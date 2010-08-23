@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.univali.br/portugol/ide/actions.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://www.univali.br/portugol/ide/actions.xsd"
+    xmlns:mstns="http://www.univali.br/portugol/ide/actions.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <xs:element name="actions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="action" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+              <xs:element name="icon" type="iconName" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>      
+    </xs:complexType>    
+  </xs:element>
+
+  <xs:simpleType name="iconName" id="iconName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Za-z0-9_.-]+\.(png|ico)"></xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>
