@@ -51,9 +51,11 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  */
 public class MainFrame extends JFrame implements TabListener, PSActionListener, Saida, Entrada
 {
-
+    ListMessagesModel model ;
+                
     private JFileChooser fileChooser = new JFileChooser();
     private JTabbedPane editorTabs = new JTabbedPane();
+    
     private NewFileAction newFileAction = null;
     private OpenFileAction openFileAction = null;
     private SaveFileAction saveFileAction = null;
@@ -137,6 +139,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
     public MainFrame()
     {
         this.setIconImage(new ImageIcon(getClass().getResource("icons/small/lightbulb.png")).getImage());
+        model = new ListMessagesModel();
         initComponents();
         centralizar();
         this.addComponentListener(new AdaptadorComponente());
@@ -174,6 +177,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
         });
 
         errosCompilador.setModel(new DefaultListModel());
+        
     }
 
     private void atualizarItensMenuConsole()
@@ -315,8 +319,6 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
         return JOptionPane.showInputDialog(this, "Digite um valor:", null);
     }
 
-
-
     private class ChangeTabListener implements ChangeListener
     {
 
@@ -381,6 +383,8 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
         console = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         errosCompilador = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabelaMensagens = new javax.swing.JTable();
         bottomPane = new javax.swing.JPanel();
         mnuBar = new javax.swing.JMenuBar();
         mnuFile = new javax.swing.JMenu();
@@ -526,6 +530,11 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
 
         painelSaida.addTab("Erros", jScrollPane1);
 
+        tabelaMensagens.setModel(model);
+        jScrollPane2.setViewportView(tabelaMensagens);
+
+        painelSaida.addTab("tab3", jScrollPane2);
+
         jSplitPane1.setRightComponent(painelSaida);
 
         javax.swing.GroupLayout bottomPaneLayout = new javax.swing.GroupLayout(bottomPane);
@@ -629,7 +638,6 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
 
                 AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico();
                 ListaMensagens listaMensagens = analizadorSemantico.analizar(saveFileAction.getFile());
-
                 DefaultListModel modelo = (DefaultListModel) errosCompilador.getModel();
                 modelo.clear();
 
@@ -637,8 +645,11 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                 {
                     if (listaMensagens.getNumeroAvisos() > 0)
                     {
-                        for (Mensagem mensagem: listaMensagens)
+                        for (Mensagem mensagem: listaMensagens){
                             modelo.addElement(mensagem);
+                            model.addMensagem(mensagem);
+                        }
+                        tabelaMensagens.setModel(model);
                     }
 
                     long horaInicial = System.currentTimeMillis();
@@ -653,9 +664,11 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                 }
                 else
                 {
-                    for (Mensagem mensagem: listaMensagens)
+                    for (Mensagem mensagem: listaMensagens){
                         modelo.addElement(mensagem);
-
+                        model.addMensagem(mensagem);
+                    }
+                    tabelaMensagens.setModel(model);
                     painelSaida.setSelectedIndex(1);
                 }
 
@@ -692,11 +705,13 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                 RSyntaxTextArea editor = aba.getTextArea();
                 editor.removeAllLineHighlights();
 
-                try { editor.addLineHighlight(mensagem.getLinha() - 1, Color.LIGHT_GRAY); }
-                catch (Exception ex){}
+                try
+                { editor.addLineHighlight(mensagem.getLinha() - 1, Color.LIGHT_GRAY); }
+                catch (Exception ex)
+                {}
             }
         }
-    }//GEN-LAST:event_errosCompiladorMousePressed
+}//GEN-LAST:event_errosCompiladorMousePressed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
@@ -719,6 +734,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
     private javax.swing.JList errosCompilador;
     private javax.swing.JToolBar fileBar;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPaneConsole;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPopupMenu menuConsole;
@@ -747,6 +763,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
     private javax.swing.JTabbedPane painelSaida;
+    private javax.swing.JTable tabelaMensagens;
     private javax.swing.JPanel topPane;
     private javax.swing.JToolBar undoRedoBar;
     // End of variables declaration//GEN-END:variables
