@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : newXMLDocument.xml
+    Created on : 3 de Agosto de 2010, 21:10
+    Author     : Fillipi Pelz
+    Description:
+        Purpose of the document follows.
+-->
+
+<actions  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns='http://www.univali.br/portugol/ide/actions.xsd'
+   xsi:schemaLocation='http://www.univali.br/portugol/ide/actions.xsd actions.xsd'>
+    <action id="NewFileAction">
+        <title>Novo</title>
+        <icon>page_white_add.png</icon>
+    </action>
+    <action id="OpenFileAction">
+        <title>Abrir...</title>
+        <icon>folder.png</icon>
+        <teste>a</teste>
+    </action>
+    <action id="SaveAction">
+        <title>Abrir...</title>
+        <icon>folder.png</icon>
+    </action>   
+    <action id="SaveFileAction">
+        <title>Salvar...</title>
+        <icon>disk.png</icon>
+    </action>
+    <action id="SaveAsAction">
+        <title>Salvar Como...</title>
+        <icon>save_as.png</icon>
+    </action>
+    <action id="UndoAction">
+        <title>Desfazer</title>
+        <icon>arrow_undo.png</icon>
+    </action>
+    <action id="RedoAction">
+        <title>Desfazer</title>
+        <icon>arrow_redo.png</icon>
+    </action>
+    <action id="EditCopyAction">
+        <title>Copiar</title>
+        <icon>page_white_copy.png</icon>
+    </action>
+    <action id="EditPasteAction">
+        <title>Colar</title>
+        <icon>page_white_paste.png</icon>
+    </action>
+    <action id="EditCutAction">
+        <title>Recortar</title>
+        <icon>cut_red.png</icon>
+    </action>
+    <action id="CompileAction">
+        <title>Compilar</title>
+       
+    </action>
+
+</actions>
