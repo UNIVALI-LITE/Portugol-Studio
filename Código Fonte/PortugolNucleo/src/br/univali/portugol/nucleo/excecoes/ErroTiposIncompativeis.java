@@ -3,6 +3,15 @@ package br.univali.portugol.nucleo.excecoes;
 import br.univali.portugol.nucleo.Operacao;
 import br.univali.portugol.nucleo.TipoDado;
 import br.univali.portugol.nucleo.asa.NoOperacao;
+import java.io.File;
+
+/**
+ *
+ * @author Luiz Fernando Noschang
+ * @since 25/08/2010
+ * @version 1.0.0
+ *
+ */
 
 public class ErroTiposIncompativeis extends Erro
 {
@@ -12,13 +21,16 @@ public class ErroTiposIncompativeis extends Erro
     private TipoDado tipoDadoOperandoDireito;
     private TipoDado tipoDadoOperandoEsquerdo;
 
-    public ErroTiposIncompativeis(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito)
+    public ErroTiposIncompativeis(File arquivo, NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito)
     {
+        super
+        (
+            arquivo,
+            operacao.getToken().getLinha(),
+            operacao.getToken().getColuna()
+        );
+
         this.operacao = operacao.getOperacao();
-
-        setLinha(operacao.getToken().getLinha());
-        setColuna(operacao.getToken().getColuna());
-
         this.tipoDadoOperandoDireito = tipoDadoOperandoDireito;
         this.tipoDadoOperandoEsquerdo = tipoDadoOperandoEsquerdo;
     }
@@ -64,7 +76,7 @@ public class ErroTiposIncompativeis extends Erro
             case SUBTRACAO_ATRIBUITIVA:         return construirMensagemSubtracaoAtribuitiva();
         }
 
-        return "A mensagem para a operação " + operacao + " ainda não foi implementada!";
+        return null;
     }
 
     private String construirMensagemAtribuicao()

@@ -5,6 +5,15 @@ import br.univali.portugol.nucleo.asa.NoReferencia;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
+import java.io.File;
+
+/**
+ *
+ * @author Luiz Fernando Noschang
+ * @since 25/08/2010
+ * @version 1.0.0
+ *
+ */
 
 public class ErroSimboloNaoDeclarado extends Erro
 {
@@ -12,11 +21,16 @@ public class ErroSimboloNaoDeclarado extends Erro
 
     private NoReferencia referencia;
 
-    public ErroSimboloNaoDeclarado(NoReferencia referencia)
+    public ErroSimboloNaoDeclarado(File arquivo, NoReferencia referencia)
     {
+        super
+        (
+            arquivo,
+            referencia.getTokenNome().getLinha(),
+            referencia.getTokenNome().getColuna()
+        );
+
         this.referencia = referencia;
-        setLinha(referencia.getTokenNome().getLinha());
-        setColuna(referencia.getTokenNome().getColuna());
     }
 
     public NoReferencia getReferencia()
@@ -41,7 +55,7 @@ public class ErroSimboloNaoDeclarado extends Erro
 
         construtorString.append("O vetor \"");
         construtorString.append(referencia.getNome());
-        construtorString.append("\" não foi declarado neste escopo!");
+        construtorString.append("\" não foi declarado neste escopo.");
 
         return construtorString.toString();
     }
@@ -52,7 +66,7 @@ public class ErroSimboloNaoDeclarado extends Erro
 
         construtorString.append("A matriz \"");
         construtorString.append(referencia.getNome());
-        construtorString.append("\" não foi declarada neste escopo!");
+        construtorString.append("\" não foi declarada neste escopo.");
 
         return construtorString.toString();
     }
@@ -63,7 +77,7 @@ public class ErroSimboloNaoDeclarado extends Erro
 
         construtorString.append("A variável \"");
         construtorString.append(referencia.getNome());
-        construtorString.append("\" não foi declarada neste escopo!");
+        construtorString.append("\" não foi declarada neste escopo.");
 
         return construtorString.toString();
     }
@@ -74,7 +88,7 @@ public class ErroSimboloNaoDeclarado extends Erro
 
         construtorString.append("A função \"");
         construtorString.append(referencia.getNome());
-        construtorString.append("\" não foi declarada neste escopo!");
+        construtorString.append("\" não foi declarada neste escopo.");
 
         return construtorString.toString();
     }

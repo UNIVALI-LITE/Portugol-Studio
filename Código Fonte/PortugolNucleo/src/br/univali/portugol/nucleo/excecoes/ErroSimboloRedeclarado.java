@@ -5,6 +5,15 @@ import br.univali.portugol.nucleo.simbolos.Matriz;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
+import java.io.File;
+
+/**
+ *
+ * @author Luiz Fernando Noschang
+ * @since 25/08/2010
+ * @version 1.0.0
+ *
+ */
 
 public final class ErroSimboloRedeclarado extends Erro
 {
@@ -13,13 +22,17 @@ public final class ErroSimboloRedeclarado extends Erro
     private Simbolo simboloExistente;
     private Simbolo simboloRedeclarado;
 
-    public ErroSimboloRedeclarado(Simbolo simboloRedeclarado, Simbolo simboloExistente)
+    public ErroSimboloRedeclarado(File arquivo, Simbolo simboloRedeclarado, Simbolo simboloExistente)
     {
+        super
+        (
+            arquivo,
+            simboloRedeclarado.getTokenNome().getLinha(),
+            simboloRedeclarado.getTokenNome().getColuna()
+        );
+
         this.simboloRedeclarado = simboloRedeclarado;
         this.simboloExistente = simboloExistente;
-
-        setLinha(simboloRedeclarado.getTokenNome().getLinha());
-        setColuna(simboloRedeclarado.getTokenNome().getColuna());
     }
 
     public Simbolo getSimboloRedeclarado()
@@ -53,6 +66,7 @@ public final class ErroSimboloRedeclarado extends Erro
         construtorString.append(simboloExistente.getTokenNome().getLinha());
         construtorString.append(", coluna: ");
         construtorString.append(simboloExistente.getTokenNome().getColuna());
+        construtorString.append(".");
 
         return construtorString.toString();
     }

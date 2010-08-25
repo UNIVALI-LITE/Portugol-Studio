@@ -13,10 +13,19 @@ import org.antlr.runtime.RecognitionException;
 
 public class AnalizadorSemantico
 {
+    private File arquivo;
     private ListaMensagens listaMensagens;
     private TabelaSimbolos tabelaSimbolosGlobal;
 
-    public ListaMensagens analizar(File arquivo) throws ExcecaoArquivoContemErros
+    public AnalizadorSemantico(File arquivo)
+    {
+        this.arquivo = arquivo;
+    }
+
+
+
+
+    public ListaMensagens analizar() throws ExcecaoArquivoContemErros
     {
         try
         {
@@ -81,7 +90,7 @@ public class AnalizadorSemantico
         if (tabelaSimbolos.contem(nome))
         {
             variavel.setRedeclarado(true);
-            listaMensagens.adicionar(new ErroSimboloRedeclarado(variavel, tabelaSimbolos.obter(nome)));
+            listaMensagens.adicionar(new ErroSimboloRedeclarado(arquivo, variavel, tabelaSimbolos.obter(nome)));
         }
 
         tabelaSimbolos.adicionar(variavel);
@@ -109,7 +118,7 @@ public class AnalizadorSemantico
 
         if (tabelaSimbolos.contem(nome))
         {
-            listaMensagens.adicionar(new ErroSimboloRedeclarado(funcao, tabelaSimbolos.obter(nome)));
+            listaMensagens.adicionar(new ErroSimboloRedeclarado(arquivo, funcao, tabelaSimbolos.obter(nome)));
             funcao.setRedeclarado(true);
         }
 
@@ -154,7 +163,7 @@ public class AnalizadorSemantico
                 simbolo = new Matriz(nome, tipoDado, 0, 0, new ArrayList<List<Object>>());
 
             if (tabelaSimbolosFuncao.contem(nome))
-                listaMensagens.adicionar(new ErroParametroRedeclarado(parametro, funcao));
+                listaMensagens.adicionar(new ErroParametroRedeclarado(arquivo, parametro, funcao));
 
             tabelaSimbolosFuncao.adicionar(simbolo);
         }
@@ -269,7 +278,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.INTEIRO) return TipoDado.INTEIRO;
             if (tipoDadoOperandoDireito == TipoDado.REAL)
             {
-                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(operacao.getOperandoDireito()));
+                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(arquivo, operacao.getOperandoDireito()));
                 return TipoDado.INTEIRO;
             }
         }
@@ -289,7 +298,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.LOGICO) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoDiferenca(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -329,7 +338,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.LOGICO) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoDivisao(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -348,7 +357,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.REAL;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoDivisaoAtribuitiva(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -358,7 +367,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.INTEIRO) return TipoDado.INTEIRO;
             if (tipoDadoOperandoDireito == TipoDado.REAL)
             {
-                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(operacao.getOperandoDireito()));
+                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(arquivo, operacao.getOperandoDireito()));
                 return TipoDado.INTEIRO;
             }
         }
@@ -371,7 +380,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.REAL;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoE(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -381,7 +390,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.LOGICO) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoIgualdade(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -421,7 +430,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.LOGICO) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoMaior(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -440,7 +449,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoMaiorIgual(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -459,7 +468,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoMenor(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -478,7 +487,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoMenorIgual(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -497,7 +506,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoModulo(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -507,7 +516,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.INTEIRO) return TipoDado.INTEIRO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoModuloAtribuitivo(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -517,7 +526,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.INTEIRO) return TipoDado.INTEIRO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoMultiplicacao(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -536,7 +545,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.REAL;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoMultiplicacaoAtribuitiva(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -546,7 +555,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.INTEIRO) return TipoDado.INTEIRO;
             if (tipoDadoOperandoDireito == TipoDado.REAL)
             {
-                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(operacao.getOperandoDireito()));
+                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(arquivo, operacao.getOperandoDireito()));
                 return TipoDado.INTEIRO;
             }
         }
@@ -559,7 +568,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.REAL;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoOu(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -569,7 +578,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.LOGICO) return TipoDado.LOGICO;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoSoma(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -615,7 +624,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.CADEIA) return TipoDado.CADEIA;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoSomaAtribuitiva(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -636,7 +645,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.INTEIRO) return TipoDado.INTEIRO;
             if (tipoDadoOperandoDireito == TipoDado.REAL)
             {
-                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(operacao.getOperandoDireito()));
+                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(arquivo, operacao.getOperandoDireito()));
                 return TipoDado.INTEIRO;
             }
         }
@@ -649,7 +658,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.REAL;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoSubtracao(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -668,7 +677,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.REAL;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoOperacaoSubtracaoAtribuitiva(NoOperacao operacao, TipoDado tipoDadoOperandoEsquerdo, TipoDado tipoDadoOperandoDireito) throws ErroTiposIncompativeis
@@ -678,7 +687,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.INTEIRO) return TipoDado.INTEIRO;
             if (tipoDadoOperandoDireito == TipoDado.REAL)
             {
-                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(operacao.getOperandoDireito()));
+                listaMensagens.adicionar(new AvisoValorExpressaoSeraArredondado(arquivo, operacao.getOperandoDireito()));
                 return TipoDado.INTEIRO;
             }
         }
@@ -691,7 +700,7 @@ public class AnalizadorSemantico
             if (tipoDadoOperandoDireito == TipoDado.REAL) return TipoDado.REAL;
         }
 
-        throw new ErroTiposIncompativeis(operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
+        throw new ErroTiposIncompativeis(arquivo, operacao, tipoDadoOperandoEsquerdo, tipoDadoOperandoDireito);
     }
 
     private TipoDado obterTipoDadoReferencia(NoReferencia referencia, TabelaSimbolos tabelaSimbolos) throws ExcecaoImpossivelDeterminarTipoDado
@@ -702,7 +711,7 @@ public class AnalizadorSemantico
 
         if (simbolo == null)
         {
-            listaMensagens.adicionar(new ErroSimboloNaoDeclarado(referencia));
+            listaMensagens.adicionar(new ErroSimboloNaoDeclarado(arquivo, referencia));
             throw new ExcecaoImpossivelDeterminarTipoDado();
         }
 
@@ -754,7 +763,7 @@ public class AnalizadorSemantico
         if (parametrosPassados.size() > funcao.getParametros().size())
         {
             cont = chamadaFuncao.getParametros().size();
-            listaMensagens.adicionar(new ErroNumeroParametrosPassadosFuncao(parametrosPassados.size(), parametrosEsperados.size(), funcao, chamadaFuncao));
+            listaMensagens.adicionar(new ErroNumeroParametrosPassadosFuncao(arquivo, parametrosPassados.size(), parametrosEsperados.size(), funcao, chamadaFuncao));
         }
 
         else
@@ -762,7 +771,7 @@ public class AnalizadorSemantico
         if (parametrosEsperados.size() > parametrosPassados.size())
         {
             cont = chamadaFuncao.getParametros().size();
-            listaMensagens.adicionar(new ErroNumeroParametrosPassadosFuncao(parametrosPassados.size(), parametrosEsperados.size(), funcao, chamadaFuncao));
+            listaMensagens.adicionar(new ErroNumeroParametrosPassadosFuncao(arquivo, parametrosPassados.size(), parametrosEsperados.size(), funcao, chamadaFuncao));
         }
 
         else cont = parametrosPassados.size();
@@ -781,7 +790,7 @@ public class AnalizadorSemantico
             if (tipoDadoParametroEsperado != TipoDado.VAZIO && tipoDadoParametroPassado != TipoDado.VAZIO)
             {
                 if (tipoDadoParametroEsperado != tipoDadoParametroPassado)
-                    listaMensagens.adicionar(new ErroTiposParametroIncompativeis(tipoDadoParametroEsperado, tipoDadoParametroPassado, parametrosEsperados.get(i), parametrosPassados.get(i), funcao));
+                    listaMensagens.adicionar(new ErroTiposParametroIncompativeis(arquivo, tipoDadoParametroEsperado, tipoDadoParametroPassado, parametrosEsperados.get(i), parametrosPassados.get(i), funcao));
             }
         }
     }

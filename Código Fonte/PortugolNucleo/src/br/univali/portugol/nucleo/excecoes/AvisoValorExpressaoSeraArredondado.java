@@ -1,22 +1,30 @@
 package br.univali.portugol.nucleo.excecoes;
 
 import br.univali.portugol.nucleo.asa.NoExpressao;
+import java.io.File;
 
 /**
  *
  * @author Luiz Fernando Noschang
+ * @since 25/08/2010
+ * @version 1.0.0
+ *
  */
 
 public class AvisoValorExpressaoSeraArredondado extends Aviso
 {
     private NoExpressao expressao;
 
-    public AvisoValorExpressaoSeraArredondado(NoExpressao expressao)
+    public AvisoValorExpressaoSeraArredondado(File arquivo, NoExpressao expressao)
     {
-        this.expressao = expressao;
+        super
+        (
+            arquivo,
+            expressao.getToken().getLinha(),
+            expressao.getToken().getColuna()
+        );
 
-        setLinha(expressao.getToken().getLinha());
-        setColuna(expressao.getToken().getColuna());
+        this.expressao = expressao;        
     }
 
     public NoExpressao getExpressao()

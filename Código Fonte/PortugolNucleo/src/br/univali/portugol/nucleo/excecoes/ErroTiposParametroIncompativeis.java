@@ -4,11 +4,16 @@ import br.univali.portugol.nucleo.TipoDado;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoParametro;
 import br.univali.portugol.nucleo.simbolos.Funcao;
+import java.io.File;
 
 /**
  *
  * @author Luiz Fernando Noschang
+ * @since 25/08/2010
+ * @version 1.0.0
+ *
  */
+
 public class ErroTiposParametroIncompativeis extends Erro
 {
     private TipoDado tipoDadoParametroEsperado;
@@ -18,16 +23,46 @@ public class ErroTiposParametroIncompativeis extends Erro
     private NoExpressao parametroPassado;
     private Funcao funcao;
 
-    public ErroTiposParametroIncompativeis(TipoDado tipoDadoParametroEsperado, TipoDado tipoDadoParametroPassado, NoParametro parametroEsperado, NoExpressao parametroPassado, Funcao funcao)
+    public ErroTiposParametroIncompativeis(File arquivo, TipoDado tipoDadoParametroEsperado, TipoDado tipoDadoParametroPassado, NoParametro parametroEsperado, NoExpressao parametroPassado, Funcao funcao)
     {
+        super
+        (
+            arquivo,
+            parametroPassado.getToken().getLinha(),
+            parametroPassado.getToken().getColuna()
+        );
+
         this.tipoDadoParametroEsperado = tipoDadoParametroEsperado;
         this.tipoDadoParametroPassado = tipoDadoParametroPassado;
         this.parametroEsperado = parametroEsperado;
         this.parametroPassado= parametroPassado;
         this.funcao = funcao;
 
-        setLinha(parametroPassado.getToken().getLinha());
-        setColuna(parametroPassado.getToken().getColuna());
+    }
+
+    public NoParametro getParametroEsperado()
+    {
+        return parametroEsperado;
+    }
+
+    public NoExpressao getParametroPassado()
+    {
+        return parametroPassado;
+    }
+
+    public Funcao getFuncao()
+    {
+        return funcao;
+    }
+
+    public TipoDado getTipoDadoParametroEsperado()
+    {
+        return tipoDadoParametroEsperado;
+    }
+
+    public TipoDado getTipoDadoParametroPassado()
+    {
+        return tipoDadoParametroPassado;
     }
 
     @Override

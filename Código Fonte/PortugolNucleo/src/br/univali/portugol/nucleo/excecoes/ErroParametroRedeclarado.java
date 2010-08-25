@@ -2,6 +2,15 @@ package br.univali.portugol.nucleo.excecoes;
 
 import br.univali.portugol.nucleo.asa.NoParametro;
 import br.univali.portugol.nucleo.simbolos.Funcao;
+import java.io.File;
+
+/**
+ *
+ * @author Luiz Fernando Noschang
+ * @since 25/08/2010
+ * @version 1.0.0
+ *
+ */
 
 public class ErroParametroRedeclarado extends Erro
 {
@@ -10,13 +19,27 @@ public class ErroParametroRedeclarado extends Erro
 
     private static final long serialVersionUID = 8170600234316233741L;
 
-    public ErroParametroRedeclarado(NoParametro parametro, Funcao funcao)
+    public ErroParametroRedeclarado(File arquivo, NoParametro parametro, Funcao funcao)
     {
+        super
+        (
+            arquivo,
+            parametro.getTokenNome().getLinha(),
+            parametro.getTokenNome().getColuna()
+        );
+
         this.funcao = funcao;
         this.parametro = parametro;
+    }
 
-        setLinha(parametro.getTokenNome().getLinha());
-        setColuna(parametro.getTokenNome().getColuna());
+    public Funcao getFuncao()
+    {
+        return funcao;
+    }
+
+    public NoParametro getParametro()
+    {
+        return parametro;
     }
 
     @Override

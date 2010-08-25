@@ -20,11 +20,14 @@ import br.univali.ps.action.SaveFileAction;
 import br.univali.ps.action.UndoAction;
 import br.univali.ps.dominio.PortugolDocument;
 import br.univali.ps.exception.NullFileOnSaveExcpetion;
+import br.univali.ps.ui.exemplojtable.exemplo1.ModeloExemplo1;
+import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
+import br.univali.ps.ui.exemplojtable.exemplo2.RenderizadorMensagem;
+import br.univali.ps.ui.swing.filtros.FiltroArquivoPortugol;
 import br.univali.ps.ui.swing.tabs.Tab;
 import br.univali.ps.ui.swing.tabs.TabClosingEvent;
 import br.univali.ps.ui.swing.tabs.TabListener;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
@@ -32,7 +35,6 @@ import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -43,7 +45,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  *
@@ -143,6 +144,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
         initComponents();
         centralizar();
         this.addComponentListener(new AdaptadorComponente());
+        configurarSeletorArquivo();
 
         acoesprontas();
 
@@ -175,8 +177,6 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                 
             }
         });
-
-        errosCompilador.setModel(new DefaultListModel());
         
     }
 
@@ -319,6 +319,15 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
         return JOptionPane.showInputDialog(this, "Digite um valor:", null);
     }
 
+    private void configurarSeletorArquivo()
+    {
+        //TODO: Permitir abrir mais de um arquivo por vez?
+        //fileChooser.setMultiSelectionEnabled(false);
+
+        fileChooser.addChoosableFileFilter(new FiltroArquivoPortugol());
+        fileChooser.setAcceptAllFileFilterUsed(false); // Desativar filtro curinga
+    }
+
     private class ChangeTabListener implements ChangeListener
     {
 
@@ -381,9 +390,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
         painelSaida = new javax.swing.JTabbedPane();
         jScrollPaneConsole = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        errosCompilador = new javax.swing.JList();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
         tabelaMensagens = new javax.swing.JTable();
         bottomPane = new javax.swing.JPanel();
         mnuBar = new javax.swing.JMenuBar();
@@ -521,19 +528,10 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
 
         painelSaida.addTab("Console", jScrollPaneConsole);
 
-        errosCompilador.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                errosCompiladorMousePressed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(errosCompilador);
-
-        painelSaida.addTab("Erros", jScrollPane1);
-
         tabelaMensagens.setModel(model);
-        jScrollPane2.setViewportView(tabelaMensagens);
+        jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
 
-        painelSaida.addTab("tab3", jScrollPane2);
+        painelSaida.addTab("Mensagens", jScrollPaneTabelaMensagens);
 
         jSplitPane1.setRightComponent(painelSaida);
 
@@ -634,24 +632,25 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                 btnCompile.setEnabled(false);
                 saveFileAction.actionPerformed(null);
                 console.setText(null);
-                painelSaida.setSelectedIndex(0);
+                painelSaida.setSelectedIndex(1);
 
-                AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico();
-                ListaMensagens listaMensagens = analizadorSemantico.analizar(saveFileAction.getFile());
-                DefaultListModel modelo = (DefaultListModel) errosCompilador.getModel();
-                modelo.clear();
+                AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(saveFileAction.getFile());
+                ListaMensagens listaMensagens = analizadorSemantico.analizar();
+
+                
+                 
+                 ModeloExemplo1 modelo = new ModeloExemplo1();                
+                 /*
+                ModeloExemplo2 modelo = new ModeloExemplo2();
+                tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
+                */
+
+                tabelaMensagens.setModel(modelo);
+                modelo.adicionar(listaMensagens);
+
 
                 if (listaMensagens.getNumeroErros() == 0)
-                {
-                    if (listaMensagens.getNumeroAvisos() > 0)
-                    {
-                        for (Mensagem mensagem: listaMensagens){
-                            modelo.addElement(mensagem);
-                            model.addMensagem(mensagem);
-                        }
-                        tabelaMensagens.setModel(model);
-                    }
-
+                {                    
                     long horaInicial = System.currentTimeMillis();
 
                     Interpretador interpretador = new Interpretador();
@@ -662,15 +661,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                     long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
                     console.append("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
                 }
-                else
-                {
-                    for (Mensagem mensagem: listaMensagens){
-                        modelo.addElement(mensagem);
-                        model.addMensagem(mensagem);
-                    }
-                    tabelaMensagens.setModel(model);
-                    painelSaida.setSelectedIndex(1);
-                }
+                else painelSaida.setSelectedIndex(1);
 
                 btnCompile.setEnabled(true);
             }
@@ -692,26 +683,6 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
     {//GEN-HEADEREND:event_menuConsoleCopiarActionPerformed
         console.copy();
     }//GEN-LAST:event_menuConsoleCopiarActionPerformed
-
-    private void errosCompiladorMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_errosCompiladorMousePressed
-    {//GEN-HEADEREND:event_errosCompiladorMousePressed
-        if (errosCompilador.getSelectedIndex() >= 0)
-        {
-            Mensagem mensagem = (Mensagem) errosCompilador.getSelectedValue();
-            Tab aba = (Tab) editorTabs.getSelectedComponent();
-
-            if (aba != null)
-            {
-                RSyntaxTextArea editor = aba.getTextArea();
-                editor.removeAllLineHighlights();
-
-                try
-                { editor.addLineHighlight(mensagem.getLinha() - 1, Color.LIGHT_GRAY); }
-                catch (Exception ex)
-                {}
-            }
-        }
-}//GEN-LAST:event_errosCompiladorMousePressed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
@@ -731,11 +702,9 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
     private javax.swing.JToolBar compileBar;
     private javax.swing.JTextArea console;
     private javax.swing.JToolBar editBar;
-    private javax.swing.JList errosCompilador;
     private javax.swing.JToolBar fileBar;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPaneConsole;
+    private javax.swing.JScrollPane jScrollPaneTabelaMensagens;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPopupMenu menuConsole;
     private javax.swing.JMenuItem menuConsoleCopiar;

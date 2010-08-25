@@ -2,10 +2,14 @@ package br.univali.portugol.nucleo.excecoes;
 
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.simbolos.Funcao;
+import java.io.File;
 
 /**
  *
  * @author Luiz Fernando Noschang
+ * @since 25/08/2010
+ * @version 1.0.0
+ *
  */
 
 public class ErroNumeroParametrosPassadosFuncao extends Erro
@@ -16,16 +20,20 @@ public class ErroNumeroParametrosPassadosFuncao extends Erro
     private Funcao funcao;
     private NoChamadaFuncao chamadaFuncao;
 
-    public ErroNumeroParametrosPassadosFuncao(int numeroParametrosPassados, int numeroParametrosEsperados, Funcao funcao, NoChamadaFuncao chamadaFuncao)
+    public ErroNumeroParametrosPassadosFuncao(File arquivo, int numeroParametrosPassados, int numeroParametrosEsperados, Funcao funcao, NoChamadaFuncao chamadaFuncao)
     {
+        super
+        (
+            arquivo,
+            chamadaFuncao.getTokenNome().getLinha(),
+            chamadaFuncao.getTokenNome().getColuna()
+        );
+
         this.numeroParametrosPassados = numeroParametrosPassados;
         this.numeroParametrosEsperados = numeroParametrosEsperados;
 
         this.funcao = funcao;
         this.chamadaFuncao = chamadaFuncao;
-
-        setLinha(chamadaFuncao.getTokenNome().getLinha());
-        setColuna(chamadaFuncao.getTokenNome().getColuna());
     }
 
     public int getNumeroParametrosEsperados()
@@ -37,6 +45,17 @@ public class ErroNumeroParametrosPassadosFuncao extends Erro
     {
         return numeroParametrosPassados;
     }
+
+    public NoChamadaFuncao getChamadaFuncao()
+    {
+        return chamadaFuncao;
+    }
+
+    public Funcao getFuncao()
+    {
+        return funcao;
+    }
+
 
     @Override
     protected String construirMensagem()
