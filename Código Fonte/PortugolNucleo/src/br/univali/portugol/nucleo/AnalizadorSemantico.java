@@ -183,12 +183,33 @@ public class AnalizadorSemantico
 
         else
 
-        if (bloco instanceof NoOperacao)
+        if (bloco instanceof NoSe)
+            analizarBlocoSe((NoSe) bloco, tabelaSimbolos);
+
+        else
+
+        if (bloco instanceof NoExpressao)
+            analizarExpressao((NoExpressao) bloco, tabelaSimbolos);
+
+    }
+
+    private void analizarExpressao(NoExpressao expressao, TabelaSimbolos tabelaSimbolos) throws ErroTiposIncompativeis
+    {
+        if (expressao instanceof NoOperacao)
         {
-            try { obterTipoDadoOperacao((NoOperacao) bloco, tabelaSimbolos); }
-            catch (ExcecaoImpossivelDeterminarTipoDado ex) {}
+            NoOperacao operacao = (NoOperacao) expressao;
+            
+            if (operacao.getOperacao() == Operacao.ATRIBUICAO)
+            {
+                try { obterTipoDadoOperacao((NoOperacao) expressao, tabelaSimbolos); }
+                catch (ExcecaoImpossivelDeterminarTipoDado ex) {}
+            }
+
+            //else listaMensagens.adicionar();
+
         }
     }
+
 
     private void analizarDeclaracao(NoDeclaracao declaracao, TabelaSimbolos tabelaSimbolos)
     {
@@ -793,5 +814,26 @@ public class AnalizadorSemantico
                     listaMensagens.adicionar(new ErroTiposParametroIncompativeis(arquivo, tipoDadoParametroEsperado, tipoDadoParametroPassado, parametrosEsperados.get(i), parametrosPassados.get(i), funcao));
             }
         }
+    }
+
+    private void analizarBlocoSe(NoSe blocoSe, TabelaSimbolos tabelaSimbolos)
+    {
+        try 
+        {
+            NoExpressao condicao = blocoSe.getCondicao();
+            TipoDado tipoDado = obterTipoDadoExpressao((NoExpressao) condicao, tabelaSimbolos);
+            if (tipoDado != TipoDado.LOGICO) listaMensagens.adicionar(new ErroTipoIncompativelExpressaoBlocoSe(arquivo, condicao));
+        }
+        catch (ErroTiposIncompativeis erro) { listaMensagens.adicionar(erro); }
+        catch (ExcecaoImpossivelDeterminarTipoDado ex) {}
+
+        tabelaSimbolos.empilharEscopo();
+        analizarListaBlocos(blocoSe.getBlocosVerdadeiros(), tabelaSimbolos);
+        tabelaSimbolos.desempilharEscopo();
+
+        tabelaSimbolos.empilharEscopo();
+        analizarListaBlocos(blocoSe.getBlocosFalsos(), tabelaSimbolos);
+        tabelaSimbolos.desempilharEscopo();
+        
     }
 }
