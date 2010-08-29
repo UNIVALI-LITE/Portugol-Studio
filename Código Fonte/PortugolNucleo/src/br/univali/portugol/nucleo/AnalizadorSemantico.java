@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import br.univali.portugol.nucleo.asa.*;
+import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
+import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
+import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.excecoes.*;
 import br.univali.portugol.nucleo.simbolos.*;
 import java.io.IOException;
@@ -188,6 +191,16 @@ public class AnalizadorSemantico
 
         else
 
+        if (bloco instanceof NoEnquanto)
+            analizarBlocoEnquanto((NoEnquanto) bloco, tabelaSimbolos);
+
+        else
+
+        if (bloco instanceof NoFacaEnquanto)
+            analizarBlocoFacaEnquanto((NoFacaEnquanto) bloco, tabelaSimbolos);
+
+        else
+
         if (bloco instanceof NoExpressao)
             analizarExpressao((NoExpressao) bloco, tabelaSimbolos);
 
@@ -204,10 +217,12 @@ public class AnalizadorSemantico
                 try { obterTipoDadoOperacao((NoOperacao) expressao, tabelaSimbolos); }
                 catch (ExcecaoImpossivelDeterminarTipoDado ex) {}
             }
-
-            //else listaMensagens.adicionar();
-
         }
+
+        else
+
+        if (expressao instanceof NoIncremento)
+            analizarIncremento((NoIncremento) expressao);
     }
 
 
@@ -821,8 +836,8 @@ public class AnalizadorSemantico
         try 
         {
             NoExpressao condicao = blocoSe.getCondicao();
-            TipoDado tipoDado = obterTipoDadoExpressao((NoExpressao) condicao, tabelaSimbolos);
-            if (tipoDado != TipoDado.LOGICO) listaMensagens.adicionar(new ErroTipoIncompativelExpressaoBlocoSe(arquivo, condicao));
+            TipoDado tipoDado = obterTipoDadoExpressao(condicao, tabelaSimbolos);
+            if (tipoDado != TipoDado.LOGICO) listaMensagens.adicionar(new ErroExpressaoTipoLogicoEsperada(arquivo, blocoSe, condicao));
         }
         catch (ErroTiposIncompativeis erro) { listaMensagens.adicionar(erro); }
         catch (ExcecaoImpossivelDeterminarTipoDado ex) {}
@@ -833,7 +848,47 @@ public class AnalizadorSemantico
 
         tabelaSimbolos.empilharEscopo();
         analizarListaBlocos(blocoSe.getBlocosFalsos(), tabelaSimbolos);
+        tabelaSimbolos.desempilharEscopo();        
+    }
+
+    private void analizarBlocoEnquanto(NoEnquanto enquanto, TabelaSimbolos tabelaSimbolos)
+    {
+        try
+        {
+            NoExpressao condicao = enquanto.getCondicao();
+            TipoDado tipoDado = obterTipoDadoExpressao(condicao, tabelaSimbolos);
+            if (tipoDado != TipoDado.LOGICO) listaMensagens.adicionar(new ErroExpressaoTipoLogicoEsperada(arquivo, enquanto, condicao));
+        }
+        catch (ErroTiposIncompativeis erro) { listaMensagens.adicionar(erro); }
+        catch (ExcecaoImpossivelDeterminarTipoDado ex) {}
+
+        tabelaSimbolos.empilharEscopo();
+        analizarListaBlocos(enquanto.getBlocos(), tabelaSimbolos);
         tabelaSimbolos.desempilharEscopo();
-        
+    }
+
+    private void analizarBlocoFacaEnquanto(NoFacaEnquanto facaEnquanto, TabelaSimbolos tabelaSimbolos)
+    {
+        tabelaSimbolos.empilharEscopo();
+        analizarListaBlocos(facaEnquanto.getBlocos(), tabelaSimbolos);
+        tabelaSimbolos.desempilharEscopo();
+
+        try
+        {
+            NoExpressao condicao = facaEnquanto.getCondicao();
+            TipoDado tipoDado = obterTipoDadoExpressao(condicao, tabelaSimbolos);
+            if (tipoDado != TipoDado.LOGICO) listaMensagens.adicionar(new ErroExpressaoTipoLogicoEsperada(arquivo, facaEnquanto, condicao));
+        }
+        catch (ErroTiposIncompativeis erro) { listaMensagens.adicionar(erro); }
+        catch (ExcecaoImpossivelDeterminarTipoDado ex) {}
+    }
+
+    private void analizarIncremento(NoIncremento incremento)
+    {
+        NoExpressao expressao = incremento.getExpressao();
+
+        if (!(expressao instanceof NoReferenciaVariavel) && !(expressao instanceof NoReferenciaVetor) && !(expressao instanceof NoReferenciaMatriz))
+            listaMensagens.adicionar(new ErroOperacaoComExpressaoConstante(arquivo, incremento, expressao));
+
     }
 }

@@ -632,7 +632,7 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                 btnCompile.setEnabled(false);
                 saveFileAction.actionPerformed(null);
                 console.setText(null);
-                painelSaida.setSelectedIndex(1);
+                painelSaida.setSelectedIndex(0);
 
                 AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(saveFileAction.getFile());
                 ListaMensagens listaMensagens = analizadorSemantico.analizar();
