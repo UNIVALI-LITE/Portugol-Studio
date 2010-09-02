@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package br.univali.ps.action;
+package br.univali.ps.acoes;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -14,14 +14,14 @@ import javax.swing.JFileChooser;
  *
  * @author Fillipi Pelz
  */
-public class SaveAsAction extends Action{
+public class AcaoSalvarComo extends Acao{
 
     Container parent;
     JFileChooser chooser;
 
     File file = null;
 
-    public SaveAsAction()
+    public AcaoSalvarComo()
     {
         super("arquivo salvo com sucesso");
     }
@@ -38,7 +38,7 @@ public class SaveAsAction extends Action{
     }
 
     @Override
-    protected void execute(ActionEvent e) throws Exception
+    protected void executar(ActionEvent e) throws Exception
     {
         if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION)
         {

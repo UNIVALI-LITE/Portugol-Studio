@@ -7,17 +7,17 @@ import br.univali.portugol.nucleo.excecoes.ListaMensagens;
 import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.portugol.nucleo.iu.Entrada;
 import br.univali.portugol.nucleo.iu.Saida;
-import br.univali.ps.action.ActionFactory;
-import br.univali.ps.action.EditCopyAction;
-import br.univali.ps.action.EditCutAction;
-import br.univali.ps.action.EditPasteAction;
-import br.univali.ps.action.NewFileAction;
-import br.univali.ps.action.OpenFileAction;
-import br.univali.ps.action.PSActionListener;
-import br.univali.ps.action.RedoAction;
-import br.univali.ps.action.SaveAsAction;
-import br.univali.ps.action.SaveFileAction;
-import br.univali.ps.action.UndoAction;
+import br.univali.ps.acoes.FabricaAcao;
+import br.univali.ps.acoes.AcaoCopiar;
+import br.univali.ps.acoes.AcaoRecortar;
+import br.univali.ps.acoes.AcaoColar;
+import br.univali.ps.acoes.AcaoNovoArquivo;
+import br.univali.ps.acoes.AcaoAbrirArquivo;
+import br.univali.ps.acoes.AcaoListener;
+import br.univali.ps.acoes.AcaoRefazer;
+import br.univali.ps.acoes.AcaoSalvarComo;
+import br.univali.ps.acoes.AcaoSalvarArquivo;
+import br.univali.ps.acoes.AcaoDesfazer;
 import br.univali.ps.dominio.PortugolDocument;
 import br.univali.ps.exception.NullFileOnSaveExcpetion;
 import br.univali.ps.ui.exemplojtable.exemplo1.ModeloExemplo1;
@@ -50,22 +50,22 @@ import javax.swing.text.BadLocationException;
  *
  * @author Fillipi Pelz
  */
-public class MainFrame extends JFrame implements TabListener, PSActionListener, Saida, Entrada
+public class MainFrame extends JFrame implements TabListener, AcaoListener, Saida, Entrada
 {
     ListMessagesModel model ;
                 
     private JFileChooser fileChooser = new JFileChooser();
     private JTabbedPane editorTabs = new JTabbedPane();
     
-    private NewFileAction newFileAction = null;
-    private OpenFileAction openFileAction = null;
-    private SaveFileAction saveFileAction = null;
-    private SaveAsAction saveAsAction = null;
-    private EditCopyAction editCopyAction = null;
-    private EditCutAction editCutAction = null;
-    private EditPasteAction editPasteAction = null;
-    private RedoAction redoAction = null;
-    private UndoAction undoAction = null;
+    private AcaoNovoArquivo acaoNovoArquivo = null;
+    private AcaoAbrirArquivo openFileAction = null;
+    private AcaoSalvarArquivo saveFileAction = null;
+    private AcaoSalvarComo saveAsAction = null;
+    private AcaoCopiar editCopyAction = null;
+    private AcaoRecortar editCutAction = null;
+    private AcaoColar editPasteAction = null;
+    private AcaoRefazer redoAction = null;
+    private AcaoDesfazer undoAction = null;
     
 
     private void acoesprontas()
@@ -74,25 +74,25 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
         exceptions.add(new NullFileOnSaveExcpetion());
         exceptions.add(new Exception("Buteco"));
 
-        newFileAction = (NewFileAction) ActionFactory.getInstance().createAction(NewFileAction.class);
-        newFileAction.addListener(this);
-        newFileAction.setup(editorTabs, this);
+        acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
+        acaoNovoArquivo.adicionarListener(this);
+        acaoNovoArquivo.setup(editorTabs, this);
 
-        openFileAction = (OpenFileAction) ActionFactory.getInstance().createAction(OpenFileAction.class);
-        openFileAction.addListener(this);
-        openFileAction.setup(this, fileChooser);
+        openFileAction = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
+        openFileAction.adicionarListener(this);
+        openFileAction.configurar(this, fileChooser);
 
-        saveFileAction = (SaveFileAction) ActionFactory.getInstance().createAction(SaveFileAction.class);
-        saveFileAction.addListener(this);
+        saveFileAction = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
+        saveFileAction.adicionarListener(this);
         saveFileAction.setEnabled(false);
 
-        saveAsAction = (SaveAsAction) ActionFactory.getInstance().createAction(SaveAsAction.class);
-        saveAsAction.addListener(this);
+        saveAsAction = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
+        saveAsAction.adicionarListener(this);
         saveAsAction.setEnabled(false);
         saveAsAction.setup(this, fileChooser);
 
-        btnNew.setAction(newFileAction);
-        mniNew.setAction(newFileAction);
+        btnNew.setAction(acaoNovoArquivo);
+        mniNew.setAction(acaoNovoArquivo);
         btnNew.setText("");
 
 
@@ -109,15 +109,15 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
 
     private void acoesAindaParaFazer()
     {
-        editCopyAction = (EditCopyAction) ActionFactory.getInstance().createAction(EditCopyAction.class);
+        editCopyAction = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
         editCopyAction.setEnabled(false);
-        editCutAction = (EditCutAction) ActionFactory.getInstance().createAction(EditCutAction.class);
+        editCutAction = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
         editCutAction.setEnabled(false);
-        editPasteAction = (EditPasteAction) ActionFactory.getInstance().createAction(EditPasteAction.class);
+        editPasteAction = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
         editPasteAction.setEnabled(false);
-        redoAction = (RedoAction) ActionFactory.getInstance().createAction(RedoAction.class);
+        redoAction = (AcaoRefazer) FabricaAcao.getInstancia().criarAcao(AcaoRefazer.class);
         redoAction.setEnabled(false);
-        undoAction = (UndoAction) ActionFactory.getInstance().createAction(UndoAction.class);
+        undoAction = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
         undoAction.setEnabled(false);
 
         mniCut.setAction(editCutAction);
@@ -224,20 +224,20 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
 
     //ActionListener
     @Override
-    public void actionPerformedSuccessfully(br.univali.ps.action.Action action, String message)
+    public void acaoExecutadaSucesso(br.univali.ps.acoes.Acao action, String message)
     {
         if (action == openFileAction)
         {
-            Tab tab = new Tab(editorTabs, ((OpenFileAction) action).getFileTitle());
+            Tab tab = new Tab(editorTabs, ((AcaoAbrirArquivo) action).getTituloArquivo());
             tab.addTabListener(this);
-            tab.getTextArea().setText(((OpenFileAction) action).getFileText());
+            tab.getTextArea().setText(((AcaoAbrirArquivo) action).getTextoArquivo());
             editorTabs.add(tab);
-            saveFileAction.setup(openFileAction.getFile(), openFileAction.getFileText());
+            saveFileAction.setup(openFileAction.getFile(), openFileAction.getTextoArquivo());
             editorTabs.setSelectedIndex(editorTabs.indexOfComponent(tab));
             btnCompile.setEnabled(true);
         } else if (action == saveAsAction)
         {            
-            saveFileAction.setup(((SaveAsAction) action).getFile(), getTextOfSelecteTab());
+            saveFileAction.setup(((AcaoSalvarComo) action).getFile(), getTextOfSelecteTab());
             saveFileAction.actionPerformed(null);
         } else if (action == saveFileAction)
         {
@@ -247,16 +247,16 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
             saveFileAction.setEnabled(false);
         }
 
-        else if (action  ==  newFileAction)
+        else if (action  ==  acaoNovoArquivo)
         {
             btnCompile.setEnabled(true);
         }
     }
 
     @Override
-    public void actionFailed(br.univali.ps.action.Action action, Exception reason)
+    public void acaoFalhou(br.univali.ps.acoes.Acao action, Exception reason)
     {
-        if (action instanceof SaveFileAction)
+        if (action instanceof AcaoSalvarArquivo)
         {
             if (reason instanceof NullFileOnSaveExcpetion)
             {
@@ -343,9 +343,9 @@ public class MainFrame extends JFrame implements TabListener, PSActionListener, 
                 saveFileAction.setEnabled(tab.getPortugolDocument().isChanged());
                 undoAction.setup();
                 redoAction.setup();
-                editPasteAction.setup();
+                editCopyAction.configurar();
+                editPasteAction.configurar();
                 tab.getTextArea().addFocusListener(editPasteAction);
-                editCopyAction.setup();
                 editCutAction.setup();
             } else
             {

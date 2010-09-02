@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.action;
+package br.univali.ps.acoes;
 
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.Container;
@@ -14,56 +14,56 @@ import javax.swing.JFileChooser;
  *
  * @author Fillipi Pelz
  */
-public class OpenFileAction extends Action
+public class AcaoAbrirArquivo extends Acao
 {
     
-    private JFileChooser chooser;;
+    private JFileChooser chooser;
     private Container parent;
 
-    private String fileText;
-    private String fileTitle;
-    private File file;
+    private String textoArquivo;
+    private String tituloArquivo;
+    private File arquivo;
 
-    public OpenFileAction()
+    public AcaoAbrirArquivo()
     {
         super("Arquivo aberto com sucesso!");
     }
 
-    public void setup(Container parent, JFileChooser chooser)
+    public void configurar(Container parent, JFileChooser chooser)
     {
         this.parent = parent;
         this.chooser = chooser;
     }
 
-    public String getFileText()
+    public String getTextoArquivo()
     {
-        return fileText;
+        return textoArquivo;
     }
 
-    public String getFileTitle()
+    public String getTituloArquivo()
     {
-        return fileTitle;
+        return tituloArquivo;
     }
 
     @Override
-    protected void execute(ActionEvent e) throws Exception
+    protected void executar(ActionEvent e) throws Exception
     {
         if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
         {
-            file = chooser.getSelectedFile();
-            fileText = FileHandle.open(file);
-            fileTitle = file.getName();
+            arquivo = chooser.getSelectedFile();
+            textoArquivo = FileHandle.open(arquivo);
+            tituloArquivo = arquivo.getName();
         }
         else
         {
-            file = null;
+            arquivo = null;
             throw new Exception("Seleção de arquivo cancelada pelo usuário");
         }
     }
 
     public File getFile()
     {
-        return file;
+        return arquivo;
     }
 
     

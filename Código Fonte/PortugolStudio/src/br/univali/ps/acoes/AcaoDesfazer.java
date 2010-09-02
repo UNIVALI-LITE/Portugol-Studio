@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.action;
+package br.univali.ps.acoes;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -14,18 +14,19 @@ import org.fife.ui.rtextarea.RecordableTextAction;
  *
  * @author Fillipi Pelz
  */
-public class EditCutAction extends Action implements PropertyChangeListener
+public class AcaoDesfazer extends Acao implements PropertyChangeListener
 {
 
-    public EditCutAction()
+    public AcaoDesfazer()
     {
-        super("Trecho recortado com sucesso");
+        super("Desfeito com sucesso!");
     }
 
     public void setup()
     {
-        RecordableTextAction rta = RTextArea.getAction(RTextArea.CUT_ACTION);
-        rta.putValue(Action.SMALL_ICON, this.getValue(Action.SMALL_ICON));        
+        RecordableTextAction rta = RTextArea.getAction(RTextArea.UNDO_ACTION);
+        rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
+        rta.putValue(Acao.NAME, getValue(Acao.NAME));
         rta.addPropertyChangeListener(this);
     }
 
@@ -38,9 +39,9 @@ public class EditCutAction extends Action implements PropertyChangeListener
         }
     }
 
-    @Override
-    protected void execute(ActionEvent e) throws Exception
+     @Override
+    protected void executar(ActionEvent e) throws Exception
     {
-        RTextArea.getAction(RTextArea.CUT_ACTION).actionPerformed(e);
+        RTextArea.getAction(RTextArea.UNDO_ACTION).actionPerformed(e);
     }
 }

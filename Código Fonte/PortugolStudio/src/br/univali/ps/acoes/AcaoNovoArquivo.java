@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package br.univali.ps.action;
+package br.univali.ps.acoes;
 
 import br.univali.ps.ui.swing.tabs.Tab;
 import br.univali.ps.ui.swing.tabs.TabListener;
@@ -14,12 +14,12 @@ import javax.swing.JTabbedPane;
  *
  * @author Fillipi Pelz
  */
-public class NewFileAction extends Action{
+public class AcaoNovoArquivo extends Acao{
 
     JTabbedPane editors;
     TabListener tabListener;
 
-    NewFileAction()
+    AcaoNovoArquivo()
     {
         super("Arquivo criado com sucesso");
     }
@@ -31,7 +31,7 @@ public class NewFileAction extends Action{
     }
 
     @Override
-    protected void execute(ActionEvent e) throws Exception
+    protected void executar(ActionEvent e) throws Exception
     {
         Tab tab = new Tab(editors);
         tab.addTabListener(tabListener);

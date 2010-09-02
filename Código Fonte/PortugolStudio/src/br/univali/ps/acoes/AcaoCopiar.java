@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package br.univali.ps.action;
+package br.univali.ps.acoes;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -15,18 +15,17 @@ import org.fife.ui.rtextarea.RecordableTextAction;
  *
  * @author Fillipi Pelz
  */
-public class RedoAction extends Action implements PropertyChangeListener{
+public class AcaoCopiar extends Acao implements PropertyChangeListener{
 
-    public RedoAction()
+    public AcaoCopiar()
     {
-        super("Refeito com sucesso");
+        super("trecho copiado com sucesso!");
     }
 
-        public void setup()
+     public void configurar()
     {
-        RecordableTextAction rta = RTextArea.getAction(RTextArea.REDO_ACTION);
-        rta.putValue(Action.SMALL_ICON, this.getValue(Action.SMALL_ICON));
-        rta.putValue(Action.NAME, getValue(Action.NAME));
+        RecordableTextAction rta = RTextArea.getAction(RTextArea.COPY_ACTION);
+        rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
         rta.addPropertyChangeListener(this);
     }
 
@@ -39,10 +38,10 @@ public class RedoAction extends Action implements PropertyChangeListener{
         }
     }
 
-    @Override
-    protected void execute(ActionEvent e) throws Exception
+     @Override
+    protected void executar(ActionEvent e) throws Exception
     {
-        RTextArea.getAction(RTextArea.REDO_ACTION).actionPerformed(e);
+        RTextArea.getAction(RTextArea.COPY_ACTION).actionPerformed(e);
     }
 
 }

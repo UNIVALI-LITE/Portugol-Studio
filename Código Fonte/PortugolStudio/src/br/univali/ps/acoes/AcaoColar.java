@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package br.univali.ps.action;
+package br.univali.ps.acoes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -16,21 +16,21 @@ import org.fife.ui.rtextarea.RecordableTextAction;
  *
  * @author Fillipi Pelz
  */
-public class EditPasteAction extends Action implements FocusListener{
+public class AcaoColar extends Acao implements FocusListener{
 
-    public EditPasteAction()
+    public AcaoColar()
     {
         super("Trecho colado com sucesso!");
     }
 
-    public void setup()
+    public void configurar()
     {
         RecordableTextAction rta = RTextArea.getAction(RTextArea.PASTE_ACTION);
-        rta.putValue(Action.SMALL_ICON, this.getValue(Action.SMALL_ICON));
+        rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
     }  
 
      @Override
-    protected void execute(ActionEvent e) throws Exception
+    protected void executar(ActionEvent e) throws Exception
     {
         RTextArea.getAction(RTextArea.PASTE_ACTION).actionPerformed(e);
     }

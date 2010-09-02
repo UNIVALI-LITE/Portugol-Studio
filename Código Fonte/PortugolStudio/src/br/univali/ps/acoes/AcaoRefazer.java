@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.action;
 
-import br.univali.ps.ui.util.IconFactory;
+package br.univali.ps.acoes;
+
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -15,19 +15,18 @@ import org.fife.ui.rtextarea.RecordableTextAction;
  *
  * @author Fillipi Pelz
  */
-public class UndoAction extends Action implements PropertyChangeListener
-{
+public class AcaoRefazer extends Acao implements PropertyChangeListener{
 
-    public UndoAction()
+    public AcaoRefazer()
     {
-        super("Desfeito com sucesso!");
+        super("Refeito com sucesso");
     }
 
-    public void setup()
+        public void setup()
     {
-        RecordableTextAction rta = RTextArea.getAction(RTextArea.UNDO_ACTION);
-        rta.putValue(Action.SMALL_ICON, this.getValue(Action.SMALL_ICON));
-        rta.putValue(Action.NAME, getValue(Action.NAME));
+        RecordableTextAction rta = RTextArea.getAction(RTextArea.REDO_ACTION);
+        rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
+        rta.putValue(Acao.NAME, getValue(Acao.NAME));
         rta.addPropertyChangeListener(this);
     }
 
@@ -40,9 +39,10 @@ public class UndoAction extends Action implements PropertyChangeListener
         }
     }
 
-     @Override
-    protected void execute(ActionEvent e) throws Exception
+    @Override
+    protected void executar(ActionEvent e) throws Exception
     {
-        RTextArea.getAction(RTextArea.UNDO_ACTION).actionPerformed(e);
+        RTextArea.getAction(RTextArea.REDO_ACTION).actionPerformed(e);
     }
+
 }
