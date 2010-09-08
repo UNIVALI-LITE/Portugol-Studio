@@ -177,7 +177,8 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
                 
             }
         });
-        
+
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     private void atualizarItensMenuConsole()
