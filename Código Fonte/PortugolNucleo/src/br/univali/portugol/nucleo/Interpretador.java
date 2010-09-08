@@ -614,15 +614,24 @@ public class Interpretador
 
     private Object obterValorOperacao(NoOperacao operacao, TabelaSimbolos tabelaSimbolos)
     {
+        switch (operacao.getOperacao())
+        {
+            case ATRIBUICAO: return obterValorOperacaoAtribuicao  (operacao, tabelaSimbolos);
+            case DIVISAO_ATRIBUITIVA: 	return obterValorOperacaoDivisaoAtribuitiva   (operacao, tabelaSimbolos);
+            case SUBTRACAO_ATRIBUITIVA: 	return obterValorOperacaoSubtracaoAtribuitiva       (operacao, tabelaSimbolos);
+            case SOMA_ATRIBUITIVA: 		return obterValorOperacaoSomaAtribuitiva            (operacao, tabelaSimbolos);
+            case MULTIPLICACAO_ATRIBUITIVA: 	return obterValorOperacaoMultiplicacaoAtribuitiva   (operacao, tabelaSimbolos);
+            case MODULO_ATRIBUITIVO: 		return obterValorOperacaoModuloAtribuitivo          (operacao, tabelaSimbolos);
+        }
+
         Object valorOperandoEsquerdo = obterValorExpressao(operacao.getOperandoEsquerdo(), tabelaSimbolos);
         Object valorOperandoDireito = obterValorExpressao(operacao.getOperandoDireito(), tabelaSimbolos);
 
         switch (operacao.getOperacao())
         {
-            case ATRIBUICAO: 			return obterValorOperacaoAtribuicao                 (operacao, tabelaSimbolos);
             case DIFERENCA: 			return obterValorOperacaoDiferenca                  (valorOperandoEsquerdo, valorOperandoDireito);
             case DIVISAO: 			return obterValorOperacaoDivisao                    (valorOperandoEsquerdo, valorOperandoDireito);
-            case DIVISAO_ATRIBUITIVA: 		return obterValorOperacaoDivisaoAtribuitiva         (operacao, tabelaSimbolos);
+
             case E: 				return obterValorOperacaoE                          (valorOperandoEsquerdo, valorOperandoDireito);
             case IGUALDADE: 			return obterValorOperacaoIgualdade                  (valorOperandoEsquerdo, valorOperandoDireito);
             case MAIOR: 			return obterValorOperacaoMaior                      (valorOperandoEsquerdo, valorOperandoDireito);
@@ -630,14 +639,11 @@ public class Interpretador
             case MENOR: 			return obterValorOperacaoMenor                      (valorOperandoEsquerdo, valorOperandoDireito);
             case MENOR_IGUAL: 			return obterValorOperacaoMenorIgual                 (valorOperandoEsquerdo, valorOperandoDireito);
             case MODULO: 			return obterValorOperacaoModulo                     (valorOperandoEsquerdo, valorOperandoDireito);
-            case MODULO_ATRIBUITIVO: 		return obterValorOperacaoModuloAtribuitivo          (operacao, tabelaSimbolos);
             case MULTIPLICACAO: 		return obterValorOperacaoMultiplicacao              (valorOperandoEsquerdo, valorOperandoDireito);
-            case MULTIPLICACAO_ATRIBUITIVA: 	return obterValorOperacaoMultiplicacaoAtribuitiva   (operacao, tabelaSimbolos);
             case OU: 				return obterValorOperacaoOu                         (valorOperandoEsquerdo, valorOperandoDireito);
             case SOMA: 				return obterValorOperacaoSoma                       (valorOperandoEsquerdo, valorOperandoDireito);
-            case SOMA_ATRIBUITIVA: 		return obterValorOperacaoSomaAtribuitiva            (operacao, tabelaSimbolos);
             case SUBTRACAO: 			return obterValorOperacaoSubtracao                  (valorOperandoEsquerdo, valorOperandoDireito);
-            case SUBTRACAO_ATRIBUITIVA: 	return obterValorOperacaoSubtracaoAtribuitiva       (operacao, tabelaSimbolos);
+
         }
 
         return null;
