@@ -1,5 +1,6 @@
 build.xml
 build-before-profiler.xml
+build
 nbproject
 dist
 manifest.mf
