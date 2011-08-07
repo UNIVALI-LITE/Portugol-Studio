@@ -22,6 +22,8 @@ public class PortugolDocument extends RSyntaxDocument{
     public PortugolDocument()
     {
         super(RSyntaxDocument.SYNTAX_STYLE_NONE);
+        
+        
     }
      
     public File getFile() {

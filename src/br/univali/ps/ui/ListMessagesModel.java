@@ -6,7 +6,6 @@
 package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.excecoes.Mensagem;
-import br.univali.ps.ui.util.IconFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;

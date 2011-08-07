@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE> sistema de Ajuda do Portugol Studio </TITLE>
+<link rel="stylesheet" type="text/css" href="estilo.css">
+</HEAD>
+
+<BODY>
+
+	<H2>Comando para</H2>
+
+	<p><a href="index.html">Tópicos de Ajuda</a> >> <a href="informacoesUso.html">Informaçãos de Uso</a> >> <a href="comandosBasicos.html"> Comandos Básicos </a> >> Comanto para</p>
+
+	<p class="subtitulo">O que é?</p>
+
+	<P> &nbsp; O comando PARA possui uma variavel de controle, ou seja com está estrutura é possivel executar um conjunto de instruções um número determinado de vezes. Através da variavel de controle, define-se a quantidade de repetições que o laço fará.</P>
+
+	<p class="subtitulo">Como usar?</p>
+
+	<P> &nbsp; Para utilizar o comando PARA você deverá escrever este comando e entre parêntese inicializar a variavel de controle com determinado número para definir o número de vezes que a intstrução será executada. Veja na tabela como utilizar.</P>
+	
+
+	<table class="tabela2">
+		<tr class="linha2">
+			<td><b> COMANDO PARA</b></td>
+		</tr>
+		<tr class="linha1">
+			<td><P>&nbsp; 
+			
+				&nbsp; <B>para</B>(variavel = &lt;valor_inicial&gt;;  variavel = &lt;valor_final&gt;;       variavel &lt;incremento&gt;) <BR>
+				&nbsp; <B>{</B> <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp; &lt;instrução&gt; <BR>
+				&nbsp; <B>}</B> <BR>
+
+			</td>
+		</tr>
+	</table>
+
+	<p><b>Veja os exemplos:</b></p>
+
+	<P><I><U>Exemplo 1:</U></I></P>
+
+	<P class="algoritmo">
+	
+	&nbsp; <B> programa </B><BR>
+	&nbsp; <B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao inicio( ) </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	inteiro cont <BR><BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("Digite um número\n") <BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> para </B>(cont=1; cont&lt;=100; cont++) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>se</B>(cont % 10 == 0) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			escreva (cont, " é multiplo de 10 \n")	<BR>			
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B><BR>
+	&nbsp; <B> } </B> <BR>
+
+	</P>
+
+	<P><I><U>Exemplo 2:</U></I></P>
+
+	<P class="algoritmo">
+	
+	&nbsp; <B> programa </B><BR>
+	&nbsp; <B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao inicio( ) </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	inteiro cont = 1,i <BR><BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> para </B>(i=1; i&lt;=20; i++) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> se </B> (cont % 2 == 0) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			escreva ("O número ", cont, " é par \n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		escreva ("O número ", cont, " é ímpar \n")<BR><BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		cont++ <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp; <B> } </B> <BR>
+	
+	</P>
+
+	<hr>
+
+</BODY>
+</HTML>
