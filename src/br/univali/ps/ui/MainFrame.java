@@ -1,6 +1,5 @@
 package br.univali.ps.ui;
 
-
 import br.univali.portugol.nucleo.AnalizadorSemantico;
 import br.univali.portugol.nucleo.Interpretador;
 import br.univali.portugol.nucleo.excecoes.ListaMensagens;
@@ -25,8 +24,6 @@ import br.univali.ps.ui.swing.tabs.Tab;
 import br.univali.ps.ui.swing.tabs.TabClosingEvent;
 import br.univali.ps.ui.swing.tabs.TabListener;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -42,18 +39,17 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
 
 /**
  *
  * @author Fillipi Pelz
  */
-public class MainFrame extends JFrame implements TabListener, AcaoListener, Saida, Entrada
-{
-    ListMessagesModel model ;
-                
+public class MainFrame extends JFrame implements TabListener, AcaoListener, Saida, Entrada {
+
+    ListMessagesModel model;
     private JFileChooser fileChooser = new JFileChooser();
     private JTabbedPane editorTabs = new JTabbedPane();
-    
     private AcaoNovoArquivo acaoNovoArquivo = null;
     private AcaoAbrirArquivo openFileAction = null;
     private AcaoSalvarArquivo saveFileAction = null;
@@ -65,8 +61,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     private AcaoDesfazer undoAction = null;
     
 
-    private void acoesprontas()
-    {
+    private void acoesprontas() {
         List<Exception> exceptions = new ArrayList<Exception>();
         exceptions.add(new NullFileOnSaveExcpetion());
         exceptions.add(new Exception("Buteco"));
@@ -104,8 +99,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         mniSaveAs.setAction(saveAsAction);
     }
 
-    private void acoesAindaParaFazer()
-    {
+    private void acoesAindaParaFazer() {
         editCopyAction = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
         editCopyAction.setEnabled(false);
         editCutAction = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
@@ -134,12 +128,11 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         btnRedo.setText("");
     }
 
-    public MainFrame()
-    {
+    public MainFrame() {
         this.setIconImage(new ImageIcon(getClass().getResource("icons/small/lightbulb.png")).getImage());
         model = new ListMessagesModel();
         initComponents();
-        centralizar();
+        this.setLocationRelativeTo(null);
         this.addComponentListener(new AdaptadorComponente());
         configurarSeletorArquivo();
 
@@ -147,6 +140,8 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
         acoesAindaParaFazer();
 
+        
+        
         editorTabs.addChangeListener(new ChangeTabListener());
         editorTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -157,75 +152,61 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         console.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
-            public void insertUpdate(DocumentEvent e)
-            {
+            public void insertUpdate(DocumentEvent e) {
                 atualizarItensMenuConsole();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e)
-            {
+            public void removeUpdate(DocumentEvent e) {
                 atualizarItensMenuConsole();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e)
-            {
-                
+            public void changedUpdate(DocumentEvent e) {
             }
         });
-
+        
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
-    private void atualizarItensMenuConsole()
-    {
-        if (console.getText().length() > 0)
-        {
+    private void atualizarItensMenuConsole() {
+        if (console.getText().length() > 0) {
             menuConsoleLimpar.setEnabled(true);
 
             int selecao = console.getSelectionEnd() - console.getSelectionStart();
 
-            if (selecao > 0)
+            if (selecao > 0) {
                 menuConsoleCopiar.setEnabled(true);
-
-            else menuConsoleCopiar.setEnabled(false);
-        }
-        else
-        {
+            } else {
+                menuConsoleCopiar.setEnabled(false);
+            }
+        } else {
             menuConsoleLimpar.setEnabled(false);
             menuConsoleCopiar.setEnabled(false);
         }
     }
 
-    public String getTextOfSelecteTab()
-    {
+    public String getTextOfSelecteTab() {
         String strReturn = null;
-        if (editorTabs.getTabCount() > 0)
-        {
+        if (editorTabs.getTabCount() > 0) {
             PortugolDocument p = ((Tab) editorTabs.getSelectedComponent()).getPortugolDocument();
-            try
-            {
+            try {
                 strReturn = p.getText(0, p.getLength());
-            } catch (BadLocationException ex)
-            {
+            } catch (BadLocationException ex) {
                 MainFrame.this.showError(ex.getMessage(), "Não foi possivel recuperar texto do editor");
             }
         }
         return strReturn;
     }
 
-    public void showError(String msg, String title)
-    {
+    public void showError(String msg, String title) {
         JOptionPane.showMessageDialog(this, msg, title, JOptionPane.ERROR_MESSAGE);
     }
 
     //ActionListener
     @Override
-    public void acaoExecutadaSucesso(br.univali.ps.acoes.Acao action, String message)
-    {
-        if (action == openFileAction)
-        {
+    public void acaoExecutadaSucesso(br.univali.ps.acoes.Acao action, String message) {
+        if (action == openFileAction) {
             Tab tab = new Tab(editorTabs, ((AcaoAbrirArquivo) action).getTituloArquivo());
             tab.addTabListener(this);
             tab.getTextArea().setText(((AcaoAbrirArquivo) action).getTextoArquivo());
@@ -233,92 +214,67 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
             saveFileAction.setup(openFileAction.getFile(), openFileAction.getTextoArquivo());
             editorTabs.setSelectedIndex(editorTabs.indexOfComponent(tab));
             btnCompile.setEnabled(true);
-        } else if (action == saveAsAction)
-        {            
+        } else if (action == saveAsAction) {
             saveFileAction.setup(((AcaoSalvarComo) action).getFile(), getTextOfSelecteTab());
             saveFileAction.actionPerformed(null);
-        } else if (action == saveFileAction)
-        {
+        } else if (action == saveFileAction) {
             ((Tab) editorTabs.getSelectedComponent()).setTitle(saveFileAction.getFile().getName());
             ((Tab) editorTabs.getSelectedComponent()).getPortugolDocument().setChanged(false);
             ((Tab) editorTabs.getSelectedComponent()).getPortugolDocument().setFile(saveFileAction.getFile());
             saveFileAction.setEnabled(false);
-        }
-
-        else if (action  ==  acaoNovoArquivo)
-        {
+        } else if (action == acaoNovoArquivo) {
             btnCompile.setEnabled(true);
         }
     }
 
     @Override
-    public void acaoFalhou(br.univali.ps.acoes.Acao action, Exception reason)
-    {
-        if (action instanceof AcaoSalvarArquivo)
-        {
-            if (reason instanceof NullFileOnSaveExcpetion)
-            {
+    public void acaoFalhou(br.univali.ps.acoes.Acao action, Exception reason) {
+        if (action instanceof AcaoSalvarArquivo) {
+            if (reason instanceof NullFileOnSaveExcpetion) {
                 saveAsAction.actionPerformed(null);
                 return;
             }
+        } else if ((action == saveAsAction) || (action == openFileAction)) {
+        } else {
+            showError(reason.getMessage(), action.toString());
         }
-
-        else
-
-        if ((action == saveAsAction) || (action == openFileAction))
-        {
-
-        }
-
-        else
-        showError(reason.getMessage(), action.toString());
     }
 
     //TAB Listener:
     @Override
-    public void tabClosing(TabClosingEvent evt)
-    {
-        if (((Tab)editorTabs.getSelectedComponent()).getPortugolDocument().isChanged()){
+    public void tabClosing(TabClosingEvent evt) {
+        if (((Tab) editorTabs.getSelectedComponent()).getPortugolDocument().isChanged()) {
             int resp = JOptionPane.showConfirmDialog(MainFrame.this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
-            if ( resp == JOptionPane.YES_OPTION)
-            {
+            if (resp == JOptionPane.YES_OPTION) {
                 saveFileAction.actionPerformed(null);
                 evt.setCanClose(true);
-            }
-            else if(resp == JOptionPane.NO_OPTION)
-            {
+            } else if (resp == JOptionPane.NO_OPTION) {
                 evt.setCanClose(true);
-            }
-            else
-            {
+            } else {
                 evt.setCanClose(false);
             }
         } else {
             evt.setCanClose(true);
         }
-        
+
     }
 
     @Override
-    public void limpar()
-    {
+    public void limpar() {
         console.setText(null);
     }
 
     @Override
-    public void imprimir(String valor)
-    {
+    public void imprimir(String valor) {
         console.append(valor);
     }
 
     @Override
-    public String ler()
-    {
+    public String ler() {
         return JOptionPane.showInputDialog(this, "Digite um valor:", null);
     }
 
-    private void configurarSeletorArquivo()
-    {
+    private void configurarSeletorArquivo() {
         //TODO: Permitir abrir mais de um arquivo por vez?
         //fileChooser.setMultiSelectionEnabled(false);
 
@@ -326,14 +282,11 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         fileChooser.setAcceptAllFileFilterUsed(false); // Desativar filtro curinga
     }
 
-    private class ChangeTabListener implements ChangeListener
-    {
+    private class ChangeTabListener implements ChangeListener {
 
         @Override
-        public void stateChanged(ChangeEvent e)
-        {
-            if (editorTabs.getTabCount() > 0)
-            {
+        public void stateChanged(ChangeEvent e) {
+            if (editorTabs.getTabCount() > 0) {
                 saveAsAction.setEnabled(true);
                 Tab tab = (Tab) editorTabs.getSelectedComponent();
                 File f = (File) tab.getPortugolDocument().getFile();
@@ -345,8 +298,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
                 editPasteAction.configurar();
                 tab.getTextArea().addFocusListener(editPasteAction);
                 editCutAction.setup();
-            } else
-            {
+            } else {
                 saveAsAction.setEnabled(false);
                 editPasteAction.setEnabled(false);
                 redoAction.setEnabled(false);
@@ -623,10 +575,8 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
     private void btnCompileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCompileActionPerformed
     {//GEN-HEADEREND:event_btnCompileActionPerformed
-        try
-        {
-            if (saveFileAction.getFile() != null)
-            {
+        try {
+            if (saveFileAction.getFile() != null) {
                 btnCompile.setEnabled(false);
                 saveFileAction.actionPerformed(null);
                 console.setText(null);
@@ -635,20 +585,19 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
                 AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(saveFileAction.getFile());
                 ListaMensagens listaMensagens = analizadorSemantico.analizar();
 
-                
-                 
-                 ModeloExemplo1 modelo = new ModeloExemplo1();                
-                 /*
+
+
+                ModeloExemplo1 modelo = new ModeloExemplo1();
+                /*
                 ModeloExemplo2 modelo = new ModeloExemplo2();
                 tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
-                */
+                 */
 
                 tabelaMensagens.setModel(modelo);
                 modelo.adicionar(listaMensagens);
 
 
-                if (listaMensagens.getNumeroErros() == 0)
-                {                    
+                if (listaMensagens.getNumeroErros() == 0) {
                     long horaInicial = System.currentTimeMillis();
 
                     Interpretador interpretador = new Interpretador();
@@ -658,15 +607,15 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
                     long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
                     console.append("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
+                } else {
+                    painelSaida.setSelectedIndex(1);
                 }
-                else painelSaida.setSelectedIndex(1);
 
                 btnCompile.setEnabled(true);
+            } else {
+                saveFileAction.actionPerformed(null);
             }
-            else saveFileAction.actionPerformed(null);
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             showError(ex.getMessage(), "Portugol Studio");
             btnCompile.setEnabled(true);
         }
@@ -735,23 +684,11 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     private javax.swing.JToolBar undoRedoBar;
     // End of variables declaration//GEN-END:variables
 // </editor-fold>
+  
+    private class AdaptadorComponente extends ComponentAdapter {
 
-
-    private void centralizar()
-    {
-        Dimension dimensoesTela = Toolkit.getDefaultToolkit().getScreenSize();
-
-        int centroX = (dimensoesTela.width / 2) - (getWidth() / 2);
-        int centroY = (dimensoesTela.height / 2) - (getHeight() / 2);
-
-        setLocation(centroX, centroY);
-    }
-
-    private class AdaptadorComponente extends ComponentAdapter
-    {
         @Override
-        public void componentResized(ComponentEvent e)
-        {
+        public void componentResized(ComponentEvent e) {
             jSplitPane1.setDividerLocation(MainFrame.this.getHeight() - 300);
         }
     }
