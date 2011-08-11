@@ -3,6 +3,7 @@ package br.univali.ps.ui;
 import br.univali.portugol.nucleo.AnalizadorSemantico;
 import br.univali.portugol.nucleo.Interpretador;
 import br.univali.portugol.nucleo.excecoes.ListaMensagens;
+import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.portugol.nucleo.iu.Entrada;
 import br.univali.portugol.nucleo.iu.Saida;
 import br.univali.ps.acoes.FabricaAcao;
@@ -19,6 +20,8 @@ import br.univali.ps.acoes.AcaoDesfazer;
 import br.univali.ps.dominio.PortugolDocument;
 import br.univali.ps.exception.NullFileOnSaveExcpetion;
 import br.univali.ps.ui.exemplojtable.exemplo1.ModeloExemplo1;
+import br.univali.ps.ui.exemplojtable.exemplo2.ErrorTableModel;
+import br.univali.ps.ui.exemplojtable.exemplo2.MessageRenderer;
 import br.univali.ps.ui.swing.filtros.FiltroArquivoPortugol;
 import br.univali.ps.ui.swing.tabs.Tab;
 import br.univali.ps.ui.swing.tabs.TabClosingEvent;
@@ -38,8 +41,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -341,7 +344,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         jScrollPaneConsole = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
         jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
-        tabelaMensagens = new javax.swing.JTable();
+        messagesTable = new javax.swing.JTable();
         bottomPane = new javax.swing.JPanel();
         mnuBar = new javax.swing.JMenuBar();
         mnuFile = new javax.swing.JMenu();
@@ -478,8 +481,8 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
         painelSaida.addTab("Console", jScrollPaneConsole);
 
-        tabelaMensagens.setModel(model);
-        jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
+        messagesTable.setModel(model);
+        jScrollPaneTabelaMensagens.setViewportView(messagesTable);
 
         painelSaida.addTab("Mensagens", jScrollPaneTabelaMensagens);
 
@@ -587,14 +590,14 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
 
 
-                ModeloExemplo1 modelo = new ModeloExemplo1();
-                /*
-                ModeloExemplo2 modelo = new ModeloExemplo2();
-                tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
-                 */
+                //ModeloExemplo2 modelo = new ModeloExemplo1();
+                
+                TableModel tableModel = new ErrorTableModel();
+                messagesTable.setDefaultRenderer(Mensagem.class, new MessageRenderer());
+                
 
-                tabelaMensagens.setModel(modelo);
-                modelo.adicionar(listaMensagens);
+                messagesTable.setModel(tableModel);
+                ((ErrorTableModel)tableModel).adicionar(listaMensagens);
 
 
                 if (listaMensagens.getNumeroErros() == 0) {
@@ -616,6 +619,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
                 saveFileAction.actionPerformed(null);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             showError(ex.getMessage(), "Portugol Studio");
             btnCompile.setEnabled(true);
         }
@@ -656,6 +660,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     private javax.swing.JPopupMenu menuConsole;
     private javax.swing.JMenuItem menuConsoleCopiar;
     private javax.swing.JMenuItem menuConsoleLimpar;
+    private javax.swing.JTable messagesTable;
     private javax.swing.JMenuItem mniAbout;
     private javax.swing.JMenuItem mniClose;
     private javax.swing.JMenuItem mniCloseAll;
@@ -679,7 +684,6 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
     private javax.swing.JTabbedPane painelSaida;
-    private javax.swing.JTable tabelaMensagens;
     private javax.swing.JPanel topPane;
     private javax.swing.JToolBar undoRedoBar;
     // End of variables declaration//GEN-END:variables

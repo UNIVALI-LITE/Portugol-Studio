@@ -42,7 +42,7 @@ public class AcaoSalvarComo extends Acao{
     {
         if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION)
         {
-            file = chooser.getSelectedFile();            
+            file = chooser.getSelectedFile();
         }
         else
         {
