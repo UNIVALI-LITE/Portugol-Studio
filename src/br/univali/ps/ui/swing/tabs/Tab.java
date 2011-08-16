@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,10 +22,7 @@ import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
-import org.fife.ui.rsyntaxtextarea.CodeTemplateManager;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.templates.CodeTemplate;
-import org.fife.ui.rsyntaxtextarea.templates.StaticCodeTemplate;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 public class Tab extends JPanel implements ContainerListener, DocumentListener
@@ -33,7 +31,7 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
     private List<TabListener> listeners;
     private TabHeader header;
     private JTabbedPane tabbedPane;
-    private PortugolDocument document = null;
+    //private PortugolDocument document = null;
     private RSyntaxTextArea textArea = null;
     private RTextScrollPane sp = null;
 
@@ -51,7 +49,7 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
 
         AutoCompletion ac = new AutoCompletion(provider);
         
-        document = new PortugolDocument();
+        PortugolDocument document = new PortugolDocument();
         document.addDocumentListener(this);
         textArea = new RSyntaxTextArea(document);
         
@@ -78,7 +76,7 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
         this(editors, IconFactory.createIcon(IconFactory.SMALL_ICONS_PATH, "page_code.png"), "Sem Título");
     }
 
-    public RSyntaxTextArea getTextArea()
+    public JTextArea getTextArea()
     {
         return textArea;
     }
@@ -134,7 +132,7 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
 
     public PortugolDocument getPortugolDocument()
     {
-        return document;
+        return (PortugolDocument) textArea.getDocument();
     }
 
     public void setTitle(String title)
@@ -175,11 +173,6 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
         }
     }
 
-
-
-
-
-
     private CompletionProvider createCompletionProvider() {
 
 		// A DefaultCompletionProvider is the simplest concrete implementation
@@ -187,11 +180,11 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
 		// language semantics. It simply checks the text entered up to the
 		// caret position for a match against known completions. This is all
 		// that is needed in the majority of cases.
-		DefaultCompletionProvider provider = new DefaultCompletionProvider();
-
+		DefaultCompletionProvider provider  = new DefaultCompletionProvider();
+                
 		// Add completions for all Java keywords.  A BasicCompletion is just
 		// a straightforward word completion.
-		provider.addCompletion(new BasicCompletion(provider, "programa","","<html><h1>Programa<h1><p>server para declara um programa!<p></html>"));
+		provider.addCompletion(new BasicCompletion(provider, "programa","<html><h1>Programa<h1><p>server para declara um programa!<p></html>"));
 		provider.addCompletion(new BasicCompletion(provider, "biblioteca"));
 		provider.addCompletion(new BasicCompletion(provider, "se"));
 		provider.addCompletion(new BasicCompletion(provider, "senao"));

@@ -28,10 +28,10 @@ public class IconFactory {
         try
         {
             InputStream iconInputStream = null;
-
+            
             try
             {
-                iconInputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(setFilePath(path, fileName));
+                iconInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(setFilePath(path, fileName));
                 icon = new ImageIcon(ImageIO.read(iconInputStream));
             }
             finally

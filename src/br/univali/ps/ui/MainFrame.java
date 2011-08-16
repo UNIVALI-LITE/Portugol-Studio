@@ -2,6 +2,9 @@ package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.AnalizadorSemantico;
 import br.univali.portugol.nucleo.Interpretador;
+import br.univali.portugol.nucleo.excecoes.ExcecaoArquivoContemErros;
+import br.univali.portugol.nucleo.excecoes.ExcecaoArquivoDeProgramaInvalido;
+import br.univali.portugol.nucleo.excecoes.ExcecaoFuncaoPrincipalNaoDeclarada;
 import br.univali.portugol.nucleo.excecoes.ListaMensagens;
 import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.portugol.nucleo.iu.Entrada;
@@ -19,9 +22,9 @@ import br.univali.ps.acoes.AcaoSalvarArquivo;
 import br.univali.ps.acoes.AcaoDesfazer;
 import br.univali.ps.dominio.PortugolDocument;
 import br.univali.ps.exception.NullFileOnSaveExcpetion;
-import br.univali.ps.ui.exemplojtable.exemplo1.ModeloExemplo1;
-import br.univali.ps.ui.exemplojtable.exemplo2.ErrorTableModel;
-import br.univali.ps.ui.exemplojtable.exemplo2.MessageRenderer;
+import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
+import br.univali.ps.ui.exemplojtable.exemplo2.RenderizadorMensagem;
+import br.univali.ps.ui.help.HelpBrowser;
 import br.univali.ps.ui.swing.filtros.FiltroArquivoPortugol;
 import br.univali.ps.ui.swing.tabs.Tab;
 import br.univali.ps.ui.swing.tabs.TabClosingEvent;
@@ -29,26 +32,32 @@ import br.univali.ps.ui.swing.tabs.TabListener;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
 
 /**
  *
  * @author Fillipi Pelz
  */
-public class MainFrame extends JFrame implements TabListener, AcaoListener, Saida, Entrada {
+public class MainFrame extends JFrame implements WindowListener, TabListener, AcaoListener, Saida, Entrada {
 
     ListMessagesModel model;
     private JFileChooser fileChooser = new JFileChooser();
@@ -62,8 +71,10 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     private AcaoColar editPasteAction = null;
     private AcaoRefazer redoAction = null;
     private AcaoDesfazer undoAction = null;
-    
 
+    private InterpretadorRunner interpretadorRunner;
+    
+    
     private void acoesprontas() {
         List<Exception> exceptions = new ArrayList<Exception>();
         exceptions.add(new NullFileOnSaveExcpetion());
@@ -138,13 +149,13 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         this.setLocationRelativeTo(null);
         this.addComponentListener(new AdaptadorComponente());
         configurarSeletorArquivo();
-
+        this.addWindowListener(this);
         acoesprontas();
 
         acoesAindaParaFazer();
 
-        
-        
+
+
         editorTabs.addChangeListener(new ChangeTabListener());
         editorTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -168,7 +179,8 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
             public void changedUpdate(DocumentEvent e) {
             }
         });
-        
+
+        tabelaMensagens.addMouseListener(new MouseListener());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
@@ -213,6 +225,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
             Tab tab = new Tab(editorTabs, ((AcaoAbrirArquivo) action).getTituloArquivo());
             tab.addTabListener(this);
             tab.getTextArea().setText(((AcaoAbrirArquivo) action).getTextoArquivo());
+            tab.getPortugolDocument().setChanged(false);
             editorTabs.add(tab);
             saveFileAction.setup(openFileAction.getFile(), openFileAction.getTextoArquivo());
             editorTabs.setSelectedIndex(editorTabs.indexOfComponent(tab));
@@ -274,7 +287,22 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
     @Override
     public String ler() {
-        return JOptionPane.showInputDialog(this, "Digite um valor:", null);
+        if (!interpretadorRunner.isInterrupted()){
+        String entrada = JOptionPane.showInputDialog(this, "Digite um valor:", null);
+        if (entrada != null)
+            return entrada;
+        else {
+                interpretadorRunner.interrupt();
+            try {
+                interpretadorRunner.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                interpretadorRunner.interpretador = null;
+                interpretadorRunner = null;                     
+        }
+        } 
+          return "";
     }
 
     private void configurarSeletorArquivo() {
@@ -284,6 +312,50 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         fileChooser.addChoosableFileFilter(new FiltroArquivoPortugol());
         fileChooser.setAcceptAllFileFilterUsed(false); // Desativar filtro curinga
     }
+
+    @Override
+    public void windowOpened(WindowEvent we) {
+    }
+
+    @Override
+    public void windowClosing(WindowEvent we) {
+        saveOpenedTabs();
+    }
+
+
+
+    @Override
+    public void windowClosed(WindowEvent we) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent we) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent we) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent we) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent we) {
+    }
+
+    private void saveOpenedTabs() {
+        for (int i = 0; i < editorTabs.getTabCount(); i++){
+            Tab tab = (Tab) editorTabs.getComponentAt(i);
+            if (tab.getPortugolDocument().isChanged()){
+                 File f = (File) tab.getPortugolDocument().getFile();
+                saveFileAction.setup(f, getTextOfSelecteTab());
+                saveFileAction.actionPerformed(null);
+            }
+        }
+    }
+
+   
 
     private class ChangeTabListener implements ChangeListener {
 
@@ -344,7 +416,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         jScrollPaneConsole = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
         jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
-        messagesTable = new javax.swing.JTable();
+        tabelaMensagens = new javax.swing.JTable();
         bottomPane = new javax.swing.JPanel();
         mnuBar = new javax.swing.JMenuBar();
         mnuFile = new javax.swing.JMenu();
@@ -368,6 +440,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         mniFindReplace = new javax.swing.JMenuItem();
         mnuHelp = new javax.swing.JMenu();
         mniAbout = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         menuConsoleLimpar.setText("Limpar");
         menuConsoleLimpar.setEnabled(false);
@@ -462,9 +535,16 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         });
         compileBar.add(btnCompile);
 
+        btnDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icons/large/control_stop_blue.png"))); // NOI18N
+        btnDebug.setEnabled(false);
         btnDebug.setFocusable(false);
         btnDebug.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDebug.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDebug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDebugActionPerformed(evt);
+            }
+        });
         compileBar.add(btnDebug);
 
         topPane.add(compileBar);
@@ -481,8 +561,8 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
         painelSaida.addTab("Console", jScrollPaneConsole);
 
-        messagesTable.setModel(model);
-        jScrollPaneTabelaMensagens.setViewportView(messagesTable);
+        tabelaMensagens.setModel(model);
+        jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
 
         painelSaida.addTab("Mensagens", jScrollPaneTabelaMensagens);
 
@@ -515,6 +595,11 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
         mniExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         mniExit.setText("Sair");
+        mniExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniExitActionPerformed(evt);
+            }
+        });
         mnuFile.add(mniExit);
 
         mnuBar.add(mnuFile);
@@ -551,6 +636,14 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
         mniAbout.setText("Sobre");
         mnuHelp.add(mniAbout);
 
+        jMenuItem1.setText("Tópicos de Ajuda");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        mnuHelp.add(jMenuItem1);
+
         mnuBar.add(mnuHelp);
 
         setJMenuBar(mnuBar);
@@ -578,6 +671,7 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
 
     private void btnCompileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCompileActionPerformed
     {//GEN-HEADEREND:event_btnCompileActionPerformed
+        ListaMensagens listaMensagens = new ListaMensagens();
         try {
             if (saveFileAction.getFile() != null) {
                 btnCompile.setEnabled(false);
@@ -586,42 +680,37 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
                 painelSaida.setSelectedIndex(0);
 
                 AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(saveFileAction.getFile());
-                ListaMensagens listaMensagens = analizadorSemantico.analizar();
+                listaMensagens = analizadorSemantico.analizar();
 
 
 
-                //ModeloExemplo2 modelo = new ModeloExemplo1();
-                
-                TableModel tableModel = new ErrorTableModel();
-                messagesTable.setDefaultRenderer(Mensagem.class, new MessageRenderer());
-                
+                //ModeloExemplo1 modelo = new ModeloExemplo1();
 
-                messagesTable.setModel(tableModel);
-                ((ErrorTableModel)tableModel).adicionar(listaMensagens);
+                ModeloExemplo2 modelo = new ModeloExemplo2();
+                tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
+
+
+                tabelaMensagens.setModel(modelo);
+                modelo.adicionar(listaMensagens);
 
 
                 if (listaMensagens.getNumeroErros() == 0) {
-                    long horaInicial = System.currentTimeMillis();
-
-                    Interpretador interpretador = new Interpretador();
-                    interpretador.setSaida(this);
-                    interpretador.setEntrada(this);
-                    interpretador.interpretar(saveFileAction.getFile(), new String[]{"teste"});
-
-                    long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
-                    console.append("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
+                    btnDebug.setEnabled(true);
+                    interpretadorRunner = new InterpretadorRunner(new Interpretador());
+                    interpretadorRunner.start();
                 } else {
                     painelSaida.setSelectedIndex(1);
                 }
 
-                btnCompile.setEnabled(true);
+                
             } else {
                 saveFileAction.actionPerformed(null);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            showError(ex.getMessage(), "Portugol Studio");
+        } catch (ExcecaoArquivoContemErros ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            showError("O arquivo contém erros", "Portugol Studio");
             btnCompile.setEnabled(true);
+            btnDebug.setEnabled(false);
         }
     }//GEN-LAST:event_btnCompileActionPerformed
 
@@ -634,6 +723,22 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     {//GEN-HEADEREND:event_menuConsoleCopiarActionPerformed
         console.copy();
     }//GEN-LAST:event_menuConsoleCopiarActionPerformed
+
+private void btnDebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDebugActionPerformed
+    this.interpretadorRunner.interrupt();
+}//GEN-LAST:event_btnDebugActionPerformed
+
+private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    HelpBrowser hb = new HelpBrowser();
+    hb.setSize(800,600);
+    hb.setVisible(true);
+    hb.setLocationRelativeTo(this);
+}//GEN-LAST:event_jMenuItem1ActionPerformed
+
+private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniExitActionPerformed
+    saveOpenedTabs();
+    System.exit(0);
+}//GEN-LAST:event_mniExitActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
@@ -654,13 +759,13 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     private javax.swing.JTextArea console;
     private javax.swing.JToolBar editBar;
     private javax.swing.JToolBar fileBar;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPaneConsole;
     private javax.swing.JScrollPane jScrollPaneTabelaMensagens;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPopupMenu menuConsole;
     private javax.swing.JMenuItem menuConsoleCopiar;
     private javax.swing.JMenuItem menuConsoleLimpar;
-    private javax.swing.JTable messagesTable;
     private javax.swing.JMenuItem mniAbout;
     private javax.swing.JMenuItem mniClose;
     private javax.swing.JMenuItem mniCloseAll;
@@ -684,16 +789,77 @@ public class MainFrame extends JFrame implements TabListener, AcaoListener, Said
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
     private javax.swing.JTabbedPane painelSaida;
+    private javax.swing.JTable tabelaMensagens;
     private javax.swing.JPanel topPane;
     private javax.swing.JToolBar undoRedoBar;
     // End of variables declaration//GEN-END:variables
 // </editor-fold>
-  
+
     private class AdaptadorComponente extends ComponentAdapter {
 
         @Override
         public void componentResized(ComponentEvent e) {
             jSplitPane1.setDividerLocation(MainFrame.this.getHeight() - 300);
+        }
+    }
+
+    private class MouseListener extends MouseAdapter {
+
+        @Override
+        public void mouseClicked(MouseEvent me) {
+
+            if (me.getClickCount() >= 2) {
+
+                Mensagem m = (Mensagem) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 0);
+                JTextArea textArea = ((Tab) editorTabs.getSelectedComponent()).getTextArea();
+                try {
+                    textArea.setCaretPosition(0);
+                    while (textArea.getLineOfOffset(textArea.getCaretPosition()) < (m.getLinha() - 1)) {
+                        textArea.setCaretPosition(textArea.getCaretPosition() + 1);
+                    }
+                    textArea.setCaretPosition(textArea.getCaretPosition() + m.getColuna());
+                } catch (Exception e) {
+                }
+
+                textArea.requestFocus();
+            }
+        }
+    }
+
+    private class InterpretadorRunner extends Thread {
+
+        Interpretador interpretador;
+
+        public InterpretadorRunner(Interpretador interpretador) {
+            this.interpretador = interpretador;
+        }
+
+        @Override
+        public void run() {
+            try {
+                long horaInicial = System.currentTimeMillis();
+                interpretador.setSaida(MainFrame.this);
+                interpretador.setEntrada(MainFrame.this);
+                interpretador.interpretar(saveFileAction.getFile(), new String[]{"teste"});
+                long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
+                console.append("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
+               
+            } catch (Exception ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                showError("O arquivo contém erros.", "Portugol Studio");
+                btnCompile.setEnabled(true);
+                btnDebug.setEnabled(false);
+            }
+             btnCompile.setEnabled(true);
+             btnDebug.setEnabled(false);
+        }
+
+        @Override
+        public void interrupt() {
+            super.interrupt();    
+            console.append("\n\nPrograma INTERROMPIDO.");
+            btnCompile.setEnabled(true);
+            btnDebug.setEnabled(false);
         }
     }
 }

@@ -33,7 +33,7 @@
         <icon>arrow_undo.png</icon>
     </action>
     <action id="AcaoRefazer">
-        <title>Desfazer</title>
+        <title>Refazer</title>
         <icon>arrow_redo.png</icon>
     </action>
     <action id="AcaoCopiar">
