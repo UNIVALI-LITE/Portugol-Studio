@@ -154,8 +154,6 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
 
         acoesAindaParaFazer();
 
-
-
         editorTabs.addChangeListener(new ChangeTabListener());
         editorTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -282,16 +280,19 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
 
     @Override
     public void imprimir(String valor) {
+        bufferEntrada = valor;
         console.append(valor);
     }
 
+    String bufferEntrada = "Digite um valor:";
     @Override
     public String ler() {
         if (!interpretadorRunner.isInterrupted()){
-        String entrada = JOptionPane.showInputDialog(this, "Digite um valor:", null);
-        if (entrada != null)
+        String entrada = JOptionPane.showInputDialog(this, bufferEntrada, null);
+        if (entrada != null){
+            console.append(" " + entrada + "\n");
             return entrada;
-        else {
+        } else {
                 interpretadorRunner.interrupt();
             try {
                 interpretadorRunner.sleep(1000);
@@ -706,6 +707,7 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
             } else {
                 saveFileAction.actionPerformed(null);
             }
+            btnCompile.setEnabled(true);
         } catch (ExcecaoArquivoContemErros ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             showError("O arquivo contém erros", "Portugol Studio");
@@ -846,7 +848,6 @@ private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                
             } catch (Exception ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                showError("O arquivo contém erros.", "Portugol Studio");
                 btnCompile.setEnabled(true);
                 btnDebug.setEnabled(false);
             }

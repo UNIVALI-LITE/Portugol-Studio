@@ -30,7 +30,7 @@ public class HelpBrowser extends javax.swing.JFrame implements HyperlinkListener
 
         this.jTextPane1.addHyperlinkListener(this);
        
-        displayPage("help/index.html");
+        displayPage("../help/index.html");
     }
 
     /** This method is called from within the constructor to
