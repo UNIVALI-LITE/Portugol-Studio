@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.excecoes.ListaMensagens;
 import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.portugol.nucleo.iu.Entrada;
 import br.univali.portugol.nucleo.iu.Saida;
+import br.univali.ps.acoes.Acao;
 import br.univali.ps.acoes.FabricaAcao;
 import br.univali.ps.acoes.AcaoCopiar;
 import br.univali.ps.acoes.AcaoRecortar;
@@ -22,6 +23,7 @@ import br.univali.ps.acoes.AcaoSalvarArquivo;
 import br.univali.ps.acoes.AcaoDesfazer;
 import br.univali.ps.dominio.PortugolDocument;
 import br.univali.ps.exception.NullFileOnSaveExcpetion;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
 import br.univali.ps.ui.exemplojtable.exemplo2.RenderizadorMensagem;
 import br.univali.ps.ui.help.HelpBrowser;
@@ -29,6 +31,7 @@ import br.univali.ps.ui.swing.filtros.FiltroArquivoPortugol;
 import br.univali.ps.ui.swing.tabs.Tab;
 import br.univali.ps.ui.swing.tabs.TabClosingEvent;
 import br.univali.ps.ui.swing.tabs.TabListener;
+import br.univali.ps.ui.util.FileHandle;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -73,9 +76,32 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
     private AcaoDesfazer undoAction = null;
 
     private InterpretadorRunner interpretadorRunner;
+
+    private void abrirAba(File arquivo, String titulo)
+    {
+        try
+        {
+            String texto = FileHandle.open(arquivo);
+            Tab tab = new Tab(editorTabs, titulo);
+            tab.addTabListener(this);
+            tab.getTextArea().setText(texto);
+
+            tab.getPortugolDocument().setChanged(false);
+            editorTabs.add(tab);
+            saveFileAction.setup(arquivo, texto);
+            editorTabs.setSelectedIndex(editorTabs.indexOfComponent(tab));
+            btnCompile.setEnabled(true);
+        }
+        catch (Exception excecao)
+        {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+        }
+    }
+
     
     
     private void acoesprontas() {
+        
         List<Exception> exceptions = new ArrayList<Exception>();
         exceptions.add(new NullFileOnSaveExcpetion());
         exceptions.add(new Exception("Buteco"));
@@ -150,6 +176,10 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
         this.addComponentListener(new AdaptadorComponente());
         configurarSeletorArquivo();
         this.addWindowListener(this);
+        
+        // Configurar o jfilechooser para iniciar na pasta de exemplos
+        fileChooser.setCurrentDirectory(new File("./examples"));
+        
         acoesprontas();
 
         acoesAindaParaFazer();
@@ -180,6 +210,12 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
 
         tabelaMensagens.addMouseListener(new MouseListener());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        if (!PortugolStudio.getInstancia().isDepurando())
+        {
+            btnAlgoritmoTeste.setVisible(false);
+            
+        }
     }
 
     private void atualizarItensMenuConsole() {
@@ -220,14 +256,9 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
     @Override
     public void acaoExecutadaSucesso(br.univali.ps.acoes.Acao action, String message) {
         if (action == openFileAction) {
-            Tab tab = new Tab(editorTabs, ((AcaoAbrirArquivo) action).getTituloArquivo());
-            tab.addTabListener(this);
-            tab.getTextArea().setText(((AcaoAbrirArquivo) action).getTextoArquivo());
-            tab.getPortugolDocument().setChanged(false);
-            editorTabs.add(tab);
-            saveFileAction.setup(openFileAction.getFile(), openFileAction.getTextoArquivo());
-            editorTabs.setSelectedIndex(editorTabs.indexOfComponent(tab));
-            btnCompile.setEnabled(true);
+            String titulo = ((AcaoAbrirArquivo) action).getTituloArquivo();
+            File arquivo = openFileAction.getFile();
+            abrirAba(arquivo, titulo);
         } else if (action == saveAsAction) {
             saveFileAction.setup(((AcaoSalvarComo) action).getFile(), getTextOfSelecteTab());
             saveFileAction.actionPerformed(null);
@@ -402,6 +433,7 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
         btnNew = new javax.swing.JButton();
         btnOpen = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        btnAlgoritmoTeste = new javax.swing.JButton();
         undoRedoBar = new javax.swing.JToolBar();
         btnUndo = new javax.swing.JButton();
         btnRedo = new javax.swing.JButton();
@@ -487,6 +519,17 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
         btnSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         fileBar.add(btnSave);
+
+        btnAlgoritmoTeste.setText("Testar");
+        btnAlgoritmoTeste.setFocusable(false);
+        btnAlgoritmoTeste.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAlgoritmoTeste.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAlgoritmoTeste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlgoritmoTesteActionPerformed(evt);
+            }
+        });
+        fileBar.add(btnAlgoritmoTeste);
 
         topPane.add(fileBar);
 
@@ -741,12 +784,18 @@ private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     saveOpenedTabs();
     System.exit(0);
 }//GEN-LAST:event_mniExitActionPerformed
+
+private void btnAlgoritmoTesteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAlgoritmoTesteActionPerformed
+{//GEN-HEADEREND:event_btnAlgoritmoTesteActionPerformed
+    abrirAba(new File("./examples/teste.por"), "teste.por");
+}//GEN-LAST:event_btnAlgoritmoTesteActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPane;
+    private javax.swing.JButton btnAlgoritmoTeste;
     private javax.swing.JButton btnCompile;
     private javax.swing.JButton btnCopy;
     private javax.swing.JButton btnCut;

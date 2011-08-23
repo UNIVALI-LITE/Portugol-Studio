@@ -144,7 +144,7 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
     @Override
     public void insertUpdate(DocumentEvent e)
     {
-
+        getPortugolDocument().setChanged(true);
         header.setModifiedTitle();
             fireStateChanged();
     }
@@ -152,7 +152,7 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
     @Override
     public void removeUpdate(DocumentEvent e)
     {
-
+        getPortugolDocument().setChanged(true); 
         header.setModifiedTitle();
             fireStateChanged();
     }
@@ -160,6 +160,7 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
     @Override
     public void changedUpdate(DocumentEvent e)
     {
+        getPortugolDocument().setChanged(true);
         header.setModifiedTitle();
             fireStateChanged();
     }

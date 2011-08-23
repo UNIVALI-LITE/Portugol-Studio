@@ -64,7 +64,5 @@ public class AcaoAbrirArquivo extends Acao
     public File getFile()
     {
         return arquivo;
-    }
-
-    
+    }    
 }
