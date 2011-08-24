@@ -1,0 +1,71 @@
+h3{
+	text-align: center;
+	color: #003399;
+	font: Arial black;
+}
+
+h2{
+	background-color: rgb(190,212,232);
+	color: #000000;
+	font: Times New Roma, Verdana, Arial black;
+}
+
+hr{
+	color: rgb(190,212,232);
+}
+
+p.subtitulo{
+	text-align:justify;
+	font: 16, Arial black;
+	font: black;
+}
+
+p{
+	font:  16px comic sans, Time;
+	text-align: justify;
+}
+
+p.algoritmo{
+  font: 16px, courier, courier new;
+  
+}
+
+table.tabela1{
+	margin: 1px 10px 10px 5px;
+	border: 1px, solid black, rgb(190,212,232);
+	width: 700px;
+	height: 100px;
+}
+
+table.tabela1 tr {
+	background-color:#3F8FD2;
+	font: 14, Arial black;
+	color: white;
+}
+
+table.tabela1 tr.linha1{
+	background-color:rgb(190,212,232); 
+	font: 12, times new roma;
+}
+
+table.tabela1 tr.linha2{
+	background-color:rgb(255,255,255); 
+	font: 12, times new roma;
+}
+
+table.tabela2{
+	margin: 1px 10px 10px 10px;
+    border: 1px, solid black, #CFE3CA;
+	width: 900px;
+	height: 100px;
+}
+
+table.tabela2 tr.linha1{
+	background-color:#CFE3CA; 
+	font: 14, times new roma;
+}
+
+table.tabela2 tr.linha2{
+	background-color:#AABA94; 
+	font: 14, times new roma;
+}

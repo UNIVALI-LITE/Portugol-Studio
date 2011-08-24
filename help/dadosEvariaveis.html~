@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE> Sistema de Ajuda do Portugol studio </TITLE>
+<link rel="stylesheet" type="text/css" href="estilo.css">
+</HEAD>
+
+<BODY>
+	
+	<h3>Dados e Variaveis</h3>
+
+	<p><a href="index.html">Tópicos de Ajuda</a> >> <a href="informacoesUso.html">Informaçãos de Uso</a> >> Dados e Variaveis</p>
+
+	<table class="tabela1">
+		<tr>
+			<td>Informações de variaveis e constantes </td>
+		</tr>
+		<tr class="linha1">
+			<td><a href="variaveis.html"> Variaveis </a></td>
+		</tr>
+		<tr class="linha2">
+			<td><a href="constantes.html"> Constantes </a></td>
+		</tr>
+		<tr class="linha1">
+			<td><a href="atribuicao.html"> Atribuições </a></td>
+		</tr>
+	</table>
+
+	<table class="tabela1">
+		<tr>
+			<td> Informações de tipos de variaveis </td>
+		</tr>
+		<tr class="linha1">
+			<td><a href="tipoInteiro.html"> Tipo Inteiro </a></td>
+		</tr>
+		<tr class="linha2">
+			<td><a href="tipoReal.html"> Tipo Real </a></td>
+		</tr>
+		<tr class="linha1">
+			<td><a href="tipoCadeia.html"> Tipo Cadeia </a></td>
+		</tr>
+		<tr class="linha2">
+			<td><a href="tipoCaracter.html"> Tipo Caracter</a></td>
+		</tr>
+		<tr class="linha1">
+			<td><a href="tipoLogico.html"> Tipo Logico </a></td>
+		</tr>
+	</table>
+</BODY>
+</HTML>

@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<TITLE> Sistema de Ajuda do Portugol Studio </TITLE>
+<link rel="stylesheet" type="text/css" href="estilo.css">
+</HEAD>
+
+<BODY>
+	
+	<H2> Comando SE  </H2>
+
+	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de Uso</a> >> <a href="comandosBasicos.html"> Comandos B&aacute;sicos </a> >> Comando SE </p>
+
+	<p class="subtitulo">O que &eacute;?</p>
+
+	<p> &nbsp; O comando SE permite que determinadas instru&ccedil;&otilde;es sejam executadas, ou n&atilde;o dependendo do resultado de ums condi&ccedil;&atilde;o, Ou seja, o algoritmo vai ter mais de uma sa&iacute;da, de acordo com o teste realizado com a condi&ccedil;&atilde;o apresentada. </p>
+
+	<p class="subtitulo">Como usar?</p>
+
+	<P> &nbsp;  Para utilizar o comando SE voc&ecirc; deve escrever a palavra reservada SE e entre par&ecirc;nteses colocar a condi&ccedil;&atilde;o, e determinar uma instru&ccedil;&atilde;o para o teste. Caso saja necess&aacute;rio determinar mais de uma instru&ccedil;&atilde;o torna-se obrigat&oacute;rio o uso das chaves. Veja a sintaxe na tabela:</P>
+
+	<table class="tabela2">
+		<tr class="linha1">
+			<td colspan="3"><b> COMANDO SE</b></td>
+		</tr>
+		<tr class="linha2">
+			<td>Desvio Condicional Simples</td>
+			<td>Desvio Condicional Composto</td>
+			<td>Desvio Condicional Aninhado</td>
+		</tr>
+		<tr class="linha1">
+			<td><P>&nbsp; 
+			
+				&nbsp;<B>se</B>(&lt;condi&ccedil;&atilde;o&gt;) <BR>
+				&nbsp;&nbsp; <B>   { </B> <BR>
+				&nbsp; &nbsp;&nbsp; 	&lt;instru&ccedil;&otilde;es&gt; <BR>
+				&nbsp;&nbsp; <B> } </B><BR><BR></P>
+
+				ou
+
+				<P>
+					&nbsp;<B>se</B>(&lt;condi&ccedil;&atilde;o&gt;) <BR>
+					&nbsp;&nbsp;&nbsp;	&lt;instru&ccedil;&atilde;o&gt; <BR><BR>
+				</P>
+
+			</td>
+			<td>
+				&nbsp; <B> se </B>(&lt;condi&ccedil;&atilde;o&gt;)<BR>
+				&nbsp; <B> { </B><BR>
+				&nbsp;&nbsp;&nbsp;	&lt;instru&ccedil;&atilde;o_um&gt; <BR>
+				&nbsp; <B>}senao{</B><BR>
+				&nbsp;&nbsp;&nbsp;	&lt;instru&ccedil;&atilde;o_dois&gt; <BR>
+				&nbsp; <B>}</B><BR>
+			</td>
+			<td>
+				&nbsp; <B>se</B> (&lt;condi&ccedil;&atilde;o&gt;) <BR>
+				&nbsp; <B>{</B> <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp; <B>}</B> <BR>
+				&nbsp;&nbsp;&nbsp; <B>senao</B> <BR>
+				 
+				&nbsp;&nbsp;&nbsp; <B>se</B> (&lt;condi&ccedil;&atilde;o&gt;) <BR>
+				&nbsp;&nbsp;&nbsp; <B>{</B> <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp;&nbsp;&nbsp; <B>}senao{</B> <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp;&nbsp;&nbsp; <B>}</B> <BR>
+			</td>
+		</tr>
+	</table>
+
+	<p><b>Veja os exemplo:</b></p>
+
+	<P><I><U>Exemplo 1:</U></I></P>
+
+	<P class="algoritmo">
+	
+	&nbsp; <B> programa </B><BR>
+	&nbsp; <B> { </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B> funcao inicio ( ) </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inteiro num <BR><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("Digite um n&uacute;mero") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; leia (num) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    <B> se </B>(num &gt; 0)<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("O n&uacute;mero &eacute; positivo") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B> } </B> <BR>
+	&nbsp; <B> } </B> <BR>
+	
+	</P>
+
+	<P><I><U>Exemplo 2:</U></I></P>
+
+	<P class="algoritmo">
+	
+	&nbsp; <B> programa </B><BR>
+	&nbsp; <B> { </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;	<B> funao inicio ( ) </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>se</B>(num > 0)<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		escreva ("Positivo") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>}senao{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		escreva ("Negativo") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>}</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;	<B>}</B> <BR>
+	&nbsp; <B>}</B> <BR>
+	
+	</P>
+
+	<P><I><U>Exemplo 3:</U></I></P>
+
+	<P class="algoritmo">
+	
+	&nbsp; <B>programa</B> <BR>
+	&nbsp; <B>{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>funcao inicio( )</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	inteiro num <BR><BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("Digite um numero positivo\n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	leia (num) <BR> <BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>se</B>(num > 0) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>se</B>(num % 2==0) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("O n&uacute;mero: ",num, "  &eacute; par \n")<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>}senao{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("O n&uacute;mero: ",num, "  &eacute; &iacute;mpar \n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>}senao{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		escreva ("O numero tem que ser positivo!!") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>}</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>}</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>}</B> <BR>
+	&nbsp; <B>}</B> <BR>
+
+	</P>
+
+	<hr>
+</BODY>
+</HTML>

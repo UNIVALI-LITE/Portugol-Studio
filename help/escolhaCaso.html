@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<TITLE> Sistema de ajuda do Portugol Studio </TITLE>
+  <link rel="stylesheet" type="text/css" href="estilo.css">
+</HEAD>
+
+<BODY>
+	
+	<H2>Escolha Caso</H2>
+
+	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de Uso</a> >> <a href="comandosBasicos.html"> Comandos B&aacute;sicos </a> >> escolha-caso</p>
+
+	<p class="subtitulo">O que &eacute;?</p>
+
+	<p> &nbsp; O comando ESCOLHA CASO &eacute; semelhante ao switch case da linguagem PHP. Determina qual caso ser&aacute; executado dependendo da escolha do usu&aacute;rio. </p>
+
+	<p class="subtitulo">Como usar?</p>
+
+	<p> &nbsp; Veja na sintaxe e no exemplo como utilizar o escolha caso.</p>
+
+	<table class="tabela2">
+		<tr class="linha2">
+			<td><b> COMANDO ESCOLHA CASO</b></td>
+		</tr>
+		<tr class="linha1">
+			<td><P>&nbsp; 
+			
+				&nbsp; <B>escolha</B>(&lt;express&atilde;o&gt; ou &lt;variavel&gt;) <BR>
+				&nbsp; <B>{</B> <BR>
+				&nbsp;&nbsp;&nbsp; caso 1: <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp;&nbsp;&nbsp; pare <BR>
+				&nbsp;&nbsp;&nbsp; caso 2: <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp;&nbsp;&nbsp; pare <BR>
+				&nbsp;&nbsp;&nbsp; caso 3: <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp;&nbsp;&nbsp; pare <BR>
+				&nbsp;&nbsp;&nbsp; caso contrario: <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp; <B>}</B> <BR>
+
+			</td>
+		</tr>
+	</table>
+
+	<P><B>Veja o exemplo</B></P>
+
+	<P><I><U>Exemplo:</U></I></P>
+
+	<P class="algoritmo">
+	
+	&nbsp; <B> programa </B> <BR>
+	&nbsp; <B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B> funcao inicio( ) </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B> { </B> <BR><BR>
+
+  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inteiro esc, voto1 = 0, voto2 = 0, voto3 = 0 <BR><BR>
+	  
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("Escolha um dos candidatos abaixo, digitando o n&uacute;mero do candidato!!  \n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("1->Dilma Rousseff \n")<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("2->Jos&eacute; Serra \n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("3->Marina Silva \n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; leia (esc) <BR><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>enquanto</B> (esc != 0) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <B> escolha</B> (esc)<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>{</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        caso 1:  <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  voto1=voto1 + 1 <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  pare <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  caso 2: <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  voto2=voto2 + 1 <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  pare <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  caso 3: <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;voto3=voto3 + 1 <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  pare <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  caso  contrario <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	   	   escreva ("\n Este n&atilde;o &eacute; um numero de um dos candidatos!\n ") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	 <B>} </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>}</B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("\n O candidato 1 tem ", voto1) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  escreva ("\n O candidato 2 tem ", voto2) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  escreva ("\n O candidato 3 tem ", voto3) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>}</B> <BR>
+    &nbsp; <B>}</B> <BR>
+
+  </P>
+
+	<hr>
+
+</BODY>
+</HTML>

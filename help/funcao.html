@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<TITLE> Sistema de Ajuda do Portugol Studio </TITLE>
+<link rel="stylesheet" type="text/css" href="estilo.css">
+</HEAD>
+
+<BODY>
+
+	<H2>Fun&ccedil;&atilde;o</H2>
+
+	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de Uso</a> >> <a href="comandosBasicos.html"> Comandos B&aacute;sicos </a> >> Fun&ccedil;&atilde;o</p>
+
+	<p class="subtitulo">O que é?</p>
+
+	<P>&nbsp; Uma fun&ccedil;&atilde;o é semelhante ao procedimento, porém tem uma diferen&ccedil;a a fun&ccedil;&atilde;o retorna um valor o procedimento n&atilde;o retorna valor. </P>
+
+	<p class="subtitulo">Como usar?</p>
+
+	<P> &nbsp; Veja na tabela a sintaxe e como usar:</P>
+
+	<table class="tabela2">
+		<tr class="linha2">
+
+			<td colspan=3><b>FUN&ccedil;&atilde;O</b></td>
+
+		</tr>
+		<tr class="linha1">
+			<td>
+				&nbsp; <B>funcao</B> &lt;tipo&gt; &lt;nome_da_funcao&gt;( ) <BR>
+				&nbsp; <B>{ </B> <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;  &lt;instru&ccedil;&otilde;es&gt; <BR>
+				&nbsp; <B>}</B> <BR>
+			</td>
+			<td> 
+				&nbsp; <B>funcao</B> &lt;tipo&gt; &lt;nome_da_funcao&gt;(&lt;tipo&gt; &lt;variavel&gt;) <BR>
+				&nbsp; <B>{</B> <BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;  &lt;instru&ccedil;&atilde;o&gt; <BR>
+				&nbsp; <B>}</B>
+			</td>
+		</tr>
+	</table>
+
+	<p><b>Veja os exemplos:</b></p>
+
+	<P><I><U>Exemplo:</U></I></P>
+
+	<P class="algoritmo">
+
+		&nbsp; <B>programa</B> <BR>
+		&nbsp; <B>{</B> <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>funcao inicio( )</B> <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>{</B> <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inteiro n <BR><BR>
+
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("Digite um n&úacute;mero \n") <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; leia (n) <BR>
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("A soma dos n&úacute;meros é ", somatorio(n)) <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>} </B> <BR><BR>
+
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>funcao</B> inteiro somatorio(inteiro n) <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>{</B> <BR>	
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inteiro soma = 0 <BR><BR>
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B> para</B>(inteiro i=1; i&lt;=n; i++) <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>{</B> <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; soma = soma + i <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>}</B> <BR>
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; retorne (soma) <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>}</B> <BR>
+		&nbsp; <B>}</B> <BR>
+
+	</FONT></P>
+
+	<P><I><U>Exemplo 2:</U></I></P>
+
+	<P class="algoritmo">
+	
+	&nbsp; <B> programa </B> <BR>
+	&nbsp; <B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao inicio( ) </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	cadeia nome1, nome2 <BR>
+		
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("digite dois nomes \n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	leia (nome1) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	leia (nome2) <BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("Os nomes s&atilde;o iguais!  ", igualdade(nome1, nome2)) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR><BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao </B> cadeia igualdade (cadeia nome1, cadeia nome2) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> se </B>(nome1 == nome2) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		retorne (verdadeiro) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> }senao{ </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		retorne (falso) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> }  </B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp; <B> } </B> <BR>
+
+	</P>
+
+	<hr>
+	
+</BODY>
+</HTML>
