@@ -55,6 +55,10 @@ public class TabHeader extends JPanel
         return tab.getTabbedPane();
     }
 
+    public void close(){
+        closeButton.getAction().actionPerformed(null);
+    }
+
     public Tab getTab()
     {
         return tab;

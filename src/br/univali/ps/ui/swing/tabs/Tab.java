@@ -33,47 +33,48 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
     private JTabbedPane tabbedPane;
     //private PortugolDocument document = null;
     private RSyntaxTextArea textArea = null;
-    private RTextScrollPane sp = null;
+    private RTextScrollPane scrollPane = null;
 
-    public Tab(JTabbedPane tabbedPane, Icon icone, String title)
+    public Tab(JTabbedPane tabbedPane, Icon icone, String title, String text)
     {
         this.listeners = new ArrayList<TabListener>();
         this.tabbedPane = tabbedPane;
         this.tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-     //   CodeTemplateManager ctm = RSyntaxTextArea.getCodeTemplateManager();
+     // CodeTemplateManager ctm = RSyntaxTextArea.getCodeTemplateManager();
      // CodeTemplate ct = new StaticCodeTemplate("ini", "funcao inicio() {}", null);
      // ctm.addTemplate(ct);
 
         CompletionProvider provider = createCompletionProvider();
 
-        AutoCompletion ac = new AutoCompletion(provider);
+        AutoCompletion autoCompletion = new AutoCompletion(provider);
         
         PortugolDocument document = new PortugolDocument();
-        document.addDocumentListener(this);
-        textArea = new RSyntaxTextArea(document);
         
-        sp = new RTextScrollPane(textArea);
-        sp.setIconRowHeaderEnabled(true);
-        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        textArea = new RSyntaxTextArea(document);
+        textArea.setText(text);
+        scrollPane = new RTextScrollPane(textArea);
+        scrollPane.setIconRowHeaderEnabled(true);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        ac.install(textArea);
-        ac.setShowDescWindow(true);
+        autoCompletion.install(textArea);
+        autoCompletion.setShowDescWindow(true);
+        document.addDocumentListener(this);
         this.tabbedPane.addContainerListener(this);
         this.header = new TabHeader(icone, title, this);
         this.setLayout(new BorderLayout());
-        this.add(sp);
+        this.add(scrollPane);
     }
 
-    public Tab(JTabbedPane editors, String title)
+    public Tab(JTabbedPane editors, String title, String text)
     {
-        this(editors, IconFactory.createIcon(IconFactory.SMALL_ICONS_PATH, "page_code.png"), title);
+        this(editors, IconFactory.createIcon(IconFactory.SMALL_ICONS_PATH, "page_code.png"), title, text);
     }
 
     public Tab(JTabbedPane editors)
     {
-        this(editors, IconFactory.createIcon(IconFactory.SMALL_ICONS_PATH, "page_code.png"), "Sem Título");
+        this(editors, IconFactory.createIcon(IconFactory.SMALL_ICONS_PATH, "page_code.png"), "Sem Título", "");
     }
 
     public JTextArea getTextArea()
@@ -163,6 +164,10 @@ public class Tab extends JPanel implements ContainerListener, DocumentListener
         getPortugolDocument().setChanged(true);
         header.setModifiedTitle();
             fireStateChanged();
+    }
+
+    public void close(){
+        header.close();
     }
 
     private void fireStateChanged()

@@ -33,6 +33,8 @@ import br.univali.ps.ui.swing.tabs.TabClosingEvent;
 import br.univali.ps.ui.swing.tabs.TabListener;
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -44,6 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -82,11 +86,11 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
         try
         {
             String texto = FileHandle.open(arquivo);
-            Tab tab = new Tab(editorTabs, titulo);
+            Tab tab = new Tab(editorTabs, titulo, texto);
             tab.addTabListener(this);
-            tab.getTextArea().setText(texto);
 
-            tab.getPortugolDocument().setChanged(false);
+            
+
             editorTabs.add(tab);
             saveFileAction.setup(arquivo, texto);
             editorTabs.setSelectedIndex(editorTabs.indexOfComponent(tab));
@@ -137,6 +141,8 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
         btnSave.setText("");
 
         mniSaveAs.setAction(saveAsAction);
+
+        
     }
 
     private void acoesAindaParaFazer() {
@@ -259,6 +265,7 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
             String titulo = ((AcaoAbrirArquivo) action).getTituloArquivo();
             File arquivo = openFileAction.getFile();
             abrirAba(arquivo, titulo);
+            saveFileAction.setup(arquivo, titulo);
         } else if (action == saveAsAction) {
             saveFileAction.setup(((AcaoSalvarComo) action).getFile(), getTextOfSelecteTab());
             saveFileAction.actionPerformed(null);
@@ -353,8 +360,6 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
     public void windowClosing(WindowEvent we) {
         saveOpenedTabs();
     }
-
-
 
     @Override
     public void windowClosed(WindowEvent we) {
@@ -631,9 +636,19 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
         mnuFile.add(mnuFileSeparator1);
 
         mniClose.setText("Fechar");
+        mniClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniCloseActionPerformed(evt);
+            }
+        });
         mnuFile.add(mniClose);
 
         mniCloseAll.setText("Fechar todos.");
+        mniCloseAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniCloseAllActionPerformed(evt);
+            }
+        });
         mnuFile.add(mniCloseAll);
         mnuFile.add(mnuFileSeparator2);
 
@@ -789,6 +804,18 @@ private void btnAlgoritmoTesteActionPerformed(java.awt.event.ActionEvent evt)//G
 {//GEN-HEADEREND:event_btnAlgoritmoTesteActionPerformed
     abrirAba(new File("./examples/teste.por"), "teste.por");
 }//GEN-LAST:event_btnAlgoritmoTesteActionPerformed
+
+private void mniCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCloseActionPerformed
+    ((Tab)editorTabs.getSelectedComponent()).close();
+}//GEN-LAST:event_mniCloseActionPerformed
+
+private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCloseAllActionPerformed
+    for (Component componet : editorTabs.getComponents()){
+        if (componet instanceof Tab){
+            ((Tab) componet).close();
+        }
+    }
+}//GEN-LAST:event_mniCloseAllActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments

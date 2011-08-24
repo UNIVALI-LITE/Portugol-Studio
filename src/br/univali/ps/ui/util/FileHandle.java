@@ -60,7 +60,7 @@ public class FileHandle
 
         if (!file.canRead())
         {
-            throw new IllegalArgumentException("Acesso ilegal ao arquivo. Ele não é legível.");
+            throw new IllegalArgumentException("Acesso negado ao arquivo. Você não possuí permissão de leitura para esse arquivo");
         }
         return read(file);
     }
