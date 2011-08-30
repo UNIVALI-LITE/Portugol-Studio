@@ -1,10 +1,11 @@
-examples/teste.por
+.classpath
+.project
+.settings
+build
 build.xml
 build-before-profiler.xml
-build
 nbproject
-master-application.jnlp
-preview-application.html
 dist
 manifest.mf
-
+lib/CopyLibs/
+lib/nblibraries.properties
