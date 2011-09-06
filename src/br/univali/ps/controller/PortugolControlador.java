@@ -55,7 +55,7 @@ public class PortugolControlador implements DocumentListener{
                 documento.setChanged(false);
                 telaPrincipal.habilitaSalvar(false);
             } else {
-                savarComo(documento);
+                savarComo();
             }
         } catch (BadLocationException ex) {
             tratadorExcecoes.exibirExcecao(ex);
@@ -64,8 +64,8 @@ public class PortugolControlador implements DocumentListener{
         }
     }
 
-    public void savarComo(PortugolDocumento documento) {
-        //telaPrincipal.dialogodeSalvar.
+    public void savarComo() {
+        telaPrincipal.dialogodeSalvar();
     }
 
     public void executar(){
