@@ -13,7 +13,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
