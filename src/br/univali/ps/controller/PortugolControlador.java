@@ -13,6 +13,7 @@ import java.io.File;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 
 public class PortugolControlador implements DocumentListener{
@@ -23,7 +24,6 @@ public class PortugolControlador implements DocumentListener{
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
 
     public PortugolControlador() {
-
     }
 
     public void novo(){
@@ -40,6 +40,7 @@ public class PortugolControlador implements DocumentListener{
             portugolDocument.insertString(0, codigoFonte, null);
             editor.novaAba(arquivo.getName(), portugolDocument);
             portugolDocument.setChanged(false);
+            portugolDocument.setFile(arquivo);
             portugolDocument.addDocumentListener(this);
             telaPrincipal.habilitaSalvar(false);
         } catch (Exception ex) {
@@ -47,15 +48,18 @@ public class PortugolControlador implements DocumentListener{
         }
     }
 
-    public void salvar(PortugolDocumento documento) {
+    public void salvar() {
         try {
+            PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
             String texto = documento.getText(0, documento.getLength());
             if (documento.getFile() != null) {
                 FileHandle.save(texto, documento.getFile());
+                editor.setTituloAbaSelecionada(documento.getFile().getName());
+                //TODO fazer um listener na ABA para ela saber quando é pra destacar modificado ou não. substituir documentListener por um especifico do Portugol
                 documento.setChanged(false);
                 telaPrincipal.habilitaSalvar(false);
             } else {
-                savarComo();
+                telaPrincipal.dialogoSalvar();
             }
         } catch (BadLocationException ex) {
             tratadorExcecoes.exibirExcecao(ex);
@@ -64,8 +68,10 @@ public class PortugolControlador implements DocumentListener{
         }
     }
 
-    public void savarComo() {
-        telaPrincipal.dialogodeSalvar();
+    public void salvarComo(File arquivo) {
+        PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
+        documento.setFile(arquivo);
+        salvar();
     }
 
     public void executar(){
@@ -153,6 +159,10 @@ public class PortugolControlador implements DocumentListener{
     public void changedUpdate(DocumentEvent de) {
         ((PortugolDocumento)de.getDocument()).setChanged(true);
         telaPrincipal.habilitaSalvar(true);
+    }
+
+    public void documentoSelecionado(Document document) {
+        telaPrincipal.habilitaSalvar(((PortugolDocumento)document).isChanged());
     }
 
     private class InterpretadorRunner extends Thread {

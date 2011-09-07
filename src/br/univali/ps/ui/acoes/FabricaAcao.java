@@ -20,7 +20,7 @@ public class FabricaAcao
 {
 
     private static final FabricaAcao instancia = new FabricaAcao();
-    private static final String CAMINHO_ACOES = "br/univali/ps/acoes";
+    private static final String CAMINHO_ACOES = "br/univali/ps/ui/acoes";
     private Document XMLacoes;
 
     private FabricaAcao()

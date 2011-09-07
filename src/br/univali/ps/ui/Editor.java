@@ -8,14 +8,18 @@ import br.univali.ps.ui.swing.aba.AbaClosingEvent;
 import br.univali.ps.ui.swing.aba.AbaListener;
 import java.awt.Component;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 
-public class Editor extends javax.swing.JPanel implements AbaListener {
+public class Editor extends javax.swing.JPanel implements AbaListener, ChangeListener {
 
     PortugolControlador controlador;
 
@@ -31,6 +35,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener {
         tab.addTabListener(this);
         acumuladorAba.add(tab);
         acumuladorAba.setSelectedIndex(acumuladorAba.indexOfComponent(tab));
+        acumuladorAba.addChangeListener(this);
     }
 
     public void fecharTodasAbas() {
@@ -42,16 +47,17 @@ public class Editor extends javax.swing.JPanel implements AbaListener {
     }
 
     private Aba abaSelecionada() throws Exception {
-         if (acumuladorAba.getTabCount() > 0) {
+        if (acumuladorAba.getTabCount() > 0) {
             return (Aba) acumuladorAba.getSelectedComponent();
-         }
-         throw new Exception(new IllegalStateException("Não há aba aberta"));
+        }
+        throw new Exception(new IllegalStateException("Não há aba aberta"));
     }
 
-    public void fecharAbaSelecionada(){
+    public void fecharAbaSelecionada() {
         try {
             abaSelecionada().close();
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
     }
 
     public Document getDocumentAbaSelecionada() {
@@ -62,7 +68,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener {
         }
     }
 
-    public void posicionaCursor(int linha, int coluna){
+    public void posicionaCursor(int linha, int coluna) {
         try {
             JTextArea textArea = abaSelecionada().getTextArea();
             textArea.setCaretPosition(0);
@@ -74,7 +80,8 @@ public class Editor extends javax.swing.JPanel implements AbaListener {
             } catch (BadLocationException ex) {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
     }
 
     public void setTituloAbaSelecionada(String titulo) {
@@ -96,12 +103,12 @@ public class Editor extends javax.swing.JPanel implements AbaListener {
 
     @Override
     public void tabClosing(AbaClosingEvent evt) {
-        
+
         PortugolDocumento documentoAbaSelecionada = (PortugolDocumento) getDocumentAbaSelecionada();
         if (documentoAbaSelecionada.isChanged()) {
             int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-                controlador.salvar(documentoAbaSelecionada);
+                controlador.salvar();
                 evt.setCanClose(true);
             } else if (resp == JOptionPane.NO_OPTION) {
                 evt.setCanClose(true);
@@ -116,12 +123,26 @@ public class Editor extends javax.swing.JPanel implements AbaListener {
     public void selecionarAbaArquivo(File arquivo) {
         for (Component componet : acumuladorAba.getComponents()) {
             if (componet instanceof Aba) {
-                PortugolDocumento document = (PortugolDocumento)((Aba) componet).getDocument();
-                if (document.getFile().getPath().equals(arquivo.getPath())){
+                PortugolDocumento document = (PortugolDocumento) ((Aba) componet).getDocument();
+                if (document.getFile().getPath().equals(arquivo.getPath())) {
                     acumuladorAba.setSelectedComponent(componet);
                     return;
                 }
             }
         }
     }
+
+    public void stateChanged(ChangeEvent ce) {
+        Aba aba;
+        try {
+            aba = abaSelecionada();
+
+            if (aba != null) {
+                controlador.documentoSelecionado(aba.getDocument());
+            }
+        } catch (Exception ex) {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+        }
+    }
+    
 }

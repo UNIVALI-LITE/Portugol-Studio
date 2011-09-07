@@ -159,7 +159,7 @@
           <Group type="102" alignment="1" attributes="0">
               <Component id="topPane" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jSplitPane1" pref="353" max="32767" attributes="0"/>
+              <Component id="jSplitPane1" pref="339" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="bottomPane" min="-2" max="-2" attributes="0"/>
           </Group>
@@ -275,10 +275,10 @@
             <Component class="javax.swing.JButton" name="btnCompile">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icons/large/control_play_blue.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_play_blue.png"/>
                 </Property>
                 <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icons/large/control_play.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_play.png"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
@@ -292,7 +292,7 @@
             <Component class="javax.swing.JButton" name="btnDebug">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icons/large/control_stop_blue.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_stop_blue.png"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>

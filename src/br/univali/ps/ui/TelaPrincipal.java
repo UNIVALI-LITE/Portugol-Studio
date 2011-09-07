@@ -54,21 +54,22 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         exceptions.add(new Exception("Buteco"));
 
         acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
-        acaoNovoArquivo.adicionarListener(this);
+//        acaoNovoArquivo.adicionarListener(this);
         acaoNovoArquivo.setup(controle);
 
         openFileAction = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
-        openFileAction.adicionarListener(this);
+ //       openFileAction.adicionarListener(this);
         openFileAction.configurar(controle,this, fileChooser);
 
         saveFileAction = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
-        saveFileAction.adicionarListener(this);
+        saveFileAction.setup(controle);
+//        saveFileAction.adicionarListener(this);
         saveFileAction.setEnabled(false);
 
         saveAsAction = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
-        saveAsAction.adicionarListener(this);
+  //      saveAsAction.adicionarListener(this);
         saveAsAction.setEnabled(false);
-        saveAsAction.setup(this, fileChooser);
+        saveAsAction.setup(controle,this, fileChooser);
 
         btnNew.setAction(acaoNovoArquivo);
         mniNew.setAction(acaoNovoArquivo);
@@ -119,7 +120,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
 
     public TelaPrincipal(PortugolControlador controle) {
         this.controle = controle;
-        this.setIconImage(new ImageIcon(getClass().getResource("icons/small/lightbulb.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("./icones/pequeno/lightbulb.png")).getImage());
         model = new ListMessagesModel();
         initComponents();
         this.setLocationRelativeTo(null);
@@ -319,8 +320,8 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
 
         compileBar.setRollover(true);
 
-        btnCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icons/large/control_play_blue.png"))); // NOI18N
-        btnCompile.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icons/large/control_play.png"))); // NOI18N
+        btnCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play_blue.png"))); // NOI18N
+        btnCompile.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play.png"))); // NOI18N
         btnCompile.setEnabled(false);
         btnCompile.setFocusable(false);
         btnCompile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -332,7 +333,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         });
         compileBar.add(btnCompile);
 
-        btnDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icons/large/control_stop_blue.png"))); // NOI18N
+        btnDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_stop_blue.png"))); // NOI18N
         btnDebug.setEnabled(false);
         btnDebug.setFocusable(false);
         btnDebug.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -454,7 +455,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(topPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bottomPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -548,6 +549,14 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     public void acaoFalhou(Acao acao, Exception motivoE) {
 //        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void habilitaSalvar(boolean b) {
+        saveFileAction.setEnabled(b);
+    }
+
+    public void dialogoSalvar() {
+        saveAsAction.actionPerformed(null);
     }
     // End of variables declaration
 // </editor-fold>

@@ -5,6 +5,7 @@
 
 package br.univali.ps.ui.acoes;
 
+import br.univali.ps.controller.PortugolControlador;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -18,23 +19,18 @@ public class AcaoSalvarComo extends Acao{
 
     Container parent;
     JFileChooser chooser;
-
-    File file = null;
+    PortugolControlador controlador;
 
     public AcaoSalvarComo()
     {
         super("arquivo salvo com sucesso");
     }
 
-    public void setup(Container parent, JFileChooser chooser)
+    public void setup(PortugolControlador controlador, Container parent, JFileChooser chooser)
     {
         this.parent = parent;
         this.chooser = chooser;
-    }
-
-    public File getFile()
-    {
-        return file;
+        this.controlador = controlador;
     }
 
     @Override
@@ -42,10 +38,11 @@ public class AcaoSalvarComo extends Acao{
     {
         if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION)
         {
-            file = chooser.getSelectedFile();
-            if (!file.getName().endsWith(".por")){
-                file = new File(file.getPath().concat(".por"));
+            File arquivo = chooser.getSelectedFile();
+            if (!arquivo.getName().endsWith(".por")){
+                arquivo = new File(arquivo.getPath().concat(".por"));
             }
+            controlador.salvarComo(arquivo);
         }
         else
         {
