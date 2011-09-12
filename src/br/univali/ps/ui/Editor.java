@@ -8,8 +8,6 @@ import br.univali.ps.ui.swing.aba.AbaClosingEvent;
 import br.univali.ps.ui.swing.aba.AbaListener;
 import java.awt.Component;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -23,7 +21,6 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
 
     PortugolControlador controlador;
 
-    /** Creates new form Editor */
     public Editor(PortugolControlador controller) {
         initComponents();
         acumuladorAba.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -56,8 +53,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
     public void fecharAbaSelecionada() {
         try {
             abaSelecionada().close();
-        } catch (Exception ex) {
-        }
+        } catch (Exception ex) {}
     }
 
     public Document getDocumentAbaSelecionada() {
@@ -80,8 +76,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
             } catch (BadLocationException ex) {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
-        } catch (Exception ex) {
-        }
+        } catch (Exception ex) {}
     }
 
     public void setTituloAbaSelecionada(String titulo) {
@@ -140,9 +135,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
             if (aba != null) {
                 controlador.documentoSelecionado(aba.getDocument());
             }
-        } catch (Exception ex) {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-        }
+        } catch (Exception ex) {}
     }
     
 }

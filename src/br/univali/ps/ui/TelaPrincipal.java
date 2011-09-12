@@ -48,26 +48,21 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
     
     
     private void acoesprontas() {
-        
-        List<Exception> exceptions = new ArrayList<Exception>();
-        exceptions.add(new NullFileOnSaveExcpetion());
-        exceptions.add(new Exception("Buteco"));
-
         acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
-//        acaoNovoArquivo.adicionarListener(this);
+        acaoNovoArquivo.adicionarListener(this);
         acaoNovoArquivo.setup(controle);
 
         openFileAction = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
- //       openFileAction.adicionarListener(this);
+        openFileAction.adicionarListener(this);
         openFileAction.configurar(controle,this, fileChooser);
 
         saveFileAction = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
         saveFileAction.setup(controle);
-//        saveFileAction.adicionarListener(this);
+        saveFileAction.adicionarListener(this);
         saveFileAction.setEnabled(false);
 
         saveAsAction = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
-  //      saveAsAction.adicionarListener(this);
+        saveAsAction.adicionarListener(this);
         saveAsAction.setEnabled(false);
         saveAsAction.setup(controle,this, fileChooser);
 
@@ -85,8 +80,6 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         btnSave.setText("");
 
         mniSaveAs.setAction(saveAsAction);
-
-        
     }
 
     private void acoesAindaParaFazer() {
@@ -147,11 +140,9 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
     
 
     private void configurarSeletorArquivo() {
-        //TODO: Permitir abrir mais de um arquivo por vez?
-        //fileChooser.setMultiSelectionEnabled(false);
-
+        fileChooser.setMultiSelectionEnabled(true);
         fileChooser.addChoosableFileFilter(new FiltroArquivoPortugol());
-        fileChooser.setAcceptAllFileFilterUsed(false); // Desativar filtro curinga
+        fileChooser.setAcceptAllFileFilterUsed(false);
     }
 
     @Override
@@ -485,7 +476,9 @@ private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
 private void btnAlgoritmoTesteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAlgoritmoTesteActionPerformed
 {//GEN-HEADEREND:event_btnAlgoritmoTesteActionPerformed
-    controle.abrir(new File("./examples/teste.por"));
+    File[] arquivos = new File[1];
+    arquivos[0] = new File("./examples/teste.por");
+    controle.abrir(arquivos);
 }//GEN-LAST:event_btnAlgoritmoTesteActionPerformed
 
 private void mniCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCloseActionPerformed
@@ -557,6 +550,14 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     public void dialogoSalvar() {
         saveAsAction.actionPerformed(null);
+    }
+
+    public void habilitaCompilar(boolean b) {
+        btnCompile.setEnabled(b);
+    }
+
+    public void habilitarDebug(boolean b) {
+        btnDebug.setEnabled(b);
     }
     // End of variables declaration
 // </editor-fold>

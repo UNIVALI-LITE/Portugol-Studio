@@ -23,7 +23,7 @@ programa  {
 		tpa = tpo + tpf + tar 
 		
 		escreva("Cliente  ",nome, "\n") 
-		escreva("A quantidade de peças compradas: \n" ,"Parafuso", qparafuso, "\n Aruelas ", qaruelas, "\n Porcas ", qporcas, "\n")
+		escreva("A quantidade de peï¿½as compradas: \n" ,"Parafuso", qparafuso, "\n Aruelas ", qaruelas, "\n Porcas ", qporcas, "\n")
 		escreva("O total a pagar:  R$ ",tpa)
 		 
 	} 

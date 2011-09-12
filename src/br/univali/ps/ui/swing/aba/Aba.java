@@ -1,6 +1,7 @@
 package br.univali.ps.ui.swing.aba;
 
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.event.ContainerEvent;
@@ -27,7 +28,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-public class Aba extends JPanel implements ContainerListener, DocumentListener
+public class Aba extends JPanel implements ContainerListener, PortugolDocumentoListener
 {
 
     private List<AbaListener> listeners;
@@ -56,7 +57,7 @@ public class Aba extends JPanel implements ContainerListener, DocumentListener
 
         autoCompletion.install(textArea);
         autoCompletion.setShowDescWindow(true);
-        document.addDocumentListener(this);
+        ((PortugolDocumento)document).addPortugolDocumentoListener(this);
         this.tabbedPane.addContainerListener(this);
         this.header = new AbaHeader(icone, title, this);
         this.setLayout(new BorderLayout());
@@ -97,6 +98,13 @@ public class Aba extends JPanel implements ContainerListener, DocumentListener
     {
     }
 
+    @Override
+    public void documentoModificado(boolean status)
+    {
+        if (status)
+            header.setModifiedTitle();
+    }
+    
     public void addTabListener(AbaListener tabListener)
     {
         if (!listeners.contains(tabListener))
@@ -131,27 +139,6 @@ public class Aba extends JPanel implements ContainerListener, DocumentListener
     {
 
         header.setTitle(title);
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e)
-    {
-        header.setModifiedTitle();
-        fireStateChanged();
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e)
-    {
-        header.setModifiedTitle();
-        fireStateChanged();
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e)
-    {
-        header.setModifiedTitle();
-        fireStateChanged();
     }
 
     public void close(){
@@ -210,8 +197,7 @@ public class Aba extends JPanel implements ContainerListener, DocumentListener
 
 		return provider;
 
-	}
-
+    }
 }
 
 

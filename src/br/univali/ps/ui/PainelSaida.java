@@ -154,6 +154,15 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     private javax.swing.JTable tabelaMensagens;
     // End of variables declaration//GEN-END:variables
 
+    // End of variables declaration//GEN-END:variables
+    public void mostrarConsole() {
+        abas.setSelectedIndex(0);
+    }
+
+    public void mostrarTabelaMensagem() {
+        abas.setSelectedIndex(1);
+    }
+
     private class MouseListener extends MouseAdapter {
 
         @Override

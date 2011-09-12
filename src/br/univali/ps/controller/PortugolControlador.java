@@ -1,6 +1,9 @@
 package br.univali.ps.controller;
 
+import br.univali.portugol.nucleo.AnalizadorSemantico;
 import br.univali.portugol.nucleo.Interpretador;
+import br.univali.portugol.nucleo.excecoes.ExcecaoArquivoContemErros;
+import br.univali.portugol.nucleo.excecoes.ListaMensagens;
 import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -8,6 +11,7 @@ import br.univali.ps.nucleo.TratadorExcecoes;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.PainelSaida;
+import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
 import javax.swing.event.DocumentEvent;
@@ -15,34 +19,38 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-
-public class PortugolControlador implements DocumentListener{
+public class PortugolControlador implements DocumentListener {
 
     TratadorExcecoes tratadorExcecoes = PortugolStudio.getInstancia().getTratadorExcecoes();
     Editor editor = new Editor(this);
     PainelSaida saida = new PainelSaida(this);
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
+    InterpretadorRunner interpretadorRunner;
+
 
     public PortugolControlador() {
     }
 
-    public void novo(){
+    public void novo() {
         PortugolDocumento portugolDocument = new PortugolDocumento();
         editor.novaAba("Sem título", portugolDocument);
         portugolDocument.addDocumentListener(this);
         portugolDocument.setChanged(false);
     }
 
-    public void abrir(File arquivo) {
+    public void abrir(File[] arquivos) {
         try {
-            String codigoFonte = FileHandle.open(arquivo);
-            PortugolDocumento portugolDocument = new PortugolDocumento();
-            portugolDocument.insertString(0, codigoFonte, null);
-            editor.novaAba(arquivo.getName(), portugolDocument);
-            portugolDocument.setChanged(false);
-            portugolDocument.setFile(arquivo);
-            portugolDocument.addDocumentListener(this);
-            telaPrincipal.habilitaSalvar(false);
+            for (int i = 0; i < arquivos.length; i++) {
+                File arquivo = arquivos[i];
+                String codigoFonte = FileHandle.open(arquivo);
+                PortugolDocumento portugolDocument = new PortugolDocumento();
+                portugolDocument.insertString(0, codigoFonte, null);
+                editor.novaAba(arquivo.getName(), portugolDocument);
+                portugolDocument.setChanged(false);
+                portugolDocument.setFile(arquivo);
+                portugolDocument.addDocumentListener(this);
+                telaPrincipal.habilitaSalvar(false);
+            }
         } catch (Exception ex) {
             tratadorExcecoes.exibirExcecao(ex);
         }
@@ -55,7 +63,6 @@ public class PortugolControlador implements DocumentListener{
             if (documento.getFile() != null) {
                 FileHandle.save(texto, documento.getFile());
                 editor.setTituloAbaSelecionada(documento.getFile().getName());
-                //TODO fazer um listener na ABA para ela saber quando é pra destacar modificado ou não. substituir documentListener por um especifico do Portugol
                 documento.setChanged(false);
                 telaPrincipal.habilitaSalvar(false);
             } else {
@@ -63,7 +70,7 @@ public class PortugolControlador implements DocumentListener{
             }
         } catch (BadLocationException ex) {
             tratadorExcecoes.exibirExcecao(ex);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             tratadorExcecoes.exibirExcecao(ex);
         }
     }
@@ -74,48 +81,36 @@ public class PortugolControlador implements DocumentListener{
         salvar();
     }
 
-    public void executar(){
-//        ListaMensagens listaMensagens = new ListaMensagens();
-//        try {
-//            if (saveFileAction.getFile() != null) {
-//                btnCompile.setEnabled(false);
-//                saveFileAction.actionPerformed(null);
-//                console.setText(null);
-//                painelSaida.setSelectedIndex(0);
-//
-//                AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(saveFileAction.getFile());
-//                listaMensagens = analizadorSemantico.analizar();
-//
-//
-//
-//                //ModeloExemplo1 modelo = new ModeloExemplo1();
-//
-//                ModeloExemplo2 modelo = new ModeloExemplo2();
-//                tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
-//
-//
-//                tabelaMensagens.setModel(modelo);
-//                modelo.adicionar(listaMensagens);
-//
-//
-//                if (listaMensagens.getNumeroErros() == 0) {
-//                    btnDebug.setEnabled(true);
-//                    interpretadorRunner = new InterpretadorRunner(new Interpretador());
-//                    interpretadorRunner.start();
-//                } else {
-//                    painelSaida.setSelectedIndex(1);
-//                }
-//
-//
-//            } else {
-//                saveFileAction.actionPerformed(null);
-//            }
-//            btnCompile.setEnabled(true);
-//        } catch (ExcecaoArquivoContemErros ex) {
-//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            showError("O arquivo contém erros", "Portugol Studio");
-//            btnCompile.setEnabled(true);
-//        }
+    public void executar() {
+        ListaMensagens listaMensagens = new ListaMensagens();
+        try {
+            if (editor.getDocumentAbaSelecionada() != null) {
+                telaPrincipal.habilitaCompilar(false);
+                salvar();
+                saida.limpar();
+                saida.mostrarConsole();
+
+                AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile());
+                listaMensagens = analizadorSemantico.analizar();
+
+
+                ModeloExemplo2 modelo = new ModeloExemplo2();
+                modelo.adicionar(listaMensagens);
+
+
+                if (listaMensagens.getNumeroErros() == 0) {
+                    telaPrincipal.habilitarDebug(true);;
+                    interpretadorRunner = new InterpretadorRunner(new Interpretador());
+                    interpretadorRunner.start();
+                } else {
+                    saida.mostrarTabelaMensagem();
+                }
+            }
+            telaPrincipal.habilitaCompilar(true);
+        } catch (ExcecaoArquivoContemErros ex) {
+            tratadorExcecoes.exibirExcecao(ex);
+            telaPrincipal.habilitaCompilar(true);
+        }
     }
 
     public void setCursor(Mensagem m) {
@@ -143,26 +138,28 @@ public class PortugolControlador implements DocumentListener{
     }
 
     public void interromper() {
-        throw new UnsupportedOperationException("Not yet implemented");
+
+
+
     }
 
     public void insertUpdate(DocumentEvent de) {
-        ((PortugolDocumento)de.getDocument()).setChanged(true);
+        ((PortugolDocumento) de.getDocument()).setChanged(true);
         telaPrincipal.habilitaSalvar(true);
     }
 
     public void removeUpdate(DocumentEvent de) {
-        ((PortugolDocumento)de.getDocument()).setChanged(true);
+        ((PortugolDocumento) de.getDocument()).setChanged(true);
         telaPrincipal.habilitaSalvar(true);
     }
 
     public void changedUpdate(DocumentEvent de) {
-        ((PortugolDocumento)de.getDocument()).setChanged(true);
+        ((PortugolDocumento) de.getDocument()).setChanged(true);
         telaPrincipal.habilitaSalvar(true);
     }
 
     public void documentoSelecionado(Document document) {
-        telaPrincipal.habilitaSalvar(((PortugolDocumento)document).isChanged());
+        telaPrincipal.habilitaSalvar(((PortugolDocumento) document).isChanged());
     }
 
     private class InterpretadorRunner extends Thread {
@@ -175,32 +172,29 @@ public class PortugolControlador implements DocumentListener{
 
         @Override
         public void run() {
-//            try {
-//                long horaInicial = System.currentTimeMillis();
-//                interpretador.setSaida(MainFrame.this);
-//                interpretador.setEntrada(MainFrame.this);
-//                interpretador.interpretar(saveFileAction.getFile(), new String[]{"teste"});
-//                long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
-//                console.append("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
-//
-//            } catch (Exception ex) {
-//                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-//                btnCompile.setEnabled(true);
-//                btnDebug.setEnabled(false);
-//            }
-//             btnCompile.setEnabled(true);
-//             btnDebug.setEnabled(false);
+            try {
+                long horaInicial = System.currentTimeMillis();
+                interpretador.setSaida(saida);
+                interpretador.setEntrada(saida);
+                interpretador.interpretar(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile(), new String[]{"teste"});
+                long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
+                saida.imprimir("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
+
+            } catch (Exception ex) {
+                tratadorExcecoes.exibirExcecao(ex);
+                telaPrincipal.habilitaCompilar(true);
+                telaPrincipal.habilitarDebug(false);
+            }
+            telaPrincipal.habilitaCompilar(true);
+            telaPrincipal.habilitarDebug(false);
         }
 
         @Override
         public void interrupt() {
-//            super.interrupt();
-//            console.append("\n\nPrograma INTERROMPIDO.");
-//            btnCompile.setEnabled(true);
-//            btnDebug.setEnabled(false);
+            super.interrupt();
+            saida.imprimir("\n\nPrograma INTERROMPIDO.");
+            telaPrincipal.habilitaCompilar(true);
+            telaPrincipal.habilitarDebug(false);
         }
     }
-
-
-
 }

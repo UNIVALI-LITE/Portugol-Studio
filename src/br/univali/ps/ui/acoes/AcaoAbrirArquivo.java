@@ -5,10 +5,8 @@
 package br.univali.ps.ui.acoes;
 
 import br.univali.ps.controller.PortugolControlador;
-import br.univali.ps.ui.util.FileHandle;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import javax.swing.JFileChooser;
 
 /**
@@ -41,7 +39,7 @@ public class AcaoAbrirArquivo extends Acao
     {
         if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
         {
-            controle.abrir(chooser.getSelectedFile());
+            controle.abrir(chooser.getSelectedFiles());
         }
         else
         {

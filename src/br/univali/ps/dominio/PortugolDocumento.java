@@ -1,24 +1,30 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.dominio;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.event.DocumentEvent;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 
-/**
- *
- * @author Fillipi Pelz
- */
 public class PortugolDocumento extends RSyntaxDocument {
 
     private boolean changed = false;
     private File file = null;
+    private List<PortugolDocumentoListener> listeners = new ArrayList<PortugolDocumentoListener>();
+
+    public boolean addPortugolDocumentoListener(PortugolDocumentoListener listener){
+        if (!listeners.contains(listener)){
+            return listeners.add(listener);
+        }
+        return false;
+    }
+
+    public boolean removePortugolDocumentoListener(PortugolDocumentoListener listener){
+        return listeners.remove(listener);
+    }
 
     public PortugolDocumento() {
         super(new AbstractTokenMakerFactory() {
@@ -45,17 +51,26 @@ public class PortugolDocumento extends RSyntaxDocument {
 
     public void setChanged(boolean changed) {
         this.changed = changed;
+        disparaDocumentoModificado(changed);
     }
 
     @Override
     protected void fireInsertUpdate(DocumentEvent e) {
         super.fireInsertUpdate(e);
-        changed = true;
+        setChanged(true);
     }
 
     @Override
     protected void fireRemoveUpdate(DocumentEvent chng) {
         super.fireRemoveUpdate(chng);
-        changed = true;
+        setChanged(true);
     }
+
+    private void disparaDocumentoModificado(boolean status){
+        for (PortugolDocumentoListener portugolDocumentoListener : listeners) {
+            portugolDocumentoListener.documentoModificado(status);
+        }
+
+    }
+
 }
