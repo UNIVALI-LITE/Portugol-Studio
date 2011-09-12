@@ -3,11 +3,15 @@ package br.univali.ps.ui;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.controller.PortugolControlador;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.acoes.Acao;
+import br.univali.ps.ui.acoes.AcaoColar;
 import br.univali.ps.ui.swing.aba.Aba;
 import br.univali.ps.ui.swing.aba.AbaClosingEvent;
 import br.univali.ps.ui.swing.aba.AbaListener;
 import java.awt.Component;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -98,9 +102,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
 
     @Override
     public void tabClosing(AbaClosingEvent evt) {
-
-        PortugolDocumento documentoAbaSelecionada = (PortugolDocumento) getDocumentAbaSelecionada();
-        if (documentoAbaSelecionada.isChanged()) {
+        if (((PortugolDocumento)evt.getAba().getDocument()).isChanged()) {
             int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
                 controlador.salvar();
@@ -135,7 +137,15 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
             if (aba != null) {
                 controlador.documentoSelecionado(aba.getDocument());
             }
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+            controlador.nenhumDocumentoAberto();
+        }
+    }
+
+    public void configurarFocusListener(Acao acaoColar) {
+        try {
+            abaSelecionada().getTextArea().addFocusListener((AcaoColar) acaoColar);
+        } catch (Exception ex) { }
     }
     
 }

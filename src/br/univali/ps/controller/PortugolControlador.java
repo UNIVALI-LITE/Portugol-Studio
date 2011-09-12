@@ -11,6 +11,7 @@ import br.univali.ps.nucleo.TratadorExcecoes;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.PainelSaida;
+import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
@@ -26,7 +27,7 @@ public class PortugolControlador implements DocumentListener {
     PainelSaida saida = new PainelSaida(this);
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
     InterpretadorRunner interpretadorRunner;
-
+   
 
     public PortugolControlador() {
     }
@@ -158,8 +159,15 @@ public class PortugolControlador implements DocumentListener {
         telaPrincipal.habilitaSalvar(true);
     }
 
+    public void nenhumDocumentoAberto(){
+        telaPrincipal.habilitaSalvarComo(true);
+        telaPrincipal.desabilitarBotoesEditar();
+    }
+
     public void documentoSelecionado(Document document) {
         telaPrincipal.habilitaSalvar(((PortugolDocumento) document).isChanged());
+        telaPrincipal.configurarBotoesEditar();
+        editor.configurarFocusListener(telaPrincipal.getAcaoColar());
     }
 
     private class InterpretadorRunner extends Thread {

@@ -16,8 +16,6 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.BasicCompletion;
@@ -42,10 +40,6 @@ public class Aba extends JPanel implements ContainerListener, PortugolDocumentoL
         this.listeners = new ArrayList<AbaListener>();
         this.tabbedPane = tabbedPane;
         this.tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-
-     // CodeTemplateManager ctm = RSyntaxTextArea.getCodeTemplateManager();
-     // CodeTemplate ct = new StaticCodeTemplate("ini", "funcao inicio() {}", null);
-     // ctm.addTemplate(ct);
 
         CompletionProvider provider = createCompletionProvider();
         AutoCompletion autoCompletion = new AutoCompletion(provider);
@@ -120,7 +114,7 @@ public class Aba extends JPanel implements ContainerListener, PortugolDocumentoL
 
     public AbaClosingEvent requestTabClosure()
     {
-        AbaClosingEvent evt = new AbaClosingEvent();
+        AbaClosingEvent evt = new AbaClosingEvent(this);
 
         for (AbaListener listener : listeners)
         {

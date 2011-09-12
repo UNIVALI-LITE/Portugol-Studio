@@ -559,6 +559,31 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     public void habilitarDebug(boolean b) {
         btnDebug.setEnabled(b);
     }
+
+
+    public Acao getAcaoColar(){
+        return editCutAction;
+    }
+
+    public void configurarBotoesEditar() {
+        undoAction.setup();
+        redoAction.setup();
+        editCopyAction.configurar();
+        editPasteAction.configurar();
+        editCutAction.setup();
+    }
+
+    public void habilitaSalvarComo(boolean b) {
+        saveAsAction.setEnabled(b);
+    }
+
+    public void desabilitarBotoesEditar() {
+        undoAction.setEnabled(false);
+        redoAction.setEnabled(false);
+        editCopyAction.setEnabled(false);
+        editPasteAction.setEnabled(false);
+        editCutAction.setEnabled(false);
+    }
     // End of variables declaration
 // </editor-fold>
 
