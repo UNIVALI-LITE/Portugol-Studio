@@ -8,10 +8,9 @@ import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.TratadorExcecoes;
-import br.univali.ps.ui.Editor;
+import br.univali.ps.ui.AcumuladorAbas;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.PainelSaida;
-import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
@@ -23,7 +22,7 @@ import javax.swing.text.Document;
 public class PortugolControlador implements DocumentListener {
 
     TratadorExcecoes tratadorExcecoes = PortugolStudio.getInstancia().getTratadorExcecoes();
-    Editor editor = new Editor(this);
+    AcumuladorAbas editor = new AcumuladorAbas(this);
     PainelSaida saida = new PainelSaida(this);
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
     InterpretadorRunner interpretadorRunner;
@@ -51,6 +50,7 @@ public class PortugolControlador implements DocumentListener {
                 portugolDocument.setFile(arquivo);
                 portugolDocument.addDocumentListener(this);
                 telaPrincipal.habilitaSalvar(false);
+
             }
         } catch (Exception ex) {
             tratadorExcecoes.exibirExcecao(ex);

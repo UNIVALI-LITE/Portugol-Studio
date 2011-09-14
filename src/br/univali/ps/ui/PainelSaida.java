@@ -17,10 +17,12 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     private String entradaBuffer = "Digite um valor";
     private PortugolControlador controle;
 
-    public PainelSaida(PortugolControlador controle)
+
+
+    public PainelSaida()
     {
         initComponents();
-        this.controle = controle;
+        //this.controle = controle;
         tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
         tabelaMensagens.addMouseListener(new MouseListener());
         console.setComponentPopupMenu(menuConsole);
@@ -152,7 +154,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     private javax.swing.JMenuItem menuConsoleCopiar;
     private javax.swing.JMenuItem menuConsoleLimpar;
     private javax.swing.JTable tabelaMensagens;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 
     // End of variables declaration//GEN-END:variables
     public void mostrarConsole() {
