@@ -11,7 +11,6 @@ import br.univali.ps.nucleo.TratadorExcecoes;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.PainelSaida;
-import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
