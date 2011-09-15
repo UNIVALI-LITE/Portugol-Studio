@@ -1,15 +1,13 @@
 package br.univali.ps.ui;
 
-import br.univali.portugol.nucleo.AnalizadorSemantico;
-import br.univali.portugol.nucleo.Interpretador;
-import br.univali.portugol.nucleo.excecoes.ExcecaoArquivoContemErros;
-import br.univali.portugol.nucleo.excecoes.ExcecaoArquivoDeProgramaInvalido;
-import br.univali.portugol.nucleo.excecoes.ExcecaoFuncaoPrincipalNaoDeclarada;
-import br.univali.portugol.nucleo.excecoes.ListaMensagens;
-import br.univali.portugol.nucleo.excecoes.Mensagem;
-import br.univali.portugol.nucleo.iu.Entrada;
-import br.univali.portugol.nucleo.iu.Saida;
-import br.univali.ps.acoes.Acao;
+import br.univali.portugol.nucleo.Portugol;
+import br.univali.portugol.nucleo.analise.ErroAlgoritmoContemErros;
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.mensagens.Mensagem;
+import br.univali.portugol.nucleo.execucao.Entrada;
+import br.univali.portugol.nucleo.execucao.Saida;
+import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.ps.acoes.FabricaAcao;
 import br.univali.ps.acoes.AcaoCopiar;
 import br.univali.ps.acoes.AcaoRecortar;
@@ -24,17 +22,16 @@ import br.univali.ps.acoes.AcaoDesfazer;
 import br.univali.ps.dominio.PortugolDocument;
 import br.univali.ps.exception.NullFileOnSaveExcpetion;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
-import br.univali.ps.ui.exemplojtable.exemplo2.RenderizadorMensagem;
 import br.univali.ps.ui.help.HelpBrowser;
+import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.swing.filtros.FiltroArquivoPortugol;
 import br.univali.ps.ui.swing.tabs.Tab;
 import br.univali.ps.ui.swing.tabs.TabClosingEvent;
+import br.univali.ps.ui.swing.tabs.TabHeader;
 import br.univali.ps.ui.swing.tabs.TabListener;
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -44,10 +41,6 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -58,6 +51,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 
 /**
@@ -66,7 +60,6 @@ import javax.swing.text.BadLocationException;
  */
 public class MainFrame extends JFrame implements WindowListener, TabListener, AcaoListener, Saida, Entrada {
 
-    ListMessagesModel model;
     private JFileChooser fileChooser = new JFileChooser();
     private JTabbedPane editorTabs = new JTabbedPane();
     private AcaoNovoArquivo acaoNovoArquivo = null;
@@ -79,7 +72,7 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
     private AcaoRefazer redoAction = null;
     private AcaoDesfazer undoAction = null;
 
-    private InterpretadorRunner interpretadorRunner;
+    //private InterpretadorRunner interpretadorRunner;
 
     private void abrirAba(File arquivo, String titulo)
     {
@@ -176,7 +169,6 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
 
     public MainFrame() {
         this.setIconImage(new ImageIcon(getClass().getResource("icons/small/lightbulb.png")).getImage());
-        model = new ListMessagesModel();
         initComponents();
         this.setLocationRelativeTo(null);
         this.addComponentListener(new AdaptadorComponente());
@@ -214,7 +206,18 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
             }
         });
 
-        tabelaMensagens.addMouseListener(new MouseListener());
+        tabelaMensagens.addMouseListener(new MouseAdapter() 
+        {
+
+            @Override
+            public void mouseClicked(MouseEvent me)
+            {
+                ResultadoAnaliseTableModel model = (ResultadoAnaliseTableModel) tabelaMensagens.getModel();
+                System.out.println (model.getValueAt(0, 0));
+            }
+            
+        });
+        
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         if (!PortugolStudio.getInstancia().isDepurando())
@@ -317,14 +320,45 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
     }
 
     @Override
-    public void imprimir(String valor) {
+    public void escrever(String valor)
+    {
         bufferEntrada = valor;
         console.append(valor);
     }
 
-    String bufferEntrada = "Digite um valor:";
     @Override
-    public String ler() {
+    public void escrever(boolean valor)
+    {
+        bufferEntrada = "Digite um valor";
+        console.append("" + valor);
+    }
+
+    @Override
+    public void escrever(char valor)
+    {
+        bufferEntrada = "Digite um valor";
+        console.append("" + valor);
+    }
+
+    @Override
+    public void escrever(double valor)
+    {
+        bufferEntrada = "Digite um valor";
+        console.append("" + valor);
+    }
+
+    @Override
+    public void escrever(int valor)
+    {
+        bufferEntrada = "Digite um valor";
+        console.append("" + valor);
+    }
+    
+    String bufferEntrada = "Digite um valor:";
+    
+    @Override
+    public String ler(TipoDado tipoDado) 
+    {/*
         if (!interpretadorRunner.isInterrupted()){
         String entrada = JOptionPane.showInputDialog(this, bufferEntrada, null);
         if (entrada != null){
@@ -340,7 +374,7 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
                 interpretadorRunner.interpretador = null;
                 interpretadorRunner = null;                     
         }
-        } 
+        } */
           return "";
     }
 
@@ -610,7 +644,7 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
 
         painelSaida.addTab("Console", jScrollPaneConsole);
 
-        tabelaMensagens.setModel(model);
+        tabelaMensagens.setModel(new ResultadoAnaliseTableModel());
         jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
 
         painelSaida.addTab("Mensagens", jScrollPaneTabelaMensagens);
@@ -730,6 +764,10 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
 
     private void btnCompileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCompileActionPerformed
     {//GEN-HEADEREND:event_btnCompileActionPerformed
+        
+        
+        
+        /*
         ListaMensagens listaMensagens = new ListaMensagens();
         try {
             if (saveFileAction.getFile() != null) {
@@ -737,10 +775,6 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
                 saveFileAction.actionPerformed(null);
                 console.setText(null);
                 painelSaida.setSelectedIndex(0);
-
-                AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(saveFileAction.getFile());
-                listaMensagens = analizadorSemantico.analizar();
-
 
 
                 //ModeloExemplo1 modelo = new ModeloExemplo1();
@@ -755,7 +789,6 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
 
                 if (listaMensagens.getNumeroErros() == 0) {
                     btnDebug.setEnabled(true);
-                    interpretadorRunner = new InterpretadorRunner(new Interpretador());
                     interpretadorRunner.start();
                 } else {
                     painelSaida.setSelectedIndex(1);
@@ -771,6 +804,18 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
             showError("O arquivo contém erros", "Portugol Studio");
             btnCompile.setEnabled(true);
             btnDebug.setEnabled(false);
+        }*/
+        
+        ResultadoAnaliseTableModel model = (ResultadoAnaliseTableModel) tabelaMensagens.getModel();
+        model.setResultadoAnalise(null);
+        
+        ResultadoAnalise resultadoAnalise = Portugol.analisar( ((TabHeader) editorTabs.getTabComponentAt(0)).getTab().getTextArea().getText());
+        
+        if (resultadoAnalise.getNumeroTotalErros() > 0)
+        {
+            model.setResultadoAnalise(resultadoAnalise);        
+            tabelaMensagens.setModel(model);
+            painelSaida.setSelectedIndex(1);
         }
     }//GEN-LAST:event_btnCompileActionPerformed
 
@@ -785,7 +830,7 @@ public class MainFrame extends JFrame implements WindowListener, TabListener, Ac
     }//GEN-LAST:event_menuConsoleCopiarActionPerformed
 
 private void btnDebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDebugActionPerformed
-    this.interpretadorRunner.interrupt();
+    //this.interpretadorRunner.interrupt();
 }//GEN-LAST:event_btnDebugActionPerformed
 
 private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -891,11 +936,13 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 Mensagem m = (Mensagem) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 0);
                 JTextArea textArea = ((Tab) editorTabs.getSelectedComponent()).getTextArea();
                 try {
+                    /*
                     textArea.setCaretPosition(0);
                     while (textArea.getLineOfOffset(textArea.getCaretPosition()) < (m.getLinha() - 1)) {
                         textArea.setCaretPosition(textArea.getCaretPosition() + 1);
                     }
                     textArea.setCaretPosition(textArea.getCaretPosition() + m.getColuna());
+                    */
                 } catch (Exception e) {
                 }
 
@@ -903,7 +950,7 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             }
         }
     }
-
+/*
     private class InterpretadorRunner extends Thread {
 
         Interpretador interpretador;
@@ -938,5 +985,5 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             btnCompile.setEnabled(true);
             btnDebug.setEnabled(false);
         }
-    }
+    }*/
 }
