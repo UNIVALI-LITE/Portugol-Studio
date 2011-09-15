@@ -113,7 +113,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
 
     public TelaPrincipal(PortugolControlador controle) {
         this.controle = controle;
-        this.setIconImage(new ImageIcon(getClass().getResource("./icones/pequeno/lightbulb.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("icones/pequeno/lightbulb.png")).getImage());
         model = new ListMessagesModel();
         initComponents();
         this.setLocationRelativeTo(null);
@@ -122,7 +122,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         this.addWindowListener(this);
         
         // Configurar o jfilechooser para iniciar na pasta de exemplos
-        fileChooser.setCurrentDirectory(new File("./examples"));
+        fileChooser.setCurrentDirectory(new File("./exemplos"));
         
         acoesprontas();
 

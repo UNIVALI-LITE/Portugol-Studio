@@ -40,6 +40,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
             public void changedUpdate(DocumentEvent e) {
             }
         });
+       
     }
 
     private void atualizarItensMenuConsole() {
@@ -152,7 +153,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     private javax.swing.JMenuItem menuConsoleCopiar;
     private javax.swing.JMenuItem menuConsoleLimpar;
     private javax.swing.JTable tabelaMensagens;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 
     // End of variables declaration//GEN-END:variables
     public void mostrarConsole() {

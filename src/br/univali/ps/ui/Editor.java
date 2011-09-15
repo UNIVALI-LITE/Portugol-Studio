@@ -10,8 +10,6 @@ import br.univali.ps.ui.swing.aba.AbaClosingEvent;
 import br.univali.ps.ui.swing.aba.AbaListener;
 import java.awt.Component;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;

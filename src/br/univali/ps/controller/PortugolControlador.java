@@ -26,7 +26,7 @@ public class PortugolControlador implements DocumentListener {
     PainelSaida saida = new PainelSaida(this);
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
     InterpretadorRunner interpretadorRunner;
-   
+    ModeloExemplo2 tabelaModel = new ModeloExemplo2();
 
     public PortugolControlador() {
     }
@@ -36,6 +36,9 @@ public class PortugolControlador implements DocumentListener {
         editor.novaAba("Sem título", portugolDocument);
         portugolDocument.addDocumentListener(this);
         portugolDocument.setChanged(false);
+        telaPrincipal.habilitaCompilar(true);
+        telaPrincipal.configurarBotoesEditar();
+        saida.setModelSaidaErros(tabelaModel);
     }
 
     public void abrir(File[] arquivos) {
@@ -50,6 +53,8 @@ public class PortugolControlador implements DocumentListener {
                 portugolDocument.setFile(arquivo);
                 portugolDocument.addDocumentListener(this);
                 telaPrincipal.habilitaSalvar(false);
+                telaPrincipal.habilitaCompilar(true);
+                telaPrincipal.configurarBotoesEditar();
             }
         } catch (Exception ex) {
             tratadorExcecoes.exibirExcecao(ex);
@@ -94,8 +99,8 @@ public class PortugolControlador implements DocumentListener {
                 listaMensagens = analizadorSemantico.analizar();
 
 
-                ModeloExemplo2 modelo = new ModeloExemplo2();
-                modelo.adicionar(listaMensagens);
+                
+                this.tabelaModel.adicionar(listaMensagens);
 
 
                 if (listaMensagens.getNumeroErros() == 0) {
@@ -138,9 +143,7 @@ public class PortugolControlador implements DocumentListener {
     }
 
     public void interromper() {
-
-
-
+        interpretadorRunner.interrupt();
     }
 
     public void insertUpdate(DocumentEvent de) {
