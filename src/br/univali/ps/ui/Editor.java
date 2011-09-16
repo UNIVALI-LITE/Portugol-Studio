@@ -119,7 +119,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
         for (Component componet : acumuladorAba.getComponents()) {
             if (componet instanceof Aba) {
                 PortugolDocumento document = (PortugolDocumento) ((Aba) componet).getDocument();
-                if (document.getFile().getPath().equals(arquivo.getPath())) {
+                if (document.getFile() != null && document.getFile().getPath().equals(arquivo.getPath())) {
                     acumuladorAba.setSelectedComponent(componet);
                     return;
                 }
@@ -141,9 +141,13 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
     }
 
     public void configurarFocusListener(Acao acaoColar) {
+        
         try {
             abaSelecionada().getTextArea().addFocusListener((AcaoColar) acaoColar);
-        } catch (Exception ex) { }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+        }
     }
     
 }

@@ -67,4 +67,9 @@ public class ModeloExemplo2 extends AbstractTableModel
     {
         return mensagens.get(linha);
     }
+
+    public void restart() {
+        mensagens.clear();
+        fireTableDataChanged();
+    }
 }

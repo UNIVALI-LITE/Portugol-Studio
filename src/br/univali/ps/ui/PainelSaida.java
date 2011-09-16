@@ -63,6 +63,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     public void setModelSaidaErros(TableModel tableModel)
     {
         tabelaMensagens.setModel(tableModel);
+        tableModel.addTableModelListener(tabelaMensagens);
     }
 
     public void limpar()
@@ -78,6 +79,8 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     public String ler()
     {
         String entrada = JOptionPane.showInputDialog(this, entradaBuffer, null);
+        if (entrada == null)
+            controle.interromper();
         console.append(" " + entrada + "\n");
         return entrada;
     }

@@ -39,6 +39,7 @@ public class PortugolControlador implements DocumentListener {
         telaPrincipal.habilitaCompilar(true);
         telaPrincipal.configurarBotoesEditar();
         saida.setModelSaidaErros(tabelaModel);
+        editor.configurarFocusListener(telaPrincipal.getAcaoColar());
     }
 
     public void abrir(File[] arquivos) {
@@ -55,6 +56,8 @@ public class PortugolControlador implements DocumentListener {
                 telaPrincipal.habilitaSalvar(false);
                 telaPrincipal.habilitaCompilar(true);
                 telaPrincipal.configurarBotoesEditar();
+                saida.setModelSaidaErros(tabelaModel);
+                editor.configurarFocusListener(telaPrincipal.getAcaoColar());
             }
         } catch (Exception ex) {
             tratadorExcecoes.exibirExcecao(ex);
@@ -91,6 +94,7 @@ public class PortugolControlador implements DocumentListener {
         try {
             if (editor.getDocumentAbaSelecionada() != null) {
                 telaPrincipal.habilitaCompilar(false);
+                tabelaModel.restart();
                 salvar();
                 saida.limpar();
                 saida.mostrarConsole();
@@ -144,6 +148,7 @@ public class PortugolControlador implements DocumentListener {
 
     public void interromper() {
         interpretadorRunner.interrupt();
+        interpretadorRunner = null;
     }
 
     public void insertUpdate(DocumentEvent de) {
@@ -162,11 +167,12 @@ public class PortugolControlador implements DocumentListener {
     }
 
     public void nenhumDocumentoAberto(){
-        telaPrincipal.habilitaSalvarComo(true);
+        telaPrincipal.habilitaSalvarComo(false);
         telaPrincipal.desabilitarBotoesEditar();
     }
 
     public void documentoSelecionado(Document document) {
+        telaPrincipal.habilitaSalvarComo(true);
         telaPrincipal.habilitaSalvar(((PortugolDocumento) document).isChanged());
         telaPrincipal.configurarBotoesEditar();
         editor.configurarFocusListener(telaPrincipal.getAcaoColar());
