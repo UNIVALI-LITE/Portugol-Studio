@@ -23,7 +23,7 @@ public class PortugolControlador implements DocumentListener {
 
     TratadorExcecoes tratadorExcecoes = PortugolStudio.getInstancia().getTratadorExcecoes();
     AcumuladorAbas editor = new AcumuladorAbas(this);
-    PainelSaida saida = new PainelSaida(this);
+    PainelSaida saida = new PainelSaida();
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
     InterpretadorRunner interpretadorRunner;
    
@@ -93,7 +93,6 @@ public class PortugolControlador implements DocumentListener {
 
                 AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile());
                 listaMensagens = analizadorSemantico.analizar();
-
 
                 ModeloExemplo2 modelo = new ModeloExemplo2();
                 modelo.adicionar(listaMensagens);
