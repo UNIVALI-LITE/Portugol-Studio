@@ -4,7 +4,7 @@
  */
 package br.univali.ps.ui.util;
 
-import br.univali.ps.ui.MainFrame;
+import br.univali.ps.ui.TelaPrincipal;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -81,7 +81,7 @@ public class FileHandle
                 reader.close();
             } catch (IOException ex)
             {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             } finally
             {
                 try
@@ -89,7 +89,7 @@ public class FileHandle
                     reader.close();
                 } catch (IOException ex)
                 {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

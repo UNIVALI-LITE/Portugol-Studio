@@ -8,7 +8,7 @@
  *
  * Created on 12/08/2011, 10:48:31
  */
-package br.univali.ps.ui.help;
+package br.univali.ps.ui.ajuda;
 
 import java.io.File;
 import java.net.URL;
@@ -19,10 +19,10 @@ import javax.swing.event.HyperlinkListener;
  *
  * @author fillipi
  */
-public class HelpBrowser extends javax.swing.JFrame implements HyperlinkListener {
+public class NavegadorAjuda extends javax.swing.JFrame implements HyperlinkListener {
 
     /** Creates new form HelpBrowser */
-    public HelpBrowser() {
+    public NavegadorAjuda() {
         initComponents();
         setTitle("Ajuda");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

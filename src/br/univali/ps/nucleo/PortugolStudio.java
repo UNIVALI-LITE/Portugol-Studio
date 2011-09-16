@@ -1,6 +1,8 @@
 
 package br.univali.ps.nucleo;
 
+import br.univali.ps.controller.PortugolControlador;
+
 /**
  *
  * @author Luiz Fernando Noschang
@@ -14,8 +16,8 @@ public final class PortugolStudio
     private static PortugolStudio instancia = null;    
     
     private boolean depurando = false;
-    private TratadorExcecoes tratadorExcecoes = null;
-    private GerenciadorTelas gerenciadorTelas = null;
+    private TratadorExcecoes tratadorExcecoes = null;    
+    private PortugolControlador portugolController;
 
     private PortugolStudio()
     {
@@ -49,7 +51,7 @@ public final class PortugolStudio
                 @Override
                 public synchronized void start()
                 {
-                    getGerenciadorTelas().getTelaPrincipal().setVisible(true);
+                    getPortugolController().iniciar();
                 }                
             };
             
@@ -65,11 +67,11 @@ public final class PortugolStudio
         return tratadorExcecoes;
     }
 
-    public GerenciadorTelas getGerenciadorTelas()
+    public PortugolControlador getPortugolController()
     {
-        if (gerenciadorTelas == null)
-            gerenciadorTelas = new GerenciadorTelas();
+        if (portugolController == null)
+            portugolController = new PortugolControlador();
         
-        return gerenciadorTelas;
+        return portugolController;
     }
 }
