@@ -1,10 +1,10 @@
 package br.univali.ps.ui;
 
-import br.univali.portugol.nucleo.excecoes.Mensagem;
-import br.univali.portugol.nucleo.iu.Entrada;
-import br.univali.portugol.nucleo.iu.Saida;
+import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.execucao.Entrada;
+import br.univali.portugol.nucleo.execucao.Saida;
+import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.controller.PortugolControlador;
-import br.univali.ps.ui.exemplojtable.exemplo2.RenderizadorMensagem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
@@ -12,8 +12,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 
-public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
-
+public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada 
+{
     private String entradaBuffer = "Digite um valor";
     private PortugolControlador controle;
 
@@ -21,7 +21,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     {
         initComponents();
         this.controle = controle;
-        tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
+        //tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
         tabelaMensagens.addMouseListener(new MouseListener());
         console.setComponentPopupMenu(menuConsole);
         console.getDocument().addDocumentListener(new DocumentListener() {
@@ -167,6 +167,36 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
         abas.setSelectedIndex(1);
     }
 
+    @Override
+    public void escrever(String valor) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void escrever(boolean valor) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void escrever(int valor) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void escrever(double valor) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void escrever(char valor) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Object ler(TipoDado tipoDado) {
+        return null;
+    }
+    
     private class MouseListener extends MouseAdapter {
 
         @Override

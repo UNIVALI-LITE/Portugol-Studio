@@ -15,6 +15,7 @@ import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
 import br.univali.ps.ui.acoes.AcaoDesfazer;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ajuda.NavegadorAjuda;
+import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
@@ -29,7 +30,7 @@ import javax.swing.JPanel;
 
 public class TelaPrincipal extends JFrame implements WindowListener, AcaoListener{
 
-    ListMessagesModel model;
+    ResultadoAnaliseTableModel model;
     private JFileChooser fileChooser = new JFileChooser();
     private AcaoNovoArquivo acaoNovoArquivo = null;
     private AcaoAbrirArquivo openFileAction = null;
@@ -111,7 +112,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
     public TelaPrincipal(PortugolControlador controle) {
         this.controle = controle;
         this.setIconImage(new ImageIcon(getClass().getResource("icones/pequeno/lightbulb.png")).getImage());
-        model = new ListMessagesModel();
+        model = new ResultadoAnaliseTableModel();
         initComponents();
         this.setLocationRelativeTo(null);
         this.addComponentListener(new AdaptadorComponente());

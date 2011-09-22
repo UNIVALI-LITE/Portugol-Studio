@@ -1,17 +1,16 @@
 package br.univali.ps.controller;
 
-import br.univali.portugol.nucleo.AnalizadorSemantico;
-import br.univali.portugol.nucleo.Interpretador;
-import br.univali.portugol.nucleo.excecoes.ExcecaoArquivoContemErros;
-import br.univali.portugol.nucleo.excecoes.ListaMensagens;
-import br.univali.portugol.nucleo.excecoes.Mensagem;
+import br.univali.portugol.nucleo.Portugol;
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.TratadorExcecoes;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.PainelSaida;
-import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
+import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
 import javax.swing.event.DocumentEvent;
@@ -25,8 +24,8 @@ public class PortugolControlador implements DocumentListener {
     Editor editor = new Editor(this);
     PainelSaida saida = new PainelSaida(this);
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
-    InterpretadorRunner interpretadorRunner;
-    ModeloExemplo2 tabelaModel = new ModeloExemplo2();
+//    InterpretadorRunner interpretadorRunner;
+    ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
 
     public PortugolControlador() {
     }
@@ -89,42 +88,56 @@ public class PortugolControlador implements DocumentListener {
         salvar();
     }
 
-    public void executar() {
-        ListaMensagens listaMensagens = new ListaMensagens();
-        try {
-            if (editor.getDocumentAbaSelecionada() != null) {
+    public void executar() 
+    {
+        try 
+        {
+            if (editor.getDocumentAbaSelecionada() != null) 
+            {
                 telaPrincipal.habilitaCompilar(false);
-                tabelaModel.restart();
+                tabelaModel.setResultadoAnalise(null);
                 salvar();
                 saida.limpar();
                 saida.mostrarConsole();
 
-                AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile());
-                listaMensagens = analizadorSemantico.analizar();
-
-
-                
-                this.tabelaModel.adicionar(listaMensagens);
-
-
-                if (listaMensagens.getNumeroErros() == 0) {
-                    telaPrincipal.habilitarDebug(true);;
-                    interpretadorRunner = new InterpretadorRunner(new Interpretador());
-                    interpretadorRunner.start();
-                } else {
+                String codigo = editor.abaSelecionada().getTextArea().getText();
+                ResultadoAnalise resultadoAnalise = Portugol.analisar(codigo);
+        
+                if (resultadoAnalise.getNumeroTotalErros() > 0)
+                {
+                    tabelaModel.setResultadoAnalise(resultadoAnalise);
+                    saida.mostrarTabelaMensagem();
+                }
+                else
+                    
+                if (resultadoAnalise.getNumeroTotalErros() == 0) 
+                {
+                    telaPrincipal.habilitarDebug(true);
+                    //interpretadorRunner = new InterpretadorRunner();
+                    //interpretadorRunner.start();
+                } else 
+                {
                     saida.mostrarTabelaMensagem();
                 }
             }
+            
             telaPrincipal.habilitaCompilar(true);
-        } catch (ExcecaoArquivoContemErros ex) {
+        } catch (Exception ex) 
+        {
             tratadorExcecoes.exibirExcecao(ex);
             telaPrincipal.habilitaCompilar(true);
         }
     }
 
-    public void setCursor(Mensagem m) {
-        editor.selecionarAbaArquivo(m.getArquivo());
-        editor.posicionaCursor(m.getLinha(), m.getColuna());
+    public void setCursor(Mensagem m) 
+    {
+        //editor.selecionarAbaArquivo(m.);
+        
+        if (m instanceof ErroAnalise)
+        {
+            ErroAnalise erro = (ErroAnalise) m;
+            editor.posicionaCursor(erro.getLinha(), erro.getColuna());
+        }
     }
 
     public void iniciar() {
@@ -147,8 +160,8 @@ public class PortugolControlador implements DocumentListener {
     }
 
     public void interromper() {
-        interpretadorRunner.interrupt();
-        interpretadorRunner = null;
+        //interpretadorRunner.interrupt();
+        //interpretadorRunner = null;
     }
 
     public void insertUpdate(DocumentEvent de) {
@@ -177,10 +190,10 @@ public class PortugolControlador implements DocumentListener {
         telaPrincipal.configurarBotoesEditar();
         editor.configurarFocusListener(telaPrincipal.getAcaoColar());
     }
-
+/*
     private class InterpretadorRunner extends Thread {
 
-        Interpretador interpretador;
+        //Interpretador interpretador;
 
         public InterpretadorRunner(Interpretador interpretador) {
             this.interpretador = interpretador;
@@ -212,5 +225,5 @@ public class PortugolControlador implements DocumentListener {
             telaPrincipal.habilitaCompilar(true);
             telaPrincipal.habilitarDebug(false);
         }
-    }
+    }*/
 }

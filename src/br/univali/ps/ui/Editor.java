@@ -45,7 +45,7 @@ public class Editor extends javax.swing.JPanel implements AbaListener, ChangeLis
         }
     }
 
-    private Aba abaSelecionada() throws Exception {
+    public Aba abaSelecionada() throws Exception {
         if (acumuladorAba.getTabCount() > 0) {
             return (Aba) acumuladorAba.getSelectedComponent();
         }
