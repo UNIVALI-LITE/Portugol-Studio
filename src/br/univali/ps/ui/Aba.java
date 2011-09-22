@@ -1,34 +1,56 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.dominio.PortugolDocumento;
-import javax.swing.JComponent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
-public class Aba{
+public abstract class Aba extends JPanel{
     
     private CabecalhoAba cabecalho;
-    private Conteudo conteudo;
-
-    public Aba() {
-        cabecalho = new CabecalhoAba();
+    private JTabbedPane painelTabulado;
+    private List<AbaListener> listeners;
+    
+    public Aba(JTabbedPane painelTabulado) {
+        listeners = new ArrayList<AbaListener>();
+        this.painelTabulado = painelTabulado;
+        cabecalho = new CabecalhoAba(this);
         cabecalho.setTitulo("Sem título");
-        cabecalho.setRemovivel(true);
-        conteudo = new Conteudo();
-    }
+        cabecalho.setBotaoFecharVisivel(true);
+        this.painelTabulado.add(this);
+        this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
     
-    public Aba(PortugolDocumento documento){
-        cabecalho = new CabecalhoAba();
-        cabecalho.setTitulo(documento.getFile().getName());
-        cabecalho.setRemovivel(true);
-        conteudo = new Conteudo();
-        conteudo.getEditor().setPortugolDocumento(documento);
-    }
-    
-    public JComponent getCabecalho() {
-        return cabecalho;
     }
 
-    public JComponent getConteudo() {
-        return conteudo;
+    public void setRemovivel(boolean removivel) {
+        cabecalho.setBotaoFecharVisivel(removivel);
     }
 
+    public boolean isRemovivel() {
+        return cabecalho.isBotaoFecharVisivel();
+    }
+    
+    public boolean fechar() {
+        
+        boolean podeFechar = true;
+        
+        for (AbaListener listener : listeners){
+            if (!listener.fechandoAba(this))
+                podeFechar = false;
+        }
+        
+        if (podeFechar)
+            painelTabulado.remove(this);
+        
+        return podeFechar;
+    }
+    
+    public void adicionarAbaListener(AbaListener listener){
+        if (!listeners.contains(listener))
+            listeners.add(listener);
+    }
+    
+    public void removerAbaListener (AbaListener listener){
+        listeners.remove(listener);
+    }
 }

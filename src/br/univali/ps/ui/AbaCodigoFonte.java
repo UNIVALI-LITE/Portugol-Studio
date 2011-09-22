@@ -9,8 +9,10 @@ import br.univali.ps.ui.acoes.AcaoDesfazer;
 import br.univali.ps.ui.acoes.AcaoRecortar;
 import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 
-public class Conteudo extends javax.swing.JPanel implements ControladorListener, PortugolDocumentoListener{
+public class AbaCodigoFonte extends Aba implements ControladorListener, PortugolDocumentoListener, AbaListener{
 
     private AcaoSalvarArquivo acaoSalvarArquivo = new AcaoSalvarArquivo();
     private AcaoDesfazer acaoDesfazer = new AcaoDesfazer();
@@ -21,7 +23,8 @@ public class Conteudo extends javax.swing.JPanel implements ControladorListener,
     private PortugolControlador controle;
 
     /** Creates new form Conteudo */
-    public Conteudo() {
+    public AbaCodigoFonte(JTabbedPane painelTabulado) {
+        super(painelTabulado);
         initComponents();
         acaoSalvarArquivo.removerIconeGrande();
         btnSalvar.setAction(acaoSalvarArquivo);
@@ -31,6 +34,8 @@ public class Conteudo extends javax.swing.JPanel implements ControladorListener,
         btnCopiar.setAction(acaoCopiar);
         btnColar.setAction(acaoColar);
         configurarAcoes();
+        adicionarAbaListener(this);
+        jPainelSeparador.setDividerLocation(480);
     }
     
     public void setPortugolControlador(PortugolControlador portugolControlador){
@@ -66,7 +71,7 @@ public class Conteudo extends javax.swing.JPanel implements ControladorListener,
 
         undoRedoBar.setFloatable(false);
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/disk.png"))); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/disk.png"))); // NOI18N
         btnSalvar.setFocusable(false);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -178,8 +183,14 @@ public class Conteudo extends javax.swing.JPanel implements ControladorListener,
         btnSalvar.setEnabled(false);
     }
 
+    @Override
     public void documentoModificado(boolean status) {
         btnSalvar.setEnabled(status);
+    }
+
+    @Override
+    public boolean fechandoAba(Aba aba) {
+        return JOptionPane.showConfirmDialog(this, "Deseja fechar ?") == JOptionPane.YES_OPTION;
     }
 
 }

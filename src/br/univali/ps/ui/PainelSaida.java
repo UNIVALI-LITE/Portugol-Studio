@@ -4,7 +4,6 @@ import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.portugol.nucleo.iu.Entrada;
 import br.univali.portugol.nucleo.iu.Saida;
 import br.univali.ps.controller.PortugolControlador;
-import br.univali.ps.ui.exemplojtable.exemplo2.RenderizadorMensagem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
@@ -23,7 +22,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada {
     {
         initComponents();
         //this.controle = controle;
-        tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
+//        tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
         tabelaMensagens.addMouseListener(new MouseListener());
         console.setComponentPopupMenu(menuConsole);
         console.getDocument().addDocumentListener(new DocumentListener() {

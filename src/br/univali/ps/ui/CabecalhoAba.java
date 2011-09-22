@@ -2,22 +2,19 @@ package br.univali.ps.ui;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class CabecalhoAba extends JPanel {
 
-    private List<CabecalhoListener> listeners = new ArrayList<CabecalhoListener>();
+    private Aba aba;
     
-    public CabecalhoAba() {
+    public CabecalhoAba(Aba aba) {
         initComponents();
+        this.aba = aba;
     }
     
-    private boolean removivel;
-
     public void setTitulo(String titulo) {
         this.jLTitulo.setText(" "+titulo);
         calculaTamanhoCabecalho();
@@ -28,10 +25,8 @@ public class CabecalhoAba extends JPanel {
         calculaTamanhoCabecalho();
     }
     
-    public void setRemovivel(boolean removivel) {
-        this.removivel = removivel;
-        if (!removivel)
-            jBFechar.setVisible(false);
+    public void setBotaoFecharVisivel(boolean removivel) {
+        jBFechar.setVisible(removivel);
         calculaTamanhoCabecalho();
     }
 
@@ -41,10 +36,6 @@ public class CabecalhoAba extends JPanel {
 
     public Icon getIcone() {
         return jLIcone.getIcon();
-    }
-
-    public boolean isRemovivel() {
-        return removivel;
     }
 
     @SuppressWarnings("unchecked")
@@ -62,6 +53,7 @@ public class CabecalhoAba extends JPanel {
         add(jLIcone, java.awt.BorderLayout.WEST);
 
         jLTitulo.setText("jLabel2");
+        jLTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 8, 1, 1));
         jLTitulo.setFocusable(false);
         add(jLTitulo, java.awt.BorderLayout.CENTER);
 
@@ -82,9 +74,7 @@ public class CabecalhoAba extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFecharActionPerformed
-        for (CabecalhoListener listener : listeners) {
-            listener.fecharAba(this);
-        }
+        aba.fechar();
     }//GEN-LAST:event_jBFecharActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -99,14 +89,8 @@ public class CabecalhoAba extends JPanel {
         int larguraTitulo = jLTitulo.getPreferredSize().width;
         setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3, 16));
     }
-    
-    public void adicionaListener(CabecalhoListener listener) {
-        if (!listeners.contains(listener)){
-            listeners.add(listener);
-        }
-    }
-    
-    public void removeListener(CabecalhoListener listener) {
-        listeners.remove(listener);
+
+    boolean isBotaoFecharVisivel() {
+        return jBFechar.isVisible();
     }
 }

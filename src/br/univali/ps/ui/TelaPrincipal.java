@@ -17,11 +17,14 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ajuda.NavegadorAjuda;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -54,7 +57,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         openFileAction.configurar(controle,this, fileChooser);
 
         saveFileAction = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
-        saveFileAction.configurar(controle);
+       /// saveFileAction.configurar(controle);
         saveFileAction.adicionarListener(this);
         saveFileAction.setEnabled(false);
 
@@ -63,18 +66,18 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         saveAsAction.setEnabled(false);
         saveAsAction.setup(controle,this, fileChooser);
 
-        btnNew.setAction(acaoNovoArquivo);
+        //btnNew.setAction(acaoNovoArquivo);
         mniNew.setAction(acaoNovoArquivo);
-        btnNew.setText("");
+        //btnNew.setText("");
 
 
-        btnOpen.setAction(openFileAction);
+        //btnOpen.setAction(openFileAction);
         mniOpen.setAction(openFileAction);
-        btnOpen.setText("");
+        //btnOpen.setText("");
 
-        btnSave.setAction(saveFileAction);
+        //btnSave.setAction(saveFileAction);
         mniSave.setAction(saveFileAction);
-        btnSave.setText("");
+ //       btnSave.setText("");
 
         mniSaveAs.setAction(saveAsAction);
     }
@@ -92,20 +95,20 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         undoAction.setEnabled(false);
 
         mniCut.setAction(editCutAction);
-        btnCut.setAction(editCutAction);
-        btnCut.setText("");
+  //      btnCut.setAction(editCutAction);
+  //      btnCut.setText("");
         mniCopy.setAction(editCopyAction);
-        btnCopy.setAction(editCopyAction);
-        btnCopy.setText("");
+  //      btnCopy.setAction(editCopyAction);
+  //      btnCopy.setText("");
         mniPaste.setAction(editPasteAction);
-        btnPaste.setAction(editPasteAction);
-        btnPaste.setText("");
+  //      btnPaste.setAction(editPasteAction);
+  //      btnPaste.setText("");
         mniUndo.setAction(undoAction);
-        btnUndo.setAction(undoAction);
-        btnUndo.setText("");
+  //      btnUndo.setAction(undoAction);
+  //      btnUndo.setText("");
         mniRedo.setAction(redoAction);
-        btnRedo.setAction(redoAction);
-        btnRedo.setText("");
+  //      btnRedo.setAction(redoAction);
+  //      btnRedo.setText("");
     }
 
     public TelaPrincipal(PortugolControlador controle) {
@@ -117,6 +120,13 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         this.addComponentListener(new AdaptadorComponente());
         configurarSeletorArquivo();
         this.addWindowListener(this);
+        Action action = new AbstractAction() {
+
+            public void actionPerformed(ActionEvent ae) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+        //this.painelTabulado1.init(action, action);
         
         // Configurar o jfilechooser para iniciar na pasta de exemplos
         fileChooser.setCurrentDirectory(new File("./examples"));
@@ -131,7 +141,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         
         if (!PortugolStudio.getInstancia().isDepurando())
         {
-            btnAlgoritmoTeste.setVisible(false);            
+  //          btnAlgoritmoTeste.setVisible(false);            
         }
     }
     
@@ -173,11 +183,11 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
     
 
     public void setEditor(JPanel editor) {
-        jSplitPane1.setLeftComponent(editor);
+    //    jSplitPane1.setLeftComponent(editor);
     }
 
     public void setPainelSaida(JPanel saida) {
-        jSplitPane1.setRightComponent(saida);
+     //   jSplitPane1.setRightComponent(saida);
     }
   
 
@@ -193,24 +203,8 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        topPane = new javax.swing.JPanel();
-        fileBar = new javax.swing.JToolBar();
-        btnNew = new javax.swing.JButton();
-        btnOpen = new javax.swing.JButton();
-        btnSave = new javax.swing.JButton();
-        btnAlgoritmoTeste = new javax.swing.JButton();
-        undoRedoBar = new javax.swing.JToolBar();
-        btnUndo = new javax.swing.JButton();
-        btnRedo = new javax.swing.JButton();
-        editBar = new javax.swing.JToolBar();
-        btnCut = new javax.swing.JButton();
-        btnCopy = new javax.swing.JButton();
-        btnPaste = new javax.swing.JButton();
-        compileBar = new javax.swing.JToolBar();
-        btnCompile = new javax.swing.JButton();
-        btnDebug = new javax.swing.JButton();
-        jSplitPane1 = new javax.swing.JSplitPane();
         bottomPane = new javax.swing.JPanel();
+        painelTabulado1 = new br.univali.ps.ui.PainelTabulado();
         mnuBar = new javax.swing.JMenuBar();
         mnuFile = new javax.swing.JMenu();
         mniNew = new javax.swing.JMenuItem();
@@ -238,107 +232,6 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Portugol Studio");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        topPane.setLayout(new javax.swing.BoxLayout(topPane, javax.swing.BoxLayout.LINE_AXIS));
-
-        fileBar.setToolTipText("Barra ferramentas arquivo");
-
-        btnNew.setText("");
-        btnNew.setDoubleBuffered(true);
-        btnNew.setFocusable(false);
-        btnNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fileBar.add(btnNew);
-
-        btnOpen.setText("");
-        btnOpen.setActionCommand("Abrir");
-        btnOpen.setFocusable(false);
-        btnOpen.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fileBar.add(btnOpen);
-
-        btnSave.setText("");
-        btnSave.setFocusable(false);
-        btnSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fileBar.add(btnSave);
-
-        btnAlgoritmoTeste.setText("Testar");
-        btnAlgoritmoTeste.setFocusable(false);
-        btnAlgoritmoTeste.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAlgoritmoTeste.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAlgoritmoTeste.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlgoritmoTesteActionPerformed(evt);
-            }
-        });
-        fileBar.add(btnAlgoritmoTeste);
-
-        topPane.add(fileBar);
-
-        btnUndo.setText("");
-        btnUndo.setFocusable(false);
-        btnUndo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnUndo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnUndo);
-
-        btnRedo.setText("");
-        btnRedo.setFocusable(false);
-        btnRedo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnRedo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnRedo);
-
-        topPane.add(undoRedoBar);
-
-        btnCut.setFocusable(false);
-        btnCut.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCut.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        editBar.add(btnCut);
-
-        btnCopy.setFocusable(false);
-        btnCopy.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCopy.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        editBar.add(btnCopy);
-
-        btnPaste.setFocusable(false);
-        btnPaste.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnPaste.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        editBar.add(btnPaste);
-
-        topPane.add(editBar);
-
-        compileBar.setRollover(true);
-
-        btnCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play_blue.png"))); // NOI18N
-        btnCompile.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play.png"))); // NOI18N
-        btnCompile.setEnabled(false);
-        btnCompile.setFocusable(false);
-        btnCompile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCompile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnCompile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCompileActionPerformed(evt);
-            }
-        });
-        compileBar.add(btnCompile);
-
-        btnDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_stop_blue.png"))); // NOI18N
-        btnDebug.setEnabled(false);
-        btnDebug.setFocusable(false);
-        btnDebug.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDebug.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDebug.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDebugActionPerformed(evt);
-            }
-        });
-        compileBar.add(btnDebug);
-
-        topPane.add(compileBar);
-
-        jSplitPane1.setDividerLocation(200);
-        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPane1.setOneTouchExpandable(true);
-        jSplitPane1.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout bottomPaneLayout = new javax.swing.GroupLayout(bottomPane);
         bottomPane.setLayout(bottomPaneLayout);
@@ -434,31 +327,21 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(topPane, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
             .addComponent(bottomPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(painelTabulado1, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                .addGap(13, 13, 13))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(topPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                .addComponent(painelTabulado1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bottomPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnCompileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCompileActionPerformed
-    {//GEN-HEADEREND:event_btnCompileActionPerformed
-        controle.executar();
-    }//GEN-LAST:event_btnCompileActionPerformed
-
-private void btnDebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDebugActionPerformed
-    controle.interromper();
-}//GEN-LAST:event_btnDebugActionPerformed
 
 private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
     NavegadorAjuda hb = new NavegadorAjuda();
@@ -470,13 +353,6 @@ private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniExitActionPerformed
     controle.fecharAplicativo();
 }//GEN-LAST:event_mniExitActionPerformed
-
-private void btnAlgoritmoTesteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAlgoritmoTesteActionPerformed
-{//GEN-HEADEREND:event_btnAlgoritmoTesteActionPerformed
-    File[] arquivos = new File[1];
-    arquivos[0] = new File("./examples/teste.por");
-    controle.abrir(arquivos);
-}//GEN-LAST:event_btnAlgoritmoTesteActionPerformed
 
 private void mniCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCloseActionPerformed
     controle.fecharAbaAtual();
@@ -491,22 +367,7 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPane;
-    private javax.swing.JButton btnAlgoritmoTeste;
-    private javax.swing.JButton btnCompile;
-    private javax.swing.JButton btnCopy;
-    private javax.swing.JButton btnCut;
-    private javax.swing.JButton btnDebug;
-    private javax.swing.JButton btnNew;
-    private javax.swing.JButton btnOpen;
-    private javax.swing.JButton btnPaste;
-    private javax.swing.JButton btnRedo;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnUndo;
-    private javax.swing.JToolBar compileBar;
-    private javax.swing.JToolBar editBar;
-    private javax.swing.JToolBar fileBar;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JMenuItem mniAbout;
     private javax.swing.JMenuItem mniClose;
     private javax.swing.JMenuItem mniCloseAll;
@@ -529,8 +390,7 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JPopupMenu.Separator mnuFileSeparator1;
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
-    private javax.swing.JPanel topPane;
-    private javax.swing.JToolBar undoRedoBar;
+    private br.univali.ps.ui.PainelTabulado painelTabulado1;
     // End of variables declaration//GEN-END:variables
 
     public void acaoExecutadaSucesso(Acao acao, String mensagem) {
@@ -550,11 +410,11 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }
 
     public void habilitaCompilar(boolean b) {
-        btnCompile.setEnabled(b);
+//        btnCompile.setEnabled(b);
     }
 
     public void habilitarDebug(boolean b) {
-        btnDebug.setEnabled(b);
+ //       btnDebug.setEnabled(b);
     }
 
 
@@ -566,7 +426,7 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         undoAction.iniciar();
         redoAction.iniciar();
         editCopyAction.iniciar();
-        editPasteAction.configurar();
+     //   editPasteAction.configurar();
         editCutAction.iniciar();
     }
 
@@ -587,7 +447,7 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private class AdaptadorComponente extends ComponentAdapter {
         @Override
         public void componentResized(ComponentEvent e) {
-            jSplitPane1.setDividerLocation(TelaPrincipal.this.getHeight() - 300);
+          //  jSplitPane1.setDividerLocation(TelaPrincipal.this.getHeight() - 300);
         }
     }
     

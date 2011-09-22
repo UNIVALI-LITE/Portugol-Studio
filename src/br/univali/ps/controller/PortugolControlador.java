@@ -1,17 +1,13 @@
 package br.univali.ps.controller;
 
-import br.univali.portugol.nucleo.AnalizadorSemantico;
 import br.univali.portugol.nucleo.Interpretador;
-import br.univali.portugol.nucleo.excecoes.ExcecaoArquivoContemErros;
 import br.univali.portugol.nucleo.excecoes.ListaMensagens;
 import br.univali.portugol.nucleo.excecoes.Mensagem;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.TratadorExcecoes;
-import br.univali.ps.ui.AcumuladorAbas;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.PainelSaida;
-import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
 import java.util.ArrayList;
@@ -24,7 +20,7 @@ import javax.swing.text.Document;
 public class PortugolControlador implements DocumentListener {
 
     TratadorExcecoes tratadorExcecoes = PortugolStudio.getInstancia().getTratadorExcecoes();
-    AcumuladorAbas editor = new AcumuladorAbas(this);
+    //AcumuladorAbas editor = new AcumuladorAbas(this);
     PainelSaida saida = new PainelSaida();
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
     InterpretadorRunner interpretadorRunner;
@@ -46,7 +42,7 @@ public class PortugolControlador implements DocumentListener {
 
     public void novo() {
         PortugolDocumento portugolDocument = new PortugolDocumento();
-        editor.novaAba("Sem título", portugolDocument);
+       // editor.novaAba("Sem título", portugolDocument);
         portugolDocument.addDocumentListener(this);
         portugolDocument.setChanged(false);
     }
@@ -58,7 +54,7 @@ public class PortugolControlador implements DocumentListener {
                 String codigoFonte = FileHandle.open(arquivo);
                 PortugolDocumento portugolDocument = new PortugolDocumento();
                 portugolDocument.insertString(0, codigoFonte, null);
-                editor.novaAba(arquivo.getName(), portugolDocument);
+       //         editor.novaAba(arquivo.getName(), portugolDocument);
                 portugolDocument.setChanged(false);
                 portugolDocument.setFile(arquivo);
                 portugolDocument.addDocumentListener(this);
@@ -75,7 +71,7 @@ public class PortugolControlador implements DocumentListener {
             String texto = documento.getText(0, documento.getLength());
             if (documento.getFile() != null) {
                 FileHandle.save(texto, documento.getFile());
-                editor.setTituloAbaSelecionada(documento.getFile().getName());
+         //       editor.setTituloAbaSelecionada(documento.getFile().getName());
                 documento.setChanged(false);
                 telaPrincipal.habilitaSalvar(false);
             } else {
@@ -89,25 +85,25 @@ public class PortugolControlador implements DocumentListener {
     }
 
     public void salvarComo(File arquivo) {
-        PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
-        documento.setFile(arquivo);
-        salvar(documento);
+       /// PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
+       // documento.setFile(arquivo);
+       // salvar(documento);
     }
 
     public void executar(PortugolDocumento documento) {
         ListaMensagens listaMensagens = new ListaMensagens();
-        try {
-            if (editor.getDocumentAbaSelecionada() != null) {
+       // try {
+          //  if (editor.getDocumentAbaSelecionada() != null) {
                 telaPrincipal.habilitaCompilar(false);
-                salvar((PortugolDocumento)editor.getDocumentAbaSelecionada());
+       //         salvar((PortugolDocumento)editor.getDocumentAbaSelecionada());
                 saida.limpar();
                 saida.mostrarConsole();
 
-                AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile());
-                listaMensagens = analizadorSemantico.analizar();
+        //        AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile());
+        //        listaMensagens = analizadorSemantico.analizar();
 
-                ModeloExemplo2 modelo = new ModeloExemplo2();
-                modelo.adicionar(listaMensagens);
+          //      ModeloExemplo2 modelo = new ModeloExemplo2();
+           //     modelo.adicionar(listaMensagens);
 
 
                 if (listaMensagens.getNumeroErros() == 0) {
@@ -117,36 +113,36 @@ public class PortugolControlador implements DocumentListener {
                 } else {
                     saida.mostrarTabelaMensagem();
                 }
-            }
+         //   }
             telaPrincipal.habilitaCompilar(true);
-        } catch (ExcecaoArquivoContemErros ex) {
-            tratadorExcecoes.exibirExcecao(ex);
-            telaPrincipal.habilitaCompilar(true);
-        }
+       // } catch (ExcecaoArquivoContemErros ex) {
+       //     tratadorExcecoes.exibirExcecao(ex);
+       //     telaPrincipal.habilitaCompilar(true);
+       // }
     }
 
     public void setCursor(Mensagem m) {
-        editor.selecionarAbaArquivo(m.getArquivo());
-        editor.posicionaCursor(m.getLinha(), m.getColuna());
+       // editor.selecionarAbaArquivo(m.getArquivo());
+       // editor.posicionaCursor(m.getLinha(), m.getColuna());
     }
 
     public void iniciar() {
-        telaPrincipal.setEditor(editor);
-        telaPrincipal.setPainelSaida(saida);
+      //  telaPrincipal.setEditor(editor);
+        //telaPrincipal.setPainelSaida(saida);
         telaPrincipal.setVisible(true);
     }
 
     public void fecharAplicativo() {
-        editor.fecharTodasAbas();
+       // editor.fecharTodasAbas();
         System.exit(0);
     }
 
     public void fecharAbaAtual() {
-        editor.fecharAbaSelecionada();
+       // editor.fecharAbaSelecionada();
     }
 
     public void fecharTodasAbas() {
-        editor.fecharTodasAbas();
+       // editor.fecharTodasAbas();
     }
 
     public void interromper(PortugolDocumento portugolDocumento) {
@@ -178,7 +174,7 @@ public class PortugolControlador implements DocumentListener {
     public void documentoSelecionado(Document document) {
         telaPrincipal.habilitaSalvar(((PortugolDocumento) document).isChanged());
         telaPrincipal.configurarBotoesEditar();
-        editor.configurarFocusListener(telaPrincipal.getAcaoColar());
+      //  editor.configurarFocusListener(telaPrincipal.getAcaoColar());
     }
 
     private class InterpretadorRunner extends Thread {
@@ -195,7 +191,7 @@ public class PortugolControlador implements DocumentListener {
                 long horaInicial = System.currentTimeMillis();
                 interpretador.setSaida(saida);
                 interpretador.setEntrada(saida);
-                interpretador.interpretar(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile(), new String[]{"teste"});
+              //  interpretador.interpretar(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile(), new String[]{"teste"});
                 long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
                 saida.imprimir("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
 

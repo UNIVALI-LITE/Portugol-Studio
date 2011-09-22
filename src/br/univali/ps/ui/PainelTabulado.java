@@ -1,30 +1,31 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.dominio.PortugolDocumento;
+import javax.swing.Action;
+import javax.swing.JComponent;
 
 
-public class PainelTabulado extends javax.swing.JTabbedPane implements CabecalhoListener{
 
-    /** Creates new form PainelTabulado */
+public class PainelTabulado extends javax.swing.JTabbedPane {
+
+    BotoesControleAba botoesControleAba = new BotoesControleAba();
+    
     public PainelTabulado() {
         initComponents();
-    }
-
-    public void novaAba(){
-        Aba aba = new Aba();
-        adicionarAba(aba);
-    }
-
-    public void novaAba(PortugolDocumento documento){
-        Aba aba = new Aba(documento);
-        adicionarAba(aba);
+        add(new JComponent() {});
+        setTabComponentAt(0, botoesControleAba);
     }
     
-    private void adicionarAba(Aba aba){
-        this.add( aba.getConteudo());
-        ((CabecalhoAba)aba.getCabecalho()).adicionaListener(this);
-        setTabComponentAt(indexOfComponent(aba.getConteudo()), aba.getCabecalho());
+    public void init(Action acaoBotaoNovaAba, Action acaoBotaoAbrir){
+
+        botoesControleAba.setBotaoNovaAbaAction(acaoBotaoNovaAba);
+        botoesControleAba.setBotaoAbrirAction(acaoBotaoAbrir);
+        new AbaCodigoFonte(this);
+        new AbaCodigoFonte(this);
+        
+        new AbaCodigoFonte(this);
     }
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -33,12 +34,5 @@ public class PainelTabulado extends javax.swing.JTabbedPane implements Cabecalho
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    public void fecharAba(CabecalhoAba cabecalhoAba) {
-        int indice = indexOfTabComponent(cabecalhoAba);
-        if (indice > -1) {
-            Conteudo conteudo = (Conteudo) getComponent(indice);
-            if (!conteudo.getEditor().getPortugolDocumento().isChanged())
-                remove(indice);
-        }
-    }
+
 }

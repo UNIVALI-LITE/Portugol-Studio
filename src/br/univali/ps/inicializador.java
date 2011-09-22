@@ -13,7 +13,7 @@ public class inicializador
             PortugolStudio portugolStudio = PortugolStudio.getInstancia();
             portugolStudio.setDepurando(isDepurando(argumentos));
             
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             portugolStudio.iniciar();
         }
         catch (Exception excecao)
