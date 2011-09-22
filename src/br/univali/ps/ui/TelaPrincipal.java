@@ -54,7 +54,7 @@ public class TelaPrincipal extends JFrame implements WindowListener, AcaoListene
         openFileAction.configurar(controle,this, fileChooser);
 
         saveFileAction = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
-        saveFileAction.setup(controle);
+        saveFileAction.configurar(controle);
         saveFileAction.adicionarListener(this);
         saveFileAction.setEnabled(false);
 
@@ -563,11 +563,11 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }
 
     public void configurarBotoesEditar() {
-        undoAction.setup();
-        redoAction.setup();
-        editCopyAction.configurar();
+        undoAction.iniciar();
+        redoAction.iniciar();
+        editCopyAction.iniciar();
         editPasteAction.configurar();
-        editCutAction.setup();
+        editCutAction.iniciar();
     }
 
     public void habilitaSalvarComo(boolean b) {

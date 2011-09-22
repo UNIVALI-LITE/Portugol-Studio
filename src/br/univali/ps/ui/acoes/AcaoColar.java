@@ -23,7 +23,7 @@ public class AcaoColar extends Acao implements FocusListener{
         super("Trecho colado com sucesso!");
     }
 
-    public void configurar()
+    public void iniciar()
     {
         RecordableTextAction rta = RTextArea.getAction(RTextArea.PASTE_ACTION);
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));

@@ -14,6 +14,8 @@ import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.exemplojtable.exemplo2.ModeloExemplo2;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -26,8 +28,19 @@ public class PortugolControlador implements DocumentListener {
     PainelSaida saida = new PainelSaida();
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
     InterpretadorRunner interpretadorRunner;
-   
-
+    List<ControladorListener> listeners = new ArrayList<ControladorListener>();
+    
+    public boolean adicionarListerner(ControladorListener listener) {
+        if (!listeners.contains(listener))
+            return listeners.add(listener);
+        return false;
+    }
+        
+    public boolean removerListener(ControladorListener listener){
+        return listeners.remove(listener);
+    }
+    
+    
     public PortugolControlador() {
     }
 
@@ -57,9 +70,8 @@ public class PortugolControlador implements DocumentListener {
         }
     }
 
-    public void salvar() {
+    public void salvar(PortugolDocumento documento) {
         try {
-            PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
             String texto = documento.getText(0, documento.getLength());
             if (documento.getFile() != null) {
                 FileHandle.save(texto, documento.getFile());
@@ -79,15 +91,15 @@ public class PortugolControlador implements DocumentListener {
     public void salvarComo(File arquivo) {
         PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
         documento.setFile(arquivo);
-        salvar();
+        salvar(documento);
     }
 
-    public void executar() {
+    public void executar(PortugolDocumento documento) {
         ListaMensagens listaMensagens = new ListaMensagens();
         try {
             if (editor.getDocumentAbaSelecionada() != null) {
                 telaPrincipal.habilitaCompilar(false);
-                salvar();
+                salvar((PortugolDocumento)editor.getDocumentAbaSelecionada());
                 saida.limpar();
                 saida.mostrarConsole();
 
@@ -137,7 +149,7 @@ public class PortugolControlador implements DocumentListener {
         editor.fecharTodasAbas();
     }
 
-    public void interromper() {
+    public void interromper(PortugolDocumento portugolDocumento) {
 
 
 
