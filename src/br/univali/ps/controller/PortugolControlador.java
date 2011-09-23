@@ -7,12 +7,13 @@ import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.TratadorExcecoes;
-import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -21,8 +22,8 @@ import javax.swing.text.Document;
 public class PortugolControlador implements DocumentListener {
 
     TratadorExcecoes tratadorExcecoes = PortugolStudio.getInstancia().getTratadorExcecoes();
-    Editor editor = new Editor(this);
-    PainelSaida saida = new PainelSaida(this);
+    //AcumuladorAbas editor = new AcumuladorAbas(this);
+    PainelSaida saida = new PainelSaida();
     TelaPrincipal telaPrincipal = new TelaPrincipal(this);
 //    InterpretadorRunner interpretadorRunner;
     ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
@@ -32,7 +33,7 @@ public class PortugolControlador implements DocumentListener {
 
     public void novo() {
         PortugolDocumento portugolDocument = new PortugolDocumento();
-        editor.novaAba("Sem título", portugolDocument);
+       // editor.novaAba("Sem título", portugolDocument);
         portugolDocument.addDocumentListener(this);
         portugolDocument.setChanged(false);
         telaPrincipal.habilitaCompilar(true);
@@ -48,7 +49,7 @@ public class PortugolControlador implements DocumentListener {
                 String codigoFonte = FileHandle.open(arquivo);
                 PortugolDocumento portugolDocument = new PortugolDocumento();
                 portugolDocument.insertString(0, codigoFonte, null);
-                editor.novaAba(arquivo.getName(), portugolDocument);
+       //         editor.novaAba(arquivo.getName(), portugolDocument);
                 portugolDocument.setChanged(false);
                 portugolDocument.setFile(arquivo);
                 portugolDocument.addDocumentListener(this);
@@ -63,13 +64,12 @@ public class PortugolControlador implements DocumentListener {
         }
     }
 
-    public void salvar() {
+    public void salvar(PortugolDocumento documento) {
         try {
-            PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
             String texto = documento.getText(0, documento.getLength());
             if (documento.getFile() != null) {
                 FileHandle.save(texto, documento.getFile());
-                editor.setTituloAbaSelecionada(documento.getFile().getName());
+         //       editor.setTituloAbaSelecionada(documento.getFile().getName());
                 documento.setChanged(false);
                 telaPrincipal.habilitaSalvar(false);
             } else {
@@ -83,9 +83,9 @@ public class PortugolControlador implements DocumentListener {
     }
 
     public void salvarComo(File arquivo) {
-        PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
-        documento.setFile(arquivo);
-        salvar();
+       /// PortugolDocumento documento = (PortugolDocumento) editor.getDocumentAbaSelecionada();
+       // documento.setFile(arquivo);
+       // salvar(documento);
     }
 
     public void executar() 
@@ -126,7 +126,10 @@ public class PortugolControlador implements DocumentListener {
         {
             tratadorExcecoes.exibirExcecao(ex);
             telaPrincipal.habilitaCompilar(true);
-        }
+       // } catch (ExcecaoArquivoContemErros ex) {
+       //     tratadorExcecoes.exibirExcecao(ex);
+       //     telaPrincipal.habilitaCompilar(true);
+       // }
     }
 
     public void setCursor(Mensagem m) 
@@ -141,22 +144,22 @@ public class PortugolControlador implements DocumentListener {
     }
 
     public void iniciar() {
-        telaPrincipal.setEditor(editor);
-        telaPrincipal.setPainelSaida(saida);
+      //  telaPrincipal.setEditor(editor);
+        //telaPrincipal.setPainelSaida(saida);
         telaPrincipal.setVisible(true);
     }
 
     public void fecharAplicativo() {
-        editor.fecharTodasAbas();
+       // editor.fecharTodasAbas();
         System.exit(0);
     }
 
     public void fecharAbaAtual() {
-        editor.fecharAbaSelecionada();
+       // editor.fecharAbaSelecionada();
     }
 
     public void fecharTodasAbas() {
-        editor.fecharTodasAbas();
+       // editor.fecharTodasAbas();
     }
 
     public void interromper() {
@@ -188,7 +191,7 @@ public class PortugolControlador implements DocumentListener {
         telaPrincipal.habilitaSalvarComo(true);
         telaPrincipal.habilitaSalvar(((PortugolDocumento) document).isChanged());
         telaPrincipal.configurarBotoesEditar();
-        editor.configurarFocusListener(telaPrincipal.getAcaoColar());
+      //  editor.configurarFocusListener(telaPrincipal.getAcaoColar());
     }
 /*
     private class InterpretadorRunner extends Thread {
@@ -205,7 +208,7 @@ public class PortugolControlador implements DocumentListener {
                 long horaInicial = System.currentTimeMillis();
                 interpretador.setSaida(saida);
                 interpretador.setEntrada(saida);
-                interpretador.interpretar(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile(), new String[]{"teste"});
+              //  interpretador.interpretar(((PortugolDocumento)editor.getDocumentAbaSelecionada()).getFile(), new String[]{"teste"});
                 long tempo = (System.currentTimeMillis() - horaInicial) / 1000;
                 saida.imprimir("\n\nPrograma executado com sucesso! Tempo de execução: " + tempo + " segundos");
 

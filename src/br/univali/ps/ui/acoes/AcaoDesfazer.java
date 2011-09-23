@@ -22,7 +22,7 @@ public class AcaoDesfazer extends Acao implements PropertyChangeListener
         super("Desfeito com sucesso!");
     }
 
-    public void setup()
+    public void iniciar()
     {
         RecordableTextAction rta = RTextArea.getAction(RTextArea.UNDO_ACTION);
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));

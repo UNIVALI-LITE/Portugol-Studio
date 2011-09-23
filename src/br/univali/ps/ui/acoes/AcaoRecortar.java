@@ -22,7 +22,7 @@ public class AcaoRecortar extends Acao implements PropertyChangeListener
         super("Trecho recortado com sucesso");
     }
 
-    public void setup()
+    public void iniciar()
     {
         RecordableTextAction rta = RTextArea.getAction(RTextArea.CUT_ACTION);
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));

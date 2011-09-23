@@ -1,153 +1,83 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.dominio.PortugolDocumento;
-import br.univali.ps.controller.PortugolControlador;
-import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.acoes.Acao;
-import br.univali.ps.ui.acoes.AcaoColar;
-import br.univali.ps.ui.swing.aba.Aba;
-import br.univali.ps.ui.swing.aba.AbaClosingEvent;
-import br.univali.ps.ui.swing.aba.AbaListener;
-import java.awt.Component;
-import java.io.File;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.BasicCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.autocomplete.DefaultCompletionProvider;
+import org.fife.ui.autocomplete.ShorthandCompletion;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
-public class Editor extends javax.swing.JPanel implements AbaListener, ChangeListener {
+public class Editor extends JPanel{
 
-    PortugolControlador controlador;
-
-    public Editor(PortugolControlador controller) {
-        initComponents();
-        acumuladorAba.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        this.controlador = controller;
+    private RSyntaxTextArea textArea = null;
+    private RTextScrollPane scrollPane = null;
+    private AutoCompletion autoCompletion = null;
+    
+    public Editor() {
+        textArea = new RSyntaxTextArea(new PortugolDocumento());
+        scrollPane = new RTextScrollPane(textArea);
+        autoCompletion = new AutoCompletion(createCompletionProvider());
+        autoCompletion.install(textArea);
+        autoCompletion.setShowDescWindow(true);
+        this.setLayout(new BorderLayout());
+        this.add(scrollPane, BorderLayout.CENTER);
+    }
+    
+    public void setPortugolDocumento(PortugolDocumento documento){
+        textArea.setDocument(documento);
     }
 
-    public void novaAba(String titulo, RSyntaxDocument documento) {
-        Aba tab = new Aba(acumuladorAba, titulo, documento);
-        tab.addTabListener(this);
-        acumuladorAba.add(tab);
-        acumuladorAba.setSelectedIndex(acumuladorAba.indexOfComponent(tab));
-        acumuladorAba.addChangeListener(this);
+    public PortugolDocumento getPortugolDocumento() {
+        return (PortugolDocumento)textArea.getDocument();
     }
+    
+    private CompletionProvider createCompletionProvider() {
 
-    public void fecharTodasAbas() {
-        for (Component componet : acumuladorAba.getComponents()) {
-            if (componet instanceof Aba) {
-                ((Aba) componet).close();
-            }
-        }
-    }
+		// A DefaultCompletionProvider is the simplest concrete implementation
+		// of CompletionProvider.  This provider has no understanding of
+		// language semantics. It simply checks the text entered up to the
+		// caret position for a match against known completions. This is all
+		// that is needed in the majority of cases.
+		DefaultCompletionProvider provider  = new DefaultCompletionProvider();
+                
+		// Add completions for all Java keywords.  A BasicCompletion is just
+		// a straightforward word completion.
+		provider.addCompletion(new BasicCompletion(provider, "programa","<html><h1>Programa<h1><p>server para declara um programa!<p></html>"));
+		provider.addCompletion(new BasicCompletion(provider, "biblioteca"));
+		provider.addCompletion(new BasicCompletion(provider, "se"));
+		provider.addCompletion(new BasicCompletion(provider, "senao"));
+		provider.addCompletion(new BasicCompletion(provider, "defina"));
+		provider.addCompletion(new BasicCompletion(provider, "inteiro"));
+		provider.addCompletion(new BasicCompletion(provider, "vazio"));
+		provider.addCompletion(new BasicCompletion(provider, "real"));
+		provider.addCompletion(new BasicCompletion(provider, "caracter"));
+		provider.addCompletion(new BasicCompletion(provider, "logico"));
+		provider.addCompletion(new BasicCompletion(provider, "cadeia"));
+		provider.addCompletion(new BasicCompletion(provider, "funcao"));
+		provider.addCompletion(new BasicCompletion(provider, "escolha"));
+		provider.addCompletion(new BasicCompletion(provider, "caso"));
+		provider.addCompletion(new BasicCompletion(provider, "pare"));
+                provider.addCompletion(new BasicCompletion(provider, "para"));
+		provider.addCompletion(new BasicCompletion(provider, "contrario"));
+		provider.addCompletion(new BasicCompletion(provider, "faca"));
+		provider.addCompletion(new BasicCompletion(provider, "enquanto"));
+		provider.addCompletion(new BasicCompletion(provider, "retorne"));
+		provider.addCompletion(new BasicCompletion(provider, "falso"));
+		provider.addCompletion(new BasicCompletion(provider, "verdadeiro"));
+		provider.addCompletion(new BasicCompletion(provider, "const"));
+		
 
-    public Aba abaSelecionada() throws Exception {
-        if (acumuladorAba.getTabCount() > 0) {
-            return (Aba) acumuladorAba.getSelectedComponent();
-        }
-        throw new Exception(new IllegalStateException("Não há aba aberta"));
-    }
+		// Add a couple of "shorthand" completions.  These completions don't
+		// require the input text to be the same thing as the replacement text.
+		provider.addCompletion(new ShorthandCompletion(provider, "ini", "funcao inicio() { }", "funcao inicio() {}"));
+		//provider.addCompletion(new ShorthandCompletion(provider, "syserr", "System.err.println(", "System.err.println("));
 
-    public void fecharAbaSelecionada() {
-        try {
-            abaSelecionada().close();
-        } catch (Exception ex) {}
-    }
+		return provider;
 
-    public Document getDocumentAbaSelecionada() {
-        try {
-            return abaSelecionada().getDocument();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public void posicionaCursor(int linha, int coluna) {
-        try {
-            JTextArea textArea = abaSelecionada().getTextArea();
-            textArea.setCaretPosition(0);
-            try {
-                while (textArea.getLineOfOffset(textArea.getCaretPosition()) < (linha - 1)) {
-                    textArea.setCaretPosition(textArea.getCaretPosition() + 1);
-                }
-                textArea.setCaretPosition(textArea.getCaretPosition() + coluna);
-            } catch (BadLocationException ex) {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-            }
-        } catch (Exception ex) {}
-    }
-
-    public void setTituloAbaSelecionada(String titulo) {
-        ((Aba) acumuladorAba.getSelectedComponent()).setTitulo(titulo);
-    }
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        acumuladorAba = new javax.swing.JTabbedPane();
-
-        setLayout(new java.awt.BorderLayout());
-        add(acumuladorAba, java.awt.BorderLayout.CENTER);
-    }// </editor-fold>//GEN-END:initComponents
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane acumuladorAba;
-    // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void tabClosing(AbaClosingEvent evt) {
-        if (((PortugolDocumento)evt.getAba().getDocument()).isChanged()) {
-            int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (resp == JOptionPane.YES_OPTION) {
-                controlador.salvar();
-                evt.setCanClose(true);
-            } else if (resp == JOptionPane.NO_OPTION) {
-                evt.setCanClose(true);
-            } else {
-                evt.setCanClose(false);
-            }
-        } else {
-            evt.setCanClose(true);
-        }
-    }
-
-    public void selecionarAbaArquivo(File arquivo) {
-        for (Component componet : acumuladorAba.getComponents()) {
-            if (componet instanceof Aba) {
-                PortugolDocumento document = (PortugolDocumento) ((Aba) componet).getDocument();
-                if (document.getFile() != null && document.getFile().getPath().equals(arquivo.getPath())) {
-                    acumuladorAba.setSelectedComponent(componet);
-                    return;
-                }
-            }
-        }
-    }
-
-    public void stateChanged(ChangeEvent ce) {
-        Aba aba;
-        try {
-            aba = abaSelecionada();
-
-            if (aba != null) {
-                controlador.documentoSelecionado(aba.getDocument());
-            }
-        } catch (Exception ex) {
-            controlador.nenhumDocumentoAberto();
-        }
-    }
-
-    public void configurarFocusListener(Acao acaoColar) {
-        
-        try {
-            abaSelecionada().getTextArea().addFocusListener((AcaoColar) acaoColar);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-        }
     }
     
 }

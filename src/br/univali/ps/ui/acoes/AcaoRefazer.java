@@ -22,7 +22,7 @@ public class AcaoRefazer extends Acao implements PropertyChangeListener{
         super("Refeito com sucesso");
     }
 
-        public void setup()
+        public void iniciar()
     {
         RecordableTextAction rta = RTextArea.getAction(RTextArea.REDO_ACTION);
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));

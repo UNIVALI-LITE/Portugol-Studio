@@ -22,7 +22,7 @@ public class AcaoCopiar extends Acao implements PropertyChangeListener{
         super("trecho copiado com sucesso!");
     }
 
-     public void configurar()
+     public void iniciar()
     {
         RecordableTextAction rta = RTextArea.getAction(RTextArea.COPY_ACTION);
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
