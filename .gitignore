@@ -8,7 +8,10 @@ nbproject
 dist
 manifest.mf
 .DS_Store
+<<<<<<< HEAD
 lib/CopyLibs/
 lib/nblibraries.properties
 examples/teste.por
 teste.por
+=======
+>>>>>>> modificacaoAbas
