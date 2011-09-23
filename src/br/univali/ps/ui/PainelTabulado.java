@@ -13,16 +13,11 @@ public class PainelTabulado extends javax.swing.JTabbedPane {
         initComponents();
         add(new JComponent() {});
         setTabComponentAt(0, botoesControleAba);
+        botoesControleAba.setFabricaAba(this);
     }
     
-    public void init(Action acaoBotaoNovaAba, Action acaoBotaoAbrir){
-
-        botoesControleAba.setBotaoNovaAbaAction(acaoBotaoNovaAba);
+    public void init(Action acaoBotaoAbrir){
         botoesControleAba.setBotaoAbrirAction(acaoBotaoAbrir);
-        new AbaCodigoFonte(this);
-        new AbaCodigoFonte(this);
-        
-        new AbaCodigoFonte(this);
     }
     
     

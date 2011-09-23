@@ -16,9 +16,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada
 {
     private String entradaBuffer = "Digite um valor";
     private PortugolControlador controle;
-
-
-
+    
     public PainelSaida()
     {
         initComponents();
@@ -71,20 +69,6 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada
     public void limpar()
     {
         console.setText(null);
-    }
-
-    public void imprimir(String valor)
-    {
-        console.append(valor);
-    }
-
-    public String ler()
-    {
-        String entrada = JOptionPane.showInputDialog(this, entradaBuffer, null);
-        if (entrada == null)
-            controle.interromper();
-        console.append(" " + entrada + "\n");
-        return entrada;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -171,27 +155,27 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada
 
     @Override
     public void escrever(String valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        console.append(valor);
     }
 
     @Override
     public void escrever(boolean valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        console.append((valor) ? "verdadeiro" : "falso");
     }
 
     @Override
     public void escrever(int valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        console.append(String.valueOf(valor));
     }
 
     @Override
     public void escrever(double valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        console.append(String.valueOf(valor));
     }
 
     @Override
     public void escrever(char valor) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        console.append(String.valueOf(valor));
     }
 
     @Override
@@ -207,7 +191,7 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada
             if (me.getClickCount() >= 2) {
 
                 Mensagem m = (Mensagem) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 0);
-                controle.setCursor(m);
+                //controle.setCursor(m);
             }
         }
     }

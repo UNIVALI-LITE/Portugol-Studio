@@ -16,9 +16,10 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
-    <Container class="javax.swing.JToolBar" name="undoRedoBar">
+    <Container class="javax.swing.JToolBar" name="barraFerramenta">
       <Properties>
         <Property name="floatable" type="boolean" value="false"/>
+        <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -40,18 +41,15 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnDesfazer">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/arrow_undo.png"/>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="acaoDesfazer" type="code"/>
             </Property>
-            <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnRefazer">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/arrow_redo.png"/>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="acaoRefazer" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -62,8 +60,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnRecortar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/cut_red.png"/>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="acaoRecortar" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -72,8 +70,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCopiar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/page_white_copy.png"/>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="acaoCopiar" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -82,8 +80,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnColar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/page_white_paste.png"/>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="acaoColar" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -95,10 +93,10 @@
         <Component class="javax.swing.JButton" name="btnCompile">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/control_play_blue.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_play_blue.png"/>
             </Property>
             <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/control_play.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_play.png"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -112,10 +110,10 @@
         <Component class="javax.swing.JButton" name="btnDebug">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/control_stop_blue.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_stop_blue.png"/>
             </Property>
             <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/control_stop.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_stop.png"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>

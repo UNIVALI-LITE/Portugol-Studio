@@ -9,30 +9,24 @@ import br.univali.ps.ui.acoes.AcaoDesfazer;
 import br.univali.ps.ui.acoes.AcaoRecortar;
 import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
+import br.univali.ps.ui.acoes.FabricaAcao;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 public class AbaCodigoFonte extends Aba implements ControladorListener, PortugolDocumentoListener, AbaListener{
 
     private AcaoSalvarArquivo acaoSalvarArquivo = new AcaoSalvarArquivo();
-    private AcaoDesfazer acaoDesfazer = new AcaoDesfazer();
-    private AcaoRefazer acaoRefazer = new AcaoRefazer();
-    private AcaoRecortar acaoRecortar = new AcaoRecortar();
-    private AcaoCopiar acaoCopiar = new AcaoCopiar();
-    private AcaoColar acaoColar = new AcaoColar();
+    private AcaoDesfazer acaoDesfazer = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
+    private AcaoRefazer acaoRefazer = (AcaoRefazer) FabricaAcao.getInstancia().criarAcao(AcaoRefazer.class);
+    private AcaoRecortar acaoRecortar = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
+    private AcaoCopiar acaoCopiar = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
+    private AcaoColar acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
     private PortugolControlador controle;
 
     /** Creates new form Conteudo */
     public AbaCodigoFonte(JTabbedPane painelTabulado) {
         super(painelTabulado);
         initComponents();
-        acaoSalvarArquivo.removerIconeGrande();
-        btnSalvar.setAction(acaoSalvarArquivo);
-        btnDesfazer.setAction(acaoDesfazer);
-        btnRefazer.setAction(acaoRefazer);
-        btnRecortar.setAction(acaoRecortar);
-        btnCopiar.setAction(acaoCopiar);
-        btnColar.setAction(acaoColar);
         configurarAcoes();
         adicionarAbaListener(this);
         jPainelSeparador.setDividerLocation(480);
@@ -42,6 +36,7 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
         controle = portugolControlador;
         editor.getPortugolDocumento().addPortugolDocumentoListener(this);
         acaoSalvarArquivo.configurar(controle,editor.getPortugolDocumento());
+        this.btnCompile.setEnabled(true);
     }
     
     public Editor getEditor(){
@@ -52,7 +47,7 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        undoRedoBar = new javax.swing.JToolBar();
+        barraFerramenta = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
         btnDesfazer = new javax.swing.JButton();
         btnRefazer = new javax.swing.JButton();
@@ -69,48 +64,46 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
 
         setLayout(new java.awt.BorderLayout());
 
-        undoRedoBar.setFloatable(false);
+        barraFerramenta.setFloatable(false);
+        barraFerramenta.setOpaque(false);
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/disk.png"))); // NOI18N
         btnSalvar.setFocusable(false);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnSalvar);
+        barraFerramenta.add(btnSalvar);
 
-        btnDesfazer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/arrow_undo.png"))); // NOI18N
-        btnDesfazer.setFocusable(false);
-        btnDesfazer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDesfazer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnDesfazer);
+        btnDesfazer.setAction(acaoDesfazer);
+        barraFerramenta.add(btnDesfazer);
 
-        btnRefazer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/arrow_redo.png"))); // NOI18N
+        btnRefazer.setAction(acaoRefazer);
         btnRefazer.setFocusable(false);
         btnRefazer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRefazer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnRefazer);
-        undoRedoBar.add(jSeparador1);
+        barraFerramenta.add(btnRefazer);
+        barraFerramenta.add(jSeparador1);
 
-        btnRecortar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cut_red.png"))); // NOI18N
+        btnRecortar.setAction(acaoRecortar);
         btnRecortar.setFocusable(false);
         btnRecortar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRecortar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnRecortar);
+        barraFerramenta.add(btnRecortar);
 
-        btnCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_copy.png"))); // NOI18N
+        btnCopiar.setAction(acaoCopiar);
         btnCopiar.setFocusable(false);
         btnCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnCopiar);
+        barraFerramenta.add(btnCopiar);
 
-        btnColar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_paste.png"))); // NOI18N
+        btnColar.setAction(acaoColar);
         btnColar.setFocusable(false);
         btnColar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnColar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        undoRedoBar.add(btnColar);
-        undoRedoBar.add(jSeparador2);
+        barraFerramenta.add(btnColar);
+        barraFerramenta.add(jSeparador2);
 
-        btnCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/control_play_blue.png"))); // NOI18N
-        btnCompile.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/control_play.png"))); // NOI18N
+        btnCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play_blue.png"))); // NOI18N
+        btnCompile.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play.png"))); // NOI18N
         btnCompile.setEnabled(false);
         btnCompile.setFocusable(false);
         btnCompile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -120,10 +113,10 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
                 btnCompileActionPerformed(evt);
             }
         });
-        undoRedoBar.add(btnCompile);
+        barraFerramenta.add(btnCompile);
 
-        btnDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/control_stop_blue.png"))); // NOI18N
-        btnDebug.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/control_stop.png"))); // NOI18N
+        btnDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_stop_blue.png"))); // NOI18N
+        btnDebug.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_stop.png"))); // NOI18N
         btnDebug.setEnabled(false);
         btnDebug.setFocusable(false);
         btnDebug.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -133,9 +126,9 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
                 btnDebugActionPerformed(evt);
             }
         });
-        undoRedoBar.add(btnDebug);
+        barraFerramenta.add(btnDebug);
 
-        add(undoRedoBar, java.awt.BorderLayout.PAGE_START);
+        add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
         jPainelSeparador.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jPainelSeparador.setBottomComponent(painelSaida1);
@@ -154,6 +147,7 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar barraFerramenta;
     private javax.swing.JButton btnColar;
     private javax.swing.JButton btnCompile;
     private javax.swing.JButton btnCopiar;
@@ -167,7 +161,6 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
     private br.univali.ps.ui.PainelSaida painelSaida1;
-    private javax.swing.JToolBar undoRedoBar;
     // End of variables declaration//GEN-END:variables
 
     private void configurarAcoes() {
@@ -176,6 +169,11 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
         acaoRecortar.iniciar();
         acaoCopiar.iniciar();
         acaoColar.iniciar();
+        btnDesfazer.setText("");
+        btnRefazer.setText("");
+        btnRecortar.setText("");
+        btnColar.setText("");
+        btnCopiar.setText("");
     }
 
     @Override

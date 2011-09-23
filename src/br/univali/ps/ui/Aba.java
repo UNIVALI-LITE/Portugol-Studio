@@ -7,7 +7,7 @@ import javax.swing.JTabbedPane;
 
 public abstract class Aba extends JPanel{
     
-    private CabecalhoAba cabecalho;
+    protected CabecalhoAba cabecalho;
     private JTabbedPane painelTabulado;
     private List<AbaListener> listeners;
     
@@ -19,7 +19,7 @@ public abstract class Aba extends JPanel{
         cabecalho.setBotaoFecharVisivel(true);
         this.painelTabulado.add(this);
         this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
-    
+        this.painelTabulado.setSelectedComponent(this);
     }
 
     public void setRemovivel(boolean removivel) {

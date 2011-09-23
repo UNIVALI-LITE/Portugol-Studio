@@ -12,6 +12,7 @@ package br.univali.ps.ui;
 
 import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -19,18 +20,22 @@ import javax.swing.JPanel;
  */
 public class BotoesControleAba extends JPanel {
 
+    FabricaAba fabricaAba;
+    
     /** Creates new form BotoesControleAba */
     public BotoesControleAba() {
         initComponents();
     }
 
+    public void setFabricaAba(JTabbedPane painel){
+        fabricaAba = new FabricaAba(painel);
+    }
+    
     public void setBotaoAbrirAction(Action action) {
         jBAbrir.setAction(action);
     }
     
-    public void setBotaoNovaAbaAction(Action action) {
-        jBNovaAba.setAction(action);
-    }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -43,7 +48,6 @@ public class BotoesControleAba extends JPanel {
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         jBAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
-        jBAbrir.setActionCommand("");
         jBAbrir.setBorderPainted(false);
         jBAbrir.setContentAreaFilled(false);
         jBAbrir.setHideActionText(true);
@@ -54,8 +58,18 @@ public class BotoesControleAba extends JPanel {
         jBNovaAba.setBorderPainted(false);
         jBNovaAba.setContentAreaFilled(false);
         jBNovaAba.setHideActionText(true);
+        jBNovaAba.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBNovaAbaActionPerformed(evt);
+            }
+        });
         add(jBNovaAba);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jBNovaAbaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovaAbaActionPerformed
+        fabricaAba.criarAbaCodidigoFonte();
+    }//GEN-LAST:event_jBNovaAbaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrir;
     private javax.swing.JButton jBNovaAba;
