@@ -7,7 +7,6 @@ import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.controller.PortugolControlador;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
@@ -20,8 +19,6 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada
     public PainelSaida()
     {
         initComponents();
-        //this.controle = controle;
-//        tabelaMensagens.setDefaultRenderer(Mensagem.class, new RenderizadorMensagem());
         tabelaMensagens.addMouseListener(new MouseListener());
         console.setComponentPopupMenu(menuConsole);
         console.getDocument().addDocumentListener(new DocumentListener() {
@@ -103,6 +100,8 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada
 
         setLayout(new java.awt.BorderLayout());
 
+        abas.setToolTipText("<html>\n\t<body>\n\t\t<h1>\n\t\t\tConsole\n\t\t</h1>\n\t\t<p>\n\t\t\tLocal onde são impressas as saídas do programa em execução.\n\t\t</p>\n\t</body>\n</html>");
+
         console.setColumns(20);
         console.setEditable(false);
         console.setRows(5);
@@ -142,8 +141,6 @@ public class PainelSaida extends javax.swing.JPanel implements Saida, Entrada
     private javax.swing.JMenuItem menuConsoleCopiar;
     private javax.swing.JMenuItem menuConsoleLimpar;
     private javax.swing.JTable tabelaMensagens;
-    // End of variables declaration                   
-
     // End of variables declaration//GEN-END:variables
     public void mostrarConsole() {
         abas.setSelectedIndex(0);

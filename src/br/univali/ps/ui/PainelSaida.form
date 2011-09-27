@@ -45,6 +45,9 @@
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
     <Container class="javax.swing.JTabbedPane" name="abas">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;body&gt;&#xa;&#x9;&#x9;&lt;h1&gt;&#xa;&#x9;&#x9;&#x9;Console&#xa;&#x9;&#x9;&lt;/h1&gt;&#xa;&#x9;&#x9;&lt;p&gt;&#xa;&#x9;&#x9;&#x9;Local onde s&#xe3;o impressas as sa&#xed;das do programa em execu&#xe7;&#xe3;o.&#xa;&#x9;&#x9;&lt;/p&gt;&#xa;&#x9;&lt;/body&gt;&#xa;&lt;/html&gt;"/>
+      </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="Center"/>

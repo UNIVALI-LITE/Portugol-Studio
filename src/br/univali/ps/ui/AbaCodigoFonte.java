@@ -10,12 +10,14 @@ import br.univali.ps.ui.acoes.AcaoRecortar;
 import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
 import br.univali.ps.ui.acoes.FabricaAcao;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 public class AbaCodigoFonte extends Aba implements ControladorListener, PortugolDocumentoListener, AbaListener{
 
-    private AcaoSalvarArquivo acaoSalvarArquivo = new AcaoSalvarArquivo();
+    private AcaoSalvarArquivo acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
     private AcaoDesfazer acaoDesfazer = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
     private AcaoRefazer acaoRefazer = (AcaoRefazer) FabricaAcao.getInstancia().criarAcao(AcaoRefazer.class);
     private AcaoRecortar acaoRecortar = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
@@ -30,6 +32,7 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
         configurarAcoes();
         adicionarAbaListener(this);
         jPainelSeparador.setDividerLocation(480);
+        this.addComponentListener(new AdaptadorComponente());
     }
     
     public void setPortugolControlador(PortugolControlador portugolControlador){
@@ -67,7 +70,7 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
         barraFerramenta.setFloatable(false);
         barraFerramenta.setOpaque(false);
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/disk.png"))); // NOI18N
+        btnSalvar.setAction(acaoSalvarArquivo);
         btnSalvar.setFocusable(false);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -174,6 +177,7 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
         btnRecortar.setText("");
         btnColar.setText("");
         btnCopiar.setText("");
+        btnSalvar.setText("");
     }
 
     @Override
@@ -188,7 +192,25 @@ public class AbaCodigoFonte extends Aba implements ControladorListener, Portugol
 
     @Override
     public boolean fechandoAba(Aba aba) {
-        return JOptionPane.showConfirmDialog(this, "Deseja fechar ?") == JOptionPane.YES_OPTION;
+    if (editor.getPortugolDocumento().isChanged()) {
+            int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                controle.salvar(editor.getPortugolDocumento());
+                return (true);
+            } else if (resp == JOptionPane.NO_OPTION) {
+                return (true);
+            } else {
+                return (false);
+            }
+        } else {
+            return (true);
+        }   
     }
 
+    private class AdaptadorComponente extends ComponentAdapter {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            jPainelSeparador.setDividerLocation(AbaCodigoFonte.this.getHeight() - 300);
+        }
+    }
 }

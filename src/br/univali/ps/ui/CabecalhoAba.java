@@ -16,12 +16,12 @@ public class CabecalhoAba extends JPanel {
     }
     
     public void setTitulo(String titulo) {
-        this.jLTitulo.setText(" "+titulo);
+        this.jLTitulo.setText(titulo);
         calculaTamanhoCabecalho();
     }
 
-    public void setIcone(Image icone) {
-        this.jLIcone.setIcon(new ImageIcon(icone));
+    public void setIcone(Icon icone) {
+        this.jLIcone.setIcon(icone);
         calculaTamanhoCabecalho();
     }
     

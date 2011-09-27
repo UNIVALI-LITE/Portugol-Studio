@@ -1,23 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * BotoesControleAba.java
- *
- * Created on 22/09/2011, 17:39:15
- */
 package br.univali.ps.ui;
 
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-/**
- *
- * @author fillipipelz
- */
 public class BotoesControleAba extends JPanel {
 
     FabricaAba fabricaAba;
