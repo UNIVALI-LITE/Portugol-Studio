@@ -17,14 +17,15 @@ import br.univali.ps.ui.acoes.AcaoRecortar;
 import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
 import br.univali.ps.ui.acoes.FabricaAcao;
-import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import javax.swing.AbstractAction;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.text.NumberFormatter;
 
 public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao {
 
@@ -77,6 +78,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jSeparador2 = new javax.swing.JToolBar.Separator();
         btnCompile = new javax.swing.JButton();
         btnDebug = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(5, 32767));
+        lblParametros = new javax.swing.JLabel();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(5, 32767));
+        txtParametros = new javax.swing.JTextField();
+        jSeparador3 = new javax.swing.JToolBar.Separator();
         jPainelSeparador = new javax.swing.JSplitPane();
         painelSaida = new br.univali.ps.ui.PainelSaida();
         editor = new br.univali.ps.ui.Editor();
@@ -147,6 +153,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
         });
         barraFerramenta.add(btnDebug);
+        barraFerramenta.add(filler1);
+
+        lblParametros.setText("Parâmetros:");
+        barraFerramenta.add(lblParametros);
+        barraFerramenta.add(filler2);
+
+        txtParametros.setPreferredSize(new java.awt.Dimension(200, 28));
+        barraFerramenta.add(txtParametros);
+        barraFerramenta.add(jSeparador3);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
@@ -168,6 +183,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             programa.interromper();
         }
 }//GEN-LAST:event_btnDebugActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramenta;
     private javax.swing.JButton btnColar;
@@ -179,10 +195,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnRefazer;
     private javax.swing.JButton btnSalvar;
     private br.univali.ps.ui.Editor editor;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JSplitPane jPainelSeparador;
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
+    private javax.swing.JToolBar.Separator jSeparador3;
+    private javax.swing.JLabel lblParametros;
     private br.univali.ps.ui.PainelSaida painelSaida;
+    private javax.swing.JTextField txtParametros;
     // End of variables declaration//GEN-END:variables
 
     private void configurarAcoes() {
@@ -211,20 +232,39 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
 
     @Override
-    public boolean fechandoAba(Aba aba) {
-        if (editor.getPortugolDocumento().isChanged()) {
+    public boolean fechandoAba(Aba aba) 
+    {
+        if (editor.getPortugolDocumento().isChanged()) 
+        {
             int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (resp == JOptionPane.YES_OPTION) {
-                controle.salvar(editor.getPortugolDocumento());
-                return (true);
-            } else if (resp == JOptionPane.NO_OPTION) {
-                return (true);
-            } else {
-                return (false);
+            
+            if (resp == JOptionPane.YES_OPTION) controle.salvar(editor.getPortugolDocumento());
+            else 
+            if (resp == JOptionPane.CANCEL_OPTION) return false;
+        } 
+        
+        /*
+         * Por enquanto vamos forçar o programa a encerrar antes de fechar a aba.
+         * Mais pra frente podemos fazer esta pergunta ao usuário.
+         * 
+         */
+        if ((programa != null) && (programa.isExecutando()))
+            programa.interromper();
+        /*
+        if ((programa != null) && programa.isExecutando())
+        {
+            int resp = JOptionPane.showConfirmDialog(this, "O programa ainda está em execução, deseja encerrar o programa e sair?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            
+            if (resp == JOptionPane.YES_OPTION)
+            {
+                programa.interromper();
+                return true;
             }
-        } else {
-            return (true);
+            else return false;
         }
+        */
+            
+        return true;
     }
 
     public void posicionarCursor(int linha, int coluna) {
@@ -257,9 +297,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
             programa.adicionarObservadorExecucao(this);
 
-            
-            programa.executar(null);
-            
+            programa.executar(getParametros());
 
         } catch (ErroCompilacao erroCompilacao) {
             ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
@@ -269,26 +307,31 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 abaMensagem.selecionar();
             }
         }
-        int a = 10;
     }
 
     @Override
     public void execucaoIniciada(Programa programa) {
         btnCompile.setEnabled(false);
         btnDebug.setEnabled(true);
+        
+        painelSaida.getConsole().selecionar();
+        painelSaida.getConsole().limpar();
+        painelSaida.getConsole().setExecutandoPrograma(true);
     }
 
     @Override
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) {
-            painelSaida.getConsole().escrever("Programa finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao());
+        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
+        {
+            painelSaida.getConsole().escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
         } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
-            painelSaida.getConsole().escrever("Erro: " + resultadoExecucao.getErro().getMensagem());
+            painelSaida.getConsole().escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
         } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
-            painelSaida.getConsole().escrever("O programa foi interrompido!");
+            painelSaida.getConsole().escrever("\nO programa foi interrompido!");
         }
         btnCompile.setEnabled(true);
         btnDebug.setEnabled(false);
+        painelSaida.getConsole().setExecutandoPrograma(false);
     }
 
     private class AdaptadorComponente extends ComponentAdapter {
@@ -297,5 +340,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         public void componentResized(ComponentEvent e) {
             jPainelSeparador.setDividerLocation(AbaCodigoFonte.this.getHeight() - 300);
         }
+    }
+    
+    private String[] getParametros()
+    {
+        String textoParametros = txtParametros.getText().trim();
+        
+        if (textoParametros.length() > 0)
+            return textoParametros.split(" ");
+        
+        return null;
     }
 }

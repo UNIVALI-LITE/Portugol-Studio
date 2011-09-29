@@ -3,6 +3,7 @@ package br.univali.ps.ui;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.Entrada;
 import br.univali.portugol.nucleo.execucao.ObservadorEntrada;
+import br.univali.portugol.nucleo.execucao.ObservadorSaida;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
 import javax.swing.JTabbedPane;
@@ -14,6 +15,7 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     private ObservadorEntrada observadorEntrada;
     private StringBuffer stringBuffer;
     private TipoDado tipoDado;
+    private boolean executandoPrograma = false;
 
     public AbaConsole(JTabbedPane painelTabulado) {
         super(painelTabulado);
@@ -58,20 +60,46 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         });
     }
 
-    private void atualizarItensMenuConsole() {
-        if (console.getText().length() > 0) {
-            menuConsoleLimpar.setEnabled(true);
+    /*
+     * Por algum motivo o método atualizarItensMenuConsole()
+     * buga o limpar() se for chamado durante a execução do programa.
+     * 
+     * Para prevenir o bug, desativamos a execução deste método
+     * enquanto o programa está rodando.
+     * 
+     * Para que o menu seja atualizado corretamente ao terminar a
+     * execução do programa, o método setExecutandoPrograma()
+     * chama manualmente o método atualizarItensMenuConsole()
+     * 
+     */
+    
+    public void setExecutandoPrograma(boolean executandoPrograma) 
+    {
+        this.executandoPrograma = executandoPrograma;
+        atualizarItensMenuConsole();
+    }
 
-            int selecao = console.getSelectionEnd() - console.getSelectionStart();
+    private void atualizarItensMenuConsole() 
+    {
+        if (!executandoPrograma)
+        {
+            if (console.getText() != null)
+            {
+                if (console.getText().length() > 0) {
+                    menuConsoleLimpar.setEnabled(true);
 
-            if (selecao > 0) {
-                menuConsoleCopiar.setEnabled(true);
-            } else {
-                menuConsoleCopiar.setEnabled(false);
+                    int selecao = console.getSelectionEnd() - console.getSelectionStart();
+
+                    if (selecao > 0) {
+                        menuConsoleCopiar.setEnabled(true);
+                    } else {
+                        menuConsoleCopiar.setEnabled(false);
+                    }
+                } else {
+                    menuConsoleLimpar.setEnabled(false);
+                    menuConsoleCopiar.setEnabled(false);
+                }
             }
-        } else {
-            menuConsoleLimpar.setEnabled(false);
-            menuConsoleCopiar.setEnabled(false);
         }
     }
 
@@ -127,38 +155,53 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void limpar() {
-        console.setText(null);
+    public void limpar(ObservadorSaida observadorSaida) 
+    {
+        limpar();
+        observadorSaida.notificarSaidaLimpa();
+    }
+    
+    public void limpar()
+    {
+        console.setText(null);        
     }
 
-    private void escreveConsole(String texto) {
+    private void escreveConsole(String texto, ObservadorSaida observadorSaida) {
+        escrever(texto);
+        observadorSaida.notificaValorEscrito();
+    }
+    
+    public void escrever(String texto)
+    {
         console.append(texto);
         console.setCaretPosition(console.getDocument().getLength());
     }
 
     @Override
-    public void escrever(String valor) {
-        escreveConsole(valor);
+    public void escrever(String valor, ObservadorSaida observadorSaida) 
+    {
+        escreveConsole(valor, observadorSaida);
     }
 
     @Override
-    public void escrever(boolean valor) {
-        escreveConsole((valor) ? "verdadeiro" : "falso");
+    public void escrever(boolean valor, ObservadorSaida observadorSaida) 
+    {
+        escreveConsole((valor) ? "verdadeiro" : "falso", observadorSaida);
     }
 
     @Override
-    public void escrever(int valor) {
-        escreveConsole(String.valueOf(valor));
+    public void escrever(int valor, ObservadorSaida observadorSaida) {
+        escreveConsole(String.valueOf(valor), observadorSaida);
     }
 
     @Override
-    public void escrever(double valor) {
-        escreveConsole(String.valueOf(valor));
+    public void escrever(double valor, ObservadorSaida observadorSaida) {
+        escreveConsole(String.valueOf(valor), observadorSaida);
     }
 
     @Override
-    public void escrever(char valor) {
-        escreveConsole(String.valueOf(valor));
+    public void escrever(char valor, ObservadorSaida observadorSaida) {
+        escreveConsole(String.valueOf(valor), observadorSaida);
     }
 
     @Override

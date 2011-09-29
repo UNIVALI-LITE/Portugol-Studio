@@ -67,8 +67,7 @@ public class PainelTabulado extends javax.swing.JTabbedPane implements Component
 
     public void componentShown(ComponentEvent ce) {
 
-        Aba aba =  (Aba) ce.getComponent();
-        System.out.println(aba.cabecalho.getTitulo());
+        Aba aba =  (Aba) ce.getComponent();        
     }
 
     public void componentHidden(ComponentEvent ce) {

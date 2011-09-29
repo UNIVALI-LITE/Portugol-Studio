@@ -15,6 +15,7 @@ import br.univali.ps.ui.acoes.AcaoDesfazer;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ajuda.NavegadorAjuda;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
+import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -224,6 +225,11 @@ public class TelaPrincipal extends JFrame {
         mnuHelp.setText("Ajuda");
 
         mniAbout.setText("Sobre");
+        mniAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniAboutActionPerformed(evt);
+            }
+        });
         mnuHelp.add(mniAbout);
 
         jMenuItem1.setText("Tópicos de Ajuda");
@@ -273,6 +279,12 @@ private void mniFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 private void mniFecharTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharTodosActionPerformed
     controle.fecharTodasAbas();
 }//GEN-LAST:event_mniFecharTodosActionPerformed
+
+private TelaSobre telaSobre = new TelaSobre(this);
+private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAboutActionPerformed
+    telaSobre.setModal(true);
+    telaSobre.setVisible(true);    
+}//GEN-LAST:event_mniAboutActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
