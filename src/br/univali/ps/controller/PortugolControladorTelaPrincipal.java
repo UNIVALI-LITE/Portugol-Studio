@@ -6,7 +6,10 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.TratadorExcecoes;
 import br.univali.ps.ui.Aba;
+import br.univali.ps.ui.AbaAjuda;
 import br.univali.ps.ui.AbaCodigoFonte;
+import br.univali.ps.ui.AbaConsole;
+import br.univali.ps.ui.AbaInicial;
 import br.univali.ps.ui.PainelTabulado;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.util.FileHandle;
@@ -83,9 +86,13 @@ public class PortugolControladorTelaPrincipal   {
         telaPrincipal.setVisible(true);
     }
 
-    public void fecharAplicativo() {
-        ((PainelTabulado)telaPrincipal.getPainelTabulado()).fecharTodasAbas();
-        System.exit(0);
+    public void fecharAplicativo() 
+    {    	
+    	PainelTabulado painelTabulado = (PainelTabulado)telaPrincipal.getPainelTabulado(); 
+        painelTabulado.fecharTodasAbas(AbaCodigoFonte.class);
+        
+        //if (!painelTabulado.temAbaAberta(AbaCodigoFonte.class))
+        	System.exit(0);
     }
 
     public void fecharAbaAtual() {
@@ -95,11 +102,16 @@ public class PortugolControladorTelaPrincipal   {
        }
     }
 
-    public void fecharTodasAbas() {
-       ((PainelTabulado)telaPrincipal.getPainelTabulado()).fecharTodasAbas();
-    }
-
-    public void interromper(PortugolDocumento documento) {
+    public void fecharTodasAbas() 
+    {
+    	for (Class<? extends Aba> classeAba: Aba.classesFilhas())
+    	{
+    		if (classeAba != AbaInicial.class)
+    			((PainelTabulado)telaPrincipal.getPainelTabulado()).fecharTodasAbas(classeAba);
+    	}       
+    }    
+    
+     public void interromper(PortugolDocumento documento) {
 
     }
 

@@ -79,7 +79,7 @@ public class Editor extends JPanel{
                 provider.addCompletion(new BasicCompletion(provider, "para"));
 		provider.addCompletion(new BasicCompletion(provider, "contrario"));
 		provider.addCompletion(new BasicCompletion(provider, "faca"));
-		provider.addCompletion(new BasicCompletion(provider, "enquanto","enquanto (<condição>) {<instruções>}",""/*explicacaoComandoEnquanto()*/));
+		provider.addCompletion(new BasicCompletion(provider, "enquanto","enquanto (<condição>) {<instruções>}",explicacaoComandoEnquanto()));
 		provider.addCompletion(new BasicCompletion(provider, "retorne"));
 		provider.addCompletion(new BasicCompletion(provider, "falso"));
 		provider.addCompletion(new BasicCompletion(provider, "verdadeiro"));
@@ -95,7 +95,7 @@ public class Editor extends JPanel{
 
     }
     
-    /*
+    
     public String explicacaoComandoEnquanto(){
         return "<body>	<h2> Comando Enquanto </h2> <p class='subtitulo'>"
                 + "O que &eacute;?</p> <p> &nbsp; O comando ENQUANTO permite"
@@ -118,5 +118,5 @@ public class Editor extends JPanel{
                 + "&lt;intru&ccedil;&atilde;o,instru&ccedil;&otilde;es&gt; <br>"
                 + "&nbsp; <b>}</b> <br>	</td></tr></table>";
     }
-    */
+    
 }

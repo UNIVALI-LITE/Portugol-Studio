@@ -1,17 +1,34 @@
 package br.univali.ps.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 public abstract class Aba extends JPanel{
     
+	private static List<Class<? extends Aba>> classesFilhas = new ArrayList<Class<? extends Aba>>();
+	
     protected CabecalhoAba cabecalho;
     private JTabbedPane painelTabulado;
     private List<AbaListener> listeners;
     
-    public Aba(JTabbedPane painelTabulado) {
+    private Aba()
+	{
+    	if (!classesFilhas.contains(this.getClass()))
+    		classesFilhas.add(this.getClass());
+	}
+    
+    public final static List<Class<? extends Aba>> classesFilhas()
+	{
+    	return new ArrayList<Class<? extends Aba>>(classesFilhas);
+	}
+    
+    public Aba(JTabbedPane painelTabulado) 
+    {
+    	this();
         listeners = new ArrayList<AbaListener>();
         this.painelTabulado = painelTabulado;
         cabecalho = criarCabecalho();

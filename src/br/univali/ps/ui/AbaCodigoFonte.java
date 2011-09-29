@@ -248,6 +248,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
          * Mais pra frente podemos fazer esta pergunta ao usuário.
          * 
          */
+        
         if ((programa != null) && (programa.isExecutando()))
             programa.interromper();
         /*
