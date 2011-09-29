@@ -9,8 +9,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class AbaConsole extends Aba implements Saida, Entrada{
-    
+public class AbaConsole extends Aba implements Saida, Entrada {
+
+    private ObservadorEntrada observadorEntrada;
+    private StringBuffer stringBuffer;
+    private TipoDado tipoDado;
+
     public AbaConsole(JTabbedPane painelTabulado) {
         super(painelTabulado);
         cabecalho.setBotaoFecharVisivel(false);
@@ -23,6 +27,24 @@ public class AbaConsole extends Aba implements Saida, Entrada{
             @Override
             public void insertUpdate(DocumentEvent e) {
                 atualizarItensMenuConsole();
+                if (stringBuffer != null) {
+                    String texto = null;
+
+                    try {
+                        texto = console.getText(e.getOffset(), e.getLength());
+                    } catch (Exception ex) {
+                    }
+
+                    if (texto.equals("\n")) {
+                        console.setEditable(false);
+                        Object valor = obterValorEntrada(stringBuffer.toString());
+                        stringBuffer = null;
+                        observadorEntrada.notificaValorLido(valor);
+                    } else {
+                        stringBuffer.append(texto);
+                    }
+
+                }
             }
 
             @Override
@@ -36,7 +58,7 @@ public class AbaConsole extends Aba implements Saida, Entrada{
         });
     }
 
-     private void atualizarItensMenuConsole() {
+    private void atualizarItensMenuConsole() {
         if (console.getText().length() > 0) {
             menuConsoleLimpar.setEnabled(true);
 
@@ -52,8 +74,6 @@ public class AbaConsole extends Aba implements Saida, Entrada{
             menuConsoleCopiar.setEnabled(false);
         }
     }
-    
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -98,7 +118,6 @@ public class AbaConsole extends Aba implements Saida, Entrada{
     private void menuConsoleCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsoleCopiarActionPerformed
         console.copy();
     }//GEN-LAST:event_menuConsoleCopiarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea console;
     private javax.swing.JScrollPane jScrollPane1;
@@ -112,11 +131,11 @@ public class AbaConsole extends Aba implements Saida, Entrada{
         console.setText(null);
     }
 
-    private void escreveConsole(String texto){
+    private void escreveConsole(String texto) {
         console.append(texto);
         console.setCaretPosition(console.getDocument().getLength());
     }
-    
+
     @Override
     public void escrever(String valor) {
         escreveConsole(valor);
@@ -144,10 +163,38 @@ public class AbaConsole extends Aba implements Saida, Entrada{
 
     @Override
     public void ler(TipoDado tipoDado, ObservadorEntrada observadorEntrada) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.observadorEntrada = observadorEntrada;
+
+        this.stringBuffer = new StringBuffer();
+
+        this.tipoDado = tipoDado;
+        console.setEditable(true);
+
+        console.requestFocus();
+
+        console.setCaretPosition(console.getText().length());
     }
 
-    
-    
-    
+    private Object obterValorEntrada(String entrada) {
+        try {
+            if (tipoDado == TipoDado.INTEIRO) {
+                return Integer.parseInt(entrada);
+            } else if (tipoDado == TipoDado.REAL) {
+                return Double.parseDouble(entrada);
+            } else if (tipoDado == TipoDado.CARACTER) {
+                return entrada.charAt(0);
+            } else if (tipoDado == TipoDado.LOGICO) {
+                if (entrada.equals("falso")) {
+                    return false;
+                } else if (entrada.equals("verdadeiro")) {
+                    return true;
+                }
+            }
+
+            return entrada;
+        } catch (Exception e) {
+            //TODO interroper;
+            return null;
+        }
+    }
 }

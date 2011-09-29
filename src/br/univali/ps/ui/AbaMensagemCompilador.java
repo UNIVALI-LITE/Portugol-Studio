@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.MouseAdapter;
@@ -23,12 +24,13 @@ public class AbaMensagemCompilador extends Aba {
         cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "table_error.png"));
         initComponents();
         tabelaMensagens.addMouseListener(new MouseListener());
+        tabelaMensagens.setModel(tabelaModel);
+        tabelaModel.addTableModelListener(tabelaMensagens);
     }
 
-    public void setModelSaidaErros(TableModel tableModel)
+    public void atualizar(ResultadoAnalise resultadoAnalise)
     {
-        tabelaMensagens.setModel(tableModel);
-        tableModel.addTableModelListener(tabelaMensagens);
+        tabelaModel.setResultadoAnalise(resultadoAnalise);
     }
     
     @SuppressWarnings("unchecked")
@@ -56,6 +58,10 @@ public class AbaMensagemCompilador extends Aba {
     private javax.swing.JScrollPane jScrollPaneTabelaMensagens;
     private javax.swing.JTable tabelaMensagens;
     // End of variables declaration//GEN-END:variables
+
+    void limpar() {
+        tabelaModel.setResultadoAnalise(null);
+    }
 
     private class MouseListener extends MouseAdapter {
 

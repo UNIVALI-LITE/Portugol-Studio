@@ -21,14 +21,6 @@ public class PainelSaida extends JTabbedPane {
         return mensagemCompilador;
     }
 
-    public void mostrarConsole(){
-        this.setSelectedComponent(console);
-    }
-    
-    public void mostrarMensagensCompilador(){
-        this.setSelectedComponent(mensagemCompilador);
-    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -76,49 +76,8 @@ public class PortugolControladorTelaPrincipal   {
 
     public void executar(PortugolDocumento documento) 
     {
-        try 
-        {
-            
-                //telaPrincipal.habilitaCompilar(false);
-                //tabelaModel.setResultadoAnalise(null);
-                salvar(documento);
-//                saida.limpar();
-  //              saida.mostrarConsole();
-
-                String codigo = documento.getCodigoFonte();
-                ResultadoAnalise resultadoAnalise = Portugol.analisar(codigo);
         
-                if (resultadoAnalise.getNumeroTotalErros() > 0)
-                {
-                    //tabelaModel.setResultadoAnalise(resultadoAnalise);
-//                    saida.mostrarTabelaMensagem();
-                }
-                else
-                    
-                if (resultadoAnalise.getNumeroTotalErros() == 0) 
-                {
-                    //telaPrincipal.habilitarDebug(true);
-                    //interpretadorRunner = new InterpretadorRunner();
-                    //interpretadorRunner.start();
-                } else 
-                {
-//                    saida.mostrarTabelaMensagem();
-                }
-            
-            
-          //  telaPrincipal.habilitaCompilar(true);
-        } catch (Exception ex) 
-        {
-            tratadorExcecoes.exibirExcecao(ex);
-            //telaPrincipal.habilitaCompilar(true);
-       // } catch (ExcecaoArquivoContemErros ex) {
-       //     tratadorExcecoes.exibirExcecao(ex);
-       //     telaPrincipal.habilitaCompilar(true);
-       // }
-        }
     }
-
- 
 
     public void iniciar() {
         telaPrincipal.setVisible(true);
@@ -141,8 +100,7 @@ public class PortugolControladorTelaPrincipal   {
     }
 
     public void interromper(PortugolDocumento documento) {
-        //interpretadorRunner.interrupt();
-        //interpretadorRunner = null;
+
     }
 
     public void nenhumDocumentoAberto(){
