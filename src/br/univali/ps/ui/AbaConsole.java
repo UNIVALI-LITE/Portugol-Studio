@@ -2,6 +2,7 @@ package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.Entrada;
+import br.univali.portugol.nucleo.execucao.ObservadorEntrada;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
 import javax.swing.JTabbedPane;
@@ -142,9 +143,11 @@ public class AbaConsole extends Aba implements Saida, Entrada{
     }
 
     @Override
-    public Object ler(TipoDado tipoDado) {
-        return null;
+    public void ler(TipoDado tipoDado, ObservadorEntrada observadorEntrada) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    
     
     
 }

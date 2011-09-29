@@ -2,18 +2,39 @@ package br.univali.ps.ui;
 
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
+import javax.swing.Icon;
 
 public class BotoesControleAba extends CabecalhoAba {
 
+    
     AcaoAbrirArquivo acaoAbrirArquivo;
     AcaoNovoArquivo acaoNovoArquivo;
     
     /** Creates new form BotoesControleAba */
     public BotoesControleAba(Aba aba) {
         super(aba);
-        initComponents();
+        removeAll();
+        initComponents();     
     }
 
+    @Override
+    public String getTitulo() {
+        return "Pagina Inicial";
+    }
+
+    @Override
+    public void setIcone(Icon icone) {
+    }
+
+    @Override
+    public void setBotaoFecharVisivel(boolean removivel) {
+    }
+    
+    @Override
+    public void setTitulo(String titulo) {
+        
+    }
+    
     public void setAcaoAbrirAction(AcaoAbrirArquivo acao) {
         acaoAbrirArquivo = acao;
     }
@@ -63,7 +84,7 @@ public class BotoesControleAba extends CabecalhoAba {
     private void jBAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAbrirActionPerformed
         acaoAbrirArquivo.actionPerformed(evt);
     }//GEN-LAST:event_jBAbrirActionPerformed
-
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrir;
     private javax.swing.JButton jBNovaAba;

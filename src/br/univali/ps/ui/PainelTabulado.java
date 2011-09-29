@@ -5,14 +5,17 @@ import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import javax.swing.JComponent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PainelTabulado extends javax.swing.JTabbedPane implements ComponentListener{
 
     BotoesControleAba cabecalhoAbaInicial;
+    List<PainelTabuladoListener> painelTabuladoListeners;
     
-     public PainelTabulado() {
+    public PainelTabulado() {
         initComponents();
+        painelTabuladoListeners = new ArrayList<PainelTabuladoListener>();
         Aba aba = new AbaInicial(this);
         cabecalhoAbaInicial = (BotoesControleAba) aba.cabecalho;
     }
@@ -71,5 +74,5 @@ public class PainelTabulado extends javax.swing.JTabbedPane implements Component
     public void componentHidden(ComponentEvent ce) {
         
     }
-
+    
 }
