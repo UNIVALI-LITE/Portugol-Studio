@@ -17,8 +17,7 @@
     </action>
     <action id="AcaoAbrirArquivo">
         <title>Abrir...</title>
-        <icon>folder.png</icon>
-        <teste>a</teste>
+        <icon>folder_open.png</icon>
     </action>
     <action id="AcaoSalvarArquivo">
         <title>Salvar...</title>
@@ -48,9 +47,4 @@
         <title>Recortar</title>
         <icon>cut_red.png</icon>
     </action>
-    <action id="CompileAction">
-        <title>Compilar</title>
-       
-    </action>
-
 </actions>

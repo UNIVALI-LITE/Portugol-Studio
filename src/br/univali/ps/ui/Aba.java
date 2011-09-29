@@ -14,14 +14,19 @@ public abstract class Aba extends JPanel{
     public Aba(JTabbedPane painelTabulado) {
         listeners = new ArrayList<AbaListener>();
         this.painelTabulado = painelTabulado;
-        cabecalho = new CabecalhoAba(this);
-        cabecalho.setTitulo("Sem título");
-        cabecalho.setBotaoFecharVisivel(true);
+        cabecalho = criarCabecalho();
         this.painelTabulado.add(this);
         this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
         this.painelTabulado.setSelectedComponent(this);
     }
 
+    protected CabecalhoAba criarCabecalho(){
+        CabecalhoAba cabecalho = new CabecalhoAba(this);
+        cabecalho.setTitulo("Sem título");
+        cabecalho.setBotaoFecharVisivel(true);
+        return cabecalho;
+    }
+    
     public void setRemovivel(boolean removivel) {
         cabecalho.setBotaoFecharVisivel(removivel);
     }
@@ -43,6 +48,10 @@ public abstract class Aba extends JPanel{
             painelTabulado.remove(this);
         
         return podeFechar;
+    }
+    
+    public void selecionar(){
+        painelTabulado.setSelectedComponent(this);
     }
     
     public void adicionarAbaListener(AbaListener listener){

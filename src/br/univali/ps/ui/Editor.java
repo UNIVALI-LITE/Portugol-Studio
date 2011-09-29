@@ -1,8 +1,10 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.text.BadLocationException;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
@@ -35,6 +37,19 @@ public class Editor extends JPanel{
         return (PortugolDocumento)textArea.getDocument();
     }
     
+    
+    public void posicionaCursor(int linha, int coluna){
+        textArea.setCaretPosition(0);
+        try {
+            while (textArea.getLineOfOffset(textArea.getCaretPosition()) < (linha - 1)) {
+                textArea.setCaretPosition(textArea.getCaretPosition() + 1);
+            }
+            textArea.setCaretPosition(textArea.getCaretPosition() + coluna);
+        } catch (BadLocationException ex) {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+        }
+    }
+    
     private CompletionProvider createCompletionProvider() {
 
 		// A DefaultCompletionProvider is the simplest concrete implementation
@@ -46,7 +61,7 @@ public class Editor extends JPanel{
                 
 		// Add completions for all Java keywords.  A BasicCompletion is just
 		// a straightforward word completion.
-		provider.addCompletion(new BasicCompletion(provider, "programa","<html><h1>Programa<h1><p>server para declara um programa!<p></html>"));
+		provider.addCompletion(new BasicCompletion(provider, "programa","","<html><h1>Programa<h1><p>server para declarar um programa!<p></html>"));
 		provider.addCompletion(new BasicCompletion(provider, "biblioteca"));
 		provider.addCompletion(new BasicCompletion(provider, "se"));
 		provider.addCompletion(new BasicCompletion(provider, "senao"));
@@ -64,7 +79,7 @@ public class Editor extends JPanel{
                 provider.addCompletion(new BasicCompletion(provider, "para"));
 		provider.addCompletion(new BasicCompletion(provider, "contrario"));
 		provider.addCompletion(new BasicCompletion(provider, "faca"));
-		provider.addCompletion(new BasicCompletion(provider, "enquanto"));
+		provider.addCompletion(new BasicCompletion(provider, "enquanto","enquanto (<condição>) {<instruções>}",""/*explicacaoComandoEnquanto()*/));
 		provider.addCompletion(new BasicCompletion(provider, "retorne"));
 		provider.addCompletion(new BasicCompletion(provider, "falso"));
 		provider.addCompletion(new BasicCompletion(provider, "verdadeiro"));
@@ -80,4 +95,28 @@ public class Editor extends JPanel{
 
     }
     
+    /*
+    public String explicacaoComandoEnquanto(){
+        return "<body>	<h2> Comando Enquanto </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> <p> &nbsp; O comando ENQUANTO permite"
+                + " que uma sequ&ecirc;ncia de instru&ccedil;&otilde;es sejam"
+                + " executada v&aacute;rias vezes, at&eacute; que uma ou mais"
+                + " condi&ccedil;&otilde;es sejam satisfeitas, ou seja, repete "
+                + "um conjunto de instru&ccedil;&otilde;es sem que seja "
+                + "necess&aacute;rio escreve-l&aacute; v&aacute;rias vezes. </p>"
+                + "<p> &nbsp; Para utilizar o comando ENQUANTO voc&ecirc; "
+                + "deve usar a palavra reservada <b>enquanto</b> e entre"
+                + " par&ecirc;nteses colocar a condi&ccedil;&atilde;o, "
+                + "ap&oacute;s o fecha par&ecirc;nteses deve se abrir e "
+                + "fechar chaves e entre elas colocar a "
+                + "instru&ccedil;&atilde;o(&otilde;es) a ser repetida enquanto"
+                + " a condi&ccedil;&atilde;o(&otilde;es) for verdadeira. "
+                + "</p>	<table class='tabela2'> <tr class='linha2'> "
+                + "<td><b> COMANDO ENQUANTO</b></td></tr><tr class='linha1'><td><p>&nbsp; "
+                + "&nbsp; <b>enquanto</b>(&lt;condi&ccedil;&atilde;o,condi&ccedil;&otilde;es&gt;) <br>"
+                + "&nbsp; <b>{</b> <br>	&nbsp;&nbsp;&nbsp;&nbsp;	"
+                + "&lt;intru&ccedil;&atilde;o,instru&ccedil;&otilde;es&gt; <br>"
+                + "&nbsp; <b>}</b> <br>	</td></tr></table>";
+    }
+    */
 }

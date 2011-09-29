@@ -50,7 +50,8 @@ public class PortugolDocumento extends RSyntaxDocument {
     }
 
     public void setFile(File file) {
-        this.file = file;
+         this.file = file;
+         disparaNomeArquivoAlterado(file.getName());
     }
 
     public boolean isChanged() {
@@ -78,7 +79,12 @@ public class PortugolDocumento extends RSyntaxDocument {
         for (PortugolDocumentoListener portugolDocumentoListener : listeners) {
             portugolDocumentoListener.documentoModificado(status);
         }
-
+    }
+    
+    private void disparaNomeArquivoAlterado(String nome){
+        for (PortugolDocumentoListener portugolDocumentoListener : listeners) {
+            portugolDocumentoListener.nomeArquivoAlterado(nome);
+        }
     }
 
 }

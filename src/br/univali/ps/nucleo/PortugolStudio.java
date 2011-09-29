@@ -1,7 +1,7 @@
 
 package br.univali.ps.nucleo;
 
-import br.univali.ps.controller.PortugolControlador;
+import br.univali.ps.controller.PortugolControladorTelaPrincipal;
 
 /**
  *
@@ -17,7 +17,7 @@ public final class PortugolStudio
     
     private boolean depurando = false;
     private TratadorExcecoes tratadorExcecoes = null;    
-    private PortugolControlador portugolController;
+    private PortugolControladorTelaPrincipal portugolController;
 
     private PortugolStudio()
     {
@@ -67,10 +67,10 @@ public final class PortugolStudio
         return tratadorExcecoes;
     }
 
-    public PortugolControlador getPortugolController()
+    public PortugolControladorTelaPrincipal getPortugolController()
     {
         if (portugolController == null)
-            portugolController = new PortugolControlador();
+            portugolController = new PortugolControladorTelaPrincipal();
         
         return portugolController;
     }

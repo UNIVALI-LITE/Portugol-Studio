@@ -1,18 +1,18 @@
 package br.univali.ps.ui.acoes;
 
-import br.univali.ps.controller.PortugolControlador;
+import br.univali.ps.controller.PortugolControladorTelaPrincipal;
 import java.awt.event.ActionEvent;
 
 public class AcaoNovoArquivo extends Acao{
 
-    PortugolControlador controlador;
+    PortugolControladorTelaPrincipal controlador;
 
     AcaoNovoArquivo()
     {
         super("Arquivo criado com sucesso");
     }
 
-    public void setup(PortugolControlador controlador)
+    public void configurar(PortugolControladorTelaPrincipal controlador)
     {
         this.controlador = controlador;
     }

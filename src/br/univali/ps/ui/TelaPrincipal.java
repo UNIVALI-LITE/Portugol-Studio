@@ -1,6 +1,6 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.controller.PortugolControlador;
+import br.univali.ps.controller.PortugolControladorTelaPrincipal;
 import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.acoes.AcaoCopiar;
@@ -8,172 +8,136 @@ import br.univali.ps.ui.acoes.AcaoRecortar;
 import br.univali.ps.ui.acoes.AcaoColar;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
-import br.univali.ps.ui.acoes.AcaoListener;
 import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarComo;
 import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
 import br.univali.ps.ui.acoes.AcaoDesfazer;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ajuda.NavegadorAjuda;
-import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
+import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 public class TelaPrincipal extends JFrame {
 
     
-    private JFileChooser fileChooser = new JFileChooser();
+    private JFileChooser dialogoEscolhaArquivo = new JFileChooser();
     private AcaoNovoArquivo acaoNovoArquivo = null;
-    private AcaoAbrirArquivo openFileAction = null;
-    private AcaoSalvarArquivo saveFileAction = null;
-    private AcaoSalvarComo saveAsAction = null;
-    private AcaoCopiar editCopyAction = null;
-    private AcaoRecortar editCutAction = null;
-    private AcaoColar editPasteAction = null;
-    private AcaoRefazer redoAction = null;
-    private AcaoDesfazer undoAction = null;
-    private PortugolControlador controle = null;
+    private AcaoAbrirArquivo abrirArquivo = null;
+    private AcaoSalvarArquivo acaoSalvarArquivo = null;
+    private AcaoSalvarComo acaoSalvarComo = null;
+    private AcaoCopiar acaoCopiar = null;
+    private AcaoRecortar acaoRecortar = null;
+    private AcaoColar acaoColar = null;
+    private AcaoRefazer acaoRefazer = null;
+    private AcaoDesfazer acaoDesfazer = null;
+    private PortugolControladorTelaPrincipal controle = null;
  
     
     
     private void acoesprontas() {
         acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
-   //     acaoNovoArquivo.adicionarListener(this);
-        acaoNovoArquivo.setup(controle);
+        acaoNovoArquivo.configurar(controle);
 
-        openFileAction = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
-     //   openFileAction.adicionarListener(this);
-        openFileAction.configurar(controle,this, fileChooser);
+        abrirArquivo = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
+        abrirArquivo.configurar(controle,this, dialogoEscolhaArquivo);
+        
+        acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
+        acaoSalvarArquivo.setEnabled(false);
 
-        saveFileAction = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
-       /// saveFileAction.configurar(controle);
-       // saveFileAction.adicionarListener(this);
-        saveFileAction.setEnabled(false);
+        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
+        acaoSalvarComo.setEnabled(false);
+        acaoSalvarComo.setup(controle,this, dialogoEscolhaArquivo);
 
-        saveAsAction = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
-        //saveAsAction.adicionarListener(this);
-        saveAsAction.setEnabled(false);
-        saveAsAction.setup(controle,this, fileChooser);
-
-        //btnNew.setAction(acaoNovoArquivo);
-        mniNew.setAction(acaoNovoArquivo);
-       
-        //btnOpen.setAction(openFileAction);
-        mniOpen.setAction(openFileAction);
-
-        //btnSave.setAction(saveFileAction);
-        mniSave.setAction(saveFileAction);
-
-        mniSaveAs.setAction(saveAsAction);
+        mniNovo.setAction(acaoNovoArquivo);
+        mniSalvar.setAction(acaoSalvarArquivo);
+        mniAbrir.setAction(abrirArquivo);
+        mniSalvarComo.setAction(acaoSalvarComo);
+        
     }
 
+    public void setAcaoSalvar(AcaoSalvarArquivo acaoSalvarArquivo) {
+        this.acaoSalvarArquivo = acaoSalvarArquivo;
+        mniSalvar.setAction(this.acaoSalvarArquivo);
+    }
+    
     private void acoesAindaParaFazer() {
-        editCopyAction = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
-        editCopyAction.setEnabled(false);
-        editCutAction = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
-        editCutAction.setEnabled(false);
-        editPasteAction = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
-        editPasteAction.setEnabled(false);
-        redoAction = (AcaoRefazer) FabricaAcao.getInstancia().criarAcao(AcaoRefazer.class);
-        redoAction.setEnabled(false);
-        undoAction = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
-        undoAction.setEnabled(false);
-
-        mniCut.setAction(editCutAction);
-  //      btnCut.setAction(editCutAction);
-  //      btnCut.setText("");
-        mniCopy.setAction(editCopyAction);
-  //      btnCopy.setAction(editCopyAction);
-  //      btnCopy.setText("");
-        mniPaste.setAction(editPasteAction);
-  //      btnPaste.setAction(editPasteAction);
-  //      btnPaste.setText("");
-        mniUndo.setAction(undoAction);
-  //      btnUndo.setAction(undoAction);
-  //      btnUndo.setText("");
-        mniRedo.setAction(redoAction);
-  //      btnRedo.setAction(redoAction);
-  //      btnRedo.setText("");
+        mnuEdit.setEnabled(false);
+        mniRecortar.setAction(acaoRecortar);
+        mniCopiar.setAction(acaoCopiar);
+        mniColar.setAction(acaoColar);
+        mniDesfazer.setAction(acaoDesfazer);
+        mniRefazer.setAction(acaoRefazer);
+        mniFechar.setEnabled(false);
+        mniFecharTodos.setEnabled(false);
     }
 
-    public TelaPrincipal(PortugolControlador controle) {
+    public TelaPrincipal(PortugolControladorTelaPrincipal controle)  {
         this.controle = controle;
-        this.setIconImage(new ImageIcon(getClass().getResource("icones/pequeno/lightbulb.png")).getImage());
-        //model = new ResultadoAnaliseTableModel();
+        try {
+        this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS +"/light-bulb-code.png")));
+        } catch (IOException ioe) {} 
         initComponents();
         this.setLocationRelativeTo(null);
-        //this.addComponentListener(new AdaptadorComponente());
         configurarSeletorArquivo();
         this.addWindowListener(new TelaPrincipalListener());
-        Action action = new AbstractAction() {
-
-            public void actionPerformed(ActionEvent ae) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        };
-        //this.painelTabulado1.init(action, action);
         
-        // Configurar o jfilechooser para iniciar na pasta de exemplos
-        fileChooser.setCurrentDirectory(new File("./exemplos"));
+        dialogoEscolhaArquivo.setCurrentDirectory(new File("./exemplos"));
         
         acoesprontas();
 
         acoesAindaParaFazer();
-
+        this.painelTabulado.init(abrirArquivo, acaoNovoArquivo);
+       
         bottomPane.setLayout(new BorderLayout());
        
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         if (!PortugolStudio.getInstancia().isDepurando())
         {
-  //          btnAlgoritmoTeste.setVisible(false);            
+            //TODO ACHAR UM LUGAR PARA ESSE BOTÃO
+    //        btnAlgoritmoTeste.setVisible(false);            
         }
     }
     
-
     private void configurarSeletorArquivo() {
-        fileChooser.setMultiSelectionEnabled(true);
-        fileChooser.addChoosableFileFilter(new FiltroArquivoPortugol());
-        fileChooser.setAcceptAllFileFilterUsed(false);
+        dialogoEscolhaArquivo.setMultiSelectionEnabled(true);
+        dialogoEscolhaArquivo.addChoosableFileFilter(new FiltroArquivoPortugol());
+        dialogoEscolhaArquivo.setAcceptAllFileFilterUsed(false);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         bottomPane = new javax.swing.JPanel();
-        painelTabulado1 = new br.univali.ps.ui.PainelTabulado();
+        painelTabulado = new br.univali.ps.ui.PainelTabulado();
         mnuBar = new javax.swing.JMenuBar();
         mnuFile = new javax.swing.JMenu();
-        mniNew = new javax.swing.JMenuItem();
-        mniOpen = new javax.swing.JMenuItem();
-        mniSave = new javax.swing.JMenuItem();
-        mniSaveAs = new javax.swing.JMenuItem();
+        mniNovo = new javax.swing.JMenuItem();
+        mniAbrir = new javax.swing.JMenuItem();
+        mniSalvar = new javax.swing.JMenuItem();
+        mniSalvarComo = new javax.swing.JMenuItem();
         mnuFileSeparator1 = new javax.swing.JPopupMenu.Separator();
-        mniClose = new javax.swing.JMenuItem();
-        mniCloseAll = new javax.swing.JMenuItem();
+        mniFechar = new javax.swing.JMenuItem();
+        mniFecharTodos = new javax.swing.JMenuItem();
         mnuFileSeparator2 = new javax.swing.JSeparator();
         mniExit = new javax.swing.JMenuItem();
         mnuEdit = new javax.swing.JMenu();
-        mniUndo = new javax.swing.JMenuItem();
-        mniRedo = new javax.swing.JMenuItem();
+        mniDesfazer = new javax.swing.JMenuItem();
+        mniRefazer = new javax.swing.JMenuItem();
         mnuEditSeparator1 = new javax.swing.JSeparator();
-        mniCut = new javax.swing.JMenuItem();
-        mniCopy = new javax.swing.JMenuItem();
-        mniPaste = new javax.swing.JMenuItem();
+        mniRecortar = new javax.swing.JMenuItem();
+        mniCopiar = new javax.swing.JMenuItem();
+        mniColar = new javax.swing.JMenuItem();
         mnuEditSeparator2 = new javax.swing.JPopupMenu.Separator();
         mniFindReplace = new javax.swing.JMenuItem();
         mnuHelp = new javax.swing.JMenu();
@@ -196,27 +160,27 @@ public class TelaPrincipal extends JFrame {
         );
 
         mnuFile.setText("Arquivo");
-        mnuFile.add(mniNew);
-        mnuFile.add(mniOpen);
-        mnuFile.add(mniSave);
-        mnuFile.add(mniSaveAs);
+        mnuFile.add(mniNovo);
+        mnuFile.add(mniAbrir);
+        mnuFile.add(mniSalvar);
+        mnuFile.add(mniSalvarComo);
         mnuFile.add(mnuFileSeparator1);
 
-        mniClose.setText("Fechar");
-        mniClose.addActionListener(new java.awt.event.ActionListener() {
+        mniFechar.setText("Fechar");
+        mniFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mniCloseActionPerformed(evt);
+                mniFecharActionPerformed(evt);
             }
         });
-        mnuFile.add(mniClose);
+        mnuFile.add(mniFechar);
 
-        mniCloseAll.setText("Fechar todos.");
-        mniCloseAll.addActionListener(new java.awt.event.ActionListener() {
+        mniFecharTodos.setText("Fechar todos.");
+        mniFecharTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mniCloseAllActionPerformed(evt);
+                mniFecharTodosActionPerformed(evt);
             }
         });
-        mnuFile.add(mniCloseAll);
+        mnuFile.add(mniFecharTodos);
         mnuFile.add(mnuFileSeparator2);
 
         mniExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
@@ -232,24 +196,24 @@ public class TelaPrincipal extends JFrame {
 
         mnuEdit.setText("Editar");
 
-        mniUndo.setText("desfazer");
-        mnuEdit.add(mniUndo);
+        mniDesfazer.setText("desfazer");
+        mnuEdit.add(mniDesfazer);
 
-        mniRedo.setText("refazer");
-        mnuEdit.add(mniRedo);
+        mniRefazer.setText("refazer");
+        mnuEdit.add(mniRefazer);
         mnuEdit.add(mnuEditSeparator1);
 
-        mniCut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        mniCut.setText("Recortar");
-        mnuEdit.add(mniCut);
+        mniRecortar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        mniRecortar.setText("Recortar");
+        mnuEdit.add(mniRecortar);
 
-        mniCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        mniCopy.setText("Copiar");
-        mnuEdit.add(mniCopy);
+        mniCopiar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        mniCopiar.setText("Copiar");
+        mnuEdit.add(mniCopiar);
 
-        mniPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        mniPaste.setText("Colar");
-        mnuEdit.add(mniPaste);
+        mniColar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        mniColar.setText("Colar");
+        mnuEdit.add(mniColar);
         mnuEdit.add(mnuEditSeparator2);
 
         mniFindReplace.setText("Procurar e substituir");
@@ -280,13 +244,13 @@ public class TelaPrincipal extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bottomPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(painelTabulado1, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
                 .addGap(13, 13, 13))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(painelTabulado1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bottomPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -295,23 +259,20 @@ public class TelaPrincipal extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    NavegadorAjuda hb = new NavegadorAjuda();
-    hb.setSize(800,600);
-    hb.setVisible(true);
-    hb.setLocationRelativeTo(this);
+    new AbaAjuda(painelTabulado);
 }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniExitActionPerformed
     controle.fecharAplicativo();
 }//GEN-LAST:event_mniExitActionPerformed
 
-private void mniCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCloseActionPerformed
+private void mniFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharActionPerformed
     controle.fecharAbaAtual();
-}//GEN-LAST:event_mniCloseActionPerformed
+}//GEN-LAST:event_mniFecharActionPerformed
 
-private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCloseAllActionPerformed
+private void mniFecharTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharTodosActionPerformed
     controle.fecharTodasAbas();
-}//GEN-LAST:event_mniCloseAllActionPerformed
+}//GEN-LAST:event_mniFecharTodosActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
@@ -320,19 +281,19 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JPanel bottomPane;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem mniAbout;
-    private javax.swing.JMenuItem mniClose;
-    private javax.swing.JMenuItem mniCloseAll;
-    private javax.swing.JMenuItem mniCopy;
-    private javax.swing.JMenuItem mniCut;
+    private javax.swing.JMenuItem mniAbrir;
+    private javax.swing.JMenuItem mniColar;
+    private javax.swing.JMenuItem mniCopiar;
+    private javax.swing.JMenuItem mniDesfazer;
     private javax.swing.JMenuItem mniExit;
+    private javax.swing.JMenuItem mniFechar;
+    private javax.swing.JMenuItem mniFecharTodos;
     private javax.swing.JMenuItem mniFindReplace;
-    private javax.swing.JMenuItem mniNew;
-    private javax.swing.JMenuItem mniOpen;
-    private javax.swing.JMenuItem mniPaste;
-    private javax.swing.JMenuItem mniRedo;
-    private javax.swing.JMenuItem mniSave;
-    private javax.swing.JMenuItem mniSaveAs;
-    private javax.swing.JMenuItem mniUndo;
+    private javax.swing.JMenuItem mniNovo;
+    private javax.swing.JMenuItem mniRecortar;
+    private javax.swing.JMenuItem mniRefazer;
+    private javax.swing.JMenuItem mniSalvar;
+    private javax.swing.JMenuItem mniSalvarComo;
     private javax.swing.JMenuBar mnuBar;
     private javax.swing.JMenu mnuEdit;
     private javax.swing.JSeparator mnuEditSeparator1;
@@ -341,59 +302,44 @@ private void mniCloseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JPopupMenu.Separator mnuFileSeparator1;
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
-    private br.univali.ps.ui.PainelTabulado painelTabulado1;
+    private br.univali.ps.ui.PainelTabulado painelTabulado;
     // End of variables declaration//GEN-END:variables
 
-    public void acaoExecutadaSucesso(Acao acao, String mensagem) {
-  //      throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void acaoFalhou(Acao acao, Exception motivoE) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public void habilitaSalvar(boolean b) {
-        saveFileAction.setEnabled(b);
+        acaoSalvarArquivo.setEnabled(b);
     }
 
     public void dialogoSalvar() {
-        saveAsAction.actionPerformed(null);
+        acaoSalvarComo.actionPerformed(null);
     }
-
-    public void habilitaCompilar(boolean b) {
-//        btnCompile.setEnabled(b);
-    }
-
-    public void habilitarDebug(boolean b) {
- //       btnDebug.setEnabled(b);
-    }
-
 
     public Acao getAcaoColar(){
-        return editPasteAction;
+        return acaoColar;
     }
 
-    public void configurarBotoesEditar() {
-        undoAction.iniciar();
-        redoAction.iniciar();
-        editCopyAction.iniciar();
-     //   editPasteAction.configurar();
-        editCutAction.iniciar();
+    public void configurarBotoesEditar(AcaoDesfazer desfazer, AcaoRefazer refazer, AcaoCopiar copiar, AcaoColar colar, AcaoRecortar recortar) {
+        acaoDesfazer = desfazer;
+        acaoRefazer = refazer;
+        acaoCopiar = copiar;
+        acaoColar = colar;
+        acaoRecortar = recortar;
     }
 
     public void habilitaSalvarComo(boolean b) {
-        saveAsAction.setEnabled(b);
+        acaoSalvarComo.setEnabled(b);
     }
 
     public void desabilitarBotoesEditar() {
-        undoAction.setEnabled(false);
-        redoAction.setEnabled(false);
-        editCopyAction.setEnabled(false);
-        editPasteAction.setEnabled(false);
-        editCutAction.setEnabled(false);
+        acaoDesfazer.setEnabled(false);
+        acaoRefazer.setEnabled(false);
+        acaoCopiar.setEnabled(false);
+        acaoColar.setEnabled(false);
+        acaoRecortar.setEnabled(false);
     }
-    // End of variables declaration
-// </editor-fold>
+
+    public JTabbedPane getPainelTabulado() {
+        return painelTabulado;
+    }
 
     private class TelaPrincipalListener extends WindowAdapter {
 

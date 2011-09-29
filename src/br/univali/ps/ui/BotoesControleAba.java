@@ -1,28 +1,27 @@
 package br.univali.ps.ui;
 
-import javax.swing.Action;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
+import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 
-public class BotoesControleAba extends JPanel {
+public class BotoesControleAba extends CabecalhoAba {
 
-    FabricaAba fabricaAba;
+    AcaoAbrirArquivo acaoAbrirArquivo;
+    AcaoNovoArquivo acaoNovoArquivo;
     
     /** Creates new form BotoesControleAba */
-    public BotoesControleAba() {
+    public BotoesControleAba(Aba aba) {
+        super(aba);
         initComponents();
     }
 
-    public void setFabricaAba(JTabbedPane painel){
-        fabricaAba = new FabricaAba(painel);
+    public void setAcaoAbrirAction(AcaoAbrirArquivo acao) {
+        acaoAbrirArquivo = acao;
     }
     
-    public void setBotaoAbrirAction(Action action) {
-        jBAbrir.setAction(action);
+    public void setAcaoNovoArquivo(AcaoNovoArquivo acao) {
+        acaoNovoArquivo = acao;
     }
-    
-    
-    
+        
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -38,6 +37,11 @@ public class BotoesControleAba extends JPanel {
         jBAbrir.setContentAreaFilled(false);
         jBAbrir.setHideActionText(true);
         jBAbrir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
+        jBAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAbrirActionPerformed(evt);
+            }
+        });
         add(jBAbrir);
 
         jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/plus.png"))); // NOI18N
@@ -53,8 +57,12 @@ public class BotoesControleAba extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBNovaAbaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovaAbaActionPerformed
-        fabricaAba.criarAbaCodidigoFonte();
+        acaoNovoArquivo.actionPerformed(evt);
     }//GEN-LAST:event_jBNovaAbaActionPerformed
+
+    private void jBAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAbrirActionPerformed
+        acaoAbrirArquivo.actionPerformed(evt);
+    }//GEN-LAST:event_jBAbrirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrir;

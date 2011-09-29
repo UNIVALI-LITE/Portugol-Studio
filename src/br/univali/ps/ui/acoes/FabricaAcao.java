@@ -51,7 +51,7 @@ public class FabricaAcao
         Element elemento = configurarPesquisaElemento(nome);
         acao.setTitulo(lerValor(elemento, "title"));
         acao.setIconeGrande(IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, lerValor(elemento, "icon")));
-        acao.setIcone(IconFactory.createIcon(IconFactory.SMALL_ICONS_PATH, lerValor(elemento, "icon")));
+        acao.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, lerValor(elemento, "icon")));
     
     }
 

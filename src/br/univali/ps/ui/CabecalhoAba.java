@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import javax.swing.Icon;
@@ -36,6 +37,10 @@ public class CabecalhoAba extends JPanel {
 
     public Icon getIcone() {
         return jLIcone.getIcon();
+    }
+    
+    public void setForegroung(Color cor){
+        jLTitulo.setForeground(cor);
     }
 
     @SuppressWarnings("unchecked")

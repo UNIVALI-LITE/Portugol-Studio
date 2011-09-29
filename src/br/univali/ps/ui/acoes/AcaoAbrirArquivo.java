@@ -4,7 +4,7 @@
  */
 package br.univali.ps.ui.acoes;
 
-import br.univali.ps.controller.PortugolControlador;
+import br.univali.ps.controller.PortugolControladorTelaPrincipal;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
@@ -18,7 +18,7 @@ public class AcaoAbrirArquivo extends Acao
     
     private JFileChooser chooser;
     private Container parent;
-    private PortugolControlador controle;
+    private PortugolControladorTelaPrincipal controle;
   
 
     public AcaoAbrirArquivo()
@@ -26,7 +26,7 @@ public class AcaoAbrirArquivo extends Acao
         super("Arquivo aberto com sucesso!");
     }
 
-    public void configurar(PortugolControlador controle, Container parent, JFileChooser chooser)
+    public void configurar(PortugolControladorTelaPrincipal controle, Container parent, JFileChooser chooser)
     {
         this.controle = controle;
         this.parent = parent;

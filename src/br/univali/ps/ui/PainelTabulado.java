@@ -1,26 +1,51 @@
 package br.univali.ps.ui;
 
-import javax.swing.Action;
+import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
+import br.univali.ps.ui.acoes.AcaoNovoArquivo;
+import java.awt.Component;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import javax.swing.JComponent;
 
+public class PainelTabulado extends javax.swing.JTabbedPane implements ComponentListener{
 
-
-public class PainelTabulado extends javax.swing.JTabbedPane {
-
-    BotoesControleAba botoesControleAba = new BotoesControleAba();
+    BotoesControleAba cabecalhoAbaInicial;
     
-    public PainelTabulado() {
+     public PainelTabulado() {
         initComponents();
-        add(new JComponent() {});
-        setTabComponentAt(0, botoesControleAba);
-        botoesControleAba.setFabricaAba(this);
+        Aba aba = new AbaInicial(this);
+        cabecalhoAbaInicial = (BotoesControleAba) aba.cabecalho;
+    }
+
+    @Override
+    public Component add(Component cmpnt) {
+        cmpnt.addComponentListener(this);
+        return super.add(cmpnt);
     }
     
-    public void init(Action acaoBotaoAbrir){
-        botoesControleAba.setBotaoAbrirAction(acaoBotaoAbrir);
+    
+    
+    public void init(AcaoAbrirArquivo acaoAbrir, AcaoNovoArquivo acaoNovo){
+        cabecalhoAbaInicial.setAcaoAbrirAction(acaoAbrir);
+        cabecalhoAbaInicial.setAcaoNovoArquivo(acaoNovo);
+    }
+
+    public Aba getAbaSelecionada(){
+        if (getSelectedComponent() instanceof Aba)
+            return (Aba) getSelectedComponent(); 
+        else
+            return null;
     }
     
-    
+    public void fecharTodasAbas(){
+        Component[] components = getComponents();
+        for (int i = 0; i < components.length; i++){
+            
+            if (components[i] instanceof Aba){
+                ((Aba)components[i]).fechar();
+            }   
+        }
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -29,5 +54,22 @@ public class PainelTabulado extends javax.swing.JTabbedPane {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
+    public void componentResized(ComponentEvent ce) {
+    
+    }
+
+    public void componentMoved(ComponentEvent ce) {
+       
+    }
+
+    public void componentShown(ComponentEvent ce) {
+
+        Aba aba =  (Aba) ce.getComponent();
+        System.out.println(aba.cabecalho.getTitulo());
+    }
+
+    public void componentHidden(ComponentEvent ce) {
+        
+    }
 
 }

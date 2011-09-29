@@ -9,30 +9,30 @@
             <Property name="text" type="java.lang.String" value="Arquivo"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mniNew">
+            <MenuItem class="javax.swing.JMenuItem" name="mniNovo">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniOpen">
+            <MenuItem class="javax.swing.JMenuItem" name="mniAbrir">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniSave">
+            <MenuItem class="javax.swing.JMenuItem" name="mniSalvar">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniSaveAs">
+            <MenuItem class="javax.swing.JMenuItem" name="mniSalvarComo">
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="mnuFileSeparator1">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniClose">
+            <MenuItem class="javax.swing.JMenuItem" name="mniFechar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Fechar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniCloseActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniFecharActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniCloseAll">
+            <MenuItem class="javax.swing.JMenuItem" name="mniFecharTodos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Fechar todos."/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniCloseAllActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniFecharTodosActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="mnuFileSeparator2">
@@ -55,19 +55,19 @@
             <Property name="text" type="java.lang.String" value="Editar"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mniUndo">
+            <MenuItem class="javax.swing.JMenuItem" name="mniDesfazer">
               <Properties>
                 <Property name="text" type="java.lang.String" value="desfazer"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniRedo">
+            <MenuItem class="javax.swing.JMenuItem" name="mniRefazer">
               <Properties>
                 <Property name="text" type="java.lang.String" value="refazer"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="mnuEditSeparator1">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniCut">
+            <MenuItem class="javax.swing.JMenuItem" name="mniRecortar">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+X"/>
@@ -75,7 +75,7 @@
                 <Property name="text" type="java.lang.String" value="Recortar"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniCopy">
+            <MenuItem class="javax.swing.JMenuItem" name="mniCopiar">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+C"/>
@@ -83,7 +83,7 @@
                 <Property name="text" type="java.lang.String" value="Copiar"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniPaste">
+            <MenuItem class="javax.swing.JMenuItem" name="mniColar">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+V"/>
@@ -151,7 +151,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="bottomPane" alignment="0" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
-              <Component id="painelTabulado1" pref="619" max="32767" attributes="0"/>
+              <Component id="painelTabulado" pref="619" max="32767" attributes="0"/>
               <EmptySpace min="13" pref="13" max="13" attributes="0"/>
           </Group>
       </Group>
@@ -159,7 +159,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="painelTabulado1" pref="379" max="32767" attributes="0"/>
+              <Component id="painelTabulado" pref="379" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="bottomPane" min="-2" max="-2" attributes="0"/>
           </Group>
@@ -182,7 +182,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="br.univali.ps.ui.PainelTabulado" name="painelTabulado1">
+    <Container class="br.univali.ps.ui.PainelTabulado" name="painelTabulado">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>

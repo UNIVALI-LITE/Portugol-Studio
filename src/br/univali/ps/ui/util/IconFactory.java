@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  */
 public class IconFactory {
 
-    public static final String SMALL_ICONS_PATH = "br/univali/ps/ui/icones/pequeno";
+    public static final String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/pequeno";
     public static final String LARGE_ICONS_PATH = "br/univali/ps/ui/icones/grande";
 
 

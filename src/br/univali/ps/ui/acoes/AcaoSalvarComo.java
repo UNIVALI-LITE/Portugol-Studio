@@ -5,7 +5,7 @@
 
 package br.univali.ps.ui.acoes;
 
-import br.univali.ps.controller.PortugolControlador;
+import br.univali.ps.controller.PortugolControladorTelaPrincipal;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -19,14 +19,14 @@ public class AcaoSalvarComo extends Acao{
 
     Container parent;
     JFileChooser chooser;
-    PortugolControlador controlador;
+    PortugolControladorTelaPrincipal controlador;
 
     public AcaoSalvarComo()
     {
         super("arquivo salvo com sucesso");
     }
 
-    public void setup(PortugolControlador controlador, Container parent, JFileChooser chooser)
+    public void setup(PortugolControladorTelaPrincipal controlador, Container parent, JFileChooser chooser)
     {
         this.parent = parent;
         this.chooser = chooser;

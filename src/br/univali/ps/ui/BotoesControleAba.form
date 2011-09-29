@@ -31,6 +31,9 @@
           <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/folder_open.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBAbrirActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jBNovaAba">
       <Properties>
