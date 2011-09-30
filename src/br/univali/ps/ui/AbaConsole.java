@@ -2,18 +2,20 @@ package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.Entrada;
-import br.univali.portugol.nucleo.execucao.ObservadorEntrada;
-import br.univali.portugol.nucleo.execucao.ObservadorSaida;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.List;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import sun.tools.tree.ThisExpression;
 
 public class AbaConsole extends Aba implements Saida, Entrada {
 
-    private ObservadorEntrada observadorEntrada;
+    private boolean swingTerminado = false;
+    
     private StringBuffer stringBuffer;
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
@@ -27,6 +29,15 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         console.setComponentPopupMenu(menuConsole);
         this.menuConsoleLimpar.setText("limpar");
         this.menuConsoleCopiar.setText("Copiar");
+        console.addComponentListener(new ComponentAdapter() {
+
+            @Override
+            public void componentResized(ComponentEvent ce) {
+                jScrollPane1.getVerticalScrollBar().setValue(ce.getComponent().getHeight());
+            }
+            
+        });
+        
         console.getDocument().addDocumentListener(new DocumentListener() {
         
             @Override
@@ -42,9 +53,7 @@ public class AbaConsole extends Aba implements Saida, Entrada {
 
                     if (texto.equals("\n")) {
                         console.setEditable(false);
-                        Object valor = obterValorEntrada(stringBuffer.toString());
-                        stringBuffer = null;
-                        observadorEntrada.notificaValorLido(valor);
+                        swingTerminado = true;
                     } else {
                         stringBuffer.append(texto);
                     }
@@ -158,67 +167,63 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void limpar(ObservadorSaida observadorSaida) 
-    {
-        limpar();
-        observadorSaida.notificarSaidaLimpa();
-    }
-    
-    public void limpar()
+    public void limpar() 
     {
         console.setText(null);        
     }
-
-    private void escreveConsole(String texto, ObservadorSaida observadorSaida) {
-        escrever(texto);
-        observadorSaida.notificaValorEscrito();
-    }
     
-    public void escrever(String texto)
+    public void escreveConsole(String texto)
     {
         console.append(texto);
-        console.setCaretPosition(console.getDocument().getLength());
+        //console.setCaretPosition(console.getDocument().getLength());
     }
 
     @Override
-    public void escrever(String valor, ObservadorSaida observadorSaida) 
+    public void escrever(String valor) 
     {
-        escreveConsole(valor, observadorSaida);
+        escreveConsole(valor);
     }
 
     @Override
-    public void escrever(boolean valor, ObservadorSaida observadorSaida) 
+    public void escrever(boolean valor) 
     {
-        escreveConsole((valor) ? "verdadeiro" : "falso", observadorSaida);
+        escreveConsole((valor) ? "verdadeiro" : "falso");
     }
 
     @Override
-    public void escrever(int valor, ObservadorSaida observadorSaida) {
-        escreveConsole(String.valueOf(valor), observadorSaida);
+    public void escrever(int valor) {
+        escreveConsole(String.valueOf(valor));
     }
 
     @Override
-    public void escrever(double valor, ObservadorSaida observadorSaida) {
-        escreveConsole(String.valueOf(valor), observadorSaida);
+    public void escrever(double valor) {
+        escreveConsole(String.valueOf(valor));
     }
 
     @Override
-    public void escrever(char valor, ObservadorSaida observadorSaida) {
-        escreveConsole(String.valueOf(valor), observadorSaida);
+    public void escrever(char valor) {
+        escreveConsole(String.valueOf(valor));
     }
 
     @Override
-    public void ler(TipoDado tipoDado, ObservadorEntrada observadorEntrada) {
-        this.observadorEntrada = observadorEntrada;
-
+    public Object ler(TipoDado tipoDado) {
         this.stringBuffer = new StringBuffer();
-
+        
         this.tipoDado = tipoDado;
         console.setEditable(true);
-
         console.requestFocus();
-
-        console.setCaretPosition(console.getText().length());
+        //console.setCaretPosition(console.getText().length());
+        new ManipuladorConsole().execute();
+        
+        while (!swingTerminado) {
+            try {
+                Thread.sleep(100);
+                System.out.println("comendo processador no leia \n");
+            } catch (InterruptedException ex) {
+               // Logger.getLogger(AbaConsole.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return stringBuffer.toString();
     }
 
     private Object obterValorEntrada(String entrada) {
@@ -243,4 +248,36 @@ public class AbaConsole extends Aba implements Saida, Entrada {
             return null;
         }
     }
+    
+    private class ManipuladorConsole extends SwingWorker {
+
+        public ManipuladorConsole() {
+            swingTerminado = false;
+        }
+
+        
+        
+        @Override
+        protected Object doInBackground() throws Exception {
+            
+            while (!swingTerminado) {
+                try {
+                    System.out.println("comendo processador no sw \n");
+                    Thread.sleep(10);
+                      
+            
+                } catch (InterruptedException ex) {
+                   // Logger.getLogger(AbaConsole.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void process(List list) {
+         }
+        
+        
+
+    } 
 }
