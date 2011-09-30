@@ -1,16 +1,9 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.acoes.FabricaAcao;
-import br.univali.ps.ui.acoes.AcaoCopiar;
-import br.univali.ps.ui.acoes.AcaoRecortar;
-import br.univali.ps.ui.acoes.AcaoColar;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
-import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarComo;
-import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
-import br.univali.ps.ui.acoes.AcaoDesfazer;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
 import br.univali.ps.ui.telas.TelaSobre;
@@ -23,7 +16,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 
 public class TelaPrincipal extends JFrame implements PainelTabuladoListener{
 
