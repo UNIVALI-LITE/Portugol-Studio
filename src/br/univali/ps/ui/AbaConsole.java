@@ -6,7 +6,6 @@ import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.List;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
@@ -15,7 +14,6 @@ import javax.swing.event.DocumentListener;
 public class AbaConsole extends Aba implements Saida, Entrada {
 
     private boolean swingTerminado = false;
-    
     private StringBuffer stringBuffer;
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
@@ -37,11 +35,11 @@ public class AbaConsole extends Aba implements Saida, Entrada {
             }
             
         });
-        
         console.getDocument().addDocumentListener(new DocumentListener() {
         
             @Override
             public void insertUpdate(DocumentEvent e) {
+                System.out.println(e.getDocument());
                 atualizarItensMenuConsole();
                 if (stringBuffer != null) {
                     String texto = null;
@@ -175,7 +173,6 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     public void escreveConsole(String texto)
     {
         console.append(texto);
-        //console.setCaretPosition(console.getDocument().getLength());
     }
 
     @Override
@@ -212,15 +209,14 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         this.tipoDado = tipoDado;
         console.setEditable(true);
         console.requestFocus();
-        //console.setCaretPosition(console.getText().length());
+        console.setCaretPosition(console.getText().length());
         new ManipuladorConsole().execute();
         
         while (!swingTerminado) {
             try {
                 Thread.sleep(100);
-                System.out.println("comendo processador no leia \n");
             } catch (InterruptedException ex) {
-               // Logger.getLogger(AbaConsole.class.getName()).log(Level.SEVERE, null, ex);
+               swingTerminado = true;
             }
         }
         return stringBuffer.toString();
@@ -262,22 +258,13 @@ public class AbaConsole extends Aba implements Saida, Entrada {
             
             while (!swingTerminado) {
                 try {
-                    System.out.println("comendo processador no sw \n");
                     Thread.sleep(10);
-                      
-            
                 } catch (InterruptedException ex) {
-                   // Logger.getLogger(AbaConsole.class.getName()).log(Level.SEVERE, null, ex);
+                   swingTerminado = true;
                 }
             }
             return null;
-        }
-
-        @Override
-        protected void process(List list) {
-         }
-        
-        
+        }        
 
     } 
 }

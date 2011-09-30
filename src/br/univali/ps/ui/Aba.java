@@ -1,8 +1,6 @@
 package br.univali.ps.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -32,7 +30,10 @@ public abstract class Aba extends JPanel{
         listeners = new ArrayList<AbaListener>();
         this.painelTabulado = painelTabulado;
         cabecalho = criarCabecalho();
-        this.painelTabulado.add(this);
+        int posicao = painelTabulado.getComponentCount();
+        if (posicao > 0)
+            posicao = 1;
+        this.painelTabulado.add(this,posicao);
         this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
         this.painelTabulado.setSelectedComponent(this);
     }
