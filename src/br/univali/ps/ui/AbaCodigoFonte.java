@@ -16,9 +16,11 @@ import br.univali.ps.ui.acoes.AcaoRecortar;
 import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
 import br.univali.ps.ui.acoes.FabricaAcao;
+import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
@@ -31,7 +33,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private AcaoRecortar acaoRecortar = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
     private AcaoCopiar acaoCopiar = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
     private AcaoColar acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
-   
+    private Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"); 
+    private Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png"); 
+    
+    
     public AbaCodigoFonte(JTabbedPane painelTabulado) {
         super(painelTabulado);
         initComponents();
@@ -215,8 +220,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         programa = null;
         if (status) {
             cabecalho.setForegroung(Color.RED);
+            cabecalho.setIcone(lampadaApagada);
         } else {
             cabecalho.setForegroung(Color.BLACK);
+            cabecalho.setIcone(lampadaAcesa);
         }
     }
 
