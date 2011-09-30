@@ -14,6 +14,13 @@
             <MenuItem class="javax.swing.JMenuItem" name="mniAbrir">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniSalvar">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/disk.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Salvar"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniSalvarComo">
             </MenuItem>
@@ -69,25 +76,16 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniRecortar">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+X"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Recortar"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniCopiar">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+C"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Copiar"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniColar">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+V"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Colar"/>
               </Properties>
             </MenuItem>

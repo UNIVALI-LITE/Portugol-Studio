@@ -1,7 +1,7 @@
 
 package br.univali.ps.nucleo;
 
-import br.univali.ps.controller.PortugolControladorTelaPrincipal;
+import br.univali.ps.ui.TelaPrincipal;
 
 /**
  *
@@ -14,10 +14,9 @@ public final class PortugolStudio
 {
     private Thread threadPortugolStudio = null;
     private static PortugolStudio instancia = null;    
-    
     private boolean depurando = false;
     private TratadorExcecoes tratadorExcecoes = null;    
-    private PortugolControladorTelaPrincipal portugolController;
+    private TelaPrincipal telaPrincipal = null;
 
     private PortugolStudio()
     {
@@ -51,7 +50,8 @@ public final class PortugolStudio
                 @Override
                 public synchronized void start()
                 {
-                    getPortugolController().iniciar();
+                    telaPrincipal = new TelaPrincipal();
+                    telaPrincipal.setVisible(true);
                 }                
             };
             
@@ -67,11 +67,7 @@ public final class PortugolStudio
         return tratadorExcecoes;
     }
 
-    public PortugolControladorTelaPrincipal getPortugolController()
-    {
-        if (portugolController == null)
-            portugolController = new PortugolControladorTelaPrincipal();
-        
-        return portugolController;
+    public TelaPrincipal getTelaPrincipal() {
+        return telaPrincipal;
     }
 }

@@ -49,6 +49,13 @@ public class Editor extends JPanel{
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
     }
+
+    @Override
+    public void requestFocus() {
+        textArea.requestFocus();
+    }
+    
+    
     
     private CompletionProvider createCompletionProvider() {
 

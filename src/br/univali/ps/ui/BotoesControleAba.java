@@ -47,34 +47,46 @@ public class BotoesControleAba extends CabecalhoAba {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToolBar1 = new javax.swing.JToolBar();
         jBAbrir = new javax.swing.JButton();
         jBNovaAba = new javax.swing.JButton();
 
         setOpaque(false);
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
+        setLayout(new java.awt.BorderLayout());
+
+        jToolBar1.setFloatable(false);
+        jToolBar1.setOpaque(false);
 
         jBAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
         jBAbrir.setBorderPainted(false);
         jBAbrir.setContentAreaFilled(false);
+        jBAbrir.setFocusPainted(false);
         jBAbrir.setHideActionText(true);
+        jBAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jBAbrir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
+        jBAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jBAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBAbrirActionPerformed(evt);
             }
         });
-        add(jBAbrir);
+        jToolBar1.add(jBAbrir);
 
         jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/plus.png"))); // NOI18N
         jBNovaAba.setBorderPainted(false);
         jBNovaAba.setContentAreaFilled(false);
+        jBNovaAba.setFocusable(false);
         jBNovaAba.setHideActionText(true);
+        jBNovaAba.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jBNovaAba.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jBNovaAba.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBNovaAbaActionPerformed(evt);
             }
         });
-        add(jBNovaAba);
+        jToolBar1.add(jBNovaAba);
+
+        add(jToolBar1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBNovaAbaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovaAbaActionPerformed
@@ -88,5 +100,6 @@ public class BotoesControleAba extends CabecalhoAba {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrir;
     private javax.swing.JButton jBNovaAba;
+    private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }

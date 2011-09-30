@@ -1,36 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.univali.ps.ui.acoes;
 
-import br.univali.ps.controller.PortugolControladorTelaPrincipal;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
 
-/**
- *
- * @author Fillipi Pelz
- */
 public class AcaoSalvarComo extends Acao{
 
     Container parent;
     JFileChooser chooser;
-    PortugolControladorTelaPrincipal controlador;
+    AcaoSalvarArquivo acaoSalvarArquivo;
 
     public AcaoSalvarComo()
     {
         super("arquivo salvo com sucesso");
     }
 
-    public void setup(PortugolControladorTelaPrincipal controlador, Container parent, JFileChooser chooser)
+    public void configurar(AcaoSalvarArquivo salvarArquivo, Container parent, JFileChooser chooser)
     {
         this.parent = parent;
         this.chooser = chooser;
-        this.controlador = controlador;
+        this.acaoSalvarArquivo = salvarArquivo;
     }
 
     @Override
@@ -42,7 +32,8 @@ public class AcaoSalvarComo extends Acao{
             if (!arquivo.getName().endsWith(".por")){
                 arquivo = new File(arquivo.getPath().concat(".por"));
             }
-            controlador.salvarComo(arquivo);
+            acaoSalvarArquivo.getDocumento().setFile(arquivo);
+            acaoSalvarArquivo.actionPerformed(e);
         }
         else
         {

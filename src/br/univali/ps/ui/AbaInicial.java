@@ -40,28 +40,58 @@ public class AbaInicial extends Aba {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+
+        setLayout(null);
+
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 48)); // NOI18N
-        jLabel1.setText("{PortugolStudio} <uma lampada>");
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("{PortugolStudio} ");
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(10, 150, 421, 57);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(30, 30, 30)
-                .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(33, 33, 33)
-                .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
-        );
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/light.png"))); // NOI18N
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(350, 0, 256, 256);
+
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 153));
+        jLabel3.setText("1.0");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(20, 210, 38, 30);
+
+        add(jPanel1);
+        jPanel1.setBounds(30, 30, 561, 264);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/open_source.png"))); // NOI18N
+        add(jLabel5);
+        jLabel5.setBounds(1000, 510, 130, 120);
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
+        add(jLabel6);
+        jLabel6.setBounds(80, 300, 80, 80);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/Light and line_4_Blue_1280 x 1024-1.jpg"))); // NOI18N
+        jLabel4.setText("jLabel4");
+        add(jLabel4);
+        jLabel4.setBounds(0, 0, 1280, 1024);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

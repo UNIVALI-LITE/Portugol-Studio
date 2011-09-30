@@ -11,8 +11,8 @@ import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 
 public class PainelTabulado extends javax.swing.JTabbedPane implements ComponentListener{
 
-    BotoesControleAba cabecalhoAbaInicial;
-    List<PainelTabuladoListener> painelTabuladoListeners;
+    private BotoesControleAba cabecalhoAbaInicial;
+    private List<PainelTabuladoListener> painelTabuladoListeners;
     
     public PainelTabulado() {
         initComponents();
@@ -84,12 +84,27 @@ public class PainelTabulado extends javax.swing.JTabbedPane implements Component
     }
 
     public void componentShown(ComponentEvent ce) {
-
-        Aba aba =  (Aba) ce.getComponent();        
+        Aba aba =  (Aba) ce.getComponent();   
+        disparaAbaSelecionada(aba);
     }
 
     public void componentHidden(ComponentEvent ce) {
         
+    }
+    
+    private void disparaAbaSelecionada(Aba aba){
+        for (PainelTabuladoListener painelTabuladoListener : painelTabuladoListeners) {
+            painelTabuladoListener.abaSelecionada(aba);
+        }
+    }
+    
+    public void adicionaPainelTabuladoListener(PainelTabuladoListener listener) {
+        if (!painelTabuladoListeners.contains(listener))
+            painelTabuladoListeners.add(listener);
+    }
+    
+    public void removePainelTabuladoListener(PainelTabuladoListener listener) {
+        painelTabuladoListeners.remove(listener);
     }
     
 }
