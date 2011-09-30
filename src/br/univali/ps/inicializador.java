@@ -1,15 +1,8 @@
 package br.univali.ps;
 
-import java.util.List;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Aba;
-import br.univali.ps.ui.AbaAjuda;
-import br.univali.ps.ui.AbaCodigoFonte;
-import br.univali.ps.ui.AbaConsole;
-
-import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
