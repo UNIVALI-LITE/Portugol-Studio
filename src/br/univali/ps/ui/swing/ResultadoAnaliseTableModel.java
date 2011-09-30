@@ -1,15 +1,8 @@
-
 package br.univali.ps.ui.swing;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import javax.swing.table.AbstractTableModel;
-
-/**
- *
- * @author Luiz Fernando Noschang
- * 
- */
 
 public final class ResultadoAnaliseTableModel extends AbstractTableModel
 {
@@ -27,7 +20,7 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
     @Override
     public int getColumnCount()
     {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -42,8 +35,7 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
             if (coluna == 1) return erroAnalise.getLinha();
             else
             if (coluna == 2) return erroAnalise.getColuna();
-            else
-            if (coluna == 3) return "Detalhes...";
+            
         }
         
         return null;
@@ -57,8 +49,7 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
         if (indice == 1) return "Linha";        
         else
         if (indice == 2) return "Coluna";
-        else 
-        if (indice == 3) return "Detalhes";
+        
         
         return null;
     }

@@ -9,6 +9,7 @@ import br.univali.ps.ui.util.IconFactory;
 import javax.swing.JTabbedPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import sun.tools.tree.ThisExpression;
 
 public class AbaConsole extends Aba implements Saida, Entrada {
 
@@ -24,8 +25,10 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png"));
         initComponents();
         console.setComponentPopupMenu(menuConsole);
+        this.menuConsoleLimpar.setText("limpar");
+        this.menuConsoleCopiar.setText("Copiar");
         console.getDocument().addDocumentListener(new DocumentListener() {
-
+        
             @Override
             public void insertUpdate(DocumentEvent e) {
                 atualizarItensMenuConsole();

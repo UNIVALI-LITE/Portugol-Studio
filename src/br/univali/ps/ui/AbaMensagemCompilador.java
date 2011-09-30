@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTabbedPane;
-import javax.swing.table.TableModel;
 
 public class AbaMensagemCompilador extends Aba {
 
@@ -42,14 +41,6 @@ public class AbaMensagemCompilador extends Aba {
 
         setLayout(new java.awt.BorderLayout());
 
-        tabelaMensagens.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
         jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
 
         add(jScrollPaneTabelaMensagens, java.awt.BorderLayout.CENTER);

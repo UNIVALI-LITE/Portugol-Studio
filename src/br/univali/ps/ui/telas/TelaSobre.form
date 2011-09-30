@@ -18,30 +18,55 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-32,0,0,2,88"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-32,0,0,3,9"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="rotuloBanner">
+    <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/imagens/banner_java.jpg"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[777, 95]"/>
         </Property>
-        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[0, 95]"/>
-        </Property>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[300, 95]"/>
-        </Property>
-        <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-          <BorderConstraints direction="First"/>
+          <BorderConstraints direction="North"/>
         </Constraint>
       </Constraints>
-    </Component>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <Component class="br.univali.ps.ui.imagens.Logo" name="logo1">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="20" y="0" width="250" height="80"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="rotuloBanner">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/univali/ps/ui/imagens/fundo_gradiente.jpg"/>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[0, 95]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[300, 95]"/>
+            </Property>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="0" y="0" width="-1" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+      </SubComponents>
+    </Container>
     <Container class="javax.swing.JPanel" name="painelCentro">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -75,7 +100,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;           &lt;head&gt;&#xa;                      &lt;style&gt;&#xa;                                 p&#xa;                                 {&#xa;                                            margin-bottom: 8px;&#xa;                                 }&#xa;&#x9;&#x9;&#x9;&#xa;                                 .atributo&#xa;                                 {&#xa;                                            color: black;&#x9;&#xa;                                            font-weight : bold;&#xa;                                 }&#xa;&#x9;&#x9;&#x9;&#xa;                                 .valor&#xa;                                 {&#xa;                                            color: green;&#xa;                                            font-weight: bold;&#xa;                                 }&#xa;&#x9;a&#xa;&#x9;{&#xa;&#x9;      color: blue;&#xa;&#x9;}&#xa;                      &lt;/style&gt;&#xa;           &lt;/head&gt;&#xa;           &lt;body&gt;&#xa;                      &lt;p&gt;&#xa;                                 &lt;span class=&quot;atributo&quot;&gt;Nome do aplicativo: &lt;/span&gt;&#xa;                                 &lt;span class=&quot;valor&quot;&gt;PortugolStudio&lt;/span&gt;&#xa;                      &lt;/p&gt;&#xa;                      &lt;p&gt;&#xa;                                 &lt;span class=&quot;atributo&quot;&gt;Vers&#xe3;o: &lt;/span&gt; &#xa;                                 &lt;span class=&quot;valor&quot;&gt;1.0&lt;/span&gt;&#xa;                      &lt;/p&gt;&#xa;                      &lt;p&gt;&#xa;                                 &lt;span class=&quot;atributo&quot;&gt;Linguagem de Programa&#xe7;&#xe3;o: &lt;/span&gt;&#xa;                                 &lt;span class=&quot;valor&quot;&gt;Java &lt;sup style=&quot;font-size: 9;&quot;&gt;TM&lt;/sup&gt;&lt;/span&gt;&#xa;                      &lt;/p&gt;&#xa;                      &lt;p&gt;&#xa;                                 &lt;span class=&quot;atributo&quot;&gt;Ambiente de Programa&#xe7;&#xe3;o: &lt;/span&gt;&#xa;                                 &lt;span class=&quot;valor&quot;&gt;Netbeans IDE 7.0&lt;/span&gt;&#xa;                      &lt;/p&gt;&#xa;                      &lt;p&gt;&#xa;                                 &lt;span class=&quot;atributo&quot;&gt;Colaboradores: &lt;/span&gt;&#xa;&#x9;&lt;ul&gt;&#xa;&#x9;         &lt;li&gt;&#xa;                                                  &lt;span class=&quot;valor&quot;&gt;&#xa;                                                           Andr&#xe9; Luis Alice Raabe ( &lt;a href=&apos;mailto:raabe@univali.br&apos;&gt;raabe@univali.br&lt;/a&gt; )&#xa;&#x9;               &lt;/span&gt;&#xa;                                            &lt;/li&gt;&#xa;&#x9;         &lt;li&gt;&#xa;                                                  &lt;span class=&quot;valor&quot;&gt;&#xa;                                                           Fillipi Domingos Pelz ( &lt;a href=&apos;mailto:fillipi.pelz@gmail.com&apos;&gt;fillipi.pelz@gmail.com&lt;/a&gt; )&#xa;                                                  &lt;/span&gt;&#xa;                                             &lt;/li&gt;&#xa;&#x9;         &lt;li&gt;&lt;span class=&quot;valor&quot;&gt;Giordana Maria da Costa Valle&lt;/span&gt;&lt;/li&gt;&#xa;&#x9;         &lt;li&gt;&#xa;                                                  &lt;span class=&quot;valor&quot;&gt;&#xa;                                                          Luiz Fernando Noschang ( &lt;a href=&apos;mailto:noschang@univali.br&apos;&gt;noschang@univali.br&lt;/a&gt; )&#xa;                                                  &lt;/span&gt;&#xa;                                             &lt;/li&gt;&#xa;&#x9;&lt;/ul&gt;&#xa;                      &lt;/p&gt;&#xa;           &lt;/body&gt;&#xa;&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;            &lt;head&gt;                       &lt;style&gt;                                  p                                  {                                             margin-bottom: 8px;                                  } &#x9;&#x9;&#x9;                                  .atributo                                  {                                             color: black;&#x9;                                             font-weight : bold;                                  } &#x9;&#x9;&#x9;                                  .valor                                  {                                             color: green;                                             font-weight: bold;                                  } &#x9;a &#x9;{ &#x9;      color: blue; &#x9;}                       &lt;/style&gt;            &lt;/head&gt;            &lt;body&gt;                       &lt;p&gt;                                  &lt;span class=&quot;atributo&quot;&gt;Nome do aplicativo: &lt;/span&gt;                                  &lt;span class=&quot;valor&quot;&gt;PortugolStudio&lt;/span&gt;                       &lt;/p&gt;                       &lt;p&gt;                                  &lt;span class=&quot;atributo&quot;&gt;Vers&#xe3;o: &lt;/span&gt;                                   &lt;span class=&quot;valor&quot;&gt;1.0&lt;/span&gt;                       &lt;/p&gt;                       &lt;p&gt;                                  &lt;span class=&quot;atributo&quot;&gt;Linguagem de Programa&#xe7;&#xe3;o: &lt;/span&gt;                                  &lt;span class=&quot;valor&quot;&gt;Java &lt;sup style=&quot;font-size: 9;&quot;&gt;TM&lt;/sup&gt;&lt;/span&gt;                       &lt;/p&gt;                       &lt;p&gt;                                  &lt;span class=&quot;atributo&quot;&gt;Ambiente de Programa&#xe7;&#xe3;o: &lt;/span&gt;                                  &lt;span class=&quot;valor&quot;&gt;Netbeans IDE 7.0&lt;/span&gt;                       &lt;/p&gt;                       &lt;p&gt;                                  &lt;span class=&quot;atributo&quot;&gt;Colaboradores: &lt;/span&gt; &#x9;&lt;ul&gt; &#x9;         &lt;li&gt;                                                   &lt;span class=&quot;valor&quot;&gt;                                                            Andr&#xe9; Luis Alice Raabe ( &lt;a href=&apos;mailto:raabe@univali.br&apos;&gt;raabe@univali.br&lt;/a&gt; ) &#x9;               &lt;/span&gt;                                             &lt;/li&gt; &#x9;         &lt;li&gt;                                                   &lt;span class=&quot;valor&quot;&gt;                                                            Fillipi Domingos Pelz ( &lt;a href=&apos;mailto:fillipi.pelz@gmail.com&apos;&gt;fillipi.pelz@gmail.com&lt;/a&gt; )                                                   &lt;/span&gt;                                              &lt;/li&gt; &#x9;         &lt;li&gt;&lt;span class=&quot;valor&quot;&gt;Giordana Maria da Costa Valle&lt;/span&gt;&lt;/li&gt; &#x9;         &lt;li&gt;                                                   &lt;span class=&quot;valor&quot;&gt;                                                           Luiz Fernando Noschang ( &lt;a href=&apos;mailto:noschang@univali.br&apos;&gt;noschang@univali.br&lt;/a&gt; )                                                   &lt;/span&gt;                                              &lt;/li&gt; &#x9;&lt;/ul&gt;                       &lt;/p&gt;            &lt;/body&gt; &lt;/html&gt;"/>
                 <Property name="verticalAlignment" type="int" value="1"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -97,7 +122,12 @@
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/imagens/duke.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/open_source.png"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder bottom="1" left="1" right="35" top="1"/>
+                  </Border>
                 </Property>
               </Properties>
               <Constraints>

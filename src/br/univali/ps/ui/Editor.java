@@ -45,6 +45,7 @@ public class Editor extends JPanel{
                 textArea.setCaretPosition(textArea.getCaretPosition() + 1);
             }
             textArea.setCaretPosition(textArea.getCaretPosition() + coluna);
+            textArea.requestFocus();
         } catch (BadLocationException ex) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
