@@ -30,10 +30,10 @@ public abstract class Aba extends JPanel{
         listeners = new ArrayList<AbaListener>();
         this.painelTabulado = painelTabulado;
         cabecalho = criarCabecalho();
-        int posicao = painelTabulado.getComponentCount();
-        if (posicao > 0)
-            posicao = 1;
-        this.painelTabulado.add(this,posicao);
+        //int posicao = painelTabulado.getComponentCount();
+        //if (posicao > 0)
+        //    posicao = 1;
+        this.painelTabulado.add(this);
         this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
         this.painelTabulado.setSelectedComponent(this);
     }

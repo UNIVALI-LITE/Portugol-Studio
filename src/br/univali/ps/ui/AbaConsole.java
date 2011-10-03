@@ -219,7 +219,7 @@ public class AbaConsole extends Aba implements Saida, Entrada {
                swingTerminado = true;
             }
         }
-        return stringBuffer.toString();
+        return obterValorEntrada(stringBuffer.toString());
     }
 
     private Object obterValorEntrada(String entrada) {

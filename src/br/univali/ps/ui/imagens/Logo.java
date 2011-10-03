@@ -36,7 +36,7 @@ public class Logo extends javax.swing.JPanel {
 
         setOpaque(false);
 
-        portugoStudio.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
+        portugoStudio.setFont(new java.awt.Font("Lucida Grande", 1, 24));
         portugoStudio.setForeground(new java.awt.Color(255, 255, 255));
         portugoStudio.setText("{PortugolStudio} ");
 
@@ -44,7 +44,7 @@ public class Logo extends javax.swing.JPanel {
 
         versao.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("1.0");
+        versao.setText("1.0.1");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
