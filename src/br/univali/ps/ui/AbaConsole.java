@@ -13,7 +13,6 @@ import javax.swing.event.DocumentListener;
 
 public class AbaConsole extends Aba implements Saida, Entrada {
 
-    private boolean swingTerminado = false;
     private StringBuffer stringBuffer;
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
@@ -39,7 +38,6 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         
             @Override
             public void insertUpdate(DocumentEvent e) {
-                System.out.println(e.getDocument());
                 atualizarItensMenuConsole();
                 if (stringBuffer != null) {
                     String texto = null;
@@ -51,7 +49,6 @@ public class AbaConsole extends Aba implements Saida, Entrada {
 
                     if (texto.equals("\n")) {
                         console.setEditable(false);
-                        swingTerminado = true;
                     } else {
                         stringBuffer.append(texto);
                     }
@@ -170,55 +167,55 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         console.setText(null);        
     }
     
-    public void escreveConsole(String texto)
+    public void escreveConsole(String texto) throws Exception
     {
-        console.append(texto);
+        ManipuladorSaida manipuladorSaida = new ManipuladorSaida(texto);
+        manipuladorSaida.execute();
+        manipuladorSaida.get();
     }
 
     @Override
-    public void escrever(String valor) 
+    public void escrever(String valor) throws Exception
     {
         escreveConsole(valor);
     }
 
     @Override
-    public void escrever(boolean valor) 
+    public void escrever(boolean valor)  throws Exception
     {
         escreveConsole((valor) ? "verdadeiro" : "falso");
     }
 
     @Override
-    public void escrever(int valor) {
+    public void escrever(int valor) throws Exception 
+    {
         escreveConsole(String.valueOf(valor));
     }
 
     @Override
-    public void escrever(double valor) {
+    public void escrever(double valor) throws Exception 
+    {
         escreveConsole(String.valueOf(valor));
     }
 
     @Override
-    public void escrever(char valor) {
+    public void escrever(char valor) throws Exception
+    {
         escreveConsole(String.valueOf(valor));
     }
 
     @Override
-    public Object ler(TipoDado tipoDado) {
+    public Object ler(TipoDado tipoDado) throws Exception {
         this.stringBuffer = new StringBuffer();
         
         this.tipoDado = tipoDado;
         console.setEditable(true);
         console.requestFocus();
         console.setCaretPosition(console.getText().length());
-        new ManipuladorConsole().execute();
+        ManipuladorEntrada manipuladorConsole = new ManipuladorEntrada();
+        manipuladorConsole.execute();
+        manipuladorConsole.get();
         
-        while (!swingTerminado) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-               swingTerminado = true;
-            }
-        }
         return obterValorEntrada(stringBuffer.toString());
     }
 
@@ -245,25 +242,35 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         }
     }
     
-    private class ManipuladorConsole extends SwingWorker {
+    private class ManipuladorEntrada extends SwingWorker {
 
-        public ManipuladorConsole() {
-            swingTerminado = false;
-        }
-
-        
-        
         @Override
         protected Object doInBackground() throws Exception {
             
-            while (!swingTerminado) {
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ex) {
-                   swingTerminado = true;
-                }
-            }
+            //while (!swingTerminado) {
+            //    try {
+            //        Thread.sleep(10);
+            //    } catch (InterruptedException ex) {
+            //       swingTerminado = true;
+            //    }
+            //}
             return null;
+        }        
+
+    }
+    
+    private class ManipuladorSaida extends SwingWorker {
+
+        String valorSaida;
+
+        public ManipuladorSaida(String valorSaida) {
+            this.valorSaida = valorSaida;
+        }
+        
+        @Override
+        protected Object doInBackground() throws Exception {
+            console.append(valorSaida);
+            return true;
         }        
 
     } 
