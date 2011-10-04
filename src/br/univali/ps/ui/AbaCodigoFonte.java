@@ -41,13 +41,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         super(painelTabulado);
         initComponents();
         configurarAcoes();
-        editor.getPortugolDocumento().addPortugolDocumentoListener(this);
+        editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         acaoSalvarArquivo.configurar(editor.getPortugolDocumento());
         acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
-        adicionarAbaListener(this);
+        adicionarAbaListener(AbaCodigoFonte.this);
         jPainelSeparador.setDividerLocation(480);
         this.addComponentListener(new AdaptadorComponente());
-        painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(this);
+        painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(AbaCodigoFonte.this);
         btnExecutar.setEnabled(true);
     }
 
@@ -315,15 +315,30 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
 
     @Override
-    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
+    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao)
+    {
+        try
         {
-            painelSaida.getConsole().escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
-        } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
-            painelSaida.getConsole().escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
-        } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
-            painelSaida.getConsole().escrever("\nO programa foi interrompido!");
+            AbaConsole console = painelSaida.getConsole();
+            
+            if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
+                console.escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+            
+            else 
+            
+            if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
+                console.escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
+            
+            else 
+                
+            if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
+                console.escrever("\nO programa foi interrompido!");
         }
+        catch (Exception e)
+        {
+            // Nada a fazer
+        }
+        
         btnExecutar.setEnabled(true);
         btnInterromper.setEnabled(false);
         painelSaida.getConsole().setExecutandoPrograma(false);
