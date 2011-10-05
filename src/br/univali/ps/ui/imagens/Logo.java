@@ -44,7 +44,7 @@ public class Logo extends javax.swing.JPanel {
 
         versao.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("1.0.1");
+        versao.setText("1.01");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -56,7 +56,7 @@ public class Logo extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .add(10, 10, 10)
                 .add(versao))
-            .add(portugoStudio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 220, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+            .add(portugoStudio, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
