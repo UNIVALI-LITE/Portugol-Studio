@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
@@ -17,9 +18,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-public class TelaPrincipal extends JFrame implements PainelTabuladoListener{
-
-    
+public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
+{   
     private JFileChooser dialogoEscolhaArquivo = new JFileChooser();
     private AcaoNovoArquivo acaoNovoArquivo = null;
     private AcaoAbrirArquivo abrirArquivo = null;
@@ -44,7 +44,10 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener{
         
     }
 
-    public TelaPrincipal()  {
+    public TelaPrincipal()  
+    {
+        Thread.setDefaultUncaughtExceptionHandler(this);
+        
         try {
         this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS +"/light-bulb-code.png")));
         } catch (IOException ioe) {} 
@@ -340,5 +343,18 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         public void windowClosing(WindowEvent we) {
             fecharAplicativo();
         }
+    }
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) 
+    {
+        if ((e instanceof ClassNotFoundException) || (e instanceof NoClassDefFoundError))
+        {
+            String mensagem = "Uma das bibliotecas ou classes necessárias para o funcionamento do PortugolStudio não foi encontrada.\nO PortugolStudio será enecerrado.";
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, e, ExcecaoAplicacao.Tipo.ERRO));
+            System.exit(1);
+        }
+        
+        else PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(e, ExcecaoAplicacao.Tipo.ERRO));
     }
 }
