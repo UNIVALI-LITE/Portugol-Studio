@@ -230,6 +230,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     @Override
     public boolean fechandoAba(Aba aba) 
     {
+        if ((programa != null) && programa.isExecutando())
+        {
+            JOptionPane.showMessageDialog(this, String.format("O programa desta aba (%s) ainda está em execução.\nEncerre o programa antes de fechar a aba.", aba.cabecalho.getTitulo()), "Aviso", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
         if (editor.getPortugolDocumento().isChanged()) 
         {
             int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -237,29 +243,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             if (resp == JOptionPane.YES_OPTION) acaoSalvarArquivo.actionPerformed(null);
             else 
             if (resp == JOptionPane.CANCEL_OPTION) return false;
-        } 
-        
-        /*
-         * Por enquanto vamos forçar o programa a encerrar antes de fechar a aba.
-         * Mais pra frente podemos fazer esta pergunta ao usuário.
-         * 
-         */
-        
-        if ((programa != null) && (programa.isExecutando()))
-            programa.interromper();
-        /*
-        if ((programa != null) && programa.isExecutando())
-        {
-            int resp = JOptionPane.showConfirmDialog(this, "O programa ainda está em execução, deseja encerrar o programa e sair?", "Confirmar", JOptionPane.YES_NO_OPTION);
-            
-            if (resp == JOptionPane.YES_OPTION)
-            {
-                programa.interromper();
-                return true;
-            }
-            else return false;
-        }
-        */
+        }        
             
         return true;
     }

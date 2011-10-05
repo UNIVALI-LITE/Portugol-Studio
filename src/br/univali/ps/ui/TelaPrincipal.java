@@ -113,7 +113,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniAbout = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -300,7 +300,8 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     public void configurarBotoesEditar() {
     }
     
-    private void fecharAplicativo() {
+    private void fecharAplicativo() 
+    {
         painelTabulado.fecharTodasAbas(AbaCodigoFonte.class);
 
         if (!painelTabulado.temAbaAberta(AbaCodigoFonte.class))

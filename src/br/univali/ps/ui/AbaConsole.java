@@ -24,7 +24,7 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png"));
         initComponents();
         console.setComponentPopupMenu(menuConsole);
-        this.menuConsoleLimpar.setText("limpar");
+        this.menuConsoleLimpar.setText("Limpar");
         this.menuConsoleCopiar.setText("Copiar");
         console.addComponentListener(new ComponentAdapter() {
 
@@ -77,6 +77,14 @@ public class AbaConsole extends Aba implements Saida, Entrada {
      * Para que o menu seja atualizado corretamente ao terminar a
      * execução do programa, o método setExecutandoPrograma()
      * chama manualmente o método atualizarItensMenuConsole()
+     * 
+     * Testei atualizar usando um SwingWorker. Funciona perfeitamente,
+     * porém deixa o escreva muito mais lento. Por isso, optei por deixar
+     * como está, atualizando somente no final da execução.
+     * 
+     * Talvez possamos remover o método setExecutando() e tornar o 
+     * método atualizarItensMenuConsole() público para acessá-lo nos
+     * métodos execucaoIniciada() e execucaoEncerrada()
      * 
      */
     
