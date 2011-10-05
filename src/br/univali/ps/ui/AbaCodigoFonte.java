@@ -16,15 +16,23 @@ import br.univali.ps.ui.acoes.AcaoRecortar;
 import br.univali.ps.ui.acoes.AcaoRefazer;
 import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
 import br.univali.ps.ui.acoes.FabricaAcao;
+import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao {
+public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao 
+{
+    private static final String template = carregarTemplate();
 
     private Programa programa = null;
     private AcaoSalvarArquivo acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
@@ -49,6 +57,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         this.addComponentListener(new AdaptadorComponente());
         painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(AbaCodigoFonte.this);
         btnExecutar.setEnabled(true);
+        carregarAlgoritmoPadrao();
     }
 
     public void setPortugolDocumento(PortugolDocumento portugolDocumento) {
@@ -383,4 +392,34 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         return acaoSalvarArquivo;
     }
     
+    private void carregarAlgoritmoPadrao()
+    {
+        try 
+        {
+            int posicaoCursor = template.indexOf("${cursor}");
+            String algoritmo = template.replace("${cursor}", "");
+            PortugolDocumento a;
+            
+            Document documento = editor.getPortugolDocumento();
+            documento.insertString(documento.getLength(), algoritmo, null);
+            
+            editor.getTextArea().setCaretPosition(posicaoCursor);
+        }
+        catch (BadLocationException ex) 
+        {
+            
+        }
+    }
+    
+    private static String carregarTemplate()
+    {
+        try
+        {
+            return FileHandle.read(ClassLoader.getSystemResourceAsStream("br/univali/ps/dominio/template.por"));
+        }
+        catch (Exception e)
+        {
+            return "";
+        }
+    }
 }

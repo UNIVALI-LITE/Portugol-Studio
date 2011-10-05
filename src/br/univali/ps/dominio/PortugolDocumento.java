@@ -1,17 +1,21 @@
 package br.univali.ps.dominio;
 
+import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 
 public class PortugolDocumento extends RSyntaxDocument {
-
+    
+    
     private boolean changed = false;
     private File file = null;
     private List<PortugolDocumentoListener> listeners = new ArrayList<PortugolDocumentoListener>();
@@ -42,7 +46,7 @@ public class PortugolDocumento extends RSyntaxDocument {
                 map.put("text/por", "br.univali.ps.dominio.PortugolLanguage");
                 return map;
             }
-        }, "text/por");
+        }, "text/por");        
     }
 
     public File getFile() {
@@ -86,5 +90,4 @@ public class PortugolDocumento extends RSyntaxDocument {
             portugolDocumentoListener.nomeArquivoAlterado(nome);
         }
     }
-
 }

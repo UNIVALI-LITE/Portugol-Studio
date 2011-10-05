@@ -102,7 +102,7 @@ public class Editor extends JPanel{
 		return provider;
 
     }
-    
+
     
     public String explicacaoComandoEnquanto(){
         return "<body>	<h2> Comando Enquanto </h2> <p class='subtitulo'>"
@@ -126,5 +126,9 @@ public class Editor extends JPanel{
                 + "&lt;intru&ccedil;&atilde;o,instru&ccedil;&otilde;es&gt; <br>"
                 + "&nbsp; <b>}</b> <br>	</td></tr></table>";
     }
-    
+
+    public RSyntaxTextArea getTextArea() 
+    {
+        return textArea;
+    }
 }

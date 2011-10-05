@@ -7,9 +7,12 @@ package br.univali.ps.ui.util;
 import br.univali.ps.ui.TelaPrincipal;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,40 +65,49 @@ public class FileHandle
         {
             throw new IllegalArgumentException("Acesso negado ao arquivo. Você não possuí permissão de leitura para esse arquivo");
         }
+        
         return read(file);
     }
-
+    
     private static String read(File file) throws Exception
     {
-        StringBuffer reading = new StringBuffer();
+        return read(new FileInputStream(file));
+    }
+    
+    public static String read(InputStream inputStream) throws Exception
+    {
+        StringBuilder reading = new StringBuilder();
+        BufferedReader reader = null;
+        
+        try
         {
-            BufferedReader reader = null;
+            String line = null;
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            
+            while ((line = reader.readLine()) != null)
+            {
+                reading.append(line);
+                reading.append("\n");
+            }
+            
+            reader.close();
+            
+        } 
+        catch (IOException ex)
+        {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
             try
             {
-                String line;
-                reader = new BufferedReader(new FileReader(file));
-                while ((line = reader.readLine()) != null)
-                {
-                    reading.append(line + "\n");
-                }
                 reader.close();
             } catch (IOException ex)
             {
                 Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            } finally
-            {
-                try
-                {
-                    reader.close();
-                } catch (IOException ex)
-                {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         }
-
+        
         return reading.toString();
     }
-
-  
 }
