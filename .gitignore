@@ -8,7 +8,7 @@ nbproject
 dist
 manifest.mf
 .DS_Store
-lib/CopyLibs/
+lib/CopyLibs
 lib/nblibraries.properties
 examples/teste.por
 teste.por
