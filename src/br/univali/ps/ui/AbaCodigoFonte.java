@@ -139,7 +139,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnColar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramenta.add(btnColar);
 
-        btnComentar.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        btnComentar.setFont(new java.awt.Font("Tahoma", 2, 11));
         btnComentar.setText("//x=2");
         btnComentar.setToolTipText("Comentar o código selecionado");
         btnComentar.setFocusPainted(false);
@@ -203,7 +203,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         });
         barraFerramenta.add(btnInterromper);
 
-        painelParametros.setPreferredSize(new java.awt.Dimension(128, 20));
+        painelParametros.setPreferredSize(new java.awt.Dimension(250, 20));
         painelParametros.setLayout(new javax.swing.BoxLayout(painelParametros, javax.swing.BoxLayout.LINE_AXIS));
         painelParametros.add(filler4);
 
