@@ -53,7 +53,6 @@
         <Component class="javax.swing.JTextArea" name="console">
           <Properties>
             <Property name="columns" type="int" value="20"/>
-            <Property name="editable" type="boolean" value="false"/>
             <Property name="rows" type="int" value="5"/>
           </Properties>
         </Component>

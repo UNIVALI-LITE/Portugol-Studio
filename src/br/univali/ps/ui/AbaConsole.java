@@ -10,13 +10,18 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.PlainDocument;
 
 public class AbaConsole extends Aba implements Saida, Entrada {
 
     private StringBuffer stringBuffer;
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
-
+    private boolean lendo;
+    
     public AbaConsole(JTabbedPane painelTabulado) {
         super(painelTabulado);
         cabecalho.setBotaoFecharVisivel(false);
@@ -26,6 +31,7 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         console.setComponentPopupMenu(menuConsole);
         this.menuConsoleLimpar.setText("limpar");
         this.menuConsoleCopiar.setText("Copiar");
+        console.setDocument(new DocumentoConsole());
         console.addComponentListener(new ComponentAdapter() {
 
             @Override
@@ -39,21 +45,6 @@ public class AbaConsole extends Aba implements Saida, Entrada {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 atualizarItensMenuConsole();
-                if (stringBuffer != null) {
-                    String texto = null;
-
-                    try {
-                        texto = console.getText(e.getOffset(), e.getLength());
-                    } catch (Exception ex) {
-                    }
-
-                    if (texto.equals("\n")) {
-                        console.setEditable(false);
-                    } else {
-                        stringBuffer.append(texto);
-                    }
-
-                }
             }
 
             @Override
@@ -139,7 +130,6 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         setLayout(new java.awt.BorderLayout());
 
         console.setColumns(20);
-        console.setEditable(false);
         console.setRows(5);
         jScrollPane1.setViewportView(console);
 
@@ -209,14 +199,11 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         this.stringBuffer = new StringBuffer();
         
         this.tipoDado = tipoDado;
-        console.setEditable(true);
-        console.requestFocus();
-        console.setCaretPosition(console.getText().length());
-        ManipuladorEntrada manipuladorConsole = new ManipuladorEntrada();
-        manipuladorConsole.execute();
-        manipuladorConsole.get();
+        System.out.println(console.getText().length());
+        ManipuladorEntrada manipuladorEntrada = new ManipuladorEntrada();
+        manipuladorEntrada.execute();
         
-        return obterValorEntrada(stringBuffer.toString());
+        return obterValorEntrada((String)manipuladorEntrada.get());
     }
 
     private Object obterValorEntrada(String entrada) {
@@ -244,18 +231,34 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     
     private class ManipuladorEntrada extends SwingWorker {
 
+        public ManipuladorEntrada() {
+            lendo = true;
+            console.setEditable(true);
+            console.requestFocus();
+            console.setCaretPosition(console.getText().length());
+        }
+        
+        
+        
         @Override
         protected Object doInBackground() throws Exception {
             
-            //while (!swingTerminado) {
-            //    try {
-            //        Thread.sleep(10);
-            //    } catch (InterruptedException ex) {
-            //       swingTerminado = true;
-            //    }
-            //}
-            return null;
-        }        
+            while (lendo) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {
+                   lendo = false;
+                }
+            }
+            return stringBuffer.toString();
+        }
+
+        @Override
+        protected void done() {
+            console.setEditable(false);
+            
+        }
+        
 
     }
     
@@ -273,5 +276,38 @@ public class AbaConsole extends Aba implements Saida, Entrada {
             return true;
         }        
 
-    } 
+    }
+    
+    private class DocumentoConsole extends PlainDocument{
+        
+        private int limitOffset = 0;
+
+        @Override
+        public void insertString(int i, String string, AttributeSet as) throws BadLocationException {
+            super.insertString(i, string, as);
+            if (!lendo)
+                limitOffset = getLength();
+        }
+        
+        @Override
+        public void replace( int i, int i1, String string, AttributeSet as) throws BadLocationException {
+            if (string.equals("\n")){
+               lendo = false;
+            } else {
+                if (lendo)
+                    stringBuffer.append(string);
+                super.replace(i, i1, string, as);
+            }
+            
+            if (!lendo)
+                limitOffset = getLength();
+        }
+
+        @Override
+        public void remove( int i, int i1) throws BadLocationException {
+            if (limitOffset <= i)
+                super.remove(i, i1);
+        }
+
+    }
 }

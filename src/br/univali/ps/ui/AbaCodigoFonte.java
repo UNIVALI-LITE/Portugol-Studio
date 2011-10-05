@@ -20,6 +20,8 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -318,11 +320,23 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
         if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
         {
-            painelSaida.getConsole().escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+            try {
+                painelSaida.getConsole().escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+            } catch (Exception ex) {
+                Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
-            painelSaida.getConsole().escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
+            try {
+                painelSaida.getConsole().escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
+            } catch (Exception ex) {
+                Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
-            painelSaida.getConsole().escrever("\nO programa foi interrompido!");
+            try {
+                painelSaida.getConsole().escrever("\nO programa foi interrompido!");
+            } catch (Exception ex) {
+                Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         btnExecutar.setEnabled(true);
         btnInterromper.setEnabled(false);
