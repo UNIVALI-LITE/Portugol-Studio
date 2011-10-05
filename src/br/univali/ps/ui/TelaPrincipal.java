@@ -355,7 +355,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, e, ExcecaoAplicacao.Tipo.ERRO));
             System.exit(1);
         }
-        
+        else if (e instanceof IllegalArgumentException){e.printStackTrace();}
         else PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(e, ExcecaoAplicacao.Tipo.ERRO));
     }
 }

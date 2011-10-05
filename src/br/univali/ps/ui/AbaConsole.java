@@ -6,21 +6,20 @@ import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.PlainDocument;
 
 public class AbaConsole extends Aba implements Saida, Entrada {
 
-    private StringBuffer stringBuffer;
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
-    private boolean lendo;
     
     public AbaConsole(JTabbedPane painelTabulado) {
         super(painelTabulado);
@@ -145,7 +144,11 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuConsoleLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsoleLimparActionPerformed
-        limpar();
+        try {
+            limpar();
+        } catch (Exception ex) {
+            Logger.getLogger(AbaConsole.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_menuConsoleLimparActionPerformed
 
     private void menuConsoleCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsoleCopiarActionPerformed
@@ -160,9 +163,11 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void limpar() 
+    public void limpar() throws Exception 
     {
-        console.setText(null);        
+        ManipuladorSaida saida = new ManipuladorSaida(null);
+        saida.execute();
+        saida.get();
     }
     
     public void escreveConsole(String texto) throws Exception
@@ -204,14 +209,23 @@ public class AbaConsole extends Aba implements Saida, Entrada {
 
     @Override
     public Object ler(TipoDado tipoDado) throws Exception {
-        this.stringBuffer = new StringBuffer();
+        
+        console.setEditable(true);
+        console.setFocusable(true);
+        console.requestFocus();
+        console.setCaretPosition(console.getText().length());
         
         this.tipoDado = tipoDado;
-        System.out.println(console.getText().length());
         ManipuladorEntrada manipuladorEntrada = new ManipuladorEntrada();
         manipuladorEntrada.execute();
         
-        return obterValorEntrada((String)manipuladorEntrada.get());
+        String entrada = (String)manipuladorEntrada.get();
+        
+        
+        console.setEditable(false);
+        console.setFocusable(false);
+        
+        return obterValorEntrada(entrada);
     }
 
     private Object obterValorEntrada(String entrada) {
@@ -238,33 +252,23 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     }
     
     private class ManipuladorEntrada extends SwingWorker {
-
+        
         public ManipuladorEntrada() {
-            lendo = true;
-            console.setEditable(true);
-            console.requestFocus();
-            console.setCaretPosition(console.getText().length());
+            ((DocumentoConsole)console.getDocument()).setLendo(true);
         }
-        
-        
         
         @Override
         protected Object doInBackground() throws Exception {
             
-            while (lendo) {
+            while (((DocumentoConsole)console.getDocument()).isLendo()) {
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException ex) {
-                   lendo = false;
+                   ((DocumentoConsole)console.getDocument()).setLendo(false);
+                   throw ex;
                 }
             }
-            return stringBuffer.toString();
-        }
-
-        @Override
-        protected void done() {
-            console.setEditable(false);
-            
+            return ((DocumentoConsole)console.getDocument()).getValorLido();
         }
         
 
@@ -273,37 +277,54 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     private class ManipuladorSaida extends SwingWorker {
 
         String valorSaida;
-
+        
         public ManipuladorSaida(String valorSaida) {
             this.valorSaida = valorSaida;
         }
         
         @Override
         protected Object doInBackground() throws Exception {
-            console.append(valorSaida);
+            if (valorSaida != null) {
+                console.append(valorSaida);
+            } else {
+                console.setText(null);
+            }
             return true;
         }        
-
     }
     
     private class DocumentoConsole extends PlainDocument{
         
         private int limitOffset = 0;
 
-        @Override
-        public void insertString(int i, String string, AttributeSet as) throws BadLocationException {
-            super.insertString(i, string, as);
-            if (!lendo)
+        private String valor;
+        
+        private boolean lendo = false;
+
+        public boolean isLendo() {
+            return lendo;
+        }
+        
+        public void setLendo(boolean lendo) {
+            this.lendo = lendo;
+            
+            if (lendo)
                 limitOffset = getLength();
+            else 
+                limitOffset = 0;
         }
         
         @Override
         public void replace( int i, int i1, String string, AttributeSet as) throws BadLocationException {
-            if (string.equals("\n")){
+            if (string == null){
+                remove(0, getLength());
+                return;
+            }
+            if ( lendo && string.equals("\n") ){
+                System.out.println(getLength());
+               valor = getText(limitOffset, getLength() - limitOffset);
                lendo = false;
             } else {
-                if (lendo)
-                    stringBuffer.append(string);
                 super.replace(i, i1, string, as);
             }
             
@@ -313,8 +334,12 @@ public class AbaConsole extends Aba implements Saida, Entrada {
 
         @Override
         public void remove( int i, int i1) throws BadLocationException {
-            if (limitOffset <= i)
+            if (!lendo || limitOffset <= i)
                 super.remove(i, i1);
+        }
+
+        private String getValorLido() {
+            return valor;
         }
 
     }

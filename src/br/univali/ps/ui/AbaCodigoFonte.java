@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.acoes.AcaoColar;
 import br.univali.ps.ui.acoes.AcaoCopiar;
 import br.univali.ps.ui.acoes.AcaoDesfazer;
@@ -57,6 +58,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(AbaCodigoFonte.this);
         btnExecutar.setEnabled(true);
         carregarAlgoritmoPadrao();
+        this.btnComentar.setVisible(false);
+        this.btnDescomentar.setVisible(false);
     }
 
     public void setPortugolDocumento(PortugolDocumento portugolDocumento) {
@@ -425,7 +428,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnInterromper.setEnabled(true);
         
         painelSaida.getConsole().selecionar();
-        painelSaida.getConsole().limpar();
+        try {
+            painelSaida.getConsole().limpar();
+        } catch (Exception ex) {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+        }
         painelSaida.getConsole().setExecutandoPrograma(true);
     }
 
