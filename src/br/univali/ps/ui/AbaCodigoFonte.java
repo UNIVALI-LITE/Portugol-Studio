@@ -72,11 +72,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jSeparador2 = new javax.swing.JToolBar.Separator();
         btnExecutar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(5, 32767));
-        lblParametros = new javax.swing.JLabel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(5, 32767));
+        jPanel1 = new javax.swing.JPanel();
+        lblParametros = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         txtParametros = new javax.swing.JTextField();
-        jSeparador3 = new javax.swing.JToolBar.Separator();
+        jPanel2 = new javax.swing.JPanel();
         jPainelSeparador = new javax.swing.JSplitPane();
         painelSaida = new br.univali.ps.ui.PainelSaida();
         editor = new br.univali.ps.ui.Editor();
@@ -155,15 +156,21 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
         });
         barraFerramenta.add(btnInterromper);
-        barraFerramenta.add(filler1);
-
-        lblParametros.setText("Parâmetros:");
-        barraFerramenta.add(lblParametros);
         barraFerramenta.add(filler2);
 
-        txtParametros.setPreferredSize(new java.awt.Dimension(200, 28));
-        barraFerramenta.add(txtParametros);
-        barraFerramenta.add(jSeparador3);
+        jPanel1.setPreferredSize(new java.awt.Dimension(128, 20));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+
+        lblParametros.setText("Parâmetros:");
+        jPanel1.add(lblParametros);
+        jPanel1.add(filler1);
+
+        txtParametros.setMaximumSize(new java.awt.Dimension(2147483647, 20));
+        txtParametros.setPreferredSize(new java.awt.Dimension(200, 20));
+        jPanel1.add(txtParametros);
+
+        barraFerramenta.add(jPanel1);
+        barraFerramenta.add(jPanel2);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
@@ -198,9 +205,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JSplitPane jPainelSeparador;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
-    private javax.swing.JToolBar.Separator jSeparador3;
     private javax.swing.JLabel lblParametros;
     private br.univali.ps.ui.PainelSaida painelSaida;
     private javax.swing.JTextField txtParametros;

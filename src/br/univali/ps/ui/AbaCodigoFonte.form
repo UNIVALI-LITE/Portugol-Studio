@@ -133,27 +133,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInterromperActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.Box$Filler" name="filler1">
-          <Properties>
-            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[5, 32767]"/>
-            </Property>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[5, 0]"/>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[8, 0]"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalStrut"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblParametros">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Par&#xe2;metros:"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.Box$Filler" name="filler2">
           <Properties>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -170,15 +149,52 @@
             <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalStrut"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtParametros">
+        <Container class="javax.swing.JPanel" name="jPanel1">
           <Properties>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[200, 28]"/>
+              <Dimension value="[128, 20]"/>
             </Property>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JToolBar$Separator" name="jSeparador3">
-        </Component>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="lblParametros">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Par&#xe2;metros:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.Box$Filler" name="filler1">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[6, 32767]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[6, 0]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[6, 0]"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalStrut"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtParametros">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[2147483647, 20]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[200, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="jPanel2">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+        </Container>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JSplitPane" name="jPainelSeparador">
