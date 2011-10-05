@@ -21,8 +21,6 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -30,7 +28,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao 
+public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao
 {
     private static final String template = carregarTemplate();
 
@@ -43,8 +41,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private AcaoColar acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
     private Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"); 
     private Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png"); 
-    
-    
+
     public AbaCodigoFonte(JTabbedPane painelTabulado) {
         super(painelTabulado);
         initComponents();
@@ -78,15 +75,18 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnRecortar = new javax.swing.JButton();
         btnCopiar = new javax.swing.JButton();
         btnColar = new javax.swing.JButton();
+        btnComentar = new javax.swing.JButton();
+        btnDescomentar = new javax.swing.JButton();
         jSeparador2 = new javax.swing.JToolBar.Separator();
         btnExecutar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(5, 32767));
-        jPanel1 = new javax.swing.JPanel();
+        painelParametros = new javax.swing.JPanel();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         lblParametros = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         txtParametros = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
+        jSeparator1 = new javax.swing.JToolBar.Separator();
         jPainelSeparador = new javax.swing.JSplitPane();
         painelSaida = new br.univali.ps.ui.PainelSaida();
         editor = new br.univali.ps.ui.Editor();
@@ -136,6 +136,41 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnColar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnColar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramenta.add(btnColar);
+
+        btnComentar.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        btnComentar.setText("//x=2");
+        btnComentar.setToolTipText("Comentar o código selecionado");
+        btnComentar.setFocusPainted(false);
+        btnComentar.setFocusable(false);
+        btnComentar.setHideActionText(true);
+        btnComentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnComentar.setMaximumSize(new java.awt.Dimension(38, 38));
+        btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
+        btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
+        btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnComentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComentarActionPerformed(evt);
+            }
+        });
+        barraFerramenta.add(btnComentar);
+
+        btnDescomentar.setText("x=2");
+        btnDescomentar.setToolTipText("Descomentar o código selecionado");
+        btnDescomentar.setFocusPainted(false);
+        btnDescomentar.setFocusable(false);
+        btnDescomentar.setHideActionText(true);
+        btnDescomentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDescomentar.setMaximumSize(new java.awt.Dimension(38, 38));
+        btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
+        btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
+        btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescomentarActionPerformed(evt);
+            }
+        });
+        barraFerramenta.add(btnDescomentar);
         barraFerramenta.add(jSeparador2);
 
         btnExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play_blue.png"))); // NOI18N
@@ -165,21 +200,22 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
         });
         barraFerramenta.add(btnInterromper);
-        barraFerramenta.add(filler2);
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(128, 20));
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        painelParametros.setPreferredSize(new java.awt.Dimension(128, 20));
+        painelParametros.setLayout(new javax.swing.BoxLayout(painelParametros, javax.swing.BoxLayout.LINE_AXIS));
+        painelParametros.add(filler4);
 
         lblParametros.setText("Parâmetros:");
-        jPanel1.add(lblParametros);
-        jPanel1.add(filler1);
+        painelParametros.add(lblParametros);
+        painelParametros.add(filler1);
 
         txtParametros.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         txtParametros.setPreferredSize(new java.awt.Dimension(200, 20));
-        jPanel1.add(txtParametros);
+        painelParametros.add(txtParametros);
+        painelParametros.add(filler3);
 
-        barraFerramenta.add(jPanel1);
-        barraFerramenta.add(jPanel2);
+        barraFerramenta.add(painelParametros);
+        barraFerramenta.add(jSeparator1);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
@@ -197,13 +233,88 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private void btnInterromperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInterromperActionPerformed
         if (programa != null) {
             programa.interromper();
-        }
+        }        
 }//GEN-LAST:event_btnInterromperActionPerformed
+
+    private void btnComentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComentarActionPerformed
+        
+        try
+        {
+            RSyntaxTextArea textArea = editor.getTextArea();
+            
+            int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
+            int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
+            
+            int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
+            int fimSelecao = textArea.getLineEndOffset(linhaFinal);
+            int tamanhoSelecao = fimSelecao - inicioSelecao;
+        
+            String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
+            StringBuilder codigoComentado = new StringBuilder();
+
+            String[] linhas = codigo.split("\n");
+
+            for (String linha: linhas)
+            {
+                codigoComentado.append("//");
+                codigoComentado.append(linha);
+                codigoComentado.append("\n");
+            }
+
+            codigo = codigoComentado.toString();
+            textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
+            textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
+
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }//GEN-LAST:event_btnComentarActionPerformed
+
+    private void btnDescomentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescomentarActionPerformed
+        try
+        {
+            RSyntaxTextArea textArea = editor.getTextArea();
+            
+            int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
+            int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
+            
+            int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
+            int fimSelecao = textArea.getLineEndOffset(linhaFinal);
+            int tamanhoSelecao = fimSelecao - inicioSelecao;
+        
+            String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
+            StringBuilder codigoDescomentado = new StringBuilder();
+
+            String[] linhas = codigo.split("\n");
+
+            for (String linha: linhas)
+            {
+                int posicaoComentario = linha.indexOf("//");
+                
+                codigoDescomentado.append(linha.substring(0, posicaoComentario));
+                codigoDescomentado.append(linha.substring(posicaoComentario + 2));
+                codigoDescomentado.append("\n");
+            }
+
+            codigo = codigoDescomentado.toString();
+            textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
+            textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
+
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }//GEN-LAST:event_btnDescomentarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramenta;
     private javax.swing.JButton btnColar;
+    private javax.swing.JButton btnComentar;
     private javax.swing.JButton btnCopiar;
+    private javax.swing.JButton btnDescomentar;
     private javax.swing.JButton btnDesfazer;
     private javax.swing.JButton btnExecutar;
     private javax.swing.JButton btnInterromper;
@@ -212,13 +323,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnSalvar;
     private br.univali.ps.ui.Editor editor;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
     private javax.swing.JSplitPane jPainelSeparador;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JLabel lblParametros;
+    private javax.swing.JPanel painelParametros;
     private br.univali.ps.ui.PainelSaida painelSaida;
     private javax.swing.JTextField txtParametros;
     // End of variables declaration//GEN-END:variables
