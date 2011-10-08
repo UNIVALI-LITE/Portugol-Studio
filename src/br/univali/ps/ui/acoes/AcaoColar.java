@@ -8,6 +8,8 @@ package br.univali.ps.ui.acoes;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RecordableTextAction;
 
@@ -21,6 +23,7 @@ public class AcaoColar extends Acao implements FocusListener{
     public AcaoColar()
     {
         super("Trecho colado com sucesso!");
+        putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl V"));
     }
 
     public void iniciar()

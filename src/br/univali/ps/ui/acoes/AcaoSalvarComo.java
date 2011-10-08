@@ -3,7 +3,9 @@ package br.univali.ps.ui.acoes;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import javax.swing.Action;
 import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 
 public class AcaoSalvarComo extends Acao{
 
@@ -14,6 +16,7 @@ public class AcaoSalvarComo extends Acao{
     public AcaoSalvarComo()
     {
         super("arquivo salvo com sucesso");
+        putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl alt S"));
     }
 
     public void configurar(AcaoSalvarArquivo salvarArquivo, Container parent, JFileChooser chooser)

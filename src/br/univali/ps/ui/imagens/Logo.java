@@ -10,15 +10,30 @@
  */
 package br.univali.ps.ui.imagens;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 /**
  *
  * @author fillipipelz
+ * @author Luiz Fernando Noschang
  */
-public class Logo extends javax.swing.JPanel {
+public class Logo extends javax.swing.JPanel 
+{
 
     /** Creates new form Logo */
     public Logo() {
         initComponents();
+        
+        addComponentListener(new ComponentAdapter() 
+        {
+            @Override
+            public void componentShown(ComponentEvent e) 
+            {
+                // Redimensiona painel para caber o texto do label
+                validate(); 
+            }            
+        });
     }
 
     /** This method is called from within the constructor to
@@ -38,35 +53,38 @@ public class Logo extends javax.swing.JPanel {
 
         portugoStudio.setFont(new java.awt.Font("Lucida Grande", 1, 24));
         portugoStudio.setForeground(new java.awt.Color(255, 255, 255));
-        portugoStudio.setText("{PortugolStudio} ");
+        portugoStudio.setText("{PortugolStudio}");
 
         lampada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/light.png"))); // NOI18N
 
         versao.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("1.02");
+        versao.setText("1.03");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(190, 190, 190)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(10, 10, 10)
+                        .add(versao))
+                    .add(portugoStudio, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(lampada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(layout.createSequentialGroup()
-                .add(10, 10, 10)
-                .add(versao))
-            .add(portugoStudio, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(lampada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
             .add(layout.createSequentialGroup()
                 .add(10, 10, 10)
-                .add(versao, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(layout.createSequentialGroup()
-                .add(30, 30, 30)
-                .add(portugoStudio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(versao, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(portugoStudio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .add(lampada, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

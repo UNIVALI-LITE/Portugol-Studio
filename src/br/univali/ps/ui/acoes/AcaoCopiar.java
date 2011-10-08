@@ -8,6 +8,8 @@ package br.univali.ps.ui.acoes;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RecordableTextAction;
 
@@ -20,6 +22,7 @@ public class AcaoCopiar extends Acao implements PropertyChangeListener{
     public AcaoCopiar()
     {
         super("trecho copiado com sucesso!");
+        putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl C"));
     }
 
      public void iniciar()

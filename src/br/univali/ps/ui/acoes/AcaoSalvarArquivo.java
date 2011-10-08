@@ -4,6 +4,8 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.event.ActionEvent;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 
 public class AcaoSalvarArquivo extends Acao
@@ -13,6 +15,7 @@ public class AcaoSalvarArquivo extends Acao
     public AcaoSalvarArquivo()
     {
         super("Arquivo salvo com sucesso");
+        putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl S"));
     }
 
     public void configurar(PortugolDocumento documento){

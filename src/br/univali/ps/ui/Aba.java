@@ -38,6 +38,12 @@ public abstract class Aba extends JPanel{
         this.painelTabulado.setSelectedComponent(this);
     }
 
+    public JTabbedPane getPainelTabulado() {
+        return painelTabulado;
+    }
+
+    
+    
     protected CabecalhoAba criarCabecalho(){
         CabecalhoAba cabecalho = new CabecalhoAba(this);
         cabecalho.setTitulo("Sem título");

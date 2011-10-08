@@ -82,7 +82,7 @@ public class TelaSobre extends javax.swing.JDialog
         jPanel1.setPreferredSize(new java.awt.Dimension(777, 95));
         jPanel1.setLayout(null);
         jPanel1.add(logo1);
-        logo1.setBounds(20, 0, 250, 80);
+        logo1.setBounds(20, 0, 260, 102);
 
         rotuloBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/fundo_gradiente.jpg"))); // NOI18N
         rotuloBanner.setMaximumSize(new java.awt.Dimension(0, 95));
