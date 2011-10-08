@@ -10,13 +10,19 @@ import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
 import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
 {   
@@ -25,6 +31,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     private AcaoAbrirArquivo abrirArquivo = null;
     private AcaoSalvarComo acaoSalvarComo = null;
  
+    private Action acaoSelecionarAbaDireita = null;
+    private Action acaoSelecionarAbaEsquerda = null;
  
     
     
@@ -41,7 +49,6 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniNovo.setAction(acaoNovoArquivo);
         mniAbrir.setAction(abrirArquivo);
         mniSalvarComo.setAction(acaoSalvarComo);
-        
     }
 
     public TelaPrincipal()  
@@ -59,7 +66,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         this.setLocationRelativeTo(null);
         configurarSeletorArquivo();
         this.addWindowListener(new TelaPrincipalListener());
-        
+        mnuPrograma.setVisible(false);
+        mnuPrograma.setEnabled(false);
         dialogoEscolhaArquivo.setCurrentDirectory(new File("./exemplos"));
         
         acoesprontas();
@@ -75,6 +83,14 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
             //TODO ACHAR UM LUGAR PARA ESSE BOTÃO
     //        btnAlgoritmoTeste.setVisible(false);            
         }
+        
+        acaoSelecionarAbaEsquerda = new AcaoSelecionarAbaEsquerda();
+        getRootPane().getActionMap().put("SelecionarEsquerda", acaoSelecionarAbaEsquerda);
+        getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift alt LEFT"), "SelecionarEsquerda");
+        
+        acaoSelecionarAbaDireita = new AcaoSelecionarAbaDireita();
+        getRootPane().getActionMap().put("SelecionarDireita", acaoSelecionarAbaDireita);
+        getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift alt RIGHT"), "SelecionarDireita");
     }
     
     private void configurarSeletorArquivo() {
@@ -100,6 +116,9 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniFecharTodos = new javax.swing.JMenuItem();
         mnuFileSeparator2 = new javax.swing.JSeparator();
         mniExit = new javax.swing.JMenuItem();
+        mnuPrograma = new javax.swing.JMenu();
+        mniExecutar = new javax.swing.JMenuItem();
+        mniInterromper = new javax.swing.JMenuItem();
         mnuEdit = new javax.swing.JMenu();
         mniDesfazer = new javax.swing.JMenuItem();
         mniRefazer = new javax.swing.JMenuItem();
@@ -108,7 +127,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniCopiar = new javax.swing.JMenuItem();
         mniColar = new javax.swing.JMenuItem();
         mnuEditSeparator2 = new javax.swing.JPopupMenu.Separator();
-        mniFindReplace = new javax.swing.JMenuItem();
+        mniSubstituir = new javax.swing.JMenuItem();
         mnuHelp = new javax.swing.JMenu();
         mniAbout = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -129,17 +148,25 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         );
 
         mnuFile.setText("Arquivo");
+
+        mniNovo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         mnuFile.add(mniNovo);
+
+        mniAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         mnuFile.add(mniAbrir);
 
+        mniSalvar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         mniSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/disk.png"))); // NOI18N
         mniSalvar.setText("Salvar");
         mniSalvar.setEnabled(false);
         mnuFile.add(mniSalvar);
+
+        mniSalvarComo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnuFile.add(mniSalvarComo);
         mnuFile.add(mnuFileSeparator1);
 
-        mniFechar.setText("Fechar");
+        mniFechar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        mniFechar.setText("Fechar esta aba");
         mniFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniFecharActionPerformed(evt);
@@ -147,7 +174,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         });
         mnuFile.add(mniFechar);
 
-        mniFecharTodos.setText("Fechar todos.");
+        mniFecharTodos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        mniFecharTodos.setText("Fechar todas as abas");
         mniFecharTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniFecharTodosActionPerformed(evt);
@@ -167,32 +195,54 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mnuBar.add(mnuFile);
 
+        mnuPrograma.setText("Programa");
+
+        mniExecutar.setText("Executar");
+        mnuPrograma.add(mniExecutar);
+
+        mniInterromper.setText("Interromper");
+        mnuPrograma.add(mniInterromper);
+
+        mnuBar.add(mnuPrograma);
+
         mnuEdit.setText("Editar");
 
-        mniDesfazer.setText("desfazer");
+        mniDesfazer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        mniDesfazer.setText("Desfazer");
         mnuEdit.add(mniDesfazer);
 
-        mniRefazer.setText("refazer");
+        mniRefazer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        mniRefazer.setText("Refazer");
         mnuEdit.add(mniRefazer);
         mnuEdit.add(mnuEditSeparator1);
 
+        mniRecortar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         mniRecortar.setText("Recortar");
         mnuEdit.add(mniRecortar);
 
+        mniCopiar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         mniCopiar.setText("Copiar");
         mnuEdit.add(mniCopiar);
 
+        mniColar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         mniColar.setText("Colar");
         mnuEdit.add(mniColar);
         mnuEdit.add(mnuEditSeparator2);
 
-        mniFindReplace.setText("Procurar e substituir");
-        mnuEdit.add(mniFindReplace);
+        mniSubstituir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        mniSubstituir.setText("Localizar e Substituir...");
+        mniSubstituir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniSubstituirActionPerformed(evt);
+            }
+        });
+        mnuEdit.add(mniSubstituir);
 
         mnuBar.add(mnuEdit);
 
         mnuHelp.setText("Ajuda");
 
+        mniAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         mniAbout.setText("Sobre");
         mniAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +251,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         });
         mnuHelp.add(mniAbout);
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem1.setText("Tópicos de Ajuda");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,6 +312,10 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     telaSobre.setModal(true);
     telaSobre.setVisible(true);    
 }//GEN-LAST:event_mniAboutActionPerformed
+
+    private void mniSubstituirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniSubstituirActionPerformed
+        ((AbaCodigoFonte) painelTabulado.getAbaSelecionada()).exibirPainelPesquisa();
+    }//GEN-LAST:event_mniSubstituirActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
@@ -273,15 +328,17 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniColar;
     private javax.swing.JMenuItem mniCopiar;
     private javax.swing.JMenuItem mniDesfazer;
+    private javax.swing.JMenuItem mniExecutar;
     private javax.swing.JMenuItem mniExit;
     private javax.swing.JMenuItem mniFechar;
     private javax.swing.JMenuItem mniFecharTodos;
-    private javax.swing.JMenuItem mniFindReplace;
+    private javax.swing.JMenuItem mniInterromper;
     private javax.swing.JMenuItem mniNovo;
     private javax.swing.JMenuItem mniRecortar;
     private javax.swing.JMenuItem mniRefazer;
     private javax.swing.JMenuItem mniSalvar;
     private javax.swing.JMenuItem mniSalvarComo;
+    private javax.swing.JMenuItem mniSubstituir;
     private javax.swing.JMenuBar mnuBar;
     private javax.swing.JMenu mnuEdit;
     private javax.swing.JSeparator mnuEditSeparator1;
@@ -290,6 +347,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JPopupMenu.Separator mnuFileSeparator1;
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
+    private javax.swing.JMenu mnuPrograma;
     private br.univali.ps.ui.PainelTabulado painelTabulado;
     // End of variables declaration//GEN-END:variables
 
@@ -309,7 +367,8 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     @Override
-    public void abaSelecionada(Aba aba) {
+    public void abaSelecionada(Aba aba) 
+    {
         if (aba.getClass() == AbaCodigoFonte.class) {
             AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
             mniSalvar.setAction(abaCodigoFonte.getAcaoSalvarArquivo());
@@ -322,9 +381,18 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             mniColar.setAction(abaCodigoFonte.getAcaoColar());
             mniRecortar.setAction(abaCodigoFonte.getAcaoRecortar());
             acaoSalvarComo.setEnabled(true);
+            
+            mniExecutar.setAction(abaCodigoFonte.getAcaoExecutar());
+            mniInterromper.setAction(abaCodigoFonte.getAcaoInterromper());
+            mnuPrograma.setVisible(true);
+            mnuPrograma.setEnabled(true);
+            
         } else {
+            mniSalvar.setEnabled(false);
             acaoSalvarComo.setEnabled(false);
             mnuEdit.setEnabled(false);
+            mnuPrograma.setVisible(false);
+            mnuPrograma.setEnabled(false);
         }
         
         if (painelTabulado.temAbaAberta(AbaCodigoFonte.class) || 
@@ -356,6 +424,38 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             System.exit(1);
         }
         else if (e instanceof IllegalArgumentException){e.printStackTrace();}
-        else PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(e, ExcecaoAplicacao.Tipo.ERRO));
+        else 
+        {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(e, ExcecaoAplicacao.Tipo.ERRO));
+            e.printStackTrace();
+        }
+    }
+    
+    private class AcaoSelecionarAbaEsquerda extends AbstractAction
+    {
+        public AcaoSelecionarAbaEsquerda() 
+        {
+            super("Selecionar esquerda");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            painelTabulado.selecionarAbaAnterior();
+        }        
+    }
+    
+    private class AcaoSelecionarAbaDireita extends AbstractAction
+    {
+        public AcaoSelecionarAbaDireita() 
+        {
+            super("Selecionar direita");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            painelTabulado.selecionarProximaAba();
+        }        
     }
 }

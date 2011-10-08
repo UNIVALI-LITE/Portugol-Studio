@@ -6,8 +6,10 @@ import br.univali.ps.ui.util.FileHandle;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 
 public class AcaoAbrirArquivo extends Acao
 {
@@ -20,6 +22,7 @@ public class AcaoAbrirArquivo extends Acao
     public AcaoAbrirArquivo()
     {
         super("Arquivo aberto com sucesso!");
+        putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl A"));
     }
 
     public void configurar(JTabbedPane painelTabulado, Container parent, JFileChooser chooser)

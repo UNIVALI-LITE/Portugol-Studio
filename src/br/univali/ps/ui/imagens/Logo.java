@@ -51,15 +51,15 @@ public class Logo extends javax.swing.JPanel
 
         setOpaque(false);
 
-        portugoStudio.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
+        portugoStudio.setFont(new java.awt.Font("Lucida Grande", 1, 24));
         portugoStudio.setForeground(new java.awt.Color(255, 255, 255));
         portugoStudio.setText("{PortugolStudio}");
 
         lampada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/light.png"))); // NOI18N
 
-        versao.setFont(new java.awt.Font("Lucida Grande", 0, 14));
+        versao.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("1.01");
+        versao.setText("1.03");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

@@ -8,6 +8,7 @@ import java.util.List;
 
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
+import javax.swing.JComponent;
 
 public class PainelTabulado extends javax.swing.JTabbedPane implements ComponentListener{
 
@@ -23,9 +24,22 @@ public class PainelTabulado extends javax.swing.JTabbedPane implements Component
 
     @Override
     public Component add(Component cmpnt) {
-        cmpnt.addComponentListener(this);
+        
+        if (cmpnt instanceof Aba)
+            cmpnt.addComponentListener(this);
+        
         return super.add(cmpnt);
     }
+
+    @Override
+    public void remove(Component component) {
+        
+        if (component instanceof Aba)
+            component.removeComponentListener(this);
+            
+        super.remove(component);
+    }
+    
     
     
     
@@ -107,6 +121,31 @@ public class PainelTabulado extends javax.swing.JTabbedPane implements Component
     
     public void removePainelTabuladoListener(PainelTabuladoListener listener) {
         painelTabuladoListeners.remove(listener);
+    }
+    
+    public void selecionarProximaAba()
+    {
+        setSelectedIndex(Math.min(getSelectedIndex() + 1, getTabCount() - 1));
+    }
+    
+    public void selecionarAbaAnterior()
+    {
+        setSelectedIndex(Math.max(0, getSelectedIndex() - 1));
+    }
+    
+    public List<Aba> getAbas(Class<? extends Aba> classe)
+    {
+        List<Aba> abas = new ArrayList<Aba>();
+                
+        for (Component componente: getComponents())
+        {
+            if (componente.getClass() == classe)
+            {   
+                abas.add((Aba) componente);
+            }
+        }
+        
+        return abas;
     }
     
 }
