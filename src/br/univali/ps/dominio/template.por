@@ -1,7 +1,7 @@
 programa
 {
-    funcao inicio(cadeia parametros[])
-    {
-        ${cursor}
-    }
+	funcao inicio(cadeia parametros[])
+	{
+		${cursor}
+	}
 }
