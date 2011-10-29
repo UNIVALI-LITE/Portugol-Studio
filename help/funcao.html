@@ -10,11 +10,15 @@
 
 	<H2>Fun&ccedil;&atilde;o</H2>
 
-	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de Uso</a> >> <a href="comandosBasicos.html"> Comandos B&aacute;sicos </a> >> Fun&ccedil;&atilde;o</p>
+	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de 
+
+Uso</a> >> <a href="comandosBasicos.html"> Comandos B&aacute;sicos </a> >> Fun&ccedil;&atilde;o</p>
 
 	<p class="subtitulo">O que é?</p>
 
-	<P>&nbsp; Uma fun&ccedil;&atilde;o é semelhante ao procedimento, porém tem uma diferen&ccedil;a a fun&ccedil;&atilde;o retorna um valor o procedimento n&atilde;o retorna valor. </P>
+	<P>&nbsp; Uma fun&ccedil;&atilde;o é semelhante ao procedimento, porém tem uma diferen&ccedil;a a 
+
+fun&ccedil;&atilde;o retorna um valor o procedimento n&atilde;o retorna valor. </P>
 
 	<p class="subtitulo">Como usar?</p>
 
@@ -54,10 +58,10 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>{</B> <BR>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inteiro n <BR><BR>
 
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("Digite um n&úacute;mero \n") <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("Digite um n&uacute;mero \n") <BR>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; leia (n) <BR>
 		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("A soma dos n&úacute;meros é ", somatorio(n)) <BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("A soma dos n&uacute;meros é ", somatorio(n)) <BR>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>} </B> <BR><BR>
 
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>funcao</B> inteiro somatorio(inteiro n) <BR>
@@ -83,20 +87,33 @@
 	&nbsp; <B> { </B> <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao inicio( ) </B><BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	cadeia nome1, nome2 <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	inteiro num1, num2 <BR>
 		
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("digite dois nomes \n") <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	leia (nome1) <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	leia (nome2) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("Digite dois Numeros \n") 
 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("Os nomes s&atilde;o iguais!  ", igualdade(nome1, nome2)) <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR><BR>
+<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	leia (num1, num2) <BR><BR>
 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao </B> cadeia igualdade (cadeia nome1, cadeia nome2) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <B>se</B> (igualdade(num1,num2)) 
+
+<B>{</B><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("\nOs dois numeros sao 
+
+iguais")<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>} senao { </B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; escreva ("\nOs dois numeros sao 
+
+diferentes") <BR>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR><BR>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao </B> logico igualdade (inteiro num1, inteiro num2) <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> se </B>(nome1 == nome2) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> se </B>(num1 == num2) <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		retorne (verdadeiro) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		retorne (verdadeiro) 
+
+<BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> }senao{ </B> <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		retorne (falso) <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> }  </B><BR>

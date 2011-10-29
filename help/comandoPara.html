@@ -10,15 +10,25 @@
 
 	<H2>Comando para</H2>
 
-	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de Uso</a> >> <a href="comandosBasicos.html"> Comandos B&aacute;sicos </a> >> Comanto para</p>
+	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de 
+
+Uso</a> >> <a href="comandosBasicos.html"> Comandos B&aacute;sicos </a> >> Comando para</p>
 
 	<p class="subtitulo">O que &eacute;?</p>
 
-	<P> &nbsp; O comando PARA possui uma variavel de controle, ou seja com est&aacute; estrutura &eacute; possivel executar um conjunto de instru&ccedil;&otilde;es um n&uacute;mero determinado de vezes. Atrav&eacute;s da variavel de controle, define-se a quantidade de repeti&ccedil;&otilde;es que o la&ccedil;o far&aacute;.</P>
+	<P> &nbsp; O comando PARA possui uma variavel de controle, ou seja com est&aacute; estrutura &eacute; possivel 
+
+executar um conjunto de instru&ccedil;&otilde;es um n&uacute;mero determinado de vezes. Atrav&eacute;s da variavel de 
+
+controle, define-se a quantidade de repeti&ccedil;&otilde;es que o la&ccedil;o far&aacute;.</P>
 
 	<p class="subtitulo">Como usar?</p>
 
-	<P> &nbsp; Para utilizar o comando PARA você dever&aacute; escrever este comando e entre parêntese inicializar a variavel de controle com determinado n&uacute;mero para definir o n&uacute;mero de vezes que a intstru&ccedil;&atilde;o ser&aacute; executada. Veja na tabela como utilizar.</P>
+	<P> &nbsp; Para utilizar o comando PARA você dever&aacute; escrever este comando e entre parêntese inicializar a 
+
+variavel de controle com determinado n&uacute;mero para definir o n&uacute;mero de vezes que a intstru&ccedil;&atilde;o 
+
+ser&aacute; executada. Veja na tabela como utilizar.</P>
 	
 
 	<table class="tabela2">
@@ -28,7 +38,9 @@
 		<tr class="linha1">
 			<td><P>&nbsp; 
 			
-				&nbsp; <B>para</B>(variavel = &lt;valor_inicial&gt;;  variavel = &lt;valor_final&gt;;       variavel &lt;incremento&gt;) <BR>
+				&nbsp; <B>para</B>(variavel = &lt;valor_inicial&gt;;  variavel = &lt;valor_final&gt;;       
+
+variavel &lt;incremento&gt;) <BR>
 				&nbsp; <B>{</B> <BR>
 				&nbsp;&nbsp;&nbsp;&nbsp; &lt;instru&ccedil;&atilde;o&gt; <BR>
 				&nbsp; <B>}</B> <BR>
@@ -48,14 +60,17 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao inicio( ) </B><BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	inteiro cont <BR><BR>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> para </B>(cont=1; cont&lt;=100; cont++) 
 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	escreva ("Digite um n&uacute;mero\n") <BR>
-
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> para </B>(cont=1; cont&lt;=100; cont++) <BR>
+<BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B><BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>se</B>(cont % 10 == 0) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B>se</B>(cont % 10 == 0) 
+
+<BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			escreva (cont, " &eacute; multiplo de 10 \n")	<BR>			
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			
+
+        escreva (cont, " &eacute; multiplo de 10 \n")	<BR>			
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B><BR>
@@ -71,19 +86,27 @@
 	&nbsp; <B> { </B> <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> funcao inicio( ) </B> <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	inteiro cont = 1,i <BR><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	inteiro,i <BR><BR>
 
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> para </B>(i=1; i&lt;=20; i++) <BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> se </B> (cont % 2 == 0) <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			escreva ("O n&uacute;mero ", cont, " &eacute; par \n") <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		escreva ("O n&uacute;mero ", cont, " &eacute; &iacute;mpar \n")<BR><BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> se </B> 
 
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		cont++ <BR>
+(i % 2 == 0) <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> { </B> 
+
+<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+
+	escreva ("O n&uacute;mero ", i, " &eacute; par \n") <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <B> } senao {</B> 
+
+<BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
+
+escreva ("O n&uacute;mero ", i, " &eacute; &iacute;mpar \n")<BR>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<B> } </B> <BR>
 	&nbsp; <B> } </B> <BR>
 	
 	</P>
