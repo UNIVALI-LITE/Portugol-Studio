@@ -82,10 +82,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoInterromper = new AcaoInterromper();
         btnExecutar.setAction(acaoExecutar);
         btnInterromper.setAction(acaoInterromper);
-               
+             
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
-
+        
         /* 
          * Habilitar pesquisa instantânea.
          * 
@@ -203,7 +203,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jPainelSeparador = new javax.swing.JSplitPane();
-        painelSaida = new br.univali.ps.ui.PainelSaida();
         painelEditor = new javax.swing.JPanel();
         barraPesquisa = new javax.swing.JToolBar();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
@@ -231,6 +230,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         chkExprRegular = new javax.swing.JCheckBox();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         editor = new br.univali.ps.ui.Editor();
+        painelSaida = new br.univali.ps.ui.PainelSaida();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -349,7 +359,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
         jPainelSeparador.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jPainelSeparador.setBottomComponent(painelSaida);
 
         painelEditor.setLayout(new java.awt.BorderLayout());
 
@@ -469,8 +478,74 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelEditor.add(editor, java.awt.BorderLayout.CENTER);
 
         jPainelSeparador.setTopComponent(painelEditor);
+        jPainelSeparador.setBottomComponent(painelSaida);
 
         add(jPainelSeparador, java.awt.BorderLayout.CENTER);
+
+        jLabel3.setText("Correção:");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("- Necessário uma declaração de variavel\n- Necessário um leia.\n");
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel4.setText("Dicas:");
+
+        jLabel5.setText("Casos Falhos:");
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jTextArea2.setText("entrada 9, 9, 8 esperado 8.66 recebido: 9\n\nentrada 6, 7, 8 esperado 7.0 recebido: 6,5 ");
+        jScrollPane2.setViewportView(jTextArea2);
+
+        jLabel6.setText("Nota:");
+
+        jLabel7.setText("3.33");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7)))
+                        .addGap(20, 20, 20))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        add(jPanel1, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void interromper()
@@ -728,11 +803,21 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JSplitPane jPainelSeparador;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel lblParametros;
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelParametros;
