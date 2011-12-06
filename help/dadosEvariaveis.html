@@ -1,51 +1,190 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<TITLE> Sistema de Ajuda do Portugol studio </TITLE>
-<link rel="stylesheet" type="text/css" href="estilo.css">
-</HEAD>
+<html>
+<head>
+<title>
+Sistema de Ajuda do PortugolStudio
+</title>
+</head>
+<body background="img/a.jpg">
 
-<BODY>
-	
-	<h3>Dados e Variaveis</h3>
 
-	<p><a href="index.html">T&oacute;picos de Ajuda</a> >> <a href="informacoesUso.html">Informa&ccedil;&otilde;es de Uso</a> >> Dados e Vari&aacute;veis</p>
 
-	<table class="tabela1">
-		<tr>
-			<td>Informa&ccedil;&otilde;es de vari&aacute;veis e constantes </td>
-		</tr>
-		<tr class="linha1">
-			<td><a href="variaveis.html"> Vari&aacute;veis </a></td>
-		</tr>
-		<tr class="linha2">
-			<td><a href="constantes.html"> Constantes </a></td>
-		</tr>
-		<tr class="linha1">
-			<td><a href="atribuicao.html"> Atribui&ccedil;&otilde;es </a></td>
-		</tr>
-	</table>
 
-	<table class="tabela1">
-		<tr>
-			<td> Informa&ccedil;&otilde;es de tipos de vari&aacute;veis </td>
-		</tr>
-		<tr class="linha1">
-			<td><a href="tipoInteiro.html"> Tipo Inteiro </a></td>
-		</tr>
-		<tr class="linha2">
-			<td><a href="tipoReal.html"> Tipo Real </a></td>
-		</tr>
-		<tr class="linha1">
-			<td><a href="tipoCadeia.html"> Tipo Cadeia </a></td>
-		</tr>
-		<tr class="linha2">
-			<td><a href="tipoCaracter.html"> Tipo Caracter</a></td>
-		</tr>
-		<tr class="linha1">
-			<td><a href="tipoLogico.html"> Tipo Logico </a></td>
-		</tr>
-	</table>
-</BODY>
-</HTML>
+<font face="Arial" color="White">
+<a href="index.html">Home</a> / <a href="menusintaxe.html"> Sintaxe</a> / Dados e Variaveis
+
+<br><br><br><h1><center><a name="topo"><font face="Arial" color="white">Dados e Variaveis</font></center></h1>
+ <br><br><font face="Arial" color="White">Tabela de Conteudos
+     <br><ul><li>Informações de Tipos de Variáveis e Constantes
+        <ul><br><li><a href="#inte">Tipo Inteiro</a>
+             <li><a href="#real">Tipo Real</a>
+              <li><a href="#cadeia">Tipo Cadeia</a>
+                <li><a href="#cara">Tipo Caracter</a>
+                 <li><a href="#log">Tipo Lógico</a>
+           </ul>
+ <br><li>Informações de Variáveis e Constantes
+     <ul><br><li><a href="#vari">Váriaveis</a>
+          <li><a href="#cons">Constantes</a>
+          <li><a href="#vet">Vetores</a>
+          <li><a href="#mat">Matrizes</a>  
+    </ul> 
+	</ul>
+
+
+           <!-- TIPOS INTEIROS --!>
+
+
+
+ <br><br><a name="inte"><h2>Tipo Inteiro</h2></a>
+  Os númros inteiros são constituidos dos numeros naturais {0,1,2,3, ...} e dos seus opostos {0, -1, -2, -3, ...}.
+O tipo deve ser acompanhado com a variável. Veja na tabela como utilizar:
+
+
+
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td> <td><font face="Arial" color="#3299CC"><center>Exemplo</td>
+</tr>
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b>inteiro</b> numero&nbsp;</td> <td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo inteiro com a variável Numero&nbsp;</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b>inteiro</b>  idade, rg&nbsp; </td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo inteiro com duas variaveis&nbsp;</td></tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b>inteiro</b> num1 = 1, num2 = 2, soma = num1 + num2&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo inteiro com atribuição na inicialização&nbsp;</td> 
+</table>
+<br>
+
+
+ <!--TIPO REAL --!>
+
+<br><a name="real"><h2><font face="Arial" color="White">Tipo Real</h2></a>
+<font face="Arial" color="White">Pode-se pensar em um número real como uma fração decimal possivelmente infinita, como 3,14592(...).   O tipo deve ser declarado juntamente com a variavel. Veja na tabela como utilizar:</center>
+
+
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3">
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td> <td><font face="Arial" color="#3299CC"><center>&nbsp;Exemplo</td>
+</tr>
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b> real</b> numero&nbsp;</td> <td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo real com Váriavel Numero&nbsp;</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b> real </b> peso, altura&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Variaveis peso e altura do tipo Real</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b> real </b> valor = 5, metade = valor / 2&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo Real com Atribuição na Inicialização&nbsp;</td></tr>
+</table>
+<br>
+
+
+
+<!-- Tipo CADEIA --!>
+
+<br><a name="cadeia"><h2><font face="Arial" color="White">Tipo Cadeia</h2></a>
+<font face="Arial" color="White">O tipo cadeia é um conjunto de caracters. O tipo cadeia deve estar acompanhado de aspas duplas. Veja na tabela como utilizar:
+
+
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3">
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td> <td><font face="Arial" color="#3299CC"><center>Exemplo</td>
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp; <b>cadeia</b> nome&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo cadeia com Váriavel Nome&nbsp;</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b> cadeia </b> endereco, empresanbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Variaveis endeco e empresa do tipo Cadeia</td>
+</tr>
+</table>
+<br>
+
+<!-- Tipo CHAR --!>
+<br><a name="cara"><h2><font face="Arial" color="White">Tipo Caracter</h2></a>
+<font face="Arial" color="White">Qualquer digito número ou alfanumérico ou letra que pode ser inserido por um dispositivo de entrada. O tipo caracter deve estar acompanhado de aspas simples. Veja na tabela como utilizar:
+
+<br><br>
+<table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td><td><font face="Arial" color="#3299CC"><center>Exemplo</td>
+</tr>
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b> caracter </b> letra&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo caracter com Váriavel letra&nbsp;</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;<b> cadeia </b> consoante, vogal, altura&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Variaveis consoante e vogal do tipo cadeia</td>
+</tr>
+</table>
+<br>
+
+<!-- TIPO LOGICO --!>
+<br><a name="log"><h2><font face="Arial" color="White">Tipo Lógico</h2></a>
+<font face="Arial" color="White">É um tipo de dado, usado em operações lógicas, que possui somente dois valores, que são consideradas pelo Portugol Studio: como verdadeiro e Falso. Veja na tabela como usar:
+
+
+<br><br>
+<table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3">  
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td> <td><font face="Arial" color="#3299CC"><center>Exemplo</td>
+</tr>
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp; <b>logico</b> opcao&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;Tipo Lógico com Váriavel opcao&nbsp;</td>
+</tr>
+</table>
+<br><br>
+
+<!-- EEEEEEEEEEEEEEENDDDDDDDDDDDDDDDDDDD --!>
+
+<a name="vari"><h2><font face="Arial" color="White">Variaveis</h2></a>
+<font face="Arial" color="White">As variaveis servem para armazenar os dados dos nossos programas. Podem ser declaradas em qualquer lugar dentro da função inicio. Vale lembrar que uma variavel declarada dentro de algum bloco só servirá para o bloco onde ela foi declarada.
+
+<br><br><br><font face="Arial" color="White"><a name="cons"><h2>Constantes</h2></a>
+As Constantes são valores que não se alteram durante a execução do programa . Veja na sintaxe e nos exemplos como usar as constante
+
+<br><br>
+<table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3">  
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td> <td><font face="Arial" color="#3299CC"><center>Exemplo</td>
+</tr>
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp; <b>*const* tipo "nome" = *valor*</b>&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white">&nbsp;cont inteiro num = 5&nbsp;</td>
+</tr>
+</table>
+<br><br>
+
+<font face="Arial" color="White"><a name="vet"><h2>Vetores</h2></a><br>
+Um vetor pode ser visto como uma variavel que possui diversas posições, e com isso armazena diversos valores, porem todos do mesmo tipo. Na declaração de vetor, indica-se o tamanho destes. Os índices devem aparecer entre conchetes. Caso o usuário não informe o índice, o programa vai considerar como sendo zero. Veja na tabela:
+
+
+<br><br>
+<table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3">  
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td> <td><font face="Arial" color="#3299CC"><center>Exemplo</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white"><center> *tipo* Nomevetor[tamanho]</td><td bgcolor="#3299CC"><font face="Arial" color="white">Sintaxe</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white"><b>inteiro</b> vetor[5]</td><td bgcolor="#3299CC"><font face="Arial" color="white"><center>Vetor do tipo inteiro com 5 posições</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white"><center><b>inteiro</b> vetor[5]={1,2,3,4,5}</td><td bgcolor="#3299CC"><font face="Arial" color="white"><center>Vetor de 5 Posições com inicialização</td>
+</tr>
+</table>
+
+<br><br><font face="Arial" color="White"><a name="mat"><h2>Matrizes</h2></a>
+As matrizes são variáveis com mais de uma dimensão, normalmente duas, cada posição é referenciada por dois índices uma para linha e outra para coluna, na declaração de matriz indica-se o número de linhas e de colunas destas, e devem aparecer entre conchetes. Veja na tabela como declarar matrizes e como utiliza-las.
+
+<br><br>
+<table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3">  
+<tr>
+<td><font face="Arial" color="#3299CC"><center>Sintaxe</td> <td><font face="Arial" color="#3299CC"><center>Exemplo</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white"><center>&nbsp;*tipo* NomeMatriz[tamanho][tamanho]&nbsp;</td><td bgcolor="#3299CC"><font face="Arial" color="white"><center>Sintaxe</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white"><center><b>inteiro</b> matriz[5][5]</td><td bgcolor="#3299CC"><font face="Arial" color="white"><center>Matriz do tipo inteiro com 5 linhas e com 5 colunas</td>
+</tr>
+<tr><td bgcolor="#3299CC"><font face="Arial" color="white"><center><b>inteiro</b> matriz[5][5]={1}</td><td bgcolor="#3299CC"><font face="Arial" color="white"><center>Matriz 5x5 com inicialização</td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+<br><br><br><br><center><font face ="Arial" color="white"><a href="menusintaxe.html">Voltar</a> / <a href="#topo">Topo</a>
+<br><br>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>
+Sistema de Ajuda do PortugolStudio
+</title>
+</head>
+
+<body background="img/a.jpg">
+<font face="Arial" color="white">
+ 
+<a href="index.html"> Home</a> / <a href="interface.html"> Informações</a> / <a href="exemplo.html">Exemplos</a> / Laços de Repetição
+
+<br><br><br><h1><center><font face="Arial" color="white"><a name="topo">Laços de Repetição</a></h1></center><br>
+<br><font face="Arial" color="white"><center>Nesta sessão encontram-se exemplos dos comandos "para", "enquanto" e "para-enquanto",  usados para fazer determinada ação num numero determinado de vezes ou até uma condição ser satisfeita:</center>
+ <ul> Exemplos 
+   <ul><li><a href="#ex1">Exemplo 1 (Para)</a>
+    <li><a href="#ex2">Exemplo 2 (Para)</a>
+    <li><a href="#ex3">Exemplo 3 (Enquanto)</a> 
+    <li><a href="#ex4">Exemplo 4 (Faça-Enquanto)</a>
+   </ul>
+  </ul>
+
+
+<br><br><h1><a name="ex1"><font face="Arial" color="white">Exemplo 1</a></h1>
+<font face="Arial" color="white">Neste exemplo, o algoritmo faz uma contagem até o numero digitado pelo usuario
+
+
+<br>
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
+<br>&nbsp;{
+<br>&nbsp;&nbsp;&nbsp; funcao inicio (cadeia parametros[])
+<br> &nbsp;&nbsp;{
+<br><br> &nbsp;&nbsp; inteiro a,i
+<br>&nbsp;&nbsp;escreva ("Digite um numero")
+<br>&nbsp;&nbsp;leia (a)
+<br>&nbsp;&nbsp;&nbsp;para (i = 0; i 	&lt;= a; i++) {
+<br>&nbsp;&nbsp;&nbsp;&nbsp;escreva (i,"\n")
+<br>&nbsp;&nbsp;&nbsp;}
+<br><br>&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;}
+</td>
+</tr>
+</table>
+
+<br><h1><a name="ex2"><font face="Arial" color="white">Exemplo 2</a></h1>
+<font face="Arial" color="white">Este exemplo mostra o preenchimento de uma matriz com numeros digitados pelo usuario e a imprime
+
+<br>
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
+<br>&nbsp;{
+<br>&nbsp;&nbsp;&nbsp; funcao inicio (cadeia parametros[])
+<br> &nbsp;&nbsp;{
+<br><br> &nbsp;&nbsp; inteiro a[2][2], i, j
+<br>&nbsp;&nbsp;para (i=0;i &lt; 2;i++) {
+<br>&nbsp;&nbsp;&nbsp;para (j=0;j&lt;2;j++) {
+<br>&nbsp;&nbsp;&nbsp; escreva ("Digite o valor para a posição ",i,"x",j," da matriz")
+<br>&nbsp;&nbsp;&nbsp;&nbsp;leia (a[i][j])
+<br>&nbsp;&nbsp;&nbsp;escreva ("\n")
+<br>&nbsp;&nbsp;&nbsp; }
+<br>&nbsp;&nbsp; escreva ("\nMatriz digitada\n")
+<br>&nbsp;&nbsp;para (i=0;i &lt; 2;i++) {
+<br>&nbsp;&nbsp;&nbsp;para (j=0;j&lt;2;j++) {
+<br>&nbsp;&nbsp;&nbsp; escreva (a[i][j]," ")
+<br>&nbsp;&nbsp;&nbsp; }
+<br>&nbsp;&nbsp;&nbsp; escreva ("\n")
+<br>&nbsp;&nbsp;}
+<br><br>&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;}
+</td>
+</tr>
+</table>
+
+
+<br><br><h1><a name="ex3"><font face="Arial" color="white">Exemplo 3</a></h1>
+<font face="Arial" color="white">Este Exemplo Repete o  Exemplo 1, só que com "Enquanto"
+
+<br>
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
+<br>&nbsp;{
+<br>&nbsp;&nbsp;&nbsp; funcao inicio (cadeia parametros[])
+<br> &nbsp;&nbsp;{
+<br><br> &nbsp;&nbsp; inteiro a,i
+<br>&nbsp;&nbsp;escreva ("Digite um numero")
+<br>&nbsp;&nbsp;leia (a)
+<br>&nbsp;&nbsp;&nbsp;enquanto (i &lt;= a) {
+<br>&nbsp;&nbsp;&nbsp;&nbsp;escreva (i,"\n")
+<br>&nbsp;&nbsp;&nbsp;i++
+<br>&nbsp;&nbsp;&nbsp;}
+<br><br>&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;}
+</td>
+</tr>
+</table>
+
+<br><br><h1><a name="ex4"><font face="Arial" color="white">Exemplo 4</a></h1>
+<font face="Arial" color="white">Este Algoritmo roda um contador de 1 até 30 mostrando os numero impares com o laço "Faça-Enquanto"
+
+
+<br>
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
+<br>&nbsp;{
+<br>&nbsp;&nbsp;&nbsp; funcao inicio (cadeia parametros[])
+<br> &nbsp;&nbsp;{
+<br><br> &nbsp;&nbsp; inteiro a = 1
+<br>&nbsp;&nbsp;&nbsp;faca {
+<br>&nbsp;&nbsp;&nbsp;&nbsp;se (a % 2 != 0) {
+<br>&nbsp;&nbsp;&nbsp;escreva (a," é impar")
+<br>&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;a++
+<br>&nbsp;&nbsp;&nbsp;} enquanto (a &lt;= 30)
+<br><br>&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;}
+</td>
+</tr>
+</table>
+
+
+<center><br><br><br><br><a href="#topo"><font face="Arial" color="white">Topo
+<br><a href="exemplo.html"><font face="Arial" color="white">Voltar para os Exemplos</a> / <a href="comandosbasicos.html"><font face="Arial" color="white">Voltar para os Comandos Basicos
+
