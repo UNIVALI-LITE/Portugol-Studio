@@ -25,24 +25,28 @@ Sistema de Ajuda do PortugolStudio
 <font face="Arial" color="white">Algoritmo que verifica se o numero é par ou impar
 
 <br>
-<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<br><br>
+<div>
+<table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
 <tr>
-<td bgcolor="#3299CC"><font face="Arial" color="white">><b>programa 
-<br>&nbsp;{
-<br>&nbsp;&nbsp;&nbsp; funcao inicio</b> (cadeia parametros[])
-<br> &nbsp;&nbsp;<b>{
-<br><br> &nbsp;&nbsp; inteiro</b> a
-<br>&nbsp;&nbsp;<b>escreva</b> ("Digite um numero")
-<br>&nbsp;&nbsp;<b>leia</b> (a)
-<br> &nbsp;&nbsp;&nbsp;<b>se</b> (a % 2 == 0) <b>{
-<br> &nbsp;&nbsp;&nbsp;escreva</b> ("O numero é par")
-<br>&nbsp;&nbsp;<b>} senao {
-<br>&nbsp;&nbsp;escreva</b> ("O numero é Impar")
-<br><br>&nbsp;&nbsp;&nbsp;<b>}
-<br>&nbsp;&nbsp;}</b>
+<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
+<p>{
+<p>funcao inicio (cadeia parametros[])
+<p>{
+<p><p>inteiro a
+<p>escreva ("Digite um numero ")
+<p>leia (a)
+<p>se (a % 2 == 0) {
+<p>escreva ("\nO numero é par")
+<p>} senao {
+<p>escreva ("\nO numero é Impar")
+<p>}
+<p><p>}
+<p>}
 </td>
 </tr>
 </table>
+</div>
 
 <br><br><h1><a name="ex2"><font face="Arial" color="white">Exemplo 2</a></h1>
 <font face="Arial" color="white">Algoritmo que verifica qual foi o maior numero digitado
@@ -51,22 +55,23 @@ Sistema de Ajuda do PortugolStudio
 <br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
 <tr>
 <td bgcolor="#3299CC"><font face="Arial" color="white">programa 
-<br>&nbsp;{
-<br>&nbsp;&nbsp;&nbsp; funcao inicio (cadeia parametros[])
-<br> &nbsp;&nbsp;{
-<br><br> &nbsp;&nbsp; inteiro a, b
-<br>&nbsp;&nbsp;escreva ("Digite um numero")
-<br>&nbsp;&nbsp;leia (a)
-<br>&nbsp;&nbsp;escreva("Digite outro numero")
-<br>&nbsp;&nbsp;leia (b)
-<br>&nbsp;&nbsp; se (a > b) {
-<br>&nbsp;&nbsp;&nbsp; escreva (a," é maior que ",b) 
-<br>&nbsp;&nbsp; } senao se (a 	&lt; b) {
-<br>&nbsp;&nbsp;&nbsp;escreva (b," é maior que ",a)
-<br>&nbsp;&nbsp; } senao {
-<br>&nbsp;&nbsp;escreva ("Os dois são iguais")
-<br><br>&nbsp;&nbsp;}
-<br>&nbsp;}
+<p>{
+<p>funcao inicio (cadeia parametros[])
+<p>{
+<p><br>inteiro a, b
+<p>escreva ("Digite um numero ")
+<p>leia (a)
+<p>escreva("\nDigite outro numero ")
+<p>leia (b)
+<p>se (a > b) {
+<p>escreva ("\n",a," é maior que ",b) 
+<p>} senao se (a &lt; b) {
+<p>escreva ("\n",b," é maior que ",a)
+<p>} senao {
+<p>escreva ("\nOs dois são iguais")
+<p>}
+<p><p>}
+<p>}
 </td>
 </tr>
 </table>
@@ -78,26 +83,26 @@ Sistema de Ajuda do PortugolStudio
 <br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
 <tr>
 <td bgcolor="#3299CC"><font face="Arial" color="white">programa 
-<br>&nbsp;{
-<br>&nbsp;&nbsp;&nbsp; funcao inicio (cadeia parametros[])
-<br> &nbsp;&nbsp;{
-<br><br> &nbsp;&nbsp; inteiro a, b
-<br>&nbsp;&nbsp; real resultado
-<br>&nbsp;&nbsp;escreva ("Digite um numero")
-<br>&nbsp;&nbsp;leia (a)
-<br>&nbsp;&nbsp;escreva ("Digite 1 para metade do numero digitado ou 2 para o dobro do numero digitado")
-<br>&nbsp;&nbsp;leia (b)
-<br><br>&nbsp;&nbsp;escolha (b) {
-<br>&nbsp;&nbsp;caso 1:
-<br>&nbsp;&nbsp;resultado = a / 2
-<br>&nbsp;&nbsp;pare
-<br>&nbsp;&nbsp;caso 2:
-<br>&nbsp;&nbsp;resultado = a * 2
-<br>&nbsp;&nbsp;pare
-<br>&nbsp;}
-<br><br>&nbsp;escreva ("O resultado é ",resultado)
-<br><br>&nbsp;&nbsp;}
-<br>&nbsp;}
+<p>{
+<p>funcao inicio (cadeia parametros[])
+<p>{
+<p><p>inteiro a, b
+<p>real resultado
+<p>escreva ("Digite um numero ")
+<p>leia (a)
+<p>escreva ("\nDigite 1 para metade do numero digitado ou 2 para o dobro do numero digitado")
+<p>leia (b)
+<p><p>escolha (b) {
+<p>caso 1:
+<p>resultado = a / 2
+<p>pare
+<p>caso 2:
+<p>resultado = a * 2
+<p>pare
+<p>}
+<p><p>escreva ("\n\nO resultado é ",resultado)
+<p><p>}
+<p>}
 </td>
 </tr>
 </table>
