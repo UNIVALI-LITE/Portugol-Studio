@@ -109,7 +109,7 @@ public class CabecalhoAba extends JPanel {
     }//GEN-LAST:event_mniFecharActionPerformed
 
     private void mniFecharOutrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharOutrasActionPerformed
-        PainelTabulado painelTabulado = (PainelTabulado)  aba.getPainelTabulado();
+        PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal)  aba.getPainelTabulado();
         
         for (Aba abaASerFechada: painelTabulado.getAbas(AbaCodigoFonte.class))
         {

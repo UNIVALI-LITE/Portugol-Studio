@@ -3,15 +3,17 @@ package br.univali.ps.ui;
 import javax.swing.JTabbedPane;
 
 
-public class EnunciadoAba extends Aba {
+public class AbaEnunciado extends Aba {
 
+    AbaCodigoFonteCorretor abaCodigoFonteCorretor;
+    
     /** Creates new form EnunciadoAba */
-    public EnunciadoAba(JTabbedPane painelTabulado) {
+    public AbaEnunciado(JTabbedPane painelTabulado, AbaCodigoFonteCorretor acfc) {
         super(painelTabulado);
         cabecalho.setBotaoFecharVisivel(false);
         cabecalho.setTitulo("Enunciado");
         initComponents();
-        
+        abaCodigoFonteCorretor = acfc;
     }
     
     public void setEninciado(String enunciado){
@@ -54,9 +56,7 @@ public class EnunciadoAba extends Aba {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    
-        
-        
+        abaCodigoFonteCorretor.corrigir();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

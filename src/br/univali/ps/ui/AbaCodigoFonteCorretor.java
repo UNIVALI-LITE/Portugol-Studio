@@ -1,5 +1,14 @@
 package br.univali.ps.ui;
 
+import br.univali.pc.CorretorDinamico;
+import br.univali.pc.CorretorEstatico;
+import br.univali.pc.EventoModificacaoEstrutural;
+import br.univali.pc.OuvinteCorrecaoDinamica;
+import br.univali.pc.OuvinteCorrecaoEstatica;
+import br.univali.pc.xml.Caso;
+import br.univali.pc.xml.Entrada;
+import br.univali.pc.xml.Questao;
+import br.univali.pc.xml.Saida;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
@@ -20,46 +29,94 @@ import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.Box.Filler;
 import javax.swing.ButtonModel;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.JToolBar.Separator;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchEngine;
 
-public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao
+public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoListener, 
+        AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao, OuvinteCorrecaoDinamica, OuvinteCorrecaoEstatica
 {
     private static final String template = carregarTemplate();
+    
+    AbaEnunciado abaEnunciado = null;
+    CorretorEstatico corretorEstatico;
+    CorretorDinamico corretorDinamico;
+    Questao questao;
+    
+     
+    
+    List<Caso> casosFalhos = new ArrayList<Caso>();   
+    
+    
+    
+    public void casoFalhou(Caso caso,Object saidaFalha) {
+        casosFalhos.add(caso);
+        String texto = "Entradas: ";
+        for (Entrada entrada : caso.getEntradas()) {
+            texto += entrada.toString() + ", ";
+        }
+        texto += "Saida esperada: ";
+        for (Saida saida : caso.getSaidas()) {
+            texto += saida.getValue() + ", ";
+        }
+        texto += " saida encontrada: "+saidaFalha;
+        jTextArea2.setText(jTextArea2.getText() + "\n"+ texto);
+    }
 
+    public void programaInterrompido(Caso caso) {
+    }
+
+    public void insereEstrutura(EventoModificacaoEstrutural modificacaoEstrutural) {
+        jTextArea1.setText(jTextArea1.getText() + "\n" + "Insira um " + modificacaoEstrutural.getTipoEstrutura());
+    }
+
+    public void removeEstrutura(EventoModificacaoEstrutural modificacaoEstrutural) {
+        jTextArea1.setText(jTextArea1.getText() + "\n" + "Remova um " + modificacaoEstrutural.getTipoEstrutura());  
+    }
+
+    void corrigir() {
+        jTextArea1.setText("");
+        jTextArea2.setText("");
+        try {
+            casosFalhos = new ArrayList<Caso>();
+            corretorEstatico.executar(questao.getSolucoes().get(0), getEditor().getPortugolDocumento().getCodigoFonte());
+            corretorDinamico.corrige(editor.getPortugolDocumento().getCodigoFonte(), getParametros(), questao);
+            
+           
+        } catch (Exception ex) {
+            Logger.getLogger(AbaCodigoFonteCorretor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void correcaoFinalizada(float nota) {
+        
+            
+        jLabel7.setText(String.valueOf(nota));
+    }
+    
+    
+    
     private Programa programa = null;
     private AcaoSalvarArquivo acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
     private AcaoDesfazer acaoDesfazer = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
@@ -84,18 +141,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
     
     
-    public AbaCodigoFonte(JTabbedPane painelTabulado) {
+    public AbaCodigoFonteCorretor(JTabbedPane painelTabulado, Questao questao) {
+    
         super(painelTabulado);
         
         initComponents();
         configurarAcoes();
-        editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
+        editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonteCorretor.this);
         acaoSalvarArquivo.configurar(editor.getPortugolDocumento());
         acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
-        adicionarAbaListener(AbaCodigoFonte.this);
+        adicionarAbaListener(AbaCodigoFonteCorretor.this);
         jPainelSeparador.setDividerLocation(480);
         this.addComponentListener(new AdaptadorComponente());
-        painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(AbaCodigoFonte.this);
+        painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(AbaCodigoFonteCorretor.this);
         btnExecutar.setEnabled(true);
         carregarAlgoritmoPadrao();
         this.btnComentar.setVisible(false);
@@ -194,6 +252,18 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         });
         
         txtLocalizar.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "OcultarPesquisa");
+    
+    
+    
+         //this.add(super.getComponent(1),FlowLayout.CENTER);]
+        this.questao = questao;
+        abaEnunciado = new AbaEnunciado(painelSaida, this);
+        abaEnunciado.setEninciado(questao.getEnunciado());
+        corretorEstatico = new CorretorEstatico();
+        corretorEstatico.addOuvinte(this);
+        corretorDinamico = new CorretorDinamico();
+        corretorDinamico.addOuvinte(this);
+    
     }
 
     public void setPortugolDocumento(PortugolDocumento portugolDocumento) {
@@ -255,6 +325,16 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         editor = new br.univali.ps.ui.Editor();
         painelSaida = new br.univali.ps.ui.PainelSaida();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -495,6 +575,69 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jPainelSeparador.setBottomComponent(painelSaida);
 
         add(jPainelSeparador, java.awt.BorderLayout.CENTER);
+
+        jLabel3.setText("Correção:");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel4.setText("Dicas:");
+
+        jLabel5.setText("Casos Falhos:");
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
+
+        jLabel6.setText("Nota:");
+
+        jLabel7.setText("-");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(20, 20, 20))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        add(jPanel1, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void interromper()
@@ -752,11 +895,21 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JSplitPane jPainelSeparador;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel lblParametros;
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelParametros;
@@ -898,7 +1051,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         @Override
         public void componentResized(ComponentEvent e) {
-            jPainelSeparador.setDividerLocation(AbaCodigoFonte.this.getHeight() - 300);
+            jPainelSeparador.setDividerLocation(AbaCodigoFonteCorretor.this.getHeight() - 300);
         }
         
         @Override

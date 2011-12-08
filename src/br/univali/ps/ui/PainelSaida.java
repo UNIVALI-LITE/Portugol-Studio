@@ -5,13 +5,12 @@ public class PainelSaida extends PainelTabulado {
 
     private AbaConsole console;
     private AbaMensagemCompilador mensagemCompilador;
-    private EnunciadoAba enunciadoAba;
+    private AbaEnunciado enunciadoAba;
     
     public PainelSaida() {
         initComponents();
         console = new AbaConsole(this);
         mensagemCompilador = new AbaMensagemCompilador(this);
-        enunciadoAba = new EnunciadoAba(this);
     }
 
     public AbaConsole getConsole() {
@@ -22,7 +21,7 @@ public class PainelSaida extends PainelTabulado {
         return mensagemCompilador;
     }
 
-    public EnunciadoAba getEnunciadoAba() {
+    public AbaEnunciado getEnunciadoAba() {
         return enunciadoAba;
     }
     
