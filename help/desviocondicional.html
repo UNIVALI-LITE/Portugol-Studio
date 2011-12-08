@@ -29,20 +29,26 @@ Sistema de Ajuda do PortugolStudio
 <div>
 <table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
 <tr>
-<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
-<p>{
-<p>funcao inicio (cadeia parametros[])
-<p>{
-<p><p>inteiro a
-<p>escreva ("Digite um numero ")
-<p>leia (a)
-<p>se (a % 2 == 0) {
-<p>escreva ("\nO numero é par")
-<p>} senao {
-<p>escreva ("\nO numero é Impar")
-<p>}
-<p><p>}
-<p>}
+<td bgcolor="#3299CC">
+<pre><font face="Arial" color="white">
+programa 
+    {
+      funcao inicio (cadeia parametros[])
+         {
+
+	inteiro a
+	escreva ("Digite um numero ")
+	leia (a)
+
+	se (a % 2 == 0) {
+           escreva ("\nO numero é par")
+	} senao {
+           escreva ("\nO numero é Impar")
+	}
+
+    }
+}
+</pre>
 </td>
 </tr>
 </table>
@@ -54,24 +60,29 @@ Sistema de Ajuda do PortugolStudio
 <br>
 <br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
 <tr>
-<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
-<p>{
-<p>funcao inicio (cadeia parametros[])
-<p>{
-<p><br>inteiro a, b
-<p>escreva ("Digite um numero ")
-<p>leia (a)
-<p>escreva("\nDigite outro numero ")
-<p>leia (b)
-<p>se (a > b) {
-<p>escreva ("\n",a," é maior que ",b) 
-<p>} senao se (a &lt; b) {
-<p>escreva ("\n",b," é maior que ",a)
-<p>} senao {
-<p>escreva ("\nOs dois são iguais")
-<p>}
-<p><p>}
-<p>}
+<td bgcolor="#3299CC">
+<pre><font face="Arial" color="white">
+programa 
+     {
+	funcao inicio (cadeia parametros[])
+	   {
+
+ 	inteiro a, b
+	escreva ("Digite um numero ")
+	leia (a)
+	escreva("\nDigite outro numero ")
+	leia (b)
+
+	se (a > b) {
+	   escreva ("\n",a," é maior que ",b) 
+	} senao se (a &lt; b) {
+	   escreva ("\n",b," é maior que ",a)
+	} senao {
+	   escreva ("\nOs dois são iguais")
+	}
+
+     }
+}
 </td>
 </tr>
 </table>
@@ -82,27 +93,33 @@ Sistema de Ajuda do PortugolStudio
 <br>
 <br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
 <tr>
-<td bgcolor="#3299CC"><font face="Arial" color="white">programa 
-<p>{
-<p>funcao inicio (cadeia parametros[])
-<p>{
-<p><p>inteiro a, b
-<p>real resultado
-<p>escreva ("Digite um numero ")
-<p>leia (a)
-<p>escreva ("\nDigite 1 para metade do numero digitado ou 2 para o dobro do numero digitado")
-<p>leia (b)
-<p><p>escolha (b) {
-<p>caso 1:
-<p>resultado = a / 2
-<p>pare
-<p>caso 2:
-<p>resultado = a * 2
-<p>pare
-<p>}
-<p><p>escreva ("\n\nO resultado é ",resultado)
-<p><p>}
-<p>}
+<td bgcolor="#3299CC">
+<pre><font face="Arial" color="white">
+programa 
+      {
+        funcao inicio (cadeia parametros[])
+	   {
+
+	inteiro a, b
+	real resultado
+
+	escreva ("Digite um numero ")
+	leia (a)
+	escreva ("\nDigite 1 para metade do numero digitado ou 2 para o dobro do numero digitado")
+	leia (b)
+
+	escolha (b) {
+	caso 1:
+	  resultado = a / 2
+	pare
+	caso 2:
+	  resultado = a * 2
+	pare
+        }
+
+	escreva ("\n\nO resultado é ",resultado)
+     }
+}
 </td>
 </tr>
 </table>
