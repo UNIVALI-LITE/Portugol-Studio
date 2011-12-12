@@ -1,0 +1,131 @@
+<html>
+<head>
+<title>
+Sistema de Ajuda do PortugolStudio
+</title>
+</head>
+<body background="img/a.jpg">
+<font face="Arial" color="white">
+ 
+<a href="index.html"> Home</a> / <a href="interface.html"> Informações</a> / <a href="exemplo.html">Exemplos</a> / Funções
+
+<br><br><br><h1><center><font face="Arial" color="white"><a name="topo">Funções</a></h1></center><br>
+<br><font face="Arial" color="white">  Funções são subrotinas que tem por objetivo executar alguma operação especifica, retornam algum valor. 
+ <ul> Exemplos 
+   <ul><li><a href="#ex1">Exemplo 1</a>
+    <li><a href="#ex2">Exemplo 2</a>
+  </ul>
+</ul>
+
+<br><br><h1><a name="ex1"><font face="Arial" color="white">Exemplo 1</a></h1>
+<font face="Arial" color="white">Programa em que o usuario digita um numero qualquer no programa principal e a frase se repete N vezes no Procedimento
+
+<br>
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td bgcolor="#3299CC">
+<pre><font face="Arial" color="white">
+programa
+{
+	funcao inicio(cadeia parametros[])
+	{
+	  inteiro vezes 
+
+	  escreva ("Digite um numero ")
+	  leia (vezes)
+
+	 frase(vezes)
+
+	  escreva ("\nDevolta ao programa principal\n\n")
+
+	}
+	
+     funcao frase (inteiro vezes) {
+     	escreva ("\nA Frase vai repitir ",vezes," vezes\n\n")
+
+     	para (inteiro i = 0; i &lt; vezes; i++) {
+     		escreva ("Oi!\n")
+     	}
+     }
+}
+</pre>
+</tr>
+</td>
+</table>
+
+<br><br><h1><a name="ex2"><font face="Arial" color="white">Exemplo 2</a></h1>
+<font face="Arial" color="white">Programa que funciona como um calculadora</font>
+   
+<br>
+<br><br><table  cellpadding="7px" cellspacing="2" bgcolor="#E6E8FA3"> 
+<tr>
+<td bgcolor="#3299CC">
+<pre><font face="Arial" color="white">
+programa
+   {
+	funcao inicio(cadeia parametros[])
+	{
+	  inteiro opcao,a,b
+
+       escreva ("Digite o calculo que deseja fazer\n")
+       escreva ("1 - Adição \n2 - Subtração \n3 - Multiplicação \n4 - Divisão ")
+       leia (opcao)
+
+          escreva ("\n\nDigite o primeiro numero\n")
+     	leia (a)
+     	escreva ("\nDigite o segundo numero\n")
+     	leia (b)
+
+         se (opcao == 1) {
+         escreva ("\nO Resultado é ", adicao(a,b))
+         } senao se (opcao == 2) {
+        escreva ("\nO Resultado é ",	subtracao(a,b))
+         } senao se (opcao == 3){
+         escreva("\nO Resultado é ",multiplicacao(a,b))
+         } senao {
+         escreva("\nO Resultado é ",divisao(a,b))
+         }
+      }
+      
+     funcao adicao (inteiro a, inteiro b) {
+     	inteiro resultado
+          resultado = a + b
+
+          retorne resultado
+     }
+     funcao subtracao (inteiro a, inteiro b) {
+     	inteiro resultado
+          resultado = a - b
+
+          retorne resultado 
+       }
+     funcao multiplicacao (inteiro a, inteiro b) {
+     	inteiro resultado 
+     	resultado = a * b
+
+     	retorne resultado
+     }
+     funcao divisao (inteiro a, inteiro b) { 
+     	real resultado 
+          resultado = a / b
+
+        retorne resultado
+     }
+     
+}
+</pre>
+</tr>
+</td>
+</table>
+
+
+<center><br><br><a href="#topo"><font face="Arial" color="white">Topo
+<br><a href="exemplo.html"><font face="Arial" color="white">Voltar para os Exemplos</a> / <a href="comandosbasicos.html"><font face="Arial" color="white">Voltar para os Comandos Basicos
+
+
+<br><br><br>
+
+   
+
+</body>
+</html>
