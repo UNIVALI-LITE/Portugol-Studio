@@ -1,15 +1,3 @@
-.classpath
-.project
-.settings
 build
-build.xml
-build-before-profiler.xml
-nbproject
 dist
-manifest.mf
-.DS_Store
-lib/CopyLibs
-lib/nblibraries.properties
-examples/teste.por
-teste.por
-bin
+nbproject/private
