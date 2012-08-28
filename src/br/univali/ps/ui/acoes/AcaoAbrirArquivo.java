@@ -1,7 +1,9 @@
 package br.univali.ps.ui.acoes;
 
+import br.univali.pc.xml.FabriacaQuestao;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.AbaCodigoFonte;
+import br.univali.ps.ui.AbaCodigoFonteCorretor;
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -38,21 +40,32 @@ public class AcaoAbrirArquivo extends Acao
     {
         if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
         {
+            
             File[] arquivos = chooser.getSelectedFiles();
             for (int i = 0; i < arquivos.length; i++) {
                 File arquivo = arquivos[i];
-                String codigoFonte = FileHandle.open(arquivo);
-                PortugolDocumento portugolDocument = new PortugolDocumento();
-                portugolDocument.insertString(0, codigoFonte, null);
-                AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
-                abaCodigoFonte.setPortugolDocumento(portugolDocument);
-                portugolDocument.setChanged(false);
-                portugolDocument.setFile(arquivo);
+                if (getFileExtension(arquivo).equals("xml")) {
+                    FabriacaQuestao f = new FabriacaQuestao();
+                    new AbaCodigoFonteCorretor(painelTabulado, f.criarQuestao(arquivo));
+                } else {
+                    String codigoFonte = FileHandle.open(arquivo);
+                    PortugolDocumento portugolDocument = new PortugolDocumento();
+                    portugolDocument.insertString(0, codigoFonte, null);
+                    AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
+                    abaCodigoFonte.setPortugolDocumento(portugolDocument);
+                    portugolDocument.setChanged(false);
+                    portugolDocument.setFile(arquivo);
+                }
             }
         }
         else
         {
             throw new Exception("Seleção de arquivo cancelada pelo usuário");
         }
-    }       
+    } 
+    
+    private String getFileExtension(File file){
+        String fileName = file.getName();
+        return fileName.substring(fileName.lastIndexOf(".") +1,fileName.length());
+    }
 }
