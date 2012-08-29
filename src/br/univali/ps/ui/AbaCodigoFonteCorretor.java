@@ -38,18 +38,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchEngine;
 
@@ -63,46 +58,59 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     CorretorDinamico corretorDinamico;
     Questao questao;
     
-     
+    DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos"); 
+    DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos"); 
     
-    List<Caso> casosFalhos = new ArrayList<Caso>();   
+    List<CasoFalho> casosFalhos = new ArrayList<CasoFalho>();   
+    List<Caso> casosAcertados = new ArrayList<Caso>();
+    private DefaultMutableTreeNode defaultMutableTreeNode;
+    private DefaultTreeModel defaultTreeModel;
     
-    
-    
-    public void casoFalhou(Caso caso,Object saidaFalha) {
-        casosFalhos.add(caso);
-        String texto = "Entradas: ";
-        for (Entrada entrada : caso.getEntradas()) {
-            texto += entrada.toString() + ", ";
+    private class CasoFalho {
+        public Caso caso;
+        public Object saidaFalha;
+
+        public CasoFalho(Caso caso, Object saidaFalha)
+        {
+            this.caso = caso;
+            this.saidaFalha = saidaFalha;
         }
-        texto += "Saida esperada: ";
-        for (Saida saida : caso.getSaidas()) {
-            texto += saida.getValue() + ", ";
-        }
-        texto += " saida encontrada: "+saidaFalha;
-        jTextArea2.setText(jTextArea2.getText() + "\n"+ texto);
+        
+    }
+    
+    public void casoFalhou(Caso caso, Object saidaFalha) {
+        casosFalhos.add(new CasoFalho(caso, saidaFalha));
+        
+        //jTextArea2.setText(jTextArea2.getText() + "\n"+ texto);
     }
 
+    @Override
+    public void casoPassou(Caso caso)
+    {
+        if (!casosAcertados.contains(caso))
+            casosAcertados.add(caso);
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    
+    
     public void programaInterrompido(Caso caso) {
     }
 
     public void insereEstrutura(EventoModificacaoEstrutural modificacaoEstrutural) {
-        jTextArea1.setText(jTextArea1.getText() + "\n" + "Insira um " + modificacaoEstrutural.getTipoEstrutura());
+        //jTextArea1.setText(jTextArea1.getText() + "\n" + "Insira um " + modificacaoEstrutural.getTipoEstrutura());
     }
 
     public void removeEstrutura(EventoModificacaoEstrutural modificacaoEstrutural) {
-        jTextArea1.setText(jTextArea1.getText() + "\n" + "Remova um " + modificacaoEstrutural.getTipoEstrutura());  
+        //jTextArea1.setText(jTextArea1.getText() + "\n" + "Remova um " + modificacaoEstrutural.getTipoEstrutura());  
     }
 
-    void corrigir() {
-        jTextArea1.setText("");
-        jTextArea2.setText("");
+    void corrigir() { 
         try {
-            casosFalhos = new ArrayList<Caso>();
+            casosFalhos = new ArrayList<CasoFalho>();
+            casosAcertados = new ArrayList<Caso>();
             corretorEstatico.executar(questao.getSolucoes().get(0), getEditor().getPortugolDocumento().getCodigoFonte());
             corretorDinamico.corrige(editor.getPortugolDocumento().getCodigoFonte(), getParametros(), questao);
-            
-           
         } catch (Exception ex) {
             Logger.getLogger(AbaCodigoFonteCorretor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,7 +118,74 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
     public void correcaoFinalizada(float nota) {
         
+        defaultMutableTreeNode = new DefaultMutableTreeNode("Casos");
+        defaultTreeModel = new DefaultTreeModel(defaultMutableTreeNode);
+         
+        
+        casosTreeFalhos = new DefaultMutableTreeNode("Incorretos"); 
+        casosTreeAcertados = new DefaultMutableTreeNode("Corretos"); 
+        
+        
+        int count = 1;
+        for (CasoFalho caso: casosFalhos){
+            DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
+        
+            DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
+            //String texto = "Entradas: ";
+            for (Entrada entrada : caso.caso.getEntradas()) {
+                entradasNode.add(new DefaultMutableTreeNode(entrada.toString()));
+                //texto += entrada.toString() + ", ";
+            }
+            DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
+            //texto += "Saida esperada: ";
+            for (Saida saida : caso.caso.getSaidas()) {
+                saidasEsperada.add(new DefaultMutableTreeNode(saida.toString()));  
+            }
+            DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
+        
+            saidasEncontrada.add(new DefaultMutableTreeNode(caso.saidaFalha));
+            //texto += " saida encontrada: "+saidaFalha;
+            defaultMutableTreeNode1.add(entradasNode);
+            defaultMutableTreeNode1.add(saidasEsperada);
+            defaultMutableTreeNode1.add(saidasEncontrada);
+
+            casosTreeFalhos.add(defaultMutableTreeNode1);
+            count++;
+        }
+        
+        count = 1;
+        for (Caso caso : casosAcertados){
+        
+             DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
+        
+            DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
+            //String texto = "Entradas: ";
+            for (Entrada entrada : caso.getEntradas()) {
+                entradasNode.add(new DefaultMutableTreeNode(entrada.toString()));
+                //texto += entrada.toString() + ", ";
+            }
+            DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
+            //texto += "Saida esperada: ";
+            for (Saida saida : caso.getSaidas()) {
+                saidasEsperada.add(new DefaultMutableTreeNode(saida.toString()));  
+            }
+             //saidasEncontrada.add(new DefaultMutableTreeNode(saidaFalha.toString()));
+            //texto += " saida encontrada: "+saidaFalha;
+            defaultMutableTreeNode1.add(entradasNode);
+            defaultMutableTreeNode1.add(saidasEsperada);
             
+            casosTreeAcertados.add(defaultMutableTreeNode1);
+            count++;
+        }
+        
+        defaultMutableTreeNode.add(casosTreeFalhos);
+        
+          defaultMutableTreeNode.add(casosTreeAcertados);
+        //jTextArea1.setText("");
+        //jTextArea2.setText("");
+        
+        jTree1.setModel(defaultTreeModel);
+            jTree1.invalidate();
         jLabel7.setText(String.valueOf(nota));
     }
     
@@ -326,14 +401,11 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         painelSaida = new br.univali.ps.ui.PainelSaida();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -381,7 +453,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         btnColar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramenta.add(btnColar);
 
-        btnComentar.setFont(new java.awt.Font("Tahoma", 2, 11));
+        btnComentar.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         btnComentar.setText("//x=2");
         btnComentar.setToolTipText("Comentar o código selecionado");
         btnComentar.setFocusPainted(false);
@@ -577,62 +649,52 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
         jLabel3.setText("Correção:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jLabel4.setText("Dicas:");
-
-        jLabel5.setText("Casos Falhos:");
-
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        jLabel5.setText("Casos de teste:");
 
         jLabel6.setText("Nota:");
 
         jLabel7.setText("-");
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Casos");
+        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane3.setViewportView(jTree1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(20, 20, 20))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(20, 20, 20))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 158, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addGap(12, 12, 12)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -895,20 +957,17 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JSplitPane jPainelSeparador;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTree jTree1;
     private javax.swing.JLabel lblParametros;
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelParametros;

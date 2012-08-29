@@ -6,6 +6,7 @@ import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
 import br.univali.ps.ui.acoes.AcaoSalvarComo;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.swing.filtro.FiltroArquivoExercicio;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
 import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.util.IconFactory;
@@ -95,6 +96,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     
     private void configurarSeletorArquivo() {
         dialogoEscolhaArquivo.setMultiSelectionEnabled(true);
+        dialogoEscolhaArquivo.addChoosableFileFilter(new FiltroArquivoExercicio());
         dialogoEscolhaArquivo.addChoosableFileFilter(new FiltroArquivoPortugol());
         dialogoEscolhaArquivo.setAcceptAllFileFilterUsed(false);
     }

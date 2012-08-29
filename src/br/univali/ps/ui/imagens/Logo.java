@@ -51,7 +51,7 @@ public class Logo extends javax.swing.JPanel
 
         setOpaque(false);
 
-        portugoStudio.setFont(new java.awt.Font("Lucida Grande", 1, 24));
+        portugoStudio.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         portugoStudio.setForeground(new java.awt.Color(255, 255, 255));
         portugoStudio.setText("{PortugolStudio}");
 
@@ -59,7 +59,7 @@ public class Logo extends javax.swing.JPanel
 
         versao.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("1.03");
+        versao.setText("1.05");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -81,10 +81,10 @@ public class Logo extends javax.swing.JPanel
                 .add(versao, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(portugoStudio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap())
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(lampada, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))
+                .add(lampada, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
