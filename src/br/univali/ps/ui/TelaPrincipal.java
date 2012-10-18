@@ -22,7 +22,6 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
@@ -106,7 +105,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     private void initComponents() {
 
         bottomPane = new javax.swing.JPanel();
-        painelTabulado = new br.univali.ps.ui.PainelTabulado();
+        painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
         mnuBar = new javax.swing.JMenuBar();
         mnuFile = new javax.swing.JMenu();
         mniNovo = new javax.swing.JMenuItem();
@@ -350,7 +349,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
     private javax.swing.JMenu mnuPrograma;
-    private br.univali.ps.ui.PainelTabulado painelTabulado;
+    private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
     // End of variables declaration//GEN-END:variables
 
     public void dialogoSalvar() {

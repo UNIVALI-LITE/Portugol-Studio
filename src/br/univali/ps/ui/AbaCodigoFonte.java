@@ -20,6 +20,7 @@ import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -28,10 +29,21 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.Box.Filler;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.JToolBar.Separator;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -57,8 +69,20 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private Action acaoExecutar;
     private Action acaoInterromper;
     
+    protected PainelSaida getPainelSaida()
+    {
+        return this.painelSaida;
+    }
+    
+    protected Editor getEditor()
+    {
+        return editor;
+    }
+    
+    
     public AbaCodigoFonte(JTabbedPane painelTabulado) {
         super(painelTabulado);
+        
         initComponents();
         configurarAcoes();
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
@@ -78,10 +102,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoInterromper = new AcaoInterromper();
         btnExecutar.setAction(acaoExecutar);
         btnInterromper.setAction(acaoInterromper);
-               
+             
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
-
+        
         /* 
          * Habilitar pesquisa instantânea.
          * 
@@ -199,7 +223,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jPainelSeparador = new javax.swing.JSplitPane();
-        painelSaida = new br.univali.ps.ui.PainelSaida();
         painelEditor = new javax.swing.JPanel();
         barraPesquisa = new javax.swing.JToolBar();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
@@ -227,6 +250,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         chkExprRegular = new javax.swing.JCheckBox();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         editor = new br.univali.ps.ui.Editor();
+        painelSaida = new br.univali.ps.ui.PainelSaida();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -345,7 +369,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
         jPainelSeparador.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jPainelSeparador.setBottomComponent(painelSaida);
 
         painelEditor.setLayout(new java.awt.BorderLayout());
 
@@ -465,6 +488,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelEditor.add(editor, java.awt.BorderLayout.CENTER);
 
         jPainelSeparador.setTopComponent(painelEditor);
+        jPainelSeparador.setBottomComponent(painelSaida);
 
         add(jPainelSeparador, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -864,6 +888,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelSaida.getConsole().setExecutandoPrograma(false);
     }
 
+  
+
     private class AdaptadorComponente extends ComponentAdapter {
 
         @Override
@@ -877,7 +903,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
     
-    private String[] getParametros()
+    protected String[] getParametros()
     {
         String textoParametros = txtParametros.getText().trim();
         

@@ -42,7 +42,9 @@ public class AcaoAbrirArquivo extends Acao
         {
             
             File[] arquivos = chooser.getSelectedFiles();
+            
             for (int i = 0; i < arquivos.length; i++) {
+                
                 File arquivo = arquivos[i];
                 if (getFileExtension(arquivo).equals("pex")||getFileExtension(arquivo).equals("xml")) {
                     FabriacaQuestao f = new FabriacaQuestao();

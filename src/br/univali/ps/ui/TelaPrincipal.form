@@ -251,7 +251,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="br.univali.ps.ui.PainelTabulado" name="painelTabulado">
+    <Container class="br.univali.ps.ui.PainelTabuladoPrincipal" name="painelTabulado">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>

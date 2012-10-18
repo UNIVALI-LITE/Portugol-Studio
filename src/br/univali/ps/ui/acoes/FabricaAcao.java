@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.acoes;
 
 import br.univali.ps.ui.util.IconFactory;

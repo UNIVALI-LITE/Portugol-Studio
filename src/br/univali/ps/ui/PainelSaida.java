@@ -1,11 +1,11 @@
 package br.univali.ps.ui;
 
-import javax.swing.JTabbedPane;
 
-public class PainelSaida extends JTabbedPane {
+public class PainelSaida extends PainelTabulado {
 
     private AbaConsole console;
     private AbaMensagemCompilador mensagemCompilador;
+    private AbaEnunciado enunciadoAba;
     
     public PainelSaida() {
         initComponents();
@@ -21,6 +21,10 @@ public class PainelSaida extends JTabbedPane {
         return mensagemCompilador;
     }
 
+    public AbaEnunciado getEnunciadoAba() {
+        return enunciadoAba;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

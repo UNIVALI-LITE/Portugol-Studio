@@ -42,7 +42,7 @@
         <Component class="br.univali.ps.ui.imagens.Logo" name="logo1">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="0" width="260" height="-1"/>
+              <AbsoluteConstraints x="20" y="0" width="270" height="100"/>
             </Constraint>
           </Constraints>
         </Component>
