@@ -6,6 +6,7 @@ import br.univali.pc.EventoModificacaoEstrutural;
 import br.univali.pc.OuvinteCorrecaoDinamica;
 import br.univali.pc.OuvinteCorrecaoEstatica;
 import br.univali.pc.xml.Caso;
+import br.univali.pc.xml.CasoFalho;
 import br.univali.pc.xml.Entrada;
 import br.univali.pc.xml.Questao;
 import br.univali.pc.xml.Saida;
@@ -29,11 +30,11 @@ import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,39 +61,8 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     
     DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos"); 
     DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos"); 
-    
-    List<CasoFalho> casosFalhos = new ArrayList<CasoFalho>();   
-    List<Caso> casosAcertados = new ArrayList<Caso>();
     private DefaultMutableTreeNode defaultMutableTreeNode;
     private DefaultTreeModel defaultTreeModel;
-    
-    private class CasoFalho {
-        public Caso caso;
-        public Object saidaFalha;
-
-        public CasoFalho(Caso caso, Object saidaFalha)
-        {
-            this.caso = caso;
-            this.saidaFalha = saidaFalha;
-        }
-        
-    }
-    
-    public void casoFalhou(Caso caso, Object saidaFalha) {
-        casosFalhos.add(new CasoFalho(caso, saidaFalha));
-        
-        //jTextArea2.setText(jTextArea2.getText() + "\n"+ texto);
-    }
-
-    @Override
-    public void casoPassou(Caso caso)
-    {
-        if (!casosAcertados.contains(caso))
-            casosAcertados.add(caso);
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    
     
     public void programaInterrompido(Caso caso) {
     }
@@ -107,8 +77,6 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
     void corrigir() { 
         try {
-            casosFalhos = new ArrayList<CasoFalho>();
-            casosAcertados = new ArrayList<Caso>();
             corretorEstatico.executar(questao.getSolucoes().get(0), getEditor().getPortugolDocumento().getCodigoFonte());
             corretorDinamico.corrige(editor.getPortugolDocumento().getCodigoFonte(), getParametros(), questao);
         } catch (Exception ex) {
@@ -116,7 +84,8 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         }
     }
 
-    public void correcaoFinalizada(float nota) {
+    @Override
+    public void correcaoFinalizada(float nota, List<Caso> corretos, List<CasoFalho> incorretos) {
         
         defaultMutableTreeNode = new DefaultMutableTreeNode("Casos");
         defaultTreeModel = new DefaultTreeModel(defaultMutableTreeNode);
@@ -127,23 +96,23 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         
         
         int count = 1;
-        for (CasoFalho caso: casosFalhos){
+        for (CasoFalho caso: incorretos){
             DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
         
             DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
             //String texto = "Entradas: ";
-            for (Entrada entrada : caso.caso.getEntradas()) {
+            for (Entrada entrada : caso.getCaso().getEntradas()) {
                 entradasNode.add(new DefaultMutableTreeNode(entrada.toString()));
                 //texto += entrada.toString() + ", ";
             }
             DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
             //texto += "Saida esperada: ";
-            for (Saida saida : caso.caso.getSaidas()) {
+            for (Saida saida : caso.getCaso().getSaidas()) {
                 saidasEsperada.add(new DefaultMutableTreeNode(saida.toString()));  
             }
             DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
         
-            saidasEncontrada.add(new DefaultMutableTreeNode(caso.saidaFalha));
+            saidasEncontrada.add(new DefaultMutableTreeNode(caso.getSaidaEncontrada()));
             //texto += " saida encontrada: "+saidaFalha;
             defaultMutableTreeNode1.add(entradasNode);
             defaultMutableTreeNode1.add(saidasEsperada);
@@ -154,7 +123,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         }
         
         count = 1;
-        for (Caso caso : casosAcertados){
+        for (Caso caso : corretos){
         
              DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
         
@@ -329,7 +298,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     
     
     
-         //this.add(super.getComponent(1),FlowLayout.CENTER);]
+        this.add(super.getComponent(1),FlowLayout.CENTER);
         this.questao = questao;
         abaEnunciado = new AbaEnunciado(painelSaida, this);
         abaEnunciado.setEninciado(questao.getEnunciado());
