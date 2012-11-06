@@ -64,6 +64,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public AbaCodigoFonte(JTabbedPane painelTabulado) {
         super(painelTabulado);
         initComponents();
+        fghjk1.setAlterador(editor);
         configurarAcoes();
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         acaoSalvarArquivo.configurar(editor.getPortugolDocumento());
@@ -180,7 +181,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         barraFerramenta = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
@@ -200,6 +202,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         lblParametros = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         txtParametros = new javax.swing.JTextField();
+        fghjk1 = new br.univali.ps.ui.Fontes();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jPainelSeparador = new javax.swing.JSplitPane();
@@ -278,7 +281,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnColar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramenta.add(btnColar);
 
-        btnComentar.setFont(new java.awt.Font("Tahoma", 2, 11));
+        btnComentar.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         btnComentar.setText("//x=2");
         btnComentar.setToolTipText("Comentar o código selecionado");
         btnComentar.setFocusPainted(false);
@@ -289,8 +292,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnComentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -306,8 +311,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDescomentarActionPerformed(evt);
             }
         });
@@ -341,6 +348,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         txtParametros.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         txtParametros.setPreferredSize(new java.awt.Dimension(200, 20));
         painelParametros.add(txtParametros);
+        painelParametros.add(fghjk1);
         painelParametros.add(filler3);
 
         barraFerramenta.add(painelParametros);
@@ -369,8 +377,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jBFecharPesquisa.setPreferredSize(new java.awt.Dimension(16, 16));
         jBFecharPesquisa.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
         jBFecharPesquisa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jBFecharActionPerformed(evt);
             }
         });
@@ -384,8 +394,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         txtLocalizar.setMaximumSize(new java.awt.Dimension(250, 20));
         txtLocalizar.setMinimumSize(new java.awt.Dimension(100, 20));
         txtLocalizar.setPreferredSize(new java.awt.Dimension(150, 20));
-        txtLocalizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        txtLocalizar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 txtLocalizarActionPerformed(evt);
             }
         });
@@ -408,8 +420,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton2ActionPerformed(evt);
             }
         });
@@ -420,8 +434,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton3.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton3ActionPerformed(evt);
             }
         });
@@ -432,8 +448,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton4.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton4ActionPerformed(evt);
             }
         });
@@ -707,6 +725,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JCheckBox chkMaiscMinusc;
     private javax.swing.JCheckBox chkPalavrasInteiras;
     private br.univali.ps.ui.Editor editor;
+    private br.univali.ps.ui.Fontes fghjk1;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler11;
