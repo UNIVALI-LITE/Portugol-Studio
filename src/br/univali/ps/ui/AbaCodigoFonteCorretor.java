@@ -1,15 +1,11 @@
 package br.univali.ps.ui;
 
-import br.univali.pc.CorretorDinamico;
-import br.univali.pc.CorretorEstatico;
-import br.univali.pc.EventoModificacaoEstrutural;
-import br.univali.pc.OuvinteCorrecaoDinamica;
-import br.univali.pc.OuvinteCorrecaoEstatica;
-import br.univali.pc.xml.Caso;
-import br.univali.pc.xml.CasoFalho;
-import br.univali.pc.xml.Entrada;
-import br.univali.pc.xml.Questao;
-import br.univali.pc.xml.Saida;
+import br.univali.portugol.corretor.dinamico.CasoFalho;
+import br.univali.portugol.corretor.dinamico.Corretor;
+import br.univali.portugol.corretor.dinamico.model.Caso;
+import br.univali.portugol.corretor.dinamico.model.Entrada;
+import br.univali.portugol.corretor.dinamico.model.Questao;
+import br.univali.portugol.corretor.dinamico.model.Saida;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
@@ -49,117 +45,107 @@ import javax.swing.tree.DefaultTreeModel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchEngine;
 
-public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoListener, 
-        AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao, OuvinteCorrecaoDinamica, OuvinteCorrecaoEstatica
+public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoListener,
+        AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao
 {
     private static final String template = carregarTemplate();
-    
     AbaEnunciado abaEnunciado = null;
-    CorretorEstatico corretorEstatico;
-    CorretorDinamico corretorDinamico;
     Questao questao;
-    
-    DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos"); 
-    DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos"); 
+    DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
+    DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
     private DefaultMutableTreeNode defaultMutableTreeNode;
     private DefaultTreeModel defaultTreeModel;
-    
-    public void programaInterrompido(Caso caso) {
-    }
 
-    public void insereEstrutura(EventoModificacaoEstrutural modificacaoEstrutural) {
-        //jTextArea1.setText(jTextArea1.getText() + "\n" + "Insira um " + modificacaoEstrutural.getTipoEstrutura());
-    }
+    void corrigir()
+    {
+        Corretor corretor = new Corretor(questao);
+        try
+        {
+            int nota = corretor.executar(editor.getPortugolDocumento().getCodigoFonte(), getParametros());
 
-    public void removeEstrutura(EventoModificacaoEstrutural modificacaoEstrutural) {
-        //jTextArea1.setText(jTextArea1.getText() + "\n" + "Remova um " + modificacaoEstrutural.getTipoEstrutura());  
-    }
+            jLResultado.setText(String.valueOf(nota));
+            List<CasoFalho> casosFalhos = corretor.getCasosFalhos();
+            List<Caso> casosAcertados = corretor.getCasosAcertados();
 
-    void corrigir() { 
-        try {
-            corretorEstatico.executar(questao.getSolucoes().get(0), getEditor().getPortugolDocumento().getCodigoFonte());
-            corretorDinamico.corrige(editor.getPortugolDocumento().getCodigoFonte(), getParametros(), questao);
-        } catch (Exception ex) {
+            //jTree1.removeAll();
+
+            defaultMutableTreeNode = new DefaultMutableTreeNode("Casos");
+            defaultTreeModel = new DefaultTreeModel(defaultMutableTreeNode);
+
+            casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
+            casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
+
+            int count = 1;
+            for (CasoFalho caso : casosFalhos)
+            {
+                DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
+
+                DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
+                //String texto = "Entradas: ";
+                for (Entrada entrada : caso.getCasoTestado().getEntradas())
+                {
+                    entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
+                    //texto += entrada.toString() + ", ";
+                }
+                DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
+                //texto += "Saida esperada: ";
+                for (Saida saida : caso.getCasoTestado().getSaidas())
+                {
+                    saidasEsperada.add(new DefaultMutableTreeNode(saida.getValor()));
+                }
+                DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
+
+                saidasEncontrada.add(new DefaultMutableTreeNode(caso.getSaidaEncontrada()));
+                //texto += " saida encontrada: "+saidaFalha;
+                defaultMutableTreeNode1.add(entradasNode);
+                defaultMutableTreeNode1.add(saidasEsperada);
+                defaultMutableTreeNode1.add(saidasEncontrada);
+
+                casosTreeFalhos.add(defaultMutableTreeNode1);
+                count++;
+            }
+
+            count = 1;
+            for (Caso caso : casosAcertados)
+            {
+
+                DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
+
+                DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
+                //String texto = "Entradas: ";
+                for (Entrada entrada : caso.getEntradas())
+                {
+                    entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
+                    //texto += entrada.toString() + ", ";
+                }
+                DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
+                //texto += "Saida esperada: ";
+                for (Saida saida : caso.getSaidas())
+                {
+                    saidasEsperada.add(new DefaultMutableTreeNode(saida.getValor()));
+                }
+                //saidasEncontrada.add(new DefaultMutableTreeNode(saidaFalha.toString()));
+                //texto += " saida encontrada: "+saidaFalha;
+                defaultMutableTreeNode1.add(entradasNode);
+                defaultMutableTreeNode1.add(saidasEsperada);
+
+                casosTreeAcertados.add(defaultMutableTreeNode1);
+                count++;
+            }
+
+            defaultMutableTreeNode.add(casosTreeFalhos);
+
+            defaultMutableTreeNode.add(casosTreeAcertados);
+
+            jTree1.setModel(defaultTreeModel);
+            jTree1.invalidate();
+
+        }
+        catch (ErroCompilacao ex)
+        {
             Logger.getLogger(AbaCodigoFonteCorretor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    @Override
-    public void correcaoFinalizada(float nota, List<Caso> corretos, List<CasoFalho> incorretos) {
-        
-        defaultMutableTreeNode = new DefaultMutableTreeNode("Casos");
-        defaultTreeModel = new DefaultTreeModel(defaultMutableTreeNode);
-         
-        
-        casosTreeFalhos = new DefaultMutableTreeNode("Incorretos"); 
-        casosTreeAcertados = new DefaultMutableTreeNode("Corretos"); 
-        
-        
-        int count = 1;
-        for (CasoFalho caso: incorretos){
-            DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
-        
-            DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
-            //String texto = "Entradas: ";
-            for (Entrada entrada : caso.getCaso().getEntradas()) {
-                entradasNode.add(new DefaultMutableTreeNode(entrada.toString()));
-                //texto += entrada.toString() + ", ";
-            }
-            DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
-            //texto += "Saida esperada: ";
-            for (Saida saida : caso.getCaso().getSaidas()) {
-                saidasEsperada.add(new DefaultMutableTreeNode(saida.toString()));  
-            }
-            DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
-        
-            saidasEncontrada.add(new DefaultMutableTreeNode(caso.getSaidaEncontrada()));
-            //texto += " saida encontrada: "+saidaFalha;
-            defaultMutableTreeNode1.add(entradasNode);
-            defaultMutableTreeNode1.add(saidasEsperada);
-            defaultMutableTreeNode1.add(saidasEncontrada);
-
-            casosTreeFalhos.add(defaultMutableTreeNode1);
-            count++;
-        }
-        
-        count = 1;
-        for (Caso caso : corretos){
-        
-             DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
-        
-            DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
-            //String texto = "Entradas: ";
-            for (Entrada entrada : caso.getEntradas()) {
-                entradasNode.add(new DefaultMutableTreeNode(entrada.toString()));
-                //texto += entrada.toString() + ", ";
-            }
-            DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
-            //texto += "Saida esperada: ";
-            for (Saida saida : caso.getSaidas()) {
-                saidasEsperada.add(new DefaultMutableTreeNode(saida.toString()));  
-            }
-             //saidasEncontrada.add(new DefaultMutableTreeNode(saidaFalha.toString()));
-            //texto += " saida encontrada: "+saidaFalha;
-            defaultMutableTreeNode1.add(entradasNode);
-            defaultMutableTreeNode1.add(saidasEsperada);
-            
-            casosTreeAcertados.add(defaultMutableTreeNode1);
-            count++;
-        }
-        
-        defaultMutableTreeNode.add(casosTreeFalhos);
-        
-          defaultMutableTreeNode.add(casosTreeAcertados);
-        //jTextArea1.setText("");
-        //jTextArea2.setText("");
-        
-        jTree1.setModel(defaultTreeModel);
-            jTree1.invalidate();
-        jLabel7.setText(String.valueOf(nota));
-    }
-    
-    
-    
     private Programa programa = null;
     private AcaoSalvarArquivo acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
     private AcaoDesfazer acaoDesfazer = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
@@ -167,27 +153,26 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     private AcaoRecortar acaoRecortar = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
     private AcaoCopiar acaoCopiar = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
     private AcaoColar acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
-    private Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"); 
-    private Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png"); 
-
+    private Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
+    private Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
     private Action acaoExecutar;
     private Action acaoInterromper;
-    
+
     protected PainelSaida getPainelSaida()
     {
         return this.painelSaida;
     }
-    
+
     protected Editor getEditor()
     {
         return editor;
     }
-    
-    
-    public AbaCodigoFonteCorretor(JTabbedPane painelTabulado, Questao questao) {
-    
+
+    public AbaCodigoFonteCorretor(JTabbedPane painelTabulado, Questao questao)
+    {
+
         super(painelTabulado);
-        
+
         initComponents();
         configurarAcoes();
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonteCorretor.this);
@@ -202,114 +187,116 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         this.btnComentar.setVisible(false);
         this.btnDescomentar.setVisible(false);
         this.barraPesquisa.setVisible(false);
-        
-        acaoExecutar = new AcaoExecutar();        
+
+        acaoExecutar = new AcaoExecutar();
         acaoInterromper = new AcaoInterromper();
         btnExecutar.setAction(acaoExecutar);
         btnInterromper.setAction(acaoInterromper);
-             
+
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
-        
+
         /* 
          * Habilitar pesquisa instantânea.
          * 
          *  Pode conflitar com o subsituir
          *  precisamos testar.
          */
-        
-        
+
+
         /*            
-        txtPesquisa.getDocument().addDocumentListener(new DocumentListener() 
+         txtPesquisa.getDocument().addDocumentListener(new DocumentListener() 
+         {
+         @Override
+         public void insertUpdate(DocumentEvent e) {
+         localizar();
+         }
+
+         @Override
+         public void removeUpdate(DocumentEvent e) {
+         localizar();
+         }
+
+         @Override
+         public void changedUpdate(DocumentEvent e) {
+         localizar();
+         }
+         });
+         */
+        barraPesquisa.addComponentListener(new ComponentAdapter()
         {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                localizar();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                localizar();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                localizar();
-            }
-        });
-        */
-        barraPesquisa.addComponentListener(new ComponentAdapter() 
-        {
-            @Override
-            public void componentShown(ComponentEvent e) 
+            public void componentShown(ComponentEvent e)
             {
                 if (posicaoAtualCursor < 0)
+                {
                     posicaoAtualCursor = editor.getTextArea().getCaretPosition();
-                
-                txtLocalizar.setText(null);      
+                }
+
+                txtLocalizar.setText(null);
                 txtSubstituir.setText(null);
                 revalidate();
                 txtLocalizar.requestFocus();
             }
 
             @Override
-            public void componentHidden(ComponentEvent e) 
+            public void componentHidden(ComponentEvent e)
             {
                 revalidate();
                 editor.requestFocus();
-                
+
                 if (posicaoAtualCursor >= 0)
+                {
                     editor.getTextArea().setCaretPosition(posicaoAtualCursor);
-                
+                }
+
                 limparPesquisa();
             }
-        });        
-        
-        
-        ChangeListener changeListener = new ChangeListener() 
+        });
+
+
+        ChangeListener changeListener = new ChangeListener()
         {
             @Override
-            public void stateChanged(ChangeEvent e) 
+            public void stateChanged(ChangeEvent e)
             {
                 AbstractButton abstractButton = (AbstractButton) e.getSource();
                 ButtonModel buttonModel = abstractButton.getModel();
-                
+
                 if (buttonModel.isPressed())
                 {
                     limparPesquisa();
                 }
             }
         };
-        
+
         chkExprRegular.addChangeListener(changeListener);
         chkMaiscMinusc.addChangeListener(changeListener);
         chkPalavrasInteiras.addChangeListener(changeListener);
-        
-        txtLocalizar.getActionMap().put("OcultarPesquisa", new AbstractAction() 
+
+        txtLocalizar.getActionMap().put("OcultarPesquisa", new AbstractAction()
         {
             @Override
-            public void actionPerformed(ActionEvent e) 
+            public void actionPerformed(ActionEvent e)
             {
                 ocultarPainelPesquisa();
             }
         });
-        
+
         txtLocalizar.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "OcultarPesquisa");
-    
-    
-    
-        this.add(super.getComponent(1),FlowLayout.CENTER);
+
+
+
+        this.add(super.getComponent(1), FlowLayout.CENTER);
         this.questao = questao;
         abaEnunciado = new AbaEnunciado(painelSaida, this);
         abaEnunciado.setEninciado(questao.getEnunciado());
-        corretorEstatico = new CorretorEstatico();
-        corretorEstatico.addOuvinte(this);
-        corretorDinamico = new CorretorDinamico();
-        corretorDinamico.addOuvinte(this);
-    
+
+
     }
 
-    public void setPortugolDocumento(PortugolDocumento portugolDocumento) {
+    public void setPortugolDocumento(PortugolDocumento portugolDocumento)
+    {
         portugolDocumento.addPortugolDocumentoListener(this);
         editor.setPortugolDocumento(portugolDocumento);
         acaoSalvarArquivo.configurar(portugolDocumento);
@@ -317,7 +304,8 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         barraFerramenta = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
@@ -369,10 +357,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         editor = new br.univali.ps.ui.Editor();
         painelSaida = new br.univali.ps.ui.PainelSaida();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        jLCorrecao = new javax.swing.JLabel();
+        jLCasosTeste = new javax.swing.JLabel();
+        jLNota = new javax.swing.JLabel();
+        jLResultado = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
 
@@ -433,8 +421,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnComentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -450,8 +440,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDescomentarActionPerformed(evt);
             }
         });
@@ -512,8 +504,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         jBFecharPesquisa.setPreferredSize(new java.awt.Dimension(16, 16));
         jBFecharPesquisa.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
         jBFecharPesquisa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jBFecharActionPerformed(evt);
             }
         });
@@ -527,8 +521,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         txtLocalizar.setMaximumSize(new java.awt.Dimension(250, 20));
         txtLocalizar.setMinimumSize(new java.awt.Dimension(100, 20));
         txtLocalizar.setPreferredSize(new java.awt.Dimension(150, 20));
-        txtLocalizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        txtLocalizar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 txtLocalizarActionPerformed(evt);
             }
         });
@@ -551,8 +547,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton2ActionPerformed(evt);
             }
         });
@@ -563,8 +561,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton3.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton3ActionPerformed(evt);
             }
         });
@@ -575,8 +575,10 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton4.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton4ActionPerformed(evt);
             }
         });
@@ -616,13 +618,13 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
         add(jPainelSeparador, java.awt.BorderLayout.CENTER);
 
-        jLabel3.setText("Correção:");
+        jLCorrecao.setText("Correção:");
 
-        jLabel5.setText("Casos de teste:");
+        jLCasosTeste.setText("Casos de teste:");
 
-        jLabel6.setText("Nota:");
+        jLNota.setText("Nota:");
 
-        jLabel7.setText("-");
+        jLResultado.setText("-");
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Casos");
         jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
@@ -637,33 +639,33 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(jLCorrecao)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(20, 20, 20))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(jLabel6)
+                .addComponent(jLNota)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 158, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
-                .addContainerGap())
+                .addComponent(jLCasosTeste)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel3)
+                .addComponent(jLCorrecao)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(jLNota)
+                    .addComponent(jLResultado))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
+                .addComponent(jLCasosTeste)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -672,31 +674,31 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
     private void interromper()
     {
-        if (programa != null) 
+        if (programa != null)
         {
             programa.interromper();
-        }        
+        }
     }
-    
+
     private void btnComentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComentarActionPerformed
-        
+
         try
         {
             RSyntaxTextArea textArea = editor.getTextArea();
-            
+
             int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
             int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
-            
+
             int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
             int fimSelecao = textArea.getLineEndOffset(linhaFinal);
             int tamanhoSelecao = fimSelecao - inicioSelecao;
-        
+
             String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
             StringBuilder codigoComentado = new StringBuilder();
 
             String[] linhas = codigo.split("\n");
 
-            for (String linha: linhas)
+            for (String linha : linhas)
             {
                 codigoComentado.append("//");
                 codigoComentado.append(linha);
@@ -710,7 +712,6 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         }
         catch (Exception ex)
         {
-            
         }
     }//GEN-LAST:event_btnComentarActionPerformed
 
@@ -718,23 +719,23 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         try
         {
             RSyntaxTextArea textArea = editor.getTextArea();
-            
+
             int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
             int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
-            
+
             int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
             int fimSelecao = textArea.getLineEndOffset(linhaFinal);
             int tamanhoSelecao = fimSelecao - inicioSelecao;
-        
+
             String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
             StringBuilder codigoDescomentado = new StringBuilder();
 
             String[] linhas = codigo.split("\n");
 
-            for (String linha: linhas)
+            for (String linha : linhas)
             {
                 int posicaoComentario = linha.indexOf("//");
-                
+
                 codigoDescomentado.append(linha.substring(0, posicaoComentario));
                 codigoDescomentado.append(linha.substring(posicaoComentario + 2));
                 codigoDescomentado.append("\n");
@@ -747,38 +748,40 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         }
         catch (Exception ex)
         {
-            
         }
     }//GEN-LAST:event_btnDescomentarActionPerformed
 
     private void jBFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFecharActionPerformed
-        ocultarPainelPesquisa();        
+        ocultarPainelPesquisa();
     }//GEN-LAST:event_jBFecharActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         localizar("A pesquisa atingiu o final do documento.\nNenhum resultado foi encontrado.");
     }
 
     private boolean localizar(String mensagem)
     {
         tentativas = 0;
-        
+
         if (!localizarProxima())
         {
             JOptionPane.showMessageDialog(this, mensagem, "PortugolSttudio", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
-        
-        else return true;
+        else
+        {
+            return true;
+        }
     }
-    
-    private boolean localizarProxima() throws PatternSyntaxException {
+
+    private boolean localizarProxima() throws PatternSyntaxException
+    {
         if ((txtLocalizar.getText() != null) && (txtLocalizar.getText().length() > 0))
         {
             posicaoAtualCursor = -1;
             //limparPesquisa();
-            
+
             if (!SearchEngine.find(editor.getTextArea(), txtLocalizar.getText(), true, chkMaiscMinusc.isSelected(), chkPalavrasInteiras.isSelected(), chkExprRegular.isSelected()))
             {
                 if (tentativas == 0)
@@ -788,25 +791,23 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
                     return localizarProxima();
                 }
             }
-            
             else
             {
                 tentativas = 0;
                 return true;
             }
-            
+
         }
         else
         {
             Toolkit.getDefaultToolkit().beep();
             txtLocalizar.requestFocus();
         }
-        
+
         return false;
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocalizarActionPerformed
-        
     }//GEN-LAST:event_txtLocalizarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -821,7 +822,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     {
         int substituicoes = 0;
         String mensagem = "A pesquisa atingiu o final do documento.\nNão foram feitas substituições.";
-        
+
         if (txtSubstituir.getText() != null)
         {
             if (txtSubstituir.getText().length() > 0)
@@ -830,13 +831,15 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
                 {
                     substituirTexto();
                     substituicoes = substituicoes + 1;
-                    
-                    if (substituicoes == 1)   
+
+                    if (substituicoes == 1)
+                    {
                         mensagem = "A pesquisa atingiu o final do documento.\nFoi feita uma substituição.";
-                    else
-                    
-                    if (substituicoes > 1)
+                    }
+                    else if (substituicoes > 1)
+                    {
                         mensagem = String.format("A pesquisa atingiu o final do documento.\nForam feitas %d substituições.", substituicoes);
+                    }
                 }
             }
             else
@@ -851,7 +854,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
             txtLocalizar.requestFocus();
         }
     }
-    
+
     private void substituir()
     {
         if (txtSubstituir.getText() != null)
@@ -866,7 +869,9 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
                 else
                 {
                     if (localizar("A pesquisa atingiu o final do documento.\nNão há valores a serem substituídos."))
-                        substituir();                    
+                    {
+                        substituir();
+                    }
                 }
             }
             else
@@ -881,12 +886,11 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
             txtLocalizar.requestFocus();
         }
     }
-    
+
     private void substituirTexto()
     {
         editor.getTextArea().replaceSelection(txtSubstituir.getText());
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramenta;
     private javax.swing.JToolBar barraPesquisa;
@@ -923,12 +927,12 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLCasosTeste;
+    private javax.swing.JLabel jLCorrecao;
+    private javax.swing.JLabel jLNota;
+    private javax.swing.JLabel jLResultado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JSplitPane jPainelSeparador;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
@@ -946,7 +950,8 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     private javax.swing.JTextField txtSubstituir;
     // End of variables declaration//GEN-END:variables
 
-    private void configurarAcoes() {
+    private void configurarAcoes()
+    {
         acaoDesfazer.iniciar();
         acaoRefazer.iniciar();
         acaoRecortar.iniciar();
@@ -955,20 +960,24 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     }
 
     @Override
-    public void documentoModificado(boolean status) {
+    public void documentoModificado(boolean status)
+    {
         acaoSalvarArquivo.setEnabled(status);
         programa = null;
-        if (status) {
+        if (status)
+        {
             cabecalho.setForegroung(Color.RED);
             cabecalho.setIcone(lampadaApagada);
-        } else {
+        }
+        else
+        {
             cabecalho.setForegroung(Color.BLACK);
             cabecalho.setIcone(lampadaAcesa);
         }
     }
 
     @Override
-    public boolean fechandoAba(Aba aba) 
+    public boolean fechandoAba(Aba aba)
     {
         if ((programa != null) && programa.isExecutando())
         {
@@ -976,40 +985,52 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
             return false;
         }
 
-        if (editor.getPortugolDocumento().isChanged()) 
+        if (editor.getPortugolDocumento().isChanged())
         {
             int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
-            
-            if (resp == JOptionPane.YES_OPTION) acaoSalvarArquivo.actionPerformed(null);
-            else 
-            if (resp == JOptionPane.CANCEL_OPTION) return false;
-        }        
-            
+
+            if (resp == JOptionPane.YES_OPTION)
+            {
+                acaoSalvarArquivo.actionPerformed(null);
+            }
+            else if (resp == JOptionPane.CANCEL_OPTION)
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 
     @Override
-    public void posicionarCursor(int linha, int coluna) {
+    public void posicionarCursor(int linha, int coluna)
+    {
         editor.posicionaCursor(linha, coluna);
     }
 
     @Override
-    public void nomeArquivoAlterado(String nome) {
+    public void nomeArquivoAlterado(String nome)
+    {
         cabecalho.setTitulo(nome);
     }
 
-    public PortugolDocumento getPortugolDocumento() {
+    public PortugolDocumento getPortugolDocumento()
+    {
         return editor.getPortugolDocumento();
     }
 
-    private void executar() {
+    private void executar()
+    {
         AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
         abaMensagem.limpar();
-        
-        try {
+
+        try
+        {
             String codigo = editor.getPortugolDocumento().getCodigoFonte();
             if (programa == null)
+            {
                 this.programa = Portugol.compilar(codigo);
+            }
 
             programa.setEntrada(painelSaida.getConsole());
             programa.setSaida(painelSaida.getConsole());
@@ -1018,10 +1039,13 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
             programa.executar(getParametros());
 
-        } catch (ErroCompilacao erroCompilacao) {
+        }
+        catch (ErroCompilacao erroCompilacao)
+        {
             ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
 
-            if (resultadoAnalise.getNumeroTotalErros() > 0) {
+            if (resultadoAnalise.getNumeroTotalErros() > 0)
+            {
                 abaMensagem.atualizar(resultadoAnalise);
                 abaMensagem.selecionar();
             }
@@ -1029,14 +1053,18 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     }
 
     @Override
-    public void execucaoIniciada(Programa programa) {
+    public void execucaoIniciada(Programa programa)
+    {
         acaoExecutar.setEnabled(false);
         acaoInterromper.setEnabled(true);
-        
+
         painelSaida.getConsole().selecionar();
-        try {
+        try
+        {
             painelSaida.getConsole().limpar();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
         painelSaida.getConsole().setExecutandoPrograma(true);
@@ -1048,98 +1076,105 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         try
         {
             AbaConsole console = painelSaida.getConsole();
-            
-            if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
+
+            if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
+            {
                 console.escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
-            
-            else 
-            
-            if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
+            }
+            else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
+            {
                 console.escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
-            
-            else 
-                
-            if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
+            }
+            else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
+            {
                 console.escrever("\nO programa foi interrompido!");
+            }
         }
         catch (Exception e)
         {
             // Nada a fazer
         }
-        
+
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
         painelSaida.getConsole().setExecutandoPrograma(false);
     }
 
-  
-
-    private class AdaptadorComponente extends ComponentAdapter {
-
+    private class AdaptadorComponente extends ComponentAdapter
+    {
         @Override
-        public void componentResized(ComponentEvent e) {
+        public void componentResized(ComponentEvent e)
+        {
             jPainelSeparador.setDividerLocation(AbaCodigoFonteCorretor.this.getHeight() - 300);
         }
-        
+
         @Override
-        public void componentShown(ComponentEvent ce) {
+        public void componentShown(ComponentEvent ce)
+        {
             editor.requestFocus();
         }
     }
-    
+
     protected String[] getParametros()
     {
         String textoParametros = txtParametros.getText().trim();
-        
+
         if (textoParametros.length() > 0)
+        {
             return textoParametros.split(" ");
-        
+        }
+
         return null;
     }
 
-    public AcaoCopiar getAcaoCopiar() {
+    public AcaoCopiar getAcaoCopiar()
+    {
         return acaoCopiar;
     }
 
-    public AcaoDesfazer getAcaoDesfazer() {
+    public AcaoDesfazer getAcaoDesfazer()
+    {
         return acaoDesfazer;
     }
 
-    public AcaoColar getAcaoColar() {
+    public AcaoColar getAcaoColar()
+    {
         return acaoColar;
     }
 
-    public AcaoRecortar getAcaoRecortar() {
+    public AcaoRecortar getAcaoRecortar()
+    {
         return acaoRecortar;
     }
 
-    public AcaoRefazer getAcaoRefazer() {
+    public AcaoRefazer getAcaoRefazer()
+    {
         return acaoRefazer;
     }
 
-    public AcaoSalvarArquivo getAcaoSalvarArquivo() {
+    public AcaoSalvarArquivo getAcaoSalvarArquivo()
+    {
         return acaoSalvarArquivo;
     }
-    
+
     private void carregarAlgoritmoPadrao()
     {
-        try 
+        try
         {
             int posicaoCursor = template.indexOf("${cursor}");
             String algoritmo = template.replace("${cursor}", "");
             PortugolDocumento a;
-            
+
             Document documento = editor.getPortugolDocumento();
             documento.insertString(documento.getLength(), algoritmo, null);
-            
+
             editor.getTextArea().setCaretPosition(posicaoCursor);
         }
-        catch (BadLocationException ex) 
+        catch (BadLocationException ex)
         {
-            
         }
     }
-    
+
     private static String carregarTemplate()
     {
         try
@@ -1150,29 +1185,26 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         {
             return "";
         }
-    }    
-    
-
+    }
     private int posicaoAtualCursor = -1;
-    
+
     public void exibirPainelPesquisa()
     {
         barraPesquisa.setVisible(true);
     }
-    
+
     public void ocultarPainelPesquisa()
     {
         barraPesquisa.setVisible(false);
     }
-    
     private int tentativas = 0;
-    
+
     private void limparPesquisa()
     {
         tentativas = 0;
-        editor.getTextArea().markAll("texto que provavelmente nunca existirá", false, false, false);        
+        editor.getTextArea().markAll("texto que provavelmente nunca existirá", false, false, false);
     }
-    
+
     private void localizarInstantaneo()
     {
         if (barraPesquisa.isVisible())
@@ -1184,49 +1216,47 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         }
     }
 
-    public Action getAcaoExecutar() 
+    public Action getAcaoExecutar()
     {
         return acaoExecutar;
     }
 
-    public Action getAcaoInterromper() 
+    public Action getAcaoInterromper()
     {
         return acaoInterromper;
-    } 
-    
-    
+    }
+
     private class AcaoExecutar extends AbstractAction
     {
-        public AcaoExecutar() 
+        public AcaoExecutar()
         {
             super("Executar");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E")); // F5 funciona
             putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "control_play_blue.png"));
             putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "control_play_blue.png"));
         }
-        
+
         @Override
-        public void actionPerformed(ActionEvent e) 
+        public void actionPerformed(ActionEvent e)
         {
             executar();
         }
     }
-    
+
     private class AcaoInterromper extends AbstractAction
     {
-        public AcaoInterromper() 
+        public AcaoInterromper()
         {
-            super("Interromper"); 
+            super("Interromper");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl I")); // Tente F6, F8, F10. Nenhum funciona
             putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "control_stop_blue.png"));
             putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "control_stop_blue.png"));
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) 
+        public void actionPerformed(ActionEvent e)
         {
             interromper();
         }
     }
-    
 }

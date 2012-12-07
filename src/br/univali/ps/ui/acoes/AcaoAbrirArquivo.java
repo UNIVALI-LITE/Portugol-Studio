@@ -1,6 +1,8 @@
 package br.univali.ps.ui.acoes;
 
 import br.univali.pc.xml.FabriacaQuestao;
+import br.univali.portugol.corretor.dinamico.Unmarshal;
+import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.AbaCodigoFonte;
 import br.univali.ps.ui.AbaCodigoFonteCorretor;
@@ -47,8 +49,9 @@ public class AcaoAbrirArquivo extends Acao
                 
                 File arquivo = arquivos[i];
                 if (getFileExtension(arquivo).equals("pex")||getFileExtension(arquivo).equals("xml")) {
-                    FabriacaQuestao f = new FabriacaQuestao();
-                    new AbaCodigoFonteCorretor(painelTabulado, f.criarQuestao(arquivo));
+                    Unmarshal u = new Unmarshal();
+                    Questao q = u.execute(arquivo);
+                    new AbaCodigoFonteCorretor(painelTabulado, q);
                 } else {
                     String codigoFonte = FileHandle.open(arquivo);
                     PortugolDocumento portugolDocument = new PortugolDocumento();
