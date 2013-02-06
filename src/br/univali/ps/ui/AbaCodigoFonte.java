@@ -64,7 +64,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public AbaCodigoFonte(JTabbedPane painelTabulado) {
         super(painelTabulado);
         initComponents();
-        fghjk1.setAlterador(editor);
+        fonte1.setAlterador(editor);
         configurarAcoes();
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         acaoSalvarArquivo.configurar(editor.getPortugolDocumento());
@@ -184,6 +184,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private void initComponents()
     {
 
+        painelSaida1 = new br.univali.ps.ui.PainelSaida();
+        painelSaida2 = new br.univali.ps.ui.PainelSaida();
         barraFerramenta = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
         btnDesfazer = new javax.swing.JButton();
@@ -202,9 +204,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         lblParametros = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         txtParametros = new javax.swing.JTextField();
-        fghjk1 = new br.univali.ps.ui.Fontes();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        fonte1 = new br.univali.ps.ui.Fonte();
+        botaoDepurador1 = new br.univali.ps.ui.BotaoDepurador();
         jPainelSeparador = new javax.swing.JSplitPane();
         painelSaida = new br.univali.ps.ui.PainelSaida();
         painelEditor = new javax.swing.JPanel();
@@ -234,6 +237,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         chkExprRegular = new javax.swing.JCheckBox();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         editor = new br.univali.ps.ui.Editor();
+        painelSaida3 = new br.univali.ps.ui.PainelSaida();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -348,11 +352,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         txtParametros.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         txtParametros.setPreferredSize(new java.awt.Dimension(200, 20));
         painelParametros.add(txtParametros);
-        painelParametros.add(fghjk1);
         painelParametros.add(filler3);
 
         barraFerramenta.add(painelParametros);
         barraFerramenta.add(jSeparator1);
+        barraFerramenta.add(fonte1);
+        barraFerramenta.add(botaoDepurador1);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
@@ -487,6 +492,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelEditor.add(editor, java.awt.BorderLayout.CENTER);
 
         jPainelSeparador.setTopComponent(painelEditor);
+        jPainelSeparador.setRightComponent(painelSaida3);
 
         add(jPainelSeparador, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -711,6 +717,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramenta;
     private javax.swing.JToolBar barraPesquisa;
+    private br.univali.ps.ui.BotaoDepurador botaoDepurador1;
     private javax.swing.JButton btnColar;
     private javax.swing.JButton btnComentar;
     private javax.swing.JButton btnCopiar;
@@ -725,7 +732,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JCheckBox chkMaiscMinusc;
     private javax.swing.JCheckBox chkPalavrasInteiras;
     private br.univali.ps.ui.Editor editor;
-    private br.univali.ps.ui.Fontes fghjk1;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler11;
@@ -741,6 +747,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
+    private br.univali.ps.ui.Fonte fonte1;
     private javax.swing.JButton jBFecharPesquisa;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -756,6 +763,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelParametros;
     private br.univali.ps.ui.PainelSaida painelSaida;
+    private br.univali.ps.ui.PainelSaida painelSaida1;
+    private br.univali.ps.ui.PainelSaida painelSaida2;
+    private br.univali.ps.ui.PainelSaida painelSaida3;
     private javax.swing.JTextField txtLocalizar;
     private javax.swing.JTextField txtParametros;
     private javax.swing.JTextField txtSubstituir;
