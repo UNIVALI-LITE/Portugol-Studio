@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -51,8 +53,16 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
     void corrigir()
     {
         Corretor corretor = new Corretor(questao);
-        
-        int nota = corretor.executar(editor.getPortugolDocumento().getCodigoFonte(), getParametros());
+        painelSaida.getMensagemCompilador().limpar();
+        int nota = 0;
+        try
+        {
+            nota = corretor.executar(editor.getPortugolDocumento().getCodigoFonte(), getParametros());
+        }
+        catch (ErroCompilacao ex)
+        {
+            mensagensCompilacao(ex);
+        }
 
         jLResultado.setText(String.valueOf(nota));
         
@@ -1032,9 +1042,8 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
     private void executar()
     {
-        AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
-        abaMensagem.limpar();
-
+        
+        painelSaida.getMensagemCompilador().limpar();
         try
         {
             String codigo = editor.getPortugolDocumento().getCodigoFonte();
@@ -1053,13 +1062,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         }
         catch (ErroCompilacao erroCompilacao)
         {
-            ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
-
-            if (resultadoAnalise.getNumeroTotalErros() > 0)
-            {
-                abaMensagem.atualizar(resultadoAnalise);
-                abaMensagem.selecionar();
-            }
+            mensagensCompilacao(erroCompilacao);
         }
     }
 
@@ -1109,6 +1112,20 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
         painelSaida.getConsole().setExecutandoPrograma(false);
+    }
+
+    private void mensagensCompilacao(ErroCompilacao erroCompilacao)
+    {
+        AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
+        abaMensagem.limpar();
+        
+        ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
+
+        if (resultadoAnalise.getNumeroTotalErros() > 0)
+        {
+            abaMensagem.atualizar(resultadoAnalise);
+            abaMensagem.selecionar();
+        }
     }
 
     private class AdaptadorComponente extends ComponentAdapter
