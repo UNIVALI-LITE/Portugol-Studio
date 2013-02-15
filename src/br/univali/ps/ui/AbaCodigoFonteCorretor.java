@@ -280,7 +280,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
         this.add(super.getComponent(1), FlowLayout.CENTER);
         this.questao = questao;
-        abaEnunciado = new AbaEnunciado(painelSaida, this);
+        abaEnunciado = new AbaEnunciado(painelSaida);
         abaEnunciado.setEninciado(questao.getEnunciado());
 
 
