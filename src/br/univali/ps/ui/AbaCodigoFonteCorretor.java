@@ -16,13 +16,7 @@ import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.acoes.AcaoColar;
-import br.univali.ps.ui.acoes.AcaoCopiar;
-import br.univali.ps.ui.acoes.AcaoDesfazer;
-import br.univali.ps.ui.acoes.AcaoRecortar;
-import br.univali.ps.ui.acoes.AcaoRefazer;
-import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
-import br.univali.ps.ui.acoes.FabricaAcao;
+import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
@@ -32,8 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -83,14 +75,11 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
                 DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
 
                 DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
-                //String texto = "Entradas: ";
                 for (Entrada entrada : caso.getCasoTestado().getEntradas())
                 {
                     entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
-                    //texto += entrada.toString() + ", ";
                 }
                 DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
-                //texto += "Saida esperada: ";
                 for (Saida saida : caso.getCasoTestado().getSaidas())
                 {
                     saidasEsperada.add(new DefaultMutableTreeNode(saida.getValor()));
@@ -98,7 +87,6 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
                 DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
 
                 saidasEncontrada.add(new DefaultMutableTreeNode(caso.getSaidaEncontrada()));
-                //texto += " saida encontrada: "+saidaFalha;
                 defaultMutableTreeNode1.add(entradasNode);
                 defaultMutableTreeNode1.add(saidasEsperada);
                 defaultMutableTreeNode1.add(saidasEncontrada);
@@ -114,20 +102,15 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
                 DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
 
                 DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
-                //String texto = "Entradas: ";
                 for (Entrada entrada : caso.getEntradas())
                 {
                     entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
-                    //texto += entrada.toString() + ", ";
                 }
                 DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
-                //texto += "Saida esperada: ";
                 for (Saida saida : caso.getSaidas())
                 {
                     saidasEsperada.add(new DefaultMutableTreeNode(saida.getValor()));
                 }
-                //saidasEncontrada.add(new DefaultMutableTreeNode(saidaFalha.toString()));
-                //texto += " saida encontrada: "+saidaFalha;
                 defaultMutableTreeNode1.add(entradasNode);
                 defaultMutableTreeNode1.add(saidasEsperada);
 
