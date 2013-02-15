@@ -64,7 +64,7 @@ public class AbaCodigoFonteCorretor extends Aba implements PortugolDocumentoList
 
         jLResultado.setText(String.valueOf(nota));
         
-        if (nota != 0) {
+        if (!(nota == 0 && corretor.getCasosFalhos().isEmpty())) {
         
             List<CasoFalho> casosFalhos = corretor.getCasosFalhos();
             List<Caso> casosAcertados = corretor.getCasosAcertados();
