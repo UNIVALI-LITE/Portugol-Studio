@@ -1,6 +1,5 @@
 package br.univali.ps.ui.acoes;
 
-import br.univali.pc.xml.FabriacaQuestao;
 import br.univali.portugol.corretor.dinamico.Unmarshal;
 import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.ps.dominio.PortugolDocumento;
