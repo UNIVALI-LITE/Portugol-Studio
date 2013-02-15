@@ -321,7 +321,6 @@ public class AbaConsole extends Aba implements Saida, Entrada {
                 return;
             }
             if ( lendo && string.equals("\n") ){
-                System.out.println(getLength());
                valor = getText(limitOffset, getLength() - limitOffset);
                lendo = false;
             } else {
