@@ -15,7 +15,7 @@ public class PainelSaida extends PainelTabulado {
         initComponents();
         console = new AbaConsole(this);
         mensagemCompilador = new AbaMensagemCompilador(this);
-        depurador = new AbaDepurador(this);
+        //depurador = new AbaDepurador(this);
     }
 
     public AbaConsole getConsole() {

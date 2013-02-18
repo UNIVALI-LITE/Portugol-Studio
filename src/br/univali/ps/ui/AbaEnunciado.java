@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.util.IconFactory;
 import javax.swing.JTabbedPane;
 
 
@@ -8,6 +9,7 @@ public class AbaEnunciado extends Aba {
     /** Creates new form EnunciadoAba */
     public AbaEnunciado(JTabbedPane painelTabulado) {
         super(painelTabulado);
+        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "question.png"));
         cabecalho.setBotaoFecharVisivel(false);
         cabecalho.setTitulo("Enunciado");
         initComponents();

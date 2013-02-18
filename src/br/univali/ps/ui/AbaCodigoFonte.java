@@ -1,5 +1,11 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.corretor.dinamico.CasoFalho;
+import br.univali.portugol.corretor.dinamico.Corretor;
+import br.univali.portugol.corretor.dinamico.model.Caso;
+import br.univali.portugol.corretor.dinamico.model.Entrada;
+import br.univali.portugol.corretor.dinamico.model.Questao;
+import br.univali.portugol.corretor.dinamico.model.Saida;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
@@ -18,12 +24,15 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.List;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchEngine;
 
@@ -40,9 +49,113 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private AcaoColar acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
     private Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"); 
     private Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png"); 
-
     private Action acaoExecutar;
     private Action acaoInterromper;
+    
+    AbaEnunciado abaEnunciado = null;
+    Questao questao = null;
+    DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
+    DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
+    private DefaultMutableTreeNode defaultMutableTreeNode;
+    private DefaultTreeModel defaultTreeModel;
+
+    void corrigir()
+    {
+        Corretor corretor = new Corretor(questao);
+        painelSaida.getMensagemCompilador().limpar();
+        int nota = 0;
+        try
+        {
+            nota = corretor.executar(editor.getPortugolDocumento().getCodigoFonte(), getParametros());
+        }
+        catch (ErroCompilacao ex)
+        {
+            mensagensCompilacao(ex);
+        }
+
+        jLResultado.setText(String.valueOf(nota));
+        
+        if (!(nota == 0 && corretor.getCasosFalhos().isEmpty())) {
+        
+            List<CasoFalho> casosFalhos = corretor.getCasosFalhos();
+            List<Caso> casosAcertados = corretor.getCasosAcertados();
+
+            //jTree1.removeAll();
+
+            defaultMutableTreeNode = new DefaultMutableTreeNode("Casos");
+            defaultTreeModel = new DefaultTreeModel(defaultMutableTreeNode);
+
+            casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
+            casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
+
+            int count = 1;
+            for (CasoFalho caso : casosFalhos)
+            {
+                DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
+
+                DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
+                for (Entrada entrada : caso.getCasoTestado().getEntradas())
+                {
+                    entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
+                }
+                DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
+                for (Saida saida : caso.getCasoTestado().getSaidas())
+                {
+                    saidasEsperada.add(new DefaultMutableTreeNode(saida.getValor()));
+                }
+                DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
+
+                saidasEncontrada.add(new DefaultMutableTreeNode(caso.getSaidaEncontrada()));
+                defaultMutableTreeNode1.add(entradasNode);
+                defaultMutableTreeNode1.add(saidasEsperada);
+                defaultMutableTreeNode1.add(saidasEncontrada);
+
+                casosTreeFalhos.add(defaultMutableTreeNode1);
+                count++;
+            }
+
+            count = 1;
+            for (Caso caso : casosAcertados)
+            {
+
+                DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
+
+                DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
+                for (Entrada entrada : caso.getEntradas())
+                {
+                    entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
+                }
+                DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
+                for (Saida saida : caso.getSaidas())
+                {
+                    saidasEsperada.add(new DefaultMutableTreeNode(saida.getValor()));
+                }
+                defaultMutableTreeNode1.add(entradasNode);
+                defaultMutableTreeNode1.add(saidasEsperada);
+
+                casosTreeAcertados.add(defaultMutableTreeNode1);
+                count++;
+            }
+
+            defaultMutableTreeNode.add(casosTreeFalhos);
+
+            defaultMutableTreeNode.add(casosTreeAcertados);
+
+            jTree1.setModel(defaultTreeModel);
+            jTree1.invalidate();
+        }
+        DefaultListModel<String> listModel = new DefaultListModel<String>();
+
+        for (String mensagem : corretor.listarMensagens())
+        {
+            listModel.addElement(mensagem);
+        }
+
+        jList1.setModel(listModel);
+        jList1.invalidate();
+        
+        
+    }
     
     protected PainelSaida getPainelSaida()
     {
@@ -59,6 +172,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         super(painelTabulado);
         
         initComponents();
+        jPanel1.setVisible(false);
         fonte1.setAlterador(editor);
         configurarAcoes();
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
@@ -167,7 +281,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         
         txtLocalizar.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "OcultarPesquisa");
     }
-
+    
+    public void setQuestao(Questao questao)
+    {
+        this.questao = questao;
+        abaEnunciado = new AbaEnunciado(painelSaida);
+        abaEnunciado.setEninciado(questao.getEnunciado());
+        jPanel1.setVisible(true);
+    }
+    
     public void setPortugolDocumento(PortugolDocumento portugolDocumento) {
         portugolDocumento.addPortugolDocumentoListener(this);
         editor.setPortugolDocumento(portugolDocumento);
@@ -201,7 +323,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
         fonte1 = new br.univali.ps.ui.Fonte();
-        botaoDepurador1 = new br.univali.ps.ui.BotaoDepurador();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLCorrecao = new javax.swing.JLabel();
+        jLCasosTeste = new javax.swing.JLabel();
+        jLNota = new javax.swing.JLabel();
+        jLResultado = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jButton1 = new javax.swing.JButton();
         jPainelSeparador = new javax.swing.JSplitPane();
         painelEditor = new javax.swing.JPanel();
         barraPesquisa = new javax.swing.JToolBar();
@@ -344,9 +476,83 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramenta.add(painelParametros);
         barraFerramenta.add(jSeparator1);
         barraFerramenta.add(fonte1);
-        barraFerramenta.add(botaoDepurador1);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
+
+        jSplitPane1.setDividerLocation(800);
+
+        jLCorrecao.setText("Correção:");
+
+        jLCasosTeste.setText("Casos de teste:");
+
+        jLNota.setText("Nota:");
+
+        jLResultado.setText("-");
+
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Casos");
+        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane3.setViewportView(jTree1);
+
+        jScrollPane1.setViewportView(jList1);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/blackboard_steps.png"))); // NOI18N
+        jButton1.setText("Corrigir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton1)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLCorrecao)
+                                        .addGap(46, 46, 46)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                                .addComponent(jLNota)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(20, 20, 20))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLCasosTeste)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLCorrecao)
+                        .addGap(23, 23, 23))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLNota)
+                            .addComponent(jLResultado))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLCasosTeste)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jSplitPane1.setRightComponent(jPanel1);
 
         jPainelSeparador.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
@@ -370,7 +576,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jBFecharPesquisa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBFecharActionPerformed(evt);
+                jBFecharPesquisajBFecharActionPerformed(evt);
             }
         });
         barraPesquisa.add(jBFecharPesquisa);
@@ -470,7 +676,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jPainelSeparador.setTopComponent(painelEditor);
         jPainelSeparador.setBottomComponent(painelSaida);
 
-        add(jPainelSeparador, java.awt.BorderLayout.CENTER);
+        jSplitPane1.setLeftComponent(jPainelSeparador);
+
+        add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void interromper()
@@ -554,34 +762,49 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }//GEN-LAST:event_btnDescomentarActionPerformed
 
-    private void jBFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFecharActionPerformed
-        ocultarPainelPesquisa();        
-    }//GEN-LAST:event_jBFecharActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        corrigir();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+    private void jBFecharPesquisajBFecharActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBFecharPesquisajBFecharActionPerformed
+    {//GEN-HEADEREND:event_jBFecharPesquisajBFecharActionPerformed
+        ocultarPainelPesquisa();
+    }//GEN-LAST:event_jBFecharPesquisajBFecharActionPerformed
+
+    private void txtLocalizarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_txtLocalizarActionPerformed
+    {//GEN-HEADEREND:event_txtLocalizarActionPerformed
+
+   }//GEN-LAST:event_txtLocalizarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
+    {//GEN-HEADEREND:event_jButton2ActionPerformed
+
         localizar("A pesquisa atingiu o final do documento.\nNenhum resultado foi encontrado.");
     }
 
     private boolean localizar(String mensagem)
     {
         tentativas = 0;
-        
+
         if (!localizarProxima())
         {
             JOptionPane.showMessageDialog(this, mensagem, "PortugolSttudio", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
-        
-        else return true;
+        else
+        {
+            return true;
+        }
     }
-    
-    private boolean localizarProxima() throws PatternSyntaxException {
+
+    private boolean localizarProxima() throws PatternSyntaxException
+    {
         if ((txtLocalizar.getText() != null) && (txtLocalizar.getText().length() > 0))
         {
             posicaoAtualCursor = -1;
             //limparPesquisa();
-            
+
             if (!SearchEngine.find(editor.getTextArea(), txtLocalizar.getText(), true, chkMaiscMinusc.isSelected(), chkPalavrasInteiras.isSelected(), chkExprRegular.isSelected()))
             {
                 if (tentativas == 0)
@@ -591,32 +814,29 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                     return localizarProxima();
                 }
             }
-            
             else
             {
                 tentativas = 0;
                 return true;
             }
-            
+
         }
         else
         {
             Toolkit.getDefaultToolkit().beep();
             txtLocalizar.requestFocus();
         }
-        
+
         return false;
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void txtLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocalizarActionPerformed
-        
-    }//GEN-LAST:event_txtLocalizarActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
+    {//GEN-HEADEREND:event_jButton3ActionPerformed
         substituir();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
+    {//GEN-HEADEREND:event_jButton4ActionPerformed
         substituirTudo();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -693,7 +913,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramenta;
     private javax.swing.JToolBar barraPesquisa;
-    private br.univali.ps.ui.BotaoDepurador botaoDepurador1;
     private javax.swing.JButton btnColar;
     private javax.swing.JButton btnComentar;
     private javax.swing.JButton btnCopiar;
@@ -725,16 +944,27 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.Box.Filler filler9;
     private br.univali.ps.ui.Fonte fonte1;
     private javax.swing.JButton jBFecharPesquisa;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLCasosTeste;
+    private javax.swing.JLabel jLCorrecao;
+    private javax.swing.JLabel jLNota;
+    private javax.swing.JLabel jLResultado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JList jList1;
     private javax.swing.JSplitPane jPainelSeparador;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTree jTree1;
     private javax.swing.JLabel lblParametros;
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelParametros;
@@ -870,6 +1100,20 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
         painelSaida.getConsole().setExecutandoPrograma(false);
+    }
+
+    private void mensagensCompilacao(ErroCompilacao erroCompilacao)
+    {
+        AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
+        abaMensagem.limpar();
+        
+        ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
+
+        if (resultadoAnalise.getNumeroTotalErros() > 0)
+        {
+            abaMensagem.atualizar(resultadoAnalise);
+            abaMensagem.selecionar();
+        }
     }
 
   
