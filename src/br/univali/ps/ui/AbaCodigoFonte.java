@@ -10,41 +10,16 @@ import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.acoes.AcaoColar;
-import br.univali.ps.ui.acoes.AcaoCopiar;
-import br.univali.ps.ui.acoes.AcaoDesfazer;
-import br.univali.ps.ui.acoes.AcaoRecortar;
-import br.univali.ps.ui.acoes.AcaoRefazer;
-import br.univali.ps.ui.acoes.AcaoSalvarArquivo;
-import br.univali.ps.ui.acoes.FabricaAcao;
+import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.regex.PatternSyntaxException;
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.Box.Filler;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.JToolBar.Separator;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
@@ -201,8 +176,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelSaida1 = new br.univali.ps.ui.PainelSaida();
         painelSaida2 = new br.univali.ps.ui.PainelSaida();
@@ -315,10 +289,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnComentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -334,17 +306,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDescomentarActionPerformed(evt);
             }
         });
         barraFerramenta.add(btnDescomentar);
         barraFerramenta.add(jSeparador2);
 
-        btnExecutar.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_play.png"))); // NOI18N
         btnExecutar.setEnabled(false);
         btnExecutar.setFocusPainted(false);
         btnExecutar.setHideActionText(true);
@@ -352,7 +321,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramenta.add(btnExecutar);
 
-        btnInterromper.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/control_stop.png"))); // NOI18N
         btnInterromper.setEnabled(false);
         btnInterromper.setFocusPainted(false);
         btnInterromper.setHideActionText(true);
@@ -400,10 +368,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jBFecharPesquisa.setPreferredSize(new java.awt.Dimension(16, 16));
         jBFecharPesquisa.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
         jBFecharPesquisa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBFecharActionPerformed(evt);
             }
         });
@@ -417,10 +383,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         txtLocalizar.setMaximumSize(new java.awt.Dimension(250, 20));
         txtLocalizar.setMinimumSize(new java.awt.Dimension(100, 20));
         txtLocalizar.setPreferredSize(new java.awt.Dimension(150, 20));
-        txtLocalizar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        txtLocalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtLocalizarActionPerformed(evt);
             }
         });
@@ -443,10 +407,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
@@ -457,10 +419,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
@@ -471,10 +431,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton4.setPreferredSize(new java.awt.Dimension(60, 21));
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
@@ -783,7 +741,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private br.univali.ps.ui.PainelSaida painelSaida;
     private br.univali.ps.ui.PainelSaida painelSaida1;
     private br.univali.ps.ui.PainelSaida painelSaida2;
-    private br.univali.ps.ui.PainelSaida painelSaida3;
     private javax.swing.JTextField txtLocalizar;
     private javax.swing.JTextField txtParametros;
     private javax.swing.JTextField txtSubstituir;
@@ -1044,8 +1001,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             super("Executar");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E")); // F5 funciona
-            putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "control_play_blue.png"));
-            putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "control_play_blue.png"));
+            putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "resultset_next.png"));
+            putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"));
         }
         
         @Override
@@ -1061,8 +1018,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             super("Interromper"); 
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl I")); // Tente F6, F8, F10. Nenhum funciona
-            putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "control_stop_blue.png"));
-            putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "control_stop_blue.png"));
+            putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "stop.png"));
+            putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "stop.png"));
         }
 
         @Override

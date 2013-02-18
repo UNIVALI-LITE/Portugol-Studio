@@ -158,9 +158,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnExecutar">
           <Properties>
-            <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_play.png"/>
-            </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="hideActionText" type="boolean" value="true"/>
@@ -170,9 +167,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnInterromper">
           <Properties>
-            <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/control_stop.png"/>
-            </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="hideActionText" type="boolean" value="true"/>
