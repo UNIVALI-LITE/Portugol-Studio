@@ -105,7 +105,16 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 }
                 DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
 
-                saidasEncontrada.add(new DefaultMutableTreeNode(caso.getSaidaEncontrada()));
+                try
+                {
+                    for (Saida saida : caso.getSaidaEncontrada())
+                    {
+                        saidasEncontrada.add(new DefaultMutableTreeNode(saida.getValor()));
+                    }
+                } catch (IllegalStateException ise) {
+                    saidasEncontrada.add(new DefaultMutableTreeNode(ise.getMessage()));
+                }
+                
                 defaultMutableTreeNode1.add(entradasNode);
                 defaultMutableTreeNode1.add(saidasEsperada);
                 defaultMutableTreeNode1.add(saidasEncontrada);
