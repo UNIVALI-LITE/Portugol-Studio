@@ -28,7 +28,8 @@ public class AbaInicial extends Aba {
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         logo1 = new br.univali.ps.ui.imagens.Logo();
         logoUnivali = new javax.swing.JLabel();
@@ -36,7 +37,7 @@ public class AbaInicial extends Aba {
 
         setLayout(null);
         add(logo1);
-        logo1.setBounds(20, 20, 270, 102);
+        logo1.setBounds(20, 20, 330, 150);
 
         logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
         add(logoUnivali);
