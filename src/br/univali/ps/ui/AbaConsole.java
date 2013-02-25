@@ -81,6 +81,12 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     public void setExecutandoPrograma(boolean executandoPrograma) 
     {
         this.executandoPrograma = executandoPrograma;
+        if (!executandoPrograma)
+        {
+            ((DocumentoConsole)console.getDocument()).setLendo(false);
+            console.setEditable(false);
+            console.setFocusable(false);
+        }
         atualizarItensMenuConsole();
     }
 
@@ -309,9 +315,13 @@ public class AbaConsole extends Aba implements Saida, Entrada {
             this.lendo = lendo;
             
             if (lendo)
+            {
                 limitOffset = getLength();
-            else 
+            }
+            else
+            {
                 limitOffset = 0;
+            }
         }
         
         @Override
@@ -328,13 +338,17 @@ public class AbaConsole extends Aba implements Saida, Entrada {
             }
             
             if (!lendo)
+            {
                 limitOffset = getLength();
+            }
         }
 
         @Override
         public void remove( int i, int i1) throws BadLocationException {
             if (!lendo || limitOffset <= i)
+            {
                 super.remove(i, i1);
+            }
         }
 
         private String getValorLido() {
