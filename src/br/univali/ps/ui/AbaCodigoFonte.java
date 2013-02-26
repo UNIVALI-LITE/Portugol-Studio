@@ -238,7 +238,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             public void componentShown(ComponentEvent e) 
             {
                 if (posicaoAtualCursor < 0)
+                {
                     posicaoAtualCursor = editor.getTextArea().getCaretPosition();
+                }
                 
                 txtLocalizar.setText(null);      
                 txtSubstituir.setText(null);
@@ -253,7 +255,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 editor.requestFocus();
                 
                 if (posicaoAtualCursor >= 0)
+                {
                     editor.getTextArea().setCaretPosition(posicaoAtualCursor);
+                }
                 
                 limparPesquisa();
             }
@@ -882,11 +886,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                     substituicoes = substituicoes + 1;
                     
                     if (substituicoes == 1)   
+                    {
                         mensagem = "A pesquisa atingiu o final do documento.\nFoi feita uma substituição.";
+                    }
                     else
                     
                     if (substituicoes > 1)
+                    {
                         mensagem = String.format("A pesquisa atingiu o final do documento.\nForam feitas %d substituições.", substituicoes);
+                    }
                 }
             }
             else
@@ -916,7 +924,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 else
                 {
                     if (localizar("A pesquisa atingiu o final do documento.\nNão há valores a serem substituídos."))
-                        substituir();                    
+                    {
+                        substituir();
+                    }                    
                 }
             }
             else
@@ -1039,9 +1049,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
             
-            if (resp == JOptionPane.YES_OPTION) acaoSalvarArquivo.actionPerformed(null);
+            if (resp == JOptionPane.YES_OPTION)
+            {
+                acaoSalvarArquivo.actionPerformed(null);
+            }
             else 
-            if (resp == JOptionPane.CANCEL_OPTION) return false;
+            if (resp == JOptionPane.CANCEL_OPTION)
+            {
+                return false;
+            }
         }        
             
         return true;
@@ -1068,7 +1084,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         try {
             String codigo = editor.getPortugolDocumento().getCodigoFonte();
             if (programa == null)
+            {
                 this.programa = Portugol.compilar(codigo);
+            }
 
             programa.setEntrada(painelSaida.getConsole());
             programa.setSaida(painelSaida.getConsole());
@@ -1109,17 +1127,23 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             AbaConsole console = painelSaida.getConsole();
             
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
+            {
                 console.escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+            }
             
             else 
             
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
+            {
                 console.escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
+            }
             
             else 
                 
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
+            {
                 console.escrever("\nO programa foi interrompido!");
+            }
         }
         catch (Exception e)
         {
@@ -1165,7 +1189,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         String textoParametros = txtParametros.getText().trim();
         
         if (textoParametros.length() > 0)
+        {
             return textoParametros.split(" ");
+        }
         
         return null;
     }
