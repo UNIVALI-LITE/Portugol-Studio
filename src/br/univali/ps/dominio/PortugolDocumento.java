@@ -40,13 +40,13 @@ public class PortugolDocumento extends RSyntaxDocument {
 
     public PortugolDocumento() {
         super(new AbstractTokenMakerFactory() {
+           
             @Override
-            protected Map createTokenMakerKeyToClassNameMap() {
-                HashMap map = new HashMap();
-                map.put("text/por", "br.univali.ps.dominio.PortugolLanguage");
-                return map;
+            protected void initTokenMakerMap()
+            {
+                putMapping("text/por", "br.univali.ps.dominio.PortugolLanguage"); //To change body of generated methods, choose Tools | Templates.
             }
-        }, "text/por");        
+        },"text/por" );
     }
 
     public File getFile() {
