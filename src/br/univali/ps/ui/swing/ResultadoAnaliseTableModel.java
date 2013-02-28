@@ -1,40 +1,42 @@
 package br.univali.ps.ui.swing;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
-import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import br.univali.portugol.nucleo.mensagens.*;
+import br.univali.ps.ui.util.IconFactory;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
 
 public final class ResultadoAnaliseTableModel extends AbstractTableModel
 {
-    private ResultadoAnalise resultadoAnalise;
+    private List<Mensagem> mensagens = new ArrayList<Mensagem>();
     
     @Override
     public int getRowCount()
     {
-        if (resultadoAnalise != null)
-            return resultadoAnalise.getNumeroTotalErros();
-        
-        return 0;
+        return mensagens.size();
     }
 
     @Override
     public int getColumnCount()
     {
-        return 3;
+        return 4;
     }
 
     @Override
     public Object getValueAt(int linha, int coluna)
     {
-        if (resultadoAnalise != null)
+        if (mensagens != null)
         {
-            ErroAnalise erroAnalise = resultadoAnalise.getErros().get(linha);
-            
-            if (coluna == 0) return erroAnalise.getMensagem();
+            Mensagem mensagem = mensagens.get(linha);
+            if (coluna == 0) return getTipoMensagem(mensagem);
             else
-            if (coluna == 1) return erroAnalise.getLinha();
+            if (coluna == 1) return mensagem.getMensagem();
             else
-            if (coluna == 2) return erroAnalise.getColuna();
+            if (coluna == 2) return getLinha(mensagem);
+            else
+            if (coluna == 3) return getColuna(mensagem);
             
         }
         
@@ -44,19 +46,81 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
     @Override
     public String getColumnName(int indice)
     {
-        if (indice == 0) return "Mensagem";
+        if (indice == 0) return " ";
         else
-        if (indice == 1) return "Linha";        
+        if (indice == 1) return "Mensagem";
         else
-        if (indice == 2) return "Coluna";
+        if (indice == 2) return "Linha";        
+        else
+        if (indice == 3) return "Coluna";
         
         
         return null;
     }
 
+    @Override
+    public Class<?> getColumnClass(int indice)
+    {
+        
+        if (indice == 0) return Icon.class;
+        else
+        if (indice == 1) return String.class;
+        else
+        if (indice == 2) return Integer.class;        
+        else
+        if (indice == 3) return Integer.class;
+        
+        return null;
+    }
+
+    
+    
     public void setResultadoAnalise(ResultadoAnalise resultadoAnalise)
     {
-        this.resultadoAnalise = resultadoAnalise;
+        
+        this.mensagens = new ArrayList<Mensagem>();
+        if (resultadoAnalise != null) {
+            for (Mensagem m : resultadoAnalise.getErros()){
+                mensagens.add(m);
+            }
+            for (Mensagem m : resultadoAnalise.getAvisos()){
+                mensagens.add(m);
+            }
+        }
         fireTableDataChanged();
+    }
+
+    private Icon getTipoMensagem(Mensagem mensagem)
+    {
+        Icon icone = null;
+        
+        if (mensagem instanceof Aviso)
+            icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "warning.png");
+        else if (mensagem instanceof Erro)
+            icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "exclamation.png");
+        
+        return icone;
+    }
+
+    private Integer getLinha(Mensagem mensagem)
+    {
+        Integer linha = null;
+        if (mensagem instanceof AvisoAnalise)
+           linha = ((AvisoAnalise)mensagem).getLinha();
+        if (mensagem instanceof ErroAnalise)
+           linha = ((ErroAnalise)mensagem).getLinha();
+        
+        return linha;
+    }
+
+    private Integer getColuna(Mensagem mensagem)
+    {
+        Integer coluna = null;
+        if (mensagem instanceof AvisoAnalise)
+           coluna = ((AvisoAnalise)mensagem).getColuna();
+        if (mensagem instanceof ErroAnalise)
+           coluna = ((ErroAnalise)mensagem).getColuna();
+        
+        return coluna;
     }
 }
