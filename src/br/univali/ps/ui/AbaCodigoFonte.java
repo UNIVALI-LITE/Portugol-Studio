@@ -6,6 +6,7 @@ import br.univali.portugol.corretor.dinamico.model.Caso;
 import br.univali.portugol.corretor.dinamico.model.Entrada;
 import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.portugol.corretor.dinamico.model.Saida;
+import br.univali.portugol.nucleo.AvisoCompilacao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
@@ -25,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -1085,7 +1088,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             String codigo = editor.getPortugolDocumento().getCodigoFonte();
             if (programa == null)
             {
-                this.programa = Portugol.compilar(codigo);
+                try
+                {
+                    this.programa = Portugol.compilar(codigo);
+                }
+                catch (AvisoCompilacao ex)
+                {
+                    Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             programa.setEntrada(painelSaida.getConsole());

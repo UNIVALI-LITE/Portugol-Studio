@@ -13,12 +13,12 @@ import javax.swing.filechooser.FileFilter;
 
 public class FiltroArquivoPortugol extends FileFilter
 {
-    private static final String descricao = "Programa do Portugol (*.por)";
+    private static final String descricao = "Arquivos do Portugol (*.por, *.pex)";
 
     @Override
     public boolean accept(File arquivo)
     {
-        return (arquivo.isDirectory() || arquivo.getName().toLowerCase().endsWith(".por"));
+        return (arquivo.isDirectory() || arquivo.getName().toLowerCase().endsWith(".por") || arquivo.getName().toLowerCase().endsWith(".pex"));
     }
 
     @Override
