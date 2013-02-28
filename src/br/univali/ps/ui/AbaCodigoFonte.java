@@ -1118,6 +1118,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelSaida.getConsole().selecionar();
         try {
             painelSaida.getConsole().limpar();
+            
+            if (analise.getNumeroAvisos() > 0)
+            {
+                painelSaida.getConsole().escrever("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
+            }
+            
         } catch (Exception ex) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
