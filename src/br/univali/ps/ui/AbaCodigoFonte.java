@@ -6,7 +6,6 @@ import br.univali.portugol.corretor.dinamico.model.Caso;
 import br.univali.portugol.corretor.dinamico.model.Entrada;
 import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.portugol.corretor.dinamico.model.Saida;
-import br.univali.portugol.nucleo.AvisoCompilacao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
@@ -1080,22 +1079,21 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         return editor.getPortugolDocumento();
     }
 
+    private ResultadoAnalise analise;
+    
     private void executar() {
         AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
         abaMensagem.limpar();
         
         try {
             String codigo = editor.getPortugolDocumento().getCodigoFonte();
+            
+            analise = Portugol.analisar(codigo);
+            abaMensagem.atualizar(analise);
+            
             if (programa == null)
             {
-                try
-                {
-                    this.programa = Portugol.compilar(codigo);
-                }
-                catch (AvisoCompilacao ex)
-                {
-                    Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                this.programa = Portugol.compilar(codigo);
             }
 
             programa.setEntrada(painelSaida.getConsole());
@@ -1107,11 +1105,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         } catch (ErroCompilacao erroCompilacao) {
             ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
-
-            if (resultadoAnalise.getNumeroTotalErros() > 0) {
-                abaMensagem.atualizar(resultadoAnalise);
-                abaMensagem.selecionar();
-            }
+            abaMensagem.atualizar(resultadoAnalise);
+            abaMensagem.selecionar();
         }
     }
 
@@ -1123,6 +1118,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelSaida.getConsole().selecionar();
         try {
             painelSaida.getConsole().limpar();
+            
+            if (analise.getNumeroAvisos() > 0)
+            {
+                painelSaida.getConsole().escrever("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
+            }
+            
         } catch (Exception ex) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }

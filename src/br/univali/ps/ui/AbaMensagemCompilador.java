@@ -25,6 +25,9 @@ public class AbaMensagemCompilador extends Aba {
         tabelaMensagens.addMouseListener(new MouseListener());
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
+        tabelaMensagens.getColumnModel().getColumn(0).setMaxWidth(27);
+        tabelaMensagens.getColumnModel().getColumn(2).setMaxWidth(57);
+        tabelaMensagens.getColumnModel().getColumn(3).setMaxWidth(67);
     }
 
     public void atualizar(ResultadoAnalise resultadoAnalise)
@@ -60,8 +63,8 @@ public class AbaMensagemCompilador extends Aba {
         public void mouseClicked(MouseEvent me) {
 
             if (me.getClickCount() >= 2) {
-                int linha = (Integer) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 1);
-                int coluna = (Integer) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 2);
+                int linha = (Integer) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 2);
+                int coluna = (Integer) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 3);
                 disparaPosicionarCursor(linha,coluna);
             }
         }
