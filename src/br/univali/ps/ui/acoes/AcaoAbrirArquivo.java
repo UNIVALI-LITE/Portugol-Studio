@@ -8,6 +8,7 @@ import br.univali.ps.ui.util.FileHandle;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
@@ -48,7 +49,7 @@ public class AcaoAbrirArquivo extends Acao
                 File arquivo = arquivos[i];
                 if (getFileExtension(arquivo).equals("pex")||getFileExtension(arquivo).equals("xml")) {
                     Unmarshal u = new Unmarshal();
-                    Questao q = u.execute(arquivo);
+                    Questao q = u.execute(new FileInputStream(arquivo));
                     AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
                     abaCodigoFonte.setQuestao(q);
                 } else {
