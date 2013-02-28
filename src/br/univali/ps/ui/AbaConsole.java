@@ -85,7 +85,7 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         {
             ((DocumentoConsole)console.getDocument()).setLendo(false);
             console.setEditable(false);
-            console.setFocusable(false);
+            console.setFocusable(false);            
         }
         atualizarItensMenuConsole();
     }
