@@ -20,21 +20,16 @@ import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rtextarea.SearchEngine;
 
 public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao
 {
@@ -195,7 +190,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         carregarAlgoritmoPadrao();
         this.btnComentar.setVisible(false);
         this.btnDescomentar.setVisible(false);
-        this.barraPesquisa.setVisible(false);
         
         acaoExecutar = new AcaoExecutar();        
         acaoInterromper = new AcaoInterromper();
@@ -204,95 +198,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
              
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
-        
-        /* 
-         * Habilitar pesquisa instantânea.
-         * 
-         *  Pode conflitar com o subsituir
-         *  precisamos testar.
-         */
-        
-        
-        /*            
-        txtPesquisa.getDocument().addDocumentListener(new DocumentListener() 
-        {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                localizar();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                localizar();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                localizar();
-            }
-        });
-        */
-        barraPesquisa.addComponentListener(new ComponentAdapter() 
-        {
-            @Override
-            public void componentShown(ComponentEvent e) 
-            {
-                if (posicaoAtualCursor < 0)
-                {
-                    posicaoAtualCursor = editor.getTextArea().getCaretPosition();
-                }
-                
-                txtLocalizar.setText(null);      
-                txtSubstituir.setText(null);
-                revalidate();
-                txtLocalizar.requestFocus();
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e) 
-            {
-                revalidate();
-                editor.requestFocus();
-                
-                if (posicaoAtualCursor >= 0)
-                {
-                    editor.getTextArea().setCaretPosition(posicaoAtualCursor);
-                }
-                
-                limparPesquisa();
-            }
-        });        
-        
-        
-        ChangeListener changeListener = new ChangeListener() 
-        {
-            @Override
-            public void stateChanged(ChangeEvent e) 
-            {
-                AbstractButton abstractButton = (AbstractButton) e.getSource();
-                ButtonModel buttonModel = abstractButton.getModel();
-                
-                if (buttonModel.isPressed())
-                {
-                    limparPesquisa();
-                }
-            }
-        };
-        
-        chkExprRegular.addChangeListener(changeListener);
-        chkMaiscMinusc.addChangeListener(changeListener);
-        chkPalavrasInteiras.addChangeListener(changeListener);
-        
-        txtLocalizar.getActionMap().put("OcultarPesquisa", new AbstractAction() 
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                ocultarPainelPesquisa();
-            }
-        });
-        
-        txtLocalizar.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "OcultarPesquisa");
+                      
     }
     
     public void setQuestao(Questao questao)
@@ -311,8 +217,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelSaida1 = new br.univali.ps.ui.PainelSaida();
         painelSaida2 = new br.univali.ps.ui.PainelSaida();
@@ -350,31 +255,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jButton1 = new javax.swing.JButton();
         jPainelSeparador = new javax.swing.JSplitPane();
         painelEditor = new javax.swing.JPanel();
-        barraPesquisa = new javax.swing.JToolBar();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        jBFecharPesquisa = new javax.swing.JButton();
-        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jLabel1 = new javax.swing.JLabel();
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        txtLocalizar = new javax.swing.JTextField();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        jLabel2 = new javax.swing.JLabel();
-        filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        txtSubstituir = new javax.swing.JTextField();
-        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jSeparator2 = new javax.swing.JToolBar.Separator();
-        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        chkMaiscMinusc = new javax.swing.JCheckBox();
-        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        chkPalavrasInteiras = new javax.swing.JCheckBox();
-        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
-        chkExprRegular = new javax.swing.JCheckBox();
-        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         editor = new br.univali.ps.ui.Editor();
         painelSaida = new br.univali.ps.ui.PainelSaida();
 
@@ -435,10 +315,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnComentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -454,10 +332,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDescomentarActionPerformed(evt);
             }
         });
@@ -515,10 +391,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/blackboard_steps.png"))); // NOI18N
         jButton1.setText("Corrigir");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
@@ -577,130 +451,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jPainelSeparador.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         painelEditor.setLayout(new java.awt.BorderLayout());
-
-        barraPesquisa.setFloatable(false);
-        barraPesquisa.setRollover(true);
-        barraPesquisa.setMinimumSize(new java.awt.Dimension(300, 35));
-        barraPesquisa.setPreferredSize(new java.awt.Dimension(100, 36));
-        barraPesquisa.add(filler2);
-
-        jBFecharPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
-        jBFecharPesquisa.setBorderPainted(false);
-        jBFecharPesquisa.setContentAreaFilled(false);
-        jBFecharPesquisa.setFocusable(false);
-        jBFecharPesquisa.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jBFecharPesquisa.setMaximumSize(new java.awt.Dimension(16, 16));
-        jBFecharPesquisa.setMinimumSize(new java.awt.Dimension(16, 16));
-        jBFecharPesquisa.setPreferredSize(new java.awt.Dimension(16, 16));
-        jBFecharPesquisa.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
-        jBFecharPesquisa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBFecharPesquisa.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jBFecharPesquisajBFecharActionPerformed(evt);
-            }
-        });
-        barraPesquisa.add(jBFecharPesquisa);
-        barraPesquisa.add(filler10);
-
-        jLabel1.setText("Localizar:");
-        barraPesquisa.add(jLabel1);
-        barraPesquisa.add(filler8);
-
-        txtLocalizar.setMaximumSize(new java.awt.Dimension(250, 20));
-        txtLocalizar.setMinimumSize(new java.awt.Dimension(100, 20));
-        txtLocalizar.setPreferredSize(new java.awt.Dimension(150, 20));
-        txtLocalizar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                txtLocalizarActionPerformed(evt);
-            }
-        });
-        barraPesquisa.add(txtLocalizar);
-        barraPesquisa.add(filler7);
-        barraPesquisa.add(filler13);
-
-        jLabel2.setText("Substituir:");
-        barraPesquisa.add(jLabel2);
-        barraPesquisa.add(filler15);
-
-        txtSubstituir.setMaximumSize(new java.awt.Dimension(250, 20));
-        txtSubstituir.setMinimumSize(new java.awt.Dimension(100, 20));
-        txtSubstituir.setPreferredSize(new java.awt.Dimension(150, 20));
-        barraPesquisa.add(txtSubstituir);
-        barraPesquisa.add(filler9);
-
-        jButton2.setText("Localizar");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setPreferredSize(new java.awt.Dimension(60, 21));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        barraPesquisa.add(jButton2);
-
-        jButton3.setText("Substituir");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setPreferredSize(new java.awt.Dimension(60, 21));
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        barraPesquisa.add(jButton3);
-
-        jButton4.setText("Substituir Tudo");
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setPreferredSize(new java.awt.Dimension(60, 21));
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        barraPesquisa.add(jButton4);
-        barraPesquisa.add(filler14);
-
-        jSeparator2.setMaximumSize(new java.awt.Dimension(6, 28));
-        barraPesquisa.add(jSeparator2);
-        barraPesquisa.add(filler5);
-
-        chkMaiscMinusc.setText("Coincidir maísculas e minúsculas");
-        chkMaiscMinusc.setFocusable(false);
-        chkMaiscMinusc.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        chkMaiscMinusc.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraPesquisa.add(chkMaiscMinusc);
-        barraPesquisa.add(filler11);
-
-        chkPalavrasInteiras.setText("Palavras inteiras");
-        chkPalavrasInteiras.setFocusable(false);
-        chkPalavrasInteiras.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        chkPalavrasInteiras.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraPesquisa.add(chkPalavrasInteiras);
-        barraPesquisa.add(filler12);
-
-        chkExprRegular.setText("Expressão regular");
-        chkExprRegular.setFocusable(false);
-        chkExprRegular.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        chkExprRegular.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraPesquisa.add(chkExprRegular);
-        barraPesquisa.add(filler6);
-
-        painelEditor.add(barraPesquisa, java.awt.BorderLayout.PAGE_END);
         painelEditor.add(editor, java.awt.BorderLayout.CENTER);
 
         jPainelSeparador.setTopComponent(painelEditor);
@@ -797,159 +547,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {//GEN-HEADEREND:event_jButton1ActionPerformed
         corrigir();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jBFecharPesquisajBFecharActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBFecharPesquisajBFecharActionPerformed
-    {//GEN-HEADEREND:event_jBFecharPesquisajBFecharActionPerformed
-        ocultarPainelPesquisa();
-    }//GEN-LAST:event_jBFecharPesquisajBFecharActionPerformed
-
-    private void txtLocalizarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_txtLocalizarActionPerformed
-    {//GEN-HEADEREND:event_txtLocalizarActionPerformed
-
-   }//GEN-LAST:event_txtLocalizarActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
-    {//GEN-HEADEREND:event_jButton2ActionPerformed
-
-        localizar("A pesquisa atingiu o final do documento.\nNenhum resultado foi encontrado.");
-    }
-
-    private boolean localizar(String mensagem)
-    {
-        tentativas = 0;
-
-        if (!localizarProxima())
-        {
-            JOptionPane.showMessageDialog(this, mensagem, "PortugolSttudio", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    private boolean localizarProxima() throws PatternSyntaxException
-    {
-        if ((txtLocalizar.getText() != null) && (txtLocalizar.getText().length() > 0))
-        {
-            posicaoAtualCursor = -1;
-            //limparPesquisa();
-/*
-            if (SearchEngine.find(editor.getTextArea(), txtLocalizar.getText(), true, chkMaiscMinusc.isSelected(), chkPalavrasInteiras.isSelected(), chkExprRegular.isSelected()))
-            {
-                tentativas = 0;
-                return true;
-            }
-            else
-            {
-                if (tentativas == 0)
-                {
-                    tentativas = tentativas + 1;
-                    editor.getTextArea().setCaretPosition(0);
-                    return localizarProxima();
-                }
-            }
-*/
-        }
-        else
-        {
-            Toolkit.getDefaultToolkit().beep();
-            txtLocalizar.requestFocus();
-        }
-
-        return false;
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
-    {//GEN-HEADEREND:event_jButton3ActionPerformed
-        substituir();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
-    {//GEN-HEADEREND:event_jButton4ActionPerformed
-        substituirTudo();
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void substituirTudo()
-    {
-        int substituicoes = 0;
-        String mensagem = "A pesquisa atingiu o final do documento.\nNão foram feitas substituições.";
-        
-        if (txtSubstituir.getText() != null)
-        {
-            if (txtSubstituir.getText().length() > 0)
-            {
-                while (localizar(mensagem))
-                {
-                    substituirTexto();
-                    substituicoes = substituicoes + 1;
-                    
-                    if (substituicoes == 1)   
-                    {
-                        mensagem = "A pesquisa atingiu o final do documento.\nFoi feita uma substituição.";
-                    }
-                    else
-                    
-                    if (substituicoes > 1)
-                    {
-                        mensagem = String.format("A pesquisa atingiu o final do documento.\nForam feitas %d substituições.", substituicoes);
-                    }
-                }
-            }
-            else
-            {
-                Toolkit.getDefaultToolkit().beep();
-                txtSubstituir.requestFocus();
-            }
-        }
-        else
-        {
-            Toolkit.getDefaultToolkit().beep();
-            txtLocalizar.requestFocus();
-        }
-    }
-    
-    private void substituir()
-    {
-        if (txtSubstituir.getText() != null)
-        {
-            if (txtSubstituir.getText().length() > 0)
-            {
-                if ((editor.getTextArea().getSelectedText() != null) && (editor.getTextArea().getSelectedText().equals(txtLocalizar.getText())))
-                {
-                    substituirTexto();
-                    localizar("A pesquisa atingiu o final do documento.\nNão há valores a serem substituídos.");
-                }
-                else
-                {
-                    if (localizar("A pesquisa atingiu o final do documento.\nNão há valores a serem substituídos."))
-                    {
-                        substituir();
-                    }                    
-                }
-            }
-            else
-            {
-                Toolkit.getDefaultToolkit().beep();
-                txtSubstituir.requestFocus();
-            }
-        }
-        else
-        {
-            Toolkit.getDefaultToolkit().beep();
-            txtLocalizar.requestFocus();
-        }
-    }
-    
-    private void substituirTexto()
-    {
-        editor.getTextArea().replaceSelection(txtSubstituir.getText());
-    }
+   
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramenta;
-    private javax.swing.JToolBar barraPesquisa;
     private javax.swing.JButton btnColar;
     private javax.swing.JButton btnComentar;
     private javax.swing.JButton btnCopiar;
@@ -960,37 +561,16 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnRecortar;
     private javax.swing.JButton btnRefazer;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JCheckBox chkExprRegular;
-    private javax.swing.JCheckBox chkMaiscMinusc;
-    private javax.swing.JCheckBox chkPalavrasInteiras;
     private br.univali.ps.ui.Editor editor;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler10;
-    private javax.swing.Box.Filler filler11;
-    private javax.swing.Box.Filler filler12;
-    private javax.swing.Box.Filler filler13;
-    private javax.swing.Box.Filler filler14;
-    private javax.swing.Box.Filler filler15;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
-    private javax.swing.Box.Filler filler5;
-    private javax.swing.Box.Filler filler6;
-    private javax.swing.Box.Filler filler7;
-    private javax.swing.Box.Filler filler8;
-    private javax.swing.Box.Filler filler9;
     private br.univali.ps.ui.Fonte fonte1;
-    private javax.swing.JButton jBFecharPesquisa;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLCasosTeste;
     private javax.swing.JLabel jLCorrecao;
     private javax.swing.JLabel jLNota;
     private javax.swing.JLabel jLResultado;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JList jList1;
     private javax.swing.JSplitPane jPainelSeparador;
     private javax.swing.JPanel jPanel1;
@@ -999,7 +579,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JToolBar.Separator jSeparador1;
     private javax.swing.JToolBar.Separator jSeparador2;
     private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTree jTree1;
     private javax.swing.JLabel lblParametros;
@@ -1008,9 +587,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private br.univali.ps.ui.PainelSaida painelSaida;
     private br.univali.ps.ui.PainelSaida painelSaida1;
     private br.univali.ps.ui.PainelSaida painelSaida2;
-    private javax.swing.JTextField txtLocalizar;
     private javax.swing.JTextField txtParametros;
-    private javax.swing.JTextField txtSubstituir;
     // End of variables declaration//GEN-END:variables
 
     private void configurarAcoes() {
@@ -1176,9 +753,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             abaMensagem.atualizar(resultadoAnalise);
             abaMensagem.selecionar();
         }
-    }
-
-  
+    }  
 
     private class AdaptadorComponente extends ComponentAdapter {
 
@@ -1260,37 +835,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }    
     
-
-    private int posicaoAtualCursor = -1;
-    
-    public void exibirPainelPesquisa()
-    {
-        barraPesquisa.setVisible(true);
-    }
-    
-    public void ocultarPainelPesquisa()
-    {
-        barraPesquisa.setVisible(false);
-    }
-    
-    private int tentativas = 0;
-    
-    private void limparPesquisa()
-    {
-        tentativas = 0;
-        editor.getTextArea().markAll("texto que provavelmente nunca existirá", false, false, false);        
-    }
-    
-    private void localizarInstantaneo()
-    {
-        if (barraPesquisa.isVisible())
-        {
-            if ((txtLocalizar.getText() != null) && (txtLocalizar.getText().length() > 0))
-            {
-                editor.getTextArea().markAll(txtLocalizar.getText(), chkPalavrasInteiras.isSelected(), chkPalavrasInteiras.isSelected(), chkExprRegular.isSelected());
-            }
-        }
-    }
 
     public Action getAcaoExecutar() 
     {
