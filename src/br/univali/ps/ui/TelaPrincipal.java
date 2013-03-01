@@ -11,6 +11,8 @@ import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -23,8 +25,18 @@ import static javax.swing.Action.NAME;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.text.BadLocationException;
+import org.fife.rsta.ui.GoToDialog;
+import org.fife.rsta.ui.search.FindDialog;
+import org.fife.rsta.ui.search.ReplaceDialog;
+import org.fife.rsta.ui.search.SearchDialogSearchContext;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rtextarea.SearchEngine;
 
 public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
 {   
@@ -41,8 +53,9 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     private Action themeEclipse = null;
     private Action themeVS = null;
     
-    
-    
+    private FindDialog findDialog;
+    private ReplaceDialog replaceDialog;
+    private FindReplaceActionListener findReplaceActionListener = new FindReplaceActionListener();
     
     private void acoesprontas() {
         acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
@@ -59,6 +72,17 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniSalvarComo.setAction(acaoSalvarComo);
     }
 
+    public void initSearchDialogs() {
+
+        findDialog = new FindDialog(this, findReplaceActionListener);
+        replaceDialog = new ReplaceDialog(this, findReplaceActionListener);
+
+        // This ties the properties of the two dialogs together (match
+        // case, regex, etc.).
+        replaceDialog.setSearchContext(findDialog.getSearchContext());
+
+    }
+    
     public TelaPrincipal()  
     {
         Thread.setDefaultUncaughtExceptionHandler(this);
@@ -115,6 +139,20 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         themeDark.setEnabled(false);
         themeEclipse.setEnabled(false);
         themeVS.setEnabled(false);
+        
+        initSearchDialogs();
+        mniFind.setAction(new ShowFindDialogAction());
+        mniReplace.setAction(new ShowReplaceDialogAction());
+        mniGoToLine.setAction(new GoToLineAction());
+        
+        mnuSearch.setVisible(false);
+        mnuSearch.setEnabled(false);
+        mniFind.setEnabled(false);
+        mniReplace.setEnabled(false);
+        mniGoToLine.setEnabled(false);
+        
+        
+        
     }
     
     private void configurarSeletorArquivo() {
@@ -152,7 +190,10 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniCopiar = new javax.swing.JMenuItem();
         mniColar = new javax.swing.JMenuItem();
         mnuEditSeparator2 = new javax.swing.JPopupMenu.Separator();
-        mniSubstituir = new javax.swing.JMenuItem();
+        mnuSearch = new javax.swing.JMenu();
+        mniFind = new javax.swing.JMenuItem();
+        mniReplace = new javax.swing.JMenuItem();
+        mniGoToLine = new javax.swing.JMenuItem();
         mnuTheme = new javax.swing.JMenu();
         mniDefault = new javax.swing.JMenuItem();
         mniDark = new javax.swing.JMenuItem();
@@ -265,18 +306,20 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mnuEdit.add(mniColar);
         mnuEdit.add(mnuEditSeparator2);
 
-        mniSubstituir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        mniSubstituir.setText("Localizar e Substituir...");
-        mniSubstituir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                mniSubstituirActionPerformed(evt);
-            }
-        });
-        mnuEdit.add(mniSubstituir);
-
         mnuBar.add(mnuEdit);
+
+        mnuSearch.setText("Pesquisar");
+
+        mniFind.setText("jMenuItem2");
+        mnuSearch.add(mniFind);
+
+        mniReplace.setText("jMenuItem2");
+        mnuSearch.add(mniReplace);
+
+        mniGoToLine.setText("jMenuItem2");
+        mnuSearch.add(mniGoToLine);
+
+        mnuBar.add(mnuSearch);
 
         mnuTheme.setText("Tema");
         mnuTheme.add(mniDefault);
@@ -362,10 +405,6 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     telaSobre.setModal(true);
     telaSobre.setVisible(true);    
 }//GEN-LAST:event_mniAboutActionPerformed
-
-    private void mniSubstituirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniSubstituirActionPerformed
-        ((AbaCodigoFonte) painelTabulado.getAbaSelecionada()).exibirPainelPesquisa();
-    }//GEN-LAST:event_mniSubstituirActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
@@ -385,13 +424,15 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniExit;
     private javax.swing.JMenuItem mniFechar;
     private javax.swing.JMenuItem mniFecharTodos;
+    private javax.swing.JMenuItem mniFind;
+    private javax.swing.JMenuItem mniGoToLine;
     private javax.swing.JMenuItem mniInterromper;
     private javax.swing.JMenuItem mniNovo;
     private javax.swing.JMenuItem mniRecortar;
     private javax.swing.JMenuItem mniRefazer;
+    private javax.swing.JMenuItem mniReplace;
     private javax.swing.JMenuItem mniSalvar;
     private javax.swing.JMenuItem mniSalvarComo;
-    private javax.swing.JMenuItem mniSubstituir;
     private javax.swing.JMenuItem mniVS;
     private javax.swing.JMenuBar mnuBar;
     private javax.swing.JMenu mnuEdit;
@@ -402,6 +443,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
     private javax.swing.JMenu mnuPrograma;
+    private javax.swing.JMenu mnuSearch;
     private javax.swing.JMenu mnuTheme;
     private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
     // End of variables declaration//GEN-END:variables
@@ -449,6 +491,13 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             themeDark.setEnabled(true);
             themeEclipse.setEnabled(true);
             themeVS.setEnabled(true);
+            
+            mnuSearch.setVisible(true);
+            mnuSearch.setEnabled(true);
+            mniFind.setEnabled(true);
+            mniReplace.setEnabled(true);
+            mniGoToLine.setEnabled(true);
+        
         } else {
             mniSalvar.setEnabled(false);
             acaoSalvarComo.setEnabled(false);
@@ -462,6 +511,12 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             themeDark.setEnabled(false);
             themeEclipse.setEnabled(false);
             themeVS.setEnabled(false);
+            mnuSearch.setVisible(false);
+            mnuSearch.setEnabled(false);
+            mniFind.setEnabled(false);
+            mniReplace.setEnabled(false);
+            mniGoToLine.setEnabled(false);
+        
         }
         
         if (painelTabulado.temAbaAberta(AbaCodigoFonte.class) || 
@@ -492,11 +547,11 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, e, ExcecaoAplicacao.Tipo.ERRO));
             System.exit(1);
         }
-        else if (e instanceof IllegalArgumentException){e.printStackTrace();}
+        else if (e instanceof IllegalArgumentException){e.printStackTrace(System.err);}
         else 
         {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(e, ExcecaoAplicacao.Tipo.ERRO));
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
     
@@ -548,6 +603,113 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             } catch (IOException ioe) {
                     ioe.printStackTrace(System.err);
             }
+        }
+
+    }
+    
+    private class GoToLineAction extends AbstractAction {
+
+        public GoToLineAction() {
+                super("Ir para linha...");
+                int c = getToolkit().getMenuShortcutKeyMask();
+                putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, c));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class) {
+                if (findDialog.isVisible()) {
+                            findDialog.setVisible(false);
+                    }
+                    if (replaceDialog.isVisible()) {
+                            replaceDialog.setVisible(false);
+                    }
+
+                    AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte)painelTabulado.getAbaSelecionada();
+                    RSyntaxTextArea textArea = abaCodigoFonte.getEditor().getTextArea();
+
+                    GoToDialog dialog = new GoToDialog(TelaPrincipal.this);
+                    dialog.setMaxLineNumberAllowed(textArea.getLineCount());
+                    dialog.setVisible(true);
+                    int line = dialog.getLineNumber();
+                    if (line>0) {
+                        try {
+                                textArea.setCaretPosition(textArea.getLineStartOffset(line-1));
+                        } catch (BadLocationException ble) { // Never happens
+                                UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+                                ble.printStackTrace(System.err);
+                        }
+                    }
+                }
+        }
+
+    }
+    
+    private class FindReplaceActionListener implements ActionListener {
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class){
+            
+                String command = e.getActionCommand();
+                SearchDialogSearchContext context = findDialog.getSearchContext();
+                AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte)painelTabulado.getAbaSelecionada();
+                RSyntaxTextArea textArea = abaCodigoFonte.getEditor().getTextArea();
+
+                if (FindDialog.ACTION_FIND.equals(command)) {
+                        if (!SearchEngine.find(textArea, context)) {
+                            UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+                        }
+                }
+                else if (ReplaceDialog.ACTION_REPLACE.equals(command)) {
+                        if (!SearchEngine.replace(textArea, context)) {
+                                UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+                        }
+                }
+                else if (ReplaceDialog.ACTION_REPLACE_ALL.equals(command)) {
+                        int count = SearchEngine.replaceAll(textArea, context);
+                                JOptionPane.showMessageDialog(null, count
+                                        + " ocorrências foram substituídas.");
+                }
+
+            }
+        }
+    }
+    
+    
+    private class ShowFindDialogAction extends AbstractAction {
+		
+        public ShowFindDialogAction() {
+                super("Procurar...");
+                int c = getToolkit().getMenuShortcutKeyMask();
+                putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, c));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+                if (replaceDialog.isVisible()) {
+                        replaceDialog.setVisible(false);
+                }
+                findDialog.setVisible(true);
+        }
+
+    }
+
+
+    private class ShowReplaceDialogAction extends AbstractAction {
+
+        public ShowReplaceDialogAction() {
+                super("Substituir...");
+                int c = getToolkit().getMenuShortcutKeyMask();
+                putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, c));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+                if (findDialog.isVisible()) {
+                        findDialog.setVisible(false);
+                }
+                replaceDialog.setVisible(true);
         }
 
     }

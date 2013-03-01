@@ -147,16 +147,27 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="mnuEditSeparator2">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniSubstituir">
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mnuSearch">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Pesquisar"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mniFind">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+L"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Localizar e Substituir..."/>
+                <Property name="text" type="java.lang.String" value="jMenuItem2"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniSubstituirActionPerformed"/>
-              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mniReplace">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jMenuItem2"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mniGoToLine">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jMenuItem2"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
