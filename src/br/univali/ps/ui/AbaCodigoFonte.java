@@ -77,11 +77,18 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
             //jTree1.removeAll();
 
-            defaultMutableTreeNode = new DefaultMutableTreeNode("Casos");
+            defaultMutableTreeNode = new DefaultMutableTreeNode("Resultados");
             defaultTreeModel = new DefaultTreeModel(defaultMutableTreeNode);
 
-            casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
-            casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
+            if (casosFalhos.isEmpty())
+                casosTreeFalhos = new DefaultMutableTreeNode("Incorretos (Não encontrado)");
+            else 
+                casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
+            
+            if (casosAcertados.isEmpty())
+                casosTreeAcertados = new DefaultMutableTreeNode("Corretos (Não encontrado)");
+            else
+                casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
 
             int count = 1;
             for (CasoFalho caso : casosFalhos)
@@ -217,7 +224,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelSaida1 = new br.univali.ps.ui.PainelSaida();
         painelSaida2 = new br.univali.ps.ui.PainelSaida();
@@ -231,6 +239,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnColar = new javax.swing.JButton();
         btnComentar = new javax.swing.JButton();
         btnDescomentar = new javax.swing.JButton();
+        fonte1 = new br.univali.ps.ui.Fonte();
         jSeparador2 = new javax.swing.JToolBar.Separator();
         btnExecutar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
@@ -241,7 +250,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         txtParametros = new javax.swing.JTextField();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        fonte1 = new br.univali.ps.ui.Fonte();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jLCorrecao = new javax.swing.JLabel();
@@ -315,8 +323,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnComentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -332,12 +342,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDescomentarActionPerformed(evt);
             }
         });
         barraFerramenta.add(btnDescomentar);
+        barraFerramenta.add(fonte1);
         barraFerramenta.add(jSeparador2);
 
         btnExecutar.setEnabled(false);
@@ -369,21 +382,20 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         barraFerramenta.add(painelParametros);
         barraFerramenta.add(jSeparator1);
-        barraFerramenta.add(fonte1);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane1.setDividerLocation(800);
 
-        jLCorrecao.setText("Correção:");
+        jLCorrecao.setText("Dicas do corretor:");
 
-        jLCasosTeste.setText("Casos de teste:");
+        jLCasosTeste.setText("Casos verificados:");
 
-        jLNota.setText("Nota:");
+        jLNota.setText("Score obtido:");
 
         jLResultado.setText("-");
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Casos");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Resultados");
         jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane3.setViewportView(jTree1);
 
@@ -391,8 +403,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/blackboard_steps.png"))); // NOI18N
         jButton1.setText("Corrigir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton1ActionPerformed(evt);
             }
         });
@@ -404,46 +418,40 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLCorrecao)
-                                        .addGap(46, 46, 46)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLNota)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(20, 20, 20))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLCasosTeste)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLCorrecao)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                .addComponent(jLNota)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLCorrecao)
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLNota)
-                            .addComponent(jLResultado))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLCasosTeste)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jLNota)
+                    .addComponent(jLResultado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLCorrecao)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLCasosTeste, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jSplitPane1.setRightComponent(jPanel1);
