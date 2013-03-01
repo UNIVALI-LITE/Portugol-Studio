@@ -26,7 +26,6 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
@@ -38,7 +37,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.SearchEngine;
 
-public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
+public final class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
 {   
     private JFileChooser dialogoEscolhaArquivo = new JFileChooser();
     private AcaoNovoArquivo acaoNovoArquivo = null;
@@ -163,8 +162,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         bottomPane = new javax.swing.JPanel();
         painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
@@ -189,7 +187,6 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniRecortar = new javax.swing.JMenuItem();
         mniCopiar = new javax.swing.JMenuItem();
         mniColar = new javax.swing.JMenuItem();
-        mnuEditSeparator2 = new javax.swing.JPopupMenu.Separator();
         mnuSearch = new javax.swing.JMenu();
         mniFind = new javax.swing.JMenuItem();
         mniReplace = new javax.swing.JMenuItem();
@@ -238,10 +235,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniFechar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        mniFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniFecharActionPerformed(evt);
             }
         });
@@ -249,10 +244,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniFecharTodos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mniFecharTodos.setText("Fechar todas as abas");
-        mniFecharTodos.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        mniFecharTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniFecharTodosActionPerformed(evt);
             }
         });
@@ -261,10 +254,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         mniExit.setText("Sair");
-        mniExit.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        mniExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniExitActionPerformed(evt);
             }
         });
@@ -304,7 +295,6 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniColar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         mniColar.setText("Colar");
         mnuEdit.add(mniColar);
-        mnuEdit.add(mnuEditSeparator2);
 
         mnuBar.add(mnuEdit);
 
@@ -333,10 +323,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         mniAbout.setText("Sobre");
-        mniAbout.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        mniAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniAboutActionPerformed(evt);
             }
         });
@@ -344,10 +332,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem1.setText("Tópicos de Ajuda");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
@@ -378,7 +364,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     }// </editor-fold>//GEN-END:initComponents
 
 private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    new AbaAjuda(painelTabulado);
+        AbaAjuda abaAjuda = new AbaAjuda(painelTabulado);
 }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniExitActionPerformed
@@ -437,7 +423,6 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuBar mnuBar;
     private javax.swing.JMenu mnuEdit;
     private javax.swing.JSeparator mnuEditSeparator1;
-    private javax.swing.JPopupMenu.Separator mnuEditSeparator2;
     private javax.swing.JMenu mnuFile;
     private javax.swing.JPopupMenu.Separator mnuFileSeparator1;
     private javax.swing.JSeparator mnuFileSeparator2;
@@ -687,6 +672,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, c));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
                 if (replaceDialog.isVisible()) {
                         replaceDialog.setVisible(false);
@@ -705,6 +691,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, c));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
                 if (findDialog.isVisible()) {
                         findDialog.setVisible(false);

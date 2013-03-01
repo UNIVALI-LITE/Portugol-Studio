@@ -145,8 +145,6 @@
                 <Property name="text" type="java.lang.String" value="Colar"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="mnuEditSeparator2">
-            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuSearch">
