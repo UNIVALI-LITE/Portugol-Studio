@@ -15,13 +15,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import static javax.swing.Action.NAME;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
+import org.fife.ui.rsyntaxtextarea.Theme;
 
 public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
 {   
@@ -33,6 +36,12 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     private Action acaoSelecionarAbaDireita = null;
     private Action acaoSelecionarAbaEsquerda = null;
  
+    private Action themeDefault = null;
+    private Action themeDark = null;
+    private Action themeEclipse = null;
+    private Action themeVS = null;
+    
+    
     
     
     private void acoesprontas() {
@@ -60,6 +69,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         initComponents();
         mniFechar.setEnabled(false);
         mniFecharTodos.setEnabled(false);
+        mnuEdit.setVisible(false);
         mnuEdit.setEnabled(false);
         painelTabulado.adicionaPainelTabuladoListener(this);
         this.setLocationRelativeTo(null);
@@ -90,6 +100,21 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         acaoSelecionarAbaDireita = new AcaoSelecionarAbaDireita();
         getRootPane().getActionMap().put("SelecionarDireita", acaoSelecionarAbaDireita);
         getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift alt RIGHT"), "SelecionarDireita");
+    
+        mnuTheme.setVisible(false);
+        mnuTheme.setEnabled(false);
+        themeDefault = new ThemeAction("Padrão","/default.xml");
+        mniDefault.setAction(themeDefault);
+        themeDark = new ThemeAction("Dark","/dark.xml");
+        mniDark.setAction(themeDark);
+        themeEclipse = new ThemeAction("Eclipse","/eclipse.xml");
+        mniEclipse.setAction(themeEclipse);
+        themeVS = new ThemeAction("Visual Studio","/vs.xml");
+        mniVS.setAction(themeVS);
+        themeDefault.setEnabled(false);
+        themeDark.setEnabled(false);
+        themeEclipse.setEnabled(false);
+        themeVS.setEnabled(false);
     }
     
     private void configurarSeletorArquivo() {
@@ -100,7 +125,8 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         bottomPane = new javax.swing.JPanel();
         painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
@@ -127,6 +153,11 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         mniColar = new javax.swing.JMenuItem();
         mnuEditSeparator2 = new javax.swing.JPopupMenu.Separator();
         mniSubstituir = new javax.swing.JMenuItem();
+        mnuTheme = new javax.swing.JMenu();
+        mniDefault = new javax.swing.JMenuItem();
+        mniDark = new javax.swing.JMenuItem();
+        mniEclipse = new javax.swing.JMenuItem();
+        mniVS = new javax.swing.JMenuItem();
         mnuHelp = new javax.swing.JMenu();
         mniAbout = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -166,8 +197,10 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniFechar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFechar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharActionPerformed(evt);
             }
         });
@@ -175,8 +208,10 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniFecharTodos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mniFecharTodos.setText("Fechar todas as abas");
-        mniFecharTodos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFecharTodos.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharTodosActionPerformed(evt);
             }
         });
@@ -185,8 +220,10 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         mniExit.setText("Sair");
-        mniExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniExit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniExitActionPerformed(evt);
             }
         });
@@ -230,8 +267,10 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mniSubstituir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         mniSubstituir.setText("Localizar e Substituir...");
-        mniSubstituir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniSubstituir.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniSubstituirActionPerformed(evt);
             }
         });
@@ -239,12 +278,22 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         mnuBar.add(mnuEdit);
 
+        mnuTheme.setText("Tema");
+        mnuTheme.add(mniDefault);
+        mnuTheme.add(mniDark);
+        mnuTheme.add(mniEclipse);
+        mnuTheme.add(mniVS);
+
+        mnuBar.add(mnuTheme);
+
         mnuHelp.setText("Ajuda");
 
         mniAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         mniAbout.setText("Sobre");
-        mniAbout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniAbout.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniAboutActionPerformed(evt);
             }
         });
@@ -252,8 +301,10 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem1.setText("Tópicos de Ajuda");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jMenuItem1ActionPerformed(evt);
             }
         });
@@ -275,7 +326,7 @@ public class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thr
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bottomPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -326,7 +377,10 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniAbrir;
     private javax.swing.JMenuItem mniColar;
     private javax.swing.JMenuItem mniCopiar;
+    private javax.swing.JMenuItem mniDark;
+    private javax.swing.JMenuItem mniDefault;
     private javax.swing.JMenuItem mniDesfazer;
+    private javax.swing.JMenuItem mniEclipse;
     private javax.swing.JMenuItem mniExecutar;
     private javax.swing.JMenuItem mniExit;
     private javax.swing.JMenuItem mniFechar;
@@ -338,6 +392,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniSalvar;
     private javax.swing.JMenuItem mniSalvarComo;
     private javax.swing.JMenuItem mniSubstituir;
+    private javax.swing.JMenuItem mniVS;
     private javax.swing.JMenuBar mnuBar;
     private javax.swing.JMenu mnuEdit;
     private javax.swing.JSeparator mnuEditSeparator1;
@@ -347,6 +402,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JSeparator mnuFileSeparator2;
     private javax.swing.JMenu mnuHelp;
     private javax.swing.JMenu mnuPrograma;
+    private javax.swing.JMenu mnuTheme;
     private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
     // End of variables declaration//GEN-END:variables
 
@@ -372,6 +428,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
             mniSalvar.setAction(abaCodigoFonte.getAcaoSalvarArquivo());
             acaoSalvarComo.configurar(abaCodigoFonte.getAcaoSalvarArquivo(), this, dialogoEscolhaArquivo);
+            mnuEdit.setVisible(true);
             mnuEdit.setEnabled(true);
             
             mniDesfazer.setAction(abaCodigoFonte.getAcaoDesfazer());
@@ -386,12 +443,25 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             mnuPrograma.setVisible(true);
             mnuPrograma.setEnabled(true);
             
+            mnuTheme.setVisible(true);
+            mnuTheme.setEnabled(true);
+            themeDefault.setEnabled(true);
+            themeDark.setEnabled(true);
+            themeEclipse.setEnabled(true);
+            themeVS.setEnabled(true);
         } else {
             mniSalvar.setEnabled(false);
             acaoSalvarComo.setEnabled(false);
+            mnuEdit.setVisible(false);
             mnuEdit.setEnabled(false);
             mnuPrograma.setVisible(false);
             mnuPrograma.setEnabled(false);
+            mnuTheme.setVisible(false);
+            mnuTheme.setEnabled(false);
+            themeDefault.setEnabled(false);
+            themeDark.setEnabled(false);
+            themeEclipse.setEnabled(false);
+            themeVS.setEnabled(false);
         }
         
         if (painelTabulado.temAbaAberta(AbaCodigoFonte.class) || 
@@ -456,5 +526,29 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         {
             painelTabulado.selecionarProximaAba();
         }        
+    }
+    
+    
+    private class ThemeAction extends AbstractAction {
+
+        private String xml;
+
+        public ThemeAction(String name,String xml) {
+            putValue(NAME, name);
+            this.xml = xml;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            InputStream in = getClass().getResourceAsStream(xml);
+            try {
+                    AbaCodigoFonte aba = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
+                    Theme theme = Theme.load(in);
+                    theme.apply(aba.getEditor().getTextArea());
+            } catch (IOException ioe) {
+                    ioe.printStackTrace(System.err);
+            }
+        }
+
     }
 }

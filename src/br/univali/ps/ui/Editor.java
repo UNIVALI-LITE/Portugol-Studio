@@ -26,6 +26,8 @@ public class Editor extends JPanel implements AlteradorFonte{
         autoCompletion = new AutoCompletion(createCompletionProvider());
         autoCompletion.install(textArea);
         autoCompletion.setShowDescWindow(true);
+        textArea.setCodeFoldingEnabled(true);
+        textArea.setAntiAliasingEnabled(true);
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);     
     }
