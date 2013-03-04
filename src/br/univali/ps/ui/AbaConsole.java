@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.Entrada;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.logging.Level;
@@ -30,6 +31,8 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         console.setComponentPopupMenu(menuConsole);
         this.menuConsoleLimpar.setText("Limpar");
         this.menuConsoleCopiar.setText("Copiar");
+        this.menuAumentarFonte.setText("Aumentar fonte");
+        this.menuDiminuirFonte.setText("Diminuir fonte");
         console.setDocument(new DocumentoConsole());
         console.addComponentListener(new ComponentAdapter() {
 
@@ -116,29 +119,56 @@ public class AbaConsole extends Aba implements Saida, Entrada {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         menuConsole = new javax.swing.JPopupMenu();
         menuConsoleLimpar = new javax.swing.JMenuItem();
         menuConsoleCopiar = new javax.swing.JMenuItem();
+        menuAumentarFonte = new javax.swing.JMenuItem();
+        menuDiminuirFonte = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
 
         menuConsoleLimpar.setText("jMenuItem1");
-        menuConsoleLimpar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        menuConsoleLimpar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 menuConsoleLimparActionPerformed(evt);
             }
         });
         menuConsole.add(menuConsoleLimpar);
 
         menuConsoleCopiar.setText("jMenuItem2");
-        menuConsoleCopiar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        menuConsoleCopiar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 menuConsoleCopiarActionPerformed(evt);
             }
         });
         menuConsole.add(menuConsoleCopiar);
+
+        menuAumentarFonte.setText("jMenuItem1");
+        menuAumentarFonte.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                menuAumentarFonteActionPerformed(evt);
+            }
+        });
+        menuConsole.add(menuAumentarFonte);
+
+        menuDiminuirFonte.setText("jMenuItem1");
+        menuDiminuirFonte.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                menuDiminuirFonteActionPerformed(evt);
+            }
+        });
+        menuConsole.add(menuDiminuirFonte);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -160,12 +190,33 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     private void menuConsoleCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsoleCopiarActionPerformed
         console.copy();
     }//GEN-LAST:event_menuConsoleCopiarActionPerformed
+
+    private void menuAumentarFonteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuAumentarFonteActionPerformed
+    {//GEN-HEADEREND:event_menuAumentarFonteActionPerformed
+        final Font fonteAtual = console.getFont();
+        float novoTamanho = fonteAtual.getSize() + 4;
+        if(novoTamanho < 70  ){
+            console.setFont(fonteAtual.deriveFont(novoTamanho));        
+        }   
+    }//GEN-LAST:event_menuAumentarFonteActionPerformed
+
+    private void menuDiminuirFonteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuDiminuirFonteActionPerformed
+    {//GEN-HEADEREND:event_menuDiminuirFonteActionPerformed
+        final Font fonteAtual = console.getFont();
+        float novoTamanho = fonteAtual.getSize() - 4;
+        if(novoTamanho > 12  ){
+            console.setFont(fonteAtual.deriveFont(novoTamanho));        
+        }
+    }//GEN-LAST:event_menuDiminuirFonteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea console;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menuAumentarFonte;
     private javax.swing.JPopupMenu menuConsole;
     private javax.swing.JMenuItem menuConsoleCopiar;
     private javax.swing.JMenuItem menuConsoleLimpar;
+    private javax.swing.JMenuItem menuDiminuirFonte;
     // End of variables declaration//GEN-END:variables
 
     @Override
