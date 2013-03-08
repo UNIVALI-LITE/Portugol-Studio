@@ -7,7 +7,7 @@ import javax.swing.event.HyperlinkListener;
 
 public class NavegadorAjuda extends javax.swing.JFrame implements HyperlinkListener {
 
-    public NavegadorAjuda() {
+    public NavegadorAjuda(String path) {
         initComponents();
         setTitle("Ajuda");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -15,7 +15,7 @@ public class NavegadorAjuda extends javax.swing.JFrame implements HyperlinkListe
 
         this.jTextPane1.addHyperlinkListener(this);
        
-        displayPage("help/index.html");
+        displayPage(path);
     }
 
     @SuppressWarnings("unchecked")
