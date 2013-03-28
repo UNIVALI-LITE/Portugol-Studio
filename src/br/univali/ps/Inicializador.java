@@ -2,7 +2,6 @@ package br.univali.ps;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import java.util.Locale;
 import javax.swing.UIManager;
 
 /**
