@@ -2,7 +2,6 @@ package br.univali.ps;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import java.util.Locale;
 import javax.swing.UIManager;
 
 /**
@@ -19,8 +18,6 @@ public final class Inicializador
             PortugolStudio portugolStudio = PortugolStudio.getInstancia();
             portugolStudio.setDepurando(isDepurando(argumentos));
 
-            Locale.setDefault(new Locale("pt","BR"));
-            
             try {                
                 for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                     if ("Nimbus".equals(info.getName())) {                       
