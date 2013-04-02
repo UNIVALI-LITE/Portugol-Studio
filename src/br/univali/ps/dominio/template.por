@@ -1,6 +1,6 @@
 programa
 {
-	funcao inicio(cadeia parametros[])
+	funcao inicio()
 	{
 		${cursor}
 	}
