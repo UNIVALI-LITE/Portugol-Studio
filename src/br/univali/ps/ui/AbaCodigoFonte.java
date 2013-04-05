@@ -639,7 +639,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 acaoSalvarArquivo.actionPerformed(null);
             }
             else 
-            if (resp == JOptionPane.CANCEL_OPTION)
+            if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION)
             {
                 return false;
             }
