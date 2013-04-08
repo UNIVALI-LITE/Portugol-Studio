@@ -2,6 +2,7 @@ package br.univali.ps;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 /**
@@ -18,13 +19,10 @@ public final class Inicializador
             PortugolStudio portugolStudio = PortugolStudio.getInstancia();
             portugolStudio.setDepurando(isDepurando(argumentos));
 
-            try {                
-                for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {                       
-                        UIManager.setLookAndFeel(info.getClassName());
-                        break;
-                    }
-                }
+            try {              
+                
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                
             } catch (Exception e) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }

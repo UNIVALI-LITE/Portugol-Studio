@@ -76,6 +76,7 @@ public class TelaSobre extends javax.swing.JDialog
         jLabel2 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         painelInferior = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         botaoSair = new javax.swing.JButton();
 
         setTitle("Sobre");
@@ -144,6 +145,16 @@ public class TelaSobre extends javax.swing.JDialog
         painelInferior.setPreferredSize(new java.awt.Dimension(463, 60));
         painelInferior.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
 
+        jButton1.setText("Licença");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        painelInferior.add(jButton1);
+
         botaoSair.setAction(acaoSair);
         botaoSair.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         botaoSair.setFocusPainted(false);
@@ -156,9 +167,14 @@ public class TelaSobre extends javax.swing.JDialog
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new Licenca(pai, true).setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoSair;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
