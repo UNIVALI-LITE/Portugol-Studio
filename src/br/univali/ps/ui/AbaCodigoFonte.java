@@ -376,6 +376,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelParametros.add(filler1);
 
         txtParametros.setMaximumSize(new java.awt.Dimension(2147483647, 20));
+        txtParametros.setMinimumSize(new java.awt.Dimension(20, 36));
         txtParametros.setPreferredSize(new java.awt.Dimension(200, 20));
         painelParametros.add(txtParametros);
         painelParametros.add(filler3);
@@ -430,7 +431,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLNota)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
