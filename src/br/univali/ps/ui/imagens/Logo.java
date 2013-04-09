@@ -64,7 +64,7 @@ public class Logo extends javax.swing.JPanel
 
         versao.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("1.11");
+        versao.setText("1.12");
         add(versao);
         versao.setBounds(10, 10, 60, 40);
     }// </editor-fold>//GEN-END:initComponents
