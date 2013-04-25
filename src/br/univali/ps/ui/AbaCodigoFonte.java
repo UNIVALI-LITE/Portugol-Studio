@@ -723,8 +723,35 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
             {
                 console.escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
-            }
-            
+                
+                if (resultadoExecucao.getRetorno() != null)
+                {
+                    Object retorno = resultadoExecucao.getRetorno();
+                    
+                    console.escrever("\n\nRetorno: ");
+                    
+                    if (retorno instanceof Integer)
+                    {
+                        console.escrever((Integer) retorno);
+                    }
+                    else if (retorno instanceof Double)    
+                    {
+                        console.escrever((Double) retorno);                                
+                    }
+                    else if (retorno instanceof Character)
+                    {
+                        console.escrever((Character) retorno);
+                    }
+                    else if (retorno instanceof String)
+                    {
+                        console.escrever((String) retorno);
+                    }
+                    else if (retorno instanceof Boolean)
+                    {
+                        console.escrever((Boolean) retorno);
+                    } 
+                }
+            }            
             else 
             
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
