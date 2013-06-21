@@ -250,6 +250,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         txtParametros = new javax.swing.JTextField();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        jButton2 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jLCorrecao = new javax.swing.JLabel();
@@ -376,12 +377,26 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelParametros.add(filler1);
 
         txtParametros.setMaximumSize(new java.awt.Dimension(2147483647, 20));
+        txtParametros.setMinimumSize(new java.awt.Dimension(20, 36));
         txtParametros.setPreferredSize(new java.awt.Dimension(200, 20));
         painelParametros.add(txtParametros);
         painelParametros.add(filler3);
 
         barraFerramenta.add(painelParametros);
         barraFerramenta.add(jSeparator1);
+
+        jButton2.setText("jButton2");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        barraFerramenta.add(jButton2);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
@@ -424,13 +439,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3)
-                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLCorrecao)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLNota)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -555,6 +570,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {//GEN-HEADEREND:event_jButton1ActionPerformed
         corrigir();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
+    {//GEN-HEADEREND:event_jButton2ActionPerformed
+        programa.getDepurador().proximo();
+    }//GEN-LAST:event_jButton2ActionPerformed
    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -575,6 +595,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.Box.Filler filler4;
     private br.univali.ps.ui.Fonte fonte1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLCasosTeste;
     private javax.swing.JLabel jLCorrecao;
     private javax.swing.JLabel jLNota;
@@ -724,7 +745,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             {
                 console.escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
                 
-                if (resultadoExecucao.getRetorno() != null)
+                /*if (resultadoExecucao.getRetorno() != null)
                 {
                     Object retorno = resultadoExecucao.getRetorno();
                     
@@ -750,7 +771,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                     {
                         console.escrever((Boolean) retorno);
                     } 
-                }
+                }*/
             }            
             else 
             

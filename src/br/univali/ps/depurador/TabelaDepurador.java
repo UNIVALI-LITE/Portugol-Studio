@@ -159,4 +159,4 @@ public class TabelaDepurador extends javax.swing.JFrame implements DepuradorList
     {
          model.resetaTabela();
     }
-}
+    }

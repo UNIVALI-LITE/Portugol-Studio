@@ -63,7 +63,7 @@ public class AbaDepurador extends Aba implements DepuradorListener
     // End of variables declaration//GEN-END:variables
 
 
-        @Override
+    @Override
     public void linhaAtual(int linha)
     {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -85,5 +85,5 @@ public class AbaDepurador extends Aba implements DepuradorListener
     public void novaTabelaSimbolos()
     {
          model.resetaTabela();
-    }
+    }    
 }
