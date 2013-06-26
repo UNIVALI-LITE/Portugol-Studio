@@ -1,9 +1,14 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
 import org.fife.ui.autocomplete.AutoCompletion;
@@ -12,6 +17,8 @@ import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 public class Editor extends JPanel implements AlteradorFonte{
@@ -57,6 +64,42 @@ public class Editor extends JPanel implements AlteradorFonte{
         return (PortugolDocumento)textArea.getDocument();
     }
     
+    public void destacarErros(ResultadoAnalise resultadoAnalise){
+        textArea.getHighlighter().removeAllHighlights();
+        
+        if (resultadoAnalise.getNumeroTotalErros() > 0)
+        {
+            for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
+            {
+                try
+                {                   
+                    int indice = textArea.getLineStartOffset(erro.getLinha() - 1) + erro.getColuna();            
+                    int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();            
+                    textArea.getHighlighter().addHighlight(indice, indice + tamanhoTexto, new SquiggleUnderlineHighlightPainter(Color.red));            
+                }
+                catch (BadLocationException ex)
+                {
+                    Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+                } 
+            }
+        }
+       
+    }
+    
+    public void destacarLinha(int linha)
+    {
+        try
+        {
+            int inicio = textArea.getLineStartOffset(linha - 1);
+            int fim = textArea.getLineEndOffset(linha - 1);
+            textArea.getHighlighter().addHighlight(inicio, fim, new ChangeableHighlightPainter(Color.GREEN,false,0.3f));  
+        }
+        catch (BadLocationException ex)
+        {
+            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
     
     public void posicionaCursor(int linha, int coluna){
         textArea.setCaretPosition(0);

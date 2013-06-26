@@ -44,7 +44,7 @@ public class PortugolDocumento extends RSyntaxDocument {
             @Override
             protected void initTokenMakerMap()
             {
-                putMapping("text/por", "br.univali.ps.dominio.PortugolLanguage"); //To change body of generated methods, choose Tools | Templates.
+                putMapping("text/por", "br.univali.ps.dominio.PortugolTokenMaker"); //To change body of generated methods, choose Tools | Templates.
             }
         },"text/por" );
     }

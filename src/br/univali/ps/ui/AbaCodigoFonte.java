@@ -13,6 +13,7 @@ import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
+import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -30,6 +31,7 @@ import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
 
 public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao
 {
@@ -562,7 +564,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
         catch (Exception ex)
         {
-            
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_btnDescomentarActionPerformed
 
@@ -693,7 +695,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             String codigo = editor.getPortugolDocumento().getCodigoFonte();
             
             analise = Portugol.analisar(codigo);
-            abaMensagem.atualizar(analise);
+            exibirResultadoAnalise(analise, abaMensagem);
             
             if (programa == null)
             {
@@ -709,9 +711,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         } catch (ErroCompilacao erroCompilacao) {
             ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
-            abaMensagem.atualizar(resultadoAnalise);
+            exibirResultadoAnalise(resultadoAnalise, abaMensagem);
             abaMensagem.selecionar();
         }
+    }
+    
+    private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise, AbaMensagemCompilador abaMensagem)
+    {
+        abaMensagem.atualizar(resultadoAnalise);
+        
+        
+        editor.destacarErros(resultadoAnalise);
     }
 
     @Override
@@ -811,6 +821,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }  
 
+    @Override
+    public void listaAtualizada()
+    {
+        editor.destacarErros(analise);
+    }
+
     private class AdaptadorComponente extends ComponentAdapter {
 
         @Override
@@ -875,7 +891,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
         catch (BadLocationException ex) 
         {
-            
+            ex.printStackTrace();
         }
     }
     

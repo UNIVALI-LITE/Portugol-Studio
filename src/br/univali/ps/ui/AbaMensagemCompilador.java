@@ -8,8 +8,10 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTabbedPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
-public class AbaMensagemCompilador extends Aba {
+public class AbaMensagemCompilador extends Aba implements TableModelListener{
 
     private List<AbaMensagemCompiladorListener> mensagemCompiladorListeners;
     ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
@@ -57,6 +59,12 @@ public class AbaMensagemCompilador extends Aba {
         tabelaModel.setResultadoAnalise(null);
     }
 
+    @Override
+    public void tableChanged(TableModelEvent e)
+    {
+       disparaTabelaAtualizada();
+    }
+
     private class MouseListener extends MouseAdapter {
 
         @Override
@@ -74,6 +82,12 @@ public class AbaMensagemCompilador extends Aba {
     private void disparaPosicionarCursor(int linha, int coluna) {
         for (AbaMensagemCompiladorListener listener : mensagemCompiladorListeners){
             listener.posicionarCursor(linha, coluna);
+        }
+    }
+    
+    private void disparaTabelaAtualizada(){
+        for (AbaMensagemCompiladorListener listener : mensagemCompiladorListeners){
+            listener.listaAtualizada();
         }
     }
     
