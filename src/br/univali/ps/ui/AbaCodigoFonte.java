@@ -10,10 +10,11 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.depuracao.DepuradorListener;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
-import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -31,9 +32,8 @@ import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
 
-public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao
+public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao, DepuradorListener
 {
     private static final String template = carregarTemplate();
 
@@ -702,12 +702,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 this.programa = Portugol.compilar(codigo);
             }
 
+            programa.setDepuradorListener(this);
+            editor.iniciarDepuracao();
             programa.setEntrada(painelSaida.getConsole());
             programa.setSaida(painelSaida.getConsole());
 
             programa.adicionarObservadorExecucao(this);
 
-            programa.executar(getParametros());
+            programa.executar(getParametros());            
 
         } catch (ErroCompilacao erroCompilacao) {
             ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
@@ -750,7 +752,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         try
         {
             AbaConsole console = painelSaida.getConsole();
-            
+            editor.pararDepuracao();
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) 
             {
                 console.escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
@@ -825,6 +827,30 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public void listaAtualizada()
     {
         editor.destacarErros(analise);
+    }
+
+    @Override
+    public void linhaAtual(int linha)
+    {
+        editor.destacarLinha(linha);
+    }
+
+    @Override
+    public void simboloDeclarado(String nome, TipoDado tipoDado)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void valorSimboloAlterado(String nome, Object valor)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void novaTabelaSimbolos()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class AdaptadorComponente extends ComponentAdapter {

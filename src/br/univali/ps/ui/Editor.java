@@ -18,7 +18,6 @@ import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
-import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 public class Editor extends JPanel implements AlteradorFonte{
@@ -36,7 +35,7 @@ public class Editor extends JPanel implements AlteradorFonte{
         textArea.setCodeFoldingEnabled(true);
         textArea.setAntiAliasingEnabled(true);
         this.setLayout(new BorderLayout());
-        this.add(scrollPane, BorderLayout.CENTER);     
+        this.add(scrollPane, BorderLayout.CENTER);  
     }
     @Override
     public void aumentarFonte (){                
@@ -86,13 +85,26 @@ public class Editor extends JPanel implements AlteradorFonte{
        
     }
     
+    private Object tag = null;
+        
+    public void iniciarDepuracao(){
+        textArea.setHighlightCurrentLine(false);
+    }
+    
+    public void pararDepuracao(){
+        textArea.removeAllLineHighlights();
+        textArea.setHighlightCurrentLine(true);
+        
+    }
+    
     public void destacarLinha(int linha)
     {
         try
         {
-            int inicio = textArea.getLineStartOffset(linha - 1);
-            int fim = textArea.getLineEndOffset(linha - 1);
-            textArea.getHighlighter().addHighlight(inicio, fim, new ChangeableHighlightPainter(Color.GREEN,false,0.3f));  
+            if (tag != null)
+                textArea.removeLineHighlight(tag);
+            
+            tag = textArea.addLineHighlight(linha - 1, new Color(0f, 1f, 0f, 0.15f));            
         }
         catch (BadLocationException ex)
         {
