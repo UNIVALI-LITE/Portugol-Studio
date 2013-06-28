@@ -1,8 +1,10 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,26 +18,48 @@ import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ShorthandCompletion;
+import org.fife.ui.rsyntaxtextarea.ErrorStrip;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
+import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
+import org.fife.ui.rsyntaxtextarea.parser.AbstractParser;
+import org.fife.ui.rsyntaxtextarea.parser.DefaultParseResult;
+import org.fife.ui.rsyntaxtextarea.parser.DefaultParserNotice;
+import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-public class Editor extends JPanel implements AlteradorFonte{
+public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoListener{
 
     private RSyntaxTextArea textArea = null;
     private RTextScrollPane scrollPane = null;
     private AutoCompletion autoCompletion = null;
-    
+    private ErrorStrip errorStrip;
+    private MyParser notificaErrosEditor;
+        
     public Editor() {
-        textArea = new RSyntaxTextArea(new PortugolDocumento());
+        final PortugolDocumento portugolDocumento = new PortugolDocumento();
+        portugolDocumento.addPortugolDocumentoListener(this);
+        textArea = new RSyntaxTextArea(portugolDocumento);
+        
+        FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));
+        textArea.setSyntaxEditingStyle("text/por");
+        textArea.setCodeFoldingEnabled(true);
+        
+        textArea.setUseFocusableTips(true);
+        notificaErrosEditor = new MyParser();
+        textArea.addParser(notificaErrosEditor);
+        errorStrip = new ErrorStrip(textArea);
+        
+        
         scrollPane = new RTextScrollPane(textArea);
         autoCompletion = new AutoCompletion(createCompletionProvider());
         autoCompletion.install(textArea);
         autoCompletion.setShowDescWindow(true);
-        textArea.setCodeFoldingEnabled(true);
         textArea.setAntiAliasingEnabled(true);
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);  
+        this.add(errorStrip, BorderLayout.LINE_END);
     }
     @Override
     public void aumentarFonte (){                
@@ -56,6 +80,7 @@ public class Editor extends JPanel implements AlteradorFonte{
     }
     
     public void setPortugolDocumento(PortugolDocumento documento){
+        documento.addPortugolDocumentoListener(this);
         textArea.setDocument(documento);
     }
 
@@ -64,25 +89,11 @@ public class Editor extends JPanel implements AlteradorFonte{
     }
     
     public void destacarErros(ResultadoAnalise resultadoAnalise){
-        textArea.getHighlighter().removeAllHighlights();
         
         if (resultadoAnalise.getNumeroTotalErros() > 0)
         {
-            for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
-            {
-                try
-                {                   
-                    int indice = textArea.getLineStartOffset(erro.getLinha() - 1) + erro.getColuna();            
-                    int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();            
-                    textArea.getHighlighter().addHighlight(indice, indice + tamanhoTexto, new SquiggleUnderlineHighlightPainter(Color.red));            
-                }
-                catch (BadLocationException ex)
-                {
-                    Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
-                } 
-            }
-        }
-       
+            notificaErrosEditor.setErros(resultadoAnalise);
+        }       
     }
     
     private Object tag = null;
@@ -130,8 +141,57 @@ public class Editor extends JPanel implements AlteradorFonte{
     public void requestFocus() {
         textArea.requestFocus();
     }
+
+    @Override
+    public void documentoModificado(boolean status)
+    {
+        ResultadoAnalise resultadoAnalise = Portugol.analisar(textArea.getText());
+        notificaErrosEditor.setErros(resultadoAnalise);        
+    }
+
+    @Override
+    public void nomeArquivoAlterado(String nome)
+    {
+      
+    }
     
-    
+    private class MyParser extends AbstractParser {
+
+        ResultadoAnalise resultadoAnalise = null;
+        
+        @Override
+        public ParseResult parse(RSyntaxDocument rsd, String string)
+        {
+            DefaultParseResult defaultParseResult = new DefaultParseResult(this);
+            if (this.resultadoAnalise != null){
+                for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
+                {
+                    try
+                    {                   
+                        int indice = textArea.getLineStartOffset(erro.getLinha() - 1) + erro.getColuna();            
+                        int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();            
+                        DefaultParserNotice notice = new DefaultParserNotice(this, erro.getMensagem(), erro.getLinha() - 1, indice, tamanhoTexto);
+                        notice.setShowInEditor(true);
+                        defaultParseResult.addNotice(notice);
+                    }
+                    catch (BadLocationException ex)
+                    {
+                        Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                }
+                
+            }
+            return defaultParseResult;
+        }
+
+        private void setErros(ResultadoAnalise resultadoAnalise)
+        {
+            
+            this.resultadoAnalise = resultadoAnalise;            
+            textArea.forceReparsing(this);
+        }
+        
+    }
     
     private CompletionProvider createCompletionProvider() {
 
