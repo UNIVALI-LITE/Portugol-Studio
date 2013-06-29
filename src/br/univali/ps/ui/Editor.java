@@ -3,25 +3,25 @@ package br.univali.ps.ui;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
+import br.univali.portugol.nucleo.simbolos.Simbolo;
+import br.univali.portugol.nucleo.simbolos.TabelaSimbolos;
+import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.completion.PortugolLanguageSuport;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
-import org.fife.ui.autocomplete.AbstractCompletionProvider;
-import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.BasicCompletion;
-import org.fife.ui.autocomplete.CompletionProvider;
-import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.FunctionCompletion;
-import org.fife.ui.autocomplete.ParameterizedCompletion;
+import org.fife.ui.autocomplete.*;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -37,9 +37,9 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
 
     private RSyntaxTextArea textArea = null;
     private RTextScrollPane scrollPane = null;
-    private AutoCompletion autoCompletion = null;
     private ErrorStrip errorStrip;
     private MyParser notificaErrosEditor;
+    private final PortugolLanguageSuport portugolLanguageSuport;
         
     public Editor() {
         final PortugolDocumento portugolDocumento = new PortugolDocumento();
@@ -55,11 +55,12 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
         textArea.addParser(notificaErrosEditor);
         errorStrip = new ErrorStrip(textArea);
                
-        
         scrollPane = new RTextScrollPane(textArea);
-        autoCompletion = new AutoCompletion(createCompletionProvider());
-        autoCompletion.install(textArea);
-        autoCompletion.setShowDescWindow(true);
+        
+        
+        this.portugolLanguageSuport = new PortugolLanguageSuport();
+        portugolLanguageSuport.install(textArea);
+        
         textArea.setAntiAliasingEnabled(true);
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);  
@@ -152,6 +153,19 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
         ResultadoAnalise resultadoAnalise = Portugol.analisar(textArea.getText());
         notificaErrosEditor.setErros(resultadoAnalise);        
         
+        TabelaSimbolos tabelaSimbolos = resultadoAnalise.getTabelaSimbolos();
+       
+        Iterator<Simbolo> iterator = tabelaSimbolos.iterator();
+        while (iterator.hasNext()){
+            Simbolo s = iterator.next();
+            if (s instanceof Variavel) {
+                DefaultCompletionProvider defaultCompletionProvider = (DefaultCompletionProvider) portugolLanguageSuport.getProvider().getDefaultCompletionProvider();
+                
+                VariableCompletion variableCompletion = new VariableCompletion(defaultCompletionProvider, s.getNome(), s.getTipoDado().name());
+                
+                defaultCompletionProvider.addCompletion(variableCompletion);
+            }
+        }
     }
 
     @Override
@@ -197,17 +211,21 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
         }
         
     }
-    
+    /*
     private CompletionProvider createCompletionProvider() {
-
+        
 		// A DefaultCompletionProvider is the simplest concrete implementation
 		// of CompletionProvider.  This provider has no understanding of
 		// language semantics. It simply checks the text entered up to the
 		// caret position for a match against known completions. This is all
 		// that is needed in the majority of cases.
 		AbstractCompletionProvider provider  = new DefaultCompletionProvider();
+                VariableCompletion a = new VariableCompletion(provider, "aaa", "inteiro");
+                a.setDefinedIn("inicio");
                 
-		// Add completions for all Java keywords.  A BasicCompletion is just
+                provider.addCompletion(a);
+		
+                // Add completions for all Java keywords.  A BasicCompletion is just
 		// a straightforward word completion.
 		provider.addCompletion(new BasicCompletion(provider, "programa","","<html><h1>Programa<h1><p>server para declarar um programa!<p></html>"));
 		//provider.addCompletion(new BasicCompletion(provider, "biblioteca","",explicacaoBiblioteca()));
@@ -415,7 +433,7 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
      public String explicacaoEstadoContrario(){
         return "";
     }
-     
+     */
     public RSyntaxTextArea getTextArea() 
     {
         return textArea;
