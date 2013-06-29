@@ -162,7 +162,8 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         bottomPane = new javax.swing.JPanel();
         painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
@@ -179,6 +180,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniExit = new javax.swing.JMenuItem();
         mnuPrograma = new javax.swing.JMenu();
         mniExecutar = new javax.swing.JMenuItem();
+        mniDepurar = new javax.swing.JMenuItem();
         mniInterromper = new javax.swing.JMenuItem();
         mnuEdit = new javax.swing.JMenu();
         mniDesfazer = new javax.swing.JMenuItem();
@@ -235,8 +237,10 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         mniFechar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFechar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharActionPerformed(evt);
             }
         });
@@ -244,8 +248,10 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         mniFecharTodos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mniFecharTodos.setText("Fechar todas as abas");
-        mniFecharTodos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFecharTodos.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharTodosActionPerformed(evt);
             }
         });
@@ -254,8 +260,10 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         mniExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         mniExit.setText("Sair");
-        mniExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniExit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniExitActionPerformed(evt);
             }
         });
@@ -267,6 +275,9 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         mniExecutar.setText("Executar");
         mnuPrograma.add(mniExecutar);
+
+        mniDepurar.setText("Depurar");
+        mnuPrograma.add(mniDepurar);
 
         mniInterromper.setText("Interromper");
         mnuPrograma.add(mniInterromper);
@@ -323,8 +334,10 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         mniAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         mniAbout.setText("Sobre");
-        mniAbout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniAbout.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniAboutActionPerformed(evt);
             }
         });
@@ -332,8 +345,10 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem1.setText("Tópicos de Ajuda");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jMenuItem1ActionPerformed(evt);
             }
         });
@@ -355,7 +370,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bottomPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -404,6 +419,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniCopiar;
     private javax.swing.JMenuItem mniDark;
     private javax.swing.JMenuItem mniDefault;
+    private javax.swing.JMenuItem mniDepurar;
     private javax.swing.JMenuItem mniDesfazer;
     private javax.swing.JMenuItem mniEclipse;
     private javax.swing.JMenuItem mniExecutar;
@@ -467,6 +483,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             
             mniExecutar.setAction(abaCodigoFonte.getAcaoExecutar());
             mniInterromper.setAction(abaCodigoFonte.getAcaoInterromper());
+            mniDepurar.setAction(abaCodigoFonte.getAcaoDepurar());
             mnuPrograma.setVisible(true);
             mnuPrograma.setEnabled(true);
             

@@ -12,6 +12,7 @@ import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
+import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -55,6 +56,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
     private DefaultMutableTreeNode defaultMutableTreeNode;
     private DefaultTreeModel defaultTreeModel;
+    private InterfaceDepurador depurador;
+    private final AcaoDepurar acaoDepurar;
 
     void corrigir()
     {
@@ -202,9 +205,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         
         acaoExecutar = new AcaoExecutar();        
         acaoInterromper = new AcaoInterromper();
+        acaoDepurar = new AcaoDepurar();
+        
         btnExecutar.setAction(acaoExecutar);
         btnInterromper.setAction(acaoInterromper);
-             
+        btnDepurar.setAction(acaoDepurar);
+        btnProximo.setVisible(false);
+        
         acaoExecutar.setEnabled(true);
         acaoInterromper.setEnabled(false);
                       
@@ -226,8 +233,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelSaida1 = new br.univali.ps.ui.PainelSaida();
         painelSaida2 = new br.univali.ps.ui.PainelSaida();
@@ -245,6 +251,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jSeparador2 = new javax.swing.JToolBar.Separator();
         btnExecutar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
+        btnDepurar = new javax.swing.JButton();
+        btnProximo = new javax.swing.JButton();
         painelParametros = new javax.swing.JPanel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         lblParametros = new javax.swing.JLabel();
@@ -252,7 +260,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         txtParametros = new javax.swing.JTextField();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 0), new java.awt.Dimension(6, 32767));
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jButton2 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jLCorrecao = new javax.swing.JLabel();
@@ -263,7 +270,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jTree1 = new javax.swing.JTree();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
+        corrigir = new javax.swing.JButton();
         jPainelSeparador = new javax.swing.JSplitPane();
         painelEditor = new javax.swing.JPanel();
         editor = new br.univali.ps.ui.Editor();
@@ -326,10 +333,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnComentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -345,10 +350,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDescomentarActionPerformed(evt);
             }
         });
@@ -370,6 +373,24 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramenta.add(btnInterromper);
 
+        btnDepurar.setEnabled(false);
+        btnDepurar.setFocusPainted(false);
+        btnDepurar.setHideActionText(true);
+        btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramenta.add(btnDepurar);
+
+        btnProximo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/bug_go.png"))); // NOI18N
+        btnProximo.setFocusable(false);
+        btnProximo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnProximo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnProximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProximoActionPerformed(evt);
+            }
+        });
+        barraFerramenta.add(btnProximo);
+
         painelParametros.setPreferredSize(new java.awt.Dimension(250, 20));
         painelParametros.setLayout(new javax.swing.BoxLayout(painelParametros, javax.swing.BoxLayout.LINE_AXIS));
         painelParametros.add(filler4);
@@ -386,19 +407,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         barraFerramenta.add(painelParametros);
         barraFerramenta.add(jSeparator1);
-
-        jButton2.setText("jButton2");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        barraFerramenta.add(jButton2);
 
         add(barraFerramenta, java.awt.BorderLayout.PAGE_START);
 
@@ -418,13 +426,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         jScrollPane1.setViewportView(jList1);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/blackboard_steps.png"))); // NOI18N
-        jButton1.setText("Corrigir");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton1ActionPerformed(evt);
+        corrigir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/blackboard_steps.png"))); // NOI18N
+        corrigir.setText("Corrigir");
+        corrigir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                corrigirActionPerformed(evt);
             }
         });
 
@@ -446,7 +452,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                                 .addComponent(jLCorrecao)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(corrigir)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLNota)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -457,7 +463,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(corrigir)
                     .addComponent(jLNota)
                     .addComponent(jLResultado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -568,15 +574,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }//GEN-LAST:event_btnDescomentarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
+    private void corrigirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_corrigirActionPerformed
+    {//GEN-HEADEREND:event_corrigirActionPerformed
         corrigir();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_corrigirActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
-    {//GEN-HEADEREND:event_jButton2ActionPerformed
-        programa.getDepurador().proximo();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnProximoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnProximoActionPerformed
+    {//GEN-HEADEREND:event_btnProximoActionPerformed
+        depurador.proximo();
+    }//GEN-LAST:event_btnProximoActionPerformed
    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -584,20 +590,21 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnColar;
     private javax.swing.JButton btnComentar;
     private javax.swing.JButton btnCopiar;
+    private javax.swing.JButton btnDepurar;
     private javax.swing.JButton btnDescomentar;
     private javax.swing.JButton btnDesfazer;
     private javax.swing.JButton btnExecutar;
     private javax.swing.JButton btnInterromper;
+    private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnRecortar;
     private javax.swing.JButton btnRefazer;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton corrigir;
     private br.univali.ps.ui.Editor editor;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private br.univali.ps.ui.Fonte fonte1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLCasosTeste;
     private javax.swing.JLabel jLCorrecao;
     private javax.swing.JLabel jLNota;
@@ -687,7 +694,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private ResultadoAnalise analise;
     
-    private void executar() {
+    private void executar(boolean depurar) {
         AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
         abaMensagem.limpar();
         
@@ -708,9 +715,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             programa.setSaida(painelSaida.getConsole());
 
             programa.adicionarObservadorExecucao(this);
-
-            programa.executar(getParametros());            
-
+            
+            if (depurar) {
+                programa.depurar(getParametros());
+            } else {    
+                programa.interpretar(getParametros());            
+            }
         } catch (ErroCompilacao erroCompilacao) {
             ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
             exibirResultadoAnalise(resultadoAnalise, abaMensagem);
@@ -729,6 +739,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     @Override
     public void execucaoIniciada(Programa programa) {
         acaoExecutar.setEnabled(false);
+        acaoDepurar.setEnabled(false);
         acaoInterromper.setEnabled(true);
         
         painelSaida.getConsole().selecionar();
@@ -804,7 +815,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             // Nada a fazer
         }
         
+        this.btnProximo.setVisible(false);
         acaoExecutar.setEnabled(true);
+        acaoDepurar.setEnabled(true);
         acaoInterromper.setEnabled(false);
         painelSaida.getConsole().setExecutandoPrograma(false);
     }
@@ -848,9 +861,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
 
     @Override
-    public void novaTabelaSimbolos()
+    public void depuracaoInicializada(InterfaceDepurador depurador)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.depurador = depurador;
+        this.btnProximo.setVisible(true);
     }
 
     private class AdaptadorComponente extends ComponentAdapter {
@@ -933,6 +947,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }    
     
+    public Action getAcaoDepurar(){
+        return acaoDepurar;
+    }
 
     public Action getAcaoExecutar() 
     {
@@ -958,7 +975,24 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         @Override
         public void actionPerformed(ActionEvent e) 
         {
-            executar();
+            executar(false);
+        }
+    }
+    
+    private class AcaoDepurar extends AbstractAction
+    {
+        public AcaoDepurar() 
+        {
+            super("Depurar");
+            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl P")); 
+            putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "bug.png"));
+            putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            executar(true);
         }
     }
     

@@ -6,6 +6,7 @@ package br.univali.ps.depurador;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
+import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
 import java.util.HashMap;
 import java.util.List;
 
@@ -154,9 +155,11 @@ public class TabelaDepurador extends javax.swing.JFrame implements DepuradorList
         model.alteraSimbolo(nome, valor);
     }
 
+    
+
     @Override
-    public void novaTabelaSimbolos()
+    public void depuracaoInicializada(InterfaceDepurador depurador)
     {
-         model.resetaTabela();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     }

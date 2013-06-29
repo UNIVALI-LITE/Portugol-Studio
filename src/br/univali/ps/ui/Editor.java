@@ -9,15 +9,19 @@ import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
+import org.fife.ui.autocomplete.AbstractCompletionProvider;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.ShorthandCompletion;
+import org.fife.ui.autocomplete.FunctionCompletion;
+import org.fife.ui.autocomplete.ParameterizedCompletion;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -50,7 +54,7 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
         notificaErrosEditor = new MyParser();
         textArea.addParser(notificaErrosEditor);
         errorStrip = new ErrorStrip(textArea);
-        
+               
         
         scrollPane = new RTextScrollPane(textArea);
         autoCompletion = new AutoCompletion(createCompletionProvider());
@@ -147,6 +151,7 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
     {
         ResultadoAnalise resultadoAnalise = Portugol.analisar(textArea.getText());
         notificaErrosEditor.setErros(resultadoAnalise);        
+        
     }
 
     @Override
@@ -200,7 +205,7 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
 		// language semantics. It simply checks the text entered up to the
 		// caret position for a match against known completions. This is all
 		// that is needed in the majority of cases.
-		DefaultCompletionProvider provider  = new DefaultCompletionProvider();
+		AbstractCompletionProvider provider  = new DefaultCompletionProvider();
                 
 		// Add completions for all Java keywords.  A BasicCompletion is just
 		// a straightforward word completion.
@@ -228,12 +233,6 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
 		provider.addCompletion(new BasicCompletion(provider, "verdadeiro","",explicacaoCasoVerdadeiro()));
 		provider.addCompletion(new BasicCompletion(provider, "const","",explicacaoDeclaracaoConst()));
 		
-                
-		// Add a couple of "shorthand" completions.  These completions don't
-		// require the input text to be the same thing as the replacement text.
-		provider.addCompletion(new ShorthandCompletion(provider, "ini", "funcao inicio() { }", "funcao inicio() {}"));
-		//provider.addCompletion(new ShorthandCompletion(provider, "syserr", "System.err.println(", "System.err.println("));
-
 		return provider;
 
     }
