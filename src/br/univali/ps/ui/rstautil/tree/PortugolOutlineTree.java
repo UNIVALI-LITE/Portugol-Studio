@@ -222,7 +222,7 @@ public class PortugolOutlineTree extends AbstractSourceTree {
                             Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
                             int offs = elem.getStartOffset() + astNode.getTrechoCodigoFonteNome().getColuna();
                             int end =  offs + astNode.getTrechoCodigoFonteNome().getTamanhoTexto();
-                            System.out.println(offs+", "+end);
+                           
                             textArea.select(offs, end);
                         }
 		}
