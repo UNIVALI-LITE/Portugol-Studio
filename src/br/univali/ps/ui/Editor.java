@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
+import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.awt.BorderLayout;
@@ -18,6 +19,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 import javax.swing.text.BadLocationException;
 import org.fife.ui.autocomplete.*;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
@@ -53,8 +55,10 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
         textArea.addParser(notificaErrosEditor);
         errorStrip = new ErrorStrip(textArea);
                
+        textArea.putClientProperty(PROPERTY_LANGUAGE_PARSER, notificaErrosEditor);
         scrollPane = new RTextScrollPane(textArea);
         
+        ToolTipManager.sharedInstance().registerComponent(textArea);
         
         this.portugolLanguageSuport = new PortugolLanguageSuport();
         portugolLanguageSuport.install(textArea);
@@ -89,14 +93,6 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
 
     public PortugolDocumento getPortugolDocumento() {
         return (PortugolDocumento)textArea.getDocument();
-    }
-    
-    public void destacarErros(ResultadoAnalise resultadoAnalise){
-        
-        //if (resultadoAnalise.getNumeroTotalErros() > 0)
-        //{
-        //    notificaErrosEditor.setErros(resultadoAnalise);
-       // }       
     }
     
     private Object tag = null;

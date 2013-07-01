@@ -118,7 +118,7 @@ class MemberTreeNode extends PortugolTreeNode {
 
 	static void appendType(TipoDado type, StringBuffer sb) {
 		if (type!=null) {
-			String t = type.name();
+			String t = type.getNome();
 			t = t.replaceAll("<", "&lt;");
 			t = t.replaceAll(">", "&gt;");
 			sb.append(t);

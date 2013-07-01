@@ -71,6 +71,7 @@ class PortugolTreeNode extends SourceTreeNode {
 	/**
 	 * Overridden to compare tree text without HTML.
 	 */
+        @Override
 	public int compareTo(Object obj) {
 		int res = -1;
 		if (obj instanceof PortugolTreeNode) {

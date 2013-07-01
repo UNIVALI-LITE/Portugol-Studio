@@ -3,11 +3,9 @@ package br.univali.ps.ui.rstautil;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrata;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
@@ -21,7 +19,6 @@ import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
 public class PortugolParser extends AbstractParser
 {
     public static final String PROPERTY_AST = "AST";
-    
     private ArvoreSintaticaAbstrata AST;
     private PropertyChangeSupport support;
     private DefaultParseResult result;
@@ -63,11 +60,13 @@ public class PortugolParser extends AbstractParser
         try
         {
             resultadoAnalise = Portugol.analisar(doc.getText(0, doc.getLength()));
-            
-            if (resultadoAnalise.getAsa() != null) {
+
+
+            if (resultadoAnalise.getAsa() != null)
+            {
                 AST = resultadoAnalise.getAsa();
             }
-            
+
         }
         catch (BadLocationException ex)
         {
@@ -82,7 +81,7 @@ public class PortugolParser extends AbstractParser
                 int line = erro.getLinha() - 1;
                 // if (line>0) {
                 Element elem = root.getElement(line);
-                int offs = elem.getStartOffset() + erro.getColuna(); 
+                int offs = elem.getStartOffset() + erro.getColuna();
                 String msg = erro.getMensagem();
                 int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();
 
@@ -95,7 +94,8 @@ public class PortugolParser extends AbstractParser
         }
 
 
-        support.firePropertyChange(PROPERTY_AST, null, AST);		
+
+        support.firePropertyChange(PROPERTY_AST, null, AST);
         return result;
     }
 }

@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -66,7 +67,10 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 	public PortugolOutlineTree() {
 		this(false);
 	}
-
+        
+        public PortugolOutlineTree(int a) {
+		this(false);
+	}
 
 	/**
 	 * Constructor.
@@ -84,37 +88,36 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 		model = new DefaultTreeModel(new DefaultMutableTreeNode("Nothing"));
 		setModel(model);
 		listener = new Listener();
-		addTreeSelectionListener(listener);
+		addTreeSelectionListener(listener);   
 	}
 
 
 	/**
 	 * Refreshes this tree.
 	 *
-	 * @param cu The parsed compilation unit.  If this is <code>null</code>
+	 * @param ast The parsed compilation unit.  If this is <code>null</code>
 	 *        then the tree is cleared.
 	 */
-	private void update(ArvoreSintaticaAbstrata cu) {
-
+	private void update(ArvoreSintaticaAbstrata ast) {
 		PortugolTreeNode root = new PortugolTreeNode("Remove me!", IconFactory.SOURCE_FILE_ICON);
 		root.setSortable(false);
-		if (cu==null) {
-			model.setRoot(root);
+		if (ast==null) {
+			//model.setRoot(root);
 			return;
 		}
 
-		
-
-		for (Iterator<NoDeclaracao> i=cu.getListaDeclaracoesGlobais().iterator(); i.hasNext(); ) {
+		for (Iterator<NoDeclaracao> i = ast.getListaDeclaracoesGlobais().iterator(); i.hasNext(); ) {
 			NoDeclaracao td =  i.next();
 			MemberTreeNode dmtn = createMemberNode(td);
-			root.add(dmtn);
-		}
-
+			
+                        root.add(dmtn);
+                }
+                
 		model.setRoot(root);
 		root.setSorted(isSorted());
 		refresh();
-
+                
+                model.reload();
 	}
 
 
@@ -212,12 +215,17 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.
 													getLastPathComponent();
 		Object obj = node.getUserObject();
-		//if (obj instanceof ASTNode) {
-		//	ASTNode astNode = (ASTNode)obj;
-		//	int start = astNode.getNameStartOffset();
-		//	int end = astNode.getNameEndOffset();
-		//	textArea.select(start, end);
-		//}
+		if (obj instanceof NoDeclaracao) {
+			NoDeclaracao astNode = (NoDeclaracao)obj;
+                        if(astNode.getTrechoCodigoFonteNome() != null ){
+                            int linha = astNode.getTrechoCodigoFonteNome().getLinha() - 1;
+                            Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
+                            int offs = elem.getStartOffset() + astNode.getTrechoCodigoFonteNome().getColuna();
+                            int end =  offs + astNode.getTrechoCodigoFonteNome().getTamanhoTexto();
+                            System.out.println(offs+", "+end);
+                            textArea.select(offs, end);
+                        }
+		}
 	}
 
 
@@ -238,6 +246,7 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 	/**
 	 * {@inheritDoc}
 	 */
+        @Override
 	public void listenTo(RSyntaxTextArea textArea) {
 
 		if (this.textArea!=null) {
@@ -252,7 +261,7 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 		// Listen for future language changes in the text editor
 		this.textArea = textArea;
 		textArea.addPropertyChangeListener(
-							RSyntaxTextArea.SYNTAX_STYLE_PROPERTY, listener);
+			PortugolParser.PROPERTY_AST, listener);
 
 		// Check whether we're currently editing Java
 		checkForPortugolParsing();
@@ -315,8 +324,8 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 			}
 
 			else if (PortugolParser.PROPERTY_AST.equals(name)) {
-				ArvoreSintaticaAbstrata cu = (ArvoreSintaticaAbstrata)e.getNewValue();
-				update(cu);
+				ArvoreSintaticaAbstrata ast = (ArvoreSintaticaAbstrata)e.getNewValue();
+				update(ast);
 			}
 
 		}

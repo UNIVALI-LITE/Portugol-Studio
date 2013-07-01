@@ -24,15 +24,201 @@
             <returnValDesc><![CDATA[A exponenciação da <em>base</em> pelo <em>expoente</em>.]]></returnValDesc>
         </keyword>
         
-        <keyword name="raiz" type="function" returnType="real" definedIn="Matematica">
+        <keyword name="raiz_quadrada" type="function" returnType="real" definedIn="Matematica">
             <params>
                 <param type="real" name="n">
                     <desc>Valor real positivo utilizado como operando</desc>
                 </param>
             </params>
-            <desc>Calcula a raiz quadrada e um valor real. </desc>
+            <desc>Calcula a raiz quadrada de um valor real. </desc>
             <returnValDesc><![CDATA[A raiz quadrada de <em>n</em>.]]></returnValDesc>
         </keyword>
+		
+		<keyword name="limpa" type="function" returnType="vazio" definedIn="Grafica">
+            <desc>Limpa o console da IDE.</desc>
+            <returnValDesc><![CDATA[Limpa o console.]]></returnValDesc>
+        </keyword>
         
+		<keyword name="sorteia" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="inteiro" name="limite">
+                    <desc>Valor inteiro positivo utilizado como operando</desc>
+                </param>
+            </params>
+            <desc>Sorteia um numero inteiro entre 0 e o limite passado por parâmentro. </desc>
+            <returnValDesc><![CDATA[Sorteia um valor inteiro de 0 até <em>limite</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_vetor" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="inteiro" name="vetor">
+                    <desc>Vetor do tipo inteiro da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho do vetor passado por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>vetor</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_matriz" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="inteiro" name="matriz">
+                    <desc>Matriz do tipo inteiro da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho da matriz passada por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>matriz</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_vetor" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="real" name="vetor">
+                    <desc>Vetor do tipo real da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho do vetor passado por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>vetor</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_matriz" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="real" name="matriz">
+                    <desc>Matriz do tipo real da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho da matriz passada por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>matriz</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_vetor" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="caracter" name="vetor">
+                    <desc>Vetor do tipo caracter da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho do vetor passado por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>vetor</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_matriz" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="caracter" name="matriz">
+                    <desc>Matriz do tipo caracter da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho da matriz passada por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>matriz</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_vetor" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="cadeia" name="vetor">
+                    <desc>Vetor do tipo cadeia da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho do vetor passado por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>vetor</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_matriz" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="cadeia" name="matriz">
+                    <desc>Matriz do tipo cadeia da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho da matriz passada por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>matriz</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_vetor" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="logico" name="vetor">
+                    <desc>Vetor do tipo logico da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho do vetor passado por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>vetor</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="tamanho_matriz" type="function" returnType="inteiro" definedIn="Matematica">
+            <params>
+                <param type="logico" name="matriz">
+                    <desc>Matriz do tipo logico da qual se deseja saber o tamanho.</desc>
+                </param>
+            </params>
+            <desc>Retorna o tamanho da matriz passada por parâmentro. </desc>
+            <returnValDesc><![CDATA[O tamanho de <em>matriz</em>.]]></returnValDesc>
+        </keyword>
+		
+		
+		<keyword name="aguarde" type="function" returnType="vazio" definedIn="Grafica">
+            <params>
+                <param type="inteiro" name="intervalo">
+                    <desc>Valor inteiro positivo utilizado como operando</desc>
+                </param>
+            </params>
+            <desc>Pausa a execução pelo tempo(em milisegundos) determinado por parâmentro. </desc>
+            <returnValDesc><![CDATA[Aguarda <em>intervalo</em> milisegundos.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="escreva" type="function" returnType="vazio" definedIn="Saida">
+            <params>
+                <param type="cadeia" name="valor">
+                    <desc>Valor que que deve ser exibido no console.</desc>
+                </param>
+            </params>
+            <desc>Exibe na console o que foi enviado por paramentro. </desc>
+            <returnValDesc><![CDATA[Exibe o <em>valor</em> no console.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="leia" type="function" returnType="vazio" definedIn="Entrada">
+            <params>
+                <param type="inteiro" name="variavel">
+                    <desc>Variavel do tipo inteiro na qual se deseja colocar um valor.</desc>
+                </param>
+            </params>
+            <desc>Lê o valor digitado no console pelo usuario e o coloca na variavel passada por parametro. </desc>
+            <returnValDesc><![CDATA[Lê o que foi digitado no console e coloca na <em>variavel</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="leia" type="function" returnType="vazio" definedIn="Entrada">
+            <params>
+                <param type="real" name="variavel">
+                    <desc>Variavel do tipo real na qual se deseja colocar um valor.</desc>
+                </param>
+            </params>
+            <desc>Lê o valor digitado no console pelo usuario e o coloca na variavel passada por parametro. </desc>
+            <returnValDesc><![CDATA[Lê o que foi digitado no console e coloca na <em>variavel</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="leia" type="function" returnType="vazio" definedIn="Entrada">
+            <params>
+                <param type="cadeia" name="variavel">
+                    <desc>Variavel do tipo cadeia na qual se deseja colocar um valor.</desc>
+                </param>
+            </params>
+            <desc>Lê o valor digitado no console pelo usuario e o coloca na variavel passada por parametro. </desc>
+            <returnValDesc><![CDATA[Lê o que foi digitado no console e coloca na <em>variavel</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="leia" type="function" returnType="vazio" definedIn="Entrada">
+            <params>
+                <param type="caracter" name="variavel">
+                    <desc>Variavel do tipo caracter na qual se deseja colocar um valor.</desc>
+                </param>
+            </params>
+            <desc>Lê o valor digitado no console pelo usuario e o coloca na variavel passada por parametro. </desc>
+            <returnValDesc><![CDATA[Lê o que foi digitado no console e coloca na <em>variavel</em>.]]></returnValDesc>
+        </keyword>
+		
+		<keyword name="leia" type="function" returnType="vazio" definedIn="Entrada">
+            <params>
+                <param type="logico" name="variavel">
+                    <desc>Variavel do tipo logico na qual se deseja colocar um valor.</desc>
+                </param>
+            </params>
+            <desc>Lê o valor digitado no console pelo usuario e o coloca na variavel passada por parametro. </desc>
+            <returnValDesc><![CDATA[Lê o que foi digitado no console e coloca na <em>variavel</em>.]]></returnValDesc>
+        </keyword>
+		
     </keywords>
 </api>
