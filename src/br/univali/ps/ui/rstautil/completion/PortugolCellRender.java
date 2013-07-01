@@ -8,7 +8,7 @@
  * This library is distributed under a modified BSD license.  See the included
  * RSTALanguageSupport.License.txt file for details.
  */
-package br.univali.ps.ui.completion;
+package br.univali.ps.ui.rstautil.completion;
 
 import java.net.URL;
 import javax.swing.Icon;

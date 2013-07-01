@@ -9,13 +9,11 @@ import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.completion.PortugolLanguageSuport;
+import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +36,7 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
     private RSyntaxTextArea textArea = null;
     private RTextScrollPane scrollPane = null;
     private ErrorStrip errorStrip;
-    private MyParser notificaErrosEditor;
+    private PortugolParser notificaErrosEditor;
     private final PortugolLanguageSuport portugolLanguageSuport;
         
     public Editor() {
@@ -51,7 +49,7 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
         textArea.setCodeFoldingEnabled(true);
         
         textArea.setUseFocusableTips(true);
-        notificaErrosEditor = new MyParser();
+        notificaErrosEditor = new PortugolParser();
         textArea.addParser(notificaErrosEditor);
         errorStrip = new ErrorStrip(textArea);
                
@@ -95,10 +93,10 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
     
     public void destacarErros(ResultadoAnalise resultadoAnalise){
         
-        if (resultadoAnalise.getNumeroTotalErros() > 0)
-        {
-            notificaErrosEditor.setErros(resultadoAnalise);
-        }       
+        //if (resultadoAnalise.getNumeroTotalErros() > 0)
+        //{
+        //    notificaErrosEditor.setErros(resultadoAnalise);
+       // }       
     }
     
     private Object tag = null;
@@ -151,10 +149,10 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
     public void documentoModificado(boolean status)
     {
         ResultadoAnalise resultadoAnalise = Portugol.analisar(textArea.getText());
-        notificaErrosEditor.setErros(resultadoAnalise);        
+//        notificaErrosEditor.setErros(resultadoAnalise);        
         
         TabelaSimbolos tabelaSimbolos = resultadoAnalise.getTabelaSimbolos();
-       
+       /*
         Iterator<Simbolo> iterator = tabelaSimbolos.iterator();
         while (iterator.hasNext()){
             Simbolo s = iterator.next();
@@ -165,7 +163,7 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
                 
                 defaultCompletionProvider.addCompletion(variableCompletion);
             }
-        }
+        }*/
     }
 
     @Override
@@ -174,43 +172,6 @@ public class Editor extends JPanel implements AlteradorFonte, PortugolDocumentoL
       
     }
     
-    private class MyParser extends AbstractParser {
-
-        ResultadoAnalise resultadoAnalise = null;
-        
-        @Override
-        public ParseResult parse(RSyntaxDocument rsd, String string)
-        {
-            DefaultParseResult defaultParseResult = new DefaultParseResult(this);
-            if (this.resultadoAnalise != null){
-                for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
-                {
-                    try
-                    {                   
-                        int indice = textArea.getLineStartOffset(erro.getLinha() - 1) + erro.getColuna();            
-                        int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();            
-                        DefaultParserNotice notice = new DefaultParserNotice(this, erro.getMensagem(), erro.getLinha() - 1, indice, tamanhoTexto);
-                        notice.setShowInEditor(true);
-                        defaultParseResult.addNotice(notice);
-                    }
-                    catch (BadLocationException ex)
-                    {
-                        Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
-                    } 
-                }
-                
-            }
-            return defaultParseResult;
-        }
-
-        private void setErros(ResultadoAnalise resultadoAnalise)
-        {
-            
-            this.resultadoAnalise = resultadoAnalise;            
-            textArea.forceReparsing(this);
-        }
-        
-    }
     /*
     private CompletionProvider createCompletionProvider() {
         

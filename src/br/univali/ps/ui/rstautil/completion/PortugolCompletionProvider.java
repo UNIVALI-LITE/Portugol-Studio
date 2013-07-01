@@ -1,5 +1,5 @@
 
-package br.univali.ps.ui.completion;
+package br.univali.ps.ui.rstautil.completion;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class PortugolCompletionProvider extends LanguageAwareCompletionProvider{
         
         protected void loadCodeCompletionsFromXml(DefaultCompletionProvider cp) {
 		ClassLoader cl = getClass().getClassLoader();
-		String res = "br/univali/ps/ui/completion/portugol.xml";
+		String res = "br/univali/ps/ui/rstautil/completion/portugol.xml";
 		if (res!=null) { // Subclasses may specify a null value
 			InputStream in = cl.getResourceAsStream(res);
 			try {
