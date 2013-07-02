@@ -470,7 +470,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(painelCorretorLayout.createSequentialGroup()
                                 .addComponent(corrigir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                                 .addComponent(jLNota)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -490,15 +490,20 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLCasosTeste, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSPCasos, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addComponent(jSPCasos, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jSplitPane1.setRightComponent(painelCorretor);
 
+        jPainelSeparador.setDividerLocation(250);
         jPainelSeparador.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jPainelSeparador.setResizeWeight(1.0);
 
         jSplitPane2.setOneTouchExpandable(true);
+
+        sPOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
+        sPOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
         jSplitPane2.setLeftComponent(sPOutlineTree);
 
         painelEditor.setLayout(new java.awt.BorderLayout());
@@ -507,6 +512,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jSplitPane2.setRightComponent(painelEditor);
 
         jPainelSeparador.setTopComponent(jSplitPane2);
+
+        painelSaida.setMinimumSize(new java.awt.Dimension(82, 150));
         jPainelSeparador.setBottomComponent(painelSaida);
 
         jSplitPane1.setLeftComponent(jPainelSeparador);
@@ -741,7 +748,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             if (depurar) {
                 programa.depurar(getParametros());
             } else {    
-                programa.interpretar(getParametros());            
+                programa.executar(getParametros());            
             }
         } catch (ErroCompilacao erroCompilacao) {
             ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();

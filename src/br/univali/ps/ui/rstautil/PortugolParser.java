@@ -27,7 +27,6 @@ public class PortugolParser extends AbstractParser
     {
         support = new PropertyChangeSupport(this);
         result = new DefaultParseResult(this);
-
     }
 
     public void addPropertyChangeListener(String prop, PropertyChangeListener l)
@@ -70,26 +69,26 @@ public class PortugolParser extends AbstractParser
         }
         catch (BadLocationException ex)
         {
-            Logger.getLogger(PortugolParser.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(System.out);
         }
 
         if (resultadoAnalise != null)
         {
             for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
             {
-
                 int line = erro.getLinha() - 1;
-                // if (line>0) {
-                Element elem = root.getElement(line);
-                int offs = elem.getStartOffset() + erro.getColuna();
-                String msg = erro.getMensagem();
-                int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();
+                
+                if (line>0) 
+                {
+                    Element elem = root.getElement(line);
+                    int offs = elem.getStartOffset() + erro.getColuna();
+                    String msg = erro.getMensagem();
+                    int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();
 
-                final DefaultParserNotice notice = new DefaultParserNotice(this, msg, line, offs, tamanhoTexto);
-                notice.setShowInEditor(true);
-                result.addNotice(notice);
-
-
+                    final DefaultParserNotice notice = new DefaultParserNotice(this, msg, line, offs, tamanhoTexto);
+                    notice.setShowInEditor(true);
+                    result.addNotice(notice);
+                }
             }
         }
 

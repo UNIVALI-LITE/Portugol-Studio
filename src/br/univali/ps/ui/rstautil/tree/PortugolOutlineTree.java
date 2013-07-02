@@ -11,16 +11,25 @@
 package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrata;
+import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
+import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.CarregadorBibliotecas;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.ps.ui.rstautil.AbstractSourceTree;
 import br.univali.ps.ui.rstautil.IconFactory;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -52,8 +61,8 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
  * @author Robert Futrell
  * @version 1.0
  */
-public class PortugolOutlineTree extends AbstractSourceTree {
-
+public class PortugolOutlineTree extends AbstractSourceTree 
+{
         private DefaultTreeModel model;
 	private RSyntaxTextArea textArea;
 	private PortugolParser parser;
@@ -106,14 +115,27 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 			return;
 		}
 
+                MemberTreeNode bibliotecas = new MemberTreeNode("Bibliotecas");
+                
+                for (NoInclusaoBiblioteca inclusao : ((ArvoreSintaticaAbstrataPrograma) ast).getListaInclusoesBibliotecas())
+                {
+                    bibliotecas.add(createMemberNode(inclusao));
+                }
+                
+                MemberTreeNode programa = new MemberTreeNode("Programa");
+                
 		for (Iterator<NoDeclaracao> i = ast.getListaDeclaracoesGlobais().iterator(); i.hasNext(); ) {
 			NoDeclaracao td =  i.next();
 			MemberTreeNode dmtn = createMemberNode(td);
 			
-                        root.add(dmtn);
+                        programa.add(dmtn);
                 }
                 
-		model.setRoot(root);
+                
+		root.add(bibliotecas);
+                root.add(programa);
+                
+                model.setRoot(root);
 		root.setSorted(isSorted());
 		refresh();
                 
@@ -144,7 +166,42 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 		}
 
 	}
-
+        
+        
+        private MemberTreeNode createMemberNode(NoInclusaoBiblioteca inclusao)
+        {
+            try
+            {                
+                Biblioteca biblioteca = CarregadorBibliotecas.carregarBiblioteca(inclusao.getNome());
+                MemberTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, biblioteca);
+                
+                List<Method> funcoes = biblioteca.getFuncoes();
+                
+                if (funcoes != null)
+                {
+                    for (Method funcao : funcoes)
+                    {
+                        raizBiblioteca.add(new LibraryFunctionTreeNode(biblioteca, funcao));
+                    }
+                }
+                
+                List<Field> variaveis =  biblioteca.getVariaveis();
+                
+                if (variaveis != null)
+                {
+                    for (Field variavel : variaveis)
+                    {
+                        raizBiblioteca.add(new LibraryVarTreeNode(biblioteca, variavel));
+                    }
+                }                
+            
+                return raizBiblioteca;
+            }
+            catch (ErroCarregamentoBiblioteca erro)
+            {
+                return new LibraryTreeNode(erro);
+            }
+        }
 
 	private MemberTreeNode createMemberNode(NoDeclaracao member) {
 
@@ -166,8 +223,19 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 		else*/
                 List<NoBloco> body = null;
                 if (member instanceof NoDeclaracaoFuncao) {
+                    
+                        List<NoDeclaracaoParametro> parametros = ((NoDeclaracaoFuncao) member).getParametros();
+                        
+                        if (parametros != null)
+                        {
+                            for (NoDeclaracaoParametro parametro : parametros)
+                            {
+                                node.add(new FuncParamTreeNode(parametro));
+                            }
+                        }
+                    
 			body = ((NoDeclaracaoFuncao)member).getBlocos();
-		}
+		}                
 
 		if (body!=null && !getShowMajorElementsOnly()) {
 			for (int i=0; i<body.size(); i++) {
@@ -192,22 +260,30 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 
 		// First, collapse all rows.
 		int j=0;
+                
+                while (j<getRowCount()) {
+			expandRow(j++);
+		}
+                
+                /*
 		while (j<getRowCount()) {
 			collapseRow(j++);
-		}
-
+		}*/
+/*
 		// Expand only type declarations
 		expandRow(0);
 		j = 1;
 		while (j<getRowCount()) {
 			TreePath path = getPathForRow(j);
 			Object comp = path.getLastPathComponent();
+                        
+                        
 			//if (comp instanceof TypeDeclarationTreeNode) {
 			//	expandPath(path);
 			//}
 			j++;
 		}
-
+*/
 	}
 
 
@@ -215,16 +291,27 @@ public class PortugolOutlineTree extends AbstractSourceTree {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.
 													getLastPathComponent();
 		Object obj = node.getUserObject();
-		if (obj instanceof NoDeclaracao) {
-			NoDeclaracao astNode = (NoDeclaracao)obj;
-                        if(astNode.getTrechoCodigoFonteNome() != null ){
-                            int linha = astNode.getTrechoCodigoFonteNome().getLinha() - 1;
-                            Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
-                            int offs = elem.getStartOffset() + astNode.getTrechoCodigoFonteNome().getColuna();
-                            int end =  offs + astNode.getTrechoCodigoFonteNome().getTamanhoTexto();
+                TrechoCodigoFonte trechoCodigoFonte = null;
+                
+		if (obj instanceof NoDeclaracao) 
+                {
+                    trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
+                }
+                else if (obj instanceof NoDeclaracaoParametro)
+                {
+                    trechoCodigoFonte = ((NoDeclaracaoParametro) obj).getTrechoCodigoFonteNome();
+                }
+                        
+                       
+                if (trechoCodigoFonte != null )
+                {
+                    int linha = trechoCodigoFonte.getLinha() - 1;
+                    Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
+                    int offs = elem.getStartOffset() + trechoCodigoFonte.getColuna();
+                    int end =  offs + trechoCodigoFonte.getTamanhoTexto();
                            
-                            textArea.select(offs, end);
-                        }
+                    textArea.select(offs, end);
+                    textArea.requestFocus();                            
 		}
 	}
 

@@ -10,7 +10,9 @@
  */
 package br.univali.ps.ui.rstautil.tree;
 
+import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoBloco;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.ps.ui.rstautil.IconFactory;
 import br.univali.ps.ui.rstautil.SourceTreeNode;
 import javax.swing.Icon;
@@ -25,7 +27,7 @@ import javax.swing.Icon;
  */
 class PortugolTreeNode extends SourceTreeNode {
 
-	private NoBloco astNode;
+	private No astNode;
 	private Icon icon;
 
 	protected static final int PRIORITY_TYPE = 0;
@@ -35,25 +37,23 @@ class PortugolTreeNode extends SourceTreeNode {
 	protected static final int PRIORITY_LOCAL_VAR = 4;
 	protected static final int PRIORITY_BOOST_STATIC = -16;
 
-
-	protected PortugolTreeNode(NoBloco node) {
+	protected PortugolTreeNode(No node) {
 		this(node, null);
 	}
 
 
-	protected PortugolTreeNode(NoBloco node, String iconName) {
+	protected PortugolTreeNode(No node, String iconName) {
 		this(node, iconName, false);
 	}
 
 
-	protected PortugolTreeNode(NoBloco node, String iconName, boolean sorted) {
+	protected PortugolTreeNode(No node, String iconName, boolean sorted) {
 		super(node, sorted);
 		this.astNode = node;
 		if (iconName!=null) {
 			setIcon(IconFactory.get().getIcon(iconName));
 		}
 	}
-
 
 	public PortugolTreeNode(String text, String iconName) {
 		this(text, iconName, false);
@@ -85,7 +85,7 @@ class PortugolTreeNode extends SourceTreeNode {
 	}
 
 
-	public NoBloco getASTNode() {
+	public No getASTNode() {
 		return astNode;
 	}
 
