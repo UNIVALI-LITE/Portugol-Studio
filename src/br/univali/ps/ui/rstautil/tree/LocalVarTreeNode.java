@@ -1,6 +1,8 @@
 package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.ps.ui.rstautil.IconFactory;
 import org.fife.ui.autocomplete.Util;
 
@@ -22,6 +24,13 @@ class LocalVarTreeNode extends PortugolTreeNode {
                 StringBuffer sb = new StringBuffer();
 		sb.append("<html>");
 		sb.append(var.getNome());
+                
+                if (var instanceof NoDeclaracaoVetor) {
+                    sb.append("[]");
+                } else if (var instanceof NoDeclaracaoMatriz){
+                    sb.append("[][]");
+                }
+                
 		sb.append(" : ");
 		sb.append("<font color='#888888'>");
 		MemberTreeNode.appendType(var.getTipoDado(), sb);

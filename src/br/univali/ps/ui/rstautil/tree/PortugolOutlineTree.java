@@ -15,8 +15,10 @@ import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
@@ -209,10 +211,12 @@ public class PortugolOutlineTree extends AbstractSourceTree
 		/*if (member instanceof CodeBlock) {
 			node = new MemberTreeNode((CodeBlock)member);
 		}
-		else*/ if (member instanceof NoDeclaracaoVariavel) {
+		else*/ if (member instanceof NoDeclaracaoVariavel || 
+                        member instanceof NoDeclaracaoMatriz ||
+                        member instanceof NoDeclaracaoVetor ) {
 			node = new MemberTreeNode(member);
 		}
-		else {
+                else if (member instanceof NoDeclaracaoFuncao) {
 			node = new MemberTreeNode((NoDeclaracaoFuncao)member);
 		}
 
@@ -240,7 +244,9 @@ public class PortugolOutlineTree extends AbstractSourceTree
 		if (body!=null && !getShowMajorElementsOnly()) {
 			for (int i=0; i<body.size(); i++) {
                             NoBloco no = body.get(i);
-                            if(no instanceof NoDeclaracaoVariavel){
+                            if(no instanceof NoDeclaracaoVariavel ||
+                                    no instanceof NoDeclaracaoVetor ||
+                                    no instanceof NoDeclaracaoMatriz ){
 				LocalVarTreeNode varNode = new LocalVarTreeNode((NoDeclaracao)body.get(i));
 				node.add(varNode);
                             }

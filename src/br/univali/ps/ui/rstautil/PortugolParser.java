@@ -3,11 +3,12 @@ package br.univali.ps.ui.rstautil;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrata;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
+import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -15,6 +16,7 @@ import org.fife.ui.rsyntaxtextarea.parser.AbstractParser;
 import org.fife.ui.rsyntaxtextarea.parser.DefaultParseResult;
 import org.fife.ui.rsyntaxtextarea.parser.DefaultParserNotice;
 import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
+import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 
 public class PortugolParser extends AbstractParser
 {
@@ -49,7 +51,7 @@ public class PortugolParser extends AbstractParser
     {
         AST = null;
         result.clearNotices();
-
+                        
         Element root = doc.getDefaultRootElement();
         int lineCount = root.getElementCount();
 
@@ -76,17 +78,21 @@ public class PortugolParser extends AbstractParser
         {
             for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
             {
-                int line = erro.getLinha() - 1;
-                
-                if (line>0) 
+                if (erro.getLinha() - 1 > 0) 
                 {
-                    Element elem = root.getElement(line);
-                    int offs = elem.getStartOffset() + erro.getColuna();
-                    String msg = erro.getMensagem();
-                    int tamanhoTexto = erro.getTrechoCodigoFonte().getTamanhoTexto();
-
-                    final DefaultParserNotice notice = new DefaultParserNotice(this, msg, line, offs, tamanhoTexto);
+                    DefaultParserNotice notice = (DefaultParserNotice) createNotice(root,erro.getTrechoCodigoFonte(),erro.getMensagem());
                     notice.setShowInEditor(true);
+                    result.addNotice(notice);
+                }
+            }
+            
+            for (AvisoAnalise aviso : resultadoAnalise.getAvisos())
+            {
+                if (aviso.getLinha() - 1 > 0) 
+                {
+                    DefaultParserNotice notice = (DefaultParserNotice) createNotice(root,aviso.getTrechoCodigoFonte(),aviso.getMensagem());
+                    notice.setShowInEditor(true);
+                    notice.setColor(Color.ORANGE);
                     result.addNotice(notice);
                 }
             }
@@ -97,4 +103,17 @@ public class PortugolParser extends AbstractParser
         support.firePropertyChange(PROPERTY_AST, null, AST);
         return result;
     }
+    
+    private ParserNotice createNotice(Element root, TrechoCodigoFonte trechoCodigoFonte, String mensagem)
+    {
+        int line = trechoCodigoFonte.getLinha() - 1;
+        Element elem = root.getElement(line);
+        int offs = elem.getStartOffset() + trechoCodigoFonte.getColuna();
+        String msg = mensagem;
+        int tamanhoTexto = trechoCodigoFonte.getTamanhoTexto();
+
+        final DefaultParserNotice notice = new DefaultParserNotice(this, msg, line, offs, tamanhoTexto);
+        return notice;
+    }
+    
 }

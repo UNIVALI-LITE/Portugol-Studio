@@ -13,7 +13,9 @@ package br.univali.ps.ui.rstautil.tree;
 import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.ui.rstautil.DecoratableIcon;
 import br.univali.ps.ui.rstautil.IconFactory;
@@ -78,6 +80,13 @@ class MemberTreeNode extends PortugolTreeNode
         
         sb.append("<html>");
         sb.append(field.getNome());
+        
+        if (field instanceof NoDeclaracaoVetor){
+            sb.append("[]");
+        } else if (field instanceof NoDeclaracaoMatriz) {
+            sb.append("[][]");
+        }
+        
         sb.append(" : ");
         sb.append("<font color='#888888'>");
 
