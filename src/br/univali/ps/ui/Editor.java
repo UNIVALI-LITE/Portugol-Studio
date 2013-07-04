@@ -1,7 +1,6 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.dominio.PortugolDocumento;
-import br.univali.ps.nucleo.PortugolStudio;
 import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
@@ -37,7 +36,7 @@ public class Editor extends JPanel implements AlteradorFonte
         textArea.setUseFocusableTips(true);
         notificaErrosEditor = new PortugolParser();
         textArea.addParser(notificaErrosEditor);
-        
+
         errorStrip = new ErrorStrip(textArea);
 
         textArea.putClientProperty(PROPERTY_LANGUAGE_PARSER, notificaErrosEditor);
@@ -59,7 +58,7 @@ public class Editor extends JPanel implements AlteradorFonte
     {
         final Font fonteAtual = textArea.getFont();
         float novoTamanho = fonteAtual.getSize() + 4;
-        
+
         if (novoTamanho < 70)
         {
             textArea.setFont(fonteAtual.deriveFont(novoTamanho));
@@ -71,7 +70,7 @@ public class Editor extends JPanel implements AlteradorFonte
     {
         final Font fonteAtual = textArea.getFont();
         float novoTamanho = fonteAtual.getSize() - 4;
-        
+
         if (novoTamanho > 12)
         {
             textArea.setFont(fonteAtual.deriveFont(novoTamanho));
@@ -87,7 +86,7 @@ public class Editor extends JPanel implements AlteradorFonte
     {
         return (PortugolDocumento) textArea.getDocument();
     }
-    
+
     public void iniciarDepuracao()
     {
         textArea.setHighlightCurrentLine(false);
@@ -118,19 +117,14 @@ public class Editor extends JPanel implements AlteradorFonte
 
     public void posicionaCursor(int linha, int coluna)
     {
-        textArea.setCaretPosition(0);
         try
         {
-            while (textArea.getLineOfOffset(textArea.getCaretPosition()) < (linha - 1))
-            {
-                textArea.setCaretPosition(textArea.getCaretPosition() + 1);
-            }
-            textArea.setCaretPosition(textArea.getCaretPosition() + coluna);
+            textArea.setCaretPosition(textArea.getLineStartOffset(linha - 1) + coluna);
             textArea.requestFocus();
         }
-        catch (BadLocationException ex)
+        catch (BadLocationException excecao)
         {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+            excecao.printStackTrace(System.out);
         }
     }
 
@@ -144,7 +138,6 @@ public class Editor extends JPanel implements AlteradorFonte
     {
         return textArea;
     }
-    
     /*
      private CompletionProvider createCompletionProvider() {
         
@@ -367,5 +360,5 @@ public class Editor extends JPanel implements AlteradorFonte
      public String explicacaoEstadoContrario(){
      return "";
      }
-     */    
+     */
 }
