@@ -30,6 +30,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -223,6 +225,22 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         tree = new PortugolOutlineTree();
         tree.listenTo(editor.getTextArea());
         sPOutlineTree.setViewportView(tree);
+        
+        editor.getTextArea().addCaretListener(new CaretListener()
+        {
+            @Override
+            public void caretUpdate(CaretEvent e)
+            {
+                atualizarInformacoesCursor();
+            }
+        });
+        
+        atualizarInformacoesCursor();
+    }
+    
+    private void atualizarInformacoesCursor()
+    {
+        rotuloPosicaoCursor.setText(String.format("Linha: %d, Coluna: %d", editor.getTextArea().getCaretLineNumber() + 1, editor.getTextArea().getCaretOffsetFromLineStart() + 1));
     }
     
     public void setQuestao(Questao questao)
@@ -283,6 +301,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         sPOutlineTree = new javax.swing.JScrollPane();
         painelEditor = new javax.swing.JPanel();
         editor = new br.univali.ps.ui.Editor();
+        barraStatus = new javax.swing.JPanel();
+        rotuloPosicaoCursor = new javax.swing.JLabel();
         painelSaida = new br.univali.ps.ui.PainelSaida();
 
         setLayout(new java.awt.BorderLayout());
@@ -470,7 +490,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(painelCorretorLayout.createSequentialGroup()
                                 .addComponent(corrigir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLNota)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -508,6 +528,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         painelEditor.setLayout(new java.awt.BorderLayout());
         painelEditor.add(editor, java.awt.BorderLayout.CENTER);
+
+        barraStatus.setPreferredSize(new java.awt.Dimension(540, 25));
+        barraStatus.setLayout(new java.awt.GridLayout());
+
+        rotuloPosicaoCursor.setText("Linha: 0, Coluna: 0");
+        rotuloPosicaoCursor.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        barraStatus.add(rotuloPosicaoCursor);
+
+        painelEditor.add(barraStatus, java.awt.BorderLayout.PAGE_END);
 
         jSplitPane2.setRightComponent(painelEditor);
 
@@ -616,6 +645,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramenta;
+    private javax.swing.JPanel barraStatus;
     private javax.swing.JButton btnColar;
     private javax.swing.JButton btnComentar;
     private javax.swing.JButton btnCopiar;
@@ -653,6 +683,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelParametros;
     private br.univali.ps.ui.PainelSaida painelSaida;
+    private javax.swing.JLabel rotuloPosicaoCursor;
     private javax.swing.JScrollPane sPOutlineTree;
     private javax.swing.JTextField txtParametros;
     // End of variables declaration//GEN-END:variables
