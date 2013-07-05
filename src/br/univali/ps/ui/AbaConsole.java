@@ -33,7 +33,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
     private boolean executandoPrograma = false;
     PiscaConsole blink;
 
-    public AbaConsole(JTabbedPane painelTabulado) throws BadLocationException, InterruptedException
+    public AbaConsole(JTabbedPane painelTabulado) 
     {
         super(painelTabulado);
         cabecalho.setBotaoFecharVisivel(false);
