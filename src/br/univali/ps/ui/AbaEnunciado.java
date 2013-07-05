@@ -25,13 +25,23 @@ public class AbaEnunciado extends Aba {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jEnunciado = new javax.swing.JEditorPane();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
+        jScrollPane1.setBackground(new java.awt.Color(250, 250, 250));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 220, 220)));
+        jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+
+        jEnunciado.setEditable(false);
+        jEnunciado.setBackground(new java.awt.Color(250, 250, 250));
+        jEnunciado.setBorder(null);
         jEnunciado.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jScrollPane1.setViewportView(jEnunciado);
 

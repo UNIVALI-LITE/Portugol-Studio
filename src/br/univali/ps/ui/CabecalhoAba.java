@@ -87,8 +87,10 @@ public class CabecalhoAba extends JPanel {
         add(jLTitulo, java.awt.BorderLayout.CENTER);
 
         jBFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
+        jBFechar.setBorder(null);
         jBFechar.setBorderPainted(false);
         jBFechar.setContentAreaFilled(false);
+        jBFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jBFechar.setFocusPainted(false);
         jBFechar.setFocusable(false);
         jBFechar.setMaximumSize(new java.awt.Dimension(16, 16));

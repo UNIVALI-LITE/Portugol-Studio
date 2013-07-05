@@ -227,8 +227,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         tree = new PortugolOutlineTree();
         tree.listenTo(editor.getTextArea());
         
+        tree.setBackground(sPOutlineTree.getBackground());
         sPOutlineTree.setViewportView(tree);
-        sPOutlineTree.setViewportBorder(null);
         editor.adicionarObservadorCursor(AbaCodigoFonte.this);
         
         caretUpdate(null);
@@ -285,14 +285,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         abaEnunciado = new AbaEnunciado(painelSaida);
         abaEnunciado.setEninciado(questao.getEnunciado());
         exibirCorretor();
-        divisorEditorCorretor.setOneTouchExpandable(true);
     }
     
     public void setPortugolDocumento(PortugolDocumento portugolDocumento) {
         portugolDocumento.addPortugolDocumentoListener(this);
         editor.setPortugolDocumento(portugolDocumento);
         acaoSalvarArquivo.configurar(portugolDocumento);
-        exibirCorretor();
     }
 
     @SuppressWarnings("unchecked")
@@ -618,9 +616,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelAlinhamento2.setOpaque(false);
         painelAlinhamento2.setLayout(new java.awt.BorderLayout());
 
+        sPOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
         sPOutlineTree.setBorder(null);
         sPOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
-        sPOutlineTree.setOpaque(false);
         sPOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
         painelAlinhamento2.add(sPOutlineTree, java.awt.BorderLayout.CENTER);
 
@@ -843,7 +841,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void btnAumentarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAumentarActionPerformed
     {//GEN-HEADEREND:event_btnAumentarActionPerformed
-        editor.aumentarFonte();        
+        editor.aumentarFonte();  
+        exibirCorretor();
+        
     }//GEN-LAST:event_btnAumentarActionPerformed
 
     private void btnDiminuirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnDiminuirActionPerformed
