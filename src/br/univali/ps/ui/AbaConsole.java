@@ -4,25 +4,37 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.Entrada;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.PlainDocument;
 
-public class AbaConsole extends Aba implements Saida, Entrada {
-
+public class AbaConsole extends Aba implements Saida, Entrada
+{
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
-    
-    public AbaConsole(JTabbedPane painelTabulado) {
+    PiscaConsole blink;
+
+    public AbaConsole(JTabbedPane painelTabulado) throws BadLocationException, InterruptedException
+    {
         super(painelTabulado);
         cabecalho.setBotaoFecharVisivel(false);
         cabecalho.setTitulo("Console");
@@ -34,29 +46,32 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         this.menuAumentarFonte.setText("Aumentar fonte");
         this.menuDiminuirFonte.setText("Diminuir fonte");
         console.setDocument(new DocumentoConsole());
-        
-        console.addComponentListener(new ComponentAdapter() {
-
+        blink = new PiscaConsole(Color.BLACK,400);
+        console.addComponentListener(new ComponentAdapter()
+        {
             @Override
-            public void componentResized(ComponentEvent ce) {
+            public void componentResized(ComponentEvent ce)
+            {
                 jScrollPane1.getVerticalScrollBar().setValue(ce.getComponent().getHeight());
             }
-            
         });
-        console.getDocument().addDocumentListener(new DocumentListener() {
-        
+        console.getDocument().addDocumentListener(new DocumentListener()
+        {
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(DocumentEvent e)
+            {
                 atualizarItensMenuConsole();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(DocumentEvent e)
+            {
                 atualizarItensMenuConsole();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(DocumentEvent e)
+            {
             }
         });
     }
@@ -81,36 +96,41 @@ public class AbaConsole extends Aba implements Saida, Entrada {
      * métodos execucaoIniciada() e execucaoEncerrada()
      * 
      */
-    
-    public void setExecutandoPrograma(boolean executandoPrograma) 
+    public void setExecutandoPrograma(boolean executandoPrograma)
     {
         this.executandoPrograma = executandoPrograma;
         if (!executandoPrograma)
         {
-            ((DocumentoConsole)console.getDocument()).setLendo(false);
+            ((DocumentoConsole) console.getDocument()).setLendo(false);
             console.setEditable(false);
-            console.setFocusable(false);            
+            console.setFocusable(false);
         }
         atualizarItensMenuConsole();
     }
 
-    private void atualizarItensMenuConsole() 
+    private void atualizarItensMenuConsole()
     {
         if (!executandoPrograma)
         {
             if (console.getText() != null)
             {
-                if (console.getText().length() > 0) {
+                if (console.getText().length() > 0)
+                {
                     menuConsoleLimpar.setEnabled(true);
 
                     int selecao = console.getSelectionEnd() - console.getSelectionStart();
 
-                    if (selecao > 0) {
+                    if (selecao > 0)
+                    {
                         menuConsoleCopiar.setEnabled(true);
-                    } else {
+                    }
+                    else
+                    {
                         menuConsoleCopiar.setEnabled(false);
                     }
-                } else {
+                }
+                else
+                {
                     menuConsoleLimpar.setEnabled(false);
                     menuConsoleCopiar.setEnabled(false);
                 }
@@ -191,9 +211,12 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuConsoleLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsoleLimparActionPerformed
-        try {
+        try
+        {
             limpar();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Logger.getLogger(AbaConsole.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_menuConsoleLimparActionPerformed
@@ -206,20 +229,21 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     {//GEN-HEADEREND:event_menuAumentarFonteActionPerformed
         final Font fonteAtual = console.getFont();
         float novoTamanho = fonteAtual.getSize() + 4;
-        if(novoTamanho < 70  ){
-            console.setFont(fonteAtual.deriveFont(novoTamanho));        
-        }   
+        if (novoTamanho < 70)
+        {
+            console.setFont(fonteAtual.deriveFont(novoTamanho));
+        }
     }//GEN-LAST:event_menuAumentarFonteActionPerformed
 
     private void menuDiminuirFonteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuDiminuirFonteActionPerformed
     {//GEN-HEADEREND:event_menuDiminuirFonteActionPerformed
         final Font fonteAtual = console.getFont();
         float novoTamanho = fonteAtual.getSize() - 4;
-        if(novoTamanho > 12  ){
-            console.setFont(fonteAtual.deriveFont(novoTamanho));        
+        if (novoTamanho > 12)
+        {
+            console.setFont(fonteAtual.deriveFont(novoTamanho));
         }
     }//GEN-LAST:event_menuDiminuirFonteActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea console;
     private javax.swing.JScrollPane jScrollPane1;
@@ -231,13 +255,13 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void limpar() throws Exception 
+    public void limpar() throws Exception
     {
         ManipuladorSaida saida = new ManipuladorSaida(null);
         saida.execute();
         saida.get();
     }
-    
+
     public void escreveConsole(String texto) throws Exception
     {
         ManipuladorSaida manipuladorSaida = new ManipuladorSaida(texto);
@@ -252,19 +276,19 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     }
 
     @Override
-    public void escrever(boolean valor)  throws Exception
+    public void escrever(boolean valor) throws Exception
     {
         escreveConsole((valor) ? "verdadeiro" : "falso");
     }
 
     @Override
-    public void escrever(int valor) throws Exception 
+    public void escrever(int valor) throws Exception
     {
         escreveConsole(String.valueOf(valor));
     }
 
     @Override
-    public void escrever(double valor) throws Exception 
+    public void escrever(double valor) throws Exception
     {
         escreveConsole(String.valueOf(valor));
     }
@@ -276,106 +300,130 @@ public class AbaConsole extends Aba implements Saida, Entrada {
     }
 
     @Override
-    public Object ler(TipoDado tipoDado) throws Exception {
-        
+    public Object ler(TipoDado tipoDado) throws Exception
+    {
+        startBlink();
         console.setEditable(true);
         console.setFocusable(true);
         console.requestFocus();
         console.setCaretPosition(console.getText().length());
-        
+
         this.tipoDado = tipoDado;
         ManipuladorEntrada manipuladorEntrada = new ManipuladorEntrada();
         manipuladorEntrada.execute();
         
-        String entrada = (String)manipuladorEntrada.get();
-        
-        
+        String entrada = (String) manipuladorEntrada.get();
+        stopBlink();
+
         console.setEditable(false);
         console.setFocusable(false);
-        
+
         return obterValorEntrada(entrada);
     }
 
-    private Object obterValorEntrada(String entrada) {
-        try {
-            if (tipoDado == TipoDado.INTEIRO) {
+    private Object obterValorEntrada(String entrada)
+    {
+        try
+        {
+            if (tipoDado == TipoDado.INTEIRO)
+            {
                 return Integer.parseInt(entrada);
-            } else if (tipoDado == TipoDado.REAL) {
+            }
+            else if (tipoDado == TipoDado.REAL)
+            {
                 return Double.parseDouble(entrada);
-            } else if (tipoDado == TipoDado.CARACTER) {
+            }
+            else if (tipoDado == TipoDado.CARACTER)
+            {
                 return entrada.charAt(0);
-            } else if (tipoDado == TipoDado.LOGICO) {
-                if (entrada.equals("falso")) {
+            }
+            else if (tipoDado == TipoDado.LOGICO)
+            {
+                if (entrada.equals("falso"))
+                {
                     return false;
-                } else if (entrada.equals("verdadeiro")) {
+                }
+                else if (entrada.equals("verdadeiro"))
+                {
                     return true;
                 }
             }
 
             return entrada;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             //TODO interroper;
             return null;
         }
     }
-    
-    private class ManipuladorEntrada extends SwingWorker {
-        
-        public ManipuladorEntrada() {
-            ((DocumentoConsole)console.getDocument()).setLendo(true);
+
+    private class ManipuladorEntrada extends SwingWorker
+    {
+        public ManipuladorEntrada()
+        {
+            ((DocumentoConsole) console.getDocument()).setLendo(true);
         }
-        
+
         @Override
-        protected Object doInBackground() throws Exception {
-            
-            while (((DocumentoConsole)console.getDocument()).isLendo()) {
-                try {
+        protected Object doInBackground() throws Exception
+        {
+
+            while (((DocumentoConsole) console.getDocument()).isLendo())
+            {
+                try
+                {
                     Thread.sleep(10);
-                } catch (InterruptedException ex) {
-                   ((DocumentoConsole)console.getDocument()).setLendo(false);
-                   throw ex;
+                }
+                catch (InterruptedException ex)
+                {
+                    ((DocumentoConsole) console.getDocument()).setLendo(false);
+                    throw ex;
                 }
             }
-            return ((DocumentoConsole)console.getDocument()).getValorLido();
+            return ((DocumentoConsole) console.getDocument()).getValorLido();
         }
-        
-
     }
-    
-    private class ManipuladorSaida extends SwingWorker {
 
+    private class ManipuladorSaida extends SwingWorker
+    {
         String valorSaida;
-        
-        public ManipuladorSaida(String valorSaida) {
+
+        public ManipuladorSaida(String valorSaida)
+        {
             this.valorSaida = valorSaida;
         }
-        
+
         @Override
-        protected Object doInBackground() throws Exception {
-            if (valorSaida != null) {
+        protected Object doInBackground() throws Exception
+        {
+            if (valorSaida != null)
+            {
                 console.append(valorSaida);
-            } else {
+            }
+            else
+            {
                 console.setText(null);
             }
             return true;
-        }        
+        }
     }
-    
-    private class DocumentoConsole extends PlainDocument{
-        
-        private int limitOffset = 0;
 
+    private class DocumentoConsole extends PlainDocument
+    {
+        private int limitOffset = 0;
         private String valor;
-        
         private boolean lendo = false;
 
-        public boolean isLendo() {
+        public boolean isLendo()
+        {
             return lendo;
         }
-        
-        public void setLendo(boolean lendo) {
+
+        public void setLendo(boolean lendo)
+        {
             this.lendo = lendo;
-            
+
             if (lendo)
             {
                 limitOffset = getLength();
@@ -385,20 +433,23 @@ public class AbaConsole extends Aba implements Saida, Entrada {
                 limitOffset = 0;
             }
         }
-        
+
         @Override
-        public void replace( int i, int i1, String string, AttributeSet as) throws BadLocationException {
-            if (string == null){
+        public void replace(int i, int i1, String string, AttributeSet as) throws BadLocationException
+        {
+            if (string == null)
+            {
                 remove(0, getLength());
                 return;
             }
-            if ( lendo && string.equals("\n") ){
-               valor = getText(limitOffset, getLength() - limitOffset);
-               lendo = false;
-            } 
-            
+            if (lendo && string.equals("\n"))
+            {
+                valor = getText(limitOffset, getLength() - limitOffset);
+                lendo = false;
+            }
+
             super.replace(i, i1, string, as);
-                        
+
             if (!lendo)
             {
                 limitOffset = getLength();
@@ -406,16 +457,77 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         }
 
         @Override
-        public void remove( int i, int i1) throws BadLocationException {
+        public void remove(int i, int i1) throws BadLocationException
+        {
             if (!lendo || limitOffset <= i)
             {
                 super.remove(i, i1);
             }
         }
 
-        private String getValorLido() {
+        private String getValorLido()
+        {
             return valor;
         }
+    }
 
+    public void startBlink() throws BadLocationException
+    {
+       // console.getHighlighter().addHighlight(0, 1, new BlinkPainter(Color.lightGray, 100));
+        blink.start();
+    }
+
+    public void stopBlink()
+    {
+        //console.getHighlighter().removeAllHighlights();
+        blink.stop();
+    }
+
+    class PiscaConsole extends DefaultHighlightPainter
+    {
+        Border outBorder = BorderFactory.createLineBorder(Color.BLUE, 2);
+        Border innerBorder = BorderFactory.createLineBorder(Color.CYAN, 2);
+        Border originalBorder = BorderFactory.createLineBorder(Color.white, 2);
+        CompoundBorder compoundBorder = new CompoundBorder(outBorder, innerBorder);
+        Timer t;
+        public PiscaConsole(Color c, int blinkRate)
+        {
+            super(null);
+            console.setBorder(originalBorder);
+            t = new Timer(blinkRate, new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    changeBorder();
+                }
+            });
+            t.start();
+        }
+
+        public void start()
+        {
+            console.setBorder(compoundBorder);
+            t.start();
+        }
+
+        public void stop()
+        {
+            t.stop();
+        }
+
+        protected void changeBorder()
+        {
+            if (console.getBorder() == originalBorder)
+            {
+                console.setBorder(compoundBorder);            
+                System.out.println("aqui");
+            }
+            if (console.getBorder() == compoundBorder)
+            {
+                console.setBorder(originalBorder);                
+                System.out.println("ali");
+            }
+            repaint();
+        }
     }
 }
