@@ -39,9 +39,7 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
     {
         initComponents();
         
-        final PortugolDocumento portugolDocumento = new PortugolDocumento();
         
-        textArea.setDocument(portugolDocumento);
         scrollPane = new RTextScrollPane(textArea,true);
         FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));
         
@@ -74,6 +72,8 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
         scrollPane.setViewportBorder(null);
         this.setBorder(new LineBorder(new Color(200,200,200)));
         errorStrip.setBackground(new Color(220, 220, 220));
+       
+        this.revalidate();
     }
     
     public void adicionarObservadorCursor(CaretListener observador)
@@ -110,9 +110,9 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
         }
     }
 
-    public void setPortugolDocumento(PortugolDocumento documento)
+    public void setCodigoFonte(String codigoFonte)
     {
-        textArea.setDocument(documento);
+        textArea.setText(codigoFonte);        
     }
 
     public PortugolDocumento getPortugolDocumento()
@@ -165,6 +165,7 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
     public void requestFocus()
     {
         textArea.requestFocus();
+        this.revalidate();
     }
 
     public RSyntaxTextArea getTextArea()
@@ -179,10 +180,11 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
-        textArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        textArea = new RSyntaxTextArea(new PortugolDocumento());
         painelEditor = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());

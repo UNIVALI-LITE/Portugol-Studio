@@ -38,6 +38,9 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="codeFoldingEnabled" type="boolean" value="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RSyntaxTextArea(new PortugolDocumento());"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

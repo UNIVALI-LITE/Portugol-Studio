@@ -471,7 +471,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             mnuPrograma.setVisible(true);
             mnuPrograma.setEnabled(true);
 
-            mnuTheme.setVisible(true);
+            //mnuTheme.setVisible(true);
             mnuTheme.setEnabled(true);
             themeDefault.setEnabled(true);
             themeDark.setEnabled(true);

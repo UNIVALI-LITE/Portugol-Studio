@@ -54,12 +54,8 @@ public class AcaoAbrirArquivo extends Acao
                     abaCodigoFonte.setQuestao(q);
                 } else {
                     String codigoFonte = FileHandle.open(arquivo);
-                    PortugolDocumento portugolDocument = new PortugolDocumento();
-                    portugolDocument.insertString(0, codigoFonte, null);
                     AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
-                    abaCodigoFonte.setPortugolDocumento(portugolDocument);
-                    portugolDocument.setChanged(false);
-                    portugolDocument.setFile(arquivo);
+                    abaCodigoFonte.setCodigoFonte(codigoFonte, arquivo);
                 }
             }
         }

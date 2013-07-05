@@ -31,6 +31,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -287,10 +288,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         exibirCorretor();
     }
     
-    public void setPortugolDocumento(PortugolDocumento portugolDocumento) {
-        portugolDocumento.addPortugolDocumentoListener(this);
-        editor.setPortugolDocumento(portugolDocumento);
-        acaoSalvarArquivo.configurar(portugolDocumento);
+    public void setCodigoFonte(String codigoFonte, File arquivo) {       
+        editor.setCodigoFonte(codigoFonte);
+        PortugolDocumento document =  editor.getPortugolDocumento();
+        document.addPortugolDocumentoListener(this);
+        document.setFile(arquivo);
+        document.setChanged(false);
+        acaoSalvarArquivo.configurar((PortugolDocumento) document);
     }
 
     @SuppressWarnings("unchecked")
@@ -363,66 +367,60 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnSalvar.setAction(acaoSalvarArquivo);
         btnSalvar.setBorderPainted(false);
-        btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalvar.setFocusPainted(false);
         btnSalvar.setFocusable(false);
         btnSalvar.setHideActionText(true);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalvar.setOpaque(false);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnSalvar);
 
         btnDesfazer.setAction(acaoDesfazer);
         btnDesfazer.setBorderPainted(false);
-        btnDesfazer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDesfazer.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDesfazer.setFocusPainted(false);
         btnDesfazer.setFocusable(false);
         btnDesfazer.setHideActionText(true);
-        btnDesfazer.setOpaque(false);
         barraFerramentas.add(btnDesfazer);
 
         btnRefazer.setAction(acaoRefazer);
         btnRefazer.setBorderPainted(false);
-        btnRefazer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRefazer.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRefazer.setFocusPainted(false);
         btnRefazer.setFocusable(false);
         btnRefazer.setHideActionText(true);
         btnRefazer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnRefazer.setOpaque(false);
         btnRefazer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnRefazer);
         barraFerramentas.add(jSeparador1);
 
         btnRecortar.setAction(acaoRecortar);
         btnRecortar.setBorderPainted(false);
-        btnRecortar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRecortar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRecortar.setFocusPainted(false);
         btnRecortar.setFocusable(false);
         btnRecortar.setHideActionText(true);
         btnRecortar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnRecortar.setOpaque(false);
         btnRecortar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnRecortar);
 
         btnCopiar.setAction(acaoCopiar);
         btnCopiar.setBorderPainted(false);
-        btnCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnCopiar.setFocusPainted(false);
         btnCopiar.setFocusable(false);
         btnCopiar.setHideActionText(true);
         btnCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCopiar.setOpaque(false);
         btnCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnCopiar);
 
         btnColar.setAction(acaoColar);
         btnColar.setBorderPainted(false);
-        btnColar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnColar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnColar.setFocusPainted(false);
         btnColar.setFocusable(false);
         btnColar.setHideActionText(true);
         btnColar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnColar.setOpaque(false);
         btnColar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnColar);
 
@@ -430,14 +428,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setText("//x=2");
         btnComentar.setToolTipText("Comentar o código selecionado");
         btnComentar.setBorderPainted(false);
-        btnComentar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnComentar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnComentar.setFocusPainted(false);
         btnComentar.setFocusable(false);
         btnComentar.setHideActionText(true);
         btnComentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnComentar.setMaximumSize(new java.awt.Dimension(38, 38));
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
-        btnComentar.setOpaque(false);
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnComentar.addActionListener(new java.awt.event.ActionListener()
@@ -452,14 +449,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setText("x=2");
         btnDescomentar.setToolTipText("Descomentar o código selecionado");
         btnDescomentar.setBorderPainted(false);
-        btnDescomentar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDescomentar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDescomentar.setFocusPainted(false);
         btnDescomentar.setFocusable(false);
         btnDescomentar.setHideActionText(true);
         btnDescomentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDescomentar.setMaximumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
-        btnDescomentar.setOpaque(false);
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnDescomentar.addActionListener(new java.awt.event.ActionListener()
@@ -473,11 +469,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnDiminuir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/font_delete.png"))); // NOI18N
         btnDiminuir.setBorderPainted(false);
-        btnDiminuir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDiminuir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDiminuir.setFocusPainted(false);
         btnDiminuir.setFocusable(false);
         btnDiminuir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDiminuir.setOpaque(false);
         btnDiminuir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnDiminuir.addActionListener(new java.awt.event.ActionListener()
         {
@@ -490,11 +485,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnAumentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/font_add.png"))); // NOI18N
         btnAumentar.setBorderPainted(false);
-        btnAumentar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAumentar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAumentar.setFocusPainted(false);
         btnAumentar.setFocusable(false);
         btnAumentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAumentar.setOpaque(false);
         btnAumentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAumentar.addActionListener(new java.awt.event.ActionListener()
         {
@@ -507,45 +501,41 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentas.add(jSeparador2);
 
         btnExecutar.setBorderPainted(false);
-        btnExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExecutar.setEnabled(false);
         btnExecutar.setFocusPainted(false);
         btnExecutar.setFocusable(false);
         btnExecutar.setHideActionText(true);
         btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnExecutar.setOpaque(false);
         btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnExecutar);
 
         btnInterromper.setBorderPainted(false);
-        btnInterromper.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnInterromper.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnInterromper.setEnabled(false);
         btnInterromper.setFocusPainted(false);
         btnInterromper.setFocusable(false);
         btnInterromper.setHideActionText(true);
         btnInterromper.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnInterromper.setOpaque(false);
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
         btnDepurar.setBorderPainted(false);
-        btnDepurar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDepurar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDepurar.setEnabled(false);
         btnDepurar.setFocusPainted(false);
         btnDepurar.setFocusable(false);
         btnDepurar.setHideActionText(true);
         btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDepurar.setOpaque(false);
         btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnDepurar);
 
         btnProximo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/bug_go.png"))); // NOI18N
         btnProximo.setBorderPainted(false);
-        btnProximo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnProximo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnProximo.setFocusPainted(false);
         btnProximo.setFocusable(false);
         btnProximo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnProximo.setOpaque(false);
         btnProximo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnProximo.addActionListener(new java.awt.event.ActionListener()
         {
@@ -557,8 +547,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentas.add(btnProximo);
         barraFerramentas.add(jSeparator6);
 
+        painelParametros.setMaximumSize(new java.awt.Dimension(300, 36));
         painelParametros.setOpaque(false);
-        painelParametros.setPreferredSize(new java.awt.Dimension(100, 20));
+        painelParametros.setPreferredSize(new java.awt.Dimension(300, 20));
         painelParametros.setLayout(new javax.swing.BoxLayout(painelParametros, javax.swing.BoxLayout.LINE_AXIS));
 
         lblParametros.setText("Parâmetros:");
@@ -588,7 +579,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorCorretor.setDividerSize(8);
         divisorEditorCorretor.setFocusable(false);
         divisorEditorCorretor.setOneTouchExpandable(true);
-        divisorEditorCorretor.setOpaque(false);
 
         painelEditor.setFocusable(false);
         painelEditor.setOpaque(false);
@@ -602,7 +592,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorSaida.setFocusable(false);
         divisorEditorSaida.setMinimumSize(new java.awt.Dimension(550, 195));
         divisorEditorSaida.setOneTouchExpandable(true);
-        divisorEditorSaida.setOpaque(false);
 
         painelAlinhamento1.setFocusable(false);
         painelAlinhamento1.setOpaque(false);
@@ -675,7 +664,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         corrigir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/blackboard_steps.png"))); // NOI18N
         corrigir.setText("Corrigir");
-        corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         corrigir.setPreferredSize(new java.awt.Dimension(130, 30));
         corrigir.addActionListener(new java.awt.event.ActionListener()
         {
