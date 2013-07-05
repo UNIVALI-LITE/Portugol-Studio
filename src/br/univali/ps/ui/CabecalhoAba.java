@@ -74,6 +74,7 @@ public class CabecalhoAba extends JPanel {
         });
         jPopupMenu1.add(mniFecharOutras);
 
+        setFocusable(false);
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
@@ -88,6 +89,8 @@ public class CabecalhoAba extends JPanel {
         jBFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
         jBFechar.setBorderPainted(false);
         jBFechar.setContentAreaFilled(false);
+        jBFechar.setFocusPainted(false);
+        jBFechar.setFocusable(false);
         jBFechar.setMaximumSize(new java.awt.Dimension(16, 16));
         jBFechar.setMinimumSize(new java.awt.Dimension(16, 16));
         jBFechar.setPreferredSize(new java.awt.Dimension(16, 16));

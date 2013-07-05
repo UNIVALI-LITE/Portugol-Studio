@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.Entrada;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
@@ -34,6 +36,9 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         this.menuAumentarFonte.setText("Aumentar fonte");
         this.menuDiminuirFonte.setText("Diminuir fonte");
         console.setDocument(new DocumentoConsole());
+        
+        jScrollPane1.setViewportBorder(null);
+        
         console.addComponentListener(new ComponentAdapter() {
 
             @Override
@@ -170,10 +175,17 @@ public class AbaConsole extends Aba implements Saida, Entrada {
         });
         menuConsole.add(menuDiminuirFonte);
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        setFocusable(false);
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
+
+        console.setBackground(new java.awt.Color(245, 245, 245));
         console.setColumns(20);
         console.setRows(5);
+        console.setBorder(null);
         jScrollPane1.setViewportView(console);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);

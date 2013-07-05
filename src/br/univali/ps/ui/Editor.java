@@ -12,6 +12,7 @@ import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
 import javax.swing.ToolTipManager;
 import javax.swing.border.LineBorder;
 import javax.swing.event.CaretEvent;
@@ -32,20 +33,21 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
     private Object tag = null;
     private ErrorStrip errorStrip;
     private PortugolParser notificaErrosEditor;
-    private final PortugolLanguageSuport portugolLanguageSuport;
-    
+    private final PortugolLanguageSuport portugolLanguageSuport;    
     
     public Editor()
     {
         initComponents();
+        
         final PortugolDocumento portugolDocumento = new PortugolDocumento();
+        
         textArea.setDocument(portugolDocumento);
         scrollPane = new RTextScrollPane(textArea,true);
         FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));
+        
         textArea.setSyntaxEditingStyle("text/por");
         textArea.setCodeFoldingEnabled(true);
         textArea.setUseFocusableTips(true);
-        
         
         notificaErrosEditor = new PortugolParser();
         textArea.addParser(notificaErrosEditor);
@@ -54,22 +56,10 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
 
         textArea.putClientProperty(PROPERTY_LANGUAGE_PARSER, notificaErrosEditor);
         
-       
-        
-         textArea.addCaretListener(new CaretListener()
-        {
-            @Override
-            public void caretUpdate(CaretEvent e)
-            {
-                rotuloPosicaoCursor.setText(String.format("Linha: %d, Coluna: %d", textArea.getCaretLineNumber() + 1, textArea.getCaretOffsetFromLineStart() + 1));
-            }
-        });
         scrollPane.setFoldIndicatorEnabled(true);
         scrollPane.setIconRowHeaderEnabled(true);
         scrollPane.setLineNumbersEnabled(true);
-        scrollPane.setViewportView(textArea);
-        
-        
+        scrollPane.setViewportView(textArea);        
         
         ToolTipManager.sharedInstance().registerComponent(textArea);
 
@@ -84,6 +74,16 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
         scrollPane.setViewportBorder(null);
         this.setBorder(new LineBorder(new Color(200,200,200)));
         errorStrip.setBackground(new Color(220, 220, 220));
+    }
+    
+    public void adicionarObservadorCursor(CaretListener observador)
+    {
+        textArea.addCaretListener(observador);
+    }
+    
+    public Point getPosicaoCursor()
+    {
+        return new Point(textArea.getCaretOffsetFromLineStart() + 1, textArea.getCaretLineNumber() + 1);
     }
     
     @Override
@@ -179,16 +179,12 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
         textArea = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         painelEditor = new javax.swing.JPanel();
-        barraStatus = new javax.swing.JPanel();
-        rotuloPosicaoCursor = new javax.swing.JLabel();
 
-        setBorder(null);
         setLayout(new java.awt.BorderLayout());
 
         scrollPane.setBorder(null);
@@ -201,26 +197,10 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
         add(scrollPane, java.awt.BorderLayout.CENTER);
 
         painelEditor.setLayout(new java.awt.BorderLayout());
-
-        barraStatus.setBackground(new java.awt.Color(220, 220, 220));
-        barraStatus.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 10));
-        barraStatus.setPreferredSize(new java.awt.Dimension(540, 30));
-        barraStatus.setLayout(new java.awt.GridLayout(1, 0));
-
-        rotuloPosicaoCursor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        rotuloPosicaoCursor.setText("Linha: 0, Coluna: 0");
-        rotuloPosicaoCursor.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        rotuloPosicaoCursor.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        barraStatus.add(rotuloPosicaoCursor);
-
-        painelEditor.add(barraStatus, java.awt.BorderLayout.SOUTH);
-
         add(painelEditor, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel barraStatus;
     private javax.swing.JPanel painelEditor;
-    private javax.swing.JLabel rotuloPosicaoCursor;
     private org.fife.ui.rtextarea.RTextScrollPane scrollPane;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea textArea;
     // End of variables declaration//GEN-END:variables

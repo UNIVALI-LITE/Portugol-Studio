@@ -45,24 +45,32 @@ public class BotoesControleAba extends CabecalhoAba {
         
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jBAbrir = new javax.swing.JButton();
         jBNovaAba = new javax.swing.JButton();
 
+        setFocusable(false);
         setOpaque(false);
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
+        setLayout(new java.awt.GridLayout(1, 2));
 
         jBAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
         jBAbrir.setBorderPainted(false);
         jBAbrir.setContentAreaFilled(false);
-        jBAbrir.setFocusPainted(false);
+        jBAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jBAbrir.setFocusable(false);
         jBAbrir.setHideActionText(true);
         jBAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jBAbrir.setMinimumSize(new java.awt.Dimension(32, 25));
+        jBAbrir.setPreferredSize(new java.awt.Dimension(32, 25));
         jBAbrir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
+        jBAbrir.setRequestFocusEnabled(false);
         jBAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBAbrir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jBAbrir.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jBAbrirActionPerformed(evt);
             }
         });
@@ -71,12 +79,17 @@ public class BotoesControleAba extends CabecalhoAba {
         jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/plus.png"))); // NOI18N
         jBNovaAba.setBorderPainted(false);
         jBNovaAba.setContentAreaFilled(false);
+        jBNovaAba.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jBNovaAba.setFocusable(false);
         jBNovaAba.setHideActionText(true);
         jBNovaAba.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jBNovaAba.setPreferredSize(new java.awt.Dimension(32, 25));
+        jBNovaAba.setRequestFocusEnabled(false);
         jBNovaAba.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBNovaAba.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jBNovaAba.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jBNovaAbaActionPerformed(evt);
             }
         });

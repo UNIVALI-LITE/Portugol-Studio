@@ -1,32 +1,35 @@
 package br.univali.ps.ui;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.LineBorder;
 
-public abstract class Aba extends JPanel{
-    
-	private static List<Class<? extends Aba>> classesFilhas = new ArrayList<Class<? extends Aba>>();
-	
+public abstract class Aba extends JPanel
+{
+    private static List<Class<? extends Aba>> classesFilhas = new ArrayList<Class<? extends Aba>>();
     protected CabecalhoAba cabecalho;
     private JTabbedPane painelTabulado;
     private List<AbaListener> listeners;
-    
+
     private Aba()
-	{
-    	if (!classesFilhas.contains(this.getClass()))
-    		classesFilhas.add(this.getClass());
-	}
-    
-    public final static List<Class<? extends Aba>> classesFilhas()
-	{
-    	return new ArrayList<Class<? extends Aba>>(classesFilhas);
-	}
-    
-    public Aba(JTabbedPane painelTabulado) 
     {
-    	this();
+        if (!classesFilhas.contains(this.getClass()))
+        {
+            classesFilhas.add(this.getClass());
+        }
+    }
+
+    public final static List<Class<? extends Aba>> classesFilhas()
+    {
+        return new ArrayList<Class<? extends Aba>>(classesFilhas);
+    }
+
+    public Aba(JTabbedPane painelTabulado)
+    {
+        this();
         listeners = new ArrayList<AbaListener>();
         this.painelTabulado = painelTabulado;
         cabecalho = criarCabecalho();
@@ -38,52 +41,65 @@ public abstract class Aba extends JPanel{
         this.painelTabulado.setSelectedComponent(this);
     }
 
-    public JTabbedPane getPainelTabulado() {
+    public JTabbedPane getPainelTabulado()
+    {
         return painelTabulado;
     }
 
-    
-    
-    protected CabecalhoAba criarCabecalho(){
+    protected CabecalhoAba criarCabecalho()
+    {
         CabecalhoAba cabecalho = new CabecalhoAba(this);
         cabecalho.setTitulo("Sem título");
         cabecalho.setBotaoFecharVisivel(true);
         return cabecalho;
     }
-    
-    public void setRemovivel(boolean removivel) {
+
+    public void setRemovivel(boolean removivel)
+    {
         cabecalho.setBotaoFecharVisivel(removivel);
     }
 
-    public boolean isRemovivel() {
+    public boolean isRemovivel()
+    {
         return cabecalho.isBotaoFecharVisivel();
     }
-    
-    public boolean fechar() {
-        
+
+    public boolean fechar()
+    {
+
         boolean podeFechar = true;
-        
-        for (AbaListener listener : listeners){
+
+        for (AbaListener listener : listeners)
+        {
             if (!listener.fechandoAba(this))
+            {
                 podeFechar = false;
+            }
         }
-        
+
         if (podeFechar)
+        {
             painelTabulado.remove(this);
-        
+        }
+
         return podeFechar;
     }
-    
-    public void selecionar(){
+
+    public void selecionar()
+    {
         painelTabulado.setSelectedComponent(this);
     }
-    
-    public void adicionarAbaListener(AbaListener listener){
+
+    public void adicionarAbaListener(AbaListener listener)
+    {
         if (!listeners.contains(listener))
+        {
             listeners.add(listener);
+        }
     }
-    
-    public void removerAbaListener (AbaListener listener){
+
+    public void removerAbaListener(AbaListener listener)
+    {
         listeners.remove(listener);
     }
 }

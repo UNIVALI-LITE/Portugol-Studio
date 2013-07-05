@@ -9,7 +9,6 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
 import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.util.IconFactory;
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -38,40 +37,39 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.SearchEngine;
 
 public final class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
-{   
+{
     private JFileChooser dialogoEscolhaArquivo = new JFileChooser();
     private AcaoNovoArquivo acaoNovoArquivo = null;
     private AcaoAbrirArquivo abrirArquivo = null;
     private AcaoSalvarComo acaoSalvarComo = null;
- 
     private Action acaoSelecionarAbaDireita = null;
     private Action acaoSelecionarAbaEsquerda = null;
- 
     private Action themeDefault = null;
     private Action themeDark = null;
     private Action themeEclipse = null;
     private Action themeVS = null;
-    
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
     private FindReplaceActionListener findReplaceActionListener = new FindReplaceActionListener();
-    
-    private void acoesprontas() {
+
+    private void acoesprontas()
+    {
         acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
         acaoNovoArquivo.configurar(painelTabulado);
 
         abrirArquivo = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
         abrirArquivo.configurar(painelTabulado, this, dialogoEscolhaArquivo);
-        
+
         acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
         acaoSalvarComo.setEnabled(false);
-       
+
         mniNovo.setAction(acaoNovoArquivo);
         mniAbrir.setAction(abrirArquivo);
         mniSalvarComo.setAction(acaoSalvarComo);
     }
 
-    public void initSearchDialogs() {
+    public void initSearchDialogs()
+    {
 
         findDialog = new FindDialog(this, findReplaceActionListener);
         replaceDialog = new ReplaceDialog(this, findReplaceActionListener);
@@ -81,14 +79,18 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         replaceDialog.setSearchContext(findDialog.getSearchContext());
 
     }
-    
-    public TelaPrincipal()  
+
+    public TelaPrincipal()
     {
         Thread.setDefaultUncaughtExceptionHandler(this);
-        
-        try {
-        this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS +"/light-bulb-code.png")));
-        } catch (IOException ioe) {} 
+
+        try
+        {
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
+        }
+        catch (IOException ioe)
+        {
+        }
         initComponents();
         mniFechar.setEnabled(false);
         mniFecharTodos.setEnabled(false);
@@ -101,73 +103,70 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mnuPrograma.setVisible(false);
         mnuPrograma.setEnabled(false);
         dialogoEscolhaArquivo.setCurrentDirectory(new File("./exemplos"));
-        
+
         acoesprontas();
 
         this.painelTabulado.init(abrirArquivo, acaoNovoArquivo);
-       
-        bottomPane.setLayout(new BorderLayout());
-       
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+
         if (!PortugolStudio.getInstancia().isDepurando())
         {
             //TODO ACHAR UM LUGAR PARA ESSE BOTÃO
-    //        btnAlgoritmoTeste.setVisible(false);            
+            //        btnAlgoritmoTeste.setVisible(false);            
         }
-        
+
         acaoSelecionarAbaEsquerda = new AcaoSelecionarAbaEsquerda();
         getRootPane().getActionMap().put("SelecionarEsquerda", acaoSelecionarAbaEsquerda);
         getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift alt LEFT"), "SelecionarEsquerda");
-        
+
         acaoSelecionarAbaDireita = new AcaoSelecionarAbaDireita();
         getRootPane().getActionMap().put("SelecionarDireita", acaoSelecionarAbaDireita);
         getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift alt RIGHT"), "SelecionarDireita");
-    
+
         mnuTheme.setVisible(false);
         mnuTheme.setEnabled(false);
-        themeDefault = new ThemeAction("Padrão","/default.xml");
+        themeDefault = new ThemeAction("Padrão", "/default.xml");
         mniDefault.setAction(themeDefault);
-        themeDark = new ThemeAction("Dark","/dark.xml");
+        themeDark = new ThemeAction("Dark", "/dark.xml");
         mniDark.setAction(themeDark);
-        themeEclipse = new ThemeAction("Eclipse","/eclipse.xml");
+        themeEclipse = new ThemeAction("Eclipse", "/eclipse.xml");
         mniEclipse.setAction(themeEclipse);
-        themeVS = new ThemeAction("Visual Studio","/vs.xml");
+        themeVS = new ThemeAction("Visual Studio", "/vs.xml");
         mniVS.setAction(themeVS);
         themeDefault.setEnabled(false);
         themeDark.setEnabled(false);
         themeEclipse.setEnabled(false);
         themeVS.setEnabled(false);
-        
+
         initSearchDialogs();
         mniFind.setAction(new ShowFindDialogAction());
         mniReplace.setAction(new ShowReplaceDialogAction());
         mniGoToLine.setAction(new GoToLineAction());
-        
+
         mnuSearch.setVisible(false);
         mnuSearch.setEnabled(false);
         mniFind.setEnabled(false);
         mniReplace.setEnabled(false);
         mniGoToLine.setEnabled(false);
-        
-        
-        
+
+
+
     }
-    
-    private void configurarSeletorArquivo() {
+
+    private void configurarSeletorArquivo()
+    {
         dialogoEscolhaArquivo.setMultiSelectionEnabled(true);
         dialogoEscolhaArquivo.addChoosableFileFilter(new FiltroArquivoPortugol());
         dialogoEscolhaArquivo.setAcceptAllFileFilterUsed(false);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {
 
-        bottomPane = new javax.swing.JPanel();
         painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
-        mnuBar = new javax.swing.JMenuBar();
+        menuPrincipal = new javax.swing.JMenuBar();
         mnuFile = new javax.swing.JMenu();
         mniNovo = new javax.swing.JMenuItem();
         mniAbrir = new javax.swing.JMenuItem();
@@ -205,17 +204,13 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setMinimumSize(new java.awt.Dimension(700, 520));
 
-        javax.swing.GroupLayout bottomPaneLayout = new javax.swing.GroupLayout(bottomPane);
-        bottomPane.setLayout(bottomPaneLayout);
-        bottomPaneLayout.setHorizontalGroup(
-            bottomPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 632, Short.MAX_VALUE)
-        );
-        bottomPaneLayout.setVerticalGroup(
-            bottomPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 28, Short.MAX_VALUE)
-        );
+        painelTabulado.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 8, 8, 8));
+        getContentPane().add(painelTabulado, java.awt.BorderLayout.CENTER);
+
+        menuPrincipal.setBackground(java.awt.Color.white);
+        menuPrincipal.setPreferredSize(new java.awt.Dimension(288, 25));
 
         mnuFile.setText("Arquivo");
 
@@ -269,7 +264,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         });
         mnuFile.add(mniExit);
 
-        mnuBar.add(mnuFile);
+        menuPrincipal.add(mnuFile);
 
         mnuPrograma.setText("Programa");
 
@@ -282,7 +277,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniInterromper.setText("Interromper");
         mnuPrograma.add(mniInterromper);
 
-        mnuBar.add(mnuPrograma);
+        menuPrincipal.add(mnuPrograma);
 
         mnuEdit.setText("Editar");
 
@@ -307,7 +302,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniColar.setText("Colar");
         mnuEdit.add(mniColar);
 
-        mnuBar.add(mnuEdit);
+        menuPrincipal.add(mnuEdit);
 
         mnuSearch.setText("Pesquisar");
 
@@ -320,7 +315,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniGoToLine.setText("jMenuItem2");
         mnuSearch.add(mniGoToLine);
 
-        mnuBar.add(mnuSearch);
+        menuPrincipal.add(mnuSearch);
 
         mnuTheme.setText("Tema");
         mnuTheme.add(mniDefault);
@@ -328,7 +323,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mnuTheme.add(mniEclipse);
         mnuTheme.add(mniVS);
 
-        mnuBar.add(mnuTheme);
+        menuPrincipal.add(mnuTheme);
 
         mnuHelp.setText("Ajuda");
 
@@ -354,32 +349,15 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         });
         mnuHelp.add(jMenuItem1);
 
-        mnuBar.add(mnuHelp);
+        menuPrincipal.add(mnuHelp);
 
-        setJMenuBar(mnuBar);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bottomPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
-                .addGap(13, 13, 13))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(painelTabulado, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bottomPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        setJMenuBar(menuPrincipal);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        AbaAjuda abaAjuda = new AbaAjuda(painelTabulado);
+    AbaAjuda abaAjuda = new AbaAjuda(painelTabulado);
 }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniExitActionPerformed
@@ -387,32 +365,34 @@ private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_mniExitActionPerformed
 
 private void mniFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharActionPerformed
-     Aba aba = painelTabulado.getAbaSelecionada();
-     if (aba != null && !(aba.getClass() == AbaInicial.class)) {
+    Aba aba = painelTabulado.getAbaSelecionada();
+    if (aba != null && !(aba.getClass() == AbaInicial.class))
+    {
         aba.fechar();
-     }
+    }
 }//GEN-LAST:event_mniFecharActionPerformed
 
 private void mniFecharTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharTodosActionPerformed
-    for (Class<? extends Aba> classeAba: Aba.classesFilhas())
+    for (Class<? extends Aba> classeAba : Aba.classesFilhas())
     {
         if (classeAba != AbaInicial.class)
+        {
             painelTabulado.fecharTodasAbas(classeAba);
-    }  
+        }
+    }
 }//GEN-LAST:event_mniFecharTodosActionPerformed
-
-private TelaSobre telaSobre = new TelaSobre(this);
+    private TelaSobre telaSobre = new TelaSobre(this);
 private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAboutActionPerformed
     telaSobre.setModal(true);
-    telaSobre.setVisible(true);    
+    telaSobre.setVisible(true);
 }//GEN-LAST:event_mniAboutActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel bottomPane;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem mniAbout;
     private javax.swing.JMenuItem mniAbrir;
     private javax.swing.JMenuItem mniColar;
@@ -436,7 +416,6 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniSalvar;
     private javax.swing.JMenuItem mniSalvarComo;
     private javax.swing.JMenuItem mniVS;
-    private javax.swing.JMenuBar mnuBar;
     private javax.swing.JMenu mnuEdit;
     private javax.swing.JSeparator mnuEditSeparator1;
     private javax.swing.JMenu mnuFile;
@@ -449,58 +428,65 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
     // End of variables declaration//GEN-END:variables
 
-    public void dialogoSalvar() {
+    public void dialogoSalvar()
+    {
         acaoSalvarComo.actionPerformed(null);
     }
 
-    public void configurarBotoesEditar() {
+    public void configurarBotoesEditar()
+    {
     }
-    
-    private void fecharAplicativo() 
+
+    private void fecharAplicativo()
     {
         painelTabulado.fecharTodasAbas(AbaCodigoFonte.class);
 
         if (!painelTabulado.temAbaAberta(AbaCodigoFonte.class))
-            System.exit(0); 
+        {
+            System.exit(0);
+        }
     }
 
     @Override
-    public void abaSelecionada(Aba aba) 
+    public void abaSelecionada(Aba aba)
     {
-        if (aba.getClass() == AbaCodigoFonte.class) {
+        if (aba.getClass() == AbaCodigoFonte.class)
+        {
             AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
             mniSalvar.setAction(abaCodigoFonte.getAcaoSalvarArquivo());
             acaoSalvarComo.configurar(abaCodigoFonte.getAcaoSalvarArquivo(), this, dialogoEscolhaArquivo);
             mnuEdit.setVisible(true);
             mnuEdit.setEnabled(true);
-            
+
             mniDesfazer.setAction(abaCodigoFonte.getAcaoDesfazer());
             mniRefazer.setAction(abaCodigoFonte.getAcaoRefazer());
             mniCopiar.setAction(abaCodigoFonte.getAcaoCopiar());
             mniColar.setAction(abaCodigoFonte.getAcaoColar());
             mniRecortar.setAction(abaCodigoFonte.getAcaoRecortar());
             acaoSalvarComo.setEnabled(true);
-            
+
             mniExecutar.setAction(abaCodigoFonte.getAcaoExecutar());
             mniInterromper.setAction(abaCodigoFonte.getAcaoInterromper());
             mniDepurar.setAction(abaCodigoFonte.getAcaoDepurar());
             mnuPrograma.setVisible(true);
             mnuPrograma.setEnabled(true);
-            
+
             mnuTheme.setVisible(true);
             mnuTheme.setEnabled(true);
             themeDefault.setEnabled(true);
             themeDark.setEnabled(true);
             themeEclipse.setEnabled(true);
             themeVS.setEnabled(true);
-            
+
             mnuSearch.setVisible(true);
             mnuSearch.setEnabled(true);
             mniFind.setEnabled(true);
             mniReplace.setEnabled(true);
             mniGoToLine.setEnabled(true);
-        
-        } else {
+
+        }
+        else
+        {
             mniSalvar.setEnabled(false);
             acaoSalvarComo.setEnabled(false);
             mnuEdit.setVisible(false);
@@ -518,30 +504,33 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             mniFind.setEnabled(false);
             mniReplace.setEnabled(false);
             mniGoToLine.setEnabled(false);
-        
+
         }
-        
-        if (painelTabulado.temAbaAberta(AbaCodigoFonte.class) || 
-                painelTabulado.temAbaAberta(AbaAjuda.class) ){
+
+        if (painelTabulado.temAbaAberta(AbaCodigoFonte.class)
+                || painelTabulado.temAbaAberta(AbaAjuda.class))
+        {
             mniFechar.setEnabled(true);
             mniFecharTodos.setEnabled(true);
-        } else {
+        }
+        else
+        {
             mniFechar.setEnabled(false);
             mniFecharTodos.setEnabled(false);
         }
     }
-        
-    
-    private class TelaPrincipalListener extends WindowAdapter {
 
+    private class TelaPrincipalListener extends WindowAdapter
+    {
         @Override
-        public void windowClosing(WindowEvent we) {
+        public void windowClosing(WindowEvent we)
+        {
             fecharAplicativo();
         }
     }
 
     @Override
-    public void uncaughtException(Thread t, Throwable e) 
+    public void uncaughtException(Thread t, Throwable e)
     {
         if ((e instanceof ClassNotFoundException) || (e instanceof NoClassDefFoundError))
         {
@@ -549,172 +538,195 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, e, ExcecaoAplicacao.Tipo.ERRO));
             System.exit(1);
         }
-        else if (e instanceof IllegalArgumentException){e.printStackTrace(System.err);}
-        else 
+        else if (e instanceof IllegalArgumentException)
+        {
+            e.printStackTrace(System.err);
+        }
+        else
         {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(e, ExcecaoAplicacao.Tipo.ERRO));
             e.printStackTrace(System.err);
         }
     }
-    
+
     private class AcaoSelecionarAbaEsquerda extends AbstractAction
     {
-        public AcaoSelecionarAbaEsquerda() 
+        public AcaoSelecionarAbaEsquerda()
         {
             super("Selecionar esquerda");
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) 
+        public void actionPerformed(ActionEvent e)
         {
             painelTabulado.selecionarAbaAnterior();
-        }        
+        }
     }
-    
+
     private class AcaoSelecionarAbaDireita extends AbstractAction
     {
-        public AcaoSelecionarAbaDireita() 
+        public AcaoSelecionarAbaDireita()
         {
             super("Selecionar direita");
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) 
+        public void actionPerformed(ActionEvent e)
         {
             painelTabulado.selecionarProximaAba();
-        }        
+        }
     }
-    
-    
-    private class ThemeAction extends AbstractAction {
 
+    private class ThemeAction extends AbstractAction
+    {
         private String xml;
 
-        public ThemeAction(String name,String xml) {
+        public ThemeAction(String name, String xml)
+        {
             putValue(NAME, name);
             this.xml = xml;
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             InputStream in = getClass().getResourceAsStream(xml);
-            try {
-                    AbaCodigoFonte aba = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
-                    Theme theme = Theme.load(in);
-                    theme.apply(aba.getEditor().getTextArea());
-            } catch (IOException ioe) {
-                    ioe.printStackTrace(System.err);
+            try
+            {
+                AbaCodigoFonte aba = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
+                Theme theme = Theme.load(in);
+                theme.apply(aba.getEditor().getTextArea());
+            }
+            catch (IOException ioe)
+            {
+                ioe.printStackTrace(System.err);
             }
         }
-
     }
-    
-    private class GoToLineAction extends AbstractAction {
 
-        public GoToLineAction() {
-                super("Ir para linha...");
-                int c = getToolkit().getMenuShortcutKeyMask();
-                putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, c));
+    private class GoToLineAction extends AbstractAction
+    {
+        public GoToLineAction()
+        {
+            super("Ir para linha...");
+            int c = getToolkit().getMenuShortcutKeyMask();
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, c));
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
 
-            if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class) {
-                if (findDialog.isVisible()) {
-                            findDialog.setVisible(false);
-                    }
-                    if (replaceDialog.isVisible()) {
-                            replaceDialog.setVisible(false);
-                    }
-
-                    AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte)painelTabulado.getAbaSelecionada();
-                    RSyntaxTextArea textArea = abaCodigoFonte.getEditor().getTextArea();
-
-                    GoToDialog dialog = new GoToDialog(TelaPrincipal.this);
-                    dialog.setMaxLineNumberAllowed(textArea.getLineCount());
-                    dialog.setVisible(true);
-                    int line = dialog.getLineNumber();
-                    if (line>0) {
-                        try {
-                                textArea.setCaretPosition(textArea.getLineStartOffset(line-1));
-                        } catch (BadLocationException ble) { // Never happens
-                                UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-                                ble.printStackTrace(System.err);
-                        }
-                    }
+            if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class)
+            {
+                if (findDialog.isVisible())
+                {
+                    findDialog.setVisible(false);
                 }
-        }
+                if (replaceDialog.isVisible())
+                {
+                    replaceDialog.setVisible(false);
+                }
 
-    }
-    
-    private class FindReplaceActionListener implements ActionListener {
-        
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class){
-            
-                String command = e.getActionCommand();
-                SearchDialogSearchContext context = findDialog.getSearchContext();
-                AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte)painelTabulado.getAbaSelecionada();
+                AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
                 RSyntaxTextArea textArea = abaCodigoFonte.getEditor().getTextArea();
 
-                if (FindDialog.ACTION_FIND.equals(command)) {
-                        if (!SearchEngine.find(textArea, context)) {
-                            UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-                        }
+                GoToDialog dialog = new GoToDialog(TelaPrincipal.this);
+                dialog.setMaxLineNumberAllowed(textArea.getLineCount());
+                dialog.setVisible(true);
+                int line = dialog.getLineNumber();
+                if (line > 0)
+                {
+                    try
+                    {
+                        textArea.setCaretPosition(textArea.getLineStartOffset(line - 1));
+                    }
+                    catch (BadLocationException ble)
+                    { // Never happens
+                        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+                        ble.printStackTrace(System.err);
+                    }
                 }
-                else if (ReplaceDialog.ACTION_REPLACE.equals(command)) {
-                        if (!SearchEngine.replace(textArea, context)) {
-                                UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-                        }
+            }
+        }
+    }
+
+    private class FindReplaceActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+
+            if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class)
+            {
+
+                String command = e.getActionCommand();
+                SearchDialogSearchContext context = findDialog.getSearchContext();
+                AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
+                RSyntaxTextArea textArea = abaCodigoFonte.getEditor().getTextArea();
+
+                if (FindDialog.ACTION_FIND.equals(command))
+                {
+                    if (!SearchEngine.find(textArea, context))
+                    {
+                        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+                    }
                 }
-                else if (ReplaceDialog.ACTION_REPLACE_ALL.equals(command)) {
-                        int count = SearchEngine.replaceAll(textArea, context);
-                                JOptionPane.showMessageDialog(null, count
-                                        + " ocorrências foram substituídas.");
+                else if (ReplaceDialog.ACTION_REPLACE.equals(command))
+                {
+                    if (!SearchEngine.replace(textArea, context))
+                    {
+                        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+                    }
+                }
+                else if (ReplaceDialog.ACTION_REPLACE_ALL.equals(command))
+                {
+                    int count = SearchEngine.replaceAll(textArea, context);
+                    JOptionPane.showMessageDialog(null, count
+                            + " ocorrências foram substituídas.");
                 }
 
             }
         }
     }
-    
-    
-    private class ShowFindDialogAction extends AbstractAction {
-		
-        public ShowFindDialogAction() {
-                super("Procurar...");
-                int c = getToolkit().getMenuShortcutKeyMask();
-                putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, c));
+
+    private class ShowFindDialogAction extends AbstractAction
+    {
+        public ShowFindDialogAction()
+        {
+            super("Procurar...");
+            int c = getToolkit().getMenuShortcutKeyMask();
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, c));
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-                if (replaceDialog.isVisible()) {
-                        replaceDialog.setVisible(false);
-                }
-                findDialog.setVisible(true);
+        public void actionPerformed(ActionEvent e)
+        {
+            if (replaceDialog.isVisible())
+            {
+                replaceDialog.setVisible(false);
+            }
+            findDialog.setVisible(true);
         }
-
     }
 
-
-    private class ShowReplaceDialogAction extends AbstractAction {
-
-        public ShowReplaceDialogAction() {
-                super("Substituir...");
-                int c = getToolkit().getMenuShortcutKeyMask();
-                putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, c));
+    private class ShowReplaceDialogAction extends AbstractAction
+    {
+        public ShowReplaceDialogAction()
+        {
+            super("Substituir...");
+            int c = getToolkit().getMenuShortcutKeyMask();
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, c));
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-                if (findDialog.isVisible()) {
-                        findDialog.setVisible(false);
-                }
-                replaceDialog.setVisible(true);
+        public void actionPerformed(ActionEvent e)
+        {
+            if (findDialog.isVisible())
+            {
+                findDialog.setVisible(false);
+            }
+            replaceDialog.setVisible(true);
         }
-
     }
 }
