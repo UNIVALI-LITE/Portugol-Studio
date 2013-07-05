@@ -12,7 +12,6 @@ import br.univali.ps.ui.TelaPrincipal;
 
 public final class PortugolStudio
 {
-    private Thread threadPortugolStudio = null;
     private static PortugolStudio instancia = null;    
     private boolean depurando = false;
     private TratadorExcecoes tratadorExcecoes = null;    
@@ -42,21 +41,16 @@ public final class PortugolStudio
     }
 
     public void iniciar()
-    {
-        if (threadPortugolStudio == null)
-        {
-            threadPortugolStudio = new Thread()
-            {
-                @Override
-                public synchronized void start()
+    {                
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
                 {
                     telaPrincipal = new TelaPrincipal();
                     telaPrincipal.setVisible(true);
                 }                
-            };
-            
-            threadPortugolStudio.start();
-        }
+            }
+        });
     }
 
     public TratadorExcecoes getTratadorExcecoes()
