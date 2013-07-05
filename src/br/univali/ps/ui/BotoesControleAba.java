@@ -47,15 +47,11 @@ public class BotoesControleAba extends CabecalhoAba {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToolBar1 = new javax.swing.JToolBar();
         jBAbrir = new javax.swing.JButton();
         jBNovaAba = new javax.swing.JButton();
 
         setOpaque(false);
-        setLayout(new java.awt.BorderLayout());
-
-        jToolBar1.setFloatable(false);
-        jToolBar1.setOpaque(false);
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         jBAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
         jBAbrir.setBorderPainted(false);
@@ -70,7 +66,7 @@ public class BotoesControleAba extends CabecalhoAba {
                 jBAbrirActionPerformed(evt);
             }
         });
-        jToolBar1.add(jBAbrir);
+        add(jBAbrir);
 
         jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/plus.png"))); // NOI18N
         jBNovaAba.setBorderPainted(false);
@@ -84,9 +80,7 @@ public class BotoesControleAba extends CabecalhoAba {
                 jBNovaAbaActionPerformed(evt);
             }
         });
-        jToolBar1.add(jBNovaAba);
-
-        add(jToolBar1, java.awt.BorderLayout.CENTER);
+        add(jBNovaAba);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBNovaAbaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovaAbaActionPerformed
@@ -100,6 +94,5 @@ public class BotoesControleAba extends CabecalhoAba {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrir;
     private javax.swing.JButton jBNovaAba;
-    private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
