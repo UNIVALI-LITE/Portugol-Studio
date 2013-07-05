@@ -842,8 +842,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private void btnAumentarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAumentarActionPerformed
     {//GEN-HEADEREND:event_btnAumentarActionPerformed
         editor.aumentarFonte();  
-        exibirCorretor();
-        
     }//GEN-LAST:event_btnAumentarActionPerformed
 
     private void btnDiminuirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnDiminuirActionPerformed
