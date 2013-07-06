@@ -142,6 +142,7 @@ public class PortugolOutlineTree extends AbstractSourceTree
 		refresh();
                 
                 model.reload();
+                TreeUtils.expandAll(this, true);
 	}
 
 
