@@ -299,8 +299,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         barraFerramentas = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
@@ -372,6 +371,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnSalvar.setFocusable(false);
         btnSalvar.setHideActionText(true);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalvar.setOpaque(false);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnSalvar);
 
@@ -381,6 +381,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDesfazer.setFocusPainted(false);
         btnDesfazer.setFocusable(false);
         btnDesfazer.setHideActionText(true);
+        btnDesfazer.setOpaque(false);
         barraFerramentas.add(btnDesfazer);
 
         btnRefazer.setAction(acaoRefazer);
@@ -390,6 +391,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnRefazer.setFocusable(false);
         btnRefazer.setHideActionText(true);
         btnRefazer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRefazer.setOpaque(false);
         btnRefazer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnRefazer);
         barraFerramentas.add(jSeparador1);
@@ -401,6 +403,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnRecortar.setFocusable(false);
         btnRecortar.setHideActionText(true);
         btnRecortar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRecortar.setOpaque(false);
         btnRecortar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnRecortar);
 
@@ -411,6 +414,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnCopiar.setFocusable(false);
         btnCopiar.setHideActionText(true);
         btnCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCopiar.setOpaque(false);
         btnCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnCopiar);
 
@@ -421,6 +425,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnColar.setFocusable(false);
         btnColar.setHideActionText(true);
         btnColar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnColar.setOpaque(false);
         btnColar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnColar);
 
@@ -435,12 +440,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnComentar.setMaximumSize(new java.awt.Dimension(38, 38));
         btnComentar.setMinimumSize(new java.awt.Dimension(38, 38));
+        btnComentar.setOpaque(false);
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnComentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -456,12 +460,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDescomentar.setMaximumSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setMinimumSize(new java.awt.Dimension(38, 38));
+        btnDescomentar.setOpaque(false);
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDescomentarActionPerformed(evt);
             }
         });
@@ -473,11 +476,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDiminuir.setFocusPainted(false);
         btnDiminuir.setFocusable(false);
         btnDiminuir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDiminuir.setOpaque(false);
         btnDiminuir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDiminuir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDiminuir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDiminuirActionPerformed(evt);
             }
         });
@@ -489,11 +491,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnAumentar.setFocusPainted(false);
         btnAumentar.setFocusable(false);
         btnAumentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAumentar.setOpaque(false);
         btnAumentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAumentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnAumentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAumentarActionPerformed(evt);
             }
         });
@@ -507,6 +508,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnExecutar.setFocusable(false);
         btnExecutar.setHideActionText(true);
         btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnExecutar.setOpaque(false);
         btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnExecutar);
 
@@ -517,6 +519,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnInterromper.setFocusable(false);
         btnInterromper.setHideActionText(true);
         btnInterromper.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnInterromper.setOpaque(false);
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
@@ -527,6 +530,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDepurar.setFocusable(false);
         btnDepurar.setHideActionText(true);
         btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDepurar.setOpaque(false);
         btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnDepurar);
 
@@ -536,11 +540,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnProximo.setFocusPainted(false);
         btnProximo.setFocusable(false);
         btnProximo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnProximo.setOpaque(false);
         btnProximo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnProximo.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnProximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProximoActionPerformed(evt);
             }
         });
@@ -666,10 +669,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         corrigir.setText("Corrigir");
         corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         corrigir.setPreferredSize(new java.awt.Dimension(130, 30));
-        corrigir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        corrigir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 corrigirActionPerformed(evt);
             }
         });
