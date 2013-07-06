@@ -1283,7 +1283,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public final void caretUpdate(CaretEvent e)
     {
         Point posicao = editor.getPosicaoCursor();
+        Editor.EscopoCursor escopo = editor.getEscopoCursor();
+        //rotuloPosicaoCursor.setText(String.format("Linha: %d, Coluna: %d", posicao.y, posicao.x));
         
-        rotuloPosicaoCursor.setText(String.format("Linha: %d, Coluna: %d", posicao.y, posicao.x));
+        rotuloPosicaoCursor.setText(String.format("Escopo: %s, Nivel: %d, Linha: %d, Coluna: %d", escopo.getNome(), escopo.getProfundidade(), posicao.y, posicao.x));
     }
 }

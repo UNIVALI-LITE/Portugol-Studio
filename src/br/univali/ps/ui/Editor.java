@@ -5,19 +5,24 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.dominio.PortugolDocumento;
-import br.univali.ps.dominio.PortugolDocumentoListener;
 import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
+import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.ToolTipManager;
 import javax.swing.border.LineBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
+import org.fife.rsta.ui.EscapableDialog;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
@@ -28,7 +33,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  *
  * @author fillipi
  */
-public class Editor extends javax.swing.JPanel implements AlteradorFonte
+public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretListener
 {
     private Object tag = null;
     private ErrorStrip errorStrip;
@@ -73,6 +78,8 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
         this.setBorder(new LineBorder(new Color(200,200,200)));
         errorStrip.setBackground(new Color(220, 220, 220));
        
+        textArea.addCaretListener(this);
+        
         this.revalidate();
     }
     
@@ -173,6 +180,82 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
         return textArea;
     }
     
+    public EscopoCursor getEscopoCursor()
+    {
+        try
+        {
+            String text = textArea.getText(0, textArea.getCaretPosition());
+        
+            int nivel = getNivelEscopo(text);
+            String nome = getNomeEscopo(text, nivel);
+           
+            return new EscopoCursor(nome, nivel, textArea.getCaretLineNumber(), textArea.getCaretOffsetFromLineStart());
+        
+        }
+        catch (BadLocationException ex)
+        {
+            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    
+    private String getNomeEscopo(String texto, int nivel)
+    {
+        String nome = null;
+                        
+        Matcher avaliadorNome = Pattern.compile("funcao(?<nome>[^\\(]+)").matcher(texto);
+        
+        while (avaliadorNome.find())
+        {
+            final String temp = avaliadorNome.group("nome").trim();
+            //nome = avaliadorNome.group();
+            //System.out.println(nome + avaliadorNome.groupCount());
+            int inicio = 0;
+            for (int i = temp.length() - 1 ; i > 0; i--)
+            {
+                if (temp.charAt(i) == ' ' || temp.charAt(i) == '\r' ||
+                        temp.charAt(i) == '\t' || temp.charAt(i) == '\n')
+                {
+                    inicio = i + 1;
+                    break;
+                }                            
+            }                
+            
+            nome = temp.substring(inicio);
+        }       
+        
+        if (nivel == 0)
+        {
+             nome = "indefinido";
+        }
+        else
+        if (nivel == 1)
+        {
+            nome = "programa";
+        }
+        
+        
+        return nome;
+    }
+    
+    private int getNivelEscopo(String texto)
+    {
+         Matcher avaliadorNivel = Pattern.compile("\\{|\\}").matcher(texto);
+        int nivel = 0;
+        while (avaliadorNivel.find()){
+            if (avaliadorNivel.group().equals("{"))
+                nivel ++;
+            else if (avaliadorNivel.group().equals("}")){
+                nivel --;
+            }
+        }
+        
+        
+        return nivel;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,5 +290,61 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea textArea;
     // End of variables declaration//GEN-END:variables
 
-   
+    @Override
+    public void caretUpdate(CaretEvent e)
+    {
+        portugolLanguageSuport.getProvider().setEscopoCursor(getEscopoCursor());        
+        textArea.forceReparsing(notificaErrosEditor);
+    }
+
+    public class EscopoCursor
+    {    
+        private String nome;
+        private int profundidade;
+        private int linha;
+        private int coluna;
+
+        public EscopoCursor(String nome, int profundidade, int linha, int coluna)
+        {
+            this.nome = nome;
+            this.profundidade = profundidade;
+            this.linha = linha;
+            this.coluna = coluna;
+        }
+        
+        /**
+         * @return the nome
+         */
+        public String getNome()
+        {
+            return nome;
+        }
+
+        /**
+         * @return the profundidade
+         */
+        public int getProfundidade()
+        {
+            return profundidade;
+        }
+
+        /**
+         * @return the linha
+         */
+        public int getLinha()
+        {
+            return linha;
+        }
+
+        /**
+         * @return the coluna
+         */
+        public int getColuna()
+        {
+            return coluna;
+        }
+        
+        
+        
+    }
 }

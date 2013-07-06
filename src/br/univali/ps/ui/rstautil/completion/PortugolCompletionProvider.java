@@ -1,6 +1,7 @@
 package br.univali.ps.ui.rstautil.completion;
 
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -17,7 +18,8 @@ import org.fife.ui.rsyntaxtextarea.templates.StaticCodeTemplate;
 public class PortugolCompletionProvider extends LanguageAwareCompletionProvider implements PropertyChangeListener
 {
     private List<Completion> dynamicCompletions = new ArrayList<Completion>();
-
+    private Editor.EscopoCursor escopoCursor;
+    
     public PortugolCompletionProvider()
     {
         setDefaultCompletionProvider(createCodeCompletionProvider());
@@ -103,7 +105,7 @@ public class PortugolCompletionProvider extends LanguageAwareCompletionProvider 
         }
     }
 
-    private void updateGlobalSimbolsCompletions(DefaultCompletionProvider cp, ArvoreSintaticaAbstrataPrograma ast)
+    private void updateGlobalSimbolsCompletions(DefaultCompletionProvider cp, ArvoreSintaticaAbstrataPrograma ast, Editor.EscopoCursor escopoCursor)
     {
         if (dynamicCompletions != null)
         {
@@ -113,11 +115,17 @@ public class PortugolCompletionProvider extends LanguageAwareCompletionProvider 
             }
         }
 
-        dynamicCompletions = new ASTCompletionFactory().createCompletions(ast, cp);
+        dynamicCompletions = new ASTCompletionFactory().createCompletions(ast, cp, escopoCursor);
         
         cp.addCompletions(dynamicCompletions);
     }
 
+    public void setEscopoCursor(Editor.EscopoCursor escopoCursor)
+    {
+        this.escopoCursor = escopoCursor;
+    }
+
+    
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
@@ -126,7 +134,7 @@ public class PortugolCompletionProvider extends LanguageAwareCompletionProvider 
             DefaultCompletionProvider cp = (DefaultCompletionProvider) getDefaultCompletionProvider();
             ArvoreSintaticaAbstrataPrograma asap = (ArvoreSintaticaAbstrataPrograma) evt.getNewValue();
             
-            updateGlobalSimbolsCompletions(cp, asap);            
+            updateGlobalSimbolsCompletions(cp, asap, escopoCursor);
         }
     }
 
