@@ -10,12 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.border.Border;
@@ -33,7 +31,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
     private boolean executandoPrograma = false;
     PiscaConsole blink;
 
-    public AbaConsole(JTabbedPane painelTabulado) 
+    public AbaConsole(JTabbedPane painelTabulado)
     {
         super(painelTabulado);
         cabecalho.setBotaoFecharVisivel(false);
@@ -46,7 +44,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
         this.menuAumentarFonte.setText("Aumentar fonte");
         this.menuDiminuirFonte.setText("Diminuir fonte");
         console.setDocument(new DocumentoConsole());
-        blink = new PiscaConsole(Color.BLACK,400);
+        blink = new PiscaConsole(Color.BLACK, 400);
         console.addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -311,7 +309,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
         this.tipoDado = tipoDado;
         ManipuladorEntrada manipuladorEntrada = new ManipuladorEntrada();
         manipuladorEntrada.execute();
-        
+
         String entrada = (String) manipuladorEntrada.get();
         stopBlink();
 
@@ -473,7 +471,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
 
     public void startBlink() throws BadLocationException
     {
-       // console.getHighlighter().addHighlight(0, 1, new BlinkPainter(Color.lightGray, 100));
+        // console.getHighlighter().addHighlight(0, 1, new BlinkPainter(Color.lightGray, 100));
         blink.start();
     }
 
@@ -490,6 +488,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
         Border originalBorder = BorderFactory.createLineBorder(Color.white, 2);
         CompoundBorder compoundBorder = new CompoundBorder(outBorder, innerBorder);
         Timer t;
+
         public PiscaConsole(Color c, int blinkRate)
         {
             super(null);
@@ -519,12 +518,12 @@ public class AbaConsole extends Aba implements Saida, Entrada
         {
             if (console.getBorder() == originalBorder)
             {
-                console.setBorder(compoundBorder);            
+                console.setBorder(compoundBorder);
                 System.out.println("aqui");
             }
             if (console.getBorder() == compoundBorder)
             {
-                console.setBorder(originalBorder);                
+                console.setBorder(originalBorder);
                 System.out.println("ali");
             }
             repaint();

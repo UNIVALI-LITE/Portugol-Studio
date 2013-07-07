@@ -7,7 +7,6 @@
         <EmptyBorder bottom="8" left="8" right="8" top="10"/>
       </Border>
     </Property>
-    <Property name="opaque" type="boolean" value="true"/>
   </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>

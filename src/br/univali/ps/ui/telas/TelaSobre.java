@@ -30,7 +30,7 @@ public class TelaSobre extends javax.swing.JDialog
 
     private void configurarAcaoSair() 
     {
-        acaoSair = new AbstractAction("Sair", IconFactory.createIcon(IconFactory.LARGE_ICONS_PATH, "sair.png"))
+        acaoSair = new AbstractAction("Sair", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "sair.png"))
         {
             public void actionPerformed(ActionEvent e) 
             {

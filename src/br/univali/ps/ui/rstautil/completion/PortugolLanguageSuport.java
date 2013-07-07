@@ -36,6 +36,7 @@ public class PortugolLanguageSuport extends AbstractLanguageSupport
         {
             provider = new PortugolCompletionProvider();
         }
+        
         return provider;
     }
 
@@ -63,7 +64,7 @@ public class PortugolLanguageSuport extends AbstractLanguageSupport
     {
         AutoCompletion ac = createAutoCompletion(getProvider());
         ac.install(textArea);
-        getParser(textArea).addPropertyChangeListener(PortugolParser.PROPERTY_AST, getProvider());
+        getParser(textArea).addPropertyChangeListener(PortugolParser.PROPERTY_RESULTADO_ANALISE, getProvider());
         installImpl(textArea, ac);
         textArea.setToolTipSupplier(getProvider());
     }
@@ -78,7 +79,7 @@ public class PortugolLanguageSuport extends AbstractLanguageSupport
     public void uninstall(RSyntaxTextArea textArea)
     {
         uninstallImpl(textArea);
-        getParser(textArea).removePropertyChangeListener(PortugolParser.PROPERTY_AST, getProvider());
+        getParser(textArea).removePropertyChangeListener(PortugolParser.PROPERTY_RESULTADO_ANALISE, getProvider());
         textArea.setToolTipSupplier(null);
     }
 }

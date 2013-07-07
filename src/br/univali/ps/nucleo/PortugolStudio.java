@@ -1,4 +1,3 @@
-
 package br.univali.ps.nucleo;
 
 import br.univali.ps.ui.TelaPrincipal;
@@ -7,30 +6,31 @@ import br.univali.ps.ui.TelaPrincipal;
  *
  * @author Luiz Fernando Noschang
  * @since 22/08/2011
- * 
+ *
  */
-
 public final class PortugolStudio
 {
-    private static PortugolStudio instancia = null;    
+    private static PortugolStudio instancia = null;
     private boolean depurando = false;
-    private TratadorExcecoes tratadorExcecoes = null;    
+    private TratadorExcecoes tratadorExcecoes = null;
     private TelaPrincipal telaPrincipal = null;
+    private Configuracoes configuracoes = null;
 
     private PortugolStudio()
     {
-        
-    }    
-    
-    public static PortugolStudio getInstancia() 
+    }
+
+    public static PortugolStudio getInstancia()
     {
         if (instancia == null)
+        {
             instancia = new PortugolStudio();
-        
+        }
+
         return instancia;
     }
 
-    public boolean isDepurando() 
+    public boolean isDepurando()
     {
         return depurando;
     }
@@ -41,14 +41,25 @@ public final class PortugolStudio
     }
 
     public void iniciar()
-    {                
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 {
+                    try
+                    {
+                        getConfiguracoes().carregar();
+                    }
+                    catch (ExcecaoAplicacao excecaoAplicacao)
+                    {
+                        getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
+                    }
+                    
                     telaPrincipal = new TelaPrincipal();
                     telaPrincipal.setVisible(true);
-                }                
+                }
             }
         });
     }
@@ -56,12 +67,25 @@ public final class PortugolStudio
     public TratadorExcecoes getTratadorExcecoes()
     {
         if (tratadorExcecoes == null)
+        {
             tratadorExcecoes = new TratadorExcecoes();
-        
+        }
+
         return tratadorExcecoes;
     }
 
-    public TelaPrincipal getTelaPrincipal() {
+    public Configuracoes getConfiguracoes()
+    {
+        if (configuracoes == null)
+        {
+            configuracoes = new Configuracoes();
+        }
+        
+        return configuracoes;
+    }
+
+    public TelaPrincipal getTelaPrincipal()
+    {
         return telaPrincipal;
     }
 }

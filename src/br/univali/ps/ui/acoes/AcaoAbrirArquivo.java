@@ -2,7 +2,6 @@ package br.univali.ps.ui.acoes;
 
 import br.univali.portugol.corretor.dinamico.Unmarshal;
 import br.univali.portugol.corretor.dinamico.model.Questao;
-import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.AbaCodigoFonte;
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.Container;
@@ -14,13 +13,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-public class AcaoAbrirArquivo extends Acao
+public final class AcaoAbrirArquivo extends Acao
 {
-    
     private JFileChooser chooser;
     private Container parent;
     private JTabbedPane painelTabulado;
-  
 
     public AcaoAbrirArquivo()
     {
@@ -34,28 +31,31 @@ public class AcaoAbrirArquivo extends Acao
         this.parent = parent;
         this.chooser = chooser;
     }
-   
 
     @Override
     protected void executar(ActionEvent e) throws Exception
     {
         if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
         {
-            
             File[] arquivos = chooser.getSelectedFiles();
-            
-            for (int i = 0; i < arquivos.length; i++) {
-                
+
+            for (int i = 0; i < arquivos.length; i++)
+            {
+
                 File arquivo = arquivos[i];
-                if (getFileExtension(arquivo).equals("pex")||getFileExtension(arquivo).equals("xml")) {
+                
+                if (getFileExtension(arquivo).equals("pex") || getFileExtension(arquivo).equals("xml"))
+                {
                     Unmarshal u = new Unmarshal();
                     Questao q = u.execute(new FileInputStream(arquivo));
                     AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
                     abaCodigoFonte.setQuestao(q);
-                } else {
+                }
+                else
+                {
                     String codigoFonte = FileHandle.open(arquivo);
                     AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
-                    abaCodigoFonte.setCodigoFonte(codigoFonte, arquivo);
+                    abaCodigoFonte.setCodigoFonte(codigoFonte, arquivo, true);
                 }
             }
         }
@@ -63,10 +63,11 @@ public class AcaoAbrirArquivo extends Acao
         {
             throw new Exception("Seleção de arquivo cancelada pelo usuário");
         }
-    } 
-    
-    private String getFileExtension(File file){
+    }
+
+    private String getFileExtension(File file)
+    {
         String fileName = file.getName();
-        return fileName.substring(fileName.lastIndexOf(".") +1,fileName.length());
+        return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
     }
 }

@@ -1,6 +1,8 @@
 package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
@@ -20,14 +22,11 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class AbaMensagemCompilador extends Aba implements TableModelListener
+public final class AbaMensagemCompilador extends Aba implements TableModelListener
 {
     private List<AbaMensagemCompiladorListener> mensagemCompiladorListeners;
-    ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
+    private ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
 
-    /**
-     * Creates new form AbaMensagemCompilador
-     */
     public AbaMensagemCompilador(JTabbedPane painelTabulado)
     {
         super(painelTabulado);
@@ -40,16 +39,18 @@ public class AbaMensagemCompilador extends Aba implements TableModelListener
 
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
+        
         tabelaMensagens.getColumnModel().getColumn(0).setMaxWidth(27);
-        tabelaMensagens.getColumnModel().getColumn(2).setMaxWidth(57);
-        tabelaMensagens.getColumnModel().getColumn(3).setMaxWidth(67);
+        tabelaMensagens.getColumnModel().getColumn(0).setResizable(false);
+        
+        tabelaMensagens.getColumnModel().getColumn(1).setMaxWidth(67);
+        tabelaMensagens.getColumnModel().getColumn(1).setResizable(false);
 
         BeautyTableCellRenderer renderer = new BeautyTableCellRenderer();
 
         tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderer);
         tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderer);
         tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderer);
-        tabelaMensagens.getColumnModel().getColumn(3).setCellRenderer(renderer);
 
         tabelaMensagens.getSelectionModel().addListSelectionListener(new ListSelectionListener()
         {
@@ -57,19 +58,38 @@ public class AbaMensagemCompilador extends Aba implements TableModelListener
             public void valueChanged(ListSelectionEvent e)
             {
                 if (tabelaMensagens.getSelectedRowCount() > 0)
-                {                        
-                    int linha = (Integer) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 2);
-                    int coluna = (Integer) tabelaMensagens.getModel().getValueAt(tabelaMensagens.getSelectedRow(), 3);
+                {
+                    Mensagem mensagem = tabelaModel.getMensagem(tabelaMensagens.getSelectedRow());
                     
-                    disparaPosicionarCursor(linha, coluna);
+                    disparaPosicionarCursor(getLinha(mensagem), getColuna(mensagem));
                 }
             }
         });
-        
+
         tabelaMensagens.setShowGrid(false);
         tabelaMensagens.setIntercellSpacing(new Dimension(0, 0));
     }
 
+    private int getLinha(Mensagem mensagem)
+    {
+        if (mensagem instanceof ErroAnalise)
+        {
+            return ((ErroAnalise) mensagem).getLinha();
+        }
+        
+        return 0;
+    }
+    
+    private int getColuna(Mensagem mensagem)
+    {
+        if (mensagem instanceof ErroAnalise)
+        {
+            return ((ErroAnalise) mensagem).getColuna();
+        }
+        
+        return 0;
+    }
+    
     public void atualizar(ResultadoAnalise resultadoAnalise)
     {
         tabelaModel.setResultadoAnalise(resultadoAnalise);
@@ -190,7 +210,7 @@ public class AbaMensagemCompilador extends Aba implements TableModelListener
                 {
                     setBackground(evenColor);
                 }
-                
+
                 setFont(getFont().deriveFont(Font.PLAIN));
             }
             else

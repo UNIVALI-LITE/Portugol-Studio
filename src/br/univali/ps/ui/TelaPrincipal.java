@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
@@ -8,6 +9,7 @@ import br.univali.ps.ui.acoes.AcaoSalvarComo;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
 import br.univali.ps.ui.telas.TelaSobre;
+import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,9 +23,12 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import static javax.swing.Action.NAME;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -149,10 +154,78 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniReplace.setEnabled(false);
         mniGoToLine.setEnabled(false);
 
-
+        criarMenuExemplos();
 
     }
 
+    private void criarMenuExemplos()
+    {
+        mnuExemplos.setVisible(false);
+        
+        try
+        {
+            Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+            File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
+            
+            if (diretorioExemplos.exists())
+            {
+                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
+                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
+                
+                for (File subdiretorio : diretorioExemplos.listFiles())
+                {
+                    adicionarSubniveis(subdiretorio, mnuExemplos, iconeDiretorio, iconeArquivo);
+                }
+                
+                mnuExemplos.setVisible(true);
+            }
+        }
+        catch (Exception excecao)
+        {
+            excecao.printStackTrace(System.out);
+        }
+    }
+    
+    private void adicionarSubniveis(File caminho, JMenu menu, Icon iconeDiretorio, Icon iconeArquivo)
+    {
+        if (caminho.isDirectory())
+        {
+            JMenu submenu = new JMenu(caminho.getName());
+            submenu.setIcon(iconeDiretorio);
+            
+            menu.add(submenu);
+            
+            for (File arquivo : caminho.listFiles())
+            {
+                adicionarSubniveis(arquivo, submenu, iconeDiretorio, iconeArquivo);
+            }
+        }
+        else
+        {
+            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName(), iconeArquivo)
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    try
+                    {
+                        File exemplo = new File(((JMenuItem) e.getSource()).getToolTipText());
+                        String codigoFonte = FileHandle.open(exemplo);
+                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                    }
+                    catch (Exception excecao)
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                    }
+                }
+            });
+            
+            item.setToolTipText(caminho.getAbsolutePath());
+            menu.add(item);
+        }
+    }
+    
     private void configurarSeletorArquivo()
     {
         dialogoEscolhaArquivo.setMultiSelectionEnabled(true);
@@ -177,6 +250,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniFecharTodos = new javax.swing.JMenuItem();
         mnuFileSeparator2 = new javax.swing.JSeparator();
         mniExit = new javax.swing.JMenuItem();
+        mnuExemplos = new javax.swing.JMenu();
         mnuPrograma = new javax.swing.JMenu();
         mniExecutar = new javax.swing.JMenuItem();
         mniDepurar = new javax.swing.JMenuItem();
@@ -209,7 +283,6 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         painelTabulado.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 8, 8, 8));
         getContentPane().add(painelTabulado, java.awt.BorderLayout.CENTER);
 
-        menuPrincipal.setBackground(java.awt.Color.white);
         menuPrincipal.setPreferredSize(new java.awt.Dimension(288, 25));
 
         mnuFile.setText("Arquivo");
@@ -265,6 +338,9 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mnuFile.add(mniExit);
 
         menuPrincipal.add(mnuFile);
+
+        mnuExemplos.setText("Exemplos");
+        menuPrincipal.add(mnuExemplos);
 
         mnuPrograma.setText("Programa");
 
@@ -418,6 +494,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniVS;
     private javax.swing.JMenu mnuEdit;
     private javax.swing.JSeparator mnuEditSeparator1;
+    private javax.swing.JMenu mnuExemplos;
     private javax.swing.JMenu mnuFile;
     private javax.swing.JPopupMenu.Separator mnuFileSeparator1;
     private javax.swing.JSeparator mnuFileSeparator2;
@@ -443,6 +520,15 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
         if (!painelTabulado.temAbaAberta(AbaCodigoFonte.class))
         {
+            try
+            {
+                PortugolStudio.getInstancia().getConfiguracoes().salvar();
+            }
+            catch (ExcecaoAplicacao excecaoAplicacao)
+            {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
+            }
+            
             System.exit(0);
         }
     }

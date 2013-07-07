@@ -1,48 +1,57 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
+import br.univali.ps.ui.acoes.AcaoListener;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import javax.swing.Icon;
 
-public class BotoesControleAba extends CabecalhoAba {
+public class BotoesControleAba extends CabecalhoAba implements AcaoListener
+{
+    private AcaoAbrirArquivo acaoAbrirArquivo;
+    private AcaoNovoArquivo acaoNovoArquivo;
 
-    
-    AcaoAbrirArquivo acaoAbrirArquivo;
-    AcaoNovoArquivo acaoNovoArquivo;
-    
-    /** Creates new form BotoesControleAba */
-    public BotoesControleAba(Aba aba) {
+    public BotoesControleAba(Aba aba)
+    {
         super(aba);
         removeAll();
-        initComponents();     
+        initComponents();
     }
 
     @Override
-    public String getTitulo() {
+    public String getTitulo()
+    {
         return "Pagina Inicial";
     }
 
     @Override
-    public void setIcone(Icon icone) {
+    public void setIcone(Icon icone)
+    {
     }
 
     @Override
-    public void setBotaoFecharVisivel(boolean removivel) {
+    public void setBotaoFecharVisivel(boolean removivel)
+    {
     }
-    
+
     @Override
-    public void setTitulo(String titulo) {
-        
+    public void setTitulo(String titulo)
+    {
     }
-    
-    public void setAcaoAbrirAction(AcaoAbrirArquivo acao) {
-        acaoAbrirArquivo = acao;
+
+    public void setAcaoAbrirAction(AcaoAbrirArquivo acao)
+    {
+        acaoAbrirArquivo = acao;        
+        acaoAbrirArquivo.adicionarListener(BotoesControleAba.this);
     }
-    
-    public void setAcaoNovoArquivo(AcaoNovoArquivo acao) {
+
+    public void setAcaoNovoArquivo(AcaoNovoArquivo acao)
+    {
         acaoNovoArquivo = acao;
+        acaoNovoArquivo.adicionarListener(BotoesControleAba.this);
     }
-        
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
@@ -103,9 +112,20 @@ public class BotoesControleAba extends CabecalhoAba {
     private void jBAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAbrirActionPerformed
         acaoAbrirArquivo.actionPerformed(evt);
     }//GEN-LAST:event_jBAbrirActionPerformed
- 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrir;
     private javax.swing.JButton jBNovaAba;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void acaoExecutadaSucesso(Acao acao, String mensagem)
+    {
+        
+    }
+
+    @Override
+    public void acaoFalhou(Acao acao, Exception motivoE)
+    {
+        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(motivoE);
+    }
 }
