@@ -91,7 +91,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             mensagensCompilacao(ex);
         }
 
-        jLNota.setText(String.format("Score obtido: %f", String.valueOf(nota)));
+        jLNota.setText(String.format("Score obtido: %s", String.valueOf(nota)));
 
         if (!(nota == 0 && corretor.getCasosFalhos().isEmpty()))
         {
