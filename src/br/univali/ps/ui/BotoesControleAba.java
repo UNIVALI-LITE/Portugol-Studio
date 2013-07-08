@@ -17,6 +17,9 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
         super(aba);
         removeAll();
         initComponents();
+
+        ToolTipFactory.createToolTipFor(jBAbrir, "Abre um programa ou exercício existente no computador em uma nova aba");
+        ToolTipFactory.createToolTipFor(jBNovaAba, "Cria uma nova aba contendo a estrutura básica de um programa");
     }
 
     @Override
@@ -42,7 +45,7 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
 
     public void setAcaoAbrirAction(AcaoAbrirArquivo acao)
     {
-        acaoAbrirArquivo = acao;        
+        acaoAbrirArquivo = acao;
         acaoAbrirArquivo.adicionarListener(BotoesControleAba.this);
     }
 
@@ -120,7 +123,6 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
     @Override
     public void acaoExecutadaSucesso(Acao acao, String mensagem)
     {
-        
     }
 
     @Override

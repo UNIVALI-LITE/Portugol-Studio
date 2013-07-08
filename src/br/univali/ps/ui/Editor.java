@@ -35,7 +35,7 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
     private static final Pattern padraoDeteccaoNomeEscopo = Pattern.compile("funcao(?<nome>[^\\(]+)");
     private static final Pattern padraoDeteccaoNivelEscopo = Pattern.compile("\\{|\\}");
     private static final char[] caracteresParada = new char[] {' ', '\r', '\t', '\n' };
-    private static final int[] teclasAutoComplete = new int[] { KeyEvent.VK_SPACE, KeyEvent.VK_ENTER, KeyEvent.VK_CONTROL, KeyEvent.VK_PERIOD };
+    private static final int[] teclasAutoComplete = new int[] { KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD };
     
     private Object tag = null;
     private ErrorStrip errorStrip;
@@ -121,6 +121,8 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
     public void iniciarDepuracao()
     {
         textArea.setEditable(false);
+        textArea.setFocusable(false);
+        textArea.setRequestFocusEnabled(false);
         textArea.setHighlightCurrentLine(false);
         textArea.setCaretPosition(0);
     }
@@ -130,6 +132,8 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
         textArea.setEditable(true);
         textArea.removeAllLineHighlights();
         textArea.setHighlightCurrentLine(true);
+        textArea.setFocusable(true);
+        textArea.setRequestFocusEnabled(true);
     }
 
     public void destacarLinha(int linha)
@@ -142,9 +146,6 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
             }
 
             tag = textArea.addLineHighlight(linha - 1, new Color(0f, 1f, 0f, 0.15f));
-            int offset = Math.min(textArea.getLineStartOffset(linha + 3), textArea.getText().length());
-            
-            textArea.setCaretPosition(offset);
         }
         catch (BadLocationException ex)
         {
@@ -271,7 +272,6 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
     public void caretUpdate(CaretEvent e)
     {
         portugolLanguageSuport.getProvider().setEscopoCursor(getEscopoCursor());
-        //textArea.forceReparsing(notificaErrosEditor);
     }
 
     @Override public void keyPressed(KeyEvent e) 
@@ -283,6 +283,11 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
                 textArea.forceReparsing(notificaErrosEditor);
                 return;
             }
+        }
+        
+        if ((e.getKeyCode() == KeyEvent.VK_SPACE) && (e.isControlDown()))
+        {
+            textArea.forceReparsing(notificaErrosEditor);
         }
     }
     

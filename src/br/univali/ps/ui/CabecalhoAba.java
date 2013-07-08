@@ -8,39 +8,43 @@ import javax.swing.JPanel;
 public class CabecalhoAba extends JPanel {
 
     private Aba aba;
-    
-    public CabecalhoAba(Aba aba) {
+
+    public CabecalhoAba(Aba aba)
+    {
         initComponents();
         this.aba = aba;
-        
-        // buga a aba
-        //setComponentPopupMenu(jPopupMenu1); 
     }
-    
-    public void setTitulo(String titulo) {
+
+    public void setTitulo(String titulo)
+    {
         this.jLTitulo.setText(titulo);
         calculaTamanhoCabecalho();
     }
 
-    public void setIcone(Icon icone) {
+    public void setIcone(Icon icone)
+    {
         this.jLIcone.setIcon(icone);
         calculaTamanhoCabecalho();
     }
-    
-    public void setBotaoFecharVisivel(boolean removivel) {
+
+    public void setBotaoFecharVisivel(boolean removivel)
+    {
         jBFechar.setVisible(removivel);
         calculaTamanhoCabecalho();
     }
 
-    public String getTitulo() {
+    public String getTitulo()
+    {
         return jLTitulo.getText();
     }
 
-    public Icon getIcone() {
+    public Icon getIcone()
+    {
         return jLIcone.getIcon();
     }
-    
-    public void setForegroung(Color cor){
+
+    public void setForegroung(Color cor)
+    {
         jLTitulo.setForeground(cor);
     }
 
@@ -111,15 +115,16 @@ public class CabecalhoAba extends JPanel {
     }//GEN-LAST:event_mniFecharActionPerformed
 
     private void mniFecharOutrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharOutrasActionPerformed
-        PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal)  aba.getPainelTabulado();
-        
-        for (Aba abaASerFechada: painelTabulado.getAbas(AbaCodigoFonte.class))
+        PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) aba.getPainelTabulado();
+
+        for (Aba abaASerFechada : painelTabulado.getAbas(AbaCodigoFonte.class))
         {
             if (abaASerFechada != this.aba)
+            {
                 abaASerFechada.fechar();
+            }
         }
     }//GEN-LAST:event_mniFecharOutrasActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBFechar;
     private javax.swing.JLabel jLIcone;
@@ -129,14 +134,16 @@ public class CabecalhoAba extends JPanel {
     private javax.swing.JMenuItem mniFecharOutras;
     // End of variables declaration//GEN-END:variables
 
-    private void calculaTamanhoCabecalho() {
+    private void calculaTamanhoCabecalho()
+    {
         int larguraBotao = (jBFechar.isVisible()) ? jBFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;
         int larguraTitulo = jLTitulo.getPreferredSize().width;
         setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3, 16));
     }
 
-    boolean isBotaoFecharVisivel() {
+    boolean isBotaoFecharVisivel()
+    {
         return jBFechar.isVisible();
     }
-}
+    }

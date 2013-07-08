@@ -19,6 +19,11 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -171,10 +176,14 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
             {
                 Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
                 Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
+                ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
                 
-                for (File subdiretorio : diretorioExemplos.listFiles())
+                File[] subdiretorios = diretorioExemplos.listFiles();
+                Arrays.sort(subdiretorios, comparadorExemplo);
+                
+                for (File subdiretorio : subdiretorios)
                 {
-                    adicionarSubniveis(subdiretorio, mnuExemplos, iconeDiretorio, iconeArquivo);
+                    adicionarSubniveis(subdiretorio, mnuExemplos, iconeDiretorio, iconeArquivo, comparadorExemplo);
                 }
                 
                 mnuExemplos.setVisible(true);
@@ -186,7 +195,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         }
     }
     
-    private void adicionarSubniveis(File caminho, JMenu menu, Icon iconeDiretorio, Icon iconeArquivo)
+    private void adicionarSubniveis(File caminho, JMenu menu, Icon iconeDiretorio, Icon iconeArquivo, ComparadorExemplo comparadorExemplo)
     {
         if (caminho.isDirectory())
         {
@@ -195,21 +204,24 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
             
             menu.add(submenu);
             
-            for (File arquivo : caminho.listFiles())
+            File[] arquivos = caminho.listFiles();
+            Arrays.sort(arquivos, comparadorExemplo);
+            
+            for (File arquivo : arquivos)
             {
-                adicionarSubniveis(arquivo, submenu, iconeDiretorio, iconeArquivo);
+                adicionarSubniveis(arquivo, submenu, iconeDiretorio, iconeArquivo, comparadorExemplo);
             }
         }
         else
         {
-            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName(), iconeArquivo)
+            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
             {
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
                     try
                     {
-                        File exemplo = new File(((JMenuItem) e.getSource()).getToolTipText());
+                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
                         String codigoFonte = FileHandle.open(exemplo);
                         AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
@@ -221,8 +233,45 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
                 }
             });
             
-            item.setToolTipText(caminho.getAbsolutePath());
+            item.setName(caminho.getAbsolutePath());
             menu.add(item);
+        }
+    }
+    
+    private final class ComparadorExemplo implements Comparator<File>
+    {
+        private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
+                
+        @Override
+        public int compare(File exemplo1, File exemplo2)
+        {
+            String nomeExemplo1 = exemplo1.getName();
+            String nomeExemplo2 = exemplo2.getName();
+            
+            Integer numero1 = extrairNumero(nomeExemplo1);
+            Integer numero2 = extrairNumero(nomeExemplo2);
+            
+            if (numero1 != null && numero2 != null)
+            {
+                nomeExemplo1 = nomeExemplo1.replace(numero1.toString(), "");
+                nomeExemplo2 = nomeExemplo2.replace(numero2.toString(), "");
+                
+                return nomeExemplo1.compareTo(nomeExemplo2) + numero1.compareTo(numero2);
+            }
+                    
+            return nomeExemplo1.compareTo(nomeExemplo2);
+        }
+        
+        private Integer extrairNumero(String nome)
+        {
+            avaliadorNumero.reset(nome);
+            
+            if (avaliadorNumero.find())
+            {
+                return Integer.parseInt(avaliadorNumero.group());
+            }
+            
+            return null;
         }
     }
     

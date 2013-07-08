@@ -138,7 +138,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         }
     }
     
-    @Override
+        @Override
     public void stateChanged(ChangeEvent e)
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
@@ -181,6 +181,8 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         rotuloFuncaoInicial.setLabelFor(campoFuncaoInicial);
         rotuloFuncaoInicial.setText("Função inicial:");
 
+        campoFuncaoInicial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         rotuloParametros.setLabelFor(campoParametros);
         rotuloParametros.setText("Parâmetros (um em cada linha):");
 
@@ -191,7 +193,10 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         campoExibirTela.setSelected(true);
         campoExibirTela.setText("Exibir esta tela antes de cada execução");
         campoExibirTela.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        campoExibirTela.setFocusPainted(false);
+        campoExibirTela.setFocusable(false);
 
+        botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/edit_clear.png"))); // NOI18N
         botaoLimpar.setText("Limpar");
         botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoLimpar.addActionListener(new java.awt.event.ActionListener()
@@ -283,6 +288,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         campoParametros.requestFocus();
     }//GEN-LAST:event_botaoLimparActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoExecutar;
     private javax.swing.JButton botaoLimpar;

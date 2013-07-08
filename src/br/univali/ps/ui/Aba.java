@@ -1,11 +1,9 @@
 package br.univali.ps.ui;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.border.LineBorder;
 
 public abstract class Aba extends JPanel
 {

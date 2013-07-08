@@ -42,6 +42,14 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.positioners.BalloonTipPositioner;
+import net.java.balloontip.positioners.LeftAbovePositioner;
+import net.java.balloontip.positioners.LeftBelowPositioner;
+import net.java.balloontip.styles.BalloonTipStyle;
+import net.java.balloontip.styles.EdgedBalloonStyle;
+import net.java.balloontip.styles.ToolTipBalloonStyle;
+import net.java.balloontip.utils.ToolTipUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao, DepuradorListener, CaretListener, PropertyChangeListener, ChangeListener
@@ -190,10 +198,27 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         jLDicas.setModel(listModel);
         jLDicas.invalidate();
-
-
     }
-
+    
+    private void criarDicasInterface()
+    {
+        ToolTipFactory.createToolTipFor(btnColar, "Cola o texto existente na área de transferência");
+        ToolTipFactory.createToolTipFor(btnCopiar, "Copia o texto selecionado para a área de transferência");
+        ToolTipFactory.createToolTipFor(btnRecortar, "Recorta o texto selecionado para a área de transferência");
+        ToolTipFactory.createToolTipFor(btnAumentar, "Aumenta o tamanho da fonte do editor");
+        ToolTipFactory.createToolTipFor(btnDiminuir, "Diminui o tamanho da fonte do editor");
+        ToolTipFactory.createToolTipFor(btnDesfazer, "Desfaz a última ação realizada");
+        ToolTipFactory.createToolTipFor(btnRefazer, "Refaz a última ação desfeita");
+        ToolTipFactory.createToolTipFor(btnDepurar, "Inicia a depuração do programa atual");
+        ToolTipFactory.createToolTipFor(btnExecutar, "Executa o programa atual");
+        ToolTipFactory.createToolTipFor(btnInterromper, "Interrompe a execução/depuração do programa atual");
+        ToolTipFactory.createToolTipFor(btnProximo, "Executa a intrução atual do programa e vai para a próxima instrução");
+        ToolTipFactory.createToolTipFor(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário");
+        
+        // Este não funciona, não sei porque. Quando ativado, buga os outros tooltips
+        //ToolTipFactory.createToolTipFor(campoOpcoesExecucao, "Ativa ou desativa as opções de execução");
+    }
+    
     protected PainelSaida getPainelSaida()
     {
         return this.painelSaida;
@@ -209,14 +234,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         super(painelTabulado);
         initComponents();
-        
+
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
         configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
         configuracoes.adicionarObservadorConfiguracao(telaOpcoesExecucao, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
-        
-        campoConfigurarExecucao.setSelected(configuracoes.isExibirOpcoesExecucao());
-        campoConfigurarExecucao.addChangeListener(AbaCodigoFonte.this);
-        
+
+        campoOpcoesExecucao.setSelected(configuracoes.isExibirOpcoesExecucao());
+        campoOpcoesExecucao.addChangeListener(AbaCodigoFonte.this);
+
         configurarAcoes();
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         acaoSalvarArquivo.configurar(editor.getPortugolDocumento());
@@ -248,7 +273,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnComentar.setVisible(false);
         btnDescomentar.setVisible(false);
-        
+
         caretUpdate(null);
 
         painelTemporario = new JPanel();
@@ -259,6 +284,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelTemporario.setBackground(Color.RED);
 
         ocultarCorretor();
+        criarDicasInterface();
     }
 
     private void ocultarCorretor()
@@ -312,11 +338,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         editor.setCodigoFonte(codigoFonte);
         PortugolDocumento document = editor.getPortugolDocumento();
         document.setFile(arquivo);
-                
-        document.setChanged(false);        
+
+        document.setChanged(false);
         acaoSalvarArquivo.setEnabled(false);
-        
-        acaoSalvarArquivo.configurar((PortugolDocumento) document);        
+
+        acaoSalvarArquivo.configurar((PortugolDocumento) document);
     }
 
     @SuppressWarnings("unchecked")
@@ -356,7 +382,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelStatus = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         rotuloPosicaoCursor = new javax.swing.JLabel();
-        campoConfigurarExecucao = new javax.swing.JCheckBox();
+        campoOpcoesExecucao = new javax.swing.JCheckBox();
         jSeparator2 = new javax.swing.JSeparator();
         painelSaida = new br.univali.ps.ui.PainelSaida();
         separadorEditorCorretor = new javax.swing.JSeparator();
@@ -631,6 +657,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelAlinhamento2.add(jSeparator3, java.awt.BorderLayout.EAST);
 
         divisorArvoreDepuracaoEditor.setLeftComponent(painelAlinhamento2);
+
+        editor.setMinimumSize(new java.awt.Dimension(350, 22));
         divisorArvoreDepuracaoEditor.setRightComponent(editor);
 
         painelAlinhamento1.add(divisorArvoreDepuracaoEditor, java.awt.BorderLayout.CENTER);
@@ -647,10 +675,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         rotuloPosicaoCursor.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         painelStatus.add(rotuloPosicaoCursor, java.awt.BorderLayout.CENTER);
 
-        campoConfigurarExecucao.setSelected(true);
-        campoConfigurarExecucao.setText("Exibir opções de execução");
-        campoConfigurarExecucao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        painelStatus.add(campoConfigurarExecucao, java.awt.BorderLayout.LINE_START);
+        campoOpcoesExecucao.setSelected(true);
+        campoOpcoesExecucao.setText("Exibir opções de execução");
+        campoOpcoesExecucao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        campoOpcoesExecucao.setFocusPainted(false);
+        campoOpcoesExecucao.setFocusable(false);
+        painelStatus.add(campoOpcoesExecucao, java.awt.BorderLayout.LINE_START);
         painelStatus.add(jSeparator2, java.awt.BorderLayout.PAGE_END);
 
         painelAlinhamento1.add(painelStatus, java.awt.BorderLayout.SOUTH);
@@ -871,7 +901,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnRecortar;
     private javax.swing.JButton btnRefazer;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JCheckBox campoConfigurarExecucao;
+    private javax.swing.JCheckBox campoOpcoesExecucao;
     private javax.swing.JButton corrigir;
     private javax.swing.JSplitPane divisorArvoreDepuracaoEditor;
     private javax.swing.JSplitPane divisorDicasCasos;
@@ -931,12 +961,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             acaoSalvarArquivo.setEnabled(false);
         }
-        
+
         if (programa != null && !programa.isExecutando())
         {
             programa = null;
         }
-        
+
         if (status && podeSalvar)
         {
             cabecalho.setForegroung(Color.RED);
@@ -1010,7 +1040,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 this.programa = Portugol.compilar(codigo);
             }
 
-            if (campoConfigurarExecucao.isSelected())
+            if (campoOpcoesExecucao.isSelected())
             {
                 telaOpcoesExecucao.inicializar(programa, depurar);
                 telaOpcoesExecucao.setVisible(true);
@@ -1077,6 +1107,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             AbaConsole console = painelSaida.getConsole();
             editor.pararDepuracao();
+            console.removerPopupLeia();
+
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
             {
                 console.escrever("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
@@ -1178,19 +1210,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public void stateChanged(ChangeEvent e)
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-        configuracoes.setExibirOpcoesExecucao(campoConfigurarExecucao.isSelected());
+        configuracoes.setExibirOpcoesExecucao(campoOpcoesExecucao.isSelected());
     }
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
         if (evt.getPropertyName().equals(Configuracoes.EXIBIR_OPCOES_EXECUCAO))
         {
             boolean exibirTela = (Boolean) evt.getNewValue();
-            
-            if (exibirTela != campoConfigurarExecucao.isSelected())
+
+            if (exibirTela != campoOpcoesExecucao.isSelected())
             {
-                campoConfigurarExecucao.setSelected(exibirTela);
+                campoOpcoesExecucao.setSelected(exibirTela);
             }
         }
     }

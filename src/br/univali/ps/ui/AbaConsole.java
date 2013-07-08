@@ -5,31 +5,40 @@ import br.univali.portugol.nucleo.execucao.Entrada;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
-import javax.swing.Timer;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.BalloonTipStyle;
+import net.java.balloontip.styles.EdgedBalloonStyle;
+import net.java.balloontip.utils.FadingUtils;
 
-public class AbaConsole extends Aba implements Saida, Entrada
+public final class AbaConsole extends Aba implements Saida, Entrada
 {
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
-    PiscaConsole blink;
+    private JLabel rotuloPopupLeia;
+    private BalloonTip popupLeia;
+    private BalloonTipStyle estiloPopupLeia;
+    private ActionListener foo;
+    private boolean popupFinalizado;
 
     public AbaConsole(JTabbedPane painelTabulado)
     {
@@ -44,7 +53,27 @@ public class AbaConsole extends Aba implements Saida, Entrada
         this.menuAumentarFonte.setText("Aumentar fonte");
         this.menuDiminuirFonte.setText("Diminuir fonte");
         console.setDocument(new DocumentoConsole());
-        blink = new PiscaConsole(Color.BLACK, 400);
+
+        rotuloPopupLeia = new JLabel("<html><body><p>O programa está aguardando a entrada de dados</p></body></html>", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"), JLabel.LEFT);
+        rotuloPopupLeia.setVerticalTextPosition(JLabel.CENTER);
+        rotuloPopupLeia.setIconTextGap(10);
+        rotuloPopupLeia.setPreferredSize(new Dimension(250, 50));
+        rotuloPopupLeia.setFont(rotuloPopupLeia.getFont().deriveFont(Font.BOLD, 14f));
+
+        estiloPopupLeia = new EdgedBalloonStyle(new Color(255, 255, 210), Color.BLACK);
+        popupLeia = new BalloonTip(jScrollPane1.getViewport(), rotuloPopupLeia, estiloPopupLeia, BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH, 50, 25, false);
+        popupLeia.setPadding(8);
+        popupLeia.setVisible(false);
+
+        foo = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                popupFinalizado = true;
+            }
+        };
+
         console.addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -72,6 +101,8 @@ public class AbaConsole extends Aba implements Saida, Entrada
             {
             }
         });
+
+        console.setCaret(new CursorConsole());
     }
 
     /*
@@ -300,23 +331,45 @@ public class AbaConsole extends Aba implements Saida, Entrada
     @Override
     public Object ler(TipoDado tipoDado) throws Exception
     {
-        startBlink();
         console.setEditable(true);
         console.setFocusable(true);
         console.requestFocus();
         console.setCaretPosition(console.getText().length());
 
         this.tipoDado = tipoDado;
+
+        popupFinalizado = false;
+        FadingUtils.fadeInBalloon(popupLeia, foo, 200, 24);
+        aguardarPopup();
+
         ManipuladorEntrada manipuladorEntrada = new ManipuladorEntrada();
         manipuladorEntrada.execute();
 
         String entrada = (String) manipuladorEntrada.get();
-        stopBlink();
+
+        popupFinalizado = false;
+        FadingUtils.fadeOutBalloon(popupLeia, foo, 50, 24);
+        aguardarPopup();
+        popupLeia.setVisible(false);
 
         console.setEditable(false);
         console.setFocusable(false);
 
         return obterValorEntrada(entrada);
+    }
+
+    private void aguardarPopup()
+    {
+        while (!popupFinalizado)
+        {
+            try
+            {
+                Thread.sleep(10);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 
     private Object obterValorEntrada(String entrada)
@@ -356,6 +409,16 @@ public class AbaConsole extends Aba implements Saida, Entrada
         }
     }
 
+    void removerPopupLeia()
+    {
+        if (popupLeia.isVisible())
+        {
+            FadingUtils.fadeOutBalloon(popupLeia, foo, 200, 24);
+            popupFinalizado = true;
+            popupLeia.setVisible(false);
+        }
+    }
+
     private class ManipuladorEntrada extends SwingWorker
     {
         public ManipuladorEntrada()
@@ -379,6 +442,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
                     throw ex;
                 }
             }
+
             return ((DocumentoConsole) console.getDocument()).getValorLido();
         }
     }
@@ -433,7 +497,7 @@ public class AbaConsole extends Aba implements Saida, Entrada
         }
 
         @Override
-        public void replace(int i, int i1, String string, AttributeSet as) throws BadLocationException
+        public void replace(int offset, int length, String string, AttributeSet as) throws BadLocationException
         {
             if (string == null)
             {
@@ -446,7 +510,10 @@ public class AbaConsole extends Aba implements Saida, Entrada
                 lendo = false;
             }
 
-            super.replace(i, i1, string, as);
+            if (offset >= limitOffset)
+            {
+                super.replace(offset, length, string, as);
+            }
 
             if (!lendo)
             {
@@ -469,64 +536,94 @@ public class AbaConsole extends Aba implements Saida, Entrada
         }
     }
 
-    public void startBlink() throws BadLocationException
+    public final class CursorConsole extends DefaultCaret
     {
-        // console.getHighlighter().addHighlight(0, 1, new BlinkPainter(Color.lightGray, 100));
-        blink.start();
-    }
+        private static final long serialVersionUID = 1L;
 
-    public void stopBlink()
-    {
-        //console.getHighlighter().removeAllHighlights();
-        blink.stop();
-    }
-
-    class PiscaConsole extends DefaultHighlightPainter
-    {
-        Border outBorder = BorderFactory.createLineBorder(Color.BLUE, 2);
-        Border innerBorder = BorderFactory.createLineBorder(Color.CYAN, 2);
-        Border originalBorder = BorderFactory.createLineBorder(Color.white, 2);
-        CompoundBorder compoundBorder = new CompoundBorder(outBorder, innerBorder);
-        Timer t;
-
-        public PiscaConsole(Color c, int blinkRate)
+        public CursorConsole()
         {
-            super(null);
-            console.setBorder(originalBorder);
-            t = new Timer(blinkRate, new ActionListener()
+            setBlinkRate(250);
+        }
+
+        protected synchronized void damage(Rectangle r)
+        {
+            if (r == null)
             {
-                public void actionPerformed(ActionEvent e)
+                return;
+            }
+
+            // give values to x,y,width,height (inherited from java.awt.Rectangle)
+            x = r.x;
+            y = r.y;
+            height = r.height;
+            // A value for width was probably set by paint(), which we leave alone.
+            // But the first call to damage() precedes the first call to paint(), so
+            // in this case we must be prepared to set a valid width, or else
+            // paint()
+            // will receive a bogus clip area and caret will not get drawn properly.
+            if (width <= 0)
+            {
+                width = getComponent().getWidth();
+            }
+
+            repaint();  //Calls getComponent().repaint(x, y, width, height) to erase 
+            repaint();  // previous location of caret. Sometimes one call isn't enough.
+        }
+
+        /* (non-Javadoc)
+         * @see javax.swing.text.DefaultCaret#paint(java.awt.Graphics)
+         */
+        public void paint(Graphics g)
+        {
+            JTextComponent comp = getComponent();
+
+            if (comp == null)
+            {
+                return;
+            }
+
+            int dot = getDot();
+            Rectangle r = null;
+            char dotChar;
+            try
+            {
+                r = comp.modelToView(dot);
+                if (r == null)
                 {
-                    changeBorder();
+                    return;
                 }
-            });
-            t.start();
-        }
-
-        public void start()
-        {
-            console.setBorder(compoundBorder);
-            t.start();
-        }
-
-        public void stop()
-        {
-            t.stop();
-        }
-
-        protected void changeBorder()
-        {
-            if (console.getBorder() == originalBorder)
-            {
-                console.setBorder(compoundBorder);
-                System.out.println("aqui");
+                dotChar = comp.getText(dot, 1).charAt(0);
             }
-            if (console.getBorder() == compoundBorder)
+            catch (BadLocationException e)
             {
-                console.setBorder(originalBorder);
-                System.out.println("ali");
+                return;
             }
-            repaint();
+
+            if (Character.isWhitespace(dotChar))
+            {
+                dotChar = '_';
+            }
+
+            if ((x != r.x) || (y != r.y))
+            {
+                // paint() has been called directly, without a previous call to
+                // damage(), so do some cleanup. (This happens, for example, when
+                // the text component is resized.)
+                damage(r);
+                return;
+            }
+
+            g.setColor(comp.getCaretColor());
+            g.setXORMode(comp.getBackground()); // do this to draw in XOR mode
+
+            width = g.getFontMetrics().charWidth(dotChar);
+            if (isVisible())
+            {
+                r.height = 2;
+                r.y = r.y + g.getFontMetrics().getHeight() - r.height - 1;
+
+                g.fillRect(r.x, r.y, width, r.height);
+            }
         }
     }
 }
