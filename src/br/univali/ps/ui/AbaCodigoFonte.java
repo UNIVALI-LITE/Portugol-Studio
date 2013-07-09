@@ -43,13 +43,6 @@ import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import net.java.balloontip.BalloonTip;
-import net.java.balloontip.positioners.BalloonTipPositioner;
-import net.java.balloontip.positioners.LeftAbovePositioner;
-import net.java.balloontip.positioners.LeftBelowPositioner;
-import net.java.balloontip.styles.BalloonTipStyle;
-import net.java.balloontip.styles.EdgedBalloonStyle;
-import net.java.balloontip.styles.ToolTipBalloonStyle;
-import net.java.balloontip.utils.ToolTipUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao, DepuradorListener, CaretListener, PropertyChangeListener, ChangeListener
@@ -202,21 +195,20 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     
     private void criarDicasInterface()
     {
-        ToolTipFactory.createToolTipFor(btnColar, "Cola o texto existente na área de transferência");
-        ToolTipFactory.createToolTipFor(btnCopiar, "Copia o texto selecionado para a área de transferência");
-        ToolTipFactory.createToolTipFor(btnRecortar, "Recorta o texto selecionado para a área de transferência");
-        ToolTipFactory.createToolTipFor(btnAumentar, "Aumenta o tamanho da fonte do editor");
-        ToolTipFactory.createToolTipFor(btnDiminuir, "Diminui o tamanho da fonte do editor");
-        ToolTipFactory.createToolTipFor(btnDesfazer, "Desfaz a última ação realizada");
-        ToolTipFactory.createToolTipFor(btnRefazer, "Refaz a última ação desfeita");
-        ToolTipFactory.createToolTipFor(btnDepurar, "Inicia a depuração do programa atual");
-        ToolTipFactory.createToolTipFor(btnExecutar, "Executa o programa atual");
-        ToolTipFactory.createToolTipFor(btnInterromper, "Interrompe a execução/depuração do programa atual");
-        ToolTipFactory.createToolTipFor(btnProximo, "Executa a intrução atual do programa e vai para a próxima instrução");
-        ToolTipFactory.createToolTipFor(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário");
-        
-        // Este não funciona, não sei porque. Quando ativado, buga os outros tooltips
-        //ToolTipFactory.createToolTipFor(campoOpcoesExecucao, "Ativa ou desativa as opções de execução");
+        FabricaDicasInterface.criarDicaInterfacePara(btnColar, "Cola o texto existente na área de transferência", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnCopiar, "Copia o texto selecionado para a área de transferência", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnRecortar, "Recorta o texto selecionado para a área de transferência", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnAumentar, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnDiminuir, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnDesfazer, "Desfaz a última ação realizada", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnRefazer, "Refaz a última ação desfeita", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnDepurar, "Inicia a depuração do programa atual", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnExecutar, "Executa o programa atual", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnInterromper, "Interrompe a execução/depuração do programa atual", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnProximo, "Executa a intrução atual do programa e vai para a próxima instrução", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(campoOpcoesExecucao, "Quando ativado, exibe uma tela de configuração antes de cada execução, permitindo informar a função inicial e os parâmetros que serão passados ao programa", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
+        FabricaDicasInterface.criarDicaInterfacePara(tree, "Exibe a estrutura do programa atual, permitindo visualizar as variáveis, funções e bibliotecas incluídas. Durante a depuração, permite visualizar também o valor das variáveis", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
     }
     
     protected PainelSaida getPainelSaida()
