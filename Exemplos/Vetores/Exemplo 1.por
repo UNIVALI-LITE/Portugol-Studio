@@ -12,7 +12,7 @@ programa
 			escreva("Digite um numero \n")
 			leia(vet1[contador])
 			soma = soma + vet1[contador]
-			multiplica = multiplica + vet1[vontador]
+			multiplica = multiplica + vet1[contador]
 		}
 		para(contador=0; contador<=5; contador++)
 		{
@@ -20,6 +20,6 @@ programa
 		}
 
 		escreva("O resultado da soma: ", soma)
-		escreva("O resultado da multiplicação foi: ", multiplica)
+		escreva("O resultado da multiplicaï¿½ï¿½o foi: ", multiplica)
 	}
 }

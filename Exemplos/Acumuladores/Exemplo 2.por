@@ -1,21 +1,26 @@
+// O exemplo requer um valor inteiro e interage de 1 até o valor passado e ao fim mostra a soma das interações.
 programa
 {
 	funcao inicio() 
 	{
-		inteiro n, soma = 1, i = 1
+		inteiro condicao, soma = 1, interador = 1
 
 		escreva("Digite um valor inteiro: \n")
-		leia(n)
-
-		escreva(i)
+		leia(condicao)
 		
-		enquanto(i <= n)
+		enquanto(interador <= condicao)
 		{	
-			soma = soma + i
-			escreva(" + ", i)
-			i++
+			se(interador == condicao){
+				escreva(interador)
+			}
+			senao {
+				escreva(interador, " + ")
+			}
+
+			soma = soma + interador			
+			interador++
+			
 		}
-		
-		escreva("\nA soma � ", soma)
+		escreva("\nA soma é: ", soma)
 	}
 }

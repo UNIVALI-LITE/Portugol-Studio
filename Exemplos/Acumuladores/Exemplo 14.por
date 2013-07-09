@@ -1,15 +1,16 @@
+// O exemplo requer um nÃºmero inteiro e ao fim retorna o dobro do valor passado.
 programa
 {
 	funcao inicio (cadeia args[])
 	{
 		inteiro num, dobro
 
-		escreva("Digite um número inteiro \n")
+		escreva("Digite um nÃºmero inteiro: ")
 		leia(num)
 
 		dobro = num *2
 
-		escreva("O dobro do número digitado é  ", dobro)
+		escreva("O dobro do nÃºmero digitado Ã©  ", dobro)
 		
 	}
 }

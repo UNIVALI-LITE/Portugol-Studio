@@ -1,15 +1,20 @@
+// O exemplo requer um valor inteiro e ao fim exibe a metade, o dobro e o triplo do número passado.
 programa
 {
-	funcao inicio()
+	funcao inicio() 
 	{
-		real v, r
-		const real pi = 3.14
+		inteiro dobro, triplo
+		real metade, valor
 
-		escreva("digite o valor do raio \n")
-		leia(r)
+		escreva("Digite um valor: ") 
+		leia(valor)
 
-		v = (4 * pi * r*r)/3
+		metade = valor / 2
+		dobro = valor * 2
+		triplo = valor * 3
 
-		escreva("O volume desta esfera �  ", v)
+		escreva("\nA metade do numero é: ",metade,"\n")
+		escreva("O dobro do numero é: ",dobro,"\n")
+		escreva("O triplo do numero é: ",triplo,"\n")
 	}
 }

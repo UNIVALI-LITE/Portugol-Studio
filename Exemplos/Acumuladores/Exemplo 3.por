@@ -1,29 +1,33 @@
+// O exemplo requer a idade e a altura de um certa quantidade de alunos(linha 6) e ao fim exibe a idade media dos alunos com menos de 1,70 de altura e a altura m√©dia dos alunos com mais de 20 anos.
 programa
 {
 	funcao inicio() 
 	{ 
 		const inteiro numero_alunos = 5
 		
-		inteiro idade, alunos
-		real altura, idade_media, media_altura
+		inteiro idade, aluno, idade_media =0
+		real altura, altura_media=0
 
-		para(alunos = 1; alunos <= numero_alunos; alunos++)
+		para(aluno = 1; aluno <= numero_alunos; aluno++)
 		{
 			leia(idade)
 			leia(altura)
 
 			se(altura <= 1.70)
 			{
-				idade_media = idade + (idade / numero_alunos)
+				idade_media += idade 
 			}
 
 			se(idade >= 20)
 			{
-				media_altura = altura + (altura / numero_alunos)
+				altura_media += altura
 			}
 		}
 		
-		escreva("A idade mÈdia dos alunos com a altura menor que 1.70 È:  ", idade_media, "\n")
-		escreva("A altura mÈdia dos alunos com mais de 20 anos: ", media_altura)
+		altura_media = altura_media  / numero_alunos
+		idade_media = idade_media / numero_alunos
+		
+		escreva("A idade m√©dia dos alunos com a altura menor que 1.70 √©:  ", idade_media, "\n")
+		escreva("A altura m√©dia dos alunos com mais de 20 anos √©: ", altura_media)
 	}
 }
