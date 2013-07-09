@@ -1,7 +1,10 @@
 package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.ps.ui.rstautil.IconFactory;
 import org.fife.ui.autocomplete.Util;
 
@@ -22,8 +25,13 @@ class FuncParamTreeNode extends PortugolTreeNode {
 
                 StringBuffer sb = new StringBuffer();
 		sb.append("<html>");
-		sb.append(parametro.getNome());
-		sb.append(" : ");
+		sb.append(parametro.getNome());                
+                if (parametro.getQuantificador() == Quantificador.VETOR) {
+                    sb.append("[]");
+                } else if (parametro.getQuantificador() == Quantificador.MATRIZ){
+                    sb.append("[][]");
+                }
+                sb.append(" : ");
 		sb.append("<font color='#888888'>");
 		MemberTreeNode.appendType(parametro.getTipoDado(), sb);
 		text = sb.toString();

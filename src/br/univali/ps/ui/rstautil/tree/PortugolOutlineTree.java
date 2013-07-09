@@ -63,7 +63,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 public class PortugolOutlineTree extends AbstractSourceTree
 {
     private DefaultTreeModel model;
-    private RSyntaxTextArea textArea;
     private PortugolParser parser;
     private Listener listener;
 
@@ -100,6 +99,8 @@ public class PortugolOutlineTree extends AbstractSourceTree
         listener = new Listener();
         addTreeSelectionListener(listener);
     }
+    
+    AstOutlineTreeFactory astFactory = new AstOutlineTreeFactory();
 
     /**
      * Refreshes this tree.
@@ -118,27 +119,7 @@ public class PortugolOutlineTree extends AbstractSourceTree
             return;
         }
 
-        ArvoreSintaticaAbstrataPrograma ast = (ArvoreSintaticaAbstrataPrograma) resultadoAnalise.getAsa();
-        MemberTreeNode bibliotecas = new MemberTreeNode("Bibliotecas");
-
-        for (NoInclusaoBiblioteca inclusao : ((ArvoreSintaticaAbstrataPrograma) ast).getListaInclusoesBibliotecas())
-        {
-            bibliotecas.add(createMemberNode(inclusao));
-        }
-
-        MemberTreeNode programa = new MemberTreeNode("Programa");
-
-        for (Iterator<NoDeclaracao> i = ast.getListaDeclaracoesGlobais().iterator(); i.hasNext();)
-        {
-            NoDeclaracao td = i.next();
-            MemberTreeNode dmtn = createMemberNode(td);
-
-            programa.add(dmtn);
-        }
-
-
-        root.add(bibliotecas);
-        root.add(programa);
+        root = astFactory.createTree(resultadoAnalise.getAsa());
 
         model.setRoot(root);
         root.setSorted(isSorted());
@@ -176,99 +157,6 @@ public class PortugolOutlineTree extends AbstractSourceTree
 
     }
 
-    private MemberTreeNode createMemberNode(NoInclusaoBiblioteca inclusao)
-    {
-        try
-        {
-            Biblioteca biblioteca = CarregadorBibliotecas.carregarBiblioteca(inclusao.getNome());
-            MemberTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, biblioteca);
-
-            List<Method> funcoes = biblioteca.getFuncoes();
-
-            if (funcoes != null)
-            {
-                for (Method funcao : funcoes)
-                {
-                    raizBiblioteca.add(new LibraryFunctionTreeNode(biblioteca, funcao));
-                }
-            }
-
-            List<Field> variaveis = biblioteca.getVariaveis();
-
-            if (variaveis != null)
-            {
-                for (Field variavel : variaveis)
-                {
-                    raizBiblioteca.add(new LibraryVarTreeNode(biblioteca, variavel));
-                }
-            }
-
-            return raizBiblioteca;
-        }
-        catch (ErroCarregamentoBiblioteca erro)
-        {
-            return new LibraryTreeNode(erro);
-        }
-    }
-
-    private MemberTreeNode createMemberNode(NoDeclaracao member)
-    {
-
-        MemberTreeNode node = null;
-        /*if (member instanceof CodeBlock) {
-         node = new MemberTreeNode((CodeBlock)member);
-         }
-         else*/ if (member instanceof NoDeclaracaoVariavel
-                || member instanceof NoDeclaracaoMatriz
-                || member instanceof NoDeclaracaoVetor)
-        {
-            node = new MemberTreeNode(member);
-        }
-        else if (member instanceof NoDeclaracaoFuncao)
-        {
-            node = new MemberTreeNode((NoDeclaracaoFuncao) member);
-        }
-
-        /*CodeBlock body = null;
-         if (member instanceof CodeBlock) {
-         body = (CodeBlock)member;
-         }                
-         else*/
-        List<NoBloco> body = null;
-        if (member instanceof NoDeclaracaoFuncao)
-        {
-
-            List<NoDeclaracaoParametro> parametros = ((NoDeclaracaoFuncao) member).getParametros();
-
-            if (parametros != null)
-            {
-                for (NoDeclaracaoParametro parametro : parametros)
-                {
-                    node.add(new FuncParamTreeNode(parametro));
-                }
-            }
-
-            body = ((NoDeclaracaoFuncao) member).getBlocos();
-        }
-
-        if (body != null && !getShowMajorElementsOnly())
-        {
-            for (int i = 0; i < body.size(); i++)
-            {
-                NoBloco no = body.get(i);
-                if (no instanceof NoDeclaracaoVariavel
-                        || no instanceof NoDeclaracaoVetor
-                        || no instanceof NoDeclaracaoMatriz)
-                {
-                    LocalVarTreeNode varNode = new LocalVarTreeNode((NoDeclaracao) body.get(i));
-                    node.add(varNode);
-                }
-            }
-        }
-
-        return node;
-
-    }
 
     /**
      * {@inheritDoc}

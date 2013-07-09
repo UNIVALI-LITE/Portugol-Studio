@@ -11,8 +11,6 @@
 package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.asa.No;
-import br.univali.portugol.nucleo.asa.NoBloco;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.ps.ui.rstautil.IconFactory;
 import br.univali.ps.ui.rstautil.SourceTreeNode;
 import javax.swing.Icon;

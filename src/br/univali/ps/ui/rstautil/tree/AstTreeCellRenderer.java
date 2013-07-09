@@ -8,7 +8,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  * Renderer for the AST tree in the UI.
  *
  */
-class AstTreeCellRenderer extends DefaultTreeCellRenderer
+class AstTreeCellRenderer extends DefaultTreeCellRenderer 
 {
     private static final long serialVersionUID = 1L;
 
