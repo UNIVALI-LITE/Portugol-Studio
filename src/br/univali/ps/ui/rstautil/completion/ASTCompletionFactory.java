@@ -209,7 +209,7 @@ public final class ASTCompletionFactory implements VisitanteASA
 
                 FunctionCompletion functionCompletion = new FunctionCompletion(completionProvider, nome, tipo);
                 functionCompletion.setDefinedIn("programa");
-
+                functionCompletion.setRelevance(nivelASA);
                 if (!parametros.isEmpty())
                 {
                     functionCompletion.setParams(parametros);

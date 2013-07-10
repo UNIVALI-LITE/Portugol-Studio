@@ -32,20 +32,16 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
      */
     protected void addShorthandCompletions(DefaultCompletionProvider codeCP)
     {
-        //codeCP.addCompletion(new ShorthandCompletion(codeCP, "main",
-        //						"int main(int argc, char **argv)"));
-//for (int i=0; i<5000; i++) {
-//	codeCP.addCompletion(new BasicCompletion(codeCP, "Number" + i));
-//}
+        codeCP.addCompletion(new ShorthandCompletion(codeCP, "ini", "funcao inicio(cadeia arg[])\n{\n\t${cursor}\n}", "funcao inicio(cadeia arg[]) {}"));
     }
 
     protected CompletionProvider createCodeCompletionProvider()
     {
         DefaultCompletionProvider cp = new DefaultCompletionProvider();
-        loadCodeCompletionsFromXml(cp);
-        addShorthandCompletions(cp);
-        addTemplateCompletions(cp);
-
+        cp.addCompletions(addTemplateCompletions(cp));
+        //loadCodeCompletionsFromXml(cp);
+        //addShorthandCompletions(cp);
+       
         return cp;
     }
 
@@ -108,20 +104,22 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
     {
         // Se houve erros sintáticos, mantemos o autocomplete gerado        
         // com a última ASA válida
-
+        
         if (resultadoAnalise.getNumeroErrosSintaticos() == 0)
         {
-            if (dynamicCompletions != null)
+            /*if (dynamicCompletions != null)
             {
                 for (Completion completion : dynamicCompletions)
                 {
                     cp.removeCompletion(completion);
                 }
-            }
+            }*/
+            //cp.clear();
+            
+            //dynamicCompletions = new ASTCompletionFactory().createCompletions((ArvoreSintaticaAbstrataPrograma) resultadoAnalise.getAsa(), cp, escopoCursor);
 
-            dynamicCompletions = new ASTCompletionFactory().createCompletions((ArvoreSintaticaAbstrataPrograma) resultadoAnalise.getAsa(), cp, escopoCursor);
-
-            cp.addCompletions(dynamicCompletions);
+            //cp.addCompletions(dynamicCompletions);
+            //cp.addCompletions(addTemplateCompletions(cp));
         }
     }
 
@@ -140,12 +138,45 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
 
             updateGlobalSimbolsCompletions(cp, resultadoAnalise, escopoCursor);
         }
+        
+            
     }
 
-    private void addTemplateCompletions(DefaultCompletionProvider cp)
-    {
-        cp.addCompletion(new TemplateCompletion(cp, "enquanto", "Laço de repetição 'enquanto'", "enquanto(${condicao})\n{\n\t${cursor}\n}", "comando", explicacaoComandoEnquanto()));
-        cp.addCompletion(new TemplateCompletion(cp, "para", "Laço de repetição 'para'", "para(inteiro ${i} = 0; ${i} < ${limite}; ${i}++)\n{\n\t${cursor}\n}", "comando", explicacaoComandoPara()));
+    private List<Completion> addTemplateCompletions(CompletionProvider cp)
+    {   
+        List<Completion> list = new ArrayList<Completion>();
+        
+        list.add(new TemplateCompletion(cp, "cadeia", "comando","cadeia ${cursor}","Tipo de dado",explicacaoTipoCadeia()));
+        list.add(new TemplateCompletion(cp, "caracter", "comando","caracter ${cursor}","Tipo de dado",explicacaoTipoCaracter()));
+        list.add(new TemplateCompletion(cp, "caso","comando","caso ${valor} :\n\t\t${cursor}\n\t\tpare","Instrucao caso",explicacaoComandoCaso()));
+	list.add(new TemplateCompletion(cp, "casocontrario","comando","caso contrario :\n\t\t${cursor}\n\t\tpare","Caminho alternativo do escolha",explicacaoEstadoContrario()));
+        list.add(new TemplateCompletion(cp, "const","comando","const ${cursor}","Torna um valor constante",explicacaoDeclaracaoConst()));
+        
+        list.add(new TemplateCompletion(cp, "enquanto", "comando", "enquanto(${condicao})\n{\n\t${cursor}\n}", "Laço de repetição 'enquanto'", explicacaoComandoEnquanto()));
+        list.add(new TemplateCompletion(cp, "escolha", "comando", "escolha(${chave})\n{\n\tcaso ${valor} :\n\t\t${cursor}\n\t\tpare\n\tcaso contrario :\n\n\t\tpare\n}", "Bloco escolha", explicacaoComandoEscolha()));
+        
+        list.add(new TemplateCompletion(cp, "faca", "comando", "faca\n{\n\t${cursor}\n} enquanto(${condicao})", "Laço de repetição 'faça enquanto'", explicacaoComandoFacaEnquanto()));
+        list.add(new TemplateCompletion(cp, "falso","comando","falso ${cursor}","Valor do tipo lógico",explicacaoCasoFalso()));        
+        list.add(new TemplateCompletion(cp, "funcao","comando", "funcao ${tipo_retorno} ${nome}( ) \n{\n\t${cursor}\n}", "Declaracao de função",explicacaoComandoFuncao()));
+        
+        list.add(new TemplateCompletion(cp, "inteiro", "comando","inteiro ${cursor}","Tipo de dado",explicacaoTipoInteiro()));
+        list.add(new TemplateCompletion(cp, "logico","comando","logico ${cursor}", "Tipo de dado",explicacaoTipoLogico()));
+        
+        list.add(new TemplateCompletion(cp, "para", "comando", "para(inteiro ${i} = 0; ${i} < ${limite}; ${i}++)\n{\n\t${cursor}\n}", "Laço de repetição 'para'", explicacaoComandoPara()));
+        list.add(new TemplateCompletion(cp, "pare","comando","pare ${cursor}","Parar a execução do bloco atual",explicacaoComandoPare()));
+        
+        list.add(new TemplateCompletion(cp, "se", "comando", "se(${codicao})\n{\n\t${cursor}\n}", "Desvio condicional simples", explicacaoComandoSe()));
+        list.add(new TemplateCompletion(cp, "se", "comando", "se(${codicao})\n{\n\t${cursor}\n}\nsenao \n{\n\t\n}", "Desvio condicional composto", explicacaoComandoSeSenao()));
+        list.add(new TemplateCompletion(cp, "senao", "comando", "senao \n{\n\t${cursor}\n}", "Caminho falso", explicacaoComandoSenao()));
+        list.add(new TemplateCompletion(cp, "senao", "comando", "senao se(${codicao}) \n{\n\t${cursor}\n}", "Caminho falso condicional", explicacaoComandoSenaoSe()));
+        
+        list.add(new TemplateCompletion(cp, "real", "comando","real ${cursor}","Tipo de dado",explicacaoTipoReal()));
+        list.add(new TemplateCompletion(cp, "retorne","comando","retorne ${expressao}","Retorno de funcao",explicacaoComandoRetorne()));
+        
+        list.add(new TemplateCompletion(cp, "vazio", "comando","vazio ${cursor}","Tipo de dado",explicacaoEstadoVazio()));
+        list.add(new TemplateCompletion(cp, "verdadeiro","comando","verdadeiro ${cursor}","Valor do tipo lógico",explicacaoCasoVerdadeiro()));
+        
+        return list;
     }
 
     private String explicacaoComandoPara()
@@ -186,5 +217,168 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
                 + "&nbsp; <b>{</b> <br>	&nbsp;&nbsp;&nbsp;&nbsp;	"
                 + "&lt;intru&ccedil;&atilde;o,instru&ccedil;&otilde;es&gt; <br>"
                 + "&nbsp; <b>}</b> <br>	</td></tr></table>";
+    }
+    
+     public String explicacaoBiblioteca(){
+        return "<h2>Biblioteca</h2><p class='subtitulo'>"
+                + "O que &eacute;?</p><p>Chama a biblioteca passado após está declaração.</p><p>Exemplo:</p>"
+                + "<p>biblioteca funcoesVetoriais";
+    }
+    public String explicacaoComandoSe(){
+        return "<body> <h2> Comando SE </h2><p class='subtitulo'>"
+                + "O que &eacute;?</p><p>A operação SE é a mais básica de todas as declarações de controle de fluxo. </p>"
+                + " <p>Ele diz para os seu programa executar uma determinada seção do código "
+                + "<b>SOMENTE</b> se um determinado teste avalia a <b>VERDADEIRO</b>.</p>"
+                + "<p>Exemplo: </p> "
+                + "<p>se (&#60condição>){</p>  <p>    &#60instruções></p> <p>}</p>";
+    }
+    public String explicacaoComandoSeSenao(){
+        return "<body> <h2> Comando SE e SENAO</h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p><p class='subtitulo'>O <b>SENAO</b> é a declaração de controle de fluxo "
+                + "que fornece um caminho secundário de "
+                + "execução quando uma cláusula <b>SE</b> anterior for avaliada como <b>FALSO</b>.</p>"
+                + "<p><b>se</b> (&#60condição>){</p>" 
+                +"<p>      &#60instruções></p>" 
+                +"<p>} <b>senão</b> {</p>" 
+                +"<p>      &#60instruções></p>" 
+                +"<p>}</p>";
+    }
+    
+    public String explicacaoComandoSenao(){
+        return "<body> <h2> Comando SENAO</h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p><p class='subtitulo'>O <b>SENAO</b> é a declaração de controle de fluxo "
+                + "que fornece um caminho secundário de "
+                + "execução quando uma cláusula <b>SE</b> anterior for avaliada como <b>FALSO</b>.</p>"
+                + "<b>senão</b> {</p>" 
+                + "<p>      &#60instruções></p>" 
+                + "<p>}</p>";
+    }
+    
+    public String explicacaoComandoSenaoSe(){
+        return "<body> <h2> Comando SENAO seguido por SE </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p><p class='subtitulo'>O <b>SENAO</b> é a declaração de controle de fluxo "
+                + "que fornece um caminho secundário de "
+                + "execução quando uma cláusula <b>SE</b> anterior for avaliada como <b>FALSO</b> um novo teste SE é realizado.</p>"
+                + "<b>senão</b> <b>se</b> (&#60condição>){</p>" 
+                + "<p>      &#60instruções></p>" 
+                + "<p>}</p>";
+    }
+    
+    public String explicacaoComandoDefina(){
+        return "";
+    }
+    public String explicacaoTipoInteiro(){
+        return "<body> <h2> Tipo Inteiro </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p><p>Está expressão é usada para declarar uma variavel do tipo Inteiro, ou seja, "
+                +"qualquer número (negativo, nulo ou positivo)"
+                + " que pertença ao conjunto dos "
+                +"números inteiros.</p>"
+                +"<p>Exemplos: </p><p>1520 |  0  | -2  | 25 | 1324 | -43 </p>";
+    }
+    public String explicacaoEstadoVazio(){
+        return "<h2> Estado Vazio </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p>"
+                + "<p>Especifica que que a variavel está vazia, ou seja, não possui valor algum.</p>"
+                + "<p>Exemplo: </p>"
+                + "<p>var = vazio</p>";
+    }
+    public String explicacaoTipoReal(){
+        return "<body> <h2> Tipo Real </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> <p>Está expressão é usada para declarar uma variavel do tipo Real, ou seja, "
+                + "qualquer número (negativo, nulo ou positivo) que pertença ao conjunto dos"
+                +"números reais. </p>"
+                +"<p>Exemplos: </p><p> 23.5  |  2520.25  |  97.5</p>";
+    }
+    public String explicacaoTipoCaracter(){
+        return "<body> <h2> Tipo Caracter </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> <p>Está expressão é usada para declarar uma variavel do tipo Caracter, ou seja, "
+                + "Qualquer informação composta de apenas UM caracter alfanumérico ou especial.</p>"
+                +"<p>Os caracteres são representados entre aspas simples.</p>"
+                +"<p>Exemplos: </p><p> 'a' | 't' | '#' | '8' | '+' </p>";
+    }
+    public String explicacaoTipoLogico(){
+        return "<body> <h2> Tipo Lógico </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> <p>Está expressão é usada para declarar uma variavel do tipo Lógico, ou seja, "
+                + "uma variavel que pode assumir somente dois valores, <b>VERDADEIRO</b> ou <b>FALSO</b>. </p>"
+                + "<p>Exemplo: </p>"
+                + "<p>logico variavel</p>";
+    }
+    public String explicacaoTipoCadeia(){
+        return "<body> <h2> Tipo Cadeia </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> <p>Está expressão é usada para declarar uma variavel do tipo Cadeia, ou seja, "
+                + " qualquer informação composta de MAIS DE UM caracter alfanumérico ou"
+                +"especial.</p><p> As cadeias são representadas entre aspas duplas.</p>"
+                +"<p>Exemplos: </p><p> \"abc\" | \"Bom Dia !\" | \"Luis Inácio\" |\"1998\"</p>";
+    }
+    public String explicacaoComandoFuncao(){
+        return "";
+    }
+    public String explicacaoComandoEscolha(){
+        return "";
+    }
+    public String explicacaoComandoCaso(){
+        return "";
+    }
+    public String explicacaoComandoPare(){
+        return "<body><h2>Comando PARA</h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p>"
+                + "<p>O comando <b>PARE</b> é usado para terminar "
+                + "a execução de um laço ENQUANTO, FACA ENQUANTO ou PARA, pulando para o próximo comando depois do laço</p>"
+                + "<p>Exemplo: </p>"
+                + "<p>enquanto (&#60condição>){</p>"
+                + "se (&#60condição>){"
+                + "pare"
+                + "}"
+                + "}";
+    }    
+    public String explicacaoComandoFacaEnquanto(){
+        return "<body>	<h2> Comando Faca Enquanto </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> &nbsp;"
+                + "<p>O comando <b>FACA ENQUANTO</b> funciona da mesma forma que o <b>ENQUANTO</b>, a unica"
+                + "diferença é que o este comando executa uma vez antes de testa a condição.</p>"
+                + "<p>Exemplo: </p>"
+                + "<p><b>faca</b> {</p>"
+                + "<p>&#60instruções></p>"
+                + "<p>}<b>enquanto</b>(&#60condição>)</p>";
+    }
+    public String explicacaoComandoRetorne(){
+        return "<body>	<h2> Retorne </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> &nbsp;";
+    }
+    public String explicacaoCasoFalso(){
+        return "<body>	<h2> Falso </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> &nbsp;"
+                + "<p>Está condição serve para atribuir valor a uma variavel ou para não validar uma condição de um"
+                + "laço de repetição ou desvio condicional.</p>"
+                + "<p>Exemplo atribuição: </p>"
+                + "<p>logico variavel = verdaddeiro</p>"
+                + "<p>Exemplo validação:</p>"
+                + "<p>se (<b>falso</b>){</p>"
+                + "<p>&#60instruções></p>"
+                + "<p>}</p>";
+    }
+    public String explicacaoCasoVerdadeiro(){
+        return "<body>	<h2> Verdadeiro </h2> <p class='subtitulo'>"
+                + "O que &eacute;?</p> &nbsp;"
+                + "<p>Está condição serve para atribuir valor a uma variavel ou para validar uma condição de um"
+                + "laço de repetição ou desvio condicional.</p>"
+                + "<p>Exemplo atribuição: </p>"
+                + "<p>logico variavel = verdaddeiro</p>"
+                + "<p>Exemplo validação:</p>"
+                + "<p>se (<b>verdadeiro</b>){</p>"
+                + "<p>&#60instruções></p>"
+                + "<p>}</p>";
+    }
+    public String explicacaoDeclaracaoConst(){
+        return   "<body> <h2>Declaração de Constante</h2>"
+                +"<p>Além das variáveis os nossos programas podem armazenar informações"
+                +"por meio de “constantes”.</p><p> As constantes são informações que foram inseridas pelo "
+                +"próprio programador no código do algoritmo.</p> "
+                +"<p>Exemplo: </p>"
+                +"<p>const inteiro idade_usuario = 37</p>"                
+                +"<p>Resultado = 100 - idade_usuario</p>";
+    }
+     public String explicacaoEstadoContrario(){
+        return "";
     }
 }
