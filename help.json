@@ -744,26 +744,10 @@ programa
 			"hasChild":false
 		},
 		{
-			"id":1,
-			"superId" : 0,
-			"ambiente" : 2,
-			"titulo" : "lol1",
-			"explicacao" : "<h2>Nesta seção serão apresentadas as interfaces do PortugolStudio.</h2>",
-			"hasChild":true
-		},
-				{
 			"id":2,
 			"superId" : 1,
 			"ambiente" : 2,
-			"titulo" : "lol2",
-			"explicacao" : "<h2>Nesta seção serão apresentadas as interfaces do PortugolStudio.</h2>",
-			"hasChild":true
-		},
-				{
-			"id":3,
-			"superId" : 1,
-			"ambiente" : 2,
-			"titulo" : "lol3",
+			"titulo" : "Exemplo para aplicação distinta.",
 			"explicacao" : "<h2>Nesta seção serão apresentadas as interfaces do PortugolStudio.</h2>",
 			"hasChild":true
 		},
