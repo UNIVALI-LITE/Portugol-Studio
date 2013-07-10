@@ -1,17 +1,16 @@
-programa 
-{ 
-	funcao inicio (cadeia args[]) 
-	{ 
-		const real imovel = 100 
-		const real loja = 800 
-		const real salMinimo = 260.00 
-		real salarioTotal, vendaImovel, vendaLoja 
+// O exemplo requer dois números reais e ao fim exibe o resultado da multiplicação dos dois números.
+programa
+{
+	funcao inicio (cadeia args[])
+	{
+		real num1, num2, multiplicacao
+
+		escreva("Digite dois números reais: \n")
+		leia(num1, num2)
+
+		multiplicacao = num1 * num2
+
+		escreva("A soma dos número digitado é:", multiplicacao)
 		
-		escreva ("Informe a quantidade de im�veis vendidos: \n") 
-		leia (vendaImovel)
-		escreva ("Informe a quantidade de lojas vendidas: \n") 
-		leia (vendaLoja)
-		salarioTotal = (salMinimo * 3) + (vendaImovel * imovel) + (vendaLoja * loja) 
-		escreva ("O sal�rio ser� de ", salarioTotal) 
-	} 
+	}
 }

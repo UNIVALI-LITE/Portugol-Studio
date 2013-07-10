@@ -6,6 +6,7 @@ import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
 import br.univali.ps.ui.acoes.AcaoListener;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import javax.swing.Icon;
+import net.java.balloontip.BalloonTip;
 
 public class BotoesControleAba extends CabecalhoAba implements AcaoListener
 {
@@ -17,9 +18,7 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
         super(aba);
         removeAll();
         initComponents();
-
-        ToolTipFactory.createToolTipFor(jBAbrir, "Abre um programa ou exercício existente no computador em uma nova aba");
-        ToolTipFactory.createToolTipFor(jBNovaAba, "Cria uma nova aba contendo a estrutura básica de um programa");
+        criarDicasInterface();
     }
 
     @Override
@@ -128,6 +127,15 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
     @Override
     public void acaoFalhou(Acao acao, Exception motivoE)
     {
-        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(motivoE);
+        if (acao instanceof AcaoNovoArquivo)
+        {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(motivoE);
+        }
+    }
+
+    private void criarDicasInterface()
+    {
+        FabricaDicasInterface.criarDicaInterfacePara(jBAbrir, "Abre um programa ou exercício existente no computador", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterfacePara(jBNovaAba, "Cria uma nova aba contendo um modelo básico de programa", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
     }
 }

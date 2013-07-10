@@ -43,12 +43,12 @@ programa
 			 }
 			 
 			 qVotos = voto1 + voto2 + branco + nulos
-			 pVoto1 = (qVotos-voto1)/100.
-			 pVoto2 = (qVotos-voto2)/100.
-			 pBranco = (qVotos-branco)/100.
-			 pNulos = (qVotos-nulos)/100.
+			 pVoto1 = (qVotos-voto1)/100.0
+			 pVoto2 = (qVotos-voto2)/100.0
+			 pBranco = (qVotos-branco)/100.0
+			 pNulos = (qVotos-nulos)/100.0
 			 
-		}enquanto(esc!=0)
+		}enquanto(esc != 0)
 			 
 		escreva("O total dos votos:  ", qVotos, "\n")
 		escreva("O candidato 1 recebeu:  " ,voto1, " ficou com ", pVoto1, "% dos votos \n" )

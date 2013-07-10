@@ -1,21 +1,30 @@
-programa
+// O exemplo mostra diversas atribuições e ao fim exibe os valores delas.
+programa 
 { 
 	funcao inicio () 
 	{ 
-		inteiro a
-        	real b
-		caracter c
-		logico d
-		cadeia f
+        inteiro a,b,c,d,h
+        real f,g
 
-		d = falso
+		 a = -4
+		 c = -2
+	      d = 10 
+     	 f = 7.0 
+      	 g = 8.0 
+      	 h = 80
 
-		b = 5
-		f = "teste2"
-		
-		escreva("d  ", d, "\n")
-		escreva("b  ", b, "\n")
-      		escreva("f  ", f, "\n")
+		g = d / c + 1 
+      	a = a + h
+      	b = 10 
+      	a = h / b
+      	f = b * f + g 
+
+
+		escreva("g  ", g, "\n")
+		escreva("a  ", a, "\n")
+      	escreva("b  ", b, "\n")
+      	escreva("f  ", f, "\n")
+      	escreva("h  ", h, "\n")
      
-    	}
+    }
 }

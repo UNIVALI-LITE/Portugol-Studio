@@ -1,19 +1,16 @@
+// Este exemplo inverte os valores das variáveis a e b e os exibe ao fim. 
 programa
-{ 
-	funcao inicio () 
-	{ 
-        real a,b,c
+{
+	funcao inicio() 
+	{
+		inteiro a = 10, b = 20, c
 
-		 a = 10
-		 b = 20
+		c = b
+		b = a
+		a = c
 
-		 c = a
-		 b = c
-		 a = b
-
-		escreva("a  ", a, "\n")
-		escreva("b  ", b, "\n")
-      	escreva("c  ", c, "\n")
-     
-    }
+		escreva("Este é o valor de a: ", a, "\n")
+		escreva("Este é o valor de b: ", b, "\n")
+		
+	}
 }

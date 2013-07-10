@@ -1,14 +1,15 @@
+// O exemplo requer um n√∫mero inteiro e ao fim exibe este n√∫mero multiplicado por ele mesmo.
 programa
 {
 	funcao inicio()
 	{
 		inteiro numero, resultado
 
-		escreva("digite um n˙mero\n")
+		escreva("Digite um n√∫mero: \n")
 		leia(numero)
 
 		resultado = numero * numero
 
-		escreva("A multiplicaÁ„o do numero por ele mesmo È:  ", resultado)
+		escreva("A multiplica√ß√£o do numero por ele mesmo √©: ", resultado)
 	}
 }

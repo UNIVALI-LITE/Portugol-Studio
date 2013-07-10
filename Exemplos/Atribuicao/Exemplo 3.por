@@ -1,3 +1,5 @@
+// Este exemplo requer o nome do usuário e três valeres inteiros, sendo eles referentes a quantidade de porcas, parafusos e aruelas compradas. 
+// Ao fim é exibido o nome do usuário mostra a quantidade de cada item comprado e mostra o valor total a ser pago.
 programa  { 
 
 	funcao inicio (cadeia args) { 
@@ -5,9 +7,9 @@ programa  {
 		const real precoParafuso=1.50
 		const real precoAruelas=2.00
 		const real precoPorcas=2.50 
-		inteiro qparafuso, qaruelas, qporcas 
+		inteiro quantidadeParafuso, quantidadeAruelas, quantidadePorcas 
 		
-		real tpf, tar, tpo, tpa 
+		real totalParafuso, totalAruelas, totalPorcas, totalPagar 
 		cadeia nome 
 		
 		escreva("Digite seu nome \n") 
@@ -15,16 +17,16 @@ programa  {
 		
 		escreva("Digite a quantidade de pecas de cada produto \n") 
 		escreva("Porca/ Parafusos/ Aruelas \n")
-		leia(qparafuso, qaruelas, qporcas) 
+		leia(quantidadeParafuso, quantidadeAruelas, quantidadePorcas) 
 		
-		tpo = (precoPorcas*10/100) * qporcas 
-		tpf = (precoParafuso*20/100) * qparafuso 
-		tar = (precoAruelas*30/100) * qaruelas 
-		tpa = tpo + tpf + tar 
+		totalPorcas = precoPorcas * quantidadePorcas 
+		totalParafuso = precoParafuso * quantidadeParafuso 
+		totalAruelas = precoAruelas * quantidadeAruelas 
+		totalPagar = totalPorcas + totalParafuso + totalAruelas 
 		
 		escreva("Cliente  ",nome, "\n") 
-		escreva("A quantidade de pe�as compradas: \n" ,"Parafuso", qparafuso, "\n Aruelas ", qaruelas, "\n Porcas ", qporcas, "\n")
-		escreva("O total a pagar:  R$ ",tpa)
+		escreva("A quantidade de peças compradas: \n" ,"Parafuso:", quantidadeParafuso, "\n Aruelas: ", quantidadeAruelas, "\n Porcas: ", quantidadePorcas, "\n")
+		escreva("O total a pagar:  R$ ",totalPagar)
 		 
 	} 
 }
