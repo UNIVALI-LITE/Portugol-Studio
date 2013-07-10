@@ -339,8 +339,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         barraFerramentas = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
@@ -405,7 +404,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnSalvar.setAction(acaoSalvarArquivo);
         btnSalvar.setBorderPainted(false);
-        btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalvar.setFocusPainted(false);
         btnSalvar.setFocusable(false);
         btnSalvar.setHideActionText(true);
@@ -416,7 +415,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnDesfazer.setAction(acaoDesfazer);
         btnDesfazer.setBorderPainted(false);
-        btnDesfazer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDesfazer.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDesfazer.setFocusPainted(false);
         btnDesfazer.setFocusable(false);
         btnDesfazer.setHideActionText(true);
@@ -425,7 +424,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnRefazer.setAction(acaoRefazer);
         btnRefazer.setBorderPainted(false);
-        btnRefazer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRefazer.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRefazer.setFocusPainted(false);
         btnRefazer.setFocusable(false);
         btnRefazer.setHideActionText(true);
@@ -437,7 +436,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnRecortar.setAction(acaoRecortar);
         btnRecortar.setBorderPainted(false);
-        btnRecortar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRecortar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRecortar.setFocusPainted(false);
         btnRecortar.setFocusable(false);
         btnRecortar.setHideActionText(true);
@@ -448,7 +447,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnCopiar.setAction(acaoCopiar);
         btnCopiar.setBorderPainted(false);
-        btnCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnCopiar.setFocusPainted(false);
         btnCopiar.setFocusable(false);
         btnCopiar.setHideActionText(true);
@@ -459,7 +458,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnColar.setAction(acaoColar);
         btnColar.setBorderPainted(false);
-        btnColar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnColar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnColar.setFocusPainted(false);
         btnColar.setFocusable(false);
         btnColar.setHideActionText(true);
@@ -472,7 +471,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setText("//x=2");
         btnComentar.setToolTipText("Comentar o código selecionado");
         btnComentar.setBorderPainted(false);
-        btnComentar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnComentar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnComentar.setFocusPainted(false);
         btnComentar.setFocusable(false);
         btnComentar.setHideActionText(true);
@@ -482,10 +481,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setOpaque(false);
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnComentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -494,7 +491,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setText("x=2");
         btnDescomentar.setToolTipText("Descomentar o código selecionado");
         btnDescomentar.setBorderPainted(false);
-        btnDescomentar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDescomentar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDescomentar.setFocusPainted(false);
         btnDescomentar.setFocusable(false);
         btnDescomentar.setHideActionText(true);
@@ -504,10 +501,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setOpaque(false);
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDescomentarActionPerformed(evt);
             }
         });
@@ -515,16 +510,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnDiminuir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/font_delete.png"))); // NOI18N
         btnDiminuir.setBorderPainted(false);
-        btnDiminuir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDiminuir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDiminuir.setFocusPainted(false);
         btnDiminuir.setFocusable(false);
         btnDiminuir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDiminuir.setOpaque(false);
         btnDiminuir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDiminuir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDiminuir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDiminuirActionPerformed(evt);
             }
         });
@@ -532,16 +525,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnAumentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/font_add.png"))); // NOI18N
         btnAumentar.setBorderPainted(false);
-        btnAumentar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAumentar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAumentar.setFocusPainted(false);
         btnAumentar.setFocusable(false);
         btnAumentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAumentar.setOpaque(false);
         btnAumentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAumentar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnAumentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAumentarActionPerformed(evt);
             }
         });
@@ -549,7 +540,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentas.add(jSeparador2);
 
         btnExecutar.setBorderPainted(false);
-        btnExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExecutar.setEnabled(false);
         btnExecutar.setFocusPainted(false);
         btnExecutar.setFocusable(false);
@@ -560,7 +551,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentas.add(btnExecutar);
 
         btnInterromper.setBorderPainted(false);
-        btnInterromper.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnInterromper.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnInterromper.setEnabled(false);
         btnInterromper.setFocusPainted(false);
         btnInterromper.setFocusable(false);
@@ -571,7 +562,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentas.add(btnInterromper);
 
         btnDepurar.setBorderPainted(false);
-        btnDepurar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDepurar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDepurar.setEnabled(false);
         btnDepurar.setFocusPainted(false);
         btnDepurar.setFocusable(false);
@@ -583,16 +574,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         btnProximo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/bug_go.png"))); // NOI18N
         btnProximo.setBorderPainted(false);
-        btnProximo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnProximo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnProximo.setFocusPainted(false);
         btnProximo.setFocusable(false);
         btnProximo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnProximo.setOpaque(false);
         btnProximo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnProximo.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnProximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProximoActionPerformed(evt);
             }
         });
@@ -669,7 +658,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         campoOpcoesExecucao.setSelected(true);
         campoOpcoesExecucao.setText("Exibir opções de execução");
-        campoOpcoesExecucao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        campoOpcoesExecucao.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         campoOpcoesExecucao.setFocusPainted(false);
         campoOpcoesExecucao.setFocusable(false);
         painelStatus.add(campoOpcoesExecucao, java.awt.BorderLayout.LINE_START);
@@ -704,13 +693,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         corrigir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/blackboard_steps.png"))); // NOI18N
         corrigir.setText("Corrigir");
-        corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        corrigir.setOpaque(false);
+        corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         corrigir.setPreferredSize(new java.awt.Dimension(130, 30));
-        corrigir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        corrigir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 corrigirActionPerformed(evt);
             }
         });
