@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui;
 
 import br.univali.ps.dominio.PortugolDocumento;
@@ -12,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.regex.Matcher;
@@ -124,6 +121,7 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
         textArea.setFocusable(false);
         textArea.setRequestFocusEnabled(false);
         textArea.setHighlightCurrentLine(false);
+        textArea.setCodeFoldingEnabled(false);
         textArea.setCaretPosition(0);
     }
 
@@ -133,7 +131,8 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
         textArea.removeAllLineHighlights();
         textArea.setHighlightCurrentLine(true);
         textArea.setFocusable(true);
-        textArea.setRequestFocusEnabled(true);
+        textArea.setCodeFoldingEnabled(true);
+        textArea.setRequestFocusEnabled(true);        
     }
 
     public void destacarLinha(int linha)
@@ -146,6 +145,11 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
             }
 
             tag = textArea.addLineHighlight(linha - 1, new Color(0f, 1f, 0f, 0.15f));
+            
+            int posicaoCursor = Math.min(textArea.getLineStartOffset(linha + 7), textArea.getText().length());
+            
+            Rectangle areaCursor = textArea.modelToView(posicaoCursor);
+            textArea.scrollRectToVisible(areaCursor);
         }
         catch (BadLocationException ex)
         {
