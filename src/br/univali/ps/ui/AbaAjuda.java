@@ -7,6 +7,8 @@ package br.univali.ps.ui;
 import ajuda.Ajuda;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JTabbedPane;
 
 /**
@@ -15,17 +17,20 @@ import javax.swing.JTabbedPane;
  */
 public class AbaAjuda extends Aba implements AbaListener
 {
-   
     public AbaAjuda(JTabbedPane painelTabulado)
     {
-        super(painelTabulado);       
+        super(painelTabulado);
         cabecalho.setTitulo("Ajuda");
         cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"));
         adicionarAbaListener(this);
         initComponents();
         this.setLayout(new BorderLayout());
-        Ajuda ajuda = new Ajuda();
-        this.add(ajuda,BorderLayout.CENTER);        
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(0);
+        list.add(1);
+        Ajuda ajuda = new Ajuda(list);
+        
+        this.add(ajuda, BorderLayout.CENTER);
     }
 
     @SuppressWarnings("unchecked")
@@ -42,5 +47,5 @@ public class AbaAjuda extends Aba implements AbaListener
     public boolean fechandoAba(Aba aba)
     {
         return true;
-    }   
+    }
 }

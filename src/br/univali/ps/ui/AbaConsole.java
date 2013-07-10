@@ -377,6 +377,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         barraFerramentas.setOpaque(false);
 
         botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        botaoLimpar.setBorderPainted(false);
         botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoLimpar.setFocusable(false);
         botaoLimpar.setHideActionText(true);
@@ -389,6 +390,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         barraFerramentas.add(botaoLimpar);
 
         botaoCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        botaoCopiar.setBorderPainted(false);
         botaoCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoCopiar.setFocusable(false);
         botaoCopiar.setHideActionText(true);
@@ -401,6 +403,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         barraFerramentas.add(botaoCopiar);
 
         botaoAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        botaoAumentarFonte.setBorderPainted(false);
         botaoAumentarFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoAumentarFonte.setFocusable(false);
         botaoAumentarFonte.setHideActionText(true);
@@ -413,6 +416,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         barraFerramentas.add(botaoAumentarFonte);
 
         botaoDiminuirFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        botaoDiminuirFonte.setBorderPainted(false);
         botaoDiminuirFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoDiminuirFonte.setFocusable(false);
         botaoDiminuirFonte.setHideActionText(true);

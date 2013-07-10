@@ -3,6 +3,7 @@ package br.univali.ps.ui.rstautil.tree;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrata;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoCaracter;
@@ -586,6 +587,12 @@ class AstOutlineTreeFactory implements VisitanteASA
 
     @Override
     public Object visitar(NoVetor noVetor) throws ExcecaoVisitaASA
+    {
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoBitwiseNao noOperacaoBitwiseNao) throws ExcecaoVisitaASA
     {
         return null;
     }
