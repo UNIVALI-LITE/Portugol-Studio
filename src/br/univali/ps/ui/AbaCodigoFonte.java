@@ -24,6 +24,8 @@ import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -276,7 +278,31 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelTemporario.setBackground(Color.RED);
 
         ocultarCorretor();
+        configurarComponentes();
         criarDicasInterface();
+    }
+    
+    private void configurarComponentes()
+    {
+        /* 
+         * Vamos configurar na mão, pois o editor visual do Netbeans sempre
+         * reseta estas configurações
+         */
+        
+        barraFerramentas.setOpaque(false);
+        
+        for (Component componente : barraFerramentas.getComponents())
+        {
+            if (componente instanceof JButton)
+            {
+                JButton botao = (JButton) componente;
+                
+                botao.setOpaque(false);
+                botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+        }
+        
+        campoOpcoesExecucao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private void ocultarCorretor()
@@ -1018,26 +1044,37 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 this.programa = Portugol.compilar(codigo);
             }
 
-            if (campoOpcoesExecucao.isSelected())
+            
+            /**
+             * Não usar campoOpcoesExecucao.isSelected() diretamente no teste condicional, 
+             * pois se o usuário desmarcar a seleção na tela de opções e depois cancelar,
+             * o programa executa mesmo assim.
+             */
+            boolean exibirOpcoes = campoOpcoesExecucao.isSelected();
+            
+            if (exibirOpcoes)
             {
                 telaOpcoesExecucao.inicializar(programa, depurar);
                 telaOpcoesExecucao.setVisible(true);
             }
-
-            programa.setDepuradorListener(this);
-            editor.iniciarDepuracao();
-            programa.setEntrada(painelSaida.getConsole());
-            programa.setSaida(painelSaida.getConsole());
-
-            programa.adicionarObservadorExecucao(this);
-
-            if (depurar)
+            
+            if ((!exibirOpcoes) || (exibirOpcoes && !telaOpcoesExecucao.isCancelado()))
             {
-                programa.depurar(telaOpcoesExecucao.getParametros());
-            }
-            else
-            {
-                programa.executar(telaOpcoesExecucao.getParametros());
+                programa.setDepuradorListener(this);
+                editor.iniciarDepuracao();
+                programa.setEntrada(painelSaida.getConsole());
+                programa.setSaida(painelSaida.getConsole());
+
+                programa.adicionarObservadorExecucao(this);
+
+                if (depurar)
+                {
+                    programa.depurar(telaOpcoesExecucao.getParametros());
+                }
+                else
+                {
+                    programa.executar(telaOpcoesExecucao.getParametros());
+                }
             }
         }
         catch (ErroCompilacao erroCompilacao)

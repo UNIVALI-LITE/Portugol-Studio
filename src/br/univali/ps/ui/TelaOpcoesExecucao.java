@@ -21,23 +21,42 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
 {
     private Programa programa;
     private String ultimaFuncaoSelecionada;
+    private boolean cancelado;
             
     public TelaOpcoesExecucao()
     {
         initComponents();
         getRootPane().setDefaultButton(botaoExecutar);
         
+        instalarObservadores();
+        carregarConfiguracoes();
+        
+    }
+    
+    private void instalarObservadores()
+    {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
         
+        configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
+        campoExibirTela.addChangeListener(TelaOpcoesExecucao.this);        
+    }
+    
+    private void carregarConfiguracoes()
+    {
+        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
         campoExibirTela.setSelected(configuracoes.isExibirOpcoesExecucao());
-        campoExibirTela.addChangeListener(TelaOpcoesExecucao.this);
     }
 
     @Override
-    public void setVisible(boolean b)    
+    public void setVisible(boolean visivel)
     {
-        setLocationRelativeTo(null);
-        super.setVisible(b);
+        if (visivel)
+        {
+            setLocationRelativeTo(null);
+            cancelado = true;
+        }
+        
+        super.setVisible(visivel);
     }
     
     public void inicializar(Programa programa, boolean depurar)
@@ -88,6 +107,11 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         {
             rotuloAviso.setVisible(false);
         }
+    }
+
+    public boolean isCancelado()
+    {
+        return cancelado;
     }
     
     private boolean funcaoExiste(String funcao, Programa programa)
@@ -172,7 +196,6 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Opções de Execução");
         setModal(true);
         setResizable(false);
@@ -279,6 +302,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
             programa.setFuncaoInicial(selecionada);
         }
         
+        cancelado = false;
         setVisible(false);
     }//GEN-LAST:event_botaoExecutarActionPerformed
 
