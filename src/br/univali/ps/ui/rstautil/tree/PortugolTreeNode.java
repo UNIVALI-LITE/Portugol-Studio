@@ -34,6 +34,7 @@ class PortugolTreeNode extends SourceTreeNode {
 	protected static final int PRIORITY_METHOD = 3;
 	protected static final int PRIORITY_LOCAL_VAR = 4;
 	protected static final int PRIORITY_BOOST_STATIC = -16;
+        protected Object valor;
 
 	protected PortugolTreeNode(No node) {
 		this(node, null);
@@ -113,6 +114,11 @@ class PortugolTreeNode extends SourceTreeNode {
 	public String toString() {
 		return getText(false);
 	}
+
+    void setValor(Object valor)
+    {
+        this.valor = valor;
+    }
 
 
 }

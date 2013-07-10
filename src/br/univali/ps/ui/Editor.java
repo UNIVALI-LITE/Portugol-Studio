@@ -295,6 +295,11 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
 
     @Override public void keyReleased(KeyEvent e) { }
 
+    void destacarDetalhado(int linha, int coluna, int tamanho)
+    {
+        
+    }
+
     public class EscopoCursor
     {
         private String nome;

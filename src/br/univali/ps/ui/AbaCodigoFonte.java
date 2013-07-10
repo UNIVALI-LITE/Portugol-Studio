@@ -10,9 +10,9 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
-import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
 import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
+import br.univali.portugol.nucleo.depuracao.MemoriaDados;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -42,14 +42,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import net.java.balloontip.BalloonTip;
-import net.java.balloontip.positioners.BalloonTipPositioner;
-import net.java.balloontip.positioners.LeftAbovePositioner;
-import net.java.balloontip.positioners.LeftBelowPositioner;
-import net.java.balloontip.styles.BalloonTipStyle;
-import net.java.balloontip.styles.EdgedBalloonStyle;
-import net.java.balloontip.styles.ToolTipBalloonStyle;
-import net.java.balloontip.utils.ToolTipUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao, DepuradorListener, CaretListener, PropertyChangeListener, ChangeListener
@@ -67,10 +59,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private Action acaoExecutar;
     private Action acaoInterromper;
     private TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
-    AbaEnunciado abaEnunciado = null;
-    Questao questao = null;
-    DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
-    DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
+    private AbaEnunciado abaEnunciado = null;
+    private Questao questao = null;
+    private DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
+    private DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
     private DefaultMutableTreeNode defaultMutableTreeNode;
     private DefaultTreeModel defaultTreeModel;
     private InterfaceDepurador depurador;
@@ -1182,23 +1174,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
 
     @Override
-    public void linhaAtual(int linha)
+    public void highlightLinha(int linha)
     {
         editor.destacarLinha(linha);
     }
 
-    @Override
-    public void simboloDeclarado(String nome, TipoDado tipoDado)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void valorSimboloAlterado(String nome, Object valor)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public void depuracaoInicializada(InterfaceDepurador depurador)
     {
@@ -1227,6 +1208,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
 
+    @Override
+    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
+    {
+        editor.destacarDetalhado(linha,coluna,tamanho);
+    }
+
+    @Override
+    public void simbolos(MemoriaDados dados)
+    {
+        tree.updateValoresSimbolos(dados);
+    }
+
+    
     private class AdaptadorComponente extends ComponentAdapter
     {
         @Override

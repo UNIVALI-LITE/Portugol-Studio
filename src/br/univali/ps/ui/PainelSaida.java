@@ -1,15 +1,12 @@
 package br.univali.ps.ui;
 
 
-import br.univali.ps.depurador.AbaDepurador;
 
 public class PainelSaida extends PainelTabulado {
 
     private AbaConsole console;
     private AbaMensagemCompilador mensagemCompilador;
     private AbaEnunciado enunciadoAba;
-
-    private AbaDepurador depurador; 
     
     public PainelSaida() {
         initComponents();
@@ -23,9 +20,7 @@ public class PainelSaida extends PainelTabulado {
         return console;
     }
 
-    public AbaDepurador getDepurador (){
-        return depurador;
-    }
+  
     public AbaMensagemCompilador getMensagemCompilador() {
         return mensagemCompilador;
     }
