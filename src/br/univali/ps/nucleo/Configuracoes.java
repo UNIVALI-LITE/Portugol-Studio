@@ -15,6 +15,7 @@ public final class Configuracoes
 {    
     private static final String arquivoConfiguracoes = "configuracoes.properties";
     
+    public static final String TAMANHO_FONTE_CONSOLE = "tamanhoFonteConsole";
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
     public static final String DIRETORIO_EXEMPLOS = "diretorioExemplos";
     
@@ -23,6 +24,7 @@ public final class Configuracoes
 
     private boolean exibirOpcoesExecucao;
     private String diretorioExemplos;
+    private float tamanhoFonteConsole;
     
     Configuracoes()
     {
@@ -37,6 +39,7 @@ public final class Configuracoes
             
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "true"));
             diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
+            tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
         }
         catch (IOException excecao)
         {
@@ -54,6 +57,21 @@ public final class Configuracoes
         {
             throw new ExcecaoAplicacao("Não foi possível salvar as configurações do PortugolStudio. As configurações padrão serão utilizadas na próxima inicialização", excecao, ExcecaoAplicacao.Tipo.AVISO);
         }
+    }
+
+    public float getTamanhoFonteConsole()
+    {
+        return tamanhoFonteConsole;
+    }
+
+    public void setTamanhoFonteConsole(float tamanhoFonteConsole)
+    {
+        float valorAntigo = this.tamanhoFonteConsole;
+        
+        this.configuracoes.setProperty(TAMANHO_FONTE_CONSOLE, Float.toString(tamanhoFonteConsole));
+        this.tamanhoFonteConsole = tamanhoFonteConsole;
+        
+        suporteMudancaPropriedade.firePropertyChange(TAMANHO_FONTE_CONSOLE, valorAntigo, tamanhoFonteConsole);        
     }
     
     public void setExibirOpcoesExecucao(boolean exibirOpcoesExecucao)
