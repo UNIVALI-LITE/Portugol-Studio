@@ -1,6 +1,8 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
@@ -11,6 +13,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ToolTipManager;
@@ -27,8 +31,12 @@ import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
  * @author Fillipi Pelz
  * @author Luiz Fernando Noschang
  */
-public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretListener, KeyListener
+public final class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretListener, KeyListener, PropertyChangeListener
 {
+    private static final float VALOR_INCREMENTO_FONTE = 2.0f;
+    private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
+    private static final float TAMANHO_MINIMO_FONTE = 10.0f;
+    
     private static final Pattern padraoDeteccaoNomeEscopo = Pattern.compile("funcao(?<nome>[^\\(]+)");
     private static final Pattern padraoDeteccaoNivelEscopo = Pattern.compile("\\{|\\}");
     private static final char[] caracteresParada = new char[] {' ', '\r', '\t', '\n' };
@@ -68,6 +76,41 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
         add(errorStrip, BorderLayout.LINE_END);
         
         textArea.addCaretListener(Editor.this);
+        
+        instalarObservadores();
+        carregarConfiguracoes();
+    }
+    
+    private void instalarObservadores()
+    {
+        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        
+        configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_EDITOR);
+    }
+    
+    private void carregarConfiguracoes()
+    {
+        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        
+        setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
+    }
+    
+    private void setTamanhoFonteEditor(float tamanho)
+    {
+        if ((tamanho != textArea.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
+        {
+            textArea.setFont(textArea.getFont().deriveFont(tamanho));
+            PortugolStudio.getInstancia().getConfiguracoes().setTamanhoFonteEditor(tamanho);
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals(Configuracoes.TAMANHO_FONTE_EDITOR))
+        {
+            setTamanhoFonteEditor((Float) evt.getNewValue());
+        }
     }
 
     public void adicionarObservadorCursor(CaretListener observador)
@@ -83,25 +126,19 @@ public class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretL
     @Override
     public void aumentarFonte()
     {
-        final Font fonteAtual = textArea.getFont();
-        float novoTamanho = fonteAtual.getSize() + 4;
-
-        if (novoTamanho < 70)
-        {
-            textArea.setFont(fonteAtual.deriveFont(novoTamanho));
-        }
+       Font fonteAtual = textArea.getFont();
+        float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
+                
+        setTamanhoFonteEditor(novoTamanho);
     }
 
     @Override
     public void diminuirFonte()
     {
-        final Font fonteAtual = textArea.getFont();
-        float novoTamanho = fonteAtual.getSize() - 4;
-
-        if (novoTamanho > 12)
-        {
-            textArea.setFont(fonteAtual.deriveFont(novoTamanho));
-        }
+        Font fonteAtual = textArea.getFont();
+        float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
+                
+        setTamanhoFonteEditor(novoTamanho);
     }
 
     public void setCodigoFonte(String codigoFonte)

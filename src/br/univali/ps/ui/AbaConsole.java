@@ -17,8 +17,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JLabel;
@@ -460,6 +458,9 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
 
     public void escreveConsole(String texto) throws Exception
     {
+        this.selecionar();
+        console.requestFocusInWindow();
+        
         ManipuladorSaida manipuladorSaida = new ManipuladorSaida(texto);
         manipuladorSaida.execute();
         manipuladorSaida.get();
@@ -500,14 +501,16 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
     {
         console.setEditable(true);
         console.setFocusable(true);
-        console.requestFocus();
-        console.setCaretPosition(console.getText().length());
-
+        
         this.tipoDado = tipoDado;
 
         popupFinalizado = false;
         FadingUtils.fadeInBalloon(popupLeia, foo, 200, 24);
         aguardarPopup();
+        
+        this.selecionar();
+        console.requestFocusInWindow();
+        console.setCaretPosition(console.getText().length());
 
         ManipuladorEntrada manipuladorEntrada = new ManipuladorEntrada();
         manipuladorEntrada.execute();
