@@ -87,22 +87,21 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
     {
-        MemberTreeNode bibliotecas = new MemberTreeNode("Bibliotecas");
+        BibliotecasTreeNode bibliotecas = new BibliotecasTreeNode();
 
         for (NoInclusaoBiblioteca inclusao : asap.getListaInclusoesBibliotecas())
         {
-            bibliotecas.add((MemberTreeNode)inclusao.aceitar(this));
+            bibliotecas.add((LibraryTreeNode)inclusao.aceitar(this));
         }
 
-        MemberTreeNode programa = new MemberTreeNode("Programa");
+        ProgramaTreeNode programa = new ProgramaTreeNode();
 
         for (Iterator<NoDeclaracao> i = asap.getListaDeclaracoesGlobais().iterator(); i.hasNext();)
         {
             NoDeclaracao td = i.next();
-            MemberTreeNode dmtn = (MemberTreeNode) td.aceitar(this);
+            PortugolTreeNode dmtn = (PortugolTreeNode) td.aceitar(this);
             programa.add(dmtn);
         }
-
 
         root.add(bibliotecas);
         root.add(programa);  
@@ -113,7 +112,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
     {
-        return new FuncParamTreeNode(noDeclaracaoParametro);
+        return new PortugolTreeNode(noDeclaracaoParametro);
     }
 
     @Override
@@ -122,7 +121,7 @@ class AstOutlineTreeFactory implements VisitanteASA
         try
         {
             Biblioteca biblioteca = CarregadorBibliotecas.carregarBiblioteca(inclusao.getNome());
-            MemberTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, biblioteca);
+            LibraryTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, biblioteca);
 
             List<Method> funcoes = biblioteca.getFuncoes();
 
@@ -155,7 +154,7 @@ class AstOutlineTreeFactory implements VisitanteASA
      @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
     {
-        MemberTreeNode node = new MemberTreeNode(declaracaoFuncao);
+        PortugolTreeNode node = new PortugolTreeNode(declaracaoFuncao);
         
         List<NoDeclaracaoParametro> parametros = declaracaoFuncao.getParametros();
 
@@ -187,25 +186,25 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
     {
-        return new LocalVarTreeNode(noDeclaracaoMatriz);
+        return new PortugolTreeNode(noDeclaracaoMatriz);
     }
 
     @Override
     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA
     {
-        return new LocalVarTreeNode(noDeclaracaoVariavel);
+        return new PortugolTreeNode(noDeclaracaoVariavel);
     }
 
     @Override
     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
     {
-        return new LocalVarTreeNode(noDeclaracaoVetor);
+        return new PortugolTreeNode(noDeclaracaoVetor);
     }
     
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA
     {
-        CommandTreeNode node = new CommandTreeNode(noEnquanto);
+        PortugolTreeNode node = new PortugolTreeNode(noEnquanto);
         boolean folha = true;
         List<NoBloco> blocos = noEnquanto.getBlocos();
         if (blocos != null){
@@ -228,7 +227,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA
     {
-        CommandTreeNode node = new CommandTreeNode(noEscolha);
+        PortugolTreeNode node = new PortugolTreeNode(noEscolha);
         boolean folha = true;
         List<NoCaso> casos = noEscolha.getCasos();
         if (casos != null){
@@ -251,7 +250,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA
     {
-        CommandTreeNode node = new CommandTreeNode(noCaso);
+        PortugolTreeNode node = new PortugolTreeNode(noCaso);
         boolean folha = true;
         List<NoBloco> blocos = noCaso.getBlocos();
         if (blocos != null){
@@ -274,7 +273,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA
     {
-        CommandTreeNode node = new CommandTreeNode(noFacaEnquanto);
+        PortugolTreeNode node = new PortugolTreeNode(noFacaEnquanto);
         boolean folha = true;
         List<NoBloco> blocos = noFacaEnquanto.getBlocos();
         if (blocos != null){
@@ -297,7 +296,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA
     {
-        CommandTreeNode node = new CommandTreeNode(noPara);
+        PortugolTreeNode node = new PortugolTreeNode(noPara);
         boolean folha = true;
         if (noPara.getInicializacao() != null){
             Object no = noPara.getInicializacao().aceitar(this);
@@ -327,7 +326,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA
     {
-        CommandTreeNode node = new CommandTreeNode(noSe);
+        PortugolTreeNode node = new PortugolTreeNode(noSe);
         boolean folha = true;
         List<NoBloco> blocosVerdadeiros = noSe.getBlocosVerdadeiros();
         if (blocosVerdadeiros != null){
@@ -352,12 +351,13 @@ class AstOutlineTreeFactory implements VisitanteASA
         
         List<NoBloco> blocosFalsos = noSe.getBlocosFalsos();
         if (blocosFalsos != null){  
-             PortugolTreeNode falsos = new PortugolTreeNode("falso", IconFactory.INTERFACE_ICON);
-             boolean folhafalso = true;
+            PortugolTreeNode falsos = new PortugolTreeNode("falso", IconFactory.INTERFACE_ICON);
+            
+            boolean folhafalso = true;
             for (NoBloco noBloco : blocosFalsos )
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noBloco.aceitar(this);
-                
+
                 if (ptn != null){
                     falsos.add(ptn);
                     folhafalso = false;
@@ -387,8 +387,6 @@ class AstOutlineTreeFactory implements VisitanteASA
     {
         return null;
     }
-
-    
 
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA

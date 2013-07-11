@@ -11,39 +11,29 @@
 package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.No;
-import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
-import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
-import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
-import br.univali.portugol.nucleo.bibliotecas.base.CarregadorBibliotecas;
-import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.depuracao.MemoriaDados;
 import br.univali.portugol.nucleo.simbolos.Funcao;
 import br.univali.portugol.nucleo.simbolos.Matriz;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
-import br.univali.ps.ui.rstautil.AbstractSourceTree;
 import br.univali.ps.ui.rstautil.IconFactory;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.Element;
@@ -69,7 +59,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  * @author Robert Futrell
  * @version 1.0
  */
-public class PortugolOutlineTree extends AbstractSourceTree
+public class PortugolOutlineTree extends AbstractSourceTree implements TreeModelListener
 {
     private DefaultTreeModel model;
     private PortugolParser parser;
@@ -107,6 +97,7 @@ public class PortugolOutlineTree extends AbstractSourceTree
         setModel(model);
         listener = new Listener();
         addTreeSelectionListener(listener);
+        model.addTreeModelListener(this);
     }
     
     AstOutlineTreeFactory astFactory = new AstOutlineTreeFactory();
@@ -309,40 +300,87 @@ public class PortugolOutlineTree extends AbstractSourceTree
     
     public void updateValoresSimbolos(MemoriaDados dados)
     {
-        PortugolTreeNode root = (PortugolTreeNode) model.getRoot();
+        SourceTreeNode root = (SourceTreeNode) model.getRoot();
         for (Simbolo simbolo : dados)
         {
-           if (!(simbolo instanceof Funcao)){
-            Enumeration en = root.depthFirstEnumeration();
-            PortugolTreeNode node = null;
-            while (en.hasMoreElements()) {
-                 node = (PortugolTreeNode) en.nextElement();                 
-                 if (node.getASTNode() != null && 
-                     comparador.compare(node.getASTNode(), simbolo.getOrigemDoSimbolo()) > 0)
-                 {
-                     break;
-                 }
-            }
-            if (node != null) 
-            {
-                 if(simbolo instanceof Variavel)
-                 {
-                     node.setValor(((Variavel)simbolo).getValor());                     
-                 } 
-                 else if (simbolo instanceof Vetor) 
-                 {
-                     node.setValor(((Vetor)simbolo).obterValores());
-                 } 
-                 else if (simbolo instanceof Matriz) 
-                 {
-                     node.setValor(((Matriz)simbolo).obterValores());
-                 }
-                 model.nodeChanged(node);
-            }
+            if (!(simbolo instanceof Funcao)){
+                Enumeration en = root.depthFirstEnumeration();
+                PortugolTreeNode node = null;
+                while (en.hasMoreElements()) 
+                {
+                    SourceTreeNode s = (SourceTreeNode)en.nextElement();
+                    if (s instanceof PortugolTreeNode){
+                        node = (PortugolTreeNode) s;                 
+                        if (node.getASTNode() != null && simbolo.getOrigemDoSimbolo() != null &&
+                            comparador.compare(node.getASTNode(), simbolo.getOrigemDoSimbolo()) > 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (node != null) 
+                {
+                     if(simbolo instanceof Variavel)
+                     {
+                         node.setValor(((Variavel)simbolo).getValor());                     
+                     } 
+                     else if (simbolo instanceof Vetor) 
+                     {
+                         List<Object> valores = ((Vetor) simbolo).obterValores();
+                         for (int i = 0; i < valores.size(); i++)
+                         {
+                             ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i));
+                             model.insertNodeInto(vtn,node, i);                             
+                         }
+                     } 
+                     else if (simbolo instanceof Matriz) 
+                     {
+                         List<List<Object>> obterValores = ((Matriz) simbolo).obterValores();
+                         for (int i = 0; i < obterValores.size(); i++)
+                         {
+                             List<Object> list = obterValores.get(i);
+                             ValorTreeNode valorTreeNode = new ValorTreeNode(i, null);
+                             for (int j = 0; j < list.size(); j++)
+                             {
+                                ValorTreeNode vtn = new ValorTreeNode(i, list.get(i));
+                                valorTreeNode.add(vtn);
+                             }
+                             model.insertNodeInto(valorTreeNode,node, node.getChildCount());
+                         }
+                     }
+                     model.nodeChanged(node);
+                    
+               }
+                TreeUtils.expandAll(this, true);
            }
         }
         
+        
        
+    }
+
+    @Override
+    public void treeNodesChanged(TreeModelEvent e)
+    {
+        this.invalidate();
+    }
+
+    @Override
+    public void treeNodesInserted(TreeModelEvent e)
+    {
+         this.invalidate();
+    }
+
+    @Override
+    public void treeNodesRemoved(TreeModelEvent e)
+    {
+         this.invalidate();
+    }
+
+    @Override
+    public void treeStructureChanged(TreeModelEvent e)
+    {
+         this.invalidate();
     }
     
     private class ComparadorNos implements Comparator<No>{
@@ -359,6 +397,8 @@ public class PortugolOutlineTree extends AbstractSourceTree
                     (o2 instanceof NoDeclaracao)) {
                 NoDeclaracao dec1 = ((NoDeclaracao)o1);
                 NoDeclaracao dec2 = ((NoDeclaracao)o2);
+                if (dec1.getTrechoCodigoFonteNome() == null)
+                    return 0;
                 linha = dec1.getTrechoCodigoFonteNome().getLinha() == dec2.getTrechoCodigoFonteNome().getLinha();
                 coluna = dec1.getTrechoCodigoFonteNome().getColuna()== dec2.getTrechoCodigoFonteNome().getColuna();
                 tamanho = dec1.getTrechoCodigoFonteNome().getTamanhoTexto()== dec2.getTrechoCodigoFonteNome().getTamanhoTexto();

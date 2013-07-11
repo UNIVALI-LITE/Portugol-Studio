@@ -12,7 +12,6 @@ package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.asa.No;
 import br.univali.ps.ui.rstautil.IconFactory;
-import br.univali.ps.ui.rstautil.SourceTreeNode;
 import javax.swing.Icon;
 
 
@@ -34,8 +33,16 @@ class PortugolTreeNode extends SourceTreeNode {
 	protected static final int PRIORITY_METHOD = 3;
 	protected static final int PRIORITY_LOCAL_VAR = 4;
 	protected static final int PRIORITY_BOOST_STATIC = -16;
-        protected Object valor;
+        
+        private Object valor;
 
+    public Object getValor()
+    {
+        return valor;
+    }
+
+        
+        
 	protected PortugolTreeNode(No node) {
 		this(node, null);
 	}
@@ -120,5 +127,11 @@ class PortugolTreeNode extends SourceTreeNode {
         this.valor = valor;
     }
 
+    @Override
+    Object aceitar(OutlineTreeVisitor visitor)
+    {
+        return visitor.visitar(this);
+    }
 
+    
 }

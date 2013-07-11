@@ -8,8 +8,9 @@
  * This library is distributed under a modified BSD license.  See the included
  * RSTALanguageSupport.License.txt file for details.
  */
-package br.univali.ps.ui.rstautil;
+package br.univali.ps.ui.rstautil.tree;
 
+import br.univali.ps.ui.rstautil.tree.SourceTreeNode;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 import javax.swing.JLabel;

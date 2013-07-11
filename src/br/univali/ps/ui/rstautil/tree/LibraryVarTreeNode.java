@@ -1,18 +1,11 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
-import br.univali.ps.ui.rstautil.IconFactory;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import org.fife.ui.autocomplete.Util;
 
-/**
- * 
- * @author Luiz Fernando Noschang
- */
-final class LibraryVarTreeNode extends PortugolTreeNode
+final class LibraryVarTreeNode extends SourceTreeNode
 {
     private static final int NUMERO_CARACTERES_EXIBIDOS = 12;
     private static final NumberFormat formatadorNumero = new DecimalFormat("#,##0.0000000000000000");
@@ -20,34 +13,12 @@ final class LibraryVarTreeNode extends PortugolTreeNode
     private Field variable;
     private Biblioteca library;
     
-    private String texto;
     
     public LibraryVarTreeNode(Biblioteca biblioteca, Field variavel)
     {
-        super(variavel.getName(), null);
-        
-        String valor = obterValorVariavel(biblioteca, variavel.getName());
-        
-        setIcon(IconFactory.get().getIcon(IconFactory.LOCAL_VARIABLE_ICON));
-        setSortPriority(PRIORITY_LOCAL_VAR);
-
-        StringBuffer sb = new StringBuffer();
-        
-        sb.append("<html>");
-        sb.append(variavel.getName());
-        
-        sb.append(" (");
-        sb.append(valor);
-        sb.append(")");
-        
-        sb.append(" : ");
-        sb.append("<font color='#888888'>");
-        
-        MemberTreeNode.appendType(TipoDado.obterTipoDadoPeloTipoJava(variavel.getType()), sb);
-        
+        super(null);
         this.variable = variavel;
         this.library = biblioteca;
-        this.texto = sb.toString();
     }
     
     public Field getVariable()
@@ -59,20 +30,14 @@ final class LibraryVarTreeNode extends PortugolTreeNode
     {
         return library;
     }
-    
-    @Override
-    public String getText(boolean selected)
-    {
-        return selected ? Util.stripHtml(texto).replaceAll("&lt;", "<").replaceAll("&gt;", ">") : texto;
-    }
-
-    private String obterValorVariavel(Biblioteca biblioteca, String nome)
+  
+    public String obterValorVariavel()
     {
         String valorFormatado = "Indefinido";
         
         try
         {
-            Object valor = biblioteca.getValorVariavel(nome);
+            Object valor = this.library.getValorVariavel(this.variable.getName());
             
             if (valor instanceof Double)
             {
@@ -118,5 +83,11 @@ final class LibraryVarTreeNode extends PortugolTreeNode
         }
         
         return valorFormatado;
+    }
+
+    @Override
+    Object aceitar(OutlineTreeVisitor visitor)
+    {
+        return visitor.visitar(this);
     }
 }

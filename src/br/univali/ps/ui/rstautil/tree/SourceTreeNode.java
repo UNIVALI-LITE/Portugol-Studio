@@ -8,8 +8,9 @@
  * This library is distributed under a modified BSD license.  See the included
  * RSTALanguageSupport.License.txt file for details.
  */
-package br.univali.ps.ui.rstautil;
+package br.univali.ps.ui.rstautil.tree;
 
+import br.univali.ps.ui.rstautil.tree.OutlineTreeVisitor;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -30,7 +31,7 @@ import org.fife.ui.autocomplete.Util;
  * @version 1.0
  * @see AbstractSourceTree
  */
-public class SourceTreeNode extends DefaultMutableTreeNode
+public abstract class SourceTreeNode extends DefaultMutableTreeNode
 		implements Cloneable, Comparable {
 
 	private boolean sortable;
@@ -73,6 +74,7 @@ public class SourceTreeNode extends DefaultMutableTreeNode
 	 */
 	public void add(MutableTreeNode child) {
 		//super.add(child);
+                visibleChildren.add(child);
 		if(child!=null && child.getParent()==this) {
 			insert(child, super.getChildCount() - 1);
 		}
@@ -185,17 +187,7 @@ public class SourceTreeNode extends DefaultMutableTreeNode
 	}
 
 
-	/**
-	 * Overridden to operate over visible children only.
-	 *
-	 * @param index The index of the visible child to retrieve.
-	 * @return The visible child after the specified index.
-	 */
-	public TreeNode getChildAt(int index) {
-		//System.out.println(index);
-		return (TreeNode)visibleChildren.get(index);
-	}
-
+	
 
 	/**
 	 * Overridden to operate over visible children only.
@@ -370,5 +362,5 @@ public class SourceTreeNode extends DefaultMutableTreeNode
 		this.sortPriority = priority;
 	}
 
-
+        abstract Object aceitar(OutlineTreeVisitor visitor);
 }

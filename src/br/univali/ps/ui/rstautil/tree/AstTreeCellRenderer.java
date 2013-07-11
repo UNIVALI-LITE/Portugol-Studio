@@ -50,8 +50,13 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoVetor;
+import br.univali.portugol.nucleo.asa.Quantificador;
+import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
+import br.univali.ps.ui.util.IconFactory;
 import java.awt.Component;
+import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
@@ -59,251 +64,354 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  * Renderer for the AST tree in the UI.
  *
  */
-class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteASA
+class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteASA, OutlineTreeVisitor
 {
     private static final long serialVersionUID = 1L;
+    private PortugolTreeNode currentPortugolTreeNode;
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
     {
-        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-        
-        if (value instanceof PortugolTreeNode)
+        Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+        JLabel jlabel = null;
+        if (value instanceof SourceTreeNode)
         {
-            PortugolTreeNode node = (PortugolTreeNode) value;
-            setText(node.getText(sel));
-            setIcon(node.getIcon());
+            jlabel = (JLabel) ((SourceTreeNode) value).aceitar(this);
         }
-        
-        return this;
-    }
-    
-    @Override
-    public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (jlabel != null)
+            return jlabel;
+        else
+            return c;
     }
 
-    @Override
-    public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     @Override
     public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noCaso.getClass().getSimpleName().replace("No", "").toLowerCase());
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
-   
+
+    @Override
+    public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(declaracaoFuncao.getNome());
+        sb.append('(');
+        
+        int paramCount = declaracaoFuncao.getParametros().size();
+        
+        for (int i = 0; i < paramCount; i++)
+        {
+            NoDeclaracaoParametro param = declaracaoFuncao.getParametros().get(i);
+            
+            sb.append(param.getTipoDado().getNome());	
+            
+            Quantificador quantificador = param.getQuantificador();
+            
+            if (quantificador == Quantificador.VETOR) {
+                sb.append("[]");
+            } else if (quantificador == Quantificador.MATRIZ){
+                sb.append("[][]");
+            }
+            
+            if (i < paramCount - 1)
+            {
+                sb.append(", ");
+            }
+        }
+        
+        sb.append(')');
+        
+        if (declaracaoFuncao.getTipoDado() != null)
+        {
+            sb.append(" : ");
+            sb.append("<font color='#888888'>");
+            sb.append(declaracaoFuncao.getTipoDado().getNome());
+            Quantificador quantificador = declaracaoFuncao.getQuantificador();
+            
+            if (quantificador == Quantificador.VETOR) {
+                sb.append("[]");
+            } else if (quantificador == Quantificador.MATRIZ){
+                sb.append("[][]");
+            }
+        }
+        
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
+    {   
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noDeclaracaoMatriz.getNome());
+        sb.append("[][]");
+        sb.append(" : ");
+        sb.append("<font color='#888888'>");
+        sb.append(noDeclaracaoMatriz.getTipoDado().getNome());	
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noDeclaracaoVariavel.getNome());
+        sb.append(" : ");
+        sb.append("<font color='#888888'>");
+        sb.append(noDeclaracaoVariavel.getTipoDado().getNome());
+        sb.append("<font color='#000000'>");
+        if (currentPortugolTreeNode != null &&
+                currentPortugolTreeNode.getValor() != null &&
+                !(currentPortugolTreeNode.getValor() instanceof List)) {
+            sb.append(" = ").append(currentPortugolTreeNode.getValor());
+               }
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noDeclaracaoVetor.getNome());
+        sb.append("[]");
+        sb.append(" : ");
+        sb.append("<font color='#888888'>");
+        sb.append(noDeclaracaoVetor.getTipoDado().getNome());	
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noEscolha.getClass().getSimpleName().replace("No", "").toLowerCase());
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoMatriz noMatriz) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoNao noNao) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaE noOperacaoLogicaE) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaOU noOperacaoLogicaOU) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoSubtracao noOperacaoSubtracao) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoMultiplicacao noOperacaoMultiplicacao) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noPara.getClass().getSimpleName().replace("No", "").toLowerCase());
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoPare noPare) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
@@ -315,60 +423,213 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     @Override
     public Object visitar(NoReal noReal) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoReferenciaVetor noReferenciaVetor) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoRetorne noRetorne) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noSe.getClass().getSimpleName().replace("No", "").toLowerCase());
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoVetor noVetor) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noDeclaracaoParametro.getNome());                
+        if (noDeclaracaoParametro.getQuantificador() == Quantificador.VETOR) {
+           sb.append("[]");
+        } else if (noDeclaracaoParametro.getQuantificador() == Quantificador.MATRIZ){
+           sb.append("[][]");
+        }
+        sb.append(" : ");
+        sb.append("<font color='#888888'>");
+        sb.append(noDeclaracaoParametro.getTipoDado().getNome());	
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(noInclusaoBiblioteca.getNome());
+        
+        if (noInclusaoBiblioteca.getAlias() != null)
+        {
+            sb.append(" (");
+            sb.append(noInclusaoBiblioteca.getAlias());
+            sb.append(")");
+        }       
+        
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 
     @Override
     public Object visitar(NoBitwiseNao noOperacaoBitwiseNao) throws ExcecaoVisitaASA
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
+    }
+
+    @Override
+    public Object visitar(PortugolTreeNode node)
+    {
+        try
+        {
+            this.currentPortugolTreeNode = node;
+            return (node.getASTNode() != null) ? (JLabel) node.getASTNode().aceitar(this) : null;
+        }
+        catch (ExcecaoVisitaASA ex)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public Object visitar(LibraryFunctionTreeNode no)
+    {
+        StringBuilder sb = new StringBuilder("<html>");
+        sb.append(no.getFuncao().getName());
+        sb.append('(');
+        
+        Class[] parametros = no.getFuncao().getParameterTypes();
+        
+        for (int i = 0; i < parametros.length; i++)
+        {
+            sb.append(TipoDado.obterTipoDadoPeloTipoJava(parametros[i]));
+            
+            if (i < parametros.length - 1)
+            {
+                sb.append(", ");
+            }
+        }
+        
+        sb.append(')');
+        
+        TipoDado tipo = TipoDado.obterTipoDadoPeloTipoJava(no.getFuncao().getReturnType());
+        
+        if (tipo != null)
+        {
+            sb.append(" : ");
+            sb.append("<font color='#888888'>");
+            sb.append(tipo);
+        }
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(LibraryVarTreeNode no)
+    {
+        
+        StringBuilder sb = new StringBuilder("<html>");
+        sb.append(no.getVariable().getName());
+        
+        sb.append(" (");
+        sb.append(no.obterValorVariavel());
+        sb.append(")");
+        
+        sb.append(" : ");
+        sb.append("<font color='#888888'>");
+        
+        sb.append(TipoDado.obterTipoDadoPeloTipoJava(no.getVariable().getType()));
+        
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(LibraryTreeNode no)
+    {
+        StringBuilder sb = new StringBuilder("<html>");
+
+        if (no.getErro() != null) 
+        {
+            sb.append(no.getErro().getMessage());
+        }
+        else 
+        {
+            sb.append(no.getNoInclusaoBiblioteca().getNome());
+            if (no.getNoInclusaoBiblioteca().getAlias() != null)
+            {
+                sb.append(" (");
+                sb.append(no.getNoInclusaoBiblioteca().getAlias());
+                sb.append(")");
+            }
+        }   
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(ValorTreeNode no)
+    {
+        StringBuilder sb = new StringBuilder("<html>[");
+        sb.append(no.getPosicao()).append("]");
+        if (no.getValor() != null) {
+            sb.append(" = ").append(no.getValor());
+        }
+        JLabel jLabel = new JLabel(sb.toString());
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(ProgramaTreeNode no)
+    {
+        JLabel jLabel = new JLabel("<html>programa");
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
+    }
+
+    @Override
+    public Object visitar(BibliotecasTreeNode no)
+    {
+        JLabel jLabel = new JLabel("<html>bibliotecas");
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        return jLabel;
     }
 }

@@ -10,6 +10,7 @@
  */
 package br.univali.ps.ui.rstautil;
 
+import br.univali.ps.ui.rstautil.tree.AbstractSourceTree;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
