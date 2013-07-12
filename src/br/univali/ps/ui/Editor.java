@@ -145,6 +145,7 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
     {
         textArea.setText(codigoFonte);
         textArea.setCaretPosition(0);
+        textArea.discardAllEdits();
     }
 
     public PortugolDocumento getPortugolDocumento()

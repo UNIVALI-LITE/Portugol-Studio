@@ -5,7 +5,7 @@ public class BibliotecasTreeNode extends SourceTreeNode
 
     public BibliotecasTreeNode()
     {
-        super(null);
+        super(new Integer(0));
     }
 
     @Override

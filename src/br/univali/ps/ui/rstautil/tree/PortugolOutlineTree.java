@@ -59,7 +59,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  * @author Robert Futrell
  * @version 1.0
  */
-public class PortugolOutlineTree extends AbstractSourceTree implements TreeModelListener
+public class PortugolOutlineTree extends AbstractTree
 {
     private DefaultTreeModel model;
     private PortugolParser parser;
@@ -89,7 +89,7 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
      */
     public PortugolOutlineTree(boolean sorted)
     {
-        setSorted(sorted);
+//        setSorted(sorted);
         setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
         setRootVisible(false);
         setCellRenderer(new AstTreeCellRenderer());
@@ -97,7 +97,6 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
         setModel(model);
         listener = new Listener();
         addTreeSelectionListener(listener);
-        model.addTreeModelListener(this);
     }
     
     AstOutlineTreeFactory astFactory = new AstOutlineTreeFactory();
@@ -122,7 +121,7 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
         root = astFactory.createTree(resultadoAnalise.getAsa());
 
         model.setRoot(root);
-        root.setSorted(isSorted());
+//        root.setSorted(isSorted());
         refresh();
 
         model.reload();
@@ -157,43 +156,7 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
 
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void expandInitialNodes()
-    {
-
-        // First, collapse all rows.
-        int j = 0;
-
-        while (j < getRowCount())
-        {
-            expandRow(j++);
-        }
-
-        /*
-         while (j<getRowCount()) {
-         collapseRow(j++);
-         }*/
-        /*
-         // Expand only type declarations
-         expandRow(0);
-         j = 1;
-         while (j<getRowCount()) {
-         TreePath path = getPathForRow(j);
-         Object comp = path.getLastPathComponent();
-                        
-                        
-         //if (comp instanceof TypeDeclarationTreeNode) {
-         //	expandPath(path);
-         //}
-         j++;
-         }
-         */
-    }
-
+   
     private void gotoElementAtPath(TreePath path)
     {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.
@@ -330,7 +293,7 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
                          for (int i = 0; i < valores.size(); i++)
                          {
                              ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i));
-                             model.insertNodeInto(vtn,node, i);                             
+                             node.add(vtn);
                          }
                      } 
                      else if (simbolo instanceof Matriz) 
@@ -345,13 +308,18 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
                                 ValorTreeNode vtn = new ValorTreeNode(i, list.get(i));
                                 valorTreeNode.add(vtn);
                              }
-                             model.insertNodeInto(valorTreeNode,node, node.getChildCount());
+                             node.add(valorTreeNode);
                          }
                      }
-                     model.nodeChanged(node);
+                     
+                     
+                    refresh();
+
+                    model.reload();
+                    TreeUtils.expandAll(this, true);
                     
                }
-                TreeUtils.expandAll(this, true);
+               
            }
         }
         
@@ -359,30 +327,6 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
        
     }
 
-    @Override
-    public void treeNodesChanged(TreeModelEvent e)
-    {
-        this.invalidate();
-    }
-
-    @Override
-    public void treeNodesInserted(TreeModelEvent e)
-    {
-         this.invalidate();
-    }
-
-    @Override
-    public void treeNodesRemoved(TreeModelEvent e)
-    {
-         this.invalidate();
-    }
-
-    @Override
-    public void treeStructureChanged(TreeModelEvent e)
-    {
-         this.invalidate();
-    }
-    
     private class ComparadorNos implements Comparator<No>{
 
         @Override
@@ -459,15 +403,12 @@ public class PortugolOutlineTree extends AbstractSourceTree implements TreeModel
         @Override
         public void valueChanged(TreeSelectionEvent e)
         {
-            if (getGotoSelectedElementOnClick())
+            TreePath newPath = e.getNewLeadSelectionPath();
+            if (newPath != null)
             {
-                //gotoSelectedElement();
-                TreePath newPath = e.getNewLeadSelectionPath();
-                if (newPath != null)
-                {
-                    gotoElementAtPath(newPath);
-                }
+                gotoElementAtPath(newPath);
             }
+            
         }
     }
 }

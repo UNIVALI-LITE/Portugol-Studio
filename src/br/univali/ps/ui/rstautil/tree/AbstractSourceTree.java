@@ -10,7 +10,6 @@
  */
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.ps.ui.rstautil.tree.SourceTreeNode;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 import javax.swing.JLabel;
@@ -203,7 +202,7 @@ public abstract class AbstractSourceTree extends JTree {
 			SourceTreeNode node = (SourceTreeNode)root;
 			node.refresh();
 			((DefaultTreeModel)getModel()).reload();
-			expandInitialNodes();
+			//expandInitialNodes();
 		}
 	}
 

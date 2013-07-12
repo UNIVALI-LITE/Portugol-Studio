@@ -107,19 +107,19 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
         
         if (resultadoAnalise.getNumeroErrosSintaticos() == 0)
         {
-            /*if (dynamicCompletions != null)
+            if (dynamicCompletions != null)
             {
                 for (Completion completion : dynamicCompletions)
                 {
                     cp.removeCompletion(completion);
                 }
-            }*/
+            }
             //cp.clear();
             
-            //dynamicCompletions = new ASTCompletionFactory().createCompletions((ArvoreSintaticaAbstrataPrograma) resultadoAnalise.getAsa(), cp, escopoCursor);
-
-            //cp.addCompletions(dynamicCompletions);
+            dynamicCompletions = new ASTCompletionFactory().createCompletions((ArvoreSintaticaAbstrataPrograma) resultadoAnalise.getAsa(), cp, escopoCursor);
             //cp.addCompletions(addTemplateCompletions(cp));
+            cp.addCompletions(dynamicCompletions);
+            
         }
     }
 
@@ -146,6 +146,8 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
     {   
         List<Completion> list = new ArrayList<Completion>();
         
+        list.add(new TemplateCompletion(cp, "b", "comando","cadeia ${cursor}","Tipo de dado",explicacaoTipoCadeia()));
+        
         list.add(new TemplateCompletion(cp, "cadeia", "comando","cadeia ${cursor}","Tipo de dado",explicacaoTipoCadeia()));
         list.add(new TemplateCompletion(cp, "caracter", "comando","caracter ${cursor}","Tipo de dado",explicacaoTipoCaracter()));
         list.add(new TemplateCompletion(cp, "caso","comando","caso ${valor} :\n\t\t${cursor}\n\t\tpare","Instrucao caso",explicacaoComandoCaso()));
@@ -159,8 +161,12 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
         list.add(new TemplateCompletion(cp, "falso","comando","falso ${cursor}","Valor do tipo lógico",explicacaoCasoFalso()));        
         list.add(new TemplateCompletion(cp, "funcao","comando", "funcao ${tipo_retorno} ${nome}( ) \n{\n\t${cursor}\n}", "Declaracao de função",explicacaoComandoFuncao()));
         
+        list.add(new TemplateCompletion(cp, "inclua", "comando","inclua biblioteca ${cursor}","Usar uma biblioteca de funcoes",explicacaoTipoInteiro()));
+        
         list.add(new TemplateCompletion(cp, "inteiro", "comando","inteiro ${cursor}","Tipo de dado",explicacaoTipoInteiro()));
+        
         list.add(new TemplateCompletion(cp, "logico","comando","logico ${cursor}", "Tipo de dado",explicacaoTipoLogico()));
+        
         
         list.add(new TemplateCompletion(cp, "para", "comando", "para(inteiro ${i} = 0; ${i} < ${limite}; ${i}++)\n{\n\t${cursor}\n}", "Laço de repetição 'para'", explicacaoComandoPara()));
         list.add(new TemplateCompletion(cp, "pare","comando","pare ${cursor}","Parar a execução do bloco atual",explicacaoComandoPare()));

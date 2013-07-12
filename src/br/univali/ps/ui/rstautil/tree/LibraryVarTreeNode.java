@@ -16,7 +16,7 @@ final class LibraryVarTreeNode extends SourceTreeNode
     
     public LibraryVarTreeNode(Biblioteca biblioteca, Field variavel)
     {
-        super(null);
+        super(variavel);
         this.variable = variavel;
         this.library = biblioteca;
     }

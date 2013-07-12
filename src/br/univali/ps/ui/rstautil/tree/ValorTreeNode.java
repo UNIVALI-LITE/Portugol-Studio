@@ -8,7 +8,7 @@ public class ValorTreeNode extends SourceTreeNode
 
     public ValorTreeNode(int posicao, Object valor)
     {
-        super(null);
+        super(valor);
         this.posicao = posicao;
         this.valor = valor;
     }
@@ -26,6 +26,6 @@ public class ValorTreeNode extends SourceTreeNode
     @Override
     Object aceitar(OutlineTreeVisitor visitor)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return visitor.visitar(this);
     }
 }

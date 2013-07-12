@@ -10,7 +10,7 @@ final class LibraryFunctionTreeNode extends SourceTreeNode
     
     public LibraryFunctionTreeNode(Biblioteca biblioteca, Method funcao)
     {
-        super(null);
+        super(biblioteca);
         this.funcao = funcao;
         this.biblioteca = biblioteca;
     }

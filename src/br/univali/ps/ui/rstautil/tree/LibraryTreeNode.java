@@ -12,7 +12,7 @@ final class LibraryTreeNode extends SourceTreeNode
     
     public LibraryTreeNode(ErroCarregamentoBiblioteca erro)
     {
-        super(null);
+        super(erro);
         this.erro = erro;
     }    
     

@@ -5,7 +5,7 @@ final class ProgramaTreeNode extends SourceTreeNode
     
     public ProgramaTreeNode()
     {
-        super(null);
+        super(new Integer(0));
         
     }
     
