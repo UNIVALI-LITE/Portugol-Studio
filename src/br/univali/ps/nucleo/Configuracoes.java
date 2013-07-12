@@ -19,6 +19,7 @@ public final class Configuracoes
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
     public static final String DIRETORIO_EXEMPLOS = "diretorioExemplos";
+    public static final String TEMA_EDITOR = "tenaEditor";
     
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();
@@ -27,6 +28,7 @@ public final class Configuracoes
     private String diretorioExemplos;
     private float tamanhoFonteConsole;
     private float tamanhoFonteEditor;
+    private String theme;
     
     Configuracoes()
     {
@@ -43,6 +45,7 @@ public final class Configuracoes
             diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
+            theme = configuracoes.getProperty(TEMA_EDITOR, "default-alt.xml");
         }
         catch (IOException excecao)
         {
@@ -67,6 +70,21 @@ public final class Configuracoes
         return tamanhoFonteConsole;
     }
 
+    public void setTemaEditor(String theme)
+    {
+        String oldTheme = this.theme;
+        
+        this.configuracoes.setProperty(TEMA_EDITOR, theme);
+        this.theme = theme;
+        
+        suporteMudancaPropriedade.firePropertyChange(TEMA_EDITOR, oldTheme, theme);
+    }
+    
+    public String getTemaEditor()
+    {
+        return this.theme;
+    }
+    
     public void setTamanhoFonteConsole(float tamanhoFonteConsole)
     {
         float valorAntigo = this.tamanhoFonteConsole;

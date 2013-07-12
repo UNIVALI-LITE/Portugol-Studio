@@ -197,6 +197,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniVS">
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mniIDEA">
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuHelp">
@@ -244,6 +246,7 @@
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="menuPrincipal"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>

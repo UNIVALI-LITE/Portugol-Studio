@@ -15,6 +15,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ToolTipManager;
@@ -23,6 +27,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 
@@ -66,7 +71,7 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         scrollPane.setIconRowHeaderEnabled(true);
         scrollPane.setLineNumbersEnabled(true);
         scrollPane.setViewportView(textArea);
-
+        
         ToolTipManager.sharedInstance().registerComponent(textArea);
 
         portugolLanguageSuport = new PortugolLanguageSuport();
@@ -86,13 +91,14 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
         
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_EDITOR);
+        configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TEMA_EDITOR);
     }
     
     private void carregarConfiguracoes()
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-        
-        setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
+        setTema(configuracoes.getTemaEditor());
+        setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());        
     }
     
     private void setTamanhoFonteEditor(float tamanho)
@@ -110,6 +116,11 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         if (evt.getPropertyName().equals(Configuracoes.TAMANHO_FONTE_EDITOR))
         {
             setTamanhoFonteEditor((Float) evt.getNewValue());
+        }
+        
+        if (evt.getPropertyName().equals(Configuracoes.TEMA_EDITOR))
+        {
+            setTema((String) evt.getNewValue());
         }
     }
 
@@ -340,6 +351,21 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
     void destacarDetalhado(int linha, int coluna, int tamanho)
     {
         
+    }
+
+    void setTema(String xml)
+    {
+        try
+        {
+            InputStream in = getClass().getResourceAsStream(xml);
+            Theme theme = Theme.load(in);
+            theme.apply(textArea);
+            PortugolStudio.getInstancia().getConfiguracoes().setTemaEditor(xml);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public class EscopoCursor

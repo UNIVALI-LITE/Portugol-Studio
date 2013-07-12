@@ -58,6 +58,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
     private Action themeDark = null;
     private Action themeEclipse = null;
     private Action themeVS = null;
+    private Action themeIDEA = null;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
     private FindReplaceActionListener findReplaceActionListener = new FindReplaceActionListener();
@@ -135,7 +136,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         mnuTheme.setVisible(false);
         mnuTheme.setEnabled(false);
-        themeDefault = new ThemeAction("Padrão", "/default.xml");
+        themeDefault = new ThemeAction("Padrão", "/default-alt.xml");
         mniDefault.setAction(themeDefault);
         themeDark = new ThemeAction("Dark", "/dark.xml");
         mniDark.setAction(themeDark);
@@ -143,6 +144,8 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniEclipse.setAction(themeEclipse);
         themeVS = new ThemeAction("Visual Studio", "/vs.xml");
         mniVS.setAction(themeVS);
+        themeIDEA = new ThemeAction("IntelliJ IDEA", "/idea.xml");
+        mniIDEA.setAction(themeIDEA);
         themeDefault.setEnabled(false);
         themeDark.setEnabled(false);
         themeEclipse.setEnabled(false);
@@ -320,6 +323,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniDark = new javax.swing.JMenuItem();
         mniEclipse = new javax.swing.JMenuItem();
         mniVS = new javax.swing.JMenuItem();
+        mniIDEA = new javax.swing.JMenuItem();
         mnuHelp = new javax.swing.JMenu();
         mniAbout = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -447,6 +451,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mnuTheme.add(mniDark);
         mnuTheme.add(mniEclipse);
         mnuTheme.add(mniVS);
+        mnuTheme.add(mniIDEA);
 
         menuPrincipal.add(mnuTheme);
 
@@ -533,6 +538,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem mniFecharTodos;
     private javax.swing.JMenuItem mniFind;
     private javax.swing.JMenuItem mniGoToLine;
+    private javax.swing.JMenuItem mniIDEA;
     private javax.swing.JMenuItem mniInterromper;
     private javax.swing.JMenuItem mniNovo;
     private javax.swing.JMenuItem mniRecortar;
@@ -725,17 +731,8 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            InputStream in = getClass().getResourceAsStream(xml);
-            try
-            {
-                AbaCodigoFonte aba = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
-                Theme theme = Theme.load(in);
-                theme.apply(aba.getEditor().getTextArea());
-            }
-            catch (IOException ioe)
-            {
-                ioe.printStackTrace(System.err);
-            }
+           AbaCodigoFonte aba = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
+           aba.setTema(xml);
         }
     }
 

@@ -1243,6 +1243,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         tree.updateValoresSimbolos(dados);
     }
 
+    void setTema(String xml)
+    {
+        editor.setTema(xml);
+    }
+
     
     private class AdaptadorComponente extends ComponentAdapter
     {
