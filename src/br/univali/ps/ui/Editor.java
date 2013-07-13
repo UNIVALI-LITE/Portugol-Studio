@@ -25,11 +25,13 @@ import javax.swing.ToolTipManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
+import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 
 /**
  *
@@ -348,9 +350,23 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
 
     @Override public void keyReleased(KeyEvent e) { }
 
+    Object tagDetalhado = null;
+    
     void destacarDetalhado(int linha, int coluna, int tamanho)
     {
-        
+        int line = linha - 1;
+        Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
+        int offs = elem.getStartOffset() + coluna;
+
+        try {
+            if (tagDetalhado == null) {
+                tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs+tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+            } else {
+                textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs+tamanho);
+            }
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     void setTema(String xml)
