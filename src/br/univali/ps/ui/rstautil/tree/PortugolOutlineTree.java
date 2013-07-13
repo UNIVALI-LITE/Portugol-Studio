@@ -283,6 +283,7 @@ public class PortugolOutlineTree extends AbstractTree
                 }
                 if (node != null) 
                 {
+                     node.removeAllChildren();
                      if(simbolo instanceof Variavel)
                      {
                          node.setValor(((Variavel)simbolo).getValor());                     
@@ -305,7 +306,7 @@ public class PortugolOutlineTree extends AbstractTree
                              ValorTreeNode valorTreeNode = new ValorTreeNode(i, null);
                              for (int j = 0; j < list.size(); j++)
                              {
-                                ValorTreeNode vtn = new ValorTreeNode(i, list.get(i));
+                                ValorTreeNode vtn = new ValorTreeNode(j, list.get(j));
                                 valorTreeNode.add(vtn);
                              }
                              node.add(valorTreeNode);
