@@ -180,6 +180,10 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
     {
         textArea.setEditable(true);
         textArea.removeAllLineHighlights();
+        if (tagDetalhado != null) {
+            textArea.getHighlighter().removeHighlight(tagDetalhado);
+            tagDetalhado = null;
+        }
         textArea.setHighlightCurrentLine(true);
         textArea.setFocusable(true);
         textArea.setCodeFoldingEnabled(true);
