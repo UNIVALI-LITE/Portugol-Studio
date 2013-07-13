@@ -357,10 +357,12 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
     {
         try
         {
+            Font f = textArea.getFont();
             InputStream in = getClass().getResourceAsStream(xml);
             Theme theme = Theme.load(in);
             theme.apply(textArea);
             PortugolStudio.getInstancia().getConfiguracoes().setTemaEditor(xml);
+            textArea.setFont(f);
         }
         catch (IOException ex)
         {
