@@ -20,7 +20,7 @@ public final class Configuracoes
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
     public static final String DIRETORIO_EXEMPLOS = "diretorioExemplos";
     public static final String TEMA_EDITOR = "tenaEditor";
-    
+        
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();
 

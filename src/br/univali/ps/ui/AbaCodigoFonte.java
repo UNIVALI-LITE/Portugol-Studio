@@ -1069,7 +1069,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
                 if (depurar)
                 {
-                    programa.depurar(telaOpcoesExecucao.getParametros());
+                    programa.depurar(telaOpcoesExecucao.getParametros(),telaOpcoesExecucao.isDepuracaoDetalhada());
                 }
                 else
                 {

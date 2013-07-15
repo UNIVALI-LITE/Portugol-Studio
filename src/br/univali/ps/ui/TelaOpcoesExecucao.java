@@ -23,6 +23,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     private String ultimaFuncaoSelecionada;
     private boolean cancelado;
             
+    
     public TelaOpcoesExecucao()
     {
         initComponents();
@@ -92,11 +93,13 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         {
             botaoExecutar.setText("Depurar");
             botaoExecutar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
+            campoDepuracaoDetalhada.setVisible(true);
         }
         else
         {
             botaoExecutar.setText("Executar");
             botaoExecutar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"));
+            campoDepuracaoDetalhada.setVisible(false);
         }
         
         if (funcoes.isEmpty())
@@ -162,7 +165,11 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         }
     }
     
-        @Override
+    public boolean isDepuracaoDetalhada(){
+        return campoDepuracaoDetalhada.isSelected();
+    }
+    
+    @Override
     public void stateChanged(ChangeEvent e)
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
@@ -186,6 +193,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         rotuloParametros = new javax.swing.JLabel();
         painelRolagemParametros = new javax.swing.JScrollPane();
         campoParametros = new javax.swing.JTextArea();
+        campoDepuracaoDetalhada = new javax.swing.JCheckBox();
         campoExibirTela = new javax.swing.JCheckBox();
         botaoLimpar = new javax.swing.JButton();
         separador = new javax.swing.JSeparator();
@@ -212,6 +220,8 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         campoParametros.setColumns(20);
         campoParametros.setRows(5);
         painelRolagemParametros.setViewportView(campoParametros);
+
+        campoDepuracaoDetalhada.setText("Realizar depuração detalhada");
 
         campoExibirTela.setSelected(true);
         campoExibirTela.setText("Exibir esta tela antes de cada execução");
@@ -260,7 +270,11 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
                         .add(10, 10, 10)
                         .add(botaoExecutar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(campoExibirTela, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(campoExibirTela, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(layout.createSequentialGroup()
+                                .add(campoDepuracaoDetalhada)
+                                .add(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(botaoLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -275,8 +289,10 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
                 .add(11, 11, 11)
                 .add(rotuloParametros)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(painelRolagemParametros, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                .add(painelRolagemParametros, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 163, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(campoDepuracaoDetalhada)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(botaoLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(campoExibirTela))
@@ -316,6 +332,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoExecutar;
     private javax.swing.JButton botaoLimpar;
+    private javax.swing.JCheckBox campoDepuracaoDetalhada;
     private javax.swing.JCheckBox campoExibirTela;
     private javax.swing.JComboBox campoFuncaoInicial;
     private javax.swing.JTextArea campoParametros;
