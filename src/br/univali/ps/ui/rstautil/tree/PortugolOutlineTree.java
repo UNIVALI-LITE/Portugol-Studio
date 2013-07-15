@@ -304,6 +304,7 @@ public class PortugolOutlineTree extends AbstractTree
                          {
                              List<Object> list = obterValores.get(i);
                              ValorTreeNode valorTreeNode = new ValorTreeNode(i, null);
+                             valorTreeNode.setColuna(true);
                              for (int j = 0; j < list.size(); j++)
                              {
                                 ValorTreeNode vtn = new ValorTreeNode(j, list.get(j));

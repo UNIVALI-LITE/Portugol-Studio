@@ -3,6 +3,7 @@ package br.univali.ps.ui.rstautil.tree;
 
 public class ValorTreeNode extends SourceTreeNode
 {
+    private boolean coluna = false;
     private int posicao; 
     private Object valor;
 
@@ -12,6 +13,18 @@ public class ValorTreeNode extends SourceTreeNode
         this.posicao = posicao;
         this.valor = valor;
     }
+
+    public boolean isColuna()
+    {
+        return coluna;
+    }
+
+    public void setColuna(boolean coluna)
+    {
+        this.coluna = coluna;
+    }
+    
+    
 
     public int getPosicao()
     {

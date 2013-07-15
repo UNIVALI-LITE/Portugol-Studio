@@ -56,6 +56,7 @@ import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Component;
 import java.util.List;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -83,6 +84,11 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         else
             return c;
     }
+    
+    private Icon getIcon(TipoDado tipoDado){
+        String iconName = tipoDado.getNome()+".png";
+        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
+    }
 
     @Override
     public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
@@ -109,7 +115,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noCaso.getClass().getSimpleName().replace("No", "").toLowerCase());
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
         return jLabel;
     }
 
@@ -166,7 +172,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         }
         
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcao.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.gif"));
         return jLabel;
     }
 
@@ -181,7 +187,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoMatriz.getTipoDado().getNome());	
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "layer_grid.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif"));
         return jLabel;
     }
 
@@ -201,7 +207,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append(" = ").append(currentPortugolTreeNode.getValor());
                }
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "int.png"));
+        jLabel.setIcon(getIcon(noDeclaracaoVariavel.getTipoDado()));
         return jLabel;
     }
 
@@ -216,7 +222,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoVetor.getTipoDado().getNome());	
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "hbox.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif"));
         return jLabel;
     }
 
@@ -227,7 +233,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
         return jLabel;
     }
 
@@ -238,7 +244,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noEscolha.getClass().getSimpleName().replace("No", "").toLowerCase());
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
         return jLabel;
     }
 
@@ -249,7 +255,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
         return jLabel;
     }
 
@@ -404,7 +410,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noPara.getClass().getSimpleName().replace("No", "").toLowerCase());
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
         return jLabel;
     }
 
@@ -457,7 +463,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noSe.getClass().getSimpleName().replace("No", "").toLowerCase());
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
         return jLabel;
     }
 
@@ -473,10 +479,15 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noDeclaracaoParametro.getNome());                
+        Icon icon = null;
         if (noDeclaracaoParametro.getQuantificador() == Quantificador.VETOR) {
-           sb.append("[]");
+            sb.append("[]");
+            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
         } else if (noDeclaracaoParametro.getQuantificador() == Quantificador.MATRIZ){
-           sb.append("[][]");
+            sb.append("[][]");
+            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
+        } else {
+            icon = getIcon(noDeclaracaoParametro.getTipoDado());
         }
         sb.append(" : ");
         sb.append("<font color='#888888'>");
@@ -489,7 +500,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
                }
         
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(icon);
         return jLabel;
     }
 
@@ -562,7 +573,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append(tipo);
         }
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcao.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.gif"));
         return jLabel;
     }
 
@@ -579,11 +590,12 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         
         sb.append(" : ");
         sb.append("<font color='#888888'>");
+        final TipoDado tipo = TipoDado.obterTipoDadoPeloTipoJava(no.getVariable().getType());
         
-        sb.append(TipoDado.obterTipoDadoPeloTipoJava(no.getVariable().getType()));
+        sb.append(tipo);
         
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "int.png"));
+        jLabel.setIcon(getIcon(tipo));
         return jLabel;
     }
 
@@ -607,7 +619,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             }
         }   
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lib.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
         return jLabel;
     }
 
@@ -616,11 +628,16 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     {
         StringBuilder sb = new StringBuilder("<html>[");
         sb.append(no.getPosicao()).append("]");
+        Icon icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
         if (no.getValor() != null) {
             sb.append(" = ").append(no.getValor());
+            TipoDado tipo = TipoDado.obterTipoDadoPeloTipoJava(no.getValor().getClass());
+            icon = getIcon(tipo);
+        } else if (no.isColuna()) {
+            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
         }
         JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        jLabel.setIcon(icon);
         return jLabel;
     }
 
@@ -636,7 +653,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(BibliotecasTreeNode no)
     {
         JLabel jLabel = new JLabel("<html>bibliotecas");
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "libs.png"));
+        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif"));
         return jLabel;
     }
 }
