@@ -56,8 +56,8 @@ import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
-import br.univali.portugol.nucleo.bibliotecas.base.CarregadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.ps.ui.Editor;
 import java.util.ArrayList;
 import java.util.List;
@@ -345,7 +345,7 @@ public final class ASTCompletionFactory implements VisitanteASA
 
             if (simboloEstaNoEscopoCursor(trecho))
             {
-                CarregadorBibliotecas.carregarBiblioteca(noInclusaoBiblioteca.getNome());
+                GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(noInclusaoBiblioteca.getNome());
 
                 String nome = (lendoAlias) ? noInclusaoBiblioteca.getAlias() : noInclusaoBiblioteca.getNome();
                 String tipo = "Biblioteca";

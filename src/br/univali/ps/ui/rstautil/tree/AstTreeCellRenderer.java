@@ -53,6 +53,7 @@ import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Component;
 import java.util.List;
@@ -547,16 +548,16 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(LibraryFunctionTreeNode no)
     {
         StringBuilder sb = new StringBuilder("<html>");
-        sb.append(no.getFuncao().getName());
+        sb.append(no.getMetaDadosFuncao().getNome());
         sb.append('(');
         
-        Class[] parametros = no.getFuncao().getParameterTypes();
+        List<MetaDadosParametro> parametros = no.getMetaDadosFuncao().getMetaDadosParametros();
         
-        for (int i = 0; i < parametros.length; i++)
+        for (int i = 0; i < parametros.size(); i++)
         {
-            sb.append(TipoDado.obterTipoDadoPeloTipoJava(parametros[i]));
+            sb.append(parametros.get(i).getTipoDado());
             
-            if (i < parametros.length - 1)
+            if (i < parametros.size() - 1)
             {
                 sb.append(", ");
             }
@@ -564,7 +565,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         
         sb.append(')');
         
-        TipoDado tipo = TipoDado.obterTipoDadoPeloTipoJava(no.getFuncao().getReturnType());
+        TipoDado tipo = no.getMetaDadosFuncao().getTipoDado();
         
         if (tipo != null)
         {
@@ -582,20 +583,21 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     {
         
         StringBuilder sb = new StringBuilder("<html>");
-        sb.append(no.getVariable().getName());
+        sb.append(no.getMetaDadosConstante().getNome());
         
         sb.append(" (");
-        sb.append(no.obterValorVariavel());
+        sb.append(no.obterValorConstante());
         sb.append(")");
         
         sb.append(" : ");
         sb.append("<font color='#888888'>");
-        final TipoDado tipo = TipoDado.obterTipoDadoPeloTipoJava(no.getVariable().getType());
+        TipoDado tipo = no.getMetaDadosConstante().getTipoDado();
         
         sb.append(tipo);
         
         JLabel jLabel = new JLabel(sb.toString());
         jLabel.setIcon(getIcon(tipo));
+        
         return jLabel;
     }
 

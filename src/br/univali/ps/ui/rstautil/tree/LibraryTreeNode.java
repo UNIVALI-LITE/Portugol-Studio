@@ -1,12 +1,12 @@
 package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
-import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
 
 final class LibraryTreeNode extends SourceTreeNode
 {
-    private Biblioteca biblioteca;
+    private MetaDadosBiblioteca metaDadosBiblioteca;
     private NoInclusaoBiblioteca noInclusaoBiblioteca;
     private ErroCarregamentoBiblioteca erro;
     
@@ -16,10 +16,10 @@ final class LibraryTreeNode extends SourceTreeNode
         this.erro = erro;
     }    
     
-    public LibraryTreeNode(NoInclusaoBiblioteca inclusao, Biblioteca biblioteca)
+    public LibraryTreeNode(NoInclusaoBiblioteca inclusao, MetaDadosBiblioteca metaDadosBiblioteca)
     {
         super(inclusao);
-        this.biblioteca = biblioteca;
+        this.metaDadosBiblioteca = metaDadosBiblioteca;
         this.noInclusaoBiblioteca = inclusao;
         this.erro = null;
     }
@@ -34,15 +34,14 @@ final class LibraryTreeNode extends SourceTreeNode
         return noInclusaoBiblioteca;
     }
 
-    public Biblioteca getBiblioteca()
+    public MetaDadosBiblioteca getMetaDadosBiblioteca()
     {
-        return biblioteca;
+        return metaDadosBiblioteca;
     }
-
+    
     @Override
     Object aceitar(OutlineTreeVisitor visitor)
     {
         return visitor.visitar(this);
     }
-
 }
