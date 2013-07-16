@@ -70,20 +70,17 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
 {
     private static final long serialVersionUID = 1L;
     private PortugolTreeNode currentPortugolTreeNode;
-
+    private JLabel component;
+    
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
     {
-        Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-        JLabel jlabel = null;
+        component = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
         if (value instanceof SourceTreeNode)
         {
-            jlabel = (JLabel) ((SourceTreeNode) value).aceitar(this);
+            ((SourceTreeNode) value).aceitar(this);
         }
-        if (jlabel != null)
-            return jlabel;
-        else
-            return c;
+        return component;
     }
     
     private Icon getIcon(TipoDado tipoDado){
@@ -115,9 +112,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noCaso.getClass().getSimpleName().replace("No", "").toLowerCase());
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        return null;
     }
 
     @Override
@@ -172,9 +169,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             }
         }
         
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.gif"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.gif"));
+        return null;
     }
 
     @Override
@@ -187,9 +184,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoMatriz.getTipoDado().getNome());	
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif"));
+        return null;
     }
 
     @Override
@@ -207,9 +204,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
                 !(currentPortugolTreeNode.getValor() instanceof List)) {
             sb.append(" = ").append(currentPortugolTreeNode.getValor());
                }
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(getIcon(noDeclaracaoVariavel.getTipoDado()));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(getIcon(noDeclaracaoVariavel.getTipoDado()));
+        return null;
     }
 
     @Override
@@ -222,9 +219,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoVetor.getTipoDado().getNome());	
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif"));
+        return null;
     }
 
     @Override
@@ -233,9 +230,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        return null;
     }
 
     @Override
@@ -244,9 +241,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noEscolha.getClass().getSimpleName().replace("No", "").toLowerCase());
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        return null;
     }
 
     @Override
@@ -255,9 +252,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        return null;
     }
 
     @Override
@@ -410,9 +407,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noPara.getClass().getSimpleName().replace("No", "").toLowerCase());
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        return null;
     }
 
     @Override
@@ -463,9 +460,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noSe.getClass().getSimpleName().replace("No", "").toLowerCase());
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        return null;
     }
 
     @Override
@@ -500,9 +497,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append(" = ").append(currentPortugolTreeNode.getValor());
                }
         
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(icon);
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(icon);
+        return null;
     }
 
     @Override
@@ -519,9 +516,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append(")");
         }       
         
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lib2.png"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lib2.png"));
+        return null;
     }
 
     @Override
@@ -573,9 +570,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append("<font color='#888888'>");
             sb.append(tipo);
         }
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.gif"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.gif"));
+        return null;
     }
 
     @Override
@@ -595,10 +592,10 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         
         sb.append(tipo);
         
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(getIcon(tipo));
+        component.setText(sb.toString());
+        component.setIcon(getIcon(tipo));
         
-        return jLabel;
+        return null;
     }
 
     @Override
@@ -620,9 +617,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
                 sb.append(")");
             }
         }   
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
+        return null;
     }
 
     @Override
@@ -638,24 +635,24 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         } else if (no.isColuna()) {
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
         }
-        JLabel jLabel = new JLabel(sb.toString());
-        jLabel.setIcon(icon);
-        return jLabel;
+        component.setText(sb.toString());
+        component.setIcon(icon);
+        return null;
     }
 
     @Override
     public Object visitar(ProgramaTreeNode no)
     {
-        JLabel jLabel = new JLabel("<html>programa");
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"));
-        return jLabel;
+        component.setText("<html>programa");
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"));
+        return null;
     }
 
     @Override
     public Object visitar(BibliotecasTreeNode no)
     {
-        JLabel jLabel = new JLabel("<html>bibliotecas");
-        jLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif"));
-        return jLabel;
+        component.setText("<html>bibliotecas");
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif"));
+        return null;
     }
 }
