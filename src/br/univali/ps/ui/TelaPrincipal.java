@@ -227,7 +227,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
                         File exemplo = new File(((JMenuItem) e.getSource()).getName());
                         String codigoFonte = FileHandle.open(exemplo);
                         AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, true);
                     }
                     catch (Exception excecao)
                     {

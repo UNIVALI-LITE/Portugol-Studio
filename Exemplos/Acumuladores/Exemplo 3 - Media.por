@@ -15,12 +15,12 @@ programa
 
 			se(altura <= 1.70)
 			{
-				idade_media += idade 
+				idade_media += idade // idade_media é um acumulador 
 			}
 
 			se(idade >= 20)
 			{
-				altura_media += altura
+				altura_media += altura // altura_media é outro acumulador
 			}
 		}
 		

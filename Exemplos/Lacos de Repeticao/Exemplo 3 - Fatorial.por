@@ -11,13 +11,11 @@ programa
 		fat=1
 		i=2
 
-		faca
+		enquanto(i<=n)
 		{
 			fat = fat * i
 			i=i+1
-			
-		}(i<=n)
-		
-		escreva("O fatorial de: ",n, " é ", fat)
+		}
+		escreva("O fatorial de ",n, " Ã©: ", fat)
 	}
 }

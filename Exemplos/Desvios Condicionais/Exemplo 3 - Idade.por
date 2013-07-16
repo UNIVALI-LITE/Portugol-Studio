@@ -7,8 +7,8 @@ programa {
 	leia(idade) 
 	
 	se (idade < 18) 
-		escreva("o usuario e menor de idade", idade) 
+		escreva("O usuario é menor de idade") 
 	senao
-		escreva("o usuario e maior de idade", idade)
+		escreva("O usuario é maior de idade")
 	} 
 }

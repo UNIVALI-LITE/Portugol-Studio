@@ -2,7 +2,7 @@ programa
 {
 	funcao inicio() 
 	{ 
-		inteiro vet1[6]
+		inteiro vet[6]
 		inteiro contador, par, impar
 
 		par = 0
@@ -19,7 +19,7 @@ programa
 				impar = impar + 1
 				escreva(vet[contador],"\n")
 		}
-		escreva("A quantidade de números pares foram: ", par)
-		escreva("A quantidade de números impares foram: ", impar)
+		escreva("A quantidade de nÃºmeros pares foram: ", par)
+		escreva("A quantidade de nÃºmeros impares foram: ", impar)
 	}
 }

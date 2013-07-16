@@ -17,8 +17,8 @@ programa
 				escreva(interador, " + ")
 			}
 
-			soma = soma + interador			
-			interador++
+			soma = soma + interador // a variável soma é o acumulador do exemplo
+			interador++ // valor do interador é incrementado
 			
 		}
 		escreva("\nA soma é: ", soma)

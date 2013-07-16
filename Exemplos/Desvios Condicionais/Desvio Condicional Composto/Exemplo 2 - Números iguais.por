@@ -7,13 +7,11 @@ programa
 		escreva("Informe um numero de 1 a 6")
 		leia(num)
 
-		// sorteia()
-
-		se (num == sorteia)
+		se (num == sorteia(6))
 		{
-			escreva("são iguais")
+			escreva("SÃ£o iguais")
 		}senao{
-			escreva("são diferentes")
+			escreva("SÃ£o diferentes")
 		}
 	}
 }

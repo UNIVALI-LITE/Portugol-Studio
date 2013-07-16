@@ -4,7 +4,7 @@ programa
 	{
 		inteiro a,b,c
 
-		escreva("Três numeros\n")
+		escreva("Trï¿½s numeros\n")
 		leia(a,b,c)
 		
 		se (a==b e b==c e a==c)

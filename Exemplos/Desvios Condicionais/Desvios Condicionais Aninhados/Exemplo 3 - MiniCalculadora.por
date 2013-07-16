@@ -5,14 +5,14 @@ programa
 		real resultado, oper1, oper2	
 		caracter opcao
 
-		escreva("Digite doi operadores \n")
+		escreva("Digite dois operadores \n")
 		leia(oper1, oper2)
 
-		escreva("Agora escolha uma das opções:\n")
+		escreva("Agora escolha uma das opÃ§Ãµes:\n")
 		escreva("+ ->  Para Soma \n")
-		escreva("- -> Para Subtração \n")
-		escreva("/ -> Para Divisão \n")
-		escreva("* -> Para Multiplicação \n")
+		escreva("- -> Para SubtraÃ§Ã£o \n")
+		escreva("/ -> Para DivisÃ£o \n")
+		escreva("* -> Para MultiplicaÃ§Ã£o \n")
 
 		leia(opcao)
 		
@@ -38,6 +38,6 @@ programa
 				}
 			}
 		}
-		escreva("O resultado da operação: ", resultado)
+		escreva("O resultado da operaÃ§Ã£o: ", resultado)
 	}
 }
