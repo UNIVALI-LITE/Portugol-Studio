@@ -582,15 +582,12 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         StringBuilder sb = new StringBuilder("<html>");
         sb.append(no.getMetaDadosConstante().getNome());
         
-        sb.append(" (");
-        sb.append(no.obterValorConstante());
-        sb.append(")");
-        
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         TipoDado tipo = no.getMetaDadosConstante().getTipoDado();
-        
         sb.append(tipo);
+        sb.append("</font> = ");        
+        sb.append(no.obterValorConstante());
         
         component.setText(sb.toString());
         component.setIcon(getIcon(tipo));

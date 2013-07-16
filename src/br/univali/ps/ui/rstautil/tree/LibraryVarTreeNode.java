@@ -37,8 +37,7 @@ final class LibraryVarTreeNode extends SourceTreeNode
         
         try
         {
-            //Object valor = this.metaDadosBiblioteca.getValorVariavel(this.metaDadosConstante.getNome());
-            Object valor = "indefinido";
+            Object valor = metaDadosConstante.getValor();
             
             if (valor instanceof Double)
             {
