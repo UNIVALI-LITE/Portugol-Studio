@@ -54,12 +54,12 @@ import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
-import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
-import br.univali.portugol.nucleo.bibliotecas.base.CarregadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.ps.ui.rstautil.IconFactory;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -120,26 +120,26 @@ class AstOutlineTreeFactory implements VisitanteASA
     {
         try
         {
-            Biblioteca biblioteca = CarregadorBibliotecas.carregarBiblioteca(inclusao.getNome());
-            LibraryTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, biblioteca);
+            MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(inclusao.getNome());
+            LibraryTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, metaDadosBiblioteca);
 
-            List<Method> funcoes = biblioteca.getFuncoes();
+            List<MetaDadosFuncao> metaDadosFuncoes = metaDadosBiblioteca.getMetaDadosFuncoes();
 
-            if (funcoes != null)
+            if (metaDadosFuncoes != null && !metaDadosFuncoes.isEmpty())
             {
-                for (Method funcao : funcoes)
+                for (MetaDadosFuncao metaDadosFuncao : metaDadosFuncoes)
                 {
-                    raizBiblioteca.add(new LibraryFunctionTreeNode(biblioteca, funcao));
+                    raizBiblioteca.add(new LibraryFunctionTreeNode(metaDadosBiblioteca, metaDadosFuncao));
                 }
             }
 
-            List<Field> variaveis = biblioteca.getVariaveis();
+            List<MetaDadosConstante> metaDadosConstantes = metaDadosBiblioteca.getMetaDadosConstantes();
 
-            if (variaveis != null)
+            if (metaDadosConstantes != null && !metaDadosConstantes.isEmpty())
             {
-                for (Field variavel : variaveis)
+                for (MetaDadosConstante metaDadosConstante : metaDadosConstantes)
                 {
-                    raizBiblioteca.add(new LibraryVarTreeNode(biblioteca, variavel));
+                    raizBiblioteca.add(new LibraryVarTreeNode(metaDadosBiblioteca, metaDadosConstante));
                 }
             }
 

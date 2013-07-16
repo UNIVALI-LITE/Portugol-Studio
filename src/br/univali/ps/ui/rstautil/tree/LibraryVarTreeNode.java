@@ -1,7 +1,7 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
-import java.lang.reflect.Field;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -10,34 +10,35 @@ final class LibraryVarTreeNode extends SourceTreeNode
     private static final int NUMERO_CARACTERES_EXIBIDOS = 12;
     private static final NumberFormat formatadorNumero = new DecimalFormat("#,##0.0000000000000000");
     
-    private Field variable;
-    private Biblioteca library;
+    private MetaDadosConstante metaDadosConstante;
+    private MetaDadosBiblioteca metaDadosBiblioteca;
     
     
-    public LibraryVarTreeNode(Biblioteca biblioteca, Field variavel)
+    public LibraryVarTreeNode(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosConstante metaDadosConstante)
     {
-        super(variavel);
-        this.variable = variavel;
-        this.library = biblioteca;
-    }
-    
-    public Field getVariable()
-    {
-        return variable;
+        super(metaDadosConstante);
+        this.metaDadosConstante = metaDadosConstante;
+        this.metaDadosBiblioteca = metaDadosBiblioteca;
     }
 
-    public Biblioteca getLibrary()
+    public MetaDadosConstante getMetaDadosConstante()
     {
-        return library;
+        return metaDadosConstante;
+    }
+
+    public MetaDadosBiblioteca getMetaDadosBiblioteca()
+    {
+        return metaDadosBiblioteca;
     }
   
-    public String obterValorVariavel()
+    public String obterValorConstante()
     {
         String valorFormatado = "Indefinido";
         
         try
         {
-            Object valor = this.library.getValorVariavel(this.variable.getName());
+            //Object valor = this.metaDadosBiblioteca.getValorVariavel(this.metaDadosConstante.getNome());
+            Object valor = "indefinido";
             
             if (valor instanceof Double)
             {

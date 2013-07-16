@@ -1,28 +1,28 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
-import java.lang.reflect.Method;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 
 final class LibraryFunctionTreeNode extends SourceTreeNode
 {
-    private Method funcao;
-    private Biblioteca biblioteca;
+    private MetaDadosFuncao metaDadosFuncao;
+    private MetaDadosBiblioteca metaDadosBiblioteca;
     
-    public LibraryFunctionTreeNode(Biblioteca biblioteca, Method funcao)
+    public LibraryFunctionTreeNode(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosFuncao metaDadosFuncao)
     {
-        super(biblioteca);
-        this.funcao = funcao;
-        this.biblioteca = biblioteca;
+        super(metaDadosBiblioteca);
+        this.metaDadosFuncao = metaDadosFuncao;
+        this.metaDadosBiblioteca = metaDadosBiblioteca;
     }
 
-    public Method getFuncao()
+    public MetaDadosFuncao getMetaDadosFuncao()
     {
-        return funcao;
+        return metaDadosFuncao;
     }
 
-    public Biblioteca getBiblioteca()
+    public MetaDadosBiblioteca getMetaDadosBiblioteca()
     {
-        return biblioteca;
+        return metaDadosBiblioteca;
     }
 
     @Override
