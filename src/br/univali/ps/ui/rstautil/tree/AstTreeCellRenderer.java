@@ -629,6 +629,10 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append(" = ").append(no.getValor());
             TipoDado tipo = TipoDado.obterTipoDadoPeloTipoJava(no.getValor().getClass());
             icon = getIcon(tipo);
+            if (no.isModificado()) {
+                sb.append("TESTE");
+                no.setModificado(false);
+            }
         } else if (no.isColuna()) {
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
         }
@@ -640,7 +644,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     @Override
     public Object visitar(ProgramaTreeNode no)
     {
-        component.setText("<html>programa");
+        component.setText((String) no.getUserObject());
         component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"));
         return null;
     }
@@ -648,8 +652,16 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     @Override
     public Object visitar(BibliotecasTreeNode no)
     {
-        component.setText("<html>bibliotecas");
+        component.setText((String) no.getUserObject());
         component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif"));
+        return null;
+    }
+
+    @Override
+    public Object visitar(GenericTreeNode no)
+    {
+        component.setText((String) no.getUserObject());
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
         return null;
     }
 }

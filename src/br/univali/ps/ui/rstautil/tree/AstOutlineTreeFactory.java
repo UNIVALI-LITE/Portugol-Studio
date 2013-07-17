@@ -65,11 +65,11 @@ import java.util.List;
 
 class AstOutlineTreeFactory implements VisitanteASA
 {
-    private PortugolTreeNode root;
+    private SourceTreeNode root;
 
-    public PortugolTreeNode createTree(ArvoreSintaticaAbstrata asa)
+    public SourceTreeNode createTree(ArvoreSintaticaAbstrata asa)
     {
-        this.root = new PortugolTreeNode("Remove me!", IconFactory.SOURCE_FILE_ICON);
+        this.root = new GenericTreeNode("Remove me!");
             
         try
         {
@@ -330,7 +330,7 @@ class AstOutlineTreeFactory implements VisitanteASA
         boolean folha = true;
         List<NoBloco> blocosVerdadeiros = noSe.getBlocosVerdadeiros();
         if (blocosVerdadeiros != null){
-            PortugolTreeNode noverdadeiro = new PortugolTreeNode("veradeiro", IconFactory.INTERFACE_ICON);
+            GenericTreeNode noverdadeiro = new GenericTreeNode("veradeiro");
             boolean folhaverdadeiro = true;
             for (NoBloco noBloco : blocosVerdadeiros)
             {
@@ -351,7 +351,7 @@ class AstOutlineTreeFactory implements VisitanteASA
         
         List<NoBloco> blocosFalsos = noSe.getBlocosFalsos();
         if (blocosFalsos != null){  
-            PortugolTreeNode falsos = new PortugolTreeNode("falso", IconFactory.INTERFACE_ICON);
+            GenericTreeNode falsos = new GenericTreeNode("falso");
             
             boolean folhafalso = true;
             for (NoBloco noBloco : blocosFalsos )

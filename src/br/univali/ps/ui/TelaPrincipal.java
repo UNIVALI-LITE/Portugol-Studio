@@ -43,7 +43,6 @@ import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
 import org.fife.rsta.ui.search.SearchDialogSearchContext;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.SearchEngine;
 
 public final class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
@@ -93,7 +92,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
     public TelaPrincipal()
     {
-        Thread.setDefaultUncaughtExceptionHandler(this);
+        //Thread.setDefaultUncaughtExceptionHandler(this);
 
         try
         {

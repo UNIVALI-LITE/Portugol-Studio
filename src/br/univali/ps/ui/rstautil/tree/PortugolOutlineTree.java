@@ -13,7 +13,6 @@ package br.univali.ps.ui.rstautil.tree;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.depuracao.MemoriaDados;
@@ -22,7 +21,6 @@ import br.univali.portugol.nucleo.simbolos.Matriz;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
-import br.univali.ps.ui.rstautil.IconFactory;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
@@ -31,14 +29,12 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JTree;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -109,19 +105,14 @@ public class PortugolOutlineTree extends AbstractTree
      */
     private void update(ResultadoAnalise resultadoAnalise)
     {
-        PortugolTreeNode root = new PortugolTreeNode("Remove me!", IconFactory.SOURCE_FILE_ICON);
-        root.setSortable(false);
 
         if (resultadoAnalise == null || resultadoAnalise.getNumeroErrosSintaticos() > 0)
         {
-            //model.setRoot(root);
             return;
         }
 
-        root = astFactory.createTree(resultadoAnalise.getAsa());
-
+        SourceTreeNode root = astFactory.createTree(resultadoAnalise.getAsa());
         model.setRoot(root);
-//        root.setSorted(isSorted());
         refresh();
 
         model.reload();
@@ -256,7 +247,7 @@ public class PortugolOutlineTree extends AbstractTree
         super.updateUI();
         // DefaultTreeCellRenderer caches colors, so we can't just call
         // ((JComponent)getCellRenderer()).updateUI()...
-        setCellRenderer(new AstTreeCellRenderer());
+        //setCellRenderer(new AstTreeCellRenderer());
     }
 
     ComparadorNos comparador = new ComparadorNos();
@@ -264,67 +255,104 @@ public class PortugolOutlineTree extends AbstractTree
     public void updateValoresSimbolos(MemoriaDados dados)
     {
         SourceTreeNode root = (SourceTreeNode) model.getRoot();
-        for (Simbolo simbolo : dados)
-        {
-            if (!(simbolo instanceof Funcao)){
-                Enumeration en = root.depthFirstEnumeration();
-                PortugolTreeNode node = null;
-                while (en.hasMoreElements()) 
-                {
-                    SourceTreeNode s = (SourceTreeNode)en.nextElement();
-                    if (s instanceof PortugolTreeNode){
-                        node = (PortugolTreeNode) s;                 
-                        if (node.getASTNode() != null && simbolo.getOrigemDoSimbolo() != null &&
-                            comparador.compare(node.getASTNode(), simbolo.getOrigemDoSimbolo()) > 0)
-                        {
-                            break;
+            for (Simbolo simbolo : dados)
+            {
+                if (!(simbolo instanceof Funcao)){
+                    Enumeration en = root.depthFirstEnumeration();
+                    PortugolTreeNode node = null;
+                    while (en.hasMoreElements()) 
+                    {
+                        SourceTreeNode s = (SourceTreeNode)en.nextElement();
+                        if (s instanceof PortugolTreeNode){
+                            node = (PortugolTreeNode) s;                 
+                            if (node.getASTNode() != null && simbolo.getOrigemDoSimbolo() != null &&
+                                comparador.compare(node.getASTNode(), simbolo.getOrigemDoSimbolo()) > 0)
+                            {
+                                break;
+                            }
                         }
                     }
-                }
-                if (node != null) 
-                {
-                     node.removeAllChildren();
-                     if(simbolo instanceof Variavel)
-                     {
-                         node.setValor(((Variavel)simbolo).getValor());                     
-                     } 
-                     else if (simbolo instanceof Vetor) 
-                     {
-                         List<Object> valores = ((Vetor) simbolo).obterValores();
-                         for (int i = 0; i < valores.size(); i++)
+                    if (node != null) 
+                    {   
+                         if(simbolo instanceof Variavel)
                          {
-                             ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i));
-                             node.add(vtn);
-                         }
-                     } 
-                     else if (simbolo instanceof Matriz) 
-                     {
-                         List<List<Object>> obterValores = ((Matriz) simbolo).obterValores();
-                         for (int i = 0; i < obterValores.size(); i++)
-                         {
-                             List<Object> list = obterValores.get(i);
-                             ValorTreeNode valorTreeNode = new ValorTreeNode(i, null);
-                             valorTreeNode.setColuna(true);
-                             for (int j = 0; j < list.size(); j++)
-                             {
-                                ValorTreeNode vtn = new ValorTreeNode(j, list.get(j));
-                                valorTreeNode.add(vtn);
+                             final Object valor = ((Variavel)simbolo).getValor(); 
+                             if (node.getValor() != null && node.getValor() != valor) {
+                                node.setValor(valor); 
+                                model.nodeChanged(node);
+                             } else {
+                                node.setValor(valor); 
+                                model.nodeChanged(node);
                              }
-                             node.add(valorTreeNode);
+                         } 
+                         else if (simbolo instanceof Vetor) 
+                         { 
+                             List<Object> valores = ((Vetor) simbolo).obterValores();
+                             if (node.getChildCount() == 0) {
+                                for (int i = 0; i < valores.size(); i++)
+                                {
+                                    ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i));
+                                    model.insertNodeInto(vtn, node, node.getChildCount());
+                                }
+                             } else {
+                                for (int i = 0; i < valores.size(); i++)
+                                {
+                                    ValorTreeNode valorTreenode =  (ValorTreeNode) node.getChildAt(i);
+                                    if (valorTreenode.getValor() != valores.get(i)) {
+                                        valorTreenode.setModificado(true);
+                                        model.nodeChanged(valorTreenode);
+                                        valorTreenode.setValor(valores.get(i));
+                                    }
+                                    
+                                    
+                                }
+                             }
+                             
+                         } 
+                         else if (simbolo instanceof Matriz) 
+                         {
+                             List<List<Object>> obterValores = ((Matriz) simbolo).obterValores();
+                             if (node.getChildCount() == 0) {
+                                for (int i = 0; i < obterValores.size(); i++)
+                                {
+                                    List<Object> list = obterValores.get(i);
+                                    ValorTreeNode valorTreeNode = new ValorTreeNode(i, null);
+                                    valorTreeNode.setColuna(true);
+                                    for (int j = 0; j < list.size(); j++)
+                                    {
+                                       ValorTreeNode vtn = new ValorTreeNode(j, list.get(j));
+                                       valorTreeNode.add(vtn);
+                                    }
+                                    model.insertNodeInto(valorTreeNode, node, node.getChildCount());
+                                }
+                             } else {
+                                for (int i = 0; i < obterValores.size(); i++)
+                                {   
+                                    ValorTreeNode linha =  (ValorTreeNode) node.getChildAt(i);
+                                    List<Object> list = obterValores.get(i);
+                                    for (int j = 0; j < list.size(); j++)
+                                    {
+                                        ValorTreeNode coluna =  (ValorTreeNode) linha.getChildAt(j);
+                                        if (coluna.getValor() != list.get(j)) {
+                                            coluna.setModificado(true);
+                                            coluna.setValor(list.get(j));
+                                            model.nodeChanged(coluna);
+                                        }
+                                    }
+                                }
+                             }
                          }
-                     }
-                     
-                     
-                    refresh();
 
-                    model.reload();
-                    TreeUtils.expandAll(this, true);
-                    
+
+                        //drefresh();
+
+                        //model.reload();
+                        //TreeUtils.expandAll(this, true);
+
+                   }
+
                }
-               
-           }
-        }
-        
+            }
         
        
     }

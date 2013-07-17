@@ -9,7 +9,7 @@ public class ValorTreeNode extends SourceTreeNode
 
     public ValorTreeNode(int posicao, Object valor)
     {
-        super(valor);
+        super(posicao);
         this.posicao = posicao;
         this.valor = valor;
     }
@@ -23,9 +23,12 @@ public class ValorTreeNode extends SourceTreeNode
     {
         this.coluna = coluna;
     }
-    
-    
 
+    public void setValor(Object valor)
+    {
+        this.valor = valor;
+    }
+    
     public int getPosicao()
     {
         return posicao;

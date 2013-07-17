@@ -208,7 +208,7 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         }
         catch (BadLocationException ex)
         {
-            ex.printStackTrace(System.out);
+           // ex.printStackTrace(System.out);
         }
     }
 

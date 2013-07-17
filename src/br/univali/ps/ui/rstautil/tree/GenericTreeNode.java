@@ -1,16 +1,18 @@
 package br.univali.ps.ui.rstautil.tree;
 
-final class ProgramaTreeNode extends SourceTreeNode
+public class GenericTreeNode extends SourceTreeNode
 {
-    
-    public ProgramaTreeNode()
+
+    public GenericTreeNode(Object userObject)
     {
-        super("programa");        
+        super(userObject);
     }
     
+
     @Override
     Object aceitar(OutlineTreeVisitor visitor)
     {
         return visitor.visitar(this);
     }
+    
 }

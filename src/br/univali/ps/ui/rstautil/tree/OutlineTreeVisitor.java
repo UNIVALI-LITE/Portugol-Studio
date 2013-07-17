@@ -10,4 +10,5 @@ interface OutlineTreeVisitor
     public Object visitar(LibraryVarTreeNode no);
     public Object visitar(LibraryTreeNode no);
     public Object visitar(ValorTreeNode no);
+    public Object visitar(GenericTreeNode no);
 }
