@@ -330,7 +330,7 @@ class AstOutlineTreeFactory implements VisitanteASA
         boolean folha = true;
         List<NoBloco> blocosVerdadeiros = noSe.getBlocosVerdadeiros();
         if (blocosVerdadeiros != null){
-            GenericTreeNode noverdadeiro = new GenericTreeNode("veradeiro");
+            GenericTreeNode noverdadeiro = new GenericTreeNode("verdadeiro");
             boolean folhaverdadeiro = true;
             for (NoBloco noBloco : blocosVerdadeiros)
             {
