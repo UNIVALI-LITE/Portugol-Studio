@@ -21,7 +21,82 @@
 			"superId" : 2,
 			"ambiente" : 1,
 			"titulo" : "Conhecendo a Interface",
-			"explicacao" : "<font face=\"Arial\" color=\"black\">Nesta sessão, você aprenderá como utilizar a interface do PortugolStudio.<br></a><img src=\"file:./img/interface/interface.jpg\" width=\"900\" height=\"528\"><br><br><font face=\"Arial\" color=\"black\">A imagem apresentada acima mostra o ambiente de programação do PortugolStudio dividido por sessões numeradas de 1 a 5. Abaixo os detalhes delas:<br><br><br><br><ul>1 - Barra Menu   <ul><li> Arquivos - Aqui encontram-se as Opções Abrir, Salvar, Salvar Como, Fexar guia, Fexar todas as Guias, Sair      <li> Programa - Opções de Executar e Interromper o programa      <li> Editar - Opções como Desfazer, Refazer, Copiar e Colar      <li> Ajuda - Opções Sobre e Topico de Ajuda    </ul>   2 - Barra de Guias  <br><br> 3 - Atalhos Rapidos      <ul><li> Salvar          <li> Desfazer          <li> Refazer          <li> Recortar          <li> Copiar          <li> Colar          <li> Executar           <li> Interromper       </ul>     4 - Ambiente de Programação      <br><br> 5 - Abas do Console e Mensagens     </ul><br><br><h2><a name=\"novo\"><font face=\"Arial\" color=\"black\">Criando Projetos</a></h2><font face=\"Arial\" color=\"black\">Para criar um novo projeto, clique no sinal \"+\" ao lado da pasta localizado na parte superior do programa<br><img src=\"file:./img/interface/novoprojeto.jpg\"><br>Você também pode clicar em Arquivo/ Novo, ou se preferir, utilize as teclas atalhos \"Ctrl+N\"<br><br><br><h2><a name=\"salvar\"><font face=\"Arial\" color=\"black\">Salvando Projetos</a></h2><font face=\"Arial\" color=\"black\">Para Salvar um Projeto, Clique no Disquete na parte superior do programa<br><img src=\"file:./img/interface/salvar.jpg\"><br>Você pode também clicar em Arquivo/Salvar ou se preferir, Apertar \"Ctrl+S\"<br><br><br><h2><a name=\"abrir\"><font face=\"Arial\" color=\"black\">Abrindo Projetos</a></h2><font face=\"Arial\" color=\"black\">Para Abrir um Projeto Existente, basta clicar na pasta ao lado do \"+\" localizado na parte superior do programa<br><img src=\"file:./img/interface/novoprojeto.jpg\"><br>Você também pode clicar em Arquivo/Abrir ou se preferir, Apertar \"Ctrl+A\"<br><br><br><h2><a name=\"compilar\"><font face=\"Arial\" color=\"black\">Compilando</a></h2><font face=\"Arial\" color=\"black\">Para compilar um projeto, basta clicar na Seta localizada na parte superior do programa<br><img src=\"file:./img/interface/compilar.jpg\"><br>Você pode também clicar em Programa/Executar ou se preferir, apertar \"Ctrl+E\"<br><br><br><h2><a name=\"parar\"><font face=\"Arial\" color=\"black\">Interrompendo o programa</a></h2><font face=\"Arial\" color=\"black\">Em meio a execução do projeto, em alguns casos é necessário interromper o programa por vontade do usuario para fazer algumas modificações. No PortugolStudio isso é possivel clicando no Quadrado localizado na parte superior do programa<br><img src=\"file:./img/interface/parar.jpg\"><br>Você pode também clicar em Programa/Interromper ou se preferir, apertar \"Ctrl+I\"<br><br><br><h2><a name=\"avan\"><font face=\"Arial\" color=\"black\">Desfazer/Refazer</a></h2><font face=\"Arial\" color=\"black\">Quando necessário, você pode retroceder alguma ação ou refazer no PortugolStudio. Para isso você pode clicar nas setas verdes localizadar na parte superior do programa<br><img src=\"file:./img/interface/avanc.jpg\"><br>Você pode também utilizar o menu Editar/Refazer ou Desfazer ou apertando \"Ctrl+Z\" para desfazer ou \"Ctrl+Y\" para refazer.",
+			"explicacao" : "<font face=\"Arial\" color=\"black\">Nesta sessão, você aprenderá como utilizar a interface do PortugolStudio.<br>
+							</a><img src=\"file:./img/interface/interface.jpg\" width=\"900\" height=\"528\">
+							<br>
+							<br>
+							<font face=\"Arial\" color=\"black\">A imagem apresentada acima mostra o ambiente de programação do PortugolStudio dividido por sessões numeradas de 1 a 5. Abaixo os detalhes delas: <br>
+							<br>
+							<br>
+							<br>
+							<ul>
+								 1 - Barra Menu
+								<ul>
+									<li> Arquivos - Aqui encontram-se as Opções Abrir, Salvar, Salvar Como, Fexar guia, Fexar todas as Guias, Sair
+									<li> Programa - Opções de Executar e Interromper o programa
+									<li> Editar - Opções como Desfazer, Refazer, Copiar e Colar
+									<li> Ajuda - Opções Sobre e Topico de Ajuda
+								</ul>
+								 2 - Barra de Guias <br>
+								<br>
+								 3 - Atalhos Rapidos
+								<ul>
+									<li> Salvar
+									<li> Desfazer
+									<li> Refazer
+									<li> Recortar
+									<li> Copiar
+									<li> Colar
+									<li> Executar
+									<li> Interromper
+								</ul>
+								 4 - Ambiente de Programação <br>
+								<br>
+								 5 - Abas do Console e Mensagens
+							</ul>
+							<br>
+							<br>
+							<h2>
+							<a name=\"novo\"><font face=\"Arial\" color=\"black\">Criando Projetos</a>
+							</h2>
+							<font face=\"Arial\" color=\"black\">Para criar um novo projeto, clique no sinal \"+\" ao lado da pasta localizado na parte superior do programa<br>
+							<img src=\"file:./img/interface/novoprojeto.jpg\">
+							<br>
+							Você também pode clicar em Arquivo/ Novo, ou se preferir, utilize as teclas atalhos \"Ctrl+N\"<br>
+							<br>
+							<br>
+							<h2>
+							<a name=\"salvar\"><font face=\"Arial\" color=\"black\">Salvando Projetos</a>
+							</h2>
+							<font face=\"Arial\" color=\"black\">Para Salvar um Projeto, Clique no Disquete na parte superior do programa<br>
+							<img src=\"file:./img/interface/salvar.jpg\"><br>
+							Você pode também clicar em Arquivo/Salvar ou se preferir, Apertar \"Ctrl+S\"<br>
+							<br>
+							<br>
+							<h2>
+							<a name=\"abrir\"><font face=\"Arial\" color=\"black\">Abrindo Projetos</a>
+							</h2>
+							<font face=\"Arial\" color=\"black\">Para Abrir um Projeto Existente, basta clicar na pasta ao lado do \"+\" localizado na parte superior do programa<br>
+							<img src=\"file:./img/interface/novoprojeto.jpg\"><br>
+							Você também pode clicar em Arquivo/Abrir ou se preferir, Apertar \"Ctrl+A\"<br>
+							<br>
+							<br>
+							<h2><a name=\"compilar\"><font face=\"Arial\" color=\"black\">Compilando</a></h2>
+							<font face=\"Arial\" color=\"black\">Para compilar um projeto, basta clicar na Seta localizada na parte superior do programa<br>
+							<img src=\"file:./img/interface/compilar.jpg\"><br>
+							Você pode também clicar em Programa/Executar ou se preferir, apertar \"Ctrl+E\"<br>
+							<br>
+							<br>
+							<h2><a name=\"parar\"><font face=\"Arial\" color=\"black\">Interrompendo o programa</a></h2>
+							<font face=\"Arial\" color=\"black\">Em meio a execução do projeto, em alguns casos é necessário interromper o programa por vontade do usuario para fazer algumas modificações. No PortugolStudio isso é possivel clicando no Quadrado localizado na parte superior do programa<br>
+							<img src=\"file:./img/interface/parar.jpg\"><br>
+							Você pode também clicar em Programa/Interromper ou se preferir, apertar \"Ctrl+I\"<br>
+							<br>
+							<br>
+							<h2><a name=\"avan\"><font face=\"Arial\" color=\"black\">Desfazer/Refazer</a></h2>
+							<font face=\"Arial\" color=\"black\">Quando necessário, você pode retroceder alguma ação ou refazer no PortugolStudio. Para isso você pode clicar nas setas verdes localizadar na parte superior do programa<br>
+							<img src=\"file:./img/interface/avanc.jpg\"><br>
+							Você pode também utilizar o menu Editar/Refazer ou Desfazer ou apertando \"Ctrl+Z\" para desfazer ou \"Ctrl+Y\" para refazer.",
 			"hasChild":true
 		},
 		{
@@ -29,7 +104,21 @@
 			"superId" : 3,
 			"ambiente" : 1,
 			"titulo" : "Conhecendo o Corretor do PortugolStudio",
-			"explicacao" : "<br/><font face=\"Arial\" color=\"black\">Nesta sessão, você aprenderá como utilizar a ferramenta de correção do PortugolStudio.</font><br/><h2>Iniciando a função de correção.</h2><img src=\"file:./img/interface/abrindoPex.png\" width=\"900\" height=\"528\"><br/><br/><font face=\"Arial\" color=\"black\">A imagem apresentada acima mostra como iniciar a função de correção do PortugolStudio:</font><br/><ul>1 - Clique no icone em forma de pasta para abrir um aruivo.<br/>2 - Escolha o exercício a ser executado, lembrando que ele deve ter a extensão \".pex\".<br/>3- Clique no botão abrir.</ul><br/><br/><a name=\"teste\"><h2>Conhecendo o Corretor<h2></a><img src=\"file:./img/interface/interfaceInicialCorretor.png\" width=\"900\" height=\"528\"><br/><br/><font face=\"Arial\" color=\"black\">A imagem apresentada acima mostra o ambiente de programação do PortugolStudio e ao seu lado direito a interface do corretor o qual está dividido em 4 seções:</font><br/><br/><ul>1 - Botão para executar a correção.<br/>2 - Aba que exibe as dicas caso haja um caso de teste falho.<br/>3 - Aba que exibe os casos de teste, demonstando os casos corretos e falhos, juntamente com suas respectivas entradas e saidas.<br/>4 - Aba que exibe o enunciado do exercício em questão.<br/>5 - Nota gerada pelo corretor, a qual corresponde ao numero de casos de teste corretos.<br/></ul><br/><br/><h2>Entendendo os casos de teste.</h2><br/><br/><img src=\"file:./img/interface/helpCorretor.png\" width=\"229\" height=\"328\"><br/><font face=\"Arial\" color=\"black\">Cada caso aprensenta suas respectivas entradas e saidas, e caso esteja incorreto as saidas desejadas. Como mostra a imagem acima.</font><br/>",
+			"explicacao" : "<br/><font face=\"Arial\" color=\"black\">Nesta sessão, você aprenderá como utilizar a ferramenta de correção do PortugolStudio.</font><br/>
+							<h2>Iniciando a função de correção.</h2>
+							<img src=\"file:./img/interface/abrindoPex.png\" width=\"900\" height=\"528\"><br/><br/><font face=\"Arial\" color=\"black\">A imagem apresentada acima mostra como iniciar a função de correção do PortugolStudio:</font><br/>
+							<ul>
+								1 - Clique no icone em forma de pasta para abrir um aruivo.<br/>2 - Escolha o exercício a ser executado, lembrando que ele deve ter a extensão \".pex\".<br/>3- Clique no botão abrir.
+							</ul>
+							<br/><br/><a name=\"teste\">
+							<h2>Conhecendo o Corretor
+							<h2></a><img src=\"file:./img/interface/interfaceInicialCorretor.png\" width=\"900\" height=\"528\"><br/><br/><font face=\"Arial\" color=\"black\">A imagem apresentada acima mostra o ambiente de programação do PortugolStudio e ao seu lado direito a interface do corretor o qual está dividido em 4 seções:</font><br/><br/>
+							<ul>
+								1 - Botão para executar a correção.<br/>2 - Aba que exibe as dicas caso haja um caso de teste falho.<br/>3 - Aba que exibe os casos de teste, demonstando os casos corretos e falhos, juntamente com suas respectivas entradas e saidas.<br/>4 - Aba que exibe o enunciado do exercício em questão.<br/>5 - Nota gerada pelo corretor, a qual corresponde ao numero de casos de teste corretos.<br/>
+							</ul>
+							<br/><br/>
+							<h2>Entendendo os casos de teste.</h2>
+							<br/><br/><img src=\"file:./img/interface/helpCorretor.png\" width=\"229\" height=\"328\"><br/><font face=\"Arial\" color=\"black\">Cada caso aprensenta suas respectivas entradas e saidas, e caso esteja incorreto as saidas desejadas. Como mostra a imagem acima.</font><br/>",
 			"hasChild":false
 		},		
 		{
@@ -37,21 +126,26 @@
 			"superId" : 1,
 			"ambiente" : 0,
 			"titulo" : "Sintaxe do Portugol",
-			"explicacao" : "<h2>São as regras que definem formalmente como os programas devem ser escritos, quais as palavras que devem ser usadas e em que ordem devem aparecer. O compilador auxilia a verificar se a sintaxe de um programa está correta.intaxe basica:<br/><tr><td>
-<pre><font face=\"Arial\" color=\"black\">
-programa{
-    funcao inicio(cadeia parametros [ ]) {
-	&lt;definicoes_de_constantes>
-	&lt;declaracoes_de_variaveis>
-	&lt;instrucoes_do_programa>
-    }
-}
-</pre></td></tr></table>	
-
-<h2>Onde:<br>
-- &lt;definicoes_de_constantes> são instruções para definir nomes para asconstantes.<br>
-- &lt;declaracoes_de_variaveis> são instruções para declaração de variáveis.<br>
-- &lt;instrucoes_do_programa> são instruções a serem executadas pelo programa.</h2>",
+			"explicacao" : "<h2>São as regras que definem formalmente como os programas devem ser escritos, quais as palavras que devem ser usadas e em que ordem devem aparecer. O compilador auxilia a verificar se a sintaxe de um programa está correta.intaxe basica:<br/>
+							<tr>
+								<td>
+									<pre>
+										<font face=\"Arial\" color=\"black\">
+										programa{ 
+											funcao inicio() { 
+												&lt;definicoes_de_constantes> 
+												&lt;declaracoes_de_variaveis> 
+												&lt;instrucoes_do_programa> 
+											} 
+										}
+									</pre>
+								</td>
+							</tr>
+							</table>
+							<h2>Onde:<br>
+							 - &lt;definicoes_de_constantes> são instruções para definir nomes para asconstantes.<br>
+							 - &lt;declaracoes_de_variaveis> são instruções para declaração de variáveis.<br>
+							 - &lt;instrucoes_do_programa> são instruções a serem executadas pelo programa.</h2>",
 			"hasChild":true
 		},
 		{
@@ -59,7 +153,20 @@ programa{
 			"superId" : 5,
 			"titulo" : "Tipos e Variáveis",
 			"ambiente" : 0,
-			"explicacao" : "<h2>Nesta seção serão apresentados os diversos tipos de operadores que o PortugolStudio possui. Abaixo uma pequena explicação sobre Tipos e Variáveis.</h2><br><br><h2>Tipos</h2><br><h2>Quais são os tipos de dados que o computador pode armazenar? Se pararmos para pensar que“tudo que o computador compreende é representado por Zeros e Uns”, então a resposta é Zero e Um. Certo?</h2><h2>Certo! Mas como, então, o computador pode exibir mensagens na tela,apresentar ambientes gráficos cheios de janelas, compreender o significado dasteclas do teclado ou dos cliques do mouse? Tudo começa com a definição de uma série de códigos.</h2><br><h2> Por exemplo, aletra \"a\" do teclado é representada pela seguinte seqüência de zeros e uns\"01000001\". O número 22 é representado por \"00010110\". E assim todos osdados que são armazenados pelo computador podem ser representados em zerose uns.Desta forma, por convenção, definiu-se que quatro tipos básicos de dados seriam representados no computador.</h2><br><br><h2>Variáveis</h2><br><h2>As variáveis podem ser entendidas como sendo apelidos para as posições da memória. É por meio das variáveis que os dados dos nossos programas serão armazenados.</h2>",
+			"explicacao" : "<h2>Nesta seção serão apresentados os diversos tipos de operadores que o PortugolStudio possui. Abaixo uma pequena explicação sobre Tipos e Variáveis.</h2>
+							<br>
+							<br>
+							<h2>Tipos</h2>
+							<br>
+							<h2>Quais são os tipos de dados que o computador pode armazenar? Se pararmos para pensar que“tudo que o computador compreende é representado por Zeros e Uns”, então a resposta é Zero e Um. Certo?</h2>
+							<h2>Certo! Mas como, então, o computador pode exibir mensagens na tela,apresentar ambientes gráficos cheios de janelas, compreender o significado dasteclas do teclado ou dos cliques do mouse? Tudo começa com a definição de uma série de códigos.</h2>
+							<br>
+							<h2> Por exemplo, aletra \"a\" do teclado é representada pela seguinte seqüência de zeros e uns\"01000001\". O número 22 é representado por \"00010110\". E assim todos osdados que são armazenados pelo computador podem ser representados em zerose uns.Desta forma, por convenção, definiu-se que quatro tipos básicos de dados seriam representados no computador.</h2>
+							<br>
+							<br>
+							<h2>Variáveis</h2>
+							<br>
+							<h2>As variáveis podem ser entendidas como sendo apelidos para as posições da memória. É por meio das variáveis que os dados dos nossos programas serão armazenados.</h2>",
 			"hasChild":true
 		},
 		{
@@ -91,7 +198,58 @@ programa{
 			"superId" : 6,	
 			"ambiente" : 0,			
 			"titulo" : "Tipo Inteiro",		
-			"explicacao" : "<h2>Os números inteiros são constituidos dos numeros naturais {0,1,2,3, ...} e dos seus opostos {0, -1, -2, -3, ...}. O tipo deve ser acompanhado com a variável.</h2> <br><br> <table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> &lt;nomeVariavel></td></tr></table><br><br><h2>Exemplos Basicos</h2><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Exemplo</td> <td><font face=\"Arial\" color=\"black\"><center>Descrição</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> numero&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Tipo inteiro com a variável Numero&nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b>  idade, rg&nbsp; </td><td ><font face=\"Arial\" color=\"black\">&nbsp;Tipo inteiro com duas variaveis&nbsp;</td></tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> num1 = 1, num2 = 2, soma = num1 + num2&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Tipo inteiro com atribuição na inicialização&nbsp;</td> </table><br>",
+			"explicacao" : "<h2>Os números inteiros são constituidos dos numeros naturais {0,1,2,3, ...} e dos seus opostos {0, -1, -2, -3, ...}. O tipo deve ser acompanhado com a variável.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> &lt;nomeVariavel>
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>
+							<h2>Exemplos Basicos</h2>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Descrição
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> numero&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Tipo inteiro com a variável Numero&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> idade, rg&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Tipo inteiro com duas variaveis&nbsp;
+								</td>
+							</tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> num1 = 1, num2 = 2, soma = num1 + num2&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Tipo inteiro com atribuição na inicialização&nbsp;
+							</td>
+							</table>
+							<br>",
 			"hasChild":false
 		},		 		
 		{
@@ -99,7 +257,60 @@ programa{
 			"superId" : 6,
 			"ambiente" : 0,
 			"titulo" : "Tipo Real",		
-			"explicacao" : "<h2>Pode-se pensar em um número real como uma fração decimal possivelmente infinita, como 3,14592(...). O tipo deve ser declarado juntamente com a variavel.<h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>real</b> &lt;nomeVariavel></td></tr></table><br><br><h2>Exemplos Basicos</h2><br> <table cellspacing=\"2\"><tr><td ><font face=\"Arial\" color=\"black\"><center>Exemplo</td> <td><font face=\"Arial\" color=\"black\"><center>&nbsp;Descrição</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b> real</b> numero&nbsp;</td> <td ><font face=\"Arial\" color=\"black\">&nbsp;Tipo real com Váriavel Numero&nbsp;</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b> real </b> peso, altura&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Variaveis peso e altura do tipo Real</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b> real </b> valor = 5, metade = valor / 2&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Tipo Real com Atribuição na Inicialização&nbsp;</td></tr></table><br>",		
+			"explicacao" : "<h2>Pode-se pensar em um número real como uma fração decimal possivelmente infinita, como 3,14592(...). O tipo deve ser declarado juntamente com a variavel.
+							<h2><br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>real</b> &lt;nomeVariavel>
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>
+							<h2>Exemplos Basicos</h2>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>&nbsp;Descrição
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b> real</b> numero&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Tipo real com Váriavel Numero&nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<font face=\"Arial\" color=\"black\">&nbsp;<b> real </b> peso, altura&nbsp;
+							</td>
+							<td>
+							<font face=\"Arial\" color=\"black\">&nbsp;Variaveis peso e altura do tipo Real
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<font face=\"Arial\" color=\"black\">&nbsp;<b> real </b> valor = 5, metade = valor / 2&nbsp;
+							</td>
+							<td>
+							<font face=\"Arial\" color=\"black\">&nbsp;Tipo Real com Atribuição na Inicialização&nbsp;
+							</td>
+							</tr>
+							</table>
+							<br>",		
 			"hasChild":false
 		},			
 		{
@@ -107,7 +318,59 @@ programa{
 			"superId" : 6,	
 			"ambiente" : 0,			
 			"titulo" : "Tipo Cadeia",			
-			"explicacao" : "<h2>O tipo cadeia é um conjunto de caracters. O tipo cadeia deve estar acompanhado de aspas duplas.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>cadeia</b> &lt;nomeVariavel></td></tr></table><br><br><h2>Exemplos Basicos</h2><br> <table   cellspacing=\"2\"><tr><td ><font face=\"Arial\" color=\"black\"><center>Exemplo</td> <td><font face=\"Arial\" color=\"black\"><center>Descrição</td><tr><td ><font face=\"Arial\" color=\"black\">&nbsp; <b>cadeia</b> nome&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Tipo cadeia com Váriavel Nome&nbsp;</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b> cadeia </b> endereco, empresa</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Variaveis endeco e empresa do tipo Cadeia</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b> cadeia </b> mes = \"março\"</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Declara a variável mes e inicia ela com a palavra \"março\"</td></tr></table><br>",
+			"explicacao" : "<h2>O tipo cadeia é um conjunto de caracters. O tipo cadeia deve estar acompanhado de aspas duplas.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>cadeia</b> &lt;nomeVariavel>
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>
+							<h2>Exemplos Basicos</h2>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Descrição
+								</td>
+								<tr>
+									<td>
+										<font face=\"Arial\" color=\"black\">&nbsp; <b>cadeia</b> nome&nbsp;
+									</td>
+									<td>
+										<font face=\"Arial\" color=\"black\">&nbsp;Tipo cadeia com Váriavel Nome&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<font face=\"Arial\" color=\"black\">&nbsp;<b> cadeia </b> endereco, empresa
+									</td>
+									<td>
+										<font face=\"Arial\" color=\"black\">&nbsp;Variaveis endeco e empresa do tipo Cadeia
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<font face=\"Arial\" color=\"black\">&nbsp;<b> cadeia </b> mes = \"março\"
+									</td>
+									<td>
+										<font face=\"Arial\" color=\"black\">&nbsp;Declara a variável mes e inicia ela com a palavra \"março\"
+									</td>
+								</tr>
+								</table>
+								<br>",
 			"hasChild":false		
 		},		
 		{
@@ -115,7 +378,50 @@ programa{
 			"superId" : 6,
 			"ambiente" : 0,			
 			"titulo" : "Tipo Caracter",					
-			"explicacao" : "<h2>Qualquer digito número ou alfanumérico ou letra que pode ser inserido por um dispositivo de entrada. O tipo caracter deve estar acompanhado de aspas simples.</h2> <br><br> <table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>caracter</b> &lt;nomeVariavel></td></tr></table><br><br><table   cellspacing=\"2\"> <tr><td ><font face=\"Arial\" color=\"black\"><center>Exemplo</td><td><font face=\"Arial\" color=\"black\"><center>Descrição</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b> caracter </b> letra&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Tipo caracter com Váriavel letra&nbsp;</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b> cadeia </b> consoante, vogal, altura&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Variaveis consoante e vogal do tipo cadeia</td></tr></table><br>",	
+			"explicacao" : "<h2>Qualquer digito número ou alfanumérico ou letra que pode ser inserido por um dispositivo de entrada. O tipo caracter deve estar acompanhado de aspas simples.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>caracter</b> &lt;nomeVariavel>
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Descrição
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b> caracter </b> letra&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Tipo caracter com Váriavel letra&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b> cadeia </b> consoante, vogal, altura&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Variaveis consoante e vogal do tipo cadeia
+								</td>
+							</tr>
+							</table>
+							<br>",	
 			"hasChild":false			
 		},	
 		{
@@ -123,7 +429,49 @@ programa{
 			"superId" : 6,		
 			"ambiente" : 0,
 			"titulo" : "Tipo Lógico",				
-			"explicacao" : "<h2>É um tipo de dado, usado em operações lógicas, que possui somente dois valores, que são consideradas pelo Portugol Studio: como verdadeiro e Falso.</h2>  <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>logico</b> &lt;nomeVariavel></td></tr></table><br><br> <table  cellspacing=\"2\">  <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td> <td><font face=\"Arial\" color=\"black\"><center>Exemplo</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp; <b>logico</b> opcao&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Variável  do tipo Lógico opcao&nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp; <b>logico</b> opcao = verdadeiro&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;variável opcao com inicialização&nbsp;</td></tr></table>",	
+			"explicacao" : "<h2>É um tipo de dado, usado em operações lógicas, que possui somente dois valores, que são consideradas pelo Portugol Studio: como verdadeiro e Falso.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>logico</b> &lt;nomeVariavel>
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; <b>logico</b> opcao&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Variável do tipo Lógico opcao&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; <b>logico</b> opcao = verdadeiro&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;variável opcao com inicialização&nbsp;
+								</td>
+							</tr>
+							</table>",	
 			"hasChild":false			
 		
 		},
@@ -132,7 +480,42 @@ programa{
 			"superId" : 6,		
 			"ambiente" : 0,
 			"titulo" : "Variaveis",	
-			"explicacao" : "<h2>As variaveis servem para armazenar os dados dos nossos programas.Podem ser declaradas em qualquer lugar dentro da função inicio. Vale lembrar que uma variavel declarada dentro de algum bloco só servirá para o bloco onde ela foi declarada.</h2> <br><br> <table  cellspacing=\"2\"> <tr><td ><font face=\"Arial\" color=\"black\"><center>Exemplo</td> <td><font face=\"Arial\" color=\"black\"><center>Descrição</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> numero&nbsp;</td> <td ><font face=\"Arial\" color=\"black\">&nbsp; Variável do tipo inteiro&nbsp;</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b>real</b>  valor &nbsp; </td><td ><font face=\"Arial\" color=\"black\">&nbsp; Variável do tipo real &nbsp;</td></tr><td ><font face=\"Arial\" color=\"black\">&nbsp;<b>cadeia</b>  nomeEscola &nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;Variável do tipo cadeia &nbsp;</td> </table><br>",	
+			"explicacao" : "<h2>As variaveis servem para armazenar os dados dos nossos programas.Podem ser declaradas em qualquer lugar dentro da função inicio. Vale lembrar que uma variavel declarada dentro de algum bloco só servirá para o bloco onde ela foi declarada.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Descrição
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>inteiro</b> numero&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; Variável do tipo inteiro&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>real</b> valor &nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; Variável do tipo real &nbsp;
+								</td>
+							</tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>cadeia</b> nomeEscola &nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Variável do tipo cadeia &nbsp;
+							</td>
+							</table>
+							<br>",	
 			"hasChild":false
 		},
 		{
@@ -140,7 +523,29 @@ programa{
 			"superId" : 6,		
 			"ambiente" : 0,
 			"titulo" : "Constantes",				
-			"explicacao" : "<h2>As Constantes são valores que não se alteram durante a execução do programa . Veja na sintaxe e nos exemplos como usar as constante.</h2>  <br><br><table  cellspacing=\"2\">  <tr><td ><font face=\"Arial\" color=\"black\"><center>Sintaxe</td> <td><font face=\"Arial\" color=\"black\"><center>Exemplo</td></tr><tr><td ><font face=\"Arial\" color=\"black\">&nbsp; <b>const &lt;tipo> &lt;nome> = &lt;valor></b>&nbsp;</td><td ><font face=\"Arial\" color=\"black\">&nbsp;cont inteiro num = 5&nbsp;</td></tr></table><br><br>",	
+			"explicacao" : "<h2>As Constantes são valores que não se alteram durante a execução do programa . Veja na sintaxe e nos exemplos como usar as constante.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; <b>const &lt;tipo> &lt;nome> = &lt;valor></b>&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;cont inteiro num = 5&nbsp;
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>",	
 			"hasChild":false			
 		},
 		{
@@ -148,7 +553,49 @@ programa{
 			"superId" : 6,		
 			"ambiente" : 0,
 			"titulo" : "Vetores",		
-			"explicacao" : "<h2>Um vetor pode ser visto como uma variavel que possui diversas posições, e com isso armazena diversos valores, porem todos do mesmo tipo. Na declaração de vetor, indica-se o tamanho destes. Os índices devem aparecer entre conchetes. Caso o usuário não informe o índice, o programa vai considerar como sendo zero.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;&lt;tipo> &lt;NomeVetor>[&lt;tamanho>]></td></tr></table><br><br> <table cellspacing=\"2\">  <tr><td ><font face=\"Arial\" color=\"black\"><center>Exemplo</td> <td><font face=\"Arial\" color=\"black\"><center>Descrição</td></tr><tr><td ><font face=\"Arial\" color=\"black\"><b>inteiro</b> vetor[5]</td><td ><font face=\"Arial\" color=\"black\"><center>Vetor do tipo inteiro com 5 posições</td></tr><tr><td><font face=\"Arial\" color=\"black\"><b>inteiro</b> vetor[5]={1,2,3,4,5}</td><td ><font face=\"Arial\" color=\"black\"><center>Vetor de 5 Posições com inicialização</td></tr></table>",							
+			"explicacao" : "<h2>Um vetor pode ser visto como uma variavel que possui diversas posições, e com isso armazena diversos valores, porem todos do mesmo tipo. Na declaração de vetor, indica-se o tamanho destes. Os índices devem aparecer entre conchetes. Caso o usuário não informe o índice, o programa vai considerar como sendo zero.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;&lt;tipo> &lt;NomeVetor>[&lt;tamanho>]>
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Descrição
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><b>inteiro</b> vetor[5]
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Vetor do tipo inteiro com 5 posições
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><b>inteiro</b> vetor[5]={1,2,3,4,5}
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Vetor de 5 Posições com inicialização
+								</td>
+							</tr>
+							</table>",							
 			"hasChild":false
 		},				
 		{
@@ -156,7 +603,48 @@ programa{
 			"superId" : 6,		
 			"ambiente" : 0,
 			"titulo" : "Matrizes",
-			"explicacao" : "<h2>As matrizes são variáveis com mais de uma dimensão, normalmente duas, cada posição é referenciada por dois índices uma para linha e outra para coluna, na declaração de matriz indica-se o número de linhas e de colunas destas, e devem aparecer entre conchetes. Veja na tabela como declarar matrizes e como utiliza-las.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;&lt;tipo> &lt;NomeMatriz>[&lt;tamanho>][&lt;tamanho>]></td></tr></table><br><br> <table cellspacing=\"2\">  <tr><td><font face=\"Arial\" color=\"black\"><center>Exemplo</td> <td><font face=\"Arial\" color=\"black\"><center>Descrição</td></tr><td><font face=\"Arial\" color=\"black\"><b>inteiro</b> matriz[5][5]</td><td><font face=\"Arial\" color=\"black\"><center>Matriz do tipo inteiro com 5 linhas e com 5 colunas</td></tr><tr><td><font face=\"Arial\" color=\"black\"><b>inteiro</b> matriz[2][2]={{1,2},{3,4}}</td><td><font face=\"Arial\" color=\"black\"><center>Matriz 2x2 com inicialização</td></tr></table>",								
+			"explicacao" : "<h2>As matrizes são variáveis com mais de uma dimensão, normalmente duas, cada posição é referenciada por dois índices uma para linha e outra para coluna, na declaração de matriz indica-se o número de linhas e de colunas destas, e devem aparecer entre conchetes. Veja na tabela como declarar matrizes e como utiliza-las.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;&lt;tipo> &lt;NomeMatriz>[&lt;tamanho>][&lt;tamanho>]>
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Descrição
+								</td>
+							</tr>
+							<td>
+								<font face=\"Arial\" color=\"black\"><b>inteiro</b> matriz[5][5]
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\"><center>Matriz do tipo inteiro com 5 linhas e com 5 colunas
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\"><b>inteiro</b> matriz[2][2]={{1,2},{3,4}}
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\"><center>Matriz 2x2 com inicialização
+							</td>
+							</tr>
+							</table>",								
 			"hasChild":false
 		},
 		{
@@ -164,7 +652,76 @@ programa{
 			"superId" : 7,
 			"ambiente" : 0,
 			"titulo" : "Operadores Aritméticos",				  			
-			"explicacao" : "<h2>As operações aritméticas são os operadores matemáticos, e são muito usados em algoritmos para realizar cálculos. Veja abaixo quais são estes operadores aritméticos.</h2> <br><br><table cellspacing=\"2\"> <tr><th><font face=\"Arial\" color=\"black\"><center>Operador</th> <th><font face=\"Arial\" color=\"black\"><center>Significado</th><th><font face=\"Arial\" color=\"black\"><center>Exemplo</th></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>+</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador de soma&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x= 2+2 &nbsp;</td></tr><tr><<td><font face=\"Arial\" color=\"black\">&nbsp;<b>-</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador de subtração&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x = 8-9 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>%</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador de resto (mod)&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x = 101%10 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>/</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador de divisão &nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x = 50/4 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>*</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador de multiplicação &nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x = 4*2.5 &nbsp;</td></tr></table>",	
+			"explicacao" : "<h2>As operações aritméticas são os operadores matemáticos, e são muito usados em algoritmos para realizar cálculos. Veja abaixo quais são estes operadores aritméticos.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Operador
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Significado
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</th>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>+</b>&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Operador de soma&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; x= 2+2 &nbsp;
+								</td>
+							</tr>
+							<tr>
+								<<td><font face=\"Arial\" color=\"black\">&nbsp;<b>-</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador de subtração&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x = 8-9 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>%</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador de resto (mod)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x = 101%10 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>/</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador de divisão &nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x = 50/4 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>*</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador de multiplicação &nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x = 4*2.5 &nbsp;
+							</td>
+							</tr>
+							</table>",	
 			"hasChild":false			
 		},		
 		{
@@ -172,7 +729,87 @@ programa{
 			"superId" : 7,
 			"ambiente" : 0,
 			"titulo" : "Operadores Relacionais",				  			
-			"explicacao" : "<h2>Em algoritmos as operações relacionais servem para realizar comparações que terão como resultado um valor lógico.</h2> <br><br><table cellspacing=\"2\"> <tr><th><font face=\"Arial\" color=\"black\"><center>Operador</th> <th><font face=\"Arial\" color=\"black\"><center>Significado</th><th><font face=\"Arial\" color=\"black\"><center>Exemplo</th></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>&lt;</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador \"maior que\"&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x &lt 10 &nbsp;</td></tr><tr><<td><font face=\"Arial\" color=\"black\">&nbsp;<b>></b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador \"menor que\"&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x > 8 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>&lt;=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador \"menor ou igual a\" &nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x &lt= 15 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>>=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador \"maior ou igual a\"&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x >= 5 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>==</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador \"igual a\" &nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x == 1 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>!=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador \"diferente de\" &nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x != 4 &nbsp;</td></tr></table>",			
+			"explicacao" : "<h2>Em algoritmos as operações relacionais servem para realizar comparações que terão como resultado um valor lógico.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Operador
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Significado
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</th>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>&lt;</b>&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Operador \"maior que\"&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; x &lt 10 &nbsp;
+								</td>
+							</tr>
+							<tr>
+								<<td><font face=\"Arial\" color=\"black\">&nbsp;<b>></b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador \"menor que\"&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x > 8 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>&lt;=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador \"menor ou igual a\" &nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x &lt= 15 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>>=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador \"maior ou igual a\"&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x >= 5 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>==</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador \"igual a\" &nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x == 1 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>!=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador \"diferente de\" &nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x != 4 &nbsp;
+							</td>
+							</tr>
+							</table>",			
 			"hasChild":false			
 		},				
 		{
@@ -180,7 +817,53 @@ programa{
 			"superId" : 7,	
 			"ambiente" : 0,			
 			"titulo" : "Operadores Lógicos",			  			
-			"explicacao" : "<h2>Um operador lógico opera com valores lógicos, ou seja, é necessário que os valores a direita e a esquerda do operador sejam lógicos.</h2> <br><br><table cellspacing=\"2\"> <tr><th><font face=\"Arial\" color=\"black\"><center>Operador</th> <th><font face=\"Arial\" color=\"black\"><center>Significado</th><th><font face=\"Arial\" color=\"black\"><center>Exemplo</th></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>e</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que verifica se todas as condições são verdadeiras e então retorna verdadeiro caso contrario falso&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; (x == 10 ou x == 0) &nbsp;</td></tr><tr><<td><font face=\"Arial\" color=\"black\">&nbsp;<b>ou</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que verifica se pelo menos uma das condições é verdadeira e então retorna verdadeiro caso todas sejam falsas ele retorna falso&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;(x>5 e x < 10) &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>nao</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador de negação, ou seja, tudo que vier após ele será invertido&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; (nao x) &nbsp;</td></tr></table>",		
+			"explicacao" : "<h2>Um operador lógico opera com valores lógicos, ou seja, é necessário que os valores a direita e a esquerda do operador sejam lógicos.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Operador
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Significado
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</th>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>e</b>&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Operador que verifica se todas as condições são verdadeiras e então retorna verdadeiro caso contrario falso&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; (x == 10 ou x == 0) &nbsp;
+								</td>
+							</tr>
+							<tr>
+								<<td><font face=\"Arial\" color=\"black\">&nbsp;<b>ou</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador que verifica se pelo menos uma das condições é verdadeira e então retorna verdadeiro caso todas sejam falsas ele retorna falso&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;(x>5 e x < 10) &nbsp;</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>nao</b>&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Operador de negação, ou seja, tudo que vier após ele será invertido&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; (nao x) &nbsp;
+								</td>
+							</tr>
+							</table>",		
 			"hasChild":false
 		},				
 		{
@@ -188,7 +871,98 @@ programa{
 			"superId" : 7,		
 			"ambiente" : 0,
 			"titulo" : "Operadores Incremento/Decremento",				  			
-			"explicacao" : "<h2>No novo Portugol existe também operadores de incremento e decremento, esses operadores são muito usado em outras linguagem de programação.</h2> <br><br><table cellspacing=\"2\"> <tr><th><font face=\"Arial\" color=\"black\"><center>Operador</th> <th><font face=\"Arial\" color=\"black\"><center>Significado</th><th><font face=\"Arial\" color=\"black\"><center>Exemplo</th></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>++</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que adiciona(incrementa) 1 no valor da variavel&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x-- &nbsp;</td></tr><tr><<td><font face=\"Arial\" color=\"black\">&nbsp;<b>--</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que subtrai(decrementa) 1 no valor da variavel&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x++ &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>+=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que adiciona ao valor da variavel o valor que estiver após a atribuição(=)&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x += 15 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>-=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que subtrai o valor da variavel pelo valor que estiver após a atribuição(=)&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x -= 5 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>%=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que atribui  ao valor da variavel o resultado da operacao de resto do valor atual pelo valor que estiver após a atribuição(=)&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x %= 10 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>/=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que divide o valor da variavel pelo valor que estiver após a atribuição(=)&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp; x /= 4 &nbsp;</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>*=</b>&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;Operador que multiplica o valor da variavel pelo valor que estiver após a atribuição(=)&nbsp;</td><td><font face=\"Arial\" color=\"black\">&nbsp;  x*= 5 &nbsp;</td></tr></table>",
+			"explicacao" : "<h2>No novo Portugol existe também operadores de incremento e decremento, esses operadores são muito usado em outras linguagem de programação.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Operador
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Significado
+								</th>
+								<th>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</th>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>++</b>&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Operador que adiciona(incrementa) 1 no valor da variavel&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp; x-- &nbsp;
+								</td>
+							</tr>
+							<tr>
+								<<td><font face=\"Arial\" color=\"black\">&nbsp;<b>--</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador que subtrai(decrementa) 1 no valor da variavel&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x++ &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>+=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador que adiciona ao valor da variavel o valor que estiver após a atribuição(=)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x += 15 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>-=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador que subtrai o valor da variavel pelo valor que estiver após a atribuição(=)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x -= 5 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>%=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador que atribui ao valor da variavel o resultado da operacao de resto do valor atual pelo valor que estiver após a atribuição(=)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x %= 10 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>/=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador que divide o valor da variavel pelo valor que estiver após a atribuição(=)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x /= 4 &nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>*=</b>&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Operador que multiplica o valor da variavel pelo valor que estiver após a atribuição(=)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp; x*= 5 &nbsp;
+							</td>
+							</tr>
+							</table>",
 			"hasChild":false
 		},	
 		{
@@ -196,7 +970,42 @@ programa{
 			"superId" : 8,		
 			"ambiente" : 0,
 			"titulo" : "Escreva",				  			
-			"explicacao" : "<h2>O comando ESCREVA é utilizado quando deseja-se mostrar informações na tela do computador, ou seja, é um comando de saída de dados. Esses dados podem ser valores de variaveis e informações para usuário na tela. Para utilizar o comando ESCREVA, você deverá escrever este comando e entre parênteses colocar a(s) variavel (eis) que você quer mostrar na tela. Quando você utilizar textos com variaves, o texto deve estar entre aspas.</h2> <br><br><table cellspacing=\"2\"  ><tr><td  ><font face=\"Arial\" color=\"black\"><center>Sintaxe</td> <td  ><font face=\"Arial\" color=\"black\"><center>Exemplo</td></tr><tr><td  ><font face=\"Arial\" color=\"black\">&nbsp;<b>escreva</b> (a)&nbsp;</td><td  ><font face=\"Arial\" color=\"black\">&nbsp;Irá escrever na tela o Conteudo da váriavel a&nbsp;</td></tr><tr><<td  ><font face=\"Arial\" color=\"black\">&nbsp;<b>escreva</b> (a,b,c)&nbsp;</td><td  ><font face=\"Arial\" color=\"black\">&nbsp;Irá escreva na tela os conteudos das váriaveis a, b ,c&nbsp;</td></tr><tr><td  ><font face=\"Arial\" color=\"black\">&nbsp;<b>escreva</b> (\"valor\",a)&nbsp;</td><td  ><font face=\"Arial\" color=\"black\">&nbsp;Irá escrever \"valor\" e o conteudo da váriavel a&nbsp;</td></tr></table>",	
+			"explicacao" : "<h2>O comando ESCREVA é utilizado quando deseja-se mostrar informações na tela do computador, ou seja, é um comando de saída de dados. Esses dados podem ser valores de variaveis e informações para usuário na tela. Para utilizar o comando ESCREVA, você deverá escrever este comando e entre parênteses colocar a(s) variavel (eis) que você quer mostrar na tela. Quando você utilizar textos com variaves, o texto deve estar entre aspas.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>escreva</b> (a)&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;Irá escrever na tela o Conteudo da váriavel a&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<<td><font face=\"Arial\" color=\"black\">&nbsp;<b>escreva</b> (a,b,c)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Irá escreva na tela os conteudos das váriaveis a, b ,c&nbsp;
+							</td>
+							</tr>
+							<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>escreva</b> (\"valor\",a)&nbsp;
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;Irá escrever \"valor\" e o conteudo da váriavel a&nbsp;
+							</td>
+							</tr>
+							</table>",	
 			"hasChild":true
 		},		
 		{

@@ -1,4 +1,4 @@
-// O exemplo requer a idade e a altura de um certa quantidade de alunos(linha 6) e ao fim exibe a idade media dos alunos com menos de 1,70 de altura e a altura média dos alunos com mais de 20 anos.
+// O exemplo pede a idade e a altura de um certa quantidade de alunos(linha 6) e ao fim exibe a idade media dos alunos com menos de 1,70 de altura e a altura média dos alunos com mais de 20 anos.
 programa
 {
 	funcao inicio() 

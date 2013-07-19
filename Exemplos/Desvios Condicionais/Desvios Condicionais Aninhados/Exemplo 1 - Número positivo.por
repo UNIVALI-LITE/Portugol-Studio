@@ -1,19 +1,20 @@
-/*Leia um n�mero inteiro. Se o n�mero lido for positivo, escreva uma mensagem indicando se ele � par ou �mpar.*/
+// Este exemplo pede ao usuário que entre com um número inteiro positivo e exibe se o número é par ou impar.
 programa
 {
-	funcao inicio(cadeia argas[])
+	funcao inicio()
 	{
 		inteiro num
 
-		escreva("Digite um numero positivo\n")
+		escreva("Digite um número positivo: ")
 		leia(num)
 
-		se(num > 0){
-			se(num % 2==0)
+		se(num > 0){ // verifica se o número é positivo
+			se(num % 2==0) // verifica se o número é par
 			{
-				escreva("O número: ",num, "  é par \n")
-			}senao{
-				escreva("O número: ",num, "  é ímpar \n")
+				escreva("O número: ",num, "  é par.")
+			}
+			senao{ 
+				escreva("O número: ",num, "  é ímpar.")
 			}
 		}
 	}

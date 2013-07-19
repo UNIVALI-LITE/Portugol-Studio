@@ -1,6 +1,7 @@
+// O programa a seguir pede que o usuário entre com três médias, calcula e exibe a media final, além de verificar e exibir qual das médias parciais é menor que a final (caso exista).
 programa
 {
-	funcao inicio (cadeia args[])
+	funcao inicio ()
 	{
 		real m1, m2, m3, media 
 
@@ -16,15 +17,15 @@ programa
 		escreva ("Média: ", media,"\n") 
 
 
-		se (m1 < media){ 
+		se (m1 < media){ // verifica se a m1 é menos que a final
 			escreva ("\n Média 1 é menor que a média final") 
 		}
 		
-		se (m2 < media) {
+		se (m2 < media) { // verifica se a m2 é menos que a final
 			escreva ("\nMédia 2 é menor que a média final")
 		}
 		
-		se (m3 < media) {
+		se (m3 < media) { // verifica se a m3 é menos que a final
 			escreva ("\nMédia 3 é menor que a média final")
 		}
 		

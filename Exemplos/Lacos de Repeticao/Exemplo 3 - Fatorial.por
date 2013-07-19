@@ -1,3 +1,4 @@
+// O exemplo a seguir pede ao usuário um número inteiro e exibe o fatorial do número passado
 programa
 {
 	funcao inicio()
@@ -11,10 +12,10 @@ programa
 		fat=1
 		i=2
 
-		enquanto(i<=n)
+		enquanto(i<=n) // intera 'i' até o valor passado
 		{
-			fat = fat * i
-			i=i+1
+			fat = fat * i // calculo do fatorial
+			i=i+1 // incremento do 'i', pode ser usado 'i++' também.
 		}
 		escreva("O fatorial de ",n, " é: ", fat)
 	}

@@ -1,13 +1,14 @@
+// O exemplo a seguir pede ao usuário dois valores e exibe a soma.
 programa
 {
-	funcao inicio(cadeia args[])
+	funcao inicio()
 	{
-		inteiro a,b,subtracao
+		inteiro a,b,soma
 		escreva("Digite dois números inteiros")
-		leia(a,b)
+		leia(a,b) // lê os valores passados pelo usuário
 
-		subtracao = a-b
+		soma = a+b // soma os valores
 
-		escreva("A subtracao do primerio número pelo segundo número é: ",subtracao)
+		escreva("A soma dos números é: ",soma) // exibe o resultado
 	}
 }

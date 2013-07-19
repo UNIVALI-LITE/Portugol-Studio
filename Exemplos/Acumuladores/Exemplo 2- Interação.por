@@ -1,4 +1,4 @@
-// O exemplo requer um valor inteiro e interage de 1 até o valor passado e ao fim mostra a soma das interações.
+// O exemplo pede ao usuário um valor inteiro e interage de 1 até o valor passado e ao fim mostra a soma das interações.
 programa
 {
 	funcao inicio() 

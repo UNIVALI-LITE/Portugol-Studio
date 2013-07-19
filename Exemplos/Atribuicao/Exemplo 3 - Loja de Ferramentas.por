@@ -1,8 +1,8 @@
-// Este exemplo requer o nome do usuário e três valeres inteiros, sendo eles referentes a quantidade de porcas, parafusos e aruelas compradas. 
+// Este exemplo pede o nome do usuário e três valeres inteiros, sendo eles referentes a quantidade de porcas, parafusos e aruelas compradas. 
 // Ao fim é exibido o nome do usuário mostra a quantidade de cada item comprado e mostra o valor total a ser pago.
 programa  { 
 
-	funcao inicio (cadeia args) { 
+	funcao inicio () { 
 	
 		const real precoParafuso=1.50
 		const real precoAruelas=2.00

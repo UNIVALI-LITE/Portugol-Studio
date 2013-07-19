@@ -1,3 +1,4 @@
+// 
 programa
 {
 	funcao inicio() 
@@ -9,7 +10,7 @@ programa
 
 		para(contador = 0; contador <= 5; contador++)
 		{
-			escreva("Digite um numero \n")
+			escreva("Digite um numero: ")
 			leia(vet1[contador])
 			soma = soma + vet1[contador]
 			multiplica = multiplica + vet1[contador]
@@ -20,6 +21,6 @@ programa
 		}
 
 		escreva("O resultado da soma: ", soma)
-		escreva("O resultado da multiplica��o foi: ", multiplica)
+		escreva("O resultado da multiplicação foi: ", multiplica)
 	}
 }
