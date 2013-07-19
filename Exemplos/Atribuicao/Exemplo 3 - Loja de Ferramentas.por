@@ -18,8 +18,9 @@ programa  {
 		escreva("Digite a quantidade de pecas de cada produto \n") 
 		escreva("Porca/ Parafusos/ Aruelas \n")
 		leia(quantidadeParafuso, quantidadeAruelas, quantidadePorcas) 
-		
-		totalPorcas = precoPorcas * quantidadePorcas 
+
+		//Atribuição dos valores a serem pagos. Os valores são baseados na quantidade de items vendidos e o preço de cada item.
+		totalPorcas = precoPorcas * quantidadePorcas  
 		totalParafuso = precoParafuso * quantidadeParafuso 
 		totalAruelas = precoAruelas * quantidadeAruelas 
 		totalPagar = totalPorcas + totalParafuso + totalAruelas 

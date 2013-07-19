@@ -186,14 +186,6 @@
 			"hasChild":true
 		},
 		{
-			"id":9,
-			"superId" : 5,
-			"ambiente" : 0,
-			"titulo" : "Comandos Complementares",
-			"explicacao" : "<h2>Nesta seção serão apresentados alguns comandos complementares do PortugolStudio.</h2>",
-			"hasChild":true
-		},
-		{
 			"id":10,
 			"superId" : 6,	
 			"ambiente" : 0,			
@@ -1013,7 +1005,35 @@
 			"superId" : 8,		
 			"ambiente" : 0,
 			"titulo" : "Leia",				  			
-			"explicacao" : "<h2>O Comando LEIA é utilizado quando se deseja obter informações do teclado do computador, ou seja, é um comando de entrada de dados. Esse comando aguarda um valor a ser digitado e o atribui diretamente na variável. Para utilizar o comando LEIA, você deverá escrever este comando e entre parênteses colocar a(s) variavel (eis) que você quer que recebam os valores a serem digitados.</h2> <br><br><table cellspacing=\"2\"  > <tr><td  ><font face=\"Arial\" color=\"black\"><center>Sintaxe</td> <td  ><font face=\"Arial\" color=\"black\"><center>Exemplo</td></tr><tr><td  ><font face=\"Arial\" color=\"black\">&nbsp;<b>leia</b> (a)&nbsp;</td><td  ><font face=\"Arial\" color=\"black\">&nbsp;A variável a recebe o valor digitado&nbsp;</td></tr><tr><td  ><font face=\"Arial\" color=\"black\">&nbsp;<b>leia</b> (a,b,c)&nbsp;</td><td  ><font face=\"Arial\" color=\"black\">&nbsp;As variaveis a,b,c recebem os valores digitados&nbsp;</td></tr></table> ",			
+			"explicacao" : "<h2>O Comando LEIA é utilizado quando se deseja obter informações do teclado do computador, ou seja, é um comando de entrada de dados. Esse comando aguarda um valor a ser digitado e o atribui diretamente na variável. Para utilizar o comando LEIA, você deverá escrever este comando e entre parênteses colocar a(s) variavel (eis) que você quer que recebam os valores a serem digitados.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Exemplo
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>leia</b> (a)&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;A variável a recebe o valor digitado&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>leia</b> (a,b,c)&nbsp;
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;As variaveis a,b,c recebem os valores digitados&nbsp;
+								</td>
+							</tr>
+							</table>",			
 			"hasChild":true
 		},
 		{
@@ -1021,7 +1041,53 @@
 			"superId" : 8,		
 			"ambiente" : 0,
 			"titulo" : "Desvio Condicional - Se",				  			
-			"explicacao" : "<h2>O comando SE permite que determinadas instruções sejam executadas, ou não dependendo do resultado de ums condição, Ou seja, o algoritmo vai ter mais de uma saída, de acordo com o teste realizado com a &lt;condição> apresentada. Para utilizar o comando SE você deve escrever a palavra reservada SE e entre parênteses colocar a &lt;condição>, e determinar uma instrução para o teste.	Caso saja necessário determinar mais de uma instrução torna-se obrigatório o uso das chaves.</h2> <br><br><table  cellspacing=\"2\"  > <tr><td ><font face=\"Arial\" color=\"black\"><center>Desvio Simples</td><td  ><font face=\"Arial\" color=\"black\"><center>Desvio Composto</td><td  ><font face=\"Arial\" color=\"black\"><center>Desvio Condicional Aninhado</td></tr> <td><font face=\"Arial\" color=\"black\">&nbsp;&nbsp;<b>se</b> (&lt;codição>) <br> &nbsp;{<br> &nbsp;...Bloco de Instruções...<br>&nbsp;}<br><br>ou<br><br> &nbsp;&nbsp;<b>se</b> (&lt;condição>)<br> &nbsp;&nbsp;...Instrução...</td> <td><font face=\"Arial\" color=\"black\">&nbsp;<b>se</b> (&lt;condição>) <br>&nbsp;{<br>&nbsp;...Bloco de Intruções...<br>&nbsp;}&nbsp;<b>senao </b>&nbsp;{<br>&nbsp;...Bloco de Instruções...<br>&nbsp;}</td><td><font face=\"Arial\" color=\"black\">&nbsp;<b>se</b>(&lt;condição>)<br>&nbsp;{<br>&nbsp;...Bloco de Instruções...<br>&nbsp;} <b> senao <br>&nbsp;se </b> (&lt;condição>)<br>&nbsp;{<br>&nbsp;...Bloco de Instruções...<br>&nbsp; } <b>senao</b> {<br>&nbsp;...Bloco de Instruções...<br>&nbsp;}</tb></tr></table>",
+			"explicacao" : "<h2>O comando SE permite que determinadas instruções sejam executadas, ou não dependendo do resultado de ums condição, Ou seja, o algoritmo vai ter mais de uma saída, de acordo com o teste realizado com a &lt;condição> apresentada. Para utilizar o comando SE você deve escrever a palavra reservada SE e entre parênteses colocar a &lt;condição>, e determinar uma instrução para o teste. Caso saja necessário determinar mais de uma instrução torna-se obrigatório o uso das chaves.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Desvio Simples
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Desvio Composto
+								</td>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Desvio Condicional Aninhado
+								</td>
+							</tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;&nbsp;<b>se</b> (&lt;codição>) <br>
+								 &nbsp;{<br>
+								 &nbsp;...Bloco de Instruções...<br>
+								&nbsp;}<br>
+								<br>
+								ou<br>
+								<br>
+								 &nbsp;&nbsp;<b>se</b> (&lt;condição>)<br>
+								 &nbsp;&nbsp;...Instrução...
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>se</b> (&lt;condição>) <br>
+								&nbsp;{<br>
+								&nbsp;...Bloco de Intruções...<br>
+								&nbsp;}&nbsp;<b>senao </b>&nbsp;{<br>
+								&nbsp;...Bloco de Instruções...<br>
+								&nbsp;}
+							</td>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;<b>se</b>(&lt;condição>)<br>
+								&nbsp;{<br>
+								&nbsp;...Bloco de Instruções...<br>
+								&nbsp;} <b> senao <br>
+								&nbsp;se </b> (&lt;condição>)<br>
+								&nbsp;{<br>
+								&nbsp;...Bloco de Instruções...<br>
+								&nbsp; } <b>senao</b> {<br>
+								&nbsp;...Bloco de Instruções...<br>
+								&nbsp;}</tb>
+							</tr>
+							</table>",
 			"hasChild":true
 		},				
 		{
@@ -1029,7 +1095,28 @@
 			"superId" : 8,		
 			"ambiente" : 0,
 			"titulo" : "Escolha-Caso",			  						
-			"explicacao" : "<h2>O comando ESCOLHA CASO é semelhante ao switch case da linguagem PHP. Determina qual caso será executado dependendo da escolha do usuário.</h2> <br><br><table cellspacing=\"2\"  ><tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>escolha</b> (&lt;expressão> ou &lt;variavel>) {&nbsp;&nbsp;<br>&nbsp;&nbsp;<b>caso 1:</b><br>&nbsp;...Bloco de Instruções...<br>&nbsp;<b>pare<br>&nbsp;&nbsp;caso 2:</b><br>&nbsp;...Bloco de Instruções...<br>&nbsp;<b>pare<br>&nbsp;&nbsp;caso 3:</b><br>&nbsp;...Bloco de Instruções...<br>&nbsp;<b>pare<br>&nbsp;caso contrario:</b><br>&nbsp;...Bloco de Instruções...<br>&nbsp;}</td></tr></table>",
+			"explicacao" : "<h2>O comando ESCOLHA CASO é semelhante ao switch case da linguagem PHP. Determina qual caso será executado dependendo da escolha do usuário.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>escolha</b> (&lt;expressão> ou &lt;variavel>) {&nbsp;&nbsp;<br>
+									&nbsp;&nbsp;<b>caso 1:</b><br>
+									&nbsp;...Bloco de Instruções...<br>
+									&nbsp;<b>pare<br>
+									&nbsp;&nbsp;caso 2:</b><br>
+									&nbsp;...Bloco de Instruções...<br>
+									&nbsp;<b>pare<br>
+									&nbsp;&nbsp;caso 3:</b><br>
+									&nbsp;...Bloco de Instruções...<br>
+									&nbsp;<b>pare<br>
+									&nbsp;caso contrario:</b><br>
+									&nbsp;...Bloco de Instruções...<br>
+									&nbsp;}
+								</td>
+							</tr>
+							</table>",
 			"hasChild":true
 		},
 		{
@@ -1037,7 +1124,20 @@
 			"superId" : 8,		
 			"ambiente" : 0,
 			"titulo" : "Laço de Repetição Para",				  					
-			"explicacao" : "<h2>O comando PARA possui uma variavel de controle, ou seja, com está estrutura é possivel executar um conjunto de instruções um número determinado de vezes. Através da variavel de controle, define-se a quantidade de repetições que o laço fará. Para utilizar o comando PARA você deverá escrever este comando e entre parêntese inicializar a variavel de controle com determinado número para definir o número de vezes que a instrução será executada.</h2> <br><br><table cellspacing=\"2\"  > <tr><td><pre><b>para</b> (&lt;variavel> = &lt;valorInicial>; &lt;variavel> = &lt;valorFinal>; &lt;variavel> &lt;incremento>) {&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...Bloco de Instruções...&nbsp;&nbsp;<br> &nbsp;&nbsp;}</pre></td></tr></table> ",
+			"explicacao" : "<h2>O comando PARA possui uma variavel de controle, ou seja, com está estrutura é possivel executar um conjunto de instruções um número determinado de vezes. Através da variavel de controle, define-se a quantidade de repetições que o laço fará. Para utilizar o comando PARA você deverá escrever este comando e entre parêntese inicializar a variavel de controle com determinado número para definir o número de vezes que a instrução será executada.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<pre>
+										<b>para</b> (&lt;variavel> = &lt;valorInicial>; &lt;variavel> = &lt;valorFinal>; &lt;variavel> &lt;incremento>) {&nbsp; <br>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...Bloco de Instruções...&nbsp;&nbsp;<br>
+										 &nbsp;&nbsp;}
+									</pre>
+								</td>
+							</tr>
+							</table>",
 			"hasChild":true
 		},	
 		{
@@ -1045,7 +1145,19 @@
 			"superId" : 8,		
 			"ambiente" : 0,
 			"titulo" : "Enquanto",				  			
-			"explicacao" : "<h2>O comando ENQUANTO permite que uma sequência de instruções seja executada várias vezes, até que uma condição seja satisfeita, ou seja, repete um conjunto de instruções sem que seja necessario escreve-la várias vezes. Para utilizar o comando ENQUANTO você deve usar este comando e entre parênteses colocar a condição, após o fecha parênteses deve se abrir e fechar chaves e entre elas colocar a instrução a ser repetida enquanto a condição for verdadeira.</h2> <br><br><table cellspacing=\"2\"  > <tr><td><font face=\"Arial\" color=\"black\">&nbsp;<b>enquanto</b> (&lt;condição>)&nbsp;&nbsp; {&nbsp;<br><br>&nbsp;&nbsp;&nbsp;...Bloco de Instruções...&nbsp;<br><br> }</tb></tr></table>",			
+			"explicacao" : "<h2>O comando ENQUANTO permite que uma sequência de instruções seja executada várias vezes, até que uma condição seja satisfeita, ou seja, repete um conjunto de instruções sem que seja necessario escreve-la várias vezes. Para utilizar o comando ENQUANTO você deve usar este comando e entre parênteses colocar a condição, após o fecha parênteses deve se abrir e fechar chaves e entre elas colocar a instrução a ser repetida enquanto a condição for verdadeira.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;<b>enquanto</b> (&lt;condição>)&nbsp;&nbsp; {&nbsp;<br>
+									<br>
+									&nbsp;&nbsp;&nbsp;...Bloco de Instruções...&nbsp;<br>
+									<br>
+									 }</tb>
+								</tr>
+								</table>",			
 			"hasChild":true
 		},
 		{
@@ -1053,55 +1165,164 @@
 			"superId" : 8,		
 			"ambiente" : 0,
 			"titulo" : "Faça-Enquanto",			  			
-			"explicacao" : "<h2>O comando FACA-ENQUANTO é semelhante ao comando ENQUANTO, permite que uma sequencia de instruções sejam executadas, porém o teste ocorre no final do laço, ou seja a instrução será executada pelo menos uma vez. Para utilizar o comando FACA-ENQUANTO você deve iniciar com a palavra reservada FACA, abrir e fechar chaves e entre elas adicionar as instruções a serem executadas, e no fim do laço deve ser aplicado entre parênteses a condição a ser testada.</h2> <br><br><table cellspacing=\"2\"  > <tr><td><font face=\"Arial\" color=\"black\">&nbsp;&nbsp;&nbsp;<b>faca</b>&nbsp;&nbsp;{ <br><br>&nbsp;&nbsp;...Bloco de Instruções...<br><br> }&nbsp;<b>enquanto</b>&nbsp; (&lt;condição>)</tr></tb></table>",					
+			"explicacao" : "<h2>O comando FACA-ENQUANTO é semelhante ao comando ENQUANTO, permite que uma sequencia de instruções sejam executadas, porém o teste ocorre no final do laço, ou seja a instrução será executada pelo menos uma vez. Para utilizar o comando FACA-ENQUANTO você deve iniciar com a palavra reservada FACA, abrir e fechar chaves e entre elas adicionar as instruções a serem executadas, e no fim do laço deve ser aplicado entre parênteses a condição a ser testada.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;&nbsp;&nbsp;<b>faca</b>&nbsp;&nbsp;{ <br>
+									<br>
+									&nbsp;&nbsp;...Bloco de Instruções...<br>
+									<br>
+									 }&nbsp;<b>enquanto</b>&nbsp; (&lt;condição>)
+								</tr>
+								</tb>
+								</table>",					
 			"hasChild":true
 		},
 		{
 			"id":30,
-			"superId" : 9,
-			"ambiente" : 0,
+			"superId" : 55,
+			"ambiente" : 2,
 			"titulo" : "Potencia",				
-			"explicacao" : "<h2>O comando potencia tem por função elevar uma base a um determinado expoente. É esperado como parâmetro dois números inteiros, sendo o primeiro a base e o segundo o expoente. Ao fim será retornado um número real resultante da operação.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;potencia(&lt;base>,&lt;expoente>)</td></tr></table><br><br>",						
+			"explicacao" : "<h2>O comando potencia tem por função elevar uma base a um determinado expoente. É esperado como parâmetro dois números inteiros, sendo o primeiro a base e o segundo o expoente. Ao fim será retornado um número real resultante da operação.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;potencia(&lt;base>,&lt;expoente>)
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>",						
 			"hasChild":true
 		},
 		{
 			"id":31,
-			"superId" : 9,		
-			"ambiente" : 0,
+			"superId" : 55,		
+			"ambiente" : 2,
 			"titulo" : "Raiz",				
-			"explicacao" : "<h2>O comando raiz tem como finalidade determinar a raiz de um numero. É esperado como parâmetro um numero real ou inteiro. Ao fim será retornado um número real com o resultado da operação.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;raiz(&lt;numero>)</td></tr></table><br><br>",						
+			"explicacao" : "<h2>O comando raiz tem como finalidade determinar a raiz de um numero. É esperado como parâmetro um numero real ou inteiro. Ao fim será retornado um número real com o resultado da operação.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;raiz(&lt;numero>)
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>",						
 			"hasChild":true
 		},
 		{
 			"id":32,
-			"superId" : 9,		
-			"ambiente" : 0,
+			"superId" : 56,		
+			"ambiente" : 2,
 			"titulo" : "Sorteia",				
-			"explicacao" : "<h2>Comando responsável por sortear um número no intervalo de 0 até o número passado por parâmetro( 0 &lt; numeroSorteado &lt; parametro ). É esperado como parâmetro um numero inteiro. Ao fim será retornado um número inteiro resultante do sorteio.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;sorteia(&lt;limite>)</td></tr></table><br><br>",			
+			"explicacao" : "<h2>Comando responsável por sortear um número no intervalo de 0 até o número passado por parâmetro( 0 &lt; numeroSorteado &lt; parametro ). É esperado como parâmetro um numero inteiro. Ao fim será retornado um número inteiro resultante do sorteio.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;sorteia(&lt;limite>)
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>",			
 			"hasChild":true
 		},
 		{
 			"id":33,
-			"superId" : 9,		
-			"ambiente" : 0,
+			"superId" : 56,		
+			"ambiente" : 2,
 			"titulo" : "Aguarde",				
-			"explicacao" : "<h2>Este comando é responsável por pausar o console por um tempo, o qual será determinado pelo valor passado por parâmetro ( lembrando que o valor será lido em milissegundos). É esperado como parâmetro um numero inteiro, e há nenhum tipo de saída.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;aguarde(&lt;tempo em milisegundos>)</td></tr></table><br><br>",			
+			"explicacao" : "<h2>Este comando é responsável por pausar o console por um tempo, o qual será determinado pelo valor passado por parâmetro ( lembrando que o valor será lido em milissegundos). É esperado como parâmetro um numero inteiro, e há nenhum tipo de saída.</h2>
+							<br>
+							<br>
+							<table cellspacing=\"2\">
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\"><center>Sintaxe
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<font face=\"Arial\" color=\"black\">&nbsp;aguarde(&lt;tempo em milisegundos>)
+								</td>
+							</tr>
+							</table>
+							<br>
+							<br>",			
 			"hasChild":true
 		},
 		{
 			"id":34,
-			"superId" : 9,		
-			"ambiente" : 0,
+			"superId" : 56,		
+			"ambiente" : 2,
 			"titulo" : "Limpa",				
-			"explicacao" : "<h2>Comando responsável por limpar o console. Não requer nenhum paramento e não tem nenhuma saída.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;limpa(&lt;parametro>)</td></tr></table><br><br>",
+			"explicacao" : "<h2>Comando responsável por limpar o console. Não requer nenhum paramento e não tem nenhuma saída.</h2>
+						<br>
+						<br>
+						<table cellspacing=\"2\">
+						<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\"><center>Sintaxe
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;limpa(&lt;parametro>)
+							</td>
+						</tr>
+						</table>
+						<br>
+						<br>",
 			"hasChild":true			
 		},
 		{
 			"id":35,
-			"superId" : 9,		
-			"ambiente" : 0,
+			"superId" : 56,		
+			"ambiente" : 2,
 			"titulo" : "Tamanho",				
-			"explicacao" : "<h2>Este comando retorna o tamanho do vetor que lhe foi passado por parâmetro. É esperado como parâmetro um vetor de qualquer tipo. Ao fim será retornado um número inteiro referente ao tamanho do vetor.</h2> <br><br><table  cellspacing=\"2\"> <tr><td><font face=\"Arial\" color=\"black\"><center>Sintaxe</td></tr><tr><td><font face=\"Arial\" color=\"black\">&nbsp;tamanho(&lt;vetor>)</td></tr></table><br><br>",			
+			"explicacao" : "<h2>Este comando retorna o tamanho do vetor que lhe foi passado por parâmetro. É esperado como parâmetro um vetor de qualquer tipo. Ao fim será retornado um número inteiro referente ao tamanho do vetor.</h2>
+						<br>
+						<br>
+						<table cellspacing=\"2\">
+						<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\"><center>Sintaxe
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<font face=\"Arial\" color=\"black\">&nbsp;tamanho(&lt;vetor>)
+							</td>
+						</tr>
+						</table>
+						<br>
+						<br>",			
 			"hasChild":true
 		},	
 		{
@@ -1553,11 +1774,27 @@ programa
 			"hasChild":false
 		},
 		{
-			"id":2,
+			"id": 54,
 			"superId" : 1,
 			"ambiente" : 2,
-			"titulo" : "Exemplo para aplicação distinta.",
-			"explicacao" : "<h2>Nesta seção serão apresentadas as interfaces do PortugolStudio.</h2>",
+			"titulo" : "Bibliotecas",
+			"explicacao" : "<h2>Nesta seção serão apresentadas as bibliotecas do PortugolStudio.</h2>",
+			"hasChild":true
+		},
+		{
+			"id": 55,
+			"superId" : 54,
+			"ambiente" : 2,
+			"titulo" : "Math",
+			"explicacao" : "<h2>Nesta seção serão apresentadas as funções da biblioteca \"Math\" do PortugolStudio.</h2>",
+			"hasChild":true
+		},
+		{
+			"id": 56,
+			"superId" : 54,
+			"ambiente" : 2,
+			"titulo" : "Util",
+			"explicacao" : "<h2>Nesta seção serão apresentadas as funções da biblioteca \"Util\" do PortugolStudio.</h2>",
 			"hasChild":true
 		},
 	]

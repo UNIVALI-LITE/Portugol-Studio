@@ -3,6 +3,6 @@ programa
 { 
 	funcao inicio () 
 	{
-		escreva("Olá Mundo!")
+		escreva("Olá Mundo!") // exibe a mensagem "Olá Mundo!" no console 
 	} 
 }
