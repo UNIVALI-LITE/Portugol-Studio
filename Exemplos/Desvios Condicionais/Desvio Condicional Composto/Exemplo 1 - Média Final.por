@@ -19,11 +19,11 @@ programa
 		se(mediaFinal >= 6) // verifica se média final é maior ou igual a 6
 		{
 			// caso a condição seja verdadeira esta parte é executada
-		 	escreva(nomeAluno, "  Aprovado media  ", mediaFinal)
+		 	escreva(nomeAluno, " você foi aprovado com a média: ", mediaFinal)
 		}
 		senao{
 			// caso a condição seja falsa esta parte é executada
-			escreva(nomeAluno, "  Reprovado media  ", mediaFinal)
+			escreva(nomeAluno, " você foi reprovado com a média: ", mediaFinal)
 		}
 
 	}

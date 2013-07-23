@@ -13,7 +13,7 @@ programa
 		enquanto(numero <= condicao) // laço que verifica se o valor digitado é menor ou igual ao valor da condição
 		{
 			soma = soma + numero  // a variavel soma é o acumulador deste exemplo
-			escreva("Digite um número inteiro. Para finalizar o programa digite um valor maior que: ",condicao," \n")
+			escreva("Digite um número inteiro. Para finalizar o programa digite um valor maior que: ",condicao," ")
 			leia(numero)
 		}
 		

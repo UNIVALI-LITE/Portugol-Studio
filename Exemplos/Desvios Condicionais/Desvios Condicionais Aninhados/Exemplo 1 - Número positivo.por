@@ -11,10 +11,10 @@ programa
 		se(num > 0){ // verifica se o número é positivo
 			se(num % 2==0) // verifica se o número é par
 			{
-				escreva("O número: ",num, "  é par.")
+				escreva("O número: ",num, " é par.")
 			}
 			senao{ 
-				escreva("O número: ",num, "  é ímpar.")
+				escreva("O número: ",num, " é ímpar.")
 			}
 		}
 	}

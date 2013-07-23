@@ -5,7 +5,7 @@ programa
 	{
 		inteiro condicao, soma = 1, interador = 1
 
-		escreva("Digite um valor inteiro: \n")
+		escreva("Digite um valor inteiro: ")
 		leia(condicao)
 		
 		enquanto(interador <= condicao)

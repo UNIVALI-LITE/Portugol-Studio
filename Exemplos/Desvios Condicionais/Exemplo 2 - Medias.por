@@ -18,7 +18,7 @@ programa
 
 
 		se (m1 < media){ // verifica se a m1 é menos que a final
-			escreva ("\n Média 1 é menor que a média final") 
+			escreva ("\nMédia 1 é menor que a média final") 
 		}
 		
 		se (m2 < media) { // verifica se a m2 é menos que a final

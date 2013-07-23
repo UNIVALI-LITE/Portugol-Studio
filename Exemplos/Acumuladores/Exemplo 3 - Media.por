@@ -10,7 +10,9 @@ programa
 
 		para(aluno = 1; aluno <= numero_alunos; aluno++)
 		{
+			escreva("Digite sua idade: ")
 			leia(idade)
+			escreva("Digite sua altura: ")
 			leia(altura)
 
 			se(altura <= 1.70)

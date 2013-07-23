@@ -4,7 +4,7 @@ programa
 	funcao inicio()
 	{
 		inteiro a,b,mult
-		escreva("Digite dois números inteiros")
+		escreva("Digite dois números inteiros: ")
 		leia(a,b) // lê os valores passados pelo usuário
 
 		mult = a*b // multiplica os valores

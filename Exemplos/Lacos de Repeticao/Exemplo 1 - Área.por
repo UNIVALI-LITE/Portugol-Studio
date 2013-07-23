@@ -8,7 +8,7 @@ programa
 		real base, altura, area
 		faca
 		{
-			escreva("Digite a base ")
+			escreva("\nDigite a base ")
 			leia(base)
 			escreva("Digite a altura ")
 			leia(altura)

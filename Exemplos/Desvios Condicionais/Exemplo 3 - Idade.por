@@ -8,10 +8,10 @@ programa {
 		leia(idade) 
 	
 		se (idade < 18) { // verifica se a idade é menor que 18 
-			escreva("O usuario é menor de idade")
+			escreva("O usuário é menor de idade")
 		} 
 		senao{
-			escreva("O usuario é maior de idade")
+			escreva("O usuário é maior de idade")
 		}
 	} 
 }

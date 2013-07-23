@@ -10,19 +10,20 @@ programa
 		soma = 0
 		multiplica = 1
 
-		para(contador = 0; contador <= 5; contador++)
+		para(contador = 0; contador < 5; contador++)
 		{
 			escreva("Digite um numero: ")
 			leia(vet[contador]) // armazena o valor passado na posisão "contador" do vetor.
 			soma = soma + vet[contador] // soma o valor passado aos demais
-			multiplica = multiplica + vet[contador] // multiplica o valor passado aos demais
+			multiplica = multiplica * vet[contador] // multiplica o valor passado aos demais
 		}
-		para(contador=0; contador<=5; contador++)
+		escreva("\nValores do vetor: ")
+		para(contador=0; contador<5; contador++)
 		{
-			escreva("O valor foi: ", vet[contador]) // exibe os valores armazenados no vetor
+			escreva(vet[contador]," ") // exibe os valores armazenados no vetor
 		}
 
-		escreva("O resultado da soma: ", soma) // exibe a soma dos valores
-		escreva("O resultado da multiplicação foi: ", multiplica) // exibe o produto dos valores
+		escreva("\nO resultado da soma: ", soma) // exibe a soma dos valores
+		escreva("\nO resultado da multiplicação foi: ", multiplica) // exibe o produto dos valores
 	}
 }

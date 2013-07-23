@@ -30,7 +30,7 @@ programa
 			 {
 			 	branco += 1 // contador dos votos brancos
 			 }
-			 se(opcao != 0 e opcao > 0 e opcao < 4)
+			 se(opcao != 0 e (opcao < 0 ou opcao > 3))
 			 {
 			 	nulos += 1  // contador dos votos nulos
 			 }

@@ -4,11 +4,11 @@ programa
 	funcao inicio()
 	{
 		inteiro a,b,div
-		escreva("Digite dois números inteiros, sendo que o segundo não pode ser 0")
+		escreva("Digite dois números inteiros, sendo que o segundo não pode ser 0: ")
 		leia(a,b) // lê os valores passados pelo usuário
 
 		div = a/b // divide os valores
 
-		escreva("A divisão do primeiro número pelo segundo é: ",div) // exibe o resultado
+		escreva("A divisão do primeiro número pelo segundo é: ",div) // exibe o resultado, lembrando que esta é uma divisão de inteiros, logo no resultado final é excluidos o valor após a virgula
 	}
 }

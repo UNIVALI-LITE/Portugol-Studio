@@ -26,7 +26,7 @@ programa  {
 		totalPagar = totalPorcas + totalParafuso + totalAruelas 
 		
 		escreva("Cliente  ",nome, "\n") 
-		escreva("A quantidade de peças compradas: \n" ,"Parafuso:", quantidadeParafuso, "\n Aruelas: ", quantidadeAruelas, "\n Porcas: ", quantidadePorcas, "\n")
+		escreva("A quantidade de peças compradas: \n" ,"Parafuso:", quantidadeParafuso, "\nAruelas: ", quantidadeAruelas, "\nPorcas: ", quantidadePorcas, "\n")
 		escreva("O total a pagar:  R$ ",totalPagar)
 		 
 	} 
