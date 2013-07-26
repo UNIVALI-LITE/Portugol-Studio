@@ -1,0 +1,511 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.univali.ps.ui;
+
+import br.univali.portugol.nucleo.asa.ModoAcesso;
+import br.univali.portugol.nucleo.asa.Quantificador;
+import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
+import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
+import br.univali.ps.ui.util.IconFactory;
+import java.awt.Desktop;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+/**
+ *
+ * @author Luiz Fernando
+ */
+public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener
+{
+    private int tamanhoFonte = 12;
+    
+    public AbaDocumentacaoBiblioteca(JTabbedPane painelTabulado)
+    {
+        super(painelTabulado);
+        initComponents();
+        
+        cabecalho.setBotaoFecharVisivel(false);
+        cabecalho.setTitulo("Documentação");
+        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
+        
+        painelHtml.addHyperlinkListener(AbaDocumentacaoBiblioteca.this);
+    }
+    
+    public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosFuncao metaDadosFuncao)
+    {
+        painelHtml.setText(montarHtmlFuncao(metaDadosBiblioteca.getNome(), metaDadosFuncao));
+        cabecalho.setTitulo(metaDadosBiblioteca.getNome());
+        painelHtml.setCaretPosition(0);
+        this.selecionar();        
+    }
+    
+    public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosConstante metaDadosConstante)
+    {
+        painelHtml.setText(montarHtmlConstante(metaDadosBiblioteca.getNome(), metaDadosConstante));
+        cabecalho.setTitulo(metaDadosBiblioteca.getNome());
+        painelHtml.setCaretPosition(0);
+        this.selecionar(); 
+    }
+    
+    public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca)
+    {
+        painelHtml.setText(montarHtmlBiblioteca(metaDadosBiblioteca));
+        cabecalho.setTitulo(metaDadosBiblioteca.getNome());
+        painelHtml.setCaretPosition(0);
+        this.selecionar(); 
+    }    
+    
+    private String montarHtmlBiblioteca(MetaDadosBiblioteca metaDadosBiblioteca)
+    {
+        String base = 
+            "<html>" +
+            "    <head>" +
+            "        <style type=\"text/css\">" +
+            "            " +
+            "            body" +
+            "            {" +
+
+            "                font-family: \"Arial\";" +
+            "                font-size: " + tamanhoFonte + "pt;                " +
+            "                line-height: 150%;" +
+            "            }" +
+            "            " +
+            "            a" +
+            "            {" +
+            "                font-weight: bold;" +
+            
+            "                color: rgb(0, 0, 140);" +
+            "            }" +
+            "            " +
+            "            h1" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            h2" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            li" +
+            "            {" +
+            "                margin-bottom: 10px;" +
+            "            }" +
+            "            " +
+            "            " +
+            "            .palavra_reservada" +
+            "            {" +
+            "                color: rgb(150, 0, 0);" +
+            "            }" +
+            "            " +
+            "            .parametro" +
+            "            {" +
+            "                font-weight: bold;" +
+            "                list-style-type: circle;" +
+            "            }" +
+            "            " +
+            "        </style>" +
+            "    </head>" +
+            "    <body>" +
+            "        <div id=\"cabecalho\">" +
+            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
+            "        </div>" +
+            "        <hr/><br>" +
+            "         <div id=\"versao\">" +
+            "                <b>Versão:</b> ${versao}" +
+            "         </div><br>" +                                
+            "         <div id=\"descricao\">" +
+            "                <b>Descrição:</b> ${descricao}" +
+            "         </div>" +    
+            //"         ${constantes}"+
+            //"         ${funcoes}"+
+            "         <br><hr/>" +
+            "    </body>" +
+            "</html>";
+        
+        base = base.replace("${nomeBiblioteca}", metaDadosBiblioteca.getNome());
+        base = base.replace("${versao}", metaDadosBiblioteca.getDocumentacao().versao());
+        base = base.replace("${descricao}", metaDadosBiblioteca.getDocumentacao().descricao());
+        //base = base.replace("${constantes}", metaDadosBiblioteca.getDocumentacao().descricao());
+        
+        return base;
+    }
+    
+    private String montarHtmlConstante(String nomeBiblioteca, MetaDadosConstante metaDadosConstante)
+    {
+        String base = 
+            "<html>" +
+            "    <head>" +
+            "        <style type=\"text/css\">" +
+            "            " +
+            "            body" +
+            "            {" +
+
+            "                font-family: \"Arial\";" +
+            "                font-size: " + tamanhoFonte + "pt;                " +
+            "                line-height: 150%;" +
+            "            }" +
+            "            " +
+            "            a" +
+            "            {" +
+            "                font-weight: bold;" +
+            
+            "                color: rgb(0, 0, 140);" +
+            "            }" +
+            "            " +
+            "            h1" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            h2" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            li" +
+            "            {" +
+            "                margin-bottom: 10px;" +
+            "            }" +
+            "            " +
+            "            " +
+            "            .palavra_reservada" +
+            "            {" +
+            "                color: rgb(150, 0, 0);" +
+            "            }" +
+            "            " +
+            "            .parametro" +
+            "            {" +
+            "                font-weight: bold;" +
+            "                list-style-type: circle;" +
+            "            }" +
+            "            " +
+            "        </style>" +
+            "    </head>" +
+            "    <body>" +
+            "        <div id=\"cabecalho\">" +
+            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
+            "            ${assinatura}" +
+            "        </div>" +
+            "        <hr/><br>" +
+            "         <div id=\"descricao\">" +
+            "                <b>Descrição:</b> ${descricao}" +
+            "         </div>" +                
+            "         <br><hr/>" +
+            "         ${referencia}" +
+            "    </body>" +
+            "</html>";
+        
+        base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
+        base = base.replace("${assinatura}", montarAssinaturaConstante(metaDadosConstante));
+        base = base.replace("${descricao}", metaDadosConstante.getDocumentacao().descricao());
+        base = base.replace("${referencia}", montarReferencia(metaDadosConstante.getDocumentacao().referencia()));
+        
+        return base;
+    }
+    
+    private String montarReferencia(String referencia)
+    {
+        if (referencia != null && referencia.length() > 0)
+        {
+             return "<a href=\"" + referencia +"\" target=\"blank\">Referência</a>";
+        }
+        
+        return "";
+    }
+    
+    private String montarAssinaturaConstante(MetaDadosConstante metaDadosConstante)
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("<h2>");
+        sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", metaDadosConstante.getTipoDado().getNome()));
+        sb.append(metaDadosConstante.getNome());
+        sb.append(" = ");
+        sb.append(metaDadosConstante.getValor());
+        sb.append("</h2>");
+        
+        return sb.toString();
+    }
+    
+    private String montarHtmlFuncao(String nomeBiblioteca, MetaDadosFuncao metaDadosFuncao)
+    {
+        String base = 
+            "<html>" +
+            "    <head>" +
+            "        <style type=\"text/css\">" +
+            "            " +
+            "            body" +
+            "            {" +
+
+            "                font-family: \"Arial\";" +
+            "                font-size: " + tamanhoFonte + "pt;                " +
+            "                line-height: 150%;" +
+            "            }" +
+            "            " +
+            "            a" +
+            "            {" +
+            "                font-weight: bold;" +
+            
+            "                color: rgb(0, 0, 140);" +
+            "            }" +
+            "            " +
+            "            h1" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            h2" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            li" +
+            "            {" +
+            "                margin-bottom: 10px;" +
+            "            }" +
+            "            " +
+            "            " +
+            "            .palavra_reservada" +
+            "            {" +
+            "                color: rgb(150, 0, 0);" +
+            "            }" +
+            "            " +
+            "            .parametro" +
+            "            {" +
+            "                font-weight: bold;" +
+            "                list-style-type: circle;" +
+            "            }" +
+            "            " +
+            "        </style>" +
+            "    </head>" +
+            "    <body>" +
+            "        <div id=\"cabecalho\">" +
+            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
+            "            ${assinatura}" +
+            "        </div>" +
+            "        <hr/><br>" +
+            "         <div id=\"descricao\">" +
+            "                <b>Descrição:</b> ${descricao}" +
+            "         </div>" +                
+            "         ${parametros}" +
+            "         ${retorno}" +
+            "         <br><hr/>" +
+            "         ${autores}" +
+            "    </body>" +
+            "</html>";
+        
+        base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
+        base = base.replace("${assinatura}", montarAssinaturaFuncao(metaDadosFuncao));
+        base = base.replace("${descricao}", metaDadosFuncao.getDocumentacao().descricao());
+        base = base.replace("${parametros}", montarParametros(metaDadosFuncao));
+        base = base.replace("${retorno}", montarRetorno(metaDadosFuncao));
+        base = base.replace("${autores}", montarAutores(metaDadosFuncao));
+        
+        return base;
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents()
+    {
+
+        painelRolagem = new javax.swing.JScrollPane();
+        painelHtml = new javax.swing.JTextPane();
+
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        setOpaque(false);
+        setLayout(new java.awt.BorderLayout());
+
+        painelRolagem.setBackground(new java.awt.Color(245, 245, 245));
+        painelRolagem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
+        painelRolagem.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+
+        painelHtml.setEditable(false);
+        painelHtml.setBackground(new java.awt.Color(245, 245, 245));
+        painelHtml.setBorder(null);
+        painelHtml.setContentType("text/html"); // NOI18N
+        painelRolagem.setViewportView(painelHtml);
+
+        add(painelRolagem, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>//GEN-END:initComponents
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextPane painelHtml;
+    private javax.swing.JScrollPane painelRolagem;
+    // End of variables declaration//GEN-END:variables
+
+    private String montarAssinaturaFuncao(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("<h2>");
+        sb.append("funcao ");
+        sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", metaDadosFuncao.getTipoDado().getNome()));
+        sb.append(metaDadosFuncao.getNome());
+        sb.append("(");
+        
+        for (MetaDadosParametro parametro : metaDadosFuncao.obterMetaDadosParametros())
+        {
+            if (parametro.getTipoDado() == TipoDado.TODOS)
+            {
+                sb.append("<span class=\"palavra_reservada\">*</span> ");
+            }
+            else 
+            {
+                sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", parametro.getTipoDado().getNome()));
+            }            
+            
+            if (parametro.getModoAcesso() == ModoAcesso.POR_REFERENCIA)
+            {
+                sb.append("&");
+            }
+            
+            sb.append(parametro.getNome());
+            
+            if (parametro.getQuantificador() == Quantificador.VETOR)
+            {
+                sb.append("[]");
+            }
+            else if (parametro.getQuantificador() == Quantificador.MATRIZ)
+            {
+                sb.append("[][]");
+            }            
+            
+            if (parametro.getIndice() < metaDadosFuncao.obterMetaDadosParametros().quantidade() - 1)
+            {
+                sb.append(", ");
+            }
+        }
+        
+        sb.append(")");
+        
+        sb.append("</h2>");
+        
+        return sb.toString();
+    }
+
+    private CharSequence montarParametros(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+        
+        if (!metaDadosFuncao.obterMetaDadosParametros().vazio())
+        {
+            sb.append("<br><div id=\"parametros\"><b>Parâmetros:</b>");
+            sb.append("<ul>");
+	
+            for (MetaDadosParametro parametro : metaDadosFuncao.obterMetaDadosParametros())
+            {
+                sb.append("<li><span class=\"parametro\">");
+                sb.append(parametro.getNome());
+                sb.append(":</span> ");
+                sb.append(parametro.getDocumentacaoParametro().descricao());
+                sb.append("</li>");
+            }
+
+            sb.append("</ul>");
+            sb.append("</div>");
+        }
+        
+        return sb.toString();
+    }
+
+    private CharSequence montarRetorno(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+        
+        if (metaDadosFuncao.getTipoDado() != TipoDado.VAZIO)
+        {
+            sb.append("<div id=\"retorno\"><b>Retorna:</b> ");
+            sb.append(metaDadosFuncao.getDocumentacao().retorno());
+            sb.append("</div>");
+        }
+        
+        return sb.toString();
+    }
+
+    private CharSequence montarAutores(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<br><div id=\"autores\">");
+        
+        String referencia = metaDadosFuncao.getDocumentacao().referencia();
+        
+        if (referencia != null && referencia.length() > 0)
+        {
+            sb.append(montarReferencia(referencia));
+            
+            sb.append(" - ");
+        }
+        
+        sb.append("<b>Autores:</b> ");
+        
+        Autor[] autores = metaDadosFuncao.getDocumentacao().autores();
+        
+        for (int i = 0; i < autores.length; i++)
+        {
+            Autor autor = autores[i];
+            
+            sb.append(autor.nome());
+            
+            if (autor.email() != null && autor.email().length() > 0)
+            {
+                sb.append(" (");
+                sb.append(autor.email());
+                sb.append(")");
+            }
+            
+            if (i < autores.length - 1)
+            {
+                sb.append(", ");
+            }
+        }
+         
+        sb.append("</div>");
+        
+        return sb.toString();
+    }
+
+    @Override
+    public void hyperlinkUpdate(HyperlinkEvent evt)
+    {
+        javax.swing.event.HyperlinkEvent.EventType type = evt.getEventType();
+        if (type == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED)
+        {
+            String urlString = evt.getURL().toExternalForm();
+            if (urlString == null)
+            {
+                JOptionPane.showMessageDialog(this, "Erro: Link inválido", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+
+            try
+            {
+                if (Desktop.isDesktopSupported())
+                {
+                    URI uri = new URI(urlString);
+                    Desktop.getDesktop().browse(uri);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Erro: Não foi possível abrir o navegador Web", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            catch (Throwable excep)
+            {
+                JOptionPane.showMessageDialog(this, "Erro: Não foi possível abrir o navegador Web", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } 
+    }
+}

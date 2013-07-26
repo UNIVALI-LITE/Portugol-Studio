@@ -277,6 +277,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelTemporario.setFocusable(false);
         painelTemporario.setBackground(Color.RED);
 
+        tree.setPainelSaida(painelSaida);
+        
         ocultarCorretor();
         configurarComponentes();
         criarDicasInterface();

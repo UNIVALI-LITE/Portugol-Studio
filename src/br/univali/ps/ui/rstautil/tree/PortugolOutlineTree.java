@@ -15,12 +15,17 @@ import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.depuracao.MemoriaDados;
 import br.univali.portugol.nucleo.simbolos.Funcao;
 import br.univali.portugol.nucleo.simbolos.Matriz;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
+import br.univali.ps.ui.AbaConsole;
+import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
@@ -34,7 +39,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -175,8 +179,47 @@ public class PortugolOutlineTree extends AbstractTree
             textArea.select(offs, end);
             textArea.requestFocus();
         }
+        
+        if (node instanceof LibraryFunctionTreeNode)
+        {
+            if (painelSaida != null)
+            {
+                MetaDadosBiblioteca metaDadosBiblioteca = ((LibraryFunctionTreeNode) node).getMetaDadosBiblioteca();
+                MetaDadosFuncao metaDadosFuncao = ((LibraryFunctionTreeNode) node).getMetaDadosFuncao();
+                
+                painelSaida.exibirDocumentacaoFuncaoBiblioteca(metaDadosBiblioteca, metaDadosFuncao);
+            }
+        }
+        else if (node instanceof LibraryTreeNode)
+        {
+            if (painelSaida != null)
+            {
+                MetaDadosBiblioteca metaDadosBiblioteca = ((LibraryTreeNode) node).getMetaDadosBiblioteca();
+                
+                painelSaida.exibirDocumentacaoBiblioteca(metaDadosBiblioteca);
+            }
+        }
+        else if (node instanceof LibraryVarTreeNode)
+        {
+            if (painelSaida != null)
+            {
+                MetaDadosBiblioteca metaDadosBiblioteca = ((LibraryVarTreeNode) node).getMetaDadosBiblioteca();
+                MetaDadosConstante metaDadosConstante =  ((LibraryVarTreeNode) node).getMetaDadosConstante();
+            
+                painelSaida.exibirDocumentacaoConstanteBiblioteca(metaDadosBiblioteca, metaDadosConstante);
+            }
+        }
+    }
+    
+    // GAMBIARRA!
+    private PainelSaida painelSaida;
+
+    public void setPainelSaida(PainelSaida painelSaida)
+    {
+        this.painelSaida = painelSaida;
     }
 
+   
     /**
      * {@inheritDoc}
      */
