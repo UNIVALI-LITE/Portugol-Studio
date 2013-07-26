@@ -106,7 +106,7 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniFecharTodos.setEnabled(false);
         mnuEdit.setVisible(false);
         mnuEdit.setEnabled(false);
-        painelTabulado.adicionaPainelTabuladoListener(this);
+        painelTabulado.adicionaPainelTabuladoListener(TelaPrincipal.this);
         this.setLocationRelativeTo(null);
         configurarSeletorArquivo();
         this.addWindowListener(new TelaPrincipalListener());
@@ -247,21 +247,30 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         @Override
         public int compare(File exemplo1, File exemplo2)
         {
-            String nomeExemplo1 = exemplo1.getName();
-            String nomeExemplo2 = exemplo2.getName();
-            
-            Integer numero1 = extrairNumero(nomeExemplo1);
-            Integer numero2 = extrairNumero(nomeExemplo2);
-            
-            if (numero1 != null && numero2 != null)
+            if (exemplo1.isDirectory() && exemplo2.isFile())
             {
-                nomeExemplo1 = nomeExemplo1.replace(numero1.toString(), "");
-                nomeExemplo2 = nomeExemplo2.replace(numero2.toString(), "");
-                
-                return nomeExemplo1.compareTo(nomeExemplo2) + numero1.compareTo(numero2);
+                return 1;
             }
-                    
-            return nomeExemplo1.compareTo(nomeExemplo2);
+            else if (exemplo1.isFile() && exemplo2.isDirectory())
+            {
+                return -1;
+            }
+            else if (exemplo1.isDirectory() && exemplo2.isDirectory())
+            {
+                return exemplo1.getName().compareTo(exemplo2.getName());
+            }
+            else if (exemplo1.isFile() && exemplo2.isFile())
+            {            
+                String nomeExemplo1 = exemplo1.getName();
+                String nomeExemplo2 = exemplo2.getName();
+
+                Integer numero1 = extrairNumero(nomeExemplo1);
+                Integer numero2 = extrairNumero(nomeExemplo2);
+                
+                return numero1.compareTo(numero2);
+            }
+            
+            return 0;
         }
         
         private Integer extrairNumero(String nome)
