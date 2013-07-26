@@ -28,6 +28,7 @@ public class AbaAjuda extends Aba implements AbaListener
         List<Integer> list = new ArrayList<Integer>();
         list.add(0);
         list.add(1);
+        list.add(2);
         Ajuda ajuda = new Ajuda(list);
         
         this.add(ajuda, BorderLayout.CENTER);
