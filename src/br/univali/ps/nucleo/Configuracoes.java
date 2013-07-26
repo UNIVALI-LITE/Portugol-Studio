@@ -24,11 +24,11 @@ public final class Configuracoes
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();
 
-    private boolean exibirOpcoesExecucao;
-    private String diretorioExemplos;
-    private float tamanhoFonteConsole;
-    private float tamanhoFonteEditor;
-    private String theme;
+    private boolean exibirOpcoesExecucao = false;
+    private String diretorioExemplos = "./Exemplos";
+    private float tamanhoFonteConsole = 12.0f;
+    private float tamanhoFonteEditor = 12.0f;
+    private String theme = "default-alt.xml";
     
     Configuracoes()
     {
