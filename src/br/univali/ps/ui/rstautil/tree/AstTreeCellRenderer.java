@@ -53,7 +53,7 @@ import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametros;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Component;
 import java.util.List;
@@ -548,13 +548,13 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(no.getMetaDadosFuncao().getNome());
         sb.append('(');
         
-        List<MetaDadosParametro> parametros = no.getMetaDadosFuncao().getMetaDadosParametros();
+        MetaDadosParametros parametros = no.getMetaDadosFuncao().obterMetaDadosParametros();
         
-        for (int i = 0; i < parametros.size(); i++)
+        for (int i = 0; i < parametros.quantidade(); i++)
         {
-            sb.append(parametros.get(i).getTipoDado());
+            sb.append(parametros.obter(i).getTipoDado());
             
-            if (i < parametros.size() - 1)
+            if (i < parametros.quantidade() - 1)
             {
                 sb.append(", ");
             }

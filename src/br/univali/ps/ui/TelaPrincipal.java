@@ -92,8 +92,8 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
     public TelaPrincipal()
     {
-        //Thread.setDefaultUncaughtExceptionHandler(this);
-
+        Thread.setDefaultUncaughtExceptionHandler(TelaPrincipal.this);
+        
         try
         {
             this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));

@@ -54,7 +54,7 @@ public final class PortugolParser extends AbstractParser
     @Override
     public ParseResult parse(RSyntaxDocument documento, String estilo)
     {
-        System.out.println("Parse!!");
+        System.out.println("Inicio parser...");
         
         Element raiz = documento.getDefaultRootElement();
         int numeroLinhas = raiz.getElementCount();
@@ -65,9 +65,11 @@ public final class PortugolParser extends AbstractParser
         try
         {
             resultadoAnalise = Portugol.analisar(documento.getText(0, documento.getLength()));
+            System.out.println("Fim parser...");
         }
         catch (BadLocationException excecao)
         {
+            System.out.println("Erro parser...");
             excecao.printStackTrace(System.out);
         }
 

@@ -58,8 +58,9 @@ import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstantes;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
-import br.univali.ps.ui.rstautil.IconFactory;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncoes;
 import java.util.Iterator;
 import java.util.List;
 
@@ -123,9 +124,9 @@ class AstOutlineTreeFactory implements VisitanteASA
             MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(inclusao.getNome());
             LibraryTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, metaDadosBiblioteca);
 
-            List<MetaDadosFuncao> metaDadosFuncoes = metaDadosBiblioteca.getMetaDadosFuncoes();
+            MetaDadosFuncoes metaDadosFuncoes = metaDadosBiblioteca.obterMetaDadosFuncoes();
 
-            if (metaDadosFuncoes != null && !metaDadosFuncoes.isEmpty())
+            if (metaDadosFuncoes != null && !metaDadosFuncoes.vazio())
             {
                 for (MetaDadosFuncao metaDadosFuncao : metaDadosFuncoes)
                 {
@@ -133,9 +134,9 @@ class AstOutlineTreeFactory implements VisitanteASA
                 }
             }
 
-            List<MetaDadosConstante> metaDadosConstantes = metaDadosBiblioteca.getMetaDadosConstantes();
+            MetaDadosConstantes metaDadosConstantes = metaDadosBiblioteca.getMetaDadosConstantes();
 
-            if (metaDadosConstantes != null && !metaDadosConstantes.isEmpty())
+            if (metaDadosConstantes != null && !metaDadosConstantes.vazio())
             {
                 for (MetaDadosConstante metaDadosConstante : metaDadosConstantes)
                 {
