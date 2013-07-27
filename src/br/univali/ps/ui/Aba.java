@@ -34,9 +34,14 @@ public abstract class Aba extends JPanel
         //int posicao = painelTabulado.getComponentCount();
         //if (posicao > 0)
         //    posicao = 1;
-        this.painelTabulado.add(this);
-        this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
-        this.painelTabulado.setSelectedComponent(this);
+        adicionar(painelTabulado);
+    }
+    
+    public final void adicionar(JTabbedPane painelTabulado)
+    {
+        painelTabulado.add(this);
+        painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
+        painelTabulado.setSelectedComponent(this);
     }
 
     public JTabbedPane getPainelTabulado()

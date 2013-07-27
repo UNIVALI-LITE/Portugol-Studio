@@ -7,26 +7,36 @@ package br.univali.ps.ui;
 import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.Component;
 import java.awt.Desktop;
+import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.Icon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTree;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
  * @author Luiz Fernando
  */
-public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener
+public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener, TreeSelectionListener
 {
     private int tamanhoFonte = 12;
     
@@ -35,17 +45,21 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         super(painelTabulado);
         initComponents();
         
-        cabecalho.setBotaoFecharVisivel(false);
-        cabecalho.setTitulo("Documentação");
+        cabecalho.setTitulo("Bibliotecas");
         cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
         
         painelHtml.addHyperlinkListener(AbaDocumentacaoBiblioteca.this);
+        
+        arvoreBibliotecas.setModel(criarModeloDocumentacao());
+        arvoreBibliotecas.setRootVisible(false);
+        arvoreBibliotecas.setShowsRootHandles(true);
+        arvoreBibliotecas.setCellRenderer(new Renderizador());
+        arvoreBibliotecas.addTreeSelectionListener(AbaDocumentacaoBiblioteca.this);
     }
     
     public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosFuncao metaDadosFuncao)
     {
         painelHtml.setText(montarHtmlFuncao(metaDadosBiblioteca.getNome(), metaDadosFuncao));
-        cabecalho.setTitulo(metaDadosBiblioteca.getNome());
         painelHtml.setCaretPosition(0);
         this.selecionar();        
     }
@@ -53,7 +67,6 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosConstante metaDadosConstante)
     {
         painelHtml.setText(montarHtmlConstante(metaDadosBiblioteca.getNome(), metaDadosConstante));
-        cabecalho.setTitulo(metaDadosBiblioteca.getNome());
         painelHtml.setCaretPosition(0);
         this.selecionar(); 
     }
@@ -61,7 +74,6 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca)
     {
         painelHtml.setText(montarHtmlBiblioteca(metaDadosBiblioteca));
-        cabecalho.setTitulo(metaDadosBiblioteca.getNome());
         painelHtml.setCaretPosition(0);
         this.selecionar(); 
     }    
@@ -210,7 +222,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
         base = base.replace("${assinatura}", montarAssinaturaConstante(metaDadosConstante));
         base = base.replace("${descricao}", metaDadosConstante.getDocumentacao().descricao());
-        base = base.replace("${referencia}", montarReferencia(metaDadosConstante.getDocumentacao().referencia()));
+        base = base.replace("${referencia}", "<br>" + montarReferencia(metaDadosConstante.getDocumentacao().referencia()));
         
         return base;
     }
@@ -321,28 +333,61 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     private void initComponents()
     {
 
-        painelRolagem = new javax.swing.JScrollPane();
+        divisor = new javax.swing.JSplitPane();
+        painelArvore = new javax.swing.JPanel();
+        painelRolagemArvore = new javax.swing.JScrollPane();
+        arvoreBibliotecas = new javax.swing.JTree();
+        separador = new javax.swing.JSeparator();
+        painelRolagemConteudo = new javax.swing.JScrollPane();
         painelHtml = new javax.swing.JTextPane();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        painelRolagem.setBackground(new java.awt.Color(245, 245, 245));
-        painelRolagem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
-        painelRolagem.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        divisor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
+        divisor.setDividerLocation(250);
+        divisor.setDividerSize(8);
+
+        painelArvore.setMinimumSize(new java.awt.Dimension(200, 22));
+        painelArvore.setLayout(new java.awt.BorderLayout());
+
+        painelRolagemArvore.setBackground(new java.awt.Color(255, 255, 255));
+        painelRolagemArvore.setBorder(null);
+        painelRolagemArvore.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
+        painelRolagemArvore.setViewportView(arvoreBibliotecas);
+
+        painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
+
+        separador.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        painelArvore.add(separador, java.awt.BorderLayout.LINE_END);
+
+        divisor.setLeftComponent(painelArvore);
+
+        painelRolagemConteudo.setBackground(new java.awt.Color(245, 245, 245));
+        painelRolagemConteudo.setBorder(null);
+        painelRolagemConteudo.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        painelRolagemConteudo.setMinimumSize(new java.awt.Dimension(350, 37));
 
         painelHtml.setEditable(false);
         painelHtml.setBackground(new java.awt.Color(245, 245, 245));
         painelHtml.setBorder(null);
         painelHtml.setContentType("text/html"); // NOI18N
-        painelRolagem.setViewportView(painelHtml);
+        painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
+        painelRolagemConteudo.setViewportView(painelHtml);
 
-        add(painelRolagem, java.awt.BorderLayout.CENTER);
+        divisor.setRightComponent(painelRolagemConteudo);
+
+        add(divisor, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTree arvoreBibliotecas;
+    private javax.swing.JSplitPane divisor;
+    private javax.swing.JPanel painelArvore;
     private javax.swing.JTextPane painelHtml;
-    private javax.swing.JScrollPane painelRolagem;
+    private javax.swing.JScrollPane painelRolagemArvore;
+    private javax.swing.JScrollPane painelRolagemConteudo;
+    private javax.swing.JSeparator separador;
     // End of variables declaration//GEN-END:variables
 
     private String montarAssinaturaFuncao(MetaDadosFuncao metaDadosFuncao)
@@ -507,5 +552,108 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
                 JOptionPane.showMessageDialog(this, "Erro: Não foi possível abrir o navegador Web", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } 
+    }
+
+    @Override
+    public void valueChanged(TreeSelectionEvent e)
+    {
+        DefaultMutableTreeNode noSelecionado = (DefaultMutableTreeNode) arvoreBibliotecas.getLastSelectedPathComponent();
+        
+        if (noSelecionado != null)
+        {
+            Object valor = noSelecionado.getUserObject();
+            DefaultMutableTreeNode noBiblioteca = (DefaultMutableTreeNode) arvoreBibliotecas.getSelectionPath().getPath()[1];
+            MetaDadosBiblioteca metaDadosBiblioteca = (MetaDadosBiblioteca) noBiblioteca.getUserObject();
+                    
+            if (valor instanceof MetaDadosFuncao)
+            {
+                exibirDocumentacao(metaDadosBiblioteca, (MetaDadosFuncao) valor);
+            }
+            else if (valor instanceof MetaDadosConstante)
+            {
+                exibirDocumentacao(metaDadosBiblioteca, (MetaDadosConstante) valor);
+            }
+            else if (valor instanceof MetaDadosBiblioteca)
+            {
+                exibirDocumentacao((MetaDadosBiblioteca) valor);
+            }
+        }
+    }
+    
+    private class Renderizador extends DefaultTreeCellRenderer
+    {
+        @Override
+        public Component getTreeCellRendererComponent(JTree arvore, Object valor, boolean selecionado, boolean expandido, boolean folha, int linha, boolean focado)
+        {
+            JLabel rotulo = (JLabel) super.getTreeCellRendererComponent(arvore, valor, selecionado, expandido, folha, linha, focado);
+            
+            try
+            {
+                DefaultMutableTreeNode no = (DefaultMutableTreeNode) valor;
+                Method metodo = no.getUserObject().getClass().getMethod("getNome");
+                metodo.setAccessible(true);
+
+                rotulo.setIcon(getIcone(no.getUserObject()));
+                rotulo.setText((String) metodo.invoke(no.getUserObject()));
+            }
+            catch (Exception ex)
+            {
+                rotulo.setText("Erro: " + ex.getMessage());
+            }
+            
+            return rotulo;
+        }
+    }
+    
+    private DefaultTreeModel criarModeloDocumentacao()
+    {
+        DefaultMutableTreeNode noRaiz = new DefaultMutableTreeNode();
+        
+        for (String biblioteca : GerenciadorBibliotecas.getInstance().listarBibliotecasDisponiveis())
+        {
+            try
+            {
+                MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(biblioteca);
+                DefaultMutableTreeNode noBiblioteca = new DefaultMutableTreeNode(metaDadosBiblioteca);
+                
+                for (MetaDadosConstante metaDadosConstante : metaDadosBiblioteca.getMetaDadosConstantes())
+                {
+                    noBiblioteca.add(new DefaultMutableTreeNode(metaDadosConstante, false));
+                }
+                
+                for (MetaDadosFuncao metaDadosFuncao : metaDadosBiblioteca.obterMetaDadosFuncoes())
+                {
+                    noBiblioteca.add(new DefaultMutableTreeNode(metaDadosFuncao, false));
+                }
+                
+                noRaiz.add(noBiblioteca);
+            }
+            catch (ErroCarregamentoBiblioteca erro)
+            {
+                noRaiz.add(new DefaultMutableTreeNode(erro));
+            }
+        }
+        
+        return new DefaultTreeModel(noRaiz);
+    }
+    
+    private Icon getIcone(Object valor)
+    {
+        if (valor instanceof MetaDadosFuncao)
+        {
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.gif");
+        }
+        else if (valor instanceof MetaDadosConstante)
+        {
+            TipoDado tipo = ((MetaDadosConstante) valor).getTipoDado();
+            
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, tipo.getNome().concat(".png"));
+        }
+        else if (valor instanceof MetaDadosBiblioteca)
+        {
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif");
+        }
+        
+        return null;
     }
 }

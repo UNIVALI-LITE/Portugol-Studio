@@ -26,6 +26,7 @@ import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.AbaConsole;
 import br.univali.ps.ui.PainelSaida;
+import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
@@ -179,46 +180,7 @@ public class PortugolOutlineTree extends AbstractTree
             textArea.select(offs, end);
             textArea.requestFocus();
         }
-        
-        if (node instanceof LibraryFunctionTreeNode)
-        {
-            if (painelSaida != null)
-            {
-                MetaDadosBiblioteca metaDadosBiblioteca = ((LibraryFunctionTreeNode) node).getMetaDadosBiblioteca();
-                MetaDadosFuncao metaDadosFuncao = ((LibraryFunctionTreeNode) node).getMetaDadosFuncao();
-                
-                painelSaida.exibirDocumentacaoFuncaoBiblioteca(metaDadosBiblioteca, metaDadosFuncao);
-            }
-        }
-        else if (node instanceof LibraryTreeNode)
-        {
-            if (painelSaida != null)
-            {
-                MetaDadosBiblioteca metaDadosBiblioteca = ((LibraryTreeNode) node).getMetaDadosBiblioteca();
-                
-                painelSaida.exibirDocumentacaoBiblioteca(metaDadosBiblioteca);
-            }
-        }
-        else if (node instanceof LibraryVarTreeNode)
-        {
-            if (painelSaida != null)
-            {
-                MetaDadosBiblioteca metaDadosBiblioteca = ((LibraryVarTreeNode) node).getMetaDadosBiblioteca();
-                MetaDadosConstante metaDadosConstante =  ((LibraryVarTreeNode) node).getMetaDadosConstante();
-            
-                painelSaida.exibirDocumentacaoConstanteBiblioteca(metaDadosBiblioteca, metaDadosConstante);
-            }
-        }
     }
-    
-    // GAMBIARRA!
-    private PainelSaida painelSaida;
-
-    public void setPainelSaida(PainelSaida painelSaida)
-    {
-        this.painelSaida = painelSaida;
-    }
-
    
     /**
      * {@inheritDoc}

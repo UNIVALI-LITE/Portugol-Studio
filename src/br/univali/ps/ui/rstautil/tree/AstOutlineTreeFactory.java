@@ -57,10 +57,6 @@ import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstantes;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncoes;
 import java.util.Iterator;
 import java.util.List;
 
@@ -94,8 +90,13 @@ class AstOutlineTreeFactory implements VisitanteASA
         {
             bibliotecas.add((LibraryTreeNode)inclusao.aceitar(this));
         }
-
+        
         ProgramaTreeNode programa = new ProgramaTreeNode();
+        
+        if (bibliotecas.getChildCount() > 0)
+        {
+            programa.add(bibliotecas);
+        }
 
         for (Iterator<NoDeclaracao> i = asap.getListaDeclaracoesGlobais().iterator(); i.hasNext();)
         {
@@ -104,7 +105,8 @@ class AstOutlineTreeFactory implements VisitanteASA
             programa.add(dmtn);
         }
 
-        root.add(bibliotecas);
+        //root.add(bibliotecas);
+        
         root.add(programa);  
         
         return null;
@@ -123,7 +125,7 @@ class AstOutlineTreeFactory implements VisitanteASA
         {
             MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(inclusao.getNome());
             LibraryTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, metaDadosBiblioteca);
-
+            /*
             MetaDadosFuncoes metaDadosFuncoes = metaDadosBiblioteca.obterMetaDadosFuncoes();
 
             if (metaDadosFuncoes != null && !metaDadosFuncoes.vazio())
@@ -142,7 +144,7 @@ class AstOutlineTreeFactory implements VisitanteASA
                 {
                     raizBiblioteca.add(new LibraryVarTreeNode(metaDadosBiblioteca, metaDadosConstante));
                 }
-            }
+            }*/
 
             return raizBiblioteca;
         }

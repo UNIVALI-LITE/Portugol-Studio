@@ -5,7 +5,7 @@ final class ProgramaTreeNode extends SourceTreeNode
     
     public ProgramaTreeNode()
     {
-        super("programa");        
+        super("Programa");        
     }
     
     @Override

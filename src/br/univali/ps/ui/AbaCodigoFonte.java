@@ -262,6 +262,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         tree.listenTo(editor.getTextArea());
 
         tree.setBackground(sPOutlineTree.getBackground());
+        tree.setRootVisible(false);
+        tree.setShowsRootHandles(true);
+        
         sPOutlineTree.setViewportView(tree);
         editor.adicionarObservadorCursor(AbaCodigoFonte.this);
 
@@ -277,8 +280,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelTemporario.setFocusable(false);
         painelTemporario.setBackground(Color.RED);
 
-        tree.setPainelSaida(painelSaida);
-        
         ocultarCorretor();
         configurarComponentes();
         criarDicasInterface();
@@ -367,7 +368,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         barraFerramentas = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
@@ -509,8 +511,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnComentar.setOpaque(false);
         btnComentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnComentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnComentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnComentarActionPerformed(evt);
             }
         });
@@ -529,8 +533,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDescomentar.setOpaque(false);
         btnDescomentar.setPreferredSize(new java.awt.Dimension(38, 38));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDescomentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDescomentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDescomentarActionPerformed(evt);
             }
         });
@@ -544,8 +550,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDiminuir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDiminuir.setOpaque(false);
         btnDiminuir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnDiminuir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDiminuir.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDiminuirActionPerformed(evt);
             }
         });
@@ -559,8 +567,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnAumentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAumentar.setOpaque(false);
         btnAumentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAumentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnAumentar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnAumentarActionPerformed(evt);
             }
         });
@@ -608,8 +618,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnProximo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnProximo.setOpaque(false);
         btnProximo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnProximo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnProximo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnProximoActionPerformed(evt);
             }
         });
@@ -656,6 +668,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         sPOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
         sPOutlineTree.setBorder(null);
+        sPOutlineTree.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
         sPOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
         sPOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
         sPOutlineTree.setViewportView(tree);
@@ -723,8 +736,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         corrigir.setText("Corrigir");
         corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         corrigir.setPreferredSize(new java.awt.Dimension(130, 30));
-        corrigir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        corrigir.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 corrigirActionPerformed(evt);
             }
         });

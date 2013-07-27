@@ -1,5 +1,8 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.ui.acoes.FabricaAcao;
@@ -18,9 +21,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,6 +62,8 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
     private FindReplaceActionListener findReplaceActionListener = new FindReplaceActionListener();
+    
+    private AbaDocumentacaoBiblioteca abaDocumentacao;
 
     private void acoesprontas()
     {
@@ -160,11 +163,24 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniFind.setEnabled(false);
         mniReplace.setEnabled(false);
         mniGoToLine.setEnabled(false);
-
+        
         criarMenuExemplos();
-
     }
-
+    
+    private void exibirAbaDocumentacao()
+    {
+        if (abaDocumentacao == null)
+        {
+            abaDocumentacao = new AbaDocumentacaoBiblioteca(painelTabulado);
+        }
+        else if (!painelTabulado.temAbaAberta(AbaDocumentacaoBiblioteca.class))
+        {
+            abaDocumentacao.adicionar(painelTabulado);
+        }
+        
+        abaDocumentacao.selecionar();
+    }
+      
     private void criarMenuExemplos()
     {
         mnuExemplos.setVisible(false);
@@ -333,8 +349,9 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         mniVS = new javax.swing.JMenuItem();
         mniIDEA = new javax.swing.JMenuItem();
         mnuHelp = new javax.swing.JMenu();
-        mniAbout = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        mniAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
@@ -465,16 +482,15 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
 
         mnuHelp.setText("Ajuda");
 
-        mniAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
-        mniAbout.setText("Sobre");
-        mniAbout.addActionListener(new java.awt.event.ActionListener()
+        jMenuItem2.setText("Bibliotecas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                mniAboutActionPerformed(evt);
+                jMenuItem2ActionPerformed(evt);
             }
         });
-        mnuHelp.add(mniAbout);
+        mnuHelp.add(jMenuItem2);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem1.setText("Tópicos de Ajuda");
@@ -486,6 +502,17 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
             }
         });
         mnuHelp.add(jMenuItem1);
+
+        mniAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
+        mniAbout.setText("Sobre");
+        mniAbout.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                mniAboutActionPerformed(evt);
+            }
+        });
+        mnuHelp.add(mniAbout);
 
         menuPrincipal.add(mnuHelp);
 
@@ -524,12 +551,19 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     telaSobre.setModal(true);
     telaSobre.setVisible(true);
 }//GEN-LAST:event_mniAboutActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        
+        exibirAbaDocumentacao();
+                
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
     //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem mniAbout;
     private javax.swing.JMenuItem mniAbrir;

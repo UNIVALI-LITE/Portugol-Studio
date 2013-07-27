@@ -5,7 +5,7 @@ public class BibliotecasTreeNode extends SourceTreeNode
 
     public BibliotecasTreeNode()
     {
-        super("bibliotecas");
+        super("Bibliotecas incluídas");
     }
 
     @Override
