@@ -76,7 +76,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
     {
         component = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-        if (value instanceof SourceTreeNode)
+        if (value != null && value instanceof SourceTreeNode)
         {
             ((SourceTreeNode) value).aceitar(this);
         }
@@ -84,7 +84,10 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     }
     
     private Icon getIcon(TipoDado tipoDado){
-        String iconName = tipoDado.getNome()+".png";
+        String iconName = "unknown.png";
+        if (tipoDado != null) {
+            iconName = tipoDado.getNome()+".png";
+        }
         return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
     }
 
