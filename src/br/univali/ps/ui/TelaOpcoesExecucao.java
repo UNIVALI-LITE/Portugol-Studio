@@ -143,7 +143,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
 
             if (textoParametros.length() > 0)
             {
-                return textoParametros.split(";");
+                return textoParametros.split("\n");
             }
         }
         

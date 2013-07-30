@@ -39,6 +39,7 @@ import javax.swing.tree.DefaultTreeModel;
 public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener, TreeSelectionListener
 {
     private int tamanhoFonte = 12;
+    private static String[] palavrasReservadas = { "inteiro", "real", "cadeia", "caracter", "logico", "verdadeiro", "falso" };
     
     public AbaDocumentacaoBiblioteca(JTabbedPane painelTabulado)
     {
@@ -119,6 +120,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             "            .palavra_reservada" +
             "            {" +
             "                color: rgb(150, 0, 0);" +
+            "                font-weight: bold;" +                
             "            }" +
             "            " +
             "            .parametro" +
@@ -148,10 +150,20 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         
         base = base.replace("${nomeBiblioteca}", metaDadosBiblioteca.getNome());
         base = base.replace("${versao}", metaDadosBiblioteca.getDocumentacao().versao());
-        base = base.replace("${descricao}", metaDadosBiblioteca.getDocumentacao().descricao());
+        base = base.replace("${descricao}", destacarPalavrasReservadas(metaDadosBiblioteca.getDocumentacao().descricao()));
         //base = base.replace("${constantes}", metaDadosBiblioteca.getDocumentacao().descricao());
         
         return base;
+    }
+    
+    private String destacarPalavrasReservadas(String texto)
+    {
+        for (String palavraReservada : palavrasReservadas)
+        {
+            texto = texto.replace(":" + palavraReservada, "<span class=\"palavra_reservada\">" + palavraReservada + "</span>");
+        }
+        
+        return texto;
     }
     
     private String montarHtmlConstante(String nomeBiblioteca, MetaDadosConstante metaDadosConstante)
@@ -195,6 +207,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             "            .palavra_reservada" +
             "            {" +
             "                color: rgb(150, 0, 0);" +
+            "                font-weight: bold;" +                
             "            }" +
             "            " +
             "            .parametro" +
@@ -221,7 +234,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         
         base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
         base = base.replace("${assinatura}", montarAssinaturaConstante(metaDadosConstante));
-        base = base.replace("${descricao}", metaDadosConstante.getDocumentacao().descricao());
+        base = base.replace("${descricao}", destacarPalavrasReservadas(metaDadosConstante.getDocumentacao().descricao()));
         base = base.replace("${referencia}", "<br>" + montarReferencia(metaDadosConstante.getDocumentacao().referencia()));
         
         return base;
@@ -292,6 +305,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             "            .palavra_reservada" +
             "            {" +
             "                color: rgb(150, 0, 0);" +
+            "                font-weight: bold;" +
             "            }" +
             "            " +
             "            .parametro" +
@@ -320,9 +334,9 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         
         base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
         base = base.replace("${assinatura}", montarAssinaturaFuncao(metaDadosFuncao));
-        base = base.replace("${descricao}", metaDadosFuncao.getDocumentacao().descricao());
-        base = base.replace("${parametros}", montarParametros(metaDadosFuncao));
-        base = base.replace("${retorno}", montarRetorno(metaDadosFuncao));
+        base = base.replace("${descricao}", destacarPalavrasReservadas(metaDadosFuncao.getDocumentacao().descricao()));
+        base = base.replace("${parametros}", destacarPalavrasReservadas(montarParametros(metaDadosFuncao)));
+        base = base.replace("${retorno}", destacarPalavrasReservadas(montarRetorno(metaDadosFuncao)));
         base = base.replace("${autores}", montarAutores(metaDadosFuncao));
         
         return base;
@@ -440,7 +454,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         return sb.toString();
     }
 
-    private CharSequence montarParametros(MetaDadosFuncao metaDadosFuncao)
+    private String montarParametros(MetaDadosFuncao metaDadosFuncao)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("");
@@ -466,7 +480,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         return sb.toString();
     }
 
-    private CharSequence montarRetorno(MetaDadosFuncao metaDadosFuncao)
+    private String montarRetorno(MetaDadosFuncao metaDadosFuncao)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("");
