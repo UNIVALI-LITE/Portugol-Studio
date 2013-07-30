@@ -1,6 +1,7 @@
 programa
 {
 	inclua biblioteca Graficos --> g
+	inclua biblioteca Utilitarios --> u
 	
 	funcao inicio()
 	{
@@ -16,7 +17,7 @@ programa
 			g.limpar_cor(g.criar_cor(c, c, c))
 			
 			escreva("\nFinalizando modo gráfico em ", i)
-			aguarde(40)
+			u.aguarde(50)
 		}
 
 		g.encerrar_modo_grafico()
