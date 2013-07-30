@@ -442,8 +442,10 @@ public final class ASTCompletionFactory implements VisitanteASA
 
         nivelASA = nivelASA + 1;
 
-        noPara.getInicializacao().aceitar(this);
-
+        if (noPara.getInicializacao() != null) {
+            noPara.getInicializacao().aceitar(this);
+        }
+        
         visitar(noPara.getBlocos());
 
         nivelASA = nivelAnterior;
