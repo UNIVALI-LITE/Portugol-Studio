@@ -52,7 +52,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="mniFechar">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+F"/>
+                  <KeyStroke key="Ctrl+Q"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Fechar esta aba"/>
               </Properties>
@@ -63,7 +63,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="mniFecharTodos">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Alt+F"/>
+                  <KeyStroke key="Shift+Ctrl+Q"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Fechar todas as abas"/>
               </Properties>
@@ -90,28 +90,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Exemplos"/>
           </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuPrograma">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Programa"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mniExecutar">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Executar"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniDepurar">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Depurar"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniInterromper">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Interromper"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuEdit">
           <Properties>
@@ -181,23 +159,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="jMenuItem2"/>
               </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuTheme">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Tema"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mniDefault">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniDark">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniEclipse">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniVS">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniIDEA">
             </MenuItem>
           </SubComponents>
         </Menu>

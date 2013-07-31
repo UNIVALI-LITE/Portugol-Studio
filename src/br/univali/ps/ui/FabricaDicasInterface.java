@@ -22,7 +22,7 @@ public final class FabricaDicasInterface
     private static final Color corTexto = Color.BLACK;
     private static final Icon iconePadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
 
-    public static void criarDicaInterfacePara(JComponent componente, String dica, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
+    public static void criarDicaInterface(JComponent componente, String dica, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
     {
         criarDicaInterfacePara(componente, dica, iconePadrao, orientacao, posicao);
     }

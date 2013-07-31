@@ -173,7 +173,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         }
         
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.gif"));
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png"));
         return null;
     }
 
@@ -574,7 +574,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append(tipo);
         }
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.gif"));
+        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.png"));
         return null;
     }
 

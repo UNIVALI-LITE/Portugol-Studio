@@ -28,7 +28,7 @@ public final class Configuracoes
     private String diretorioExemplos = "./Exemplos";
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
-    private String theme = "default-alt.xml";
+    private String tema = "Padrão";
     
     Configuracoes()
     {
@@ -45,7 +45,7 @@ public final class Configuracoes
             diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
-            theme = configuracoes.getProperty(TEMA_EDITOR, "default-alt.xml");
+            tema = configuracoes.getProperty(TEMA_EDITOR, "default-alt.xml");
         }
         catch (IOException excecao)
         {
@@ -72,17 +72,17 @@ public final class Configuracoes
 
     public void setTemaEditor(String theme)
     {
-        String oldTheme = this.theme;
+        String oldTheme = this.tema;
         
         this.configuracoes.setProperty(TEMA_EDITOR, theme);
-        this.theme = theme;
+        this.tema = theme;
         
         suporteMudancaPropriedade.firePropertyChange(TEMA_EDITOR, oldTheme, theme);
     }
     
     public String getTemaEditor()
     {
-        return this.theme;
+        return this.tema;
     }
     
     public void setTamanhoFonteConsole(float tamanhoFonteConsole)

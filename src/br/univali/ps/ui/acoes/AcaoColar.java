@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RecordableTextAction;
@@ -30,6 +31,7 @@ public class AcaoColar extends Acao implements FocusListener{
     {
         RecordableTextAction rta = RTextArea.getAction(RTextArea.PASTE_ACTION);
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
+        setIconeGrande((Icon) this.getValue(Acao.SMALL_ICON));
     }  
 
      @Override

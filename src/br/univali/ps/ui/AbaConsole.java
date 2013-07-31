@@ -213,10 +213,10 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
     
     private void criarDicasInterface()
     {
-        FabricaDicasInterface.criarDicaInterfacePara(botaoLimpar, "Limpa o texto existente no console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterfacePara(botaoCopiar, "Copia o texto existente no console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterfacePara(botaoAumentarFonte, "Aumenta o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterfacePara(botaoDiminuirFonte, "Diminui o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
     }    
     
     private void instalarObservadores()
@@ -316,7 +316,8 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         menuConsole = new javax.swing.JPopupMenu();
         menuConsoleLimpar = new javax.swing.JMenuItem();
@@ -328,10 +329,10 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         console = new javax.swing.JTextArea();
         painelFerramentas = new javax.swing.JPanel();
         barraFerramentas = new javax.swing.JToolBar();
-        botaoLimpar = new javax.swing.JButton();
-        botaoCopiar = new javax.swing.JButton();
         botaoAumentarFonte = new javax.swing.JButton();
         botaoDiminuirFonte = new javax.swing.JButton();
+        botaoLimpar = new javax.swing.JButton();
+        botaoCopiar = new javax.swing.JButton();
 
         menuConsoleLimpar.setText("jMenuItem1");
         menuConsole.add(menuConsoleLimpar);
@@ -376,32 +377,6 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         barraFerramentas.setRollover(true);
         barraFerramentas.setOpaque(false);
 
-        botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoLimpar.setBorderPainted(false);
-        botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoLimpar.setFocusable(false);
-        botaoLimpar.setHideActionText(true);
-        botaoLimpar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoLimpar.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setOpaque(false);
-        botaoLimpar.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoLimpar);
-
-        botaoCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoCopiar.setBorderPainted(false);
-        botaoCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoCopiar.setFocusable(false);
-        botaoCopiar.setHideActionText(true);
-        botaoCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoCopiar.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setOpaque(false);
-        botaoCopiar.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoCopiar);
-
         botaoAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         botaoAumentarFonte.setBorderPainted(false);
         botaoAumentarFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -428,9 +403,35 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         botaoDiminuirFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(botaoDiminuirFonte);
 
+        botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        botaoLimpar.setBorderPainted(false);
+        botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botaoLimpar.setFocusable(false);
+        botaoLimpar.setHideActionText(true);
+        botaoLimpar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botaoLimpar.setMaximumSize(new java.awt.Dimension(24, 24));
+        botaoLimpar.setMinimumSize(new java.awt.Dimension(24, 24));
+        botaoLimpar.setOpaque(false);
+        botaoLimpar.setPreferredSize(new java.awt.Dimension(24, 24));
+        botaoLimpar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(botaoLimpar);
+
+        botaoCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        botaoCopiar.setBorderPainted(false);
+        botaoCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botaoCopiar.setFocusable(false);
+        botaoCopiar.setHideActionText(true);
+        botaoCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botaoCopiar.setMaximumSize(new java.awt.Dimension(24, 24));
+        botaoCopiar.setMinimumSize(new java.awt.Dimension(24, 24));
+        botaoCopiar.setOpaque(false);
+        botaoCopiar.setPreferredSize(new java.awt.Dimension(24, 24));
+        botaoCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(botaoCopiar);
+
         painelFerramentas.add(barraFerramentas, java.awt.BorderLayout.CENTER);
 
-        painelConteudo.add(painelFerramentas, java.awt.BorderLayout.LINE_END);
+        painelConteudo.add(painelFerramentas, java.awt.BorderLayout.EAST);
 
         add(painelConteudo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

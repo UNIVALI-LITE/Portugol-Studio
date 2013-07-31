@@ -15,6 +15,7 @@ public final class PortugolStudio
     private TratadorExcecoes tratadorExcecoes = null;
     private TelaPrincipal telaPrincipal = null;
     private Configuracoes configuracoes = null;
+    private GerenciadorTemas gerenciadorTemas = null;
 
     private PortugolStudio()
     {
@@ -87,5 +88,15 @@ public final class PortugolStudio
     public TelaPrincipal getTelaPrincipal()
     {
         return telaPrincipal;
+    }
+
+    public GerenciadorTemas getGerenciadorTemas()
+    {
+        if (gerenciadorTemas == null)
+        {
+            gerenciadorTemas = new GerenciadorTemas();
+        }
+        
+        return gerenciadorTemas;
     }
 }

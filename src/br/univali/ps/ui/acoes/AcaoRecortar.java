@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RecordableTextAction;
@@ -30,6 +31,7 @@ public class AcaoRecortar extends Acao implements PropertyChangeListener
         RecordableTextAction rta = RTextArea.getAction(RTextArea.CUT_ACTION);
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
         rta.addPropertyChangeListener(this);
+        setIconeGrande((Icon) this.getValue(Acao.SMALL_ICON));
     }
 
     @Override

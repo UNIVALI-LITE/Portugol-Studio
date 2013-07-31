@@ -2,30 +2,46 @@ package br.univali.ps.ui;
 
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.ExcecaoAplicacao;
+import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.acoes.AcaoColar;
+import br.univali.ps.ui.acoes.AcaoCopiar;
+import br.univali.ps.ui.acoes.AcaoDesfazer;
+import br.univali.ps.ui.acoes.AcaoRecortar;
+import br.univali.ps.ui.acoes.AcaoRefazer;
+import br.univali.ps.ui.acoes.FabricaAcao;
 import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
+import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenuItem;
 import javax.swing.ToolTipManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
+import net.java.balloontip.BalloonTip;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -38,7 +54,7 @@ import org.fife.ui.rtextarea.ChangeableHighlightPainter;
  * @author Fillipi Pelz
  * @author Luiz Fernando Noschang
  */
-public final class Editor extends javax.swing.JPanel implements AlteradorFonte, CaretListener, KeyListener, PropertyChangeListener
+public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener
 {
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
@@ -53,39 +69,285 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
     private ErrorStrip errorStrip;
     private PortugolParser notificaErrosEditor;
     private PortugolLanguageSuport portugolLanguageSuport;
+    
+    
+    private Action acaoAumentarFonte;
+    private Action acaoDiminuirFonte;
+    private AcaoRecortar acaoRecortar;
+    private AcaoCopiar acaoCopiar;
+    private AcaoColar acaoColar;
+    private AcaoDesfazer acaoDesfazer;
+    private AcaoRefazer acaoRefazer;
+    private Action acaoComentar;
+    private Action acaoDescomentar;
+    private Action acaoListarTemas;
+    private Action acaoAplicarTema;
 
     public Editor()
     {
         initComponents();
-
-        FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));
+        
+        configurarParser();
+        configurarTextArea();
+        configurarAcoes();
+        configurarBotoes();
+        criarMenuTemas();
+        criarDicasInterface();
+        instalarObservadores();
+        carregarConfiguracoes();
+    }
+    
+    private void criarMenuTemas()
+    {
+        GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
+        
+        for (String tema : gerenciadorTemas.listarTemas())
+        {
+            JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
+            
+            itemMenu.setAction(acaoAplicarTema);
+            itemMenu.setText(tema);
+            itemMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            
+            menuTema.add(itemMenu);
+        }
+    }
+    
+    private void configurarParser()
+    {
+        FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));        
+        ToolTipManager.sharedInstance().registerComponent(textArea);
+        
         notificaErrosEditor = new PortugolParser();
-
-        textArea.setSyntaxEditingStyle("text/por");
-        textArea.setCodeFoldingEnabled(true);
-        textArea.setUseFocusableTips(true);
-        textArea.addParser(notificaErrosEditor);
         textArea.putClientProperty(PROPERTY_LANGUAGE_PARSER, notificaErrosEditor);
-        textArea.addKeyListener(Editor.this);
-        errorStrip = new ErrorStrip(textArea);
+        textArea.addParser(notificaErrosEditor);
+        
+        portugolLanguageSuport = new PortugolLanguageSuport();
+        portugolLanguageSuport.install(textArea);
+    }
+    
+    private void criarDicasInterface()
+    {
+        FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+    }
 
+    private void configurarTextArea()
+    {
         scrollPane.setFoldIndicatorEnabled(true);
         scrollPane.setIconRowHeaderEnabled(true);
         scrollPane.setLineNumbersEnabled(true);
-        scrollPane.setViewportView(textArea);
         
-        ToolTipManager.sharedInstance().registerComponent(textArea);
-
-        portugolLanguageSuport = new PortugolLanguageSuport();
-        portugolLanguageSuport.install(textArea);
-
+        textArea.setSyntaxEditingStyle("text/por");
+        textArea.setCodeFoldingEnabled(true);
+        textArea.setUseFocusableTips(true);
+        textArea.addKeyListener(Editor.this);
+        
+        errorStrip = new ErrorStrip(textArea);
         errorStrip.setBackground(new Color(220, 220, 220));
-        add(errorStrip, BorderLayout.LINE_END);
+        painelEditor.add(errorStrip, BorderLayout.EAST);
+    }    
+    
+    private void configurarAcoes()
+    {
+        configurarAcaoAumentarFonte();
+        configurarAcaoDiminuirFonte();
+        configurarAcaoRecortar();
+        configurarAcaoCopiar();
+        configurarAcaoColar();
+        configurarAcaoDesfazer();
+        configurarAcaoRefazer();
+        configurarAcaoComentar();
+        configurarAcaoDescomentar();
+        configurarAcaoListarTemas();
+        configurarAcaoAplicarTema();        
+    }
+    
+    private void configurarAcaoDesfazer()
+    {
+        acaoDesfazer = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
+        acaoDesfazer.iniciar();
+    }
+    
+    private void configurarAcaoRefazer()
+    {
+        acaoRefazer = (AcaoRefazer) FabricaAcao.getInstancia().criarAcao(AcaoRefazer.class);
+        acaoRefazer.iniciar();
+    }
+
+    private void configurarAcaoRecortar()
+    {
+        acaoRecortar = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
+        acaoRecortar.iniciar();
+    }	
+	
+    private void configurarAcaoCopiar()
+    {
+        acaoCopiar = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
+        acaoCopiar.iniciar();    
+    }
+    
+    private void configurarAcaoColar()
+    {
+        acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
+        acaoColar.iniciar();
+    }
+
+	
+    private void configurarAcaoComentar()
+    {
+        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
+                    int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
+
+                    int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
+                    int fimSelecao = textArea.getLineEndOffset(linhaFinal);
+                    int tamanhoSelecao = fimSelecao - inicioSelecao;
+
+                    String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
+                    StringBuilder codigoComentado = new StringBuilder();
+
+                    String[] linhas = codigo.split("\n");
+
+                    for (String linha : linhas)
+                    {
+                        codigoComentado.append("//");
+                        codigoComentado.append(linha);
+                        codigoComentado.append("\n");
+                    }
+
+                    codigo = codigoComentado.toString();
+                    textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
+                    textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
+                }
+                catch (Exception excecao)
+                {
+                    excecao.printStackTrace(System.out);
+                }
+            }
+        };
         
-        textArea.addCaretListener(Editor.this);
+        btnComentar.setAction(acaoComentar);
+    }
+         
+    private void configurarAcaoDescomentar()
+    {
+        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
+                    int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
+
+                    int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
+                    int fimSelecao = textArea.getLineEndOffset(linhaFinal);
+                    int tamanhoSelecao = fimSelecao - inicioSelecao;
+
+                    String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
+                    StringBuilder codigoDescomentado = new StringBuilder();
+
+                    String[] linhas = codigo.split("\n");
+
+                    for (String linha : linhas)
+                    {
+                        int posicaoComentario = linha.indexOf("//");
+
+                        codigoDescomentado.append(linha.substring(0, posicaoComentario));
+                        codigoDescomentado.append(linha.substring(posicaoComentario + 2));
+                        codigoDescomentado.append("\n");
+                    }
+
+                    codigo = codigoDescomentado.toString();
+                    textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
+                    textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
+
+                }
+                catch (Exception excecao)
+                {
+                    
+                }
+            }
+        };
         
-        instalarObservadores();
-        carregarConfiguracoes();
+        btnDescomentar.setAction(acaoDescomentar);
+    }
+    
+    private void configurarAcaoListarTemas()
+    {
+        acaoListarTemas = new AbstractAction("Listar temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                int y = btnTema.getHeight();
+                int x = btnTema.getWidth() - menuTema.getPreferredSize().width;
+                        
+                menuTema.show(btnTema, x, y);
+            }
+        };
+        
+        btnTema.setAction(acaoListarTemas);                
+    }
+    
+    private void configurarAcaoAplicarTema()
+    {
+        acaoAplicarTema = new AbstractAction("Aplicar tema", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                JMenuItem item = (JMenuItem) e.getSource();
+                String tema = item.getText();
+                
+                aplicarTema(tema);
+            }
+        };
+    }
+    
+    private void configurarAcaoAumentarFonte()
+    {
+        acaoAumentarFonte = new AbstractAction("Aumentar fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Font fonteAtual = textArea.getFont();
+                float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
+                
+                setTamanhoFonteEditor(novoTamanho);                
+            }
+        };
+        
+        btnAumentarFonte.setAction(acaoAumentarFonte);
+    }
+        
+    private void configurarAcaoDiminuirFonte()
+    {
+        acaoDiminuirFonte = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Font fonteAtual = textArea.getFont();
+                float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
+
+                setTamanhoFonteEditor(novoTamanho);
+            }
+        };
+        
+        btnDiminuirFonte.setAction(acaoDiminuirFonte);
     }
     
     private void instalarObservadores()
@@ -94,13 +356,29 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_EDITOR);
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TEMA_EDITOR);
+        
+        textArea.addCaretListener(Editor.this);
     }
     
     private void carregarConfiguracoes()
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-        setTema(configuracoes.getTemaEditor());
-        setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());        
+        
+        aplicarTema(configuracoes.getTemaEditor());
+        setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());       
+    }
+    
+    private void configurarBotoes()
+    {
+        for (Component componente : barraFerramentas.getComponents())
+        {
+            if (componente instanceof JButton)
+            {
+                componente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+        }
+        
+        btnPesquisar.setVisible(false);
     }
     
     private void setTamanhoFonteEditor(float tamanho)
@@ -122,7 +400,7 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         
         if (evt.getPropertyName().equals(Configuracoes.TEMA_EDITOR))
         {
-            setTema((String) evt.getNewValue());
+            aplicarTema((String) evt.getNewValue());
         }
     }
 
@@ -134,24 +412,6 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
     public Point getPosicaoCursor()
     {
         return new Point(textArea.getCaretOffsetFromLineStart() + 1, textArea.getCaretLineNumber() + 1);
-    }
-
-    @Override
-    public void aumentarFonte()
-    {
-       Font fonteAtual = textArea.getFont();
-        float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
-                
-        setTamanhoFonteEditor(novoTamanho);
-    }
-
-    @Override
-    public void diminuirFonte()
-    {
-        Font fonteAtual = textArea.getFont();
-        float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
-                
-        setTamanhoFonteEditor(novoTamanho);
     }
 
     public void setCodigoFonte(String codigoFonte)
@@ -373,20 +633,59 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         }
     }
 
-    void setTema(String xml)
+    public AcaoColar getAcaoColar()
+    {
+        return acaoColar;
+    }
+
+    public AcaoCopiar getAcaoCopiar()
+    {
+        return acaoCopiar;
+    }
+
+    public AcaoDesfazer getAcaoDesfazer()
+    {
+        return acaoDesfazer;
+    }
+
+    public AcaoRefazer getAcaoRefazer()
+    {
+        return acaoRefazer;
+    }
+
+    public AcaoRecortar getAcaoRecortar()
+    {
+        return acaoRecortar;
+    }
+
+    private void aplicarTema(String nome)
     {
         try
         {
-            Font f = textArea.getFont();
-            InputStream in = getClass().getResourceAsStream(xml);
-            Theme theme = Theme.load(in);
-            theme.apply(textArea);
-            PortugolStudio.getInstancia().getConfiguracoes().setTemaEditor(xml);
-            textArea.setFont(f);
+            GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
+            Theme tema = gerenciadorTemas.carregarTema(nome);
+
+            Font fonte = textArea.getFont();
+            tema.apply(textArea);
+
+            textArea.setFont(fonte);
+            PortugolStudio.getInstancia().getConfiguracoes().setTemaEditor(nome);
+
+            for (Component componente : menuTema.getComponents())
+            {
+                JMenuItem item = (JMenuItem) componente;
+
+                if (item.getText().equals(nome))
+                {
+                    item.setSelected(true);
+                }
+
+                else item.setSelected(false);
+            }            
         }
-        catch (IOException ex)
+        catch (ExcecaoAplicacao excecao)
         {
-            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
         }
     }
 
@@ -436,11 +735,22 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
     private void initComponents()
     {
 
+        menuTema = new javax.swing.JPopupMenu();
+        painelEditor = new javax.swing.JPanel();
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
         textArea = new RSyntaxTextArea(new PortugolDocumento());
-        painelEditor = new javax.swing.JPanel();
+        painelFerramentas = new javax.swing.JPanel();
+        barraFerramentas = new javax.swing.JToolBar();
+        btnAumentarFonte = new javax.swing.JButton();
+        btnDiminuirFonte = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
+        btnComentar = new javax.swing.JButton();
+        btnDescomentar = new javax.swing.JButton();
+        btnTema = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
+
+        painelEditor.setLayout(new java.awt.BorderLayout());
 
         scrollPane.setBorder(null);
 
@@ -449,13 +759,102 @@ public final class Editor extends javax.swing.JPanel implements AlteradorFonte, 
         textArea.setCodeFoldingEnabled(true);
         scrollPane.setViewportView(textArea);
 
-        add(scrollPane, java.awt.BorderLayout.CENTER);
+        painelEditor.add(scrollPane, java.awt.BorderLayout.CENTER);
 
-        painelEditor.setLayout(new java.awt.BorderLayout());
-        add(painelEditor, java.awt.BorderLayout.SOUTH);
+        add(painelEditor, java.awt.BorderLayout.CENTER);
+
+        painelFerramentas.setBackground(new java.awt.Color(250, 250, 250));
+        painelFerramentas.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        painelFerramentas.setPreferredSize(new java.awt.Dimension(34, 100));
+        painelFerramentas.setLayout(new java.awt.BorderLayout());
+
+        barraFerramentas.setFloatable(false);
+        barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        barraFerramentas.setRollover(true);
+        barraFerramentas.setOpaque(false);
+
+        btnAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnAumentarFonte.setFocusable(false);
+        btnAumentarFonte.setHideActionText(true);
+        btnAumentarFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAumentarFonte.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnAumentarFonte.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnAumentarFonte.setOpaque(false);
+        btnAumentarFonte.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnAumentarFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnAumentarFonte);
+
+        btnDiminuirFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnDiminuirFonte.setFocusable(false);
+        btnDiminuirFonte.setHideActionText(true);
+        btnDiminuirFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDiminuirFonte.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnDiminuirFonte.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnDiminuirFonte.setOpaque(false);
+        btnDiminuirFonte.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnDiminuirFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnDiminuirFonte);
+
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnPesquisar.setFocusable(false);
+        btnPesquisar.setHideActionText(true);
+        btnPesquisar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnPesquisar.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnPesquisar.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnPesquisar.setOpaque(false);
+        btnPesquisar.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnPesquisar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnPesquisar);
+
+        btnComentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnComentar.setFocusable(false);
+        btnComentar.setHideActionText(true);
+        btnComentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnComentar.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnComentar.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnComentar.setOpaque(false);
+        btnComentar.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnComentar);
+
+        btnDescomentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnDescomentar.setFocusable(false);
+        btnDescomentar.setHideActionText(true);
+        btnDescomentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDescomentar.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnDescomentar.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnDescomentar.setOpaque(false);
+        btnDescomentar.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnDescomentar);
+
+        btnTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnTema.setFocusable(false);
+        btnTema.setHideActionText(true);
+        btnTema.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnTema.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnTema.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnTema.setOpaque(false);
+        btnTema.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnTema.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnTema);
+
+        painelFerramentas.add(barraFerramentas, java.awt.BorderLayout.CENTER);
+
+        add(painelFerramentas, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar barraFerramentas;
+    private javax.swing.JButton btnAumentarFonte;
+    private javax.swing.JButton btnComentar;
+    private javax.swing.JButton btnDescomentar;
+    private javax.swing.JButton btnDiminuirFonte;
+    private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnTema;
+    private javax.swing.JPopupMenu menuTema;
     private javax.swing.JPanel painelEditor;
+    private javax.swing.JPanel painelFerramentas;
     private org.fife.ui.rtextarea.RTextScrollPane scrollPane;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea textArea;
     // End of variables declaration//GEN-END:variables

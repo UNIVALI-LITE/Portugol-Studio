@@ -655,7 +655,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     {
         if (valor instanceof MetaDadosFuncao)
         {
-            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.gif");
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.png");
         }
         else if (valor instanceof MetaDadosConstante)
         {

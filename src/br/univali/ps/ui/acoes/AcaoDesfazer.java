@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RecordableTextAction;
@@ -31,6 +32,7 @@ public class AcaoDesfazer extends Acao implements PropertyChangeListener
         rta.putValue(Acao.SMALL_ICON, this.getValue(Acao.SMALL_ICON));
         rta.putValue(Acao.NAME, getValue(Acao.NAME));
         rta.addPropertyChangeListener(this);
+        setIconeGrande((Icon) this.getValue(Acao.SMALL_ICON));
     }
 
     @Override
