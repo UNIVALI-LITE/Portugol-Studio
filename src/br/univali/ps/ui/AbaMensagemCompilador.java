@@ -1,7 +1,9 @@
 package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroSemanticoNaoTratado;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.util.IconFactory;
@@ -92,6 +94,15 @@ public final class AbaMensagemCompilador extends Aba implements TableModelListen
     
     public void atualizar(ResultadoAnalise resultadoAnalise)
     {
+        
+        for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
+        {
+            if (erro instanceof ErroSemanticoNaoTratado)
+            {
+                erro.printStackTrace(System.out);
+            }
+        }
+        
         tabelaModel.setResultadoAnalise(resultadoAnalise);
     }
 

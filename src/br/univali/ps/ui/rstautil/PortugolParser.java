@@ -137,10 +137,14 @@ public final class PortugolParser extends AbstractParser
             {
                 if (aviso.getLinha() - 1 > 0)
                 {
-                    DefaultParserNotice notice = (DefaultParserNotice) createNotice(raiz, aviso.getTrechoCodigoFonte(), aviso.getMensagem());
-                    notice.setShowInEditor(true);
-                    notice.setColor(Color.ORANGE);
-                    resultado.addNotice(notice);
+                    if (aviso.getTrechoCodigoFonte() != null) {
+                        DefaultParserNotice notice = (DefaultParserNotice) createNotice(raiz, aviso.getTrechoCodigoFonte(), aviso.getMensagem());
+                        notice.setColor(Color.ORANGE);
+                        notice.setShowInEditor(true);
+                        resultado.addNotice(notice);
+                    } else {
+                        System.out.println("Aviso com TrechoCodigoFonte NULL = "+aviso.getClass());
+                    }
                 }
             }
         }

@@ -476,12 +476,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         try
         {
-            textArea.setCaretPosition(textArea.getLineStartOffset(linha - 1) + coluna);
-            textArea.requestFocus();
+            int nova = textArea.getLineStartOffset(linha - 1) + coluna;
+
+            if (nova >= 0 && nova < textArea.getText().length())
+            {
+                textArea.setCaretPosition(nova);
+                textArea.requestFocus();
+            }
         }
-        catch (BadLocationException excecao)
+        catch (Exception ex)
         {
-            excecao.printStackTrace(System.out);
+            ex.printStackTrace(System.err);
         }
     }
 
