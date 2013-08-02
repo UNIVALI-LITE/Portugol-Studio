@@ -21,6 +21,8 @@ import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.acoes.*;
+import br.univali.ps.ui.swing.filtros.FiltroArquivo;
+import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
@@ -62,6 +64,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private JPanel painelTemporario;
     
     private AcaoSalvarArquivo acaoSalvarArquivo;
+    private AcaoSalvarComo acaoSalvarComo;
+    private FiltroArquivo filtroExercicio;
+    private FiltroArquivo filtroPrograma;
+    private FiltroArquivo filtroTodosSuportados;
+    private JFileChooser dialogoSelecaoArquivo;
+    
     
     private Action acaoExecutar;
     private Action acaoDepurar;
@@ -228,7 +236,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         super(painelTabulado);
         
-        initComponents();        
+        initComponents(); 
+        configurarSeletorArquivo();
         configurarAcoes();
         
         telaOpcoesExecucao = new TelaOpcoesExecucao();
@@ -355,7 +364,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         document.setChanged(false);
         acaoSalvarArquivo.setEnabled(false);
 
-        acaoSalvarArquivo.configurar((PortugolDocumento) document);
+        acaoSalvarArquivo.configurar((PortugolDocumento) document, acaoSalvarComo);
     }
 
     @SuppressWarnings("unchecked")
@@ -365,6 +374,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         barraFerramentas = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
+        btnSalvarComo = new javax.swing.JButton();
         btnDepurar = new javax.swing.JButton();
         btnExecutar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
@@ -418,9 +428,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnSalvar.setFocusable(false);
         btnSalvar.setHideActionText(true);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalvar.setOpaque(false);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnSalvar);
+
+        btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/unknown.png"))); // NOI18N
+        btnSalvarComo.setFocusable(false);
+        btnSalvarComo.setHideActionText(true);
+        btnSalvarComo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalvarComo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnSalvarComo);
 
         btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/unknown.png"))); // NOI18N
         btnDepurar.setBorderPainted(false);
@@ -430,7 +446,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDepurar.setFocusable(false);
         btnDepurar.setHideActionText(true);
         btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDepurar.setOpaque(false);
         btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnDepurar);
 
@@ -442,7 +457,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnExecutar.setFocusable(false);
         btnExecutar.setHideActionText(true);
         btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnExecutar.setOpaque(false);
         btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnExecutar);
 
@@ -454,7 +468,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnInterromper.setFocusable(false);
         btnInterromper.setHideActionText(true);
         btnInterromper.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnInterromper.setOpaque(false);
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
@@ -657,6 +670,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnExecutar;
     private javax.swing.JButton btnInterromper;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnSalvarComo;
     private javax.swing.JCheckBox campoOpcoesExecucao;
     private javax.swing.JButton corrigir;
     private javax.swing.JSplitPane divisorArvoreDepuracaoEditor;
@@ -697,16 +711,32 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private void configurarAcoes()
     {
         configurarAcaoSalvarArquivo();
+        configurarAcaoSalvarComo();
         configurarAcaoExecutar();
         configurarAcaoDepurar();
         configurarAcaoInterromper();
         configurarAcaoProximaInstrucao();
     }
     
+    private void configurarAcaoSalvarComo()
+    {
+        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
+        acaoSalvarComo.configurar(acaoSalvarArquivo, this, dialogoSelecaoArquivo, filtroPrograma, filtroPrograma);
+        acaoSalvarArquivo.configurar(editor.getPortugolDocumento(),acaoSalvarComo);  
+        
+        String nome = (String) acaoSalvarComo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoSalvarComo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoSalvarComo);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
+        btnSalvarComo.setAction(acaoSalvarComo);
+    }
+    
     private void configurarAcaoSalvarArquivo()
     {
         acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
-        acaoSalvarArquivo.configurar(editor.getPortugolDocumento());
+        
         acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
 
         String nome = (String) acaoSalvarArquivo.getValue(AbstractAction.NAME);
@@ -800,11 +830,18 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
 
-    public AcaoSalvarArquivo getAcaoSalvarArquivo()
+    private void configurarSeletorArquivo()
     {
-        return acaoSalvarArquivo;
+        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
+        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");        
+        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+        
+        dialogoSelecaoArquivo = new JFileChooser();
+        
+        dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
+        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
+        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
     }
-
     
     @Override
     public boolean fechandoAba(Aba aba)

@@ -42,7 +42,6 @@ public final class TelaPrincipal extends JFrame
     
     private AcaoNovoArquivo acaoNovoArquivo;
     private AcaoAbrirArquivo acaoAbrirArquivo;
-    private AcaoSalvarComo acaoSalvarComo;
     private Action acaoSelecionarAbaDireita;
     private Action acaoSelecionarAbaEsquerda;
     private Action acaoPesquisarSubstituir;
@@ -119,7 +118,6 @@ public final class TelaPrincipal extends JFrame
     {
         configurarAcaoNovoArquivo();
         configurarAcaoAbrirArquivo();
-        configurarAcaoSalvarComo();
         
         configurarAcaoSelecionarAbaEsquerda();
         configurarAcaoSelecionarAbaDireita();
@@ -156,18 +154,6 @@ public final class TelaPrincipal extends JFrame
         KeyStroke atalho = (KeyStroke) acaoAbrirArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
         
         getRootPane().getActionMap().put(nome, acaoAbrirArquivo);
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-    }
-
-    private void configurarAcaoSalvarComo()
-    {
-        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
-        acaoSalvarComo.setEnabled(false);
-        
-        String nome = (String) acaoSalvarComo.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoSalvarComo.getValue(AbstractAction.ACCELERATOR_KEY);
-        
-        getRootPane().getActionMap().put(nome, acaoSalvarComo);
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
@@ -377,16 +363,11 @@ public final class TelaPrincipal extends JFrame
                 if (aba.getClass() == AbaCodigoFonte.class)
                 {
                     abaCodigoFonte = (AbaCodigoFonte) aba;
-            
-                    acaoSalvarComo.configurar(abaCodigoFonte.getAcaoSalvarArquivo(), TelaPrincipal.this, dialogoSelecaoArquivo, filtroPrograma, filtroPrograma);
-                    acaoSalvarComo.setEnabled(true);
-            
                     telaPrincipal = false;
                 }
                 else
                 {
                     abaCodigoFonte = null;
-                    acaoSalvarComo.setEnabled(false);
                     telaPrincipal = true;
                 }               
             }
@@ -405,11 +386,6 @@ public final class TelaPrincipal extends JFrame
         });
     }
     
-    public void dialogoSalvar()
-    {
-        acaoSalvarComo.actionPerformed(null);
-    }
-
     private void fecharAplicativo()
     {
         painelTabulado.fecharTodasAbas(AbaCodigoFonte.class);

@@ -46,6 +46,7 @@ public class AcaoSalvarComo extends Acao
             chooser.addChoosableFileFilter(filtro);
         }
         
+        chooser.setSelectedFile(null);
         chooser.setFileFilter(filtroSelecionado);
         
         if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION)

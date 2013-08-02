@@ -46,13 +46,23 @@
             </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Default"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="hideActionText" type="boolean" value="true"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnSalvarComo">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/unknown.png"/>
+            </Property>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="hideActionText" type="boolean" value="true"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
@@ -63,14 +73,13 @@
             </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Default"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="hideActionText" type="boolean" value="true"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="opaque" type="boolean" value="false"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
@@ -81,14 +90,13 @@
             </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Default"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="hideActionText" type="boolean" value="true"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="opaque" type="boolean" value="false"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
@@ -99,14 +107,13 @@
             </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Default"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="hideActionText" type="boolean" value="true"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="opaque" type="boolean" value="false"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
         </Component>
@@ -341,7 +348,7 @@
                                 <Property name="selected" type="boolean" value="true"/>
                                 <Property name="text" type="java.lang.String" value="Exibir op&#xe7;&#xf5;es de execu&#xe7;&#xe3;o"/>
                                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                                  <Color id="Cursor Default"/>
+                                  <Color id="Default Cursor"/>
                                 </Property>
                                 <Property name="focusPainted" type="boolean" value="false"/>
                                 <Property name="focusable" type="boolean" value="false"/>
@@ -448,7 +455,7 @@
                             </Property>
                             <Property name="text" type="java.lang.String" value="Corrigir"/>
                             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                              <Color id="Cursor Default"/>
+                              <Color id="Default Cursor"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[130, 30]"/>

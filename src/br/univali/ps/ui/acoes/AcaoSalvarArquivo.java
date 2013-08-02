@@ -11,6 +11,7 @@ import javax.swing.text.BadLocationException;
 public class AcaoSalvarArquivo extends Acao
 {
     private PortugolDocumento documento;
+    private AcaoSalvarComo salvarComo;
     
     public AcaoSalvarArquivo()
     {
@@ -18,8 +19,9 @@ public class AcaoSalvarArquivo extends Acao
         putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl S"));
     }
 
-    public void configurar(PortugolDocumento documento){
+    public void configurar(PortugolDocumento documento, AcaoSalvarComo acaoSalvarComo){
         this.documento = documento;
+        this.salvarComo = acaoSalvarComo;
     }
 
     public PortugolDocumento getDocumento() {
@@ -35,7 +37,7 @@ public class AcaoSalvarArquivo extends Acao
                 FileHandle.save(texto, documento.getFile());
                 documento.setChanged(false);
             } else {
-                PortugolStudio.getInstancia().getTelaPrincipal().dialogoSalvar();
+                salvarComo.actionPerformed(e);
             }
         } catch (BadLocationException ex) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
