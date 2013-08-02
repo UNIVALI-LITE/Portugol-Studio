@@ -28,12 +28,15 @@ public class AbaInicial extends Aba {
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         gradiente1 = new br.univali.ps.ui.imagens.Gradiente();
         logo1 = new br.univali.ps.ui.imagens.Logo();
         logoUnivali = new javax.swing.JLabel();
 
+        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         gradiente1.setLayout(null);

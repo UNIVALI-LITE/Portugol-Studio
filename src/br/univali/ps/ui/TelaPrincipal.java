@@ -8,7 +8,6 @@ import br.univali.ps.ui.acoes.AcaoSalvarComo;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
-import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -650,8 +649,7 @@ public final class TelaPrincipal extends JFrame
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
 
