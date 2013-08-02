@@ -35,6 +35,9 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener, Pai
         ((PainelTabulado)aba.getPainelTabulado()).adicionaPainelTabuladoListener(this);
         this.aceso = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
         this.apagado = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
+        
+        jBAbrir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        jBNovaAba.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         titulo.addMouseListener(new MouseAdapter() {
 
@@ -221,6 +224,7 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener, Pai
     {
         FabricaDicasInterface.criarDicaInterface(jBAbrir, "Abre um programa ou exercício existente no computador", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
         FabricaDicasInterface.criarDicaInterface(jBNovaAba, "Cria uma nova aba contendo um modelo básico de programa", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
     }
 
     @Override

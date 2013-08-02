@@ -20,7 +20,7 @@ public final class FabricaDicasInterface
     private static final int intervaloInicio = 500;
     private static final Color corDica = new Color(255, 255, 210);
     private static final Color corTexto = Color.BLACK;
-    private static final Icon iconePadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
+    private static final Icon iconePadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
 
     public static void criarDicaInterface(JComponent componente, String dica, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
     {
