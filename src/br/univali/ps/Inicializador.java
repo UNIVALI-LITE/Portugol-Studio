@@ -31,7 +31,7 @@ public final class Inicializador
         catch (Exception excecao)
         {
             
-            String mensagem = "O PortugolStudio encontrou um erro desconhecido e precisa ser fechado:\n" + excecao.getMessage();
+            String mensagem = "O Portugol Studio encontrou um erro desconhecido e precisa ser fechado:\n" + excecao.getMessage();
             ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO);
 
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecaoAplicacao);

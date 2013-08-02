@@ -22,38 +22,66 @@ public class Licenca extends javax.swing.JDialog
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jSPLicencaPortugol = new javax.swing.JScrollPane();
+        jTALicencaPortugol = new javax.swing.JTextArea();
+        jSPLicencaANTLR = new javax.swing.JScrollPane();
+        jTALicencaANTLR = new javax.swing.JTextArea();
+        jSPLicencaRSTA = new javax.swing.JScrollPane();
+        jTALicencaRSTA = new javax.swing.JTextArea();
+        jSPLicencaBalloonTip = new javax.swing.JScrollPane();
+        jTALicencaBalloonTip = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(659, 526));
+        setMinimumSize(new java.awt.Dimension(659, 526));
+        setPreferredSize(new java.awt.Dimension(659, 526));
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("    \n    PortugolStudio   - Ambiente gráfico para programação em Portugol\n    PortugolNucleo   - Analisador Sintático/Semantico e Interpretador \n    PortugolCorretor - Verificador de exercícios escritos em Portugol \n\n    Copyright (C) 2013  UNIVALI - Universidade do Vale do Itajaí\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU Lesser General Public License as published \n    by the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU Lesser General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.\n");
-        jScrollPane1.setViewportView(jTextArea1);
+        jTALicencaPortugol.setEditable(false);
+        jTALicencaPortugol.setColumns(20);
+        jTALicencaPortugol.setRows(5);
+        jTALicencaPortugol.setText("    \n    Portugol Studio   - Ambiente gráfico para programação em Portugol\n    Portugol Nucleo   - Analisador Sintático/Semântico e Interpretador \n    Portugol Corretor - Verificador de exercícios escritos em Portugol \n\n    Copyright (C) 2013  UNIVALI - Universidade do Vale do Itajaí\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU Lesser General Public License as published \n    by the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU Lesser General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.\n");
+        jSPLicencaPortugol.setViewportView(jTALicencaPortugol);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        jTabbedPane1.addTab("Licença do Portugol", jSPLicencaPortugol);
+
+        jTALicencaANTLR.setEditable(false);
+        jTALicencaANTLR.setColumns(20);
+        jTALicencaANTLR.setRows(5);
+        jTALicencaANTLR.setText("Copyright (c) 2010 Terence Parr\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the author nor the names of its contributors may\n      be used to endorse or promote products derived from this software\n      without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE \nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jSPLicencaANTLR.setViewportView(jTALicencaANTLR);
+
+        jTabbedPane1.addTab("Licença do ANTLR 3", jSPLicencaANTLR);
+
+        jTALicencaRSTA.setColumns(20);
+        jTALicencaRSTA.setRows(5);
+        jTALicencaRSTA.setText("Copyright (c) 2012, Robert Futrell\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the author nor the names of its contributors may\n      be used to endorse or promote products derived from this software\n      without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE \nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jSPLicencaRSTA.setViewportView(jTALicencaRSTA);
+
+        jTabbedPane1.addTab("Licença do RSyntaxTextArea", jSPLicencaRSTA);
+
+        jTALicencaBalloonTip.setColumns(20);
+        jTALicencaBalloonTip.setRows(5);
+        jTALicencaBalloonTip.setText("Copyright (c) 2011, Bernhard Pauler, Tim Molderez.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the author nor the names of its contributors may\n      be used to endorse or promote products derived from this software\n      without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE \nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jSPLicencaBalloonTip.setViewportView(jTALicencaBalloonTip);
+
+        jTabbedPane1.addTab("Licença do Balloon Tip", jSPLicencaBalloonTip);
+
+        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jSPLicencaANTLR;
+    private javax.swing.JScrollPane jSPLicencaBalloonTip;
+    private javax.swing.JScrollPane jSPLicencaPortugol;
+    private javax.swing.JScrollPane jSPLicencaRSTA;
+    private javax.swing.JTextArea jTALicencaANTLR;
+    private javax.swing.JTextArea jTALicencaBalloonTip;
+    private javax.swing.JTextArea jTALicencaPortugol;
+    private javax.swing.JTextArea jTALicencaRSTA;
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -49,7 +49,7 @@ public final class Configuracoes
         }
         catch (IOException excecao)
         {
-            throw new ExcecaoAplicacao("Não foi possível carregar as configurações do PortugolStudio. As configurações padrão serão utilizadas", excecao, ExcecaoAplicacao.Tipo.AVISO);
+            throw new ExcecaoAplicacao("Não foi possível carregar as configurações do Portugol Studio. As configurações padrão serão utilizadas", excecao, ExcecaoAplicacao.Tipo.AVISO);
         }
     }
     
@@ -61,7 +61,7 @@ public final class Configuracoes
         }
         catch (IOException excecao)
         {
-            throw new ExcecaoAplicacao("Não foi possível salvar as configurações do PortugolStudio. As configurações padrão serão utilizadas na próxima inicialização", excecao, ExcecaoAplicacao.Tipo.AVISO);
+            throw new ExcecaoAplicacao("Não foi possível salvar as configurações do Portugol Studio. As configurações padrão serão utilizadas na próxima inicialização", excecao, ExcecaoAplicacao.Tipo.AVISO);
         }
     }
     

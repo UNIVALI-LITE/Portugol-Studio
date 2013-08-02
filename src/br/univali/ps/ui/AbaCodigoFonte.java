@@ -31,8 +31,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -274,6 +272,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         ocultarCorretor();
         configurarComponentes();
         criarDicasInterface();
+        
+        
+        editor.configurarPesquisar((AbstractAction) painelTabulado.getActionMap().get("Pesquisar e substituir"));
     }
     
     private void configurarComponentes()

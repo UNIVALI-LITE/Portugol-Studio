@@ -62,7 +62,8 @@ public class TelaSobre extends javax.swing.JDialog
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel1 = new javax.swing.JPanel();
         logo1 = new br.univali.ps.ui.imagens.Logo();
@@ -75,7 +76,7 @@ public class TelaSobre extends javax.swing.JDialog
         jLabel2 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         painelInferior = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        botaoLicencas = new javax.swing.JButton();
         botaoSair = new javax.swing.JButton();
 
         setTitle("Sobre");
@@ -100,7 +101,7 @@ public class TelaSobre extends javax.swing.JDialog
 
         rotuloDescricao.setBackground(new java.awt.Color(255, 255, 255));
         rotuloDescricao.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        rotuloDescricao.setText("<html>               <head>         <style>             p                                  {                                             margin-bottom: 8px;                                  } \t\t\t                                  .atributo                                  {                                             color: black;\t                                             font-weight : bold;                                  } \t\t\t                                  .valor                                  {                                             color: green;                                             font-weight: bold;                                  } \ta \t{ \t      color: blue; \t}                  </style>      </head>     <body>         <p>             <span class=\"atributo\">Nome do aplicativo: </span>             <span class=\"valor\">PortugolStudio</span>          </p>                       <p>                                       <span class=\"atributo\">Versão: </span>                           <span class=\"valor\">1.12</span>          </p>                       <p>                    <span class=\"atributo\">Linguagem de Programação: </span>                 <span class=\"valor\">Java <sup style=\"font-size: 9;\">TM</sup></span>           </p>                       <p>                                                       <span class=\"atributo\">Home page: </span>                            <span class=\"valor\">http://univali-l2s.github.com/Portugol</span>                      </p>                       <p>                                                         <span class=\"atributo\">Colaboradores: </span> \t<ul> \t         <li>                                        <span class=\"valor\">                                                     André Luis Alice Raabe ( <a href='mailto:raabe@univali.br'>raabe@univali.br</a> ) \t                    </span>                                             </li> \t         <li>                    <span class=\"valor\">                                                                            Fillipi Domingos Pelz ( <a href='mailto:fillipi.pelz@gmail.com'>fillipi.pelz@gmail.com</a> )                                                   </span>                                              </li> \t         <li><span class=\"valor\">Giordana Maria da Costa Valle</span></li> \t         <li>                                                   <span class=\"valor\">                                                           Luiz Fernando Noschang ( <a href='mailto:noschang@univali.br'>noschang@univali.br</a> )                                                   </span>                                              </li><li><span class=\"valor\"> Carlos Alexandre Krueger </spam></li><li><span class=\"valor\"> Andre Luiz Maciel Santana</spam></li> \t</ul>                       </p>            </body> </html>");
+        rotuloDescricao.setText("<html>                 <head>               <style>                 p                     {                           margin-bottom: 8px;                 } \t\t\t                     .atributo                                 {                                             color: black;\t                         font-weight : bold;                   } \t\t\t                       .valor                                 {                                               color: green;                              font-weight: bold;                       }              a \t{                  color: blue;              }                          </style>         </head>         <body>           <p>                 <span class=\"atributo\">Nome do aplicativo: </span>              <span class=\"valor\">Portugol Studio</span>            </p>                               <p>                                <span class=\"atributo\">Versão: </span>                  <span class=\"valor\">2.0</span>                 </p>                               <p>                              <span class=\"atributo\">Linguagem de Programação: </span>              <span class=\"valor\">Java <sup style=\"font-size: smaller;\">TM</sup></span>          </p>                          <p>                                           <span class=\"atributo\">Home page: </span>                      <span class=\"valor\">http://univali-l2s.github.com/Portugol</span>           </p>                            <p>                                        <span class=\"atributo\">Orientador: </span>             <span class=\"valor\">                      André Luis Alice Raabe ( <a href='mailto:raabe@univali.br'>raabe@univali.br</a> )             </span>             </p>         <span class=\"atributo\">Programadores: </span>          <ul> \t             <li>                             <span class=\"valor\">                        Fillipi Domingos Pelz ( <a href='mailto:fillipi.pelz@gmail.com'>fillipi.pelz@gmail.com</a> )                      </span>                                                   </li>             <li>                                                              <span class=\"valor\">                             Luiz Fernando Noschang ( <a href='mailto:noschang@univali.br'>noschang@univali.br</a> )                       </span>                                 </li>         </ul>                                             <span class=\"atributo\">Demais colaboradores: </span>                 <ul>              <li>                 <span class=\"valor\"> Andre Luiz Maciel Santana</span>             </li>             <li>                 <span class=\"valor\"> Carlos Alexandre Krueger </span>             </li>             <li>                 <span class=\"valor\">Giordana Maria da Costa Valle</span>             </li>          </ul>                          </body> </html>");
         rotuloDescricao.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         rotuloDescricao.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 8, 8, 8));
         rotuloDescricao.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -117,23 +118,24 @@ public class TelaSobre extends javax.swing.JDialog
         painelConteudoLayout.setHorizontalGroup(
             painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelConteudoLayout.createSequentialGroup()
-                .addComponent(rotuloDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rotuloDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94)
                 .addGroup(painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painelConteudoLayout.setVerticalGroup(
             painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelConteudoLayout.createSequentialGroup()
-                .addGroup(painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rotuloDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(painelConteudoLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(0, 22, Short.MAX_VALUE)))
-                .addGap(62, 62, 62))
+                .addComponent(rotuloDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelConteudoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(32, 32, 32))
         );
 
         painelCentro.add(painelConteudo, java.awt.BorderLayout.CENTER);
@@ -144,13 +146,18 @@ public class TelaSobre extends javax.swing.JDialog
         painelInferior.setPreferredSize(new java.awt.Dimension(463, 60));
         painelInferior.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
 
-        jButton1.setText("Licença");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        botaoLicencas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/license.png"))); // NOI18N
+        botaoLicencas.setMaximumSize(new java.awt.Dimension(48, 48));
+        botaoLicencas.setMinimumSize(new java.awt.Dimension(48, 48));
+        botaoLicencas.setPreferredSize(new java.awt.Dimension(48, 48));
+        botaoLicencas.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                botaoLicencasActionPerformed(evt);
             }
         });
-        painelInferior.add(jButton1);
+        painelInferior.add(botaoLicencas);
 
         botaoSair.setAction(acaoSair);
         botaoSair.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -165,13 +172,13 @@ public class TelaSobre extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botaoLicencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLicencasActionPerformed
         new Licenca(pai, true).setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botaoLicencasActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoLicencas;
     private javax.swing.JButton botaoSair;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

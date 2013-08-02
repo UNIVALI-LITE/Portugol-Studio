@@ -104,6 +104,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarConfiguracoes();
     }
 
+    public void configurarPesquisar(AbstractAction action)
+    {
+        btnPesquisar.setAction(action);
+    }
+    
     private void criarMenuTemas()
     {
         GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
@@ -211,7 +216,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 	
     private void configurarAcaoComentar()
     {
-        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"))
+        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -253,7 +258,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
          
     private void configurarAcaoDescomentar()
     {
-        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"))
+        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "uncomment.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -438,7 +443,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         }
         
-        btnPesquisar.setVisible(false);
+        btnPesquisar.setVisible(true);
     }
     
     private void setTamanhoFonteEditor(float tamanho)

@@ -213,7 +213,7 @@ public final class TelaPrincipal extends JFrame
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
         String nome = "Pesquisar e substituir";
         
-        acaoPesquisarSubstituir = new AbstractAction(nome)
+        acaoPesquisarSubstituir = new AbstractAction(nome,IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -351,7 +351,7 @@ public final class TelaPrincipal extends JFrame
             {
                 if ((excecao instanceof ClassNotFoundException) || (excecao instanceof NoClassDefFoundError))
                 {
-                    String mensagem = "Uma das bibliotecas ou classes necessárias para o funcionamento do PortugolStudio não foi encontrada.\nO PortugolStudio será enecerrado.";
+                    String mensagem = "Uma das bibliotecas ou classes necessárias para o funcionamento do Portugol Studio não foi encontrada.\nO Portugol Studio será enecerrado.";
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO));
                     System.exit(1);
                 }
@@ -650,7 +650,8 @@ public final class TelaPrincipal extends JFrame
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
 

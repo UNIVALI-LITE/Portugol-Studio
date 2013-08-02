@@ -75,7 +75,7 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light-bulb-code.png"))); // NOI18N
-        jLabel1.setText("PortugoStudio");
+        jLabel1.setText("Portugol Studio");
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jLabel1.setMinimumSize(new java.awt.Dimension(100, 16));
@@ -108,7 +108,7 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
         });
         painelBotoes.add(jBAbrir);
 
-        jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/plus.png"))); // NOI18N
+        jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
         jBNovaAba.setBorderPainted(false);
         jBNovaAba.setContentAreaFilled(false);
         jBNovaAba.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -116,7 +116,10 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
         jBNovaAba.setHideActionText(true);
         jBNovaAba.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jBNovaAba.setPreferredSize(new java.awt.Dimension(32, 25));
+        jBNovaAba.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
         jBNovaAba.setRequestFocusEnabled(false);
+        jBNovaAba.setRolloverEnabled(false);
+        jBNovaAba.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
         jBNovaAba.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jBNovaAba.addActionListener(new java.awt.event.ActionListener()
         {
