@@ -43,7 +43,8 @@ public class Logo extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         portugoStudio = new javax.swing.JLabel();
         lampada = new javax.swing.JLabel();
@@ -60,11 +61,11 @@ public class Logo extends javax.swing.JPanel
 
         lampada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/light.png"))); // NOI18N
         add(lampada);
-        lampada.setBounds(240, 10, 70, 81);
+        lampada.setBounds(200, 10, 70, 81);
 
         versao.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("1.12");
+        versao.setText("2.0 RC 1");
         add(versao);
         versao.setBounds(10, 10, 60, 40);
     }// </editor-fold>//GEN-END:initComponents
