@@ -1,41 +1,32 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
 import br.univali.ps.ui.acoes.AcaoSalvarComo;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.swing.filtro.FiltroArquivoPortugol;
+import br.univali.ps.ui.swing.filtros.FiltroArquivo;
+import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.telas.TelaSobre;
-import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
-import javax.swing.text.BadLocationException;
-import org.fife.rsta.ui.GoToDialog;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
 import org.fife.rsta.ui.search.SearchDialogSearchContext;
@@ -43,55 +34,70 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 
-public final class TelaPrincipal extends JFrame implements PainelTabuladoListener, Thread.UncaughtExceptionHandler
+public final class TelaPrincipal extends JFrame
 {
-    private JFileChooser dialogoEscolhaArquivo = new JFileChooser();
-    private AcaoNovoArquivo acaoNovoArquivo = null;
-    private AcaoAbrirArquivo abrirArquivo = null;
-    private AcaoSalvarComo acaoSalvarComo = null;
-    private Action acaoSelecionarAbaDireita = null;
-    private Action acaoSelecionarAbaEsquerda = null;
-    private FindDialog findDialog;
-    private ReplaceDialog replaceDialog;
-    private FindReplaceActionListener findReplaceActionListener = new FindReplaceActionListener();
+    private FiltroArquivo filtroExercicio;
+    private FiltroArquivo filtroPrograma;
+    private FiltroArquivo filtroTodosSuportados;
+    private JFileChooser dialogoSelecaoArquivo;
     
-    private AbaDocumentacaoBiblioteca abaDocumentacao;
-    private final Action acaoPesquisarSubstituir;
-
-    private boolean abaPrincipal = false;
+    private AcaoNovoArquivo acaoNovoArquivo;
+    private AcaoAbrirArquivo acaoAbrirArquivo;
+    private AcaoSalvarComo acaoSalvarComo;
+    private Action acaoSelecionarAbaDireita;
+    private Action acaoSelecionarAbaEsquerda;
+    private Action acaoPesquisarSubstituir;
+    private Action acaoFecharAbaAtual;
+    private Action acaoFecharTodasAbas;
+    private Action acaoExibirAjuda;
+    private Action acaoExibirTelaSobre;
+    private Action acaoExibirDocumentacaoBiblioteca;
     
-    private void acoesprontas()
-    {
-        acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
-        acaoNovoArquivo.configurar(painelTabulado);
-
-        abrirArquivo = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
-        abrirArquivo.configurar(painelTabulado, this, dialogoEscolhaArquivo);
-
-        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
-        acaoSalvarComo.setEnabled(false);
-
-        mniNovo.setAction(acaoNovoArquivo);
-        mniAbrir.setAction(abrirArquivo);
-        mniSalvarComo.setAction(acaoSalvarComo);
-    }
-
-    public void initSearchDialogs()
-    {
-
-        findDialog = new FindDialog(this, findReplaceActionListener);
-        replaceDialog = new ReplaceDialog(this, findReplaceActionListener);
-
-        // This ties the properties of the two dialogs together (match
-        // case, regex, etc.).
-        replaceDialog.setSearchContext(findDialog.getSearchContext());
-
-    }
-
+    private FindDialog dialogoPesquisar;
+    private ReplaceDialog dialogoSubstituir;
+    private FindReplaceActionListener observadorAcaoPesquisaSubstituir;
+        
+    private AbaAjuda abaAjuda;
+    private AbaCodigoFonte abaCodigoFonte;    
+    private AbaDocumentacaoBiblioteca abaDocumentacao;    
+    
+    private boolean telaPrincipal = false;
+    
     public TelaPrincipal()
     {
-        Thread.setDefaultUncaughtExceptionHandler(TelaPrincipal.this);
+        initComponents();        
+        configurarJanela();
+        configurarSeletorArquivo();        
+        configurarDialogosPesquisarSubstituir();        
+        configurarAcoes();
+        instalarObservadores();
         
+        
+        //criarMenuExemplos();        
+    }    
+    
+     private void configurarJanela()
+    {
+        configurarIconeAplicacao();
+        setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
+     
+    private void configurarSeletorArquivo()
+    {
+        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
+        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");        
+        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+        
+        dialogoSelecaoArquivo = new JFileChooser();
+        
+        dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
+        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
+        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+    }
+    
+    private void configurarIconeAplicacao()
+    {
         try
         {
             this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
@@ -99,456 +105,310 @@ public final class TelaPrincipal extends JFrame implements PainelTabuladoListene
         catch (IOException ioe)
         {
         }
-        initComponents();
-        mniFechar.setEnabled(false);
-        mniFecharTodos.setEnabled(false);
-        mnuEdit.setVisible(false);
-        mnuEdit.setEnabled(false);
-        painelTabulado.adicionaPainelTabuladoListener(TelaPrincipal.this);
-        this.setLocationRelativeTo(null);
-        configurarSeletorArquivo();
-        this.addWindowListener(new TelaPrincipalListener());
-        dialogoEscolhaArquivo.setCurrentDirectory(new File("./exemplos"));
-
-        acoesprontas();
-
-        this.painelTabulado.init(abrirArquivo, acaoNovoArquivo);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        if (!PortugolStudio.getInstancia().isDepurando())
-        {
-            //TODO ACHAR UM LUGAR PARA ESSE BOTÃO
-            //        btnAlgoritmoTeste.setVisible(false);            
-        }
-
-        acaoSelecionarAbaEsquerda = new AcaoSelecionarAbaEsquerda();
-        getRootPane().getActionMap().put("SelecionarEsquerda", acaoSelecionarAbaEsquerda);
-        getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift alt LEFT"), "SelecionarEsquerda");
-
-        acaoSelecionarAbaDireita = new AcaoSelecionarAbaDireita();
-        getRootPane().getActionMap().put("SelecionarDireita", acaoSelecionarAbaDireita);
-        getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("shift alt RIGHT"), "SelecionarDireita");
-
-        initSearchDialogs();
-        
-        acaoPesquisarSubstituir = new ShowReplaceDialogAction();        
-        mniReplace.setAction(acaoPesquisarSubstituir);
-        
-        mniGoToLine.setAction(new GoToLineAction());
-
-        mnuSearch.setVisible(false);
-        mnuSearch.setEnabled(false);
-        mniFind.setEnabled(false);
-        mniReplace.setEnabled(false);
-        mniGoToLine.setEnabled(false);
-        
-        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke) acaoPesquisarSubstituir.getValue(AbstractAction.ACCELERATOR_KEY), "pesquisar");
-        painelTabulado.getActionMap().put("pesquisar", acaoPesquisarSubstituir);
-                
-        
-        criarMenuExemplos();
     }
     
-    private void exibirAbaDocumentacao()
+    public void configurarDialogosPesquisarSubstituir()
     {
-        if (abaDocumentacao == null)
-        {
-            abaDocumentacao = new AbaDocumentacaoBiblioteca(painelTabulado);
-        }
-        else if (!painelTabulado.temAbaAberta(AbaDocumentacaoBiblioteca.class))
-        {
-            abaDocumentacao.adicionar(painelTabulado);
-        }
+        observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
         
-        abaDocumentacao.selecionar();
+        dialogoPesquisar = new FindDialog(this, observadorAcaoPesquisaSubstituir);
+        dialogoSubstituir = new ReplaceDialog(this, observadorAcaoPesquisaSubstituir);
+        dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
     }
-      
-    private void criarMenuExemplos()
+    
+    private void configurarAcoes()
     {
-        mnuExemplos.setVisible(false);
+        configurarAcaoNovoArquivo();
+        configurarAcaoAbrirArquivo();
+        configurarAcaoSalvarComo();
         
-        try
+        configurarAcaoSelecionarAbaEsquerda();
+        configurarAcaoSelecionarAbaDireita();
+        configurarAcaoPesquisarSubstituir();
+        
+        configurarAcaoFecharAbaAtual();
+        configurarAcaoFecharTodasAbas();
+        
+        configurarAcaoExibirAjuda();
+        configurarAcaoExibirDocumentacaoBiblioteca();
+        configurarAcaoExibirTelaSobre();
+        
+        painelTabulado.init(acaoAbrirArquivo, acaoNovoArquivo);
+    }
+    
+    private void configurarAcaoNovoArquivo()
+    {
+        acaoNovoArquivo = (AcaoNovoArquivo) FabricaAcao.getInstancia().criarAcao(AcaoNovoArquivo.class);
+        acaoNovoArquivo.configurar(painelTabulado);
+        
+        String nome = (String) acaoNovoArquivo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoNovoArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getRootPane().getActionMap().put(nome, acaoNovoArquivo);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void configurarAcaoAbrirArquivo()
+    {
+        acaoAbrirArquivo = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
+        acaoAbrirArquivo.configurar(painelTabulado, this, dialogoSelecaoArquivo, filtroTodosSuportados, filtroExercicio, filtroPrograma, filtroTodosSuportados);
+        
+        String nome = (String) acaoAbrirArquivo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoAbrirArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getRootPane().getActionMap().put(nome, acaoAbrirArquivo);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+
+    private void configurarAcaoSalvarComo()
+    {
+        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
+        acaoSalvarComo.setEnabled(false);
+        
+        String nome = (String) acaoSalvarComo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoSalvarComo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getRootPane().getActionMap().put(nome, acaoSalvarComo);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+
+    private void configurarAcaoSelecionarAbaEsquerda()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK);
+        String nome = "Selecionar aba à esquerda";
+                
+        acaoSelecionarAbaEsquerda = new AbstractAction(nome)
         {
-            Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-            File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
-            
-            if (diretorioExemplos.exists())
+            @Override
+            public void actionPerformed(ActionEvent e)
             {
-                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
-                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
-                ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
-                
-                File[] subdiretorios = diretorioExemplos.listFiles();
-                Arrays.sort(subdiretorios, comparadorExemplo);
-                
-                for (File subdiretorio : subdiretorios)
+                painelTabulado.selecionarAbaAnterior();
+            }
+        };
+        
+        getRootPane().getActionMap().put(nome, acaoSelecionarAbaEsquerda);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void configurarAcaoSelecionarAbaDireita()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK);
+        String nome = "Selecionar aba á direita";
+        
+        acaoSelecionarAbaDireita = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                painelTabulado.selecionarProximaAba();
+            }
+        };
+        
+        getRootPane().getActionMap().put(nome, acaoSelecionarAbaDireita);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void configurarAcaoPesquisarSubstituir()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
+        String nome = "Pesquisar e substituir";
+        
+        acaoPesquisarSubstituir = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (!telaPrincipal)
                 {
-                    adicionarSubniveis(subdiretorio, mnuExemplos, iconeDiretorio, iconeArquivo, comparadorExemplo);
+                    if (dialogoPesquisar.isVisible())
+                    {
+                        dialogoPesquisar.setVisible(false);
+                    }
+                    
+                    dialogoSubstituir.setVisible(true);
                 }
-                
-                mnuExemplos.setVisible(true);
             }
-        }
-        catch (Exception excecao)
-        {
-            excecao.printStackTrace(System.out);
-        }
+        };
+        
+        painelTabulado.getActionMap().put(nome, acaoPesquisarSubstituir);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
     
-    private void adicionarSubniveis(File caminho, JMenu menu, Icon iconeDiretorio, Icon iconeArquivo, ComparadorExemplo comparadorExemplo)
+    private void configurarAcaoFecharAbaAtual()
     {
-        if (caminho.isDirectory())
+        KeyStroke atalho = KeyStroke.getKeyStroke("control Q");
+        String nome = "Fechar aba atual";
+        
+        acaoFecharAbaAtual = new AbstractAction(nome)
         {
-            JMenu submenu = new JMenu(caminho.getName());
-            submenu.setIcon(iconeDiretorio);
-            
-            menu.add(submenu);
-            
-            File[] arquivos = caminho.listFiles();
-            Arrays.sort(arquivos, comparadorExemplo);
-            
-            for (File arquivo : arquivos)
+            @Override
+            public void actionPerformed(ActionEvent e)
             {
-                adicionarSubniveis(arquivo, submenu, iconeDiretorio, iconeArquivo, comparadorExemplo);
-            }
-        }
-        else
-        {
-            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
+                Aba aba = painelTabulado.getAbaSelecionada();
+                
+                if (aba != null && aba.getClass() != AbaInicial.class)
                 {
-                    try
+                    aba.fechar();
+                }
+            }
+        };
+        
+        painelTabulado.getActionMap().put(nome, acaoFecharAbaAtual);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void  configurarAcaoFecharTodasAbas()
+    {
+       KeyStroke atalho = KeyStroke.getKeyStroke("shift control Q");
+       String nome = "Fechar todas as abas";
+        
+        acaoFecharTodasAbas = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                for (Class<? extends Aba> classeAba : Aba.classesFilhas())
+                {
+                    if (classeAba != AbaInicial.class)
                     {
-                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
-                        String codigoFonte = FileHandle.open(exemplo);
-                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, true);
-                    }
-                    catch (Exception excecao)
-                    {
-                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                        painelTabulado.fecharTodasAbas(classeAba);
                     }
                 }
-            });
-            
-            item.setName(caminho.getAbsolutePath());
-            menu.add(item);
-        }
+            }
+        };
+        
+        painelTabulado.getActionMap().put(nome, acaoFecharTodasAbas);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
     
-    private final class ComparadorExemplo implements Comparator<File>
+    private void  configurarAcaoExibirDocumentacaoBiblioteca()
     {
-        private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
-                
-        @Override
-        public int compare(File exemplo1, File exemplo2)
-        {
-            if (exemplo1.isDirectory() && exemplo2.isFile())
-            {
-                return 1;
-            }
-            else if (exemplo1.isFile() && exemplo2.isDirectory())
-            {
-                return -1;
-            }
-            else if (exemplo1.isDirectory() && exemplo2.isDirectory())
-            {
-                return exemplo1.getName().compareTo(exemplo2.getName());
-            }
-            else if (exemplo1.isFile() && exemplo2.isFile())
-            {            
-                String nomeExemplo1 = exemplo1.getName();
-                String nomeExemplo2 = exemplo2.getName();
-
-                Integer numero1 = extrairNumero(nomeExemplo1);
-                Integer numero2 = extrairNumero(nomeExemplo2);
-                
-                return numero1.compareTo(numero2);
-            }
-            
-            return 0;
-        }
+       KeyStroke atalho = KeyStroke.getKeyStroke("shift F1");
+       String nome = "Documentação das bibliotecas";
         
-        private Integer extrairNumero(String nome)
+        acaoExibirDocumentacaoBiblioteca = new AbstractAction(nome)
         {
-            avaliadorNumero.reset(nome);
-            
-            if (avaliadorNumero.find())
+            @Override
+            public void actionPerformed(ActionEvent e)
             {
-                return Integer.parseInt(avaliadorNumero.group());
+                exibirAbaDocumentacao();
             }
-            
-            return null;
-        }
+        };
+        
+        painelTabulado.getActionMap().put(nome, acaoExibirDocumentacaoBiblioteca);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    } 
+
+    private void  configurarAcaoExibirAjuda()
+    {
+       KeyStroke atalho = KeyStroke.getKeyStroke("F1");
+       String nome = "Exibir ajuda";
+        
+        acaoExibirAjuda = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                exibirAbaAjuda();
+            }
+        };
+        
+        painelTabulado.getActionMap().put(nome, acaoExibirAjuda);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
     
-    private void configurarSeletorArquivo()
+    private void  configurarAcaoExibirTelaSobre()
     {
-        dialogoEscolhaArquivo.setMultiSelectionEnabled(true);
-        dialogoEscolhaArquivo.addChoosableFileFilter(new FiltroArquivoPortugol());
-        dialogoEscolhaArquivo.setAcceptAllFileFilterUsed(false);
-    }
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
-
-        painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
-        menuPrincipal = new javax.swing.JMenuBar();
-        mnuFile = new javax.swing.JMenu();
-        mniNovo = new javax.swing.JMenuItem();
-        mniAbrir = new javax.swing.JMenuItem();
-        mniSalvar = new javax.swing.JMenuItem();
-        mniSalvarComo = new javax.swing.JMenuItem();
-        mnuFileSeparator1 = new javax.swing.JPopupMenu.Separator();
-        mniFechar = new javax.swing.JMenuItem();
-        mniFecharTodos = new javax.swing.JMenuItem();
-        mnuFileSeparator2 = new javax.swing.JSeparator();
-        mniExit = new javax.swing.JMenuItem();
-        mnuExemplos = new javax.swing.JMenu();
-        mnuEdit = new javax.swing.JMenu();
-        mniDesfazer = new javax.swing.JMenuItem();
-        mniRefazer = new javax.swing.JMenuItem();
-        mnuEditSeparator1 = new javax.swing.JSeparator();
-        mniRecortar = new javax.swing.JMenuItem();
-        mniCopiar = new javax.swing.JMenuItem();
-        mniColar = new javax.swing.JMenuItem();
-        mnuSearch = new javax.swing.JMenu();
-        mniFind = new javax.swing.JMenuItem();
-        mniReplace = new javax.swing.JMenuItem();
-        mniGoToLine = new javax.swing.JMenuItem();
-        mnuHelp = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        mniAbout = new javax.swing.JMenuItem();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Portugol Studio");
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new java.awt.Dimension(700, 520));
-
-        painelTabulado.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 8, 8, 8));
-        getContentPane().add(painelTabulado, java.awt.BorderLayout.CENTER);
-
-        menuPrincipal.setPreferredSize(new java.awt.Dimension(288, 25));
-
-        mnuFile.setText("Arquivo");
-
-        mniNovo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        mnuFile.add(mniNovo);
-
-        mniAbrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        mnuFile.add(mniAbrir);
-
-        mniSalvar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        mniSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/disk.png"))); // NOI18N
-        mniSalvar.setText("Salvar");
-        mniSalvar.setEnabled(false);
-        mnuFile.add(mniSalvar);
-
-        mniSalvarComo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mnuFile.add(mniSalvarComo);
-        mnuFile.add(mnuFileSeparator1);
-
-        mniFechar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                mniFecharActionPerformed(evt);
-            }
-        });
-        mnuFile.add(mniFechar);
-
-        mniFecharTodos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        mniFecharTodos.setText("Fechar todas as abas");
-        mniFecharTodos.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                mniFecharTodosActionPerformed(evt);
-            }
-        });
-        mnuFile.add(mniFecharTodos);
-        mnuFile.add(mnuFileSeparator2);
-
-        mniExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        mniExit.setText("Sair");
-        mniExit.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                mniExitActionPerformed(evt);
-            }
-        });
-        mnuFile.add(mniExit);
-
-        menuPrincipal.add(mnuFile);
-
-        mnuExemplos.setText("Exemplos");
-        menuPrincipal.add(mnuExemplos);
-
-        mnuEdit.setText("Editar");
-
-        mniDesfazer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        mniDesfazer.setText("Desfazer");
-        mnuEdit.add(mniDesfazer);
-
-        mniRefazer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        mniRefazer.setText("Refazer");
-        mnuEdit.add(mniRefazer);
-        mnuEdit.add(mnuEditSeparator1);
-
-        mniRecortar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        mniRecortar.setText("Recortar");
-        mnuEdit.add(mniRecortar);
-
-        mniCopiar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        mniCopiar.setText("Copiar");
-        mnuEdit.add(mniCopiar);
-
-        mniColar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        mniColar.setText("Colar");
-        mnuEdit.add(mniColar);
-
-        menuPrincipal.add(mnuEdit);
-
-        mnuSearch.setText("Pesquisar");
-
-        mniFind.setText("jMenuItem2");
-        mnuSearch.add(mniFind);
-
-        mniReplace.setText("jMenuItem2");
-        mnuSearch.add(mniReplace);
-
-        mniGoToLine.setText("jMenuItem2");
-        mnuSearch.add(mniGoToLine);
-
-        menuPrincipal.add(mnuSearch);
-
-        mnuHelp.setText("Ajuda");
-
-        jMenuItem2.setText("Bibliotecas");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        mnuHelp.add(jMenuItem2);
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        jMenuItem1.setText("Tópicos de Ajuda");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        mnuHelp.add(jMenuItem1);
-
-        mniAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
-        mniAbout.setText("Sobre");
-        mniAbout.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                mniAboutActionPerformed(evt);
-            }
-        });
-        mnuHelp.add(mniAbout);
-
-        menuPrincipal.add(mnuHelp);
-
-        setJMenuBar(menuPrincipal);
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    AbaAjuda abaAjuda = new AbaAjuda(painelTabulado);
-}//GEN-LAST:event_jMenuItem1ActionPerformed
-
-private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniExitActionPerformed
-    fecharAplicativo();
-}//GEN-LAST:event_mniExitActionPerformed
-
-private void mniFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharActionPerformed
-    Aba aba = painelTabulado.getAbaSelecionada();
-    if (aba != null && !(aba.getClass() == AbaInicial.class))
-    {
-        aba.fechar();
-    }
-}//GEN-LAST:event_mniFecharActionPerformed
-
-private void mniFecharTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharTodosActionPerformed
-    for (Class<? extends Aba> classeAba : Aba.classesFilhas())
-    {
-        if (classeAba != AbaInicial.class)
-        {
-            painelTabulado.fecharTodasAbas(classeAba);
-        }
-    }
-}//GEN-LAST:event_mniFecharTodosActionPerformed
-    private TelaSobre telaSobre = new TelaSobre(this);
-private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAboutActionPerformed
-    telaSobre.setModal(true);
-    telaSobre.setVisible(true);
-}//GEN-LAST:event_mniAboutActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+       KeyStroke atalho = KeyStroke.getKeyStroke("F12");
+       String nome = "Exibir tela sobre";
         
-        exibirAbaDocumentacao();
-                
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-    //Converter em action.    // <editor-fold defaultstate="collapsed" desc="IDE Declaration Code">
-    /**
-     * @param args the command line arguments
-     */
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuBar menuPrincipal;
-    private javax.swing.JMenuItem mniAbout;
-    private javax.swing.JMenuItem mniAbrir;
-    private javax.swing.JMenuItem mniColar;
-    private javax.swing.JMenuItem mniCopiar;
-    private javax.swing.JMenuItem mniDesfazer;
-    private javax.swing.JMenuItem mniExit;
-    private javax.swing.JMenuItem mniFechar;
-    private javax.swing.JMenuItem mniFecharTodos;
-    private javax.swing.JMenuItem mniFind;
-    private javax.swing.JMenuItem mniGoToLine;
-    private javax.swing.JMenuItem mniNovo;
-    private javax.swing.JMenuItem mniRecortar;
-    private javax.swing.JMenuItem mniRefazer;
-    private javax.swing.JMenuItem mniReplace;
-    private javax.swing.JMenuItem mniSalvar;
-    private javax.swing.JMenuItem mniSalvarComo;
-    private javax.swing.JMenu mnuEdit;
-    private javax.swing.JSeparator mnuEditSeparator1;
-    private javax.swing.JMenu mnuExemplos;
-    private javax.swing.JMenu mnuFile;
-    private javax.swing.JPopupMenu.Separator mnuFileSeparator1;
-    private javax.swing.JSeparator mnuFileSeparator2;
-    private javax.swing.JMenu mnuHelp;
-    private javax.swing.JMenu mnuSearch;
-    private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
-    // End of variables declaration//GEN-END:variables
-
+        acaoExibirTelaSobre = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                PortugolStudio.getInstancia().getTelaSobre().setVisible(true);
+            }
+        };
+        
+        painelTabulado.getActionMap().put(nome, acaoExibirTelaSobre);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }    
+    
+    private void instalarObservadores()
+    {
+        instalarObservadorExcecoesNaoTratadas();
+        instalarObservadorPainelTabulado();
+        instalarObservadorJanela();
+    }
+    
+    private void instalarObservadorExcecoesNaoTratadas()
+    {
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+        {
+            @Override
+            public void uncaughtException(Thread thread, Throwable excecao)
+            {
+                if ((excecao instanceof ClassNotFoundException) || (excecao instanceof NoClassDefFoundError))
+                {
+                    String mensagem = "Uma das bibliotecas ou classes necessárias para o funcionamento do PortugolStudio não foi encontrada.\nO PortugolStudio será enecerrado.";
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO));
+                    System.exit(1);
+                }
+                else if (excecao instanceof IllegalArgumentException)
+                {
+                    excecao.printStackTrace(System.err);
+                }
+                else
+                {
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+                    excecao.printStackTrace(System.err);
+                }
+            }
+        });
+    }
+    
+    private void instalarObservadorPainelTabulado()
+    {
+        painelTabulado.adicionaPainelTabuladoListener(new PainelTabuladoListener()
+        {
+            @Override
+            public void abaSelecionada(Aba aba)
+            {
+                if (aba.getClass() == AbaCodigoFonte.class)
+                {
+                    abaCodigoFonte = (AbaCodigoFonte) aba;
+            
+                    acaoSalvarComo.configurar(abaCodigoFonte.getAcaoSalvarArquivo(), TelaPrincipal.this, dialogoSelecaoArquivo, filtroPrograma, filtroPrograma);
+                    acaoSalvarComo.setEnabled(true);
+            
+                    telaPrincipal = false;
+                }
+                else
+                {
+                    abaCodigoFonte = null;
+                    acaoSalvarComo.setEnabled(false);
+                    telaPrincipal = true;
+                }               
+            }
+        });
+    }
+    
+    private void instalarObservadorJanela()
+    {
+        addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                fecharAplicativo();
+            }            
+        });
+    }
+    
     public void dialogoSalvar()
     {
         acaoSalvarComo.actionPerformed(null);
-    }
-
-    public void configurarBotoesEditar()
-    {
     }
 
     private void fecharAplicativo()
@@ -568,166 +428,7 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             
             System.exit(0);
         }
-    }
-
-    @Override
-    public void abaSelecionada(Aba aba)
-    {
-        if (aba.getClass() == AbaCodigoFonte.class)
-        {
-            this.abaPrincipal = false;
-            
-            AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
-            mniSalvar.setAction(abaCodigoFonte.getAcaoSalvarArquivo());
-            acaoSalvarComo.configurar(abaCodigoFonte.getAcaoSalvarArquivo(), this, dialogoEscolhaArquivo);
-            mnuEdit.setVisible(false);
-            //mnuSearch.setVisible(true);
-            mnuEdit.setEnabled(true);
-
-            Editor editor = abaCodigoFonte.getEditor();
-            
-            mniDesfazer.setAction(editor.getAcaoDesfazer());
-            mniRefazer.setAction(editor.getAcaoRefazer());
-            mniCopiar.setAction(editor.getAcaoCopiar());
-            mniColar.setAction(editor.getAcaoColar());
-            mniRecortar.setAction(editor.getAcaoRecortar());
-            acaoSalvarComo.setEnabled(true);
-
-            mnuSearch.setEnabled(true);
-            mniFind.setEnabled(true);
-            mniReplace.setEnabled(true);
-            mniGoToLine.setEnabled(true);
-        }
-        else
-        {
-            mniSalvar.setEnabled(false);
-            acaoSalvarComo.setEnabled(false);
-            mnuEdit.setVisible(false);
-            mnuEdit.setEnabled(false);
-            mnuSearch.setVisible(false);
-            mnuSearch.setEnabled(false);
-            mniFind.setEnabled(false);
-            mniReplace.setEnabled(false);
-            mniGoToLine.setEnabled(false);
-            this.abaPrincipal = true;
-        }
-
-        if (painelTabulado.temAbaAberta(AbaCodigoFonte.class)
-                || painelTabulado.temAbaAberta(AbaAjuda.class))
-        {
-            mniFechar.setEnabled(true);
-            mniFecharTodos.setEnabled(true);
-        }
-        else
-        {
-            mniFechar.setEnabled(false);
-            mniFecharTodos.setEnabled(false);
-        }
-    }
-
-    private class TelaPrincipalListener extends WindowAdapter
-    {
-        @Override
-        public void windowClosing(WindowEvent we)
-        {
-            fecharAplicativo();
-        }
-    }
-
-    @Override
-    public void uncaughtException(Thread t, Throwable e)
-    {
-        if ((e instanceof ClassNotFoundException) || (e instanceof NoClassDefFoundError))
-        {
-            String mensagem = "Uma das bibliotecas ou classes necessárias para o funcionamento do PortugolStudio não foi encontrada.\nO PortugolStudio será enecerrado.";
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, e, ExcecaoAplicacao.Tipo.ERRO));
-            System.exit(1);
-        }
-        else if (e instanceof IllegalArgumentException)
-        {
-            e.printStackTrace(System.err);
-        }
-        else
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(e, ExcecaoAplicacao.Tipo.ERRO));
-            e.printStackTrace(System.err);
-        }
-    }
-
-    private class AcaoSelecionarAbaEsquerda extends AbstractAction
-    {
-        public AcaoSelecionarAbaEsquerda()
-        {
-            super("Selecionar esquerda");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            painelTabulado.selecionarAbaAnterior();
-        }
-    }
-
-    private class AcaoSelecionarAbaDireita extends AbstractAction
-    {
-        public AcaoSelecionarAbaDireita()
-        {
-            super("Selecionar direita");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            painelTabulado.selecionarProximaAba();
-        }
-    }
-
-    private class GoToLineAction extends AbstractAction
-    {
-        public GoToLineAction()
-        {
-            super("Ir para linha...");
-            int c = getToolkit().getMenuShortcutKeyMask();
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, c));
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-
-            if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class)
-            {
-                if (findDialog.isVisible())
-                {
-                    findDialog.setVisible(false);
-                }
-                if (replaceDialog.isVisible())
-                {
-                    replaceDialog.setVisible(false);
-                }
-
-                AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
-                RSyntaxTextArea textArea = abaCodigoFonte.getEditor().getTextArea();
-
-                GoToDialog dialog = new GoToDialog(TelaPrincipal.this);
-                dialog.setMaxLineNumberAllowed(textArea.getLineCount());
-                dialog.setVisible(true);
-                int line = dialog.getLineNumber();
-                if (line > 0)
-                {
-                    try
-                    {
-                        textArea.setCaretPosition(textArea.getLineStartOffset(line - 1));
-                    }
-                    catch (BadLocationException ble)
-                    { // Never happens
-                        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-                        ble.printStackTrace(System.err);
-                    }
-                }
-            }
-        }
-    }
+    }    
 
     private class FindReplaceActionListener implements ActionListener
     {
@@ -737,9 +438,8 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
             if (painelTabulado.getAbaSelecionada().getClass() == AbaCodigoFonte.class)
             {
-
                 String command = e.getActionCommand();
-                SearchDialogSearchContext context = findDialog.getSearchContext();
+                SearchDialogSearchContext context = dialogoPesquisar.getSearchContext();
                 AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
                 RSyntaxTextArea textArea = abaCodigoFonte.getEditor().getTextArea();
 
@@ -798,27 +498,174 @@ private void mniAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
         }
     }
-
-    private class ShowReplaceDialogAction extends AbstractAction
+    
+    private void exibirAbaAjuda()
     {
-        public ShowReplaceDialogAction()
+        if (abaAjuda == null)
         {
-            super("Substituir...");
-            int c = getToolkit().getMenuShortcutKeyMask();
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, c));
+            abaAjuda = new AbaAjuda(painelTabulado);
         }
-
-        @Override
-        public void actionPerformed(ActionEvent e)
+        else if (!painelTabulado.temAbaAberta(AbaAjuda.class))
         {
-            if (!abaPrincipal)
+            abaAjuda.adicionar(painelTabulado);
+        }
+        
+        abaAjuda.selecionar();
+    }
+    
+    private void exibirAbaDocumentacao()
+    {
+        if (abaDocumentacao == null)
+        {
+            abaDocumentacao = new AbaDocumentacaoBiblioteca(painelTabulado);
+        }
+        else if (!painelTabulado.temAbaAberta(AbaDocumentacaoBiblioteca.class))
+        {
+            abaDocumentacao.adicionar(painelTabulado);
+        }
+        
+        abaDocumentacao.selecionar();
+    }
+   
+    /*
+    private void criarMenuExemplos()
+    {
+        try
+        {
+            Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+            File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
+            
+            if (diretorioExemplos.exists())
             {
-                if (findDialog.isVisible())
+                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
+                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
+                ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
+                
+                File[] subdiretorios = diretorioExemplos.listFiles();
+                Arrays.sort(subdiretorios, comparadorExemplo);
+                
+                for (File subdiretorio : subdiretorios)
                 {
-                    findDialog.setVisible(false);
+                    adicionarSubniveis(subdiretorio, mnuExemplos, iconeDiretorio, iconeArquivo, comparadorExemplo);
                 }
-                replaceDialog.setVisible(true);
             }
         }
+        catch (Exception excecao)
+        {
+            excecao.printStackTrace(System.out);
+        }
     }
+    
+    private void adicionarSubniveis(File caminho, JMenu menu, Icon iconeDiretorio, Icon iconeArquivo, ComparadorExemplo comparadorExemplo)
+    {
+        if (caminho.isDirectory())
+        {
+            JMenu submenu = new JMenu(caminho.getName());
+            submenu.setIcon(iconeDiretorio);
+            
+            menu.add(submenu);
+            
+            File[] arquivos = caminho.listFiles();
+            Arrays.sort(arquivos, comparadorExemplo);
+            
+            for (File arquivo : arquivos)
+            {
+                adicionarSubniveis(arquivo, submenu, iconeDiretorio, iconeArquivo, comparadorExemplo);
+            }
+        }
+        else
+        {
+            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    try
+                    {
+                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
+                        String codigoFonte = FileHandle.open(exemplo);
+                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, true);
+                    }
+                    catch (Exception excecao)
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                    }
+                }
+            });
+            
+            item.setName(caminho.getAbsolutePath());
+            menu.add(item);
+        }
+    }
+
+    
+    
+    private final class ComparadorExemplo implements Comparator<File>
+    {
+        private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
+                
+        @Override
+        public int compare(File exemplo1, File exemplo2)
+        {
+            if (exemplo1.isDirectory() && exemplo2.isFile())
+            {
+                return 1;
+            }
+            else if (exemplo1.isFile() && exemplo2.isDirectory())
+            {
+                return -1;
+            }
+            else if (exemplo1.isDirectory() && exemplo2.isDirectory())
+            {
+                return exemplo1.getName().compareTo(exemplo2.getName());
+            }
+            else if (exemplo1.isFile() && exemplo2.isFile())
+            {            
+                String nomeExemplo1 = exemplo1.getName();
+                String nomeExemplo2 = exemplo2.getName();
+
+                Integer numero1 = extrairNumero(nomeExemplo1);
+                Integer numero2 = extrairNumero(nomeExemplo2);
+                
+                return numero1.compareTo(numero2);
+            }
+            
+            return 0;
+        }
+        
+        private Integer extrairNumero(String nome)
+        {
+            avaliadorNumero.reset(nome);
+            
+            if (avaliadorNumero.find())
+            {
+                return Integer.parseInt(avaliadorNumero.group());
+            }
+            
+            return null;
+        }
+    }
+    */
+    
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Portugol Studio");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setMinimumSize(new java.awt.Dimension(700, 520));
+
+        painelTabulado.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 8, 8, 8));
+        getContentPane().add(painelTabulado, java.awt.BorderLayout.CENTER);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
+    // End of variables declaration//GEN-END:variables
 }

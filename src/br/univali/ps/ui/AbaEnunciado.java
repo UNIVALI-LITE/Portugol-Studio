@@ -15,7 +15,7 @@ public class AbaEnunciado extends Aba {
         initComponents();
     }
     
-    public void setEninciado(String enunciado){
+    public void setEnunciado(String enunciado){
         jEnunciado.setText(enunciado);
     }
     

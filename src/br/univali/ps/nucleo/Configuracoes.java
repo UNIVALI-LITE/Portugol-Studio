@@ -19,8 +19,8 @@ public final class Configuracoes
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
     public static final String DIRETORIO_EXEMPLOS = "diretorioExemplos";
-    public static final String TEMA_EDITOR = "tenaEditor";
-        
+    public static final String TEMA_EDITOR = "temaEditor";
+    
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();
 
@@ -28,7 +28,7 @@ public final class Configuracoes
     private String diretorioExemplos = "./Exemplos";
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
-    private String tema = "Padrão";
+    private String temaEditor = "Padrão";
     
     Configuracoes()
     {
@@ -45,7 +45,7 @@ public final class Configuracoes
             diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
-            tema = configuracoes.getProperty(TEMA_EDITOR, "default-alt.xml");
+            temaEditor = configuracoes.getProperty(TEMA_EDITOR, "default-alt.xml");
         }
         catch (IOException excecao)
         {
@@ -72,17 +72,17 @@ public final class Configuracoes
 
     public void setTemaEditor(String theme)
     {
-        String oldTheme = this.tema;
+        String oldTheme = this.temaEditor;
         
         this.configuracoes.setProperty(TEMA_EDITOR, theme);
-        this.tema = theme;
+        this.temaEditor = theme;
         
         suporteMudancaPropriedade.firePropertyChange(TEMA_EDITOR, oldTheme, theme);
     }
     
     public String getTemaEditor()
     {
-        return this.tema;
+        return this.temaEditor;
     }
     
     public void setTamanhoFonteConsole(float tamanhoFonteConsole)
