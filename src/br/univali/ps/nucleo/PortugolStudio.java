@@ -1,6 +1,7 @@
 package br.univali.ps.nucleo;
 
 import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.telas.TelaSobre;
 
 /**
  *
@@ -16,6 +17,7 @@ public final class PortugolStudio
     private TelaPrincipal telaPrincipal = null;
     private Configuracoes configuracoes = null;
     private GerenciadorTemas gerenciadorTemas = null;
+    private TelaSobre telaSobre = null;
 
     private PortugolStudio()
     {
@@ -99,4 +101,18 @@ public final class PortugolStudio
         
         return gerenciadorTemas;
     }
+
+    public TelaSobre getTelaSobre()
+    {
+        if (telaSobre == null)
+        {
+            telaSobre = new TelaSobre(getTelaPrincipal());
+        }
+        
+        telaSobre.setLocationRelativeTo(null);
+        
+        return telaSobre;
+    }
+    
+    
 }

@@ -6,9 +6,9 @@ import javax.swing.Action;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-public class AcaoNovoArquivo extends Acao{
-
-    JTabbedPane painelTabulado;
+public final class AcaoNovoArquivo extends Acao
+{
+    private JTabbedPane painelTabulado;
 
     AcaoNovoArquivo()
     {

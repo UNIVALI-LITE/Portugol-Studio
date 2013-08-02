@@ -21,7 +21,7 @@
     </action>
     <action id="AcaoSalvarArquivo">
         <title>Salvar...</title>
-        <icon>disk.png</icon>
+        <icon>flashdisk.png</icon>
     </action>
     <action id="AcaoSalvarComo">
         <title>Salvar Como...</title>

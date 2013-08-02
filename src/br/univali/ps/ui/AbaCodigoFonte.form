@@ -196,6 +196,9 @@
                     <Container class="javax.swing.JPanel" name="painelAlinhamento1">
                       <Properties>
                         <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[608, 190]"/>
+                        </Property>
                         <Property name="opaque" type="boolean" value="false"/>
                       </Properties>
                       <Constraints>

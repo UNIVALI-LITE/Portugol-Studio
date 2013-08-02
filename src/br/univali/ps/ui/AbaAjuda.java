@@ -21,7 +21,7 @@ public class AbaAjuda extends Aba implements AbaListener
     {
         super(painelTabulado);
         cabecalho.setTitulo("Ajuda");
-        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"));
+        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"));
         adicionarAbaListener(this);
         initComponents();
         this.setLayout(new BorderLayout());

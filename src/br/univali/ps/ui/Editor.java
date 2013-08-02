@@ -23,6 +23,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
@@ -35,7 +36,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -65,11 +68,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private static final char[] caracteresParada = new char[] {' ', '\r', '\t', '\n' };
     private static final int[] teclasAutoComplete = new int[] { KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD };
     
+    private AbaCodigoFonte abaCodigoFonte;
+    
     private Object tag = null;
     private ErrorStrip errorStrip;
     private PortugolParser notificaErrosEditor;
-    private PortugolLanguageSuport portugolLanguageSuport;
-    
+    private PortugolLanguageSuport portugolLanguageSuport;    
     
     private Action acaoAumentarFonte;
     private Action acaoDiminuirFonte;
@@ -82,6 +86,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Action acaoDescomentar;
     private Action acaoListarTemas;
     private Action acaoAplicarTema;
+    private Action acaoExpandir;
+    private Action acaoRestaurar;
+    private Action acaoAlternarModoEditor;
 
     public Editor()
     {
@@ -95,6 +102,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
+    }
+
+    public void configurarPesquisar(AbstractAction action)
+    {
+        btnPesquisar.setAction(action);
     }
     
     private void criarMenuTemas()
@@ -133,6 +145,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Alterna o modo do editor entre normal e expandido", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        //FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Alterna o modo do editor entre normal e expandido (" + acaoAlternarModoEditor.getValue(AbstractAction.ACCELERATOR_KEY).toString() + ")", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
     }
 
     private void configurarTextArea()
@@ -163,7 +177,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoComentar();
         configurarAcaoDescomentar();
         configurarAcaoListarTemas();
-        configurarAcaoAplicarTema();        
+        configurarAcaoAplicarTema();
+        configurarAcaoExpandir();
+        configurarAcaoRestaurar();
+        configurarAcaoAlternarModoEditor();
     }
     
     private void configurarAcaoDesfazer()
@@ -199,7 +216,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 	
     private void configurarAcaoComentar()
     {
-        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"))
+        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -241,7 +258,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
          
     private void configurarAcaoDescomentar()
     {
-        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"))
+        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "uncomment.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -350,6 +367,54 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDiminuirFonte.setAction(acaoDiminuirFonte);
     }
     
+    private void configurarAcaoAlternarModoEditor()
+    {
+        acaoAlternarModoEditor = new AbstractAction("Alternar modo do editor")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                btnMaximizar.getAction().actionPerformed(e);
+            }
+        };
+        
+        String nome = (String) acaoAlternarModoEditor.getValue(AbstractAction.NAME);
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_DOWN_MASK);        
+        
+        acaoAlternarModoEditor.putValue(AbstractAction.ACCELERATOR_KEY, atalho);
+        
+        getActionMap().put(nome, acaoAlternarModoEditor);
+        getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
+    }
+    
+    private void configurarAcaoExpandir()
+    {   
+        acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                abaCodigoFonte.expandirEditor();
+                btnMaximizar.setAction(acaoRestaurar);
+            }
+        };
+        
+        btnMaximizar.setAction(acaoExpandir);
+    }
+    
+    private void configurarAcaoRestaurar()
+    {
+        acaoRestaurar = new AbstractAction("Restaurar editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                abaCodigoFonte.restaurarEditor();
+                btnMaximizar.setAction(acaoExpandir);
+            }
+        };
+    }
+    
     private void instalarObservadores()
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
@@ -365,8 +430,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
         
         aplicarTema(configuracoes.getTemaEditor());
-        setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());       
-    }
+        setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
+    }    
     
     private void configurarBotoes()
     {
@@ -378,7 +443,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         }
         
-        btnPesquisar.setVisible(false);
+        btnPesquisar.setVisible(true);
     }
     
     private void setTamanhoFonteEditor(float tamanho)
@@ -389,7 +454,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             PortugolStudio.getInstancia().getConfiguracoes().setTamanhoFonteEditor(tamanho);
         }
     }
-
+    
+    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
+    {
+        this.abaCodigoFonte = abaCodigoFonte;
+    }
+    
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
@@ -397,13 +467,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             setTamanhoFonteEditor((Float) evt.getNewValue());
         }
-        
-        if (evt.getPropertyName().equals(Configuracoes.TEMA_EDITOR))
+        else  if (evt.getPropertyName().equals(Configuracoes.TEMA_EDITOR))
         {
             aplicarTema((String) evt.getNewValue());
         }
     }
-
+    
     public void adicionarObservadorCursor(CaretListener observador)
     {
         textArea.addCaretListener(observador);
@@ -737,8 +806,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         menuTema = new javax.swing.JPopupMenu();
         painelEditor = new javax.swing.JPanel();
@@ -751,6 +819,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnPesquisar = new javax.swing.JButton();
         btnComentar = new javax.swing.JButton();
         btnDescomentar = new javax.swing.JButton();
+        btnMaximizar = new javax.swing.JButton();
         btnTema = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
@@ -833,6 +902,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnDescomentar);
 
+        btnMaximizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnMaximizar.setFocusable(false);
+        btnMaximizar.setHideActionText(true);
+        btnMaximizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnMaximizar.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnMaximizar.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnMaximizar.setOpaque(false);
+        btnMaximizar.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnMaximizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnMaximizar);
+
         btnTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         btnTema.setFocusable(false);
         btnTema.setHideActionText(true);
@@ -855,6 +935,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private javax.swing.JButton btnComentar;
     private javax.swing.JButton btnDescomentar;
     private javax.swing.JButton btnDiminuirFonte;
+    private javax.swing.JButton btnMaximizar;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnTema;
     private javax.swing.JPopupMenu menuTema;

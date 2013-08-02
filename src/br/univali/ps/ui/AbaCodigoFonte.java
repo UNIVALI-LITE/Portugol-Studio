@@ -55,11 +55,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     
     private boolean podeSalvar = true;
     private boolean depurando = false;
+    private int posicaoDivisorEditorArvore;
+    private int posicaoDivisorEditorConsole;
     
     private TelaOpcoesExecucao telaOpcoesExecucao;
     private JPanel painelTemporario;
     
-    private AcaoSalvarArquivo acaoSalvar;
+    private AcaoSalvarArquivo acaoSalvarArquivo;
     
     private Action acaoExecutar;
     private Action acaoDepurar;
@@ -239,7 +241,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         campoOpcoesExecucao.setSelected(configuracoes.isExibirOpcoesExecucao());
         campoOpcoesExecucao.addChangeListener(AbaCodigoFonte.this);
-
+        
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         adicionarAbaListener(AbaCodigoFonte.this);
         divisorEditorSaida.setDividerLocation(480);
@@ -252,7 +254,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         tree.setBackground(sPOutlineTree.getBackground());
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
-        
+
         sPOutlineTree.setViewportView(tree);
         editor.adicionarObservadorCursor(AbaCodigoFonte.this);
 
@@ -265,9 +267,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelTemporario.setFocusable(false);
         painelTemporario.setBackground(Color.RED);
 
+        editor.setAbaCodigoFonte(this);
+        
         ocultarCorretor();
-        configurarComponentes();        
+        configurarComponentes();
         criarDicasInterface();
+        
+        
+        editor.configurarPesquisar((AbstractAction) painelTabulado.getActionMap().get("Pesquisar e substituir"));
     }
     
     private void configurarComponentes()
@@ -334,7 +341,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         this.questao = questao;
         abaEnunciado = new AbaEnunciado(painelSaida);
-        abaEnunciado.setEninciado(questao.getEnunciado());
+        abaEnunciado.setEnunciado(questao.getEnunciado());
         exibirCorretor();
     }
 
@@ -346,9 +353,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         document.setFile(arquivo);
 
         document.setChanged(false);
-        acaoSalvar.setEnabled(false);
+        acaoSalvarArquivo.setEnabled(false);
 
-        acaoSalvar.configurar((PortugolDocumento) document);
+        acaoSalvarArquivo.configurar((PortugolDocumento) document);
     }
 
     @SuppressWarnings("unchecked")
@@ -478,6 +485,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorSaida.setOneTouchExpandable(true);
 
         painelAlinhamento1.setFocusable(false);
+        painelAlinhamento1.setMinimumSize(new java.awt.Dimension(608, 190));
         painelAlinhamento1.setOpaque(false);
         painelAlinhamento1.setLayout(new java.awt.BorderLayout());
 
@@ -697,11 +705,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     
     private void configurarAcaoSalvarArquivo()
     {
-        acaoSalvar = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
-        acaoSalvar.configurar(editor.getPortugolDocumento());
-        acaoSalvar.setEnabled(editor.getPortugolDocumento().isChanged());
+        acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
+        acaoSalvarArquivo.configurar(editor.getPortugolDocumento());
+        acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
 
-        btnSalvar.setAction(acaoSalvar);
+        String nome = (String) acaoSalvarArquivo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoSalvarArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoSalvarArquivo);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
+        btnSalvar.setAction(acaoSalvarArquivo);
     }
             
     private void configurarAcaoExecutar()
@@ -709,12 +723,25 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoExecutar = new AcaoExecutar();
         acaoExecutar.setEnabled(true);
         
+        String nome = (String) acaoExecutar.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoExecutar.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoExecutar);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
         btnExecutar.setAction(acaoExecutar);
     }
     
     private void configurarAcaoDepurar()
     {
-        acaoDepurar = new AcaoDepurar();        
+        acaoDepurar = new AcaoDepurar();
+        
+        String nome = (String) acaoDepurar.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoDepurar.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoDepurar);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);        
+        
         btnDepurar.setAction(acaoDepurar);
     }
     
@@ -723,6 +750,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoInterromper = new AcaoInterromper();
         acaoInterromper.setEnabled(false);
         
+        String nome = (String) acaoInterromper.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoInterromper.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoInterromper);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);         
+        
         btnInterromper.setAction(acaoInterromper);
     }
 
@@ -730,6 +763,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         acaoProximaInstrucao = new AcaoProximaInstrucao();
         acaoProximaInstrucao.setEnabled(true);
+        
+        String nome = (String) acaoProximaInstrucao.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoProximaInstrucao.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoProximaInstrucao);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);             
     }
     
     @Override
@@ -737,11 +776,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         if (podeSalvar)
         {
-            acaoSalvar.setEnabled(status);
+            acaoSalvarArquivo.setEnabled(status);
         }
         else
         {
-            acaoSalvar.setEnabled(false);
+            acaoSalvarArquivo.setEnabled(false);
         }
 
         if (programa != null && !programa.isExecutando())
@@ -761,6 +800,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
 
+    public AcaoSalvarArquivo getAcaoSalvarArquivo()
+    {
+        return acaoSalvarArquivo;
+    }
+
+    
     @Override
     public boolean fechandoAba(Aba aba)
     {
@@ -776,7 +821,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
             if (resp == JOptionPane.YES_OPTION)
             {
-                acaoSalvar.actionPerformed(null);
+                acaoSalvarArquivo.actionPerformed(null);
             }
             else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION)
             {
@@ -999,7 +1044,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
         configuracoes.setExibirOpcoesExecucao(campoOpcoesExecucao.isSelected());
     }
-
+    
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
@@ -1013,7 +1058,22 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
         }
     }
-
+    
+    public void expandirEditor()
+    {
+        posicaoDivisorEditorArvore = divisorArvoreDepuracaoEditor.getDividerLocation();
+        posicaoDivisorEditorConsole = divisorEditorSaida.getDividerLocation();
+                
+        divisorArvoreDepuracaoEditor.setDividerLocation(0.0);
+        divisorEditorSaida.setDividerLocation(1.0);
+    }
+    
+    public void restaurarEditor()
+    {
+        divisorArvoreDepuracaoEditor.setDividerLocation(posicaoDivisorEditorArvore);
+        divisorEditorSaida.setDividerLocation(posicaoDivisorEditorConsole);
+    }
+    
     @Override
     public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
     {
@@ -1039,11 +1099,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             editor.requestFocus();
         }
-    }
-
-    public AcaoSalvarArquivo getAcaoSalvarArquivo()
-    {
-        return acaoSalvar;
     }
 
     private void carregarAlgoritmoPadrao()
@@ -1076,27 +1131,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
 
-    public Action getAcaoDepurar()
-    {
-        return acaoDepurar;
-    }
-
-    public Action getAcaoExecutar()
-    {
-        return acaoExecutar;
-    }
-
-    public Action getAcaoInterromper()
-    {
-        return acaoInterromper;
-    }
-
     private class AcaoExecutar extends AbstractAction
     {
         public AcaoExecutar()
         {
             super("Executar");
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E")); // F5 funciona
+            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift F6")); // F5 funciona
             putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "resultset_next.png"));
             putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"));
         }
@@ -1113,7 +1153,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         public AcaoDepurar()
         {
             super("Depurar");
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl P"));
+            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift F5"));
             putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "bug.png"));
             putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
         }
@@ -1130,7 +1170,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         public AcaoProximaInstrucao()
         {
             super("Próxima instrução");
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl P"));
+            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift F9"));
             putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "bug_go.png"));
             putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug_go.png"));
         }
@@ -1147,7 +1187,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         public AcaoInterromper()
         {
             super("Interromper");
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl I")); // Tente F6, F8, F10. Nenhum funciona
+            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift F7")); // Tente F6, F8, F10. Nenhum funciona
             putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
             putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "stop.png"));
         }

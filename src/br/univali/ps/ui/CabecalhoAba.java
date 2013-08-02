@@ -134,7 +134,7 @@ public class CabecalhoAba extends JPanel {
     private javax.swing.JMenuItem mniFecharOutras;
     // End of variables declaration//GEN-END:variables
 
-    private void calculaTamanhoCabecalho()
+    protected void calculaTamanhoCabecalho()
     {
         int larguraBotao = (jBFechar.isVisible()) ? jBFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;

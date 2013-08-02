@@ -5,6 +5,7 @@ import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
 import br.univali.ps.ui.acoes.AcaoListener;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
+import java.awt.Dimension;
 import javax.swing.Icon;
 import net.java.balloontip.BalloonTip;
 
@@ -59,12 +60,31 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
     private void initComponents()
     {
 
+        painelTitulo = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        painelBotoes = new javax.swing.JPanel();
         jBAbrir = new javax.swing.JButton();
         jBNovaAba = new javax.swing.JButton();
 
         setFocusable(false);
         setOpaque(false);
-        setLayout(new java.awt.GridLayout(1, 2));
+        setLayout(new java.awt.BorderLayout());
+
+        painelTitulo.setOpaque(false);
+        painelTitulo.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light-bulb-code.png"))); // NOI18N
+        jLabel1.setText("Portugol Studio");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jLabel1.setMinimumSize(new java.awt.Dimension(100, 16));
+        painelTitulo.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        add(painelTitulo, java.awt.BorderLayout.CENTER);
+
+        painelBotoes.setOpaque(false);
+        painelBotoes.setLayout(new java.awt.GridLayout(1, 2));
 
         jBAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
         jBAbrir.setBorderPainted(false);
@@ -77,6 +97,7 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
         jBAbrir.setPreferredSize(new java.awt.Dimension(32, 25));
         jBAbrir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
         jBAbrir.setRequestFocusEnabled(false);
+        jBAbrir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
         jBAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jBAbrir.addActionListener(new java.awt.event.ActionListener()
         {
@@ -85,9 +106,9 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
                 jBAbrirActionPerformed(evt);
             }
         });
-        add(jBAbrir);
+        painelBotoes.add(jBAbrir);
 
-        jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/plus.png"))); // NOI18N
+        jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
         jBNovaAba.setBorderPainted(false);
         jBNovaAba.setContentAreaFilled(false);
         jBNovaAba.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -95,7 +116,10 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
         jBNovaAba.setHideActionText(true);
         jBNovaAba.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jBNovaAba.setPreferredSize(new java.awt.Dimension(32, 25));
+        jBNovaAba.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
         jBNovaAba.setRequestFocusEnabled(false);
+        jBNovaAba.setRolloverEnabled(false);
+        jBNovaAba.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
         jBNovaAba.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jBNovaAba.addActionListener(new java.awt.event.ActionListener()
         {
@@ -104,7 +128,9 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
                 jBNovaAbaActionPerformed(evt);
             }
         });
-        add(jBNovaAba);
+        painelBotoes.add(jBNovaAba);
+
+        add(painelBotoes, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBNovaAbaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovaAbaActionPerformed
@@ -117,6 +143,9 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrir;
     private javax.swing.JButton jBNovaAba;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel painelBotoes;
+    private javax.swing.JPanel painelTitulo;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -138,4 +167,12 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener
         FabricaDicasInterface.criarDicaInterface(jBAbrir, "Abre um programa ou exercício existente no computador", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
         FabricaDicasInterface.criarDicaInterface(jBNovaAba, "Cria uma nova aba contendo um modelo básico de programa", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
     }
+
+    @Override
+    protected void calculaTamanhoCabecalho()
+    {
+        
+    }
+    
+    
 }
