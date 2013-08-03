@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Declaração de Constante</title>
+        <link rel="stylesheet" type="text/css" href="../../../ajuda.css" />
+        <link rel="shortcut icon" href="../../../imagens/pagina.png" />
+    </head>
+    <body>
+        <div>
+            <h1>Declaração de Constante</h1>
+            <p>Constante é um identificador cujo valor associado não pode ser alterado pelo programa durante a sua execução.</p>
+            <p>Para declarar uma constante basta adicionar a palavra reservada <span class="palavra-reservada">const</span> antes da declaração de variável, vetor ou matriz com inicialização.</p>
+        </div>
+        <h2>Exemplo:</h2>
+        <pre class="codigo-portugol">
+programa
+{
+    //Constante global do tipo de dado real 
+    const real aceleracao_gravidade = 9.78
+
+    funcao inicio()
+    {
+        //Vetor constante local do tipo de dado caracter
+        const caracter vogais[5] = {'a','e','i','o','u'}
+
+        //Matriz constante local do tipo de dado inteiro
+        const inteiro teclado_numerico[][] = {{1,2,3},{4,5,6},{7,8,9}}
+    }
+}
+
+        </pre>
+    </body>
+</html>

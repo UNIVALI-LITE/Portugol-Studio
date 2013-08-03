@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>Declaração de Variáveis</title>
+        <link rel="stylesheet" type="text/css" href="../../../ajuda.css" />
+        <link rel="shortcut icon" href="../../../imagens/pagina.png" />
+    </head>
+    <body>
+        <div>
+            <h1>Declaração de Variáveis</h1>
+            <p>Quando nos referimos à variável, do ponto de vista da programação de computadores, estamos tratando de uma “região de memória (do computador) previamente identificada cuja finalidade é armazenar os dados ou informações de um programa por um determinado espaço de tempo”.</p>
+            <p>O computador armazena os dados nessas divisões, sendo que em cada divisão só é possível armazenar um dado e toda vez que o computador armazenar um dado em uma dessas divisões, o dado que antes estava armazenado é eliminado. O conteúdo pode ser alterado, mas somente um dado por vez pode ser armazenado naquela divisão.</p>
+            <p>Uma variável é composta por dois elementos básicos: o tipo que a variável pode armazenar e seu identificador, nome dado à variável para possibilitar sua utilização.</p>
+            <p>O local onde a variável é declarada define seu escopo.</p>
+            <h2>Exemplo:</h2>
+            <pre class="codigo-portugol">
+programa
+{
+    //variável global do tipo inteiro
+    inteiro variavel
+	
+    funcao inicio()
+    {
+        //variável local do tipo inteiro
+        inteiro outra_variavel 
+
+        //variável local do tipo real já inicializada
+        real altura = 1.79
+
+        cadeia frase = "Isso é uma variável do tipo cadeia"
+
+        caracter inicial = 'P'
+
+        logico exemplo = verdadeiro
+
+        //Imprime 1.79, valor obtido na variável altura
+        escreva(altura)
+    }
+}
+            </pre>
+        </div>
+    </body>
+</html>

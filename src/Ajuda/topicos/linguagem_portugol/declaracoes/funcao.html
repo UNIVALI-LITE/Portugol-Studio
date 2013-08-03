@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <title>Declaração de Função</title>
+        <link rel="stylesheet" type="text/css" href="../../../ajuda.css" />
+        <link rel="shortcut icon" href="../../../imagens/pagina.png" />
+    </head>
+    <body>
+        <div>
+            <h1>Declaração de Função</h1>
+            <p>A função consiste em uma porção de código que resolve um problema muito específico, parte de um problema maior.</p>
+            <p>Algumas das vantagens na utilização de funções durante a programação são:</p>
+            <ul>
+                <li>a redução de código duplicado num programa;</li>
+                <li>a possibilidade de reutilizar o mesmo código sem grandes alterações em outros programas;</li>
+                <li>a decomposição de problemas grandes em pequenas partes;</li>
+                <li>melhorar a interpretação visual de um programa;</li>
+                <li>esconder ou regular uma parte de um programa, mantendo o restante código alheio às questões internas resolvidas dentro dessa função;</li>
+            </ul>
+            <p>As componentes de uma funções são:</p>
+            <ul>
+                <li>O seu protótipo, que inclui os parâmetros que são passados à função na altura da invocação;</li>
+                <li>O corpo, que contém o bloco de código que resolve o problema proposto;</li>
+                <li>Um possível valor de retorno, que poderá ser utilizado imediatamente a seguir à invocação da função.</li>
+            </ul>
+            <p>A declaração de função no Portugol é realizada da seguinte forma: Deve-se utilizar a palavra reservada <span class="palavra-reservada">funcao</span>, seguido do tipo de retorno, quando o tipo de retorno é ocultado o Portugol assume que o retorno é do tipo vazio, e então do nome da função seguido de abre parenteses, uma lista de parâmetros pode ser incluída antes do fecha parenteses, para concluir a declaração deve-se criar o corpo da função.</p> 
+            <p>O corpo da função consiste em estruturas dentro do abre e fecha chaves.
+               Quando uma função possuí um tipo de retorno diferente de vazio, é obrigatória a presença do comando retorne no corpo da função.</p> 
+            <p>A declaração dos parâmetros é similar a declaração de variável, vetor e matriz sem inicialização e devem ser separados por vírgula. Por padrão os parâmetros se comportam como passagem por valor, para o parâmetro se comportar como referência deve-se adicionar o simbolo & antes do nome do parâmetro</p>
+            <h2>Exemplo:</h2>
+            <pre class="codigo-portugol">
+programa
+{
+    //Função com retorno do tipo vazio sem parâmetro
+    funcao vazio imprime_linha()
+    {
+        escreva("\n-----------------------------\n")	
+    }
+
+    //Função com retorno do tipo vazio e com um vetor como parâmetro
+    funcao inicio(cadeia argumentos[])
+    {
+        //Imprime o retorno da função media
+        escreva(media(4,9,8))
+
+        imprime_linha()
+
+        inteiro variavel = 123
+
+        zera_valor(variavel) 
+
+        //Imprime 0
+        escreva(variavel) 
+    }
+
+    //Função com retorno do tipo real e três parâmetros do tipo inteiro
+    funcao real media(inteiro m1, inteiro m2, inteiro m3) 
+    {
+        retorne (m1 * 2 + m2 * 3 + m3 * 8) / 13.0	
+    }
+
+    //Função com retorno vazio e parâmetro por referência
+    funcao zera_valor(inteiro &valor)
+    {
+        valor = 0
+    }
+}
+            </pre>
+        </div>
+    </body>
+</html>
