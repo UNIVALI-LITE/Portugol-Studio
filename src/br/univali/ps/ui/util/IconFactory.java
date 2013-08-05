@@ -6,6 +6,8 @@
 package br.univali.ps.ui.util;
 
 
+import java.awt.Image;
+import java.io.File;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,6 +25,26 @@ public class IconFactory {
     public static final String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/grande";
 
     private static Map<String, Icon> icones = new TreeMap<String, Icon>();
+    
+    public static Icon createIcon(File arquivo)
+    {
+        try
+        {
+            if (!icones.containsKey(arquivo.getAbsolutePath()))
+            {
+                Image imagem = ImageIO.read(arquivo);
+                ImageIcon icone = new ImageIcon(imagem);
+                
+                icones.put(arquivo.getAbsolutePath(), icone);
+            }
+            
+            return icones.get(arquivo.getAbsolutePath());
+        }
+        catch (Exception excecao)
+        {
+            return createIcon(CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        }
+    }
     
     public static Icon createIcon(String path, String fileName)
     {
@@ -47,9 +69,10 @@ public class IconFactory {
                 try { iconInputStream.close();} catch (Exception ex) {}
             }
         }
-        catch (Exception ex) { }
-        
-        return null;
+        catch (Exception ex) 
+        {
+            return createIcon(CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        }
     }
 
     private static String getFilePath(String path, String fileName)
