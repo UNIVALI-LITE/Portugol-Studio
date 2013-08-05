@@ -63,7 +63,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
     
-    private static final Pattern padraoDeteccaoNomeEscopo = Pattern.compile("funcao(?<nome>[^\\(]+)");
+    private static final Pattern padraoDeteccaoNomeEscopo = Pattern.compile("funcao([^\\(]+)");
     private static final Pattern padraoDeteccaoNivelEscopo = Pattern.compile("\\{|\\}");
     private static final char[] caracteresParada = new char[] {' ', '\r', '\t', '\n' };
     private static final int[] teclasAutoComplete = new int[] { KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD };
@@ -602,7 +602,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         while (avaliadorNome.find())
         {
             int inicio = 0;
-            String temp = avaliadorNome.group("nome").trim();
+            String temp = avaliadorNome.group(1).trim();
             
             for (int i = temp.length() - 1; i > 0; i--)
             {

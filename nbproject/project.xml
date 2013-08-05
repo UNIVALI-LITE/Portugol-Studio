@@ -4,6 +4,7 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Portugol-Studio</name>
+            <explicit-platform explicit-source-supported="true"/>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
@@ -13,6 +14,14 @@
             <definitions>.\lib\nblibraries.properties</definitions>
         </libraries>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
+            <reference>
+                <foreign-project>Portugol-Ajuda</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
             <reference>
                 <foreign-project>Portugol-Corretor</foreign-project>
                 <artifact-type>jar</artifact-type>
