@@ -23,8 +23,21 @@ public class IconFactory {
 
     public static final String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/pequeno";
     public static final String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/grande";
+    private static final Icon iconePadrao = criarIconePadrao();
 
     private static Map<String, Icon> icones = new TreeMap<String, Icon>();
+    
+    private static Icon criarIconePadrao()
+    {
+        try
+        {
+            return createIcon(CAMINHO_ICONES_PEQUENOS, "unkown.png");
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }            
     
     public static Icon createIcon(File arquivo)
     {
@@ -71,7 +84,7 @@ public class IconFactory {
         }
         catch (Exception ex) 
         {
-            return createIcon(CAMINHO_ICONES_PEQUENOS, "unknown.png");
+            return iconePadrao;
         }
     }
 
