@@ -15,7 +15,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
  */
 public final class GerenciadorTemas
 {
-    private static final String PACOTE_TEMA = "br/univali/ps/ui/temas/";
+    private static final String PACOTE_TEMA = "";
     
     private Map<String, String> arquivosTema;
 
@@ -58,9 +58,9 @@ public final class GerenciadorTemas
             String nomeArquivo = arquivosTema.get(nome);        
 
             String caminho = String.format("%s/%s.xml", PACOTE_TEMA, nomeArquivo);
-            InputStream arquivoTema = getClass().getClassLoader().getResourceAsStream(caminho);
+            InputStream arquivoTema = Thread.currentThread().getContextClassLoader().getResourceAsStream(caminho);
             
-            return Theme.load(arquivoTema);
+            return Theme.load(getClass().getResourceAsStream(caminho));
         }
         catch (IOException excecao)
         {
