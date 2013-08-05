@@ -51,6 +51,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
  *
@@ -460,6 +461,41 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         this.abaCodigoFonte = abaCodigoFonte;
     }
     
+    /**
+     * Este método deve ser usado somente para definir o código fonte
+     * quando o componente estiver embutido no HTML da ajuda
+     * 
+     * @param codigo 
+     */
+    public void setCodigo(String codigo)
+    {
+        codigo = codigo.replace("${rn}", "\r\n");
+        codigo = codigo.replace("${n}", "\n");
+        codigo = codigo.replace("${t}", "\t");
+        codigo = codigo.replace("${dq}", "\"");
+        codigo = codigo.replace("${sq}", "'");
+        
+        textArea.setText(codigo);
+        textArea.setCaretPosition(0);
+        textArea.discardAllEdits();
+    }    
+    
+    public void setEditavel(String editavel)
+    {
+        boolean edit = Boolean.parseBoolean(editavel);
+        
+        btnComentar.setVisible(edit);
+        btnDescomentar.setVisible(edit);
+        btnPesquisar.setVisible(edit);
+        btnMaximizar.setVisible(edit);
+        textArea.setEditable(edit);                
+    }
+
+    public RTextScrollPane getScrollPane()
+    {
+        return scrollPane;
+    }    
+    
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
@@ -523,22 +559,32 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         try
         {
+            int line = linha - 1;
+            
             if (tag != null)
             {
                 textArea.removeLineHighlight(tag);
             }
 
-            tag = textArea.addLineHighlight(linha - 1, new Color(0f, 1f, 0f, 0.15f));
+            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.15f));
             
-            int posicaoCursor = Math.min(textArea.getLineStartOffset(linha + 7), textArea.getText().length());
-            
-            Rectangle areaCursor = textArea.modelToView(posicaoCursor);
-            textArea.scrollRectToVisible(areaCursor);
+            rolarAteDestaque(line, 0);
         }
         catch (BadLocationException ex)
         {
-           // ex.printStackTrace(System.out);
+           ex.printStackTrace(System.out);
         }
+    }
+    
+    private void rolarAteDestaque(int linha, int coluna) throws BadLocationException
+    {
+        int ma = scrollPane.getHeight() / 2;
+        int ml = scrollPane.getWidth() / 2;
+            
+        Rectangle areaCursor = textArea.modelToView(textArea.getLineStartOffset(linha) + coluna);
+        Rectangle area = new Rectangle(areaCursor.x - ml, areaCursor.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
+
+        textArea.scrollRectToVisible(area);
     }
 
     public void posicionaCursor(int linha, int coluna)
@@ -702,6 +748,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             } else {
                 textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs+tamanho);
             }
+            
+            rolarAteDestaque(line, coluna);
+            
         } catch (BadLocationException ex) {
             Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
         }

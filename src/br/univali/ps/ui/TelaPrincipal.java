@@ -4,7 +4,6 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.ui.acoes.FabricaAcao;
 import br.univali.ps.ui.acoes.AcaoNovoArquivo;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
-import br.univali.ps.ui.acoes.AcaoSalvarComo;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
@@ -472,6 +471,11 @@ public final class TelaPrincipal extends JFrame
                 actionPerformed(e);
             }
         }
+    }
+
+    public PainelTabuladoPrincipal getPainelTabulado()
+    {
+        return painelTabulado;
     }
     
     private void exibirAbaAjuda()
