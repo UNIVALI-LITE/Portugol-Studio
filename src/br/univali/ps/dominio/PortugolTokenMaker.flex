@@ -1,4 +1,4 @@
-package org.fife.ui.rsyntaxtextarea.modes;
+package br.univali.ps.dominio;
 
 import java.io.*;
 import javax.swing.text.Segment;
@@ -213,8 +213,9 @@ LineCommentBegin	= "//"
 NonFloatSuffix		= (([uU][lL]?)|([lL][uU]?))
 IntegerLiteral		= ({Digit}+{Exponent}?{NonFloatSuffix}?)
 HexLiteral		= ("0"[xX]{HexDigit}+{NonFloatSuffix}?)
+BinLiteral              = ("0"[bB](0|1)+{NonFloatSuffix}?)
 FloatLiteral		= ((({Digit}*[\.]{Digit}+)|({Digit}+[\.]{Digit}*)){Exponent}?[fFlL]?)
-ErrorNumberFormat	= (({IntegerLiteral}|{HexLiteral}|{FloatLiteral}){NonSeparator}+)
+ErrorNumberFormat	= (({IntegerLiteral}|{HexLiteral}|{BinLiteral}|{FloatLiteral}){NonSeparator}+)
 
 NonSeparator		= ([^\t\f\r\n\ \(\)\{\}\[\]\;\,\.\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%\"\']|"#")
 Identifier		= ({LetterOrUnderscore}({LetterOrUnderscore}|{Digit}|[$])*)
@@ -251,6 +252,9 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 	"se" |
 	"senao" |
 	"inclua" |
+        "e" |
+        "nao" |
+	"ou" |
 	"biblioteca" 			{ addToken(Token.RESERVED_WORD); }
 
 	/* Boolean literals. */
@@ -267,14 +271,7 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 
 	
 	"escreva" |
-	"leia" |
-	"raiz" |
-	"potencia" |
-	"tamanho_matriz" |
-	"tamanho_vetor" |
-	"limpa" |
-	"sorteia" |
-	"aguarde"				{ addToken(Token.FUNCTION); }
+	"leia"  				{ addToken(Token.FUNCTION); }
 
 	
 
@@ -324,18 +321,21 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 	"*=" |
 	"/=" |
 	"%=" |
-	"e" |
-	"ou" |
+	"&" |
+        "|" |
+        "^" |
+        "~" |
 	":" |
 	"," |
-	"nao" |
+	"." |
 	"++" |
 	"--" 						{ addToken(Token.OPERATOR); }
 
 	/* Numbers */
 	{IntegerLiteral}				{ addToken(Token.LITERAL_NUMBER_DECIMAL_INT); }
 	{HexLiteral}					{ addToken(Token.LITERAL_NUMBER_HEXADECIMAL); }
-	{FloatLiteral}					{ addToken(Token.LITERAL_NUMBER_FLOAT); }
+	{BinLiteral}                                    { addToken(Token.LITERAL_NUMBER_HEXADECIMAL); }
+        {FloatLiteral}					{ addToken(Token.LITERAL_NUMBER_FLOAT); }
 	{ErrorNumberFormat}				{ addToken(Token.ERROR_NUMBER_FORMAT); }
 
 	/* Some lines will end in '\' to wrap an expression. */
