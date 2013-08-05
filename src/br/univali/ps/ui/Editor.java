@@ -51,6 +51,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
  *
@@ -459,6 +460,41 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         this.abaCodigoFonte = abaCodigoFonte;
     }
+    
+    /**
+     * Este método deve ser usado somente para definir o código fonte
+     * quando o componente estiver embutido no HTML da ajuda
+     * 
+     * @param codigo 
+     */
+    public void setCodigo(String codigo)
+    {
+        codigo = codigo.replace("${rn}", "\r\n");
+        codigo = codigo.replace("${n}", "\n");
+        codigo = codigo.replace("${t}", "\t");
+        codigo = codigo.replace("${dq}", "\"");
+        codigo = codigo.replace("${sq}", "'");
+        
+        textArea.setText(codigo);
+        textArea.setCaretPosition(0);
+        textArea.discardAllEdits();
+    }    
+    
+    public void setEditavel(String editavel)
+    {
+        boolean edit = Boolean.parseBoolean(editavel);
+        
+        btnComentar.setVisible(edit);
+        btnDescomentar.setVisible(edit);
+        btnPesquisar.setVisible(edit);
+        btnMaximizar.setVisible(edit);
+        textArea.setEditable(edit);                
+    }
+
+    public RTextScrollPane getScrollPane()
+    {
+        return scrollPane;
+    }    
     
     @Override
     public void propertyChange(PropertyChangeEvent evt)

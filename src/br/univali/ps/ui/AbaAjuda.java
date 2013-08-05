@@ -297,16 +297,21 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                         if (valor.toLowerCase().equals("codigo-portugol"))
                         {
                             String codigo = avaliadorTagPre.group(1).trim();
-                                   codigo = codigo.replace("\n", "\\n");
-                                   codigo = codigo.replace("\t", "\\t");
-                                   codigo = codigo.replace("\"", "\\\"");
+                                   codigo = codigo.replace("\r\n", "${rn}");
+                                   codigo = codigo.replace("\n", "${n}");
+                                   codigo = codigo.replace("\t", "${t}");
+                                   codigo = codigo.replace("\"", "${dq}");
+                                   codigo = codigo.replace("'", "${sq}");
                                    //codigo = codigo.replace("&", "&amp;");
                                    //codigo = codigo.replace("", templateRaiz)
                             
                             String tagObject = 
-                                    "   <object classid=\"br.univali.ps.ui.Editor\">"
-                                    + "     <param name=\"text\" value=\"%s\">"
-                                    + " </object>";
+                                    "  <div>"
+                                    + "     <object classid=\"br.univali.ps.ui.EditorAjuda\">"
+                                    + "         <param name=\"editavel\" value=\"false\">"
+                                    + "         <param name=\"codigo\" value=\"%s\">"                                    
+                                    + "     </object>"
+                                    + "</div>";
                             
                             tagObject = String.format(tagObject, codigo);
                             

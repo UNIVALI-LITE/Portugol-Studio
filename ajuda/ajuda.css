@@ -9,12 +9,13 @@ body
 
 h1
 {
-    color: blue;
+    color: orange;
 }
 
 img
 {    
     border: 2px solid black;
+    margin: 10px;
 }
 
 .cadeia 
