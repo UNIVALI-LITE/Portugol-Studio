@@ -7,6 +7,7 @@ import br.univali.portugol.ajuda.ObservadorCarregamentoAjuda;
 import br.univali.portugol.ajuda.PreProcessadorConteudo;
 import br.univali.portugol.ajuda.Topico;
 import br.univali.portugol.ajuda.TopicoHtml;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -178,9 +179,16 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             }
             catch (Exception excecao)
             {
-                ErroCarregamentoAjuda erroCarregamentoAjuda = (ErroCarregamentoAjuda) excecao.getCause();
-                rotuloErroCarregamento.setText(String.format(rotuloErroCarregamento.getText(), erroCarregamentoAjuda.getMessage()));
-                rotuloErroCarregamento.setVisible(true);
+                if (excecao.getCause() instanceof ErroCarregamentoAjuda)
+                {
+                    ErroCarregamentoAjuda erroCarregamentoAjuda = (ErroCarregamentoAjuda) excecao.getCause();
+                    rotuloErroCarregamento.setText(String.format(rotuloErroCarregamento.getText(), erroCarregamentoAjuda.getMessage()));
+                    rotuloErroCarregamento.setVisible(true);
+                }
+                else
+                {
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                }
             }
         }
     }
