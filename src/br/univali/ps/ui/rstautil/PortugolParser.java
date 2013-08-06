@@ -2,6 +2,7 @@ package br.univali.ps.ui.rstautil;
 
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
@@ -77,7 +78,19 @@ public final class PortugolParser extends AbstractParser
         {
             for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
             {
-                if (erro.getLinha() - 1 > 0)
+                if (erro instanceof ErroExpressoesForaEscopoPrograma)
+                {
+                    int posicao = ((ErroExpressoesForaEscopoPrograma) erro).getPosicao();
+                    String expressoes = ((ErroExpressoesForaEscopoPrograma) erro).getExpressoes();
+                    
+                    DefaultParserNotice notice = new DefaultParserNotice(this, erro.getMensagem(), 1, posicao, expressoes.length());
+                    notice.setShowInEditor(true);
+                    notice.setColor(Color.RED);
+
+                    resultado.addNotice(notice);
+                    
+                }
+                else if (erro.getLinha() - 1 >= 0)
                 {
                     try
                     {
