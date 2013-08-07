@@ -6,16 +6,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class FileHandle
+public final class FileHandle
 {
+    private static final String charset = "ISO-8859-1";
 
     public static void save(String text, File file) throws Exception
     {
         {
-            FileWriter writer = null;
+            BufferedWriter writer = null;
             try
             {
-                writer = new FileWriter(file);
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
                 writer.write(text);
                 writer.flush();
                 writer.close();
@@ -68,7 +69,7 @@ public class FileHandle
         try
         {
             String line = null;
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+            reader = new BufferedReader(new InputStreamReader(inputStream, charset));
             
             while ((line = reader.readLine()) != null)
             {
