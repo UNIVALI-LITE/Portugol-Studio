@@ -45,7 +45,7 @@ public final class Configuracoes
             diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
-            temaEditor = configuracoes.getProperty(TEMA_EDITOR, "default-alt.xml");
+            temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
         }
         catch (IOException excecao)
         {

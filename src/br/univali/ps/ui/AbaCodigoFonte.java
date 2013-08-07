@@ -10,11 +10,13 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
 import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
+import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
@@ -943,6 +945,27 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise, AbaMensagemCompilador abaMensagem)
     {
+        for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
+        {
+            if (erro instanceof ErroExpressoesForaEscopoPrograma)
+            {
+                try
+                {
+                    ErroExpressoesForaEscopoPrograma erroEx = (ErroExpressoesForaEscopoPrograma) erro;
+                    int posicao = erroEx.getPosicao();
+                    int linha = editor.getTextArea().getLineOfOffset(posicao);
+                    int coluna = posicao - editor.getTextArea().getLineStartOffset(linha);
+                    
+                    erroEx.setLinha(linha + 1);
+                    erroEx.setColuna(coluna + 1);
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+            }
+        }
+        
         abaMensagem.atualizar(resultadoAnalise);
     }
 
