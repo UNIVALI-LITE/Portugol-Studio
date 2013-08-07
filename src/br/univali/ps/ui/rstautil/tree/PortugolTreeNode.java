@@ -5,6 +5,7 @@ import br.univali.portugol.nucleo.asa.No;
 class PortugolTreeNode extends SourceTreeNode
 {
     private Object valor;
+    private boolean declarado = false;
 
     public Object getValor()
     {
@@ -30,5 +31,15 @@ class PortugolTreeNode extends SourceTreeNode
     Object aceitar(OutlineTreeVisitor visitor)
     {
         return visitor.visitar(this);
+    }
+
+    void setDeclarado(boolean declarado)
+    {
+        this.declarado = declarado;
+    }
+
+    public boolean isDeclarado()
+    {
+        return declarado;
     }
 }

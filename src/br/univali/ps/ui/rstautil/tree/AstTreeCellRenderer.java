@@ -55,7 +55,10 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametros;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -173,6 +176,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         }
         
         component.setText(sb.toString());
+        if (currentPortugolTreeNode.isModificado()) {
+            component.setForeground(Color.BLUE);
+        }
         component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png"));
         return null;
     }
@@ -182,12 +188,21 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     {   
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("<b>");
+        }
         sb.append(noDeclaracaoMatriz.getNome());
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("</b>");
+        }
         sb.append("[][]");
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoMatriz.getTipoDado().getNome());	
         component.setText(sb.toString());
+        if (currentPortugolTreeNode.isModificado()) {
+            component.setForeground(Color.BLUE);
+        }
         component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif"));
         return null;
     }
@@ -197,7 +212,13 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("<b>");
+        }
         sb.append(noDeclaracaoVariavel.getNome());
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("</b>");
+        }
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoVariavel.getTipoDado().getNome());
@@ -206,10 +227,24 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
                 currentPortugolTreeNode.getValor() != null &&
                 !(currentPortugolTreeNode.getValor() instanceof List)) {
             sb.append(" = ").append(currentPortugolTreeNode.getValor());
-               }
-        component.setText(sb.toString());
+            }
+        final String valor = sb.toString();
+        component.setText(valor);
+        if (currentPortugolTreeNode.isModificado()) {
+            component.setForeground(Color.BLUE);
+        }
+        component.setSize(1000,20);
         component.setIcon(getIcon(noDeclaracaoVariavel.getTipoDado()));
         return null;
+    }
+    
+    private Dimension getSise(String s)
+    {
+
+        FontMetrics fontMetrics = component.getFontMetrics(component.getFont());
+        int width = fontMetrics.stringWidth(s);
+        int height = fontMetrics.getHeight();
+        return new Dimension(width, height);
     }
 
     @Override
@@ -217,12 +252,21 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("<b>");
+        }
         sb.append(noDeclaracaoVetor.getNome());
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("</b>");
+        }
         sb.append("[]");
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoVetor.getTipoDado().getNome());	
         component.setText(sb.toString());
+        if (currentPortugolTreeNode.isModificado()) {
+            component.setForeground(Color.BLUE);
+        }
         component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif"));
         return null;
     }
@@ -479,7 +523,13 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
-        sb.append(noDeclaracaoParametro.getNome());                
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("<b>");
+        }
+        sb.append(noDeclaracaoParametro.getNome());
+        if (currentPortugolTreeNode.isDeclarado()) {
+            sb.append("</b>");
+        }               
         Icon icon = null;
         if (noDeclaracaoParametro.getQuantificador() == Quantificador.VETOR) {
             sb.append("[]");
@@ -501,6 +551,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
                }
         
         component.setText(sb.toString());
+        if (currentPortugolTreeNode.isModificado()){
+            component.setForeground(Color.BLUE);
+        }
         component.setIcon(icon);
         return null;
     }
@@ -627,19 +680,17 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     {
         StringBuilder sb = new StringBuilder("<html>[");
         sb.append(no.getPosicao()).append("]");
-        Icon icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        Icon icon = getIcon(no.getTipoDado());
         if (no.getValor() != null) {
             sb.append(" = ").append(no.getValor());
-            TipoDado tipo = TipoDado.obterTipoDadoPeloTipoJava(no.getValor().getClass());
-            icon = getIcon(tipo);
-            if (no.isModificado()) {
-                sb.append("TESTE");
-                no.setModificado(false);
-            }
         } else if (no.isColuna()) {
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
         }
         component.setText(sb.toString());
+        component.setPreferredSize(new Dimension(200,20));
+        if (no.isModificado()) {
+            component.setForeground(Color.BLUE);
+        }
         component.setIcon(icon);
         return null;
     }

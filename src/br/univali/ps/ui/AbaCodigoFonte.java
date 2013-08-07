@@ -12,10 +12,10 @@ import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
 import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
-import br.univali.portugol.nucleo.depuracao.MemoriaDados;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
+import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.Configuracoes;
@@ -48,7 +48,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import net.java.balloontip.BalloonTip;
 
-public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, AbaMensagemCompiladorListener, ObservadorExecucao, DepuradorListener, CaretListener, PropertyChangeListener, ChangeListener
+public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, DepuradorListener
 {
     private static final String template = carregarTemplate();
     
@@ -255,7 +255,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         adicionarAbaListener(AbaCodigoFonte.this);
         divisorEditorSaida.setDividerLocation(480);
         this.addComponentListener(new AdaptadorComponente());
-        painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(AbaCodigoFonte.this);
+        painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(editor);
         carregarAlgoritmoPadrao();
 
         tree.listenTo(editor.getTextArea());
@@ -870,12 +870,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
 
     @Override
-    public void posicionarCursor(int linha, int coluna)
-    {
-        editor.posicionaCursor(linha, coluna);
-    }
-
-    @Override
     public void nomeArquivoAlterado(String nome)
     {
         cabecalho.setTitulo(nome);
@@ -920,7 +914,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             
             if ((!exibirOpcoes) || (exibirOpcoes && !telaOpcoesExecucao.isCancelado()))
             {
-                programa.setDepuradorListener(this);
+                programa.addDepuradorListener(this);
+                programa.addDepuradorListener(editor);
+                programa.addDepuradorListener(tree);
                 editor.iniciarDepuracao();
                 programa.setEntrada(painelSaida.getConsole());
                 programa.setSaida(painelSaida.getConsole());
@@ -1055,18 +1051,22 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
 
-    @Override
-    public void listaAtualizada()
-    {
-    }
-
-    @Override
-    public void highlightLinha(int linha)
-    {
-        editor.destacarLinha(linha);
-    }
-
     
+    @Override
+    public void simboloRemovido(Simbolo simbolo) {}
+    
+    @Override
+    public void highlightLinha(int linha){}
+
+    @Override
+    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho){}
+    
+    @Override
+    public void simbolosAlterados(List<Simbolo> simbolo) {}
+
+    @Override
+    public void simboloDeclarado(Simbolo simbolo){}
+
     @Override
     public void depuracaoInicializada(InterfaceDepurador depurador)
     {
@@ -1110,19 +1110,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorArvoreDepuracaoEditor.setDividerLocation(posicaoDivisorEditorArvore);
         divisorEditorSaida.setDividerLocation(posicaoDivisorEditorConsole);
     }
+
     
-    @Override
-    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
-    {
-        editor.destacarDetalhado(linha,coluna,tamanho);
-    }
-
-    @Override
-    public void simbolos(MemoriaDados dados)
-    {
-        tree.updateValoresSimbolos(dados);
-    }
-
+   
     private class AdaptadorComponente extends ComponentAdapter
     {
         @Override

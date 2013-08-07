@@ -15,31 +15,33 @@ import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
-import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
-import br.univali.portugol.nucleo.depuracao.MemoriaDados;
+import br.univali.portugol.nucleo.depuracao.DepuradorListener;
+import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
 import br.univali.portugol.nucleo.simbolos.Funcao;
 import br.univali.portugol.nucleo.simbolos.Matriz;
+import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
-import br.univali.ps.ui.AbaConsole;
-import br.univali.ps.ui.PainelSaida;
-import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -60,7 +62,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  * @author Robert Futrell
  * @version 1.0
  */
-public class PortugolOutlineTree extends AbstractTree
+public class PortugolOutlineTree extends AbstractTree implements DepuradorListener
 {
     private DefaultTreeModel model;
     private PortugolParser parser;
@@ -257,109 +259,285 @@ public class PortugolOutlineTree extends AbstractTree
 
     ComparadorNos comparador = new ComparadorNos();
     
-    public void updateValoresSimbolos(MemoriaDados dados)
+    @Override
+    public void depuracaoInicializada(InterfaceDepurador depurador)
+    {}
+
+    @Override
+    public void highlightLinha(int linha)
+    {}
+
+    @Override
+    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
+    {}
+
+    @Override
+    public void simbolosAlterados(List<Simbolo> simbolos)
     {
         SourceTreeNode root = (SourceTreeNode) model.getRoot();
-            for (Simbolo simbolo : dados)
+        limparModificado(root);
+        for (Simbolo simbolo : simbolos){
+            if (!(simbolo instanceof Funcao)){
+                PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+                if (node != null)
+                {    
+                    modificar(simbolo,node);
+                    SwingUtilities.invokeLater(new FireChangedEvent(node));
+                }
+            }
+        }
+        this.repaint();
+    }
+    
+     @Override
+    public void simboloRemovido(Simbolo simbolo)
+    {
+        SourceTreeNode root = (SourceTreeNode) model.getRoot();
+        limparModificado(root);   
+        if (!(simbolo instanceof Funcao)){
+            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+            if (node != null)
             {
-                if (!(simbolo instanceof Funcao)){
-                    Enumeration en = root.depthFirstEnumeration();
-                    PortugolTreeNode node = null;
-                    while (en.hasMoreElements()) 
+                remover(node,simbolo);
+                node.setDeclarado(false);
+                SwingUtilities.invokeLater(new FireChangedEvent(node));
+            }
+        }
+        this.repaint();
+    }
+
+    @Override
+    public void simboloDeclarado(Simbolo simbolo)
+    {
+        SourceTreeNode root = (SourceTreeNode) model.getRoot();
+        limparModificado(root);   
+        if (!(simbolo instanceof Funcao)){
+            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+            if (node != null)
+            {
+                inicializar(node,simbolo);
+                node.setDeclarado(true);
+                SwingUtilities.invokeLater(new FireChangedEvent(node));
+            }
+        }
+        this.repaint();
+    }
+
+    private void inicializar(PortugolTreeNode node, Simbolo simbolo)
+    {
+        if(simbolo instanceof Variavel)
+        {
+            inicializarVariavel(simbolo, node);
+        } 
+        else if (simbolo instanceof Vetor) 
+        { 
+            if (node.getChildCount() == 0) {
+                inicializarVetor(simbolo, node);
+            }
+        }
+        else if (simbolo instanceof Matriz) 
+        {
+            if (node.getChildCount() == 0) {
+                inicializarMatriz(simbolo, node);
+            }
+        }
+        else if (simbolo instanceof Ponteiro){
+            inicializar(node, ((Ponteiro)simbolo).getSimboloApontado());
+        }
+    }
+
+    private void inicializarVariavel(Simbolo simbolo, PortugolTreeNode node)
+    {
+        final Object valor = ((Variavel)simbolo).getValor(); 
+        node.setValor(valor);
+        SwingUtilities.invokeLater(new FireChangedEvent(node));
+    }
+
+    private void inicializarVetor(Simbolo simbolo, PortugolTreeNode node)
+    {
+        List<Object> valores = ((Vetor) simbolo).obterValores();
+       
+        for (int i = 0; i < valores.size(); i++)
+        {
+            ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i),simbolo.getTipoDado());
+            inserirNo(vtn, node);
+        }
+    }
+
+    private void inicializarMatriz(Simbolo simbolo, PortugolTreeNode node)
+    {
+        List<List<Object>> obterValores = ((Matriz) simbolo).obterValores();
+
+        for (int i = 0; i < obterValores.size(); i++)
+        {
+            List<Object> list = obterValores.get(i);
+            ValorTreeNode valorTreeNode = new ValorTreeNode(i, null,simbolo.getTipoDado());
+            valorTreeNode.setColuna(true);
+            for (int j = 0; j < list.size(); j++)
+            {
+               ValorTreeNode vtn = new ValorTreeNode(j, list.get(j),simbolo.getTipoDado());
+               valorTreeNode.add(vtn);
+            }
+            inserirNo(valorTreeNode, node);
+        }
+    }
+
+    private void inserirNo(ValorTreeNode vtn, PortugolTreeNode node)
+    {
+        try
+        {
+            SwingUtilities.invokeAndWait(new InsertNode(vtn, node));
+        }
+        catch (InterruptedException ex)
+        {
+            Logger.getLogger(PortugolOutlineTree.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (InvocationTargetException ex)
+        {
+            Logger.getLogger(PortugolOutlineTree.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void modificar(Simbolo simbolo, PortugolTreeNode noAlteraldo)
+    {
+        if(simbolo instanceof Variavel)
+        {
+            final Object valor = ((Variavel)simbolo).getValor(); 
+            noAlteraldo.setValor(valor);
+            noAlteraldo.setModificado(true);
+            SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
+        } 
+        else if (simbolo instanceof Vetor) 
+        { 
+            final Vetor vetor = (Vetor) simbolo;
+            List<Object> valores = vetor.obterValores();
+            for (int i = 0; i < valores.size(); i++)
+            {
+                if (vetor.getUltimoIndiceModificado() == i){
+                    ValorTreeNode valorTreenode =  (ValorTreeNode) noAlteraldo.getChildAt(i);
+                    valorTreenode.setModificado(true);
+                    noAlteraldo.setModificado(true);
+                    valorTreenode.setValor(valores.get(i));
+                    SwingUtilities.invokeLater(new FireChangedEvent(valorTreenode));
+                    SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
+                    return;
+                }
+
+            }             
+        } 
+        else if (simbolo instanceof Matriz) {
+            Matriz matriz =((Matriz)simbolo);
+            List<List<Object>> obterValores = matriz.obterValores();
+            for (int i = 0; i < obterValores.size(); i++)
+            {   
+                if (matriz.getUltimaLinhaModificada() == i) {
+                    ValorTreeNode linha =  (ValorTreeNode) noAlteraldo.getChildAt(i);
+                    linha.setModificado(true);
+                    noAlteraldo.setModificado(true);
+                    List<Object> list = obterValores.get(i);
+                    for (int j = 0; j < list.size(); j++)
                     {
-                        SourceTreeNode s = (SourceTreeNode)en.nextElement();
-                        if (s instanceof PortugolTreeNode){
-                            node = (PortugolTreeNode) s;                 
-                            if (node.getASTNode() != null && simbolo.getOrigemDoSimbolo() != null &&
-                                comparador.compare(node.getASTNode(), simbolo.getOrigemDoSimbolo()) > 0)
-                            {
-                                break;
-                            }
+                        if (matriz.getUltimaColunaModificada() == j) {
+                            ValorTreeNode coluna =  (ValorTreeNode) linha.getChildAt(j);
+                            coluna.setModificado(true);
+                            coluna.setValor(list.get(j));
+                            SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
+                            SwingUtilities.invokeLater(new FireChangedEvent(linha));
+                            SwingUtilities.invokeLater(new FireChangedEvent(coluna));
+                            return;
                         }
                     }
-                    if (node != null) 
-                    {   
-                         if(simbolo instanceof Variavel)
-                         {
-                             final Object valor = ((Variavel)simbolo).getValor(); 
-                             if (node.getValor() != null && node.getValor() != valor) {
-                                node.setValor(valor); 
-                                model.nodeChanged(node);
-                             } else {
-                                node.setValor(valor); 
-                                model.nodeChanged(node);
-                             }
-                         } 
-                         else if (simbolo instanceof Vetor) 
-                         { 
-                             List<Object> valores = ((Vetor) simbolo).obterValores();
-                             if (node.getChildCount() == 0) {
-                                for (int i = 0; i < valores.size(); i++)
-                                {
-                                    ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i));
-                                    model.insertNodeInto(vtn, node, node.getChildCount());
-                                }
-                             } else {
-                                for (int i = 0; i < valores.size(); i++)
-                                {
-                                    ValorTreeNode valorTreenode =  (ValorTreeNode) node.getChildAt(i);
-                                    if (valorTreenode.getValor() != valores.get(i)) {
-                                        valorTreenode.setModificado(true);
-                                        model.nodeChanged(valorTreenode);
-                                        valorTreenode.setValor(valores.get(i));
-                                    }
-                                    
-                                    
-                                }
-                             }
-                             
-                         } 
-                         else if (simbolo instanceof Matriz) 
-                         {
-                             List<List<Object>> obterValores = ((Matriz) simbolo).obterValores();
-                             if (node.getChildCount() == 0) {
-                                for (int i = 0; i < obterValores.size(); i++)
-                                {
-                                    List<Object> list = obterValores.get(i);
-                                    ValorTreeNode valorTreeNode = new ValorTreeNode(i, null);
-                                    valorTreeNode.setColuna(true);
-                                    for (int j = 0; j < list.size(); j++)
-                                    {
-                                       ValorTreeNode vtn = new ValorTreeNode(j, list.get(j));
-                                       valorTreeNode.add(vtn);
-                                    }
-                                    model.insertNodeInto(valorTreeNode, node, node.getChildCount());
-                                }
-                             } else {
-                                for (int i = 0; i < obterValores.size(); i++)
-                                {   
-                                    ValorTreeNode linha =  (ValorTreeNode) node.getChildAt(i);
-                                    List<Object> list = obterValores.get(i);
-                                    for (int j = 0; j < list.size(); j++)
-                                    {
-                                        ValorTreeNode coluna =  (ValorTreeNode) linha.getChildAt(j);
-                                        if (coluna.getValor() != list.get(j)) {
-                                            coluna.setModificado(true);
-                                            coluna.setValor(list.get(j));
-                                            model.nodeChanged(coluna);
-                                        }
-                                    }
-                                }
-                             }
-                         }
-
-
-                        //drefresh();
-
-                        //model.reload();
-                        //TreeUtils.expandAll(this, true);
-
-                   }
-
-               }
+                }
             }
+        } else if (simbolo instanceof Ponteiro) {
+            modificar(((Ponteiro)simbolo).getSimboloApontado(), noAlteraldo);
+        }
+                        
+    }
+
+    private void limparModificado(SourceTreeNode root)
+    {
+        Enumeration en = root.depthFirstEnumeration();
+        while (en.hasMoreElements()) 
+        {
+            SourceTreeNode s = (SourceTreeNode)en.nextElement();
+            s.setModificado(false);
+        }
+    }
+
+    private PortugolTreeNode getPortugolTreeNode(SourceTreeNode root, Simbolo simbolo)
+    {
+        Enumeration en = root.depthFirstEnumeration();
+        NoDeclaracao noDeclaracao = simbolo.getOrigemDoSimbolo();
+        PortugolTreeNode node = null;
+        while (en.hasMoreElements()) 
+        {
+            SourceTreeNode s = (SourceTreeNode)en.nextElement();
+            if (s instanceof PortugolTreeNode){
+                node = (PortugolTreeNode) s;                 
+                if (node.getASTNode() != null && noDeclaracao != null &&
+                    comparador.compare(node.getASTNode(), noDeclaracao) > 0)
+                {
+                    break;
+                }
+            }
+        }
+        return node;
+    }
+
+    private void remover(PortugolTreeNode node, Simbolo simbolo)
+    {
+        if(simbolo instanceof Variavel)
+        {
+            removerVariavel(node);
+        } 
+        else if (simbolo instanceof Vetor) 
+        { 
+            removerVetor(node);
+        }
+        else if (simbolo instanceof Matriz) 
+        {
+            removerMatriz(node);
+        }
+        else if (simbolo instanceof Ponteiro){
+            remover(node, ((Ponteiro)simbolo).getSimboloApontado());
+        }
+    }
+
+    private void removerVariavel(PortugolTreeNode node)
+    {
+        node.setValor(null);
+    }
+
+    private void removerVetor(PortugolTreeNode node)
+    {
+        removerFilhos(node);
+    }
+
+    private void removerMatriz(final PortugolTreeNode node)
+    {
+        removerFilhos(node);
         
-       
+        
+    }
+
+    private void removerFilhos(final PortugolTreeNode node)
+    {
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+
+                @Override
+                public void run()
+                {
+                    for (int i = model.getChildCount(node) -1; i >= 0; i--){
+                        model.removeNodeFromParent((MutableTreeNode)model.getChild(node, i));
+                    }
+                }
+            });
+        
+        } catch (Exception e){
+            e.printStackTrace(System.err);
+        }
     }
 
     private class ComparadorNos implements Comparator<No>{
@@ -385,17 +563,6 @@ public class PortugolOutlineTree extends AbstractTree
                 
                 
             }
-            else if ((o1 instanceof NoDeclaracaoParametro) &&
-                    (o2 instanceof NoDeclaracaoParametro))
-            {
-                NoDeclaracaoParametro dec1 = ((NoDeclaracaoParametro)o1);
-                NoDeclaracaoParametro dec2 = ((NoDeclaracaoParametro)o2);
-                linha = dec1.getTrechoCodigoFonteNome().getLinha() == dec2.getTrechoCodigoFonteNome().getLinha();
-                coluna = dec1.getTrechoCodigoFonteNome().getColuna()== dec2.getTrechoCodigoFonteNome().getColuna();
-                tamanho = dec1.getTrechoCodigoFonteNome().getTamanhoTexto()== dec2.getTrechoCodigoFonteNome().getTamanhoTexto();
-                nome = dec1.getNome().equals(dec2.getNome());
-            }
-            
             if (linha && coluna && tamanho && nome)
                 return 1;
             else 
@@ -444,6 +611,39 @@ public class PortugolOutlineTree extends AbstractTree
                 gotoElementAtPath(newPath);
             }
             
+        }
+    }
+
+    private class InsertNode implements Runnable
+    {
+        private final ValorTreeNode child;
+        private final PortugolTreeNode parent;
+
+        public InsertNode(ValorTreeNode valorTreeNode, PortugolTreeNode node)
+        {
+            this.child = valorTreeNode;
+            this.parent = node;
+        }
+
+        @Override
+        public void run() {
+            model.insertNodeInto(child, parent, parent.getChildCount());
+        }
+    }
+
+    private class FireChangedEvent implements Runnable
+    {
+        private final SourceTreeNode node;
+
+        public FireChangedEvent(SourceTreeNode node)
+        {
+            this.node = node;
+        }
+
+        @Override
+        public void run()
+        {
+            model.nodeChanged(node);
         }
     }
 }

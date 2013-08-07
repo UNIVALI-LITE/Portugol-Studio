@@ -24,7 +24,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public final class AbaMensagemCompilador extends Aba implements TableModelListener
+public final class AbaMensagemCompilador extends Aba 
 {
     private List<AbaMensagemCompiladorListener> mensagemCompiladorListeners;
     private ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
@@ -146,12 +146,7 @@ public final class AbaMensagemCompilador extends Aba implements TableModelListen
         tabelaModel.setResultadoAnalise(null);
     }
 
-    @Override
-    public void tableChanged(TableModelEvent e)
-    {
-        disparaTabelaAtualizada();
-    }
-
+   
     private void disparaPosicionarCursor(int linha, int coluna)
     {
         for (AbaMensagemCompiladorListener listener : mensagemCompiladorListeners)
@@ -160,13 +155,7 @@ public final class AbaMensagemCompilador extends Aba implements TableModelListen
         }
     }
 
-    private void disparaTabelaAtualizada()
-    {
-        for (AbaMensagemCompiladorListener listener : mensagemCompiladorListeners)
-        {
-            listener.listaAtualizada();
-        }
-    }
+   
 
     public void adicionaAbaMensagemCompiladorListener(AbaMensagemCompiladorListener l)
     {

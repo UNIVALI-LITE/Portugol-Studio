@@ -1,5 +1,8 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.nucleo.depuracao.DepuradorListener;
+import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
+import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
@@ -28,6 +31,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -58,7 +62,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  * @author Fillipi Pelz
  * @author Luiz Fernando Noschang
  */
-public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener
+public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener
 {
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
@@ -554,28 +558,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setCodeFoldingEnabled(true);
         textArea.setRequestFocusEnabled(true);        
     }
-
-    public void destacarLinha(int linha)
-    {
-        try
-        {
-            int line = linha - 1;
-            
-            if (tag != null)
-            {
-                textArea.removeLineHighlight(tag);
-            }
-
-            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.15f));
-            
-            rolarAteDestaque(line, 0);
-        }
-        catch (BadLocationException ex)
-        {
-           ex.printStackTrace(System.out);
-        }
-    }
-    
+ 
     private void rolarAteDestaque(int linha, int coluna) throws BadLocationException
     {
         int ma = scrollPane.getHeight() / 2;
@@ -585,24 +568,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         Rectangle area = new Rectangle(areaCursor.x - ml, areaCursor.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
 
         textArea.scrollRectToVisible(area);
-    }
-
-    public void posicionaCursor(int linha, int coluna)
-    {
-        try
-        {
-            int nova = textArea.getLineStartOffset(linha - 1) + coluna;
-
-            if (nova >= 0 && nova < textArea.getText().length())
-            {
-                textArea.setCaretPosition(nova);
-                textArea.requestFocus();
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace(System.err);
-        }
     }
 
     @Override
@@ -736,26 +701,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     Object tagDetalhado = null;
     
-    void destacarDetalhado(int linha, int coluna, int tamanho)
-    {
-        int line = linha - 1;
-        Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
-        int offs = elem.getStartOffset() + coluna;
-
-        try {
-            if (tagDetalhado == null) {
-                tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs+tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
-            } else {
-                textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs+tamanho);
-            }
-            
-            rolarAteDestaque(line, coluna);
-            
-        } catch (BadLocationException ex) {
-            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public AcaoColar getAcaoColar()
     {
         return acaoColar;
@@ -811,6 +756,83 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
         }
     }
+
+    @Override
+    public void depuracaoInicializada(InterfaceDepurador depurador)
+    {}
+
+    @Override
+    public void highlightLinha(int linha)
+    {
+        try
+        {
+            int line = linha - 1;
+            
+            if (tag != null)
+            {
+                textArea.removeLineHighlight(tag);
+            }
+
+            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.15f));
+            
+            rolarAteDestaque(line, 0);
+        }
+        catch (BadLocationException ex)
+        {
+           ex.printStackTrace(System.out);
+        }
+    }
+
+    @Override
+    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
+    {
+        int line = linha - 1;
+        Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
+        int offs = elem.getStartOffset() + coluna;
+
+        try {
+            if (tagDetalhado == null) {
+                tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs+tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+            } else {
+                textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs+tamanho);
+            }
+            
+            rolarAteDestaque(line, coluna);
+            
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void simbolosAlterados(List<Simbolo> simbolo)
+    {}
+
+    @Override
+    public void simboloDeclarado(Simbolo simbolo)
+    {}
+
+    @Override
+    public void posicionarCursor(int linha, int coluna)
+    {
+        try
+        {
+            int nova = textArea.getLineStartOffset(linha - 1) + coluna;
+
+            if (nova >= 0 && nova < textArea.getText().length())
+            {
+                textArea.setCaretPosition(nova);
+                textArea.requestFocus();
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    @Override
+    public void simboloRemovido(Simbolo simbolo) {}
 
     public class EscopoCursor
     {
