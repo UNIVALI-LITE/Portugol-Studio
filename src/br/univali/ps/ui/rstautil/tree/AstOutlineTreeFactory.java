@@ -45,7 +45,6 @@ import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoPare;
-import br.univali.portugol.nucleo.asa.NoPercorra;
 import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
@@ -545,12 +544,6 @@ class AstOutlineTreeFactory implements VisitanteASA
 
     @Override
     public Object visitar(NoPare noPare) throws ExcecaoVisitaASA
-    {
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoPercorra noPercorra) throws ExcecaoVisitaASA
     {
         return null;
     }
