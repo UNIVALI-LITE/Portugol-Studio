@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Leia</title>
+        <link rel="stylesheet" type="text/css" href="../../../ajuda.css" />
+        <link rel="shortcut icon" href="../../../imagens/pagina.png" />
+    </head>
+    <body>
+        <div>
+            <h1>Leia</h1>
+            <p>O Comando <span class="palavra-reservada">leia</span> é utilizado quando se deseja obter informações do teclado do computador, ou seja, é um comando de entrada de dados. Esse comando aguarda um valor a ser digitado e o atribui diretamente na variável.</p>
+            <p> Para utilizar o comando <span class="palavra-reservada">leia</span>, você deverá escrever este comando e entre parênteses colocar a(s) variavel (eis) que você quer que recebam os valores a serem digitados.</p>
+            <h2>Exemplo:</h2>
+            <pre class="codigo-portugol">
+programa
+{
+    funcao inicio()
+    {
+        inteiro numero
+
+        //pede ao usuário que entre com um número
+        escreva("Digite um valor inteiro: ")
+        
+        //lê o valor digitado pelo usuário
+        leia(numero)
+
+        //exibe a frase "O número digitado foi: " seguido do número digitado pelo usuário.
+        escreva("O número digitado foi: ",numero)
+    }
+}
+           </pre>
+        </div>
+    </body>
+</html>
