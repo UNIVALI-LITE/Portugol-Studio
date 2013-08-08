@@ -919,78 +919,78 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         barraFerramentas.setOpaque(false);
 
         btnAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnAumentarFonte.setBorderPainted(false);
         btnAumentarFonte.setFocusable(false);
         btnAumentarFonte.setHideActionText(true);
         btnAumentarFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAumentarFonte.setMaximumSize(new java.awt.Dimension(24, 24));
         btnAumentarFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnAumentarFonte.setOpaque(false);
         btnAumentarFonte.setPreferredSize(new java.awt.Dimension(24, 24));
         btnAumentarFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnAumentarFonte);
 
         btnDiminuirFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnDiminuirFonte.setBorderPainted(false);
         btnDiminuirFonte.setFocusable(false);
         btnDiminuirFonte.setHideActionText(true);
         btnDiminuirFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDiminuirFonte.setMaximumSize(new java.awt.Dimension(24, 24));
         btnDiminuirFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnDiminuirFonte.setOpaque(false);
         btnDiminuirFonte.setPreferredSize(new java.awt.Dimension(24, 24));
         btnDiminuirFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnDiminuirFonte);
 
         btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnPesquisar.setBorderPainted(false);
         btnPesquisar.setFocusable(false);
         btnPesquisar.setHideActionText(true);
         btnPesquisar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnPesquisar.setMaximumSize(new java.awt.Dimension(24, 24));
         btnPesquisar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnPesquisar.setOpaque(false);
         btnPesquisar.setPreferredSize(new java.awt.Dimension(24, 24));
         btnPesquisar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnPesquisar);
 
         btnComentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnComentar.setBorderPainted(false);
         btnComentar.setFocusable(false);
         btnComentar.setHideActionText(true);
         btnComentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnComentar.setMaximumSize(new java.awt.Dimension(24, 24));
         btnComentar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnComentar.setOpaque(false);
         btnComentar.setPreferredSize(new java.awt.Dimension(24, 24));
         btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnComentar);
 
         btnDescomentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnDescomentar.setBorderPainted(false);
         btnDescomentar.setFocusable(false);
         btnDescomentar.setHideActionText(true);
         btnDescomentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDescomentar.setMaximumSize(new java.awt.Dimension(24, 24));
         btnDescomentar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnDescomentar.setOpaque(false);
         btnDescomentar.setPreferredSize(new java.awt.Dimension(24, 24));
         btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnDescomentar);
 
         btnMaximizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnMaximizar.setBorderPainted(false);
         btnMaximizar.setFocusable(false);
         btnMaximizar.setHideActionText(true);
         btnMaximizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMaximizar.setMaximumSize(new java.awt.Dimension(24, 24));
         btnMaximizar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnMaximizar.setOpaque(false);
         btnMaximizar.setPreferredSize(new java.awt.Dimension(24, 24));
         btnMaximizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnMaximizar);
 
         btnTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnTema.setBorderPainted(false);
         btnTema.setFocusable(false);
         btnTema.setHideActionText(true);
         btnTema.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnTema.setMaximumSize(new java.awt.Dimension(24, 24));
         btnTema.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnTema.setOpaque(false);
         btnTema.setPreferredSize(new java.awt.Dimension(24, 24));
         btnTema.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnTema);

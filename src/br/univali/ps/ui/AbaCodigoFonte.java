@@ -371,8 +371,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         barraFerramentas = new javax.swing.JToolBar();
         btnSalvar = new javax.swing.JButton();
@@ -434,6 +433,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentas.add(btnSalvar);
 
         btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/unknown.png"))); // NOI18N
+        btnSalvarComo.setBorderPainted(false);
         btnSalvarComo.setFocusable(false);
         btnSalvarComo.setHideActionText(true);
         btnSalvarComo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -512,7 +512,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelAlinhamento2.setOpaque(false);
         painelAlinhamento2.setLayout(new java.awt.BorderLayout());
 
-        sPOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
         sPOutlineTree.setBorder(null);
         sPOutlineTree.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
         sPOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
@@ -534,6 +533,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelStatus.setFocusable(false);
         painelStatus.setPreferredSize(new java.awt.Dimension(371, 35));
         painelStatus.setLayout(new java.awt.BorderLayout());
+
+        jSeparator1.setPreferredSize(new java.awt.Dimension(0, 10));
         painelStatus.add(jSeparator1, java.awt.BorderLayout.PAGE_START);
 
         rotuloPosicaoCursor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -548,7 +549,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         campoOpcoesExecucao.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         campoOpcoesExecucao.setFocusPainted(false);
         campoOpcoesExecucao.setFocusable(false);
+        campoOpcoesExecucao.setMaximumSize(new java.awt.Dimension(199, 26));
+        campoOpcoesExecucao.setMinimumSize(new java.awt.Dimension(199, 26));
+        campoOpcoesExecucao.setPreferredSize(new java.awt.Dimension(199, 26));
         painelStatus.add(campoOpcoesExecucao, java.awt.BorderLayout.LINE_START);
+
+        jSeparator2.setPreferredSize(new java.awt.Dimension(0, 10));
         painelStatus.add(jSeparator2, java.awt.BorderLayout.PAGE_END);
 
         painelAlinhamento1.add(painelStatus, java.awt.BorderLayout.SOUTH);
@@ -582,10 +588,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         corrigir.setText("Corrigir");
         corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         corrigir.setPreferredSize(new java.awt.Dimension(130, 30));
-        corrigir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        corrigir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 corrigirActionPerformed(evt);
             }
         });
