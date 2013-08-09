@@ -50,7 +50,8 @@ public class CabecalhoAba extends JPanel {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         mniFechar = new javax.swing.JMenuItem();
@@ -60,23 +61,30 @@ public class CabecalhoAba extends JPanel {
         jBFechar = new javax.swing.JButton();
 
         mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFechar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharActionPerformed(evt);
             }
         });
         jPopupMenu1.add(mniFechar);
 
         mniFecharOutras.setText("Fechar as outras abas");
-        mniFecharOutras.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFecharOutras.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharOutrasActionPerformed(evt);
             }
         });
         jPopupMenu1.add(mniFecharOutras);
 
         setFocusable(false);
+        setMaximumSize(new java.awt.Dimension(300, 25));
+        setMinimumSize(new java.awt.Dimension(110, 25));
         setOpaque(false);
+        setPreferredSize(new java.awt.Dimension(110, 25));
         setLayout(new java.awt.BorderLayout());
 
         jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light-bulb-code.png"))); // NOI18N
@@ -94,12 +102,11 @@ public class CabecalhoAba extends JPanel {
         jBFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jBFechar.setFocusPainted(false);
         jBFechar.setFocusable(false);
-        jBFechar.setMaximumSize(new java.awt.Dimension(16, 16));
-        jBFechar.setMinimumSize(new java.awt.Dimension(16, 16));
-        jBFechar.setPreferredSize(new java.awt.Dimension(16, 16));
         jBFechar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
-        jBFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jBFechar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jBFecharActionPerformed(evt);
             }
         });

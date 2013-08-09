@@ -513,7 +513,8 @@ public final class TelaPrincipal extends JFrame
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
 
@@ -522,7 +523,7 @@ public final class TelaPrincipal extends JFrame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
 
-        painelTabulado.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 8, 8, 8));
+        painelTabulado.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         getContentPane().add(painelTabulado, java.awt.BorderLayout.CENTER);
 
         pack();

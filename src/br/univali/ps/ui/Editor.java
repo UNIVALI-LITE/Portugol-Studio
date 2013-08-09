@@ -444,7 +444,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             if (componente instanceof JButton)
             {
-                componente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                JButton botao = (JButton) componente;
+                
+                botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                botao.setOpaque(false);
             }
         }
         

@@ -124,10 +124,14 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener, Pai
         jBNovaAba = new javax.swing.JButton();
 
         setFocusable(false);
+        setMaximumSize(new java.awt.Dimension(180, 25));
+        setMinimumSize(new java.awt.Dimension(180, 25));
         setOpaque(false);
+        setPreferredSize(new java.awt.Dimension(180, 25));
         setLayout(new java.awt.BorderLayout());
 
         painelTitulo.setOpaque(false);
+        painelTitulo.setPreferredSize(new java.awt.Dimension(120, 16));
         painelTitulo.setLayout(new java.awt.BorderLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
