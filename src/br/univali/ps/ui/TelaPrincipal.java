@@ -16,6 +16,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -68,8 +69,12 @@ public final class TelaPrincipal extends JFrame
         configurarDialogosPesquisarSubstituir();        
         configurarAcoes();
         instalarObservadores();
+        List<Aba> abas =  painelTabulado.getAbas(AbaInicial.class);
+        final AbaInicial abaInicial = (AbaInicial)abas.get(0);
         
-        
+        abaInicial.configurarAcaoSobre(acaoExibirTelaSobre);
+        abaInicial.configurarAcaoAjuda(acaoExibirAjuda);
+        abaInicial.configurarAcaoBibliotecas(acaoExibirDocumentacaoBiblioteca);
         //criarMenuExemplos();        
     }    
     
@@ -505,127 +510,6 @@ public final class TelaPrincipal extends JFrame
         
         abaDocumentacao.selecionar();
     }
-   
-    /*
-    private void criarMenuExemplos()
-    {
-        try
-        {
-            Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-            File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
-            
-            if (diretorioExemplos.exists())
-            {
-                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
-                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
-                ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
-                
-                File[] subdiretorios = diretorioExemplos.listFiles();
-                Arrays.sort(subdiretorios, comparadorExemplo);
-                
-                for (File subdiretorio : subdiretorios)
-                {
-                    adicionarSubniveis(subdiretorio, mnuExemplos, iconeDiretorio, iconeArquivo, comparadorExemplo);
-                }
-            }
-        }
-        catch (Exception excecao)
-        {
-            excecao.printStackTrace(System.out);
-        }
-    }
-    
-    private void adicionarSubniveis(File caminho, JMenu menu, Icon iconeDiretorio, Icon iconeArquivo, ComparadorExemplo comparadorExemplo)
-    {
-        if (caminho.isDirectory())
-        {
-            JMenu submenu = new JMenu(caminho.getName());
-            submenu.setIcon(iconeDiretorio);
-            
-            menu.add(submenu);
-            
-            File[] arquivos = caminho.listFiles();
-            Arrays.sort(arquivos, comparadorExemplo);
-            
-            for (File arquivo : arquivos)
-            {
-                adicionarSubniveis(arquivo, submenu, iconeDiretorio, iconeArquivo, comparadorExemplo);
-            }
-        }
-        else
-        {
-            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    try
-                    {
-                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
-                        String codigoFonte = FileHandle.open(exemplo);
-                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte(painelTabulado);
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, true);
-                    }
-                    catch (Exception excecao)
-                    {
-                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-                    }
-                }
-            });
-            
-            item.setName(caminho.getAbsolutePath());
-            menu.add(item);
-        }
-    }
-
-    
-    
-    private final class ComparadorExemplo implements Comparator<File>
-    {
-        private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
-                
-        @Override
-        public int compare(File exemplo1, File exemplo2)
-        {
-            if (exemplo1.isDirectory() && exemplo2.isFile())
-            {
-                return 1;
-            }
-            else if (exemplo1.isFile() && exemplo2.isDirectory())
-            {
-                return -1;
-            }
-            else if (exemplo1.isDirectory() && exemplo2.isDirectory())
-            {
-                return exemplo1.getName().compareTo(exemplo2.getName());
-            }
-            else if (exemplo1.isFile() && exemplo2.isFile())
-            {            
-                String nomeExemplo1 = exemplo1.getName();
-                String nomeExemplo2 = exemplo2.getName();
-
-                Integer numero1 = extrairNumero(nomeExemplo1);
-                Integer numero2 = extrairNumero(nomeExemplo2);
-                
-                return numero1.compareTo(numero2);
-            }
-            
-            return 0;
-        }
-        
-        private Integer extrairNumero(String nome)
-        {
-            avaliadorNumero.reset(nome);
-            
-            if (avaliadorNumero.find())
-            {
-                return Integer.parseInt(avaliadorNumero.group());
-            }
-            
-            return null;
-        }
-    }
-    */
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
