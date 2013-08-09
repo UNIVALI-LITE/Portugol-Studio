@@ -177,9 +177,18 @@ public class AbaInicial extends Aba {
             else {
                 jlabel.setIcon(iconeDiretorio);
             }
+            
             File file = (File) ((DefaultMutableTreeNode)value).getUserObject();
-            jlabel.setText(file.getName().replace(".por", ""));
-            jlabel.setBackground(new Color(1f,1f,1f,0f));
+            
+            if (file != null)
+            {            
+                jlabel.setText(file.getName().replace(".por", ""));                
+            }
+            else
+            {
+                jlabel.setText("Unidefined");
+            }
+            
             return jlabel;
         }
     }
