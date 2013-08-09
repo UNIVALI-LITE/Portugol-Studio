@@ -11,13 +11,18 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -32,13 +37,13 @@ public final class AbaMensagemCompilador extends Aba
     public AbaMensagemCompilador(JTabbedPane painelTabulado)
     {
         super(painelTabulado);
-        mensagemCompiladorListeners = new ArrayList<AbaMensagemCompiladorListener>();
+        mensagemCompiladorListeners = new ArrayList<>();
         cabecalho.setBotaoFecharVisivel(false);
         cabecalho.setTitulo("Mensagens");
         cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "table_error.png"));
         initComponents();
 
-
+        tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
         
@@ -53,6 +58,11 @@ public final class AbaMensagemCompilador extends Aba
         tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderer);
         tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderer);
         tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderer);
+        
+        AjustadorLinha ajustadorLinha = new AjustadorLinha(tabelaMensagens);
+        
+        tabelaMensagens.addComponentListener(ajustadorLinha);
+        tabelaModel.addTableModelListener(ajustadorLinha);
 
         tabelaMensagens.getSelectionModel().addListSelectionListener(new ListSelectionListener()
         {
@@ -145,7 +155,6 @@ public final class AbaMensagemCompilador extends Aba
     {
         tabelaModel.setResultadoAnalise(null);
     }
-
    
     private void disparaPosicionarCursor(int linha, int coluna)
     {
@@ -154,8 +163,6 @@ public final class AbaMensagemCompilador extends Aba
             listener.posicionarCursor(linha, coluna);
         }
     }
-
-   
 
     public void adicionaAbaMensagemCompiladorListener(AbaMensagemCompiladorListener l)
     {
@@ -170,7 +177,7 @@ public final class AbaMensagemCompilador extends Aba
         mensagemCompiladorListeners.remove(l);
     }
 
-    private class BeautyTableCellRenderer extends DefaultTableCellRenderer
+    private final class BeautyTableCellRenderer extends DefaultTableCellRenderer
     {
         private Color evenColor = Color.WHITE;
         private Color oddColor = new Color(235, 235, 235);
@@ -179,14 +186,25 @@ public final class AbaMensagemCompilador extends Aba
         {
             setFocusable(false);
             setOpaque(true);
-            setVerticalAlignment(SwingConstants.CENTER);
+            setVerticalAlignment(SwingConstants.TOP);            
         }
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
         {
             JLabel renderer = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
+            
+            setBorder(new EmptyBorder(4, 4, 4, 4));
+            
+            if (column < 2)
+            {
+                setVerticalAlignment(JLabel.CENTER);
+            }
+            else 
+            {
+                setVerticalAlignment(JLabel.TOP);
+            }
+            
             if (column == 0)
             {
                 setIcon((Icon) value);
@@ -197,7 +215,18 @@ public final class AbaMensagemCompilador extends Aba
             {
                 setIcon(null);
                 setHorizontalAlignment(SwingConstants.LEADING);
-                setText(" ".concat(value.toString()));
+                
+                String valor = value.toString();
+        
+                valor = valor.replace("\r\n", " ");
+                valor = valor.replace("\n", " ");
+                valor = valor.replace("\t", " ");                
+                valor = valor.replace("<", "&lt;");
+                valor = valor.replace(">", "&gt;");
+                
+                valor = String.format("<html><body><div>%s</div></body></html>", valor);
+                
+                setText(valor);
             }
 
             if (!isSelected)
@@ -213,12 +242,87 @@ public final class AbaMensagemCompilador extends Aba
 
                 setFont(getFont().deriveFont(Font.PLAIN));
             }
-            else
-            {
-                setFont(getFont().deriveFont(Font.BOLD));
-            }
 
             return renderer;
         }
+    }
+    
+    private final class AjustadorLinha implements TableModelListener, ComponentListener
+    {
+        private JTextArea auxiliar;
+        private JTable tabela;
+
+        public AjustadorLinha(JTable tabela)
+        {
+            auxiliar = new JTextArea();            
+            auxiliar.setLineWrap(true);
+            auxiliar.setWrapStyleWord(true);
+            
+            this.tabela = tabela;
+        }        
+        
+        private void ajustarLinhas()
+        {
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        for (int row = 0; row < tabela.getRowCount(); row++)
+                        {
+                            int alturaLinha = tabela.getRowHeight();
+
+                            for (int column = 1; column < tabela.getColumnCount(); column++)
+                            {
+                                JLabel renderizador = (JLabel) tabela.prepareRenderer(tabela.getCellRenderer(row, column), row, column);
+                                
+                                String valor = tabela.getModel().getValueAt(row, column).toString();
+                                
+                                valor = valor.replace("\r\n", " ");
+                                valor = valor.replace("\n", " ");
+                                valor = valor.replace("\t", " ");   
+                                
+                                auxiliar.setBorder(renderizador.getBorder());
+                                auxiliar.setFont(renderizador.getFont());
+                                auxiliar.setSize(tabela.getColumnModel().getColumn(column).getWidth(), tabela.getRowHeight());
+                                auxiliar.setText(valor);
+                                
+                                if (auxiliar.getPreferredSize().height > alturaLinha)
+                                {
+                                    alturaLinha = auxiliar.getPreferredSize().height;
+                                }
+                            }
+                            
+                            tabela.setRowHeight(row, alturaLinha);
+                        }
+                    }
+                    catch(ClassCastException e) {}
+                }
+            });
+        }
+        
+        @Override
+        public void tableChanged(TableModelEvent e)
+        {
+            ajustarLinhas();
+        }
+
+        @Override
+        public void componentResized(ComponentEvent e)
+        {
+            ajustarLinhas();
+        }
+
+        @Override
+        public void componentShown(ComponentEvent e)
+        {
+            ajustarLinhas();
+        }
+
+        @Override public void componentHidden(ComponentEvent e) { }
+         
+        @Override public void componentMoved(ComponentEvent e) { }
     }
 }
