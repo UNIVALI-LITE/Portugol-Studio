@@ -255,7 +255,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         adicionarAbaListener(AbaCodigoFonte.this);
-        divisorEditorSaida.setDividerLocation(480);
+        divisorArvoreDepuracaoEditor.setDividerLocation(480);
         this.addComponentListener(new AdaptadorComponente());
         painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(editor);
         carregarAlgoritmoPadrao();
@@ -286,6 +286,37 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         
         
         editor.configurarPesquisar((AbstractAction) painelTabulado.getActionMap().get("Pesquisar e substituir"));
+        
+        this.addComponentListener(new ComponentAdapter() {
+
+            private boolean primeiraVez = true;
+            
+            @Override
+            public void componentShown(ComponentEvent e)
+            {
+                if (primeiraVez){
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run()
+                        {
+
+                            divisorArvoreDepuracaoEditor.setDividerLocation(0.0);
+                            divisorEditorPainelSaida.setDividerLocation(1.0);
+                            divisorArvoreDepuracaoEditor.setDividerLocation(250);
+                            divisorEditorPainelSaida.setDividerLocation(divisorEditorPainelSaida.getHeight() - 200);
+                            revalidate();
+                            primeiraVez = false; 
+
+                        }
+                    });
+                }
+            }
+            
+        
+        });
+        
+        
     }
     
     private void configurarComponentes()
@@ -309,6 +340,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
         
         campoOpcoesExecucao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        
     }
 
     private void ocultarCorretor()
@@ -382,13 +415,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelConteudo = new javax.swing.JPanel();
         divisorEditorCorretor = new javax.swing.JSplitPane();
         painelEditor = new javax.swing.JPanel();
-        divisorEditorSaida = new javax.swing.JSplitPane();
-        painelAlinhamento1 = new javax.swing.JPanel();
         divisorArvoreDepuracaoEditor = new javax.swing.JSplitPane();
-        painelAlinhamento2 = new javax.swing.JPanel();
-        sPOutlineTree = new javax.swing.JScrollPane();
-        tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
-        jSeparator3 = new javax.swing.JSeparator();
+        divisorEditorPainelSaida = new javax.swing.JSplitPane();
+        painelAlinhamento1 = new javax.swing.JPanel();
         editor = new br.univali.ps.ui.Editor();
         painelStatus = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -396,6 +425,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         campoOpcoesExecucao = new javax.swing.JCheckBox();
         jSeparator2 = new javax.swing.JSeparator();
         painelSaida = new br.univali.ps.ui.PainelSaida();
+        painelAlinhamento2 = new javax.swing.JPanel();
+        sPOutlineTree = new javax.swing.JScrollPane();
+        tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
+        jSeparator3 = new javax.swing.JSeparator();
         separadorEditorCorretor = new javax.swing.JSeparator();
         painelCorretor = new javax.swing.JPanel();
         painelResultado = new javax.swing.JPanel();
@@ -490,45 +523,29 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelEditor.setOpaque(false);
         painelEditor.setLayout(new java.awt.BorderLayout());
 
-        divisorEditorSaida.setBorder(null);
-        divisorEditorSaida.setDividerLocation(250);
-        divisorEditorSaida.setDividerSize(8);
-        divisorEditorSaida.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        divisorEditorSaida.setResizeWeight(1.0);
-        divisorEditorSaida.setFocusable(false);
-        divisorEditorSaida.setMinimumSize(new java.awt.Dimension(550, 195));
-        divisorEditorSaida.setOneTouchExpandable(true);
+        divisorArvoreDepuracaoEditor.setBorder(null);
+        divisorArvoreDepuracaoEditor.setDividerLocation(250);
+        divisorArvoreDepuracaoEditor.setDividerSize(8);
+        divisorArvoreDepuracaoEditor.setResizeWeight(1.0);
+        divisorArvoreDepuracaoEditor.setFocusable(false);
+        divisorArvoreDepuracaoEditor.setMinimumSize(new java.awt.Dimension(550, 195));
+        divisorArvoreDepuracaoEditor.setOneTouchExpandable(true);
+
+        divisorEditorPainelSaida.setBorder(null);
+        divisorEditorPainelSaida.setDividerLocation(200);
+        divisorEditorPainelSaida.setDividerSize(8);
+        divisorEditorPainelSaida.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        divisorEditorPainelSaida.setOneTouchExpandable(true);
 
         painelAlinhamento1.setFocusable(false);
         painelAlinhamento1.setMinimumSize(new java.awt.Dimension(608, 190));
         painelAlinhamento1.setOpaque(false);
+        painelAlinhamento1.setPreferredSize(new java.awt.Dimension(0, 0));
         painelAlinhamento1.setLayout(new java.awt.BorderLayout());
 
-        divisorArvoreDepuracaoEditor.setBorder(null);
-        divisorArvoreDepuracaoEditor.setDividerSize(8);
-        divisorArvoreDepuracaoEditor.setOneTouchExpandable(true);
-
-        painelAlinhamento2.setFocusable(false);
-        painelAlinhamento2.setOpaque(false);
-        painelAlinhamento2.setLayout(new java.awt.BorderLayout());
-
-        sPOutlineTree.setBorder(null);
-        sPOutlineTree.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
-        sPOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
-        sPOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
-        sPOutlineTree.setViewportView(tree);
-
-        painelAlinhamento2.add(sPOutlineTree, java.awt.BorderLayout.CENTER);
-
-        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        painelAlinhamento2.add(jSeparator3, java.awt.BorderLayout.EAST);
-
-        divisorArvoreDepuracaoEditor.setLeftComponent(painelAlinhamento2);
-
         editor.setMinimumSize(new java.awt.Dimension(350, 22));
-        divisorArvoreDepuracaoEditor.setRightComponent(editor);
-
-        painelAlinhamento1.add(divisorArvoreDepuracaoEditor, java.awt.BorderLayout.CENTER);
+        editor.setPreferredSize(new java.awt.Dimension(0, 0));
+        painelAlinhamento1.add(editor, java.awt.BorderLayout.CENTER);
 
         painelStatus.setFocusable(false);
         painelStatus.setPreferredSize(new java.awt.Dimension(371, 35));
@@ -559,12 +576,33 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         painelAlinhamento1.add(painelStatus, java.awt.BorderLayout.SOUTH);
 
-        divisorEditorSaida.setTopComponent(painelAlinhamento1);
+        divisorEditorPainelSaida.setTopComponent(painelAlinhamento1);
 
-        painelSaida.setMinimumSize(new java.awt.Dimension(82, 180));
-        divisorEditorSaida.setBottomComponent(painelSaida);
+        painelSaida.setMinimumSize(new java.awt.Dimension(82, 200));
+        painelSaida.setPreferredSize(new java.awt.Dimension(82, 200));
+        divisorEditorPainelSaida.setBottomComponent(painelSaida);
 
-        painelEditor.add(divisorEditorSaida, java.awt.BorderLayout.CENTER);
+        divisorArvoreDepuracaoEditor.setRightComponent(divisorEditorPainelSaida);
+
+        painelAlinhamento2.setFocusable(false);
+        painelAlinhamento2.setOpaque(false);
+        painelAlinhamento2.setPreferredSize(new java.awt.Dimension(250, 23));
+        painelAlinhamento2.setLayout(new java.awt.BorderLayout());
+
+        sPOutlineTree.setBorder(null);
+        sPOutlineTree.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
+        sPOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
+        sPOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
+        sPOutlineTree.setViewportView(tree);
+
+        painelAlinhamento2.add(sPOutlineTree, java.awt.BorderLayout.CENTER);
+
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        painelAlinhamento2.add(jSeparator3, java.awt.BorderLayout.EAST);
+
+        divisorArvoreDepuracaoEditor.setLeftComponent(painelAlinhamento2);
+
+        painelEditor.add(divisorArvoreDepuracaoEditor, java.awt.BorderLayout.CENTER);
 
         separadorEditorCorretor.setOrientation(javax.swing.SwingConstants.VERTICAL);
         painelEditor.add(separadorEditorCorretor, java.awt.BorderLayout.EAST);
@@ -682,7 +720,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JSplitPane divisorArvoreDepuracaoEditor;
     private javax.swing.JSplitPane divisorDicasCasos;
     private javax.swing.JSplitPane divisorEditorCorretor;
-    private javax.swing.JSplitPane divisorEditorSaida;
+    private javax.swing.JSplitPane divisorEditorPainelSaida;
     private br.univali.ps.ui.Editor editor;
     private javax.swing.JLabel jLCasosTeste;
     private javax.swing.JLabel jLCorrecao;
@@ -1125,17 +1163,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     
     public void expandirEditor()
     {
-        posicaoDivisorEditorArvore = divisorArvoreDepuracaoEditor.getDividerLocation();
-        posicaoDivisorEditorConsole = divisorEditorSaida.getDividerLocation();
+        posicaoDivisorEditorArvore = divisorEditorPainelSaida.getDividerLocation();
+        posicaoDivisorEditorConsole = divisorArvoreDepuracaoEditor.getDividerLocation();
                 
+        divisorEditorPainelSaida.setDividerLocation(1.0);
         divisorArvoreDepuracaoEditor.setDividerLocation(0.0);
-        divisorEditorSaida.setDividerLocation(1.0);
     }
     
     public void restaurarEditor()
     {
-        divisorArvoreDepuracaoEditor.setDividerLocation(posicaoDivisorEditorArvore);
-        divisorEditorSaida.setDividerLocation(posicaoDivisorEditorConsole);
+        divisorEditorPainelSaida.setDividerLocation(posicaoDivisorEditorArvore);
+        divisorArvoreDepuracaoEditor.setDividerLocation(posicaoDivisorEditorConsole);
     }
 
     
@@ -1145,7 +1183,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         @Override
         public void componentResized(ComponentEvent e)
         {
-            divisorEditorSaida.setDividerLocation(AbaCodigoFonte.this.getHeight() - 300);
+            divisorArvoreDepuracaoEditor.setDividerLocation(AbaCodigoFonte.this.getHeight() - 300);
         }
 
         @Override
