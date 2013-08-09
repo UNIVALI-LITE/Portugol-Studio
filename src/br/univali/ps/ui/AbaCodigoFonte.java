@@ -33,6 +33,7 @@ import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
@@ -287,36 +288,32 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         
         editor.configurarPesquisar((AbstractAction) painelTabulado.getActionMap().get("Pesquisar e substituir"));
         
-        this.addComponentListener(new ComponentAdapter() {
-
+        this.addComponentListener(new ComponentAdapter()
+        {
             private boolean primeiraVez = true;
             
             @Override
             public void componentShown(ComponentEvent e)
             {
-                if (primeiraVez){
-                    SwingUtilities.invokeLater(new Runnable() {
-
+                if (primeiraVez)
+                {
+                    SwingUtilities.invokeLater(new Runnable() 
+                    {                    
                         @Override
                         public void run()
-                        {
-
+                        {                                    
                             divisorArvoreDepuracaoEditor.setDividerLocation(0.0);
                             divisorEditorPainelSaida.setDividerLocation(1.0);
                             divisorArvoreDepuracaoEditor.setDividerLocation(250);
                             divisorEditorPainelSaida.setDividerLocation(divisorEditorPainelSaida.getHeight() - 200);
                             revalidate();
                             primeiraVez = false; 
-
+                                  
                         }
                     });
                 }
-            }
-            
-        
+            }       
         });
-        
-        
     }
     
     private void configurarComponentes()
@@ -418,6 +415,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorArvoreDepuracaoEditor = new javax.swing.JSplitPane();
         divisorEditorPainelSaida = new javax.swing.JSplitPane();
         painelAlinhamento1 = new javax.swing.JPanel();
+        painelAlinhamento3 = new javax.swing.JPanel();
         editor = new br.univali.ps.ui.Editor();
         painelStatus = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -535,6 +533,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorPainelSaida.setDividerLocation(200);
         divisorEditorPainelSaida.setDividerSize(8);
         divisorEditorPainelSaida.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        divisorEditorPainelSaida.setResizeWeight(1.0);
         divisorEditorPainelSaida.setOneTouchExpandable(true);
 
         painelAlinhamento1.setFocusable(false);
@@ -543,15 +542,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelAlinhamento1.setPreferredSize(new java.awt.Dimension(0, 0));
         painelAlinhamento1.setLayout(new java.awt.BorderLayout());
 
+        painelAlinhamento3.setLayout(new java.awt.BorderLayout());
+
         editor.setMinimumSize(new java.awt.Dimension(350, 22));
         editor.setPreferredSize(new java.awt.Dimension(0, 0));
-        painelAlinhamento1.add(editor, java.awt.BorderLayout.CENTER);
+        painelAlinhamento3.add(editor, java.awt.BorderLayout.CENTER);
 
         painelStatus.setFocusable(false);
-        painelStatus.setPreferredSize(new java.awt.Dimension(371, 35));
+        painelStatus.setMaximumSize(new java.awt.Dimension(300, 40));
+        painelStatus.setMinimumSize(new java.awt.Dimension(300, 40));
+        painelStatus.setPreferredSize(new java.awt.Dimension(300, 40));
         painelStatus.setLayout(new java.awt.BorderLayout());
-
-        jSeparator1.setPreferredSize(new java.awt.Dimension(0, 10));
         painelStatus.add(jSeparator1, java.awt.BorderLayout.PAGE_START);
 
         rotuloPosicaoCursor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -569,12 +570,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         campoOpcoesExecucao.setMaximumSize(new java.awt.Dimension(199, 26));
         campoOpcoesExecucao.setMinimumSize(new java.awt.Dimension(199, 26));
         campoOpcoesExecucao.setPreferredSize(new java.awt.Dimension(199, 26));
-        painelStatus.add(campoOpcoesExecucao, java.awt.BorderLayout.LINE_START);
+        painelStatus.add(campoOpcoesExecucao, java.awt.BorderLayout.WEST);
 
-        jSeparator2.setPreferredSize(new java.awt.Dimension(0, 10));
-        painelStatus.add(jSeparator2, java.awt.BorderLayout.PAGE_END);
+        painelAlinhamento3.add(painelStatus, java.awt.BorderLayout.SOUTH);
 
-        painelAlinhamento1.add(painelStatus, java.awt.BorderLayout.SOUTH);
+        painelAlinhamento1.add(painelAlinhamento3, java.awt.BorderLayout.CENTER);
+        painelAlinhamento1.add(jSeparator2, java.awt.BorderLayout.SOUTH);
 
         divisorEditorPainelSaida.setTopComponent(painelAlinhamento1);
 
@@ -589,6 +590,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelAlinhamento2.setPreferredSize(new java.awt.Dimension(250, 23));
         painelAlinhamento2.setLayout(new java.awt.BorderLayout());
 
+        sPOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
         sPOutlineTree.setBorder(null);
         sPOutlineTree.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
         sPOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
@@ -736,6 +738,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JTree jTCasos;
     private javax.swing.JPanel painelAlinhamento1;
     private javax.swing.JPanel painelAlinhamento2;
+    private javax.swing.JPanel painelAlinhamento3;
     private javax.swing.JPanel painelAlinhamento5;
     private javax.swing.JPanel painelAlinhamento6;
     private javax.swing.JPanel painelCasos;
