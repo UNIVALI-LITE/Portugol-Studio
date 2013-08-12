@@ -94,6 +94,7 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
     {
 //        setSorted(sorted);
         setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        setRowHeight(0);
         setRootVisible(false);
         setCellRenderer(new AstTreeCellRenderer());
         model = new DefaultTreeModel(new DefaultMutableTreeNode("Nothing"));

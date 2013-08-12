@@ -20,6 +20,7 @@ public final class Configuracoes
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
     public static final String DIRETORIO_EXEMPLOS = "diretorioExemplos";
     public static final String TEMA_EDITOR = "temaEditor";
+    public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();
@@ -28,6 +29,7 @@ public final class Configuracoes
     private String diretorioExemplos = "./Exemplos";
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
+    private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Padrão";
     
     Configuracoes()
@@ -46,6 +48,7 @@ public final class Configuracoes
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
             temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
+            tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
         }
         catch (IOException excecao)
         {
@@ -138,6 +141,21 @@ public final class Configuracoes
     public boolean isExibirOpcoesExecucao()
     {
         return exibirOpcoesExecucao;
+    }
+    
+    public void setTamanhoFonteArvore(float tamanhoFonteArvore)
+    {
+        float valorAntigo = this.tamanhoFonteArvore;
+        
+        this.configuracoes.setProperty(TAMANHO_FONTE_ARVORE, Float.toString(tamanhoFonteArvore));
+        this.tamanhoFonteArvore = tamanhoFonteArvore;
+        
+        suporteMudancaPropriedade.firePropertyChange(TAMANHO_FONTE_ARVORE, valorAntigo, tamanhoFonteArvore);
+    }
+
+    public float getTamanhoFonteArvore()
+    {
+        return tamanhoFonteArvore;
     }
     
     public void adicionarObservadorConfiguracoes(PropertyChangeListener observador)

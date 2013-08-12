@@ -62,6 +62,8 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
@@ -73,15 +75,29 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     private static final long serialVersionUID = 1L;
     private PortugolTreeNode currentPortugolTreeNode;
     private JLabel component;
+
+    public AstTreeCellRenderer()
+    {
+        //setBorder(new CompoundBorder(getBorder(), new EmptyBorder(4, 0, 4, 0)));
+    }
+    
+    
     
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
     {
         component = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+        
         if (value != null && value instanceof SourceTreeNode)
         {
             ((SourceTreeNode) value).aceitar(this);
         }
+        
+        //Dimension tam = component.getSize();
+        
+        //component.setSize(new Dimension(tam.width, tam.height + 100));
+        //component.setPreferredSize(new Dimension(tam.width, tam.height + 100));
+        
         return component;
     }
     
@@ -232,7 +248,6 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setSize(1000,20);
         component.setIcon(getIcon(noDeclaracaoVariavel.getTipoDado()));
         return null;
     }
@@ -680,7 +695,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
         }
         component.setText(sb.toString());
-        component.setPreferredSize(new Dimension(200,20));
+        //component.setPreferredSize(new Dimension(200,20));
         if (no.isModificado()) {
             component.setForeground(Color.BLUE);
         }
