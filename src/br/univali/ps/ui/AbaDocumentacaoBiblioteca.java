@@ -39,7 +39,6 @@ import javax.swing.tree.DefaultTreeModel;
 public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener, TreeSelectionListener
 {
     private int tamanhoFonte = 12;
-    private static String[] palavrasReservadas = { "inteiro", "real", "cadeia", "caracter", "logico", "verdadeiro", "falso" };
     
     public AbaDocumentacaoBiblioteca(JTabbedPane painelTabulado)
     {
@@ -158,10 +157,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
     private String destacarPalavrasReservadas(String texto)
     {
-        for (String palavraReservada : palavrasReservadas)
-        {
-            texto = texto.replace(":" + palavraReservada, "<span class=\"palavra_reservada\">" + palavraReservada + "</span>");
-        }
+        texto = texto.replace("<tipo>", "<span class=\"palavra_reservada\">");
+        texto = texto.replace("</tipo>", "</span>");
+        
+        texto = texto.replace("<param>", "<b>");
+        texto = texto.replace("</param>", "</b>");
         
         return texto;
     }
