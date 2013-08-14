@@ -47,9 +47,10 @@ public final class EditorAjuda extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
-                AbaCodigoFonte aba = new AbaCodigoFonte(telaPrincipal.getPainelTabulado());
                 
-                aba.getEditor().getTextArea().setText(editor.getTextArea().getText());
+                AbaCodigoFonte aba = new AbaCodigoFonte();
+                aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
+                aba.adicionar(telaPrincipal.getPainelTabulado());
             }
         };
         

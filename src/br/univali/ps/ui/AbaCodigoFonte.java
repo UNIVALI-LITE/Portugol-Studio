@@ -58,6 +58,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
     
+    private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
+    private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
     
     private Programa programa = null;
     private InterfaceDepurador depurador;    
@@ -72,10 +74,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     
     private AcaoSalvarArquivo acaoSalvarArquivo;
     private AcaoSalvarComo acaoSalvarComo;
-    private FiltroArquivo filtroExercicio;
     private FiltroArquivo filtroPrograma;
-    private JFileChooser dialogoSelecaoArquivo;
-    
+    private JFileChooser dialogoSelecaoArquivo;    
     
     private Action acaoExecutar;
     private Action acaoDepurar;
@@ -83,9 +83,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private Action acaoInterromper;
     private Action acaoAumentarFonteArvore;
     private Action acaoDiminuirFonteArvore;
-    
-    private Icon lampadaAcesa;
-    private Icon lampadaApagada;
     
     private Questao questao = null;
     private AbaEnunciado abaEnunciado = null;
@@ -95,10 +92,231 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
     private DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
     
+    public AbaCodigoFonte()
+    {
+        super("Sem título", lampadaApagada, true);
+        
+        initComponents();
+        configurarArvoreEstrutural();
+        criarPainelTemporario();
+        ocultarCorretor();
+        carregarConfiguracoes();
+        configurarSeletorArquivo();
+        configurarAcoes();
+        instalarObservadores();        
+        configurarCursorBotoes();        
+        atualizarStatusCursor();
+        carregarAlgoritmoPadrao();
+        criarDicasInterface();
+        
+        telaOpcoesExecucao = new TelaOpcoesExecucao();
+        editor.setAbaCodigoFonte(AbaCodigoFonte.this);
+        
+        divisorArvoreDepuracaoEditor.resetToPreferredSizes();
+        divisorEditorPainelSaida.resetToPreferredSizes();
+    }
+    
+    private void configurarArvoreEstrutural()
+    {
+        tree.setBackground(sPOutlineTree.getBackground());
+        tree.setRootVisible(false);
+        tree.setShowsRootHandles(true);
+    }
+    
+    private void criarPainelTemporario()
+    {
+        painelTemporario = new JPanel();
+        painelTemporario.setBorder(null);
+        painelTemporario.setLayout(new GridLayout(1, 1));
+        painelTemporario.setOpaque(false);
+        painelTemporario.setFocusable(false);
+        painelTemporario.setBackground(Color.RED);
+    }
+    
+    private void carregarConfiguracoes()
+    {
+        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        
+        campoOpcoesExecucao.setSelected(configuracoes.isExibirOpcoesExecucao());
+        setTamanhoFonteArvore(configuracoes.getTamanhoFonteArvore());
+    }    
+    
+    private void configurarSeletorArquivo()
+    {
+        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
+        
+        dialogoSelecaoArquivo = new JFileChooser();
+        
+        dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
+        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
+        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+    }    
+    
+    private void configurarAcoes()
+    {
+        configurarAcaoSalvarArquivo();
+        configurarAcaoSalvarComo();
+        configurarAcaoExecutar();
+        configurarAcaoDepurar();
+        configurarAcaoInterromper();
+        configurarAcaoProximaInstrucao();
+        configurarAcaoAumentarFonteArvore();
+        configurarAcaoDiminuirFonteArvore();
+    }
+    
+    private void configurarAcaoSalvarComo()
+    {
+        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
+        acaoSalvarComo.configurar(acaoSalvarArquivo, this, dialogoSelecaoArquivo, filtroPrograma, filtroPrograma);
+        acaoSalvarArquivo.configurar(editor.getPortugolDocumento(),acaoSalvarComo);  
+        
+        String nome = (String) acaoSalvarComo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoSalvarComo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoSalvarComo);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
+        btnSalvarComo.setAction(acaoSalvarComo);
+    }
+    
+    private void configurarAcaoSalvarArquivo()
+    {
+        acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
+        
+        acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
+
+        String nome = (String) acaoSalvarArquivo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoSalvarArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoSalvarArquivo);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
+        btnSalvar.setAction(acaoSalvarArquivo);
+    }
+            
+    private void configurarAcaoExecutar()
+    {
+        acaoExecutar = new AcaoExecutar();
+        acaoExecutar.setEnabled(true);
+        
+        String nome = (String) acaoExecutar.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoExecutar.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoExecutar);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
+        btnExecutar.setAction(acaoExecutar);
+    }
+    
+    private void configurarAcaoDepurar()
+    {
+        acaoDepurar = new AcaoDepurar();
+        
+        String nome = (String) acaoDepurar.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoDepurar.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoDepurar);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);        
+        
+        btnDepurar.setAction(acaoDepurar);
+    }
+    
+    private void configurarAcaoInterromper()
+    {
+        acaoInterromper = new AcaoInterromper();
+        acaoInterromper.setEnabled(false);
+        
+        String nome = (String) acaoInterromper.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoInterromper.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoInterromper);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
+        btnInterromper.setAction(acaoInterromper);
+    }
+
+    private void configurarAcaoProximaInstrucao()
+    {
+        acaoProximaInstrucao = new AcaoProximaInstrucao();
+        acaoProximaInstrucao.setEnabled(true);
+        
+        String nome = (String) acaoProximaInstrucao.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoProximaInstrucao.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        getActionMap().put(nome, acaoProximaInstrucao);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);             
+    }
+    
+    private void configurarAcaoAumentarFonteArvore()
+    {
+        acaoAumentarFonteArvore = new AbstractAction("Aumentar fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Font fonteAtual = tree.getFont();
+                float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
+                
+                setTamanhoFonteArvore(novoTamanho);
+            }
+        };
+        
+        btnAumentarFonteArvore.setAction(acaoAumentarFonteArvore);
+    }
+        
+    private void configurarAcaoDiminuirFonteArvore()
+    {
+        acaoDiminuirFonteArvore = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Font fonteAtual = tree.getFont();
+                float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
+
+                setTamanhoFonteArvore(novoTamanho);
+            }
+        };
+        
+        btnDiminuirFonteArvore.setAction(acaoDiminuirFonteArvore);
+    }    
+    
+    private void instalarObservadores()
+    {
+        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        
+        configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
+        configuracoes.adicionarObservadorConfiguracao(telaOpcoesExecucao, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
+        configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.TAMANHO_FONTE_ARVORE);
+		
+        campoOpcoesExecucao.addChangeListener(AbaCodigoFonte.this);		
+        editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
+        painelSaida.getAbaMensagensCompilador().adicionaAbaMensagemCompiladorListener(editor);
+        adicionarAbaListener(AbaCodigoFonte.this);
+        editor.adicionarObservadorCursor(AbaCodigoFonte.this);
+        tree.listenTo(editor.getTextArea());
+        
+        addComponentListener(new ComponentAdapter() 
+        {
+            @Override
+            public void componentShown(ComponentEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        editor.getTextArea().requestFocusInWindow();
+                    }
+                });
+            }
+        });
+    }
+    
     void corrigir()
     {
         Corretor corretor = new Corretor(questao);
-        painelSaida.getMensagemCompilador().limpar();
+        painelSaida.getAbaMensagensCompilador().limpar();
         int nota = 0;
         try
         {
@@ -207,7 +425,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             jTCasos.setModel(defaultTreeModel);
             jTCasos.invalidate();
         }
-        DefaultListModel<String> listModel = new DefaultListModel<String>();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
 
         for (String mensagem : corretor.listarMensagens())
         {
@@ -242,96 +460,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         return editor;
     }
     
-    public AbaCodigoFonte(JTabbedPane painelTabulado)
+    private void configurarCursorBotoes()
     {
-        super(painelTabulado);
-        
-        initComponents(); 
-        configurarSeletorArquivo();
-        configurarAcoes();
-        
-        telaOpcoesExecucao = new TelaOpcoesExecucao();
-        lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
-        lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
-
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-        configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
-        configuracoes.adicionarObservadorConfiguracao(telaOpcoesExecucao, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
-        configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.TAMANHO_FONTE_ARVORE);
-
-        campoOpcoesExecucao.setSelected(configuracoes.isExibirOpcoesExecucao());
-        campoOpcoesExecucao.addChangeListener(AbaCodigoFonte.this);
-        
-        setTamanhoFonteArvore(configuracoes.getTamanhoFonteArvore());
-        
-        editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
-        adicionarAbaListener(AbaCodigoFonte.this);
-        divisorArvoreDepuracaoEditor.setDividerLocation(480);
-        this.addComponentListener(new AdaptadorComponente());
-        painelSaida.getMensagemCompilador().adicionaAbaMensagemCompiladorListener(editor);
-        carregarAlgoritmoPadrao();
-
-        tree.listenTo(editor.getTextArea());
-
-        tree.setBackground(sPOutlineTree.getBackground());
-        tree.setRootVisible(false);
-        tree.setShowsRootHandles(true);
-
-        sPOutlineTree.setViewportView(tree);
-        editor.adicionarObservadorCursor(AbaCodigoFonte.this);
-
-        caretUpdate(null);
-
-        painelTemporario = new JPanel();
-        painelTemporario.setBorder(null);
-        painelTemporario.setLayout(new GridLayout(1, 1));
-        painelTemporario.setOpaque(false);
-        painelTemporario.setFocusable(false);
-        painelTemporario.setBackground(Color.RED);
-
-        editor.setAbaCodigoFonte(this);
-        
-        ocultarCorretor();
-        configurarComponentes();
-        criarDicasInterface();
-        
-        editor.configurarPesquisar((AbstractAction) painelTabulado.getActionMap().get("Pesquisar e substituir"));
-        
-        this.addComponentListener(new ComponentAdapter()
-        {
-            private boolean primeiraVez = true;
-            
-            @Override
-            public void componentShown(ComponentEvent e)
-            {
-                if (primeiraVez)
-                {
-                    SwingUtilities.invokeLater(new Runnable() 
-                    {                    
-                        @Override
-                        public void run()
-                        {                                    
-                            divisorArvoreDepuracaoEditor.setDividerLocation(0.0);
-                            divisorEditorPainelSaida.setDividerLocation(1.0);
-                            divisorArvoreDepuracaoEditor.setDividerLocation(250);
-                            divisorEditorPainelSaida.setDividerLocation(divisorEditorPainelSaida.getHeight() - 200);
-                            revalidate();
-                            primeiraVez = false; 
-                                  
-                        }
-                    });
-                }
-            }       
-        });
-    }
-    
-    private void configurarComponentes()
-    {
-        /* 
-         * Vamos configurar na mão, pois o editor visual do Netbeans sempre
-         * reseta estas configurações
-         */
-        
         barraFerramentas.setOpaque(false);
         
         for (Component componente : barraFerramentas.getComponents())
@@ -402,8 +532,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public void setQuestao(Questao questao)
     {
         this.questao = questao;
-        abaEnunciado = new AbaEnunciado(painelSaida);
-        abaEnunciado.setEnunciado(questao.getEnunciado());
+        this.abaEnunciado = new AbaEnunciado();
+        this.abaEnunciado.setEnunciado(questao.getEnunciado());
+        this.abaEnunciado.adicionar(painelSaida);
+        
         exibirCorretor();
     }
 
@@ -560,16 +692,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorArvoreDepuracaoEditor.setOneTouchExpandable(true);
 
         divisorEditorPainelSaida.setBorder(null);
-        divisorEditorPainelSaida.setDividerLocation(200);
         divisorEditorPainelSaida.setDividerSize(8);
         divisorEditorPainelSaida.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         divisorEditorPainelSaida.setResizeWeight(1.0);
         divisorEditorPainelSaida.setOneTouchExpandable(true);
 
         painelAlinhamento1.setFocusable(false);
-        painelAlinhamento1.setMinimumSize(new java.awt.Dimension(608, 190));
+        painelAlinhamento1.setMinimumSize(new java.awt.Dimension(500, 200));
         painelAlinhamento1.setOpaque(false);
-        painelAlinhamento1.setPreferredSize(new java.awt.Dimension(0, 0));
+        painelAlinhamento1.setPreferredSize(new java.awt.Dimension(500, 200));
         painelAlinhamento1.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento3.setLayout(new java.awt.BorderLayout());
@@ -609,13 +740,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         divisorEditorPainelSaida.setTopComponent(painelAlinhamento1);
 
-        painelSaida.setMinimumSize(new java.awt.Dimension(82, 200));
-        painelSaida.setPreferredSize(new java.awt.Dimension(82, 200));
+        painelSaida.setMinimumSize(new java.awt.Dimension(150, 200));
+        painelSaida.setPreferredSize(new java.awt.Dimension(200, 200));
         divisorEditorPainelSaida.setBottomComponent(painelSaida);
 
         divisorArvoreDepuracaoEditor.setRightComponent(divisorEditorPainelSaida);
 
         painelAlinhamento2.setFocusable(false);
+        painelAlinhamento2.setMinimumSize(new java.awt.Dimension(250, 100));
+        painelAlinhamento2.setName(""); // NOI18N
         painelAlinhamento2.setOpaque(false);
         painelAlinhamento2.setPreferredSize(new java.awt.Dimension(250, 23));
         painelAlinhamento2.setLayout(new java.awt.BorderLayout());
@@ -805,192 +938,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             programa = null;
         }
     }
-
-    private void corrigirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_corrigirActionPerformed
-    {//GEN-HEADEREND:event_corrigirActionPerformed
-        corrigir();
-    }//GEN-LAST:event_corrigirActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToolBar barraFerramentas;
-    private javax.swing.JToolBar barraFerramentasArvore;
-    private javax.swing.JButton btnAumentarFonteArvore;
-    private javax.swing.JButton btnContrairNosArvore;
-    private javax.swing.JButton btnDepurar;
-    private javax.swing.JButton btnDiminuirFonteArvore;
-    private javax.swing.JButton btnExecutar;
-    private javax.swing.JButton btnExpandirNosArvore;
-    private javax.swing.JButton btnInterromper;
-    private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton btnSalvarComo;
-    private javax.swing.JCheckBox campoOpcoesExecucao;
-    private javax.swing.JButton corrigir;
-    private javax.swing.JSplitPane divisorArvoreDepuracaoEditor;
-    private javax.swing.JSplitPane divisorDicasCasos;
-    private javax.swing.JSplitPane divisorEditorCorretor;
-    private javax.swing.JSplitPane divisorEditorPainelSaida;
-    private br.univali.ps.ui.Editor editor;
-    private javax.swing.JLabel jLCasosTeste;
-    private javax.swing.JLabel jLCorrecao;
-    private javax.swing.JList jLDicas;
-    private javax.swing.JLabel jLNota;
-    private javax.swing.JScrollPane jSPCasos;
-    private javax.swing.JScrollPane jSPDicas;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JTree jTCasos;
-    private javax.swing.JPanel painelAlinhamento1;
-    private javax.swing.JPanel painelAlinhamento2;
-    private javax.swing.JPanel painelAlinhamento3;
-    private javax.swing.JPanel painelAlinhamento4;
-    private javax.swing.JPanel painelAlinhamento5;
-    private javax.swing.JPanel painelAlinhamento6;
-    private javax.swing.JPanel painelBarraFerramentasArvore;
-    private javax.swing.JPanel painelCasos;
-    private javax.swing.JPanel painelConteudo;
-    private javax.swing.JPanel painelCorretor;
-    private javax.swing.JPanel painelDicas;
-    private javax.swing.JPanel painelEditor;
-    private javax.swing.JPanel painelResultado;
-    private br.univali.ps.ui.PainelSaida painelSaida;
-    private javax.swing.JPanel painelStatus;
-    private javax.swing.JLabel rotuloPosicaoCursor;
-    private javax.swing.JScrollPane sPOutlineTree;
-    private javax.swing.JSeparator separadorEditorCorretor;
-    private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
-    // End of variables declaration//GEN-END:variables
-
-    private void configurarAcoes()
-    {
-        configurarAcaoSalvarArquivo();
-        configurarAcaoSalvarComo();
-        configurarAcaoExecutar();
-        configurarAcaoDepurar();
-        configurarAcaoInterromper();
-        configurarAcaoProximaInstrucao();
-        configurarAcaoAumentarFonteArvore();
-        configurarAcaoDiminuirFonteArvore();
-    }
     
-    private void configurarAcaoSalvarComo()
-    {
-        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
-        acaoSalvarComo.configurar(acaoSalvarArquivo, this, dialogoSelecaoArquivo, filtroPrograma, filtroPrograma);
-        acaoSalvarArquivo.configurar(editor.getPortugolDocumento(),acaoSalvarComo);  
-        
-        String nome = (String) acaoSalvarComo.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoSalvarComo.getValue(AbstractAction.ACCELERATOR_KEY);
-        
-        getActionMap().put(nome, acaoSalvarComo);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        
-        btnSalvarComo.setAction(acaoSalvarComo);
-    }
-    
-    private void configurarAcaoSalvarArquivo()
-    {
-        acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
-        
-        acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
 
-        String nome = (String) acaoSalvarArquivo.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoSalvarArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
-        
-        getActionMap().put(nome, acaoSalvarArquivo);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        
-        btnSalvar.setAction(acaoSalvarArquivo);
-    }
-            
-    private void configurarAcaoExecutar()
-    {
-        acaoExecutar = new AcaoExecutar();
-        acaoExecutar.setEnabled(true);
-        
-        String nome = (String) acaoExecutar.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoExecutar.getValue(AbstractAction.ACCELERATOR_KEY);
-        
-        getActionMap().put(nome, acaoExecutar);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        
-        btnExecutar.setAction(acaoExecutar);
-    }
-    
-    private void configurarAcaoDepurar()
-    {
-        acaoDepurar = new AcaoDepurar();
-        
-        String nome = (String) acaoDepurar.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoDepurar.getValue(AbstractAction.ACCELERATOR_KEY);
-        
-        getActionMap().put(nome, acaoDepurar);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);        
-        
-        btnDepurar.setAction(acaoDepurar);
-    }
-    
-    private void configurarAcaoInterromper()
-    {
-        acaoInterromper = new AcaoInterromper();
-        acaoInterromper.setEnabled(false);
-        
-        String nome = (String) acaoInterromper.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoInterromper.getValue(AbstractAction.ACCELERATOR_KEY);
-        
-        getActionMap().put(nome, acaoInterromper);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        
-        btnInterromper.setAction(acaoInterromper);
-    }
-
-    private void configurarAcaoProximaInstrucao()
-    {
-        acaoProximaInstrucao = new AcaoProximaInstrucao();
-        acaoProximaInstrucao.setEnabled(true);
-        
-        String nome = (String) acaoProximaInstrucao.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoProximaInstrucao.getValue(AbstractAction.ACCELERATOR_KEY);
-        
-        getActionMap().put(nome, acaoProximaInstrucao);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);             
-    }
-    
-    private void configurarAcaoAumentarFonteArvore()
-    {
-        acaoAumentarFonteArvore = new AbstractAction("Aumentar fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Font fonteAtual = tree.getFont();
-                float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
-                
-                setTamanhoFonteArvore(novoTamanho);
-            }
-        };
-        
-        btnAumentarFonteArvore.setAction(acaoAumentarFonteArvore);
-    }
-        
-    private void configurarAcaoDiminuirFonteArvore()
-    {
-        acaoDiminuirFonteArvore = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Font fonteAtual = tree.getFont();
-                float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
-
-                setTamanhoFonteArvore(novoTamanho);
-            }
-        };
-        
-        btnDiminuirFonteArvore.setAction(acaoDiminuirFonteArvore);
-    }
 
     private void setTamanhoFonteArvore(float tamanho)
     {
@@ -1002,11 +951,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
     
     @Override
-    public void documentoModificado(boolean status)
+    public void documentoModificado(boolean modificado)
     {
         if (podeSalvar)
         {
-            acaoSalvarArquivo.setEnabled(status);
+            acaoSalvarArquivo.setEnabled(modificado);
         }
         else
         {
@@ -1018,36 +967,26 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             programa = null;
         }
 
-        if (status && podeSalvar)
+        if (modificado && podeSalvar)
         {
-            cabecalho.setForegroung(Color.RED);
-            cabecalho.setIcone(lampadaApagada);
+            getCabecalho().setForegroung(Color.RED);
+            getCabecalho().setIcone(lampadaApagada);
         }
         else
         {
-            cabecalho.setForegroung(Color.BLACK);
-            cabecalho.setIcone(lampadaAcesa);
+            getCabecalho().setForegroung(Color.BLACK);
+            getCabecalho().setIcone(lampadaAcesa);
         }
     }
 
-    private void configurarSeletorArquivo()
-    {
-        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
-        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
-        
-        dialogoSelecaoArquivo = new JFileChooser();
-        
-        dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
-        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
-        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
-    }
+    
     
     @Override
     public boolean fechandoAba(Aba aba)
     {
         if ((programa != null) && programa.isExecutando())
         {
-            JOptionPane.showMessageDialog(this, String.format("O programa desta aba (%s) ainda está em execução.\nEncerre o programa antes de fechar a aba.", aba.cabecalho.getTitulo()), "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, String.format("O programa desta aba (%s) ainda está em execução.\nEncerre o programa antes de fechar a aba.", getCabecalho().getTitulo()), "Aviso", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
@@ -1071,7 +1010,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     @Override
     public void nomeArquivoAlterado(String nome)
     {
-        cabecalho.setTitulo(nome);
+        getCabecalho().setTitulo(nome);
     }
 
     public PortugolDocumento getPortugolDocumento()
@@ -1082,7 +1021,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void executar(boolean depurar)
     {
-        AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
+        AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();
         abaMensagem.limpar();
 
         try
@@ -1259,7 +1198,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void mensagensCompilacao(ErroCompilacao erroCompilacao)
     {
-        AbaMensagemCompilador abaMensagem = painelSaida.getMensagemCompilador();
+        AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();
         abaMensagem.limpar();
 
         ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
@@ -1335,39 +1274,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorArvoreDepuracaoEditor.setDividerLocation(posicaoDivisorEditorConsole);
     }
 
-    
-   
-    private class AdaptadorComponente extends ComponentAdapter
+    private void atualizarStatusCursor()
     {
-        @Override
-        public void componentResized(ComponentEvent e)
-        {
-            divisorArvoreDepuracaoEditor.setDividerLocation(AbaCodigoFonte.this.getHeight() - 300);
-        }
-
-        @Override
-        public void componentShown(ComponentEvent ce)
-        {
-            editor.requestFocus();
-        }
+        caretUpdate(null);
     }
 
     private void carregarAlgoritmoPadrao()
     {
-        try
-        {
-            int posicaoCursor = template.indexOf("${cursor}");
-            String algoritmo = template.replace("${cursor}", "");
-
-            Document documento = editor.getPortugolDocumento();
-            documento.insertString(documento.getLength(), algoritmo, null);
-
-            editor.getTextArea().setCaretPosition(posicaoCursor);
-        }
-        catch (BadLocationException ex)
-        {
-            ex.printStackTrace(System.out);
-        }
+        int posicaoCursor = template.indexOf("${cursor}");
+        String algoritmo = template.replace("${cursor}", "");
+        editor.setCodigoFonte(algoritmo);
+        editor.getTextArea().setCaretPosition(posicaoCursor);
     }
 
     private static String carregarTemplate()
@@ -1458,5 +1375,62 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         //rotuloPosicaoCursor.setText(String.format("Linha: %d, Coluna: %d", posicao.y, posicao.x));
 
         rotuloPosicaoCursor.setText(String.format("Escopo: %s, Nivel: %d, Linha: %d, Coluna: %d", escopo.getNome(), escopo.getProfundidade(), posicao.y, posicao.x));
-    }
+    }    
+
+    private void corrigirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_corrigirActionPerformed
+    {//GEN-HEADEREND:event_corrigirActionPerformed
+        corrigir();
+    }//GEN-LAST:event_corrigirActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar barraFerramentas;
+    private javax.swing.JToolBar barraFerramentasArvore;
+    private javax.swing.JButton btnAumentarFonteArvore;
+    private javax.swing.JButton btnContrairNosArvore;
+    private javax.swing.JButton btnDepurar;
+    private javax.swing.JButton btnDiminuirFonteArvore;
+    private javax.swing.JButton btnExecutar;
+    private javax.swing.JButton btnExpandirNosArvore;
+    private javax.swing.JButton btnInterromper;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnSalvarComo;
+    private javax.swing.JCheckBox campoOpcoesExecucao;
+    private javax.swing.JButton corrigir;
+    private javax.swing.JSplitPane divisorArvoreDepuracaoEditor;
+    private javax.swing.JSplitPane divisorDicasCasos;
+    private javax.swing.JSplitPane divisorEditorCorretor;
+    private javax.swing.JSplitPane divisorEditorPainelSaida;
+    private br.univali.ps.ui.Editor editor;
+    private javax.swing.JLabel jLCasosTeste;
+    private javax.swing.JLabel jLCorrecao;
+    private javax.swing.JList jLDicas;
+    private javax.swing.JLabel jLNota;
+    private javax.swing.JScrollPane jSPCasos;
+    private javax.swing.JScrollPane jSPDicas;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JTree jTCasos;
+    private javax.swing.JPanel painelAlinhamento1;
+    private javax.swing.JPanel painelAlinhamento2;
+    private javax.swing.JPanel painelAlinhamento3;
+    private javax.swing.JPanel painelAlinhamento4;
+    private javax.swing.JPanel painelAlinhamento5;
+    private javax.swing.JPanel painelAlinhamento6;
+    private javax.swing.JPanel painelBarraFerramentasArvore;
+    private javax.swing.JPanel painelCasos;
+    private javax.swing.JPanel painelConteudo;
+    private javax.swing.JPanel painelCorretor;
+    private javax.swing.JPanel painelDicas;
+    private javax.swing.JPanel painelEditor;
+    private javax.swing.JPanel painelResultado;
+    private br.univali.ps.ui.PainelSaida painelSaida;
+    private javax.swing.JPanel painelStatus;
+    private javax.swing.JLabel rotuloPosicaoCursor;
+    private javax.swing.JScrollPane sPOutlineTree;
+    private javax.swing.JSeparator separadorEditorCorretor;
+    private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
+    // End of variables declaration//GEN-END:variables
 }

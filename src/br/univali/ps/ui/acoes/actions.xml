@@ -11,10 +11,6 @@
 <actions  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
    xmlns='http://www.univali.br/portugol/ide/actions.xsd'
    xsi:schemaLocation='http://www.univali.br/portugol/ide/actions.xsd actions.xsd'>
-    <action id="AcaoNovoArquivo">
-        <title>Novo</title>
-        <icon>page_white_add.png</icon>
-    </action>
     <action id="AcaoAbrirArquivo">
         <title>Abrir...</title>
         <icon>folder_open.png</icon>

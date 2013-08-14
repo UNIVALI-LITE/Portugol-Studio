@@ -2,6 +2,9 @@ package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
 import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
+import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
+import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.Configuracoes;
@@ -26,6 +29,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -42,13 +46,18 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import net.java.balloontip.BalloonTip;
+import org.fife.rsta.ui.search.FindDialog;
+import org.fife.rsta.ui.search.ReplaceDialog;
+import org.fife.rsta.ui.search.SearchDialogSearchContext;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -56,6 +65,8 @@ import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.SearchContext;
+import org.fife.ui.rtextarea.SearchEngine;
 
 /**
  *
@@ -94,11 +105,18 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Action acaoExpandir;
     private Action acaoRestaurar;
     private Action acaoAlternarModoEditor;
+    private Action acaoPesquisarSubstituir;
 
+    
+    private FindDialog dialogoPesquisar;
+    private ReplaceDialog dialogoSubstituir;
+    private FindReplaceActionListener observadorAcaoPesquisaSubstituir;
+    
     public Editor()
     {
         initComponents();
         
+        configurarDialogoPesquisarSubstituir();
         configurarParser();
         configurarTextArea();
         configurarAcoes();
@@ -130,6 +148,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
     
+    private void configurarDialogoPesquisarSubstituir()
+    {
+        TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+        observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
+        
+        dialogoPesquisar = new FindDialog(telaPrincipal, observadorAcaoPesquisaSubstituir);
+        dialogoSubstituir = new ReplaceDialog(telaPrincipal, observadorAcaoPesquisaSubstituir);
+        dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
+    }    
+    
     private void configurarParser()
     {
         FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));        
@@ -151,6 +179,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Alterna o modo do editor entre normal e expandido", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnPesquisar, "Pesquisa e/ou substitui um texto no editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
         //FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Alterna o modo do editor entre normal e expandido (" + acaoAlternarModoEditor.getValue(AbstractAction.ACCELERATOR_KEY).toString() + ")", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
     }
 
@@ -186,6 +215,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoExpandir();
         configurarAcaoRestaurar();
         configurarAcaoAlternarModoEditor();
+        configurarAcaoPesquisarSubstituir();
     }
     
     private void configurarAcaoDesfazer()
@@ -392,6 +422,31 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
     }
     
+    private void configurarAcaoPesquisarSubstituir()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
+        String nome = "Pesquisar e substituir";
+        
+        acaoPesquisarSubstituir = new AbstractAction(nome,IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {                
+                if (dialogoPesquisar.isVisible())
+                {
+                    dialogoPesquisar.setVisible(false);
+                }
+
+                dialogoSubstituir.setVisible(true);
+            }
+        };
+        
+        btnPesquisar.setAction(acaoPesquisarSubstituir);
+        
+        getActionMap().put(nome, acaoPesquisarSubstituir);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }    
+    
     private void configurarAcaoExpandir()
     {   
         acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"))
@@ -506,13 +561,15 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
-        if (evt.getPropertyName().equals(Configuracoes.TAMANHO_FONTE_EDITOR))
+        switch (evt.getPropertyName())
         {
-            setTamanhoFonteEditor((Float) evt.getNewValue());
-        }
-        else  if (evt.getPropertyName().equals(Configuracoes.TEMA_EDITOR))
-        {
-            aplicarTema((String) evt.getNewValue());
+            case Configuracoes.TAMANHO_FONTE_EDITOR:
+                setTamanhoFonteEditor((Float) evt.getNewValue());
+            break;
+            
+            case Configuracoes.TEMA_EDITOR:
+                aplicarTema((String) evt.getNewValue());
+            break;
         }
     }
     
@@ -531,6 +588,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setText(codigoFonte);
         textArea.setCaretPosition(0);
         textArea.discardAllEdits();
+        textArea.forceReparsing(notificaErrosEditor);
     }
 
     public PortugolDocumento getPortugolDocumento()
@@ -649,13 +707,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         
         while (avaliadorNivel.find())
         {
-            if (avaliadorNivel.group().equals("{"))
+            switch (avaliadorNivel.group())
             {
-                nivel++;
-            }
-            else if (avaliadorNivel.group().equals("}"))
-            {
-                nivel--;
+                case "{":
+                    nivel++;
+                    break;
+                case "}":
+                    nivel--;
+                    break;
             }
         }
 
@@ -816,6 +875,27 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {}
 
     @Override
+    public void mensagemCompiladorSelecionada(Mensagem mensagem)
+    {
+        int linha = 0;
+        int coluna = 0;
+        
+        if (mensagem instanceof ErroAnalise)
+        {
+            linha = ((ErroAnalise) mensagem).getLinha();
+            coluna = ((ErroAnalise) mensagem).getColuna();
+        }
+        
+        else if (mensagem instanceof AvisoAnalise)
+        {
+            linha = ((AvisoAnalise) mensagem).getLinha();
+            coluna = ((AvisoAnalise) mensagem).getColuna();
+        }
+        
+        posicionarCursor(linha, coluna);
+    }
+    
+    
     public void posicionarCursor(int linha, int coluna)
     {
         try
@@ -837,6 +917,65 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     @Override
     public void simboloRemovido(Simbolo simbolo) {}
 
+    private class FindReplaceActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            String command = e.getActionCommand();
+            SearchDialogSearchContext context = dialogoPesquisar.getSearchContext();
+
+            if (FindDialog.ACTION_FIND.equals(command))
+            {
+                if (!SearchEngine.find(textArea, context))
+                {
+                    reiniciar(context, textArea, e);
+                }
+            }
+            else if (ReplaceDialog.ACTION_REPLACE.equals(command))
+            {
+                if (!SearchEngine.replace(textArea, context))
+                {
+                    reiniciar(context, textArea, e);
+                }
+            }
+            else if (ReplaceDialog.ACTION_REPLACE_ALL.equals(command))
+            {
+                TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+                
+                int count = SearchEngine.replaceAll(textArea, context);
+                JOptionPane.showMessageDialog(telaPrincipal, count + " ocorrências foram substituídas.");
+            }
+        }
+        
+        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, ActionEvent e)
+        {
+            TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+            UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+                        
+            String s = "A pesquisa chegou no início do arquivo, deseja recomeçar do final?";
+
+            if (context.getSearchForward())
+            {
+                s = "A pesquisa chegou no final do arquivo, deseja recomeçar do início?";
+            }
+
+            if (JOptionPane.showConfirmDialog(telaPrincipal, s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
+            {
+                if (context.getSearchForward())
+                {
+                    textArea.setCaretPosition(0);
+                }
+                else
+                {
+                    textArea.setCaretPosition(textArea.getText().length() - 1);
+                }
+
+                actionPerformed(e);
+            }
+        }
+    }    
+    
     public class EscopoCursor
     {
         private String nome;

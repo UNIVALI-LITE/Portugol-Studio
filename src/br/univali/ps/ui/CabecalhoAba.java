@@ -5,8 +5,8 @@ import java.awt.Dimension;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
-public class CabecalhoAba extends JPanel {
-
+public class CabecalhoAba extends JPanel
+{
     private Aba aba;
 
     public CabecalhoAba(Aba aba)
@@ -15,6 +15,11 @@ public class CabecalhoAba extends JPanel {
         this.aba = aba;
     }
 
+    protected Aba getAba()
+    {
+        return aba;
+    }
+    
     public void setTitulo(String titulo)
     {
         this.jLTitulo.setText(titulo);
@@ -153,4 +158,4 @@ public class CabecalhoAba extends JPanel {
     {
         return jBFechar.isVisible();
     }
-    }
+}

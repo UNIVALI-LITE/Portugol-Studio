@@ -1,62 +1,81 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.util.IconFactory;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Icon;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 public abstract class Aba extends JPanel
 {
-    private static List<Class<? extends Aba>> classesFilhas = new ArrayList<Class<? extends Aba>>();
-    protected CabecalhoAba cabecalho;
-    private JTabbedPane painelTabulado;
+    private static List<Class<? extends Aba>> classesFilhas = new ArrayList<>();
+    
+    private CabecalhoAba cabecalho;
+    private PainelTabulado painelTabulado;
     private List<AbaListener> listeners;
 
-    private Aba()
+    public Aba()
     {
         if (!classesFilhas.contains(this.getClass()))
         {
             classesFilhas.add(this.getClass());
         }
-    }
-
-    public final static List<Class<? extends Aba>> classesFilhas()
-    {
-        return new ArrayList<Class<? extends Aba>>(classesFilhas);
-    }
-
-    public Aba(JTabbedPane painelTabulado)
-    {
-        this();
-        listeners = new ArrayList<AbaListener>();
-        this.painelTabulado = painelTabulado;
-        cabecalho = criarCabecalho();
-        //int posicao = painelTabulado.getComponentCount();
-        //if (posicao > 0)
-        //    posicao = 1;
-        adicionar(painelTabulado);
+        
+        this.listeners = new ArrayList<>();
+        this.cabecalho = criarCabecalhoPadrao("Sem título", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"), false);
     }
     
-    public final void adicionar(JTabbedPane painelTabulado)
+     public Aba(String titulo, Icon icone, boolean removivel)
+     {
+         this();
+         this.cabecalho = criarCabecalhoPadrao(titulo, icone, removivel);
+     }
+    
+    public Aba(CabecalhoAba cabecalhoAba)
     {
-        painelTabulado.add(this);
-        painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
-        painelTabulado.setSelectedComponent(this);
+        this();        
+        this.cabecalho = cabecalhoAba;
+    }
+    
+    public static List<Class<? extends Aba>> classesFilhas()
+    {
+        return new ArrayList<>(classesFilhas);
     }
 
-    public JTabbedPane getPainelTabulado()
+    private CabecalhoAba criarCabecalhoPadrao(String titulo, Icon icone, boolean removivel)
     {
-        return painelTabulado;
+        CabecalhoAba cabecalhoPadrao = new CabecalhoAba(this);
+        
+        cabecalhoPadrao.setTitulo(titulo);
+        cabecalhoPadrao.setIcone(icone);
+        cabecalhoPadrao.setBotaoFecharVisivel(removivel);
+        
+        return cabecalhoPadrao;
+    }
+    
+    public final void adicionar(PainelTabulado painelTabulado)
+    {
+        this.painelTabulado = painelTabulado;
+        this.painelTabulado.add(this);
+        this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
+        this.painelTabulado.setSelectedComponent(this);
     }
 
-    protected CabecalhoAba criarCabecalho()
+    protected CabecalhoAba getCabecalho()
     {
-        CabecalhoAba cabecalho = new CabecalhoAba(this);
-        cabecalho.setTitulo("Sem título");
-        cabecalho.setBotaoFecharVisivel(true);
         return cabecalho;
     }
 
+    protected void setCabecalho(CabecalhoAba cabecalho)
+    {
+        this.cabecalho = cabecalho;
+    }
+    
+    public PainelTabulado getPainelTabulado()
+    {
+        return painelTabulado;
+    }
+    
     public void setRemovivel(boolean removivel)
     {
         cabecalho.setBotaoFecharVisivel(removivel);
@@ -69,7 +88,6 @@ public abstract class Aba extends JPanel
 
     public boolean fechar()
     {
-
         boolean podeFechar = true;
 
         for (AbaListener listener : listeners)
@@ -82,7 +100,11 @@ public abstract class Aba extends JPanel
 
         if (podeFechar)
         {
-            painelTabulado.remove(this);
+            if (painelTabulado != null)
+            {
+                painelTabulado.remove(this);
+                painelTabulado = null;
+            }
         }
 
         return podeFechar;
@@ -90,7 +112,10 @@ public abstract class Aba extends JPanel
 
     public void selecionar()
     {
-        painelTabulado.setSelectedComponent(this);
+        if (painelTabulado != null)
+        {
+            painelTabulado.setSelectedComponent(this);
+        }
     }
 
     public void adicionarAbaListener(AbaListener listener)

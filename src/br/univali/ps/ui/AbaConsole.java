@@ -19,8 +19,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -40,6 +40,8 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
     
+    private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png");
+    
     private TipoDado tipoDado;
     private boolean executandoPrograma = false;
     private JLabel rotuloPopupLeia;
@@ -53,12 +55,10 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
     private Action acaoLimpar;
     private Action acaoCopiar;
 
-    public AbaConsole(JTabbedPane painelTabulado) 
+    public AbaConsole()
     {
-        super(painelTabulado);
-        cabecalho.setBotaoFecharVisivel(false);
-        cabecalho.setTitulo("Console");
-        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png"));
+        super("Console", icone, false);
+
         initComponents();
         console.setComponentPopupMenu(menuConsole);
         this.menuConsoleLimpar.setText("Limpar");
@@ -565,13 +565,10 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
             }
             else if (tipoDado == TipoDado.LOGICO)
             {
-                if (entrada.equals("falso"))
+                switch (entrada)
                 {
-                    return false;
-                }
-                else if (entrada.equals("verdadeiro"))
-                {
-                    return true;
+                    case "falso": return false;
+                    case "verdadeiro": return true;
                 }
             }
 
@@ -720,6 +717,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
             setBlinkRate(250);
         }
 
+        @Override        
         protected synchronized void damage(Rectangle r)
         {
             if (r == null)
@@ -748,6 +746,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         /* (non-Javadoc)
          * @see javax.swing.text.DefaultCaret#paint(java.awt.Graphics)
          */
+        @Override
         public void paint(Graphics g)
         {
             JTextComponent comp = getComponent();

@@ -90,7 +90,7 @@
         <Property name="rows" type="int" value="1"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jBAbrir">
+        <Component class="javax.swing.JButton" name="botaoAbrir">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/folder_closed.png"/>
@@ -118,11 +118,8 @@
             </Property>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBAbrirActionPerformed"/>
-          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jBNovaAba">
+        <Component class="javax.swing.JButton" name="botaoNovoArquivo">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/page_white_add.png"/>
@@ -147,9 +144,6 @@
             </Property>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBNovaAbaActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

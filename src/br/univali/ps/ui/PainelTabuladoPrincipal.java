@@ -1,25 +1,15 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
-import br.univali.ps.ui.acoes.AcaoNovoArquivo;
-
-public class PainelTabuladoPrincipal extends PainelTabulado
+public final class PainelTabuladoPrincipal extends PainelTabulado
 {
-    private BotoesControleAba cabecalhoAbaInicial;
-
     public PainelTabuladoPrincipal()
     {
         initComponents();
-        Aba aba = new AbaInicial(this);
-        cabecalhoAbaInicial = (BotoesControleAba) aba.cabecalho;
+        
+        AbaInicial abaInicial = new AbaInicial(PainelTabuladoPrincipal.this);
+        abaInicial.adicionar(PainelTabuladoPrincipal.this);
     }
-
-    public void init(AcaoAbrirArquivo acaoAbrir, AcaoNovoArquivo acaoNovo)
-    {
-        cabecalhoAbaInicial.setAcaoAbrirAction(acaoAbrir);
-        cabecalhoAbaInicial.setAcaoNovoArquivo(acaoNovo);
-    }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()

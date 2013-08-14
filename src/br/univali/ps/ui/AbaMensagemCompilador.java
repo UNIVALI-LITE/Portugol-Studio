@@ -2,7 +2,6 @@ package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSemanticoNaoTratado;
-import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
@@ -10,14 +9,12 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
@@ -31,18 +28,23 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public final class AbaMensagemCompilador extends Aba 
 {
+    private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "table_error.png");
+    
     private List<AbaMensagemCompiladorListener> mensagemCompiladorListeners;
     private ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
 
-    public AbaMensagemCompilador(JTabbedPane painelTabulado)
+    public AbaMensagemCompilador()
     {
-        super(painelTabulado);
-        mensagemCompiladorListeners = new ArrayList<>();
-        cabecalho.setBotaoFecharVisivel(false);
-        cabecalho.setTitulo("Mensagens");
-        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "table_error.png"));
+        super("Mensagens", icone, false);
         initComponents();
-
+        configurarAparenciaTabela();
+        instalarObservadores();
+        
+        mensagemCompiladorListeners = new ArrayList<>();
+    }
+    
+    private void configurarAparenciaTabela()
+    {
         tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
@@ -53,17 +55,23 @@ public final class AbaMensagemCompilador extends Aba
         tabelaMensagens.getColumnModel().getColumn(1).setMaxWidth(67);
         tabelaMensagens.getColumnModel().getColumn(1).setResizable(false);
 
-        BeautyTableCellRenderer renderer = new BeautyTableCellRenderer();
+        Renderizador renderizador = new Renderizador();
 
-        tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderer);
-        tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderer);
-        tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderer);
+        tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderizador);
+        tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderizador);
+        tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderizador);
         
         AjustadorLinha ajustadorLinha = new AjustadorLinha(tabelaMensagens);
         
         tabelaMensagens.addComponentListener(ajustadorLinha);
         tabelaModel.addTableModelListener(ajustadorLinha);
-
+        
+        tabelaMensagens.setShowGrid(false);
+        tabelaMensagens.setIntercellSpacing(new Dimension(0, 0));        
+    }
+    
+    private void instalarObservadores()
+    {
         tabelaMensagens.getSelectionModel().addListSelectionListener(new ListSelectionListener()
         {
             @Override
@@ -73,38 +81,14 @@ public final class AbaMensagemCompilador extends Aba
                 {
                     Mensagem mensagem = tabelaModel.getMensagem(tabelaMensagens.getSelectedRow());
                     
-                    disparaPosicionarCursor(getLinha(mensagem), getColuna(mensagem));
+                    notificarMensagemSelecionada(mensagem);
                 }
             }
         });
-
-        tabelaMensagens.setShowGrid(false);
-        tabelaMensagens.setIntercellSpacing(new Dimension(0, 0));
-    }
-
-    private int getLinha(Mensagem mensagem)
-    {
-        if (mensagem instanceof ErroAnalise)
-        {
-            return ((ErroAnalise) mensagem).getLinha();
-        }
-        
-        return 0;
-    }
-    
-    private int getColuna(Mensagem mensagem)
-    {
-        if (mensagem instanceof ErroAnalise)
-        {
-            return ((ErroAnalise) mensagem).getColuna();
-        }
-        
-        return 0;
     }
     
     public void atualizar(ResultadoAnalise resultadoAnalise)
-    {
-        
+    {        
         for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
         {
             if (erro instanceof ErroSemanticoNaoTratado)
@@ -116,73 +100,38 @@ public final class AbaMensagemCompilador extends Aba
         tabelaModel.setResultadoAnalise(resultadoAnalise);
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
-
-        jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
-        tabelaMensagens = new javax.swing.JTable();
-
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        setFocusable(false);
-        setOpaque(false);
-        setLayout(new java.awt.BorderLayout());
-
-        jScrollPaneTabelaMensagens.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
-        jScrollPaneTabelaMensagens.setFocusable(false);
-        jScrollPaneTabelaMensagens.setOpaque(false);
-
-        tabelaMensagens.setBackground(new java.awt.Color(245, 245, 245));
-        tabelaMensagens.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tabelaMensagens.setFillsViewportHeight(true);
-        tabelaMensagens.setRequestFocusEnabled(false);
-        tabelaMensagens.setRowHeight(24);
-        tabelaMensagens.setSelectionBackground(new java.awt.Color(0, 84, 148));
-        tabelaMensagens.setShowHorizontalLines(false);
-        tabelaMensagens.setShowVerticalLines(false);
-        tabelaMensagens.getTableHeader().setReorderingAllowed(false);
-        jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
-
-        add(jScrollPaneTabelaMensagens, java.awt.BorderLayout.CENTER);
-    }// </editor-fold>//GEN-END:initComponents
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPaneTabelaMensagens;
-    private javax.swing.JTable tabelaMensagens;
-    // End of variables declaration//GEN-END:variables
-
-    void limpar()
+void limpar()
     {
         tabelaModel.setResultadoAnalise(null);
     }
    
-    private void disparaPosicionarCursor(int linha, int coluna)
+    private void notificarMensagemSelecionada(Mensagem mensagem)
     {
         for (AbaMensagemCompiladorListener listener : mensagemCompiladorListeners)
         {
-            listener.posicionarCursor(linha, coluna);
+            listener.mensagemCompiladorSelecionada(mensagem);
         }
     }
 
-    public void adicionaAbaMensagemCompiladorListener(AbaMensagemCompiladorListener l)
+    public void adicionaAbaMensagemCompiladorListener(AbaMensagemCompiladorListener listener)
     {
-        if (!mensagemCompiladorListeners.contains(l))
+        if (!mensagemCompiladorListeners.contains(listener))
         {
-            mensagemCompiladorListeners.add(l);
+            mensagemCompiladorListeners.add(listener);
         }
     }
 
-    public void removeAbaMensagemCompiladorListener(AbaMensagemCompiladorListener l)
+    public void removeAbaMensagemCompiladorListener(AbaMensagemCompiladorListener listener)
     {
-        mensagemCompiladorListeners.remove(l);
+        mensagemCompiladorListeners.remove(listener);
     }
-
-    private final class BeautyTableCellRenderer extends DefaultTableCellRenderer
+    
+    private final class Renderizador extends DefaultTableCellRenderer
     {
-        private Color evenColor = Color.WHITE;
-        private Color oddColor = new Color(235, 235, 235);
+        private final Color corImpar = Color.WHITE;
+        private final Color corPar = new Color(235, 235, 235);
 
-        public BeautyTableCellRenderer()
+        public Renderizador()
         {
             setFocusable(false);
             setOpaque(true);
@@ -193,30 +142,16 @@ public final class AbaMensagemCompilador extends Aba
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
         {
             JLabel renderer = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            String valor = null;
             
             setBorder(new EmptyBorder(4, 4, 4, 4));
+            setVerticalAlignment((column < 2)? JLabel.CENTER : JLabel.TOP);
+            setIcon((column == 0)? (Icon) value : null);
+            setHorizontalAlignment((column == 0)? SwingConstants.CENTER : SwingConstants.LEADING);
             
-            if (column < 2)
-            {
-                setVerticalAlignment(JLabel.CENTER);
-            }
-            else 
-            {
-                setVerticalAlignment(JLabel.TOP);
-            }
-            
-            if (column == 0)
-            {
-                setIcon((Icon) value);
-                setHorizontalAlignment(SwingConstants.CENTER);
-                setText(null);
-            }
-            else
-            {
-                setIcon(null);
-                setHorizontalAlignment(SwingConstants.LEADING);
-                
-                String valor = value.toString();
+            if (column > 0)
+            {                
+                valor = value.toString();
         
                 valor = valor.replace("\r\n", " ");
                 valor = valor.replace("\n", " ");
@@ -225,22 +160,13 @@ public final class AbaMensagemCompilador extends Aba
                 valor = valor.replace(">", "&gt;");
                 
                 valor = String.format("<html><body><div>%s</div></body></html>", valor);
-                
-                setText(valor);
             }
+            
+            setText(valor);
 
             if (!isSelected)
             {
-                if (row % 2 == 0)
-                {
-                    setBackground(oddColor);
-                }
-                else
-                {
-                    setBackground(evenColor);
-                }
-
-                setFont(getFont().deriveFont(Font.PLAIN));
+                setBackground((row % 2 == 0)? corPar : corImpar);
             }
 
             return renderer;
@@ -325,4 +251,39 @@ public final class AbaMensagemCompilador extends Aba
          
         @Override public void componentMoved(ComponentEvent e) { }
     }
+    
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents()
+    {
+
+        jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
+        tabelaMensagens = new javax.swing.JTable();
+
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        setFocusable(false);
+        setOpaque(false);
+        setLayout(new java.awt.BorderLayout());
+
+        jScrollPaneTabelaMensagens.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
+        jScrollPaneTabelaMensagens.setFocusable(false);
+        jScrollPaneTabelaMensagens.setOpaque(false);
+
+        tabelaMensagens.setBackground(new java.awt.Color(245, 245, 245));
+        tabelaMensagens.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tabelaMensagens.setFillsViewportHeight(true);
+        tabelaMensagens.setRequestFocusEnabled(false);
+        tabelaMensagens.setRowHeight(24);
+        tabelaMensagens.setSelectionBackground(new java.awt.Color(0, 84, 148));
+        tabelaMensagens.setShowHorizontalLines(false);
+        tabelaMensagens.setShowVerticalLines(false);
+        tabelaMensagens.getTableHeader().setReorderingAllowed(false);
+        jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
+
+        add(jScrollPaneTabelaMensagens, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>//GEN-END:initComponents
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPaneTabelaMensagens;
+    private javax.swing.JTable tabelaMensagens;
+    // End of variables declaration//GEN-END:variables
 }

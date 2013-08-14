@@ -62,18 +62,14 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private Action acaoAtualizarTopico;
     private Topico topicoAtual;
     
-    public AbaAjuda(JTabbedPane painelTabulado)
+    public AbaAjuda()
     {
-        super(painelTabulado);
-        
-        cabecalho.setTitulo("Ajuda");
-        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"));
-        
+        super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
+
         initComponents();
         configurarArvore();
         configurarAcoes();
         
-        //conteudo.setContentType("text/plain");
         rotuloErroCarregamento.setVisible(false);
         
         addComponentListener(new ComponentAdapter()

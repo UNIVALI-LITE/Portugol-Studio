@@ -38,22 +38,29 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener, TreeSelectionListener
 {
-    private int tamanhoFonte = 12;
+    private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif");
+    private static final int tamanhoFonte = 12;
     
-    public AbaDocumentacaoBiblioteca(JTabbedPane painelTabulado)
+    public AbaDocumentacaoBiblioteca()
     {
-        super(painelTabulado);
+        super("Bibliotecas", icone, true);
+        
         initComponents();
-        
-        cabecalho.setTitulo("Bibliotecas");
-        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
-        
-        painelHtml.addHyperlinkListener(AbaDocumentacaoBiblioteca.this);
-        
+        configurarAparenciaArvore();
+        instalarObservadores();        
+    }
+    
+    private void configurarAparenciaArvore()
+    {
         arvoreBibliotecas.setModel(criarModeloDocumentacao());
         arvoreBibliotecas.setRootVisible(false);
         arvoreBibliotecas.setShowsRootHandles(true);
         arvoreBibliotecas.setCellRenderer(new Renderizador());
+    }
+    
+    private void instalarObservadores()
+    {
+        painelHtml.addHyperlinkListener(AbaDocumentacaoBiblioteca.this);
         arvoreBibliotecas.addTreeSelectionListener(AbaDocumentacaoBiblioteca.this);
     }
     

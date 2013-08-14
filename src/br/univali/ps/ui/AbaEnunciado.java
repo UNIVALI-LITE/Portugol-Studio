@@ -1,26 +1,27 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.ui.util.IconFactory;
-import javax.swing.JTabbedPane;
+import javax.swing.Icon;
 
+public final class AbaEnunciado extends Aba
+{
+    private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "question.png");
 
-public class AbaEnunciado extends Aba {
+    public AbaEnunciado()
+    {
+        super("Enunciado", icone, false);
 
-    /** Creates new form EnunciadoAba */
-    public AbaEnunciado(JTabbedPane painelTabulado) {
-        super(painelTabulado);
-        cabecalho.setIcone(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "question.png"));
-        cabecalho.setBotaoFecharVisivel(false);
-        cabecalho.setTitulo("Enunciado");
         initComponents();
     }
-    
-    public void setEnunciado(String enunciado){
-        jEnunciado.setText(enunciado);
+
+    public void setEnunciado(String enunciado)
+    {
+        campoTextoEnunciado.setText(enunciado);
     }
-    
-    public String getEnunciado(){
-        return jEnunciado.getText();
+
+    public String getEnunciado()
+    {
+        return campoTextoEnunciado.getText();
     }
 
     @SuppressWarnings("unchecked")
@@ -28,28 +29,27 @@ public class AbaEnunciado extends Aba {
     private void initComponents()
     {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jEnunciado = new javax.swing.JEditorPane();
+        painelRolagemEnunciado = new javax.swing.JScrollPane();
+        campoTextoEnunciado = new javax.swing.JEditorPane();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setBackground(new java.awt.Color(250, 250, 250));
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 220, 220)));
-        jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        painelRolagemEnunciado.setBackground(new java.awt.Color(250, 250, 250));
+        painelRolagemEnunciado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 220, 220)));
+        painelRolagemEnunciado.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        jEnunciado.setEditable(false);
-        jEnunciado.setBackground(new java.awt.Color(250, 250, 250));
-        jEnunciado.setBorder(null);
-        jEnunciado.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jScrollPane1.setViewportView(jEnunciado);
+        campoTextoEnunciado.setEditable(false);
+        campoTextoEnunciado.setBackground(new java.awt.Color(250, 250, 250));
+        campoTextoEnunciado.setBorder(null);
+        campoTextoEnunciado.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        painelRolagemEnunciado.setViewportView(campoTextoEnunciado);
 
-        add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        add(painelRolagemEnunciado, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JEditorPane jEnunciado;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JEditorPane campoTextoEnunciado;
+    private javax.swing.JScrollPane painelRolagemEnunciado;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,31 +1,35 @@
 package br.univali.ps.ui;
 
-public class PainelSaida extends PainelTabulado
+public final class PainelSaida extends PainelTabulado
 {
-    private AbaConsole console;
-    private AbaMensagemCompilador mensagemCompilador;
-    private AbaEnunciado enunciadoAba;
+    private AbaConsole abaConsole;
+    private AbaMensagemCompilador abaMensagensCompilador;
+    private AbaEnunciado abaEnunciado;
 
     public PainelSaida()
     {
         initComponents();
-        console = new AbaConsole(this);
-        mensagemCompilador = new AbaMensagemCompilador(this);
+        
+        abaConsole = new AbaConsole();
+        abaConsole.adicionar(PainelSaida.this);
+        
+        abaMensagensCompilador = new AbaMensagemCompilador();
+        abaMensagensCompilador.adicionar(PainelSaida.this);
     }
 
     public AbaConsole getConsole()
     {
-        return console;
+        return abaConsole;
     }
 
-    public AbaMensagemCompilador getMensagemCompilador()
+    public AbaMensagemCompilador getAbaMensagensCompilador()
     {
-        return mensagemCompilador;
+        return abaMensagensCompilador;
     }
 
     public AbaEnunciado getEnunciadoAba()
     {
-        return enunciadoAba;
+        return abaEnunciado;
     }
 
     @SuppressWarnings("unchecked")

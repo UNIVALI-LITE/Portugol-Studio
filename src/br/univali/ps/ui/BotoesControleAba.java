@@ -1,50 +1,153 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.acoes.Acao;
 import br.univali.ps.ui.acoes.AcaoAbrirArquivo;
-import br.univali.ps.ui.acoes.AcaoListener;
-import br.univali.ps.ui.acoes.AcaoNovoArquivo;
+import br.univali.ps.ui.acoes.FabricaAcao;
+import br.univali.ps.ui.swing.filtros.FiltroArquivo;
+import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 import net.java.balloontip.BalloonTip;
 
-public class BotoesControleAba extends CabecalhoAba implements AcaoListener, PainelTabuladoListener
+public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener
 {
+    private static final Icon iconeAtivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
+    private static final Icon iconeInativo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
+    
+    private static final Color corAtivo = new Color(60, 60, 60);
+    private static final Color corInativo = new Color(120, 120, 120);
+    
+    private Action acaoNovoArquivo;
     private AcaoAbrirArquivo acaoAbrirArquivo;
-    private AcaoNovoArquivo acaoNovoArquivo;
-    private Aba pai;
-    private final Icon aceso;
-    private final Icon apagado;
-    private final Color ativo = new Color(60,60,60);
-    private final Color inativo = new Color(120,120,120);
     
-    boolean abaAtual = false;
+    private Aba abaAtual;
+    private PainelTabulado painelTabulado;
     
-    public BotoesControleAba(Aba aba)
+    private FiltroArquivo filtroExercicio;
+    private FiltroArquivo filtroPrograma;
+    private FiltroArquivo filtroTodosSuportados;
+    private JFileChooser dialogoSelecaoArquivo;
+    
+    
+    public BotoesControleAba(AbaInicial abaInicial, PainelTabulado painelTabulado)
     {
-        super(aba);
-        this.pai = aba;
+        super(abaInicial);
         removeAll();
         initComponents();
-        criarDicasInterface();
-        ((PainelTabulado)aba.getPainelTabulado()).adicionaPainelTabuladoListener(this);
-        this.aceso = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
-        this.apagado = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
         
-        jBAbrir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        jBNovaAba.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        this.painelTabulado = painelTabulado;
+        
+        configurarSeletorArquivo();
+        configurarAcoes();
+        configurarBotoes();
+        criarDicasInterface();
+        instalarObservadores();        
+    }
+    
+    private void configurarBotoes()
+    {
+        botaoAbrir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoAbrir.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png"));
+        botaoAbrir.setRolloverIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png"));
+        botaoAbrir.setPressedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png"));
+        
+        botaoNovoArquivo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoNovoArquivo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"));
+        botaoNovoArquivo.setRolloverIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_add.png"));
+        botaoNovoArquivo.setPressedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_add.png"));
+        
+        
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        titulo.addMouseListener(new MouseAdapter() {
+    }
+    
+    private void configurarSeletorArquivo()
+    {
+        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
+        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");        
+        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+        
+        dialogoSelecaoArquivo = new JFileChooser();
+        
+        dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
+        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
+        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+    }    
 
+    private void configurarAcoes()
+    {
+        configurarAcaoNovoArquivo();
+        configurarAcaoAbrirArquivo();
+    }
+    
+    private void configurarAcaoNovoArquivo()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK);
+        String nome = "Novo arquivo";
+        
+        acaoNovoArquivo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                abaCodigoFonte.adicionar(painelTabulado);
+                abaCodigoFonte.selecionar();
+            }
+        };
+        
+        botaoNovoArquivo.setAction(acaoNovoArquivo);
+        
+        painelTabulado.getActionMap().put(nome, acaoNovoArquivo);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void configurarAcaoAbrirArquivo()
+    {
+        TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+        
+        acaoAbrirArquivo = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
+        acaoAbrirArquivo.configurar(painelTabulado, telaPrincipal, dialogoSelecaoArquivo, filtroTodosSuportados, filtroExercicio, filtroPrograma, filtroTodosSuportados);
+        
+        String nome = (String) acaoAbrirArquivo.getValue(AbstractAction.NAME);
+        KeyStroke atalho = (KeyStroke) acaoAbrirArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
+        
+        painelTabulado.getActionMap().put(nome, acaoAbrirArquivo);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
+        botaoAbrir.setAction(acaoAbrirArquivo);
+    }    
+    
+    private void criarDicasInterface()
+    {
+        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+    }
+    
+    private void instalarObservadores()
+    {
+        painelTabulado.adicionaPainelTabuladoListener(this);
+        
+        titulo.addMouseListener(new MouseAdapter()
+        {
             @Override
             public void mouseEntered(MouseEvent e)
             {
-                if (!abaAtual) {
+                if (!(abaAtual instanceof AbaInicial))
+                {
                     ativar();
                 }
             }
@@ -52,7 +155,8 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener, Pai
             @Override
             public void mouseExited(MouseEvent e)
             {
-                if (!abaAtual) {
+                if (!(abaAtual instanceof AbaInicial))
+                {
                     desativar();
                 }
             }
@@ -60,22 +164,42 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener, Pai
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                pai.selecionar();
-            }
-            
+                getAba().selecionar();
+            }            
         });
     }
+
+    @Override
+    protected void calculaTamanhoCabecalho()
+    {
+        
+    }
+
+    @Override
+    public void abaSelecionada(Aba aba)
+    {
+        abaAtual = aba;
+        
+        if (abaAtual == this.getAba())
+        {
+            ativar();
+        } 
+        else 
+        {
+            desativar();
+        }
+    }    
     
     private void desativar()
     {
-        titulo.setIcon(apagado);
-        titulo.setForeground(inativo);
+        titulo.setIcon(iconeInativo);
+        titulo.setForeground(corInativo);
     }
     
     private void ativar()
     {
-        titulo.setIcon(aceso);
-        titulo.setForeground(ativo);
+        titulo.setIcon(iconeAtivo);
+        titulo.setForeground(corAtivo);
     }
              
 
@@ -98,30 +222,18 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener, Pai
     @Override
     public void setTitulo(String titulo)
     {
-    }
-
-    public void setAcaoAbrirAction(AcaoAbrirArquivo acao)
-    {
-        acaoAbrirArquivo = acao;
-        acaoAbrirArquivo.adicionarListener(BotoesControleAba.this);
-    }
-
-    public void setAcaoNovoArquivo(AcaoNovoArquivo acao)
-    {
-        acaoNovoArquivo = acao;
-        acaoNovoArquivo.adicionarListener(BotoesControleAba.this);
+        
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelTitulo = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
         painelBotoes = new javax.swing.JPanel();
-        jBAbrir = new javax.swing.JButton();
-        jBNovaAba = new javax.swing.JButton();
+        botaoAbrir = new javax.swing.JButton();
+        botaoNovoArquivo = new javax.swing.JButton();
 
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(180, 25));
@@ -149,103 +261,43 @@ public class BotoesControleAba extends CabecalhoAba implements AcaoListener, Pai
         painelBotoes.setOpaque(false);
         painelBotoes.setLayout(new java.awt.GridLayout(1, 2));
 
-        jBAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
-        jBAbrir.setBorderPainted(false);
-        jBAbrir.setContentAreaFilled(false);
-        jBAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jBAbrir.setFocusable(false);
-        jBAbrir.setHideActionText(true);
-        jBAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jBAbrir.setMinimumSize(new java.awt.Dimension(32, 25));
-        jBAbrir.setPreferredSize(new java.awt.Dimension(32, 25));
-        jBAbrir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
-        jBAbrir.setRequestFocusEnabled(false);
-        jBAbrir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
-        jBAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBAbrir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jBAbrirActionPerformed(evt);
-            }
-        });
-        painelBotoes.add(jBAbrir);
+        botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
+        botaoAbrir.setBorderPainted(false);
+        botaoAbrir.setContentAreaFilled(false);
+        botaoAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        botaoAbrir.setFocusable(false);
+        botaoAbrir.setHideActionText(true);
+        botaoAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botaoAbrir.setMinimumSize(new java.awt.Dimension(32, 25));
+        botaoAbrir.setPreferredSize(new java.awt.Dimension(32, 25));
+        botaoAbrir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
+        botaoAbrir.setRequestFocusEnabled(false);
+        botaoAbrir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
+        botaoAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        painelBotoes.add(botaoAbrir);
 
-        jBNovaAba.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
-        jBNovaAba.setBorderPainted(false);
-        jBNovaAba.setContentAreaFilled(false);
-        jBNovaAba.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jBNovaAba.setFocusable(false);
-        jBNovaAba.setHideActionText(true);
-        jBNovaAba.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jBNovaAba.setPreferredSize(new java.awt.Dimension(32, 25));
-        jBNovaAba.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
-        jBNovaAba.setRequestFocusEnabled(false);
-        jBNovaAba.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
-        jBNovaAba.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jBNovaAba.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jBNovaAbaActionPerformed(evt);
-            }
-        });
-        painelBotoes.add(jBNovaAba);
+        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
+        botaoNovoArquivo.setBorderPainted(false);
+        botaoNovoArquivo.setContentAreaFilled(false);
+        botaoNovoArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        botaoNovoArquivo.setFocusable(false);
+        botaoNovoArquivo.setHideActionText(true);
+        botaoNovoArquivo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botaoNovoArquivo.setPreferredSize(new java.awt.Dimension(32, 25));
+        botaoNovoArquivo.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
+        botaoNovoArquivo.setRequestFocusEnabled(false);
+        botaoNovoArquivo.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
+        botaoNovoArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        painelBotoes.add(botaoNovoArquivo);
 
         add(painelBotoes, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBNovaAbaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovaAbaActionPerformed
-        acaoNovoArquivo.actionPerformed(evt);
-    }//GEN-LAST:event_jBNovaAbaActionPerformed
-
-    private void jBAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAbrirActionPerformed
-        acaoAbrirArquivo.actionPerformed(evt);
-    }//GEN-LAST:event_jBAbrirActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBAbrir;
-    private javax.swing.JButton jBNovaAba;
+    private javax.swing.JButton botaoAbrir;
+    private javax.swing.JButton botaoNovoArquivo;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelTitulo;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void acaoExecutadaSucesso(Acao acao, String mensagem)
-    {
-    }
-
-    @Override
-    public void acaoFalhou(Acao acao, Exception motivoE)
-    {
-        if (acao instanceof AcaoNovoArquivo)
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(motivoE);
-        }
-    }
-
-    private void criarDicasInterface()
-    {
-        FabricaDicasInterface.criarDicaInterface(jBAbrir, "Abre um programa ou exercício existente no computador", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(jBNovaAba, "Cria uma nova aba contendo um modelo básico de programa", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-    }
-
-    @Override
-    protected void calculaTamanhoCabecalho()
-    {
-        
-    }
-
-    @Override
-    public void abaSelecionada(Aba aba)
-    {
-        if (abaAtual = aba == pai){
-            ativar();
-        } else {
-            desativar();
-        }
-    }
-    
-    
 }

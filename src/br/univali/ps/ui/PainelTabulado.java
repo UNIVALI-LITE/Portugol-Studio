@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui;
 
 import java.awt.Component;
@@ -13,7 +9,7 @@ import javax.swing.JTabbedPane;
 
 /**
  *
- * @author fillipipelz
+ * @author Fillipi Domingos Pelz
  */
 public class PainelTabulado extends JTabbedPane implements ComponentListener
 {
@@ -22,9 +18,8 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
     public PainelTabulado()
     {
         setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        painelTabuladoListeners = new ArrayList<PainelTabuladoListener>();
-
-    }
+        painelTabuladoListeners = new ArrayList<>();
+    }    
 
     @Override
     public Component add(Component cmpnt)
@@ -45,21 +40,6 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
     }
 
     @Override
-    public void componentHidden(ComponentEvent ce)
-    {
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent ce)
-    {
-    }
-
-    @Override
-    public void componentResized(ComponentEvent ce)
-    {
-    }
-
-    @Override
     public void componentShown(ComponentEvent ce)
     {
         Aba aba = (Aba) ce.getComponent();
@@ -69,6 +49,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
     public void fecharTodasAbas(Class<? extends Aba> classe)
     {
         Component[] components = getComponents();
+        
         for (int i = 0; i < components.length; i++)
         {
             if (components[i].getClass() == classe)
@@ -92,7 +73,8 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
 
     public List<Aba> getAbas(Class<? extends Aba> classe)
     {
-        List<Aba> abas = new ArrayList<Aba>();
+        List<Aba> abas = new ArrayList<>();
+        
         for (Component componente : getComponents())
         {
             if (componente.getClass() == classe)
@@ -131,6 +113,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
     public boolean temAbaAberta(Class<? extends Aba> classe)
     {
         Component[] components = getComponents();
+        
         for (int i = 0; i < components.length; i++)
         {
             if (components[i].getClass() == classe)
@@ -138,6 +121,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -148,4 +132,10 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
             painelTabuladoListener.abaSelecionada(aba);
         }
     }
+    
+    @Override public void componentHidden(ComponentEvent ce) { }
+
+    @Override public void componentMoved(ComponentEvent ce) { }
+
+    @Override public void componentResized(ComponentEvent ce) { }
 }
