@@ -2,9 +2,16 @@ package br.univali.ps.ui;
 
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.Timer;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.EdgedBalloonStyle;
@@ -29,16 +36,26 @@ public final class FabricaDicasInterface
 
     public static void criarDicaInterfacePara(JComponent componente, String dica, Icon icone, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
     {
-        BalloonTip tip = new BalloonTip(componente, criarRotulo(dica, icone), criarEstilo(), orientacao, posicao, 20, 25, false);
+        final BalloonTip tip = new BalloonTip(componente, criarRotulo(dica, icone), criarEstilo(), orientacao, posicao, 20, 25, false);
+        
+        componente.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {
+                tip.refreshLocation();
+            }
+        });
+        
         ToolTipUtils.balloonToToolTip(tip, intervaloInicio, intervaloFim);
     }
-
+    
     private static JLabel criarRotulo(String texto, Icon icone)
     {
         String textoHtml = String.format("<html><body><p>%s</p></body></html>", texto);
         JLabel rotulo = new JLabel(textoHtml, icone, JLabel.LEFT);
         rotulo.setFont(rotulo.getFont().deriveFont(12f));
-
+        
         return rotulo;
     }
     
