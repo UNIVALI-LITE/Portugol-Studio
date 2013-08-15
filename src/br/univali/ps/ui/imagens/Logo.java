@@ -41,7 +41,7 @@ public class Logo extends javax.swing.JPanel
                 validate(); 
             }            
         });
-        FabricaDicasInterface.criarDicaInterface(this, "Visitar página oficial.", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
+        FabricaDicasInterface.criarDicaInterface(Logo.this, "Visitar página oficial", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
 
     }
 
