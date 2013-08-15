@@ -3,6 +3,6 @@ programa
 { 
 	funcao inicio () 
 	{
-		escreva("Olá Mundo!") // exibe a mensagem "Olá Mundo!" no console 
+		escreva("Olá Mundo!/*${cursor}*/") // exibe a mensagem "Olá Mundo!" no console 
 	} 
 }

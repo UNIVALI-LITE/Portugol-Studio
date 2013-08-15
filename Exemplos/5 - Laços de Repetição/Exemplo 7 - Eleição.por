@@ -6,7 +6,7 @@ programa
 		inteiro voto1 = 0, voto2 = 0, branco=0, nulos = 0, totalVotos = 0, candidato
 		
 		real porcentagemVoto1, porcentagemVoto2,porcentagemBranco, porcentagemNulos
-
+		/*${cursor}*/
 		faca
 		{
 			limpa()

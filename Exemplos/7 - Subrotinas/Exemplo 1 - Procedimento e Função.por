@@ -25,7 +25,7 @@ programa
 	
 	funcao inicio()
 	{
-		mensagem ("Bem Vindo")  // chama o procedimento
+		mensagem ("Bem Vindo/*${cursor}*/")  // chama o procedimento
 	     escreva ("\nO resultado da funcao chamada será: ", calcula (3.0, 4.0))  // chama a função no escreva
 		
 	}

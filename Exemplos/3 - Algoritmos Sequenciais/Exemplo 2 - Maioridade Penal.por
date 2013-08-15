@@ -7,7 +7,7 @@ programa
 	{
 		const inteiro maiorIdade = 18
 		inteiro idade, anos
-
+		/*${cursor}*/
 		escreva("Digite sua idade: ")
 		leia(idade)
 

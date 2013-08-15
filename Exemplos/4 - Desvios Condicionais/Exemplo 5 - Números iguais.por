@@ -8,7 +8,7 @@ programa
 	funcao inicio()
 	{
 		inteiro numDigitado, numSorteado
-
+		/*${cursor}*/
 		escreva("Informe um numero de 0 a 6: ")
 		leia(numDigitado)
 

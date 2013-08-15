@@ -6,8 +6,8 @@ programa
 	
 	funcao inicio() 
 	{
-		inteiro contador = 10
-
+		inteiro contador = 10/*${cursor}*/
+		
 		enquanto (contador > 0) {
 		  escreva (contador,  " ") // exibe o número e um espaço ao lado 
 		  contador--

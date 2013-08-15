@@ -4,7 +4,7 @@ programa
 	funcao inicio()
 	{
 		real a
-		
+		/*${cursor}*/
 		a = 5.0 + 4.0 * 2.0
 		escreva("\n 5 + 4 * 2 = ", a) // exibe o resultado
 		

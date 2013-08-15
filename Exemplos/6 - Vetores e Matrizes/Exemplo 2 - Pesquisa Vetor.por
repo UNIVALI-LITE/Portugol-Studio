@@ -3,7 +3,7 @@ programa
 {
 	funcao inicio() 
 	{ 
-		inteiro vet[5] = { 1, 3, 5, 7, 9}  // cria o vetor com estes valores dentro
+		inteiro vet[5] = { 1, 3, 5, 7, 9/*${cursor}*/}  // cria o vetor com estes valores dentro
 		inteiro i, num
 		logico achou = falso  // variavel que ajuda a indicar se o numero foi encontrado ou não
 

@@ -7,7 +7,7 @@ programa
 	{
 		real resultado, oper1, oper2	
 		caracter op
-
+		/*${cursor}*/
 		escreva("Digite dois números: \n")
 		leia(oper1, oper2)
 

@@ -8,7 +8,7 @@ programa
 	funcao inicio() 
 	{
 		real valor, pot, raizq
-
+		/*${cursor}*/
 		escreva("Digite um valor: ") 
 		leia(valor) // lê o valor digitado pelo usuário
 

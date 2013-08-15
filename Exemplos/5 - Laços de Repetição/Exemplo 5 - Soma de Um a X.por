@@ -5,7 +5,7 @@ programa
 	funcao inicio() 
 	{
 		inteiro soma, x, cont
-
+		/*${cursor}*/
 		escreva("Digite o número até o qual deseja somar: ")
 		leia(x)
 

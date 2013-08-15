@@ -3,7 +3,7 @@ programa {
 	funcao inicio(){
 
 		inteiro a,b,c
-
+		/*${cursor}*/
 		escreva ("Entre com os dados do triângulo: ")
 		leia (a,b,c)
 

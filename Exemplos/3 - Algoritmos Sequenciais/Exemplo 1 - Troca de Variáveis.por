@@ -4,7 +4,7 @@ programa
 	funcao inicio() 
 	{
 		inteiro a = 10, b = 20, c
-
+		/*${cursor}*/
 		// exibição do valor inicial 
 		escreva("O valor inicial de a é: ", a, "\n")
 		escreva("O valor inicial de b é: ", b, "\n")

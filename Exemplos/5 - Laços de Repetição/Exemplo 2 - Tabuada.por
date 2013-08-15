@@ -4,7 +4,7 @@ programa
 	funcao inicio() 
 	{
 		inteiro numero, result, contador
-
+		/*${cursor}*/
 		escreva("Informe o número para ver sua tabuada: ")
 		leia(numero)
 		

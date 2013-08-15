@@ -4,7 +4,7 @@ programa
 	funcao inicio ()
 	{
 		real m1, m2, m3, media 
-
+		/*${cursor}*/
 		escreva("Digite suas medias: \n")
 		escreva ("Informe a média 1: " )
 		leia (m1)

@@ -6,7 +6,7 @@ programa
 	funcao inicio() 
 	{
 		inteiro metadeInteira, resto, valor  
-		
+		/*${cursor}*/
 		escreva("Digite um valor: ") 
 		leia(valor) // lê o valor digitado pelo usuário
 

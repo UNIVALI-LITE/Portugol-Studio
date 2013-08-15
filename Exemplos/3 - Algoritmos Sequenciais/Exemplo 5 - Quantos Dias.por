@@ -5,7 +5,7 @@ programa
 	funcao inicio()
 	{
 		inteiro ano_atual, qtd_anos_bi, dias
-
+		/*${cursor}*/
 		escreva("Digite ano atual: ")
 		leia(ano_atual) // lê o ano atual digitado pelo usuário
 

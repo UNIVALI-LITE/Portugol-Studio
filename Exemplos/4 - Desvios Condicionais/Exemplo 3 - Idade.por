@@ -3,7 +3,7 @@ programa {
 	funcao inicio () { 
 	
 		inteiro menor, idade 
-	
+		/*${cursor}*/
 		escreva("Digite sua idade: ") 
 		leia(idade) 
 	

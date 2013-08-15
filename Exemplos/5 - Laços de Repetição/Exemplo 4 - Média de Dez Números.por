@@ -4,7 +4,7 @@ programa
 	funcao inicio() 
 	{
 		real numero, soma, media
-		inteiro cont = 0
+		inteiro cont = 0/*${cursor}*/
 		soma = 0.0
 		enquanto(cont < 10) // laço que verifica se o valor digitado é menor ou igual ao valor da condição
 		{

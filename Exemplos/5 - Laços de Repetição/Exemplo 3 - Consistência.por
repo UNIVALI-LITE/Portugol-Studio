@@ -3,7 +3,7 @@ programa
 {
 	funcao inicio()
 	{
-		inteiro idade
+		inteiro idade/*${cursor}*/
 		faca {
 			escreva ("Por favor sua idade (valores aceito de 0 a 150):")
 			leia (idade)

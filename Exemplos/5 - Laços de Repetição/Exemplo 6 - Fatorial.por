@@ -5,7 +5,7 @@ programa
 	{
 		inteiro n, i
 		real fat
-
+		/*${cursor}*/
 		escreva("Digite um numero \n")
 		leia(n)
 		

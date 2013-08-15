@@ -4,7 +4,7 @@ programa
 	funcao inicio()
 	{
 		real a, b, soma, sub, mult, div
-		
+		/*${cursor}*/
 		escreva("Digite dois números inteiros: ")
 		leia(a,b) // lê os valores digitados pelo usuário  e armazena em a e b
 

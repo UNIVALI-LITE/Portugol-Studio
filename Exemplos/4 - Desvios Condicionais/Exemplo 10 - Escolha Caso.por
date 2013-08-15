@@ -6,7 +6,7 @@ programa
 	funcao inicio()
 	{
 		inteiro opc
-			
+		/*${cursor}*/
 		escreva("1) Elogio \n")
 		escreva("2) Ofensa \n")
 		escreva("3) Sair \n")

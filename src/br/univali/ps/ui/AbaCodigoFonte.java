@@ -44,8 +44,6 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import net.java.balloontip.BalloonTip;
@@ -1281,10 +1279,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void carregarAlgoritmoPadrao()
     {
-        int posicaoCursor = template.indexOf("${cursor}");
-        String algoritmo = template.replace("${cursor}", "");
-        editor.setCodigoFonte(algoritmo);
-        editor.getTextArea().setCaretPosition(posicaoCursor);
+        editor.setCodigoFonte(template);
     }
 
     private static String carregarTemplate()

@@ -4,7 +4,7 @@ programa
 	funcao inicio () 
 	{ 
 		inteiro numero
-		
+		/*${cursor}*/
 		escreva("Digite um número inteiro: ")
 		leia(numero) // lê o número digitado pelo usuário
 		

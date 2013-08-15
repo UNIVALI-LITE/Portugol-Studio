@@ -5,7 +5,7 @@ programa
 	funcao inicio() 
 	{
 		inteiro vet[10], i
-		
+		/*${cursor}*/
 		// preenche o vetor
 		para(i = 0; i < 10; i++){
 			vet [i] = util.sorteia(1,100)			

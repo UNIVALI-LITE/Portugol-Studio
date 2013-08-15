@@ -33,7 +33,7 @@ programa {
 	
 	funcao inicio()
 	{
-	inteiro col=2, bateu = 0, brancos, inc=1
+	inteiro col=2, bateu = 0, brancos, inc=1/*${cursor}*/
 	enquanto (bateu <= 5){
 	  desenho(col)  // chama a funcao que desenha
 	  col = col + inc

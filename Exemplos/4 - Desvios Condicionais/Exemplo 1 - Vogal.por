@@ -3,7 +3,7 @@ programa  {
 	funcao inicio ()
 	{ 	
 		caracter letra 
-		
+		/*${cursor}*/
 		escreva("Digite uma letra: ") 
 		leia(letra) 
 		

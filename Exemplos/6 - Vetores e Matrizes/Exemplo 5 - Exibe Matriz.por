@@ -4,7 +4,7 @@ programa
 {
 	funcao inicio()
 	{
-		const inteiro TAM = 5
+		const inteiro TAM = 5/*${cursor}*/
 		inteiro l,c, mat[TAM][TAM] // cria a matriz usando a constante
 
 		para(l = 0; l < TAM; l++)

@@ -14,7 +14,7 @@ programa
 	funcao inicio()
 	{
 		inteiro numero
-		 
+		/*${cursor}*/ 
 		escreva("Digite quantos termos da série de Fibonacci você deseja ver: ")
 		leia(numero)
 		

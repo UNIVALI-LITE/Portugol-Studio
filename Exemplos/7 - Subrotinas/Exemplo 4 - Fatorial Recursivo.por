@@ -14,7 +14,7 @@ programa
 	funcao inicio()
 	{
 		inteiro valor
-		
+		/*${cursor}*/		
 		escreva("Digite um número inteiro para saber o fatorial dele: ")
 		leia(valor)
 		

@@ -3,7 +3,7 @@ programa
 	inclua biblioteca Util --> util
 	funcao inicio()
 	{
-		inteiro vet [10]
+		inteiro vet [10/*${cursor}*/]
 		preenche (vet)
 		exibe (vet)
 		ordena (vet)

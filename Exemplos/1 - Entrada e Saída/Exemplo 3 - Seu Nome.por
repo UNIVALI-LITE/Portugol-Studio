@@ -4,7 +4,7 @@ programa
 	funcao inicio ()
 	{
 		cadeia nome 
-		
+		/*${cursor}*/
 		escreva("Digite seu nome: ")
 		leia(nome) // lê o nome digitado pelo usuário e armazena na variável nome
 

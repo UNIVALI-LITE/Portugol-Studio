@@ -5,7 +5,7 @@ programa
 	funcao inicio()
 	{
 		real altura1, altura2, altura3, mediaAltura
-
+		/*${cursor}*/
 		escreva("Digite a Altura de três pessoas: \n")
 		leia(altura1, altura2, altura3) // lê os valores passados pelo usuário
 

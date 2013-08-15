@@ -35,9 +35,9 @@ programa
 
 			nome = t.caracteres_maiusculos(params[0])
 
-			se (tip.cadeia_e_inteiro(params[1]))
+			se (tip.cadeia_e_inteiro(params[1], 10))
 			{
-				idade = tip.cadeia_para_inteiro(params[1])
+				idade = tip.cadeia_para_inteiro(params[1], 10)
 				id = verdadeiro
 			}
 			senao escreva("O segundo parâmetro deve ser do tipo inteiro")

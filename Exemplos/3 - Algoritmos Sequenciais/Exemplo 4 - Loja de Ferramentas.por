@@ -12,7 +12,7 @@ programa  {
 		
 		real totalParafuso, totalAruelas, totalPorcas, totalPagar 
 		cadeia nome 
-		
+		/*${cursor}*/
 		escreva("Digite seu nome \n") 
 		leia(nome) 
 		

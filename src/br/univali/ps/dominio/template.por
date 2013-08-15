@@ -2,6 +2,6 @@ programa
 {
 	funcao inicio()
 	{
-		${cursor}
+		/*${cursor}*/
 	}
 }

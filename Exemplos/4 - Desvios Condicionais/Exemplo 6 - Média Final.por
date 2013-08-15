@@ -7,7 +7,7 @@ programa
 	{
 		cadeia nomeAluno
 		real media1,media2,media3, mediaFinal
-		
+		/*${cursor}*/
 		escreva("Digite o nome do aluno\n")
 		leia(nomeAluno)
 

@@ -4,7 +4,7 @@ programa
 	funcao inicio()
 	{
 		inteiro num
-
+		/*${cursor}*/
 		escreva("Digite um número inteiro: ")
 		leia(num)
 

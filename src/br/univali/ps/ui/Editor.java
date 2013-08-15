@@ -30,6 +30,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -48,6 +52,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
@@ -84,6 +89,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private static final char[] caracteresParada = new char[] {' ', '\r', '\t', '\n' };
     private static final int[] teclasAutoComplete = new int[] { KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD };
     
+    private int ultimaPosicaoCursor;
     private AbaCodigoFonte abaCodigoFonte;
     
     private Object tag = null;
@@ -483,6 +489,35 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TEMA_EDITOR);
         
         textArea.addCaretListener(Editor.this);
+        textArea.addFocusListener(new FocusListener()
+        {
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                SwingUtilities.invokeLater(new Runnable() 
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            rolarAteCursor();
+                        }
+                        catch (Exception excecao)
+                        {
+                            excecao.printStackTrace(System.out);
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void focusLost(FocusEvent e)
+            {
+
+            }
+        });
     }
     
     private void carregarConfiguracoes()
@@ -585,10 +620,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public void setCodigoFonte(String codigoFonte)
     {
-        textArea.setText(codigoFonte);
-        textArea.setCaretPosition(0);
+        int posicaoCursor = (codigoFonte.indexOf("/*${cursor}*/") >= 0)? codigoFonte.indexOf("/*${cursor}*/") : 0;
+        
+        textArea.setText(codigoFonte.replace("/*${cursor}*/", ""));
         textArea.discardAllEdits();
-        textArea.forceReparsing(notificaErrosEditor);
+        textArea.forceReparsing(notificaErrosEditor);        
+        textArea.setCaretPosition(posicaoCursor);
     }
 
     public PortugolDocumento getPortugolDocumento()
@@ -598,12 +635,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public void iniciarDepuracao()
     {
+        ultimaPosicaoCursor = textArea.getCaretPosition();
+        
         textArea.setEditable(false);
         textArea.setFocusable(false);
         textArea.setRequestFocusEnabled(false);
         textArea.setHighlightCurrentLine(false);
         textArea.setCodeFoldingEnabled(false);
-        textArea.setCaretPosition(0);
+        //textArea.setCaretPosition(0);
     }
 
     public void pararDepuracao()
@@ -617,18 +656,40 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setHighlightCurrentLine(true);
         textArea.setFocusable(true);
         textArea.setCodeFoldingEnabled(true);
-        textArea.setRequestFocusEnabled(true);        
+        textArea.setRequestFocusEnabled(true);
+        textArea.setCaretPosition(ultimaPosicaoCursor);
+        textArea.requestFocusInWindow();
+    }
+    
+    public void rolarAteCursor()
+    {
+        try
+        {
+            rolarAteCursor(textArea.getCaretPosition());
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+    
+    private void rolarAtePosicao(int linha, int coluna) throws BadLocationException
+    {
+        rolarAteCursor(textArea.getLineStartOffset(linha) + coluna);
     }
  
-    private void rolarAteDestaque(int linha, int coluna) throws BadLocationException
+    private void rolarAteCursor(int posicao) throws BadLocationException
     {
         int ma = scrollPane.getHeight() / 2;
         int ml = scrollPane.getWidth() / 2;
             
-        Rectangle areaCursor = textArea.modelToView(textArea.getLineStartOffset(linha) + coluna);
-        Rectangle area = new Rectangle(areaCursor.x - ml, areaCursor.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
-
-        textArea.scrollRectToVisible(area);
+        Rectangle areaPosicao = textArea.modelToView(posicao);
+        
+        if (areaPosicao != null)
+        {
+            Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
+            textArea.scrollRectToVisible(area);
+        }
     }
 
     @Override
@@ -837,7 +898,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.15f));
             
-            rolarAteDestaque(line, 0);
+            rolarAtePosicao(line, 0);
         }
         catch (BadLocationException ex)
         {
@@ -859,7 +920,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs+tamanho);
             }
             
-            rolarAteDestaque(line, coluna);
+            rolarAtePosicao(line, coluna);
             
         } catch (BadLocationException ex) {
             Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
