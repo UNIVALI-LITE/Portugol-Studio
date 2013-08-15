@@ -6,7 +6,6 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -24,30 +23,153 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import net.java.balloontip.BalloonTip;
 
 public final class AbaInicial extends Aba
 {
+    private JPopupMenu menuExemplos;
+    
     public AbaInicial(PainelTabulado painelTabulado)
     {
         super();
         setCabecalho(new BotoesControleAba(this, painelTabulado));
         
         initComponents();
+        criarMenuExemplos();
         configurarCursorLogos();
-        configurarArvoreExemplos();
         criarDicasInterface();
         configurarAcoes();
         configurarLinks();
     }
 
+    private void criarMenuExemplos()
+    {
+        try
+        {
+            Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+            File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
+            
+            if (diretorioExemplos.exists())
+            {
+                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
+                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
+                ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
+                
+                File[] subdiretorios = diretorioExemplos.listFiles();
+                Arrays.sort(subdiretorios, comparadorExemplo);
+                
+                menuExemplos = new JPopupMenu();
+                
+                for (File subdiretorio : subdiretorios)
+                {
+                    menuExemplos.add(obterSubniveis(subdiretorio, iconeDiretorio, iconeArquivo, comparadorExemplo));
+                }
+            }
+        }
+        catch (Exception excecao)
+        {
+            excecao.printStackTrace(System.out);
+        }
+    }
+    
+    private JMenuItem obterSubniveis(File caminho, Icon iconeDiretorio, Icon iconeArquivo, ComparadorExemplo comparadorExemplo)
+    {
+        if (caminho.isDirectory())
+        {
+            JMenu submenu = new JMenu(caminho.getName());
+            
+            submenu.setIcon(iconeDiretorio);
+            submenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            
+            File[] arquivos = caminho.listFiles();
+            Arrays.sort(arquivos, comparadorExemplo);
+            
+            for (File arquivo : arquivos)
+            {
+                submenu.add(obterSubniveis(arquivo, iconeDiretorio, iconeArquivo, comparadorExemplo));
+            }
+            
+            return submenu;
+        }
+        else
+        {
+            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    try
+                    {
+                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
+                        String codigoFonte = FileHandle.open(exemplo);
+                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, true);
+                        abaCodigoFonte.adicionar(getPainelTabulado());
+                    }
+                    catch (Exception excecao)
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                    }
+                }
+            });
+            
+            item.setName(caminho.getAbsolutePath());
+            item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            
+            return item;
+        }
+    }
+   
+    private final class ComparadorExemplo implements Comparator<File>
+    {
+        private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
+                
+        @Override
+        public int compare(File exemplo1, File exemplo2)
+        {
+            if (exemplo1.isDirectory() && exemplo2.isFile())
+            {
+                return 1;
+            }
+            else if (exemplo1.isFile() && exemplo2.isDirectory())
+            {
+                return -1;
+            }
+            else if (exemplo1.isDirectory() && exemplo2.isDirectory())
+            {
+                return exemplo1.getName().compareTo(exemplo2.getName());
+            }
+            else if (exemplo1.isFile() && exemplo2.isFile())
+            {            
+                String nomeExemplo1 = exemplo1.getName();
+                String nomeExemplo2 = exemplo2.getName();
+
+                Integer numero1 = extrairNumero(nomeExemplo1);
+                Integer numero2 = extrairNumero(nomeExemplo2);
+                
+                return numero1.compareTo(numero2);
+            }
+            
+            return 0;
+        }
+        
+        private Integer extrairNumero(String nome)
+        {
+            avaliadorNumero.reset(nome);
+            
+            if (avaliadorNumero.find())
+            {
+                return Integer.parseInt(avaliadorNumero.group());
+            }
+            
+            return null;
+        }
+    }   
+    
+    
     private void configurarCursorLogos()
     {
         logoGitHub.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -142,7 +264,7 @@ public final class AbaInicial extends Aba
     
     private void exibirMenuExemplos()
     {
-        jPopupMenu1.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
+        menuExemplos.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
     }
             
     
@@ -163,201 +285,17 @@ public final class AbaInicial extends Aba
     
      private void criarDicasInterface()
     {
-        FabricaDicasInterface.criarDicaInterface(logoGitHub, "Contribuir com o projeto.", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI.", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(logoGitHub, "Contribuir com o projeto", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
+        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
     }
-    
-    private void configurarArvoreExemplos()
-    {
-        arvoreExemplos.setModel(criarModeloExemplos());
-        arvoreExemplos.setCellRenderer(new RenderizadorExemplos());
-        arvoreExemplos.setRootVisible(false);
-        arvoreExemplos.setShowsRootHandles(true);
-        arvoreExemplos.addTreeSelectionListener(new TreeSelectionListener() {
-
-            @Override
-            public void valueChanged(TreeSelectionEvent e)
-            {
-                DefaultMutableTreeNode noSelecionado = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
-        
-                if (noSelecionado != null)
-                {
-                    try
-                    {
-                        File exemplo = (File) noSelecionado.getUserObject();
-                        
-                        if ( exemplo.isFile())
-                        {
-                            String codigoFonte = FileHandle.open(exemplo);
-                            
-                            AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-                            abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, true);
-                            abaCodigoFonte.adicionar(getPainelTabulado());
-                            abaCodigoFonte.selecionar();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            }
-        
-        });
-    }
-    
-    private TreeModel criarModeloExemplos()
-    {
-        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode();
-        
-        try
-        {
-            Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-            File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
-            
-            if (diretorioExemplos.exists())
-            {
-                ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
-                
-                File[] subdiretorios = diretorioExemplos.listFiles();
-                Arrays.sort(subdiretorios, comparadorExemplo);
-                
-                
-                
-                for (File subdiretorio : subdiretorios)
-                {
-                    raiz.add(criarSubniveis(subdiretorio, comparadorExemplo));
-                }
-            }
-        }
-        catch (Exception excecao)
-        {
-            excecao.printStackTrace(System.out);
-        }
-        
-        return new DefaultTreeModel(raiz);
-    }
-    
-    private DefaultMutableTreeNode criarSubniveis(File caminho, ComparadorExemplo comparadorExemplo)
-    {
-        
-        if (caminho.isDirectory())
-        {
-            DefaultMutableTreeNode subPasta = new DefaultMutableTreeNode(caminho, true);
-            
-            File[] arquivos = caminho.listFiles();
-            Arrays.sort(arquivos, comparadorExemplo);
-            
-            for (File arquivo : arquivos)
-            {
-                subPasta.add(criarSubniveis(arquivo,comparadorExemplo));
-            }
-            return subPasta;
-        }
-        else
-        {
-            return new DefaultMutableTreeNode(caminho, false);
-        }
-    }   
-
-    private final class RenderizadorExemplos extends DefaultTreeCellRenderer 
-    {
-         private final Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
-         private final Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lightbulb.png");
-        
-        @Override
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-        {
-            final JLabel jlabel = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-            
-            if (leaf)
-                jlabel.setIcon(iconeArquivo);
-            else {
-                jlabel.setIcon(iconeDiretorio);
-            }
-            
-            File file = (File) ((DefaultMutableTreeNode)value).getUserObject();
-            
-            if (file != null)
-            {            
-                jlabel.setText(file.getName().replace(".por", ""));                
-            }
-            else
-            {
-                jlabel.setText("Unidefined");
-            }
-            
-            return jlabel;
-        }
-    }
-    
-    private final class ComparadorExemplo implements Comparator<File>
-    {
-        private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
-                
-        @Override
-        public int compare(File exemplo1, File exemplo2)
-        {
-            if (exemplo1.isDirectory() && exemplo2.isFile())
-            {
-                return 1;
-            }
-            else if (exemplo1.isFile() && exemplo2.isDirectory())
-            {
-                return -1;
-            }
-            else if (exemplo1.isDirectory() && exemplo2.isDirectory())
-            {
-                return exemplo1.getName().compareTo(exemplo2.getName());
-            }
-            else if (exemplo1.isFile() && exemplo2.isFile())
-            {            
-                String nomeExemplo1 = exemplo1.getName();
-                String nomeExemplo2 = exemplo2.getName();
-
-                Integer numero1 = extrairNumero(nomeExemplo1);
-                Integer numero2 = extrairNumero(nomeExemplo2);
-                
-                return numero1.compareTo(numero2);
-            }
-            
-            return 0;
-        }
-        
-        private Integer extrairNumero(String nome)
-        {
-            avaliadorNumero.reset(nome);
-            
-            if (avaliadorNumero.find())
-            {
-                return Integer.parseInt(avaliadorNumero.group());
-            }
-            
-            return null;
-        }
-    }
-    
+     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {
 
-        jPanel1 = new javax.swing.JPanel();
-        painelAlinhamento6 = new javax.swing.JPanel();
-        painelRolagemExemplos = new javax.swing.JScrollPane();
-        arvoreExemplos = new javax.swing.JTree();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         painelGradiente = new br.univali.ps.ui.imagens.Gradiente();
-        painelTopo = new javax.swing.JPanel();
+        painelCabecalho = new javax.swing.JPanel();
         painelCentralizacaoLogo = new javax.swing.JPanel();
         logoPS = new br.univali.ps.ui.imagens.Logo();
         rotuloSlogan = new javax.swing.JLabel();
@@ -384,8 +322,6 @@ public final class AbaInicial extends Aba
         rotuloColabore = new javax.swing.JLabel();
         rotuloRelatarBug = new javax.swing.JLabel();
         rotuloAjudarDesenvolvimento = new javax.swing.JLabel();
-        painelAlinhamento2 = new javax.swing.JPanel();
-        logoGitHub = new javax.swing.JLabel();
         painelCreditos = new javax.swing.JPanel();
         painelTituloCreditos = new javax.swing.JPanel();
         rotuloCreditos = new javax.swing.JLabel();
@@ -394,8 +330,6 @@ public final class AbaInicial extends Aba
         painelAlinhamento3 = new javax.swing.JPanel();
         rotuloFormaAprender8 = new javax.swing.JLabel();
         rotuloInformacoesSoftware = new javax.swing.JLabel();
-        painelAlinhamento4 = new javax.swing.JPanel();
-        logoUnivali = new javax.swing.JLabel();
         painelNovidades = new javax.swing.JPanel();
         painelTituloNovidades = new javax.swing.JPanel();
         rotuloNovidades = new javax.swing.JLabel();
@@ -411,53 +345,10 @@ public final class AbaInicial extends Aba
         rotuloAtalhosTeclado = new javax.swing.JLabel();
         rotuloFormaAprender9 = new javax.swing.JLabel();
         rotuloFormaAprender10 = new javax.swing.JLabel();
-
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
-
-        painelAlinhamento6.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        painelAlinhamento6.setOpaque(false);
-        painelAlinhamento6.setLayout(new java.awt.BorderLayout());
-
-        painelRolagemExemplos.setBorder(null);
-        painelRolagemExemplos.setOpaque(false);
-        painelRolagemExemplos.setViewportView(arvoreExemplos);
-
-        painelAlinhamento6.add(painelRolagemExemplos, java.awt.BorderLayout.CENTER);
-
-        jPanel1.add(painelAlinhamento6);
-
-        jMenu1.setText("jMenu1");
-
-        jMenuItem1.setText("jMenuItem1");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setText("jMenuItem2");
-        jMenu1.add(jMenuItem2);
-
-        jPopupMenu1.add(jMenu1);
-
-        jMenu2.setText("jMenu2");
-
-        jMenuItem4.setText("jMenuItem4");
-        jMenu2.add(jMenuItem4);
-
-        jMenuItem5.setText("jMenuItem5");
-        jMenu2.add(jMenuItem5);
-
-        jPopupMenu1.add(jMenu2);
-
-        jMenuItem3.setText("jMenuItem3");
-        jPopupMenu1.add(jMenuItem3);
-
-        jMenuItem6.setText("jMenuItem6");
-        jPopupMenu1.add(jMenuItem6);
+        painelRodape = new javax.swing.JPanel();
+        painelAlinhamento7 = new javax.swing.JPanel();
+        logoGitHub = new javax.swing.JLabel();
+        logoUnivali = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         setOpaque(false);
@@ -465,24 +356,24 @@ public final class AbaInicial extends Aba
 
         painelGradiente.setLayout(new java.awt.BorderLayout());
 
-        painelTopo.setOpaque(false);
-        painelTopo.setLayout(new java.awt.BorderLayout());
+        painelCabecalho.setOpaque(false);
+        painelCabecalho.setLayout(new java.awt.BorderLayout());
 
         painelCentralizacaoLogo.setOpaque(false);
 
         logoPS.setOpaque(false);
         painelCentralizacaoLogo.add(logoPS);
 
-        painelTopo.add(painelCentralizacaoLogo, java.awt.BorderLayout.CENTER);
+        painelCabecalho.add(painelCentralizacaoLogo, java.awt.BorderLayout.CENTER);
 
         rotuloSlogan.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
         rotuloSlogan.setForeground(new java.awt.Color(255, 255, 255));
         rotuloSlogan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rotuloSlogan.setText("Ambiente para Aprender a Programar");
         rotuloSlogan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        painelTopo.add(rotuloSlogan, java.awt.BorderLayout.SOUTH);
+        painelCabecalho.add(rotuloSlogan, java.awt.BorderLayout.SOUTH);
 
-        painelGradiente.add(painelTopo, java.awt.BorderLayout.NORTH);
+        painelGradiente.add(painelCabecalho, java.awt.BorderLayout.NORTH);
 
         painelConteudo.setBackground(new Color(0.9f,0.9f,0.9f,0.45f));
         painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(35, 50, 15, 50));
@@ -543,7 +434,6 @@ public final class AbaInicial extends Aba
         rotuloExplorarExemplos.setForeground(new java.awt.Color(255, 255, 255));
         rotuloExplorarExemplos.setText("<html><body><div>:: <u>Explorar os Exemplos</u></div></body></html>");
         rotuloExplorarExemplos.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloExplorarExemplos.setComponentPopupMenu(jPopupMenu1);
         rotuloExplorarExemplos.setName("explorarExemplos"); // NOI18N
         painelAlinhamento5.add(rotuloExplorarExemplos);
 
@@ -610,22 +500,6 @@ public final class AbaInicial extends Aba
 
         conteudoColaborar.add(painelAlinhamento1, java.awt.BorderLayout.CENTER);
 
-        painelAlinhamento2.setOpaque(false);
-        painelAlinhamento2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
-
-        logoGitHub.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logoGitHub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/GitHub-Mark-64px.png"))); // NOI18N
-        logoGitHub.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
-                logoGitHubMouseClicked(evt);
-            }
-        });
-        painelAlinhamento2.add(logoGitHub);
-
-        conteudoColaborar.add(painelAlinhamento2, java.awt.BorderLayout.SOUTH);
-
         painelColaborar.add(conteudoColaborar, java.awt.BorderLayout.CENTER);
 
         painelColaborarCreditos.add(painelColaborar);
@@ -666,22 +540,6 @@ public final class AbaInicial extends Aba
         painelAlinhamento3.add(rotuloInformacoesSoftware);
 
         conteudoCreditos.add(painelAlinhamento3, java.awt.BorderLayout.CENTER);
-
-        painelAlinhamento4.setOpaque(false);
-        painelAlinhamento4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
-
-        logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
-                logoUnivaliMouseClicked(evt);
-            }
-        });
-        painelAlinhamento4.add(logoUnivali);
-
-        conteudoCreditos.add(painelAlinhamento4, java.awt.BorderLayout.SOUTH);
 
         painelCreditos.add(conteudoCreditos, java.awt.BorderLayout.CENTER);
 
@@ -775,6 +633,41 @@ public final class AbaInicial extends Aba
 
         painelGradiente.add(painelConteudo, java.awt.BorderLayout.CENTER);
 
+        painelRodape.setOpaque(false);
+        painelRodape.setPreferredSize(new java.awt.Dimension(10, 80));
+        painelRodape.setLayout(new java.awt.BorderLayout());
+
+        painelAlinhamento7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        painelAlinhamento7.setOpaque(false);
+        painelAlinhamento7.setPreferredSize(new java.awt.Dimension(200, 64));
+        painelAlinhamento7.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
+
+        logoGitHub.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logoGitHub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/GitHub-Mark-64px.png"))); // NOI18N
+        logoGitHub.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                logoGitHubMouseClicked(evt);
+            }
+        });
+        painelAlinhamento7.add(logoGitHub);
+
+        logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
+        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                logoUnivaliMouseClicked(evt);
+            }
+        });
+        painelAlinhamento7.add(logoUnivali);
+
+        painelRodape.add(painelAlinhamento7, java.awt.BorderLayout.WEST);
+
+        painelGradiente.add(painelRodape, java.awt.BorderLayout.SOUTH);
+
         add(painelGradiente, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -802,37 +695,20 @@ public final class AbaInicial extends Aba
         }
     }//GEN-LAST:event_logoUnivaliMouseClicked
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem1ActionPerformed
-    {//GEN-HEADEREND:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTree arvoreExemplos;
     private javax.swing.JPanel conteudoAprender;
     private javax.swing.JPanel conteudoAprender1;
     private javax.swing.JPanel conteudoColaborar;
     private javax.swing.JPanel conteudoCreditos;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JLabel logoGitHub;
     private br.univali.ps.ui.imagens.Logo logoPS;
     private javax.swing.JLabel logoUnivali;
     private javax.swing.JPanel painelAlinhamento1;
-    private javax.swing.JPanel painelAlinhamento2;
     private javax.swing.JPanel painelAlinhamento3;
-    private javax.swing.JPanel painelAlinhamento4;
     private javax.swing.JPanel painelAlinhamento5;
-    private javax.swing.JPanel painelAlinhamento6;
+    private javax.swing.JPanel painelAlinhamento7;
     private javax.swing.JPanel painelAprender;
+    private javax.swing.JPanel painelCabecalho;
     private javax.swing.JPanel painelCentralizacaoLogo;
     private javax.swing.JPanel painelColaborar;
     private javax.swing.JPanel painelColaborarCreditos;
@@ -840,12 +716,11 @@ public final class AbaInicial extends Aba
     private javax.swing.JPanel painelCreditos;
     private br.univali.ps.ui.imagens.Gradiente painelGradiente;
     private javax.swing.JPanel painelNovidades;
-    private javax.swing.JScrollPane painelRolagemExemplos;
+    private javax.swing.JPanel painelRodape;
     private javax.swing.JPanel painelTituloAprender;
     private javax.swing.JPanel painelTituloColaborar;
     private javax.swing.JPanel painelTituloCreditos;
     private javax.swing.JPanel painelTituloNovidades;
-    private javax.swing.JPanel painelTopo;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
     private javax.swing.JLabel rotuloAprender;
     private javax.swing.JLabel rotuloAtalhosTeclado;
