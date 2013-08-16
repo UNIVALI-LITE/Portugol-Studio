@@ -291,8 +291,7 @@ public final class AbaInicial extends Aba
      
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelGradiente = new br.univali.ps.ui.imagens.Gradiente();
         painelCabecalho = new javax.swing.JPanel();
@@ -310,6 +309,7 @@ public final class AbaInicial extends Aba
         rotuloSairProgramando = new javax.swing.JLabel();
         rotuloConhecerLinguagem = new javax.swing.JLabel();
         rotuloConhecerBibliotecas = new javax.swing.JLabel();
+        rotuloAtalhosTeclado = new javax.swing.JLabel();
         rotuloExplorarExemplos = new javax.swing.JLabel();
         painelColaborarCreditos = new javax.swing.JPanel();
         painelColaborar = new javax.swing.JPanel();
@@ -342,7 +342,6 @@ public final class AbaInicial extends Aba
         rotuloFormaAprender5 = new javax.swing.JLabel();
         rotuloFormaAprender6 = new javax.swing.JLabel();
         rotuloFormaAprender7 = new javax.swing.JLabel();
-        rotuloAtalhosTeclado = new javax.swing.JLabel();
         rotuloFormaAprender9 = new javax.swing.JLabel();
         rotuloFormaAprender10 = new javax.swing.JLabel();
         painelRodape = new javax.swing.JPanel();
@@ -429,6 +428,13 @@ public final class AbaInicial extends Aba
         rotuloConhecerBibliotecas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloConhecerBibliotecas.setName("conhecerBibliotecas"); // NOI18N
         painelAlinhamento5.add(rotuloConhecerBibliotecas);
+
+        rotuloAtalhosTeclado.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        rotuloAtalhosTeclado.setForeground(new java.awt.Color(255, 255, 255));
+        rotuloAtalhosTeclado.setText("<html><body><div>:: <u>Atalhos de teclado</u></div></body></html>");
+        rotuloAtalhosTeclado.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloAtalhosTeclado.setName("atalhosTeclado"); // NOI18N
+        painelAlinhamento5.add(rotuloAtalhosTeclado);
 
         rotuloExplorarExemplos.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloExplorarExemplos.setForeground(new java.awt.Color(255, 255, 255));
@@ -608,13 +614,6 @@ public final class AbaInicial extends Aba
         rotuloFormaAprender7.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender7);
 
-        rotuloAtalhosTeclado.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
-        rotuloAtalhosTeclado.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloAtalhosTeclado.setText("<html><body><div>:: <u>Atalhos de teclado</u></div></body></html>");
-        rotuloAtalhosTeclado.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloAtalhosTeclado.setName("atalhosTeclado"); // NOI18N
-        conteudoAprender1.add(rotuloAtalhosTeclado);
-
         rotuloFormaAprender9.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender9.setForeground(new java.awt.Color(255, 255, 255));
         rotuloFormaAprender9.setText("<html><body><div>:: Inúmeros Bugs corrigidos</div></body></html>");
@@ -644,10 +643,8 @@ public final class AbaInicial extends Aba
 
         logoGitHub.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoGitHub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/GitHub-Mark-64px.png"))); // NOI18N
-        logoGitHub.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        logoGitHub.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoGitHubMouseClicked(evt);
             }
         });
@@ -655,10 +652,8 @@ public final class AbaInicial extends Aba
 
         logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoUnivaliMouseClicked(evt);
             }
         });

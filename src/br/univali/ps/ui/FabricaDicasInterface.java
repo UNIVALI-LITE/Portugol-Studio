@@ -23,8 +23,8 @@ import net.java.balloontip.utils.ToolTipUtils;
  */
 public final class FabricaDicasInterface
 {
-    private static final int intervaloFim = 3000;
-    private static final int intervaloInicio = 500;
+    private static final int intervaloFim = 5000;
+    private static final int intervaloInicio = 1000;
     private static final Color corDica = new Color(255, 255, 210);
     private static final Color corTexto = Color.BLACK;
     private static final Icon iconePadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");

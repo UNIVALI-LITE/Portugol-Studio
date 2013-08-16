@@ -21,6 +21,7 @@ public final class Configuracoes
     public static final String DIRETORIO_EXEMPLOS = "diretorioExemplos";
     public static final String TEMA_EDITOR = "temaEditor";
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
+    public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();
@@ -31,6 +32,7 @@ public final class Configuracoes
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Padrão";
+    private boolean centralizarCodigoFonte = false;
     
     Configuracoes()
     {
@@ -49,6 +51,7 @@ public final class Configuracoes
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
             temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
+            centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
         }
         catch (IOException excecao)
         {
@@ -156,6 +159,21 @@ public final class Configuracoes
     public float getTamanhoFonteArvore()
     {
         return tamanhoFonteArvore;
+    }
+
+    public void setCentralizarCodigoFonte(boolean centralizarCodigoFonte)
+    {
+        boolean valorAntigo = this.centralizarCodigoFonte;
+        
+        this.configuracoes.setProperty(CENTRALIZAR_CODIGO_FONTE, Boolean.toString(centralizarCodigoFonte));
+        this.centralizarCodigoFonte = centralizarCodigoFonte;
+        
+        suporteMudancaPropriedade.firePropertyChange(CENTRALIZAR_CODIGO_FONTE, valorAntigo, centralizarCodigoFonte);
+    }
+
+    public boolean isCentralizarCodigoFonte()
+    {
+        return centralizarCodigoFonte;
     }
     
     public void adicionarObservadorConfiguracoes(PropertyChangeListener observador)

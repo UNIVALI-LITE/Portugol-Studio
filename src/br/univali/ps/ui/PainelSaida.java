@@ -34,10 +34,9 @@ public final class PainelSaida extends PainelTabulado
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 8, 8, 8));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 8, 8, 4));
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
