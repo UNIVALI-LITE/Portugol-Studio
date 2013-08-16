@@ -106,7 +106,7 @@ public final class AbaInicial extends Aba
                         File exemplo = new File(((JMenuItem) e.getSource()).getName());
                         String codigoFonte = FileHandle.open(exemplo);
                         AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, true);
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         abaCodigoFonte.adicionar(getPainelTabulado());
                     }
                     catch (Exception excecao)
