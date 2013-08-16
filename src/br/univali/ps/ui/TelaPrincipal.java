@@ -3,24 +3,18 @@ package br.univali.ps.ui;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 public final class TelaPrincipal extends JFrame
 {
+    public static final String ACAO_EXIBIR_AJUDA = "Exibir ajuda";
+    public static final String ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA = "Documentação das bibliotecas";
+    
     private Action acaoSelecionarAbaDireita;
     private Action acaoSelecionarAbaEsquerda;
-    private Action acaoPesquisarSubstituir;
     private Action acaoFecharAbaAtual;
     private Action acaoFecharTodasAbas;
     private Action acaoExibirAjuda;
@@ -151,9 +145,8 @@ public final class TelaPrincipal extends JFrame
     private void  configurarAcaoExibirDocumentacaoBiblioteca()
     {
        KeyStroke atalho = KeyStroke.getKeyStroke("shift F1");
-       String nome = "Documentação das bibliotecas";
         
-        acaoExibirDocumentacaoBiblioteca = new AbstractAction(nome)
+        acaoExibirDocumentacaoBiblioteca = new AbstractAction(ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA)
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -162,16 +155,15 @@ public final class TelaPrincipal extends JFrame
             }
         };
         
-        painelTabulado.getActionMap().put(nome, acaoExibirDocumentacaoBiblioteca);
-        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        painelTabulado.getActionMap().put(ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA, acaoExibirDocumentacaoBiblioteca);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA);
     } 
 
     private void  configurarAcaoExibirAjuda()
     {
        KeyStroke atalho = KeyStroke.getKeyStroke("F1");
-       String nome = "Exibir ajuda";
         
-        acaoExibirAjuda = new AbstractAction(nome)
+        acaoExibirAjuda = new AbstractAction(ACAO_EXIBIR_AJUDA)
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -180,8 +172,8 @@ public final class TelaPrincipal extends JFrame
             }
         };
         
-        painelTabulado.getActionMap().put(nome, acaoExibirAjuda);
-        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        painelTabulado.getActionMap().put(ACAO_EXIBIR_AJUDA, acaoExibirAjuda);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_EXIBIR_AJUDA);
     }
     
     private void  configurarAcaoExibirTelaSobre()

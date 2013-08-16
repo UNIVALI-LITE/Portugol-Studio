@@ -190,9 +190,54 @@ public final class AbaInicial extends Aba
     
     private void configurarAcoes()
     {
+        configurarAcaoSairProgramando();
+        configurarAcaoConhecerLinguagem();
+        configurarAcaoConhecerBibliotecas();
         configurarAcaoExibirTelaSobre();
         configurarAcaoAjudarDesenvolvimento();
         configurarAcaoRelatarBug();
+    }
+    
+    private void configurarAcaoSairProgramando()
+    {
+        Action acao = new AbstractAction(rotuloSairProgramando.getName())
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO).actionPerformed(e);
+            }
+        };
+        
+        getActionMap().put(rotuloSairProgramando.getName(), acao);
+    }
+    
+    private void configurarAcaoConhecerLinguagem()
+    {
+        Action acao = new AbstractAction(rotuloConhecerLinguagem.getName())
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                getPainelTabulado().getActionMap().get(TelaPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
+            }
+        };
+        
+        getActionMap().put(rotuloConhecerLinguagem.getName(), acao);
+    }
+    
+    private void configurarAcaoConhecerBibliotecas()
+    {
+        Action acao = new AbstractAction(rotuloConhecerBibliotecas.getName())
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                getPainelTabulado().getActionMap().get(TelaPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
+            }
+        };
+        
+        getActionMap().put(rotuloConhecerBibliotecas.getName(), acao);
     }
     
     private void configurarAcaoExibirTelaSobre()

@@ -29,6 +29,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     
     private static final Color corAtivo = new Color(60, 60, 60);
     private static final Color corInativo = new Color(120, 120, 120);
+    public static final String  ACAO_NOVO_ARQUIVO = "Novo arquivo";
     
     private Action acaoNovoArquivo;
     private AcaoAbrirArquivo acaoAbrirArquivo;
@@ -95,9 +96,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private void configurarAcaoNovoArquivo()
     {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK);
-        String nome = "Novo arquivo";
         
-        acaoNovoArquivo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"))
+        
+        acaoNovoArquivo = new AbstractAction(ACAO_NOVO_ARQUIVO, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -110,8 +111,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         
         botaoNovoArquivo.setAction(acaoNovoArquivo);
         
-        painelTabulado.getActionMap().put(nome, acaoNovoArquivo);
-        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        painelTabulado.getActionMap().put(ACAO_NOVO_ARQUIVO, acaoNovoArquivo);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_NOVO_ARQUIVO);
     }
     
     private void configurarAcaoAbrirArquivo()
