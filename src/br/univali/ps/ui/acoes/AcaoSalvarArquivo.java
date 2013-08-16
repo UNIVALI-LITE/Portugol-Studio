@@ -12,6 +12,7 @@ public class AcaoSalvarArquivo extends Acao
 {
     private PortugolDocumento documento;
     private AcaoSalvarComo salvarComo;
+    private int posicaoCursor;
     
     public AcaoSalvarArquivo()
     {
@@ -24,6 +25,11 @@ public class AcaoSalvarArquivo extends Acao
         this.salvarComo = acaoSalvarComo;
     }
 
+    public void setPosicaoCursor(int posicaoCursor)
+    {
+        this.posicaoCursor = posicaoCursor;
+    }
+
     public PortugolDocumento getDocumento() {
         return documento;
     }
@@ -33,6 +39,16 @@ public class AcaoSalvarArquivo extends Acao
     {       
         try {
             String texto = documento.getText(0, documento.getLength());
+            
+            StringBuilder sb = new StringBuilder(texto);
+            
+            if (posicaoCursor >= 0)
+            {
+                sb.insert(posicaoCursor, "/*${cursor}*/");
+            }
+            
+            texto = sb.toString();
+            
             if (documento.getFile() != null) {
                 FileHandle.save(texto, documento.getFile());
                 documento.setChanged(false);

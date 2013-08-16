@@ -1074,8 +1074,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             programa = null;
         }
     }
-    
-
 
     private void setTamanhoFonteArvore(float tamanho)
     {
@@ -1539,6 +1537,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         Editor.EscopoCursor escopo = editor.getEscopoCursor();
 
         rotuloPosicaoCursor.setText(String.format("Escopo: %s, Nivel: %d, Linha: %d, Coluna: %d", escopo.getNome(), escopo.getProfundidade(), posicao.y, posicao.x));
+        
+        acaoSalvarArquivo.setPosicaoCursor(editor.getTextArea().getCaretPosition());
     }    
 
     private void corrigirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_corrigirActionPerformed
