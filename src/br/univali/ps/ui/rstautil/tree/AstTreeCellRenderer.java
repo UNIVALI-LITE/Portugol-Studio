@@ -241,7 +241,11 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode != null &&
                 currentPortugolTreeNode.getValor() != null &&
                 !(currentPortugolTreeNode.getValor() instanceof List)) {
-            sb.append(" = ").append(currentPortugolTreeNode.getValor());
+            Object valor = currentPortugolTreeNode.getValor();
+            if (valor instanceof Boolean){
+                valor = ((Boolean)valor) ? "verdadeiro" : "falso";
+            }
+            sb.append(" = ").append(valor);
             }
         final String valor = sb.toString();
         component.setText(valor);
@@ -690,7 +694,11 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(no.getPosicao()).append("]");
         Icon icon = getIcon(no.getTipoDado());
         if (no.getValor() != null) {
-            sb.append(" = ").append(no.getValor());
+            Object valor = no.getValor();
+            if (valor instanceof Boolean){
+                valor = ((Boolean)valor) ? "verdadeiro" : "falso";
+            }
+            sb.append(" = ").append(valor);
         } else if (no.isColuna()) {
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
         }
