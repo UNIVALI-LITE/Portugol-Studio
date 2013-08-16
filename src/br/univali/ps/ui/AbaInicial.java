@@ -122,6 +122,18 @@ public final class AbaInicial extends Aba
             return item;
         }
     }
+
+    private void abrirGitHub()
+    {
+        try
+        {
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/Univali-l2s/Portugol"));
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
    
     private final class ComparadorExemplo implements Comparator<File>
     {
@@ -179,6 +191,8 @@ public final class AbaInicial extends Aba
     private void configurarAcoes()
     {
         configurarAcaoExibirTelaSobre();
+        configurarAcaoAjudarDesenvolvimento();
+        configurarAcaoRelatarBug();
     }
     
     private void configurarAcaoExibirTelaSobre()
@@ -193,7 +207,44 @@ public final class AbaInicial extends Aba
         };
         
         getActionMap().put(rotuloInformacoesSoftware.getName(), acao);
-   }
+    }
+    
+    private void configurarAcaoAjudarDesenvolvimento()
+    {
+        Action acao = new AbstractAction(rotuloAjudarDesenvolvimento.getName())
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                abrirGitHub();
+            }
+        };
+        
+        getActionMap().put(rotuloAjudarDesenvolvimento.getName(), acao);
+    }
+    
+    private void configurarAcaoRelatarBug()
+    {
+        Action acao = new AbstractAction(rotuloRelatarBug.getName())
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform"));
+                }
+                catch (IOException ex)
+                {
+                    Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        
+        getActionMap().put(rotuloRelatarBug.getName(), acao);
+    }
+    
+    
     
     private void configurarLinks()
     {
@@ -668,14 +719,7 @@ public final class AbaInicial extends Aba
 
     private void logoGitHubMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_logoGitHubMouseClicked
     {//GEN-HEADEREND:event_logoGitHubMouseClicked
-        try
-        {
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/Univali-l2s/Portugol"));
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        abrirGitHub();
     }//GEN-LAST:event_logoGitHubMouseClicked
 
     private void logoUnivaliMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_logoUnivaliMouseClicked
