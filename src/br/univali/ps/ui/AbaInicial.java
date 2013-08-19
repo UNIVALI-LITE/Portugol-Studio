@@ -2,6 +2,7 @@ package br.univali.ps.ui;
 
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -370,8 +371,15 @@ public final class AbaInicial extends Aba
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                selecionar();
-                menuExemplos.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
+                if (menuExemplos != null)
+                {
+                    selecionar();
+                    menuExemplos.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
+                }
+                else
+                {
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao("Não foi possível carregar os exemplos", ExcecaoAplicacao.Tipo.ERRO));
+                }
             }
         };
         
