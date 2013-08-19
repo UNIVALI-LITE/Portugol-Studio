@@ -78,7 +78,12 @@ public final class AbaInicial extends Aba
                 
                 for (File subdiretorio : subdiretorios)
                 {
-                    menuExemplos.add(obterSubniveis(subdiretorio, iconeDiretorio, iconeArquivo, comparadorExemplo));
+                    JMenuItem item = obterSubniveis(subdiretorio, iconeDiretorio, iconeArquivo, comparadorExemplo);
+                    
+                    if (item != null)
+                    {
+                        menuExemplos.add(item);
+                    }
                 }
             }
         }
@@ -102,38 +107,51 @@ public final class AbaInicial extends Aba
             
             for (File arquivo : arquivos)
             {
-                submenu.add(obterSubniveis(arquivo, iconeDiretorio, iconeArquivo, comparadorExemplo));
+                JMenuItem item = obterSubniveis(arquivo, iconeDiretorio, iconeArquivo, comparadorExemplo);                       
+                        
+                if (item != null)
+                {
+                    submenu.add(item);
+                }
             }
             
-            return submenu;
+            if (submenu.getSubElements().length > 0)
+            {
+                return submenu;
+            }
         }
         else
         {
-            JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
+            if (caminho.getName().toLowerCase().endsWith(".por"))
             {
-                @Override
-                public void actionPerformed(ActionEvent e)
+                JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
                 {
-                    try
+                    @Override
+                    public void actionPerformed(ActionEvent e)
                     {
-                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
-                        String codigoFonte = FileHandle.open(exemplo);
-                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-                        abaCodigoFonte.adicionar(getPainelTabulado());
+                        try
+                        {
+                            File exemplo = new File(((JMenuItem) e.getSource()).getName());
+                            String codigoFonte = FileHandle.open(exemplo);
+                            AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                            abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                            abaCodigoFonte.adicionar(getPainelTabulado());
+                        }
+                        catch (Exception excecao)
+                        {
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                        }
                     }
-                    catch (Exception excecao)
-                    {
-                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-                    }
-                }
-            });
+                });
             
-            item.setName(caminho.getAbsolutePath());
-            item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            
-            return item;
+                item.setName(caminho.getAbsolutePath());
+                item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+                return item;
+            }
         }
+        
+        return null;
     }
 
     private void abrirGitHub()
@@ -169,13 +187,18 @@ public final class AbaInicial extends Aba
             }
             else if (exemplo1.isFile() && exemplo2.isFile())
             {            
-                String nomeExemplo1 = exemplo1.getName();
-                String nomeExemplo2 = exemplo2.getName();
+                if (exemplo1.getName().toLowerCase().endsWith(".por") && exemplo2.getName().toLowerCase().endsWith(".por"))
+                {
+                    String nomeExemplo1 = exemplo1.getName();
+                    String nomeExemplo2 = exemplo2.getName();
 
-                Integer numero1 = extrairNumero(nomeExemplo1);
-                Integer numero2 = extrairNumero(nomeExemplo2);
+                    Integer numero1 = extrairNumero(nomeExemplo1);
+                    Integer numero2 = extrairNumero(nomeExemplo2);
+
+                    return numero1.compareTo(numero2);
+                }
                 
-                return numero1.compareTo(numero2);
+                return 0;
             }
             
             return 0;
