@@ -33,6 +33,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     
     private Action acaoNovoArquivo;
     private AcaoAbrirArquivo acaoAbrirArquivo;
+    private Action acaoExibirTelaInicial;
     
     private Aba abaAtual;
     private PainelTabulado painelTabulado;
@@ -91,6 +92,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     {
         configurarAcaoNovoArquivo();
         configurarAcaoAbrirArquivo();
+        configurarAcaoExibirTelaInicial();
     }
     
     private void configurarAcaoNovoArquivo()
@@ -108,6 +110,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
                 abaCodigoFonte.selecionar();
             }
         };
+        acaoNovoArquivo.putValue(Action.ACCELERATOR_KEY, atalho);
         
         botaoNovoArquivo.setAction(acaoNovoArquivo);
         
@@ -131,11 +134,31 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoAbrir.setAction(acaoAbrirArquivo);
     }    
     
+    private void configurarAcaoExibirTelaInicial()
+    {
+        String nome = "Exibir tela inicial";
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK);
+        
+        acaoExibirTelaInicial = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                getAba().selecionar();
+            }
+        };
+        
+        acaoExibirTelaInicial.putValue(Action.ACCELERATOR_KEY, atalho);
+        
+        painelTabulado.getActionMap().put(nome, acaoExibirTelaInicial);
+        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
     private void criarDicasInterface()
     {
-        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", acaoAbrirArquivo, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", acaoNovoArquivo, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
     }
     
     private void instalarObservadores()

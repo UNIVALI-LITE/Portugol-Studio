@@ -194,13 +194,6 @@ public final class TelaPrincipal extends JFrame
         painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
     
-    public void configurarAbaInicial(AbaInicial abaInicial)
-    {
-        abaInicial.configurarAcaoSobre(acaoExibirTelaSobre);
-        abaInicial.configurarAcaoAjuda(acaoExibirAjuda);
-        abaInicial.configurarAcaoBibliotecas(acaoExibirDocumentacaoBiblioteca);
-    }
-    
     private void instalarObservadores()
     {
         instalarObservadorExcecoesNaoTratadas();

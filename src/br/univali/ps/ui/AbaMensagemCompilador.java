@@ -100,7 +100,7 @@ public final class AbaMensagemCompilador extends Aba
         tabelaModel.setResultadoAnalise(resultadoAnalise);
     }
 
-void limpar()
+    void limpar()
     {
         tabelaModel.setResultadoAnalise(null);
     }

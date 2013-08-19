@@ -4,10 +4,12 @@ package br.univali.ps.ui.telas;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -16,24 +18,26 @@ import javax.swing.JFrame;
 
 public final class TelaSobre extends JDialog
 {
-    private JFrame pai;
     private Action acaoSair;
     
     public TelaSobre(JFrame pai) 
     {
+        super(pai);
         configurarAcaoSair();
         initComponents();
-        this.pai = pai;
         
         botaoSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoLicencas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        //setIconImage(GerenciadorIcones.carregar("aplicacao.png", GerenciadorIcones.Tamanho.x16).getImage());
+
         setSize(640, 480);        
     }
 
     private void configurarAcaoSair() 
     {
-        acaoSair = new AbstractAction("Sair", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "sair.png"))
+        String nome  = "Sair";
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        
+        acaoSair = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "sair.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e) 
@@ -41,28 +45,10 @@ public final class TelaSobre extends JDialog
                 setVisible(false);
             }
         };
+        
+        getRootPane().getActionMap().put(nome, acaoSair);
+        getRootPane().getInputMap().put(atalho, nome);
     }
-    
-    @Override
-    public void setVisible(boolean visivel) 
-    {
-        if (visivel)
-        {
-            pai.setEnabled(false);
-
-            setLocationRelativeTo(pai);
-            super.setVisible(visivel);
-            toFront();
-        }
-        else
-        {
-            super.setVisible(visivel);
-            
-            pai.setEnabled(true);
-            pai.toFront();
-        }
-    }
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -83,6 +69,7 @@ public final class TelaSobre extends JDialog
         botaoSair = new javax.swing.JButton();
 
         setTitle("Sobre");
+        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(777, 95));

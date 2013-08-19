@@ -8,6 +8,7 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,19 +23,30 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
+import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 import net.java.balloontip.BalloonTip;
 
 public final class AbaInicial extends Aba
 {
     private JPopupMenu menuExemplos;
+    private PainelTabulado painelTabulado;
+    private TelaAtalhosTeclado telaAtalhosTeclado;
+    
+    private Action acaoExplorarExemplos;    
+    private Action acaoExibirAtalhosTeclado;
+    
     
     public AbaInicial(PainelTabulado painelTabulado)
     {
         super();
+        
+        this.painelTabulado = painelTabulado;
+        this.telaAtalhosTeclado = new TelaAtalhosTeclado();
         setCabecalho(new BotoesControleAba(this, painelTabulado));
         
         initComponents();
@@ -179,8 +191,7 @@ public final class AbaInicial extends Aba
             
             return null;
         }
-    }   
-    
+    }
     
     private void configurarCursorLogos()
     {
@@ -196,6 +207,8 @@ public final class AbaInicial extends Aba
         configurarAcaoExibirTelaSobre();
         configurarAcaoAjudarDesenvolvimento();
         configurarAcaoRelatarBug();
+        configurarAcaoExplorarExemplos();
+        configurarAcaoExibirAtalhosTeclado();
     }
     
     private void configurarAcaoSairProgramando()
@@ -288,9 +301,7 @@ public final class AbaInicial extends Aba
         
         getActionMap().put(rotuloRelatarBug.getName(), acao);
     }
-    
-    
-    
+        
     private void configurarLinks()
     {
         MouseListener listener = new MouseAdapter() 
@@ -299,20 +310,13 @@ public final class AbaInicial extends Aba
             public void mouseClicked(MouseEvent e)
             {
                 JLabel rotulo = (JLabel) e.getSource();
-                String nomeAcao = rotulo.getName();
-                
-                if (nomeAcao.equals("explorarExemplos"))
+                String nomeAcao = rotulo.getName();                
+               
+                Action acao = getActionMap().get(nomeAcao);
+
+                if (acao != null)
                 {
-                    exibirMenuExemplos();
-                }
-                else
-                {
-                    Action acao = getActionMap().get(nomeAcao);
-                    
-                    if (acao != null)
-                    {
-                        acao.actionPerformed(null);
-                    }
+                    acao.actionPerformed(null);
                 }
             }
 
@@ -321,8 +325,6 @@ public final class AbaInicial extends Aba
             {
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setForeground(Color.YELLOW);
-                
-               
             }
 
             @Override
@@ -358,28 +360,53 @@ public final class AbaInicial extends Aba
         rotuloExplorarExemplos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     
-    private void exibirMenuExemplos()
+    private void configurarAcaoExplorarExemplos()
     {
-        menuExemplos.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
-    }
-            
-    
-    public void configurarAcaoAjuda(Action action)
-    {
+        String nome = "explorarExemplos";
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.ALT_DOWN_MASK);
         
-    }
-    
-    public void configurarAcaoSobre(Action action)
-    {
+        acaoExplorarExemplos = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                selecionar();
+                menuExemplos.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
+            }
+        };
         
-    }
-    
-    public void configurarAcaoBibliotecas(Action action)
-    {
+        acaoExplorarExemplos.putValue(Action.ACCELERATOR_KEY, atalho);
         
+        getActionMap().put(nome, acaoExplorarExemplos);
+        
+        painelTabulado.getActionMap().put(nome, acaoExplorarExemplos);
+        painelTabulado.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
     
-     private void criarDicasInterface()
+    private void configurarAcaoExibirAtalhosTeclado()
+    {
+        String nome = "atalhosTeclado";
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
+        
+        acaoExibirAtalhosTeclado = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                telaAtalhosTeclado.setLocationRelativeTo(null);
+                telaAtalhosTeclado.setVisible(true);
+            }
+        };
+        
+        acaoExibirAtalhosTeclado.putValue(Action.ACCELERATOR_KEY, atalho);
+        
+        getActionMap().put(nome, acaoExibirAtalhosTeclado);
+        
+        painelTabulado.getActionMap().put(nome, acaoExibirAtalhosTeclado);
+        painelTabulado.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void criarDicasInterface()
     {
         FabricaDicasInterface.criarDicaInterface(logoGitHub, "Contribuir com o projeto", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
         FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
@@ -527,14 +554,14 @@ public final class AbaInicial extends Aba
 
         rotuloAtalhosTeclado.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloAtalhosTeclado.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloAtalhosTeclado.setText("<html><body><div>:: <u>Atalhos de teclado</u></div></body></html>");
+        rotuloAtalhosTeclado.setText("<html><body><div>:: <u>Atalhos do teclado</u> (F11)</div></body></html>");
         rotuloAtalhosTeclado.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloAtalhosTeclado.setName("atalhosTeclado"); // NOI18N
         painelAlinhamento5.add(rotuloAtalhosTeclado);
 
         rotuloExplorarExemplos.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloExplorarExemplos.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloExplorarExemplos.setText("<html><body><div>:: <u>Explorar os Exemplos</u></div></body></html>");
+        rotuloExplorarExemplos.setText("<html><body><div>:: <u>Explorar os Exemplos</u> (Alt+E)</div></body></html>");
         rotuloExplorarExemplos.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloExplorarExemplos.setName("explorarExemplos"); // NOI18N
         painelAlinhamento5.add(rotuloExplorarExemplos);
@@ -682,7 +709,7 @@ public final class AbaInicial extends Aba
 
         rotuloFormaAprender3.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender3.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender3.setText("<html><body><div>:: Árvore de Símbolo</div></body></html>");
+        rotuloFormaAprender3.setText("<html><body><div>:: Árvore de Símbolos</div></body></html>");
         rotuloFormaAprender3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender3);
 

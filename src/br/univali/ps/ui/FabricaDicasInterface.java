@@ -2,16 +2,13 @@ package br.univali.ps.ui;
 
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.Timer;
+import javax.swing.KeyStroke;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.EdgedBalloonStyle;
@@ -31,6 +28,17 @@ public final class FabricaDicasInterface
 
     public static void criarDicaInterface(JComponent componente, String dica, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
     {
+        criarDicaInterfacePara(componente, dica, iconePadrao, orientacao, posicao);
+    }
+    
+    public static void criarDicaInterface(JComponent componente, String dica, Action acao, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
+    {
+        if ((acao != null) && acao.getValue(Action.ACCELERATOR_KEY) != null)
+        {
+            KeyStroke atalho = (KeyStroke) acao.getValue(Action.ACCELERATOR_KEY);
+            dica = dica.concat(" (Atalho: ").concat(TradutorAtalhosTeclado.traduzir(atalho)).concat(")");
+        }
+        
         criarDicaInterfacePara(componente, dica, iconePadrao, orientacao, posicao);
     }
 
