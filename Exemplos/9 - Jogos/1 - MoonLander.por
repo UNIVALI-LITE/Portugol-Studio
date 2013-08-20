@@ -1,5 +1,5 @@
 /**
- * /*${cursor}*/Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander
+ * Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander
  */
 programa
 {
@@ -12,7 +12,7 @@ programa
 	const inteiro ACELERACAO_GRAVIDADE = 1
 	const inteiro ACELERACAO_FOGUETE = 1
 	const inteiro VELOCIDADE_MAXIMA = 5
-	const inteiro TAXA_ATUALIZACAO = 20 //FPS
+	const inteiro TAXA_ATUALIZACAO = 25 //FPS
 
 	const inteiro ALTURA_FOGUETE = 76, LARGURA_FOGUETE = 59
 	const inteiro LARGURA_PLATAFORMA = 135
@@ -26,6 +26,8 @@ programa
 	
 	inteiro velocidade_vertical = 0, velocidade_horizontal = 0
 	inteiro tempo_inicio = 0, tempo_decorrido = 0, tempo_restante = 0, tempo_quadro = 1000 / TAXA_ATUALIZACAO	
+
+	inteiro tempo_inicio_jogo = 0, tempo_total_jogo = 0
 	
 	logico acelerando = falso, quebrou = falso, pousou = falso, foi_para_o_espaco = falso
 	
@@ -45,7 +47,7 @@ programa
 			g.desenhar_texto(220, 300, "Utilize as teclas W, A e D para jogar", 20,  0xFFFFFF, 0x000000)
 			g.desenhar_texto(260, 330, "Pressione ENTER para iniciar", 20,  0xFFFFFF, 0x000000)
 			g.desenhar_texto(290, 360, "Pressione ESC para sair", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander", 16, 0x00FFFF, 0x000000)
+			g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander                                               ", 16, 0x00FFFF, 0x000000)
 			g.renderizar()
 			
 			se (t.tecla_pressionada(t.TECLA_ENTER))
@@ -83,11 +85,11 @@ programa
 		{
 			atualizar_velocidade_vertical()
 			atualizar_velocidade_horizontal()
-			atualizar_posicao_foguete()	        
+			atualizar_posicao_foguete()
 			atualizar_estado_foguete()
 		}
 		senao
-		{
+		{	
 			se (t.tecla_pressionada(t.TECLA_ENTER))
 			{
 				reiniciar()
@@ -149,6 +151,7 @@ programa
 				se (velocidade_vertical <= VELOCIDADE_MAXIMA)
 				{
 					pousou = verdadeiro
+					tempo_total_jogo = u.tempo_decorrido() - tempo_inicio_jogo
 				}
                 	senao
                 	{
@@ -170,7 +173,8 @@ programa
 		se (pousou)
         	{
 			g.desenhar_imagem(x_foguete, y_foguete, imagem_foguete_pousado)
-			g.desenhar_texto(290, 270, "Parabéns, você venceu!", 20,  0xFFFFFF, 0x000000)
+			g.desenhar_texto(290, 240, "Parabéns, você venceu!", 20,  0xFFFFFF, 0x000000)
+			g.desenhar_texto(280, 270, "Você pousou em " + (tempo_total_jogo / 1000) + " segundos!", 20,  0xFFFFFF, 0x000000)
 			g.desenhar_texto(220, 300, "Pressione ENTER para jogar novamente", 20,  0xFFFFFF, 0x000000)
 			g.desenhar_texto(290, 330, "Pressione ESC para sair", 20,  0xFFFFFF, 0x000000)
 		}
@@ -199,7 +203,7 @@ programa
 			}
         	}
 
-		g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander", 16, 0x00FFFF, 0x000000)
+					g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander                                               ", 16, 0x00FFFF, 0x000000)
 		g.renderizar()
 	}
 
@@ -213,6 +217,8 @@ programa
 		foi_para_o_espaco = falso
 		velocidade_vertical = 0
 		velocidade_horizontal = 0
+		tempo_inicio_jogo = u.tempo_decorrido()
+		tempo_total_jogo = 0
 	}
 
 	funcao carregar_imagens()
@@ -254,3 +260,4 @@ programa
 		g.encerrar_modo_grafico()
 	}
 }
+/*${cursor}*/
