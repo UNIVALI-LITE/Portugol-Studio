@@ -5,6 +5,8 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -219,8 +221,21 @@ public final class TelaPrincipal extends JFrame
                 }
                 else
                 {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                
+                    excecao.printStackTrace(pw);
                     excecao.printStackTrace(System.err);
+
+                    if (sw.toString().contains("rsyntax"))
+                    {
+                        // Erro do RSyntaxTextArea, printa no console e ignora
+                        System.out.println("Erro do RSyntaxTextArea");
+                    }
+                    else
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+                    }
                 }
             }
         });
