@@ -22,6 +22,7 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
@@ -48,7 +49,8 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
     private BalloonTip popupLeia;
     private BalloonTipStyle estiloPopupLeia;
     private ActionListener foo;
-    private boolean popupFinalizado;
+    private Timer timerPopupLeia;
+    private boolean removendoPopup = true;
     
     private Action acaoAumentarFonte;
     private Action acaoDiminuirFonte;
@@ -67,11 +69,11 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         this.menuDiminuirFonte.setText("Diminuir fonte");
         console.setDocument(new DocumentoConsole());
 
-        rotuloPopupLeia = new JLabel("<html><body><p>O programa está aguardando a entrada de dados</p></body></html>", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"), JLabel.LEFT);
+        rotuloPopupLeia = new JLabel("<html><body><p>O programa está aguardando a entrada de dados</p></body></html>", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"), JLabel.LEFT);
         rotuloPopupLeia.setVerticalTextPosition(JLabel.CENTER);
         rotuloPopupLeia.setIconTextGap(10);
-        rotuloPopupLeia.setPreferredSize(new Dimension(250, 50));
-        rotuloPopupLeia.setFont(rotuloPopupLeia.getFont().deriveFont(Font.BOLD, 14f));
+        rotuloPopupLeia.setPreferredSize(new Dimension(230, 70));
+        rotuloPopupLeia.setFont(rotuloPopupLeia.getFont().deriveFont(12f));
 
         estiloPopupLeia = new EdgedBalloonStyle(new Color(255, 255, 210), Color.BLACK);
         popupLeia = new BalloonTip(painelRolagem.getViewport(), rotuloPopupLeia, estiloPopupLeia, BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH, 50, 25, false);
@@ -83,7 +85,15 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                popupFinalizado = true;
+                if (removendoPopup)
+                {
+                    popupLeia.setVisible(false);
+                }/*
+                else
+                {
+                    console.requestFocusInWindow();
+                    console.setCaretPosition(console.getText().length());
+                }*/
             }
         };
 
@@ -361,7 +371,6 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         console.setEditable(false);
         console.setBackground(new java.awt.Color(250, 250, 250));
         console.setColumns(20);
-        console.setRows(5);
         console.setBorder(null);
         painelRolagem.setViewportView(console);
 
@@ -509,9 +518,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         
         this.tipoDado = tipoDado;
 
-        popupFinalizado = false;
-        FadingUtils.fadeInBalloon(popupLeia, foo, 200, 24);
-        aguardarPopup();
+        agendarPopupLeia();
         
         this.selecionar();
         console.requestFocusInWindow();
@@ -522,10 +529,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
 
         String entrada = (String) manipuladorEntrada.get();
 
-        popupFinalizado = false;
-        FadingUtils.fadeOutBalloon(popupLeia, foo, 50, 24);
-        aguardarPopup();
-        popupLeia.setVisible(false);
+        removerPopupLeia();
 
         console.setEditable(false);
         console.setFocusable(false);
@@ -533,20 +537,30 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         return obterValorEntrada(entrada);
     }
 
-    private void aguardarPopup()
+    private void agendarPopupLeia()
     {
-        while (!popupFinalizado)
+        timerPopupLeia = new Timer(4000, new ActionListener()
         {
-            try
+            @Override
+            public void actionPerformed(ActionEvent e)
             {
-                Thread.sleep(10);
+                removendoPopup = false;
+                FadingUtils.fadeInBalloon(popupLeia, foo, 500, 24);
+                cancelarPopupLeia();
             }
-            catch (Exception ex)
-            {
-            }
-        }
+        });
+        
+        timerPopupLeia.start();
     }
 
+    private void cancelarPopupLeia()
+    {
+        if (timerPopupLeia != null)
+        {
+            timerPopupLeia.stop();
+        }
+    }
+    
     private Object obterValorEntrada(String entrada)
     {
         try
@@ -583,11 +597,13 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
 
     void removerPopupLeia()
     {
+        cancelarPopupLeia();
+        
+        removendoPopup = true;
+        
         if (popupLeia.isVisible())
-        {
-            FadingUtils.fadeOutBalloon(popupLeia, foo, 200, 24);
-            popupFinalizado = true;
-            popupLeia.setVisible(false);
+        {            
+            FadingUtils.fadeOutBalloon(popupLeia, foo, 500, 24);
         }
     }
 
@@ -637,7 +653,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
             }
             else
             {
-                console.setText(null);
+                console.setText(null);                
             }
             return true;
         }

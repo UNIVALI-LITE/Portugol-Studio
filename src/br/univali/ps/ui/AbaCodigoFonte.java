@@ -110,7 +110,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         
         telaOpcoesExecucao = new TelaOpcoesExecucao();
         divisorEditorArvore.resetToPreferredSizes();
-        divisorEditorPainelSaida.resetToPreferredSizes();
+        divisorEditorPainelSaida.resetToPreferredSizes();        
     }
     
     private void configurarArvoreEstrutural()
