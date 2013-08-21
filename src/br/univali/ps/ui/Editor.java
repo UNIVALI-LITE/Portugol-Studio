@@ -2,6 +2,8 @@ package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
 import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
+import br.univali.portugol.nucleo.execucao.ModoEncerramento;
+import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
@@ -58,6 +60,8 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import net.java.balloontip.BalloonTip;
@@ -98,6 +102,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private AbaCodigoFonte abaCodigoFonte;
     
     private Object tag = null;
+    
+    private Object tagErro = null;
+    private int ultimaLinhaErro = 0;    
+    private int ultimaColunaErro = 0; 
+    private Color corErro;
+    
     private ErrorStrip errorStrip;
     private PortugolParser notificaErrosEditor;
     private PortugolLanguageSuport portugolLanguageSuport;    
@@ -521,13 +531,41 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TEMA_EDITOR);
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.CENTRALIZAR_CODIGO_FONTE);
         
+        textArea.getDocument().addDocumentListener(new DocumentListener() 
+        {
+            @Override
+            public void insertUpdate(DocumentEvent e)
+            {
+                limparErroExecucao();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e)
+            {
+                limparErroExecucao();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e)
+            {
+                limparErroExecucao();
+            }
+        });
+        
         textArea.addCaretListener(Editor.this);
         textArea.addFocusListener(new FocusAdapter()
         {
             @Override
             public void focusGained(FocusEvent e)
             {
-                centralizarCodigoFonte();
+                if (tagErro != null)
+                {
+                    rolarAtePosicao(ultimaLinhaErro + 1, ultimaColunaErro);
+                }
+                else
+                {
+                    centralizarCodigoFonte();
+                }
             }
         });
         
@@ -710,6 +748,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public void iniciarDepuracao()
     {
+        limparErroExecucao();
+        
         depurando = true;        
         ultimaPosicaoCursor = textArea.getCaretPosition();
         
@@ -723,7 +763,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnProximaInstrucao.setVisible(expandido);
     }
 
-    public void pararDepuracao()
+    public void pararDepuracao(ResultadoExecucao resultadoExecucao)
     {
         depurando = false;
         
@@ -743,7 +783,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDepurar.setVisible(expandido);
         btnProximaInstrucao.setVisible(false);
         
-        centralizarCodigoFonte();
+        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
+        {
+            destacarErroExecucao(resultadoExecucao.getErro().getLinha(), resultadoExecucao.getErro().getColuna());
+        }
+        else
+        {
+            centralizarCodigoFonte();
+        }
     }
     
     private void rolarAtePosicao(int linha, int coluna)
@@ -931,6 +978,27 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         portugolLanguageSuport.getProvider().setEscopoCursor(getEscopoCursor());
         
+        if (tagErro != null)
+        {
+            try
+            {
+                int linhaAtual = textArea.getLineOfOffset(textArea.getCaretPosition());
+                
+                if (linhaAtual == ultimaLinhaErro)
+                {
+                    textArea.setHighlightCurrentLine(false);
+                }
+                else
+                {
+                    textArea.setHighlightCurrentLine(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
+        
         if (btnCentralizarCodigoFonte.isSelected())
         {
             centralizarCodigoFonte();
@@ -943,7 +1011,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             @Override
             public void run()
-            {
+            {                
                 rolarAtePosicao(textArea.getCaretPosition());
             }
         });
@@ -1020,7 +1088,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 }
 
                 else item.setSelected(false);
-            }            
+            }
+            
+            corErro = obterCorErro();
+            
+            if (tagErro != null)
+            {
+                destacarErroExecucao(ultimaLinhaErro + 1, ultimaColunaErro + 1);
+            }
         }
         catch (ExcecaoAplicacao excecao)
         {
@@ -1032,6 +1107,49 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     public void depuracaoInicializada(InterfaceDepurador depurador)
     {}
 
+    private void destacarErroExecucao(int linha, int coluna)
+    {
+        try
+        {
+            int line = linha - 1;
+            scrollPane.getGutter().addLineTrackingIcon(line, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "stop.png"));
+            
+            if (tagErro != null)
+            {
+                textArea.removeLineHighlight(tagErro);
+            }
+            
+            int linhaAtual = textArea.getLineOfOffset(textArea.getCaretPosition());
+            
+            if (linhaAtual == line)
+            {
+                textArea.setHighlightCurrentLine(false);
+            }
+            
+            tagErro = textArea.addLineHighlight(line, corErro);
+            
+            ultimaLinhaErro = line;
+            ultimaColunaErro = coluna;
+            
+            rolarAtePosicao(line, coluna);
+        }
+        catch (BadLocationException ex)
+        {
+           ex.printStackTrace(System.out);
+        }
+    }
+    
+    private void limparErroExecucao()
+    {
+        if (tagErro != null)
+        {
+            textArea.removeLineHighlight(tagErro);
+            tagErro = null;
+            scrollPane.getGutter().removeAllTrackingIcons();
+            textArea.setHighlightCurrentLine(true);
+        }
+    }
+    
     @Override
     public void highlightLinha(int linha)
     {
@@ -1044,7 +1162,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 textArea.removeLineHighlight(tag);
             }
 
-            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.15f));            
+            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));            
             
             ultimaLinhaHighlight = line;
             ultimaColunaHighlight = 0;
@@ -1130,6 +1248,26 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     @Override
     public void simboloRemovido(Simbolo simbolo) {}
+
+    private Color obterCorErro()
+    {
+        Color cor = new Color(1f, 0f, 0f, 0.15f);
+            
+        // Por enquanto vamos fazer no braço, depois vemos como podemos 
+        // incluir e/ou buscar esta informação no tema
+
+        for (Component componente : menuTema.getComponents())
+        {
+            JMenuItem item = (JMenuItem) componente;
+
+            if (item.isSelected() && item.getText().equals("Dark"))
+            {
+                cor = new Color(1f, 0f, 0f, 0.50f);
+            }
+        }
+        
+        return cor;
+    }
 
     private class FindReplaceActionListener implements ActionListener
     {

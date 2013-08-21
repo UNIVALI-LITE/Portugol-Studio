@@ -1274,7 +1274,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         try
         {
             AbaConsole console = painelSaida.getConsole();
-            editor.pararDepuracao();
+            editor.pararDepuracao(resultadoExecucao);
             console.removerPopupLeia();
 
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
@@ -1311,7 +1311,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
             {
-                console.escrever("\nErro: " + resultadoExecucao.getErro().getMensagem());
+                console.escrever("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                console.escrever("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + resultadoExecucao.getErro().getColuna());
             }
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
             {
