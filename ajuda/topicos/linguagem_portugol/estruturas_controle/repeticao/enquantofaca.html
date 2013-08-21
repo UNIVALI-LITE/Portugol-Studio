@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>Laços Faça-Enquanto</title>
+        <link rel="stylesheet" type="text/css" href="../../../ajuda.css" />
+        <link rel="shortcut icon" href="../../../../imagens/pagina.png" />
+    </head>
+    <body>
+        <div>
+        	<h1>Laço Faça-Enquanto (Pós-Testado)</h1>
+        	<img src="../../../../imagens/laco_facaenquanto.png">
+        	<p>Nesta estrutura de repetição o programador executa um bloco de instruções <strong>D</strong> e posteriormente faz uma verificação em <strong>B</strong> caso a condição de teste seja verdadeira executa o bloco de instrução até que a condição em <strong>B</strong> seja falsa.</p>
+        	<h2>Exemplo:</h2>
+            <pre class="codigo-portugol">
+programa
+{
+    funcao inicio()
+    {
+        //Escreve no console o valor da variável passo durante as execuções
+        inteiro passo = 0
+        faca{
+        	escreva(passo)
+        	passo = passo + 1
+        }enquanto(passo &#60; 5)
+
+		passo = 0
+        //Escreve no console o valor de passo multiplicado por 5
+        faca{
+        	escreva(passo)
+        	passo = passo + 1
+        }enquanto(passo &#60; 10)
+        
+        //Escreve no console "passo" enquanto teste for igual a verdadeiro
+        passo = 0
+        logico teste = verdadeiro
+        faca{
+        	escreva("passo")
+        	passo = passo + 1
+        	se (passo > 5){
+        		teste = falso
+        	}
+        }enquanto(passo &#60; 5)	
+    }
+}
+           </pre>
+        </div>
+    </body>
+</html>

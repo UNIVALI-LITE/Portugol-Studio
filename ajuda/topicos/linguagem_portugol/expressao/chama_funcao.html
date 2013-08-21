@@ -5,6 +5,42 @@
         <link rel="shortcut icon" href="../../../imagens/pagina.png" />
     </head>
     <body>
-        <div>TODO write content</div>
+        <div>
+        	<h1>Chamada de Função</h1>
+        	<p>Uma chamada de função consiste em executar uma porção de código de forma desacoplada do resto do programa, não sendo necessário executar etapas que não estejam de acordo com as atribuições do procedimento. Uma chamada de função pode ou não retornar um valor e pode ou não receber parâmetros</p>
+        	<h2>Exemplo:</h2>
+            <pre class="codigo-portugol">            
+programa{
+	//Função soma, recebe como parâmetro dois números inteiros que são informados na função inicio
+	funcao inteiro soma(inteiro a, inteiro b){
+		retorne a+b
+	}
+
+	//Função exibir, recebe dois parâmetros inteiros e escreve a soma destes valores na saída do console
+	funcao vazio exibir(inteiro a, inteiro b){
+		escreva(a+b)
+	}
+
+	//Função mostrar, exibe a soma de dois valores informados pelo usuário
+	funcao vazio mostrar(){
+		inteiro a, b
+		leia(a)
+		leia(b)
+		escreva(a+b)
+	}
+
+    funcao inicio(){
+        //Chama a função soma, passando por parâmetro 5 e 2
+        escreva(soma(5,2))
+		
+		//Chama a função exibir, passando por parâmetro 5 e 2
+		exibir(5,2)
+		
+		//Chama a função mostrar, sem passar parâmetros
+		mostrar()
+    }
+}
+            </pre>
+        </div>
     </body>
 </html>
