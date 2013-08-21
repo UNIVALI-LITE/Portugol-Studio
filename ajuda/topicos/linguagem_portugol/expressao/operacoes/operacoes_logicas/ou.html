@@ -15,16 +15,18 @@ programa
 {
     funcao inicio()
     {
-        inteiro numero
-
-        //pede ao usuário que entre com um número
-        escreva("Digite um valor inteiro: ")
+    	//Teste utilizando o operador lógico "ou" onde a deve ser igual a 2 ou pelo menos b deve ser igual a 2, qualquer um destes satisfaz o teste oferecendo-lhe verdadeiro como resposta
+        inteiro a = 2, b = 2
+        se(a == 2 ou b == 2){
+        	escreva("Teste positivo")
+        }
         
-        //lê o valor digitado pelo usuário
-        leia(numero)
-
-        //exibe a frase "O número digitado foi: " seguido do número digitado pelo usuário.
-        escreva("O número digitado foi: ",numero)
+        //Neste caso c é igual a 2, entretanto d não é igual a 2, mas qualquer uma das condições oferece ao teste como resposta: verdadeiro
+        inteiro c = 2, d = 3
+        se(c == 2 ou d == 2){
+        	escreva("Teste positivo")
+        }
+        
     }
 }
            </pre>
