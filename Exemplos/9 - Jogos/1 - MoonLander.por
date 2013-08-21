@@ -1,5 +1,5 @@
 /**
- * Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander
+ * /*${cursor}*/Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander
  */
 programa
 {
@@ -260,4 +260,4 @@ programa
 		g.encerrar_modo_grafico()
 	}
 }
-/*${cursor}*/
+
