@@ -1312,7 +1312,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
             {
                 console.escrever("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
-                console.escrever("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + resultadoExecucao.getErro().getColuna());
+                console.escrever("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
             }
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
             {

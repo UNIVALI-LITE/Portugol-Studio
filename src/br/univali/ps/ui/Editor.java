@@ -1111,7 +1111,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         try
         {
-            int line = linha - 1;
+            int line = Math.max(0, linha - 1);
+            
             scrollPane.getGutter().addLineTrackingIcon(line, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "stop.png"));
             
             if (tagErro != null)
