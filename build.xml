@@ -10,6 +10,21 @@
 <project name="Portugol-Studio" default="default" basedir=".">
     <description>Builds, tests, and runs the project Portugol-Studio.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="distribuicao" description="Distribuição" depends="clean, compile, jar">
+        <delete file="${dist.dir}/README.TXT" failonerror="false"/>
+	<delete dir="../Portugol-Instalador/Arquivos/bin" failonerror="false"/>
+	<delete dir="../Portugol-Instalador/Arquivos/ajuda" failonerror="false"/>
+        <delete dir="../Portugol-Instalador/Arquivos/exemplos" failonerror="false"/>        
+        <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
+		<fileset dir="${dist.dir}"/>
+	</copy>
+        <copy todir="../Portugol-Instalador/Arquivos/ajuda" overwrite="true">
+		<fileset dir="ajuda"/>
+	</copy>
+        <copy todir="../Portugol-Instalador/Arquivos/exemplos" overwrite="true">
+		<fileset dir="exemplos"/>
+	</copy>                
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
