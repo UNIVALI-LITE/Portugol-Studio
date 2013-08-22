@@ -11,10 +11,17 @@
     <description>Builds, tests, and runs the project Portugol-Studio.</description>
     <import file="nbproject/build-impl.xml"/>
     <target name="distribuicao" description="Distribuição" depends="clean, compile, jar">
+        <antcall target="-maybe-call-dep">
+            <param name="call.built.properties" value="${built-jar.properties}"/>
+            <param location="../Portugol-Console" name="call.subproject"/>
+            <param location="../Portugol-Console/build.xml" name="call.script"/>
+            <param name="call.target" value="jar"/>
+            <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
+        </antcall>        
         <delete file="${dist.dir}/README.TXT" failonerror="false"/>
 	<delete dir="../Portugol-Instalador/Arquivos/bin" failonerror="false"/>
 	<delete dir="../Portugol-Instalador/Arquivos/ajuda" failonerror="false"/>
-        <delete dir="../Portugol-Instalador/Arquivos/exemplos" failonerror="false"/>        
+        <delete dir="../Portugol-Instalador/Arquivos/exemplos" failonerror="false"/>
         <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
 		<fileset dir="${dist.dir}"/>
 	</copy>
@@ -23,7 +30,10 @@
 	</copy>
         <copy todir="../Portugol-Instalador/Arquivos/exemplos" overwrite="true">
 		<fileset dir="exemplos"/>
-	</copy>                
+	</copy>  
+        <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
+		<fileset file="../Portugol-Console/dist/portugol-console.jar"/>
+	</copy>                       
     </target>
     <!--
 
