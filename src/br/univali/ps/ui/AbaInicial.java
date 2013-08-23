@@ -219,7 +219,6 @@ public final class AbaInicial extends Aba
     
     private void configurarCursorLogos()
     {
-        logoGitHub.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         logoUnivali.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     
@@ -439,13 +438,13 @@ public final class AbaInicial extends Aba
     
     private void criarDicasInterface()
     {
-        FabricaDicasInterface.criarDicaInterface(logoGitHub, "Contribuir com o projeto", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
         FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
     }
      
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelGradiente = new br.univali.ps.ui.imagens.Gradiente();
         painelCabecalho = new javax.swing.JPanel();
@@ -500,7 +499,6 @@ public final class AbaInicial extends Aba
         rotuloFormaAprender10 = new javax.swing.JLabel();
         painelRodape = new javax.swing.JPanel();
         painelAlinhamento7 = new javax.swing.JPanel();
-        logoGitHub = new javax.swing.JLabel();
         logoUnivali = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
@@ -790,28 +788,21 @@ public final class AbaInicial extends Aba
         painelRodape.setPreferredSize(new java.awt.Dimension(10, 80));
         painelRodape.setLayout(new java.awt.BorderLayout());
 
-        painelAlinhamento7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        painelAlinhamento7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 50, 0, 10));
         painelAlinhamento7.setOpaque(false);
         painelAlinhamento7.setPreferredSize(new java.awt.Dimension(200, 64));
-        painelAlinhamento7.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
-
-        logoGitHub.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logoGitHub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/GitHub-Mark-64px.png"))); // NOI18N
-        logoGitHub.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoGitHubMouseClicked(evt);
-            }
-        });
-        painelAlinhamento7.add(logoGitHub);
+        painelAlinhamento7.setLayout(new java.awt.BorderLayout());
 
         logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 logoUnivaliMouseClicked(evt);
             }
         });
-        painelAlinhamento7.add(logoUnivali);
+        painelAlinhamento7.add(logoUnivali, java.awt.BorderLayout.WEST);
 
         painelRodape.add(painelAlinhamento7, java.awt.BorderLayout.WEST);
 
@@ -819,11 +810,6 @@ public final class AbaInicial extends Aba
 
         add(painelGradiente, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void logoGitHubMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_logoGitHubMouseClicked
-    {//GEN-HEADEREND:event_logoGitHubMouseClicked
-        abrirGitHub();
-    }//GEN-LAST:event_logoGitHubMouseClicked
 
     private void logoUnivaliMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_logoUnivaliMouseClicked
     {//GEN-HEADEREND:event_logoUnivaliMouseClicked
@@ -842,7 +828,6 @@ public final class AbaInicial extends Aba
     private javax.swing.JPanel conteudoAprender1;
     private javax.swing.JPanel conteudoColaborar;
     private javax.swing.JPanel conteudoCreditos;
-    private javax.swing.JLabel logoGitHub;
     private br.univali.ps.ui.imagens.Logo logoPS;
     private javax.swing.JLabel logoUnivali;
     private javax.swing.JPanel painelAlinhamento1;
