@@ -1,7 +1,14 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.ui.AbaCodigoFonte;
 import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.TelaProgressoAba;
 import br.univali.ps.ui.telas.TelaSobre;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.List;
+import javax.swing.Timer;
 
 /**
  *
@@ -18,6 +25,7 @@ public final class PortugolStudio
     private Configuracoes configuracoes = null;
     private GerenciadorTemas gerenciadorTemas = null;
     private TelaSobre telaSobre = null;
+    private TelaProgressoAba telaProgressoAba = null;
 
     private PortugolStudio()
     {
@@ -43,7 +51,7 @@ public final class PortugolStudio
         this.depurando = depurando;
     }
 
-    public void iniciar()
+    public void iniciar(final List<File> arquivos)
     {
         java.awt.EventQueue.invokeLater(new Runnable()
         {
@@ -61,6 +69,7 @@ public final class PortugolStudio
                     }
                     
                     telaPrincipal = new TelaPrincipal();
+                    telaPrincipal.setArquivosIniciais(arquivos);
                     telaPrincipal.setVisible(true);
                 }
             }
@@ -114,5 +123,36 @@ public final class PortugolStudio
         return telaSobre;
     }
     
+    private TelaProgressoAba getTelaProgressoaba()
+    {
+        if (telaProgressoAba == null)
+        {
+            telaProgressoAba = new TelaProgressoAba(telaPrincipal);
+        }
+        
+        return telaProgressoAba;
+    }
     
+    public void criarNovoCodigoFonte()
+    {
+        getTelaProgressoaba().criarNovoCodigoFonte();
+    }
+    
+    public void abrirArquivosCodigoFonte(final List<File> arquivos)
+    {
+        if (!arquivos.isEmpty())
+        {
+            Timer timer = new Timer(750, new ActionListener() 
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    getTelaProgressoaba().abrirArquivosCodigoFonte(arquivos);
+                }
+            });
+
+            timer.setRepeats(false);
+            timer.start();
+        }
+    }
 }

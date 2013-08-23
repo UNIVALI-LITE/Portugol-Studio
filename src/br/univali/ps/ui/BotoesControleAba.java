@@ -99,15 +99,12 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK);
         
-        
         acaoNovoArquivo = new AbstractAction(ACAO_NOVO_ARQUIVO, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-                abaCodigoFonte.adicionar(painelTabulado);
-                abaCodigoFonte.selecionar();
+                PortugolStudio.getInstancia().criarNovoCodigoFonte();
             }
         };
         acaoNovoArquivo.putValue(Action.ACCELERATOR_KEY, atalho);

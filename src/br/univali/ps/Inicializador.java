@@ -4,8 +4,12 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * 
@@ -42,13 +46,12 @@ public final class Inicializador
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             }
             
-            portugolStudio.iniciar();
+            portugolStudio.iniciar(listarArquivos(argumentos));
             
             splashProgress(100);
         }
-        catch (Exception excecao)
-        {
-            
+        catch (NumberFormatException | HeadlessException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException excecao)
+        {            
             String mensagem = "O Portugol Studio encontrou um erro desconhecido e precisa ser fechado:\n" + excecao.getMessage();
             ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO);
 
@@ -124,5 +127,25 @@ public final class Inicializador
         }
 
         return false;
+    }
+
+    private static List<File> listarArquivos(String[] argumentos)
+    {
+        List<File> arquivos = new ArrayList();
+        
+        if (argumentos != null && argumentos.length > 0)
+        {
+            for (String argumento : argumentos)
+            {
+                File arquivo = new File(argumento);
+                
+                if (arquivo.exists() && arquivo.isFile() && arquivo.canRead() && arquivo.getName().toLowerCase().endsWith(".por"))
+                {
+                    arquivos.add(arquivo);
+                }
+            }
+        }
+        
+        return arquivos;
     }
 }

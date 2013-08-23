@@ -4,9 +4,11 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -25,6 +27,8 @@ public final class TelaPrincipal extends JFrame
     
     private AbaAjuda abaAjuda;
     private AbaDocumentacaoBiblioteca abaDocumentacao;
+    private List<File> arquivosIniciais;
+    private boolean primeiraVez = true;
     
     public TelaPrincipal()
     {
@@ -251,6 +255,20 @@ public final class TelaPrincipal extends JFrame
                 fecharAplicativo();
             }            
         });
+        
+        addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentShown(ComponentEvent e)
+            {
+                if (primeiraVez)
+                {
+                    primeiraVez = false;
+                    
+                    PortugolStudio.getInstancia().abrirArquivosCodigoFonte(arquivosIniciais);
+                }
+            }
+        });
     }
     
     private void fecharAplicativo()
@@ -328,4 +346,9 @@ public final class TelaPrincipal extends JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
     // End of variables declaration//GEN-END:variables
+
+    public void setArquivosIniciais(List<File> arquivos)
+    {
+        this.arquivosIniciais = arquivos;
+    }
 }
