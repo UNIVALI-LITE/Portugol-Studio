@@ -2,6 +2,7 @@ package br.univali.ps.nucleo;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.Properties;
  */
 public final class Configuracoes
 {    
-    private static final String arquivoConfiguracoes = "configuracoes.properties";
+    private static final File arquivoConfiguracoes = obterCaminhoArquivoConfiguracoes();
     
     public static final String TAMANHO_FONTE_CONSOLE = "tamanhoFonteConsole";
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
@@ -43,7 +44,7 @@ public final class Configuracoes
     {
         try
         {
-            configuracoes.load(new FileReader("./" + arquivoConfiguracoes));
+            configuracoes.load(new FileReader(arquivoConfiguracoes));
             
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
             diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
@@ -63,7 +64,7 @@ public final class Configuracoes
     {
         try
         {
-            configuracoes.store(new FileWriter("./" + arquivoConfiguracoes), "");
+            configuracoes.store(new FileWriter(arquivoConfiguracoes), "");
         }
         catch (IOException excecao)
         {
@@ -194,5 +195,33 @@ public final class Configuracoes
     public void removerObservadorConfiguracao(PropertyChangeListener observador, String configuracao)
     {
         suporteMudancaPropriedade.removePropertyChangeListener(configuracao, observador);
+    }
+
+    private static File obterCaminhoArquivoConfiguracoes()
+    {
+        String nomeArquivo = "configuracoes.properties";
+        File diretorioUsuario = new File(".");
+        
+        try
+        {
+            diretorioUsuario = new File(System.getProperty("user.home"));
+            
+            if (!diretorioUsuario.exists())
+            {            
+                throw new Exception();
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+        
+        File caminho = new File(diretorioUsuario, ".portugol");
+        
+        if (!caminho.exists())
+        {
+            caminho.mkdir();
+        }
+        
+        return new File(caminho, nomeArquivo);
     }
 }
