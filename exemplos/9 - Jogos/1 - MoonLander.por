@@ -44,10 +44,15 @@ programa
 		faca 
 		{
 			g.desenhar_imagem(0, 0, imagem_menu)
-			g.desenhar_texto(220, 300, "Utilize as teclas W, A e D para jogar", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(260, 330, "Pressione ENTER para iniciar", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(290, 360, "Pressione ESC para sair", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander                                               ", 16, 0x00FFFF, 0x000000)
+			
+			g.definir_fonte(g.nome_fonte(), 20.0, 0xFFFFFF, falso, falso, falso)
+			g.desenhar_texto(220, 300, "Utilize as teclas W, A e D para jogar", falso)
+			g.desenhar_texto(260, 330, "Pressione ENTER para iniciar", falso)
+			g.desenhar_texto(290, 360, "Pressione ESC para sair", falso)
+
+			g.definir_cor(0x000000)
+			g.definir_fonte(g.nome_fonte(), 16.0, 0x00FFFF, falso, verdadeiro, falso)
+			g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander                     ", verdadeiro)
 			g.renderizar()
 			
 			se (t.tecla_pressionada(t.TECLA_ENTER))
@@ -173,25 +178,29 @@ programa
 		se (pousou)
         	{
 			g.desenhar_imagem(x_foguete, y_foguete, imagem_foguete_pousado)
-			g.desenhar_texto(290, 240, "Parabéns, você venceu!", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(280, 270, "Você pousou em " + (tempo_total_jogo / 1000) + " segundos!", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(220, 300, "Pressione ENTER para jogar novamente", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(290, 330, "Pressione ESC para sair", 20,  0xFFFFFF, 0x000000)
+
+			g.definir_fonte(g.nome_fonte(), 20.0, 0xFFFFFF, falso, falso, falso)
+			g.desenhar_texto(290, 240, "Parabéns, você venceu!", falso)
+			g.desenhar_texto(280, 270, "Você pousou em " + (tempo_total_jogo / 1000) + " segundos!", falso)
+			g.desenhar_texto(220, 300, "Pressione ENTER para jogar novamente", falso)
+			g.desenhar_texto(290, 330, "Pressione ESC para sair", falso)
 		}
 		senao se (quebrou)
 		{
 			g.desenhar_imagem(0, 0, imagem_borda)
             	g.desenhar_imagem(x_foguete, y_foguete + ALTURA_FOGUETE - 43, imagem_foguete_quebrado)
-            	g.desenhar_texto(250, 270, "Que pena, seu foguete quebrou!", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(220, 300, "Pressione ENTER para jogar novamente", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(290, 330, "Pressione ESC para sair", 20,  0xFFFFFF, 0x000000)
+            	g.definir_fonte(g.nome_fonte(), 20.0, 0xFFFFFF, falso, falso, falso)
+            	g.desenhar_texto(250, 270, "Que pena, seu foguete quebrou!", falso)
+			g.desenhar_texto(220, 300, "Pressione ENTER para jogar novamente", falso)
+			g.desenhar_texto(290, 330, "Pressione ESC para sair", falso)
         	}
         	senao se (foi_para_o_espaco)
         	{
         		g.desenhar_imagem(0, 0, imagem_borda)
-            	g.desenhar_texto(230, 270, "Que pena, você se perdeu no espaço!", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(220, 300, "Pressione ENTER para jogar novamente", 20,  0xFFFFFF, 0x000000)
-			g.desenhar_texto(290, 330, "Pressione ESC para sair", 20,  0xFFFFFF, 0x000000)
+        		g.definir_fonte(g.nome_fonte(), 20.0, 0xFFFFFF, falso, falso, falso)
+            	g.desenhar_texto(230, 270, "Que pena, você se perdeu no espaço!", falso)
+			g.desenhar_texto(220, 300, "Pressione ENTER para jogar novamente", falso)
+			g.desenhar_texto(290, 330, "Pressione ESC para sair", falso)
         	}
 		senao
         	{
@@ -203,7 +212,9 @@ programa
 			}
         	}
 
-					g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander                                               ", 16, 0x00FFFF, 0x000000)
+		g.definir_cor(0x000000)
+		g.definir_fonte(g.nome_fonte(), 16.0, 0x00FFFF, falso, verdadeiro, falso)
+		g.desenhar_texto(0, ALTURA_TELA - 16, "Jogo adaptado de http://www.gametutorial.net/article/Keyboard-input---Moon-lander                     ", verdadeiro)
 		g.renderizar()
 	}
 

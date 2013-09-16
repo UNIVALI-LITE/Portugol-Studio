@@ -4,7 +4,7 @@ programa
 	inclua biblioteca Graficos --> g
 	inclua biblioteca Teclado --> t
 
-	const inteiro NUMERO_ITERACOES = 5
+	const inteiro NUMERO_ITERACOES = 5/*${cursor}*/
 	const inteiro NUMERO_PONTOS = 100000
 	
 	const inteiro LARGURA_JANELA = 700
@@ -42,10 +42,12 @@ programa
 
 	funcao exibir_tela_inicial()
 	{
-		g.limpar(COR_FUNDO)
-		g.desenhar_texto(15, 15, "Este exemplo desenha um Fractal de Fern na tela", 18, COR_TEXTO, COR_FUNDO)
-		g.desenhar_texto(15, 40, "O desenho leva alguns segundos para ficar pronto", 18, COR_TEXTO, COR_FUNDO)
-		g.desenhar_texto(15, 65, "Pressione <ENTER> para continuar", 18, COR_TEXTO, COR_FUNDO)
+		g.definir_cor(COR_FUNDO)
+		g.limpar()
+		g.definir_fonte(g.nome_fonte(), 18.0, COR_TEXTO, falso, falso, falso)
+		g.desenhar_texto(15, 15, "Este exemplo desenha um Fractal de Fern na tela", falso)
+		g.desenhar_texto(15, 40, "O desenho leva alguns segundos para ficar pronto", falso)
+		g.desenhar_texto(15, 65, "Pressione <ENTER> para continuar", falso)
 		g.renderizar()
 
 		enquanto (t.ler_tecla() != t.TECLA_ENTER) { }
@@ -53,9 +55,11 @@ programa
 
 	funcao exibir_fractal()
 	{
-		g.limpar(COR_FUNDO)
-		g.desenhar_texto(15, 15, "Status: " + porcentagem + "% concluido", 18, COR_TEXTO, COR_FUNDO)
+		g.definir_cor(COR_FUNDO)
+		g.limpar()
+		g.desenhar_texto(15, 15, "Status: " + porcentagem + "% concluido", falso)
 		g.renderizar()
+		g.definir_cor(COR_FRACTAL)
 		
 		x = sorteia()
 		y = sorteia()
@@ -67,19 +71,21 @@ programa
          		porcentagem = porcentagemR
          			
          		se (porcentagem / porcentagemR == 1.0 e porcentagem % INTERVALO_ATUALIZACAO == 0) 
-         		{         				
-         			g.desenhar_texto(15, 15, "Status: " + porcentagem + "% concluido", 18, COR_TEXTO, COR_FUNDO)
+         		{         	
+         			g.definir_cor(COR_FUNDO)			
+         			g.desenhar_texto(15, 15, "Status: " + porcentagem + "% concluido", verdadeiro)
          			g.renderizar()
+         			g.definir_cor(COR_FRACTAL)
          		}
           }
 	}
 
 	funcao exibir_tela_final()
 	{
-		g.desenhar_texto(15, 40, "Pressione <ENTER> para sair", 14, COR_TEXTO, COR_FUNDO)
+		g.desenhar_texto(15, 40, "Pressione <ENTER> para sair", falso)
           g.renderizar()
 
-		enquanto (t.ler_tecla() != t.TECLA_ENTER) { }/*${cursor}*/
+		enquanto (t.ler_tecla() != t.TECLA_ENTER) { }
           
           g.encerrar_modo_grafico()
 	}
@@ -125,7 +131,6 @@ programa
 			}
 		}
           
-		g.desenhar_ponto((x + 5.0) * relacaoX, (y - 10.0) * relacaoY, COR_FRACTAL)
-	}
-	
+		g.desenhar_ponto((x + 5.0) * relacaoX, (y - 10.0) * relacaoY)
+	}	
 }
