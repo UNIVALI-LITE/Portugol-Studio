@@ -51,7 +51,7 @@ public final class AbaInicial extends Aba
         setCabecalho(new BotoesControleAba(this, painelTabulado));
         
         initComponents();
-        criarMenuExemplos();
+        //criarMenuExemplos();
         configurarCursorLogos();
         criarDicasInterface();
         configurarAcoes();

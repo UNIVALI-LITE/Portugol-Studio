@@ -2,6 +2,8 @@ package br.univali.ps;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.TelaPrincipalDesktop;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -46,7 +48,8 @@ public final class Inicializador
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             }
             
-            portugolStudio.iniciar(listarArquivos(argumentos));
+            TelaPrincipal tela = (runningApplet()) ? (new PSApplet()) : (new TelaPrincipalDesktop());
+            portugolStudio.iniciar( listarArquivos(argumentos), tela );
             
             splashProgress(100);
         }
@@ -62,6 +65,10 @@ public final class Inicializador
         if (mySplash != null)   // check if we really had a spash screen
             mySplash.close();   // if so we're now done with it
         
+    }
+    
+    private static boolean runningApplet(){
+        return System.getSecurityManager() != null;
     }
     
     private static void splashInit()

@@ -21,22 +21,27 @@ import javax.swing.Timer;
  */
 public final class TelaProgressoAba extends JDialog
 {
-    public TelaProgressoAba(JFrame pai)
+    private final PainelTabulado painelTabulado;
+
+    public TelaProgressoAba(PainelTabulado painel)
     {
-        super(pai);
+        super();
+        setModal(true);
+        setLocationRelativeTo(null);
+        painelTabulado = painel;
         initComponents();
     }
-    
+
     public void criarNovoCodigoFonte()
     {
         rotuloStatus.setText("Criando novo arquivo de código fonte, por favor aguarde...");
-        
+
         barraProgresso.setValue(0);
         barraProgresso.setMaximum(100);
-        
-        SwingWorker worker = new CriadorArquivos();
+
+        SwingWorker worker = new CriadorArquivos(painelTabulado);
         worker.execute();
-        
+
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -44,13 +49,13 @@ public final class TelaProgressoAba extends JDialog
     public void abrirArquivosCodigoFonte(List<File> arquivos)
     {
         atualizarStatusArquivo(arquivos.size());
-        
+
         barraProgresso.setValue(0);
         barraProgresso.setMaximum(arquivos.size());
-        
+
         SwingWorker worker = new CarregadorArquivos(arquivos);
         worker.execute();
-        
+
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -66,14 +71,21 @@ public final class TelaProgressoAba extends JDialog
             rotuloStatus.setText("Abrindo os arquivos de código fonte, por favor aguarde...");
         }
     }
-    
+
     private class CriadorArquivos extends SwingWorker<Object, AbaCodigoFonte>
     {
+        private PainelTabulado painelTabulado;
+
+        public CriadorArquivos(PainelTabulado painelTabulado)
+        {
+            this.painelTabulado = painelTabulado;
+        }
+
         @Override
         protected Object doInBackground() throws Exception
         {
             publish(new AbaCodigoFonte());
-            
+
             return null;
         }
 
@@ -81,10 +93,10 @@ public final class TelaProgressoAba extends JDialog
         protected void process(List<AbaCodigoFonte> abas)
         {
             AbaCodigoFonte abaCodigoFonte = abas.get(0);
-            
-            abaCodigoFonte.adicionar(PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado());
+
+            abaCodigoFonte.adicionar(painelTabulado);
             abaCodigoFonte.selecionar();
-            
+
             barraProgresso.setValue(100);
         }
 
@@ -99,12 +111,12 @@ public final class TelaProgressoAba extends JDialog
                     setVisible(false);
                 }
             });
-            
+
             timer.setRepeats(false);
             timer.start();
         }
     }
-    
+
     private class CarregadorArquivos extends SwingWorker<Object, AbaCodigoFonte>
     {
         private List<File> arquivos;
@@ -114,23 +126,23 @@ public final class TelaProgressoAba extends JDialog
         {
             this.arquivos = arquivos;
         }
-        
+
         @Override
         protected Object doInBackground() throws Exception
         {
             for (int indice = 0; indice < arquivos.size(); indice++)
             {
                 File arquivo = arquivos.get(indice);
-                
+
                 try
                 {
                     AbaCodigoFonte abaCodigoFonte;
-                    
+
                     if (obterExtensaoArquivo(arquivo).equals("pex") || obterExtensaoArquivo(arquivo).equals("xml"))
                     {
                         Unmarshal u = new Unmarshal();
                         Questao q = u.execute(new FileInputStream(arquivo));
-                    
+
                         abaCodigoFonte = new AbaCodigoFonte();
                         abaCodigoFonte.setQuestao(q);
                     }
@@ -140,7 +152,7 @@ public final class TelaProgressoAba extends JDialog
                         abaCodigoFonte = new AbaCodigoFonte();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, arquivo, true);
                     }
-                    
+
                     publish(abaCodigoFonte);
                 }
                 catch (Exception ex)
@@ -148,7 +160,7 @@ public final class TelaProgressoAba extends JDialog
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Erro ao abrir o arquivo '%d'", arquivo.getPath()), ExcecaoAplicacao.Tipo.ERRO));
                 }
             }
-            
+
             return null;
         }
 
@@ -158,8 +170,8 @@ public final class TelaProgressoAba extends JDialog
             for (final AbaCodigoFonte aba : chunks)
             {
                 contador += 1;
-                
-                aba.adicionar(PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado());
+
+                aba.adicionar(painelTabulado);
                 barraProgresso.setValue(contador);
             }
         }
@@ -175,17 +187,18 @@ public final class TelaProgressoAba extends JDialog
                     setVisible(false);
                 }
             });
-            
+
             timer.setRepeats(false);
             timer.start();
         }
-        
+
         private String obterExtensaoArquivo(File file)
         {
             String fileName = file.getName();
             return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

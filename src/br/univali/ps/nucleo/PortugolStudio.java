@@ -1,7 +1,7 @@
 package br.univali.ps.nucleo;
 
-import br.univali.ps.ui.AbaCodigoFonte;
 import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.TelaProgressoAba;
 import br.univali.ps.ui.telas.TelaSobre;
 import java.awt.event.ActionEvent;
@@ -51,29 +51,19 @@ public final class PortugolStudio
         this.depurando = depurando;
     }
 
-    public void iniciar(final List<File> arquivos)
+    public void iniciar(final List<File> arquivos, final TelaPrincipal telaPrincipal)
     {
-        java.awt.EventQueue.invokeLater(new Runnable()
+        try
         {
-            @Override
-            public void run()
-            {
-                {
-                    try
-                    {
-                        getConfiguracoes().carregar();
-                    }
-                    catch (ExcecaoAplicacao excecaoAplicacao)
-                    {
-                        getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
-                    }
-                    
-                    telaPrincipal = new TelaPrincipal();
-                    telaPrincipal.setArquivosIniciais(arquivos);
-                    telaPrincipal.setVisible(true);
-                }
-            }
-        });
+            getConfiguracoes().carregar();
+        }
+        catch (ExcecaoAplicacao excecaoAplicacao)
+        {
+            getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
+        }
+        telaPrincipal.setArquivosIniciais(arquivos);
+        telaPrincipal.setVisible(true);
+        this.telaPrincipal = telaPrincipal;
     }
 
     public TratadorExcecoes getTratadorExcecoes()
@@ -92,7 +82,7 @@ public final class PortugolStudio
         {
             configuracoes = new Configuracoes();
         }
-        
+
         return configuracoes;
     }
 
@@ -107,7 +97,7 @@ public final class PortugolStudio
         {
             gerenciadorTemas = new GerenciadorTemas();
         }
-        
+
         return gerenciadorTemas;
     }
 
@@ -115,34 +105,34 @@ public final class PortugolStudio
     {
         if (telaSobre == null)
         {
-            telaSobre = new TelaSobre(getTelaPrincipal());
+            telaSobre = new TelaSobre();
         }
-        
+
         telaSobre.setLocationRelativeTo(null);
-        
+
         return telaSobre;
     }
-    
+
     private TelaProgressoAba getTelaProgressoaba()
     {
         if (telaProgressoAba == null)
         {
-            telaProgressoAba = new TelaProgressoAba(telaPrincipal);
+            telaProgressoAba = new TelaProgressoAba(telaPrincipal.getPainelTabulado());
         }
-        
+
         return telaProgressoAba;
     }
-    
+
     public void criarNovoCodigoFonte()
     {
         getTelaProgressoaba().criarNovoCodigoFonte();
     }
-    
+
     public void abrirArquivosCodigoFonte(final List<File> arquivos)
     {
         if (!arquivos.isEmpty())
         {
-            Timer timer = new Timer(750, new ActionListener() 
+            Timer timer = new Timer(750, new ActionListener()
             {
                 @Override
                 public void actionPerformed(ActionEvent e)

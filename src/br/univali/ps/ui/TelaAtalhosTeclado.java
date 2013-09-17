@@ -33,7 +33,9 @@ public final class TelaAtalhosTeclado extends JDialog
     
     public TelaAtalhosTeclado()
     {
-        super(PortugolStudio.getInstancia().getTelaPrincipal());
+        super();
+        setModal(true); //TODO verificar se realmente fica modal e trava as outras janelas
+        
         initComponents();
         configurarAcoes();
         configurarDadosAcoes();

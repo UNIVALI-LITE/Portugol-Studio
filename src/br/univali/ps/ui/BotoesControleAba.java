@@ -117,10 +117,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     
     private void configurarAcaoAbrirArquivo()
     {
-        TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+        //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         
         acaoAbrirArquivo = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
-        acaoAbrirArquivo.configurar(painelTabulado, telaPrincipal, dialogoSelecaoArquivo, filtroTodosSuportados, filtroExercicio, filtroPrograma, filtroTodosSuportados);
+        acaoAbrirArquivo.configurar(painelTabulado, getParent(), dialogoSelecaoArquivo, filtroTodosSuportados, filtroExercicio, filtroPrograma, filtroTodosSuportados);
         
         String nome = (String) acaoAbrirArquivo.getValue(AbstractAction.NAME);
         KeyStroke atalho = (KeyStroke) acaoAbrirArquivo.getValue(AbstractAction.ACCELERATOR_KEY);

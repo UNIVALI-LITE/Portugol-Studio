@@ -1,6 +1,6 @@
 package br.univali.ps.ui.util;
 
-import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.TelaPrincipalDesktop;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,7 +82,7 @@ public final class FileHandle
         } 
         catch (IOException ex)
         {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaPrincipalDesktop.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
@@ -91,7 +91,7 @@ public final class FileHandle
                 reader.close();
             } catch (IOException ex)
             {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaPrincipalDesktop.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         

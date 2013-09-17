@@ -20,9 +20,11 @@ public final class TelaSobre extends JDialog
 {
     private Action acaoSair;
     
-    public TelaSobre(JFrame pai) 
+    public TelaSobre() 
     {
-        super(pai);
+        super();
+        setModal(true);
+        setLocationRelativeTo(null);
         configurarAcaoSair();
         initComponents();
         

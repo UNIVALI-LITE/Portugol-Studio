@@ -175,8 +175,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
         
-        dialogoPesquisar = new FindDialog(telaPrincipal, observadorAcaoPesquisaSubstituir);
-        dialogoSubstituir = new ReplaceDialog(telaPrincipal, observadorAcaoPesquisaSubstituir);
+        dialogoPesquisar = new FindDialog(null, observadorAcaoPesquisaSubstituir);
+        dialogoSubstituir = new ReplaceDialog(null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
     }    
     
@@ -1294,16 +1294,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
             else if (ReplaceDialog.ACTION_REPLACE_ALL.equals(command))
             {
-                TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+                //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
                 
                 int count = SearchEngine.replaceAll(textArea, context);
-                JOptionPane.showMessageDialog(telaPrincipal, count + " ocorrências foram substituídas.");
+                JOptionPane.showMessageDialog(getParent(), count + " ocorrências foram substituídas.");
             }
         }
         
         private void reiniciar(SearchContext context, RSyntaxTextArea textArea, ActionEvent e)
         {
-            TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+            //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
             UIManager.getLookAndFeel().provideErrorFeedback(textArea);
                         
             String s = "A pesquisa chegou no início do arquivo, deseja recomeçar do final?";
@@ -1313,7 +1313,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 s = "A pesquisa chegou no final do arquivo, deseja recomeçar do início?";
             }
 
-            if (JOptionPane.showConfirmDialog(telaPrincipal, s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
+            if (JOptionPane.showConfirmDialog(getParent(), s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
             {
                 if (context.getSearchForward())
                 {

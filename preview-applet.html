@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- ########################## IMPORTANT NOTE ############################ -->
+<!-- This preview HTML page will work only with JDK 6 update 10 and higher! -->
+<!-- ###################################################################### -->
+<html>
+    <head>
+        <title>Test page for launching the applet via JNLP</title>
+    </head>
+    <body>
+        <h3>Test page for launching the applet via JNLP</h3>
+        <script src="http://java.com/js/deployJava.js"></script>
+        <script>
+            var attributes = {
+                code:       "${JNLP.APPLET.CLASS}",
+                archive:    "${JNLP.RESOURCES.MAIN.JAR}",
+                width:      ${JNLP.APPLET.WIDTH},
+                height:     ${JNLP.APPLET.HEIGHT}
+            };
+            var parameters = {${JNLP.APPLET.PARAMS}}; <!-- Applet Parameters -->
+            var version = "${JNLP_VM_VERSION}"; <!-- Required Java Version -->
+            deployJava.runApplet(attributes, parameters, version);
+        </script>
+        <!-- Or use the following applet element to launch the applet using jnlp_href -->
+        <!--
+        <applet width="${JNLP.APPLET.WIDTH}" height="${JNLP.APPLET.HEIGHT}">
+            <param name="jnlp_href" value="${JNLP.FILE}"/>
+        </applet>
+        -->
+    </body>
+</html>

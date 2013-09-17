@@ -1,0 +1,23 @@
+<jnlp spec="1.0+" codebase="${jnlp.codebase}" href="launch.jnlp">
+    <information>
+        <title>${APPLICATION.TITLE}</title>
+        <vendor>${APPLICATION.VENDOR}</vendor>
+        <homepage href="${APPLICATION.HOMEPAGE}"/>
+        <description>${APPLICATION.DESC}</description>
+        <description kind="short">${APPLICATION.DESC.SHORT}</description>
+        <!--${JNLP.ICONS}-->
+        <!--${JNLP.OFFLINE.ALLOWED}-->
+    </information>
+    <!--${JNLP.UPDATE}-->
+    <!--${JNLP.SECURITY}-->
+    <resources>
+        <!--${JNLP.RESOURCES.RUNTIME}-->
+        <!--${JNLP.RESOURCES.MAIN.JAR}-->
+        <!--${JNLP.RESOURCES.JARS}-->
+        <!--${JNLP.RESOURCES.EXTENSIONS}-->
+    </resources>
+    <applet-desc main-class="${jnlp.main.class}" name="${APPLICATION.TITLE}"
+        width="${jnlp.applet.width}" height="${jnlp.applet.height}">
+        <!--${JNLP.APPLET.PARAMS}-->
+    </applet-desc>
+</jnlp>
