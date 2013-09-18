@@ -10,6 +10,11 @@
 <project name="Portugol-Studio" default="default" basedir=".">
     <description>Builds, tests, and runs the project Portugol-Studio.</description>
     <import file="nbproject/build-impl.xml"/>
+    
+    <target name="-post-jar">
+        <copy todir="${dist.dir}" file="./index.html"/>
+    </target>
+    
     <target name="distribuicao" description="Distribuição" depends="clean, compile, jar">
         <antcall target="-maybe-call-dep">
             <param name="call.built.properties" value="${built-jar.properties}"/>
@@ -34,7 +39,11 @@
         <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
 		<fileset file="../Portugol-Console/dist/portugol-console.jar"/>
 	</copy>                       
+        
     </target>
+    
+   
+    
     <!--
 
     There exist several targets which are by default empty and which can be 

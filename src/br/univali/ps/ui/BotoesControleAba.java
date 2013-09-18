@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -82,11 +84,11 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
         
         dialogoSelecaoArquivo = new JFileChooser();
-        
-        dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
+        dialogoSelecaoArquivo.setCurrentDirectory(new File("."));
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
     }    
+    
 
     private void configurarAcoes()
     {
