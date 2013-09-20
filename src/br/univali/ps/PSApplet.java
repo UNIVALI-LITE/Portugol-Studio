@@ -6,6 +6,8 @@ import br.univali.ps.ui.TelaPrincipal;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
@@ -78,6 +80,7 @@ public class PSApplet extends javax.swing.JApplet implements TelaPrincipal
                     portugol.iniciar(null, PSApplet.this);
                     setLayout(new BorderLayout());
                     add(portugol.getTelaPrincipal().getPainelTabulado(), BorderLayout.CENTER);
+                    
                 }
             });
         }

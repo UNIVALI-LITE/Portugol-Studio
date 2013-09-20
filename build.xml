@@ -11,9 +11,9 @@
     <description>Builds, tests, and runs the project Portugol-Studio.</description>
     <import file="nbproject/build-impl.xml"/>
     
-    <target name="-post-jar">
+    <!--target name="-post-jar">
         <copy todir="${dist.dir}" file="./index.html"/>
-    </target>
+    </target-->
     
     <target name="distribuicao" description="Distribuição" depends="clean, compile, jar">
         <antcall target="-maybe-call-dep">
