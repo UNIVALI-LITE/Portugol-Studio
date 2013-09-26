@@ -23,12 +23,13 @@ public final class Configuracoes
     public static final String TEMA_EDITOR = "temaEditor";
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
+    public static final String URL_DOS_PACOTES = "http://localhost/Portugol-Exemplos/";
     
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();
 
     private boolean exibirOpcoesExecucao = false;
-    private String diretorioExemplos = "./Exemplos";
+    private static final String diretorioExemplos = Configuracoes.obterDiretorioPortugol().getAbsolutePath() + "/exemplos";
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
@@ -40,6 +41,10 @@ public final class Configuracoes
         
     }
     
+    public static String getUrlDosPacotes(){
+        return URL_DOS_PACOTES;
+    }
+    
     public void carregar() throws ExcecaoAplicacao
     {
         try
@@ -47,7 +52,7 @@ public final class Configuracoes
             configuracoes.load(new FileReader(arquivoConfiguracoes));
             
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
-            diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
+            //diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
             temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
@@ -132,15 +137,15 @@ public final class Configuracoes
         return diretorioExemplos;
     }
 
-    public void setDiretorioExemplos(String diretorioExemplos)
-    {
-        String valorAntigo = this.diretorioExemplos;
-        
-        this.configuracoes.setProperty(DIRETORIO_EXEMPLOS, diretorioExemplos);
-        this.diretorioExemplos = diretorioExemplos;
-        
-        suporteMudancaPropriedade.firePropertyChange(DIRETORIO_EXEMPLOS, valorAntigo, diretorioExemplos);
-    }
+//    public void setDiretorioExemplos(String diretorioExemplos)
+//    {
+//        String valorAntigo = this.diretorioExemplos;
+//        
+//        this.configuracoes.setProperty(DIRETORIO_EXEMPLOS, diretorioExemplos);
+//        this.diretorioExemplos = diretorioExemplos;
+//        
+//        suporteMudancaPropriedade.firePropertyChange(DIRETORIO_EXEMPLOS, valorAntigo, diretorioExemplos);
+//    }
 
     public boolean isExibirOpcoesExecucao()
     {
@@ -197,9 +202,8 @@ public final class Configuracoes
         suporteMudancaPropriedade.removePropertyChangeListener(configuracao, observador);
     }
 
-    private static File obterCaminhoArquivoConfiguracoes()
+    public static File obterDiretorioPortugol()
     {
-        String nomeArquivo = "configuracoes.properties";
         File diretorioUsuario = new File(".");
         
         try
@@ -221,7 +225,13 @@ public final class Configuracoes
         {
             caminho.mkdir();
         }
-        
+        return caminho ;
+    }
+    
+    private static File obterCaminhoArquivoConfiguracoes()
+    {
+        String nomeArquivo = "configuracoes.properties";
+        File caminho = obterDiretorioPortugol();
         return new File(caminho, nomeArquivo);
     }
 }

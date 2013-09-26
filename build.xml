@@ -11,9 +11,16 @@
     <description>Builds, tests, and runs the project Portugol-Studio.</description>
     <import file="nbproject/build-impl.xml"/>
     
-    <!--target name="-post-jar">
-        <copy todir="${dist.dir}" file="./index.html"/>
-    </target-->
+    <target name="-do-jar-with-libraries-without-manifest">
+    <!-- esta target foi utilizada para evitar que o manifest.mf seja criado
+       sem apontar para a Main.class quando o projeto é compilado usando a tecnologia
+       Web Start. A classe principal foi adicionada no arquivo Manifest.mf que 
+       está na raiz deste projeto e foi necessário sobrescrever esta target que é
+       utilizada pelo NetBeans. Com isso o JAR sempre é gerado apontando para a
+       classe principal, mesmo quando o projeto está utilizando Web Start. Assim
+       é possível rodar o jar diretamente ou via browser sem precisar fazer um
+       build diferente. -->
+</target>
     
     <target name="distribuicao" description="Distribuição" depends="clean, compile, jar">
         <antcall target="-maybe-call-dep">
@@ -42,7 +49,7 @@
         
     </target>
     
-   
+    
     
     <!--
 

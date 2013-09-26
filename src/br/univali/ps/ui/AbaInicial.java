@@ -1,6 +1,8 @@
 package br.univali.ps.ui;
 
-
+import br.univali.ps.dominio.pack.PackDownloader;
+import br.univali.ps.dominio.pack.PackDownloaderException;
+import br.univali.ps.dominio.pack.PackDownloaderListener;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -30,6 +32,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import net.java.balloontip.BalloonTip;
 
 public final class AbaInicial extends Aba
@@ -37,25 +40,64 @@ public final class AbaInicial extends Aba
     private JPopupMenu menuExemplos;
     private PainelTabulado painelTabulado;
     private TelaAtalhosTeclado telaAtalhosTeclado;
-    
-    private Action acaoExplorarExemplos;    
+    private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
-    
-    
+
     public AbaInicial(PainelTabulado painelTabulado)
     {
         super();
-        
+
         this.painelTabulado = painelTabulado;
         this.telaAtalhosTeclado = new TelaAtalhosTeclado();
         setCabecalho(new BotoesControleAba(this, painelTabulado));
-        
+
         initComponents();
         //criarMenuExemplos();
+        inicializaExemplos();//faz o download do pacote de exemplos se necessário e depois inicializa o menu
         configurarCursorLogos();
         criarDicasInterface();
         configurarAcoes();
         configurarLinks();
+    }
+
+    private void inicializaExemplos()
+    {
+        rotuloExplorarExemplos.setEnabled(false);
+        PackDownloader downloaderDosExemplos = new PackDownloader();
+        downloaderDosExemplos.addListener(new PackDownloaderListener()
+        {
+            @Override
+            public void downloadStarted()
+            {
+            }
+
+            @Override
+            public void downloadFinished()
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        criarMenuExemplos();
+                        rotuloExplorarExemplos.setEnabled(true);
+                    }
+                });
+            }
+
+            @Override
+            public void downloadProgress(int bytesDownloaded, int totalBytes)
+            {
+            }
+        });
+        try
+        {
+            downloaderDosExemplos.downloadPack(Configuracoes.getUrlDosPacotes(), "exemplos");
+        }
+        catch (PackDownloaderException pEx)
+        {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(pEx);
+        }
     }
 
     private void criarMenuExemplos()
@@ -64,27 +106,30 @@ public final class AbaInicial extends Aba
         {
             Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
             File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
-            
+
             if (diretorioExemplos.exists())
             {
                 Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
                 Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
                 ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
-                
+
                 File[] subdiretorios = diretorioExemplos.listFiles();
                 Arrays.sort(subdiretorios, comparadorExemplo);
-                
+
                 menuExemplos = new JPopupMenu();
-                
+
                 for (File subdiretorio : subdiretorios)
                 {
                     JMenuItem item = obterSubniveis(subdiretorio, iconeDiretorio, iconeArquivo, comparadorExemplo);
-                    
+
                     if (item != null)
                     {
                         menuExemplos.add(item);
                     }
                 }
+            }
+            else{
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new Exception("Diretórios de exemplos " + diretorioExemplos.getPath() + " não existe! Não foi possível criar os exemplos!"));
             }
         }
         catch (Exception excecao)
@@ -92,29 +137,29 @@ public final class AbaInicial extends Aba
             excecao.printStackTrace(System.out);
         }
     }
-    
+
     private JMenuItem obterSubniveis(File caminho, Icon iconeDiretorio, Icon iconeArquivo, ComparadorExemplo comparadorExemplo)
     {
         if (caminho.isDirectory())
         {
             JMenu submenu = new JMenu(caminho.getName());
-            
+
             submenu.setIcon(iconeDiretorio);
             submenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            
+
             File[] arquivos = caminho.listFiles();
             Arrays.sort(arquivos, comparadorExemplo);
-            
+
             for (File arquivo : arquivos)
             {
-                JMenuItem item = obterSubniveis(arquivo, iconeDiretorio, iconeArquivo, comparadorExemplo);                       
-                        
+                JMenuItem item = obterSubniveis(arquivo, iconeDiretorio, iconeArquivo, comparadorExemplo);
+
                 if (item != null)
                 {
                     submenu.add(item);
                 }
             }
-            
+
             if (submenu.getSubElements().length > 0)
             {
                 return submenu;
@@ -143,14 +188,14 @@ public final class AbaInicial extends Aba
                         }
                     }
                 });
-            
+
                 item.setName(caminho.getAbsolutePath());
                 item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 return item;
             }
         }
-        
+
         return null;
     }
 
@@ -165,11 +210,11 @@ public final class AbaInicial extends Aba
             Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
+
     private final class ComparadorExemplo implements Comparator<File>
     {
         private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
-                
+
         @Override
         public int compare(File exemplo1, File exemplo2)
         {
@@ -186,7 +231,7 @@ public final class AbaInicial extends Aba
                 return exemplo1.getName().compareTo(exemplo2.getName());
             }
             else if (exemplo1.isFile() && exemplo2.isFile())
-            {            
+            {
                 if (exemplo1.getName().toLowerCase().endsWith(".por") && exemplo2.getName().toLowerCase().endsWith(".por"))
                 {
                     String nomeExemplo1 = exemplo1.getName();
@@ -197,31 +242,31 @@ public final class AbaInicial extends Aba
 
                     return numero1.compareTo(numero2);
                 }
-                
+
                 return 0;
             }
-            
+
             return 0;
         }
-        
+
         private Integer extrairNumero(String nome)
         {
             avaliadorNumero.reset(nome);
-            
+
             if (avaliadorNumero.find())
             {
                 return Integer.parseInt(avaliadorNumero.group());
             }
-            
+
             return null;
         }
     }
-    
+
     private void configurarCursorLogos()
     {
         logoUnivali.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-    
+
     private void configurarAcoes()
     {
         configurarAcaoSairProgramando();
@@ -233,7 +278,7 @@ public final class AbaInicial extends Aba
         configurarAcaoExplorarExemplos();
         configurarAcaoExibirAtalhosTeclado();
     }
-    
+
     private void configurarAcaoSairProgramando()
     {
         Action acao = new AbstractAction(rotuloSairProgramando.getName())
@@ -244,10 +289,10 @@ public final class AbaInicial extends Aba
                 getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO).actionPerformed(e);
             }
         };
-        
+
         getActionMap().put(rotuloSairProgramando.getName(), acao);
     }
-    
+
     private void configurarAcaoConhecerLinguagem()
     {
         Action acao = new AbstractAction(rotuloConhecerLinguagem.getName())
@@ -258,10 +303,10 @@ public final class AbaInicial extends Aba
                 getPainelTabulado().getActionMap().get(TelaPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
             }
         };
-        
+
         getActionMap().put(rotuloConhecerLinguagem.getName(), acao);
     }
-    
+
     private void configurarAcaoConhecerBibliotecas()
     {
         Action acao = new AbstractAction(rotuloConhecerBibliotecas.getName())
@@ -272,10 +317,10 @@ public final class AbaInicial extends Aba
                 getPainelTabulado().getActionMap().get(TelaPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
             }
         };
-        
+
         getActionMap().put(rotuloConhecerBibliotecas.getName(), acao);
     }
-    
+
     private void configurarAcaoExibirTelaSobre()
     {
         Action acao = new AbstractAction(rotuloInformacoesSoftware.getName())
@@ -286,10 +331,10 @@ public final class AbaInicial extends Aba
                 PortugolStudio.getInstancia().getTelaSobre().setVisible(true);
             }
         };
-        
+
         getActionMap().put(rotuloInformacoesSoftware.getName(), acao);
     }
-    
+
     private void configurarAcaoAjudarDesenvolvimento()
     {
         Action acao = new AbstractAction(rotuloAjudarDesenvolvimento.getName())
@@ -300,10 +345,10 @@ public final class AbaInicial extends Aba
                 abrirGitHub();
             }
         };
-        
+
         getActionMap().put(rotuloAjudarDesenvolvimento.getName(), acao);
     }
-    
+
     private void configurarAcaoRelatarBug()
     {
         Action acao = new AbstractAction(rotuloRelatarBug.getName())
@@ -321,20 +366,20 @@ public final class AbaInicial extends Aba
                 }
             }
         };
-        
+
         getActionMap().put(rotuloRelatarBug.getName(), acao);
     }
-        
+
     private void configurarLinks()
     {
-        MouseListener listener = new MouseAdapter() 
+        MouseListener listener = new MouseAdapter()
         {
             @Override
             public void mouseClicked(MouseEvent e)
             {
                 JLabel rotulo = (JLabel) e.getSource();
-                String nomeAcao = rotulo.getName();                
-               
+                String nomeAcao = rotulo.getName();
+
                 Action acao = getActionMap().get(nomeAcao);
 
                 if (acao != null)
@@ -357,37 +402,37 @@ public final class AbaInicial extends Aba
                 rotulo.setForeground(Color.WHITE);
             }
         };
-        
+
         rotuloSairProgramando.addMouseListener(listener);
         rotuloSairProgramando.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloConhecerBibliotecas.addMouseListener(listener);
         rotuloConhecerBibliotecas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloConhecerLinguagem.addMouseListener(listener);
         rotuloConhecerLinguagem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloAjudarDesenvolvimento.addMouseListener(listener);
         rotuloAjudarDesenvolvimento.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloRelatarBug.addMouseListener(listener);
         rotuloRelatarBug.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloAtalhosTeclado.addMouseListener(listener);
         rotuloAtalhosTeclado.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloInformacoesSoftware.addMouseListener(listener);
         rotuloInformacoesSoftware.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloExplorarExemplos.addMouseListener(listener);
         rotuloExplorarExemplos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-    
+
     private void configurarAcaoExplorarExemplos()
     {
         String nome = "explorarExemplos";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.ALT_DOWN_MASK);
-        
+
         acaoExplorarExemplos = new AbstractAction(nome)
         {
             @Override
@@ -404,20 +449,20 @@ public final class AbaInicial extends Aba
                 }
             }
         };
-        
+
         acaoExplorarExemplos.putValue(Action.ACCELERATOR_KEY, atalho);
-        
+
         getActionMap().put(nome, acaoExplorarExemplos);
-        
+
         painelTabulado.getActionMap().put(nome, acaoExplorarExemplos);
         painelTabulado.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
-    
+
     private void configurarAcaoExibirAtalhosTeclado()
     {
         String nome = "atalhosTeclado";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
-        
+
         acaoExibirAtalhosTeclado = new AbstractAction(nome)
         {
             @Override
@@ -427,20 +472,20 @@ public final class AbaInicial extends Aba
                 telaAtalhosTeclado.setVisible(true);
             }
         };
-        
+
         acaoExibirAtalhosTeclado.putValue(Action.ACCELERATOR_KEY, atalho);
-        
+
         getActionMap().put(nome, acaoExibirAtalhosTeclado);
-        
+
         painelTabulado.getActionMap().put(nome, acaoExibirAtalhosTeclado);
         painelTabulado.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
-    
+
     private void criarDicasInterface()
     {
         FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
     }
-     
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
@@ -822,7 +867,6 @@ public final class AbaInicial extends Aba
             Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_logoUnivaliMouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel conteudoAprender;
     private javax.swing.JPanel conteudoAprender1;

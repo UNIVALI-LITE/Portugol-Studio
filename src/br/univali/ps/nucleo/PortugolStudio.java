@@ -1,12 +1,15 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.dominio.pack.PackDownloader;
+import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.ui.TelaPrincipal;
-import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.TelaProgressoAba;
 import br.univali.ps.ui.telas.TelaSobre;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import javax.swing.Timer;
 
@@ -26,11 +29,11 @@ public final class PortugolStudio
     private GerenciadorTemas gerenciadorTemas = null;
     private TelaSobre telaSobre = null;
     private TelaProgressoAba telaProgressoAba = null;
-
+    
     private PortugolStudio()
     {
     }
-
+    
     public static PortugolStudio getInstancia()
     {
         if (instancia == null)
