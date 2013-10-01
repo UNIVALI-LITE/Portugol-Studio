@@ -3,6 +3,7 @@ package br.univali.ps.ui;
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.dominio.pack.PackDownloaderListener;
+import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -35,7 +36,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import net.java.balloontip.BalloonTip;
 
-public final class AbaInicial extends Aba
+public final class AbaInicial extends Aba implements PackDownloaderObserver
 {
     private JPopupMenu menuExemplos;
     private PainelTabulado painelTabulado;
@@ -52,52 +53,10 @@ public final class AbaInicial extends Aba
         setCabecalho(new BotoesControleAba(this, painelTabulado));
 
         initComponents();
-        //criarMenuExemplos();
-        inicializaExemplos();//faz o download do pacote de exemplos se necessário e depois inicializa o menu
         configurarCursorLogos();
         criarDicasInterface();
         configurarAcoes();
         configurarLinks();
-    }
-
-    private void inicializaExemplos()
-    {
-        rotuloExplorarExemplos.setEnabled(false);
-        PackDownloader downloaderDosExemplos = new PackDownloader();
-        downloaderDosExemplos.addListener(new PackDownloaderListener()
-        {
-            @Override
-            public void downloadStarted()
-            {
-            }
-
-            @Override
-            public void downloadFinished()
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        criarMenuExemplos();
-                        rotuloExplorarExemplos.setEnabled(true);
-                    }
-                });
-            }
-
-            @Override
-            public void downloadProgress(int bytesDownloaded, int totalBytes)
-            {
-            }
-        });
-        try
-        {
-            downloaderDosExemplos.downloadPack(Configuracoes.getUrlDosPacotes(), "exemplos");
-        }
-        catch (PackDownloaderException pEx)
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(pEx);
-        }
     }
 
     private void criarMenuExemplos()
@@ -128,7 +87,8 @@ public final class AbaInicial extends Aba
                     }
                 }
             }
-            else{
+            else
+            {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new Exception("Diretórios de exemplos " + diretorioExemplos.getPath() + " não existe! Não foi possível criar os exemplos!"));
             }
         }
@@ -209,6 +169,46 @@ public final class AbaInicial extends Aba
         {
             Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void registrarListener(PackDownloader packDownloader)
+    {
+        packDownloader.addListener(new PackDownloaderListener()
+        {
+            @Override
+            public void downloadStarted()
+            {
+                rotuloExplorarExemplos.setEnabled(false);
+            }
+
+            @Override
+            public void downloadFinished()
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        criarMenuExemplos();
+                        rotuloExplorarExemplos.setEnabled(true);
+                    }
+                });
+            }
+
+            @Override
+            public void downloadProgress(int bytesDownloaded, int totalBytes)
+            {
+                // Sem progresso por enquanto.
+                System.out.println(bytesDownloaded);
+            }
+
+            @Override
+            public void downloadFail(PackDownloaderException ex)
+            {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+            }
+        });
     }
 
     private final class ComparadorExemplo implements Comparator<File>
@@ -300,7 +300,7 @@ public final class AbaInicial extends Aba
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                getPainelTabulado().getActionMap().get(TelaPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
+                getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
             }
         };
 
@@ -314,7 +314,7 @@ public final class AbaInicial extends Aba
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                getPainelTabulado().getActionMap().get(TelaPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
+                getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
             }
         };
 

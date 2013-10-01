@@ -23,7 +23,7 @@ public final class Configuracoes
     public static final String TEMA_EDITOR = "temaEditor";
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
-    public static final String URL_DOS_PACOTES = "http://localhost/Portugol-Exemplos/";
+    public static final String URL_DOS_PACOTES = "http://localhost/portugol-pacotes/";
     
     private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private Properties configuracoes = new Properties();

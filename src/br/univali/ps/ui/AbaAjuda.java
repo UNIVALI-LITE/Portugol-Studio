@@ -7,6 +7,11 @@ import br.univali.portugol.ajuda.ObservadorCarregamentoAjuda;
 import br.univali.portugol.ajuda.PreProcessadorConteudo;
 import br.univali.portugol.ajuda.Topico;
 import br.univali.portugol.ajuda.TopicoHtml;
+import br.univali.ps.dominio.pack.PackDownloader;
+import br.univali.ps.dominio.pack.PackDownloaderException;
+import br.univali.ps.dominio.pack.PackDownloaderListener;
+import br.univali.ps.dominio.pack.PackDownloaderObserver;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.CardLayout;
@@ -27,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -38,7 +44,7 @@ import javax.swing.tree.DefaultTreeModel;
  *
  * @author Luiz Fernando Noschang
  */
-public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener
+public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener, PackDownloaderObserver
 {
     private static final String templateRaiz =             
              
@@ -62,6 +68,58 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private Action acaoAtualizarTopico;
     private Topico topicoAtual;
     
+    
+    @Override
+    public void registrarListener(PackDownloader packDownloader)
+    {
+        
+        packDownloader.addListener(new PackDownloaderListener() {
+
+            @Override
+            public void downloadStarted()
+            {
+                rotuloCarregamento.setText("Realizando download do conteúdo de ajuda...");
+            }
+
+            @Override
+            public void downloadFinished()
+            {
+                rotuloCarregamento.setText("Carregando os tópicos da ajuda por favor aguarde...");
+                addComponentListener(new ComponentAdapter()
+                {
+                    @Override
+                    public void componentShown(ComponentEvent e)
+                    {
+                        carregarAjuda();
+                    }
+                });
+                if (AbaAjuda.this.isVisible()){
+                    carregarAjuda();
+                }
+            }
+
+            @Override
+            public void downloadProgress(final int bytesDownloaded,final int totalBytes)
+            {
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run()
+                    {
+                        barraProgresso.setValue((int)(bytesDownloaded * 100f) / totalBytes );
+                    }
+                });
+            }
+
+            @Override
+            public void downloadFail(PackDownloaderException ex)
+            {
+                AbaAjuda.this.rotuloErroCarregamento.setText("Erro ao fazer download da ajuda!");
+                AbaAjuda.this.rotuloErroCarregamento.setVisible(true);
+            }
+        });
+    }
+    
     public AbaAjuda()
     {
         super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
@@ -72,14 +130,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         
         rotuloErroCarregamento.setVisible(false);
         
-        addComponentListener(new ComponentAdapter()
-        {
-            @Override
-            public void componentShown(ComponentEvent e)
-            {
-                carregarAjuda();
-            }
-        });
+        
     }
 
     private void configurarAcoes()
@@ -212,6 +263,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         
         topicoAtual = topico;
     }
+
+    
     
     private class Carregador extends SwingWorker<Ajuda, Integer> implements ObservadorCarregamentoAjuda
     {
@@ -224,7 +277,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             carregadorAjuda.adicionarObservadorCarregamento(this);
             carregadorAjuda.adicionarPreProcessadorConteudo(new PreProcessadorConteudoAjuda());
 
-            return carregadorAjuda.carregar(new File("./ajuda"));
+            return carregadorAjuda.carregar(new File(Configuracoes.obterDiretorioPortugol()+"/ajuda"));
         }        
         
         @Override

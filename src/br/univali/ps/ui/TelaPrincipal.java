@@ -10,9 +10,7 @@ import javax.swing.RootPaneContainer;
  */
 public interface TelaPrincipal extends RootPaneContainer
 {
-    String ACAO_EXIBIR_AJUDA = "Exibir ajuda";
-    String ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA = "Documentação das bibliotecas";
-
+    
     PainelTabuladoPrincipal getPainelTabulado();
 
     void setArquivosIniciais(List<File> arquivos);

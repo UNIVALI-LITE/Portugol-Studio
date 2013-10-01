@@ -2,6 +2,7 @@ package br.univali.ps.nucleo;
 
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
+import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.TelaProgressoAba;
 import br.univali.ps.ui.telas.TelaSobre;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Timer;
 
@@ -62,12 +64,67 @@ public final class PortugolStudio
         }
         catch (ExcecaoAplicacao excecaoAplicacao)
         {
-            getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
+            //getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
         }
         telaPrincipal.setArquivosIniciais(arquivos);
         telaPrincipal.setVisible(true);
         this.telaPrincipal = telaPrincipal;
+        
+        try{
+            inicializarRecursos();
+        }
+        catch(Exception ex){
+            getTratadorExcecoes().exibirExcecao(ex);
+        }
+        
     }
+    
+    private void inicializarRecursos() throws Exception{
+        
+        URL url = new URL(Configuracoes.getUrlDosPacotes());
+        List<DownloadPackInfos> recursos = new ArrayList<>();
+        
+        recursos.add(new DownloadPackInfos(new PackDownloader(url, "exemplos"), telaPrincipal.getPainelTabulado().getAbaInicial()));
+        recursos.add(new DownloadPackInfos(new PackDownloader(url, "ajuda"), telaPrincipal.getPainelTabulado().getAbaAjuda()));
+                
+        for (DownloadPackInfos downloadPackInfos : recursos)
+        {
+            try
+            {
+                downloadPackInfos.getPackDownloader().downloadPack();
+            }
+            catch (PackDownloaderException pEx)
+            {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(pEx);
+            }
+        }
+    }
+    
+    private class DownloadPackInfos
+    {
+        private PackDownloader packDownloader;
+        private PackDownloaderObserver observer;
+
+        public DownloadPackInfos(PackDownloader packDownloader, PackDownloaderObserver observer)
+        {
+            this.packDownloader = packDownloader;
+            this.observer = observer;
+            
+            this.observer.registrarListener(packDownloader);
+        }
+
+        public PackDownloaderObserver getObserver()
+        {
+            return observer;
+        }
+
+        public PackDownloader getPackDownloader()
+        {
+            return packDownloader;
+        }
+    }
+    
+    
 
     public TratadorExcecoes getTratadorExcecoes()
     {

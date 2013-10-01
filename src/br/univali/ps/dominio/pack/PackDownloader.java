@@ -18,6 +18,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 /**
  * @author Elieser, Luis e Fillipi Esta classe é utilizada para baixar (caso
@@ -38,38 +39,36 @@ public class PackDownloader
 {
     private List<PackDownloaderListener> listeners = new ArrayList<>();
     private ExecutorService service = Executors.newSingleThreadExecutor();
+    private final String packName;
+    private final URL baseURL;
+
+    public PackDownloader(URL baseURL, String packName)
+    {
+        this.packName = packName;
+        this.baseURL = baseURL;
+    }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public void downloadPack(URL baseUrl, String packName) throws PackDownloaderException
+    public void downloadPack() throws PackDownloaderException
     {
-        service.submit(new DownloadTask(baseUrl, Configuracoes.obterDiretorioPortugol().getAbsolutePath(), packName));
+        //service.submit(new DownloadTask(baseURL, Configuracoes.obterDiretorioPortugol().getAbsolutePath(), packName));
+        service.submit(new DownloadTask());
     }
 
-    public void downloadPack(String baseUrl, String packName) throws PackDownloaderException
-    {
-        try
-        {
-            downloadPack(new URL(baseUrl), packName);
-        }
-        catch (Exception e)
-        {
-            throw new PackDownloaderException(e);
-        }
-    }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private class DownloadTask implements Runnable
     {
-        private URL baseURL;
-        private String destPath;
-        private String packName;
+        //private URL baseURL;
+        //private String destPath;
+        //private String packName;
 
-        public DownloadTask(URL fileURL, String destPath, String packName)
-        {
-            this.baseURL = fileURL;
-            this.destPath = destPath;
-            this.packName = packName;
-        }
+//        public DownloadTask(URL fileURL, String destPath, String packName)
+//        {
+//            this.baseURL = fileURL;
+//            this.destPath = destPath;
+//            this.packName = packName;
+//        }
 
         @Override
         public void run()
@@ -77,16 +76,16 @@ public class PackDownloader
             fireDownloadStarted();
             try
             {
-                if (newVersionAvailable(baseURL, packName))
+                if (newVersionAvailable())
                 {
-                    deleteOldPackFiles(packName);
-                    extractZipContent(downloadZipFile(baseURL, packName));
-                    overwriteLocalVersionFile(baseURL, packName);
+                    deleteOldPackFiles();
+                    extractZipContent(downloadZipFile());
+                    overwriteLocalVersionFile();
                 }
             }
             catch (Exception e)
             {
-                throw new RuntimeException(e);
+                fireDownloadFail(new PackDownloaderException(e, packName));
             }
             fireDownloadFinished();
             service.shutdown();
@@ -94,7 +93,7 @@ public class PackDownloader
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private void deleteOldPackFiles(String packName)
+    private void deleteOldPackFiles()
     {
         File oldFile = new File(Configuracoes.obterDiretorioPortugol() + "/" + packName);
         deleteFile(oldFile);//deleta os arquivos antigos
@@ -115,28 +114,20 @@ public class PackDownloader
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private File downloadZipFile(URL baseURL, String packName) throws Exception
+    private File downloadZipFile() throws Exception
     {
         URL zipUrl = new URL(baseURL, packName + "/" + packName + ".zip");
         return downloadFile(zipUrl, Configuracoes.obterDiretorioPortugol() + "/" + packName + ".zip", true);
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private void extractZipContent(File zipFile) throws PackDownloaderException
+    private void extractZipContent(File zipFile) throws ZipException
     {
-        try
-        {
-            ZipFile zip = new ZipFile(zipFile);
-            zip.setRunInThread(false);
-            zip.setFileNameCharset("ISO-8859-1");
-            zip.extractAll(Configuracoes.obterDiretorioPortugol().getAbsolutePath());
-            zipFile.delete();
-        }
-        catch (Exception e)
-        {
-            throw new PackDownloaderException(e.getMessage());
-        }
-
+        ZipFile zip = new ZipFile(zipFile);
+        zip.setRunInThread(false);
+        zip.setFileNameCharset("ISO-8859-1");
+        zip.extractAll(Configuracoes.obterDiretorioPortugol().getAbsolutePath());
+        zipFile.delete();
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -187,15 +178,15 @@ public class PackDownloader
         }
         catch (Exception e)
         {
-            throw new PackDownloaderException(e);
+            throw new PackDownloaderException(e.getMessage());
         }
         return file;
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private boolean newVersionAvailable(URL baseUrl, String packName) throws Exception
+    private boolean newVersionAvailable() throws Exception
     {
-        URL url = new URL(baseUrl, packName + "/build.number");
+        URL url = new URL(baseURL, packName + "/build.number");
         Properties remoteProperties = new Properties();
         remoteProperties.load(url.openStream());//lê o properties diretamente da URL, não é necessário baixar o arquivo
 
@@ -225,9 +216,9 @@ public class PackDownloader
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private void overwriteLocalVersionFile(URL baseUrl, String packName) throws Exception
+    private void overwriteLocalVersionFile() throws Exception
     {
-        URL url = new URL(baseUrl, packName + "/build.number");
+        URL url = new URL(baseURL, packName + "/build.number");
         downloadFile(url, Configuracoes.obterDiretorioPortugol() + "/" + packName + ".build.number", false);
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -243,6 +234,14 @@ public class PackDownloader
         for (PackDownloaderListener packDownloaderListener : listeners)
         {
             packDownloaderListener.downloadStarted();
+        }
+    }
+
+    private void fireDownloadFail(PackDownloaderException ex)
+    {
+        for (PackDownloaderListener packDownloaderListener : listeners)
+        {
+            packDownloaderListener.downloadFail(ex);
         }
     }
 
@@ -265,7 +264,7 @@ public class PackDownloader
 
     public static void main(String args[]) throws Exception
     {
-        PackDownloader packDownloader = new PackDownloader();
+        PackDownloader packDownloader = new PackDownloader(new URL("http://localhost/portugol-exemplos/"), "exemplos");
 
         packDownloader.addListener(new PackDownloaderListener()
         {
@@ -286,6 +285,12 @@ public class PackDownloader
             {
                 System.out.println("progresso: " + bytesDownloaded + "/" + totalBytes);
             }
+
+            @Override
+            public void downloadFail(PackDownloaderException ex)
+            {
+                System.out.println("falha no download");
+            }
         });
 
 
@@ -294,7 +299,7 @@ public class PackDownloader
             System.out.println("contando: " + i);
             if (i == 5)//inicia o download no meio da contagem apenas para ver as threads alternando a execução
             {
-                packDownloader.downloadPack(new URL("http://localhost/portugol-exemplos/"), "exemplos");
+                packDownloader.downloadPack();
             }
             Thread.sleep(100);
         }

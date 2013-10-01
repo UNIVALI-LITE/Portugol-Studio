@@ -731,10 +731,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentasFixarBarraFerramentas.setOpaque(false);
 
         btnFixarBarraFerramentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/fixar.png"))); // NOI18N
+        btnFixarBarraFerramentas.setBorderPainted(false);
         btnFixarBarraFerramentas.setFocusable(false);
         btnFixarBarraFerramentas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarBarraFerramentas.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarBarraFerramentas.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnFixarBarraFerramentas.setOpaque(false);
         btnFixarBarraFerramentas.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarBarraFerramentas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarBarraFerramentas.add(btnFixarBarraFerramentas);
@@ -822,10 +824,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentasFixarPainelStatus.setRequestFocusEnabled(false);
 
         btnFixarPainelStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/fixar.png"))); // NOI18N
+        btnFixarPainelStatus.setBorderPainted(false);
         btnFixarPainelStatus.setFocusable(false);
         btnFixarPainelStatus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarPainelStatus.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelStatus.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnFixarPainelStatus.setOpaque(false);
         btnFixarPainelStatus.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarPainelStatus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarPainelStatus.add(btnFixarPainelStatus);
@@ -855,12 +859,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentasFixarPainelSaida.setRollover(true);
         barraFerramentasFixarPainelSaida.setOpaque(false);
 
-        btnFixarPainelSaida.setBackground(new java.awt.Color(0, 102, 102));
         btnFixarPainelSaida.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/fixar.png"))); // NOI18N
+        btnFixarPainelSaida.setBorderPainted(false);
         btnFixarPainelSaida.setFocusable(false);
         btnFixarPainelSaida.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarPainelSaida.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelSaida.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnFixarPainelSaida.setOpaque(false);
         btnFixarPainelSaida.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarPainelSaida.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarPainelSaida.add(btnFixarPainelSaida);
@@ -895,16 +900,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentasArvore.setOpaque(false);
 
         btnFixarArvoreSimbolos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/fixar.png"))); // NOI18N
+        btnFixarArvoreSimbolos.setBorderPainted(false);
         btnFixarArvoreSimbolos.setFocusable(false);
         btnFixarArvoreSimbolos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarArvoreSimbolos.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarArvoreSimbolos.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnFixarArvoreSimbolos.setOpaque(false);
         btnFixarArvoreSimbolos.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarArvoreSimbolos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasArvore.add(btnFixarArvoreSimbolos);
 
         btnAumentarFonteArvore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         btnAumentarFonteArvore.setBorderPainted(false);
+        btnAumentarFonteArvore.setContentAreaFilled(false);
         btnAumentarFonteArvore.setFocusable(false);
         btnAumentarFonteArvore.setHideActionText(true);
         btnAumentarFonteArvore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

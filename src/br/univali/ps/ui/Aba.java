@@ -25,6 +25,8 @@ public abstract class Aba extends JPanel
         this.cabecalho = criarCabecalhoPadrao("Sem título", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"), false);
     }
     
+    
+    
      public Aba(String titulo, Icon icone, boolean removivel)
      {
          this();
