@@ -10,11 +10,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import net.lingala.zip4j.core.ZipFile;
@@ -37,7 +35,7 @@ import net.lingala.zip4j.exception.ZipException;
  */
 public class PackDownloader
 {
-    private List<PackDownloaderListener> listeners = new ArrayList<>();
+    private List<PackDownloaderListener> listeners = new ArrayList<PackDownloaderListener>();
     private ExecutorService service = Executors.newSingleThreadExecutor();
     private final String packName;
     private final URL baseURL;
@@ -133,7 +131,7 @@ public class PackDownloader
 
     private File downloadFile(URL url, String destPath, boolean fireProgressEvent) throws Exception
     {
-        System.out.println("download file...");
+        //System.out.println("download file...");
         InputStream is = null;
         OutputStream os = null;
         File file = new File(destPath);

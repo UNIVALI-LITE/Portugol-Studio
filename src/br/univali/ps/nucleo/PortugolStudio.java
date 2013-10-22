@@ -3,6 +3,7 @@ package br.univali.ps.nucleo;
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
+import br.univali.ps.ui.AbaCodigoFonte;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.TelaProgressoAba;
 import br.univali.ps.ui.telas.TelaSobre;
@@ -31,11 +32,11 @@ public final class PortugolStudio
     private GerenciadorTemas gerenciadorTemas = null;
     private TelaSobre telaSobre = null;
     private TelaProgressoAba telaProgressoAba = null;
-    
+
     private PortugolStudio()
     {
     }
-    
+
     public static PortugolStudio getInstancia()
     {
         if (instancia == null)
@@ -69,24 +70,27 @@ public final class PortugolStudio
         telaPrincipal.setArquivosIniciais(arquivos);
         telaPrincipal.setVisible(true);
         this.telaPrincipal = telaPrincipal;
-        
-        try{
+
+        try
+        {
             inicializarRecursos();
         }
-        catch(Exception ex){
+        catch (Exception ex)
+        {
             getTratadorExcecoes().exibirExcecao(ex);
         }
-        
+
     }
-    
-    private void inicializarRecursos() throws Exception{
-        
+
+    private void inicializarRecursos() throws Exception
+    {
+
         URL url = new URL(Configuracoes.getUrlDosPacotes());
         List<DownloadPackInfos> recursos = new ArrayList<>();
-        
+
         recursos.add(new DownloadPackInfos(new PackDownloader(url, "exemplos"), telaPrincipal.getPainelTabulado().getAbaInicial()));
         recursos.add(new DownloadPackInfos(new PackDownloader(url, "ajuda"), telaPrincipal.getPainelTabulado().getAbaAjuda()));
-                
+
         for (DownloadPackInfos downloadPackInfos : recursos)
         {
             try
@@ -99,7 +103,7 @@ public final class PortugolStudio
             }
         }
     }
-    
+
     private class DownloadPackInfos
     {
         private PackDownloader packDownloader;
@@ -109,7 +113,7 @@ public final class PortugolStudio
         {
             this.packDownloader = packDownloader;
             this.observer = observer;
-            
+
             this.observer.registrarListener(packDownloader);
         }
 
@@ -123,8 +127,6 @@ public final class PortugolStudio
             return packDownloader;
         }
     }
-    
-    
 
     public TratadorExcecoes getTratadorExcecoes()
     {
@@ -204,5 +206,24 @@ public final class PortugolStudio
             timer.setRepeats(false);
             timer.start();
         }
+    }
+
+    public void abrirArquivoCodigoFonte(final String codigoFonte)
+    {
+
+        getTelaProgressoaba().abrirCodigoFonte(codigoFonte);
+
+//        Timer timer = new Timer(750, new ActionListener()
+//        {
+//            @Override
+//            public void actionPerformed(ActionEvent e)
+//            {
+//                getTelaProgressoaba().abrirCodigoFonte(codigoFonte);
+//            }
+//        });
+//
+//        timer.setRepeats(false);
+//        timer.start();
+        
     }
 }

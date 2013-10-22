@@ -2,31 +2,46 @@
 <html>
     <head>
         <title>Portugol Studio</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <script>
-            //function redimensionaApplet(){
-             //   var applet = document.getElementById("deployJavaPlugin");
-              //  applet.style.width = "100%";
-               // applet.style.height = "90%";
-            //}
+            
+            function enviaQuestao(){
+                var idDaQuestao =  Math.floor((Math.random() * 100));
+                var applet = document.getElementById("applet");
+                var pex = '<?xml version="1.0" encoding="UTF-8"?><questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd"><testes><caso><saidas><saida tipodado="cadeia">Ola Mundo!</saida></saidas></caso></testes><enunciado>Faca um programa que exiba na tela a mensagem "Ola Mundo!".</enunciado></questao>';
+                applet.setQuestao(idDaQuestao, pex);
+            }
+            
+            function obtemExercicioAtual(){//pega os dados do exercício que o aluno está resolvendo no momento
+                var applet = document.getElementById("applet");
+                var exercicio = applet.getExercicioAtual();
+                if(exercicio != null){
+                    var divDoCodigo = document.getElementById("divDoCodigo");
+                    var idDaQuestaoAtual = exercicio.getIdDaQuestao();
+                    var codigoDoAluno = exercicio.getCodigoFonteDoAluno();
+                    divDoCodigo.innerHTML = "Questão " + idDaQuestaoAtual + " " + codigoDoAluno;
+                }
+            }
+          
         </script>
     </head>
     <body >
+        <button onclick="enviaQuestao()" value="enviar para o applet">enviar questão para o applet</button>
+        <button onclick="obtemExercicioAtual()" >obter código</button>
+        <div id="divDoCodigo">
+            área do código
+        </div>
         <script src="http://java.com/js/deployJava.js"></script>
         <script>
-//            var attributes = {
-//                code:       "${JNLP.APPLET.CLASS}",
-//                archive:    "${JNLP.RESOURCES.MAIN.JAR}",
-//                width:      "100%",
-//                height:     "${JNLP.APPLET.HEIGHT}"
-//            };
             var attributes = {
                 code:       "${JNLP.APPLET.CLASS}",
                 archive:    "${JNLP.RESOURCES.MAIN.JAR}",
                 width:      "100%",
-                height:     "100%"
+                height:     "100%",
+                id:         "applet"
             };
-            var parameters = {${JNLP.APPLET.PARAMS}}; <!-- Applet Parameters -->
-            var version = "${JNLP_VM_VERSION}"; <!-- Required Java Version -->
+            var parameters = {${JNLP.APPLET.PARAMS}}; 
+            var version = "${JNLP_VM_VERSION}"; 
             
             deployJava.runApplet(attributes, parameters, version);
            

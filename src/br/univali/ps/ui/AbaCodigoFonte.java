@@ -1356,6 +1356,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
 
+    public String getCodigoFonte()
+    {
+        return getEditor().getTextArea().getText();
+    }
     
     @Override
     public void simboloRemovido(Simbolo simbolo) {}

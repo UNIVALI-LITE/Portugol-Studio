@@ -7,11 +7,17 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
@@ -72,6 +78,32 @@ public final class TelaProgressoAba extends JDialog
         }
     }
 
+   
+    public void abrirCodigoFonte(final String codigoFonte) 
+    {
+        atualizarStatusArquivo(1);
+
+        barraProgresso.setValue(0);
+        barraProgresso.setMaximum(barraProgresso.getMaximum());
+
+        //esse trecho de código foi executado em uma PrivilegedAction
+        //para corrigir o problema que acontecia quando o Applet tentava
+        //usar Reflection para instânciar uma Questao a partir do XML do arquivo pex.
+        AccessController.doPrivileged(new PrivilegedAction<Void>()
+        {
+            @Override
+            public Void run()
+            {
+                SwingWorker worker = new CarregadorArquivos(codigoFonte);
+                worker.execute();
+
+                setLocationRelativeTo(null);
+                setVisible(true);
+                return null;
+            }
+        });
+    }
+
     private class CriadorArquivos extends SwingWorker<Object, AbaCodigoFonte>
     {
         private PainelTabulado painelTabulado;
@@ -117,47 +149,100 @@ public final class TelaProgressoAba extends JDialog
         }
     }
 
+    private enum TipoCarregamento
+    {
+        LISTA_ARQUIVOS, CODIGO_FONTE
+    };
+
     private class CarregadorArquivos extends SwingWorker<Object, AbaCodigoFonte>
     {
+        private TipoCarregamento tipoCarregamento;
         private List<File> arquivos;
+        private String arquivoPex;
         private int contador = 0;
 
         public CarregadorArquivos(List<File> arquivos)
         {
+            this.tipoCarregamento = TipoCarregamento.LISTA_ARQUIVOS;
             this.arquivos = arquivos;
+        }
+
+        public CarregadorArquivos(String arquivoPex)
+        {
+            this.tipoCarregamento = TipoCarregamento.CODIGO_FONTE;
+            this.arquivoPex = arquivoPex;
         }
 
         @Override
         protected Object doInBackground() throws Exception
         {
-            for (int indice = 0; indice < arquivos.size(); indice++)
+            System.out.println("doInBackground...");
+            switch (tipoCarregamento)
             {
-                File arquivo = arquivos.get(indice);
-
-                try
+                case CODIGO_FONTE:
                 {
-                    AbaCodigoFonte abaCodigoFonte;
-
-                    if (obterExtensaoArquivo(arquivo).equals("pex") || obterExtensaoArquivo(arquivo).equals("xml"))
+                    try
                     {
+                        AbaCodigoFonte abaCodigoFonte;
                         Unmarshal u = new Unmarshal();
-                        Questao q = u.execute(new FileInputStream(arquivo));
 
+                        InputStream is = new ByteArrayInputStream(arquivoPex.getBytes());
+
+                        Questao q = u.execute(is);
                         abaCodigoFonte = new AbaCodigoFonte();
                         abaCodigoFonte.setQuestao(q);
+                        abaCodigoFonte.setRemovivel(false);
+                        publish(abaCodigoFonte);
+                        //return abaCodigoFonte;
                     }
-                    else
+                    catch (final Exception e)
                     {
-                        String codigoFonte = FileHandle.open(arquivo);
-                        abaCodigoFonte = new AbaCodigoFonte();
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, arquivo, true);
+                        SwingUtilities.invokeLater(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                JOptionPane.showMessageDialog(rootPane, e);
+                            }
+                        });
                     }
 
-                    publish(abaCodigoFonte);
+                    break;
                 }
-                catch (Exception ex)
+                case LISTA_ARQUIVOS:
                 {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Erro ao abrir o arquivo '%d'", arquivo.getPath()), ExcecaoAplicacao.Tipo.ERRO));
+                    for (int indice = 0; indice < arquivos.size(); indice++)
+                    {
+                        File arquivo = arquivos.get(indice);
+
+                        try
+                        {
+                            AbaCodigoFonte abaCodigoFonte;
+
+                            if (obterExtensaoArquivo(arquivo).equals("pex") || obterExtensaoArquivo(arquivo).equals("xml"))
+                            {
+                                Unmarshal u = new Unmarshal();
+                                Questao q = u.execute(new FileInputStream(arquivo));
+
+                                abaCodigoFonte = new AbaCodigoFonte();
+                                abaCodigoFonte.setQuestao(q);
+                            }
+                            else
+                            {
+                                String codigoFonte = FileHandle.open(arquivo);
+                                abaCodigoFonte = new AbaCodigoFonte();
+                                abaCodigoFonte.setCodigoFonte(codigoFonte, arquivo, true);
+                            }
+
+                            publish(abaCodigoFonte);
+                        }
+                        catch (Exception ex)
+                        {
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Erro ao abrir o arquivo '%d'", arquivo.getPath()), ExcecaoAplicacao.Tipo.ERRO));
+                        }
+                    }
+
+                    break;
                 }
             }
 
@@ -167,10 +252,10 @@ public final class TelaProgressoAba extends JDialog
         @Override
         protected void process(List<AbaCodigoFonte> chunks)
         {
+            System.out.println("process..");
             for (final AbaCodigoFonte aba : chunks)
             {
                 contador += 1;
-
                 aba.adicionar(painelTabulado);
                 barraProgresso.setValue(contador);
             }

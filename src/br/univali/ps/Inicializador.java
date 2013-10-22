@@ -48,7 +48,7 @@ public final class Inicializador
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             }
             
-            TelaPrincipal tela = (runningApplet()) ? (new PSApplet()) : (new TelaPrincipalDesktop());
+            TelaPrincipal tela = (runningApplet()) ? (new TelaPrincipalApplet()) : (new TelaPrincipalDesktop());
             portugolStudio.iniciar( listarArquivos(argumentos), tela );
             
             splashProgress(100);

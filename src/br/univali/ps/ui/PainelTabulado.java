@@ -19,6 +19,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
     {
         setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
+        
     }    
 
     @Override
@@ -132,6 +133,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
             painelTabuladoListener.abaSelecionada(aba);
         }
     }
+    
     
     @Override public void componentHidden(ComponentEvent ce) { }
 

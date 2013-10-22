@@ -14,8 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.InputStream;
-import java.net.URI;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;

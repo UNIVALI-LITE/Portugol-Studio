@@ -2,3 +2,4 @@ Manifest-Version: 1.0
 SplashScreen-Image: splash.jpg
 Main-Class: br.univali.ps.Inicializador
 
+

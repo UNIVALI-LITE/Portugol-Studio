@@ -197,10 +197,16 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             }
 
             @Override
-            public void downloadProgress(int bytesDownloaded, int totalBytes)
+            public void downloadProgress(final int bytesDownloaded, final int totalBytes)
             {
-                // Sem progresso por enquanto.
-                System.out.println(bytesDownloaded);
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run()
+                    {
+                        //int progresso = (int)((bytesDownloaded * 100.0f )/totalBytes );
+                    }
+                });
             }
 
             @Override

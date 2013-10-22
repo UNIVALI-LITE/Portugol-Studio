@@ -18,6 +18,8 @@
     </resources>
     <applet-desc main-class="${jnlp.main.class}" name="${APPLICATION.TITLE}"
         width="${jnlp.applet.width}" height="${jnlp.applet.height}">
-        <!--${JNLP.APPLET.PARAMS}-->
+        
+        <param name="idDaQuestao" value="${idDaQuestao}"/>
+        <param name="idDoAluno" value="${idDoAluno}"/>
     </applet-desc>
 </jnlp>
