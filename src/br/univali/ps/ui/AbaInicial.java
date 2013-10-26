@@ -16,14 +16,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -70,16 +70,14 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             {
                 Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
                 Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
-                ComparadorExemplo comparadorExemplo = new ComparadorExemplo();
-
-                File[] subdiretorios = diretorioExemplos.listFiles();
-                Arrays.sort(subdiretorios, comparadorExemplo);
 
                 menuExemplos = new JPopupMenu();
+                
+                List<String[]> entradasIndice = lerIndice(new File(diretorioExemplos, "indice.txt"));
 
-                for (File subdiretorio : subdiretorios)
+                for (String[] entradaIndice : entradasIndice)
                 {
-                    JMenuItem item = obterSubniveis(subdiretorio, iconeDiretorio, iconeArquivo, comparadorExemplo);
+                    JMenuItem item = obterSubniveis(diretorioExemplos, entradaIndice, iconeDiretorio, iconeArquivo);
 
                     if (item != null)
                     {
@@ -98,21 +96,22 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         }
     }
 
-    private JMenuItem obterSubniveis(File caminho, Icon iconeDiretorio, Icon iconeArquivo, ComparadorExemplo comparadorExemplo)
+    private JMenuItem obterSubniveis(File diretorioAtual, String[] entradaIndice, Icon iconeDiretorio, Icon iconeArquivo) throws Exception
     {
+        File caminho = new File(diretorioAtual, entradaIndice[1]);
+        
         if (caminho.isDirectory())
         {
-            JMenu submenu = new JMenu(caminho.getName());
+            JMenu submenu = new JMenu(entradaIndice[0]);
 
             submenu.setIcon(iconeDiretorio);
             submenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-            File[] arquivos = caminho.listFiles();
-            Arrays.sort(arquivos, comparadorExemplo);
+            List<String[]> entradasIndiceSubDiretorio = lerIndice(new File(caminho, "indice.txt"));
 
-            for (File arquivo : arquivos)
+            for (String[] entradaIndiceSubDiretorio : entradasIndiceSubDiretorio)
             {
-                JMenuItem item = obterSubniveis(arquivo, iconeDiretorio, iconeArquivo, comparadorExemplo);
+                JMenuItem item = obterSubniveis(caminho, entradaIndiceSubDiretorio, iconeDiretorio, iconeArquivo);
 
                 if (item != null)
                 {
@@ -127,36 +126,73 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         }
         else
         {
-            if (caminho.getName().toLowerCase().endsWith(".por"))
+            JMenuItem item = new JMenuItem(new AbstractAction(entradaIndice[0], iconeArquivo)
             {
-                JMenuItem item = new JMenuItem(new AbstractAction(caminho.getName().replace(".por", ""), iconeArquivo)
+                @Override
+                public void actionPerformed(ActionEvent e)
                 {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
+                    try
                     {
-                        try
-                        {
-                            File exemplo = new File(((JMenuItem) e.getSource()).getName());
-                            String codigoFonte = FileHandle.open(exemplo);
-                            AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-                            abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-                            abaCodigoFonte.adicionar(getPainelTabulado());
-                        }
-                        catch (Exception excecao)
-                        {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-                        }
+                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
+                        String codigoFonte = FileHandle.open(exemplo);
+                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                        abaCodigoFonte.adicionar(getPainelTabulado());
                     }
-                });
+                    catch (Exception excecao)
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                    }
+                }
+            });
 
-                item.setName(caminho.getAbsolutePath());
-                item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            item.setName(caminho.getAbsolutePath());
+            item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-                return item;
-            }
+            return item;
         }
 
         return null;
+    }
+    
+    private List<String[]> lerIndice(File arquivoIndice) throws Exception
+    {
+        if (arquivoIndice.exists())
+        {
+            int cont = 0;
+            String linha;
+            List<String[]> indice = new ArrayList<>();
+            
+            try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoIndice)))
+            {
+                while ((linha = leitor.readLine()) != null)
+                {
+                    cont += 1;
+                    
+                    if (linha.trim().length() >= 3 && linha.contains("="))
+                    {
+                        String[] entrada = linha.split("=");
+                        
+                        if (entrada.length == 2)
+                        {
+                            indice.add(entrada);
+                        }
+                        else
+                        {
+                            throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: ", cont, entrada));
+                        }
+                    }
+                }
+                
+                leitor.close();
+            }
+            
+            return indice;
+        }
+        else
+        {
+            throw new Exception(String.format("O arquivo de índice não foi encontrado no diretório: %s", arquivoIndice.getCanonicalPath()));
+        }        
     }
 
     private void abrirGitHub()
@@ -215,57 +251,6 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         });
-    }
-
-    private final class ComparadorExemplo implements Comparator<File>
-    {
-        private final Matcher avaliadorNumero = Pattern.compile("[0-9]+").matcher("");
-
-        @Override
-        public int compare(File exemplo1, File exemplo2)
-        {
-            if (exemplo1.isDirectory() && exemplo2.isFile())
-            {
-                return 1;
-            }
-            else if (exemplo1.isFile() && exemplo2.isDirectory())
-            {
-                return -1;
-            }
-            else if (exemplo1.isDirectory() && exemplo2.isDirectory())
-            {
-                return exemplo1.getName().compareTo(exemplo2.getName());
-            }
-            else if (exemplo1.isFile() && exemplo2.isFile())
-            {
-                if (exemplo1.getName().toLowerCase().endsWith(".por") && exemplo2.getName().toLowerCase().endsWith(".por"))
-                {
-                    String nomeExemplo1 = exemplo1.getName();
-                    String nomeExemplo2 = exemplo2.getName();
-
-                    Integer numero1 = extrairNumero(nomeExemplo1);
-                    Integer numero2 = extrairNumero(nomeExemplo2);
-
-                    return numero1.compareTo(numero2);
-                }
-
-                return 0;
-            }
-
-            return 0;
-        }
-
-        private Integer extrairNumero(String nome)
-        {
-            avaliadorNumero.reset(nome);
-
-            if (avaliadorNumero.find())
-            {
-                return Integer.parseInt(avaliadorNumero.group());
-            }
-
-            return null;
-        }
     }
 
     private void configurarCursorLogos()
