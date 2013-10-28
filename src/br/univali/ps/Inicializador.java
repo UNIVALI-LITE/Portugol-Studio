@@ -62,9 +62,15 @@ public final class Inicializador
             System.exit(0);
         }
         
-        if (mySplash != null)   // check if we really had a spash screen
-            mySplash.close();   // if so we're now done with it
-        
+        try
+        {
+            if (mySplash != null)   // check if we really had a spash screen
+                mySplash.close();   // if so we're now done with it
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace(System.out);
+        }        
     }
     
     private static boolean runningApplet(){

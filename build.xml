@@ -37,12 +37,6 @@
         <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
 		<fileset dir="${dist.dir}"/>
 	</copy>
-        <copy todir="../Portugol-Instalador/Arquivos/ajuda" overwrite="true">
-		<fileset dir="ajuda"/>
-	</copy>
-        <copy todir="../Portugol-Instalador/Arquivos/exemplos" overwrite="true">
-		<fileset dir="exemplos"/>
-	</copy>  
         <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
 		<fileset file="../Portugol-Console/dist/portugol-console.jar"/>
 	</copy>                       

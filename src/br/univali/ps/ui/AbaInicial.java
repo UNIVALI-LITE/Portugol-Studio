@@ -18,8 +18,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -163,7 +164,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             String linha;
             List<String[]> indice = new ArrayList<>();
             
-            try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoIndice)))
+            try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8")))
             {
                 while ((linha = leitor.readLine()) != null)
                 {
