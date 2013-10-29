@@ -23,6 +23,7 @@ import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
+import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
@@ -126,35 +127,6 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
         model.reload();
         TreeUtils.expandAll(this, true);
     }
-
-    /**
-     * Refreshes listeners on the text area when its syntax style changes.
-     */
-    private void checkForPortugolParsing()
-    {
-
-
-        PortugolLanguageSuport jls = new PortugolLanguageSuport();
-
-        // Listen for re-parsing of the editor, and update the tree accordingly
-        parser = jls.getParser(textArea);
-        if (parser != null)
-        { // Should always be true
-            parser.addPropertyChangeListener(PortugolParser.PROPERTY_RESULTADO_ANALISE, listener);
-            // Populate with any already-existing CompilationUnit
-
-            if (parser.getResultadoAnalise() != null)
-            {
-                update(parser.getResultadoAnalise());
-            }
-        }
-        else
-        {
-            update((ResultadoAnalise) null); // Clear the tree
-        }
-
-    }
-
    
     private void gotoElementAtPath(TreePath path)
     {
@@ -220,13 +192,20 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
 
         // Listen for future language changes in the text editor
         this.textArea = textArea;
-        textArea.addPropertyChangeListener(PortugolParser.PROPERTY_RESULTADO_ANALISE, listener);
-
-        // Check whether we're currently editing Java
-        checkForPortugolParsing();
-
+        getParser(textArea).addPropertyChangeListener(PortugolParser.PROPERTY_RESULTADO_ANALISE, listener);
     }
 
+     public PortugolParser getParser(RSyntaxTextArea textArea)
+    {
+        // Could be a parser for another language.
+        Object parser = textArea.getClientProperty(PROPERTY_LANGUAGE_PARSER);
+        if (parser instanceof PortugolParser)
+        {
+            return (PortugolParser) parser;
+        }
+        return null;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -587,15 +566,12 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
         public void propertyChange(PropertyChangeEvent e)
         {
             String name = e.getPropertyName();
+            
+            ResultadoAnalise resultadoAnalise = (ResultadoAnalise) e.getNewValue();
 
-            // If the text area is changing the syntax style it is editing
-            if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name))
+            if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPERTY_RESULTADO_ANALISE.equals(name))
             {
-                checkForPortugolParsing();
-            }
-            else if (PortugolParser.PROPERTY_RESULTADO_ANALISE.equals(name))
-            {
-                update((ResultadoAnalise) e.getNewValue());
+                update(resultadoAnalise);
             }
         }
 

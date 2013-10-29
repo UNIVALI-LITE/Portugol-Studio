@@ -40,6 +40,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.Executors;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -1160,65 +1161,72 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     }
     private ResultadoAnalise analise;
 
-    private void executar(boolean depurar)
+    private void executar(final boolean depurar)
     {
-        AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();
-        abaMensagem.limpar();
-        depurando = depurar;
-
-        try
+        Executors.newCachedThreadPool().submit(new Runnable()
         {
-            String codigo = editor.getPortugolDocumento().getCodigoFonte();
-
-            analise = Portugol.analisar(codigo);
-            exibirResultadoAnalise(analise, abaMensagem);
-
-            if (programa == null)
+            @Override
+            public void run()
             {
-                this.programa = Portugol.compilar(codigo);
-            }
+                AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();
+                abaMensagem.limpar();
+                depurando = depurar;
 
-            
-            /**
-             * Não usar campoOpcoesExecucao.isSelected() diretamente no teste condicional, 
-             * pois se o usuário desmarcar a seleção na tela de opções e depois cancelar,
-             * o programa executa mesmo assim.
-             */
-            boolean exibirOpcoes = campoOpcoesExecucao.isSelected();
-            
-            if (exibirOpcoes)
-            {
-                telaOpcoesExecucao.inicializar(programa, depurar);
-                telaOpcoesExecucao.setVisible(true);
-            }
-            
-            if ((!exibirOpcoes) || (exibirOpcoes && !telaOpcoesExecucao.isCancelado()))
-            {
-                programa.addDepuradorListener(this);
-                programa.addDepuradorListener(editor);
-                programa.addDepuradorListener(tree);
-                editor.iniciarDepuracao();
-                programa.setEntrada(painelSaida.getConsole());
-                programa.setSaida(painelSaida.getConsole());
-
-                programa.adicionarObservadorExecucao(this);
-
-                if (depurar)
+                try
                 {
-                    programa.depurar(telaOpcoesExecucao.getParametros(),telaOpcoesExecucao.isDepuracaoDetalhada()  && exibirOpcoes);
+                    String codigo = editor.getPortugolDocumento().getCodigoFonte();
+
+                    analise = Portugol.analisar(codigo);
+                    exibirResultadoAnalise(analise, abaMensagem);
+
+                    if (programa == null)
+                    {
+                        AbaCodigoFonte.this.programa = Portugol.compilar(codigo);
+                    }
+
+
+                    /**
+                     * Não usar campoOpcoesExecucao.isSelected() diretamente no teste condicional, 
+                     * pois se o usuário desmarcar a seleção na tela de opções e depois cancelar,
+                     * o programa executa mesmo assim.
+                     */
+                    boolean exibirOpcoes = campoOpcoesExecucao.isSelected();
+
+                    if (exibirOpcoes)
+                    {
+                        telaOpcoesExecucao.inicializar(programa, depurar);
+                        telaOpcoesExecucao.setVisible(true);
+                    }
+
+                    if ((!exibirOpcoes) || (exibirOpcoes && !telaOpcoesExecucao.isCancelado()))
+                    {
+                        programa.addDepuradorListener(AbaCodigoFonte.this);
+                        programa.addDepuradorListener(editor);
+                        programa.addDepuradorListener(tree);
+                        editor.iniciarDepuracao();
+                        programa.setEntrada(painelSaida.getConsole());
+                        programa.setSaida(painelSaida.getConsole());
+
+                        programa.adicionarObservadorExecucao(AbaCodigoFonte.this);
+
+                        if (depurar)
+                        {
+                            programa.depurar(telaOpcoesExecucao.getParametros(),telaOpcoesExecucao.isDepuracaoDetalhada()  && exibirOpcoes);
+                        }
+                        else
+                        {
+                            programa.executar(telaOpcoesExecucao.getParametros());
+                        }
+                    }
                 }
-                else
+                catch (ErroCompilacao erroCompilacao)
                 {
-                    programa.executar(telaOpcoesExecucao.getParametros());
+                    ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
+                    exibirResultadoAnalise(resultadoAnalise, abaMensagem);
+                    abaMensagem.selecionar();
                 }
             }
-        }
-        catch (ErroCompilacao erroCompilacao)
-        {
-            ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
-            exibirResultadoAnalise(resultadoAnalise, abaMensagem);
-            abaMensagem.selecionar();
-        }
+        });
     }
 
     private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise, AbaMensagemCompilador abaMensagem)

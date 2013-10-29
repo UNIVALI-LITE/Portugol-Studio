@@ -62,6 +62,10 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                     excecao.printStackTrace(System.err);
                 }
                 else
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+                    }
+                /*else
                 {
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
@@ -78,7 +82,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                     {
                         PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
                     }
-                }
+                }*/
             }
         });
     }

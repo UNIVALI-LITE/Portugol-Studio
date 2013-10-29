@@ -7,10 +7,13 @@ import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
+import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import javax.swing.JOptionPane;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -30,6 +33,7 @@ public final class PortugolParser extends AbstractParser
     private ResultadoAnalise resultadoAnalise;
     private PropertyChangeSupport support;
     private DefaultParseResult resultado;
+    private static ExecutorService service = Executors.newCachedThreadPool();
 
     public PortugolParser()
     {
@@ -52,118 +56,146 @@ public final class PortugolParser extends AbstractParser
         return resultadoAnalise;
     }
 
-    @Override
-    public ParseResult parse(RSyntaxDocument documento, String estilo)
+    private class ParseTask implements Callable<ParseResult>
     {
-        System.out.println("Inicio parser...");
-        
-        Element raiz = documento.getDefaultRootElement();
-        int numeroLinhas = raiz.getElementCount();
 
-        resultado.clearNotices();
-        resultado.setParsedLines(0, numeroLinhas - 1);
+        private RSyntaxDocument documento;
 
-        try
+        public ParseTask(RSyntaxDocument documento)
         {
-            resultadoAnalise = Portugol.analisar(documento.getText(0, documento.getLength()));
-            System.out.println("Fim parser...");
-        }
-        catch (BadLocationException excecao)
-        {
-            System.out.println("Erro parser...");
-            excecao.printStackTrace(System.out);
+            this.documento = documento;
         }
 
-        if (resultadoAnalise != null)
+        @Override
+        public ParseResult call() throws Exception
         {
-            for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
+            Element raiz = documento.getDefaultRootElement();
+            int numeroLinhas = raiz.getElementCount();
+
+            resultado.clearNotices();
+            resultado.setParsedLines(0, numeroLinhas - 1);
+
+            try
             {
-                if (erro instanceof ErroExpressoesForaEscopoPrograma)
-                {
-                    int posicao = ((ErroExpressoesForaEscopoPrograma) erro).getPosicao();
-                    String expressoes = ((ErroExpressoesForaEscopoPrograma) erro).getExpressoes();
-                    
-                    DefaultParserNotice notice = new DefaultParserNotice(this, erro.getMensagem(), 1, posicao, expressoes.length());
-                    notice.setShowInEditor(true);
-                    notice.setColor(Color.RED);
+                resultadoAnalise = Portugol.analisar(documento.getText(0, documento.getLength()));
+            }
+            catch (BadLocationException excecao)
+            {
+                excecao.printStackTrace(System.out);
+            }
 
-                    resultado.addNotice(notice);
-                    
-                }
-                else if (erro.getLinha() - 1 >= 0)
+            if (resultadoAnalise != null)
+            {
+                for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
                 {
-                    try
+                    if (erro instanceof ErroExpressoesForaEscopoPrograma)
                     {
-                        raiz = documento.getDefaultRootElement();
-                        Element linha = raiz.getElement(erro.getLinha() - 1);
+                        int posicao = ((ErroExpressoesForaEscopoPrograma) erro).getPosicao();
+                        String expressoes = ((ErroExpressoesForaEscopoPrograma) erro).getExpressoes();
 
-                        int coluna = 0;
-                        int indice = linha.getStartOffset() + erro.getColuna();
-
-                        for (int i = indice; i > 0; i--)
-                        {
-                            if (caracterParadaEncontrado(documento.charAt(i)))
-                            {
-                                indice = i + 1;
-                                break;
-                            }
-                        }
-
-                        for (int i = indice; i < documento.getLength(); i++)
-                        {
-                            if (caracterParadaEncontrado(documento.charAt(i)))
-                            {
-                                coluna = i;
-                                break;
-                            }
-                        }
-
-                        if (coluna == 0)
-                        {
-                            coluna = documento.getLength();
-                        }
-
-                        DefaultParserNotice notice = new DefaultParserNotice(this, erro.getMensagem(), erro.getLinha() - 1, indice, coluna - indice);
+                        DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), 1, posicao, expressoes.length());
                         notice.setShowInEditor(true);
                         notice.setColor(Color.RED);
 
                         resultado.addNotice(notice);
+
                     }
-                    catch (BadLocationException excecao)
+                    else if (erro.getLinha() - 1 >= 0)
                     {
-                        excecao.printStackTrace(System.out);
+                        try
+                        {
+                            raiz = documento.getDefaultRootElement();
+                            Element linha = raiz.getElement(erro.getLinha() - 1);
+
+                            int coluna = 0;
+                            int indice = linha.getStartOffset() + erro.getColuna();
+
+                            for (int i = indice; i > 0; i--)
+                            {
+                                if (caracterParadaEncontrado(documento.charAt(i)))
+                                {
+                                    indice = i + 1;
+                                    break;
+                                }
+                            }
+
+                            for (int i = indice; i < documento.getLength(); i++)
+                            {
+                                if (caracterParadaEncontrado(documento.charAt(i)))
+                                {
+                                    coluna = i;
+                                    break;
+                                }
+                            }
+
+                            if (coluna == 0)
+                            {
+                                coluna = documento.getLength();
+                            }
+
+                            DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), erro.getLinha() - 1, indice, coluna - indice);
+                            notice.setShowInEditor(true);
+                            notice.setColor(Color.RED);
+
+                            resultado.addNotice(notice);
+                        }
+                        catch (BadLocationException excecao)
+                        {
+                            excecao.printStackTrace(System.out);
+                        }
                     }
                 }
-            }
 
-            for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
-            {
-                if (erro.getLinha() - 1 > 0)
+                for (ErroSemantico erro : resultadoAnalise.getErrosSemanticos())
                 {
-                    DefaultParserNotice notice = (DefaultParserNotice) createNotice(raiz, erro.getTrechoCodigoFonte(), erro.getMensagem());
-                    notice.setShowInEditor(true);
-                    resultado.addNotice(notice);
-                }
-            }
-
-            for (AvisoAnalise aviso : resultadoAnalise.getAvisos())
-            {
-                if (aviso.getLinha() - 1 > 0)
-                {
-                    if (aviso.getTrechoCodigoFonte() != null) {
-                        DefaultParserNotice notice = (DefaultParserNotice) createNotice(raiz, aviso.getTrechoCodigoFonte(), aviso.getMensagem());
-                        notice.setColor(Color.ORANGE);
+                    if (erro.getLinha() - 1 > 0)
+                    {
+                        DefaultParserNotice notice = (DefaultParserNotice) createNotice(raiz, erro.getTrechoCodigoFonte(), erro.getMensagem());
                         notice.setShowInEditor(true);
                         resultado.addNotice(notice);
-                    } else {
-                        System.out.println("Aviso com TrechoCodigoFonte NULL = "+aviso.getClass());
+                    }
+                }
+
+                for (AvisoAnalise aviso : resultadoAnalise.getAvisos())
+                {
+                    if (aviso.getLinha() - 1 > 0)
+                    {
+                        if (aviso.getTrechoCodigoFonte() != null)
+                        {
+                            DefaultParserNotice notice = (DefaultParserNotice) createNotice(raiz, aviso.getTrechoCodigoFonte(), aviso.getMensagem());
+                            notice.setColor(Color.ORANGE);
+                            notice.setShowInEditor(true);
+                            resultado.addNotice(notice);
+                        }
+                        else
+                        {
+                            System.out.println("Aviso com TrechoCodigoFonte NULL = " + aviso.getClass());
+                        }
                     }
                 }
             }
+
+            support.firePropertyChange(PROPERTY_RESULTADO_ANALISE, null, resultadoAnalise);
+
+            return resultado;
         }
 
-        support.firePropertyChange(PROPERTY_RESULTADO_ANALISE, null, resultadoAnalise);
+    }
 
+    @Override
+    public ParseResult parse(RSyntaxDocument documento, String estilo)
+    {
+        try
+        {
+            return service.submit(new ParseTask(documento)).get();
+        }
+        catch (Exception ex)
+        {
+            resultado.clearNotices();
+            resultado.setParsedLines(0, 0);
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new Exception("Ocorreu um erro de parsing", ex));
+        }
+        
         return resultado;
     }
 
