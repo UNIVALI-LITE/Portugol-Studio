@@ -31,13 +31,11 @@
             <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
         </antcall>        
         <delete file="${dist.dir}/README.TXT" failonerror="false"/>
-	<delete dir="../Portugol-Instalador/Arquivos/bin" failonerror="false"/>
-	<delete dir="../Portugol-Instalador/Arquivos/ajuda" failonerror="false"/>
-        <delete dir="../Portugol-Instalador/Arquivos/exemplos" failonerror="false"/>
-        <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
+	<delete dir="../Portugol-Instalador/arquivos/bin" failonerror="false"/>
+        <copy todir="../Portugol-Instalador/arquivos/bin" overwrite="true">
 		<fileset dir="${dist.dir}"/>
 	</copy>
-        <copy todir="../Portugol-Instalador/Arquivos/bin" overwrite="true">
+        <copy todir="../Portugol-Instalador/arquivos/bin" overwrite="true">
 		<fileset file="../Portugol-Console/dist/portugol-console.jar"/>
 	</copy>                       
         
