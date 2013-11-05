@@ -1204,7 +1204,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                         programa.addDepuradorListener(editor);
                         programa.addDepuradorListener(tree);
                         editor.iniciarDepuracao();
-                        programa.setEntrada(painelSaida.getConsole());
+                        painelSaida.getConsole().registrarComoEntrada(programa);
                         programa.setSaida(painelSaida.getConsole());
 
                         programa.adicionarObservadorExecucao(AbaCodigoFonte.this);

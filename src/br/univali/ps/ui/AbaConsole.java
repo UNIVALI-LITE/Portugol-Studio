@@ -1,6 +1,8 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.execucao.Armazenador;
 import br.univali.portugol.nucleo.execucao.Entrada;
 import br.univali.portugol.nucleo.execucao.Saida;
 import br.univali.ps.nucleo.Configuracoes;
@@ -35,7 +37,7 @@ import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.java.balloontip.utils.FadingUtils;
 
-public final class AbaConsole extends Aba implements Saida, Entrada, PropertyChangeListener
+public final class AbaConsole extends Aba implements Saida, PropertyChangeListener
 {
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
@@ -43,7 +45,6 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
     
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png");
     
-    private TipoDado tipoDado;
     private boolean executandoPrograma = false;
     private JLabel rotuloPopupLeia;
     private BalloonTip popupLeia;
@@ -510,33 +511,6 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         escreveConsole(String.valueOf(valor));
     }
 
-    @Override
-    public Object ler(TipoDado tipoDado) throws Exception
-    {
-        console.setEditable(true);
-        console.setFocusable(true);
-        
-        this.tipoDado = tipoDado;
-
-        agendarPopupLeia();
-        
-        this.selecionar();
-        console.requestFocusInWindow();
-        console.setCaretPosition(console.getText().length());
-
-        ManipuladorEntrada manipuladorEntrada = new ManipuladorEntrada();
-        manipuladorEntrada.execute();
-
-        String entrada = (String) manipuladorEntrada.get();
-
-        removerPopupLeia();
-
-        console.setEditable(false);
-        console.setFocusable(false);
-
-        return obterValorEntrada(entrada);
-    }
-
     private void agendarPopupLeia()
     {
         timerPopupLeia = new Timer(4000, new ActionListener()
@@ -561,7 +535,7 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         }
     }
     
-    private Object obterValorEntrada(String entrada)
+    private Object obterValorEntrada(TipoDado tipoDado, String entrada)
     {
         try
         {
@@ -607,34 +581,6 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
         }
     }
 
-    private class ManipuladorEntrada extends SwingWorker
-    {
-        public ManipuladorEntrada()
-        {
-            ((DocumentoConsole) console.getDocument()).setLendo(true);
-        }
-
-        @Override
-        protected Object doInBackground() throws Exception
-        {
-
-            while (((DocumentoConsole) console.getDocument()).isLendo())
-            {
-                try
-                {
-                    Thread.sleep(10);
-                }
-                catch (InterruptedException ex)
-                {
-                    ((DocumentoConsole) console.getDocument()).setLendo(false);
-                    throw ex;
-                }
-            }
-
-            return ((DocumentoConsole) console.getDocument()).getValorLido();
-        }
-    }
-
     private class ManipuladorSaida extends SwingWorker
     {
         String valorSaida;
@@ -658,18 +604,37 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
             return true;
         }
     }
+    
+    public void registrarComoEntrada(Programa programa)
+    {
+        programa.setEntrada((Entrada) console.getDocument());
+    }
 
-    private class DocumentoConsole extends PlainDocument
+    private class DocumentoConsole extends PlainDocument implements Entrada
     {
         private int limitOffset = 0;
-        private String valor;
         private boolean lendo = false;
 
-        public boolean isLendo()
+        private Armazenador armazenador;
+        private TipoDado tipoDado;
+    
+        @Override
+        public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador) throws Exception
         {
-            return lendo;
-        }
+            lendo = true;
+            this.armazenador = armazenador;
+            this.tipoDado = tipoDado;
 
+            console.setEditable(true);
+            console.setFocusable(true);
+
+            agendarPopupLeia();
+
+            AbaConsole.this.selecionar();
+            console.requestFocusInWindow();
+            console.setCaretPosition(console.getText().length());
+        }
+    
         public void setLendo(boolean lendo)
         {
             this.lendo = lendo;
@@ -694,8 +659,14 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
             }
             if (lendo && string.equals("\n"))
             {
-                valor = getText(limitOffset, getLength() - limitOffset);
                 lendo = false;
+                removerPopupLeia();
+
+                console.setEditable(false);
+                console.setFocusable(false);
+
+                Object valor = obterValorEntrada(tipoDado, getText(limitOffset, getLength() - limitOffset));
+                armazenador.setValor(valor);
             }
 
             if (offset >= limitOffset)
@@ -716,11 +687,6 @@ public final class AbaConsole extends Aba implements Saida, Entrada, PropertyCha
             {
                 super.remove(i, i1);
             }
-        }
-
-        private String getValorLido()
-        {
-            return valor;
         }
     }
 
