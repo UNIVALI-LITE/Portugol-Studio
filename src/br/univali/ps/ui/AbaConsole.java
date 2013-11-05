@@ -621,7 +621,7 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
         @Override
         public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador) throws Exception
         {
-            lendo = true;
+            setLendo(true);
             this.armazenador = armazenador;
             this.tipoDado = tipoDado;
 
@@ -659,13 +659,13 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             }
             if (lendo && string.equals("\n"))
             {
-                lendo = false;
                 removerPopupLeia();
 
                 console.setEditable(false);
                 console.setFocusable(false);
 
                 Object valor = obterValorEntrada(tipoDado, getText(limitOffset, getLength() - limitOffset));
+                setLendo(false);
                 armazenador.setValor(valor);
             }
 
