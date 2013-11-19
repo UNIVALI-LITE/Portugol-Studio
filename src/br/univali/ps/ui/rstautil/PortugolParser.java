@@ -21,6 +21,7 @@ import org.fife.ui.rsyntaxtextarea.parser.AbstractParser;
 import org.fife.ui.rsyntaxtextarea.parser.DefaultParseResult;
 import org.fife.ui.rsyntaxtextarea.parser.DefaultParserNotice;
 import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
+import org.fife.ui.rsyntaxtextarea.parser.Parser;
 import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 
 public final class PortugolParser extends AbstractParser
@@ -59,7 +60,7 @@ public final class PortugolParser extends AbstractParser
     private class ParseTask implements Callable<ParseResult>
     {
 
-        private RSyntaxDocument documento;
+        private final RSyntaxDocument documento;
 
         public ParseTask(RSyntaxDocument documento)
         {
@@ -92,7 +93,7 @@ public final class PortugolParser extends AbstractParser
                     {
                         int posicao = ((ErroExpressoesForaEscopoPrograma) erro).getPosicao();
                         String expressoes = ((ErroExpressoesForaEscopoPrograma) erro).getExpressoes();
-
+                        
                         DefaultParserNotice notice = new DefaultParserNotice(PortugolParser.this, erro.getMensagem(), 1, posicao, expressoes.length());
                         notice.setShowInEditor(true);
                         notice.setColor(Color.RED);

@@ -37,14 +37,14 @@ import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.java.balloontip.utils.FadingUtils;
 
-public final class AbaConsole extends Aba implements Saida, PropertyChangeListener
+public final class AbaConsole extends Aba implements PropertyChangeListener
 {
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
-    
+
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png");
-    
+
     private boolean executandoPrograma = false;
     private JLabel rotuloPopupLeia;
     private BalloonTip popupLeia;
@@ -52,12 +52,16 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
     private ActionListener foo;
     private Timer timerPopupLeia;
     private boolean removendoPopup = true;
-    
+
     private Action acaoAumentarFonte;
     private Action acaoDiminuirFonte;
     private Action acaoLimpar;
     private Action acaoCopiar;
+    
+    private final HandlerDaSaida handlerDaSaida;
 
+    
+    
     public AbaConsole()
     {
         super("Console", icone, false);
@@ -90,11 +94,12 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
                 {
                     popupLeia.setVisible(false);
                 }/*
-                else
-                {
-                    console.requestFocusInWindow();
-                    console.setCaretPosition(console.getText().length());
-                }*/
+                 else
+                 {
+                 console.requestFocusInWindow();
+                 console.setCaretPosition(console.getText().length());
+                 }*/
+
             }
         };
 
@@ -127,20 +132,30 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
         });
 
         console.setCaret(new CursorConsole());
-        
+
         criarAcoes();
         criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
+        
+        handlerDaSaida = new HandlerDaSaida();
     }
-    
+
     private void criarAcoes()
     {
         criarAcaoLimpar();
         criarAcaoCopiar();
         criarAcaoAumentarFonte();
         criarAcaoDiminuirFonte();
-        
+
+    }
+
+    public void limparUI(){
+        escreverNaUI("");
+    }
+    
+    public void escreverNaUI(String msg){
+        console.setText(msg);
     }
     
     private void criarAcaoLimpar()
@@ -150,23 +165,16 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try 
-                {
-                    limpar(); 
-                }
-                catch (Exception ex) 
-                {
-                    
-                }
+                limparUI();
             }
         };
-        
+
         acaoLimpar.setEnabled(false);
-        
+
         menuConsoleLimpar.setAction(acaoLimpar);
         botaoLimpar.setAction(acaoLimpar);
     }
-    
+
     private void criarAcaoCopiar()
     {
         acaoCopiar = new AbstractAction("Copiar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png"))
@@ -179,13 +187,13 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
                 console.select(0, 0);
             }
         };
-        
+
         acaoCopiar.setEnabled(false);
-        
+
         menuConsoleCopiar.setAction(acaoCopiar);
         botaoCopiar.setAction(acaoCopiar);
     }
-    
+
     private void criarAcaoAumentarFonte()
     {
         acaoAumentarFonte = new AbstractAction("Aumentar Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
@@ -195,15 +203,15 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             {
                 Font fonteAtual = console.getFont();
                 float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
-                
+
                 setTamanhoFonteConsole(novoTamanho);
             }
         };
-        
+
         menuAumentarFonte.setAction(acaoAumentarFonte);
         botaoAumentarFonte.setAction(acaoAumentarFonte);
     }
-    
+
     private void criarAcaoDiminuirFonte()
     {
         acaoDiminuirFonte = new AbstractAction("Diminuir Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
@@ -213,37 +221,37 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             {
                 Font fonteAtual = console.getFont();
                 float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
-                
+
                 setTamanhoFonteConsole(novoTamanho);
             }
         };
-        
+
         menuDiminuirFonte.setAction(acaoDiminuirFonte);
         botaoDiminuirFonte.setAction(acaoDiminuirFonte);
-    }    
-    
+    }
+
     private void criarDicasInterface()
     {
         FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-    }    
-    
+    }
+
     private void instalarObservadores()
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-        
+
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_CONSOLE);
-    }    
-    
+    }
+
     private void carregarConfiguracoes()
     {
         Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
-        
+
         setTamanhoFonteConsole(configuracoes.getTamanhoFonteConsole());
     }
-    
+
     private void setTamanhoFonteConsole(float tamanho)
     {
         if ((tamanho != console.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
@@ -261,8 +269,7 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             setTamanhoFonteConsole((Float) evt.getNewValue());
         }
     }
-    
-    
+
     /*
      * Por algum motivo o método atualizarItensMenuConsole()
      * buga o limpar() se for chamado durante a execução do programa.
@@ -463,52 +470,57 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
     private javax.swing.JScrollPane painelRolagem;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void limpar() throws Exception
+    private class HandlerDaSaida implements Saida
     {
-        ManipuladorSaida saida = new ManipuladorSaida(null);
-        saida.execute();
-        saida.get();
-    }
 
-    public void escreveConsole(String texto) throws Exception
-    {
-        this.selecionar();
-        console.requestFocusInWindow();
-        
-        ManipuladorSaida manipuladorSaida = new ManipuladorSaida(texto);
-        manipuladorSaida.execute();
-        manipuladorSaida.get();
-    }
+        @Override
+        public void limpar() throws Exception
+        {
+            ManipuladorSaida saida = new ManipuladorSaida(null);
+            saida.execute();
+            saida.get();
+        }
 
-    @Override
-    public void escrever(String valor) throws Exception
-    {
-        escreveConsole(valor);
-    }
+        @Override
+        public void escrever(String valor) throws Exception
+        {
+            escreveConsole(valor);
+        }
 
-    @Override
-    public void escrever(boolean valor) throws Exception
-    {
-        escreveConsole((valor) ? "verdadeiro" : "falso");
-    }
+        @Override
+        public void escrever(boolean valor) throws Exception
+        {
+            escreveConsole((valor) ? "verdadeiro" : "falso");
+        }
 
-    @Override
-    public void escrever(int valor) throws Exception
-    {
-        escreveConsole(String.valueOf(valor));
-    }
+        @Override
+        public void escrever(int valor) throws Exception
+        {
+            escreveConsole(String.valueOf(valor));
+        }
 
-    @Override
-    public void escrever(double valor) throws Exception
-    {
-        escreveConsole(String.valueOf(valor));
-    }
+        @Override
+        public void escrever(double valor) throws Exception
+        {
+            escreveConsole(String.valueOf(valor));
+        }
 
-    @Override
-    public void escrever(char valor) throws Exception
-    {
-        escreveConsole(String.valueOf(valor));
+        @Override
+        public void escrever(char valor) throws Exception
+        {
+            escreveConsole(String.valueOf(valor));
+        }
+
+        private void escreveConsole(String texto) throws Exception
+        {
+            AbaConsole.this.selecionar();
+            console.requestFocusInWindow();
+
+            ManipuladorSaida manipuladorSaida = new ManipuladorSaida(texto);
+            manipuladorSaida.execute();
+            manipuladorSaida.get();
+        }
+
     }
 
     private void agendarPopupLeia()
@@ -523,7 +535,7 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
                 cancelarPopupLeia();
             }
         });
-        
+
         timerPopupLeia.start();
     }
 
@@ -534,7 +546,7 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             timerPopupLeia.stop();
         }
     }
-    
+
     private Object obterValorEntrada(TipoDado tipoDado, String entrada)
     {
         try
@@ -555,8 +567,10 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             {
                 switch (entrada)
                 {
-                    case "falso": return false;
-                    case "verdadeiro": return true;
+                    case "falso":
+                        return false;
+                    case "verdadeiro":
+                        return true;
                 }
             }
 
@@ -572,11 +586,11 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
     void removerPopupLeia()
     {
         cancelarPopupLeia();
-        
+
         removendoPopup = true;
-        
+
         if (popupLeia.isVisible())
-        {            
+        {
             FadingUtils.fadeOutBalloon(popupLeia, foo, 500, 24);
         }
     }
@@ -599,10 +613,17 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             }
             else
             {
-                console.setText(null);                
+                console.setText(null);
             }
             return true;
         }
+    }
+
+    public void registrarComoSaida(Programa p){
+        if(handlerDaSaida == null){
+            new IllegalStateException("Handler está nulo!");
+        }
+        p.setSaida(handlerDaSaida);
     }
     
     public void registrarComoEntrada(Programa programa)
@@ -617,7 +638,7 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
 
         private Armazenador armazenador;
         private TipoDado tipoDado;
-    
+
         @Override
         public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador) throws Exception
         {
@@ -634,7 +655,7 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             console.requestFocusInWindow();
             console.setCaretPosition(console.getText().length());
         }
-    
+
         public void setLendo(boolean lendo)
         {
             this.lendo = lendo;
@@ -699,7 +720,7 @@ public final class AbaConsole extends Aba implements Saida, PropertyChangeListen
             setBlinkRate(250);
         }
 
-        @Override        
+        @Override
         protected synchronized void damage(Rectangle r)
         {
             if (r == null)
