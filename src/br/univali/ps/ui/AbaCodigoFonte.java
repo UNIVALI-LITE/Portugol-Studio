@@ -1261,11 +1261,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelSaida.getConsole().selecionar();
         try
         {
-            painelSaida.getConsole().limparUI();
+            painelSaida.getConsole().limparConsole();
 
             if (analise.getNumeroAvisos() > 0)
             {
-                painelSaida.getConsole().escreverNaUI("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
+                painelSaida.getConsole().escreverNaConsole("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
             }
 
         }
@@ -1287,7 +1287,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
             {
-                console.escreverNaUI("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+                console.escreverNaConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
 
                 /*if (resultadoExecucao.getRetorno() != null)
                  {
@@ -1319,12 +1319,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
             {
-                console.escreverNaUI("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
-                console.escreverNaUI("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
+                console.escreverNaConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                console.escreverNaConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
             }
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
             {
-                console.escreverNaUI("\nO programa foi interrompido!");
+                console.escreverNaConsole("\nO programa foi interrompido!");
             }
         }
         catch (Exception e)

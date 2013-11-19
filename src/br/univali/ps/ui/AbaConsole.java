@@ -151,11 +151,11 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     }
 
-    public void limparUI(){
-        escreverNaUI("");
+    public void limparConsole(){
+        escreverNaConsole("");
     }
     
-    public void escreverNaUI(final String msg){
+    public void escreverNaConsole(final String msg){
         SwingUtilities.invokeLater(new Runnable()
         {
 
@@ -175,7 +175,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                limparUI();
+                limparConsole();
             }
         };
 
