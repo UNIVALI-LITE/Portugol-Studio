@@ -23,6 +23,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
@@ -154,8 +155,17 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         escreverNaUI("");
     }
     
-    public void escreverNaUI(String msg){
-        console.setText(msg);
+    public void escreverNaUI(final String msg){
+        SwingUtilities.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                console.setText(msg);
+            }
+        });
+        
     }
     
     private void criarAcaoLimpar()
