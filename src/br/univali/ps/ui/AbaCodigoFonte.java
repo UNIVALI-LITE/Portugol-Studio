@@ -47,6 +47,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import net.java.balloontip.BalloonTip;
@@ -71,7 +72,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private boolean podeSalvar = true;
     private boolean depurando = false;
 
-    private TelaOpcoesExecucao telaOpcoesExecucao;
+    private final TelaOpcoesExecucao telaOpcoesExecucao;
     private JPanel painelTemporario;
 
     private AcaoSalvarArquivo acaoSalvarArquivo;
@@ -1237,7 +1238,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                     erroEx.setLinha(linha + 1);
                     erroEx.setColuna(coluna + 1);
                 }
-                catch (Exception ex)
+                catch (BadLocationException ex)
                 {
 
                 }
@@ -1265,7 +1266,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
             if (analise.getNumeroAvisos() > 0)
             {
-                painelSaida.getConsole().escreverNaConsole("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
+                painelSaida.getConsole().escreverNoConsole("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
             }
 
         }
@@ -1287,7 +1288,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
             if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
             {
-                console.escreverNaConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+                console.escreverNoConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
 
                 /*if (resultadoExecucao.getRetorno() != null)
                  {
@@ -1319,12 +1320,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
             {
-                console.escreverNaConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
-                console.escreverNaConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
+                console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
             }
             else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
             {
-                console.escreverNaConsole("\nO programa foi interrompido!");
+                console.escreverNoConsole("\nO programa foi interrompido!");
             }
         }
         catch (Exception e)
@@ -1408,18 +1409,22 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
-        if (evt.getPropertyName().equals(Configuracoes.EXIBIR_OPCOES_EXECUCAO))
+        switch (evt.getPropertyName())
         {
-            boolean exibirTela = (Boolean) evt.getNewValue();
-
-            if (exibirTela != campoOpcoesExecucao.isSelected())
-            {
-                campoOpcoesExecucao.setSelected(exibirTela);
-            }
-        }
-        else if (evt.getPropertyName().equals(Configuracoes.TAMANHO_FONTE_ARVORE))
-        {
-            setTamanhoFonteArvore((Float) evt.getNewValue());
+            case Configuracoes.EXIBIR_OPCOES_EXECUCAO:
+                
+                boolean exibirTela = (Boolean) evt.getNewValue();
+                
+                if (exibirTela != campoOpcoesExecucao.isSelected())
+                {
+                    campoOpcoesExecucao.setSelected(exibirTela);
+                } 
+            break;
+                
+            case Configuracoes.TAMANHO_FONTE_ARVORE:
+                setTamanhoFonteArvore((Float) evt.getNewValue());
+            
+            break;
         }
     }
 

@@ -19,6 +19,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -152,17 +153,30 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     }
 
     public void limparConsole(){
-        escreverNaConsole("");
+        try
+        {
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    console.setText(null);
+                }
+            });
+        }
+        catch (InterruptedException | InvocationTargetException ex)
+        {
+            ex.printStackTrace(System.out);
+        }
     }
     
-    public void escreverNaConsole(final String msg){
+    public void escreverNoConsole(final String msg){
         SwingUtilities.invokeLater(new Runnable()
         {
-
             @Override
             public void run()
             {
-                console.setText(msg);
+                console.append(msg);
             }
         });
         
