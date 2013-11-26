@@ -171,21 +171,15 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     }
     
     public void escreverNoConsole(final String msg){
-        try
+        SwingUtilities.invokeLater(new Runnable()
         {
-            SwingUtilities.invokeAndWait(new Runnable()
+            @Override
+            public void run()
             {
-                @Override
-                public void run()
-                {
-                    console.append(msg);
-                }
-            });
-        }
-        catch (InterruptedException | InvocationTargetException e)
-        {
-            
-        }
+                console.append(msg);
+            }
+        });
+        
     }
     
     private void criarAcaoLimpar()
