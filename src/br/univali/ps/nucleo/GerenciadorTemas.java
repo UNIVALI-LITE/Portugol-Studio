@@ -2,6 +2,7 @@ package br.univali.ps.nucleo;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 public final class GerenciadorTemas
 {
     private static final String PACOTE_TEMA = "";
-    
+
     private Map<String, String> arquivosTema;
 
     GerenciadorTemas()
@@ -31,8 +32,8 @@ public final class GerenciadorTemas
             /*
              * Por enquanto adicionamos manualmente, futuramente podemos 
              * carregar dinamicamente do pacote de temas.
-             */ 
-            
+             */
+
             arquivosTema.put("Dark", "dark");
             arquivosTema.put("Eclipse", "eclipse");
             arquivosTema.put("IntelliJ IDEA", "idea");
@@ -42,7 +43,7 @@ public final class GerenciadorTemas
 
         List<String> listaTemas = new ArrayList<String>(arquivosTema.keySet());
         Collections.sort(listaTemas);
-        
+
         return listaTemas;
     }
 
@@ -52,19 +53,18 @@ public final class GerenciadorTemas
         {
             listarTemas();
         }
-            
+
         try
         {
-            String nomeArquivo = arquivosTema.get(nome);        
-
+            String nomeArquivo = arquivosTema.get(nome);
             String caminho = String.format("%s/%s.xml", PACOTE_TEMA, nomeArquivo);
-            InputStream arquivoTema = Thread.currentThread().getContextClassLoader().getResourceAsStream(caminho);
-            
-            return Theme.load(getClass().getResourceAsStream(caminho));
+            final InputStream resourceStream = getClass().getResourceAsStream(caminho);
+            final Theme theme = Theme.load(resourceStream);
+            return theme;
         }
         catch (IOException excecao)
         {
             throw new ExcecaoAplicacao(String.format("Erro ao carregar o tema '%s'", nome), excecao, ExcecaoAplicacao.Tipo.ERRO);
-        }        
+        }
     }
 }
