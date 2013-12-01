@@ -304,7 +304,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
                     textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
                 }
-                catch (Exception excecao)
+                catch (BadLocationException excecao)
                 {
                     excecao.printStackTrace(System.out);
                 }
@@ -349,7 +349,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
 
                 }
-                catch (Exception excecao)
+                catch (BadLocationException excecao)
                 {
                     
                 }
@@ -820,7 +820,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 textArea.scrollRectToVisible(area);
             }
         }
-        catch (Exception ex)
+        catch (BadLocationException ex)
         {
             
         }
@@ -993,7 +993,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     textArea.setHighlightCurrentLine(true);
                 }
             }
-            catch (Exception ex)
+            catch (BadLocationException ex)
             {
                 
             }
@@ -1241,7 +1241,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 textArea.requestFocus();
             }
         }
-        catch (Exception ex)
+        catch (BadLocationException ex)
         {
             ex.printStackTrace(System.err);
         }
@@ -1277,27 +1277,33 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             String command = e.getActionCommand();
             SearchDialogSearchContext context = dialogoPesquisar.getSearchContext();
-
-            if (FindDialog.ACTION_FIND.equals(command))
+            
+            switch (command)
             {
-                if (!SearchEngine.find(textArea, context))
-                {
-                    reiniciar(context, textArea, e);
-                }
-            }
-            else if (ReplaceDialog.ACTION_REPLACE.equals(command))
-            {
-                if (!SearchEngine.replace(textArea, context))
-                {
-                    reiniciar(context, textArea, e);
-                }
-            }
-            else if (ReplaceDialog.ACTION_REPLACE_ALL.equals(command))
-            {
-                //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+                case FindDialog.ACTION_FIND:
+            
+                    if (!SearchEngine.find(textArea, context))
+                    {
+                        reiniciar(context, textArea, e);
+                    }
+                    
+                break;
+                    
+                case ReplaceDialog.ACTION_REPLACE:
+                    
+                    if (!SearchEngine.replace(textArea, context))
+                    {
+                        reiniciar(context, textArea, e);
+                    }
+                    
+                break;
                 
-                int count = SearchEngine.replaceAll(textArea, context);
-                JOptionPane.showMessageDialog(getParent(), count + " ocorrências foram substituídas.");
+                case ReplaceDialog.ACTION_REPLACE_ALL:
+                    //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+                    int count = SearchEngine.replaceAll(textArea, context);
+                    JOptionPane.showMessageDialog(getParent(), count + " ocorrências foram substituídas.");
+                    
+                break;
             }
         }
         
@@ -1329,12 +1335,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }    
     
-    public class EscopoCursor
+    public final class EscopoCursor
     {
-        private String nome;
-        private int profundidade;
-        private int linha;
-        private int coluna;
+        private final String nome;
+        private final int profundidade;
+        private final int linha;
+        private final int coluna;
 
         public EscopoCursor(String nome, int profundidade, int linha, int coluna)
         {

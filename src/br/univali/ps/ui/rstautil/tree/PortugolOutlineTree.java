@@ -10,7 +10,7 @@
  */
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
@@ -25,7 +25,6 @@ import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
 import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
-import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +41,6 @@ import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -112,15 +110,14 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
      * @param ast The parsed compilation unit. If this is <code>null</code> then
      * the tree is cleared.
      */
-    private void update(ResultadoAnalise resultadoAnalise)
+    private void update(Programa programa)
     {
-
-        if (resultadoAnalise == null || resultadoAnalise.getNumeroErrosSintaticos() > 0)
+        if (programa == null)
         {
             return;
         }
 
-        SourceTreeNode root = astFactory.createTree(resultadoAnalise.getAsa());
+        SourceTreeNode root = astFactory.createTree(programa.getArvoreSintaticaAbstrata());
         model.setRoot(root);
         refresh();
 
@@ -192,16 +189,17 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
 
         // Listen for future language changes in the text editor
         this.textArea = textArea;
-        getParser(textArea).addPropertyChangeListener(PortugolParser.PROPERTY_RESULTADO_ANALISE, listener);
+        getParser(textArea).addPropertyChangeListener(PortugolParser.PROPERTY_PROGRAMA_COMPILADO, listener);
     }
 
      public PortugolParser getParser(RSyntaxTextArea textArea)
     {
         // Could be a parser for another language.
-        Object parser = textArea.getClientProperty(PROPERTY_LANGUAGE_PARSER);
-        if (parser instanceof PortugolParser)
+        Object pParser = textArea.getClientProperty(PROPERTY_LANGUAGE_PARSER);
+        
+        if (pParser instanceof PortugolParser)
         {
-            return (PortugolParser) parser;
+            return (PortugolParser) pParser;
         }
         return null;
     }
@@ -214,7 +212,7 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
     {
         if (parser != null)
         {
-            parser.removePropertyChangeListener(PortugolParser.PROPERTY_RESULTADO_ANALISE, listener);
+            parser.removePropertyChangeListener(PortugolParser.PROPERTY_PROGRAMA_COMPILADO, listener);
             parser = null;
         }
 
@@ -368,11 +366,7 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
         {
             SwingUtilities.invokeAndWait(new InsertNode(vtn, node));
         }
-        catch (InterruptedException ex)
-        {
-            Logger.getLogger(PortugolOutlineTree.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InvocationTargetException ex)
+        catch (InterruptedException | InvocationTargetException ex)
         {
             Logger.getLogger(PortugolOutlineTree.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -567,11 +561,11 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
         {
             String name = e.getPropertyName();
             
-            ResultadoAnalise resultadoAnalise = (ResultadoAnalise) e.getNewValue();
+            Programa programa = (Programa) e.getNewValue();
 
-            if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPERTY_RESULTADO_ANALISE.equals(name))
+            if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPERTY_PROGRAMA_COMPILADO.equals(name))
             {
-                update(resultadoAnalise);
+                update(programa);
             }
         }
 

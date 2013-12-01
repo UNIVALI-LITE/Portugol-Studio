@@ -2,9 +2,9 @@ package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.portugol.nucleo.execucao.Armazenador;
-import br.univali.portugol.nucleo.execucao.Entrada;
-import br.univali.portugol.nucleo.execucao.Saida;
+import br.univali.portugol.nucleo.execucao.es.Armazenador;
+import br.univali.portugol.nucleo.execucao.es.Entrada;
+import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
@@ -600,9 +600,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
             return entrada;
         }
-        catch (Exception e)
+        catch (NumberFormatException e)
         {
-            //TODO interroper;
             return null;
         }
     }
