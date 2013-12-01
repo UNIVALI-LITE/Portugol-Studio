@@ -85,6 +85,82 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         this.selecionar(); 
     }    
     
+    public void exibirErroCarregamento(ErroCarregamentoBiblioteca erro)
+    {
+        painelHtml.setText(montarHtmlErroCarregamento(erro));
+        painelHtml.setCaretPosition(0);
+        this.selecionar(); 
+    }    
+    
+     private String montarHtmlErroCarregamento(ErroCarregamentoBiblioteca erro)
+    {
+        String base = 
+            "<html>" +
+            "    <head>" +
+            "        <style type=\"text/css\">" +
+            "            " +
+            "            body" +
+            "            {" +
+
+            "                font-family: \"Arial\";" +
+            "                font-size: " + tamanhoFonte + "pt;                " +
+            "                line-height: 150%;" +
+            "            }" +
+            "            " +
+            "            a" +
+            "            {" +
+            "                font-weight: bold;" +
+            
+            "                color: rgb(0, 0, 140);" +
+            "            }" +
+            "            " +
+            "            h1" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            h2" +
+            "            {" +
+            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
+            "            }" +
+            "            " +
+            "            li" +
+            "            {" +
+            "                margin-bottom: 10px;" +
+            "            }" +
+            "            " +
+            "            " +
+            "            .palavra_reservada" +
+            "            {" +
+            "                color: rgb(150, 0, 0);" +
+            "                font-weight: bold;" +                
+            "            }" +
+            "            " +
+            "            .parametro" +
+            "            {" +
+            "                font-weight: bold;" +
+            "                list-style-type: circle;" +
+            "            }" +
+            "            " +
+            "        </style>" +
+            "    </head>" +
+            "    <body>" +
+            "        <div id=\"cabecalho\">" +
+            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
+            "        </div>" +
+            "        <hr/><br>" +
+            "         <div id=\"erro\">" +
+            "" + erro.getMessage() +
+            "         </div>" +                                            
+            "         <br><hr/>" +
+            "    </body>" +
+            "</html>";
+        
+        base = base.replace("${nomeBiblioteca}", erro.getNome());
+
+        return base;
+    }
+    
     private String montarHtmlBiblioteca(MetaDadosBiblioteca metaDadosBiblioteca)
     {
         String base = 
@@ -584,19 +660,27 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         {
             Object valor = noSelecionado.getUserObject();
             DefaultMutableTreeNode noBiblioteca = (DefaultMutableTreeNode) arvoreBibliotecas.getSelectionPath().getPath()[1];
-            MetaDadosBiblioteca metaDadosBiblioteca = (MetaDadosBiblioteca) noBiblioteca.getUserObject();
-                    
-            if (valor instanceof MetaDadosFuncao)
+            
+            if (noBiblioteca.getUserObject() instanceof ErroCarregamentoBiblioteca)
             {
-                exibirDocumentacao(metaDadosBiblioteca, (MetaDadosFuncao) valor);
+                exibirErroCarregamento((ErroCarregamentoBiblioteca) noBiblioteca.getUserObject());
             }
-            else if (valor instanceof MetaDadosConstante)
+            else
             {
-                exibirDocumentacao(metaDadosBiblioteca, (MetaDadosConstante) valor);
-            }
-            else if (valor instanceof MetaDadosBiblioteca)
-            {
-                exibirDocumentacao((MetaDadosBiblioteca) valor);
+                MetaDadosBiblioteca metaDadosBiblioteca = (MetaDadosBiblioteca) noBiblioteca.getUserObject();
+
+                if (valor instanceof MetaDadosFuncao)
+                {
+                    exibirDocumentacao(metaDadosBiblioteca, (MetaDadosFuncao) valor);
+                }
+                else if (valor instanceof MetaDadosConstante)
+                {
+                    exibirDocumentacao(metaDadosBiblioteca, (MetaDadosConstante) valor);
+                }
+                else if (valor instanceof MetaDadosBiblioteca)
+                {
+                    exibirDocumentacao((MetaDadosBiblioteca) valor);
+                }
             }
         }
     }
