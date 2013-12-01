@@ -40,8 +40,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -54,9 +52,6 @@ import net.java.balloontip.BalloonTip;
 
 public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, DepuradorListener
 {
-
-    private static final ExecutorService service = Executors.newCachedThreadPool();
-
     private static final String template = carregarTemplate();
 
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
@@ -65,14 +60,15 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
     private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
-
+    
+    private final TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
+    
     private Programa programa = null;
     private InterfaceDepurador depurador;
 
     private boolean podeSalvar = true;
     private boolean depurando = false;
 
-    private final TelaOpcoesExecucao telaOpcoesExecucao;
     private JPanel painelTemporario;
 
     private AcaoSalvarArquivo acaoSalvarArquivo;
@@ -114,7 +110,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         carregarAlgoritmoPadrao();
         criarDicasInterface();
 
-        telaOpcoesExecucao = new TelaOpcoesExecucao();
         divisorEditorArvore.resetToPreferredSizes();
         divisorEditorPainelSaida.resetToPreferredSizes();
     }
@@ -342,13 +337,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         Corretor corretor = new Corretor(questao);
         painelSaida.getAbaMensagensCompilador().limpar();
         int nota = 0;
+        
         try
         {
             nota = corretor.executar(editor.getPortugolDocumento().getCodigoFonte(), null);
         }
         catch (ErroCompilacao ex)
         {
-            mensagensCompilacao(ex);
+            AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();            
+            abaMensagem.limpar();
+                    
+            exibirResultadoAnalise(ex.getResultadoAnalise());
+            
+            abaMensagem.selecionar();            
         }
 
         jLNota.setText(String.format("Score obtido: %s", String.valueOf(nota)));
@@ -1161,22 +1162,20 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         return editor.getPortugolDocumento();
     }
-    private ResultadoAnalise analise;
 
     private void executar(final boolean depurar)
     {
-        AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();
-        abaMensagem.limpar();
+        AbaMensagemCompilador abaMensagens = painelSaida.getAbaMensagensCompilador();
+        abaMensagens.limpar();
         depurando = depurar;
-        try{
-            String codigo = editor.getPortugolDocumento().getCodigoFonte();
-
-            analise = Portugol.analisar(codigo);
-            exibirResultadoAnalise(analise, abaMensagem);
-
-            if (programa == null)
+        
+        try
+        {
+            programa = Portugol.compilar(editor.getPortugolDocumento().getCodigoFonte());
+            
+            if (programa.getResultadoAnalise().contemAvisos())
             {
-                AbaCodigoFonte.this.programa = Portugol.compilar(codigo);
+                exibirResultadoAnalise(programa.getResultadoAnalise());
             }
 
             /**
@@ -1201,7 +1200,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 painelSaida.getConsole().registrarComoEntrada(programa);
                 painelSaida.getConsole().registrarComoSaida(programa);
 
-                programa.adicionarObservadorExecucao(AbaCodigoFonte.this);
+                programa.adicionarObservadorExecucao(this);
 
                 if (depurar)
                 {
@@ -1215,14 +1214,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
         catch (ErroCompilacao erroCompilacao)
         {
-            ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
-            exibirResultadoAnalise(resultadoAnalise, abaMensagem);
-            abaMensagem.selecionar();
+            exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
+            abaMensagens.selecionar();
         }
-
     }
 
-    private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise, AbaMensagemCompilador abaMensagem)
+    private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise)
     {
         for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
         {
@@ -1245,7 +1242,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
         }
 
-        abaMensagem.atualizar(resultadoAnalise);
+        painelSaida.getAbaMensagensCompilador().atualizar(resultadoAnalise);
     }
 
     @Override
@@ -1264,7 +1261,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             painelSaida.getConsole().limparConsole();
 
-            if (analise.getNumeroAvisos() > 0)
+            if (programa.getResultadoAnalise().contemAvisos())
             {
                 painelSaida.getConsole().escreverNoConsole("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
             }
@@ -1341,21 +1338,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoInterromper.setEnabled(false);
         acaoProximaInstrucao.setEnabled(false);
         painelSaida.getConsole().setExecutandoPrograma(false);
-    }
-
-    private void mensagensCompilacao(ErroCompilacao erroCompilacao)
-    {
-        AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();
-        abaMensagem.limpar();
-
-        ResultadoAnalise resultadoAnalise = erroCompilacao.getResultadoAnalise();
-
-        if (resultadoAnalise.getNumeroTotalErros() > 0)
-        {
-            abaMensagem.atualizar(resultadoAnalise);
-            abaMensagem.selecionar();
-        }
-    }
+    }   
 
     public String getCodigoFonte()
     {

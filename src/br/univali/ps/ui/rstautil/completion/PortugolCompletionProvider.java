@@ -1,7 +1,6 @@
 package br.univali.ps.ui.rstautil.completion;
 
-import br.univali.portugol.nucleo.analise.ResultadoAnalise;
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.Programa;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import java.beans.PropertyChangeEvent;
@@ -15,7 +14,7 @@ import org.fife.ui.autocomplete.*;
 
 public final class PortugolCompletionProvider extends LanguageAwareCompletionProvider implements PropertyChangeListener
 {
-    private List<Completion> dynamicCompletions = new ArrayList<Completion>();
+    private List<Completion> dynamicCompletions = new ArrayList<>();
     private Editor.EscopoCursor escopoCursor;
 
     public PortugolCompletionProvider()
@@ -78,49 +77,42 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
     {
         ClassLoader cl = getClass().getClassLoader();
         String res = "br/univali/ps/ui/rstautil/completion/portugol.xml";
-        if (res != null)
-        { // Subclasses may specify a null value
-            InputStream in = cl.getResourceAsStream(res);
-            try
+        
+        InputStream in = cl.getResourceAsStream(res);
+        
+        try
+        {
+            if (in != null)
             {
-                if (in != null)
-                {
-                    cp.loadFromXML(in);
-                    in.close();
-                }
-                else
-                {
-                    cp.loadFromXML(new File(res));
-                }
+                cp.loadFromXML(in);
+                in.close();
             }
-            catch (IOException ioe)
+            else
             {
-                ioe.printStackTrace(System.err);
+                cp.loadFromXML(new File(res));
             }
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace(System.err);
         }
     }
 
-    private void updateGlobalSimbolsCompletions(DefaultCompletionProvider cp, ResultadoAnalise resultadoAnalise, Editor.EscopoCursor escopoCursor)
+    private void updateGlobalSimbolsCompletions(DefaultCompletionProvider cp, Programa programa, Editor.EscopoCursor escopoCursor)
     {
-        // Se houve erros sintáticos, mantemos o autocomplete gerado        
-        // com a última ASA válida
-        
-        if (resultadoAnalise.getNumeroErrosSintaticos() == 0)
+        if (dynamicCompletions != null)
         {
-            if (dynamicCompletions != null)
+            for (Completion completion : dynamicCompletions)
             {
-                for (Completion completion : dynamicCompletions)
-                {
-                    cp.removeCompletion(completion);
-                }
+                cp.removeCompletion(completion);
             }
-            //cp.clear();
-            
-            dynamicCompletions = new ASTCompletionFactory().createCompletions((ArvoreSintaticaAbstrataPrograma) resultadoAnalise.getAsa(), cp, escopoCursor);
-            //cp.addCompletions(addTemplateCompletions(cp));
-            cp.addCompletions(dynamicCompletions);
-            
         }
+            
+        //cp.clear();
+            
+        dynamicCompletions = new ASTCompletionFactory().createCompletions(programa.getArvoreSintaticaAbstrata(), cp, escopoCursor);
+        //cp.addCompletions(addTemplateCompletions(cp));
+        cp.addCompletions(dynamicCompletions);
     }
 
     public void setEscopoCursor(Editor.EscopoCursor escopoCursor)
@@ -131,12 +123,12 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
-        if (PortugolParser.PROPERTY_RESULTADO_ANALISE.equals(evt.getPropertyName()))
+        if (PortugolParser.PROPERTY_PROGRAMA_COMPILADO.equals(evt.getPropertyName()))
         {
             DefaultCompletionProvider cp = (DefaultCompletionProvider) getDefaultCompletionProvider();
-            ResultadoAnalise resultadoAnalise = (ResultadoAnalise) evt.getNewValue();
+            Programa programa = (Programa) evt.getNewValue();
 
-            updateGlobalSimbolsCompletions(cp, resultadoAnalise, escopoCursor);
+            updateGlobalSimbolsCompletions(cp, programa, escopoCursor);
         }
         
             
@@ -144,7 +136,7 @@ public final class PortugolCompletionProvider extends LanguageAwareCompletionPro
 
     private List<Completion> addTemplateCompletions(CompletionProvider cp)
     {   
-        List<Completion> list = new ArrayList<Completion>();
+        List<Completion> list = new ArrayList<>();
         
         list.add(new TemplateCompletion(cp, "b", "comando","cadeia ${cursor}","Tipo de dado",explicacaoTipoCadeia()));
         
