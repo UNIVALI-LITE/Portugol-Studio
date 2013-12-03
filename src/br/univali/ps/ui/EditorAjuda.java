@@ -46,7 +46,7 @@ public final class EditorAjuda extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+                ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
                 
                 AbaCodigoFonte aba = new AbaCodigoFonte();
                 aba.getEditor().setCodigoFonte(editor.getTextArea().getText());

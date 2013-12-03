@@ -172,7 +172,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     private void configurarDialogoPesquisarSubstituir()
     {
-        TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+        ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
         
         dialogoPesquisar = new FindDialog(null, observadorAcaoPesquisaSubstituir);

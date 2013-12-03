@@ -12,7 +12,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
+public final class TelaPrincipalDesktop extends JFrame implements ContextoDeTrabalho
 {
     private List<File> arquivosIniciais;
     private boolean primeiraVez = true;
@@ -132,11 +132,11 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
         }
     }    
 
-    @Override
-    public PainelTabuladoPrincipal getPainelTabulado()
-    {
-        return painelTabulado;
-    }
+//    @Override
+//    public PainelTabuladoPrincipal getPainelTabulado()
+//    {
+//        return painelTabulado;
+//    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

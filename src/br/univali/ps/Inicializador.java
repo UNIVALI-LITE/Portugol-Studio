@@ -2,7 +2,7 @@ package br.univali.ps;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.ContextoDeTrabalho;
 import br.univali.ps.ui.TelaPrincipalDesktop;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -48,7 +48,7 @@ public final class Inicializador
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             }
             
-            TelaPrincipal tela = (runningApplet()) ? (new TelaPrincipalApplet()) : (new TelaPrincipalDesktop());
+            ContextoDeTrabalho tela = (runningApplet()) ? (new TelaPrincipalApplet()) : (new TelaPrincipalDesktop());
             portugolStudio.iniciar( listarArquivos(argumentos), tela );
             
             splashProgress(100);

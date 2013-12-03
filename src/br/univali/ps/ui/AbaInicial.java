@@ -37,7 +37,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import net.java.balloontip.BalloonTip;
 
-public final class AbaInicial extends Aba implements PackDownloaderObserver
+public final class AbaInicial extends Aba
 {
     private JPopupMenu menuExemplos;
     private PainelTabulado painelTabulado;
