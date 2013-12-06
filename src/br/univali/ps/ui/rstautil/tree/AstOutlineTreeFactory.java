@@ -3,6 +3,7 @@ package br.univali.ps.ui.rstautil.tree;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrata;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCadeia;
@@ -53,9 +54,13 @@ import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
+import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -87,7 +92,7 @@ class AstOutlineTreeFactory implements VisitanteASA
 
         for (NoInclusaoBiblioteca inclusao : asap.getListaInclusoesBibliotecas())
         {
-            bibliotecas.add((LibraryTreeNode)inclusao.aceitar(this));
+            bibliotecas.add((LibraryTreeNode) inclusao.aceitar(this));
         }
         
         ProgramaTreeNode programa = new ProgramaTreeNode();
@@ -96,12 +101,21 @@ class AstOutlineTreeFactory implements VisitanteASA
         {
             programa.add(bibliotecas);
         }
-
+        
+        List<SourceTreeNode> nos = new ArrayList<>();
+        
         for (Iterator<NoDeclaracao> i = asap.getListaDeclaracoesGlobais().iterator(); i.hasNext();)
         {
             NoDeclaracao td = i.next();
             PortugolTreeNode dmtn = (PortugolTreeNode) td.aceitar(this);
-            programa.add(dmtn);
+            nos.add(dmtn);
+        }
+        
+        Collections.sort(nos, new ComparadorNos());
+        
+        for (SourceTreeNode no : nos)
+        {
+            programa.add(no);
         }
 
         //root.add(bibliotecas);
@@ -590,6 +604,35 @@ class AstOutlineTreeFactory implements VisitanteASA
     {
         return null;
     }
-
     
+    private class ComparadorNos implements Comparator<SourceTreeNode>
+    {
+        @Override
+        public int compare(SourceTreeNode no1, SourceTreeNode no2)
+        {
+            Object o1 = no1.getUserObject();
+            Object o2 = no2.getUserObject();
+            
+            if ((o1 instanceof NoDeclaracao) && (o2 instanceof NoDeclaracao))
+            {
+                NoDeclaracao nd1 = (NoDeclaracao) o1;
+                NoDeclaracao nd2 = (NoDeclaracao) o2;
+                
+                if ((!(nd1 instanceof NoDeclaracaoFuncao)) && (nd2 instanceof NoDeclaracaoFuncao))
+                {
+                    return -1;
+                }
+                else if ((nd1 instanceof NoDeclaracaoFuncao) && (!(nd2 instanceof NoDeclaracaoFuncao)))
+                {
+                    return 1;
+                }
+                else
+                {
+                    return nd1.getNome().compareTo(nd2.getNome());                            
+                }                
+            }
+            
+            return o1.toString().compareTo(o2.toString());
+        }
+    }
 }
