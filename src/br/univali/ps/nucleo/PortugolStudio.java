@@ -7,9 +7,13 @@ import br.univali.ps.ui.AbaCodigoFonte;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.TelaProgressoAba;
 import br.univali.ps.ui.telas.TelaSobre;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -59,6 +63,8 @@ public final class PortugolStudio
 
     public void iniciar(final List<File> arquivos, final TelaPrincipal telaPrincipal)
     {
+        registrar_fontes();
+        
         try
         {
             getConfiguracoes().carregar();
@@ -100,6 +106,32 @@ public final class PortugolStudio
             catch (PackDownloaderException pEx)
             {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(pEx);
+            }
+        }
+    }
+
+    private void registrar_fontes()
+    {
+        final String path = "br/univali/ps/ui/fontes/";
+        
+        final String[] fontes = 
+        {
+            "dejavu_sans_mono.ttf",
+            "dejavu_sans_mono_bold.ttf",
+            "dejavu_sans_mono_bold_oblique.ttf",
+            "dejavu_sans_mono_oblique.ttf"
+        };
+            
+        for (String nome : fontes)
+        {
+            try
+            {                
+                Font fonte = Font.createFont(Font.TRUETYPE_FONT, Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome));
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fonte);
+            }
+            catch (FontFormatException | IOException excecao)
+            {
+                excecao.printStackTrace(System.err);
             }
         }
     }

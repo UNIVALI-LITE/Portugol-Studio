@@ -138,6 +138,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         criarAcoes();
         criarDicasInterface();
         instalarObservadores();
+        console.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
         carregarConfiguracoes();
         
         handlerDaSaida = new HandlerDaSaida();
