@@ -5,7 +5,6 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.es.Armazenador;
 import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.Saida;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
@@ -265,14 +264,14 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     private void instalarObservadores()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
 
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_CONSOLE);
     }
 
     private void carregarConfiguracoes()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
 
         setTamanhoFonteConsole(configuracoes.getTamanhoFonteConsole());
     }
@@ -282,7 +281,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         if ((tamanho != console.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
         {
             console.setFont(console.getFont().deriveFont(tamanho));
-            PortugolStudio.getInstancia().getConfiguracoes().setTamanhoFonteConsole(tamanho);
+            Configuracoes.getInstancia().setTamanhoFonteConsole(tamanho);
         }
     }
 

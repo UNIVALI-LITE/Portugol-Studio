@@ -1,6 +1,6 @@
 package br.univali.ps.dominio.pack;
 
-import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.Configuracoes;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;

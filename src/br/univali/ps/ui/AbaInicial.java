@@ -4,7 +4,6 @@ import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.dominio.pack.PackDownloaderListener;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.FileHandle;
@@ -37,7 +36,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import net.java.balloontip.BalloonTip;
 
-public final class AbaInicial extends Aba
+public final class AbaInicial extends Aba implements PackDownloaderObserver
 {
     private JPopupMenu menuExemplos;
     private PainelTabulado painelTabulado;
@@ -45,13 +44,13 @@ public final class AbaInicial extends Aba
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
 
-    public AbaInicial(PainelTabulado painelTabulado)
+    public AbaInicial(PainelTabulado painelTabulado, TelaPrincipalDesktop telaPrincipalDesktop)
     {
         super();
 
         this.painelTabulado = painelTabulado;
         this.telaAtalhosTeclado = new TelaAtalhosTeclado();
-        setCabecalho(new BotoesControleAba(this, painelTabulado));
+        setCabecalho(new BotoesControleAba(this, telaPrincipalDesktop));
 
         initComponents();
         configurarCursorLogos();
@@ -64,7 +63,7 @@ public final class AbaInicial extends Aba
     {
         try
         {
-            Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+            Configuracoes configuracoes = Configuracoes.getInstancia();
             File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
 
             if (diretorioExemplos.exists())

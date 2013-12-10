@@ -1,7 +1,6 @@
 package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.Programa;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.beans.PropertyChangeEvent;
@@ -36,7 +35,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     
     private void instalarObservadores()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
         
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
         campoExibirTela.addChangeListener(TelaOpcoesExecucao.this);        
@@ -44,7 +43,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     
     private void carregarConfiguracoes()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
         campoExibirTela.setSelected(configuracoes.isExibirOpcoesExecucao());
     }
 
@@ -172,7 +171,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     @Override
     public void stateChanged(ChangeEvent e)
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
         configuracoes.setExibirOpcoesExecucao(campoExibirTela.isSelected());
     }    
     

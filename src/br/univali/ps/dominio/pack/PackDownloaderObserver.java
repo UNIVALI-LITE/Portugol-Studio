@@ -10,7 +10,5 @@ package br.univali.ps.dominio.pack;
  */
 public interface PackDownloaderObserver
 {
-
-    //void registrarListener(PackDownloader packDownloader);
-    
+    void registrarListener(PackDownloader packDownloader);    
 }

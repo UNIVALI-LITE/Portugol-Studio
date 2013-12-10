@@ -9,7 +9,6 @@ import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -172,7 +171,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     private void configurarDialogoPesquisarSubstituir()
     {
-        ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+        //ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
         
         dialogoPesquisar = new FindDialog(null, observadorAcaoPesquisaSubstituir);
@@ -481,7 +480,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             @Override
             public void actionPerformed(ActionEvent e)
             {                
-                Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+                Configuracoes configuracoes = Configuracoes.getInstancia();
                 configuracoes.setCentralizarCodigoFonte(!btnCentralizarCodigoFonte.isSelected());
             }
         };
@@ -525,7 +524,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     private void instalarObservadores()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
         
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_EDITOR);
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TEMA_EDITOR);
@@ -598,7 +597,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     private void carregarConfiguracoes()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
         
         aplicarTema(configuracoes.getTemaEditor());
         setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
@@ -650,7 +649,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         if ((tamanho != textArea.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
         {
             textArea.setFont(textArea.getFont().deriveFont(tamanho));
-            PortugolStudio.getInstancia().getConfiguracoes().setTamanhoFonteEditor(tamanho);
+            Configuracoes.getInstancia().setTamanhoFonteEditor(tamanho);
         }
     }
     
@@ -1076,7 +1075,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             tema.apply(textArea);
 
             textArea.setFont(fonte);
-            PortugolStudio.getInstancia().getConfiguracoes().setTemaEditor(nome);
+            Configuracoes.getInstancia().setTemaEditor(nome);
 
             for (Component componente : menuTema.getComponents())
             {

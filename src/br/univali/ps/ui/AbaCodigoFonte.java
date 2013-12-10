@@ -20,7 +20,6 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
@@ -146,7 +145,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void carregarConfiguracoes()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
 
         campoOpcoesExecucao.setSelected(configuracoes.isExibirOpcoesExecucao());
         setTamanhoFonteArvore(configuracoes.getTamanhoFonteArvore());
@@ -302,7 +301,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void instalarObservadores()
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
 
         configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
         configuracoes.adicionarObservadorConfiguracao(telaOpcoesExecucao, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
@@ -1093,7 +1092,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         if ((tamanho != tree.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
         {
             tree.setFont(tree.getFont().deriveFont(tamanho));
-            PortugolStudio.getInstancia().getConfiguracoes().setTamanhoFonteArvore(tamanho);
+            Configuracoes.getInstancia().setTamanhoFonteArvore(tamanho);
         }
     }
 
@@ -1385,7 +1384,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     @Override
     public void stateChanged(ChangeEvent e)
     {
-        Configuracoes configuracoes = PortugolStudio.getInstancia().getConfiguracoes();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
         configuracoes.setExibirOpcoesExecucao(campoOpcoesExecucao.isSelected());
     }
 

@@ -1,5 +1,6 @@
-package br.univali.ps.nucleo;
+package br.univali.ps.ui;
 
+import br.univali.ps.nucleo.ExcecaoAplicacao;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -36,10 +37,15 @@ public final class Configuracoes
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Padrão";
     private boolean centralizarCodigoFonte = false;
+    private static final Configuracoes instancia = new Configuracoes();
     
-    Configuracoes()
+    private Configuracoes()
     {
         
+    }
+    
+    public static Configuracoes getInstancia(){       
+        return instancia;
     }
     
     public static String getUrlDosPacotes(){

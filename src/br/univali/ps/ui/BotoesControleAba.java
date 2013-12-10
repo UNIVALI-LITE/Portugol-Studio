@@ -36,7 +36,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private Action acaoExibirTelaInicial;
     
     private Aba abaAtual;
-    private PainelTabulado painelTabulado;
+    private TelaPrincipalDesktop telaPrincipal;
     
     private FiltroArquivo filtroExercicio;
     private FiltroArquivo filtroPrograma;
@@ -44,13 +44,13 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private JFileChooser dialogoSelecaoArquivo;
     
     
-    public BotoesControleAba(AbaInicial abaInicial, PainelTabulado painelTabulado)
+    public BotoesControleAba(AbaInicial abaInicial, TelaPrincipalDesktop telaPrincipal)
     {
         super(abaInicial);
         removeAll();
         initComponents();
         
-        this.painelTabulado = painelTabulado;
+        this.telaPrincipal = telaPrincipal;
         
         configurarSeletorArquivo();
         configurarAcoes();
@@ -104,15 +104,15 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                PortugolStudio.getInstancia().criarNovoCodigoFonte();
+                telaPrincipal.criarNovoCodigoFonte();
             }
         };
         acaoNovoArquivo.putValue(Action.ACCELERATOR_KEY, atalho);
         
         botaoNovoArquivo.setAction(acaoNovoArquivo);
         
-        painelTabulado.getActionMap().put(ACAO_NOVO_ARQUIVO, acaoNovoArquivo);
-        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_NOVO_ARQUIVO);
+        telaPrincipal.getPainelTabulado().getActionMap().put(ACAO_NOVO_ARQUIVO, acaoNovoArquivo);
+        telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_NOVO_ARQUIVO);
     }
     
     private void configurarAcaoAbrirArquivo()
@@ -120,13 +120,13 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         
         acaoAbrirArquivo = (AcaoAbrirArquivo) FabricaAcao.getInstancia().criarAcao(AcaoAbrirArquivo.class);
-        acaoAbrirArquivo.configurar(painelTabulado, getParent(), dialogoSelecaoArquivo, filtroTodosSuportados, filtroExercicio, filtroPrograma, filtroTodosSuportados);
+        acaoAbrirArquivo.configurar(telaPrincipal, getParent(), dialogoSelecaoArquivo, filtroTodosSuportados, filtroExercicio, filtroPrograma, filtroTodosSuportados);
         
         String nome = (String) acaoAbrirArquivo.getValue(AbstractAction.NAME);
         KeyStroke atalho = (KeyStroke) acaoAbrirArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
         
-        painelTabulado.getActionMap().put(nome, acaoAbrirArquivo);
-        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        telaPrincipal.getPainelTabulado().getActionMap().put(nome, acaoAbrirArquivo);
+        telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
         
         botaoAbrir.setAction(acaoAbrirArquivo);
     }    
@@ -147,8 +147,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         
         acaoExibirTelaInicial.putValue(Action.ACCELERATOR_KEY, atalho);
         
-        painelTabulado.getActionMap().put(nome, acaoExibirTelaInicial);
-        painelTabulado.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        telaPrincipal.getPainelTabulado().getActionMap().put(nome, acaoExibirTelaInicial);
+        telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
     
     private void criarDicasInterface()
@@ -160,7 +160,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     
     private void instalarObservadores()
     {
-        painelTabulado.adicionaPainelTabuladoListener(this);
+        telaPrincipal.getPainelTabulado().adicionaPainelTabuladoListener(this);
         
         titulo.addMouseListener(new MouseAdapter()
         {

@@ -1,18 +1,12 @@
 package br.univali.ps;
 
-import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.exception.CarregamentoDeExercicioException;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.AbaCodigoFonte;
-import br.univali.ps.ui.ContextoDeTrabalho;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 /**
  *
@@ -28,42 +22,7 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
         abaCodigoFonte = new AbaCodigoFonte();
     }
 
-    private class ContextoApplet implements ContextoDeTrabalho{
-
-        @Override
-        public void setArquivosIniciais(List<File> arquivos){
-        }
-
-        @Override
-        public void inicializar()
-        {
-        }
-
-        @Override
-        public void downloadStarted()
-        {
-            
-        }
-
-        @Override
-        public void downloadFinished()
-        {
-            //@todo simular o sistema de arquivos para exibir a ajuda
-        }
-
-        @Override
-        public void downloadProgress(int bytesDownloaded, int totalBytes)
-        {
-            
-        }
-
-        @Override
-        public void downloadFail(PackDownloaderException ex)
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-        }
-        
-    }
+    
     
     private void criaAbaParaRealizacaoDeExercicio(String urlDoXmlDoExercicio) throws MalformedURLException, IOException
     {
@@ -117,7 +76,7 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
     {
         initComponents();
         PortugolStudio portugol = PortugolStudio.getInstancia();
-        portugol.iniciar(null, new ContextoApplet());
+        portugol.iniciar();
         setLayout(new BorderLayout());
         add(abaCodigoFonte, BorderLayout.CENTER);
         if (idDoExercicioFoiPassadoComoParametro())

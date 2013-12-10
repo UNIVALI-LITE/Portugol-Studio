@@ -1,6 +1,5 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -39,6 +38,8 @@ public final class EditorAjuda extends JPanel
         configurarAcaoTenteVoceMesmo();
     }
     
+    //public void setPainelTabulado()
+    
     private void configurarAcaoTenteVoceMesmo()
     {
         acaoTenteVoceMesmo = new AbstractAction("Tente você mesmo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"))
@@ -46,11 +47,13 @@ public final class EditorAjuda extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+                //ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
                 
                 AbaCodigoFonte aba = new AbaCodigoFonte();
                 aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
-                aba.adicionar(telaPrincipal.getPainelTabulado());
+                AbaAjuda abaAjuda = (AbaAjuda)getParent();
+                
+                aba.adicionar(abaAjuda.getPainelTabulado());
             }
         };
         

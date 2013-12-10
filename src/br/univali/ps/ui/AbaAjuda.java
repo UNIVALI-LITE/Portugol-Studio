@@ -11,7 +11,6 @@ import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.dominio.pack.PackDownloaderListener;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.CardLayout;
