@@ -126,6 +126,11 @@ public final class PortugolStudio
         return abrirQuestao(conteudoDoXmlDoExercicio);
     }
 
+    public boolean rodandoApplet()
+    {
+        return System.getSecurityManager() != null;
+    }
+
     private static class CarregadorDeArquivo
     {
         public static String getConteudoDoArquivo(String urlDoArquivo) throws CarregamentoDeExercicioException

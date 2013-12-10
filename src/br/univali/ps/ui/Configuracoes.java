@@ -1,6 +1,7 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
+import br.univali.ps.nucleo.PortugolStudio;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -41,14 +42,26 @@ public final class Configuracoes
     
     private Configuracoes()
     {
-        
+        if (!PortugolStudio.getInstancia().rodandoApplet())
+        {
+            try
+            {
+                carregar();
+            }
+            catch (ExcecaoAplicacao excecaoAplicacao)
+            {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
+            }
+        }
     }
     
-    public static Configuracoes getInstancia(){       
+    public static Configuracoes getInstancia()
+    {
         return instancia;
     }
     
-    public static String getUrlDosPacotes(){
+    public static String getUrlDosPacotes()
+    {
         return URL_DOS_PACOTES;
     }
     
