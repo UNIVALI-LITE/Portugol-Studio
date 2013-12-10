@@ -30,12 +30,13 @@ estar no servidor para ser usada como splash no Applet. -->
 </target>
     
     <!-- target que compila as libs e o jar principal em um único jar-->
-    <target name="package-for-store" depends="jar">
+    <!-- código iriginal tinha o valor depends como "jar" -->
+<target name="package-in-one-jar" depends="jar, jnlp">
 
         <property name="store.jar.name" value="Portugol-Studio"/>
 
         <!-- don't edit below this line -->
-        <property name="store.dir" value="store"/><!-- nome do diretório onde o jar será colocado-->
+        <property name="store.dir" value="oneJar"/><!-- nome do diretório onde o jar será colocado-->
         <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>
 
         <echo message="Packaging ${application.title} into a single JAR at ${store.jar}"/>
@@ -59,15 +60,28 @@ estar no servidor para ser usada como splash no Applet. -->
 
         <delete file="${store.dir}/temp_final.jar"/>
         
-        <!--signjar destDir="#{store.dir}" alias="alias" keystore="keyFile.ks"
-                storepass="ps"
-                preservelastmodified="true">
+
+        <signjar 
+            destDir="${store.dir}"
+            alias="PortugolStudio" 
+            keystore="${src.src.dir}/PortugolStudio.jks"
+            storepass="PortugolStudio"
+            preservelastmodified="true"
+            verbose="true"
+            >
             <path>
                 <fileset dir="${store.dir}" includes="*.jar" />
             </path>
             <flattenmapper />
-        </signjar-->
-        
+        </signjar>
+
+        <copy todir="${store.dir}">
+            <fileset dir="${dist.dir}">
+                <include name="*.jpg"/>
+                <include name="*.html"/>
+                <include name="*.jnlp"/>
+            </fileset>
+        </copy>        
 
     </target>
     

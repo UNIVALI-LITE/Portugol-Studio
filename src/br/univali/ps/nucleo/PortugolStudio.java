@@ -1,10 +1,15 @@
 package br.univali.ps.nucleo;
 
+import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
+import br.univali.ps.dominio.pack.PackDownloaderListener;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
-import br.univali.ps.ui.AbaCodigoFonte;
-import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.exception.CarregamentoDeExercicioException;
+import br.univali.ps.ui.AbaAjuda;
+import br.univali.ps.ui.AbaInicial;
+import br.univali.ps.ui.ContextoDeTrabalho;
+import br.univali.ps.ui.PainelTabulado;
 import br.univali.ps.ui.TelaProgressoAba;
 import br.univali.ps.ui.telas.TelaSobre;
 import java.awt.Font;
@@ -12,9 +17,12 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +39,7 @@ public final class PortugolStudio
     private static PortugolStudio instancia = null;
     private boolean depurando = false;
     private TratadorExcecoes tratadorExcecoes = null;
-    private TelaPrincipal telaPrincipal = null;
+    private ContextoDeTrabalho contextoDeTrabalho = null;
     private Configuracoes configuracoes = null;
     private GerenciadorTemas gerenciadorTemas = null;
     private TelaSobre telaSobre = null;
@@ -61,7 +69,7 @@ public final class PortugolStudio
         this.depurando = depurando;
     }
 
-    public void iniciar(final List<File> arquivos, final TelaPrincipal telaPrincipal)
+    public void iniciar(final List<File> arquivos, final ContextoDeTrabalho contextoDeTrabalho)
     {
         registrar_fontes();
         
@@ -73,41 +81,20 @@ public final class PortugolStudio
         {
             //getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
         }
-        telaPrincipal.setArquivosIniciais(arquivos);
-        telaPrincipal.setVisible(true);
-        this.telaPrincipal = telaPrincipal;
+        contextoDeTrabalho.setArquivosIniciais(arquivos);
+        contextoDeTrabalho.inicializar();
+        this.contextoDeTrabalho = contextoDeTrabalho;
 
         try
         {
-            inicializarRecursos();
+            inicializarRecursos(contextoDeTrabalho);
+        
         }
         catch (Exception ex)
         {
             getTratadorExcecoes().exibirExcecao(ex);
         }
 
-    }
-
-    private void inicializarRecursos() throws Exception
-    {
-
-        URL url = new URL(Configuracoes.getUrlDosPacotes());
-        List<DownloadPackInfos> recursos = new ArrayList<>();
-
-        recursos.add(new DownloadPackInfos(new PackDownloader(url, "exemplos"), telaPrincipal.getPainelTabulado().getAbaInicial()));
-        recursos.add(new DownloadPackInfos(new PackDownloader(url, "ajuda"), telaPrincipal.getPainelTabulado().getAbaAjuda()));
-
-        for (DownloadPackInfos downloadPackInfos : recursos)
-        {
-            try
-            {
-                downloadPackInfos.getPackDownloader().downloadPack();
-            }
-            catch (PackDownloaderException pEx)
-            {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(pEx);
-            }
-        }
     }
 
     private void registrar_fontes()
@@ -135,29 +122,25 @@ public final class PortugolStudio
             }
         }
     }
-
-    private class DownloadPackInfos
+    
+    private void inicializarRecursos(PackDownloaderListener listener) throws Exception
     {
-        private PackDownloader packDownloader;
-        private PackDownloaderObserver observer;
-
-        public DownloadPackInfos(PackDownloader packDownloader, PackDownloaderObserver observer)
+        URL url = new URL(Configuracoes.getUrlDosPacotes());
+        try
         {
-            this.packDownloader = packDownloader;
-            this.observer = observer;
-
-            this.observer.registrarListener(packDownloader);
+            String packNames [] = {"exemplos", "ajuda"};
+            for (String packName : packNames)
+            {
+                PackDownloader downloader = new PackDownloader(url, packName);
+                downloader.addListener(listener);
+                downloader.downloadPack();
+            }
+        }
+        catch (PackDownloaderException pEx)
+        {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(pEx);
         }
 
-        public PackDownloaderObserver getObserver()
-        {
-            return observer;
-        }
-
-        public PackDownloader getPackDownloader()
-        {
-            return packDownloader;
-        }
     }
 
     public TratadorExcecoes getTratadorExcecoes()
@@ -180,9 +163,9 @@ public final class PortugolStudio
         return configuracoes;
     }
 
-    public TelaPrincipal getTelaPrincipal()
+    public ContextoDeTrabalho getTelaPrincipal()
     {
-        return telaPrincipal;
+        return contextoDeTrabalho;
     }
 
     public GerenciadorTemas getGerenciadorTemas()
@@ -207,19 +190,19 @@ public final class PortugolStudio
         return telaSobre;
     }
 
-    private TelaProgressoAba getTelaProgressoaba()
+    private TelaProgressoAba getTelaProgressoaba(PainelTabulado painelTabulado)
     {
         if (telaProgressoAba == null)
         {
-            telaProgressoAba = new TelaProgressoAba(telaPrincipal.getPainelTabulado());
+            telaProgressoAba = new TelaProgressoAba(painelTabulado);
         }
 
         return telaProgressoAba;
     }
 
-    public void criarNovoCodigoFonte()
+    public void criarNovoCodigoFonte(PainelTabulado painelTabulado)
     {
-        getTelaProgressoaba().criarNovoCodigoFonte();
+        getTelaProgressoaba(painelTabulado).criarNovoCodigoFonte();
     }
 
     public void abrirArquivosCodigoFonte(final List<File> arquivos)
@@ -240,6 +223,50 @@ public final class PortugolStudio
         }
     }
 
+    public Questao abrirQuestao(String pathDoArquivoPex) throws CarregamentoDeExercicioException
+    {
+        String conteudoDoXmlDoExercicio = CarregadorDeArquivo.getConteudoDoArquivo(pathDoArquivoPex);
+        return abrirQuestao(conteudoDoXmlDoExercicio);
+    }
+
+    private static class CarregadorDeArquivo
+    {
+        public static String getConteudoDoArquivo(String urlDoArquivo) throws CarregamentoDeExercicioException
+        {
+            try
+            {
+                InputStream is = null;
+                BufferedOutputStream bos = null;
+                String conteudoDoArquivo = "";
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                try
+                {
+                    is = new BufferedInputStream(new URL(urlDoArquivo).openStream());
+
+                    bos = new BufferedOutputStream(baos);
+                    int byteLido = -1;
+                    while ((byteLido = is.read()) != -1)
+                    {
+                        bos.write(byteLido);
+                    }
+                }
+                finally
+                {
+                    bos.flush();
+                    conteudoDoArquivo = new String(baos.toByteArray());
+                    is.close();
+                    bos.close();
+                    baos.close();//por precaução :)
+                    return conteudoDoArquivo;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new CarregamentoDeExercicioException(urlDoArquivo);
+            }
+        }
+    }
+
     public void abrirArquivoCodigoFonte(final String codigoFonte)
     {
 
@@ -256,6 +283,5 @@ public final class PortugolStudio
 //
 //        timer.setRepeats(false);
 //        timer.start();
-        
     }
 }

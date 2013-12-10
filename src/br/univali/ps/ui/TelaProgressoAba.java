@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
+import javax.xml.bind.JAXBException;
 
 /**
  *
@@ -78,8 +79,7 @@ public final class TelaProgressoAba extends JDialog
         }
     }
 
-   
-    public void abrirCodigoFonte(final String codigoFonte) 
+    public void abrirCodigoFonte(final String codigoFonte)
     {
         atualizarStatusArquivo(1);
 
@@ -154,6 +154,14 @@ public final class TelaProgressoAba extends JDialog
         LISTA_ARQUIVOS, CODIGO_FONTE
     };
 
+    private Questao getQuestaoFromPex(String pexContent) throws JAXBException
+    {
+        Unmarshal u = new Unmarshal();
+        InputStream is = new ByteArrayInputStream(pexContent.getBytes());
+        Questao q = u.execute(is);
+        return q;
+    }
+
     private class CarregadorArquivos extends SwingWorker<Object, AbaCodigoFonte>
     {
         private TipoCarregamento tipoCarregamento;
@@ -183,13 +191,8 @@ public final class TelaProgressoAba extends JDialog
                 {
                     try
                     {
-                        AbaCodigoFonte abaCodigoFonte;
-                        Unmarshal u = new Unmarshal();
-
-                        InputStream is = new ByteArrayInputStream(arquivoPex.getBytes());
-
-                        Questao q = u.execute(is);
-                        abaCodigoFonte = new AbaCodigoFonte();
+                        Questao q = getQuestaoFromPex(arquivoPex);
+                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
                         abaCodigoFonte.setQuestao(q);
                         abaCodigoFonte.setRemovivel(false);
                         publish(abaCodigoFonte);

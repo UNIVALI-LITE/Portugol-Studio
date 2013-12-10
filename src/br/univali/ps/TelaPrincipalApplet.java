@@ -1,159 +1,82 @@
 package br.univali.ps;
 
+import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.exception.CarregamentoDeExercicioException;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Aba;
 import br.univali.ps.ui.AbaCodigoFonte;
-import br.univali.ps.ui.AbaListener;
-import br.univali.ps.ui.PainelTabuladoPrincipal;
-import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.ContextoDeTrabalho;
 import java.awt.BorderLayout;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *
  * @author Elieser
  */
-public class TelaPrincipalApplet extends javax.swing.JApplet implements TelaPrincipal
+public class TelaPrincipalApplet extends javax.swing.JApplet
 {
     private static final long serialVersionUID = 1L;
-    private final PainelTabuladoPrincipal painelTabulado = new PainelTabuladoPrincipal();
-    private Exercicio exercicioAtual = null;
+    private final AbaCodigoFonte abaCodigoFonte;
 
-    private void criaAbaParaRealizacaoDeExercicio(final int idDoExercicio, String urlDoXmlDoExercicio) throws MalformedURLException, IOException
+    public TelaPrincipalApplet() throws HeadlessException
     {
-        if (exercicioAtual == null)
-        {
-            painelTabulado.addChangeListener(new ChangeListener()
-            {
-                @Override//quando a aba do novo exercício é criada e selecionada...
-                public void stateChanged(ChangeEvent e)
-                {
-                    if (exercicioAtual == null)
-                    {
-                        AbaCodigoFonte abaDoCodigo = (AbaCodigoFonte) painelTabulado.getAbaSelecionada();
-                        exercicioAtual = new Exercicio(abaDoCodigo);
-                        painelTabulado.setTitleAt(painelTabulado.getSelectedIndex(), "Exercício " + idDoExercicio);
-                        abaDoCodigo.adicionarAbaListener(new AbaListener()
-                        {
-                            @Override
-                            public boolean fechandoAba(Aba aba)
-                            {
-                                exercicioAtual = null;
-                                return true;
-                            }
-                        });
-                    }
-                }
-            });
-
-            try
-            {
-                String conteudoDoXmlDoExercicio = CarregadorDeArquivo.getConteudoDoArquivo(urlDoXmlDoExercicio);
-                PortugolStudio.getInstancia().abrirArquivoCodigoFonte(conteudoDoXmlDoExercicio);
-            }
-            catch (CarregamentoDeExercicioException ex)
-            {
-                ex.printStackTrace();
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex) ;
-            }
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(rootPane, "Já existe um exercício aberto! Você pode resolver apenas um exercício de cada vez!");
-        }
+        abaCodigoFonte = new AbaCodigoFonte();
     }
 
-    private static class CarregadorDeArquivo
-    {
-        public static String getConteudoDoArquivo(String urlDoArquivo) throws CarregamentoDeExercicioException
-        {
-            try
-            {
-                InputStream is = null;
-                BufferedOutputStream bos = null;
-                String conteudoDoArquivo = "";
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                try{
-                    is = new BufferedInputStream(new URL(urlDoArquivo).openStream());
-                    
-                    bos = new BufferedOutputStream(baos);
-                    int byteLido = -1;
-                    while ((byteLido = is.read()) != -1)
-                    {
-                        bos.write(byteLido);
-                    }
-                }
-                finally{
-                    bos.flush();
-                    conteudoDoArquivo = new String(baos.toByteArray());
-                    is.close();
-                    bos.close();
-                    baos.close();//por precaução :)
-                    return conteudoDoArquivo;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new CarregamentoDeExercicioException(urlDoArquivo);
-            }
+    private class ContextoApplet implements ContextoDeTrabalho{
+
+        @Override
+        public void setArquivosIniciais(List<File> arquivos){
         }
+
+        @Override
+        public void inicializar()
+        {
+        }
+
+        @Override
+        public void downloadStarted()
+        {
+            
+        }
+
+        @Override
+        public void downloadFinished()
+        {
+            //@todo simular o sistema de arquivos para exibir a ajuda
+        }
+
+        @Override
+        public void downloadProgress(int bytesDownloaded, int totalBytes)
+        {
+            
+        }
+
+        @Override
+        public void downloadFail(PackDownloaderException ex)
+        {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+        }
+        
     }
-
-    public class Exercicio
+    
+    private void criaAbaParaRealizacaoDeExercicio(String urlDoXmlDoExercicio) throws MalformedURLException, IOException
     {
-        //private final int idDaQuestao;
-        private final AbaCodigoFonte abaDoExercicio;
-
-        public String getCodigoFonteDoAluno()
+        try
         {
-            return abaDoExercicio.getCodigoFonte();
+            PortugolStudio.getInstancia().abrirQuestao(urlDoXmlDoExercicio);
+            
         }
-
-//        public int getIdDaQuestao()
-//        {
-//            return idDaQuestao;
-//        }
-
-        public Exercicio(AbaCodigoFonte abaDoExercicio)
+        catch (CarregamentoDeExercicioException ex)
         {
-            //this.idDaQuestao = idDaQuestao;
-            this.abaDoExercicio = abaDoExercicio;
+            ex.printStackTrace();
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
-    }
-
-    /**
-     *
-     * @return Retorna uma Instância de exercício contendo a Questão que o aluno
-     * estava resolvendo, o código que o aluno escreveu, etc
-     */
-    public Exercicio getExercicioAtual()
-    {
-        if (exercicioAtual != null)
-        {
-            return exercicioAtual;
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Não existe nenhum exercício aberto no momento!");
-        }
-
-        return null;
     }
 
     private boolean idDoExercicioFoiPassadoComoParametro()
@@ -164,11 +87,11 @@ public class TelaPrincipalApplet extends javax.swing.JApplet implements TelaPrin
 
     private void carregaExercicio()
     {
-        String idDoExercicio = getParameter("idDaQuestao");
-        AppletUtils.exibeMensagemNaConsoleJava("O applet recebeu o id da questão " + idDoExercicio);
+        String idDaQuestao = getParameter("idDaQuestao");
+        AppletUtils.exibeMensagemNaConsoleJava("O applet recebeu o id da questão " + idDaQuestao);
         try
         {
-            int id = Integer.parseInt(idDoExercicio);
+            int id = Integer.parseInt(idDaQuestao);
             //String caminhoBaseDosExercicios = "http://localhost:8080/Alice/exercicios";
             String caminhoBaseDosExercicios = getCodeBase() + getParameter("pathDosExercicios");
             if (caminhoBaseDosExercicios == null)
@@ -176,7 +99,7 @@ public class TelaPrincipalApplet extends javax.swing.JApplet implements TelaPrin
                 throw new IllegalArgumentException("O caminho base dos exercícios não foi passado como parâmetro para o applet!");
             }
             String urlDoExercicio = AppletUtils.getCaminhoDoArquivoDoExercicio(caminhoBaseDosExercicios, id);
-            criaAbaParaRealizacaoDeExercicio(id, urlDoExercicio);
+            criaAbaParaRealizacaoDeExercicio(urlDoExercicio);
         }
         catch (NumberFormatException ex)
         {
@@ -194,9 +117,9 @@ public class TelaPrincipalApplet extends javax.swing.JApplet implements TelaPrin
     {
         initComponents();
         PortugolStudio portugol = PortugolStudio.getInstancia();
-        portugol.iniciar(null, TelaPrincipalApplet.this);
+        portugol.iniciar(null, new ContextoApplet());
         setLayout(new BorderLayout());
-        add(portugol.getTelaPrincipal().getPainelTabulado(), BorderLayout.CENTER);
+        add(abaCodigoFonte, BorderLayout.CENTER);
         if (idDoExercicioFoiPassadoComoParametro())
         {
             carregaExercicio();
@@ -227,28 +150,6 @@ public class TelaPrincipalApplet extends javax.swing.JApplet implements TelaPrin
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public PainelTabuladoPrincipal getPainelTabulado()
-    {
-        return painelTabulado;
-    }
 
-    @Override
-    public void setArquivosIniciais(List<File> arquivos)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    static
-    {
-        try
-        {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-        catch (Exception ex)
-        {
-            //ex.printStackTrace();
-        }
-    }
 }
-
