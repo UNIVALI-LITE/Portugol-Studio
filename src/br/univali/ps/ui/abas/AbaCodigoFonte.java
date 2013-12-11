@@ -802,7 +802,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorArvore.setBorder(null);
         divisorEditorArvore.setDividerLocation(150);
         divisorEditorArvore.setDividerSize(8);
-        divisorEditorArvore.setResizeWeight(0.2);
+        divisorEditorArvore.setResizeWeight(0.25);
         divisorEditorArvore.setFocusable(false);
         divisorEditorArvore.setMinimumSize(new java.awt.Dimension(550, 195));
         divisorEditorArvore.setOneTouchExpandable(true);

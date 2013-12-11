@@ -271,7 +271,7 @@
                     </Property>
                     <Property name="dividerLocation" type="int" value="150"/>
                     <Property name="dividerSize" type="int" value="8"/>
-                    <Property name="resizeWeight" type="double" value="0.2"/>
+                    <Property name="resizeWeight" type="double" value="0.25"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[550, 195]"/>
