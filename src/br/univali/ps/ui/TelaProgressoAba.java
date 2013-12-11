@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.portugol.corretor.dinamico.Unmarshal;
 import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
@@ -127,7 +128,7 @@ public final class TelaProgressoAba extends JDialog
         protected Object doInBackground() throws Exception
         {
             try{
-                AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
                 publish(abaCodigoFonte);
                 return null;
             }
@@ -210,7 +211,7 @@ public final class TelaProgressoAba extends JDialog
                     try
                     {
                         Questao q = getQuestaoFromPex(arquivoPex);
-                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
                         abaCodigoFonte.setQuestao(q);
                         abaCodigoFonte.setRemovivel(false);
                         publish(abaCodigoFonte);
@@ -245,13 +246,13 @@ public final class TelaProgressoAba extends JDialog
                                 Unmarshal u = new Unmarshal();
                                 Questao q = u.execute(new FileInputStream(arquivo));
 
-                                abaCodigoFonte = new AbaCodigoFonte();
+                                abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
                                 abaCodigoFonte.setQuestao(q);
                             }
                             else
                             {
                                 String codigoFonte = FileHandle.open(arquivo);
-                                abaCodigoFonte = new AbaCodigoFonte();
+                                abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
                                 abaCodigoFonte.setCodigoFonte(codigoFonte, arquivo, true);
                             }
 

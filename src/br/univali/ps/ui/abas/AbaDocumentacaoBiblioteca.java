@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.Quantificador;

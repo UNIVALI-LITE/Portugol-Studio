@@ -1,5 +1,9 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.abas.AbaInicial;
+import br.univali.ps.ui.abas.AbaAjuda;
+import br.univali.ps.ui.abas.AbaDocumentacaoBiblioteca;
+import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.PortugolStudio;

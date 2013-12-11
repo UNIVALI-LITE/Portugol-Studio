@@ -1,5 +1,6 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
+import br.univali.ps.ui.PainelTabulado;
 import br.univali.ps.ui.util.IconFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public abstract class Aba extends JPanel
 ////        this.painelTabulado.setSelectedComponent(this);
 //    }
 
-    protected CabecalhoAba getCabecalho()
+    public CabecalhoAba getCabecalho()
     {
         return cabecalho;
     }

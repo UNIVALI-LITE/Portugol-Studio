@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.TipoDado;
@@ -6,6 +6,8 @@ import br.univali.portugol.nucleo.execucao.es.Armazenador;
 import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Configuracoes;
+import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -426,7 +428,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         botaoAumentarFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoAumentarFonte.setMaximumSize(new java.awt.Dimension(24, 24));
         botaoAumentarFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoAumentarFonte.setOpaque(false);
         botaoAumentarFonte.setPreferredSize(new java.awt.Dimension(24, 24));
         botaoAumentarFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(botaoAumentarFonte);
@@ -439,7 +440,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         botaoDiminuirFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoDiminuirFonte.setMaximumSize(new java.awt.Dimension(24, 24));
         botaoDiminuirFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoDiminuirFonte.setOpaque(false);
         botaoDiminuirFonte.setPreferredSize(new java.awt.Dimension(24, 24));
         botaoDiminuirFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(botaoDiminuirFonte);
@@ -452,7 +452,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         botaoLimpar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoLimpar.setMaximumSize(new java.awt.Dimension(24, 24));
         botaoLimpar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setOpaque(false);
         botaoLimpar.setPreferredSize(new java.awt.Dimension(24, 24));
         botaoLimpar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(botaoLimpar);
@@ -465,7 +464,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         botaoCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoCopiar.setMaximumSize(new java.awt.Dimension(24, 24));
         botaoCopiar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setOpaque(false);
         botaoCopiar.setPreferredSize(new java.awt.Dimension(24, 24));
         botaoCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(botaoCopiar);

@@ -1,5 +1,7 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.abas.AbaAjuda;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -49,7 +51,7 @@ public final class EditorAjuda extends JPanel
             {
                 //ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
                 
-                AbaCodigoFonte aba = new AbaCodigoFonte();
+                AbaCodigoFonte aba = AbaCodigoFonte.criaNovaAba();
                 aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
                 //@todo dando erro em cast nessa linha abaixo
                 AbaAjuda abaAjuda = (AbaAjuda)getParent();

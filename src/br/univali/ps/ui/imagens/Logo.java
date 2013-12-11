@@ -10,7 +10,7 @@
  */
 package br.univali.ps.ui.imagens;
 
-import br.univali.ps.ui.AbaInicial;
+import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.FabricaDicasInterface;
 import java.awt.Cursor;
 import java.awt.event.ComponentAdapter;

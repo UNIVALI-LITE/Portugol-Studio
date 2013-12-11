@@ -1,5 +1,7 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.abas.AbaMensagemCompiladorListener;
 import br.univali.portugol.nucleo.depuracao.DepuradorListener;
 import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;

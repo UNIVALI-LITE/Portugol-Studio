@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.abas.Aba;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -22,8 +23,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
         
     }    
 
-    
-    
+  
     @Override
     public Component add(Component componente)
     {

@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.util.IconFactory;
 import javax.swing.Icon;

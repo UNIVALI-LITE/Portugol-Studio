@@ -1,5 +1,7 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.abas.AbaInicial;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
@@ -233,11 +235,11 @@ public final class TelaPrincipalDesktop extends JFrame
         this.arquivosIniciais = arquivos;
     }
 
-    private AbaCodigoFonte aba = new AbaCodigoFonte();
+    private AbaCodigoFonte aba = AbaCodigoFonte.criaNovaAba();
     public void criarNovoCodigoFonte()
     {
         //getTelaProgressoaba().criarNovoCodigoFonte();
-        painelTabuladoPrincipal.add(new AbaCodigoFonte());
+        painelTabuladoPrincipal.add(AbaCodigoFonte.criaNovaAba());
     }
 
     private TelaProgressoAba getTelaProgressoaba()

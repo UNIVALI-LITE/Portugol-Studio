@@ -1,5 +1,6 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
+import br.univali.ps.ui.PainelTabuladoPrincipal;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.Icon;

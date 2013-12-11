@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 

@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSemanticoNaoTratado;

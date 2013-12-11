@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
@@ -6,6 +6,11 @@ import br.univali.ps.dominio.pack.PackDownloaderListener;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Configuracoes;
+import br.univali.ps.ui.FabricaDicasInterface;
+import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.TelaAtalhosTeclado;
+import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
@@ -138,7 +143,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
                     {
                         File exemplo = new File(((JMenuItem) e.getSource()).getName());
                         String codigoFonte = FileHandle.open(exemplo);
-                        AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         getPainelTabulado().add(abaCodigoFonte);
                         //abaCodigoFonte.adicionar(getPainelTabulado());

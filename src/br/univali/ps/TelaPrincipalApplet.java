@@ -2,7 +2,7 @@ package br.univali.ps;
 
 import br.univali.ps.exception.CarregamentoDeExercicioException;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.AbaCodigoFonte;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
 
     public TelaPrincipalApplet() throws HeadlessException
     {
-        abaCodigoFonte = new AbaCodigoFonte();
+        abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
     }
 
     

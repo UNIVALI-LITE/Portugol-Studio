@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.portugol.corretor.dinamico.CasoFalho;
 import br.univali.portugol.corretor.dinamico.Corretor;
@@ -21,6 +21,11 @@ import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Configuracoes;
+import br.univali.ps.ui.Editor;
+import br.univali.ps.ui.FabricaDicasInterface;
+import br.univali.ps.ui.PainelSaida;
+import br.univali.ps.ui.TelaOpcoesExecucao;
 import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
@@ -38,6 +43,8 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -89,9 +96,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private DefaultMutableTreeNode defaultMutableTreeNode;
     private DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
     private DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
-
+    //+++++++++++++++++++++++++++++
+    private static final PoolDeAbasDeCodigoFonte poolDeAbasDeCodigoFonte = new PoolDeAbasDeCodigoFonte(10);
     
-    public AbaCodigoFonte()
+    public static AbaCodigoFonte criaNovaAba(){
+        return poolDeAbasDeCodigoFonte.get();
+    }
+    
+    private AbaCodigoFonte()
     {
         super("Sem título", lampadaApagada, true);
 
@@ -114,6 +126,26 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorPainelSaida.resetToPreferredSizes();
     }
 
+    private static class PoolDeAbasDeCodigoFonte extends PoolDeAbasAbstrato<AbaCodigoFonte>{
+
+        public PoolDeAbasDeCodigoFonte(int quantidadeInicialDeAbasNoPool)
+        {
+            super(quantidadeInicialDeAbasNoPool);
+        }
+
+        @Override
+        protected Collection<AbaCodigoFonte> criaObjetos(int quantidadeDeObjetos)
+        {
+            List<AbaCodigoFonte> novasAbas = new ArrayList<AbaCodigoFonte>(quantidadeDeObjetos);
+            for (int i = 0; i < quantidadeDeObjetos; i++)
+            {
+                novasAbas.add(new AbaCodigoFonte());
+            }
+            return novasAbas;
+        }
+        
+    }
+    
     private void configurarArvoreEstrutural()
     {
         tree.setBackground(sPOutlineTree.getBackground());
@@ -484,7 +516,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         return this.painelSaida;
     }
 
-    protected Editor getEditor()
+    public Editor getEditor()
     {
         return editor;
     }
@@ -741,7 +773,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnFixarBarraFerramentas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarBarraFerramentas.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarBarraFerramentas.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnFixarBarraFerramentas.setOpaque(false);
         btnFixarBarraFerramentas.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarBarraFerramentas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarBarraFerramentas.add(btnFixarBarraFerramentas);
@@ -834,7 +865,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnFixarPainelStatus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarPainelStatus.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelStatus.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnFixarPainelStatus.setOpaque(false);
         btnFixarPainelStatus.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarPainelStatus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarPainelStatus.add(btnFixarPainelStatus);
@@ -855,8 +885,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         painelSaida.setMinimumSize(new java.awt.Dimension(150, 200));
         painelSaida.setPreferredSize(new java.awt.Dimension(200, 200));
+        jLayeredPane1.add(painelSaida);
         painelSaida.setBounds(110, 50, 190, 140);
-        jLayeredPane1.add(painelSaida, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         barraFerramentasFixarPainelSaida.setBackground(new java.awt.Color(255, 51, 51));
         barraFerramentasFixarPainelSaida.setFloatable(false);
@@ -870,13 +900,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnFixarPainelSaida.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarPainelSaida.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelSaida.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnFixarPainelSaida.setOpaque(false);
         btnFixarPainelSaida.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarPainelSaida.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarPainelSaida.add(btnFixarPainelSaida);
 
+        jLayeredPane1.add(barraFerramentasFixarPainelSaida);
         barraFerramentasFixarPainelSaida.setBounds(300, 10, 30, 60);
-        jLayeredPane1.add(barraFerramentasFixarPainelSaida, javax.swing.JLayeredPane.DRAG_LAYER);
+        jLayeredPane1.setLayer(barraFerramentasFixarPainelSaida, javax.swing.JLayeredPane.DRAG_LAYER);
 
         divisorEditorPainelSaida.setBottomComponent(jLayeredPane1);
 
@@ -910,7 +940,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnFixarArvoreSimbolos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFixarArvoreSimbolos.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarArvoreSimbolos.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnFixarArvoreSimbolos.setOpaque(false);
         btnFixarArvoreSimbolos.setPreferredSize(new java.awt.Dimension(24, 24));
         btnFixarArvoreSimbolos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasArvore.add(btnFixarArvoreSimbolos);
@@ -923,7 +952,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnAumentarFonteArvore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAumentarFonteArvore.setMaximumSize(new java.awt.Dimension(24, 24));
         btnAumentarFonteArvore.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnAumentarFonteArvore.setOpaque(false);
         btnAumentarFonteArvore.setPreferredSize(new java.awt.Dimension(24, 24));
         btnAumentarFonteArvore.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasArvore.add(btnAumentarFonteArvore);
@@ -935,7 +963,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnDiminuirFonteArvore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDiminuirFonteArvore.setMaximumSize(new java.awt.Dimension(24, 24));
         btnDiminuirFonteArvore.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnDiminuirFonteArvore.setOpaque(false);
         btnDiminuirFonteArvore.setPreferredSize(new java.awt.Dimension(24, 24));
         btnDiminuirFonteArvore.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasArvore.add(btnDiminuirFonteArvore);
@@ -947,7 +974,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnExpandirNosArvore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExpandirNosArvore.setMaximumSize(new java.awt.Dimension(24, 24));
         btnExpandirNosArvore.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnExpandirNosArvore.setOpaque(false);
         btnExpandirNosArvore.setPreferredSize(new java.awt.Dimension(24, 24));
         btnExpandirNosArvore.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasArvore.add(btnExpandirNosArvore);
@@ -959,7 +985,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnContrairNosArvore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnContrairNosArvore.setMaximumSize(new java.awt.Dimension(24, 24));
         btnContrairNosArvore.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnContrairNosArvore.setOpaque(false);
         btnContrairNosArvore.setPreferredSize(new java.awt.Dimension(24, 24));
         btnContrairNosArvore.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasArvore.add(btnContrairNosArvore);

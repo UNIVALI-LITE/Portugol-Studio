@@ -1,5 +1,9 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.abas.AbaConsole;
+import br.univali.ps.ui.abas.AbaMensagemCompilador;
+import br.univali.ps.ui.abas.AbaEnunciado;
+
 public final class PainelSaida extends PainelTabulado
 {
     private AbaConsole abaConsole;

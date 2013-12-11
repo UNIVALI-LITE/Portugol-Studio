@@ -134,7 +134,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         return campoExibirTela.isSelected();
     }
     
-    protected String[] getParametros()
+    public String[] getParametros()
     {
         if (campoParametros.getText() != null)
         {

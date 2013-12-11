@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.abas;
 
 import br.univali.portugol.ajuda.Ajuda;
 import br.univali.portugol.ajuda.CarregadorAjuda;
@@ -12,6 +12,7 @@ import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.dominio.pack.PackDownloaderListener;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -509,7 +510,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelCarregamento = new javax.swing.JPanel();
         rotuloCarregamento = new javax.swing.JLabel();
