@@ -4,9 +4,12 @@ import br.univali.ps.exception.CarregamentoDeExercicioException;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 
 /**
  *
@@ -79,6 +82,10 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
         portugol.iniciar();
         setLayout(new BorderLayout());
         add(abaCodigoFonte, BorderLayout.CENTER);
+        Border lineBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true);
+        Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        
+        abaCodigoFonte.setBorder(BorderFactory.createCompoundBorder(emptyBorder, lineBorder));
         if (idDoExercicioFoiPassadoComoParametro())
         {
             carregaExercicio();

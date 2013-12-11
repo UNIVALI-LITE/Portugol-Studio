@@ -800,9 +800,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         divisorEditorArvore.setBackground(new java.awt.Color(255, 255, 255));
         divisorEditorArvore.setBorder(null);
-        divisorEditorArvore.setDividerLocation(250);
+        divisorEditorArvore.setDividerLocation(150);
         divisorEditorArvore.setDividerSize(8);
-        divisorEditorArvore.setResizeWeight(1.0);
+        divisorEditorArvore.setResizeWeight(0.2);
         divisorEditorArvore.setFocusable(false);
         divisorEditorArvore.setMinimumSize(new java.awt.Dimension(550, 195));
         divisorEditorArvore.setOneTouchExpandable(true);
@@ -882,11 +882,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         jLayeredPane1.setMinimumSize(new java.awt.Dimension(150, 200));
         jLayeredPane1.setPreferredSize(new java.awt.Dimension(200, 200));
+        jLayeredPane1.setLayout(new java.awt.BorderLayout());
 
         painelSaida.setMinimumSize(new java.awt.Dimension(150, 200));
         painelSaida.setPreferredSize(new java.awt.Dimension(200, 200));
-        jLayeredPane1.add(painelSaida);
-        painelSaida.setBounds(110, 50, 190, 140);
+        jLayeredPane1.add(painelSaida, java.awt.BorderLayout.CENTER);
 
         barraFerramentasFixarPainelSaida.setBackground(new java.awt.Color(255, 51, 51));
         barraFerramentasFixarPainelSaida.setFloatable(false);
@@ -904,8 +904,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnFixarPainelSaida.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarPainelSaida.add(btnFixarPainelSaida);
 
-        jLayeredPane1.add(barraFerramentasFixarPainelSaida);
-        barraFerramentasFixarPainelSaida.setBounds(300, 10, 30, 60);
+        jLayeredPane1.add(barraFerramentasFixarPainelSaida, java.awt.BorderLayout.EAST);
         jLayeredPane1.setLayer(barraFerramentasFixarPainelSaida, javax.swing.JLayeredPane.DRAG_LAYER);
 
         divisorEditorPainelSaida.setBottomComponent(jLayeredPane1);
@@ -913,7 +912,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorArvore.setRightComponent(divisorEditorPainelSaida);
 
         painelAlinhamento2.setFocusable(false);
-        painelAlinhamento2.setMinimumSize(new java.awt.Dimension(250, 100));
+        painelAlinhamento2.setMaximumSize(new java.awt.Dimension(100, 100));
+        painelAlinhamento2.setMinimumSize(new java.awt.Dimension(100, 100));
         painelAlinhamento2.setName(""); // NOI18N
         painelAlinhamento2.setOpaque(false);
         painelAlinhamento2.setPreferredSize(new java.awt.Dimension(250, 23));
