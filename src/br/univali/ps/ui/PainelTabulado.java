@@ -22,14 +22,22 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
         
     }    
 
+    
+    
     @Override
-    public Component add(Component cmpnt)
+    public Component add(Component componente)
     {
-        if (cmpnt instanceof Aba)
+        if (componente instanceof Aba)
         {
-            cmpnt.addComponentListener(this);
+            Aba aba = (Aba)componente;
+            aba.addComponentListener(this);
+            aba.setPainelTabulado(this);
+            super.add(aba);
+            setTabComponentAt(indexOfComponent(aba), aba.getCabecalho());
+            setSelectedComponent(aba);
+            return aba;
         }
-        return super.add(cmpnt);
+        return super.add(componente);
     }
 
     public void adicionaPainelTabuladoListener(PainelTabuladoListener listener)

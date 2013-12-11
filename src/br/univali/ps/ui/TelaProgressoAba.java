@@ -39,18 +39,28 @@ public final class TelaProgressoAba extends JDialog
         initComponents();
     }
 
-    public void criarNovoCodigoFonte()
+    public AbaCodigoFonte criarNovoCodigoFonte()
     {
         rotuloStatus.setText("Criando novo arquivo de código fonte, por favor aguarde...");
 
         barraProgresso.setValue(0);
         barraProgresso.setMaximum(100);
-
-        SwingWorker worker = new CriadorArquivos(painelTabulado);
+        
+        
+        
+        CriadorArquivos worker = new CriadorArquivos(painelTabulado);
         worker.execute();
-
+        AbaCodigoFonte abaCodigoFonte = null;
+        try{
+             abaCodigoFonte = (AbaCodigoFonte)worker.get();
+            return abaCodigoFonte;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         setLocationRelativeTo(null);
         setVisible(true);
+        return abaCodigoFonte;
     }
 
     public void abrirArquivosCodigoFonte(List<File> arquivos)
@@ -116,9 +126,15 @@ public final class TelaProgressoAba extends JDialog
         @Override
         protected Object doInBackground() throws Exception
         {
-            publish(new AbaCodigoFonte());
-
-            return null;
+            try{
+                AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+                publish(abaCodigoFonte);
+                return null;
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+                throw ex;
+            }
         }
 
         @Override
@@ -126,7 +142,9 @@ public final class TelaProgressoAba extends JDialog
         {
             AbaCodigoFonte abaCodigoFonte = abas.get(0);
 
-            abaCodigoFonte.adicionar(painelTabulado);
+            //abaCodigoFonte.adicionar(painelTabulado);
+            painelTabulado.add(abaCodigoFonte);
+            abaCodigoFonte.setPainelTabulado(painelTabulado);
             abaCodigoFonte.selecionar();
 
             barraProgresso.setValue(100);
@@ -259,7 +277,8 @@ public final class TelaProgressoAba extends JDialog
             for (final AbaCodigoFonte aba : chunks)
             {
                 contador += 1;
-                aba.adicionar(painelTabulado);
+                painelTabulado.add(aba);
+                //aba.adicionar(painelTabulado);
                 barraProgresso.setValue(contador);
             }
         }

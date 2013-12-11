@@ -39,26 +39,29 @@ import net.java.balloontip.BalloonTip;
 public final class AbaInicial extends Aba implements PackDownloaderObserver
 {
     private JPopupMenu menuExemplos;
-    private PainelTabulado painelTabulado;
-    private TelaAtalhosTeclado telaAtalhosTeclado;
+    //private PainelTabulado painelTabulado;
+    private final TelaAtalhosTeclado telaAtalhosTeclado;
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
 
-    public AbaInicial(PainelTabulado painelTabulado, TelaPrincipalDesktop telaPrincipalDesktop)
+    public AbaInicial(TelaPrincipalDesktop telaPrincipalDesktop)
     {
         super();
-
-        this.painelTabulado = painelTabulado;
+        setPainelTabulado(telaPrincipalDesktop.getPainelTabulado());
         this.telaAtalhosTeclado = new TelaAtalhosTeclado();
         setCabecalho(new BotoesControleAba(this, telaPrincipalDesktop));
 
         initComponents();
+        
+        configurarAcaoExplorarExemplos();
         configurarCursorLogos();
         criarDicasInterface();
         configurarAcoes();
         configurarLinks();
+        
     }
-
+    
+    
     private void criarMenuExemplos()
     {
         try
@@ -137,7 +140,8 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
                         String codigoFonte = FileHandle.open(exemplo);
                         AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-                        abaCodigoFonte.adicionar(getPainelTabulado());
+                        getPainelTabulado().add(abaCodigoFonte);
+                        //abaCodigoFonte.adicionar(getPainelTabulado());
                     }
                     catch (Exception excecao)
                     {
@@ -266,7 +270,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         configurarAcaoExibirTelaSobre();
         configurarAcaoAjudarDesenvolvimento();
         configurarAcaoRelatarBug();
-        configurarAcaoExplorarExemplos();
+        
         configurarAcaoExibirAtalhosTeclado();
     }
 
@@ -278,6 +282,8 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             public void actionPerformed(ActionEvent e)
             {
                 getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO).actionPerformed(e);
+                Action action = getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO);
+                System.out.println("nome da classe da Action: " + action.getClass().getName());
             }
         };
 
@@ -445,8 +451,8 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
         getActionMap().put(nome, acaoExplorarExemplos);
 
-        painelTabulado.getActionMap().put(nome, acaoExplorarExemplos);
-        painelTabulado.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        getPainelTabulado().getActionMap().put(nome, acaoExplorarExemplos);
+        getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
     private void configurarAcaoExibirAtalhosTeclado()
@@ -468,8 +474,8 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
         getActionMap().put(nome, acaoExibirAtalhosTeclado);
 
-        painelTabulado.getActionMap().put(nome, acaoExibirAtalhosTeclado);
-        painelTabulado.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        getPainelTabulado().getActionMap().put(nome, acaoExibirAtalhosTeclado);
+        getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
     private void criarDicasInterface()

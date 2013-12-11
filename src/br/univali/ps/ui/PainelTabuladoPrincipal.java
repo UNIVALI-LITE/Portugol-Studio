@@ -4,15 +4,12 @@ import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 
 public final class PainelTabuladoPrincipal extends PainelTabulado implements PackDownloaderObserver
 {
@@ -35,37 +32,26 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
     public PainelTabuladoPrincipal()
     {
         initComponents();
+        
+    }
+
+    public void setAbaInicial(AbaInicial abaInicial)
+    {
+        this.abaInicial = abaInicial;
+        add(abaInicial);
+        setTabComponentAt(indexOfComponent(abaInicial), abaInicial.getCabecalho());
+        setSelectedComponent(abaInicial);
+        
+        //abaInicial.adicionar(PainelTabuladoPrincipal.this);
+        //abaInicial.inicializar();
         configurarAcoes();
-
-        addAncestorListener(new AncestorListener()
-        {
-
-            @Override
-            public void ancestorAdded(AncestorEvent event)
-                    
-            {
-                //Não me responsabilizo por esta linha -> Elieser :0
-                //@todo arrumar essa dependencia da classe TelaPrincipalDesktop
-                PainelTabuladoPrincipal.this.abaInicial = new AbaInicial(PainelTabuladoPrincipal.this, (TelaPrincipalDesktop) PainelTabuladoPrincipal.this.getParent().getParent().getParent().getParent());
-                abaInicial.adicionar(PainelTabuladoPrincipal.this);
-            }
-
-            @Override
-            public void ancestorRemoved(AncestorEvent event)
-            {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void ancestorMoved(AncestorEvent event)
-            {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
     }
 
     public AbaInicial getAbaInicial()
     {
+        if(abaInicial == null){
+            throw new IllegalStateException("A abaInicial precisa ser setada no PainelTabuladoPrincipal!");
+        }
         return abaInicial;
     }
 
@@ -232,7 +218,8 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
     {
         if (!this.temAbaAberta(AbaAjuda.class))
         {
-            abaAjuda.adicionar(this);
+            //abaAjuda.adicionar(this);
+            this.add(abaAjuda);
         }
 
         abaAjuda.selecionar();
@@ -243,11 +230,12 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
         if (abaDocumentacao == null)
         {
             abaDocumentacao = new AbaDocumentacaoBiblioteca();
-            abaDocumentacao.adicionar(this);
+            this.add(abaDocumentacao);
         }
         else if (!this.temAbaAberta(AbaDocumentacaoBiblioteca.class))
         {
-            abaDocumentacao.adicionar(this);
+            //abaDocumentacao.adicionar(this);
+            this.add(abaDocumentacao);
         }
 
         abaDocumentacao.selecionar();

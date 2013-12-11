@@ -30,14 +30,20 @@ public final class TelaPrincipalDesktop extends JFrame
     private Configuracoes configuracoes = null;
 
     private TelaProgressoAba telaProgressoAba = null;
+    
 
     public TelaPrincipalDesktop()
     {
         initComponents();
         configurarJanela();
+        criaAbas();
         instalarObservadores();
     }
 
+    private void criaAbas(){
+        painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
+    }
+    
     public Configuracoes getConfiguracoes()
     {
         if (configuracoes == null)
@@ -162,10 +168,10 @@ public final class TelaPrincipalDesktop extends JFrame
         {
             URL url = new URL(Configuracoes.getUrlDosPacotes());
             PackDownloader exemploDownlader = new PackDownloader(url, "exemplos");
-            painelTabulado.getAbaInicial().registrarListener(exemploDownlader);
+            painelTabuladoPrincipal.getAbaInicial().registrarListener(exemploDownlader);
 
             PackDownloader ajudaDownlader = new PackDownloader(url, "ajuda");
-            painelTabulado.getAbaAjuda().registrarListener(ajudaDownlader);
+            painelTabuladoPrincipal.getAbaAjuda().registrarListener(ajudaDownlader);
 
             ajudaDownlader.downloadPack();
             exemploDownlader.downloadPack();
@@ -178,9 +184,9 @@ public final class TelaPrincipalDesktop extends JFrame
 
     private void fecharAplicativo()
     {
-        painelTabulado.fecharTodasAbas(AbaCodigoFonte.class);
+        painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
 
-        if (!painelTabulado.temAbaAberta(AbaCodigoFonte.class))
+        if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
             try
             {
@@ -197,7 +203,7 @@ public final class TelaPrincipalDesktop extends JFrame
 
     public PainelTabuladoPrincipal getPainelTabulado()
     {
-        return painelTabulado;
+        return painelTabuladoPrincipal;
     }
 
     @SuppressWarnings("unchecked")
@@ -205,21 +211,21 @@ public final class TelaPrincipalDesktop extends JFrame
     private void initComponents()
     {
 
-        painelTabulado = new br.univali.ps.ui.PainelTabuladoPrincipal();
+        painelTabuladoPrincipal = new br.univali.ps.ui.PainelTabuladoPrincipal();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
 
-        painelTabulado.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        getContentPane().add(painelTabulado, java.awt.BorderLayout.CENTER);
+        painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        getContentPane().add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private br.univali.ps.ui.PainelTabuladoPrincipal painelTabulado;
+    private br.univali.ps.ui.PainelTabuladoPrincipal painelTabuladoPrincipal;
     // End of variables declaration//GEN-END:variables
 
     public void setArquivosIniciais(List<File> arquivos)
@@ -227,16 +233,18 @@ public final class TelaPrincipalDesktop extends JFrame
         this.arquivosIniciais = arquivos;
     }
 
+    private AbaCodigoFonte aba = new AbaCodigoFonte();
     public void criarNovoCodigoFonte()
     {
-        getTelaProgressoaba().criarNovoCodigoFonte();
+        //getTelaProgressoaba().criarNovoCodigoFonte();
+        painelTabuladoPrincipal.add(new AbaCodigoFonte());
     }
 
     private TelaProgressoAba getTelaProgressoaba()
     {
         if (telaProgressoAba == null)
         {
-            telaProgressoAba = new TelaProgressoAba(painelTabulado);
+            telaProgressoAba = new TelaProgressoAba(painelTabuladoPrincipal);
         }
 
         return telaProgressoAba;

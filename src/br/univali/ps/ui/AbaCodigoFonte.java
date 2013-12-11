@@ -59,9 +59,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
     private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
-    
+
     private final TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
-    
+
     private Programa programa = null;
     private InterfaceDepurador depurador;
 
@@ -90,6 +90,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
     private DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
 
+    
     public AbaCodigoFonte()
     {
         super("Sem título", lampadaApagada, true);
@@ -336,19 +337,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         Corretor corretor = new Corretor(questao);
         painelSaida.getAbaMensagensCompilador().limpar();
         int nota = 0;
-        
+
         try
         {
             nota = corretor.executar(editor.getPortugolDocumento().getCodigoFonte(), null);
         }
         catch (ErroCompilacao ex)
         {
-            AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();            
+            AbaMensagemCompilador abaMensagem = painelSaida.getAbaMensagensCompilador();
             abaMensagem.limpar();
-                    
+
             exibirResultadoAnalise(ex.getResultadoAnalise());
-            
-            abaMensagem.selecionar();            
+
+            abaMensagem.selecionar();
         }
 
         jLNota.setText(String.format("Score obtido: %s", String.valueOf(nota)));
@@ -566,7 +567,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         this.questao = questao;
         this.abaEnunciado = new AbaEnunciado();
         this.abaEnunciado.setEnunciado(questao.getEnunciado());
-        this.abaEnunciado.adicionar(painelSaida);
+        //this.abaEnunciado.adicionar(painelSaida);
+        painelSaida.add(abaEnunciado);
 
         exibirCorretor();
     }
@@ -1167,11 +1169,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         AbaMensagemCompilador abaMensagens = painelSaida.getAbaMensagensCompilador();
         abaMensagens.limpar();
         depurando = depurar;
-        
+
         try
         {
             programa = Portugol.compilar(editor.getPortugolDocumento().getCodigoFonte());
-            
+
             if (programa.getResultadoAnalise().contemAvisos())
             {
                 exibirResultadoAnalise(programa.getResultadoAnalise());
@@ -1337,7 +1339,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoInterromper.setEnabled(false);
         acaoProximaInstrucao.setEnabled(false);
         painelSaida.getConsole().setExecutandoPrograma(false);
-    }   
+    }
 
     public String getCodigoFonte()
     {
@@ -1394,19 +1396,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         switch (evt.getPropertyName())
         {
             case Configuracoes.EXIBIR_OPCOES_EXECUCAO:
-                
+
                 boolean exibirTela = (Boolean) evt.getNewValue();
-                
+
                 if (exibirTela != campoOpcoesExecucao.isSelected())
                 {
                     campoOpcoesExecucao.setSelected(exibirTela);
-                } 
-            break;
-                
+                }
+                break;
+
             case Configuracoes.TAMANHO_FONTE_ARVORE:
                 setTamanhoFonteArvore((Float) evt.getNewValue());
-            
-            break;
+
+                break;
         }
     }
 

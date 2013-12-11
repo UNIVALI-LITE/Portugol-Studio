@@ -51,9 +51,11 @@ public final class EditorAjuda extends JPanel
                 
                 AbaCodigoFonte aba = new AbaCodigoFonte();
                 aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
+                //@todo dando erro em cast nessa linha abaixo
                 AbaAjuda abaAjuda = (AbaAjuda)getParent();
                 
-                aba.adicionar(abaAjuda.getPainelTabulado());
+                //aba.adicionar(abaAjuda.getPainelTabulado());
+                abaAjuda.getPainelTabulado().add(aba);
             }
         };
         

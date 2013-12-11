@@ -11,10 +11,11 @@ public final class PainelSaida extends PainelTabulado
         initComponents();
         
         abaConsole = new AbaConsole();
-        abaConsole.adicionar(PainelSaida.this);
+        add(abaConsole);
         
         abaMensagensCompilador = new AbaMensagemCompilador();
-        abaMensagensCompilador.adicionar(PainelSaida.this);
+        //abaMensagensCompilador.adicionar(this);
+        this.add(abaMensagensCompilador);
     }
 
     public AbaConsole getConsole()

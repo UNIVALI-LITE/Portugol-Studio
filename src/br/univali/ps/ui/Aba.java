@@ -14,8 +14,7 @@ public abstract class Aba extends JPanel
     private PainelTabulado painelTabulado;
     private List<AbaListener> listeners;
 
-    public Aba()
-    {
+    public Aba() {
         if (!classesFilhas.contains(this.getClass()))
         {
             classesFilhas.add(this.getClass());
@@ -24,8 +23,12 @@ public abstract class Aba extends JPanel
         this.listeners = new ArrayList<>();
         this.cabecalho = criarCabecalhoPadrao("Sem título", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"), false);
     }
-    
-    
+
+    public void setPainelTabulado(PainelTabulado painelTabulado)
+    {
+        this.painelTabulado = painelTabulado;
+    }
+
     
      public Aba(String titulo, Icon icone, boolean removivel)
      {
@@ -55,13 +58,13 @@ public abstract class Aba extends JPanel
         return cabecalhoPadrao;
     }
     
-    public final void adicionar(PainelTabulado painelTabulado)
-    {
-        this.painelTabulado = painelTabulado;
-        this.painelTabulado.add(this);
-        this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
-        this.painelTabulado.setSelectedComponent(this);
-    }
+//    public void adicionar(PainelTabulado painelTabulado)
+//    {
+////        this.painelTabulado = painelTabulado;
+////        this.painelTabulado.add(this);
+////        this.painelTabulado.setTabComponentAt(painelTabulado.indexOfComponent(this), cabecalho);
+////        this.painelTabulado.setSelectedComponent(this);
+//    }
 
     protected CabecalhoAba getCabecalho()
     {
@@ -116,7 +119,9 @@ public abstract class Aba extends JPanel
     {
         if (painelTabulado != null)
         {
-            painelTabulado.setSelectedComponent(this);
+            if(painelTabulado.indexOfComponent(this) >= 0){
+                painelTabulado.setSelectedComponent(this);
+            }
         }
     }
 
