@@ -1,16 +1,15 @@
 package br.univali.ps.ui.abas;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class  PoolDeAbasAbstrato <T> {
+public abstract class  PoolAbstrato <T> {
 
     private final List<T> pool;
     private final int tamanhoInicialDoPool;
 
-    public PoolDeAbasAbstrato(int tamanhoInicial)
+    public PoolAbstrato(int tamanhoInicial)
     {
         if(tamanhoInicial < 1){
             throw new IllegalArgumentException("O tamanho inicial do pool deve ser pelo menos 1!");

@@ -12,7 +12,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.List;
@@ -40,6 +39,7 @@ public final class TelaProgressoAba extends JDialog
         initComponents();
     }
 
+    //@todo este método não deveria estar nessa classe
     public AbaCodigoFonte criarNovoCodigoFonte()
     {
         rotuloStatus.setText("Criando novo arquivo de código fonte, por favor aguarde...");
@@ -64,6 +64,7 @@ public final class TelaProgressoAba extends JDialog
         return abaCodigoFonte;
     }
 
+    //@todo este método também não deveria estar aqui
     public void abrirArquivosCodigoFonte(List<File> arquivos)
     {
         atualizarStatusArquivo(arquivos.size());
@@ -90,6 +91,7 @@ public final class TelaProgressoAba extends JDialog
         }
     }
 
+    //@todo muito provavelmente também não deveria estar aqui
     public void abrirCodigoFonte(final String codigoFonte)
     {
         atualizarStatusArquivo(1);

@@ -1,5 +1,8 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.ajuda;
 
+import br.univali.ps.ui.Editor;
+import br.univali.ps.ui.PainelTabulado;
+import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.AbaAjuda;
 import br.univali.ps.ui.util.IconFactory;
@@ -18,6 +21,7 @@ public final class EditorAjuda extends JPanel
 {
     private Editor editor;
     private Action acaoTenteVoceMesmo;
+    private PainelTabulado painelTabulado;
     
     public EditorAjuda()
     {
@@ -26,6 +30,8 @@ public final class EditorAjuda extends JPanel
         configurarAcoes();
         
         botaoTentar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        
     }
     
     private void configurarEditor()
@@ -40,7 +46,9 @@ public final class EditorAjuda extends JPanel
         configurarAcaoTenteVoceMesmo();
     }
     
-    //public void setPainelTabulado()
+    public void setPainelTabulado(PainelTabulado painelTabulado){
+        this.painelTabulado = painelTabulado;
+    }
     
     private void configurarAcaoTenteVoceMesmo()
     {
@@ -53,11 +61,10 @@ public final class EditorAjuda extends JPanel
                 
                 AbaCodigoFonte aba = AbaCodigoFonte.criaNovaAba();
                 aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
-                //@todo dando erro em cast nessa linha abaixo
-                AbaAjuda abaAjuda = (AbaAjuda)getParent();
-                
-                //aba.adicionar(abaAjuda.getPainelTabulado());
-                abaAjuda.getPainelTabulado().add(aba);
+                if(painelTabulado == null){
+                    throw new IllegalStateException("O painel tabulado do EditorAjuda não está setado!");
+                }
+                painelTabulado.add(aba);
             }
         };
         

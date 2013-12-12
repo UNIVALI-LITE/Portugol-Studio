@@ -126,7 +126,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorPainelSaida.resetToPreferredSizes();
     }
 
-    private static class PoolDeAbasDeCodigoFonte extends PoolDeAbasAbstrato<AbaCodigoFonte>{
+    private static class PoolDeAbasDeCodigoFonte extends PoolAbstrato<AbaCodigoFonte>{
 
         public PoolDeAbasDeCodigoFonte(int quantidadeInicialDeAbasNoPool)
         {

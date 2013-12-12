@@ -28,7 +28,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
     private Action acaoExibirTelaSobre;
     private Action acaoExibirDocumentacaoBiblioteca;
 
-    private final AbaAjuda abaAjuda = new AbaAjuda();
+    private final AbaAjuda abaAjuda;// = new AbaAjuda();
     private AbaDocumentacaoBiblioteca abaDocumentacao;
 
     private AbaInicial abaInicial;
@@ -36,7 +36,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
     public PainelTabuladoPrincipal()
     {
         initComponents();
-        
+        abaAjuda = new AbaAjuda();
     }
 
     public void setAbaInicial(AbaInicial abaInicial)
