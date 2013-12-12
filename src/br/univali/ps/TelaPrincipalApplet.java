@@ -9,7 +9,9 @@ import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
+
 
 /**
  *
@@ -22,6 +24,7 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
 
     public TelaPrincipalApplet() throws HeadlessException
     {
+        instalaLookAndFeel();
         abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
     }
 
@@ -77,6 +80,7 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
     @Override
     public void init()
     {
+        
         initComponents();
         PortugolStudio portugol = PortugolStudio.getInstancia();
         portugol.iniciar();
@@ -92,6 +96,15 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
         }
     }
 
+    private void instalaLookAndFeel(){
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * This method is called from within the init() method to initialize the
      * form. WARNING: Do NOT modify this code. The content of this method is

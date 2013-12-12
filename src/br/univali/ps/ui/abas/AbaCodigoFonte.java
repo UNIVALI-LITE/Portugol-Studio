@@ -30,13 +30,7 @@ import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -51,6 +45,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.SplitPaneUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -122,9 +117,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         carregarAlgoritmoPadrao();
         criarDicasInterface();
 
-        divisorEditorArvore.resetToPreferredSizes();
+        divisorEditorArvore.setDividerLocation(divisorEditorArvore.getMinimumDividerLocation());
         divisorEditorPainelSaida.resetToPreferredSizes();
     }
+    
+    
 
     private static class PoolDeAbasDeCodigoFonte extends PoolAbstrato<AbaCodigoFonte>{
 
@@ -620,8 +617,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelTopo = new javax.swing.JPanel();
         barraFerramentas = new javax.swing.JToolBar();
@@ -803,6 +799,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorArvore.setDividerLocation(150);
         divisorEditorArvore.setDividerSize(8);
         divisorEditorArvore.setResizeWeight(0.25);
+        divisorEditorArvore.setDoubleBuffered(true);
         divisorEditorArvore.setFocusable(false);
         divisorEditorArvore.setMinimumSize(new java.awt.Dimension(550, 195));
         divisorEditorArvore.setOneTouchExpandable(true);
@@ -912,11 +909,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorArvore.setRightComponent(divisorEditorPainelSaida);
 
         painelAlinhamento2.setFocusable(false);
-        painelAlinhamento2.setMaximumSize(new java.awt.Dimension(100, 100));
-        painelAlinhamento2.setMinimumSize(new java.awt.Dimension(100, 100));
+        painelAlinhamento2.setMaximumSize(new java.awt.Dimension(400, 100));
+        painelAlinhamento2.setMinimumSize(new java.awt.Dimension(300, 100));
         painelAlinhamento2.setName(""); // NOI18N
         painelAlinhamento2.setOpaque(false);
-        painelAlinhamento2.setPreferredSize(new java.awt.Dimension(250, 23));
+        painelAlinhamento2.setPreferredSize(new java.awt.Dimension(400, 23));
         painelAlinhamento2.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento4.setOpaque(false);
@@ -1035,10 +1032,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         corrigir.setText("Corrigir");
         corrigir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         corrigir.setPreferredSize(new java.awt.Dimension(130, 30));
-        corrigir.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        corrigir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 corrigirActionPerformed(evt);
             }
         });
