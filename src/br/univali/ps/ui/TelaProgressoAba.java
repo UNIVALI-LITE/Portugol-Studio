@@ -177,10 +177,7 @@ public final class TelaProgressoAba extends JDialog
 
     private Questao getQuestaoFromPex(String pexContent) throws JAXBException
     {
-        Unmarshal u = new Unmarshal();
-        InputStream is = new ByteArrayInputStream(pexContent.getBytes());
-        Questao q = u.execute(is);
-        return q;
+        return Questao.geraQuestao(pexContent);
     }
 
     private class CarregadorArquivos extends SwingWorker<Object, AbaCodigoFonte>

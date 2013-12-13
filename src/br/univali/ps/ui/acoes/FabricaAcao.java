@@ -38,6 +38,7 @@ public class FabricaAcao
             return acao;
         } catch (Exception ex)
         {
+            ex.printStackTrace();
         }
         return null;
     }

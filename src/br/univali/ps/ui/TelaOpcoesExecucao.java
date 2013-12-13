@@ -1,7 +1,6 @@
 package br.univali.ps.ui;
 
 import br.univali.portugol.nucleo.Programa;
-import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

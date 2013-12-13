@@ -45,7 +45,6 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.SplitPaneUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -74,6 +73,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private AcaoSalvarArquivo acaoSalvarArquivo;
     private AcaoSalvarComo acaoSalvarComo;
+    
     private FiltroArquivo filtroPrograma;
     private JFileChooser dialogoSelecaoArquivo;
 
@@ -83,6 +83,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private Action acaoInterromper;
     private Action acaoAumentarFonteArvore;
     private Action acaoDiminuirFonteArvore;
+    
 
     private Questao questao = null;
     private AbaEnunciado abaEnunciado = null;
@@ -92,13 +93,18 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private DefaultMutableTreeNode casosTreeFalhos = new DefaultMutableTreeNode("Incorretos");
     private DefaultMutableTreeNode casosTreeAcertados = new DefaultMutableTreeNode("Corretos");
     //+++++++++++++++++++++++++++++
-    private static final PoolDeAbasDeCodigoFonte poolDeAbasDeCodigoFonte = new PoolDeAbasDeCodigoFonte(10);
+    private static PoolDeAbasDeCodigoFonte poolDeAbasDeCodigoFonte;
     
     public static AbaCodigoFonte criaNovaAba(){
+        //inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando. 
+        //O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
+        if(poolDeAbasDeCodigoFonte == null){
+             poolDeAbasDeCodigoFonte = new PoolDeAbasDeCodigoFonte(10);
+        }
         return poolDeAbasDeCodigoFonte.get();
     }
     
-    private AbaCodigoFonte()
+    protected AbaCodigoFonte()
     {
         super("Sem título", lampadaApagada, true);
 
@@ -108,7 +114,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         configurarPainelSaida();
         ocultarCorretor();
         carregarConfiguracoes();
-        configurarSeletorArquivo();
+        
         configurarAcoes();
         configurarEditor();
         instalarObservadores();
@@ -116,9 +122,16 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         atualizarStatusCursor();
         carregarAlgoritmoPadrao();
         criarDicasInterface();
+        
+        configurarSeletorArquivo();
+        
 
+        btnEnviarAlgoritmo.setVisible(false);//este botão só é exibido no Applet
+        
         divisorEditorArvore.setDividerLocation(divisorEditorArvore.getMinimumDividerLocation());
         divisorEditorPainelSaida.resetToPreferredSizes();
+        
+        
     }
     
     
@@ -181,7 +194,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         setTamanhoFonteArvore(configuracoes.getTamanhoFonteArvore());
     }
 
-    private void configurarSeletorArquivo()
+    protected void configurarSeletorArquivo()
     {
         filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
 
@@ -192,7 +205,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
     }
 
-    private void configurarAcoes()
+    protected void configurarAcoes()
     {
         configurarAcaoSalvarArquivo();
         configurarAcaoSalvarComo();
@@ -204,6 +217,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         configurarAcaoDiminuirFonteArvore();
     }
 
+    
+    
     private void configurarAcaoSalvarComo()
     {
         acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
@@ -489,7 +504,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         jLDicas.invalidate();
     }
 
-    private void criarDicasInterface()
+    protected void criarDicasInterface()
     {
         FabricaDicasInterface.criarDicaInterface(btnDepurar, "Inicia a depuração do programa atual", acaoDepurar, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
         FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual", acaoExecutar, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
@@ -506,6 +521,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         FabricaDicasInterface.criarDicaInterface(btnFixarBarraFerramentas, "Fixa este painel, impedindo que ele seja ocultado ao expandir o editor", BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.SOUTH);
         FabricaDicasInterface.criarDicaInterface(btnFixarPainelSaida, "Fixa este painel, impedindo que ele seja ocultado ao expandir o editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnFixarPainelStatus, "Fixa este painel, impedindo que ele seja ocultado ao expandir o editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+
+        
     }
 
     protected PainelSaida getPainelSaida()
@@ -627,6 +644,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnProximaInstrucao = new javax.swing.JButton();
         btnExecutar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
+        btnEnviarAlgoritmo = new javax.swing.JButton();
         painelFixarBarraFerramentas = new javax.swing.JPanel();
         barraFerramentasFixarBarraFerramentas = new javax.swing.JToolBar();
         btnFixarBarraFerramentas = new javax.swing.JToggleButton();
@@ -753,6 +771,17 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
+        btnEnviarAlgoritmo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/unknown.png"))); // NOI18N
+        btnEnviarAlgoritmo.setBorderPainted(false);
+        btnEnviarAlgoritmo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEnviarAlgoritmo.setEnabled(false);
+        btnEnviarAlgoritmo.setFocusPainted(false);
+        btnEnviarAlgoritmo.setFocusable(false);
+        btnEnviarAlgoritmo.setHideActionText(true);
+        btnEnviarAlgoritmo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEnviarAlgoritmo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnEnviarAlgoritmo);
+
         painelTopo.add(barraFerramentas, java.awt.BorderLayout.CENTER);
 
         painelFixarBarraFerramentas.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 8));
@@ -787,6 +816,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         divisorEditorCorretor.setBorder(null);
         divisorEditorCorretor.setDividerLocation(600);
         divisorEditorCorretor.setDividerSize(8);
+        divisorEditorCorretor.setResizeWeight(0.7);
         divisorEditorCorretor.setFocusable(false);
         divisorEditorCorretor.setOneTouchExpandable(true);
 
@@ -1574,6 +1604,31 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         acaoSalvarArquivo.setPosicaoCursor(editor.getTextArea().getCaretPosition());
     }
 
+    protected JButton getBtnEnviarAlgoritmo() {
+        return btnEnviarAlgoritmo;
+    }
+
+    protected JButton getBtnSalvar() {
+        return btnSalvar;
+    }
+
+    protected JButton getBtnSalvarComo() {
+        return btnSalvarComo;
+    }
+
+    protected JToggleButton getBtnFixarBarraFerramentas() {
+        return btnFixarBarraFerramentas;
+    }
+
+    protected JPanel getPainelCorretor() {
+        return painelCorretor;
+    }
+
+    protected JSplitPane getDivisorEditorArvore() {
+        return divisorEditorArvore;
+    }
+
+    
     private void corrigirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_corrigirActionPerformed
     {//GEN-HEADEREND:event_corrigirActionPerformed
         corrigir();
@@ -1589,6 +1644,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnContrairNosArvore;
     private javax.swing.JButton btnDepurar;
     private javax.swing.JButton btnDiminuirFonteArvore;
+    private javax.swing.JButton btnEnviarAlgoritmo;
     private javax.swing.JButton btnExecutar;
     private javax.swing.JButton btnExpandirNosArvore;
     private javax.swing.JToggleButton btnFixarArvoreSimbolos;

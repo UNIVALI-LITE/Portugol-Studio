@@ -6,14 +6,14 @@ import br.univali.ps.ui.abas.AbaEnunciado;
 
 public final class PainelSaida extends PainelTabulado
 {
-    private AbaConsole abaConsole;
-    private AbaMensagemCompilador abaMensagensCompilador;
+    private final AbaConsole abaConsole;
+    private final AbaMensagemCompilador abaMensagensCompilador;
     private AbaEnunciado abaEnunciado;
 
     public PainelSaida()
     {
         initComponents();
-        
+
         abaConsole = new AbaConsole();
         add(abaConsole);
         

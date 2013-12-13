@@ -14,10 +14,10 @@ import java.util.Properties;
  *
  * @author Luiz Fernando Noschang
  */
-public final class Configuracoes
-{    
-    private static final File arquivoConfiguracoes = obterCaminhoArquivoConfiguracoes();
-    
+public final class Configuracoes {
+
+    private static File arquivoConfiguracoes;
+
     public static final String TAMANHO_FONTE_CONSOLE = "tamanhoFonteConsole";
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
@@ -27,50 +27,45 @@ public final class Configuracoes
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     //public static final String URL_DOS_PACOTES = "http://localhost/portugol-pacotes/";
     public static final String URL_DOS_PACOTES = "http://siaiacad17.univali.br/~alice/portugolStudio/";
-    
-    private PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
-    private Properties configuracoes = new Properties();
+
+    private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
+    private final Properties configuracoes = new Properties();
 
     private boolean exibirOpcoesExecucao = false;
-    private static final String diretorioExemplos = Configuracoes.obterDiretorioPortugol().getAbsolutePath() + "/exemplos";
+    private static String diretorioExemplos;
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Padrão";
     private boolean centralizarCodigoFonte = false;
     private static final Configuracoes instancia = new Configuracoes();
-    
-    private Configuracoes()
-    {
-        if (!PortugolStudio.getInstancia().rodandoApplet())
-        {
-            try
-            {
+
+    private Configuracoes() {
+        if (!PortugolStudio.getInstancia().rodandoApplet()) {
+            try {
+                //estas linhas foram movidas para cá para evitar que este código seja executado pelo Applet
+                diretorioExemplos = obterDiretorioPortugol().getAbsolutePath() + "/exemplos";
+                arquivoConfiguracoes = obterCaminhoArquivoConfiguracoes();
                 carregar();
-            }
-            catch (ExcecaoAplicacao excecaoAplicacao)
-            {
+            } catch (ExcecaoAplicacao excecaoAplicacao) {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
             }
         }
     }
-    
-    public static Configuracoes getInstancia()
-    {
+
+    public static Configuracoes getInstancia() {
         return instancia;
     }
-    
-    public static String getUrlDosPacotes()
-    {
+
+    public static String getUrlDosPacotes() {
         return URL_DOS_PACOTES;
     }
-    
-    public void carregar() throws ExcecaoAplicacao
-    {
-        try
-        {
+
+    public void carregar() throws ExcecaoAplicacao {
+        try {
+
             configuracoes.load(new FileReader(arquivoConfiguracoes));
-            
+
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
             //diretorioExemplos = configuracoes.getProperty(DIRETORIO_EXEMPLOS, "./Exemplos");
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
@@ -78,82 +73,68 @@ public final class Configuracoes
             temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
-        }
-        catch (IOException excecao)
-        {
+        } catch (IOException excecao) {
             throw new ExcecaoAplicacao("Não foi possível carregar as configurações do Portugol Studio. As configurações padrão serão utilizadas", excecao, ExcecaoAplicacao.Tipo.AVISO);
         }
     }
-    
-    public void salvar() throws ExcecaoAplicacao
-    {
-        try
-        {
+
+    public void salvar() throws ExcecaoAplicacao {
+        try {
             configuracoes.store(new FileWriter(arquivoConfiguracoes), "");
-        }
-        catch (IOException excecao)
-        {
+        } catch (IOException excecao) {
             throw new ExcecaoAplicacao("Não foi possível salvar as configurações do Portugol Studio. As configurações padrão serão utilizadas na próxima inicialização", excecao, ExcecaoAplicacao.Tipo.AVISO);
         }
     }
-    
-    public float getTamanhoFonteConsole()
-    {
+
+    public float getTamanhoFonteConsole() {
         return tamanhoFonteConsole;
     }
 
-    public void setTemaEditor(String theme)
-    {
+    public void setTemaEditor(String theme) {
         String oldTheme = this.temaEditor;
-        
+
         this.configuracoes.setProperty(TEMA_EDITOR, theme);
         this.temaEditor = theme;
-        
+
         suporteMudancaPropriedade.firePropertyChange(TEMA_EDITOR, oldTheme, theme);
     }
-    
-    public String getTemaEditor()
-    {
+
+    public String getTemaEditor() {
         return this.temaEditor;
     }
-    
-    public void setTamanhoFonteConsole(float tamanhoFonteConsole)
-    {
+
+    public void setTamanhoFonteConsole(float tamanhoFonteConsole) {
         float valorAntigo = this.tamanhoFonteConsole;
-        
+
         this.configuracoes.setProperty(TAMANHO_FONTE_CONSOLE, Float.toString(tamanhoFonteConsole));
         this.tamanhoFonteConsole = tamanhoFonteConsole;
-        
-        suporteMudancaPropriedade.firePropertyChange(TAMANHO_FONTE_CONSOLE, valorAntigo, tamanhoFonteConsole);        
+
+        suporteMudancaPropriedade.firePropertyChange(TAMANHO_FONTE_CONSOLE, valorAntigo, tamanhoFonteConsole);
     }
 
-    public float getTamanhoFonteEditor()
-    {
+    public float getTamanhoFonteEditor() {
         return tamanhoFonteEditor;
     }
 
-    public void setTamanhoFonteEditor(float tamanhoFonteEditor)
-    {
+    public void setTamanhoFonteEditor(float tamanhoFonteEditor) {
         float valorAntigo = this.tamanhoFonteEditor;
-        
+
         this.configuracoes.setProperty(TAMANHO_FONTE_EDITOR, Float.toString(tamanhoFonteEditor));
         this.tamanhoFonteEditor = tamanhoFonteEditor;
-        
-        suporteMudancaPropriedade.firePropertyChange(TAMANHO_FONTE_EDITOR, valorAntigo, tamanhoFonteEditor);  
+
+        suporteMudancaPropriedade.firePropertyChange(TAMANHO_FONTE_EDITOR, valorAntigo, tamanhoFonteEditor);
     }
-    
-    public void setExibirOpcoesExecucao(boolean exibirOpcoesExecucao)
-    {
+
+    public void setExibirOpcoesExecucao(boolean exibirOpcoesExecucao) {
         boolean valorAntigo = this.exibirOpcoesExecucao;
-        
+
         this.configuracoes.setProperty(EXIBIR_OPCOES_EXECUCAO, Boolean.toString(exibirOpcoesExecucao));
         this.exibirOpcoesExecucao = exibirOpcoesExecucao;
-        
+
         suporteMudancaPropriedade.firePropertyChange(EXIBIR_OPCOES_EXECUCAO, valorAntigo, exibirOpcoesExecucao);
     }
 
-    public String getDiretorioExemplos()
-    {
+    public String getDiretorioExemplos() {
         return diretorioExemplos;
     }
 
@@ -166,90 +147,73 @@ public final class Configuracoes
 //        
 //        suporteMudancaPropriedade.firePropertyChange(DIRETORIO_EXEMPLOS, valorAntigo, diretorioExemplos);
 //    }
-
-    public boolean isExibirOpcoesExecucao()
-    {
+    public boolean isExibirOpcoesExecucao() {
         return exibirOpcoesExecucao;
     }
-    
-    public void setTamanhoFonteArvore(float tamanhoFonteArvore)
-    {
+
+    public void setTamanhoFonteArvore(float tamanhoFonteArvore) {
         float valorAntigo = this.tamanhoFonteArvore;
-        
+
         this.configuracoes.setProperty(TAMANHO_FONTE_ARVORE, Float.toString(tamanhoFonteArvore));
         this.tamanhoFonteArvore = tamanhoFonteArvore;
-        
+
         suporteMudancaPropriedade.firePropertyChange(TAMANHO_FONTE_ARVORE, valorAntigo, tamanhoFonteArvore);
     }
 
-    public float getTamanhoFonteArvore()
-    {
+    public float getTamanhoFonteArvore() {
         return tamanhoFonteArvore;
     }
 
-    public void setCentralizarCodigoFonte(boolean centralizarCodigoFonte)
-    {
+    public void setCentralizarCodigoFonte(boolean centralizarCodigoFonte) {
         boolean valorAntigo = this.centralizarCodigoFonte;
-        
+
         this.configuracoes.setProperty(CENTRALIZAR_CODIGO_FONTE, Boolean.toString(centralizarCodigoFonte));
         this.centralizarCodigoFonte = centralizarCodigoFonte;
-        
+
         suporteMudancaPropriedade.firePropertyChange(CENTRALIZAR_CODIGO_FONTE, valorAntigo, centralizarCodigoFonte);
     }
 
-    public boolean isCentralizarCodigoFonte()
-    {
+    public boolean isCentralizarCodigoFonte() {
         return centralizarCodigoFonte;
     }
-    
-    public void adicionarObservadorConfiguracoes(PropertyChangeListener observador)
-    {
+
+    public void adicionarObservadorConfiguracoes(PropertyChangeListener observador) {
         suporteMudancaPropriedade.addPropertyChangeListener(observador);
-    }            
-    
-    public void adicionarObservadorConfiguracao(PropertyChangeListener observador, String configuracao)
-    {
+    }
+
+    public void adicionarObservadorConfiguracao(PropertyChangeListener observador, String configuracao) {
         suporteMudancaPropriedade.addPropertyChangeListener(configuracao, observador);
     }
-    
-    public void removerObservadorConfiguracoes(PropertyChangeListener observador)
-    {
+
+    public void removerObservadorConfiguracoes(PropertyChangeListener observador) {
         suporteMudancaPropriedade.removePropertyChangeListener(observador);
     }
-    
-    public void removerObservadorConfiguracao(PropertyChangeListener observador, String configuracao)
-    {
+
+    public void removerObservadorConfiguracao(PropertyChangeListener observador, String configuracao) {
         suporteMudancaPropriedade.removePropertyChangeListener(configuracao, observador);
     }
 
-    public static File obterDiretorioPortugol()
-    {
+    public static File obterDiretorioPortugol() {
         File diretorioUsuario = new File(".");
-        
-        try
-        {
+
+        try {
             diretorioUsuario = new File(System.getProperty("user.home"));
-            
-            if (!diretorioUsuario.exists())
-            {            
+
+            if (!diretorioUsuario.exists()) {
                 throw new Exception();
             }
+        } catch (Exception ex) {
         }
-        catch (Exception ex)
-        {
-        }
-        
+
         File caminho = new File(diretorioUsuario, ".portugol");
-        
-        if (!caminho.exists())
-        {
+
+        if (!caminho.exists()) {
             caminho.mkdir();
         }
-        return caminho ;
+        return caminho;
     }
-    
-    private static File obterCaminhoArquivoConfiguracoes()
-    {
+
+    private static File obterCaminhoArquivoConfiguracoes() {
         String nomeArquivo = "configuracoes.properties";
         File caminho = obterDiretorioPortugol();
         return new File(caminho, nomeArquivo);

@@ -1,110 +1,105 @@
 package br.univali.ps;
 
+import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.ps.exception.CarregamentoDeExercicioException;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.abas.AbaCodigoFonteDoApplet;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import javax.swing.BorderFactory;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
-
 
 /**
  *
  * @author Elieser
  */
-public class TelaPrincipalApplet extends javax.swing.JApplet
-{
-    private static final long serialVersionUID = 1L;
-    private final AbaCodigoFonte abaCodigoFonte;
+public class TelaPrincipalApplet extends javax.swing.JApplet {
 
-    public TelaPrincipalApplet() throws HeadlessException
-    {
+    private static final long serialVersionUID = 1L;
+    private AbaCodigoFonte abaCodigoFonte;
+
+    public TelaPrincipalApplet() {
         instalaLookAndFeel();
-        abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
     }
 
-    
-    
-    private void criaAbaParaRealizacaoDeExercicio(String urlDoXmlDoExercicio) throws MalformedURLException, IOException
-    {
-        try
-        {
-            PortugolStudio.getInstancia().abrirQuestao(urlDoXmlDoExercicio);
-            
-        }
-        catch (CarregamentoDeExercicioException ex)
-        {
-            ex.printStackTrace();
+    private void abreQuestao(final String urlDoPexDaQuestao) throws MalformedURLException, IOException {
+
+        try {
+            ParserDeQuestao parserDeQuestao = new ParserDeQuestaoParaDesktop();// new ParserDeQuestaoParaApplet();
+            Questao questao = PortugolStudio.getInstancia().abrirQuestao(urlDoPexDaQuestao, parserDeQuestao);
+            abaCodigoFonte.setQuestao(questao);
+
+        } catch (CarregamentoDeExercicioException ex) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
+
     }
 
-    private boolean idDoExercicioFoiPassadoComoParametro()
-    {
-        String idDaQuestao = getParameter("idDaQuestao");
-        return idDaQuestao != null && !idDaQuestao.isEmpty();
-    }
-
-    private void carregaExercicio()
-    {
-        String idDaQuestao = getParameter("idDaQuestao");
+//    private boolean recebeuOsParametros() {
+//        String idDaQuestao = getParameter("idDaQuestao");
+//        String idDoAluno = getParameter("idDoAluno");
+//        return idDaQuestao != null && !idDaQuestao.isEmpty() && idDoAluno != null && !idDoAluno.isEmpty();
+//    }
+    private void carregaExercicio() {
+        int idDaQuestao = getIdDaQuestao();
         AppletUtils.exibeMensagemNaConsoleJava("O applet recebeu o id da questão " + idDaQuestao);
-        try
-        {
-            int id = Integer.parseInt(idDaQuestao);
-            //String caminhoBaseDosExercicios = "http://localhost:8080/Alice/exercicios";
-            String caminhoBaseDosExercicios = getCodeBase() + getParameter("pathDosExercicios");
-            if (caminhoBaseDosExercicios == null)
-            {
+        try {
+            String caminhoBaseDosExercicios = "http://localhost:8084/exercicios";
+            //String caminhoBaseDosExercicios = getCodeBase() + getParameter("pathDosExercicios");
+            if (caminhoBaseDosExercicios == null) {
                 throw new IllegalArgumentException("O caminho base dos exercícios não foi passado como parâmetro para o applet!");
             }
-            String urlDoExercicio = AppletUtils.getCaminhoDoArquivoDoExercicio(caminhoBaseDosExercicios, id);
-            criaAbaParaRealizacaoDeExercicio(urlDoExercicio);
-        }
-        catch (NumberFormatException ex)
-        {
+            String urlDoExercicio = AppletUtils.getCaminhoDoArquivoDoExercicio(caminhoBaseDosExercicios, idDaQuestao);
+            abreQuestao(urlDoExercicio);
+        } catch (NumberFormatException ex) {
             String mensagemDaExcecao = "Não foi possível obter o número da questão (" + ex.getMessage() + ")";
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new Exception(mensagemDaExcecao, ex));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(e);
         }
     }
 
+    private int getIdDaQuestao() {
+        String idDaQuestao = getParameter("idDaQuestao");
+        if (idDaQuestao != null) {
+            return Integer.parseInt(idDaQuestao);
+        }
+        return 1;
+    }
+
+    private int getIdDoAluno() {
+        String idDoaluno = getParameter("idDoAluno");
+        if (idDoaluno != null) {
+            return Integer.parseInt(idDoaluno);
+        }
+        return 0;
+    }
+
     @Override
-    public void init()
-    {
-        
+    public void init() {
+
         initComponents();
+
+        abaCodigoFonte = new AbaCodigoFonteDoApplet(getIdDoAluno(), getIdDaQuestao());
+
         PortugolStudio portugol = PortugolStudio.getInstancia();
         portugol.iniciar();
         setLayout(new BorderLayout());
         add(abaCodigoFonte, BorderLayout.CENTER);
-        Border lineBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true);
-        Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-        
-        abaCodigoFonte.setBorder(BorderFactory.createCompoundBorder(emptyBorder, lineBorder));
-        if (idDoExercicioFoiPassadoComoParametro())
-        {
-            carregaExercicio();
-        }
+        //if (recebeuOsParametros()) {
+        carregaExercicio();
+        //}
     }
 
-    private void instalaLookAndFeel(){
-        try{
+    private void instalaLookAndFeel() {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * This method is called from within the init() method to initialize the
      * form. WARNING: Do NOT modify this code. The content of this method is
@@ -128,7 +123,5 @@ public class TelaPrincipalApplet extends javax.swing.JApplet
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
-
 
 }

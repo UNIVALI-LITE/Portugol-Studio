@@ -297,6 +297,7 @@ public final class TelaPrincipalDesktop extends JFrame
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             }
 
