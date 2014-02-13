@@ -115,6 +115,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         ocultarCorretor();
         carregarConfiguracoes();
         
+        configurarSeletorArquivo(); // Deve ser configurado antes das ações
         configurarAcoes();
         configurarEditor();
         instalarObservadores();
@@ -122,16 +123,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         atualizarStatusCursor();
         carregarAlgoritmoPadrao();
         criarDicasInterface();
-        
-        configurarSeletorArquivo();
-        
 
         btnEnviarAlgoritmo.setVisible(false);//este botão só é exibido no Applet
         
         divisorEditorArvore.setDividerLocation(divisorEditorArvore.getMinimumDividerLocation());
         divisorEditorPainelSaida.resetToPreferredSizes();
-        
-        
     }
     
     
