@@ -27,6 +27,7 @@ public final class Configuracoes {
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     //public static final String URL_DOS_PACOTES = "http://localhost/portugol-pacotes/";
     public static final String URL_DOS_PACOTES = "http://siaiacad17.univali.br/~alice/portugolStudio/";
+    public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
 
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
@@ -38,6 +39,7 @@ public final class Configuracoes {
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Padrão";
     private boolean centralizarCodigoFonte = false;
+    private boolean exibirAvisoVideoAulas = true;
     private static final Configuracoes instancia = new Configuracoes();
 
     private Configuracoes() {
@@ -73,6 +75,8 @@ public final class Configuracoes {
             temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
+            exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
+
         } catch (IOException excecao) {
             throw new ExcecaoAplicacao("Não foi possível carregar as configurações do Portugol Studio. As configurações padrão serão utilizadas", excecao, ExcecaoAplicacao.Tipo.AVISO);
         }
@@ -132,6 +136,20 @@ public final class Configuracoes {
         this.exibirOpcoesExecucao = exibirOpcoesExecucao;
 
         suporteMudancaPropriedade.firePropertyChange(EXIBIR_OPCOES_EXECUCAO, valorAntigo, exibirOpcoesExecucao);
+    }
+
+    public boolean isExibirAvisoVideoAulas() {
+        return exibirAvisoVideoAulas;
+    }
+
+    public void setExibirAvisoVideoAulas(boolean exibirAvisoVideoAulas) {
+        
+        boolean valorAntigo = this.exibirAvisoVideoAulas;
+        
+        this.configuracoes.setProperty(EXIBIR_AVISO_VIDEO_AULAS, Boolean.toString(exibirAvisoVideoAulas));
+        this.exibirAvisoVideoAulas = exibirAvisoVideoAulas;
+        
+        suporteMudancaPropriedade.firePropertyChange(EXIBIR_AVISO_VIDEO_AULAS, valorAntigo, exibirAvisoVideoAulas);
     }
 
     public String getDiretorioExemplos() {

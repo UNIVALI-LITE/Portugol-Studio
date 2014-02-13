@@ -16,6 +16,8 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,8 +29,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -36,6 +36,7 @@ import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -63,9 +64,35 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         criarDicasInterface();
         configurarAcoes();
         configurarLinks();
+        configurarExibicaoAvisoVideoAulas();
         
     }
     
+    private void configurarExibicaoAvisoVideoAulas()
+    {
+        addComponentListener(new ComponentAdapter() 
+        {
+            @Override
+            public void componentShown(ComponentEvent e) 
+            {
+                Configuracoes configuracoes = Configuracoes.getInstancia();
+                
+                if (configuracoes.isExibirAvisoVideoAulas())
+                {                        
+                    configuracoes.setExibirAvisoVideoAulas(false);
+                    
+                    SwingUtilities.invokeLater(new Runnable()
+                    {
+                        @Override
+                        public void run() 
+                        {
+                            JOptionPane.showMessageDialog(AbaInicial.this, "Seja bem vindo!!\n\nPara tornar o Portugol Studio ainda melhor, preparamos uma série de vídeoaulas que irão auxiliá-lo no seu aprendizado.\nPara assistí-las, acesse o link \"Assistir Vídeoaulas\" localizado no menu \"Aprender\".\n\nObrigado por utilizar o Portugol Studio e bons estudos!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                }
+            }            
+        });
+    }
     
     private void criarMenuExemplos()
     {
@@ -212,7 +239,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         }
         catch (IOException ex)
         {
-            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara auxiliar no desenvolvimento do projeto, por favor acesse o seguinte endereço:\n\nhttps://github.com/Univali-l2s/Portugol", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -271,6 +298,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
     {
         configurarAcaoSairProgramando();
         configurarAcaoConhecerLinguagem();
+        configurarAcaoAssistirVideoAulas();
         configurarAcaoConhecerBibliotecas();
         configurarAcaoExibirTelaSobre();
         configurarAcaoAjudarDesenvolvimento();
@@ -279,6 +307,27 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         configurarAcaoExibirAtalhosTeclado();
     }
 
+    private void configurarAcaoAssistirVideoAulas()
+    {
+         Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try 
+                {
+                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://www.youtube.com/user/portugolstudio"));
+                }
+                catch (IOException ex) 
+                {
+                    JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara assistir às vídeo aulas, acesse o seguinte endereço:\n\nhttps://www.youtube.com/user/portugolstudio", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        };
+
+        getActionMap().put(rotuloAssistirVideoAulas.getName(), acao);
+    }
+    
     private void configurarAcaoSairProgramando()
     {
         Action acao = new AbstractAction(rotuloSairProgramando.getName())
@@ -364,7 +413,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
                 }
                 catch (IOException ex)
                 {
-                    Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara relatar um bug, por favor acesse o seguinte endereço:\n\nhttps://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         };
@@ -407,6 +456,9 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
         rotuloSairProgramando.addMouseListener(listener);
         rotuloSairProgramando.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        rotuloAssistirVideoAulas.addMouseListener(listener);
+        rotuloAssistirVideoAulas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         rotuloConhecerBibliotecas.addMouseListener(listener);
         rotuloConhecerBibliotecas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -490,8 +542,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelGradiente = new br.univali.ps.ui.imagens.Gradiente();
         painelCabecalho = new javax.swing.JPanel();
@@ -507,6 +558,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         painelAlinhamento5 = new javax.swing.JPanel();
         rotuloFormaAprender = new javax.swing.JLabel();
         rotuloSairProgramando = new javax.swing.JLabel();
+        rotuloAssistirVideoAulas = new javax.swing.JLabel();
         rotuloConhecerLinguagem = new javax.swing.JLabel();
         rotuloConhecerBibliotecas = new javax.swing.JLabel();
         rotuloAtalhosTeclado = new javax.swing.JLabel();
@@ -613,6 +665,13 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloSairProgramando.setName("sairProgramando"); // NOI18N
         painelAlinhamento5.add(rotuloSairProgramando);
+
+        rotuloAssistirVideoAulas.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        rotuloAssistirVideoAulas.setForeground(new java.awt.Color(255, 255, 255));
+        rotuloAssistirVideoAulas.setText("<html><body><div>:: <u>Assistir Vídeoaulas</u></div></body></html>");
+        rotuloAssistirVideoAulas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloAssistirVideoAulas.setName("assistirVideoAulas"); // NOI18N
+        painelAlinhamento5.add(rotuloAssistirVideoAulas);
 
         rotuloConhecerLinguagem.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloConhecerLinguagem.setForeground(new java.awt.Color(255, 255, 255));
@@ -842,10 +901,8 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
         logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoUnivaliMouseClicked(evt);
             }
         });
@@ -866,7 +923,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         }
         catch (IOException ex)
         {
-            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara conhecer o curso de computação da UNIVALI, por favor acesse o seguinte endereço:\n\nhttp://www.univali.br/computacao", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_logoUnivaliMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -896,6 +953,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
     private javax.swing.JPanel painelTituloNovidades;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
     private javax.swing.JLabel rotuloAprender;
+    private javax.swing.JLabel rotuloAssistirVideoAulas;
     private javax.swing.JLabel rotuloAtalhosTeclado;
     private javax.swing.JLabel rotuloColaborar;
     private javax.swing.JLabel rotuloColabore;
