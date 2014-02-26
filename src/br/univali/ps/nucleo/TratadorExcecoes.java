@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -29,6 +31,8 @@ import javax.swing.border.EmptyBorder;
 
 public final class TratadorExcecoes
 {
+    private static Logger LOGGER = Logger.getLogger(TratadorExcecoes.class.getName());
+    
     private JPanel painel;
     private JLabel rotulo;
     private JTextArea caixaTexto;
@@ -45,6 +49,8 @@ public final class TratadorExcecoes
   
     public void exibirExcecao(Exception excecao)
     {
+        LOGGER.log(Level.WARNING, excecao.getMessage(), excecao);
+        
         ExcecaoAplicacao excecaoAplicacao = transformarExcecao(excecao);
         PortugolStudio portugolStudio = PortugolStudio.getInstancia();
         

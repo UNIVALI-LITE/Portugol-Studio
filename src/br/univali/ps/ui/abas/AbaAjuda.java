@@ -58,7 +58,7 @@ import javax.swing.tree.DefaultTreeModel;
 public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener, PackDownloaderObserver {
 
     private static final EditorAjuda editorDaAjuda = new EditorAjuda();//usa sempre a mesma instância do editor
-    
+
     private static final String templateRaiz
             = "   <html>"
             + "     <head>"
@@ -87,21 +87,35 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
             @Override
             public void downloadStarted() {
-                rotuloCarregamento.setText("Realizando download do conteúdo de ajuda...");
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        rotuloCarregamento.setText("Realizando download do conteúdo de ajuda...");
+                    }
+                });
+
             }
 
             @Override
             public void downloadFinished() {
-                rotuloCarregamento.setText("Carregando os tópicos da ajuda por favor aguarde...");
-                addComponentListener(new ComponentAdapter() {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void componentShown(ComponentEvent e) {
-                        carregarAjuda();
+                    public void run() {
+                        rotuloCarregamento.setText("Carregando os tópicos da ajuda por favor aguarde...");
+
+                        addComponentListener(new ComponentAdapter() {
+                            @Override
+                            public void componentShown(ComponentEvent e) {
+                                carregarAjuda();
+                            }
+                        });
+
+                        if (AbaAjuda.this.isVisible()) {
+                            carregarAjuda();
+                        }
                     }
                 });
-                if (AbaAjuda.this.isVisible()) {
-                    carregarAjuda();
-                }
             }
 
             @Override
@@ -137,10 +151,9 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     @Override
     public void setPainelTabulado(PainelTabulado painelTabulado) {
-        super.setPainelTabulado(painelTabulado); 
+        super.setPainelTabulado(painelTabulado);
         editorDaAjuda.setPainelTabulado(painelTabulado);
     }
-
 
     /**
      * *
@@ -162,7 +175,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                     Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
                     Object o = (elementName != null) ? null : attrs.getAttribute(StyleConstants.NameAttribute);
                     if (o instanceof HTML.Tag && (HTML.Tag) o == HTML.Tag.OBJECT) {//pois é, também me perguntei que raios é isso :), mas a linha anterior é melhor ainda :)
-                        
+
                         return new ObjectView(element) {
 
                             @Override
@@ -180,7 +193,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             };
         }
     }
-    
+
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void configurarAcoes() {
         configurarAcaoAtualizarAjuda();

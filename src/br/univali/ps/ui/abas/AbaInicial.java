@@ -251,7 +251,14 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             @Override
             public void downloadStarted()
             {
-                rotuloExplorarExemplos.setEnabled(false);
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        rotuloExplorarExemplos.setEnabled(false);
+                    }
+                });
+                
             }
 
             @Override

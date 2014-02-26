@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.CheckThreadViolationRepaintManager;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.dominio.pack.PackDownloader;
@@ -18,10 +19,14 @@ import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -277,6 +282,8 @@ public final class TelaPrincipalDesktop extends JFrame
 
     public static void main(final String argumentos[])
     {
+        setLoggerConfigurations();
+        RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
         try
         {
             splashInit();
@@ -338,6 +345,30 @@ public final class TelaPrincipalDesktop extends JFrame
         }
     }
 
+    public static void setLoggerConfigurations() {
+        setLoggerConfigurations(null);
+    }
+
+    public static void setLoggerConfigurations(String level) {
+        //</editor-fold>
+        final InputStream inputStream = TelaPrincipalDesktop.class.getResourceAsStream("/logging.properties");
+
+        try {
+            LogManager.getLogManager().readConfiguration(inputStream);
+            if (level != null) {
+                Logger log = LogManager.getLogManager().getLogger("");
+                log.setLevel(Level.parse(level));
+//                for (Handler h : log.getHandlers()) {
+//                    h.setLevel(Level.parse(level));
+//                    System.out.println(h.getLevel());
+//                }
+            }
+        } catch (final IOException e) {
+            Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+            Logger.getAnonymousLogger().severe(e.getMessage());
+        }
+    }
+    
     private static boolean runningApplet()
     {
         return System.getSecurityManager() != null;

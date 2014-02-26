@@ -84,35 +84,35 @@ import org.fife.ui.rtextarea.SearchEngine;
  * @author Fillipi Pelz
  * @author Luiz Fernando Noschang
  */
-public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener
-{
+public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener {
+
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
-    
+
     private static final Pattern padraoDeteccaoNomeEscopo = Pattern.compile("funcao([^\\(]+)");
     private static final Pattern padraoDeteccaoNivelEscopo = Pattern.compile("\\{|\\}");
-    private static final char[] caracteresParada = new char[] {' ', '\r', '\t', '\n' };
-    private static final int[] teclasAutoComplete = new int[] { KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD };
-    
+    private static final char[] caracteresParada = new char[]{' ', '\r', '\t', '\n'};
+    private static final int[] teclasAutoComplete = new int[]{KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD};
+
     private boolean expandido = false;
     private boolean depurando = false;
     private int ultimaPosicaoCursor;
     private int ultimaLinhaHighlight = 0;
     private int ultimaColunaHighlight = 0;
     private AbaCodigoFonte abaCodigoFonte;
-    
+
     private Object tag = null;
-    
+
     private Object tagErro = null;
-    private int ultimaLinhaErro = 0;    
-    private int ultimaColunaErro = 0; 
+    private int ultimaLinhaErro = 0;
+    private int ultimaColunaErro = 0;
     private Color corErro;
-    
+
     private ErrorStrip errorStrip;
     private PortugolParser notificaErrosEditor;
-    private PortugolLanguageSuport portugolLanguageSuport;    
-    
+    private PortugolLanguageSuport portugolLanguageSuport;
+
     private Action acaoAumentarFonte;
     private Action acaoDiminuirFonte;
     private AcaoRecortar acaoRecortar;
@@ -130,15 +130,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Action acaoPesquisarSubstituir;
     private Action acaoCentralizarCodigoFonte;
 
-    
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
     private FindReplaceActionListener observadorAcaoPesquisaSubstituir;
-    
-    public Editor()
-    {
+
+    public Editor() {
         initComponents();
-        
+
         configurarDialogoPesquisarSubstituir();
         configurarParser();
         configurarTextArea();
@@ -150,52 +148,46 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarConfiguracoes();
     }
 
-    public void configurarPesquisar(AbstractAction action)
-    {
+    public void configurarPesquisar(AbstractAction action) {
         btnPesquisar.setAction(action);
     }
-    
-    private void criarMenuTemas()
-    {
+
+    private void criarMenuTemas() {
         GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-        
-        for (String tema : gerenciadorTemas.listarTemas())
-        {
+
+        for (String tema : gerenciadorTemas.listarTemas()) {
             JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
-            
+
             itemMenu.setAction(acaoAplicarTema);
             itemMenu.setText(tema);
             itemMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            
+
             menuTema.add(itemMenu);
         }
     }
-    
-    private void configurarDialogoPesquisarSubstituir()
-    {
+
+    private void configurarDialogoPesquisarSubstituir() {
         //ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
-        
+
         dialogoPesquisar = new FindDialog(null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir = new ReplaceDialog(null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
-    }    
-    
-    private void configurarParser()
-    {
-        FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));        
+    }
+
+    private void configurarParser() {
+        FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));
         ToolTipManager.sharedInstance().registerComponent(textArea);
-        
+
         notificaErrosEditor = new PortugolParser();
         textArea.putClientProperty(PROPERTY_LANGUAGE_PARSER, notificaErrosEditor);
         textArea.addParser(notificaErrosEditor);
-        
+
         portugolLanguageSuport = new PortugolLanguageSuport();
         portugolLanguageSuport.install(textArea);
     }
-    
-    private void criarDicasInterface()
-    {
+
+    private void criarDicasInterface() {
         FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
@@ -206,24 +198,22 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
 
-    private void configurarTextArea()
-    {
+    private void configurarTextArea() {
         scrollPane.setFoldIndicatorEnabled(true);
         scrollPane.setIconRowHeaderEnabled(true);
         scrollPane.setLineNumbersEnabled(true);
-        
+
         textArea.setSyntaxEditingStyle("text/por");
         textArea.setCodeFoldingEnabled(true);
         textArea.setUseFocusableTips(true);
         textArea.addKeyListener(Editor.this);
-        
+
         errorStrip = new ErrorStrip(textArea);
         errorStrip.setBackground(new Color(220, 220, 220));
         painelEditor.add(errorStrip, BorderLayout.EAST);
-    }    
-    
-    private void configurarAcoes()
-    {
+    }
+
+    private void configurarAcoes() {
         configurarAcaoAumentarFonte();
         configurarAcaoDiminuirFonte();
         configurarAcaoRecortar();
@@ -241,47 +231,37 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoPesquisarSubstituir();
         configurarAcaoCentralizarCodigoFonte();
     }
-    
-    private void configurarAcaoDesfazer()
-    {
+
+    private void configurarAcaoDesfazer() {
         acaoDesfazer = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
         acaoDesfazer.iniciar();
     }
-    
-    private void configurarAcaoRefazer()
-    {
+
+    private void configurarAcaoRefazer() {
         acaoRefazer = (AcaoRefazer) FabricaAcao.getInstancia().criarAcao(AcaoRefazer.class);
         acaoRefazer.iniciar();
     }
 
-    private void configurarAcaoRecortar()
-    {
+    private void configurarAcaoRecortar() {
         acaoRecortar = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
         acaoRecortar.iniciar();
-    }	
-	
-    private void configurarAcaoCopiar()
-    {
-        acaoCopiar = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
-        acaoCopiar.iniciar();    
     }
-    
-    private void configurarAcaoColar()
-    {
+
+    private void configurarAcaoCopiar() {
+        acaoCopiar = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
+        acaoCopiar.iniciar();
+    }
+
+    private void configurarAcaoColar() {
         acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
         acaoColar.iniciar();
     }
 
-	
-    private void configurarAcaoComentar()
-    {
-        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png"))
-        {
+    private void configurarAcaoComentar() {
+        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
+            public void actionPerformed(ActionEvent e) {
+                try {
                     int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
                     int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
 
@@ -294,8 +274,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
                     String[] linhas = codigo.split("\n");
 
-                    for (String linha : linhas)
-                    {
+                    for (String linha : linhas) {
                         codigoComentado.append("//");
                         codigoComentado.append(linha);
                         codigoComentado.append("\n");
@@ -304,26 +283,20 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     codigo = codigoComentado.toString();
                     textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
                     textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
-                }
-                catch (BadLocationException excecao)
-                {
+                } catch (BadLocationException excecao) {
                     excecao.printStackTrace(System.out);
                 }
             }
         };
-        
+
         btnComentar.setAction(acaoComentar);
     }
-         
-    private void configurarAcaoDescomentar()
-    {
-        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "uncomment.png"))
-        {
+
+    private void configurarAcaoDescomentar() {
+        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "uncomment.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
+            public void actionPerformed(ActionEvent e) {
+                try {
                     int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
                     int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
 
@@ -336,8 +309,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
                     String[] linhas = codigo.split("\n");
 
-                    for (String linha : linhas)
-                    {
+                    for (String linha : linhas) {
                         int posicaoComentario = linha.indexOf("//");
 
                         codigoDescomentado.append(linha.substring(0, posicaoComentario));
@@ -349,425 +321,353 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
                     textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
 
-                }
-                catch (BadLocationException excecao)
-                {
-                    
+                } catch (BadLocationException excecao) {
+
                 }
             }
         };
-        
+
         btnDescomentar.setAction(acaoDescomentar);
     }
-    
-    private void configurarAcaoListarTemas()
-    {
-        acaoListarTemas = new AbstractAction("Listar temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png"))
-        {
+
+    private void configurarAcaoListarTemas() {
+        acaoListarTemas = new AbstractAction("Listar temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 int y = btnTema.getHeight();
                 int x = btnTema.getWidth() - menuTema.getPreferredSize().width;
-                        
+
                 menuTema.show(btnTema, x, y);
             }
         };
-        
-        btnTema.setAction(acaoListarTemas);                
+
+        btnTema.setAction(acaoListarTemas);
     }
-    
-    private void configurarAcaoAplicarTema()
-    {
-        acaoAplicarTema = new AbstractAction("Aplicar tema", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png"))
-        {
+
+    private void configurarAcaoAplicarTema() {
+        acaoAplicarTema = new AbstractAction("Aplicar tema", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 JMenuItem item = (JMenuItem) e.getSource();
                 String tema = item.getText();
-                
+
                 aplicarTema(tema);
             }
         };
     }
-    
-    private void configurarAcaoAumentarFonte()
-    {
-        acaoAumentarFonte = new AbstractAction("Aumentar fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
-        {
+
+    private void configurarAcaoAumentarFonte() {
+        acaoAumentarFonte = new AbstractAction("Aumentar fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 Font fonteAtual = textArea.getFont();
                 float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
-                
-                setTamanhoFonteEditor(novoTamanho);                
+
+                setTamanhoFonteEditor(novoTamanho);
             }
         };
-        
+
         btnAumentarFonte.setAction(acaoAumentarFonte);
     }
-        
-    private void configurarAcaoDiminuirFonte()
-    {
-        acaoDiminuirFonte = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
-        {
+
+    private void configurarAcaoDiminuirFonte() {
+        acaoDiminuirFonte = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 Font fonteAtual = textArea.getFont();
                 float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
 
                 setTamanhoFonteEditor(novoTamanho);
             }
         };
-        
+
         btnDiminuirFonte.setAction(acaoDiminuirFonte);
     }
-    
-    private void configurarAcaoAlternarModoEditor()
-    {
-        acaoAlternarModoEditor = new AbstractAction("Alternar modo do editor")
-        {
+
+    private void configurarAcaoAlternarModoEditor() {
+        acaoAlternarModoEditor = new AbstractAction("Alternar modo do editor") {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 btnMaximizar.getAction().actionPerformed(e);
             }
         };
-        
+
         String nome = (String) acaoAlternarModoEditor.getValue(AbstractAction.NAME);
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_DOWN_MASK);        
-        
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_DOWN_MASK);
+
         acaoAlternarModoEditor.putValue(AbstractAction.ACCELERATOR_KEY, atalho);
-        
+
         getActionMap().put(nome, acaoAlternarModoEditor);
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
     }
-    
-    private void configurarAcaoPesquisarSubstituir()
-    {
+
+    private void configurarAcaoPesquisarSubstituir() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
         String nome = "Pesquisar e substituir";
-        
-        acaoPesquisarSubstituir = new AbstractAction(nome,IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"))
-        {
+
+        acaoPesquisarSubstituir = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {                
-                if (dialogoPesquisar.isVisible())
-                {
+            public void actionPerformed(ActionEvent e) {
+                if (dialogoPesquisar.isVisible()) {
                     dialogoPesquisar.setVisible(false);
                 }
 
                 dialogoSubstituir.setVisible(true);
             }
         };
-        
+
         acaoPesquisarSubstituir.putValue(Action.ACCELERATOR_KEY, atalho);
         btnPesquisar.setAction(acaoPesquisarSubstituir);
-        
+
         getActionMap().put(nome, acaoPesquisarSubstituir);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
-    
-    private void configurarAcaoCentralizarCodigoFonte()
-    {
+
+    private void configurarAcaoCentralizarCodigoFonte() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE, InputEvent.SHIFT_DOWN_MASK);
         String nome = "Centralizar código fonte";
-        
-        acaoCentralizarCodigoFonte = new AbstractAction(nome,IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "centralizar_codigo.png"))
-        {
+
+        acaoCentralizarCodigoFonte = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "centralizar_codigo.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {                
+            public void actionPerformed(ActionEvent e) {
                 Configuracoes configuracoes = Configuracoes.getInstancia();
                 configuracoes.setCentralizarCodigoFonte(!btnCentralizarCodigoFonte.isSelected());
             }
         };
-        
-        acaoCentralizarCodigoFonte.putValue(Action.ACCELERATOR_KEY, atalho);        
+
+        acaoCentralizarCodigoFonte.putValue(Action.ACCELERATOR_KEY, atalho);
         btnCentralizarCodigoFonte.setAction(acaoCentralizarCodigoFonte);
-        
+
         getActionMap().put(nome, acaoCentralizarCodigoFonte);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
-    
-    private void configurarAcaoExpandir()
-    {   
-        acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"))
-        {
+
+    private void configurarAcaoExpandir() {
+        acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 expandido = true;
                 abaCodigoFonte.expandirEditor();
                 btnMaximizar.setAction(acaoRestaurar);
             }
         };
-        
+
         btnMaximizar.setAction(acaoExpandir);
     }
-    
-    private void configurarAcaoRestaurar()
-    {
-        acaoRestaurar = new AbstractAction("Restaurar editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png"))
-        {
+
+    private void configurarAcaoRestaurar() {
+        acaoRestaurar = new AbstractAction("Restaurar editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 expandido = false;
                 abaCodigoFonte.restaurarEditor();
                 btnMaximizar.setAction(acaoExpandir);
             }
         };
     }
-    
-    private void instalarObservadores()
-    {
+
+    private void instalarObservadores() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
-        
+
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_EDITOR);
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TEMA_EDITOR);
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.CENTRALIZAR_CODIGO_FONTE);
-        
-        textArea.getDocument().addDocumentListener(new DocumentListener() 
-        {
+
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e)
-            {
+            public void insertUpdate(DocumentEvent e) {
                 limparErroExecucao();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e)
-            {
+            public void removeUpdate(DocumentEvent e) {
                 limparErroExecucao();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e)
-            {
+            public void changedUpdate(DocumentEvent e) {
                 limparErroExecucao();
             }
         });
-        
+
         textArea.addCaretListener(Editor.this);
-        textArea.addFocusListener(new FocusAdapter()
-        {
+        textArea.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent e)
-            {
-                if (tagErro != null)
-                {
+            public void focusGained(FocusEvent e) {
+                if (tagErro != null) {
                     rolarAtePosicao(ultimaLinhaErro + 1, ultimaColunaErro);
-                }
-                else
-                {
+                } else {
                     centralizarCodigoFonte();
                 }
             }
         });
-        
-        scrollPane.addComponentListener(new ComponentAdapter() 
-        {
+
+        scrollPane.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e)
-            {
-                if (depurando)
-                {
-                    try
-                    {
+            public void componentResized(ComponentEvent e) {
+                if (depurando) {
+                    try {
                         rolarAtePosicao(ultimaLinhaHighlight, ultimaColunaHighlight);
+                    } catch (Exception ex) {
+
                     }
-                    catch (Exception ex)
-                    {
-                        
-                    }
-                }
-                else
-                {
-                    if (btnCentralizarCodigoFonte.isSelected())
-                    {
+                } else {
+                    if (btnCentralizarCodigoFonte.isSelected()) {
                         centralizarCodigoFonte();
                     }
                 }
             }
         });
     }
-    
-    private void carregarConfiguracoes()
-    {
+
+    private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
-        
+
         aplicarTema(configuracoes.getTemaEditor());
         setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
         setCentralizarCodigoFonte(configuracoes.isCentralizarCodigoFonte());
-    }    
-    
-    private void configurarBotoes()
-    {
-        for (Component componente : barraFerramentas.getComponents())
-        {
-            if (componente instanceof JButton)
-            {
+    }
+
+    private void configurarBotoes() {
+        for (Component componente : barraFerramentas.getComponents()) {
+            if (componente instanceof JButton) {
                 JButton botao = (JButton) componente;
-                
+
                 botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 botao.setOpaque(false);
             }
         }
-        
-        
+
         btnProximaInstrucao.setVisible(false);
         btnSalvar.setVisible(false);
         btnSalvarComo.setVisible(false);
         ocultarBotoesExecucao();
     }
-    
-    public void exibirBotoesExecucao()
-    {
+
+    public void exibirBotoesExecucao() {
         jSeparator1.setVisible(true);
         btnExecutar.setVisible(true);
         btnInterromper.setVisible(true);
-        
+
         btnDepurar.setVisible(btnDepurar.getAction().isEnabled());
-        btnProximaInstrucao.setVisible(!btnDepurar.getAction().isEnabled());        
+        btnProximaInstrucao.setVisible(!btnDepurar.getAction().isEnabled());
     }
-    
-    
-    public void ocultarBotoesExecucao()
-    {
+
+    public void ocultarBotoesExecucao() {
         jSeparator1.setVisible(false);
         btnExecutar.setVisible(false);
-        btnInterromper.setVisible(false);        
+        btnInterromper.setVisible(false);
         btnDepurar.setVisible(false);
-        btnProximaInstrucao.setVisible(false);        
+        btnProximaInstrucao.setVisible(false);
     }
-    
-    private void setTamanhoFonteEditor(float tamanho)
-    {
-        if ((tamanho != textArea.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
-        {
+
+    private void setTamanhoFonteEditor(float tamanho) {
+        if ((tamanho != textArea.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE)) {
             textArea.setFont(textArea.getFont().deriveFont(tamanho));
             Configuracoes.getInstancia().setTamanhoFonteEditor(tamanho);
         }
     }
-    
-    private void setCentralizarCodigoFonte(boolean centralizarCodigoFonte)
-    {
+
+    private void setCentralizarCodigoFonte(boolean centralizarCodigoFonte) {
         btnCentralizarCodigoFonte.setSelected(centralizarCodigoFonte);
         centralizarCodigoFonte();
     }
-    
-    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
-    {
+
+    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte) {
         this.abaCodigoFonte = abaCodigoFonte;
     }
-    
+
     /**
-     * Este método deve ser usado somente para definir o código fonte
-     * quando o componente estiver embutido no HTML da ajuda
-     * 
-     * @param codigo 
+     * Este método deve ser usado somente para definir o código fonte quando o
+     * componente estiver embutido no HTML da ajuda
+     *
+     * @param codigo
      */
-    public void setCodigo(String codigo)
-    {
+    public void setCodigo(String codigo) {
         codigo = codigo.replace("${rn}", "\r\n");
         codigo = codigo.replace("${n}", "\n");
         codigo = codigo.replace("${t}", "\t");
         codigo = codigo.replace("${dq}", "\"");
         codigo = codigo.replace("${sq}", "'");
-        
+
         textArea.setText(codigo);
         textArea.setCaretPosition(0);
         textArea.discardAllEdits();
-    }    
-    
-    public void setEditavel(String editavel)
-    {
+    }
+
+    public void setEditavel(String editavel) {
         boolean edit = Boolean.parseBoolean(editavel);
-        
+
         btnComentar.setVisible(edit);
         btnDescomentar.setVisible(edit);
         btnPesquisar.setVisible(edit);
         btnMaximizar.setVisible(edit);
-        textArea.setEditable(edit);                
+        textArea.setEditable(edit);
     }
 
-    public RTextScrollPane getScrollPane()
-    {
+    public RTextScrollPane getScrollPane() {
         return scrollPane;
-    }    
-    
+    }
+
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-        switch (evt.getPropertyName())
-        {
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
             case Configuracoes.TAMANHO_FONTE_EDITOR:
                 setTamanhoFonteEditor((Float) evt.getNewValue());
-            break;
-            
+                break;
+
             case Configuracoes.TEMA_EDITOR:
                 aplicarTema((String) evt.getNewValue());
-            break;
-                
+                break;
+
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:
                 setCentralizarCodigoFonte((Boolean) evt.getNewValue());
-            break;
+                break;
         }
     }
-    
-    public void adicionarObservadorCursor(CaretListener observador)
-    {
+
+    public void adicionarObservadorCursor(CaretListener observador) {
         textArea.addCaretListener(observador);
     }
 
-    public Point getPosicaoCursor()
-    {
+    public Point getPosicaoCursor() {
         return new Point(textArea.getCaretOffsetFromLineStart() + 1, textArea.getCaretLineNumber() + 1);
     }
 
-    public void setCodigoFonte(String codigoFonte)
-    {
-        int posicaoCursor = (codigoFonte.indexOf("/*${cursor}*/") >= 0)? codigoFonte.indexOf("/*${cursor}*/") : 0;
-        
+    public void setCodigoFonte(String codigoFonte) {
+        int posicaoCursor = (codigoFonte.indexOf("/*${cursor}*/") >= 0) ? codigoFonte.indexOf("/*${cursor}*/") : 0;
+
         textArea.setText(codigoFonte.replace("/*${cursor}*/", ""));
         textArea.discardAllEdits();
-        textArea.forceReparsing(notificaErrosEditor);        
+        textArea.forceReparsing(notificaErrosEditor);
         textArea.setCaretPosition(posicaoCursor);
-        
+
         centralizarCodigoFonte();
     }
 
-    public PortugolDocumento getPortugolDocumento()
-    {
+    public PortugolDocumento getPortugolDocumento() {
         return (PortugolDocumento) textArea.getDocument();
     }
 
-    public void iniciarDepuracao()
-    {
+    public void iniciarDepuracao() {
         limparErroExecucao();
-        
-        depurando = true;        
+
+        depurando = true;
         ultimaPosicaoCursor = textArea.getCaretPosition();
-        
+
         textArea.setEditable(false);
         textArea.setFocusable(false);
         textArea.setRequestFocusEnabled(false);
         textArea.setHighlightCurrentLine(false);
         textArea.setCodeFoldingEnabled(false);
-        
+
         btnDepurar.setVisible(false);
         btnProximaInstrucao.setVisible(expandido);
     }
 
-    public void pararDepuracao(ResultadoExecucao resultadoExecucao)
-    {
+    public void pararDepuracao(ResultadoExecucao resultadoExecucao) {
         depurando = false;
-        
+
         textArea.setEditable(true);
         textArea.removeAllLineHighlights();
         if (tagDetalhado != null) {
@@ -780,72 +680,63 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setRequestFocusEnabled(true);
         textArea.setCaretPosition(ultimaPosicaoCursor);
         textArea.requestFocusInWindow();
-        
+
         btnDepurar.setVisible(expandido);
         btnProximaInstrucao.setVisible(false);
-        
-        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
-        {
+
+        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
             destacarErroExecucao(resultadoExecucao.getErro().getLinha(), resultadoExecucao.getErro().getColuna());
-        }
-        else
-        {
+        } else {
             centralizarCodigoFonte();
         }
     }
-    
-    private void rolarAtePosicao(int linha, int coluna)
-    {
-        try
-        {
+
+    private void rolarAtePosicao(int linha, int coluna) {
+        try {
             rolarAtePosicao(textArea.getLineStartOffset(linha) + coluna);
-        }
-        catch (BadLocationException ex)
-        {
-            
+        } catch (BadLocationException ex) {
+
         }
     }
- 
-    private void rolarAtePosicao(int posicao)
-    {
-        try
-        {
-            int ma = scrollPane.getHeight() / 2;
-            int ml = scrollPane.getWidth() / 2;
 
-            Rectangle areaPosicao = textArea.modelToView(posicao);
+    private void rolarAtePosicao(final int posicao) {
+        SwingUtilities.invokeLater(new Runnable() {
 
-            if (areaPosicao != null)
-            {
-                Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
-                textArea.scrollRectToVisible(area);
+            @Override
+            public void run() {
+                try {
+                    int ma = scrollPane.getHeight() / 2;
+                    int ml = scrollPane.getWidth() / 2;
+
+                    Rectangle areaPosicao = textArea.modelToView(posicao);
+
+                    if (areaPosicao != null) {
+                        Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
+                        textArea.scrollRectToVisible(area);
+                    }
+                } catch (BadLocationException ex) {
+                    
+                }
             }
-        }
-        catch (BadLocationException ex)
-        {
-            
-        }
+        });
+
     }
 
     @Override
-    public void requestFocus()
-    {
+    public void requestFocus() {
         textArea.requestFocus();
         this.revalidate();
     }
 
-    public RSyntaxTextArea getTextArea()
-    {
+    public RSyntaxTextArea getTextArea() {
         return textArea;
     }
 
-    public EscopoCursor getEscopoCursor()
-    {
+    public EscopoCursor getEscopoCursor() {
         int linha = textArea.getCaretLineNumber() + 1;
         int coluna = textArea.getCaretOffsetFromLineStart();
-                
-        try
-        {
+
+        try {
             String text = textArea.getText(0, textArea.getCaretPosition());
 
             int nivel = getNivelEscopo(text);
@@ -853,29 +744,23 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             return new EscopoCursor(nome, nivel, linha, coluna);
 
-        }
-        catch (BadLocationException ex)
-        {
+        } catch (BadLocationException ex) {
             ex.printStackTrace(System.out);
         }
 
         return new EscopoCursor("indefinido", 0, linha, coluna);
     }
 
-    private String getNomeEscopo(String texto, int nivel)
-    {
+    private String getNomeEscopo(String texto, int nivel) {
         String nome = null;
         Matcher avaliadorNome = padraoDeteccaoNomeEscopo.matcher(texto);
 
-        while (avaliadorNome.find())
-        {
+        while (avaliadorNome.find()) {
             int inicio = 0;
             String temp = avaliadorNome.group(1).trim();
-            
-            for (int i = temp.length() - 1; i > 0; i--)
-            {
-                if (caracterParada(temp.charAt(i)))
-                {
+
+            for (int i = temp.length() - 1; i > 0; i--) {
+                if (caracterParada(temp.charAt(i))) {
                     inicio = i + 1;
                     break;
                 }
@@ -884,27 +769,21 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             nome = temp.substring(inicio);
         }
 
-        if (nivel == 0)
-        {
+        if (nivel == 0) {
             nome = "indefinido";
-        }
-        else if (nivel == 1)
-        {
+        } else if (nivel == 1) {
             nome = "programa";
         }
-        
+
         return nome;
     }
 
-    private int getNivelEscopo(String texto)
-    {
+    private int getNivelEscopo(String texto) {
         int nivel = 0;
         Matcher avaliadorNivel = padraoDeteccaoNivelEscopo.matcher(texto);
-        
-        while (avaliadorNivel.find())
-        {
-            switch (avaliadorNivel.group())
-            {
+
+        while (avaliadorNivel.find()) {
+            switch (avaliadorNivel.group()) {
                 case "{":
                     nivel++;
                     break;
@@ -917,159 +796,131 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return nivel;
     }
 
-    private boolean caracterParada(char caracter)
-    {
-        for (int i = 0; i < caracteresParada.length; i++)
-        {
-            if (caracter == caracteresParada[i])
-            {
+    private boolean caracterParada(char caracter) {
+        for (int i = 0; i < caracteresParada.length; i++) {
+            if (caracter == caracteresParada[i]) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
-    public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutar, final Action acaoInterromper, final Action acaoDepurar, final Action acaoProximaInstrucao)
-    {
+
+    public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutar, final Action acaoInterromper, final Action acaoDepurar, final Action acaoProximaInstrucao) {
         configurarAcaoExterna(btnSalvar, acaoSalvar);
         configurarAcaoExterna(btnSalvarComo, acaoSalvarComo);
         configurarAcaoExterna(btnExecutar, acaoExecutar);
         configurarAcaoExterna(btnInterromper, acaoInterromper);
         configurarAcaoExterna(btnDepurar, acaoDepurar);
         configurarAcaoExterna(btnProximaInstrucao, acaoProximaInstrucao);
-        
+
         FabricaDicasInterface.criarDicaInterface(btnDepurar, "Inicia a depuração do programa atual", acaoDepurar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual", acaoExecutar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução/depuração do programa atual", acaoInterromper, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnProximaInstrucao, "Executa a intrução atual do programa e vai para a próxima instrução", acaoProximaInstrucao, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-    }    
-    
-    private void configurarAcaoExterna(final JButton botao, final Action acaoExterna)
-    {
+    }
+
+    private void configurarAcaoExterna(final JButton botao, final Action acaoExterna) {
         final String nome = (String) acaoExterna.getValue(Action.NAME);
         Icon icone = (Icon) acaoExterna.getValue(Action.SMALL_ICON);
-        
-        botao.setAction(new AbstractAction(nome, icone)
-        {
+
+        botao.setAction(new AbstractAction(nome, icone) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 acaoExterna.actionPerformed(e);
             }
         });
-        
+
         botao.getAction().setEnabled(acaoExterna.isEnabled());
-        
-        acaoExterna.addPropertyChangeListener(new PropertyChangeListener()
-        {
+
+        acaoExterna.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                if (evt.getPropertyName().equals("enabled"))
-                {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("enabled")) {
                     botao.getAction().setEnabled(acaoExterna.isEnabled());
                 }
             }
         });
     }
-    
+
     @Override
-    public void caretUpdate(CaretEvent e)
-    {
+    public void caretUpdate(CaretEvent e) {
         portugolLanguageSuport.getProvider().setEscopoCursor(getEscopoCursor());
-        
-        if (tagErro != null)
-        {
-            try
-            {
+
+        if (tagErro != null) {
+            try {
                 int linhaAtual = textArea.getLineOfOffset(textArea.getCaretPosition());
-                
-                if (linhaAtual == ultimaLinhaErro)
-                {
+
+                if (linhaAtual == ultimaLinhaErro) {
                     textArea.setHighlightCurrentLine(false);
-                }
-                else
-                {
+                } else {
                     textArea.setHighlightCurrentLine(true);
                 }
-            }
-            catch (BadLocationException ex)
-            {
-                
+            } catch (BadLocationException ex) {
+
             }
         }
-        
-        if (btnCentralizarCodigoFonte.isSelected())
-        {
+
+        if (btnCentralizarCodigoFonte.isSelected()) {
             centralizarCodigoFonte();
         }
     }
-    
-    private void centralizarCodigoFonte()
-    {
-        SwingUtilities.invokeLater(new Runnable() 
-        {
+
+    private void centralizarCodigoFonte() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {                
+            public void run() {
                 rolarAtePosicao(textArea.getCaretPosition());
             }
         });
     }
 
-    @Override public void keyPressed(KeyEvent e) 
-    {
-        for (int i = 0; i < teclasAutoComplete.length; i++)
-        {
-            if (e.getKeyCode() == teclasAutoComplete[i])
-            {
+    @Override
+    public void keyPressed(KeyEvent e) {
+        for (int i = 0; i < teclasAutoComplete.length; i++) {
+            if (e.getKeyCode() == teclasAutoComplete[i]) {
                 textArea.forceReparsing(notificaErrosEditor);
                 return;
             }
         }
-        
-        if ((e.getKeyCode() == KeyEvent.VK_SPACE) && (e.isControlDown()))
-        {
+
+        if ((e.getKeyCode() == KeyEvent.VK_SPACE) && (e.isControlDown())) {
             textArea.forceReparsing(notificaErrosEditor);
         }
     }
-    
-    @Override public void keyTyped(KeyEvent e) { }
 
-    @Override public void keyReleased(KeyEvent e) { }
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
     Object tagDetalhado = null;
-    
-    public AcaoColar getAcaoColar()
-    {
+
+    public AcaoColar getAcaoColar() {
         return acaoColar;
     }
 
-    public AcaoCopiar getAcaoCopiar()
-    {
+    public AcaoCopiar getAcaoCopiar() {
         return acaoCopiar;
     }
 
-    public AcaoDesfazer getAcaoDesfazer()
-    {
+    public AcaoDesfazer getAcaoDesfazer() {
         return acaoDesfazer;
     }
 
-    public AcaoRefazer getAcaoRefazer()
-    {
+    public AcaoRefazer getAcaoRefazer() {
         return acaoRefazer;
     }
 
-    public AcaoRecortar getAcaoRecortar()
-    {
+    public AcaoRecortar getAcaoRecortar() {
         return acaoRecortar;
     }
 
-    private void aplicarTema(String nome)
-    {
-        try
-        {
+    private void aplicarTema(String nome) {
+        try {
             GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
             Theme tema = gerenciadorTemas.carregarTema(nome);
 
@@ -1079,299 +930,252 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);
 
-            for (Component componente : menuTema.getComponents())
-            {
+            for (Component componente : menuTema.getComponents()) {
                 JMenuItem item = (JMenuItem) componente;
 
-                if (item.getText().equals(nome))
-                {
+                if (item.getText().equals(nome)) {
                     item.setSelected(true);
+                } else {
+                    item.setSelected(false);
                 }
-
-                else item.setSelected(false);
             }
-            
+
             corErro = obterCorErro();
-            
-            if (tagErro != null)
-            {
+
+            if (tagErro != null) {
                 destacarErroExecucao(ultimaLinhaErro + 1, ultimaColunaErro + 1);
             }
-        }
-        catch (ExcecaoAplicacao excecao)
-        {
+        } catch (ExcecaoAplicacao excecao) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
         }
     }
 
     @Override
-    public void depuracaoInicializada(InterfaceDepurador depurador)
-    {}
+    public void depuracaoInicializada(InterfaceDepurador depurador) {
+    }
 
-    private void destacarErroExecucao(int linha, int coluna)
-    {
-        try
-        {
+    private void destacarErroExecucao(int linha, int coluna) {
+        try {
             int line = Math.max(0, linha - 1);
-            
+
             scrollPane.getGutter().addLineTrackingIcon(line, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "stop.png"));
-            
-            if (tagErro != null)
-            {
+
+            if (tagErro != null) {
                 textArea.removeLineHighlight(tagErro);
             }
-            
+
             int linhaAtual = textArea.getLineOfOffset(textArea.getCaretPosition());
-            
-            if (linhaAtual == line)
-            {
+
+            if (linhaAtual == line) {
                 textArea.setHighlightCurrentLine(false);
             }
-            
+
             tagErro = textArea.addLineHighlight(line, corErro);
-            
+
             ultimaLinhaErro = line;
             ultimaColunaErro = coluna;
-            
+
             rolarAtePosicao(line, coluna);
-        }
-        catch (BadLocationException ex)
-        {
-           ex.printStackTrace(System.out);
+        } catch (BadLocationException ex) {
+            ex.printStackTrace(System.out);
         }
     }
-    
-    private void limparErroExecucao()
-    {
-        if (tagErro != null)
-        {
+
+    private void limparErroExecucao() {
+        if (tagErro != null) {
             textArea.removeLineHighlight(tagErro);
             tagErro = null;
             scrollPane.getGutter().removeAllTrackingIcons();
             textArea.setHighlightCurrentLine(true);
         }
     }
-    
+
     @Override
-    public void highlightLinha(int linha)
-    {
-        try
-        {
+    public void highlightLinha(int linha) {
+        try {
             int line = linha - 1;
-            
-            if (tag != null)
-            {
+
+            if (tag != null) {
                 textArea.removeLineHighlight(tag);
             }
 
-            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));            
-            
+            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));
+
             ultimaLinhaHighlight = line;
             ultimaColunaHighlight = 0;
-            
+
             rolarAtePosicao(line, 0);
-        }
-        catch (BadLocationException ex)
-        {
-           ex.printStackTrace(System.out);
+        } catch (BadLocationException ex) {
+            ex.printStackTrace(System.out);
         }
     }
 
     @Override
-    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
-    {
+    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho) {
         int line = linha - 1;
         Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
         int offs = elem.getStartOffset() + coluna;
 
         try {
             if (tagDetalhado == null) {
-                tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs+tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+                tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
             } else {
-                textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs+tamanho);
+                textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs + tamanho);
             }
-            
+
             ultimaLinhaHighlight = line;
             ultimaColunaHighlight = coluna;
-            
+
             rolarAtePosicao(line, coluna);
-            
+
         } catch (BadLocationException ex) {
             Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolo)
-    {}
+    public void simbolosAlterados(List<Simbolo> simbolo) {
+    }
 
     @Override
-    public void simboloDeclarado(Simbolo simbolo)
-    {}
+    public void simboloDeclarado(Simbolo simbolo) {
+    }
 
     @Override
-    public void mensagemCompiladorSelecionada(Mensagem mensagem)
-    {
+    public void mensagemCompiladorSelecionada(Mensagem mensagem) {
         int linha = 0;
         int coluna = 0;
-        
-        if (mensagem instanceof ErroAnalise)
-        {
+
+        if (mensagem instanceof ErroAnalise) {
             linha = ((ErroAnalise) mensagem).getLinha();
             coluna = ((ErroAnalise) mensagem).getColuna();
-        }
-        
-        else if (mensagem instanceof AvisoAnalise)
-        {
+        } else if (mensagem instanceof AvisoAnalise) {
             linha = ((AvisoAnalise) mensagem).getLinha();
             coluna = ((AvisoAnalise) mensagem).getColuna();
         }
-        
+
         posicionarCursor(linha, coluna);
-    }    
-    
-    public void posicionarCursor(int linha, int coluna)
-    {
-        try
-        {
+    }
+
+    public void posicionarCursor(int linha, int coluna) {
+        try {
             int nova = textArea.getLineStartOffset(linha - 1) + coluna;
 
-            if (nova >= 0 && nova < textArea.getText().length())
-            {
+            if (nova >= 0 && nova < textArea.getText().length()) {
                 textArea.setCaretPosition(nova);
                 textArea.requestFocus();
             }
-        }
-        catch (BadLocationException ex)
-        {
+        } catch (BadLocationException ex) {
             ex.printStackTrace(System.err);
         }
     }
 
     @Override
-    public void simboloRemovido(Simbolo simbolo) {}
+    public void simboloRemovido(Simbolo simbolo) {
+    }
 
-    private Color obterCorErro()
-    {
+    private Color obterCorErro() {
         Color cor = new Color(1f, 0f, 0f, 0.15f);
-            
+
         // Por enquanto vamos fazer no braço, depois vemos como podemos 
         // incluir e/ou buscar esta informação no tema
-
-        for (Component componente : menuTema.getComponents())
-        {
+        for (Component componente : menuTema.getComponents()) {
             JMenuItem item = (JMenuItem) componente;
 
-            if (item.isSelected() && item.getText().equals("Dark"))
-            {
+            if (item.isSelected() && item.getText().equals("Dark")) {
                 cor = new Color(1f, 0f, 0f, 0.50f);
             }
         }
-        
+
         return cor;
     }
 
-    private class FindReplaceActionListener implements ActionListener
-    {
+    private class FindReplaceActionListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             SearchDialogSearchContext context = dialogoPesquisar.getSearchContext();
-            
-            switch (command)
-            {
+
+            switch (command) {
                 case FindDialog.ACTION_FIND:
-            
-                    if (!SearchEngine.find(textArea, context))
-                    {
+
+                    if (!SearchEngine.find(textArea, context)) {
                         reiniciar(context, textArea, e);
                     }
-                    
-                break;
-                    
+
+                    break;
+
                 case ReplaceDialog.ACTION_REPLACE:
-                    
-                    if (!SearchEngine.replace(textArea, context))
-                    {
+
+                    if (!SearchEngine.replace(textArea, context)) {
                         reiniciar(context, textArea, e);
                     }
-                    
-                break;
-                
+
+                    break;
+
                 case ReplaceDialog.ACTION_REPLACE_ALL:
                     //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
                     int count = SearchEngine.replaceAll(textArea, context);
                     JOptionPane.showMessageDialog(getParent(), count + " ocorrências foram substituídas.");
-                    
-                break;
+
+                    break;
             }
         }
-        
-        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, ActionEvent e)
-        {
+
+        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, ActionEvent e) {
             //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
             UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-                        
+
             String s = "A pesquisa chegou no início do arquivo, deseja recomeçar do final?";
 
-            if (context.getSearchForward())
-            {
+            if (context.getSearchForward()) {
                 s = "A pesquisa chegou no final do arquivo, deseja recomeçar do início?";
             }
 
-            if (JOptionPane.showConfirmDialog(getParent(), s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
-            {
-                if (context.getSearchForward())
-                {
+            if (JOptionPane.showConfirmDialog(getParent(), s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
+                if (context.getSearchForward()) {
                     textArea.setCaretPosition(0);
-                }
-                else
-                {
+                } else {
                     textArea.setCaretPosition(textArea.getText().length() - 1);
                 }
 
                 actionPerformed(e);
             }
         }
-    }    
-    
-    public final class EscopoCursor
-    {
+    }
+
+    public final class EscopoCursor {
+
         private final String nome;
         private final int profundidade;
         private final int linha;
         private final int coluna;
 
-        public EscopoCursor(String nome, int profundidade, int linha, int coluna)
-        {
+        public EscopoCursor(String nome, int profundidade, int linha, int coluna) {
             this.nome = nome;
             this.profundidade = profundidade;
             this.linha = linha;
             this.coluna = coluna;
         }
 
-        public String getNome()
-        {
+        public String getNome() {
             return nome;
         }
 
-        public int getProfundidade()
-        {
+        public int getProfundidade() {
             return profundidade;
         }
 
-        public int getLinha()
-        {
+        public int getLinha() {
             return linha;
         }
 
-        public int getColuna()
-        {
+        public int getColuna() {
             return coluna;
         }
-    }    
-    
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
