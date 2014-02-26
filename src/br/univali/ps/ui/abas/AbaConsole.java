@@ -62,8 +62,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     private Action acaoCopiar;
     
     private final HandlerDaSaida handlerDaSaida;
-
-    
+    private AbaCodigoFonte abaCodigoFonte;
     
     public AbaConsole()
     {
@@ -152,6 +151,11 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         criarAcaoAumentarFonte();
         criarAcaoDiminuirFonte();
 
+    }
+
+    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
+    {
+        this.abaCodigoFonte = abaCodigoFonte;
     }
 
     public void limparConsole(){
@@ -628,6 +632,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         @Override
         protected Object doInBackground() throws Exception
         {
+            abaCodigoFonte.exibirPainelSaida();
+            
             if (valorSaida != null)
             {
                 console.append(valorSaida);
@@ -664,6 +670,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador) throws Exception
         {
             setLendo(true);
+            
+            abaCodigoFonte.exibirPainelSaida();
             this.armazenador = armazenador;
             this.tipoDado = tipoDado;
 
