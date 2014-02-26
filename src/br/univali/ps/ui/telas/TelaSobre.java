@@ -31,7 +31,7 @@ public final class TelaSobre extends JDialog
         botaoSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoLicencas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        setSize(640, 480);        
+        setSize(640, 550);        
     }
 
     private void configurarAcaoSair() 
@@ -98,7 +98,7 @@ public final class TelaSobre extends JDialog
 
         rotuloDescricao.setBackground(new java.awt.Color(255, 255, 255));
         rotuloDescricao.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        rotuloDescricao.setText("<html>                 \n\t<head>\n\t               <style>\n                 p                    \n {                           margin-bottom: 8px;                 } \t\n\t\t                     .atributo                      \n           {                                             color: black;\t                         font-weight : bold;                   } \t\n\t\t                       .valor                                 {                                               color: maroon;                              font-weight: bold;                       }              a \t{                  color: blue;              }                          </style>         </head>         <body>           <p>                 <span class=\"atributo\">Nome do aplicativo: </span>              <span class=\"valor\">Portugol Studio</span>            </p>                               <p>                                <span class=\"atributo\">Versão: </span>                  <span class=\"valor\">2.0</span>                 </p>                               <p>                              <span class=\"atributo\">Linguagem de Programação: </span>              <span class=\"valor\">Java <sup style=\"font-size: smaller;\">TM</sup></span>          </p>                          <p>                                           <span class=\"atributo\">Home page: </span>                      <span class=\"valor\">http://univali-l2s.github.com/Portugol</span>           </p>                            <p>                                        <span class=\"atributo\">Orientador: </span>             <span class=\"valor\">                      André Luis Alice Raabe ( <a href='mailto:raabe@univali.br'>raabe@univali.br</a> )             </span>             </p>         <span class=\"atributo\">Programadores: </span>          <ul> \t             <li>                             <span class=\"valor\">                        Fillipi Domingos Pelz ( <a href='mailto:fillipi.pelz@gmail.com'>fillipi.pelz@gmail.com</a> )                      </span>                                                   </li>             <li>                                                              <span class=\"valor\">                             Luiz Fernando Noschang ( <a href='mailto:noschang@univali.br'>noschang@univali.br</a> )                       </span>                                 </li>         </ul>                                             <span class=\"atributo\">Demais colaboradores: </span>                 <ul>              <li>                 <span class=\"valor\"> Andre Luiz Maciel Santana</span>             </li>             <li>                 <span class=\"valor\"> Carlos Alexandre Krueger </span>             </li>             <li>                 <span class=\"valor\">Giordana Maria da Costa Valle</span>             </li>          </ul>                          </body> </html>");
+        rotuloDescricao.setText("<html>\n\t<head>\n\t\t<style>\n\t\t\n\t\t\tp { margin-bottom: 8px; }\n\t\t\ta { color: blue; }\n\n\t\t\t.atributo { color: black; font-weight : bold;  }\n\t\t\t.valor    { color: maroon; font-weight: bold;  }\n\n\t\t</style>\n\t</head>\n\t<body>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Nome do aplicativo: </span>\n\t\t\t<span class=\"valor\">Portugol Studio</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Versão: </span>\n\t\t\t<span class=\"valor\">2.0</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Linguagem de Programação: </span>\n\t\t\t<span class=\"valor\">Java <sup style=\"font-size: smaller;\">TM</sup></span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Home page: </span>\n\t\t\t<span class=\"valor\">http://univali-l2s.github.com/Portugol</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Orientador: </span>\n\t\t\t<span class=\"valor\">André Luis Alice Raabe ( <a href='mailto:raabe@univali.br'>raabe@univali.br</a> )</span>\n\t\t</p>\n\t\t<span class=\"atributo\">Programadores: </span>\n\n\t\t<ul>\n\t\t\t<li><span class=\"valor\">Elieser Ademir de Jesus ( <a href='mailto:elieserdejesus@gmail.com'>elieserdejesus@gmail.com</a> )</span></li>\n\t\t\t<li><span class=\"valor\">Fillipi Domingos Pelz ( <a href='mailto:fillipi.pelz@gmail.com'>fillipi.pelz@gmail.com</a> )</span></li>\n\t\t\t<li><span class=\"valor\">Luiz Fernando Noschang ( <a href='mailto:noschang@univali.br'>noschang@univali.br</a> )</span></li>\n\t\t</ul>\n\n\t\t<span class=\"atributo\">Demais colaboradores: </span>\n\t\t<ul>\n\t\t\t<li><span class=\"valor\">André Luiz Maciel Santana</span></li>\n\t\t\t<li><span class=\"valor\">Carlos Alexandre Krueger</span></li>\n\t\t\t<li><span class=\"valor\">Giordana Maria da Costa Valle</span></li>\n\t\t\t<li><span class=\"valor\">Nereu Oliveira</span></li>\n\t\t\t<li><span class=\"valor\">Paula Mannes</span></li>\n\t\t\t<li><span class=\"valor\">Roberto Gonçalves Augusto Junior</span></li>\n\t\t</ul>\n\t</body>\n</html>");
         rotuloDescricao.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         rotuloDescricao.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 8, 8, 8));
         rotuloDescricao.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -115,24 +115,24 @@ public final class TelaSobre extends JDialog
         painelConteudoLayout.setHorizontalGroup(
             painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelConteudoLayout.createSequentialGroup()
-                .addComponent(rotuloDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94)
+                .addComponent(rotuloDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addGroup(painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addContainerGap())
         );
         painelConteudoLayout.setVerticalGroup(
             painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelConteudoLayout.createSequentialGroup()
+                .addContainerGap(52, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(40, 40, 40)
+                .addComponent(jLabel2)
+                .addGap(55, 55, 55))
+            .addGroup(painelConteudoLayout.createSequentialGroup()
                 .addComponent(rotuloDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelConteudoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(32, 32, 32))
         );
 
         painelCentro.add(painelConteudo, java.awt.BorderLayout.CENTER);
