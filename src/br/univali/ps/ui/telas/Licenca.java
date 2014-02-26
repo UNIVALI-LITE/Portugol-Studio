@@ -7,10 +7,16 @@ public class Licenca extends javax.swing.JDialog
     public Licenca(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
+        
         initComponents();
         setTitle("Licença do Portugol");
         toFront();
         setLocationRelativeTo(null);
+        
+        jTALicencaANTLR.setCaretPosition(0);
+        jTALicencaBalloonTip.setCaretPosition(0);
+        jTALicencaPortugol.setCaretPosition(0);
+        jTALicencaRSTA.setCaretPosition(0);        
     }
 
     /**
@@ -22,7 +28,8 @@ public class Licenca extends javax.swing.JDialog
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        painelConteudo = new javax.swing.JPanel();
+        painelTabulado = new javax.swing.JTabbedPane();
         jSPLicencaPortugol = new javax.swing.JScrollPane();
         jTALicencaPortugol = new javax.swing.JTextArea();
         jSPLicencaANTLR = new javax.swing.JScrollPane();
@@ -36,40 +43,77 @@ public class Licenca extends javax.swing.JDialog
         setMaximumSize(new java.awt.Dimension(659, 526));
         setMinimumSize(new java.awt.Dimension(659, 526));
         setPreferredSize(new java.awt.Dimension(659, 526));
+        setResizable(false);
+
+        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        painelConteudo.setLayout(new java.awt.BorderLayout());
+
+        painelTabulado.setFocusable(false);
+
+        jSPLicencaPortugol.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
+        jSPLicencaPortugol.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jSPLicencaPortugol.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        jSPLicencaPortugol.setOpaque(false);
 
         jTALicencaPortugol.setEditable(false);
         jTALicencaPortugol.setColumns(20);
+        jTALicencaPortugol.setLineWrap(true);
         jTALicencaPortugol.setRows(5);
-        jTALicencaPortugol.setText("    \n    Portugol Studio   - Ambiente gráfico para programação em Portugol\n    Portugol Nucleo   - Analisador Sintático/Semântico e Interpretador \n    Portugol Corretor - Verificador de exercícios escritos em Portugol \n\n    Copyright (C) 2013  UNIVALI - Universidade do Vale do Itajaí\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU Lesser General Public License as published \n    by the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU Lesser General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.\n");
+        jTALicencaPortugol.setText("Portugol Studio   - Ambiente gráfico para programação em Portugol\nPortugol Nucleo   - Analisador Sintático/Semântico e Interpretador\nPortugol Corretor - Verificador de exercícios escritos em Portugol\n\nCopyright (C) 2013  UNIVALI - Universidade do Vale do Itajaí\n\nThis program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU Lesser General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.");
+        jTALicencaPortugol.setWrapStyleWord(true);
+        jTALicencaPortugol.setBorder(null);
+        jTALicencaPortugol.setCaretPosition(0);
         jSPLicencaPortugol.setViewportView(jTALicencaPortugol);
 
-        jTabbedPane1.addTab("Licença do Portugol", jSPLicencaPortugol);
+        painelTabulado.addTab("Licença do Portugol", jSPLicencaPortugol);
+
+        jSPLicencaANTLR.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
+        jSPLicencaANTLR.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jSPLicencaANTLR.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        jSPLicencaANTLR.setOpaque(false);
 
         jTALicencaANTLR.setEditable(false);
         jTALicencaANTLR.setColumns(20);
         jTALicencaANTLR.setRows(5);
-        jTALicencaANTLR.setText("Copyright (c) 2010 Terence Parr\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the author nor the names of its contributors may\n      be used to endorse or promote products derived from this software\n      without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE \nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jTALicencaANTLR.setText("Copyright (c) 2010, Terence Parr.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are\nmet:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in\n      the documentation and/or other materials provided with the\n      distribution.\n\n    * Neither the name of the author nor the names of its contributors\n      may be used to endorse or promote products derived from this\n      software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT \nHOLDER> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, \nEXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,\nPROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \nPROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY \nOF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\nNEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS \nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jTALicencaANTLR.setBorder(null);
+        jTALicencaANTLR.setCaretPosition(0);
         jSPLicencaANTLR.setViewportView(jTALicencaANTLR);
 
-        jTabbedPane1.addTab("Licença do ANTLR 3", jSPLicencaANTLR);
+        painelTabulado.addTab("Licença do ANTLR 3", jSPLicencaANTLR);
 
-        jTALicencaRSTA.setColumns(20);
+        jSPLicencaRSTA.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
+        jSPLicencaRSTA.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jSPLicencaRSTA.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        jSPLicencaRSTA.setOpaque(false);
+
         jTALicencaRSTA.setEditable(false);
+        jTALicencaRSTA.setColumns(20);
         jTALicencaRSTA.setRows(5);
-        jTALicencaRSTA.setText("Copyright (c) 2012, Robert Futrell\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the author nor the names of its contributors may\n      be used to endorse or promote products derived from this software\n      without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE \nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jTALicencaRSTA.setText("Copyright (c) 2012, Robert Futrell.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are\nmet:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in\n      the documentation and/or other materials provided with the\n      distribution.\n\n    * Neither the name of the author nor the names of its contributors\n      may be used to endorse or promote products derived from this\n      software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT \nHOLDER> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, \nEXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,\nPROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \nPROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY \nOF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\nNEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS \nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jTALicencaRSTA.setBorder(null);
         jSPLicencaRSTA.setViewportView(jTALicencaRSTA);
 
-        jTabbedPane1.addTab("Licença do RSyntaxTextArea", jSPLicencaRSTA);
+        painelTabulado.addTab("Licença do RSyntaxTextArea", jSPLicencaRSTA);
 
-        jTALicencaBalloonTip.setColumns(20);
+        jSPLicencaBalloonTip.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
+        jSPLicencaBalloonTip.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jSPLicencaBalloonTip.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        jSPLicencaBalloonTip.setOpaque(false);
+
         jTALicencaBalloonTip.setEditable(false);
+        jTALicencaBalloonTip.setColumns(20);
         jTALicencaBalloonTip.setRows(5);
-        jTALicencaBalloonTip.setText("Copyright (c) 2011, Bernhard Pauler, Tim Molderez.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the author nor the names of its contributors may\n      be used to endorse or promote products derived from this software\n      without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE \nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jTALicencaBalloonTip.setText("Copyright (c) 2011, Bernhard Pauler, Tim Molderez.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are\nmet:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in\n      the documentation and/or other materials provided with the\n      distribution.\n\n    * Neither the name of the author nor the names of its contributors\n      may be used to endorse or promote products derived from this\n      software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT \nHOLDER> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, \nEXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,\nPROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \nPROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY \nOF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\nNEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS \nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.");
+        jTALicencaBalloonTip.setBorder(null);
+        jTALicencaBalloonTip.setCaretPosition(0);
         jSPLicencaBalloonTip.setViewportView(jTALicencaBalloonTip);
 
-        jTabbedPane1.addTab("Licença do Balloon Tip", jSPLicencaBalloonTip);
+        painelTabulado.addTab("Licença do Balloon Tip", jSPLicencaBalloonTip);
 
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        painelConteudo.add(painelTabulado, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(painelConteudo, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -84,6 +128,7 @@ public class Licenca extends javax.swing.JDialog
     private javax.swing.JTextArea jTALicencaBalloonTip;
     private javax.swing.JTextArea jTALicencaPortugol;
     private javax.swing.JTextArea jTALicencaRSTA;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel painelConteudo;
+    private javax.swing.JTabbedPane painelTabulado;
     // End of variables declaration//GEN-END:variables
 }
