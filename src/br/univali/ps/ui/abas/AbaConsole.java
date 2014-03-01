@@ -37,7 +37,8 @@ import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.java.balloontip.utils.FadingUtils;
 
-public final class AbaConsole extends Aba implements PropertyChangeListener {
+public final class AbaConsole extends Aba implements PropertyChangeListener
+{
 
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
@@ -46,10 +47,11 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png");
 
     private boolean executandoPrograma = false;
-    private JLabel rotuloPopupLeia;
+
     private BalloonTip popupLeia;
-    private BalloonTipStyle estiloPopupLeia;
-    private ActionListener foo;
+    private final JLabel rotuloPopupLeia;
+    private final BalloonTipStyle estiloPopupLeia;
+    private final ActionListener foo;
     private Timer timerPopupLeia;
     private boolean removendoPopup = true;
 
@@ -61,7 +63,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
     private final HandlerDaSaida handlerDaSaida;
     private AbaCodigoFonte abaCodigoFonte;
 
-    public AbaConsole() {
+    public AbaConsole()
+    {
         super("Console", icone, false);
 
         initComponents();
@@ -83,45 +86,56 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         popupLeia.setPadding(8);
         popupLeia.setVisible(false);
 
-        foo = new ActionListener() {
+        foo = new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (removendoPopup) {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (removendoPopup)
+                {
                     popupLeia.setVisible(false);
                 }/*
-                 else
-                 {
-                 console.requestFocusInWindow();
-                 console.setCaretPosition(console.getText().length());
-                 }*/
+                 * else
+                 * {
+                 * console.requestFocusInWindow();
+                 * console.setCaretPosition(console.getText().length());
+                 * }
+                 */
 
             }
         };
 
-        console.addComponentListener(new ComponentAdapter() {
+        console.addComponentListener(new ComponentAdapter()
+        {
             @Override
-            public void componentResized(ComponentEvent ce) {
+            public void componentResized(ComponentEvent ce)
+            {
                 painelRolagem.getVerticalScrollBar().setValue(ce.getComponent().getHeight());
             }
         });
-        console.getDocument().addDocumentListener(new DocumentListener() {
+        console.getDocument().addDocumentListener(new DocumentListener()
+        {
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(DocumentEvent e)
+            {
                 atualizarItensMenuConsole();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(DocumentEvent e)
+            {
                 atualizarItensMenuConsole();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(DocumentEvent e)
+            {
             }
         });
 
         console.setCaret(new CursorConsole());
 
+        configurarBarraFerramentas();
         criarAcoes();
         criarDicasInterface();
         instalarObservadores();
@@ -131,36 +145,53 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         handlerDaSaida = new HandlerDaSaida();
     }
 
-    private void criarAcoes() {
+    private void configurarBarraFerramentas()
+    {
+        barraFerramentas.setOpaque(false);
+        botaoAumentarFonte.setOpaque(false);
+        botaoCopiar.setOpaque(false);
+        botaoDiminuirFonte.setOpaque(false);
+        botaoLimpar.setOpaque(false);
+    }
+
+    private void criarAcoes()
+    {
         criarAcaoLimpar();
         criarAcaoCopiar();
         criarAcaoAumentarFonte();
         criarAcaoDiminuirFonte();
-
     }
 
-    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte) {
+    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
+    {
         this.abaCodigoFonte = abaCodigoFonte;
     }
 
-    public void limparConsole() {
+    public void limparConsole()
+    {
         console.setText(null);
     }
 
-    public void escreverNoConsole(final String msg) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void escreverNoConsole(final String msg)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 console.append(msg);
             }
         });
 
     }
 
-    private void criarAcaoLimpar() {
-        acaoLimpar = new AbstractAction("Limpar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")) {
+    private void criarAcaoLimpar()
+    {
+        acaoLimpar = new AbstractAction("Limpar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 limparConsole();
             }
         };
@@ -171,10 +202,13 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         botaoLimpar.setAction(acaoLimpar);
     }
 
-    private void criarAcaoCopiar() {
-        acaoCopiar = new AbstractAction("Copiar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png")) {
+    private void criarAcaoCopiar()
+    {
+        acaoCopiar = new AbstractAction("Copiar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 console.selectAll();
                 console.copy();
                 console.select(0, 0);
@@ -187,10 +221,13 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         botaoCopiar.setAction(acaoCopiar);
     }
 
-    private void criarAcaoAumentarFonte() {
-        acaoAumentarFonte = new AbstractAction("Aumentar Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png")) {
+    private void criarAcaoAumentarFonte()
+    {
+        acaoAumentarFonte = new AbstractAction("Aumentar Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 Font fonteAtual = console.getFont();
                 float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
 
@@ -202,10 +239,13 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         botaoAumentarFonte.setAction(acaoAumentarFonte);
     }
 
-    private void criarAcaoDiminuirFonte() {
-        acaoDiminuirFonte = new AbstractAction("Diminuir Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")) {
+    private void criarAcaoDiminuirFonte()
+    {
+        acaoDiminuirFonte = new AbstractAction("Diminuir Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 Font fonteAtual = console.getFont();
                 float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
 
@@ -217,35 +257,42 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         botaoDiminuirFonte.setAction(acaoDiminuirFonte);
     }
 
-    private void criarDicasInterface() {
+    private void criarDicasInterface()
+    {
         FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
 
-    private void instalarObservadores() {
+    private void instalarObservadores()
+    {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_CONSOLE);
     }
 
-    private void carregarConfiguracoes() {
+    private void carregarConfiguracoes()
+    {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
         setTamanhoFonteConsole(configuracoes.getTamanhoFonteConsole());
     }
 
-    private void setTamanhoFonteConsole(float tamanho) {
-        if ((tamanho != console.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE)) {
+    private void setTamanhoFonteConsole(float tamanho)
+    {
+        if ((tamanho != console.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
+        {
             console.setFont(console.getFont().deriveFont(tamanho));
             Configuracoes.getInstancia().setTamanhoFonteConsole(tamanho);
         }
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(Configuracoes.TAMANHO_FONTE_CONSOLE)) {
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals(Configuracoes.TAMANHO_FONTE_CONSOLE))
+        {
             setTamanhoFonteConsole((Float) evt.getNewValue());
         }
     }
@@ -253,26 +300,28 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
     /*
      * Por algum motivo o método atualizarItensMenuConsole()
      * buga o limpar() se for chamado durante a execução do programa.
-     * 
+     *
      * Para prevenir o bug, desativamos a execução deste método
      * enquanto o programa está rodando.
-     * 
+     *
      * Para que o menu seja atualizado corretamente ao terminar a
      * execução do programa, o método setExecutandoPrograma()
      * chama manualmente o método atualizarItensMenuConsole()
-     * 
+     *
      * Testei atualizar usando um SwingWorker. Funciona perfeitamente,
      * porém deixa o escreva muito mais lento. Por isso, optei por deixar
      * como está, atualizando somente no final da execução.
-     * 
-     * Talvez possamos remover o método setExecutando() e tornar o 
+     *
+     * Talvez possamos remover o método setExecutando() e tornar o
      * método atualizarItensMenuConsole() público para acessá-lo nos
      * métodos execucaoIniciada() e execucaoEncerrada()
-     * 
+     *
      */
-    public void setExecutandoPrograma(boolean executandoPrograma) {
+    public void setExecutandoPrograma(boolean executandoPrograma)
+    {
         this.executandoPrograma = executandoPrograma;
-        if (!executandoPrograma) {
+        if (!executandoPrograma)
+        {
             ((DocumentoConsole) console.getDocument()).setLendo(false);
             console.setEditable(false);
             console.setFocusable(false);
@@ -280,20 +329,29 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         atualizarItensMenuConsole();
     }
 
-    private void atualizarItensMenuConsole() {
-        if (!executandoPrograma) {
-            if (console.getText() != null) {
-                if (console.getText().length() > 0) {
+    private void atualizarItensMenuConsole()
+    {
+        if (!executandoPrograma)
+        {
+            if (console.getText() != null)
+            {
+                if (console.getText().length() > 0)
+                {
                     acaoLimpar.setEnabled(true);
 
                     int selecao = console.getSelectionEnd() - console.getSelectionStart();
 
-                    if (selecao > 0) {
+                    if (selecao > 0)
+                    {
                         acaoCopiar.setEnabled(true);
-                    } else {
+                    }
+                    else
+                    {
                         acaoCopiar.setEnabled(false);
                     }
-                } else {
+                }
+                else
+                {
                     acaoLimpar.setEnabled(false);
                     acaoCopiar.setEnabled(false);
                 }
@@ -435,62 +493,78 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
     private javax.swing.JScrollPane painelRolagem;
     // End of variables declaration//GEN-END:variables
 
-    private class HandlerDaSaida implements Saida {
+    private class HandlerDaSaida implements Saida
+    {
 
         @Override
-        public void limpar() throws Exception {
+        public void limpar() throws Exception
+        {
             escreveConsole(null);
         }
 
         @Override
-        public void escrever(String valor) throws Exception {
+        public void escrever(String valor) throws Exception
+        {
             escreveConsole(valor);
         }
 
         @Override
-        public void escrever(boolean valor) throws Exception {
+        public void escrever(boolean valor) throws Exception
+        {
             escreveConsole((valor) ? "verdadeiro" : "falso");
         }
 
         @Override
-        public void escrever(int valor) throws Exception {
+        public void escrever(int valor) throws Exception
+        {
             escreveConsole(String.valueOf(valor));
         }
 
         @Override
-        public void escrever(double valor) throws Exception {
+        public void escrever(double valor) throws Exception
+        {
             escreveConsole(String.valueOf(valor));
         }
 
         @Override
-        public void escrever(char valor) throws Exception {
+        public void escrever(char valor) throws Exception
+        {
             escreveConsole(String.valueOf(valor));
         }
 
-        private void escreveConsole(final String texto) throws Exception {
-            SwingUtilities.invokeAndWait(new Runnable() {
+        private void escreveConsole(final String texto) throws Exception
+        {
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
 
                 @Override
-                public void run() {
+                public void run()
+                {
                     AbaConsole.this.selecionar();
                     console.requestFocusInWindow();
 
                     abaCodigoFonte.exibirPainelSaida();
 
-                    if (texto != null) {
+                    if (texto != null)
+                    {
                         console.append(texto);
-                    } else {
+                    }
+                    else
+                    {
                         console.setText(null);
                     }
                 }
-            });          
+            });
         }
     }
 
-    private void agendarPopupLeia() {
-        timerPopupLeia = new Timer(4000, new ActionListener() {
+    private void agendarPopupLeia()
+    {
+        timerPopupLeia = new Timer(4000, new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 removendoPopup = false;
                 FadingUtils.fadeInBalloon(popupLeia, foo, 500, 24);
                 cancelarPopupLeia();
@@ -500,22 +574,34 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         timerPopupLeia.start();
     }
 
-    private void cancelarPopupLeia() {
-        if (timerPopupLeia != null) {
+    private void cancelarPopupLeia()
+    {
+        if (timerPopupLeia != null)
+        {
             timerPopupLeia.stop();
         }
     }
 
-    private Object obterValorEntrada(TipoDado tipoDado, String entrada) {
-        try {
-            if (tipoDado == TipoDado.INTEIRO) {
+    private Object obterValorEntrada(TipoDado tipoDado, String entrada)
+    {
+        try
+        {
+            if (tipoDado == TipoDado.INTEIRO)
+            {
                 return Integer.parseInt(entrada);
-            } else if (tipoDado == TipoDado.REAL) {
+            }
+            else if (tipoDado == TipoDado.REAL)
+            {
                 return Double.parseDouble(entrada);
-            } else if (tipoDado == TipoDado.CARACTER) {
+            }
+            else if (tipoDado == TipoDado.CARACTER)
+            {
                 return entrada.charAt(0);
-            } else if (tipoDado == TipoDado.LOGICO) {
-                switch (entrada) {
+            }
+            else if (tipoDado == TipoDado.LOGICO)
+            {
+                switch (entrada)
+                {
                     case "falso":
                         return false;
                     case "verdadeiro":
@@ -524,33 +610,41 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
             }
 
             return entrada;
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             return null;
         }
     }
 
-    void removerPopupLeia() {
+    void removerPopupLeia()
+    {
         cancelarPopupLeia();
 
         removendoPopup = true;
 
-        if (popupLeia.isVisible()) {
+        if (popupLeia.isVisible())
+        {
             FadingUtils.fadeOutBalloon(popupLeia, foo, 500, 24);
         }
     }
 
-    public void registrarComoSaida(Programa p) {
-        if (handlerDaSaida == null) {
-            new IllegalStateException("Handler está nulo!");
+    public void registrarComoSaida(Programa p)
+    {
+        if (handlerDaSaida == null)
+        {
+            throw new IllegalStateException("Handler está nulo!");
         }
         p.setSaida(handlerDaSaida);
     }
 
-    public void registrarComoEntrada(Programa programa) {
+    public void registrarComoEntrada(Programa programa)
+    {
         programa.setEntrada((Entrada) console.getDocument());
     }
 
-    private class DocumentoConsole extends PlainDocument implements Entrada {
+    private class DocumentoConsole extends PlainDocument implements Entrada
+    {
 
         private int limitOffset = 0;
         private boolean lendo = false;
@@ -559,7 +653,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         private TipoDado tipoDado;
 
         @Override
-        public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador) throws Exception {
+        public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador) throws Exception
+        {
             setLendo(true);
 
             abaCodigoFonte.exibirPainelSaida();
@@ -576,23 +671,30 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
             console.setCaretPosition(console.getText().length());
         }
 
-        public void setLendo(boolean lendo) {
+        public void setLendo(boolean lendo)
+        {
             this.lendo = lendo;
 
-            if (lendo) {
+            if (lendo)
+            {
                 limitOffset = getLength();
-            } else {
+            }
+            else
+            {
                 limitOffset = 0;
             }
         }
 
         @Override
-        public void replace(int offset, int length, String string, AttributeSet as) throws BadLocationException {
-            if (string == null) {
+        public void replace(int offset, int length, String string, AttributeSet as) throws BadLocationException
+        {
+            if (string == null)
+            {
                 remove(0, getLength());
                 return;
             }
-            if (lendo && string.equals("\n")) {
+            if (lendo && string.equals("\n"))
+            {
                 removerPopupLeia();
 
                 console.setEditable(false);
@@ -603,34 +705,42 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
                 armazenador.setValor(valor);
             }
 
-            if (offset >= limitOffset) {
+            if (offset >= limitOffset)
+            {
                 super.replace(offset, length, string, as);
             }
 
-            if (!lendo) {
+            if (!lendo)
+            {
                 limitOffset = getLength();
             }
         }
 
         @Override
-        public void remove(int i, int i1) throws BadLocationException {
-            if (!lendo || limitOffset <= i) {
+        public void remove(int i, int i1) throws BadLocationException
+        {
+            if (!lendo || limitOffset <= i)
+            {
                 super.remove(i, i1);
             }
         }
     }
 
-    public final class CursorConsole extends DefaultCaret {
+    public final class CursorConsole extends DefaultCaret
+    {
 
         private static final long serialVersionUID = 1L;
 
-        public CursorConsole() {
+        public CursorConsole()
+        {
             setBlinkRate(250);
         }
 
         @Override
-        protected synchronized void damage(Rectangle r) {
-            if (r == null) {
+        protected synchronized void damage(Rectangle r)
+        {
+            if (r == null)
+            {
                 return;
             }
 
@@ -643,7 +753,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
             // in this case we must be prepared to set a valid width, or else
             // paint()
             // will receive a bogus clip area and caret will not get drawn properly.
-            if (width <= 0) {
+            if (width <= 0)
+            {
                 width = getComponent().getWidth();
             }
 
@@ -651,35 +762,44 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
             repaint();  // previous location of caret. Sometimes one call isn't enough.
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
          * @see javax.swing.text.DefaultCaret#paint(java.awt.Graphics)
          */
         @Override
-        public void paint(Graphics g) {
+        public void paint(Graphics g)
+        {
             JTextComponent comp = getComponent();
 
-            if (comp == null) {
+            if (comp == null)
+            {
                 return;
             }
 
             int dot = getDot();
-            Rectangle r = null;
+            Rectangle r;
             char dotChar;
-            try {
+            try
+            {
                 r = comp.modelToView(dot);
-                if (r == null) {
+                if (r == null)
+                {
                     return;
                 }
                 dotChar = comp.getText(dot, 1).charAt(0);
-            } catch (BadLocationException e) {
+            }
+            catch (BadLocationException e)
+            {
                 return;
             }
 
-            if (Character.isWhitespace(dotChar)) {
+            if (Character.isWhitespace(dotChar))
+            {
                 dotChar = '_';
             }
 
-            if ((x != r.x) || (y != r.y)) {
+            if ((x != r.x) || (y != r.y))
+            {
                 // paint() has been called directly, without a previous call to
                 // damage(), so do some cleanup. (This happens, for example, when
                 // the text component is resized.)
@@ -691,7 +811,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
             g.setXORMode(comp.getBackground()); // do this to draw in XOR mode
 
             width = g.getFontMetrics().charWidth(dotChar);
-            if (isVisible()) {
+            if (isVisible())
+            {
                 r.height = 2;
                 r.y = r.y + g.getFontMetrics().getHeight() - r.height - 1;
 

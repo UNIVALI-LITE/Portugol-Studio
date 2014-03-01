@@ -243,7 +243,7 @@ public final class TelaPrincipalDesktop extends JFrame
     private AbaCodigoFonte aba = AbaCodigoFonte.criaNovaAba();
     public void criarNovoCodigoFonte()
     {
-        //getTelaProgressoaba().criarNovoCodigoFonte();
+        //getTelaProgressoaba().criarNovoCodigoFonte(); 
         painelTabuladoPrincipal.add(AbaCodigoFonte.criaNovaAba());
     }
 

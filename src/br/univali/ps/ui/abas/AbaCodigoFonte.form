@@ -533,7 +533,9 @@
                             </Constraint>
                           </Constraints>
 
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+                            <Property name="useNullLayout" type="boolean" value="true"/>
+                          </Layout>
                           <SubComponents>
                             <Component class="br.univali.ps.ui.PainelSaida" name="painelSaida">
                               <Properties>
@@ -545,8 +547,8 @@
                                 </Property>
                               </Properties>
                               <Constraints>
-                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                                  <BorderConstraints direction="Center"/>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                                  <AbsoluteConstraints x="0" y="0" width="440" height="-1"/>
                                 </Constraint>
                               </Constraints>
                             </Component>
@@ -564,8 +566,8 @@
                                 <AuxValue name="JLayeredPane.layer" type="java.lang.Integer" value="400"/>
                               </AuxValues>
                               <Constraints>
-                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                                  <BorderConstraints direction="East"/>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                                  <AbsoluteConstraints x="414" y="0" width="-1" height="200"/>
                                 </Constraint>
                               </Constraints>
 
@@ -697,7 +699,6 @@
                                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[24, 24]"/>
                                         </Property>
-                                        <Property name="opaque" type="boolean" value="false"/>
                                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                           <Dimension value="[24, 24]"/>
                                         </Property>
