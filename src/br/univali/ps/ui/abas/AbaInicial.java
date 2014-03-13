@@ -58,42 +58,42 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         setCabecalho(new BotoesControleAba(this, telaPrincipalDesktop));
 
         initComponents();
-        
+
         configurarAcaoExplorarExemplos();
         configurarCursorLogos();
         criarDicasInterface();
         configurarAcoes();
         configurarLinks();
         configurarExibicaoAvisoVideoAulas();
-        
+
     }
-    
+
     private void configurarExibicaoAvisoVideoAulas()
     {
-        addComponentListener(new ComponentAdapter() 
+        addComponentListener(new ComponentAdapter()
         {
             @Override
-            public void componentShown(ComponentEvent e) 
+            public void componentShown(ComponentEvent e)
             {
                 Configuracoes configuracoes = Configuracoes.getInstancia();
-                
+
                 if (configuracoes.isExibirAvisoVideoAulas())
-                {                        
+                {
                     configuracoes.setExibirAvisoVideoAulas(false);
-                    
+
                     SwingUtilities.invokeLater(new Runnable()
                     {
                         @Override
-                        public void run() 
+                        public void run()
                         {
                             JOptionPane.showMessageDialog(AbaInicial.this, "Seja bem vindo!!\n\nPara tornar o Portugol Studio ainda melhor, preparamos uma série de vídeoaulas que irão auxiliá-lo no seu aprendizado.\nPara assistí-las, acesse o link \"Assistir Vídeoaulas\" localizado no menu \"Aprender\".\n\nObrigado por utilizar o Portugol Studio e bons estudos!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
                 }
-            }            
+            }
         });
     }
-    
+
     private void criarMenuExemplos()
     {
         try
@@ -107,7 +107,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
                 Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
 
                 menuExemplos = new JPopupMenu();
-                
+
                 List<String[]> entradasIndice = lerIndice(new File(diretorioExemplos, "indice.txt"));
 
                 for (String[] entradaIndice : entradasIndice)
@@ -134,7 +134,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
     private JMenuItem obterSubniveis(File diretorioAtual, String[] entradaIndice, Icon iconeDiretorio, Icon iconeArquivo) throws Exception
     {
         File caminho = new File(diretorioAtual, entradaIndice[1]);
-        
+
         if (caminho.isDirectory())
         {
             JMenu submenu = new JMenu(entradaIndice[0]);
@@ -190,7 +190,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
         return null;
     }
-    
+
     private List<String[]> lerIndice(File arquivoIndice) throws Exception
     {
         if (arquivoIndice.exists())
@@ -198,17 +198,17 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             int cont = 0;
             String linha;
             List<String[]> indice = new ArrayList<>();
-            
+
             try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8")))
             {
                 while ((linha = leitor.readLine()) != null)
                 {
                     cont += 1;
-                    
+
                     if (linha.trim().length() >= 3 && linha.contains("="))
                     {
                         String[] entrada = linha.split("=");
-                        
+
                         if (entrada.length == 2)
                         {
                             indice.add(entrada);
@@ -219,16 +219,16 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
                         }
                     }
                 }
-                
+
                 leitor.close();
             }
-            
+
             return indice;
         }
         else
         {
             throw new Exception(String.format("O arquivo de índice não foi encontrado no diretório: %s", arquivoIndice.getCanonicalPath()));
-        }        
+        }
     }
 
     private void abrirGitHub()
@@ -251,14 +251,14 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             @Override
             public void downloadStarted()
             {
-                SwingUtilities.invokeLater(new Runnable() {
-
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         rotuloExplorarExemplos.setEnabled(false);
                     }
                 });
-                
             }
 
             @Override
@@ -278,8 +278,8 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             @Override
             public void downloadProgress(final int bytesDownloaded, final int totalBytes)
             {
-                SwingUtilities.invokeLater(new Runnable() {
-
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     @Override
                     public void run()
                     {
@@ -289,9 +289,16 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             }
 
             @Override
-            public void downloadFail(PackDownloaderException ex)
+            public void downloadFail(final PackDownloaderException exception)
             {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
+                    }
+                });
             }
         });
     }
@@ -310,22 +317,22 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         configurarAcaoExibirTelaSobre();
         configurarAcaoAjudarDesenvolvimento();
         configurarAcaoRelatarBug();
-        
+
         configurarAcaoExibirAtalhosTeclado();
     }
 
     private void configurarAcaoAssistirVideoAulas()
     {
-         Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
+        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try 
+                try
                 {
                     java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://www.youtube.com/user/portugolstudio"));
                 }
-                catch (IOException ex) 
+                catch (IOException ex)
                 {
                     JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara assistir às vídeo aulas, acesse o seguinte endereço:\n\nhttps://www.youtube.com/user/portugolstudio", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -334,7 +341,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
         getActionMap().put(rotuloAssistirVideoAulas.getName(), acao);
     }
-    
+
     private void configurarAcaoSairProgramando()
     {
         Action acao = new AbstractAction(rotuloSairProgramando.getName())
@@ -463,7 +470,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
 
         rotuloSairProgramando.addMouseListener(listener);
         rotuloSairProgramando.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloAssistirVideoAulas.addMouseListener(listener);
         rotuloAssistirVideoAulas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 

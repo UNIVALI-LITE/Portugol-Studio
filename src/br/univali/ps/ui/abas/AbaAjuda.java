@@ -25,6 +25,7 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
@@ -55,7 +56,8 @@ import javax.swing.tree.DefaultTreeModel;
  *
  * @author Luiz Fernando Noschang
  */
-public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener, PackDownloaderObserver {
+public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener, PackDownloaderObserver
+{
 
     private static final EditorAjuda editorDaAjuda = new EditorAjuda();//usa sempre a mesma instância do editor
 
@@ -81,37 +83,45 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private Topico topicoAtual;
 
     @Override
-    public void registrarListener(PackDownloader packDownloader) {
-
-        packDownloader.addListener(new PackDownloaderListener() {
+    public void registrarListener(PackDownloader packDownloader)
+    {
+        packDownloader.addListener(new PackDownloaderListener()
+        {
 
             @Override
-            public void downloadStarted() {
-                SwingUtilities.invokeLater(new Runnable() {
-
+            public void downloadStarted()
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         rotuloCarregamento.setText("Realizando download do conteúdo de ajuda...");
                     }
                 });
-
             }
 
             @Override
-            public void downloadFinished() {
-                SwingUtilities.invokeLater(new Runnable() {
+            public void downloadFinished()
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         rotuloCarregamento.setText("Carregando os tópicos da ajuda por favor aguarde...");
 
-                        addComponentListener(new ComponentAdapter() {
+                        addComponentListener(new ComponentAdapter()
+                        {
                             @Override
-                            public void componentShown(ComponentEvent e) {
+                            public void componentShown(ComponentEvent e)
+                            {
                                 carregarAjuda();
                             }
                         });
 
-                        if (AbaAjuda.this.isVisible()) {
+                        if (AbaAjuda.this.isVisible())
+                        {
                             carregarAjuda();
                         }
                     }
@@ -119,25 +129,36 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             }
 
             @Override
-            public void downloadProgress(final int bytesDownloaded, final int totalBytes) {
-                SwingUtilities.invokeLater(new Runnable() {
-
+            public void downloadProgress(final int bytesDownloaded, final int totalBytes)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         barraProgresso.setValue((int) (bytesDownloaded * 100f) / totalBytes);
                     }
                 });
             }
 
             @Override
-            public void downloadFail(PackDownloaderException ex) {
-                AbaAjuda.this.rotuloErroCarregamento.setText("Erro ao fazer download da ajuda!");
-                AbaAjuda.this.rotuloErroCarregamento.setVisible(true);
+            public void downloadFail(PackDownloaderException ex)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        AbaAjuda.this.rotuloErroCarregamento.setText("Erro ao fazer download da ajuda!");
+                        AbaAjuda.this.rotuloErroCarregamento.setVisible(true);
+                    }
+                });
             }
         });
     }
 
-    public AbaAjuda() {
+    public AbaAjuda()
+    {
         super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
         initComponents();
         configurarArvore();
@@ -150,7 +171,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
 
     @Override
-    public void setPainelTabulado(PainelTabulado painelTabulado) {
+    public void setPainelTabulado(PainelTabulado painelTabulado)
+    {
         super.setPainelTabulado(painelTabulado);
         editorDaAjuda.setPainelTabulado(painelTabulado);
     }
@@ -164,22 +186,29 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
      * obtido em
      * https://weblogs.java.net/blog/aim/archive/2007/07/embedding_swing.html
      */
-    protected class KitDoEditorDoConteudo extends HTMLEditorKit {
+    protected class KitDoEditorDoConteudo extends HTMLEditorKit
+    {
 
         @Override
-        public ViewFactory getViewFactory() {
-            return new HTMLEditorKit.HTMLFactory() {
+        public ViewFactory getViewFactory()
+        {
+            return new HTMLEditorKit.HTMLFactory()
+            {
                 @Override
-                public View create(Element element) {
+                public View create(Element element)
+                {
                     AttributeSet attrs = element.getAttributes();
                     Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
                     Object o = (elementName != null) ? null : attrs.getAttribute(StyleConstants.NameAttribute);
-                    if (o instanceof HTML.Tag && (HTML.Tag) o == HTML.Tag.OBJECT) {//pois é, também me perguntei que raios é isso :), mas a linha anterior é melhor ainda :)
+                    if (o instanceof HTML.Tag && (HTML.Tag) o == HTML.Tag.OBJECT)
+                    {//pois é, também me perguntei que raios é isso :), mas a linha anterior é melhor ainda :)
 
-                        return new ObjectView(element) {
+                        return new ObjectView(element)
+                        {
 
                             @Override
-                            protected Component createComponent() {
+                            protected Component createComponent()
+                            {
                                 String editavel = (String) getElement().getAttributes().getAttribute("editavel");
                                 String codigo = (String) getElement().getAttributes().getAttribute("codigo");
                                 editorDaAjuda.setEditavel(editavel);
@@ -195,18 +224,22 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    private void configurarAcoes() {
+    private void configurarAcoes()
+    {
         configurarAcaoAtualizarAjuda();
         configurarAcaoRecarregarTopico();
     }
 
-    private void configurarAcaoAtualizarAjuda() {
+    private void configurarAcaoAtualizarAjuda()
+    {
         String nome = "Atualizar tópicos da ajuda";
         KeyStroke atalho = KeyStroke.getKeyStroke("F5");
 
-        acaoAtualizarAjuda = new AbstractAction() {
+        acaoAtualizarAjuda = new AbstractAction()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 ajudaCarregada = false;
                 topicoAtual = null;
 
@@ -218,14 +251,18 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoRecarregarTopico() {
+    private void configurarAcaoRecarregarTopico()
+    {
         String nome = "Recarregar o tópico da ajuda atual";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F5");
 
-        acaoAtualizarTopico = new AbstractAction() {
+        acaoAtualizarTopico = new AbstractAction()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (topicoAtual != null) {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (topicoAtual != null)
+                {
                     exibirTopico(topicoAtual);
                 }
             }
@@ -235,15 +272,18 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarArvore() {
+    private void configurarArvore()
+    {
         arvore.setCellRenderer(new Renderizador());
         arvore.setRootVisible(false);
         arvore.setShowsRootHandles(true);
         arvore.addTreeSelectionListener(this);
     }
 
-    private void carregarAjuda() {
-        if (!ajudaCarregada && !carregandoAjuda) {
+    private void carregarAjuda()
+    {
+        if (!ajudaCarregada && !carregandoAjuda)
+        {
             CardLayout layout = (CardLayout) getLayout();
             layout.show(this, "painelCarregamento");
 
@@ -254,14 +294,21 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (!(evt.getNewValue() instanceof SwingWorker.StateValue)) {
-            if (evt.getPropertyName().equals("progress")) {
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (!(evt.getNewValue() instanceof SwingWorker.StateValue))
+        {
+            if (evt.getPropertyName().equals("progress"))
+            {
                 barraProgresso.setValue((Integer) evt.getNewValue());
             }
-        } else {
-            if (((SwingWorker.StateValue) evt.getNewValue()) == SwingWorker.StateValue.DONE) {
-                try {
+        }
+        else
+        {
+            if (((SwingWorker.StateValue) evt.getNewValue()) == SwingWorker.StateValue.DONE)
+            {
+                try
+                {
                     Ajuda ajuda = carregador.get();
                     arvore.setModel(criarModeloAjuda(ajuda));
 
@@ -269,12 +316,17 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                     layout.show(AbaAjuda.this, "painelAjuda");
 
                     editorPaneDoConteudo.setText(templateRaiz);
-                } catch (Exception excecao) {
-                    if (excecao.getCause() instanceof ErroCarregamentoAjuda) {
+                }
+                catch (InterruptedException | ExecutionException excecao)
+                {
+                    if (excecao.getCause() instanceof ErroCarregamentoAjuda)
+                    {
                         ErroCarregamentoAjuda erroCarregamentoAjuda = (ErroCarregamentoAjuda) excecao.getCause();
                         rotuloErroCarregamento.setText(String.format(rotuloErroCarregamento.getText(), erroCarregamentoAjuda.getMessage()));
                         rotuloErroCarregamento.setVisible(true);
-                    } else {
+                    }
+                    else
+                    {
                         PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
                     }
                 }
@@ -283,31 +335,37 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
 
     @Override
-    public void valueChanged(TreeSelectionEvent e) {
+    public void valueChanged(TreeSelectionEvent e)
+    {
         DefaultMutableTreeNode noSelecionado = (DefaultMutableTreeNode) arvore.getLastSelectedPathComponent();
 
-        if (noSelecionado != null) {
+        if (noSelecionado != null)
+        {
             Object valor = noSelecionado.getUserObject();
 
-            if (valor instanceof Topico) {
+            if (valor instanceof Topico)
+            {
                 exibirTopico((Topico) valor);
             }
         }
     }
 
-    private void exibirTopico(Topico topico) {
+    private void exibirTopico(Topico topico)
+    {
         editorPaneDoConteudo.setText(topico.getConteudo());
         editorPaneDoConteudo.setCaretPosition(0);
 
         topicoAtual = topico;
     }
 
-    private class Carregador extends SwingWorker<Ajuda, Integer> implements ObservadorCarregamentoAjuda {
+    private class Carregador extends SwingWorker<Ajuda, Integer> implements ObservadorCarregamentoAjuda
+    {
 
         private int numeroTopicos;
 
         @Override
-        protected Ajuda doInBackground() throws Exception {
+        protected Ajuda doInBackground() throws Exception
+        {
             CarregadorAjuda carregadorAjuda = new CarregadorAjuda();
             carregadorAjuda.adicionarObservadorCarregamento(this);
             carregadorAjuda.adicionarPreProcessadorConteudo(new PreProcessadorConteudoAjuda());
@@ -316,7 +374,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         }
 
         @Override
-        public void carregamentoAjudaIniciado(int numeroTopicos) {
+        public void carregamentoAjudaIniciado(int numeroTopicos)
+        {
             this.numeroTopicos = numeroTopicos;
 
             ajudaCarregada = false;
@@ -326,57 +385,68 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         }
 
         @Override
-        public void carregamentoTopicoIniciado(int indiceTopico) {
+        public void carregamentoTopicoIniciado(int indiceTopico)
+        {
 
         }
 
         @Override
-        public void carregamentoTopicoFinalizado(int indiceTopico) {
+        public void carregamentoTopicoFinalizado(int indiceTopico)
+        {
             setProgress(caluclarPorcentagem(indiceTopico, numeroTopicos));
         }
 
         @Override
-        public void carregamentoAjudaFinalizado() {
+        public void carregamentoAjudaFinalizado()
+        {
             setProgress(100);
 
             carregandoAjuda = false;
             ajudaCarregada = true;
         }
 
-        private int caluclarPorcentagem(int indice, int total) {
+        private int caluclarPorcentagem(int indice, int total)
+        {
             return (100 * indice) / total;
         }
     }
 
-    private class PreProcessadorConteudoAjuda implements PreProcessadorConteudo {
+    private class PreProcessadorConteudoAjuda implements PreProcessadorConteudo
+    {
 
         private final Pattern padraoInicioTagPre = Pattern.compile("<pre[^>]*>([^<]*)</pre>", Pattern.CASE_INSENSITIVE);
         private final Pattern padraoAtributoSrcHref = Pattern.compile("(src|href)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
         private final Pattern padraoAtributoClass = Pattern.compile("(class)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
 
         @Override
-        public String processar(String conteudo, Topico topico) {
+        public String processar(String conteudo, Topico topico)
+        {
             conteudo = resolverReferenciasArquivos(conteudo, topico);
             conteudo = inserirComponentesEditor(conteudo);
 
             return conteudo;
         }
 
-        private String inserirComponentesEditor(String conteudo) {
-            try {
+        private String inserirComponentesEditor(String conteudo)
+        {
+            try
+            {
                 StringBuilder novoConteudo = new StringBuilder(conteudo);
                 Matcher avaliadorTagPre = padraoInicioTagPre.matcher(novoConteudo);
 
-                while (avaliadorTagPre.find()) {
+                while (avaliadorTagPre.find())
+                {
                     String tag = avaliadorTagPre.group();
                     int inicioTag = avaliadorTagPre.start();
 
                     Matcher avaliadorAtributoClass = padraoAtributoClass.matcher(tag);
 
-                    if (avaliadorAtributoClass.find()) {
+                    if (avaliadorAtributoClass.find())
+                    {
                         String valor = avaliadorAtributoClass.group(3);
 
-                        if (valor.toLowerCase().equals("codigo-portugol")) {
+                        if (valor.toLowerCase().equals("codigo-portugol"))
+                        {
                             String codigo = avaliadorTagPre.group(1).trim();
                             codigo = codigo.replace("\r\n", "${rn}");
                             codigo = codigo.replace("\n", "${n}");
@@ -411,22 +481,28 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 }
 
                 return novoConteudo.toString();
-            } catch (Exception excecao) {
+            }
+            catch (Exception excecao)
+            {
                 return conteudo;
             }
         }
 
-        private String resolverReferenciasArquivos(String conteudo, Topico topico) {
-            try {
+        private String resolverReferenciasArquivos(String conteudo, Topico topico)
+        {
+            try
+            {
                 StringBuilder novoConteudo = new StringBuilder(conteudo);
                 Matcher avaliador = padraoAtributoSrcHref.matcher(novoConteudo);
 
-                while (avaliador.find()) {
+                while (avaliador.find())
+                {
                     int posicao = avaliador.start();
                     String atributo = avaliador.group();
                     String valor = avaliador.group(3);
 
-                    if (!valor.toLowerCase().startsWith("http://") && !valor.toLowerCase().startsWith("file:")) {
+                    if (!valor.toLowerCase().startsWith("http://") && !valor.toLowerCase().startsWith("file:"))
+                    {
                         File caminhoHtml = ((TopicoHtml) topico).getArquivoOrigem().getParentFile();
                         File novoCaminho = new File(caminhoHtml, valor);
 
@@ -438,41 +514,50 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 }
 
                 return novoConteudo.toString();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 return conteudo;
             }
         }
     }
 
-    private DefaultTreeModel criarModeloAjuda(Ajuda ajuda) {
+    private DefaultTreeModel criarModeloAjuda(Ajuda ajuda)
+    {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Ajuda");
 
-        for (Topico topico : ajuda.getTopicos()) {
+        for (Topico topico : ajuda.getTopicos())
+        {
             raiz.add(criarNoTopico(topico));
         }
 
         return new DefaultTreeModel(raiz);
     }
 
-    private DefaultMutableTreeNode criarNoTopico(Topico topico) {
+    private DefaultMutableTreeNode criarNoTopico(Topico topico)
+    {
         DefaultMutableTreeNode noTopico = new DefaultMutableTreeNode(topico);
 
-        for (Topico subTopico : topico.getSubTopicos()) {
+        for (Topico subTopico : topico.getSubTopicos())
+        {
             noTopico.add(criarNoTopico(subTopico));
         }
 
         return noTopico;
     }
 
-    private static class Renderizador extends DefaultTreeCellRenderer {
+    private static class Renderizador extends DefaultTreeCellRenderer
+    {
 
         @Override
-        public Component getTreeCellRendererComponent(JTree arvore, Object valor, boolean selecionado, boolean expandido, boolean folha, int linha, boolean focado) {
+        public Component getTreeCellRendererComponent(JTree arvore, Object valor, boolean selecionado, boolean expandido, boolean folha, int linha, boolean focado)
+        {
             JLabel renderizador = (JLabel) super.getTreeCellRendererComponent(arvore, valor, selecionado, expandido, folha, linha, focado);
             DefaultMutableTreeNode no = (DefaultMutableTreeNode) valor;
             Object conteudoNo = no.getUserObject();
 
-            if (conteudoNo instanceof Topico) {
+            if (conteudoNo instanceof Topico)
+            {
                 Topico topico = (Topico) conteudoNo;
                 String titulo = topico.getTitulo();
                 Icon icone = obterIcone(topico, selecionado, expandido, folha);
@@ -484,11 +569,14 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             return renderizador;
         }
 
-        private Icon obterIcone(Topico topico, boolean selecionado, boolean expandido, boolean folha) {
+        private Icon obterIcone(Topico topico, boolean selecionado, boolean expandido, boolean folha)
+        {
             File arquivoIcone = new File(topico.getIcone());
 
-            if (!arquivoIcone.isAbsolute()) {
-                if (topico instanceof TopicoHtml) {
+            if (!arquivoIcone.isAbsolute())
+            {
+                if (topico instanceof TopicoHtml)
+                {
                     TopicoHtml topicoHtml = (TopicoHtml) topico;
                     arquivoIcone = new File(topicoHtml.getArquivoOrigem().getParent(), topico.getIcone());
                 }
@@ -498,15 +586,20 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             String extensao = nomeCompleto.substring(nomeCompleto.lastIndexOf("."), nomeCompleto.length());
             String novoNome = nomeCompleto.replace(extensao, "");
 
-            if (expandido) {
+            if (expandido)
+            {
                 novoNome = novoNome.concat("_aberto");
-            } else {
-                if (!folha) {
+            }
+            else
+            {
+                if (!folha)
+                {
                     novoNome = novoNome.concat("_fechado");
                 }
             }
 
-            if (selecionado) {
+            if (selecionado)
+            {
                 novoNome = novoNome.concat("_selecionado");
             }
 

@@ -37,7 +37,6 @@ public final class TelaPrincipalDesktop extends JFrame
     private Configuracoes configuracoes = null;
 
     private TelaProgressoAba telaProgressoAba = null;
-    
 
     public TelaPrincipalDesktop()
     {
@@ -47,10 +46,11 @@ public final class TelaPrincipalDesktop extends JFrame
         instalarObservadores();
     }
 
-    private void criaAbas(){
+    private void criaAbas()
+    {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
     }
-    
+
     public Configuracoes getConfiguracoes()
     {
         if (configuracoes == null)
@@ -102,44 +102,28 @@ public final class TelaPrincipalDesktop extends JFrame
                 {
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
                 }
-                /*else
-                 {
-                 StringWriter sw = new StringWriter();
-                 PrintWriter pw = new PrintWriter(sw);
-                
-                 excecao.printStackTrace(pw);
-                 excecao.printStackTrace(System.err);
-
-                 if (sw.toString().contains("rsyntax"))
-                 {
-                 // Erro do RSyntaxTextArea, printa no console e ignora
-                 System.out.println("Erro do RSyntaxTextArea");
-                 }
-                 else
-                 {
-                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
-                 }
-                 }*/
+                /*
+                 * else
+                 * {
+                 * StringWriter sw = new StringWriter();
+                 * PrintWriter pw = new PrintWriter(sw);
+                 *
+                 * excecao.printStackTrace(pw);
+                 * excecao.printStackTrace(System.err);
+                 *
+                 * if (sw.toString().contains("rsyntax"))
+                 * {
+                 * // Erro do RSyntaxTextArea, printa no console e ignora
+                 * System.out.println("Erro do RSyntaxTextArea");
+                 * }
+                 * else
+                 * {
+                 * PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+                 * }
+                 * }
+                 */
             }
         });
-    }
-
-    public void abrirArquivoCodigoFonte(final String codigoFonte)
-    {
-
-        getTelaProgressoaba().abrirCodigoFonte(codigoFonte);
-
-//        Timer timer = new Timer(750, new ActionListener()
-//        {
-//            @Override
-//            public void actionPerformed(ActionEvent e)
-//            {
-//                getTelaProgressoaba().abrirCodigoFonte(codigoFonte);
-//            }
-//        });
-//
-//        timer.setRepeats(false);
-//        timer.start();
     }
 
     private void instalarObservadorJanela()
@@ -241,6 +225,7 @@ public final class TelaPrincipalDesktop extends JFrame
     }
 
     private AbaCodigoFonte aba = AbaCodigoFonte.criaNovaAba();
+
     public void criarNovoCodigoFonte()
     {
         //getTelaProgressoaba().criarNovoCodigoFonte(); 
@@ -261,7 +246,7 @@ public final class TelaPrincipalDesktop extends JFrame
     {
         if (!arquivos.isEmpty())
         {
-            Timer timer = new Timer(750, new ActionListener()
+            final Timer timer = new Timer(750, new ActionListener()
             {
                 @Override
                 public void actionPerformed(ActionEvent e)
@@ -284,10 +269,12 @@ public final class TelaPrincipalDesktop extends JFrame
     {
         setLoggerConfigurations();
         RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
+        
         try
         {
             splashInit();
             String property = System.getProperty("java.specification.version");
+            
             if (Double.valueOf(property) < 1.7)
             {
                 JOptionPane.showMessageDialog(null, "Para executar o Portugol Studio é preciso utilizar o Java 1.7 ou superior.", "Erro na inicialização", JOptionPane.ERROR_MESSAGE);
@@ -302,7 +289,7 @@ public final class TelaPrincipalDesktop extends JFrame
             {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }
-            catch (Exception e)
+            catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e)
             {
                 e.printStackTrace();
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -345,17 +332,21 @@ public final class TelaPrincipalDesktop extends JFrame
         }
     }
 
-    public static void setLoggerConfigurations() {
+    public static void setLoggerConfigurations()
+    {
         setLoggerConfigurations(null);
     }
 
-    public static void setLoggerConfigurations(String level) {
+    public static void setLoggerConfigurations(String level)
+    {
         //</editor-fold>
         final InputStream inputStream = TelaPrincipalDesktop.class.getResourceAsStream("/logging.properties");
 
-        try {
+        try
+        {
             LogManager.getLogManager().readConfiguration(inputStream);
-            if (level != null) {
+            if (level != null)
+            {
                 Logger log = LogManager.getLogManager().getLogger("");
                 log.setLevel(Level.parse(level));
 //                for (Handler h : log.getHandlers()) {
@@ -363,12 +354,14 @@ public final class TelaPrincipalDesktop extends JFrame
 //                    System.out.println(h.getLevel());
 //                }
             }
-        } catch (final IOException e) {
+        }
+        catch (final IOException e)
+        {
             Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
             Logger.getAnonymousLogger().severe(e.getMessage());
         }
     }
-    
+
     private static boolean runningApplet()
     {
         return System.getSecurityManager() != null;

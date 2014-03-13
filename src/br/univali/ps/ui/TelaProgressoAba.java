@@ -202,7 +202,6 @@ public final class TelaProgressoAba extends JDialog
         @Override
         protected Object doInBackground() throws Exception
         {
-            System.out.println("doInBackground...");
             switch (tipoCarregamento)
             {
                 case CODIGO_FONTE:
@@ -216,7 +215,7 @@ public final class TelaProgressoAba extends JDialog
                         publish(abaCodigoFonte);
                         //return abaCodigoFonte;
                     }
-                    catch (final Exception e)
+                    catch (final JAXBException e)
                     {
                         SwingUtilities.invokeLater(new Runnable()
                         {
@@ -273,7 +272,6 @@ public final class TelaProgressoAba extends JDialog
         @Override
         protected void process(List<AbaCodigoFonte> chunks)
         {
-            System.out.println("process..");
             for (final AbaCodigoFonte aba : chunks)
             {
                 contador += 1;
