@@ -2,4 +2,5 @@ build
 dist
 nbproject/private
 configuracoes.properties
-/Exercícios/
+log.txt
+log.txt.lck
