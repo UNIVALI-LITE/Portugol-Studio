@@ -26,7 +26,6 @@ import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.TelaOpcoesExecucao;
-import br.univali.ps.ui.acoes.*;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -74,8 +73,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private JPanel painelTemporario;
 
-    private AcaoSalvarArquivo acaoSalvarArquivo;
-    private AcaoSalvarComo acaoSalvarComo;
+    private Action acaoSalvarArquivo;
+    private Action acaoSalvarComo;
 
     private FiltroArquivo filtroPrograma;
     private JFileChooser dialogoSelecaoArquivo;
@@ -119,7 +118,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         ocultarCorretor();
         carregarConfiguracoes();
 
-        configurarSeletorArquivo(); // Deve ser configurado antes das ações
+        configurarSeletorArquivo();
         configurarAcoes();
         configurarEditor();
         instalarObservadores();
@@ -202,10 +201,11 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
 
         dialogoSelecaoArquivo = new JFileChooser();
-
         dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+        dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
+        dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
     }
 
     protected void configurarAcoes()
@@ -235,12 +235,28 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void configurarAcaoSalvarComo()
     {
-        acaoSalvarComo = (AcaoSalvarComo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarComo.class);
-        acaoSalvarComo.configurar(acaoSalvarArquivo, this, dialogoSelecaoArquivo, filtroPrograma, filtroPrograma);
-        acaoSalvarArquivo.configurar(editor.getPortugolDocumento(), acaoSalvarComo, editor);
+        final String nome = "Salvar como";
+        final KeyStroke atalho = KeyStroke.getKeyStroke("shift ctrl S");
 
-        String nome = (String) acaoSalvarComo.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoSalvarComo.getValue(AbstractAction.ACCELERATOR_KEY);
+        acaoSalvarComo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save_as.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION)
+                {
+                    File arquivo = dialogoSelecaoArquivo.getSelectedFile();
+
+                    if (!arquivo.getName().toLowerCase().endsWith(".por"))
+                    {
+                        arquivo = new File(arquivo.getPath().concat(".por"));
+                    }
+
+                    editor.getPortugolDocumento().setFile(arquivo);
+                    acaoSalvarArquivo.actionPerformed(e);
+                }
+            }
+        };
 
         getActionMap().put(nome, acaoSalvarComo);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
@@ -250,17 +266,47 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private void configurarAcaoSalvarArquivo()
     {
-        acaoSalvarArquivo = (AcaoSalvarArquivo) FabricaAcao.getInstancia().criarAcao(AcaoSalvarArquivo.class);
+        final String nome = (String) "Salvar arquivo";
+        final KeyStroke atalho = KeyStroke.getKeyStroke("ctrl S");
+
+        acaoSalvarArquivo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    final PortugolDocumento documento = editor.getPortugolDocumento();
+
+                    if (documento.getFile() != null)
+                    {
+                        String texto = documento.getText(0, documento.getLength());
+                        texto = inserirInformacoesPortugolStudio(texto);
+
+                        FileHandle.save(texto, documento.getFile());
+                        documento.setChanged(false);
+                    }
+                    else
+                    {
+                        acaoSalvarComo.actionPerformed(e);
+                    }
+                }
+                catch (BadLocationException ex)
+                {
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                }
+                catch (Exception ex)
+                {
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                }
+            }
+        };
 
         acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
-
-        String nome = (String) acaoSalvarArquivo.getValue(AbstractAction.NAME);
-        KeyStroke atalho = (KeyStroke) acaoSalvarArquivo.getValue(AbstractAction.ACCELERATOR_KEY);
+        btnSalvar.setAction(acaoSalvarArquivo);
 
         getActionMap().put(nome, acaoSalvarArquivo);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-
-        btnSalvar.setAction(acaoSalvarArquivo);
     }
 
     private void configurarAcaoExecutar()
@@ -641,16 +687,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             {
                 AbaCodigoFonte.this.podeSalvar = podeSalvar;
                 editor.setCodigoFonte(codigoFonte);
+
                 PortugolDocumento document = editor.getPortugolDocumento();
                 document.setFile(arquivo);
-
                 document.setChanged(false);
-                acaoSalvarArquivo.setEnabled(false);
 
-                acaoSalvarArquivo.configurar((PortugolDocumento) document, acaoSalvarComo, editor);
+                acaoSalvarArquivo.setEnabled(false);
             }
         });
-
     }
 
     @SuppressWarnings("unchecked")
@@ -1447,6 +1491,58 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         });
     }
 
+    private String inserirInformacoesPortugolStudio(String texto)
+    {
+        StringBuilder sb = new StringBuilder(texto);
+
+        sb.append("\n/* $$$ Portugol Studio $$$ ");
+        sb.append("\n * ");
+        sb.append("\n * Esta seção do arquivo guarda informações do Portugol Studio.");
+        sb.append("\n * Você pode apagá-la se estiver utilizando outro editor.");
+        sb.append("\n * ");
+
+        inserirInformacoesCursor(sb);
+        inserirInformacoesDobramentoCodigo(sb);
+
+        sb.append("\n */");
+
+        return sb.toString();
+    }
+
+    private void inserirInformacoesCursor(final StringBuilder sb)
+    {
+        final int posicaoCursor = editor.getTextArea().getCaretPosition();
+
+        if (posicaoCursor >= 0)
+        {
+            sb.append(String.format("\n * @POSICAO-CURSOR = %d; ", posicaoCursor));
+        }
+    }
+
+    private void inserirInformacoesDobramentoCodigo(final StringBuilder sb)
+    {
+        final List<Integer> linhasCodigoDobradas = editor.getLinhasCodigoDobradas();
+
+        if (linhasCodigoDobradas != null && !linhasCodigoDobradas.isEmpty())
+        {
+            StringBuilder linhas = new StringBuilder("[");
+
+            for (int i = 0; i < linhasCodigoDobradas.size(); i++)
+            {
+                linhas.append(linhasCodigoDobradas.get(i).toString());
+
+                if (i < linhasCodigoDobradas.size() - 1)
+                {
+                    linhas.append(", ");
+                }
+            }
+
+            linhas.append("]");
+
+            sb.append(String.format("\n * @DOBRAMENTO-CODIGO = %s;", linhas));
+        }
+    }
+
     public String getCodigoFonte()
     {
         return getEditor().getTextArea().getText();
@@ -1696,8 +1792,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         Editor.EscopoCursor escopo = editor.getEscopoCursor();
 
         rotuloPosicaoCursor.setText(String.format("Escopo: %s, Nivel: %d, Linha: %d, Coluna: %d", escopo.getNome(), escopo.getProfundidade(), posicao.y, posicao.x));
-
-        acaoSalvarArquivo.setPosicaoCursor(editor.getTextArea().getCaretPosition());
     }
 
     protected JButton getBtnEnviarAlgoritmo()

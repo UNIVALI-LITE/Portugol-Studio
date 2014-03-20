@@ -44,17 +44,18 @@ import net.java.balloontip.BalloonTip;
 
 public final class AbaInicial extends Aba implements PackDownloaderObserver
 {
+    private final TelaAtalhosTeclado telaAtalhosTeclado = new TelaAtalhosTeclado();
+    
     private JPopupMenu menuExemplos;
-    //private PainelTabulado painelTabulado;
-    private final TelaAtalhosTeclado telaAtalhosTeclado;
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
+    private Action acaoAbrirCodigoFonte;
 
     public AbaInicial(TelaPrincipalDesktop telaPrincipalDesktop)
     {
         super();
+
         setPainelTabulado(telaPrincipalDesktop.getPainelTabulado());
-        this.telaAtalhosTeclado = new TelaAtalhosTeclado();
         setCabecalho(new BotoesControleAba(this, telaPrincipalDesktop));
 
         initComponents();
@@ -65,7 +66,6 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         configurarAcoes();
         configurarLinks();
         configurarExibicaoAvisoVideoAulas();
-
     }
 
     private void configurarExibicaoAvisoVideoAulas()
@@ -351,7 +351,6 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
             {
                 getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO).actionPerformed(e);
                 Action action = getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO);
-                System.out.println("nome da classe da Action: " + action.getClass().getName());
             }
         };
 

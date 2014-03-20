@@ -14,12 +14,6 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.acoes.AcaoColar;
-import br.univali.ps.ui.acoes.AcaoCopiar;
-import br.univali.ps.ui.acoes.AcaoDesfazer;
-import br.univali.ps.ui.acoes.AcaoRecortar;
-import br.univali.ps.ui.acoes.AcaoRefazer;
-import br.univali.ps.ui.acoes.FabricaAcao;
 import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
@@ -77,6 +71,7 @@ import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
+import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
@@ -88,7 +83,6 @@ import org.fife.ui.rtextarea.SearchEngine;
  */
 public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener
 {
-
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
@@ -114,6 +108,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private List<Integer> linhasCodigoDobradas = new ArrayList<>();
 
     private Object tag = null;
+    private Object tagDetalhado = null;
 
     private Object tagErro = null;
     private int ultimaLinhaErro = 0;
@@ -126,11 +121,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private Action acaoAumentarFonte;
     private Action acaoDiminuirFonte;
-    private AcaoRecortar acaoRecortar;
-    private AcaoCopiar acaoCopiar;
-    private AcaoColar acaoColar;
-    private AcaoDesfazer acaoDesfazer;
-    private AcaoRefazer acaoRefazer;
     private Action acaoComentar;
     private Action acaoDescomentar;
     private Action acaoListarTemas;
@@ -160,11 +150,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarConfiguracoes();
     }
 
-    public void configurarPesquisar(AbstractAction action)
-    {
-        btnPesquisar.setAction(action);
-    }
-
     private void criarMenuTemas()
     {
         GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
@@ -183,7 +168,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarDialogoPesquisarSubstituir()
     {
-        //ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
 
         dialogoPesquisar = new FindDialog(null, observadorAcaoPesquisaSubstituir);
@@ -254,37 +238,37 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarAcaoDesfazer()
     {
-        acaoDesfazer = (AcaoDesfazer) FabricaAcao.getInstancia().criarAcao(AcaoDesfazer.class);
-        acaoDesfazer.iniciar();
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "arrow_undo.png");
+        RTextArea.getAction(RSyntaxTextArea.UNDO_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
     private void configurarAcaoRefazer()
     {
-        acaoRefazer = (AcaoRefazer) FabricaAcao.getInstancia().criarAcao(AcaoRefazer.class);
-        acaoRefazer.iniciar();
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "arrow_redo.png");
+        RTextArea.getAction(RSyntaxTextArea.REDO_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
     private void configurarAcaoRecortar()
     {
-        acaoRecortar = (AcaoRecortar) FabricaAcao.getInstancia().criarAcao(AcaoRecortar.class);
-        acaoRecortar.iniciar();
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cut_red.png");
+        RTextArea.getAction(RSyntaxTextArea.CUT_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
     private void configurarAcaoCopiar()
     {
-        acaoCopiar = (AcaoCopiar) FabricaAcao.getInstancia().criarAcao(AcaoCopiar.class);
-        acaoCopiar.iniciar();
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png");
+        RTextArea.getAction(RSyntaxTextArea.COPY_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
     private void configurarAcaoColar()
     {
-        acaoColar = (AcaoColar) FabricaAcao.getInstancia().criarAcao(AcaoColar.class);
-        acaoColar.iniciar();
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_paste.png");
+        RTextArea.getAction(RSyntaxTextArea.PASTE_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
     private void configurarAcaoComentar()
     {
-        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png"))
+        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_paste.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -750,7 +734,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void carregarInformacoesPortugolStudio(String codigoFonte)
     {
         String informacoesPortugolStudio = extrairInformacoesPortugolStudio(codigoFonte);
-        
+
         carregarPosicaoCursor(informacoesPortugolStudio);
         carregarDobramentoCodigo(informacoesPortugolStudio);
     }
@@ -758,12 +742,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void carregarPosicaoCursor(String informacoesPortugolStudio)
     {
         Matcher avaliador = Pattern.compile("@POSICAO-CURSOR[ ]*=[ ]*[0-9]+[ ]*;").matcher(informacoesPortugolStudio);
-            
+
         if (avaliador.find())
         {
             String linha = avaliador.group();
             String valor = linha.split("=")[1].replace(";", "").trim();
-            
+
             try
             {
                 textArea.setCaretPosition(Integer.parseInt(valor));
@@ -772,26 +756,26 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             {
                 excecao.printStackTrace(System.out);
             }
-        }        
+        }
     }
-    
+
     private void carregarDobramentoCodigo(String informacoesPortugolStudio)
     {
-         Matcher avaliador = Pattern.compile("@DOBRAMENTO-CODIGO[ ]*=[ ]*\\[([ ]*[0-9]+[ ]*)(,[ ]*[0-9]+[ ]*)*\\];").matcher(informacoesPortugolStudio);
-            
+        Matcher avaliador = Pattern.compile("@DOBRAMENTO-CODIGO[ ]*=[ ]*\\[([ ]*[0-9]+[ ]*)(,[ ]*[0-9]+[ ]*)*\\];").matcher(informacoesPortugolStudio);
+
         if (avaliador.find() && textArea.isCodeFoldingEnabled())
         {
             String linha = avaliador.group();
             String valores[] = linha.split("=")[1].replace(";", "").replace("[", "").replace("]", "").split(",");
             List<Integer> linhasDobradas = new ArrayList<>();
-            
+
             try
             {
                 for (String valor : valores)
                 {
                     linhasDobradas.add(Integer.parseInt(valor.trim()));
                 }
-                
+
                 dobrarLinhasCodigo(linhasDobradas);
             }
             catch (NumberFormatException excecao)
@@ -800,33 +784,33 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         }
     }
-     
+
     private String extrairInformacoesPortugolStudio(String codigoFonte)
     {
         Matcher avaliador = Pattern.compile("[\\n]*/\\* \\$\\$\\$ Portugol Studio \\$\\$\\$([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/").matcher(codigoFonte);
-        
+
         if (avaliador.find())
         {
             return avaliador.group();
         }
-        
+
         return "";
     }
-    
+
     private String removerInformacoesPortugolStudio(String codigoFonte)
     {
         Matcher avaliador = Pattern.compile("[\\n]*/\\* \\$\\$\\$ Portugol Studio \\$\\$\\$([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/").matcher(codigoFonte);
-        
+
         if (avaliador.find())
         {
             StringBuilder sb = new StringBuilder(codigoFonte);
-        
+
             sb.replace(avaliador.start(), avaliador.end(), "");
             codigoFonte = sb.toString();
         }
         return codigoFonte;
     }
-    
+
     public PortugolDocumento getPortugolDocumento()
     {
         return (PortugolDocumento) textArea.getDocument();
@@ -850,19 +834,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDepurar.setVisible(false);
         btnProximaInstrucao.setVisible(expandido);
     }
-    
+
     public List<Integer> getLinhasCodigoDobradas()
     {
         List<Integer> linhas = new ArrayList<>();
-        
+
         for (int i = 0; i < textArea.getFoldManager().getFoldCount(); i++)
         {
             adicionarLinhaDobrada(textArea.getFoldManager().getFold(i), linhas);
         }
-        
+
         return linhas;
     }
-    
+
     private void adicionarLinhaDobrada(Fold dobramento, List<Integer> linhas)
     {
         for (int i = 0; i < dobramento.getChildCount(); i++)
@@ -875,7 +859,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             linhas.add(dobramento.getStartLine());
         }
     }
-      
+
     private void dobrarLinhasCodigo(List<Integer> linhas)
     {
         textArea.setCodeFoldingEnabled(true);
@@ -900,7 +884,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
         textArea.setHighlightCurrentLine(true);
         textArea.setFocusable(true);
-        
+
         dobrarLinhasCodigo(linhasCodigoDobradas);
 
         textArea.setRequestFocusEnabled(true);
@@ -1179,33 +1163,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     @Override
     public void keyReleased(KeyEvent e)
     {
-    }
-
-    Object tagDetalhado = null;
-
-    public AcaoColar getAcaoColar()
-    {
-        return acaoColar;
-    }
-
-    public AcaoCopiar getAcaoCopiar()
-    {
-        return acaoCopiar;
-    }
-
-    public AcaoDesfazer getAcaoDesfazer()
-    {
-        return acaoDesfazer;
-    }
-
-    public AcaoRefazer getAcaoRefazer()
-    {
-        return acaoRefazer;
-    }
-
-    public AcaoRecortar getAcaoRecortar()
-    {
-        return acaoRecortar;
     }
 
     private void aplicarTema(String nome)

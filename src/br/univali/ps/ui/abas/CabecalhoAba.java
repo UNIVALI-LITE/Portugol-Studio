@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 public class CabecalhoAba extends JPanel
 {
-    private Aba aba;
+    private final Aba aba;
 
     public CabecalhoAba(Aba aba)
     {
@@ -20,7 +20,7 @@ public class CabecalhoAba extends JPanel
     {
         return aba;
     }
-    
+
     public void setTitulo(String titulo)
     {
         this.jLTitulo.setText(titulo);
