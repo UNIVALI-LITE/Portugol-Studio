@@ -49,8 +49,11 @@ public class PortugolDocumento extends RSyntaxDocument {
     }
 
     public void setFile(File file) {
+        
+        String nome = (file != null)? file.getName() : null;
+        
          this.file = file;
-         disparaNomeArquivoAlterado(file.getName());
+         disparaNomeArquivoAlterado(nome);
     }
 
     public boolean isChanged() {

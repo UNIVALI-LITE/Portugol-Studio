@@ -12,7 +12,7 @@ public class ExcecaoAplicacao extends Exception
 {
     public enum Tipo { ERRO, AVISO, MENSAGEM };
 
-    private Tipo tipo;
+    private final Tipo tipo;
     
     public ExcecaoAplicacao(String mensagem, Tipo tipo)
     {

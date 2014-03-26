@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -135,9 +136,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
             {
                 if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION)
                 {
-                    File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
-
-                    telaPrincipal.abrirArquivosCodigoFonte(new ArrayList<>(Arrays.asList(arquivos)));
+                    final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
+                    final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
+                                        
+                    telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);
                 }
             }
         };

@@ -711,6 +711,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
+    public void desabilitarCentralizacaoCodigoFonte()
+    {
+        if (btnCentralizarCodigoFonte.isSelected())
+        {
+            acaoCentralizarCodigoFonte.actionPerformed(null);
+        }
+    }
+    
     public void adicionarObservadorCursor(CaretListener observador)
     {
         textArea.addCaretListener(observador);
@@ -727,8 +735,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.discardAllEdits();
         textArea.forceReparsing(notificaErrosEditor);
 
-        carregarInformacoesPortugolStudio(codigoFonte);
-        centralizarCodigoFonte();
+        carregarInformacoesPortugolStudio(codigoFonte);        
     }
 
     private void carregarInformacoesPortugolStudio(String codigoFonte)

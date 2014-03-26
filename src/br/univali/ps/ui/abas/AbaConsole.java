@@ -653,22 +653,29 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         private TipoDado tipoDado;
 
         @Override
-        public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador) throws Exception
+        public void solicitaEntrada(final TipoDado tipoDado, final Armazenador armazenador) throws Exception
         {
-            setLendo(true);
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    setLendo(true);
 
-            abaCodigoFonte.exibirPainelSaida();
-            this.armazenador = armazenador;
-            this.tipoDado = tipoDado;
+                    abaCodigoFonte.exibirPainelSaida();
+                    DocumentoConsole.this.armazenador = armazenador;
+                    DocumentoConsole.this.tipoDado = tipoDado;
 
-            console.setEditable(true);
-            console.setFocusable(true);
+                    console.setEditable(true);
+                    console.setFocusable(true);
 
-            agendarPopupLeia();
+                    agendarPopupLeia();
 
-            AbaConsole.this.selecionar();
-            console.requestFocusInWindow();
-            console.setCaretPosition(console.getText().length());
+                    AbaConsole.this.selecionar();
+                    console.requestFocusInWindow();
+                    console.setCaretPosition(console.getText().length());
+                }
+            });
         }
 
         public void setLendo(boolean lendo)

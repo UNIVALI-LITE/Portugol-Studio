@@ -102,9 +102,7 @@ public final class AbaMensagemCompilador extends Aba
 
     void limpar()
     {
-
         tabelaModel.setResultadoAnalise(null);
-
     }
 
     private void notificarMensagemSelecionada(Mensagem mensagem)

@@ -2,7 +2,6 @@ package br.univali.ps.nucleo;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,11 +17,11 @@ public final class GerenciadorTemas
 {
     private static final String PACOTE_TEMA = "";
 
-    private Map<String, String> arquivosTema;
+    private final Map<String, String> arquivosTema = new HashMap<>();
 
     GerenciadorTemas()
     {
-        arquivosTema = new HashMap<String, String>();
+
     }
 
     public List<String> listarTemas()
@@ -30,7 +29,7 @@ public final class GerenciadorTemas
         if (arquivosTema.isEmpty())
         {
             /*
-             * Por enquanto adicionamos manualmente, futuramente podemos 
+             * Por enquanto adicionamos manualmente, futuramente podemos
              * carregar dinamicamente do pacote de temas.
              */
 
@@ -41,7 +40,7 @@ public final class GerenciadorTemas
             arquivosTema.put("Visual Studio", "vs");
         }
 
-        List<String> listaTemas = new ArrayList<String>(arquivosTema.keySet());
+        List<String> listaTemas = new ArrayList<>(arquivosTema.keySet());
         Collections.sort(listaTemas);
 
         return listaTemas;
@@ -56,10 +55,11 @@ public final class GerenciadorTemas
 
         try
         {
-            String nomeArquivo = arquivosTema.get(nome);
-            String caminho = String.format("%s/%s.xml", PACOTE_TEMA, nomeArquivo);
+            final String nomeArquivo = arquivosTema.get(nome);
+            final String caminho = String.format("%s/%s.xml", PACOTE_TEMA, nomeArquivo);
             final InputStream resourceStream = getClass().getResourceAsStream(caminho);
             final Theme theme = Theme.load(resourceStream);
+            
             return theme;
         }
         catch (IOException excecao)

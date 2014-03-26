@@ -1,42 +1,54 @@
 package br.univali.ps.ui;
 
-import br.univali.ps.CheckThreadViolationRepaintManager;
+import br.univali.ps.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.HeadlessException;
-import java.awt.SplashScreen;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public final class TelaPrincipalDesktop extends JFrame
+public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 {
-    private List<File> arquivosIniciais;
-    private boolean primeiraVez = true;
-    private Configuracoes configuracoes = null;
+    private static final Logger LOGGER = Logger.getLogger(TelaPrincipalDesktop.class.getName());
 
-    private TelaProgressoAba telaProgressoAba = null;
+    private boolean exibindoPrimeiraVez = true;
+    private Configuracoes configuracoes = null;
+    private List<File> arquivosIniciais;
+
+    public static void main(final String argumentos[])
+    {
+        PortugolStudio.getInstancia().iniciar(argumentos);
+    }
+
+    @Override
+    public void exibir()
+    {
+        setVisible(true);
+    }
+
+    @Override
+    public void bloquear()
+    {
+        setEnabled(false);
+    }
+
+    @Override
+    public void desbloquear()
+    {
+        setEnabled(true);
+    }
 
     public TelaPrincipalDesktop()
     {
@@ -44,6 +56,11 @@ public final class TelaPrincipalDesktop extends JFrame
         configurarJanela();
         criaAbas();
         instalarObservadores();
+    }
+
+    public void setArquivosIniciais(List<File> arquivos)
+    {
+        this.arquivosIniciais = arquivos;
     }
 
     private void criaAbas()
@@ -142,15 +159,53 @@ public final class TelaPrincipalDesktop extends JFrame
             @Override
             public void componentShown(ComponentEvent e)
             {
-                if (primeiraVez)
+                if (exibindoPrimeiraVez)
                 {
-                    primeiraVez = false;
+                    exibindoPrimeiraVez = false;
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
                     inicializarRecursos();
                 }
             }
         });
+    }
+
+    public void criarNovoCodigoFonte()
+    {
+        painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
+    }
+
+    public void abrirArquivosCodigoFonte(final List<File> arquivos)
+    {
+        if (arquivos != null && !arquivos.isEmpty())
+        {
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    PortugolStudio.getInstancia().getTelaPrincipal().bloquear();
+
+                    for (File arquivo : arquivos)
+                    {
+                        try
+                        {
+                            final String conteudo = FileHandle.open(arquivo);
+                            final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+
+                            abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
+                            getPainelTabulado().add(abaCodigoFonte);
+                        }
+                        catch (Exception excecao)
+                        {
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                        }
+                    }
+
+                    PortugolStudio.getInstancia().getTelaPrincipal().desbloquear();
+                }
+            });
+        }
     }
 
     private void inicializarRecursos()
@@ -179,15 +234,7 @@ public final class TelaPrincipalDesktop extends JFrame
 
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
-            try
-            {
-                Configuracoes.getInstancia().salvar();
-            }
-            catch (ExcecaoAplicacao excecaoAplicacao)
-            {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
-            }
-
+            Configuracoes.getInstancia().salvar();
             System.exit(0);
         }
     }
@@ -218,237 +265,4 @@ public final class TelaPrincipalDesktop extends JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private br.univali.ps.ui.PainelTabuladoPrincipal painelTabuladoPrincipal;
     // End of variables declaration//GEN-END:variables
-
-    public void setArquivosIniciais(List<File> arquivos)
-    {
-        this.arquivosIniciais = arquivos;
-    }
-
-    private AbaCodigoFonte aba = AbaCodigoFonte.criaNovaAba();
-
-    public void criarNovoCodigoFonte()
-    {
-        //getTelaProgressoaba().criarNovoCodigoFonte(); 
-        painelTabuladoPrincipal.add(AbaCodigoFonte.criaNovaAba());
-    }
-
-    private TelaProgressoAba getTelaProgressoaba()
-    {
-        if (telaProgressoAba == null)
-        {
-            telaProgressoAba = new TelaProgressoAba(painelTabuladoPrincipal);
-        }
-
-        return telaProgressoAba;
-    }
-
-    public void abrirArquivosCodigoFonte(final List<File> arquivos)
-    {
-        if (!arquivos.isEmpty())
-        {
-            final Timer timer = new Timer(750, new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    TelaPrincipalDesktop.this.getTelaProgressoaba().abrirArquivosCodigoFonte(arquivos);
-                }
-            });
-
-            timer.setRepeats(false);
-            timer.start();
-        }
-    }
-
-    private static SplashScreen mySplash;
-    private static java.awt.geom.Rectangle2D.Double splashProgressArea;
-    private static Graphics2D splashGraphics;
-    private static Font font;
-
-    public static void main(final String argumentos[])
-    {
-        setLoggerConfigurations();
-        RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-        
-        try
-        {
-            splashInit();
-            String property = System.getProperty("java.specification.version");
-            
-            if (Double.valueOf(property) < 1.7)
-            {
-                JOptionPane.showMessageDialog(null, "Para executar o Portugol Studio é preciso utilizar o Java 1.7 ou superior.", "Erro na inicialização", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            PortugolStudio portugolStudio = PortugolStudio.getInstancia();
-            portugolStudio.setDepurando(isDepurando(argumentos));
-            splashProgress(50);
-
-            try
-            {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            }
-            catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e)
-            {
-                e.printStackTrace();
-                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            }
-
-            EventQueue.invokeLater(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    TelaPrincipalDesktop telaPrincipalDesktop = new TelaPrincipalDesktop();
-                    telaPrincipalDesktop.setArquivosIniciais(listarArquivos(argumentos));
-                    telaPrincipalDesktop.setVisible(true);
-                }
-            });
-
-            portugolStudio.iniciar();
-
-            splashProgress(100);
-        }
-        catch (NumberFormatException | HeadlessException | ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException excecao)
-        {
-            String mensagem = "O Portugol Studio encontrou um erro desconhecido e precisa ser fechado:\n" + excecao.getMessage();
-            ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO);
-
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
-            System.exit(0);
-        }
-
-        try
-        {
-            if (mySplash != null)   // check if we really had a spash screen
-            {
-                mySplash.close();   // if so we're now done with it
-            }
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace(System.out);
-        }
-    }
-
-    public static void setLoggerConfigurations()
-    {
-        setLoggerConfigurations(null);
-    }
-
-    public static void setLoggerConfigurations(String level)
-    {
-        //</editor-fold>
-        final InputStream inputStream = TelaPrincipalDesktop.class.getResourceAsStream("/logging.properties");
-
-        try
-        {
-            LogManager.getLogManager().readConfiguration(inputStream);
-            if (level != null)
-            {
-                Logger log = LogManager.getLogManager().getLogger("");
-                log.setLevel(Level.parse(level));
-//                for (Handler h : log.getHandlers()) {
-//                    h.setLevel(Level.parse(level));
-//                    System.out.println(h.getLevel());
-//                }
-            }
-        }
-        catch (final IOException e)
-        {
-            Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
-            Logger.getAnonymousLogger().severe(e.getMessage());
-        }
-    }
-
-    private static boolean runningApplet()
-    {
-        return System.getSecurityManager() != null;
-    }
-
-    private static void splashInit()
-    {
-        mySplash = SplashScreen.getSplashScreen();
-        if (mySplash != null)
-        {   // if there are any problems displaying the splash this will be null
-            Dimension ssDim = mySplash.getSize();
-            int height = ssDim.height;
-            int width = ssDim.width;
-            // stake out some area for our status information
-            splashProgressArea = new Rectangle2D.Double(width * .55, height * .92, width * .4, 12);
-
-            // create the Graphics environment for drawing status info
-            splashGraphics = mySplash.createGraphics();
-            font = new Font("Dialog", Font.PLAIN, 14);
-            splashGraphics.setFont(font);
-
-            splashProgress(0);
-        }
-    }
-
-    public static void splashProgress(int pct)
-    {
-        if (mySplash != null && mySplash.isVisible())
-        {
-
-            // Note: 3 colors are used here to demonstrate steps
-            // erase the old one
-            splashGraphics.setPaint(Color.LIGHT_GRAY);
-            splashGraphics.fill(splashProgressArea);
-
-            // draw an outline
-            splashGraphics.setPaint(Color.BLUE);
-            splashGraphics.draw(splashProgressArea);
-
-            // Calculate the width corresponding to the correct percentage
-            int x = (int) splashProgressArea.getMinX();
-            int y = (int) splashProgressArea.getMinY();
-            int wid = (int) splashProgressArea.getWidth();
-            int hgt = (int) splashProgressArea.getHeight();
-
-            int doneWidth = Math.round(pct * wid / 100.f);
-            doneWidth = Math.max(0, Math.min(doneWidth, wid - 1));  // limit 0-width
-
-            // fill the done part one pixel smaller than the outline
-            splashGraphics.setPaint(Color.GREEN);
-            splashGraphics.fillRect(x, y + 1, doneWidth, hgt - 1);
-
-            // make sure it's displayed
-            mySplash.update();
-        }
-    }
-
-    private static boolean isDepurando(String[] argumentos)
-    {
-        for (String argumento : argumentos)
-        {
-            if (argumento.equals("-debug"))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static List<File> listarArquivos(String[] argumentos)
-    {
-        List<File> arquivos = new ArrayList();
-
-        if (argumentos != null && argumentos.length > 0)
-        {
-            for (String argumento : argumentos)
-            {
-                File arquivo = new File(argumento);
-
-                if (arquivo.exists() && arquivo.isFile() && arquivo.canRead() && arquivo.getName().toLowerCase().endsWith(".por"))
-                {
-                    arquivos.add(arquivo);
-                }
-            }
-        }
-
-        return arquivos;
-    }
 }

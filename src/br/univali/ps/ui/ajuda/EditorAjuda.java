@@ -57,10 +57,9 @@ public final class EditorAjuda extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                //ContextoDeTrabalho telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
-                
-                AbaCodigoFonte aba = AbaCodigoFonte.criaNovaAba();
+                AbaCodigoFonte aba = AbaCodigoFonte.novaAba();
                 aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
+                
                 if(painelTabulado == null){
                     throw new IllegalStateException("O painel tabulado do EditorAjuda não está setado!");
                 }

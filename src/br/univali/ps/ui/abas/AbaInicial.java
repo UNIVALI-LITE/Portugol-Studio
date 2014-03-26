@@ -170,7 +170,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
                     {
                         File exemplo = new File(((JMenuItem) e.getSource()).getName());
                         String codigoFonte = FileHandle.open(exemplo);
-                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.criaNovaAba();
+                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         getPainelTabulado().add(abaCodigoFonte);
                         //abaCodigoFonte.adicionar(getPainelTabulado());

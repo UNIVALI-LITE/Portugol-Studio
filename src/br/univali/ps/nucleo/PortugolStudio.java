@@ -1,97 +1,348 @@
 package br.univali.ps.nucleo;
 
 import br.univali.portugol.corretor.dinamico.model.Questao;
+import br.univali.ps.DetectorViolacoesThreadSwing;
 import br.univali.ps.ParserDeQuestao;
+import br.univali.ps.TelaPrincipal;
+import br.univali.ps.TelaPrincipalApplet;
 import br.univali.ps.exception.CarregamentoDeExercicioException;
+import br.univali.ps.ui.Splash;
+import br.univali.ps.ui.TelaPrincipalDesktop;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaSobre;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
+import java.awt.HeadlessException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import javax.xml.bind.JAXBException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RepaintManager;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author Luiz Fernando Noschang
  * @since 22/08/2011
- *
  */
-public final class PortugolStudio {
-
+public final class PortugolStudio
+{
+    private static final Logger LOGGER = Logger.getLogger(PortugolStudio.class.getName());
     private static PortugolStudio instancia = null;
+
+    private final List<File> arquivosIniciais = new ArrayList<>();
+
     private boolean depurando = false;
-    private TratadorExcecoes tratadorExcecoes = null;
+
+    private TelaSobre telaSobre = null;
+    private TelaPrincipal telaPrincipal = null;
 
     private GerenciadorTemas gerenciadorTemas = null;
-    private TelaSobre telaSobre = null;
+    private TratadorExcecoes tratadorExcecoes = null;
 
-    private PortugolStudio() {
+    private PortugolStudio()
+    {
+
     }
 
-    public static PortugolStudio getInstancia() {
-        if (instancia == null) {
+    public static PortugolStudio getInstancia()
+    {
+        if (instancia == null)
+        {
             instancia = new PortugolStudio();
         }
 
         return instancia;
     }
 
-    public boolean isDepurando() {
-        return depurando;
+    public void iniciar()
+    {
+        iniciar(null);
     }
 
-    public void setDepurando(boolean depurando) {
-        this.depurando = depurando;
+    public void iniciar(final String[] parametros)
+    {
+        if (versaoJavaCorreta())
+        {
+            Splash.exibir();
+
+            inicializarMecanismoLog();
+            Splash.definirProgresso(10);
+
+            processarParametrosLinhaComando(parametros);
+            Splash.definirProgresso(20);
+
+            instalarDetectorVialacoesNaThreadSwing();
+            Splash.definirProgresso(30);
+
+            definirLookAndFeel();
+            Splash.definirProgresso(40);
+
+            registrarFontes();
+            Splash.definirProgresso(50);
+
+            definirFontePadraoInterface();
+            Splash.definirProgresso(60);
+
+            AbaCodigoFonte.inicializarPool();
+            Splash.definirProgresso(70);
+
+            try
+            {
+                exibirTelaPrincipal();
+                Splash.definirProgresso(100);
+            }
+            catch (ExcecaoAplicacao excecaoAplicacao)
+            {
+                getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
+            }
+
+            Splash.ocultar();
+        }
     }
 
-    public void iniciar() {
+    private boolean versaoJavaCorreta()
+    {
+        try
+        {
+            String property = System.getProperty("java.specification.version");
 
+            if (Double.valueOf(property) < 1.7)
+            {
+                JOptionPane.showMessageDialog(null, "Para executar o Portugol Studio é preciso utilizar o Java 1.7 ou superior.", "Portugol Studio", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+
+            return true;
+        }
+        catch (HeadlessException | NumberFormatException excecao)
+        {
+            JOptionPane.showMessageDialog(null, "Não foi possível determinar a versão do Java. O Portugol Studio será encerrado!", "Portugol Studio", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
     }
 
-    private void registrar_fontes() {
-        final String path = "br/univali/ps/ui/fontes/";
+    private void inicializarMecanismoLog()
+    {
+        final InputStream inputStream = TelaPrincipalDesktop.class.getResourceAsStream("/logging.properties");
 
-        final String[] fontes
-                = {
-                    "dejavu_sans_mono.ttf",
-                    "dejavu_sans_mono_bold.ttf",
-                    "dejavu_sans_mono_bold_oblique.ttf",
-                    "dejavu_sans_mono_oblique.ttf"
-                };
+        try
+        {
+            LogManager.getLogManager().readConfiguration(inputStream);
+        }
+        catch (final IOException excecao)
+        {
+            Logger.getAnonymousLogger().severe("Não foi possível localizar o arquivo de configuração de log 'logging.properties'");
+            Logger.getAnonymousLogger().log(Level.SEVERE, excecao.getMessage(), excecao);
+        }
+    }
 
-        for (String nome : fontes) {
-            try {
-                Font fonte = Font.createFont(Font.TRUETYPE_FONT, Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome));
-                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fonte);
-            } catch (FontFormatException | IOException excecao) {
-                excecao.printStackTrace(System.err);
+    private void processarParametrosLinhaComando(final String[] parametros)
+    {
+        if (parametros != null)
+        {
+            processarParametroModoDepuracao(parametros);
+            processarParametroArquivosIniciais(parametros);
+        }
+    }
+
+    private void processarParametroModoDepuracao(final String[] parametros)
+    {
+        setDepurando(false);
+
+        for (String parametro : parametros)
+        {
+            if (parametro.equals("-debug"))
+            {
+                setDepurando(true);
             }
         }
     }
 
-    public TratadorExcecoes getTratadorExcecoes() {
-        if (tratadorExcecoes == null) {
+    private void processarParametroArquivosIniciais(String[] argumentos)
+    {
+        if (!rodandoApplet())
+        {
+            if (argumentos != null && argumentos.length > 0)
+            {
+                for (String argumento : argumentos)
+                {
+                    File arquivo = new File(argumento);
+
+                    if (arquivo.exists() && arquivo.isFile() && arquivo.canRead() && arquivo.getName().toLowerCase().endsWith(".por"))
+                    {
+                        arquivosIniciais.add(arquivo);
+                    }
+                }
+            }
+        }
+    }
+
+    private void instalarDetectorVialacoesNaThreadSwing()
+    {
+        RepaintManager.setCurrentManager(new DetectorViolacoesThreadSwing());
+    }
+
+    private void definirLookAndFeel()
+    {
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException excecao)
+        {
+            LOGGER.log(Level.INFO, "Não foi possível alterar o Look And Feel para o Look And Feel padrão do sistema operacional");
+        }
+    }
+
+    private void registrarFontes()
+    {
+        final String path = "br/univali/ps/ui/fontes/";
+
+        final String[] fontes =
+        {
+            "dejavu_sans_mono.ttf",
+            "dejavu_sans_mono_bold.ttf",
+            "dejavu_sans_mono_bold_oblique.ttf",
+            "dejavu_sans_mono_oblique.ttf",
+            "tahoma.ttf",
+            "tahomabd.ttf"
+        };
+
+        for (String nome : fontes)
+        {
+            try
+            {
+                Font fonte = Font.createFont(Font.TRUETYPE_FONT, Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome));
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fonte);
+            }
+            catch (FontFormatException | IOException excecao)
+            {
+                final String mensagem = String.format("Não foi possível registrar a fonte '%s' no ambiente", nome);
+
+                LOGGER.log(Level.INFO, mensagem, excecao);
+            }
+        }
+    }
+
+    private void definirFontePadraoInterface()
+    {
+        try
+        {
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Enumeration keys = UIManager.getDefaults().keys();
+
+                    while (keys.hasMoreElements())
+                    {
+                        Object key = keys.nextElement();
+                        Object value = UIManager.get(key);
+
+                        if (value instanceof javax.swing.plaf.FontUIResource)
+                        {
+                            /*
+                             * Não está funcionando. O swing altera a fonte padrão para a maioria dos componentes,
+                             * mas não todos. Além disso, o tamanho ds fonte da árvore estrutural para de funcionar
+                             *
+                             */
+                            //UIManager.put(key, new Font("Tahoma", Font.PLAIN, 11));                            
+                        }
+                    }
+                }
+            });
+        }
+        catch (InterruptedException | InvocationTargetException excecao)
+        {
+            LOGGER.log(Level.INFO, "Não foi possível definir uma fonte padrão na interface do usuário", excecao);
+        }
+    }
+
+    private void exibirTelaPrincipal() throws ExcecaoAplicacao
+    {
+        try
+        {
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    getTelaPrincipal().exibir();
+                }
+            });
+        }
+        catch (InterruptedException | InvocationTargetException ex)
+        {
+            throw new ExcecaoAplicacao("Não foi possível iniciar o Portugol Studio", ex, ExcecaoAplicacao.Tipo.ERRO);
+        }
+    }
+
+    public TelaPrincipal getTelaPrincipal()
+    {
+        if (telaPrincipal == null)
+        {
+            if (rodandoApplet())
+            {
+                telaPrincipal = new TelaPrincipalApplet();
+            }
+            else
+            {
+                telaPrincipal = new TelaPrincipalDesktop();
+
+                TelaPrincipalDesktop telaPrincipalDesktop = (TelaPrincipalDesktop) telaPrincipal;
+                telaPrincipalDesktop.setArquivosIniciais(arquivosIniciais);
+            }
+        }
+
+        return telaPrincipal;
+    }
+
+    public boolean isDepurando()
+    {
+        return depurando;
+    }
+
+    public void setDepurando(boolean depurando)
+    {
+        this.depurando = depurando;
+    }
+
+    public TratadorExcecoes getTratadorExcecoes()
+    {
+        if (tratadorExcecoes == null)
+        {
             tratadorExcecoes = new TratadorExcecoes();
         }
 
         return tratadorExcecoes;
     }
 
-    public GerenciadorTemas getGerenciadorTemas() {
-        if (gerenciadorTemas == null) {
+    public GerenciadorTemas getGerenciadorTemas()
+    {
+        if (gerenciadorTemas == null)
+        {
             gerenciadorTemas = new GerenciadorTemas();
         }
 
         return gerenciadorTemas;
     }
 
-    public TelaSobre getTelaSobre() {
-        if (telaSobre == null) {
+    public TelaSobre getTelaSobre()
+    {
+        if (telaSobre == null)
+        {
             telaSobre = new TelaSobre();
         }
 
@@ -100,48 +351,22 @@ public final class PortugolStudio {
         return telaSobre;
     }
 
-    public Questao abrirQuestao(String pathDoArquivoPex, ParserDeQuestao parserDeQuestao) throws CarregamentoDeExercicioException {
-        String conteudoDoXmlDoExercicio = CarregadorDeArquivo.getConteudoDoArquivo(pathDoArquivoPex);
+    public Questao abrirQuestao(String pathDoArquivoPex, ParserDeQuestao parserDeQuestao) throws CarregamentoDeExercicioException
+    {
+        String conteudoDoXmlDoExercicio = "";//CarregadorDeArquivo.getConteudoDoArquivo(pathDoArquivoPex);
 
-        try {
+        try
+        {
             return parserDeQuestao.getQuestao(conteudoDoXmlDoExercicio);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             throw new CarregamentoDeExercicioException(pathDoArquivoPex, e);
         }
     }
 
-    public boolean rodandoApplet() {
+    public boolean rodandoApplet()
+    {
         return System.getSecurityManager() != null;
     }
-
-    private static class CarregadorDeArquivo {
-
-        public static String getConteudoDoArquivo(String urlDoArquivo) throws CarregamentoDeExercicioException {
-            try {
-                InputStream is = null;
-                BufferedOutputStream bos = null;
-                String conteudoDoArquivo = "";
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                try {
-                    is = new BufferedInputStream(new URL(urlDoArquivo).openStream());
-
-                    bos = new BufferedOutputStream(baos);
-                    int byteLido = -1;
-                    while ((byteLido = is.read()) != -1) {
-                        bos.write(byteLido);
-                    }
-                } finally {
-                    bos.flush();
-                    conteudoDoArquivo = new String(baos.toByteArray());
-                    is.close();
-                    bos.close();
-                    baos.close();//por precaução :)
-                    return conteudoDoArquivo;
-                }
-            } catch (Exception e) {
-                throw new CarregamentoDeExercicioException(urlDoArquivo);
-            }
-        }
-    }
-
 }
