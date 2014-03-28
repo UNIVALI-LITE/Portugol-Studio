@@ -493,9 +493,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     private javax.swing.JScrollPane painelRolagem;
     // End of variables declaration//GEN-END:variables
 
-    private class HandlerDaSaida implements Saida
+    private final class HandlerDaSaida implements Saida
     {
-
         @Override
         public void limpar() throws Exception
         {
@@ -536,13 +535,12 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         {
             SwingUtilities.invokeAndWait(new Runnable()
             {
-
                 @Override
                 public void run()
                 {
                     AbaConsole.this.selecionar();
-                    console.requestFocusInWindow();
 
+                    console.requestFocusInWindow();
                     abaCodigoFonte.exibirPainelSaida();
 
                     if (texto != null)

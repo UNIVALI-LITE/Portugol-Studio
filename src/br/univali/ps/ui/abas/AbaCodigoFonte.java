@@ -58,7 +58,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private static final int TAMANHO_POOL_ABAS = 8;
     private static PoolAbasCodigoFonte poolAbasCodigoFonte;
-    
+
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
@@ -441,8 +441,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         final Corretor corretor = new Corretor(questao);
         int nota = 0;
-        
-        painelSaida.getAbaMensagensCompilador().limpar();        
+
+        painelSaida.getAbaMensagensCompilador().limpar();
 
         try
         {
@@ -488,19 +488,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
 
             int count = 1;
-            
+
             for (CasoFalho caso : casosFalhos)
             {
                 final DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
                 final DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
                 final DefaultMutableTreeNode saidasEsperadas = new DefaultMutableTreeNode("Saidas esperadas");
                 final DefaultMutableTreeNode saidasEncontrada = new DefaultMutableTreeNode("Saidas encontrada");
-                
+
                 for (Entrada entrada : caso.getCasoTestado().getEntradas())
                 {
                     entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
                 }
-                
+
                 for (Saida saida : caso.getCasoTestado().getSaidas())
                 {
                     saidasEsperadas.add(new DefaultMutableTreeNode(saida.getValor()));
@@ -527,24 +527,24 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             }
 
             count = 1;
-            
+
             for (Caso caso : casosAcertados)
             {
 
                 final DefaultMutableTreeNode defaultMutableTreeNode1 = new DefaultMutableTreeNode("Caso " + count);
                 final DefaultMutableTreeNode entradasNode = new DefaultMutableTreeNode("Entradas");
                 final DefaultMutableTreeNode saidasEsperada = new DefaultMutableTreeNode("Saidas esperadas");
-                
+
                 for (Entrada entrada : caso.getEntradas())
                 {
                     entradasNode.add(new DefaultMutableTreeNode(entrada.getValor()));
                 }
-                
+
                 for (Saida saida : caso.getSaidas())
                 {
                     saidasEsperada.add(new DefaultMutableTreeNode(saida.getValor()));
                 }
-                
+
                 defaultMutableTreeNode1.add(entradasNode);
                 defaultMutableTreeNode1.add(saidasEsperada);
 
@@ -559,7 +559,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             jTCasos.setModel(defaultTreeModel);
             jTCasos.invalidate();
         }
-        
+
         final DefaultListModel<String> listModel = new DefaultListModel<>();
 
         for (String mensagem : corretor.listarMensagens())
@@ -1650,7 +1650,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     public void exibirPainelSaida()
     {
-        if (editorExpandido && !painelSaidaFixado)
+        if (editorExpandido && !painelSaidaFixado && divisorEditorPainelSaida.getBottomComponent() != jLayeredPane1)
         {
             divisorEditorPainelSaida.setBottomComponent(jLayeredPane1);
             divisorEditorPainelSaida.setDividerLocation(divisorEditorPainelSaida.getMaximumDividerLocation());
