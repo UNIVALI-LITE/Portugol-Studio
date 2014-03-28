@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import static java.awt.Cursor.getPredefinedCursor;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSemanticoNaoTratado;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
@@ -8,15 +9,19 @@ import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -30,8 +35,11 @@ public final class AbaMensagemCompilador extends Aba
 {
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "table_error.png");
 
-    private List<AbaMensagemCompiladorListener> mensagemCompiladorListeners;
-    private ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
+    private final ResultadoAnaliseTableModel tabelaModel = new ResultadoAnaliseTableModel();
+    private final List<AbaMensagemCompiladorListener> mensagemCompiladorListeners = new ArrayList<>();
+
+    private Cursor cursorItem;
+    private Cursor cursorTabela;
 
     public AbaMensagemCompilador()
     {
@@ -39,12 +47,12 @@ public final class AbaMensagemCompilador extends Aba
         initComponents();
         configurarAparenciaTabela();
         instalarObservadores();
-
-        mensagemCompiladorListeners = new ArrayList<>();
     }
 
     private void configurarAparenciaTabela()
     {
+        tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
         tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
@@ -68,6 +76,8 @@ public final class AbaMensagemCompilador extends Aba
 
         tabelaMensagens.setShowGrid(false);
         tabelaMensagens.setIntercellSpacing(new Dimension(0, 0));
+
+        configurarCursorItensTabela();
     }
 
     private void instalarObservadores()
@@ -126,6 +136,31 @@ public final class AbaMensagemCompilador extends Aba
         mensagemCompiladorListeners.remove(listener);
     }
 
+    private void configurarCursorItensTabela()
+    {
+        cursorItem = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+
+        tabelaMensagens.addMouseMotionListener(new MouseMotionAdapter()
+        {
+            @Override
+            public void mouseMoved(MouseEvent e)
+            {
+                if (tabelaMensagens.rowAtPoint(e.getPoint()) >= 0)
+                {
+                    if (tabelaMensagens.getCursor() != cursorItem)
+                    {
+                        cursorTabela = tabelaMensagens.getCursor();
+                        tabelaMensagens.setCursor(cursorItem);
+                    }
+                }
+                else if (tabelaMensagens.getCursor() != cursorTabela)
+                {
+                    tabelaMensagens.setCursor(cursorTabela);
+                }
+            }
+        });
+    }
+
     private final class Renderizador extends DefaultTableCellRenderer
     {
         private final Color corImpar = Color.WHITE;
@@ -141,7 +176,7 @@ public final class AbaMensagemCompilador extends Aba
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
         {
-            JLabel renderer = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            final JLabel renderizador = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             String valor = null;
 
             setBorder(new EmptyBorder(4, 4, 4, 4));
@@ -169,14 +204,14 @@ public final class AbaMensagemCompilador extends Aba
                 setBackground((row % 2 == 0) ? corPar : corImpar);
             }
 
-            return renderer;
+            return renderizador;
         }
     }
 
     private final class AjustadorLinha implements TableModelListener, ComponentListener
     {
-        private JTextArea auxiliar;
-        private JTable tabela;
+        private final JTextArea auxiliar;
+        private final JTable tabela;
 
         public AjustadorLinha(JTable tabela)
         {
@@ -278,7 +313,6 @@ public final class AbaMensagemCompilador extends Aba
         jScrollPaneTabelaMensagens.setOpaque(false);
 
         tabelaMensagens.setBackground(new java.awt.Color(245, 245, 245));
-        tabelaMensagens.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tabelaMensagens.setFillsViewportHeight(true);
         tabelaMensagens.setRequestFocusEnabled(false);
         tabelaMensagens.setRowHeight(24);
