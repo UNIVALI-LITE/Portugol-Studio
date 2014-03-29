@@ -1789,7 +1789,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            depurador.proximo();
+            if (depurando)
+            {
+                depurador.proximo();
+            }
         }
     }
 
