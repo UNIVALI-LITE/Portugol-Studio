@@ -165,6 +165,9 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
                     inicializarRecursos();
+                    
+                    TelaPrincipalDesktop.this.toFront();
+                    TelaPrincipalDesktop.this.requestFocusInWindow();
                 }
             }
         });
