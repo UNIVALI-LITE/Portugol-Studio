@@ -6,6 +6,8 @@ import br.univali.ps.ParserDeQuestao;
 import br.univali.ps.TelaPrincipal;
 import br.univali.ps.TelaPrincipalApplet;
 import br.univali.ps.exception.CarregamentoDeExercicioException;
+import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -41,6 +43,7 @@ public final class PortugolStudio
     private static PortugolStudio instancia = null;
 
     private final List<File> arquivosIniciais = new ArrayList<>();
+    private final List<File> diretoriosPlugins = new ArrayList<>();
 
     private boolean depurando = false;
 
@@ -94,8 +97,15 @@ public final class PortugolStudio
             definirFontePadraoInterface();
             Splash.definirProgresso(60);
 
-            AbaCodigoFonte.inicializarPool();
+            /* 
+             * Os plugins devem sempre ser carregados antes de inicializar o Pool de abas, 
+             * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
+             */
+            carregarPlugins();
             Splash.definirProgresso(70);
+
+            AbaCodigoFonte.inicializarPool();
+            Splash.definirProgresso(80);
 
             try
             {
@@ -153,6 +163,27 @@ public final class PortugolStudio
         {
             processarParametroModoDepuracao(parametros);
             processarParametroArquivosIniciais(parametros);
+            processarParametrosDiretoriosPlugins(parametros);
+        }
+    }
+
+    private void processarParametrosDiretoriosPlugins(final String[] parametros)
+    {
+        for (String parametro : parametros)
+        {
+            if (parametro.startsWith("-plugins="))
+            {
+                String descDiretorios = parametro.split("=")[1];
+                String[] diretorios = descDiretorios.split(",");
+                
+                if (diretorios != null && diretorios.length > 0)
+                {
+                    for (String diretorio : diretorios)
+                    {
+                        diretoriosPlugins.add(new File(diretorio));
+                    }
+                }
+            }
         }
     }
 
@@ -267,6 +298,24 @@ public final class PortugolStudio
         catch (InterruptedException | InvocationTargetException excecao)
         {
             LOGGER.log(Level.INFO, "Não foi possível definir uma fonte padrão na interface do usuário", excecao);
+        }
+    }
+
+    private void carregarPlugins()
+    {
+        if (!rodandoApplet())
+        {
+            GerenciadorPlugins gerenciadorPlugins = GerenciadorPlugins.getInstance();
+            Configuracoes configuracoes = Configuracoes.getInstancia();
+
+            gerenciadorPlugins.incluirDiretorioPlugins(new File(configuracoes.getDiretorioPlugins()));
+            
+            for (File diretorio : diretoriosPlugins)
+            {
+                gerenciadorPlugins.incluirDiretorioPlugins(diretorio);
+            }
+            
+            gerenciadorPlugins.carregarPlugins();
         }
     }
 

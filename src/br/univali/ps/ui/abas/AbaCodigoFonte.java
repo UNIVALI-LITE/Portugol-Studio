@@ -21,6 +21,9 @@ import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.plugins.base.Plugin;
+import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.FabricaDicasInterface;
@@ -38,7 +41,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -51,7 +56,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import net.java.balloontip.BalloonTip;
 
-public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, DepuradorListener
+public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, DepuradorListener, UtilizadorPlugins
 {
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
@@ -62,6 +67,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
+
+    private final Map<Action, JButton> botoes = new HashMap<>();
 
     private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
     private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
@@ -163,6 +170,18 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         tree.setBackground(sPOutlineTree.getBackground());
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
+
+        painelBarraFerramentasArvore.setOpaque(true);
+        painelBarraFerramentasArvore.setBackground(Color.WHITE);
+
+        barraFerramentasArvore.setOpaque(true);
+        barraFerramentasArvore.setBackground(Color.WHITE);
+
+        btnAumentarFonteArvore.setOpaque(false);
+        btnDiminuirFonteArvore.setOpaque(false);
+        btnFixarArvoreSimbolos.setOpaque(false);
+        btnExpandirNosArvore.setOpaque(false);
+        btnContrairNosArvore.setOpaque(false);
     }
 
     private void criarPainelTemporario()
@@ -741,6 +760,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         barraFerramentasFixarPainelSaida = new javax.swing.JToolBar();
         btnFixarPainelSaida = new javax.swing.JToggleButton();
         painelAlinhamento2 = new javax.swing.JPanel();
+        jSeparator3 = new javax.swing.JSeparator();
+        divisorArvorePlugins = new javax.swing.JSplitPane();
         painelAlinhamento4 = new javax.swing.JPanel();
         painelBarraFerramentasArvore = new javax.swing.JPanel();
         barraFerramentasArvore = new javax.swing.JToolBar();
@@ -751,7 +772,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         btnContrairNosArvore = new javax.swing.JButton();
         sPOutlineTree = new javax.swing.JScrollPane();
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
-        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator6 = new javax.swing.JSeparator();
+        painelPlugins = new javax.swing.JPanel();
         separadorEditorCorretor = new javax.swing.JSeparator();
         painelCorretor = new javax.swing.JPanel();
         painelResultado = new javax.swing.JPanel();
@@ -1026,13 +1048,21 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         painelAlinhamento2.setPreferredSize(new java.awt.Dimension(400, 23));
         painelAlinhamento2.setLayout(new java.awt.BorderLayout());
 
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        painelAlinhamento2.add(jSeparator3, java.awt.BorderLayout.EAST);
+
+        divisorArvorePlugins.setBorder(null);
+        divisorArvorePlugins.setDividerSize(8);
+        divisorArvorePlugins.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        divisorArvorePlugins.setOneTouchExpandable(true);
+
         painelAlinhamento4.setOpaque(false);
         painelAlinhamento4.setLayout(new java.awt.BorderLayout());
 
+        painelBarraFerramentasArvore.setBackground(new java.awt.Color(255, 255, 255));
         painelBarraFerramentasArvore.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 0));
         painelBarraFerramentasArvore.setMaximumSize(new java.awt.Dimension(34, 100));
         painelBarraFerramentasArvore.setMinimumSize(new java.awt.Dimension(34, 100));
-        painelBarraFerramentasArvore.setOpaque(false);
         painelBarraFerramentasArvore.setPreferredSize(new java.awt.Dimension(34, 100));
         painelBarraFerramentasArvore.setLayout(new java.awt.BorderLayout());
 
@@ -1117,11 +1147,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         sPOutlineTree.setViewportView(tree);
 
         painelAlinhamento4.add(sPOutlineTree, java.awt.BorderLayout.CENTER);
+        painelAlinhamento4.add(jSeparator6, java.awt.BorderLayout.PAGE_END);
 
-        painelAlinhamento2.add(painelAlinhamento4, java.awt.BorderLayout.CENTER);
+        divisorArvorePlugins.setLeftComponent(painelAlinhamento4);
 
-        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        painelAlinhamento2.add(jSeparator3, java.awt.BorderLayout.EAST);
+        painelPlugins.setLayout(new java.awt.GridLayout(1, 1));
+        divisorArvorePlugins.setRightComponent(painelPlugins);
+
+        painelAlinhamento2.add(divisorArvorePlugins, java.awt.BorderLayout.CENTER);
 
         divisorEditorArvore.setLeftComponent(painelAlinhamento2);
 
@@ -1739,6 +1772,81 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         }
     }
 
+    @Override
+    public void instalarPlugin(final Plugin plugin)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                painelPlugins.add(plugin.getVisao());
+                divisorArvorePlugins.setDividerLocation(divisorArvorePlugins.getMinimumDividerLocation());
+                divisorArvorePlugins.resetToPreferredSizes();
+                divisorArvorePlugins.validate();
+                divisorArvorePlugins.repaint();
+            }
+        });
+    }
+
+    @Override
+    public void desinstalarPlugin(final Plugin plugin)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                painelPlugins.remove(plugin.getVisao());
+                divisorArvorePlugins.validate();
+                divisorArvorePlugins.repaint();
+            }
+        });
+    }
+
+    @Override
+    public void instalarAcaoPlugin(final Plugin plugin, final Action acao)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                JButton botaoAcao = new JButton(acao);
+
+                botaoAcao.setBorderPainted(false);
+                botaoAcao.setOpaque(false);
+                botaoAcao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                botaoAcao.setFocusPainted(false);
+                botaoAcao.setFocusable(false);
+                botaoAcao.setHideActionText(true);
+                botaoAcao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+                botaoAcao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+                barraFerramentas.add(botaoAcao);
+                barraFerramentas.repaint();
+
+                botoes.put(acao, botaoAcao);
+            }
+        });
+    }
+
+    @Override
+    public void desinstalarAcaoPlugin(Plugin plugin, final Action acao)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                JButton botaoAcao = botoes.get(acao);
+
+                barraFerramentas.remove(botaoAcao);
+                barraFerramentas.repaint();
+            }
+        });
+    }
+
     private class AcaoExecutar extends AbstractAction
     {
 
@@ -1881,6 +1989,12 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             final AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
 
+            /* Ao criar a aba no pool, instalar todos os plugins nela. Fazemos isto dentro pool para
+             * garantir que sempre que uma aba for utilizada, os plugins serão instalados, independente
+             * do local do código fonte aonde ela for inctanciada
+             */
+            GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
+
             abaCodigoFonte.adicionarAbaListener(new AbaListener()
             {
                 @Override
@@ -1889,6 +2003,19 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                     if (abaCodigoFonte.podeFechar())
                     {
                         abaCodigoFonte.redefinirAba();
+
+                        /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
+                         * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
+                         * da utilização anterior
+                         */
+                        GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
+
+                        /*
+                         * Logo após, instalamos todos os plugins novamente, para garantir que quando a aba for
+                         * reaproveitada a partir do pool, já estará inicializada com os plugins
+                         */
+                        GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
+
                         devolver(abaCodigoFonte);
 
                         return true;
@@ -1930,6 +2057,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JButton btnSalvarComo;
     private javax.swing.JCheckBox campoOpcoesExecucao;
     private javax.swing.JButton corrigir;
+    private javax.swing.JSplitPane divisorArvorePlugins;
     private javax.swing.JSplitPane divisorDicasCasos;
     private javax.swing.JSplitPane divisorEditorArvore;
     private javax.swing.JSplitPane divisorEditorCorretor;
@@ -1947,6 +2075,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTree jTCasos;
     private javax.swing.JPanel painelAlinhamento1;
     private javax.swing.JPanel painelAlinhamento2;
@@ -1962,6 +2091,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelFixarBarraFerramentas;
     private javax.swing.JPanel painelFixarPainelStatus;
+    private javax.swing.JPanel painelPlugins;
     private javax.swing.JPanel painelResultado;
     private br.univali.ps.ui.PainelSaida painelSaida;
     private javax.swing.JPanel painelStatus;

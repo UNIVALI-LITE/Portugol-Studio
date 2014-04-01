@@ -629,222 +629,6 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                       <SubComponents>
-                        <Container class="javax.swing.JPanel" name="painelAlinhamento4">
-                          <Properties>
-                            <Property name="opaque" type="boolean" value="false"/>
-                          </Properties>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                              <BorderConstraints direction="Center"/>
-                            </Constraint>
-                          </Constraints>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                          <SubComponents>
-                            <Container class="javax.swing.JPanel" name="painelBarraFerramentasArvore">
-                              <Properties>
-                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                                    <EmptyBorder bottom="4" left="4" right="0" top="4"/>
-                                  </Border>
-                                </Property>
-                                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                  <Dimension value="[34, 100]"/>
-                                </Property>
-                                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                  <Dimension value="[34, 100]"/>
-                                </Property>
-                                <Property name="opaque" type="boolean" value="false"/>
-                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                  <Dimension value="[34, 100]"/>
-                                </Property>
-                              </Properties>
-                              <Constraints>
-                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                                  <BorderConstraints direction="West"/>
-                                </Constraint>
-                              </Constraints>
-
-                              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                              <SubComponents>
-                                <Container class="javax.swing.JToolBar" name="barraFerramentasArvore">
-                                  <Properties>
-                                    <Property name="floatable" type="boolean" value="false"/>
-                                    <Property name="orientation" type="int" value="1"/>
-                                    <Property name="rollover" type="boolean" value="true"/>
-                                    <Property name="opaque" type="boolean" value="false"/>
-                                  </Properties>
-                                  <Constraints>
-                                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                                      <BorderConstraints direction="Center"/>
-                                    </Constraint>
-                                  </Constraints>
-
-                                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-                                  <SubComponents>
-                                    <Component class="javax.swing.JToggleButton" name="btnFixarArvoreSimbolos">
-                                      <Properties>
-                                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/pin.png"/>
-                                        </Property>
-                                        <Property name="borderPainted" type="boolean" value="false"/>
-                                        <Property name="focusable" type="boolean" value="false"/>
-                                        <Property name="horizontalTextPosition" type="int" value="0"/>
-                                        <Property name="iconTextGap" type="int" value="0"/>
-                                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                                          <Insets value="[0, 0, 0, 0]"/>
-                                        </Property>
-                                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/pin_over.png"/>
-                                        </Property>
-                                        <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/pin_pushed.png"/>
-                                        </Property>
-                                        <Property name="verticalTextPosition" type="int" value="3"/>
-                                      </Properties>
-                                    </Component>
-                                    <Component class="javax.swing.JButton" name="btnAumentarFonteArvore">
-                                      <Properties>
-                                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
-                                        </Property>
-                                        <Property name="borderPainted" type="boolean" value="false"/>
-                                        <Property name="focusable" type="boolean" value="false"/>
-                                        <Property name="hideActionText" type="boolean" value="true"/>
-                                        <Property name="horizontalTextPosition" type="int" value="0"/>
-                                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="opaque" type="boolean" value="false"/>
-                                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="verticalTextPosition" type="int" value="3"/>
-                                      </Properties>
-                                    </Component>
-                                    <Component class="javax.swing.JButton" name="btnDiminuirFonteArvore">
-                                      <Properties>
-                                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
-                                        </Property>
-                                        <Property name="borderPainted" type="boolean" value="false"/>
-                                        <Property name="focusable" type="boolean" value="false"/>
-                                        <Property name="hideActionText" type="boolean" value="true"/>
-                                        <Property name="horizontalTextPosition" type="int" value="0"/>
-                                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="opaque" type="boolean" value="false"/>
-                                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="verticalTextPosition" type="int" value="3"/>
-                                      </Properties>
-                                    </Component>
-                                    <Component class="javax.swing.JButton" name="btnExpandirNosArvore">
-                                      <Properties>
-                                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
-                                        </Property>
-                                        <Property name="borderPainted" type="boolean" value="false"/>
-                                        <Property name="focusable" type="boolean" value="false"/>
-                                        <Property name="hideActionText" type="boolean" value="true"/>
-                                        <Property name="horizontalTextPosition" type="int" value="0"/>
-                                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="opaque" type="boolean" value="false"/>
-                                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="verticalTextPosition" type="int" value="3"/>
-                                      </Properties>
-                                    </Component>
-                                    <Component class="javax.swing.JButton" name="btnContrairNosArvore">
-                                      <Properties>
-                                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
-                                        </Property>
-                                        <Property name="borderPainted" type="boolean" value="false"/>
-                                        <Property name="focusable" type="boolean" value="false"/>
-                                        <Property name="hideActionText" type="boolean" value="true"/>
-                                        <Property name="horizontalTextPosition" type="int" value="0"/>
-                                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="opaque" type="boolean" value="false"/>
-                                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                          <Dimension value="[24, 24]"/>
-                                        </Property>
-                                        <Property name="verticalTextPosition" type="int" value="3"/>
-                                      </Properties>
-                                    </Component>
-                                  </SubComponents>
-                                </Container>
-                              </SubComponents>
-                            </Container>
-                            <Container class="javax.swing.JScrollPane" name="sPOutlineTree">
-                              <Properties>
-                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                                </Property>
-                                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                                  <Border info="null"/>
-                                </Property>
-                                <Property name="viewportBorder" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                                    <EmptyBorder bottom="8" left="0" right="4" top="8"/>
-                                  </Border>
-                                </Property>
-                                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                  <Dimension value="[250, 23]"/>
-                                </Property>
-                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                  <Dimension value="[250, 2]"/>
-                                </Property>
-                              </Properties>
-                              <Constraints>
-                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                                  <BorderConstraints direction="Center"/>
-                                </Constraint>
-                              </Constraints>
-
-                              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                              <SubComponents>
-                                <Component class="br.univali.ps.ui.rstautil.tree.PortugolOutlineTree" name="tree">
-                                  <Properties>
-                                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                                        <EmptyBorder bottom="0" left="0" right="0" top="0"/>
-                                      </Border>
-                                    </Property>
-                                  </Properties>
-                                </Component>
-                              </SubComponents>
-                            </Container>
-                          </SubComponents>
-                        </Container>
                         <Component class="javax.swing.JSeparator" name="jSeparator3">
                           <Properties>
                             <Property name="orientation" type="int" value="1"/>
@@ -855,6 +639,262 @@
                             </Constraint>
                           </Constraints>
                         </Component>
+                        <Container class="javax.swing.JSplitPane" name="divisorArvorePlugins">
+                          <Properties>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="null"/>
+                            </Property>
+                            <Property name="dividerSize" type="int" value="8"/>
+                            <Property name="orientation" type="int" value="0"/>
+                            <Property name="oneTouchExpandable" type="boolean" value="true"/>
+                          </Properties>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="Center"/>
+                            </Constraint>
+                          </Constraints>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
+                          <SubComponents>
+                            <Container class="javax.swing.JPanel" name="painelAlinhamento4">
+                              <Properties>
+                                <Property name="opaque" type="boolean" value="false"/>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                                  <JSplitPaneConstraints position="left"/>
+                                </Constraint>
+                              </Constraints>
+
+                              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                              <SubComponents>
+                                <Container class="javax.swing.JPanel" name="painelBarraFerramentasArvore">
+                                  <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
+                                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                                        <EmptyBorder bottom="4" left="4" right="0" top="4"/>
+                                      </Border>
+                                    </Property>
+                                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                      <Dimension value="[34, 100]"/>
+                                    </Property>
+                                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                      <Dimension value="[34, 100]"/>
+                                    </Property>
+                                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                      <Dimension value="[34, 100]"/>
+                                    </Property>
+                                  </Properties>
+                                  <Constraints>
+                                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                      <BorderConstraints direction="West"/>
+                                    </Constraint>
+                                  </Constraints>
+
+                                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                                  <SubComponents>
+                                    <Container class="javax.swing.JToolBar" name="barraFerramentasArvore">
+                                      <Properties>
+                                        <Property name="floatable" type="boolean" value="false"/>
+                                        <Property name="orientation" type="int" value="1"/>
+                                        <Property name="rollover" type="boolean" value="true"/>
+                                        <Property name="opaque" type="boolean" value="false"/>
+                                      </Properties>
+                                      <Constraints>
+                                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                          <BorderConstraints direction="Center"/>
+                                        </Constraint>
+                                      </Constraints>
+
+                                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+                                      <SubComponents>
+                                        <Component class="javax.swing.JToggleButton" name="btnFixarArvoreSimbolos">
+                                          <Properties>
+                                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/pin.png"/>
+                                            </Property>
+                                            <Property name="borderPainted" type="boolean" value="false"/>
+                                            <Property name="focusable" type="boolean" value="false"/>
+                                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                                            <Property name="iconTextGap" type="int" value="0"/>
+                                            <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                                              <Insets value="[0, 0, 0, 0]"/>
+                                            </Property>
+                                            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/pin_over.png"/>
+                                            </Property>
+                                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/pin_pushed.png"/>
+                                            </Property>
+                                            <Property name="verticalTextPosition" type="int" value="3"/>
+                                          </Properties>
+                                        </Component>
+                                        <Component class="javax.swing.JButton" name="btnAumentarFonteArvore">
+                                          <Properties>
+                                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
+                                            </Property>
+                                            <Property name="borderPainted" type="boolean" value="false"/>
+                                            <Property name="focusable" type="boolean" value="false"/>
+                                            <Property name="hideActionText" type="boolean" value="true"/>
+                                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                                            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="opaque" type="boolean" value="false"/>
+                                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="verticalTextPosition" type="int" value="3"/>
+                                          </Properties>
+                                        </Component>
+                                        <Component class="javax.swing.JButton" name="btnDiminuirFonteArvore">
+                                          <Properties>
+                                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
+                                            </Property>
+                                            <Property name="borderPainted" type="boolean" value="false"/>
+                                            <Property name="focusable" type="boolean" value="false"/>
+                                            <Property name="hideActionText" type="boolean" value="true"/>
+                                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                                            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="opaque" type="boolean" value="false"/>
+                                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="verticalTextPosition" type="int" value="3"/>
+                                          </Properties>
+                                        </Component>
+                                        <Component class="javax.swing.JButton" name="btnExpandirNosArvore">
+                                          <Properties>
+                                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
+                                            </Property>
+                                            <Property name="borderPainted" type="boolean" value="false"/>
+                                            <Property name="focusable" type="boolean" value="false"/>
+                                            <Property name="hideActionText" type="boolean" value="true"/>
+                                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                                            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="opaque" type="boolean" value="false"/>
+                                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="verticalTextPosition" type="int" value="3"/>
+                                          </Properties>
+                                        </Component>
+                                        <Component class="javax.swing.JButton" name="btnContrairNosArvore">
+                                          <Properties>
+                                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/unknown.png"/>
+                                            </Property>
+                                            <Property name="borderPainted" type="boolean" value="false"/>
+                                            <Property name="focusable" type="boolean" value="false"/>
+                                            <Property name="hideActionText" type="boolean" value="true"/>
+                                            <Property name="horizontalTextPosition" type="int" value="0"/>
+                                            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="opaque" type="boolean" value="false"/>
+                                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                              <Dimension value="[24, 24]"/>
+                                            </Property>
+                                            <Property name="verticalTextPosition" type="int" value="3"/>
+                                          </Properties>
+                                        </Component>
+                                      </SubComponents>
+                                    </Container>
+                                  </SubComponents>
+                                </Container>
+                                <Container class="javax.swing.JScrollPane" name="sPOutlineTree">
+                                  <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
+                                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                      <Border info="null"/>
+                                    </Property>
+                                    <Property name="viewportBorder" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                                        <EmptyBorder bottom="8" left="0" right="4" top="8"/>
+                                      </Border>
+                                    </Property>
+                                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                      <Dimension value="[250, 23]"/>
+                                    </Property>
+                                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                      <Dimension value="[250, 2]"/>
+                                    </Property>
+                                  </Properties>
+                                  <Constraints>
+                                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                      <BorderConstraints direction="Center"/>
+                                    </Constraint>
+                                  </Constraints>
+
+                                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                                  <SubComponents>
+                                    <Component class="br.univali.ps.ui.rstautil.tree.PortugolOutlineTree" name="tree">
+                                      <Properties>
+                                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                                          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                                            <EmptyBorder bottom="0" left="0" right="0" top="0"/>
+                                          </Border>
+                                        </Property>
+                                      </Properties>
+                                    </Component>
+                                  </SubComponents>
+                                </Container>
+                                <Component class="javax.swing.JSeparator" name="jSeparator6">
+                                  <Constraints>
+                                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                      <BorderConstraints direction="Last"/>
+                                    </Constraint>
+                                  </Constraints>
+                                </Component>
+                              </SubComponents>
+                            </Container>
+                            <Container class="javax.swing.JPanel" name="painelPlugins">
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                                  <JSplitPaneConstraints position="right"/>
+                                </Constraint>
+                              </Constraints>
+
+                              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                                <Property name="columns" type="int" value="1"/>
+                                <Property name="rows" type="int" value="1"/>
+                              </Layout>
+                            </Container>
+                          </SubComponents>
+                        </Container>
                       </SubComponents>
                     </Container>
                   </SubComponents>

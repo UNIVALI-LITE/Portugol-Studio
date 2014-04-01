@@ -7,6 +7,7 @@ import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
@@ -165,7 +166,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
                     inicializarRecursos();
-                    
+
                     TelaPrincipalDesktop.this.toFront();
                     TelaPrincipalDesktop.this.requestFocusInWindow();
                 }
@@ -175,7 +176,9 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
     public void criarNovoCodigoFonte()
     {
-        painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
+        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+
+        painelTabuladoPrincipal.add(abaCodigoFonte);
     }
 
     public void abrirArquivosCodigoFonte(final List<File> arquivos)
@@ -197,6 +200,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                             final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
 
                             abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
+
                             getPainelTabulado().add(abaCodigoFonte);
                         }
                         catch (Exception excecao)

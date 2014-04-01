@@ -21,6 +21,8 @@ public final class Configuracoes
     private static final Configuracoes instancia = new Configuracoes();
 
     private static File arquivoConfiguracoes;
+    private static String diretorioExemplos;
+    private static String diretorioPlugins;
 
     public static final String TAMANHO_FONTE_CONSOLE = "tamanhoFonteConsole";
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
@@ -33,11 +35,11 @@ public final class Configuracoes
     public static final String URL_DOS_PACOTES = "http://siaiacad17.univali.br/~alice/portugolStudio/";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
 
+    
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
 
-    private boolean exibirOpcoesExecucao = false;
-    private static String diretorioExemplos;
+    private boolean exibirOpcoesExecucao = false;    
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
@@ -70,6 +72,7 @@ public final class Configuracoes
                 configuracoes.load(new FileReader(arquivoConfiguracoes));
 
                 diretorioExemplos = obterDiretorioPortugol().getAbsolutePath() + "/exemplos";
+                diretorioPlugins = obterDiretorioPortugol().getAbsolutePath() + "/plugins";
                 exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
                 tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
                 tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
@@ -175,6 +178,11 @@ public final class Configuracoes
     public String getDiretorioExemplos()
     {
         return diretorioExemplos;
+    }
+
+    public String getDiretorioPlugins()
+    {
+        return diretorioPlugins;
     }
 
     public boolean isExibirOpcoesExecucao()
