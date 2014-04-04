@@ -31,7 +31,6 @@ public final class AbaCodigoFonteDoApplet extends AbaCodigoFonte
         getBtnEnviarAlgoritmo().setVisible(true);
         getBtnFixarBarraFerramentas().setVisible(false);
 
-        getPainelCorretor().setVisible(false);
         getDivisorEditorArvore().setDividerLocation(getDivisorEditorArvore().getMinimumDividerLocation());
     }
 

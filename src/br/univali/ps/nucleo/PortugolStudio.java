@@ -1,11 +1,8 @@
 package br.univali.ps.nucleo;
 
-import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.ps.DetectorViolacoesThreadSwing;
-import br.univali.ps.ParserDeQuestao;
 import br.univali.ps.TelaPrincipal;
 import br.univali.ps.TelaPrincipalApplet;
-import br.univali.ps.exception.CarregamentoDeExercicioException;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.Splash;
@@ -82,30 +79,33 @@ public final class PortugolStudio
             inicializarMecanismoLog();
             Splash.definirProgresso(10);
 
+            instalarDetectorExcecoesNaoTratadas();
+            Splash.definirProgresso(20);
+
             processarParametrosLinhaComando(parametros);
             Splash.definirProgresso(20);
 
             instalarDetectorVialacoesNaThreadSwing();
-            Splash.definirProgresso(30);
-
-            definirLookAndFeel();
             Splash.definirProgresso(40);
 
-            registrarFontes();
+            definirLookAndFeel();
             Splash.definirProgresso(50);
 
-            definirFontePadraoInterface();
+            registrarFontes();
             Splash.definirProgresso(60);
+
+            definirFontePadraoInterface();
+            Splash.definirProgresso(70);
 
             /* 
              * Os plugins devem sempre ser carregados antes de inicializar o Pool de abas, 
              * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
              */
             carregarPlugins();
-            Splash.definirProgresso(70);
+            Splash.definirProgresso(80);
 
             AbaCodigoFonte.inicializarPool();
-            Splash.definirProgresso(80);
+            Splash.definirProgresso(90);
 
             try
             {
@@ -157,6 +157,11 @@ public final class PortugolStudio
         }
     }
 
+    private void instalarDetectorExcecoesNaoTratadas()
+    {
+        Thread.setDefaultUncaughtExceptionHandler(getTratadorExcecoes());
+    }
+
     private void processarParametrosLinhaComando(final String[] parametros)
     {
         if (parametros != null)
@@ -175,7 +180,7 @@ public final class PortugolStudio
             {
                 String descDiretorios = parametro.split("=")[1];
                 String[] diretorios = descDiretorios.split(",");
-                
+
                 if (diretorios != null && diretorios.length > 0)
                 {
                     for (String diretorio : diretorios)
@@ -309,13 +314,13 @@ public final class PortugolStudio
             Configuracoes configuracoes = Configuracoes.getInstancia();
 
             gerenciadorPlugins.incluirDiretorioPlugins(new File(configuracoes.getDiretorioPlugins()));
-            
+
             for (File diretorio : diretoriosPlugins)
             {
                 gerenciadorPlugins.incluirDiretorioPlugins(diretorio);
             }
-            
-            gerenciadorPlugins.carregarPlugins();
+
+            gerenciadorPlugins.carregarPlugins();            
         }
     }
 
@@ -398,20 +403,6 @@ public final class PortugolStudio
         telaSobre.setLocationRelativeTo(null);
 
         return telaSobre;
-    }
-
-    public Questao abrirQuestao(String pathDoArquivoPex, ParserDeQuestao parserDeQuestao) throws CarregamentoDeExercicioException
-    {
-        String conteudoDoXmlDoExercicio = "";//CarregadorDeArquivo.getConteudoDoArquivo(pathDoArquivoPex);
-
-        try
-        {
-            return parserDeQuestao.getQuestao(conteudoDoXmlDoExercicio);
-        }
-        catch (Exception e)
-        {
-            throw new CarregamentoDeExercicioException(pathDoArquivoPex, e);
-        }
     }
 
     public boolean rodandoApplet()

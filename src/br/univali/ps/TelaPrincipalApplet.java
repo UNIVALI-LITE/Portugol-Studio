@@ -1,13 +1,9 @@
 package br.univali.ps;
 
-import br.univali.portugol.corretor.dinamico.model.Questao;
-import br.univali.ps.exception.CarregamentoDeExercicioException;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.AbaCodigoFonteDoApplet;
 import java.awt.BorderLayout;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import javax.swing.JApplet;
 
 /**
@@ -49,21 +45,6 @@ public class TelaPrincipalApplet extends JApplet implements TelaPrincipal
     {
         
     }
-    
-    private void abreQuestao(final String urlDoPexDaQuestao) throws MalformedURLException, IOException
-    {
-        try
-        {
-            ParserDeQuestao parserDeQuestao = new ParserDeQuestaoParaDesktop();// new ParserDeQuestaoParaApplet();
-            Questao questao = PortugolStudio.getInstancia().abrirQuestao(urlDoPexDaQuestao, parserDeQuestao);
-            abaCodigoFonte.setQuestao(questao);
-
-        }
-        catch (CarregamentoDeExercicioException ex)
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-        }
-    }
 
 //    private boolean recebeuOsParametros() {
 //        String idDaQuestao = getParameter("idDaQuestao");
@@ -83,7 +64,7 @@ public class TelaPrincipalApplet extends JApplet implements TelaPrincipal
                 throw new IllegalArgumentException("O caminho base dos exercícios não foi passado como parâmetro para o applet!");
             }
             String urlDoExercicio = AppletUtils.getCaminhoDoArquivoDoExercicio(caminhoBaseDosExercicios, idDaQuestao);
-            abreQuestao(urlDoExercicio);
+            
         }
         catch (NumberFormatException ex)
         {

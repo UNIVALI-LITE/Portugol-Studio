@@ -1,5 +1,8 @@
 package br.univali.ps.nucleo;
 
+import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO;
+
+import br.univali.ps.plugins.base.GerenciadorPlugins;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -10,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -28,7 +32,7 @@ import javax.swing.border.EmptyBorder;
  * @since 23/08/2011
  *
  */
-public final class TratadorExcecoes
+public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 {
     private static final Logger LOGGER = Logger.getLogger(TratadorExcecoes.class.getName());
 
@@ -41,6 +45,8 @@ public final class TratadorExcecoes
     private JPanel painelsul;
     private JButton botaoCopiarTexto;
 
+    private boolean encerrarAplicacao = false;
+
     TratadorExcecoes()
     {
 
@@ -48,42 +54,65 @@ public final class TratadorExcecoes
 
     public void exibirExcecao(final Exception excecao)
     {
-        LOGGER.log(Level.WARNING, excecao.getMessage(), excecao);
+        final ExcecaoAplicacao excecaoAplicacao = transformarExcecao(excecao);
+        final Level level = obterNivelLog(excecaoAplicacao);
 
-        SwingUtilities.invokeLater(new Runnable()
+        LOGGER.log(level, "Exceção capturada", excecao);
+
+        if (SwingUtilities.isEventDispatchThread())
         {
-
-            @Override
-            public void run()
+            exibir(excecaoAplicacao);
+        }
+        else
+        {
+            try
             {
-                ExcecaoAplicacao excecaoAplicacao = transformarExcecao(excecao);
-                PortugolStudio portugolStudio = PortugolStudio.getInstancia();
-
-                int tipoDialogo = getTipoDialogo(excecaoAplicacao);
-
-                if ((portugolStudio.isDepurando()) && (excecaoAplicacao.getTipo() == ExcecaoAplicacao.Tipo.ERRO))
+                SwingUtilities.invokeAndWait(new Runnable()
                 {
-                    exibirExcecaoDetalhada(excecaoAplicacao);
-                }
-                else
-                {
-                    exibirexcecaoSimples(excecaoAplicacao, tipoDialogo);
-                }
+                    @Override
+                    public void run()
+                    {
+                        exibir(excecaoAplicacao);
+                    }
+                });
             }
-        });
+            catch (InterruptedException | InvocationTargetException ex)
+            {
+
+            }
+        }
     }
 
-    private void exibirexcecaoSimples(ExcecaoAplicacao excecaoAplicacao, int tipoDialogo)
+    private void exibir(final ExcecaoAplicacao excecaoAplicacao)
+    {
+        PortugolStudio portugolStudio = PortugolStudio.getInstancia();
+
+        int tipoDialogo = getTipoDialogo(excecaoAplicacao);
+
+        if ((portugolStudio.isDepurando()) && (excecaoAplicacao.getTipo() == ExcecaoAplicacao.Tipo.ERRO))
+        {
+            exibirExcecaoDetalhada(excecaoAplicacao);
+        }
+        else
+        {
+            exibirExcecaoSimples(excecaoAplicacao, tipoDialogo);
+        }
+
+    }
+
+    private void exibirExcecaoSimples(ExcecaoAplicacao excecaoAplicacao, int tipoDialogo)
     {
         JOptionPane.showMessageDialog(null, excecaoAplicacao.getMessage(), "Portugol Studio", tipoDialogo);
+
+        if (encerrarAplicacao)
+        {
+            System.exit(1);
+        }
     }
 
     private void exibirExcecaoDetalhada(ExcecaoAplicacao excecaoAplicacao)
     {
-        if (caixaTexto == null)
-        {
-            inicializarComponentes();
-        }
+        inicializarComponentesExcecaoDetalhada();
 
         caixaTexto.setText(null);
         rotulo.setText(String.format("<html><p>%s<br><br>Detalhes:</p></html>", excecaoAplicacao.getMessage()));
@@ -91,45 +120,99 @@ public final class TratadorExcecoes
         excecaoAplicacao.printStackTrace(escritorExcecao);
 
         JOptionPane.showMessageDialog(null, painel, "Portugol Studio", JOptionPane.ERROR_MESSAGE);
+
+        if (encerrarAplicacao)
+        {
+            System.exit(1);
+        }
     }
 
-    private void inicializarComponentes()
+    private void inicializarComponentesExcecaoDetalhada()
     {
-        rotulo = new JLabel();
-        rotulo.setBorder(new EmptyBorder(8, 0, 8, 8));
-
-        caixaTexto = new JTextArea();
-        caixaTexto.setEditable(false);
-
-        painelRolagem = new JScrollPane();
-        painelRolagem.setViewportView(caixaTexto);
-        painelRolagem.setPreferredSize(new Dimension(400, 250));
-
-        botaoCopiarTexto = new JButton();
-
-        botaoCopiarTexto.setAction(new AbstractAction("Copiar Texto")
+        if (caixaTexto == null)
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
+            rotulo = new JLabel();
+            rotulo.setBorder(new EmptyBorder(8, 0, 8, 8));
+
+            caixaTexto = new JTextArea();
+            caixaTexto.setEditable(false);
+
+            painelRolagem = new JScrollPane();
+            painelRolagem.setViewportView(caixaTexto);
+            painelRolagem.setPreferredSize(new Dimension(400, 250));
+
+            botaoCopiarTexto = new JButton();
+
+            botaoCopiarTexto.setAction(new AbstractAction("Copiar Texto")
             {
-                Clipboard areaTransferencia = Toolkit.getDefaultToolkit().getSystemClipboard();
-                areaTransferencia.setContents(new StringSelection(caixaTexto.getText()), null);
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    Clipboard areaTransferencia = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    areaTransferencia.setContents(new StringSelection(caixaTexto.getText()), null);
+                }
+            });
+
+            painelsul = new JPanel();
+            painelsul.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+            painelsul.setPreferredSize(new Dimension(20, 50));
+            painelsul.add(botaoCopiarTexto);
+
+            painel = new JPanel();
+            painel.setLayout(new BorderLayout());
+            painel.add(BorderLayout.NORTH, rotulo);
+            painel.add(BorderLayout.CENTER, painelRolagem);
+            painel.add(BorderLayout.SOUTH, painelsul);
+            painel.setPreferredSize(new Dimension(550, 400));
+
+            fluxoSaida = new FluxoSaidaExcecao();
+            escritorExcecao = new PrintWriter(fluxoSaida, true);
+        }
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable excecao)
+    {
+        if ((excecao instanceof ClassNotFoundException) || (excecao instanceof NoClassDefFoundError))
+        {
+            String mensagem;
+
+            if (GerenciadorPlugins.getInstance().excecaoCausadaPorPlugin(excecao))
+            {
+                mensagem = "Ocoreu um erro ao executar um dos plugins do Portugol Studio.";
+                encerrarAplicacao = false;
             }
-        });
+            else
+            {
+                mensagem = "Uma das bibliotecas ou classes necessárias para o funcionamento do Portugol Studio não foi encontrada.\nO Portugol Studio será enecerrado.";
+                encerrarAplicacao = true;
+            }
 
-        painelsul = new JPanel();
-        painelsul.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-        painelsul.setPreferredSize(new Dimension(20, 50));
-        painelsul.add(botaoCopiarTexto);
+            exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO));
+        }
+        else if (excecao instanceof IllegalArgumentException)
+        {
+            LOGGER.log(Level.WARNING, "Exceção não identificada", excecao);
+        }
+        else
+        {
+            exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+        }
+    }
 
-        painel = new JPanel();
-        painel.setLayout(new BorderLayout());
-        painel.add(BorderLayout.NORTH, rotulo);
-        painel.add(BorderLayout.CENTER, painelRolagem);
-        painel.add(BorderLayout.SOUTH, painelsul);
+    private Level obterNivelLog(ExcecaoAplicacao excecaoAplicacao)
+    {
+        switch (excecaoAplicacao.getTipo())
+        {
+            case ERRO:
+                return Level.SEVERE;
+            case AVISO:
+                return Level.WARNING;
+            case MENSAGEM:
+                return Level.INFO;
+        }
 
-        fluxoSaida = new FluxoSaidaExcecao();
-        escritorExcecao = new PrintWriter(fluxoSaida, true);
+        return null;
     }
 
     private final class FluxoSaidaExcecao extends OutputStream

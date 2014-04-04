@@ -7,7 +7,9 @@ import br.univali.ps.dominio.pack.PackDownloader;
 import br.univali.ps.dominio.pack.PackDownloaderException;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.plugins.base.ErroCarregamentoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.plugins.base.ResultadoCarregamento;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
@@ -95,53 +97,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
     private void instalarObservadores()
     {
-        instalarObservadorExcecoesNaoTratadas();
         instalarObservadorJanela();
-    }
-
-    private void instalarObservadorExcecoesNaoTratadas()
-    {
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread thread, Throwable excecao)
-            {
-                if ((excecao instanceof ClassNotFoundException) || (excecao instanceof NoClassDefFoundError))
-                {
-                    String mensagem = "Uma das bibliotecas ou classes necessárias para o funcionamento do Portugol Studio não foi encontrada.\nO Portugol Studio será enecerrado.";
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO));
-                    System.exit(1);
-                }
-                else if (excecao instanceof IllegalArgumentException)
-                {
-                    excecao.printStackTrace(System.err);
-                }
-                else
-                {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
-                }
-                /*
-                 * else
-                 * {
-                 * StringWriter sw = new StringWriter();
-                 * PrintWriter pw = new PrintWriter(sw);
-                 *
-                 * excecao.printStackTrace(pw);
-                 * excecao.printStackTrace(System.err);
-                 *
-                 * if (sw.toString().contains("rsyntax"))
-                 * {
-                 * // Erro do RSyntaxTextArea, printa no console e ignora
-                 * System.out.println("Erro do RSyntaxTextArea");
-                 * }
-                 * else
-                 * {
-                 * PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
-                 * }
-                 * }
-                 */
-            }
-        });
     }
 
     private void instalarObservadorJanela()
@@ -162,6 +118,16 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
             {
                 if (exibindoPrimeiraVez)
                 {
+                    ResultadoCarregamento resultadoCarregamento = GerenciadorPlugins.getInstance().getResultadoCarregamento();
+                    
+                    if (resultadoCarregamento.contemErros())
+                    {
+                        for (ErroCarregamentoPlugin erro : resultadoCarregamento.getErros())
+                        {
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
+                        }
+                    }
+                    
                     exibindoPrimeiraVez = false;
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
