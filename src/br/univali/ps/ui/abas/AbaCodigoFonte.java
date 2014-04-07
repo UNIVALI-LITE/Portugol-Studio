@@ -1598,7 +1598,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
                 botoesPlugins.put(plugin, botaoPlugin);
                 barraBotoesPlugins.add(botaoPlugin);
-                grupoBotoesPlugins.add(btnSalvar);
+                grupoBotoesPlugins.add(botaoPlugin);
 
                 criarDicaInterfacePlugin(plugin, botaoPlugin);
                 exibirPainelBotoesPlugins();

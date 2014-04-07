@@ -71,7 +71,17 @@ public final class PainelPlugins extends JPanel
         rotuloNome.setText(metaDadosPlugin.getNome());
 
         painelConteudo.add(plugin.getVisao(), BorderLayout.CENTER);
-        validate();
+        
+        SwingUtilities.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                validate();
+                repaint();
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

@@ -16,10 +16,12 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
@@ -319,16 +321,38 @@ public final class PortugolStudio
 
             if (configuracoes.getDiretorioPlugins() != null)
             {
-                gerenciadorPlugins.incluirDiretorioPlugins(new File(configuracoes.getDiretorioPlugins()));
+                File diretorioPlugins = new File(configuracoes.getDiretorioPlugins());
+                
+                if (diretorioPlugins.exists())
+                {                
+                    for (File pastaPlugin : listarPastasPlugins(diretorioPlugins))
+                    {
+                        gerenciadorPlugins.incluirDiretorioPlugin(pastaPlugin);
+                    }
+                }
             }
             
             for (File diretorio : diretoriosPluginsInformadosPorParametro)
             {
-                gerenciadorPlugins.incluirDiretorioPlugins(diretorio);
+                gerenciadorPlugins.incluirDiretorioPlugin(diretorio);
             }
 
             gerenciadorPlugins.carregarPlugins();
         }
+    }
+    
+    private List<File> listarPastasPlugins(File diretorioPlugins)
+    {
+        File[] diretorios = diretorioPlugins.listFiles(new FileFilter()
+        {
+            @Override
+            public boolean accept(File pathname)
+            {
+                return pathname.isDirectory();
+            }
+        });
+
+        return Arrays.asList(diretorios);
     }
 
     private void exibirTelaPrincipal() throws ExcecaoAplicacao
