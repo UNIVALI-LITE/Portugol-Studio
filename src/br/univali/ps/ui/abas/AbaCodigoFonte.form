@@ -644,7 +644,7 @@
                       <Dimension value="[32, 10]"/>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[40, 10]"/>
+                      <Dimension value="[38, 10]"/>
                     </Property>
                   </Properties>
                   <Constraints>
@@ -668,7 +668,7 @@
                     <Container class="javax.swing.JPanel" name="painelAlinhamentoBotoesPlugins">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[120, 25]"/>
+                          <Dimension value="[120, 20]"/>
                         </Property>
                       </Properties>
                       <Constraints>

@@ -480,6 +480,9 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             painelEsquerda.remove(separadorPainelEsquerda);
             painelEsquerda.add(painelAcessoPlugins, BorderLayout.EAST);
+            
+            //separadorEsquerdalPlugins.setVisible(false);
+            
             painelEsquerda.validate();
         }
     }
@@ -901,13 +904,13 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         painelAcessoPlugins.setMaximumSize(new java.awt.Dimension(32, 10));
         painelAcessoPlugins.setMinimumSize(new java.awt.Dimension(32, 10));
-        painelAcessoPlugins.setPreferredSize(new java.awt.Dimension(40, 10));
+        painelAcessoPlugins.setPreferredSize(new java.awt.Dimension(38, 10));
         painelAcessoPlugins.setLayout(new java.awt.BorderLayout());
 
         separadorEsquerdalPlugins.setOrientation(javax.swing.SwingConstants.VERTICAL);
         painelAcessoPlugins.add(separadorEsquerdalPlugins, java.awt.BorderLayout.WEST);
 
-        painelAlinhamentoBotoesPlugins.setPreferredSize(new java.awt.Dimension(120, 25));
+        painelAlinhamentoBotoesPlugins.setPreferredSize(new java.awt.Dimension(120, 20));
         painelAlinhamentoBotoesPlugins.setLayout(new java.awt.BorderLayout());
 
         painelBotoesPlugins.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -1579,6 +1582,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
                 botaoPlugin.setFocusable(false);
                 botaoPlugin.setRequestFocusEnabled(false);
                 botaoPlugin.setHideActionText(true);
+                botaoPlugin.setIconTextGap(0);
+                botaoPlugin.setHorizontalAlignment(JToggleButton.CENTER);
 
                 botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone16x16()))
                 {
