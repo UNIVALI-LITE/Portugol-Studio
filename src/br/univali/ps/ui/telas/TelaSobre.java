@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
 /**

@@ -8,6 +8,7 @@ import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaSobre;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -46,6 +47,7 @@ public final class PortugolStudio
 
     private TelaSobre telaSobre = null;
     private TelaPrincipal telaPrincipal = null;
+    private TelaInformacoesPlugin telaInformacoesPlugin = null;
 
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
@@ -403,6 +405,18 @@ public final class PortugolStudio
         telaSobre.setLocationRelativeTo(null);
 
         return telaSobre;
+    }
+
+    public TelaInformacoesPlugin getTelaInformacoesPlugin()
+    {
+        if (telaInformacoesPlugin == null)
+        {
+            telaInformacoesPlugin = new TelaInformacoesPlugin();
+        }
+        
+        telaInformacoesPlugin.setLocationRelativeTo(null);
+        
+        return telaInformacoesPlugin;
     }
 
     public boolean rodandoApplet()

@@ -1,12 +1,15 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import net.java.balloontip.BalloonTip;
 
 /**
@@ -16,14 +19,14 @@ public final class PainelPlugins extends JPanel
 {
     private Plugin plugin;
     private MetaDadosPlugin metaDadosPlugin;
-    private AbaCodigoFonte abaCodigoFonte;    
-    
+    private AbaCodigoFonte abaCodigoFonte;
+
     public PainelPlugins()
     {
         initComponents();
         criarDicasInterface();
     }
-    
+
     private void criarDicasInterface()
     {
         FabricaDicasInterface.criarDicaInterface(botaoFechar, "Fecha o painel de plugins", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
@@ -32,32 +35,41 @@ public final class PainelPlugins extends JPanel
 
     public void setPlugin(Plugin plugin)
     {
-        removerPluginAnterior();
-        
-        this.plugin = plugin;
-        this.metaDadosPlugin = plugin.getMetaDados();
-        
-        instalarNovoPlugin();
+        if (plugin != null)
+        {
+            removerPlugin();
+
+            this.plugin = plugin;
+            this.metaDadosPlugin = plugin.getMetaDados();
+
+            instalarNovoPlugin();
+        }
+    }
+
+    public Plugin getPlugin()
+    {
+        return plugin;
     }
 
     public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
     {
         this.abaCodigoFonte = abaCodigoFonte;
     }
-    
-    private void removerPluginAnterior()
+
+    public void removerPlugin()
     {
         if (this.plugin != null)
         {
             painelConteudo.remove(this.plugin.getVisao());
+            this.plugin = null;
         }
     }
-    
+
     private void instalarNovoPlugin()
     {
         rotuloNome.setIcon(new ImageIcon(metaDadosPlugin.getIcone16x16()));
         rotuloNome.setText(metaDadosPlugin.getNome());
-        
+
         painelConteudo.add(plugin.getVisao(), BorderLayout.CENTER);
         validate();
     }
@@ -171,7 +183,9 @@ public final class PainelPlugins extends JPanel
 
     private void botaoInformacoesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_botaoInformacoesActionPerformed
     {//GEN-HEADEREND:event_botaoInformacoesActionPerformed
-        JOptionPane.showMessageDialog(abaCodigoFonte, metaDadosPlugin.getDescricao(),  metaDadosPlugin.getNome(), JOptionPane.INFORMATION_MESSAGE);
+        TelaInformacoesPlugin telaInformacoesPlugin = PortugolStudio.getInstancia().getTelaInformacoesPlugin();
+        telaInformacoesPlugin.setPlugin(plugin);
+        telaInformacoesPlugin.setVisible(true);
     }//GEN-LAST:event_botaoInformacoesActionPerformed
 
 

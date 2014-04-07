@@ -134,6 +134,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         });
 
         console.setCaret(new CursorConsole());
+        console.getCaret().setVisible(true);
 
         configurarBarraFerramentas();
         criarAcoes();
@@ -653,11 +654,13 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         @Override
         public void solicitaEntrada(final TipoDado tipoDado, final Armazenador armazenador) throws Exception
         {
-            SwingUtilities.invokeAndWait(new Runnable()
+            SwingUtilities.invokeLater(new Runnable()
             {
                 @Override
                 public void run()
                 {
+                    AbaConsole.this.selecionar();
+                    
                     setLendo(true);
 
                     abaCodigoFonte.exibirPainelSaida();
@@ -667,11 +670,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                     console.setEditable(true);
                     console.setFocusable(true);
 
-                    agendarPopupLeia();
-
-                    AbaConsole.this.selecionar();
-                    console.requestFocusInWindow();
                     console.setCaretPosition(console.getText().length());
+                    console.requestFocusInWindow();
+                                        
+                    agendarPopupLeia();
                 }
             });
         }
@@ -731,7 +733,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         }
     }
 
-    public final class CursorConsole extends DefaultCaret
+    private final class CursorConsole extends DefaultCaret
     {
 
         private static final long serialVersionUID = 1L;

@@ -2,8 +2,7 @@ package br.univali.ps.ui.telas;
 
 
 public class Licenca extends javax.swing.JDialog
-{
-   
+{   
     public Licenca(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
@@ -26,7 +25,8 @@ public class Licenca extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelConteudo = new javax.swing.JPanel();
         painelTabulado = new javax.swing.JTabbedPane();
