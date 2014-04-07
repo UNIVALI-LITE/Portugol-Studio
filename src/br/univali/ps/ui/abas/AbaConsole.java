@@ -134,7 +134,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         });
 
         console.setCaret(new CursorConsole());
-        console.getCaret().setVisible(true);
+        console.getCaret().setVisible(false);
 
         configurarBarraFerramentas();
         criarAcoes();
@@ -670,6 +670,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                     console.setEditable(true);
                     console.setFocusable(true);
 
+                    console.getCaret().setVisible(true);                    
                     console.setCaretPosition(console.getText().length());
                     console.requestFocusInWindow();
                                         
@@ -709,6 +710,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
                 Object valor = obterValorEntrada(tipoDado, getText(limitOffset, getLength() - limitOffset));
                 setLendo(false);
+                console.getCaret().setVisible(false);
                 armazenador.setValor(valor);
             }
 

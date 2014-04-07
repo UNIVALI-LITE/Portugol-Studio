@@ -10,6 +10,7 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.ErroCarregamentoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.plugins.base.ResultadoCarregamento;
+import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
@@ -118,16 +119,6 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
             {
                 if (exibindoPrimeiraVez)
                 {
-                    ResultadoCarregamento resultadoCarregamento = GerenciadorPlugins.getInstance().getResultadoCarregamento();
-                    
-                    if (resultadoCarregamento.contemErros())
-                    {
-                        for (ErroCarregamentoPlugin erro : resultadoCarregamento.getErros())
-                        {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
-                        }
-                    }
-                    
                     exibindoPrimeiraVez = false;
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
@@ -135,6 +126,24 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
                     TelaPrincipalDesktop.this.toFront();
                     TelaPrincipalDesktop.this.requestFocusInWindow();
+                    
+                    boolean errosPlugins = GerenciadorPlugins.getInstance().getResultadoCarregamento().contemErros();
+                    boolean errosBibliotecas = false;
+                    
+                    if (errosPlugins || errosBibliotecas)
+                    {
+                        TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = PortugolStudio.getInstancia().getTelaErrosPluginsBibliotecas();
+                        telaErrosPluginsBibliotecas.setVisible(true);
+                        /*
+                        SwingUtilities.invokeLater(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                
+                            }
+                        });*/
+                    }
                 }
             }
         });

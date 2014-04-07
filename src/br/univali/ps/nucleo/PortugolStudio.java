@@ -8,6 +8,7 @@ import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaSobre;
 import java.awt.Font;
@@ -41,13 +42,14 @@ public final class PortugolStudio
     private static PortugolStudio instancia = null;
 
     private final List<File> arquivosIniciais = new ArrayList<>();
-    private final List<File> diretoriosPlugins = new ArrayList<>();
+    private final List<File> diretoriosPluginsInformadosPorParametro = new ArrayList<>();
 
     private boolean depurando = false;
 
     private TelaSobre telaSobre = null;
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
+    private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
 
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
@@ -187,7 +189,7 @@ public final class PortugolStudio
                 {
                     for (String diretorio : diretorios)
                     {
-                        diretoriosPlugins.add(new File(diretorio));
+                        diretoriosPluginsInformadosPorParametro.add(new File(diretorio));
                     }
                 }
             }
@@ -293,7 +295,7 @@ public final class PortugolStudio
                         {
                             /*
                              * Não está funcionando. O swing altera a fonte padrão para a maioria dos componentes,
-                             * mas não todos. Além disso, o tamanho ds fonte da árvore estrutural para de funcionar
+                             * mas não todos. Além disso, o tamanho da fonte da árvore estrutural para de funcionar
                              *
                              */
                             //UIManager.put(key, new Font("Tahoma", Font.PLAIN, 11));                            
@@ -315,14 +317,17 @@ public final class PortugolStudio
             GerenciadorPlugins gerenciadorPlugins = GerenciadorPlugins.getInstance();
             Configuracoes configuracoes = Configuracoes.getInstancia();
 
-            gerenciadorPlugins.incluirDiretorioPlugins(new File(configuracoes.getDiretorioPlugins()));
-
-            for (File diretorio : diretoriosPlugins)
+            if (configuracoes.getDiretorioPlugins() != null)
+            {
+                gerenciadorPlugins.incluirDiretorioPlugins(new File(configuracoes.getDiretorioPlugins()));
+            }
+            
+            for (File diretorio : diretoriosPluginsInformadosPorParametro)
             {
                 gerenciadorPlugins.incluirDiretorioPlugins(diretorio);
             }
 
-            gerenciadorPlugins.carregarPlugins();            
+            gerenciadorPlugins.carregarPlugins();
         }
     }
 
@@ -413,10 +418,22 @@ public final class PortugolStudio
         {
             telaInformacoesPlugin = new TelaInformacoesPlugin();
         }
-        
+
         telaInformacoesPlugin.setLocationRelativeTo(null);
-        
+
         return telaInformacoesPlugin;
+    }
+
+    public TelaErrosPluginsBibliotecas getTelaErrosPluginsBibliotecas()
+    {
+        if (telaErrosPluginsBibliotecas == null)
+        {
+            telaErrosPluginsBibliotecas = new TelaErrosPluginsBibliotecas();
+        }
+
+        telaErrosPluginsBibliotecas.setLocationRelativeTo(null);
+        
+        return telaErrosPluginsBibliotecas;
     }
 
     public boolean rodandoApplet()

@@ -574,6 +574,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         grupoBotoesPlugins = new javax.swing.ButtonGroup();
         separadorPainelEsquerda = new javax.swing.JSeparator();
@@ -836,11 +837,14 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         divisorEditorConsole.setTopComponent(painelAlinhamentoEditor);
 
-        painelConsole.setLayout(new javax.swing.OverlayLayout(painelConsole));
+        painelConsole.setDoubleBuffered(false);
+        painelConsole.setLayout(new java.awt.GridBagLayout());
 
         painelOverlay.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 0, 0, 6));
+        painelOverlay.setAlignmentX(0.0F);
+        painelOverlay.setAlignmentY(1.0F);
         painelOverlay.setOpaque(false);
-        painelOverlay.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 0, 0));
+        painelOverlay.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 0));
 
         barraFerramentasFixarPainelSaida.setBackground(new java.awt.Color(255, 51, 51));
         barraFerramentasFixarPainelSaida.setFloatable(false);
@@ -862,11 +866,24 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         painelOverlay.add(barraFerramentasFixarPainelSaida);
 
-        painelConsole.add(painelOverlay);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        painelConsole.add(painelOverlay, gridBagConstraints);
 
         painelSaida.setMinimumSize(new java.awt.Dimension(150, 200));
         painelSaida.setPreferredSize(new java.awt.Dimension(200, 200));
-        painelConsole.add(painelSaida);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        painelConsole.add(painelSaida, gridBagConstraints);
 
         divisorEditorConsole.setRightComponent(painelConsole);
 

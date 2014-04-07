@@ -505,11 +505,16 @@
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JPanel" name="painelConsole">
+                      <Properties>
+                        <Property name="doubleBuffered" type="boolean" value="false"/>
+                      </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
                           <JSplitPaneConstraints position="right"/>
                         </Constraint>
                       </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
                       <SubComponents>
                         <Container class="javax.swing.JPanel" name="painelOverlay">
                           <Properties>
@@ -518,11 +523,18 @@
                                 <EmptyBorder bottom="0" left="0" right="6" top="3"/>
                               </Border>
                             </Property>
+                            <Property name="alignmentX" type="float" value="0.0"/>
+                            <Property name="alignmentY" type="float" value="1.0"/>
                             <Property name="opaque" type="boolean" value="false"/>
                           </Properties>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                              <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="3" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="22" weightX="0.0" weightY="0.0"/>
+                            </Constraint>
+                          </Constraints>
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                            <Property name="alignment" type="int" value="4"/>
+                            <Property name="alignment" type="int" value="2"/>
                             <Property name="horizontalGap" type="int" value="0"/>
                             <Property name="verticalGap" type="int" value="0"/>
                           </Layout>
@@ -588,35 +600,13 @@
                               <Dimension value="[200, 200]"/>
                             </Property>
                           </Properties>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                              <GridBagConstraints gridX="0" gridY="0" gridWidth="2" gridHeight="2" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+                            </Constraint>
+                          </Constraints>
                         </Component>
                       </SubComponents>
-                      <LayoutCode>
-                        <CodeStatement>
-                          <CodeExpression id="1_painelConsole">
-                            <CodeVariable name="painelConsole" type="8194" declaredType="javax.swing.JPanel"/>
-                            <ExpressionOrigin>
-                              <ExpressionProvider type="ComponentRef">
-                                <ComponentRef name="painelConsole"/>
-                              </ExpressionProvider>
-                            </ExpressionOrigin>
-                          </CodeExpression>
-                          <StatementProvider type="CodeMethod">
-                            <CodeMethod name="setLayout" class="java.awt.Container" parameterTypes="java.awt.LayoutManager"/>
-                          </StatementProvider>
-                          <Parameters>
-                            <CodeExpression id="2">
-                              <ExpressionOrigin>
-                                <ExpressionProvider type="CodeConstructor">
-                                  <CodeConstructor class="javax.swing.OverlayLayout" parameterTypes="java.awt.Container"/>
-                                </ExpressionProvider>
-                                <Parameters>
-                                  <CodeExpression id="1_painelConsole"/>
-                                </Parameters>
-                              </ExpressionOrigin>
-                            </CodeExpression>
-                          </Parameters>
-                        </CodeStatement>
-                      </LayoutCode>
                     </Container>
                   </SubComponents>
                 </Container>

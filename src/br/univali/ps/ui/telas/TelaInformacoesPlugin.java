@@ -7,8 +7,6 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
@@ -144,7 +142,7 @@ public final class TelaInformacoesPlugin extends JDialog
             setText(valor.toString());
             setForeground(Color.BLACK);
 
-            setBackground(new Color(245, 245, 245));
+            setBackground(new Color(240, 240, 240));
 
             return renderizador;
         }
