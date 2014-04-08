@@ -83,40 +83,42 @@ public final class PortugolStudio
             Splash.exibir();
 
             inicializarMecanismoLog();
-            Splash.definirProgresso(10);
+            Splash.definirProgresso(10, "step2.png");
 
             instalarDetectorExcecoesNaoTratadas();
-            Splash.definirProgresso(20);
+            Splash.definirProgresso(20, "step3.png");
 
             processarParametrosLinhaComando(parametros);
-            Splash.definirProgresso(20);
+            Splash.definirProgresso(30, "step4.png");
 
             instalarDetectorVialacoesNaThreadSwing();
-            Splash.definirProgresso(40);
+            Splash.definirProgresso(40, "step4.png");
 
             definirLookAndFeel();
-            Splash.definirProgresso(50);
+            Splash.definirProgresso(50, "step5.png");
 
             registrarFontes();
-            Splash.definirProgresso(60);
+            Splash.definirProgresso(60, "step5.png");
 
             definirFontePadraoInterface();
-            Splash.definirProgresso(70);
+            Splash.definirProgresso(70, "step6.png");
 
             /* 
              * Os plugins devem sempre ser carregados antes de inicializar o Pool de abas, 
              * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
              */
             carregarPlugins();
-            Splash.definirProgresso(80);
+            Splash.definirProgresso(80, "step7.png");
 
+            carregarBibliotecas();
+            Splash.definirProgresso(90, "step8.png");
+            
             AbaCodigoFonte.inicializarPool();
-            Splash.definirProgresso(90);
+            Splash.definirProgresso(100, "step9.png");
 
             try
             {
                 exibirTelaPrincipal();
-                Splash.definirProgresso(100);
             }
             catch (ExcecaoAplicacao excecaoAplicacao)
             {
@@ -339,6 +341,11 @@ public final class PortugolStudio
 
             gerenciadorPlugins.carregarPlugins();
         }
+    }
+    
+    private void carregarBibliotecas()
+    {
+        // Implementar depois
     }
     
     private List<File> listarPastasPlugins(File diretorioPlugins)

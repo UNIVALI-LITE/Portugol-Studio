@@ -52,47 +52,40 @@ public class Logo extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        portugoStudio = new javax.swing.JLabel();
-        lampada = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
         versao = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(0, 0, 0));
         setMaximumSize(new java.awt.Dimension(280, 80));
         setMinimumSize(new java.awt.Dimension(280, 80));
         setPreferredSize(new java.awt.Dimension(280, 80));
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 formMouseClicked(evt);
             }
         });
         setLayout(new java.awt.GridBagLayout());
 
-        portugoStudio.setFont(new java.awt.Font("Consolas", 1, 28)); // NOI18N
-        portugoStudio.setForeground(new java.awt.Color(255, 255, 255));
-        portugoStudio.setText("{Portugol  Studio}");
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/logo_ps.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_END;
-        add(portugoStudio, gridBagConstraints);
-
-        lampada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/light.png"))); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 30, 0, 0);
-        add(lampada, gridBagConstraints);
+        add(logo, gridBagConstraints);
 
         versao.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("2.0");
+        versao.setText("2.1 RC4");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 12);
+        gridBagConstraints.insets = new java.awt.Insets(32, 0, 0, 22);
         add(versao, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -109,8 +102,7 @@ public class Logo extends javax.swing.JPanel
     }//GEN-LAST:event_formMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lampada;
-    private javax.swing.JLabel portugoStudio;
+    private javax.swing.JLabel logo;
     private javax.swing.JLabel versao;
     // End of variables declaration//GEN-END:variables
 }

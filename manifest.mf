@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-SplashScreen-Image: splash.jpg
+SplashScreen-Image: splash.png
 Main-Class: br.univali.ps.ui.TelaPrincipalDesktop
 
 

@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.SplashScreen;
-import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -15,7 +19,7 @@ public final class Splash
 {
     private static SplashScreen splash;
     private static Graphics2D graphics;
-    private static Rectangle2D.Double areaProgresso;
+    private static boolean progressFlag = true;
 
     public static void exibir()
     {
@@ -27,38 +31,53 @@ public final class Splash
             final int height = ssDim.height;
             final int width = ssDim.width;
 
-            areaProgresso = new Rectangle2D.Double(width * 0.55, height * 0.92, width * 0.4, 12);
-
             graphics = splash.createGraphics();
+            
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.setFont(new Font("Dialog", Font.PLAIN, 14));
 
-            definirProgresso(0);
+            definirProgresso(0, "step1.png");
         }
     }
 
-    public static void definirProgresso(final int progresso)
+    public static void definirProgresso(final int progresso, final String step)
     {
         if (splash != null && splash.isVisible())
         {
-            graphics.setPaint(Color.LIGHT_GRAY);
-            graphics.fill(areaProgresso);
-
-            graphics.setPaint(Color.BLUE);
-            graphics.draw(areaProgresso);
-
-            final int x = (int) areaProgresso.getMinX();
-            final int y = (int) areaProgresso.getMinY();
-            final int width = (int) areaProgresso.getWidth();
-            final int height = (int) areaProgresso.getHeight();
-
-            int doneWidth = Math.round(progresso * width / 100.f);
-            doneWidth = Math.max(0, Math.min(doneWidth, width - 1));
-
-            graphics.setPaint(Color.GREEN);
-            graphics.fillRect(x, y + 1, doneWidth, height - 1);
-
+            desenharBarraProgresso(progresso);
+            desenharCodigoFonte(step);
+            
             splash.update();
         }
+    }
+    
+    private static void desenharBarraProgresso(final int progresso)
+    {
+        int largura = (int) ((progresso / 100f) * 253);
+        
+        graphics.setColor(Color.YELLOW);
+        
+        
+        if (largura > 0 && progressFlag)
+        {
+            progressFlag = false;
+            graphics.fillOval(27, 131, 8, 8);
+        }
+        
+        graphics.fillRect(29, 131, largura, 8);
+        
+        if (largura > 8)
+        {
+            graphics.fillOval(23 + largura , 131, 8, 8);
+        }
+    }
+    
+    private static void desenharCodigoFonte(final String step)
+    {
+        String caminho = String.format("br/univali/ps/ui/imagens/splash/%s", step);
+        Image imagem = carregarImagem(caminho);
+        
+        graphics.drawImage(imagem, 311, 31, null);
     }
     
     public static void ocultar()
@@ -67,5 +86,35 @@ public final class Splash
         {
             splash.close();
         }
+    }
+
+    private static Image carregarImagem(String filePath)
+    {
+        try
+        {
+            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+
+            if (stream != null)
+            {
+                Image imagem = ImageIO.read(stream);
+
+                try
+                {
+                    stream.close();
+                }
+                catch (IOException ex)
+                {
+
+                }
+
+                return imagem;
+            }
+        }
+        catch (IOException ex)
+        {
+
+        }
+
+        return null;
     }
 }
