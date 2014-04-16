@@ -24,4 +24,7 @@
     <recurso nome="jLayer" versao="1.0.1" arquivo="licenca-jlayer-1.0.1.txt" url="http://www.javazoom.net/javalayer/javalayer.html">
         <descricao>Biblioteca para a reprodução de arquivos MP3. Utilizado pelo Portugol Núcleo para a reprodução de sons na biblioteca "Sons"</descricao>
     </recurso>
+    <recurso nome="DejaVu" versao="Não disponível" arquivo="licenca-fonte-dejavu.txt" url="http://www.fontsquirrel.com/fonts/DejaVu-Sans">
+        <descricao>Pacote de fontes. Utilizado pelo Portugol Studio no console de entrada e saída de dados</descricao>
+    </recurso>
 </licencas>

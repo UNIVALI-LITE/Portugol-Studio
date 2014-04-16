@@ -815,6 +815,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             sb.replace(avaliador.start(), avaliador.end(), "");
             codigoFonte = sb.toString();
         }
+        
+        // Remove a tag de cursor que foi incluída nas versões anteriores do Portugol Studio
+        codigoFonte = codigoFonte.replace("/*${cursor}*/", "");
+        
         return codigoFonte;
     }
 
