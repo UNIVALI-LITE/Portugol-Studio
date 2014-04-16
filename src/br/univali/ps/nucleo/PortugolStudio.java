@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -84,7 +85,25 @@ public final class PortugolStudio
     {
         if (versaoJavaCorreta())
         {
-            Splash.exibir();
+            /* Por enquanto vamos fazer hard coded. Depois faremos ler de um arquivo de dicas dentro do JAR */
+
+            String dica = "";
+            Random rnd = new Random(System.currentTimeMillis());
+
+            switch (rnd.nextInt(3))
+            {
+                case 0:
+                    dica = "Pressione F11 a qualquer momento para visualizar os atalhos de teclado";
+                    break;
+                case 1:
+                    dica = "Reserve algum tempo para assitir às vídeoaulas, elas irão auxiliá-lo";
+                    break;
+                case 2:
+                    dica = "Está com dificuldades? Pressione F1 para acessar a ajuda do Portugol Studio";
+                    break;
+            }
+
+            Splash.exibir(dica);
 
             inicializarMecanismoLog();
             Splash.definirProgresso(10, "step2.png");
@@ -504,9 +523,9 @@ public final class PortugolStudio
         {
             telaLicencas = new TelaLicencas();
         }
-        
+
         telaLicencas.setLocationRelativeTo(null);
-        
+
         return telaLicencas;
     }
 
