@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public final class FileHandle
 {
-    private static final String charset = "ISO-8859-1";
+    private static final String charsetPadrao = "ISO-8859-1";
 
     public static void save(String text, File file) throws Exception
     {
@@ -16,7 +16,7 @@ public final class FileHandle
             BufferedWriter writer = null;
             try
             {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charsetPadrao));
                 writer.write(text);
                 writer.flush();
                 writer.close();
@@ -62,6 +62,11 @@ public final class FileHandle
     }
     
     public static String read(InputStream inputStream) throws Exception
+    {
+        return read(inputStream, charsetPadrao);
+    }
+    
+    public static String read(InputStream inputStream, String charset) throws Exception
     {
         StringBuilder reading = new StringBuilder();
         BufferedReader reader = null;

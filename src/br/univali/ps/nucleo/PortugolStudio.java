@@ -10,6 +10,7 @@ import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
+import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -46,12 +48,14 @@ public final class PortugolStudio
     private final List<File> arquivosIniciais = new ArrayList<>();
     private final List<File> diretoriosPluginsInformadosPorParametro = new ArrayList<>();
 
+    private String versao = null;
     private boolean depurando = false;
 
     private TelaSobre telaSobre = null;
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
+    private TelaLicencas telaLicencas = null;
 
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
@@ -112,7 +116,7 @@ public final class PortugolStudio
 
             carregarBibliotecas();
             Splash.definirProgresso(90, "step8.png");
-            
+
             AbaCodigoFonte.inicializarPool();
             Splash.definirProgresso(100, "step9.png");
 
@@ -324,16 +328,16 @@ public final class PortugolStudio
             if (configuracoes.getDiretorioPlugins() != null)
             {
                 File diretorioPlugins = new File(configuracoes.getDiretorioPlugins());
-                
+
                 if (diretorioPlugins.exists())
-                {                
+                {
                     for (File pastaPlugin : listarPastasPlugins(diretorioPlugins))
                     {
                         gerenciadorPlugins.incluirDiretorioPlugin(pastaPlugin);
                     }
                 }
             }
-            
+
             for (File diretorio : diretoriosPluginsInformadosPorParametro)
             {
                 gerenciadorPlugins.incluirDiretorioPlugin(diretorio);
@@ -342,12 +346,12 @@ public final class PortugolStudio
             gerenciadorPlugins.carregarPlugins();
         }
     }
-    
+
     private void carregarBibliotecas()
     {
         // Implementar depois
     }
-    
+
     private List<File> listarPastasPlugins(File diretorioPlugins)
     {
         File[] diretorios = diretorioPlugins.listFiles(new FileFilter()
@@ -379,6 +383,33 @@ public final class PortugolStudio
         {
             throw new ExcecaoAplicacao("Não foi possível iniciar o Portugol Studio", ex, ExcecaoAplicacao.Tipo.ERRO);
         }
+    }
+
+    public String getVersao()
+    {
+        if (versao == null)
+        {
+            versao = carregarVersao();
+        }
+
+        return versao;
+    }
+
+    private String carregarVersao()
+    {
+        try
+        {
+            Properties propriedades = new Properties();
+            propriedades.load(getClass().getClassLoader().getResourceAsStream("versao.properties"));
+
+            return propriedades.getProperty("portugol.studio.versao");
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, "Erro ao carregar o arquivo de versão", excecao);
+        }
+
+        return "Indefinida";
     }
 
     public TelaPrincipal getTelaPrincipal()
@@ -463,8 +494,20 @@ public final class PortugolStudio
         }
 
         telaErrosPluginsBibliotecas.setLocationRelativeTo(null);
-        
+
         return telaErrosPluginsBibliotecas;
+    }
+
+    public TelaLicencas getTelaLicencas()
+    {
+        if (telaLicencas == null)
+        {
+            telaLicencas = new TelaLicencas();
+        }
+        
+        telaLicencas.setLocationRelativeTo(null);
+        
+        return telaLicencas;
     }
 
     public boolean rodandoApplet()

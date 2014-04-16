@@ -1,6 +1,6 @@
-
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -14,46 +14,47 @@ import javax.swing.KeyStroke;
  *
  * @author Luiz Fernando Noschang
  */
-
 public final class TelaSobre extends JDialog
 {
     private Action acaoSair;
-    
-    public TelaSobre() 
+
+    public TelaSobre()
     {
         super();
         setModal(true);
         setLocationRelativeTo(null);
         configurarAcaoSair();
         initComponents();
-        
+
         botaoSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoLicencas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        setSize(640, 550);        
+        setSize(640, 550);
+        rotuloDescricao.setText(String.format(rotuloDescricao.getText(), PortugolStudio.getInstancia().getVersao()));
     }
 
-    private void configurarAcaoSair() 
+    private void configurarAcaoSair()
     {
-        String nome  = "Sair";
+        String nome = "Sair";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-        
+
         acaoSair = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "sair.png"))
         {
             @Override
-            public void actionPerformed(ActionEvent e) 
+            public void actionPerformed(ActionEvent e)
             {
                 setVisible(false);
             }
         };
-        
+
         getRootPane().getActionMap().put(nome, acaoSair);
         getRootPane().getInputMap().put(atalho, nome);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel1 = new javax.swing.JPanel();
         logo1 = new br.univali.ps.ui.imagens.Logo();
@@ -97,7 +98,7 @@ public final class TelaSobre extends JDialog
 
         rotuloDescricao.setBackground(new java.awt.Color(255, 255, 255));
         rotuloDescricao.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        rotuloDescricao.setText("<html>\n\t<head>\n\t\t<style>\n\t\t\n\t\t\tp { margin-bottom: 8px; }\n\t\t\ta { color: blue; }\n\n\t\t\t.atributo { color: black; font-weight : bold;  }\n\t\t\t.valor    { color: maroon; font-weight: bold;  }\n\n\t\t</style>\n\t</head>\n\t<body>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Nome do aplicativo: </span>\n\t\t\t<span class=\"valor\">Portugol Studio</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Versão: </span>\n\t\t\t<span class=\"valor\">2.0</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Linguagem de Programação: </span>\n\t\t\t<span class=\"valor\">Java <sup style=\"font-size: smaller;\">TM</sup></span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Home page: </span>\n\t\t\t<span class=\"valor\">http://univali-l2s.github.com/Portugol</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Orientador: </span>\n\t\t\t<span class=\"valor\">André Luis Alice Raabe ( <a href='mailto:raabe@univali.br'>raabe@univali.br</a> )</span>\n\t\t</p>\n\t\t<span class=\"atributo\">Programadores: </span>\n\n\t\t<ul>\n\t\t\t<li><span class=\"valor\">Elieser Ademir de Jesus ( <a href='mailto:elieserdejesus@gmail.com'>elieserdejesus@gmail.com</a> )</span></li>\n\t\t\t<li><span class=\"valor\">Fillipi Domingos Pelz ( <a href='mailto:fillipi.pelz@gmail.com'>fillipi.pelz@gmail.com</a> )</span></li>\n\t\t\t<li><span class=\"valor\">Luiz Fernando Noschang ( <a href='mailto:noschang@univali.br'>noschang@univali.br</a> )</span></li>\n\t\t</ul>\n\n\t\t<span class=\"atributo\">Demais colaboradores: </span>\n\t\t<ul>\n\t\t\t<li><span class=\"valor\">André Luiz Maciel Santana</span></li>\n\t\t\t<li><span class=\"valor\">Carlos Alexandre Krueger</span></li>\n\t\t\t<li><span class=\"valor\">Giordana Maria da Costa Valle</span></li>\n\t\t\t<li><span class=\"valor\">Nereu Oliveira</span></li>\n\t\t\t<li><span class=\"valor\">Paula Mannes</span></li>\n\t\t\t<li><span class=\"valor\">Roberto Gonçalves Augusto Junior</span></li>\n\t\t</ul>\n\t</body>\n</html>");
+        rotuloDescricao.setText("<html>\n\t<head>\n\t\t<style>\n\t\t\n\t\t\tp { margin-bottom: 8px; }\n\t\t\ta { color: blue; }\n\n\t\t\t.atributo { color: black; font-weight : bold;  }\n\t\t\t.valor    { color: maroon; font-weight: bold;  }\n\n\t\t</style>\n\t</head>\n\t<body>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Nome do aplicativo: </span>\n\t\t\t<span class=\"valor\">Portugol Studio</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Versão: </span>\n\t\t\t<span class=\"valor\">%s</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Linguagem de Programação: </span>\n\t\t\t<span class=\"valor\">Java <sup style=\"font-size: smaller;\">TM</sup></span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Home page: </span>\n\t\t\t<span class=\"valor\">http://univali-l2s.github.com/Portugol</span>\n\t\t</p>\n\t\t<p>\n\t\t\t<span class=\"atributo\">Orientador: </span>\n\t\t\t<span class=\"valor\">André Luis Alice Raabe ( <a href='mailto:raabe@univali.br'>raabe@univali.br</a> )</span>\n\t\t</p>\n\t\t<span class=\"atributo\">Programadores: </span>\n\n\t\t<ul>\n\t\t\t<li><span class=\"valor\">Elieser Ademir de Jesus ( <a href='mailto:elieserdejesus@gmail.com'>elieserdejesus@gmail.com</a> )</span></li>\n\t\t\t<li><span class=\"valor\">Fillipi Domingos Pelz ( <a href='mailto:fillipi.pelz@gmail.com'>fillipi.pelz@gmail.com</a> )</span></li>\n\t\t\t<li><span class=\"valor\">Luiz Fernando Noschang ( <a href='mailto:noschang@univali.br'>noschang@univali.br</a> )</span></li>\n\t\t</ul>\n\n\t\t<span class=\"atributo\">Demais colaboradores: </span>\n\t\t<ul>\n\t\t\t<li><span class=\"valor\">André Luiz Maciel Santana</span></li>\n\t\t\t<li><span class=\"valor\">Carlos Alexandre Krueger</span></li>\n\t\t\t<li><span class=\"valor\">Giordana Maria da Costa Valle</span></li>\n\t\t\t<li><span class=\"valor\">Nereu Oliveira</span></li>\n\t\t\t<li><span class=\"valor\">Paula Mannes</span></li>\n\t\t\t<li><span class=\"valor\">Roberto Gonçalves Augusto Junior</span></li>\n\t\t</ul>\n\t</body>\n</html>");
         rotuloDescricao.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         rotuloDescricao.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 8, 8, 8));
         rotuloDescricao.setPreferredSize(new java.awt.Dimension(200, 45));
@@ -150,8 +151,10 @@ public final class TelaSobre extends JDialog
         botaoLicencas.setMaximumSize(new java.awt.Dimension(48, 48));
         botaoLicencas.setMinimumSize(new java.awt.Dimension(48, 48));
         botaoLicencas.setPreferredSize(new java.awt.Dimension(48, 48));
-        botaoLicencas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        botaoLicencas.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 botaoLicencasActionPerformed(evt);
             }
         });
@@ -172,9 +175,10 @@ public final class TelaSobre extends JDialog
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoLicencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLicencasActionPerformed
-        new Licenca(null, true).setVisible(true);
+        TelaLicencas telaLicencas = PortugolStudio.getInstancia().getTelaLicencas();
+        telaLicencas.setVisible(true);
     }//GEN-LAST:event_botaoLicencasActionPerformed
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoLicencas;
     private javax.swing.JButton botaoSair;

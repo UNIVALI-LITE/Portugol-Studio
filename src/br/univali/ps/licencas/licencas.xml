@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <licencas>
-    <recurso nome="Balloon Tip" versao="1.2.1" tipo="biblioteca" arquivo="balloontip"/>
+    <recurso nome="Portugol Studio" versao="Não disponível" arquivo="licenca-portugol-studio.txt" url="http://sourceforge.net/projects/portugolstudio/">
+        <descricao>Ambiente de desenvolvimento para a linguagem Portugol 2.0</descricao>
+    </recurso>
+    <recurso nome="Portugol Núcleo" versao="Não disponível" arquivo="licenca-portugol-nucleo.txt" url="https://github.com/UNIVALI-L2S/Portugol-Nucleo">
+        <descricao>Compilador da linguagem Portugol 2.0. Inclui: analisador sintático e semântico, gerador de código intermediário, interpretador, depurador e mecanismo de inclusão de bibliotecas</descricao>
+    </recurso>
+    <recurso nome="Zip4j" versao="1.3.1" arquivo="licenca-zip4j-1.3.1.txt" url="http://www.lingala.net/zip4j/index.php">
+        <descricao>Biblioteca que permite a compactação e descompactação de arquivos ZIP. Suporta a criação de arquivos com senha e criptografados nos formatos AES 128/256. Permite trabalhar com arquivos divididos em múltiplas partes</descricao>
+    </recurso>
+    <recurso nome="Balloon Tip" versao="1.2.1" arquivo="licenca-balloontip-1.2.1.txt" url="https://balloontip.java.net/">
+        <descricao>Biblioteca que permite a criação de mensagens em forma de balão. Utilizado pelo Portugol Studio na criação das dicas de interface exibidas ao usuário ao repousar o mouse sobre determinadas áreas da tela</descricao>
+    </recurso>
+    <recurso nome="ANTLR" versao="3.4" arquivo="licenca-antlr-3.4.txt" url="http://www.antlr3.org/">
+        <descricao>Gerador de parsers que permitem, ler, processar, executar ou traduzir arquivos binários ou de texto estruturado. Amplamente utilizado na construção de linguagens de programação, ferramentas, bibliotecas e frameworks</descricao>
+    </recurso>    
+    <recurso nome="RSyntaxTextArea" versao="Não disponível" arquivo="licenca-rsyntaxtextarea.txt" url="http://fifesoft.com/rsyntaxtextarea/">
+        <descricao>Componente de texto baseado na API Swing do Java. Provê recursos como: destaque de código fonte, conclusão de código e busca avançada de texto e expressões regulares. Indicado para aplicações cujo foco é a edição ou visualização de código fonte</descricao>   
+    </recurso>
+    <recurso nome="jSoup" versao="1.7.2" arquivo="licenca-jsoup-1.7.2.txt" url="http://jsoup.org/">
+        <descricao>Biblioteca para a manipulação de HTML. A biblioteca utiliza o mesmo modelo DOM dos navegadores e permite a navegação nos elementos utilizando seletores CSS</descricao>
+    </recurso>
 </licencas>
