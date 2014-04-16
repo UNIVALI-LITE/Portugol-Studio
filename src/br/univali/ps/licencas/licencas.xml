@@ -21,4 +21,7 @@
     <recurso nome="jSoup" versao="1.7.2" arquivo="licenca-jsoup-1.7.2.txt" url="http://jsoup.org/">
         <descricao>Biblioteca para a manipulação de HTML. A biblioteca utiliza o mesmo modelo DOM dos navegadores e permite a navegação nos elementos utilizando seletores CSS</descricao>
     </recurso>
+    <recurso nome="jLayer" versao="1.0.1" arquivo="licenca-jlayer-1.0.1.txt" url="http://www.javazoom.net/javalayer/javalayer.html">
+        <descricao>Biblioteca para a reprodução de arquivos MP3. Utilizado pelo Portugol Núcleo para a reprodução de sons na biblioteca "Sons"</descricao>
+    </recurso>
 </licencas>
