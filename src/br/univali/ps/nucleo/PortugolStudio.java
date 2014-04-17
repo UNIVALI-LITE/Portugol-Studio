@@ -16,10 +16,12 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +50,10 @@ public final class PortugolStudio
 
     private final List<File> arquivosIniciais = new ArrayList<>();
     private final List<File> diretoriosPluginsInformadosPorParametro = new ArrayList<>();
+
+    private final Random random = new Random(System.nanoTime());
+    private final List<String> dicas = new ArrayList<>();
+    private final List<Integer> dicasExibidas = new ArrayList<>();
 
     private String versao = null;
     private boolean depurando = false;
@@ -85,24 +91,7 @@ public final class PortugolStudio
     {
         if (versaoJavaCorreta())
         {
-            /* Por enquanto vamos fazer hard coded. Depois faremos ler de um arquivo de dicas dentro do JAR */
-
-            String dica = "";
-            Random rnd = new Random(System.currentTimeMillis());
-
-            switch (rnd.nextInt(3))
-            {
-                case 0:
-                    dica = "Pressione F11 a qualquer momento para visualizar os atalhos de teclado";
-                    break;
-                case 1:
-                    dica = "Reserve algum tempo para assitir às vídeoaulas, elas irão auxiliá-lo";
-                    break;
-                case 2:
-                    dica = "Está com dificuldades? Pressione F1 para acessar a ajuda do Portugol Studio";
-                    break;
-            }
-
+            String dica = obterProximaDica();
             Splash.exibir(dica);
 
             inicializarMecanismoLog();
@@ -149,6 +138,53 @@ public final class PortugolStudio
             }
 
             Splash.ocultar();
+        }
+    }
+
+    public String obterProximaDica()
+    {
+        if (dicas.isEmpty())
+        {
+            carregarDicas();
+        }
+
+        if (dicasExibidas.size() == dicas.size())
+        {
+            dicasExibidas.clear();
+        }
+
+        if (!dicas.isEmpty())
+        {
+            int indice = random.nextInt(dicas.size());
+
+            while (dicasExibidas.contains(indice))
+            {
+                indice = (indice + 1) % dicas.size();
+            }
+
+            return dicas.get(indice);
+        }
+
+        return null;
+    }
+
+    private void carregarDicas()
+    {
+        String linha;
+
+        try (BufferedReader leitor = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("dicas.txt"))))
+        {
+            while ((linha = leitor.readLine()) != null)
+            {
+                if (linha.trim().length() != 0 && !linha.startsWith("#"))
+                {
+                    dicas.add(linha);
+                }
+            }
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, "Erro ao carregar as dicas da Splash Screen", excecao);
         }
     }
 

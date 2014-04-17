@@ -57,26 +57,33 @@ public final class Splash
 
     private static void desenharDica(String dica)
     {
-        if (hintFlag)
+        if (hintFlag && dica != null)
         {
             hintFlag = false;
 
-            int y = 170;
+            //int alturaDica = 80;
+            int larguraDica = 259;
+                    
             FontMetrics fm = graphics.getFontMetrics();
-            List<String> partes = StringUtils.wrap(dica, fm, 255);
+            List<String> partes = StringUtils.wrap(dica, fm, larguraDica);
 
             graphics.setColor(Color.WHITE);
 
+            int yDica = 150;
+            int xDica = 20;
+            
             for (String parte : partes)
             {
-                graphics.drawString(parte, 28, y);
-                y = y + fm.getHeight();
+                graphics.drawString(parte, xDica, yDica);
+                yDica = yDica + fm.getHeight();
             }
         }
     }
 
     private static void desenharBarraProgresso(final int progresso)
     {
+        int xProgresso = 17;
+        int yProgresso = 107;
         int largura = (int) ((progresso / 100f) * 253);
 
         graphics.setColor(Color.YELLOW);
@@ -84,14 +91,14 @@ public final class Splash
         if (largura > 0 && progressFlag)
         {
             progressFlag = false;
-            graphics.fillOval(27, 131, 8, 8);
+            graphics.fillOval(xProgresso + 4, yProgresso, 8, 8);
         }
 
-        graphics.fillRect(29, 131, largura, 8);
+        graphics.fillRect(xProgresso + 6, yProgresso, largura, 8);
 
         if (largura > 8)
         {
-            graphics.fillOval(23 + largura, 131, 8, 8);
+            graphics.fillOval(xProgresso + largura, yProgresso, 8, 8);
         }
     }
 
@@ -100,7 +107,7 @@ public final class Splash
         String caminho = String.format("br/univali/ps/ui/imagens/splash/%s", step);
         Image imagem = carregarImagem(caminho);
 
-        graphics.drawImage(imagem, 311, 31, null);
+        graphics.drawImage(imagem, 323, 48, null);
     }
 
     public static void ocultar()

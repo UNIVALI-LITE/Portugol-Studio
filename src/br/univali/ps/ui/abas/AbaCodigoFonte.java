@@ -56,7 +56,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
 
-    private static final int TAMANHO_POOL_ABAS = 8;
+    private static final int TAMANHO_POOL_ABAS = 12;
     private static PoolAbasCodigoFonte poolAbasCodigoFonte;
 
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
@@ -68,7 +68,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     private final TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
 
-    private final Map<Plugin, JToggleButton> botoesPlugins = new HashMap<Plugin, JToggleButton>();
+    private final Map<Plugin, JToggleButton> botoesPlugins = new HashMap<>();
     private final Map<Action, JButton> mapaBotoesAcoesPlugins = new HashMap<>();
 
     private Programa programa = null;
