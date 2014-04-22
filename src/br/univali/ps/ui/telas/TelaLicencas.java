@@ -1,15 +1,22 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.util.IconFactory;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
 public final class TelaLicencas extends javax.swing.JDialog
 {
     private final List<PainelLicenca> paineis;
+    private Action acaoSair;
 
     public TelaLicencas()
     {
@@ -30,8 +37,28 @@ public final class TelaLicencas extends javax.swing.JDialog
                 redefinirPaineis();
             }
         });
+        
+        configurarAcaoSair();
     }
 
+    private void configurarAcaoSair()
+    {
+        String nome = "Sair";
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+
+        acaoSair = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                setVisible(false);
+            }
+        };
+
+        getRootPane().getActionMap().put(nome, acaoSair);
+        getRootPane().getInputMap().put(atalho, nome);
+    }
+    
     private void redefinirPaineis()
     {
         painelTabulado.setSelectedIndex(0);
