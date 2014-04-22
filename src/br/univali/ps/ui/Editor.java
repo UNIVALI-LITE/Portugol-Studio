@@ -15,6 +15,8 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
 import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
+
+import br.univali.ps.ui.rstautil.PortugolFoldParser;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
 import br.univali.ps.ui.util.IconFactory;
@@ -177,7 +179,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarParser()
     {
-        FoldParserManager.get().addFoldParserMapping("text/por", new CurlyFoldParser(true, false));
+        FoldParserManager.get().addFoldParserMapping("text/por", new PortugolFoldParser());
         ToolTipManager.sharedInstance().registerComponent(textArea);
 
         notificaErrosEditor = new PortugolParser();
