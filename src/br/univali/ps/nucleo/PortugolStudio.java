@@ -17,8 +17,11 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -146,6 +149,7 @@ public final class PortugolStudio
         if (dicas.isEmpty())
         {
             carregarDicas();
+            carregarDicasExibidas();
         }
 
         if (dicasExibidas.size() == dicas.size())
@@ -161,6 +165,9 @@ public final class PortugolStudio
             {
                 indice = (indice + 1) % dicas.size();
             }
+
+            dicasExibidas.add(indice);
+            salvarDicasExibidas();
 
             return dicas.get(indice);
         }
@@ -185,6 +192,51 @@ public final class PortugolStudio
         catch (IOException excecao)
         {
             LOGGER.log(Level.SEVERE, "Erro ao carregar as dicas da Splash Screen", excecao);
+        }
+    }
+
+    private void carregarDicasExibidas()
+    {
+        String linha;
+        File arquivoDicas = new File(Configuracoes.obterDiretorioPortugol(), "dicas_exibidas.txt");
+
+        if (arquivoDicas.exists())
+        {
+            try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoDicas)))
+            {
+                while ((linha = leitor.readLine()) != null)
+                {
+                    if (linha.trim().length() != 0 && !linha.startsWith("#"))
+                    {
+                        dicasExibidas.add(Integer.parseInt(linha));
+                    }
+                }
+            }
+            catch (IOException excecao)
+            {
+                LOGGER.log(Level.SEVERE, "Erro ao carregar as dicas já exibidas", excecao);
+            }
+        }
+    }
+
+    private void salvarDicasExibidas()
+    {
+        if (!dicasExibidas.isEmpty())
+        {
+            File arquivoDicas = new File(Configuracoes.obterDiretorioPortugol(), "dicas_exibidas.txt");
+
+            try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivoDicas)))
+            {
+                for (Integer indice : dicasExibidas)
+                {
+                    escritor.write(indice.toString());
+                    escritor.newLine();
+                }
+            }
+            catch (IOException excecao)
+            {
+                LOGGER.log(Level.SEVERE, "Erro ao salvar as dicas já exibidas", excecao);
+            }
         }
     }
 
