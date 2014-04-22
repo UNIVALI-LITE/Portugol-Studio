@@ -340,9 +340,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 {
                     acaoLimpar.setEnabled(true);
 
-                    int selecao = console.getSelectionEnd() - console.getSelectionStart();
-
-                    if (selecao > 0)
+                    if (console.getText().length() > 0)
                     {
                         acaoCopiar.setEnabled(true);
                     }
@@ -366,10 +364,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     {
 
         menuConsole = new javax.swing.JPopupMenu();
-        menuConsoleLimpar = new javax.swing.JMenuItem();
-        menuConsoleCopiar = new javax.swing.JMenuItem();
         menuAumentarFonte = new javax.swing.JMenuItem();
         menuDiminuirFonte = new javax.swing.JMenuItem();
+        menuConsoleLimpar = new javax.swing.JMenuItem();
+        menuConsoleCopiar = new javax.swing.JMenuItem();
         painelConteudo = new javax.swing.JPanel();
         painelRolagem = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
@@ -380,17 +378,17 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         botaoLimpar = new javax.swing.JButton();
         botaoCopiar = new javax.swing.JButton();
 
-        menuConsoleLimpar.setText("jMenuItem1");
-        menuConsole.add(menuConsoleLimpar);
-
-        menuConsoleCopiar.setText("jMenuItem2");
-        menuConsole.add(menuConsoleCopiar);
-
         menuAumentarFonte.setText("jMenuItem1");
         menuConsole.add(menuAumentarFonte);
 
         menuDiminuirFonte.setText("jMenuItem1");
         menuConsole.add(menuDiminuirFonte);
+
+        menuConsoleLimpar.setText("jMenuItem1");
+        menuConsole.add(menuConsoleLimpar);
+
+        menuConsoleCopiar.setText("jMenuItem2");
+        menuConsole.add(menuConsoleCopiar);
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setFocusable(false);

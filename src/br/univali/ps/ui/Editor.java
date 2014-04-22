@@ -268,7 +268,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarAcaoComentar()
     {
-        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_paste.png"))
+        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png"))
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -278,11 +278,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
                     int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
 
-                    int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
-                    int fimSelecao = textArea.getLineEndOffset(linhaFinal);
-                    int tamanhoSelecao = fimSelecao - inicioSelecao;
+                    int inicioSelecao = textArea.getSelectionStart();
+                    int fimSelecao = textArea.getSelectionEnd();
+                    int inicioTexto = textArea.getLineStartOffset(linhaInicial);
+                    int fimTexto = textArea.getLineEndOffset(linhaFinal);
+                    int tamanhoTexto = fimTexto - inicioTexto;
 
-                    String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
+                    String codigo = textArea.getText(inicioTexto, tamanhoTexto);
                     StringBuilder codigoComentado = new StringBuilder();
 
                     String[] linhas = codigo.split("\n");
@@ -295,8 +297,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     }
 
                     codigo = codigoComentado.toString();
-                    textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
-                    textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
+                    textArea.replaceRange(codigo, inicioTexto, fimTexto);
+                    textArea.select(inicioSelecao + 2, fimSelecao + (linhas.length * 2));
                 }
                 catch (BadLocationException excecao)
                 {
@@ -320,28 +322,54 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
                     int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
 
-                    int inicioSelecao = textArea.getLineStartOffset(linhaInicial);
-                    int fimSelecao = textArea.getLineEndOffset(linhaFinal);
+                    int inicioSelecao = textArea.getSelectionStart();
+                    int fimSelecao = textArea.getSelectionEnd();
                     int tamanhoSelecao = fimSelecao - inicioSelecao;
+                    int inicioTexto = textArea.getLineStartOffset(linhaInicial);
+                    int fimTexto = textArea.getLineEndOffset(linhaFinal);
+                    int tamanhoTexto = fimTexto - inicioTexto;
 
-                    String codigo = textArea.getText(inicioSelecao, tamanhoSelecao);
+                    String codigo = textArea.getText(inicioTexto, tamanhoTexto);
                     StringBuilder codigoDescomentado = new StringBuilder();
 
                     String[] linhas = codigo.split("\n");
 
+                    int deslocamento = 0;
+                    
                     for (String linha : linhas)
                     {
                         int posicaoComentario = linha.indexOf("//");
+                        int inicioSelecaoLinha = inicioSelecao - inicioTexto;
+                        int fimSelecaoLinha = inicioSelecaoLinha + tamanhoSelecao;
+                        
+                        if (posicaoComentario >= 0)
+                        {
+                            codigoDescomentado.append(linha.substring(0, posicaoComentario));
+                            codigoDescomentado.append(linha.substring(posicaoComentario + 2));
+                        }
+                        else
+                        {
+                            codigoDescomentado.append(linha);
+                        }
 
-                        codigoDescomentado.append(linha.substring(0, posicaoComentario));
-                        codigoDescomentado.append(linha.substring(posicaoComentario + 2));
                         codigoDescomentado.append("\n");
+                        posicaoComentario = posicaoComentario + deslocamento;
+                        deslocamento = deslocamento + linha.length();
+                        
+                        if (posicaoComentario >=0 && posicaoComentario < inicioSelecaoLinha)
+                        {
+                            inicioSelecao = inicioSelecao - 2;
+                            fimSelecao = fimSelecao - 2;
+                        }
+                        else if (posicaoComentario >= 0 && posicaoComentario < fimSelecaoLinha)
+                        {
+                            fimSelecao = fimSelecao - 2;
+                        }
                     }
 
                     codigo = codigoDescomentado.toString();
-                    textArea.replaceRange(codigo, inicioSelecao, fimSelecao);
-                    textArea.select(inicioSelecao, inicioSelecao + codigo.length() - 1);
-
+                    textArea.replaceRange(codigo, inicioTexto, fimTexto);                    
+                    textArea.select(inicioSelecao, fimSelecao);
                 }
                 catch (BadLocationException excecao)
                 {
@@ -718,7 +746,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             acaoCentralizarCodigoFonte.actionPerformed(null);
         }
     }
-    
+
     public void adicionarObservadorCursor(CaretListener observador)
     {
         textArea.addCaretListener(observador);
@@ -735,7 +763,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.discardAllEdits();
         textArea.forceReparsing(notificaErrosEditor);
 
-        carregarInformacoesPortugolStudio(codigoFonte);        
+        carregarInformacoesPortugolStudio(codigoFonte);
     }
 
     private void carregarInformacoesPortugolStudio(String codigoFonte)
@@ -815,10 +843,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             sb.replace(avaliador.start(), avaliador.end(), "");
             codigoFonte = sb.toString();
         }
-        
+
         // Remove a tag de cursor que foi incluída nas versões anteriores do Portugol Studio
         codigoFonte = codigoFonte.replace("/*${cursor}*/", "");
-        
+
         return codigoFonte;
     }
 

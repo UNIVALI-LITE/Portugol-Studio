@@ -8,16 +8,6 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="menuConsoleLimpar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menuConsoleCopiar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem2"/>
-          </Properties>
-        </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="menuAumentarFonte">
           <Properties>
             <Property name="text" type="java.lang.String" value="jMenuItem1"/>
@@ -26,6 +16,16 @@
         <MenuItem class="javax.swing.JMenuItem" name="menuDiminuirFonte">
           <Properties>
             <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+          </Properties>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="menuConsoleLimpar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+          </Properties>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="menuConsoleCopiar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jMenuItem2"/>
           </Properties>
         </MenuItem>
       </SubComponents>
