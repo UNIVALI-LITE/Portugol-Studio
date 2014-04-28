@@ -1,7 +1,6 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -105,6 +104,7 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
+        painelTabulado.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         painelTabulado.setFocusable(false);
         painelConteudo.add(painelTabulado, java.awt.BorderLayout.CENTER);
 

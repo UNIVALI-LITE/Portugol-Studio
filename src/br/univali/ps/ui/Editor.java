@@ -14,21 +14,18 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
-import static br.univali.ps.ui.rstautil.LanguageSupport.PROPERTY_LANGUAGE_PARSER;
 
-import br.univali.ps.ui.rstautil.PortugolFoldParser;
-import br.univali.ps.ui.rstautil.PortugolParser;
-import br.univali.ps.ui.rstautil.completion.PortugolLanguageSuport;
+import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
@@ -54,7 +51,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -65,18 +61,19 @@ import javax.swing.text.Element;
 import net.java.balloontip.BalloonTip;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
-import org.fife.rsta.ui.search.SearchDialogSearchContext;
+import org.fife.rsta.ui.search.SearchEvent;
+import org.fife.rsta.ui.search.SearchListener;
+
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
-import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
-import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
+import org.fife.ui.rtextarea.SearchResult;
 
 /**
  *
@@ -89,12 +86,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
 
-    private static final Pattern padraoDeteccaoNomeEscopo = Pattern.compile("funcao([^\\(]+)");
-    private static final Pattern padraoDeteccaoNivelEscopo = Pattern.compile("\\{|\\}");
-    private static final char[] caracteresParada = new char[]
-    {
-        ' ', '\r', '\t', '\n'
-    };
     private static final int[] teclasAutoComplete = new int[]
     {
         KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD
@@ -118,8 +109,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Color corErro;
 
     private ErrorStrip errorStrip;
-    private PortugolParser notificaErrosEditor;
-    private PortugolLanguageSuport portugolLanguageSuport;
+    private SuporteLinguagemPortugol suporteLinguagemPortugol;
 
     private Action acaoAumentarFonte;
     private Action acaoDiminuirFonte;
@@ -135,7 +125,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
-    private FindReplaceActionListener observadorAcaoPesquisaSubstituir;
+    private SearchListener observadorAcaoPesquisaSubstituir;
 
     public Editor()
     {
@@ -150,6 +140,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
+    }
+
+    public SuporteLinguagemPortugol getSuporteLinguagemPortugol()
+    {
+        return suporteLinguagemPortugol;
     }
 
     private void criarMenuTemas()
@@ -170,24 +165,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarDialogoPesquisarSubstituir()
     {
-        observadorAcaoPesquisaSubstituir = new FindReplaceActionListener();
+        observadorAcaoPesquisaSubstituir = new FindReplaceSearchListener();
 
-        dialogoPesquisar = new FindDialog(null, observadorAcaoPesquisaSubstituir);
-        dialogoSubstituir = new ReplaceDialog(null, observadorAcaoPesquisaSubstituir);
+        dialogoPesquisar = new FindDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
+        dialogoSubstituir = new ReplaceDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
     }
 
     private void configurarParser()
     {
-        FoldParserManager.get().addFoldParserMapping("text/por", new PortugolFoldParser());
-        ToolTipManager.sharedInstance().registerComponent(textArea);
-
-        notificaErrosEditor = new PortugolParser();
-        textArea.putClientProperty(PROPERTY_LANGUAGE_PARSER, notificaErrosEditor);
-        textArea.addParser(notificaErrosEditor);
-
-        portugolLanguageSuport = new PortugolLanguageSuport();
-        portugolLanguageSuport.install(textArea);
+        suporteLinguagemPortugol = new SuporteLinguagemPortugol();
+        suporteLinguagemPortugol.instalar(textArea);
     }
 
     private void criarDicasInterface()
@@ -337,13 +325,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     String[] linhas = codigo.split("\n");
 
                     int deslocamento = 0;
-                    
+
                     for (String linha : linhas)
                     {
                         int posicaoComentario = linha.indexOf("//");
                         int inicioSelecaoLinha = inicioSelecao - inicioTexto;
                         int fimSelecaoLinha = inicioSelecaoLinha + tamanhoSelecao;
-                        
+
                         if (posicaoComentario >= 0)
                         {
                             codigoDescomentado.append(linha.substring(0, posicaoComentario));
@@ -357,8 +345,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                         codigoDescomentado.append("\n");
                         posicaoComentario = posicaoComentario + deslocamento;
                         deslocamento = deslocamento + linha.length();
-                        
-                        if (posicaoComentario >=0 && posicaoComentario < inicioSelecaoLinha)
+
+                        if (posicaoComentario >= 0 && posicaoComentario < inicioSelecaoLinha)
                         {
                             inicioSelecao = inicioSelecao - 2;
                             fimSelecao = fimSelecao - 2;
@@ -370,7 +358,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     }
 
                     codigo = codigoDescomentado.toString();
-                    textArea.replaceRange(codigo, inicioTexto, fimTexto);                    
+                    textArea.replaceRange(codigo, inicioTexto, fimTexto);
                     textArea.select(inicioSelecao, fimSelecao);
                 }
                 catch (BadLocationException excecao)
@@ -763,8 +751,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         textArea.setText(removerInformacoesPortugolStudio(codigoFonte));
         textArea.discardAllEdits();
-        textArea.forceReparsing(notificaErrosEditor);
 
+        suporteLinguagemPortugol.atualizar(textArea);
         carregarInformacoesPortugolStudio(codigoFonte);
     }
 
@@ -999,97 +987,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return textArea;
     }
 
-    public EscopoCursor getEscopoCursor()
-    {
-        int linha = textArea.getCaretLineNumber() + 1;
-        int coluna = textArea.getCaretOffsetFromLineStart();
-
-        try
-        {
-            String text = textArea.getText(0, textArea.getCaretPosition());
-
-            int nivel = getNivelEscopo(text);
-            String nome = getNomeEscopo(text, nivel);
-
-            return new EscopoCursor(nome, nivel, linha, coluna);
-
-        }
-        catch (BadLocationException ex)
-        {
-            ex.printStackTrace(System.out);
-        }
-
-        return new EscopoCursor("indefinido", 0, linha, coluna);
-    }
-
-    private String getNomeEscopo(String texto, int nivel)
-    {
-        String nome = null;
-        Matcher avaliadorNome = padraoDeteccaoNomeEscopo.matcher(texto);
-
-        while (avaliadorNome.find())
-        {
-            int inicio = 0;
-            String temp = avaliadorNome.group(1).trim();
-
-            for (int i = temp.length() - 1; i > 0; i--)
-            {
-                if (caracterParada(temp.charAt(i)))
-                {
-                    inicio = i + 1;
-                    break;
-                }
-            }
-
-            nome = temp.substring(inicio);
-        }
-
-        if (nivel == 0)
-        {
-            nome = "indefinido";
-        }
-        else if (nivel == 1)
-        {
-            nome = "programa";
-        }
-
-        return nome;
-    }
-
-    private int getNivelEscopo(String texto)
-    {
-        int nivel = 0;
-        Matcher avaliadorNivel = padraoDeteccaoNivelEscopo.matcher(texto);
-
-        while (avaliadorNivel.find())
-        {
-            switch (avaliadorNivel.group())
-            {
-                case "{":
-                    nivel++;
-                    break;
-                case "}":
-                    nivel--;
-                    break;
-            }
-        }
-
-        return nivel;
-    }
-
-    private boolean caracterParada(char caracter)
-    {
-        for (int i = 0; i < caracteresParada.length; i++)
-        {
-            if (caracter == caracteresParada[i])
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutar, final Action acaoInterromper, final Action acaoDepurar, final Action acaoProximaInstrucao)
     {
         configurarAcaoExterna(btnSalvar, acaoSalvar);
@@ -1137,8 +1034,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     @Override
     public void caretUpdate(CaretEvent e)
     {
-        portugolLanguageSuport.getProvider().setEscopoCursor(getEscopoCursor());
-
         if (tagErro != null)
         {
             try
@@ -1185,14 +1080,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             if (e.getKeyCode() == teclasAutoComplete[i])
             {
-                textArea.forceReparsing(notificaErrosEditor);
+                suporteLinguagemPortugol.atualizar(textArea);
                 return;
             }
         }
 
         if ((e.getKeyCode() == KeyEvent.VK_SPACE) && (e.isControlDown()))
         {
-            textArea.forceReparsing(notificaErrosEditor);
+            suporteLinguagemPortugol.atualizar(textArea);
         }
     }
 
@@ -1423,47 +1318,86 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return cor;
     }
 
-    private class FindReplaceActionListener implements ActionListener
+    private class FindReplaceSearchListener implements SearchListener
     {
 
         @Override
-        public void actionPerformed(ActionEvent e)
+        public String getSelectedText()
         {
-            String command = e.getActionCommand();
-            SearchDialogSearchContext context = dialogoPesquisar.getSearchContext();
+            return textArea.getSelectedText();
+        }
 
-            switch (command)
+        @Override
+        public void searchEvent(SearchEvent e)
+        {
+            SearchEvent.Type type = e.getType();
+            SearchContext context = e.getSearchContext();
+            SearchResult result = null;
+
+            switch (type)
             {
-                case FindDialog.ACTION_FIND:
-
-                    if (!SearchEngine.find(textArea, context))
+                case MARK_ALL:
+                    result = SearchEngine.markAll(textArea, context);
+                    break;
+                case FIND:
+                    result = SearchEngine.find(textArea, context);
+                    if (!result.wasFound())
                     {
                         reiniciar(context, textArea, e);
                     }
-
                     break;
-
-                case ReplaceDialog.ACTION_REPLACE:
-
-                    if (!SearchEngine.replace(textArea, context))
+                case REPLACE:
+                    result = SearchEngine.replace(textArea, context);
+                    if (!result.wasFound())
                     {
                         reiniciar(context, textArea, e);
                     }
-
                     break;
-
-                case ReplaceDialog.ACTION_REPLACE_ALL:
-                    //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
-                    int count = SearchEngine.replaceAll(textArea, context);
-                    JOptionPane.showMessageDialog(getParent(), count + " ocorrências foram substituídas.");
-
+                case REPLACE_ALL:
+                    result = SearchEngine.replaceAll(textArea, context);
+                    JOptionPane.showMessageDialog(null, result.getCount()
+                            + " ocorrências substituídas.");
                     break;
             }
         }
 
-        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, ActionEvent e)
+        /*
+         @Override
+         public void actionPerformed(ActionEvent e)
+         {
+         String command = e.getActionCommand();
+         SearchDialogSearchContext context = dialogoPesquisar.getSearchContext();
+
+         switch (command)
+         {
+         case FindDialog.ACTION_FIND:
+
+         if (!SearchEngine.find(textArea, context))
+         {
+         reiniciar(context, textArea, e);
+         }
+
+         break;
+
+         case ReplaceDialog.ACTION_REPLACE:
+
+         if (!SearchEngine.replace(textArea, context))
+         {
+         reiniciar(context, textArea, e);
+         }
+
+         break;
+
+         case ReplaceDialog.ACTION_REPLACE_ALL:
+         //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+         int count = SearchEngine.replaceAll(textArea, context);
+         JOptionPane.showMessageDialog(getParent(), count + " ocorrências foram substituídas.");
+
+         break;
+         }
+         }*/
+        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, SearchEvent e)
         {
-            //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
             UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 
             String s = "A pesquisa chegou no início do arquivo, deseja recomeçar do final?";
@@ -1484,53 +1418,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     textArea.setCaretPosition(textArea.getText().length() - 1);
                 }
 
-                actionPerformed(e);
+                searchEvent(e);
             }
         }
     }
 
-    public final class EscopoCursor
-    {
-
-        private final String nome;
-        private final int profundidade;
-        private final int linha;
-        private final int coluna;
-
-        public EscopoCursor(String nome, int profundidade, int linha, int coluna)
-        {
-            this.nome = nome;
-            this.profundidade = profundidade;
-            this.linha = linha;
-            this.coluna = coluna;
-        }
-
-        public String getNome()
-        {
-            return nome;
-        }
-
-        public int getProfundidade()
-        {
-            return profundidade;
-        }
-
-        public int getLinha()
-        {
-            return linha;
-        }
-
-        public int getColuna()
-        {
-            return coluna;
-        }
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()

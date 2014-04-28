@@ -15,9 +15,15 @@
     <recurso nome="ANTLR" versao="3.4" arquivo="licenca-antlr-3.4.txt" url="http://www.antlr3.org/">
         <descricao>Gerador de parsers que permitem, ler, processar, executar ou traduzir arquivos binários ou de texto estruturado. Amplamente utilizado na construção de linguagens de programação, ferramentas, bibliotecas e frameworks</descricao>
     </recurso>    
-    <recurso nome="RSyntaxTextArea" versao="Não disponível" arquivo="licenca-rsyntaxtextarea.txt" url="http://fifesoft.com/rsyntaxtextarea/">
-        <descricao>Componente de texto baseado na API Swing do Java. Provê recursos como: destaque de código fonte, conclusão de código e busca avançada de texto e expressões regulares. Indicado para aplicações cujo foco é a edição ou visualização de código fonte</descricao>   
+    <recurso nome="RSyntaxTextArea" versao="2.5.2" arquivo="licenca-rsyntaxtextarea-2.5.2.txt" url="http://fifesoft.com/rsyntaxtextarea/">
+        <descricao>Componente de texto baseado na API Swing do Java. Provê recursos para destaque e dobramento de código fonte. Indicado para aplicações cujo foco é a edição ou visualização de código fonte</descricao>   
     </recurso>
+    <recurso nome="AutoComplete" versao="2.5.2" arquivo="licenca-autocomplete-2.5.2.txt" url="http://fifesoft.com/autocomplete/">
+        <descricao>Componente de texto baseado na API Swing do Java. Provê recursos para conclusão de código fonte. Dependende do RSyntaxTextArea. Indicado para aplicações cujo foco é a edição ou visualização de código fonte</descricao>   
+    </recurso>
+    <recurso nome="RSyntaxTextArea Components" versao="2.5.2" arquivo="licenca-rstaui-2.5.2.txt" url="http://fifesoft.com/autocomplete/">
+        <descricao>Componente de texto baseado na API Swing do Java. Provê recursos para busca avançada de texto e expressões regulares. Dependende do RSyntaxTextArea. Indicado para aplicações cujo foco é a edição ou visualização de código fonte</descricao>   
+    </recurso>    
     <recurso nome="jSoup" versao="1.7.2" arquivo="licenca-jsoup-1.7.2.txt" url="http://jsoup.org/">
         <descricao>Biblioteca para a manipulação de HTML. A biblioteca utiliza o mesmo modelo DOM dos navegadores e permite a navegação nos elementos utilizando seletores CSS</descricao>
     </recurso>

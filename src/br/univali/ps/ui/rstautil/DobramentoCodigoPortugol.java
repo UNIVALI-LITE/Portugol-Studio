@@ -14,7 +14,7 @@ import org.fife.ui.rsyntaxtextarea.folding.Fold;
  *
  * @author Luiz Fernando
  */
-public final class PortugolFoldParser extends CurlyFoldParser
+public final class DobramentoCodigoPortugol extends CurlyFoldParser
 {
 
     @Override
@@ -34,8 +34,8 @@ public final class PortugolFoldParser extends CurlyFoldParser
     {
         try
         {
-            int startOffset = getStartOffset(fold).getOffset();
-            int endOffset = getEndOffset(fold).getOffset();
+            int startOffset = getStartOffset(fold);
+            int endOffset = getEndOffset(fold);
 
             String text = textArea.getText(startOffset, endOffset - startOffset);
 
@@ -82,38 +82,40 @@ public final class PortugolFoldParser extends CurlyFoldParser
         return startOffset;
     }
 
-    private Position getStartOffset(Fold fold)
+    private int getStartOffset(Fold fold)
     {
         try
         {
             Field field = Fold.class.getDeclaredField("startOffs");
             field.setAccessible(true);
+            Position posicao = (Position) field.get(fold);
 
-            return (Position) field.get(fold);
+            return posicao.getOffset();
         }
         catch (NoSuchFieldException | SecurityException | IllegalAccessException excecao)
         {
 
         }
 
-        return null;
+        return -1;
     }
 
-    private Position getEndOffset(Fold fold)
+    private int getEndOffset(Fold fold)
     {
         try
         {
             Field field = Fold.class.getDeclaredField("endOffs");
             field.setAccessible(true);
+            Position posicao = (Position) field.get(fold);
 
-            return (Position) field.get(fold);
+            return posicao.getOffset();
         }
         catch (NoSuchFieldException | SecurityException | IllegalAccessException excecao)
         {
 
         }
 
-        return null;
+        return -1;
     }
 
     private void setStartOffset(Fold fold, int startOffset, RSyntaxTextArea textArea)

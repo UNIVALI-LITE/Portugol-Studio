@@ -45,6 +45,7 @@
       <SubComponents>
         <Container class="javax.swing.JTabbedPane" name="painelTabulado">
           <Properties>
+            <Property name="tabLayoutPolicy" type="int" value="1"/>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Constraints>

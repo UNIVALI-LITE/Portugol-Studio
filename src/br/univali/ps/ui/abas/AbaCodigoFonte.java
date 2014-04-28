@@ -23,6 +23,7 @@ import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.Editor;
+import br.univali.ps.ui.EscopoCursor;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.TelaOpcoesExecucao;
@@ -480,9 +481,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             painelEsquerda.remove(separadorPainelEsquerda);
             painelEsquerda.add(painelAcessoPlugins, BorderLayout.EAST);
-            
+
             //separadorEsquerdalPlugins.setVisible(false);
-            
             painelEsquerda.validate();
         }
     }
@@ -1773,7 +1773,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     public final void caretUpdate(CaretEvent e)
     {
         Point posicao = editor.getPosicaoCursor();
-        Editor.EscopoCursor escopo = editor.getEscopoCursor();
+        EscopoCursor escopo = EscopoCursor.localizar(editor.getTextArea());
 
         rotuloPosicaoCursor.setText(String.format("Escopo: %s, Nivel: %d, Linha: %d, Coluna: %d", escopo.getNome(), escopo.getProfundidade(), posicao.y, posicao.x));
     }
