@@ -1747,7 +1747,10 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             if (depurando)
             {
-                depurador.proximo();
+                if (!painelSaida.getConsole().isLendo())
+                {
+                    depurador.proximo();
+                }
             }
         }
     }

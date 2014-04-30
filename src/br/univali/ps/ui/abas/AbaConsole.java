@@ -168,6 +168,13 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         this.abaCodigoFonte = abaCodigoFonte;
     }
 
+    public synchronized boolean isLendo()
+    {
+        DocumentoConsole documento = (DocumentoConsole) console.getDocument();
+        
+        return documento.lendo;
+    }
+            
     public void limparConsole()
     {
         console.setText(null);
@@ -677,7 +684,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
             });
         }
 
-        public void setLendo(boolean lendo)
+        public synchronized void setLendo(boolean lendo)
         {
             this.lendo = lendo;
 
