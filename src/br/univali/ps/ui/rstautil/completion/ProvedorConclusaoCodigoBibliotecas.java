@@ -16,7 +16,6 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
-import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
@@ -37,7 +35,7 @@ import org.fife.ui.autocomplete.FunctionCompletion;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
 import org.fife.ui.autocomplete.VariableCompletion;
 
-final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
+public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
 {
     private final FabricaConclusaoCodigoBibliotecas fabricaConclusoes;
     private final Map<String, List<Completion>> conclusoesBibliotecas;
@@ -96,29 +94,11 @@ final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
                     }
                 }
 
-                //incluirPrefixo(conclusoes, partes[0]);
                 return conclusoes;
             }
         }
 
         return Collections.emptyList();
-    }
-
-    private void incluirPrefixo(List<Completion> conclusoes, String prefixo)
-    {
-        for (Completion conclusao : conclusoes)
-        {
-            try
-            {
-                Field campo = BasicCompletion.class.getDeclaredField("replacementText");
-                campo.setAccessible(true);
-                campo.set(conclusao, prefixo.concat(".").concat(conclusao.getReplacementText()));
-            }
-            catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException ex)
-            {
-                Logger.getLogger(ProvedorConclusaoCodigoBibliotecas.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     private final class AtualizadorEstadoBibliotecas extends VisitanteASABasico
@@ -206,12 +186,18 @@ final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
             String nome = constante.getNome();
             String tipo = obterTipo(constante.getTipoDado(), constante.getQuantificador());
 
+            String descricao = String.format("%s<br><br>Valor: %s", constante.getDocumentacao().descricao(), constante.getValor().toString());
+
+            if (constante.getDocumentacao().referencia() != null && constante.getDocumentacao().referencia().trim().length() > 0)
+            {
+                descricao = descricao.concat(String.format("<br><br><a href='%s'>Mais Informações</a>", constante.getDocumentacao().referencia()));
+            }
+
             VariableCompletion conclusao = new VariableCompletion(provedorConclusoes, nome, tipo);
 
             conclusao.setRelevance(1);
             conclusao.setDefinedIn(metaDadosBiblioteca.getNome());
-            conclusao.setShortDescription(String.format("Valor: %s", constante.getValor().toString()));
-            conclusao.setSummary(constante.getDocumentacao().descricao());
+            conclusao.setShortDescription(descricao);
 
             return conclusao;
         }
@@ -221,12 +207,19 @@ final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
             String nomeFuncao = funcao.getNome();
             String tipoFuncao = obterTipo(funcao.getTipoDado(), funcao.getQuantificador());
 
+            String descricao = funcao.getDocumentacao().descricao();
+
+            if (funcao.getDocumentacao().referencia() != null && funcao.getDocumentacao().referencia().trim().length() > 0)
+            {
+                descricao = descricao.concat(String.format("<br><br><a href='%s'>Mais Informações</a>", funcao.getDocumentacao().referencia()));
+            }
+
             FunctionCompletion conclusao = new FunctionCompletion(provedorConclusoes, nomeFuncao, tipoFuncao);
 
             conclusao.setRelevance(0);
             conclusao.setDefinedIn(metaDadosBiblioteca.getNome());
             conclusao.setReturnValueDescription(funcao.getDocumentacao().retorno());
-            conclusao.setSummary(funcao.getDocumentacao().descricao());
+            conclusao.setShortDescription(descricao);
 
             if (funcao.getDocumentacao().parametros() != null && funcao.getDocumentacao().parametros().length > 0)
             {
@@ -258,10 +251,10 @@ final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
                 sb.append("*");
             }
             else
-            {                   
+            {
                 sb.append(tipoDado.getNome());
             }
-            
+
             switch (quantificador)
             {
                 case VETOR:
