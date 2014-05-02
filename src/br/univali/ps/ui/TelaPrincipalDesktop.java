@@ -3,21 +3,14 @@ package br.univali.ps.ui;
 import br.univali.ps.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.dominio.pack.PackDownloader;
-import br.univali.ps.dominio.pack.PackDownloaderException;
-import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.plugins.base.ErroCarregamentoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
-import br.univali.ps.plugins.base.ResultadoCarregamento;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -122,27 +115,26 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                     exibindoPrimeiraVez = false;
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
-                    inicializarRecursos();
 
                     TelaPrincipalDesktop.this.toFront();
                     TelaPrincipalDesktop.this.requestFocusInWindow();
-                    
+
                     boolean errosPlugins = GerenciadorPlugins.getInstance().getResultadoCarregamento().contemErros();
                     boolean errosBibliotecas = false;
-                    
+
                     if (errosPlugins || errosBibliotecas)
                     {
                         TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = PortugolStudio.getInstancia().getTelaErrosPluginsBibliotecas();
                         telaErrosPluginsBibliotecas.setVisible(true);
                         /*
-                        SwingUtilities.invokeLater(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
+                         SwingUtilities.invokeLater(new Runnable()
+                         {
+                         @Override
+                         public void run()
+                         {
                                 
-                            }
-                        });*/
+                         }
+                         });*/
                     }
                 }
             }
@@ -187,26 +179,6 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                     PortugolStudio.getInstancia().getTelaPrincipal().desbloquear();
                 }
             });
-        }
-    }
-
-    private void inicializarRecursos()
-    {
-        try
-        {
-            URL url = new URL(Configuracoes.getUrlDosPacotes());
-            PackDownloader exemploDownlader = new PackDownloader(url, "exemplos");
-            painelTabuladoPrincipal.getAbaInicial().registrarListener(exemploDownlader);
-
-            PackDownloader ajudaDownlader = new PackDownloader(url, "ajuda");
-            painelTabuladoPrincipal.getAbaAjuda().registrarListener(ajudaDownlader);
-
-            ajudaDownlader.downloadPack();
-            exemploDownlader.downloadPack();
-        }
-        catch (PackDownloaderException | MalformedURLException e)
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(e);
         }
     }
 

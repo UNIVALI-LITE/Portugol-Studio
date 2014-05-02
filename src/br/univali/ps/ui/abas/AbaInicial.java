@@ -1,9 +1,5 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.dominio.pack.PackDownloader;
-import br.univali.ps.dominio.pack.PackDownloaderException;
-import br.univali.ps.dominio.pack.PackDownloaderListener;
-import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Configuracoes;
@@ -42,10 +38,10 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import net.java.balloontip.BalloonTip;
 
-public final class AbaInicial extends Aba implements PackDownloaderObserver
+public final class AbaInicial extends Aba
 {
     private final TelaAtalhosTeclado telaAtalhosTeclado = new TelaAtalhosTeclado();
-    
+
     private JPopupMenu menuExemplos;
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
@@ -66,6 +62,7 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         configurarAcoes();
         configurarLinks();
         configurarExibicaoAvisoVideoAulas();
+        criarMenuExemplos();
     }
 
     private void configurarExibicaoAvisoVideoAulas()
@@ -241,66 +238,6 @@ public final class AbaInicial extends Aba implements PackDownloaderObserver
         {
             JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara auxiliar no desenvolvimento do projeto, por favor acesse o seguinte endereço:\n\nhttps://github.com/Univali-l2s/Portugol", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-
-    @Override
-    public void registrarListener(PackDownloader packDownloader)
-    {
-        packDownloader.addListener(new PackDownloaderListener()
-        {
-            @Override
-            public void downloadStarted()
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        rotuloExplorarExemplos.setEnabled(false);
-                    }
-                });
-            }
-
-            @Override
-            public void downloadFinished()
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        criarMenuExemplos();
-                        rotuloExplorarExemplos.setEnabled(true);
-                    }
-                });
-            }
-
-            @Override
-            public void downloadProgress(final int bytesDownloaded, final int totalBytes)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        //int progresso = (int)((bytesDownloaded * 100.0f )/totalBytes );
-                    }
-                });
-            }
-
-            @Override
-            public void downloadFail(final PackDownloaderException exception)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
-                    }
-                });
-            }
-        });
     }
 
     private void configurarCursorLogos()

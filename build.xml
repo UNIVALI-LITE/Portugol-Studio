@@ -26,7 +26,7 @@
 estar no servidor para ser usada como splash no Applet. -->
 <target name="-post-jar">
     <echo message="COPIANDO ARQUIVO DE SPLASH..."/>
-    <copy file="${src.src.dir}/splash.jpg" todir="${dist.dir}"/>
+    <copy file="${src.src.dir}/splash.png" todir="${dist.dir}"/>
 </target>
     
     <!-- target que compila as libs e o jar principal em um único jar-->

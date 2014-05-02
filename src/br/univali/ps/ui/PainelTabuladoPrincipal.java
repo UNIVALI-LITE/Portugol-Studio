@@ -4,8 +4,6 @@ import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaAjuda;
 import br.univali.ps.ui.abas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.dominio.pack.PackDownloader;
-import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -15,7 +13,7 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
-public final class PainelTabuladoPrincipal extends PainelTabulado implements PackDownloaderObserver
+public final class PainelTabuladoPrincipal extends PainelTabulado
 {
     public static final String ACAO_EXIBIR_AJUDA = "Exibir ajuda";
     public static final String ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA = "Documentação das bibliotecas";
@@ -45,7 +43,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
         add(abaInicial);
         setTabComponentAt(indexOfComponent(abaInicial), abaInicial.getCabecalho());
         setSelectedComponent(abaInicial);
-        
+
         //abaInicial.adicionar(PainelTabuladoPrincipal.this);
         //abaInicial.inicializar();
         configurarAcoes();
@@ -53,7 +51,8 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
 
     public AbaInicial getAbaInicial()
     {
-        if(abaInicial == null){
+        if (abaInicial == null)
+        {
             throw new IllegalStateException("A abaInicial precisa ser setada no PainelTabuladoPrincipal!");
         }
         return abaInicial;
@@ -75,12 +74,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements Pac
         configurarAcaoExibirAjuda();
         configurarAcaoExibirDocumentacaoBiblioteca();
         configurarAcaoExibirTelaSobre();
-    }
-
-    @Override
-    public void registrarListener(PackDownloader packDownloader)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void configurarAcaoSelecionarAbaEsquerda()

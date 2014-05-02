@@ -7,14 +7,9 @@ import br.univali.portugol.ajuda.ObservadorCarregamentoAjuda;
 import br.univali.portugol.ajuda.PreProcessadorConteudo;
 import br.univali.portugol.ajuda.Topico;
 import br.univali.portugol.ajuda.TopicoHtml;
-import br.univali.ps.dominio.pack.PackDownloader;
-import br.univali.ps.dominio.pack.PackDownloaderException;
-import br.univali.ps.dominio.pack.PackDownloaderListener;
-import br.univali.ps.dominio.pack.PackDownloaderObserver;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.PainelTabulado;
-import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.ajuda.EditorAjuda;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.CardLayout;
@@ -35,7 +30,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -56,7 +50,7 @@ import javax.swing.tree.DefaultTreeModel;
  *
  * @author Luiz Fernando Noschang
  */
-public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener, PackDownloaderObserver
+public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener
 {
 
     private static final EditorAjuda editorDaAjuda = new EditorAjuda();//usa sempre a mesma instância do editor
@@ -82,81 +76,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private Action acaoAtualizarTopico;
     private Topico topicoAtual;
 
-    @Override
-    public void registrarListener(PackDownloader packDownloader)
-    {
-        packDownloader.addListener(new PackDownloaderListener()
-        {
-
-            @Override
-            public void downloadStarted()
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        rotuloCarregamento.setText("Realizando download do conteúdo de ajuda...");
-                    }
-                });
-            }
-
-            @Override
-            public void downloadFinished()
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        rotuloCarregamento.setText("Carregando os tópicos da ajuda por favor aguarde...");
-
-                        addComponentListener(new ComponentAdapter()
-                        {
-                            @Override
-                            public void componentShown(ComponentEvent e)
-                            {
-                                carregarAjuda();
-                            }
-                        });
-
-                        if (AbaAjuda.this.isVisible())
-                        {
-                            carregarAjuda();
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void downloadProgress(final int bytesDownloaded, final int totalBytes)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        barraProgresso.setValue((int) (bytesDownloaded * 100f) / totalBytes);
-                    }
-                });
-            }
-
-            @Override
-            public void downloadFail(PackDownloaderException ex)
-            {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        AbaAjuda.this.rotuloErroCarregamento.setText("Erro ao fazer download da ajuda!");
-                        AbaAjuda.this.rotuloErroCarregamento.setVisible(true);
-                    }
-                });
-            }
-        });
-    }
-
     public AbaAjuda()
     {
         super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
@@ -168,6 +87,14 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
         rotuloErroCarregamento.setVisible(false);
 
+        addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentShown(ComponentEvent e)
+            {
+                carregarAjuda();
+            }
+        });
     }
 
     @Override
