@@ -179,7 +179,7 @@ public final class PortugolStudio
     {
         String linha;
 
-        try (BufferedReader leitor = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("dicas.txt"))))
+        try (BufferedReader leitor = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("dicas.txt"), "UTF-8")))
         {
             while ((linha = leitor.readLine()) != null)
             {

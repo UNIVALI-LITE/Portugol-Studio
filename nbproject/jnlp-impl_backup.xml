@@ -2,7 +2,7 @@
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
-Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+Copyright 1997-2013 Oracle and/or its affiliates. All rights reserved.
 
 Oracle and Java are registered trademarks of Oracle and/or its affiliates.
 Other names may be trademarks of their respective owners.
@@ -56,6 +56,21 @@ made subject to such option by the copyright holder.
         <echo message="Default target is not set, you must specify which target you want to run."/>
     </target>
 
+    <target name="-check-operating-system">
+        <condition property="running.on.mac">
+            <os family="mac"/>
+        </condition>
+        <condition property="running.on.unix">
+            <os family="unix"/>
+        </condition>
+        <condition property="running.on.windows">
+            <os family="windows"/>
+        </condition>
+        <echo message="running.on.mac = ${running.on.mac}" level="verbose"/>
+        <echo message="running.on.unix = ${running.on.unix}" level="verbose"/>
+        <echo message="running.on.windows = ${running.on.windows}" level="verbose"/>
+    </target>
+
     <target name="-substitute-platform-home" unless="platform.home">
         <property name="platform.home" value="${java.home}"/>
     </target>
@@ -82,12 +97,162 @@ made subject to such option by the copyright holder.
         <fail message="Error:${line.separator}JDK 7u4 Mac does not support WebStart technology.${line.separator}Please upgrade to JDK 7u6 or later." if="have-jdk-7u4-mac"/>
     </target>
 
+    <!-- Check availability of WebStart executable -->
+
+    <target name="-check-webstart-in-platform-home-jre" if="platform.home">
+        <condition property="do.set.webstart.in.platform.home.jre">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <or>
+                    <available file="${platform.home}${file.separator}jre${file.separator}bin${file.separator}javaws.exe"/>
+                    <available file="${platform.home}${file.separator}jre${file.separator}bin${file.separator}javaws"/>
+                </or>
+            </and>
+        </condition>
+    </target>
+    <target name="-set-webstart-in-platform-home-jre" depends="-check-webstart-in-platform-home-jre" if="do.set.webstart.in.platform.home.jre">
+        <property name="active.webstart.executable" value="${platform.home}${file.separator}jre${file.separator}bin${file.separator}javaws"/>
+    </target>
+    <target name="-check-webstart-in-platform-home" if="platform.home">
+        <condition property="do.set.webstart.in.platform.home">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <or>
+                    <available file="${platform.home}${file.separator}bin${file.separator}javaws.exe"/>
+                    <available file="${platform.home}${file.separator}bin${file.separator}javaws"/>
+                </or>
+            </and>
+        </condition>
+    </target>
+    <target name="-set-webstart-in-platform-home" depends="-set-webstart-in-platform-home-jre,-check-webstart-in-platform-home" if="do.set.webstart.in.platform.home">
+        <property name="active.webstart.executable" value="${platform.home}${file.separator}bin${file.separator}javaws"/>
+    </target>
+    <target name="-check-webstart-in-platform-home-220918workaround" if="platform.home">
+        <condition property="do.set.webstart.in.platform.home.220918workaround">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <or>
+                    <available file="${platform.home}${file.separator}..${file.separator}bin${file.separator}javaws.exe"/>
+                    <available file="${platform.home}${file.separator}..${file.separator}bin${file.separator}javaws"/>
+                </or>
+            </and>
+        </condition>
+    </target>
+    <target name="-set-webstart-in-platform-home-220918workaround" depends="-set-webstart-in-platform-home,-check-webstart-in-platform-home-220918workaround" if="do.set.webstart.in.platform.home.220918workaround">
+        <property name="active.webstart.executable" value="${platform.home}${file.separator}..${file.separator}bin${file.separator}javaws"/>
+    </target>
+    <target name="-check-webstart-in-jre" unless="active.webstart.executable">
+        <condition property="do.set.webstart.in.jre">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <or>
+                    <available file="${java.home}${file.separator}bin${file.separator}javaws.exe"/>
+                    <available file="${java.home}${file.separator}bin${file.separator}javaws"/>
+                </or>
+            </and>
+        </condition>
+    </target>
+    <target name="-set-webstart-in-jre" depends="-set-webstart-in-platform-home-220918workaround,-check-webstart-in-jre" if="do.set.webstart.in.jre">
+        <property name="active.webstart.executable" value="${java.home}${file.separator}bin${file.separator}javaws"/>
+    </target>
+    <target name="-check-webstart-in-probjdk" unless="active.webstart.executable">
+        <condition property="do.set.webstart.in.probjdk">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <or>
+                    <available file="${java.home}${file.separator}..${file.separator}bin${file.separator}javaws.exe"/>
+                    <available file="${java.home}${file.separator}..${file.separator}bin${file.separator}javaws"/>
+                </or>
+            </and>
+        </condition>
+    </target>
+    <target name="-set-webstart-in-probjdk" depends="-set-webstart-in-jre,-check-webstart-in-probjdk" if="do.set.webstart.in.probjdk">
+        <property name="active.webstart.executable" value="${java.home}${file.separator}..${file.separator}bin${file.separator}javaws"/>
+    </target>
+    <target name="-check-webstart-in-envjdk" unless="active.webstart.executable">
+        <property environment="env"/>
+        <condition property="do.set.webstart.in.envjdk">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <or>
+                    <available file="${env.JAVA_HOME}${file.separator}bin${file.separator}javaws.exe"/>
+                    <available file="${env.JAVA_HOME}${file.separator}bin${file.separator}javaws"/>
+                </or>
+            </and>
+        </condition>
+    </target>
+    <target name="-set-webstart-in-envjdk" depends="-set-webstart-in-probjdk,-check-webstart-in-envjdk" if="do.set.webstart.in.envjdk">
+        <property name="active.webstart.executable" value="${env.JAVA_HOME}${file.separator}bin${file.separator}javaws"/>
+    </target>
+    <target name="-check-webstart-in-usr-bin" unless="active.webstart.executable">
+        <condition property="do.set.webstart.in.usr.bin">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <available file="${file.separator}usr${file.separator}bin${file.separator}javaws"/>
+            </and>
+        </condition>
+    </target>
+    <target name="-set-webstart-in-usr-bin" depends="-set-webstart-in-envjdk,-check-webstart-in-usr-bin" if="do.set.webstart.in.usr.bin">
+        <property name="active.webstart.executable" value="${file.separator}usr${file.separator}bin${file.separator}javaws"/>
+    </target>
+    <target name="-pre-check-webstart-in-unix" depends="-check-operating-system,-set-webstart-in-usr-bin" unless="active.webstart.executable">
+        <condition property="running.on.unix-active.webstart.executable">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <isset property="running.on.unix"/>
+            </and>
+        </condition>
+    </target>
+    <target name="-check-webstart-in-unix" depends="-pre-check-webstart-in-unix" if="running.on.unix-active.webstart.executable">
+        <local name="exec.which.javaws.result"/>
+        <exec executable="which" failifexecutionfails="false" failonerror="false" resultproperty="exec.which.javaws.result" outputproperty="exec.which.javaws.output">
+            <arg value="javaws"/>
+        </exec>
+        <condition property="do.set.webstart.in.unix">
+            <and>
+                <not><isset property="active.webstart.executable"/></not>
+                <isset property="exec.which.javaws.result"/>
+                <equals arg1="${exec.which.javaws.result}" arg2="0"/>
+                <isset property="exec.which.javaws.output"/>
+                <not><equals arg1="${exec.which.javaws.output}" arg2=""/></not>
+            </and>
+        </condition>
+        <echo message="do.set.webstart.in.unix = ${do.set.webstart.in.unix}" level="verbose"/>
+    </target>
+    <target name="-set-webstart-in-unix" depends="-set-webstart-in-envjdk,-check-webstart-in-unix" if="do.set.webstart.in.unix">
+        <property name="active.webstart.executable" value="${exec.which.javaws.output}"/>
+    </target>
+    <target name="-pre-check-webstart" depends="-set-webstart-in-unix">
+        <echo message="active.webstart.executable = ${active.webstart.executable}" level="verbose"/>
+    </target>
+
+    <target name="-check-webstart" depends="-pre-check-webstart">
+        <condition property="webstart-available">
+            <and>
+                <or>
+                    <isset property="do.set.webstart.in.platform.home.jre"/>
+                    <isset property="do.set.webstart.in.platform.home"/>
+                    <isset property="do.set.webstart.in.platform.home.220918workaround"/>
+                    <isset property="do.set.webstart.in.jre"/>
+                    <isset property="do.set.webstart.in.probjdk"/>
+                    <isset property="do.set.webstart.in.envjdk"/>
+                    <isset property="do.set.webstart.in.usr.bin"/>
+                    <isset property="do.set.webstart.in.unix"/>
+                </or>
+                <isset property="active.webstart.executable"/>
+            </and>
+        </condition>
+        <fail message="Error:${line.separator}WebStart executable could not be found." unless="webstart-available"/>
+        <echo message="webstart-available = ${webstart-available}" level="verbose"/>
+    </target>
+
     <!-- Main target -->
 
     <target name="jnlp" depends="-init-filename,-test-jnlp-enabled,-do-jar-jnlp" if="is.jnlp.enabled">
         <makeurl property="jnlp.local.codebase.url" file="${basedir}/dist" validate="false"/>
         <antcall target="generate-jnlp"/>
         <antcall target="generate-html-preview"/>
+        <antcall target="-warn-insufficient-signing"/>
     </target>
 
     <!-- JNLP archiving -->
@@ -161,7 +326,6 @@ made subject to such option by the copyright holder.
             </customize>
         </jnlp:extend-manifest>
     </target>
-
     <target name="-add-trusted-library-attribute" depends="-set-mixed-code-properties,-init-macrodef-extend-manifest" if="mixed.code.trusted.library">
         <jnlp:extend-manifest>
             <customize>
@@ -169,6 +333,135 @@ made subject to such option by the copyright holder.
             </customize>
         </jnlp:extend-manifest>
     </target>
+    
+    <target name="-check-manifest-codebase">
+        <condition property="manifest.codebase.copy" value="${jnlp.dest.dir}">
+            <and>
+                <isset property="jnlp.codebase.type"/>
+                <equals arg1="${jnlp.codebase.type}" arg2="local"/>
+                <or>
+                    <not><isset property="manifest.custom.codebase"/></not>
+                    <equals arg1="${manifest.custom.codebase}" arg2=""/>
+                </or>
+            </and>
+        </condition>
+        <condition property="manifest.codebase.copy" value="${jnlp.codebase.user}">
+            <and>
+                <isset property="jnlp.codebase.type"/>
+                <equals arg1="${jnlp.codebase.type}" arg2="user"/>
+                <isset property="jnlp.codebase.user"/>
+                <not><equals arg1="${jnlp.codebase.type}" arg2=""/></not>
+                <or>
+                    <not><isset property="manifest.custom.codebase"/></not>
+                    <equals arg1="${manifest.custom.codebase}" arg2=""/>
+                </or>
+            </and>
+        </condition>
+        <condition property="manifest.codebase.web">
+            <and>
+                <isset property="jnlp.codebase.type"/>
+                <equals arg1="${jnlp.codebase.type}" arg2="web"/>
+                <or>
+                    <not><isset property="manifest.custom.codebase"/></not>
+                    <equals arg1="${manifest.custom.codebase}" arg2=""/>
+                </or>
+            </and>
+        </condition>
+        <condition property="manifest.codebase.other">
+            <and>
+                <not><isset property="manifest.codebase.copy"/></not>
+                <not><isset property="manifest.codebase.web"/></not>
+                <or>
+                    <not><isset property="manifest.custom.codebase"/></not>
+                    <equals arg1="${manifest.custom.codebase}" arg2=""/>
+                </or>
+            </and>
+        </condition>
+        <condition property="manifest.codebase.override">
+            <and>
+                <isset property="manifest.custom.codebase"/>
+                <not><equals arg1="${manifest.custom.codebase}" arg2=""/></not>
+            </and>
+        </condition>
+        <condition property="manifest.codebase.override.warning">
+            <and>
+                <isset property="manifest.codebase.override"/>
+                <equals arg1="${manifest.custom.codebase}" arg2="*"/>
+            </and>
+        </condition>
+        <echo message="manifest.codebase.copy = ${manifest.codebase.copy}" level="verbose"/>
+        <echo message="manifest.codebase.web = ${manifest.codebase.web}" level="verbose"/>
+        <echo message="manifest.codebase.other = ${manifest.codebase.other}" level="verbose"/>
+        <echo message="manifest.codebase.override = ${manifest.codebase.override}" level="verbose"/>
+    </target>
+    <target name="-extend-manifest-codebase-copy" depends="-check-manifest-codebase" if="manifest.codebase.copy">
+        <property name="manifest.codebase.attribute" value="${manifest.codebase.copy}"/>
+    </target>
+    <target name="-extend-manifest-codebase-web" depends="-check-manifest-codebase" if="manifest.codebase.web">
+        <property name="manifest.codebase.attribute" value="*"/>
+        <echo message="Warning: Setting Codebase manifest attribute to '*' due to current JNLP Codebase setting. Set manifest.custom.codebase property to override the non-secure value '*'." level="warning"/>
+    </target>
+    <target name="-extend-manifest-codebase-other" depends="-check-manifest-codebase" if="manifest.codebase.other">
+        <property name="manifest.codebase.attribute" value="*"/>
+        <echo message="Warning: Setting Codebase manifest attribute to '*' due to current JNLP Codebase. Set manifest.custom.codebase property to override the non-secure value '*'." level="warning"/>
+    </target>
+    <target name="-extend-manifest-codebase-override-warning" depends="-check-manifest-codebase" if="manifest.codebase.override.warning">
+        <echo message="Warning: Codebase manifest attribute should be used to restrict JAR repurposing. Preferably set manifest.custom.codebase to more specific value than the non-secure '*'" level="warning"/>
+    </target>
+    <target name="-extend-manifest-codebase-override" depends="-check-manifest-codebase,-extend-manifest-codebase-override-warning" if="manifest.codebase.override">
+        <property name="manifest.codebase.attribute" value="${manifest.custom.codebase}"/>
+    </target>
+    <target name="-check-manifest-permissions">
+        <condition property="manifest.permissions.all">
+            <and>
+                <istrue value="${jnlp.signed}"/>
+                <or>
+                    <not><isset property="manifest.custom.permissions"/></not>
+                    <equals arg1="${manifest.custom.permissions}" arg2=""/>
+                </or>
+            </and>
+        </condition>
+        <condition property="manifest.permissions.sandbox">
+            <and>
+                <not><istrue value="${jnlp.signed}"/></not>
+                <or>
+                    <not><isset property="manifest.custom.permissions"/></not>
+                    <equals arg1="${manifest.custom.permissions}" arg2=""/>
+                </or>
+            </and>
+        </condition>
+        <condition property="manifest.permissions.override">
+            <and>
+                <isset property="manifest.custom.permissions"/>
+                <not><equals arg1="${manifest.custom.permissions}" arg2=""/></not>
+            </and>
+        </condition>
+        <echo message="manifest.permissions.all = ${manifest.permissions.all}" level="verbose"/>
+        <echo message="manifest.permissions.sandbox = ${manifest.permissions.sandbox}" level="verbose"/>
+        <echo message="manifest.permissions.override = ${manifest.permissions.override}" level="verbose"/>
+    </target>    
+    <target name="-extend-manifest-permissions-sandbox" depends="-check-manifest-permissions" if="manifest.permissions.sandbox">
+        <property name="manifest.permissions.attribute" value="sandbox"/>
+    </target>
+    <target name="-extend-manifest-permissions-all" depends="-check-manifest-permissions" if="manifest.permissions.all">
+        <property name="manifest.permissions.attribute" value="all-permissions"/>
+    </target>
+    <target name="-extend-manifest-permissions-override" depends="-check-manifest-permissions" if="manifest.permissions.override">
+        <property name="manifest.permissions.attribute" value="${manifest.custom.permissions}"/>
+    </target>
+    <target name="-add-manifest-security" depends="-init-macrodef-extend-manifest,
+                    -extend-manifest-codebase-copy,-extend-manifest-codebase-web,-extend-manifest-codebase-other,-extend-manifest-codebase-override,
+                    -extend-manifest-permissions-sandbox,-extend-manifest-permissions-all,-extend-manifest-permissions-override">
+        <jnlp:extend-manifest>
+            <customize>
+                <attribute name="Codebase" value="${manifest.codebase.attribute}"/>
+                <attribute name="Permissions" value="${manifest.permissions.attribute}"/>
+            </customize>
+        </jnlp:extend-manifest>
+        <echo message="Added manifest attribute Codebase: ${manifest.codebase.attribute}" level="verbose"/>
+        <echo message="Added manifest attribute Permissions: ${manifest.permissions.attribute}" level="verbose"/>
+    </target>
+
     <target name="-do-jar-applet" depends="-test-jnlp-type,-init-macrodef-copylibs" if="is.applet+mkdist.available">
         <j2seproject3:copylibs manifest="${tmp.manifest.file}"/>
     </target>
@@ -185,7 +478,7 @@ made subject to such option by the copyright holder.
     <target name="-do-jar-jnlp-component" depends="-test-jnlp-type,-init-macrodef-copylibs" if="is.component+mkdist.available">
         <j2seproject3:copylibs manifest="${tmp.manifest.file}"/>
     </target>
-    <target name="-do-jar-jnlp" depends="-create-tmp-manifest,-copy-tmp-manifest,-add-trusted-only-attribute,-add-trusted-library-attribute,-do-jar-applet,-do-jar-jnlp-application,-do-jar-jnlp-component"/>
+    <target name="-do-jar-jnlp" depends="-create-tmp-manifest,-copy-tmp-manifest,-add-trusted-only-attribute,-add-trusted-library-attribute,-add-manifest-security,-do-jar-applet,-do-jar-jnlp-application,-do-jar-jnlp-component"/>
 
     <!-- Init jnlp filename -->
     
@@ -215,6 +508,18 @@ made subject to such option by the copyright holder.
     <target name="-test-jnlp-enabled">
         <condition property="is.jnlp.enabled">
             <istrue value="${jnlp.enabled}"/>
+        </condition>
+    </target>
+    
+    <target name="-test-signing-security">
+        <condition property="is.signing.unsafe">
+            <and>
+                <istrue value="${jnlp.enabled}"/>
+                <or>
+                    <not><istrue value="${jnlp.signed}"/></not>
+                    <equals arg1="${jnlp.signing}" arg2="generated" casesensitive="false" trim="true"/>
+                </or>
+            </and>
         </condition>
     </target>
     
@@ -299,7 +604,7 @@ made subject to such option by the copyright holder.
         </condition>
     </target>
     
-    <target name="-jnlp-init-keystore" depends="-jnlp-init-signing,-jnlp-init-keystore1,-jnlp-init-keystore2,-check-keystore-exists" unless="jnlp.signjar.keystore.exists">
+    <target name="-jnlp-init-keystore" depends="-jnlp-init-signing,-jnlp-init-keystore1,-jnlp-init-keystore2,-check-keystore-exists" if="do.init.keystore">
         <echo message="${application.vendor}" file="${helper.file}"/>
         <loadfile property="application.vendor.filtered" srcfile="${helper.file}">
             <filterchain>
@@ -313,8 +618,14 @@ made subject to such option by the copyright holder.
             storepass="${jnlp.signjar.storepass}" keypass="${jnlp.signjar.keypass}"/>
     </target>
     
-    <target name="-check-keystore-exists">
+    <target name="-check-keystore-exists" depends="-security-props-check">
         <available property="jnlp.signjar.keystore.exists" file="${jnlp.signjar.keystore}"/>
+        <condition property="do.init.keystore">
+            <and>
+                <isset property="jnlp.signed.true"/>
+                <not><isset property="jnlp.signjar.keystore.exists"/></not>
+            </and>
+        </condition>
     </target>
 
     <target name="-jnlp-init-signing">
@@ -375,11 +686,16 @@ made subject to such option by the copyright holder.
         </sign-jars>
     </target>
     
+    <target name="-warn-insufficient-signing" depends="-test-signing-security" if="is.signing.unsafe">
+        <echo message="Warning: Unsigned and self-signed WebStart applications and Applets are deprecated from JDK7u21 onwards due to security reasons.${line.separator}         To ensure future correct functionality please sign WebStart applications and Applets using trusted certificate."/>
+    </target>
+
     <!-- Running/Debugging -->
     
-    <target name="jws-run" depends="jar,-verify-jnlp-enabled,-verify-codebase,-init-platform" description="Start javaws execution">
-        <exec executable="${platform.home}/bin/javaws">
-            <arg file="${jnlp.dest.dir}/${jnlp.file}"/>
+    <target name="jws-run" depends="jar,-verify-jnlp-enabled,-verify-codebase,-init-platform,-check-webstart" description="Start javaws execution">
+        <echo message="Executing ${jnlp.dest.dir}${file.separator}${jnlp.file} using ${active.webstart.executable}"/>
+        <exec executable="${active.webstart.executable}">
+            <arg file="${jnlp.dest.dir}${file.separator}${jnlp.file}"/>
         </exec>
     </target>
     
@@ -407,11 +723,12 @@ made subject to such option by the copyright holder.
         </condition>
     </target>
 
-    <target name="-debug-javaws-debuggee" depends="-init-debug-args,-init-platform">
-        <exec executable="${platform.home}/bin/javaws">
+    <target name="-debug-javaws-debuggee" depends="-init-debug-args,-init-platform,-check-webstart">
+        <echo message="Executing ${jnlp.dest.dir}${file.separator}${jnlp.file} in debug mode using ${active.webstart.executable}"/>
+        <exec executable="${active.webstart.executable}">
             <env key="JAVAWS_VM_ARGS" value="${debug-args-line} -Xrunjdwp:transport=${debug-transport},address=${jpda.address}"/>
             <arg value="-wait"/>
-            <arg file="${jnlp.dest.dir}/${jnlp.file}"/>
+            <arg file="${jnlp.dest.dir}${file.separator}${jnlp.file}"/>
         </exec>
     </target>
     
