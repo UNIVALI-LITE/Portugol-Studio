@@ -2,7 +2,7 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Configuracoes;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaAtalhosTeclado;

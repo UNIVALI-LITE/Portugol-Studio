@@ -8,7 +8,7 @@ import br.univali.portugol.ajuda.PreProcessadorConteudo;
 import br.univali.portugol.ajuda.Topico;
 import br.univali.portugol.ajuda.TopicoHtml;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Configuracoes;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.PainelTabulado;
 import br.univali.ps.ui.ajuda.EditorAjuda;
 import br.univali.ps.ui.util.IconFactory;

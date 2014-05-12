@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;

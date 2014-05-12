@@ -4,7 +4,6 @@ import br.univali.ps.DetectorViolacoesThreadSwing;
 import br.univali.ps.TelaPrincipal;
 import br.univali.ps.TelaPrincipalApplet;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
-import br.univali.ps.ui.Configuracoes;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipalDesktop;
 import br.univali.ps.ui.abas.AbaCodigoFonte;

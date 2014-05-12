@@ -21,7 +21,7 @@ import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
-import br.univali.ps.ui.Configuracoes;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.EscopoCursor;
 import br.univali.ps.ui.FabricaDicasInterface;
