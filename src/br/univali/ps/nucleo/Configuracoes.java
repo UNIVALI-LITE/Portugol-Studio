@@ -1,6 +1,5 @@
 package br.univali.ps.nucleo;
 
-import br.univali.ps.nucleo.PortugolStudio;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
