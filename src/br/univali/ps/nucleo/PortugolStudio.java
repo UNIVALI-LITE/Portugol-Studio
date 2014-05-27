@@ -3,6 +3,7 @@ package br.univali.ps.nucleo;
 import br.univali.ps.DetectorViolacoesThreadSwing;
 import br.univali.ps.TelaPrincipal;
 import br.univali.ps.TelaPrincipalApplet;
+import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipalDesktop;
@@ -68,6 +69,7 @@ public final class PortugolStudio
 
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
+    private GerenciadorAtualizacoes gerenciadorAtualizacoes = null;
 
     private PortugolStudio()
     {
@@ -94,35 +96,35 @@ public final class PortugolStudio
         if (versaoJavaCorreta())
         {
             String dica = obterProximaDica();
-            Splash.exibir(dica);
+            Splash.exibir(dica, 9);
 
             inicializarMecanismoLog();
-            Splash.definirProgresso(10, "step2.png");
+            Splash.definirProgresso(18, "step2.png");
 
             instalarDetectorExcecoesNaoTratadas();
-            Splash.definirProgresso(20, "step3.png");
+            Splash.definirProgresso(27, "step3.png");
 
             processarParametrosLinhaComando(parametros);
-            Splash.definirProgresso(30, "step4.png");
+            Splash.definirProgresso(36, "step4.png");
 
             instalarDetectorVialacoesNaThreadSwing();
-            Splash.definirProgresso(40, "step4.png");
+            Splash.definirProgresso(45, "step4.png");
 
             definirLookAndFeel();
-            Splash.definirProgresso(50, "step5.png");
+            Splash.definirProgresso(54, "step5.png");
 
             registrarFontes();
-            Splash.definirProgresso(60, "step5.png");
+            Splash.definirProgresso(63, "step5.png");
 
             definirFontePadraoInterface();
-            Splash.definirProgresso(70, "step6.png");
+            Splash.definirProgresso(72, "step6.png");
 
             /* 
              * Os plugins devem sempre ser carregados antes de inicializar o Pool de abas, 
              * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
              */
             carregarPlugins();
-            Splash.definirProgresso(80, "step7.png");
+            Splash.definirProgresso(81, "step7.png");
 
             carregarBibliotecas();
             Splash.definirProgresso(90, "step8.png");
@@ -141,6 +143,11 @@ public final class PortugolStudio
 
             Splash.ocultar();
         }
+    }
+
+    public void finalizar(int codigo)
+    {
+        System.exit(codigo);
     }
 
     public String obterProximaDica()
@@ -196,8 +203,8 @@ public final class PortugolStudio
 
     private void carregarDicasExibidas()
     {
+        File arquivoDicas = Configuracoes.getInstancia().getCaminhoArquivoDicas();
         String linha;
-        File arquivoDicas = new File(Configuracoes.obterDiretorioPortugol(), "dicas_exibidas.txt");
 
         if (arquivoDicas.exists())
         {
@@ -222,7 +229,7 @@ public final class PortugolStudio
     {
         if (!dicasExibidas.isEmpty())
         {
-            File arquivoDicas = new File(Configuracoes.obterDiretorioPortugol(), "dicas_exibidas.txt");
+            File arquivoDicas = Configuracoes.getInstancia().getCaminhoArquivoDicas();
 
             try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivoDicas)))
             {
@@ -286,25 +293,24 @@ public final class PortugolStudio
         {
             processarParametroModoDepuracao(parametros);
             processarParametroArquivosIniciais(parametros);
-            processarParametrosDiretoriosPlugins(parametros);
+            processarParametroDiretoriosPlugins(parametros);
         }
     }
 
-    private void processarParametrosDiretoriosPlugins(final String[] parametros)
+    private void processarParametroDiretoriosPlugins(final String[] parametros)
     {
-        for (String parametro : parametros)
+        if (parametroExiste("-plugins=*", parametros))
         {
-            if (parametro.startsWith("-plugins="))
-            {
-                String descDiretorios = parametro.split("=")[1];
-                String[] diretorios = descDiretorios.split(",");
+            String parametro = obterParametro("-plugins=*", parametros);
 
-                if (diretorios != null && diretorios.length > 0)
+            String descDiretorios = parametro.split("=")[1];
+            String[] diretorios = descDiretorios.split(",");
+
+            if (diretorios != null && diretorios.length > 0)
+            {
+                for (String diretorio : diretorios)
                 {
-                    for (String diretorio : diretorios)
-                    {
-                        diretoriosPluginsInformadosPorParametro.add(new File(diretorio));
-                    }
+                    diretoriosPluginsInformadosPorParametro.add(new File(diretorio));
                 }
             }
         }
@@ -312,15 +318,24 @@ public final class PortugolStudio
 
     private void processarParametroModoDepuracao(final String[] parametros)
     {
-        setDepurando(false);
+        setDepurando(parametroExiste("-debug", parametros));
+    }
 
+    private boolean parametroExiste(String nome, String[] parametros)
+    {
         for (String parametro : parametros)
         {
-            if (parametro.equals("-debug"))
+            if (nome.endsWith("*") && parametro.startsWith(nome.replace("*", "")))
             {
-                setDepurando(true);
+                return true;
+            }
+            else if (!nome.endsWith("*") && parametro.equals(nome))
+            {
+                return true;
             }
         }
+
+        return false;
     }
 
     private void processarParametroArquivosIniciais(String[] argumentos)
@@ -433,7 +448,7 @@ public final class PortugolStudio
 
             if (configuracoes.getDiretorioPlugins() != null)
             {
-                File diretorioPlugins = new File(configuracoes.getDiretorioPlugins());
+                File diretorioPlugins = configuracoes.getDiretorioPlugins();
 
                 if (diretorioPlugins.exists())
                 {
@@ -568,6 +583,16 @@ public final class PortugolStudio
         return gerenciadorTemas;
     }
 
+    public GerenciadorAtualizacoes getGerenciadorAtualizacoes()
+    {
+        if (gerenciadorAtualizacoes == null)
+        {
+            gerenciadorAtualizacoes = new GerenciadorAtualizacoes();
+        }
+
+        return gerenciadorAtualizacoes;
+    }
+
     public TelaSobre getTelaSobre()
     {
         if (telaSobre == null)
@@ -619,5 +644,22 @@ public final class PortugolStudio
     public boolean rodandoApplet()
     {
         return System.getSecurityManager() != null;
+    }
+
+    private String obterParametro(String nome, String[] parametros)
+    {
+        for (String parametro : parametros)
+        {
+            if (nome.endsWith("*") && parametro.startsWith(nome.replace("*", "")))
+            {
+                return parametro;
+            }
+            else if (!nome.endsWith("*") && parametro.equals(nome))
+            {
+                return parametro;
+            }
+        }
+
+        return null;
     }
 }

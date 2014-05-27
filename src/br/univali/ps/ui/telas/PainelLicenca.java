@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 final class PainelLicenca extends javax.swing.JPanel
 {
     private final String htmlRotulos = "<html><body><div><b>%s:</b> %s</div></body></html>";
+    private final Licencas.Recurso recurso;
     
     public PainelLicenca(Licencas.Recurso recurso)
     {
@@ -20,8 +21,15 @@ final class PainelLicenca extends javax.swing.JPanel
         
         jTADescricao.setText(recurso.getDescricao());
         jTALicenca.setText(recurso.getLicenca());        
+        
+        this.recurso = recurso;
     }
 
+    public Licencas.Recurso getRecurso()
+    {
+        return recurso;
+    }
+    
     public void redefinir()
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -87,7 +95,7 @@ final class PainelLicenca extends javax.swing.JPanel
         jPInformacoes.add(jLVersao, gridBagConstraints);
 
         jLUrl.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLUrl.setText("<html><body><b>Página Web:</b> http://umrecurso.com.br/recurso</body></html>");
+        jLUrl.setText("<html><body><b>Página Web:</b>http://umrecurso.com.br/recurso</body></html>");
         jLUrl.setPreferredSize(new java.awt.Dimension(200, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -152,6 +160,8 @@ final class PainelLicenca extends javax.swing.JPanel
         jTALicenca.setColumns(20);
         jTALicenca.setRows(5);
         jTALicenca.setBorder(null);
+        jTALicenca.setFocusable(false);
+        jTALicenca.setVerifyInputWhenFocusTarget(false);
         jSPLicenca.setViewportView(jTALicenca);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

@@ -95,8 +95,7 @@ public final class AbaInicial extends Aba
     {
         try
         {
-            Configuracoes configuracoes = Configuracoes.getInstancia();
-            File diretorioExemplos = new File(configuracoes.getDiretorioExemplos());
+            File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
             if (diretorioExemplos.exists())
             {
@@ -119,7 +118,7 @@ public final class AbaInicial extends Aba
             }
             else
             {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new Exception("Diretórios de exemplos " + diretorioExemplos.getPath() + " não existe! Não foi possível criar os exemplos!"));
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Não foi possível carregar os exemplos! O diretório de exemplos '%s' não existe!", diretorioExemplos.getPath()), ExcecaoAplicacao.Tipo.ERRO));
             }
         }
         catch (Exception excecao)
@@ -212,7 +211,7 @@ public final class AbaInicial extends Aba
                         }
                         else
                         {
-                            throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: ", cont, entrada));
+                            throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: %s", cont, linha));
                         }
                     }
                 }
@@ -492,7 +491,8 @@ public final class AbaInicial extends Aba
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelGradiente = new br.univali.ps.ui.imagens.Gradiente();
         painelCabecalho = new javax.swing.JPanel();
@@ -851,8 +851,10 @@ public final class AbaInicial extends Aba
 
         logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 logoUnivaliMouseClicked(evt);
             }
         });

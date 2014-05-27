@@ -297,7 +297,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             carregadorAjuda.adicionarObservadorCarregamento(this);
             carregadorAjuda.adicionarPreProcessadorConteudo(new PreProcessadorConteudoAjuda());
 
-            return carregadorAjuda.carregar(new File(Configuracoes.obterDiretorioPortugol() + "/ajuda"));
+            return carregadorAjuda.carregar(Configuracoes.getInstancia().getDiretorioAjuda());
         }
 
         @Override

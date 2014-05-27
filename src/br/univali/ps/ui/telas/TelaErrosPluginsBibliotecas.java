@@ -1,6 +1,5 @@
 package br.univali.ps.ui.telas;
 
-import static java.awt.Color.BLACK;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.ps.plugins.base.ErroCarregamentoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
@@ -16,13 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;

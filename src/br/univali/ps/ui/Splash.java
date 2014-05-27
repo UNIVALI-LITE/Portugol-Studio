@@ -2,8 +2,10 @@ package br.univali.ps.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.SplashScreen;
@@ -26,8 +28,10 @@ public final class Splash
     private static boolean hintFlag = true;
     private static String dica;
 
-    public static void exibir(String dica)
+    public static void exibir(String dica, int progresso)
     {
+        carregarFontesSplash();
+
         Splash.dica = dica;
 
         splash = SplashScreen.getSplashScreen();
@@ -37,9 +41,9 @@ public final class Splash
             graphics = splash.createGraphics();
 
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics.setFont(new Font("Arial", Font.BOLD, 12));
+            graphics.setFont(new Font("Consolas", Font.PLAIN, 13));
 
-            definirProgresso(0, "step1.png");
+            definirProgresso(progresso, "step1.png");
         }
     }
 
@@ -61,22 +65,26 @@ public final class Splash
         {
             hintFlag = false;
 
-            //int alturaDica = 80;
             int larguraDica = 259;
-                    
+
             FontMetrics fm = graphics.getFontMetrics();
             List<String> partes = StringUtils.wrap(dica, fm, larguraDica);
 
-            graphics.setColor(Color.WHITE);
+            desenharDica(partes, 19, 151, fm.getHeight(), new Color(0, 0, 0, 0.4f));
+            desenharDica(partes, 18, 152, fm.getHeight(), new Color(0, 0, 0, 0.3f));
 
-            int yDica = 150;
-            int xDica = 20;
-            
-            for (String parte : partes)
-            {
-                graphics.drawString(parte, xDica, yDica);
-                yDica = yDica + fm.getHeight();
-            }
+            desenharDica(partes, 20, 150, fm.getHeight(), Color.WHITE);
+        }
+    }
+
+    private static void desenharDica(List<String> partes, int x, int y, int alturaLinha, Color cor)
+    {
+        graphics.setColor(cor);
+
+        for (String parte : partes)
+        {
+            graphics.drawString(parte, x, y);
+            y = y + alturaLinha;
         }
     }
 
@@ -107,7 +115,7 @@ public final class Splash
         String caminho = String.format("br/univali/ps/ui/imagens/splash/%s", step);
         Image imagem = carregarImagem(caminho);
 
-        graphics.drawImage(imagem, 323, 48, null);
+        graphics.drawImage(imagem, 327, 29, null);
     }
 
     public static void ocultar()
@@ -148,22 +156,45 @@ public final class Splash
         return null;
     }
 
+    private static void carregarFontesSplash()
+    {
+        final String path = "br/univali/ps/ui/fontes/splash";
+
+        final String[] fontes =
+        {
+            "consolas.ttf",
+            "consolasb.ttf",
+            "consolasi.ttf",
+            "consolasz.ttf"
+        };
+
+        for (String nome : fontes)
+        {
+            try
+            {
+                Font fonte = Font.createFont(Font.TRUETYPE_FONT, Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome));
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fonte);
+            }
+            catch (FontFormatException | IOException excecao)
+            {
+
+            }
+        }
+    }
+
     private static class StringUtils
     {
         /**
-         * Returns an array of strings, one for each line in the string after it has
-         * been wrapped to fit lines of <var>maxWidth</var>. Lines end with any of
-         * cr, lf, or cr lf. A line ending at the end of the string will not output a
-         * further, empty string.
+         * Returns an array of strings, one for each line in the string after it
+         * has been wrapped to fit lines of <var>maxWidth</var>. Lines end with
+         * any of cr, lf, or cr lf. A line ending at the end of the string will
+         * not output a further, empty string.
          * <p>
          * This code assumes <var>str</var> is not <code>null</code>.
          *
-         * @param str
-         *                 the string to split
-         * @param fm
-         *                 needed for string width calculations
-         * @param maxWidth
-         *                 the max line width, in points
+         * @param str the string to split
+         * @param fm needed for string width calculations
+         * @param maxWidth the max line width, in points
          *
          * @return a non-empty list of strings
          */
@@ -185,17 +216,13 @@ public final class Splash
         }
 
         /**
-         * Given a line of text and font metrics information, wrap the line and add
-         * the new line(s) to <var>list</var>.
+         * Given a line of text and font metrics information, wrap the line and
+         * add the new line(s) to <var>list</var>.
          *
-         * @param line
-         *                 a line of text
-         * @param list
-         *                 an output list of strings
-         * @param fm
-         *                 font metrics
-         * @param maxWidth
-         *                 maximum width of the line(s)
+         * @param line a line of text
+         * @param list an output list of strings
+         * @param fm font metrics
+         * @param maxWidth maximum width of the line(s)
          */
         public static void wrapLineInto(String line, List list, FontMetrics fm, int maxWidth)
         {
@@ -243,14 +270,13 @@ public final class Splash
         }
 
         /**
-         * Returns the index of the first whitespace character or '-' in <var>line</var>
-         * that is at or before <var>start</var>. Returns -1 if no such character is
-         * found.
+         * Returns the index of the first whitespace character or '-' in
+         * <var>line</var>
+         * that is at or before <var>start</var>. Returns -1 if no such
+         * character is found.
          *
-         * @param line
-         *              a string
-         * @param start
-         *              where to star looking
+         * @param line a string
+         * @param start where to star looking
          */
         public static int findBreakBefore(String line, int start)
         {
@@ -266,14 +292,13 @@ public final class Splash
         }
 
         /**
-         * Returns the index of the first whitespace character or '-' in <var>line</var>
-         * that is at or after <var>start</var>. Returns -1 if no such character is
-         * found.
+         * Returns the index of the first whitespace character or '-' in
+         * <var>line</var>
+         * that is at or after <var>start</var>. Returns -1 if no such character
+         * is found.
          *
-         * @param line
-         *              a string
-         * @param start
-         *              where to star looking
+         * @param line a string
+         * @param start where to star looking
          */
         public static int findBreakAfter(String line, int start)
         {
@@ -290,14 +315,13 @@ public final class Splash
         }
 
         /**
-         * Returns an array of strings, one for each line in the string. Lines end
-         * with any of cr, lf, or cr lf. A line ending at the end of the string will
-         * not output a further, empty string.
+         * Returns an array of strings, one for each line in the string. Lines
+         * end with any of cr, lf, or cr lf. A line ending at the end of the
+         * string will not output a further, empty string.
          * <p>
          * This code assumes <var>str</var> is not <code>null</code>.
          *
-         * @param str
-         *            the string to split
+         * @param str the string to split
          *
          * @return a non-empty list of strings
          */

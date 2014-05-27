@@ -23,6 +23,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import net.java.balloontip.BalloonTip;
 
 public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener
@@ -262,6 +263,18 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     }
 
+    public void exibirDica(final String dica)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                FabricaDicasInterface.criarDicaInterfaceEstatica(titulo, dica, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+            }
+        }); 
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()

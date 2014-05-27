@@ -106,7 +106,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
         if (encerrarAplicacao)
         {
-            System.exit(1);
+            PortugolStudio.getInstancia().finalizar(-1);
         }
     }
 
@@ -123,7 +123,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
         if (encerrarAplicacao)
         {
-            System.exit(1);
+            PortugolStudio.getInstancia().finalizar(-1);
         }
     }
 

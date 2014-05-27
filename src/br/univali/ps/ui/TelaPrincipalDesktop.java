@@ -2,20 +2,27 @@ package br.univali.ps.ui;
 
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.TelaPrincipal;
+import br.univali.ps.atualizador.GerenciadorAtualizacoes;
+import br.univali.ps.atualizador.ObservadorAtualizacao;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.abas.BotoesControleAba;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
+import br.univali.ps.ui.telas.TelaLogAtualizacoes;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import net.java.balloontip.BalloonTip;
+import org.apache.commons.io.FileUtils;
 
 public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 {
@@ -120,26 +127,65 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                     TelaPrincipalDesktop.this.toFront();
                     TelaPrincipalDesktop.this.requestFocusInWindow();
 
-                    boolean errosPlugins = GerenciadorPlugins.getInstance().getResultadoCarregamento().contemErros();
-                    boolean errosBibliotecas = false;
+                    exibirErrosPluginsBibliotecas();
+                    exibirLogAtualizacoes();
 
-                    if (errosPlugins || errosBibliotecas)
-                    {
-                        TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = PortugolStudio.getInstancia().getTelaErrosPluginsBibliotecas();
-                        telaErrosPluginsBibliotecas.setVisible(true);
-                        /*
-                         SwingUtilities.invokeLater(new Runnable()
-                         {
-                         @Override
-                         public void run()
-                         {
-                                
-                         }
-                         });*/
-                    }
+                    baixarNovasAtualizacoes();
                 }
             }
         });
+    }
+
+    private void exibirErrosPluginsBibliotecas()
+    {
+        boolean errosPlugins = GerenciadorPlugins.getInstance().getResultadoCarregamento().contemErros();
+        boolean errosBibliotecas = false;
+
+        if (errosPlugins || errosBibliotecas)
+        {
+            TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = PortugolStudio.getInstancia().getTelaErrosPluginsBibliotecas();
+            telaErrosPluginsBibliotecas.setVisible(true);
+        }
+    }
+
+    private void exibirLogAtualizacoes()
+    {
+        Configuracoes configuracoes = Configuracoes.getInstancia();
+        File logAtualizacoes = configuracoes.getCaminhoLogAtualizacoes();
+
+        if (logAtualizacoes.exists())
+        {
+            try
+            {
+                String atualizacoes = FileHandle.open(logAtualizacoes);
+                TelaLogAtualizacoes telaLogAtualizacoes = new TelaLogAtualizacoes();
+
+                telaLogAtualizacoes.setAtualizacoes(atualizacoes);
+                telaLogAtualizacoes.setVisible(true);
+                
+                FileUtils.deleteQuietly(logAtualizacoes);
+            }
+            catch (Exception excecao)
+            {
+                LOGGER.log(Level.SEVERE, "Erro ao carregar o log de atualizações", excecao);
+            }
+        }
+    }
+
+    private void baixarNovasAtualizacoes()
+    {
+        GerenciadorAtualizacoes gerenciadorAtualizacoes = PortugolStudio.getInstancia().getGerenciadorAtualizacoes();
+        gerenciadorAtualizacoes.setObservadorAtualizacao(new ObservadorAtualizacao()
+        {
+            @Override
+            public void atualizacaoConcluida()
+            {
+                BotoesControleAba cabecalho = (BotoesControleAba) getPainelTabulado().getAbaInicial().getCabecalho();
+                cabecalho.exibirDica("O Portugol Studio terminou de baixar algumas atualizações. \nReinicie o Portugol Studio para que as modificações tenham efeito");
+            }
+        });
+
+        gerenciadorAtualizacoes.baixarAtualizacoes();
     }
 
     public void criarNovoCodigoFonte()
@@ -190,7 +236,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
             Configuracoes.getInstancia().salvar();
-            System.exit(0);
+            PortugolStudio.getInstancia().finalizar(0);
         }
     }
 

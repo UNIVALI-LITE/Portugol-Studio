@@ -17,28 +17,34 @@ import java.util.logging.Logger;
 public final class Configuracoes
 {
     private static final Logger LOGGER = Logger.getLogger(Configuracoes.class.getName());
-    private static final Configuracoes instancia = new Configuracoes();
-
-    private static File arquivoConfiguracoes;
-    private static String diretorioExemplos;
-    private static String diretorioPlugins;
+    private static Configuracoes instancia = null;
 
     public static final String TAMANHO_FONTE_CONSOLE = "tamanhoFonteConsole";
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
-    public static final String DIRETORIO_EXEMPLOS = "diretorioExemplos";
     public static final String TEMA_EDITOR = "temaEditor";
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
-    //public static final String URL_DOS_PACOTES = "http://localhost/portugol-pacotes/";
-    public static final String URL_DOS_PACOTES = "http://siaiacad17.univali.br/~alice/portugolStudio/";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
 
-    
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
 
-    private boolean exibirOpcoesExecucao = false;    
+    private final File diretorioConfiguracoes = resolverDiretorioConfiguracoes();
+    private final File caminhoArquivoConfiguracoes = new File(diretorioConfiguracoes, "configuracoes.properties");
+    private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");
+
+    private final File diretorioInstalacao = new File(".");
+    private final File diretorioTemporario = new File(diretorioInstalacao, "temp");
+    private final File diretorioAjuda = new File(diretorioInstalacao, "ajuda");
+    private final File diretorioExemplos = new File(diretorioInstalacao, "exemplos");
+    private final File diretorioPlugins = new File(diretorioInstalacao, "plugins");
+    private final File diretorioBibliotecas = new File(diretorioInstalacao, "bibliotecas");
+    private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
+    private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
+    private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "portugol-studio-inicializador.jar");
+    
+    private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
@@ -53,12 +59,12 @@ public final class Configuracoes
 
     public static Configuracoes getInstancia()
     {
+        if (instancia == null)
+        {
+            instancia = new Configuracoes();
+        }
+        
         return instancia;
-    }
-
-    public static String getUrlDosPacotes()
-    {
-        return URL_DOS_PACOTES;
     }
 
     private void carregar()
@@ -67,11 +73,8 @@ public final class Configuracoes
         {
             try
             {
-                arquivoConfiguracoes = obterCaminhoArquivoConfiguracoes();
-                configuracoes.load(new FileReader(arquivoConfiguracoes));
+                configuracoes.load(new FileReader(caminhoArquivoConfiguracoes));
 
-                diretorioExemplos = obterDiretorioPortugol().getAbsolutePath() + "/exemplos";
-                diretorioPlugins = obterDiretorioPortugol().getAbsolutePath() + "/plugins";
                 exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
                 tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
                 tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
@@ -94,7 +97,7 @@ public final class Configuracoes
         {
             try
             {
-                configuracoes.store(new FileWriter(arquivoConfiguracoes), "");
+                configuracoes.store(new FileWriter(caminhoArquivoConfiguracoes), "");
             }
             catch (IOException excecao)
             {
@@ -174,16 +177,6 @@ public final class Configuracoes
         suporteMudancaPropriedade.firePropertyChange(EXIBIR_AVISO_VIDEO_AULAS, valorAntigo, exibirAvisoVideoAulas);
     }
 
-    public String getDiretorioExemplos()
-    {
-        return diretorioExemplos;
-    }
-
-    public String getDiretorioPlugins()
-    {
-        return diretorioPlugins;
-    }
-
     public boolean isExibirOpcoesExecucao()
     {
         return exibirOpcoesExecucao;
@@ -239,7 +232,47 @@ public final class Configuracoes
         suporteMudancaPropriedade.removePropertyChangeListener(configuracao, observador);
     }
 
-    public static File obterDiretorioPortugol()
+    public File getDiretorioInstalacao()
+    {
+        return diretorioInstalacao;
+    }
+
+    public File getDiretorioTemporario()
+    {
+        return diretorioTemporario;
+    }
+
+    public File getDiretorioAjuda()
+    {
+        return diretorioAjuda;
+    }
+
+    public File getDiretorioBibliotecas()
+    {
+        return diretorioBibliotecas;
+    }
+
+    public File getDiretorioExemplos()
+    {
+        return diretorioExemplos;
+    }
+
+    public File getDiretorioPlugins()
+    {
+        return diretorioPlugins;
+    }
+
+    public File getDiretorioAplicacao()
+    {
+        return diretorioAplicacao;
+    }
+
+    public File getCaminhoArquivoDicas()
+    {
+        return caminhoArquivoDicas;
+    }
+
+    private File resolverDiretorioConfiguracoes()
     {
         File diretorioUsuario = new File(".");
 
@@ -262,14 +295,17 @@ public final class Configuracoes
         {
             caminho.mkdir();
         }
+
         return caminho;
     }
 
-    private File obterCaminhoArquivoConfiguracoes()
+    public File getCaminhoLogAtualizacoes()
     {
-        String nomeArquivo = "configuracoes.properties";
-        File caminho = obterDiretorioPortugol();
+        return caminhoLogAtualizacoes;
+    }
 
-        return new File(caminho, nomeArquivo);
+    public File getCaminhoInicializadorPortugolStudio()
+    {
+        return caminhoInicializadorPortugolStudio;
     }
 }
