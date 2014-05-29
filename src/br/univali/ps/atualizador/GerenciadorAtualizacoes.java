@@ -1,6 +1,7 @@
 package br.univali.ps.atualizador;
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -31,14 +32,14 @@ public final class GerenciadorAtualizacoes
     private static final int HTTP_OK = 200;
 
     private static final Logger LOGGER = Logger.getLogger(GerenciadorAtualizacoes.class.getName());
-    private static final String uriAtualizacao = "http://localhost/portugol/studio";
+    private static final String uriAtualizacao = PortugolStudio.getInstancia().getUriAtualizacao();
     private static final ExecutorService servicoThread = Executors.newSingleThreadExecutor();
 
     private static final Map<String, String> caminhosInstalacao = criarMapaCaminhosInstalacao();
     private static final Map<String, String> caminhosRemotos = criarMapaCaminhosRemotos();
     private static final File caminhoScriptAtualizacaoLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script");
     private static final File caminhoScriptAtualizacaoTemporario = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script.temp");
-    
+
     private static final String caminhoScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.script");
     private static final String caminhoHashScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.hash");
 

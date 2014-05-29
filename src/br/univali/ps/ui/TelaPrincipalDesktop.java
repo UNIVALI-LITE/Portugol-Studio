@@ -181,7 +181,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
             public void atualizacaoConcluida()
             {
                 BotoesControleAba cabecalho = (BotoesControleAba) getPainelTabulado().getAbaInicial().getCabecalho();
-                cabecalho.exibirDica("O Portugol Studio terminou de baixar algumas atualizações. \nReinicie o Portugol Studio para que as modificações tenham efeito");
+                cabecalho.exibirDica("Foram encontradas novas atualizações. Elas serão instaladas na próxima vez em que o Portugol Studio for iniciado");
             }
         });
 

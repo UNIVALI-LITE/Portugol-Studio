@@ -67,10 +67,6 @@ public final class FabricaDicasInterface
         final JLabel rotulo = criarRotulo(dica, iconePadrao, 12f);
         final BalloonTip tip = new BalloonTip(componente, rotulo, criarEstilo(), orientacao, posicao, 20, 25, false);
         
-        tip.setPadding(8);
-        rotulo.setIconTextGap(8);
-        rotulo.setText(dica);
-
         FadingUtils.fadeInBalloon(tip, new ActionListener()
         {
             @Override

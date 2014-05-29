@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -57,9 +59,10 @@ public final class PortugolStudio
     private final Random random = new Random(System.nanoTime());
     private final List<String> dicas = new ArrayList<>();
     private final List<Integer> dicasExibidas = new ArrayList<>();
-
+    
     private String versao = null;
     private boolean depurando = false;
+    private String uriAtualizacao = "http://siaiacad17.univali.br/~alice/portugol/studio/";
 
     private TelaSobre telaSobre = null;
     private TelaPrincipal telaPrincipal = null;
@@ -294,6 +297,29 @@ public final class PortugolStudio
             processarParametroModoDepuracao(parametros);
             processarParametroArquivosIniciais(parametros);
             processarParametroDiretoriosPlugins(parametros);
+            processarParametroUriAtualizacao(parametros);
+        }
+    }
+    
+    private void processarParametroUriAtualizacao(final String[] parametros)
+    {
+        if (parametroExiste("-atualizacao=*", parametros))
+        {
+            String parametro = obterParametro("-atualizacao=*", parametros);
+
+            String uri = parametro.split("=")[1].trim();
+            
+            if (uri.length() > 0)
+            {
+                try
+                {
+                    uriAtualizacao = new URI(uri).toString();
+                }
+                catch (URISyntaxException excecao)
+                {
+                    
+                }
+            }
         }
     }
 
@@ -639,6 +665,16 @@ public final class PortugolStudio
         telaLicencas.setLocationRelativeTo(null);
 
         return telaLicencas;
+    }
+
+    public String getUriAtualizacao()
+    {
+        if (uriAtualizacao.endsWith("/"))
+        {
+            uriAtualizacao = uriAtualizacao.substring(0, uriAtualizacao.length() - 1);
+        }
+        
+        return uriAtualizacao;
     }
 
     public boolean rodandoApplet()
