@@ -1,16 +1,17 @@
 package br.univali.ps.atualizador;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.util.EntityUtils;
 
 /**
  *
@@ -83,7 +84,10 @@ public final class Util
 
             if (resultado == HTTP_OK)
             {
-                return EntityUtils.toString(resposta.getEntity());
+                try (InputStream is = resposta.getEntity().getContent(); BufferedReader leitor = new BufferedReader(new InputStreamReader(is)))
+                {
+                    return leitor.readLine();
+                }
             }
             else
             {
