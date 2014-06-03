@@ -284,7 +284,9 @@ public final class GerenciadorAtualizacoes
                     {
                         while ((linha = leitor.readLine()) != null)
                         {
-                            if (linha.trim().length() > 0)
+                            linha = linha.trim();
+                            
+                            if (linha.length() > 0 && !linha.startsWith("#"))
                             {
                                 entradas.add(linha);
                             }

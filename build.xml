@@ -11,6 +11,12 @@
     <description>Builds, tests, and runs the project Portugol-Studio.</description>
     <import file="nbproject/build-impl.xml"/>
     
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="ant/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+    
     <target name="-do-jar-with-libraries-without-manifest">
     <!-- esta target foi utilizada para evitar que o manifest.mf seja criado
        sem apontar para a Main.class quando o projeto é compilado usando a tecnologia
@@ -85,27 +91,272 @@ estar no servidor para ser usada como splash no Applet. -->
 
     </target>
     
-    <target name="distribuicao" description="Distribuição" depends="clean, compile, jar">
+    <target name="gerar-arquivos-instalador" depends="clean">
+        <property name="instalador.dir" value="../Portugol-Instalador/arquivos/compartilhados"/>
+        
+        <delete failonerror="false" includeemptydirs="true">
+            <fileset dir="${instalador.dir}">
+                <include name="*"/>
+                <include name="**"/>
+            </fileset>
+        </delete>
+
+        <mkdir dir="${instalador.dir}"/>
+        
+        <antcall target="empacotar-recursos"/>
+        <antcall target="empacotar-aplicacao"/>
+        <antcall target="compilar-portugol-inicializador"/>
+        
+        <copy todir="${instalador.dir}">
+            <fileset file="../Portugol-Studio-Inicializador/dist/inicializador-ps.jar"/>
+        </copy>
+        
+        <for param="recurso.dir">
+            <path>
+                <dirset dir="${dist.dir}" includes="*" excludes="plugins"/>
+            </path>
+            <sequential>
+                <local name="recurso.dir.basename"/>
+                <basename property="recurso.dir.basename" file="@{recurso.dir}"/>
+                <unzip src="${dist.dir}/${recurso.dir.basename}/pacote.zip" dest="${instalador.dir}/${recurso.dir.basename}"/>
+                <copy file="${dist.dir}/${recurso.dir.basename}/hash" todir="${instalador.dir}/${recurso.dir.basename}"/>
+            </sequential>        
+        </for>
+        
+        <for param="plugin.dir">
+            <path>                
+                <dirset dir="${dist.dir}/plugins" includes="*" erroronmissingdir="false"/>
+            </path>
+            <sequential>
+                <local name="plugin.dir.basename"/>
+                <basename property="plugin.dir.basename" file="@{plugin.dir}"/>
+                <unzip src="${dist.dir}/plugins/${plugin.dir.basename}/pacote.zip" dest="${instalador.dir}/plugins/${plugin.dir.basename}"/>
+                <copy file="${dist.dir}/plugins/${plugin.dir.basename}/hash" todir="${instalador.dir}/plugins/${plugin.dir.basename}"/>
+            </sequential>
+        </for>
+        
+        <for param="biblioteca.dir">
+            <path>                
+                <dirset dir="${dist.dir}/bibliotecas" includes="*" erroronmissingdir="false"/>
+            </path>
+            <sequential>
+                <local name="biblioteca.dir.basename"/>
+                <basename property="biblioteca.dir.basename" file="@{biblioteca.dir}"/>
+                <unzip src="${dist.dir}/bibliotecas/${biblioteca.dir.basename}/pacote.zip" dest="${instalador.dir}/bibliotecas/${biblioteca.dir.basename}"/>
+                <copy file="${dist.dir}/bibliotecas/${biblioteca.dir.basename}/hash" todir="${instalador.dir}/bibliotecas/${biblioteca.dir.basename}"/>
+            </sequential>
+        </for>
+    </target>
+    
+    <target name="publicar-atualizacoes" description="Cria os pacotes ZIP e os Hashes para todos os recursos do Portugol Studio e publica no servidor FTP" depends="clean">
+
+        <antcall target="empacotar-recursos"/>
+        <antcall target="empacotar-aplicacao"/>        
+        <antcall target="compilar-portugol-inicializador"/>
+        
+        <copy todir="${dist.dir}">
+            <fileset file="../Portugol-Studio-Recursos/plugins/plugins.auto"/>
+            <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*" excludes="inicializador-ps.jar"/>
+        </copy>
+        
+        <antcall target="atualizar-arquivos-servidor"/>
+    </target>
+    
+    <target name="atualizar-arquivos-servidor">
+        <input message="Informe a senha do FTP" addproperty="dist.ftp.password"/>
+        
+        <property name="dist.ftp.user" value="alice"/>
+        
+        <antcall target="limpar-arquivos-servidor">
+            <param name="dist.ftp.user" value="${dist.ftp.user}"/>
+            <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+        </antcall>
+        <antcall target="fazer-upload-arquivos-servidor">
+            <param name="dist.ftp.user" value="${dist.ftp.user}"/>
+            <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+        </antcall>
+    </target>
+    
+    <target name="fazer-upload-arquivos-servidor">
+        <ftp server="siaiacad17.univali.br" action="send" userid="${dist.ftp.user}" remotedir="public_html/portugol/studio" password="${dist.ftp.password}" verbose="true">
+            <fileset dir="${dist.dir}">
+                <include name="*"/>
+                <include name="**"/>
+            </fileset>
+        </ftp>
+    </target>
+    
+    <target name="limpar-arquivos-servidor">
+        <antcall target="remover-arquivos-servidor">
+            <param name="dist.ftp.user" value="${dist.ftp.user}"/>
+            <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+        </antcall>
+        <antcall target="remover-pastas-servidor">
+            <param name="dist.ftp.user" value="${dist.ftp.user}"/>
+            <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+        </antcall>
+    </target>
+    
+    <target name="remover-arquivos-servidor">
+        <ftp server="siaiacad17.univali.br" action="del" userid="${dist.ftp.user}" remotedir="public_html/portugol/studio" password="${dist.ftp.password}" verbose="true" >
+            <fileset>
+                <include name="*"/>
+                <include name="**"/>
+            </fileset>
+        </ftp>
+    </target>
+    
+    <target name="remover-pastas-servidor">
+        <ftp server="siaiacad17.univali.br" action="rmdir" userid="${dist.ftp.user}" remotedir="public_html/portugol/studio" password="${dist.ftp.password}" verbose="true">
+            <fileset>
+                <include name="*"/>
+                <include name="**"/>
+            </fileset>
+        </ftp>
+    </target>    
+    
+    <target name="empacotar-aplicacao" depends=" compilar-portugol-console, jar">
+        <property name="app.dist.dir" value="${dist.dir}/aplicacao"/>
+        <property name="temp.app.dist.dir" value="${dist.dir}/aplicacao_temp"/>        
+        
+        <mkdir dir="${app.dist.dir}"/>
+        <mkdir dir="${temp.app.dist.dir}"/>
+        
+        <copy file="../Portugol-Console/dist/portugol-console.jar" todir="${temp.app.dist.dir}"/>
+        
+        <move todir="${temp.app.dist.dir}/lib" failonerror="false">
+            <fileset dir="${dist.dir}/lib"/>            
+        </move>
+        
+        <move todir="${temp.app.dist.dir}" failonerror="false">
+            <fileset file="${dist.dir}/portugol-studio.jar"/>
+        </move>
+            
+        <antcall target="empacotar-recurso">
+            <param name="recurso.src.dir" value="${temp.app.dist.dir}"/>
+            <param name="recurso.dist.dir" value="${app.dist.dir}"/>
+        </antcall>
+        
+        <delete dir="${temp.app.dist.dir}" failonerror="false" includeemptydirs="true"/>
+        
+        <delete failonerror="false" casesensitive="false">
+            <fileset file="${dist.dir}/splash.png"/>
+            <fileset file="${dist.dir}/launch.jnlp"/>
+            <fileset file="${dist.dir}/launch.html"/>
+            <fileset file="${dist.dir}/launch.htm"/>
+            <fileset file="${dist.dir}/README.TXT"/>
+        </delete>
+    </target>
+    
+    <target name="compilar-portugol-console">
         <antcall target="-maybe-call-dep">
             <param name="call.built.properties" value="${built-jar.properties}"/>
             <param location="../Portugol-Console" name="call.subproject"/>
             <param location="../Portugol-Console/build.xml" name="call.script"/>
             <param name="call.target" value="jar"/>
             <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
-        </antcall>        
-        <delete file="${dist.dir}/README.TXT" failonerror="false"/>
-	<delete dir="../Portugol-Instalador/arquivos/bin" failonerror="false"/>
-        <copy todir="../Portugol-Instalador/arquivos/bin" overwrite="true">
-		<fileset dir="${dist.dir}"/>
-	</copy>
-        <copy todir="../Portugol-Instalador/arquivos/bin" overwrite="true">
-		<fileset file="../Portugol-Console/dist/portugol-console.jar"/>
-	</copy>                       
-        
+        </antcall>
     </target>
     
+    <target name="compilar-portugol-inicializador">
+        <antcall target="-maybe-call-dep">
+            <param name="call.built.properties" value="${built-jar.properties}"/>
+            <param location="../Portugol-Studio-Inicializador" name="call.subproject"/>
+            <param location="../Portugol-Studio-Inicializador/build.xml" name="call.script"/>
+            <param name="call.target" value="jar"/>
+            <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
+        </antcall>
+    </target>
     
+    <target name="empacotar-recursos">
+        <antcall target="empacotar-ajuda"/>
+        <antcall target="empacotar-exemplos"/>
+        <antcall target="empacotar-plugins"/>
+    </target>
     
+    <target name="empacotar-ajuda">
+        <antcall target="empacotar-recurso">
+            <param name="recurso.src.dir" value="../Portugol-Studio-Recursos/ajuda"/>
+            <param name="recurso.dist.dir" value="${dist.dir}/ajuda"/>
+        </antcall>
+    </target>
+    
+    <target name="empacotar-exemplos">
+        <antcall target="empacotar-recurso">
+            <param name="recurso.src.dir" value="../Portugol-Studio-Recursos/exemplos"/>
+            <param name="recurso.dist.dir" value="${dist.dir}/exemplos"/>
+        </antcall>
+    </target>
+    
+    <target name="empacotar-recurso">        
+        <property name="recurso.dist.pack" value="${recurso.dist.dir}/pacote.zip"/>
+        <property name="recurso.dist.hash" value="${recurso.dist.dir}/hash"/>
+                
+        <mkdir dir="${recurso.dist.dir}"/>
+        <zip file="${recurso.dist.pack}" basedir="${recurso.src.dir}" compress="true" level="9"/>
+        <checksum file="${recurso.dist.pack}" algorithm="SHA-512" forceoverwrite="true" todir="${recurso.dist.dir}"/>
+        <move file="${recurso.dist.pack}.SHA-512" tofile="${recurso.dist.hash}"/>
+    </target>
+    
+    <target name="empacotar-plugins">
+        <for param="plugin.dir">
+            <path>                
+                <dirset dir="../Portugol-Studio-Recursos/plugins" includes="*" erroronmissingdir="false"/>
+            </path>
+            <sequential>
+                <local name="plugin.dir.basename"/>
+                <basename property="plugin.dir.basename" file="@{plugin.dir}"/>
+                <antcall target="empacotar-plugin">            
+                    <param name="plugin.src.dir" value="../Portugol-Studio-Recursos/plugins/${plugin.dir.basename}"/>
+                </antcall>
+            </sequential>
+        </for>
+    </target>
+    
+    <target name="empacotar-plugin">        
+        <xmlproperty file="${plugin.src.dir}/src/plugin.xml" collapseattributes="true"/>
+        
+        <property name="plugin.dist.dir" value="${dist.dir}/plugins/${plugin.classe}"/>
+        <property name="plugin.build.dir" value="${plugin.src.dir}/dist"/>
+        
+        <antcall target="compilar-plugin">
+            <param name="plugin.src.dir" value="${plugin.src.dir}"/>
+        </antcall>
+        
+        <delete file="${plugin.build.dir}/README.TXT" casesensitive="false" failonerror="false"/>
+        <delete file="${plugin.build.dir}/lib/portugol-studio-plugins.jar" failonerror="false"/>
+        <delete file="${plugin.build.dir}/lib/portugol-nucleo.jar" failonerror="false"/>
+        <deleteEmptyFolders dir="${plugin.build.dir}/lib"/>
+        
+        <antcall target="empacotar-recurso">
+            <param name="recurso.src.dir" value="${plugin.build.dir}"/>
+            <param name="recurso.dist.dir" value="${plugin.dist.dir}"/>
+        </antcall>
+    </target>    
+    
+    <target name="compilar-plugin">
+        <antcall target="-maybe-call-dep">
+            <param name="call.built.properties" value="${built-jar.properties}"/>
+            <param location="${plugin.src.dir}" name="call.subproject"/>
+            <param location="${plugin.src.dir}/build.xml" name="call.script"/>
+            <param name="call.target" value="jar"/>
+            <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
+        </antcall>
+    </target>
+    
+    <macrodef name="deleteEmptyFolders">
+    <attribute name="dir"/>
+    <sequential>
+        <delete includeemptydirs="true">
+            <fileset dir="@{dir}"  >
+                <and>
+                    <size value="0"/>
+                    <type type="dir"/>
+                </and>
+            </fileset>
+        </delete>
+    </sequential>
+</macrodef>
     <!--
 
     There exist several targets which are by default empty and which can be 
