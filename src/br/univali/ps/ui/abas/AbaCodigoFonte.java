@@ -1167,6 +1167,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         try
         {
             programa = Portugol.compilar(editor.getPortugolDocumento().getCodigoFonte());
+            programa.setDiretorioTrabalho(editor.getPortugolDocumento().getFile().getParentFile());
 
             if (programa.getResultadoAnalise().contemAvisos())
             {
