@@ -1174,6 +1174,15 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             ultimaColunaErro = coluna;
 
             rolarAtePosicao(line, coluna);
+            
+            int posicao = textArea.getLineStartOffset(line);
+            Fold dobramento = textArea.getFoldManager().getDeepestFoldContaining(posicao);
+            
+            while (dobramento != null)
+            {
+                dobramento.setCollapsed(false);
+                dobramento = dobramento.getParent();
+            }
         }
         catch (BadLocationException ex)
         {
