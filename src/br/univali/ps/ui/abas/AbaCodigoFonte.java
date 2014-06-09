@@ -1167,7 +1167,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         try
         {
             programa = Portugol.compilar(editor.getPortugolDocumento().getCodigoFonte());
-            programa.setDiretorioTrabalho(editor.getPortugolDocumento().getFile().getParentFile());
+            definirDiretorioTrabalho(programa);
 
             if (programa.getResultadoAnalise().contemAvisos())
             {
@@ -1212,6 +1212,26 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         {
             exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
             abaMensagens.selecionar();
+        }
+    }
+
+    private void definirDiretorioTrabalho(final Programa programa)
+    {
+        if (editor.getPortugolDocumento().getFile() != null)
+        {
+            programa.setDiretorioTrabalho(editor.getPortugolDocumento().getFile().getParentFile());
+        }
+        else
+        {
+            try
+            {              
+                programa.setDiretorioTrabalho(new File(System.getProperty("user.dir")));
+            }
+            catch (SecurityException | IllegalArgumentException | NullPointerException excecao)
+            {
+                programa.setDiretorioTrabalho(new File("."));
+                LOGGER.log(Level.INFO, "Impossível obter o diretório do usuário. Definindo o diretório atual como diretório de trabalho", excecao);
+            }
         }
     }
 
