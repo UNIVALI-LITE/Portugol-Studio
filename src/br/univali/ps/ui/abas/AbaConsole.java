@@ -714,9 +714,18 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 console.setFocusable(false);
 
                 Object valor = obterValorEntrada(tipoDado, getText(limitOffset, getLength() - limitOffset));
+                
                 setLendo(false);
                 console.getCaret().setVisible(false);
-                armazenador.setValor(valor);
+                
+                if (valor != null)
+                {
+                    armazenador.setValor(valor);
+                }
+                else
+                {
+                    armazenador.cancelarLeitura();
+                }
             }
 
             if (offset >= limitOffset)
