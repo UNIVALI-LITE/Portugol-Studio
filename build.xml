@@ -146,9 +146,25 @@
         <property name="temp.app.dist.dir" value="${dist.dir}/aplicacao_temp"/>        
         
         <mkdir dir="${app.dist.dir}"/>
-        <mkdir dir="${temp.app.dist.dir}"/>
+        <mkdir dir="${temp.app.dist.dir}"/>        
+        <mkdir dir="${temp.app.dist.dir}/icones"/>
+        <mkdir dir="${temp.app.dist.dir}/icones/mac"/>
+        <mkdir dir="${temp.app.dist.dir}/icones/windows"/>
+        <mkdir dir="${temp.app.dist.dir}/icones/linux"/>
         
         <copy file="../Portugol-Console/dist/portugol-console.jar" todir="${temp.app.dist.dir}"/>
+        
+        <copy todir="${temp.app.dist.dir}/icones/linux">
+            <fileset dir="../Portugol-Instalador/arquivos/linux/icones" includes="**"/>
+        </copy>
+        
+        <copy todir="${temp.app.dist.dir}/icones/windows">
+            <fileset dir="../Portugol-Instalador/arquivos/windows/icones" includes="**"/>
+        </copy>
+        
+        <copy todir="${temp.app.dist.dir}/icones/mac">
+            <fileset dir="../Portugol-Instalador/arquivos/mac/icones" includes="**"/>
+        </copy>
         
         <move todir="${temp.app.dist.dir}/lib" failonerror="false">
             <fileset dir="${dist.dir}/lib"/>            
