@@ -35,7 +35,7 @@ public final class DobramentoCodigoPortugol extends CurlyFoldParser
         try
         {
             int startOffset = getStartOffset(fold);
-            int endOffset = getEndOffset(fold);
+            int endOffset = getEndOffset(fold, textArea);
 
             String text = textArea.getText(startOffset, endOffset - startOffset);
 
@@ -100,7 +100,7 @@ public final class DobramentoCodigoPortugol extends CurlyFoldParser
         return -1;
     }
 
-    private int getEndOffset(Fold fold)
+    private int getEndOffset(Fold fold, RSyntaxTextArea textArea)
     {
         try
         {
@@ -108,14 +108,17 @@ public final class DobramentoCodigoPortugol extends CurlyFoldParser
             field.setAccessible(true);
             Position posicao = (Position) field.get(fold);
 
-            return posicao.getOffset();
+            if (posicao != null)
+            {
+                return posicao.getOffset();
+            }
         }
         catch (NoSuchFieldException | SecurityException | IllegalAccessException excecao)
         {
 
         }
 
-        return -1;
+        return textArea.getDocument().getEndPosition().getOffset();
     }
 
     private void setStartOffset(Fold fold, int startOffset, RSyntaxTextArea textArea)
