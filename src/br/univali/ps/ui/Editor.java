@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -36,12 +37,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -171,6 +174,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         dialogoPesquisar = new FindDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir = new ReplaceDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
+
+        try
+        {
+            Image icone = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png"));
+
+            dialogoPesquisar.setIconImage(icone);
+            dialogoSubstituir.setIconImage(icone);
+        }
+        catch (IOException ioe)
+        {
+        }
     }
 
     private void configurarParser()
@@ -1174,10 +1188,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             ultimaColunaErro = coluna;
 
             rolarAtePosicao(line, coluna);
-            
+
             int posicao = textArea.getLineStartOffset(line);
             Fold dobramento = textArea.getFoldManager().getDeepestFoldContaining(posicao);
-            
+
             while (dobramento != null)
             {
                 dobramento.setCollapsed(false);

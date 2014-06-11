@@ -11,8 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
@@ -46,6 +48,14 @@ public final class TelaErrosPluginsBibliotecas extends JDialog
         
         setSize(new Dimension(610, 350));
         getRootPane().setDefaultButton(jBSair);
+        
+        try
+        {
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
+        }
+        catch (IOException ioe)
+        {
+        }
     }
     
     private void configurarTabela()

@@ -1,5 +1,8 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.util.IconFactory;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JDialog;
 
 /**
@@ -16,6 +19,14 @@ public final class TelaLogAtualizacoes extends JDialog
         initComponents();
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(botaoOK);
+        
+        try
+        {
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
+        }
+        catch (IOException ioe)
+        {
+        }
     }
     
     public void setAtualizacoes(String atualizacoes)

@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import net.java.balloontip.BalloonTip;
 import org.apache.commons.io.FileUtils;
 
 public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal

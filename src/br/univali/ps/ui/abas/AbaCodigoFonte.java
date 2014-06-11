@@ -76,7 +76,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private InterfaceDepurador depurador;
 
     private boolean podeSalvar = true;
-    private boolean fechando = false;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
     private boolean editorExpandido = false;
@@ -96,7 +95,6 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private Action acaoInterromper;
     private Action acaoAumentarFonteArvore;
     private Action acaoDiminuirFonteArvore;
-    private Action acaoAlternarPlugin;
 
     protected AbaCodigoFonte()
     {

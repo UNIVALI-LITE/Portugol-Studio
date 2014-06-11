@@ -782,55 +782,55 @@ public final class AbaInicial extends Aba
 
         rotuloFormaAprender1.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender1.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender1.setText("<html><body><div>Novidades da versão 2.0 (19/08/2013)</div></body></html>");
+        rotuloFormaAprender1.setText("<html><body><div>Novidades da versão 2.1 (01/07/2014)</div></body></html>");
         rotuloFormaAprender1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender1);
 
         rotuloFormaAprender2.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender2.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender2.setText("<html><body><div>:: Depurador de Código</div></body></html>");
+        rotuloFormaAprender2.setText("<html><body><div>:: Suporte a plugins</div></body></html>");
         rotuloFormaAprender2.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender2);
 
         rotuloFormaAprender3.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender3.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender3.setText("<html><body><div>:: Árvore de Símbolos</div></body></html>");
+        rotuloFormaAprender3.setText("<html><body><div>:: Atualização automática</div></body></html>");
         rotuloFormaAprender3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender3);
 
         rotuloFormaAprender4.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender4.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender4.setText("<html><body><div>:: Suporte a Bibliotecas</div></body></html>");
+        rotuloFormaAprender4.setText("<html><body><div>:: Melhorias na ajuda</div></body></html>");
         rotuloFormaAprender4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender4);
 
         rotuloFormaAprender5.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender5.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender5.setText("<html><body><div>:: Novo Sistema de Ajuda</div></body></html>");
+        rotuloFormaAprender5.setText("<html><body><div>:: Melhorias nos exemplos</div></body></html>");
         rotuloFormaAprender5.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender5);
 
         rotuloFormaAprender6.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender6.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender6.setText("<html><body><div>:: Novos Exemplos</div></body></html>");
+        rotuloFormaAprender6.setText("<html><body><div>:: Correção de travamentos</div></body></html>");
         rotuloFormaAprender6.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender6);
 
         rotuloFormaAprender7.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender7.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender7.setText("<html><body><div>:: Melhorias na análise semântica</div></body></html>");
+        rotuloFormaAprender7.setText("<html><body><div>:: Conclusão de código das bibliotecas</div></body></html>");
         rotuloFormaAprender7.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender7);
 
         rotuloFormaAprender9.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender9.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender9.setText("<html><body><div>:: Inúmeros Bugs corrigidos</div></body></html>");
+        rotuloFormaAprender9.setText("                                         ");
         rotuloFormaAprender9.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender9);
 
         rotuloFormaAprender10.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         rotuloFormaAprender10.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloFormaAprender10.setText("<html><body><div>:: Em Breve: Corretor automático</div></body></html>");
+        rotuloFormaAprender10.setText("                                   ");
         rotuloFormaAprender10.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         conteudoAprender1.add(rotuloFormaAprender10);
 

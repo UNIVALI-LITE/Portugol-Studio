@@ -676,7 +676,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;Novidades da vers&#xe3;o 2.0 (19/08/2013)&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;Novidades da vers&#xe3;o 2.1 (01/07/2014)&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -692,7 +692,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Depurador de C&#xf3;digo&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Suporte a plugins&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -708,7 +708,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: &#xc1;rvore de S&#xed;mbolos&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Atualiza&#xe7;&#xe3;o autom&#xe1;tica&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -724,7 +724,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Suporte a Bibliotecas&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Melhorias na ajuda&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -740,7 +740,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Novo Sistema de Ajuda&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Melhorias nos exemplos&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -756,7 +756,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Novos Exemplos&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Corre&#xe7;&#xe3;o de travamentos&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -772,7 +772,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Melhorias na an&#xe1;lise sem&#xe2;ntica&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Conclus&#xe3;o de c&#xf3;digo das bibliotecas&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -788,7 +788,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: In&#xfa;meros Bugs corrigidos&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="                                         "/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>
@@ -804,7 +804,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;:: Em Breve: Corretor autom&#xe1;tico&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="                                   "/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="8" left="0" right="0" top="8"/>

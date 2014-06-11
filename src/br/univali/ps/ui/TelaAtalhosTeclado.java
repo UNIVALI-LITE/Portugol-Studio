@@ -8,10 +8,12 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -42,6 +44,14 @@ public final class TelaAtalhosTeclado extends JDialog
         configurarAparenciaTabela();
         
         btnFechar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        try
+        {
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
+        }
+        catch (IOException ioe)
+        {
+        }
     }
     
     private void configurarAcoes()
