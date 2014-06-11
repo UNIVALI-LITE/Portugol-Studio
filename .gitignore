@@ -3,3 +3,5 @@ dist
 nbproject/private
 configuracoes.properties
 log.*
+temp
+atualizacao.script

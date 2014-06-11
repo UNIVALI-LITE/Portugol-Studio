@@ -274,6 +274,19 @@ public final class Configuracoes
 
     private File resolverDiretorioConfiguracoes()
     {
+        File diretorioUsuario = getDiretorioUsuario();
+        File caminho = new File(diretorioUsuario, ".portugol");
+
+        if (!caminho.exists())
+        {
+            caminho.mkdir();
+        }
+
+        return caminho;
+    }
+    
+    public File getDiretorioUsuario()
+    {
         File diretorioUsuario = new File(".");
 
         try
@@ -288,15 +301,8 @@ public final class Configuracoes
         catch (Exception ex)
         {
         }
-
-        File caminho = new File(diretorioUsuario, ".portugol");
-
-        if (!caminho.exists())
-        {
-            caminho.mkdir();
-        }
-
-        return caminho;
+        
+        return diretorioUsuario;
     }
 
     public File getCaminhoLogAtualizacoes()

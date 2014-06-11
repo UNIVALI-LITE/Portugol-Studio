@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoListener;
 import br.univali.ps.ui.TelaPrincipalDesktop;
@@ -83,7 +84,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
 
         dialogoSelecaoArquivo = new JFileChooser();
-        dialogoSelecaoArquivo.setCurrentDirectory(new File("."));
+        dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
 

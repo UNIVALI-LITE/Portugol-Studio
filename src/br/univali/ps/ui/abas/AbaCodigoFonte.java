@@ -76,6 +76,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     private InterfaceDepurador depurador;
 
     private boolean podeSalvar = true;
+    private boolean fechando = false;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
     private boolean editorExpandido = false;
@@ -197,11 +198,50 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     {
         filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
 
-        dialogoSelecaoArquivo = new JFileChooser();
-        dialogoSelecaoArquivo.setCurrentDirectory(new File("./exemplos"));
+        dialogoSelecaoArquivo = new JFileChooser()
+        {
+            @Override
+            public File getSelectedFile()
+            {
+                File arquivo = super.getSelectedFile();
+
+                if (arquivo != null)
+                {
+                    if (!arquivo.getName().toLowerCase().endsWith(".por"))
+                    {
+                        arquivo = new File(arquivo.getPath().concat(".por"));
+                    }
+                }
+                
+                return arquivo;
+            }            
+            
+            @Override
+            public void approveSelection()
+            {
+                if (getDialogType() == JFileChooser.SAVE_DIALOG)
+                {
+                    File selectedFile = getSelectedFile();
+
+                    if ((selectedFile != null) && selectedFile.exists())
+                    {
+                        int response = JOptionPane.showConfirmDialog(this, "O arquivo informado já existe.\n Deseja substituí-lo?", "Portugol Studio", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                        if (response != JOptionPane.YES_OPTION)
+                        {
+                            return;
+                        }
+                    }
+                }
+                    
+                super.approveSelection();
+            }
+        };
+
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
         dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
+
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
     }
 
@@ -240,17 +280,25 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                if (editor.getPortugolDocumento().getFile() != null)
+                {
+                    dialogoSelecaoArquivo.setCurrentDirectory(editor.getPortugolDocumento().getFile());
+                }
+                else
+                {
+                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
+                }
+
                 if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION)
                 {
-                    File arquivo = dialogoSelecaoArquivo.getSelectedFile();
-
-                    if (!arquivo.getName().toLowerCase().endsWith(".por"))
-                    {
-                        arquivo = new File(arquivo.getPath().concat(".por"));
-                    }
-
+                     File arquivo = dialogoSelecaoArquivo.getSelectedFile();
+                    
                     editor.getPortugolDocumento().setFile(arquivo);
-                    acaoSalvarArquivo.actionPerformed(e);
+                     acaoSalvarArquivo.actionPerformed(e);
+                }
+                else
+                {
+                    usuarioCancelouSalvamento = true;
                 }
             }
         };
@@ -1113,6 +1161,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
     @Override
     public boolean fechandoAba(Aba aba)
     {
+        this.selecionar();
         usuarioCancelouSalvamento = false;
 
         if (programaExecutando())
@@ -1123,11 +1172,16 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
         if (arquivoModificado())
         {
-            int resp = JOptionPane.showConfirmDialog(this, "O documento possui modificações, deseja Salva-las?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
-
+            int resp = JOptionPane.showConfirmDialog(this, String.format("O documento '%s' possui modificações, deseja Salvá-las?", getCabecalho().getTitulo()), "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+            
             if (resp == JOptionPane.YES_OPTION)
             {
                 acaoSalvarArquivo.actionPerformed(null);
+                
+                if (usuarioCancelouSalvamento)
+                {
+                    return false;
+                }
             }
             else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION)
             {
@@ -1224,7 +1278,7 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         else
         {
             try
-            {              
+            {
                 programa.setDiretorioTrabalho(new File(System.getProperty("user.dir")));
             }
             catch (SecurityException | IllegalArgumentException | NullPointerException excecao)
