@@ -32,7 +32,7 @@ public final class Configuracoes
 
     private final File diretorioConfiguracoes = resolverDiretorioConfiguracoes();
     private final File caminhoArquivoConfiguracoes = new File(diretorioConfiguracoes, "configuracoes.properties");
-    private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");
+    private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");    
 
     private final File diretorioInstalacao = new File(".");
     private final File diretorioTemporario = new File(diretorioInstalacao, "temp");
@@ -42,8 +42,8 @@ public final class Configuracoes
     private final File diretorioBibliotecas = new File(diretorioInstalacao, "bibliotecas");
     private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
-    private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "portugol-studio-inicializador.jar");
-
+    private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "inicializador-ps.jar");    
+    
     private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;

@@ -33,11 +33,19 @@ public final class Splash
         carregarFontesSplash();
 
         Splash.dica = dica;
-
         splash = SplashScreen.getSplashScreen();
 
         if (splash != null)
         {
+            try
+            {
+                splash.setImageURL(ClassLoader.getSystemResource("splash_real.png"));
+            }
+            catch (IOException | IllegalStateException | NullPointerException ex)
+            {
+
+            }
+
             graphics = splash.createGraphics();
 
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -201,7 +209,8 @@ public final class Splash
         public static List wrap(String str, FontMetrics fm, int maxWidth)
         {
             List lines = splitIntoLines(str);
-            if (lines.size() == 0)
+
+            if (lines.isEmpty())
             {
                 return lines;
             }

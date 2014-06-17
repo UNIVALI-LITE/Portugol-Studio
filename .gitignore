@@ -5,3 +5,4 @@ configuracoes.properties
 log.*
 temp
 atualizacao.script
+**/Thumbs.db

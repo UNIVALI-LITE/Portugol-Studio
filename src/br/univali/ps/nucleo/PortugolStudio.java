@@ -87,15 +87,45 @@ public final class PortugolStudio
         return instancia;
     }
 
-    public void iniciar()
+    public void iniciar(final String[] parametros)
     {
-        iniciar(null);
+        try
+        {
+            if (Mutex.existeUmaInstanciaExecutando())
+            {
+                try
+                {
+                    Mutex.InstanciaPortugolStudio studio = Mutex.conectarInstanciaPortugolStudio();
+                    processarParametroArquivosIniciais(parametros);
+                    
+                    studio.abrirArquivos(arquivosIniciais);
+                    studio.desconectar();
+                }
+                catch (Mutex.ErroConexaoInstancia erro)
+                {
+                    // Se o arquivo de Mutex existe, mas não foi possível abrir a conexão para a instância,
+                    // então provavelmente o aplicativo foi fechado de forma inesperada deixando o arquivo pra trás.
+                    // Neste caso, apagamos o arquivo e iniciamos uma nova instãncia
+                    iniciarNovaInstancia(parametros);
+                }
+            }
+            else
+            {
+                iniciarNovaInstancia(parametros);
+            }
+        }
+        catch (Mutex.ErroCriacaoMutex erro)
+        {
+            getTratadorExcecoes().exibirExcecao(erro);
+        }
     }
 
-    public void iniciar(final String[] parametros)
+    private void iniciarNovaInstancia(String[] parametros) throws Mutex.ErroCriacaoMutex
     {
         if (versaoJavaCorreta())
         {
+            Mutex.criar();
+            
             String dica = obterProximaDica();
             Splash.exibir(dica, 9);
 
@@ -148,6 +178,8 @@ public final class PortugolStudio
 
     public void finalizar(int codigo)
     {
+        Mutex.destruir();
+        Configuracoes.getInstancia().salvar();        
         System.exit(codigo);
     }
 

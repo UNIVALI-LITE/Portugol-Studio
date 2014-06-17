@@ -27,6 +27,7 @@ import br.univali.ps.ui.EscopoCursor;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.TelaOpcoesExecucao;
+import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -291,10 +292,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION)
                 {
-                     File arquivo = dialogoSelecaoArquivo.getSelectedFile();
-                    
-                    editor.getPortugolDocumento().setFile(arquivo);
-                     acaoSalvarArquivo.actionPerformed(e);
+                     File arquivo = dialogoSelecaoArquivo.getSelectedFile();                    
+                     AbaCodigoFonte aba = PortugolStudio.getInstancia().getTelaPrincipal().obterAbaArquivo(arquivo);
+                     
+                    if (aba == null)
+                    {
+                        editor.getPortugolDocumento().setFile(arquivo);
+                        acaoSalvarArquivo.actionPerformed(e);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", "Portugol Studio", JOptionPane.WARNING_MESSAGE);
+                        usuarioCancelouSalvamento = true;                                 
+                    }
                 }
                 else
                 {
@@ -308,7 +318,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         btnSalvarComo.setAction(acaoSalvarComo);
     }
-
+    
     private void configurarAcaoSalvarArquivo()
     {
         final String nome = (String) "Salvar arquivo";

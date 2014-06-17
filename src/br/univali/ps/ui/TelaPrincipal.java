@@ -3,10 +3,12 @@ package br.univali.ps.ui;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.atualizador.ObservadorAtualizacao;
+import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.BotoesControleAba;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaLogAtualizacoes;
@@ -15,6 +17,8 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +63,7 @@ public final class TelaPrincipal extends JFrame
 
         try
         {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/portugol-studio.png")));
         }
         catch (IOException ioe)
         {
@@ -92,9 +96,6 @@ public final class TelaPrincipal extends JFrame
                     exibindoPrimeiraVez = false;
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
-
-                    TelaPrincipal.this.toFront();
-                    TelaPrincipal.this.requestFocusInWindow();
 
                     exibirErrosPluginsBibliotecas();
                     exibirLogAtualizacoes();
@@ -167,34 +168,108 @@ public final class TelaPrincipal extends JFrame
     {
         if (arquivos != null && !arquivos.isEmpty())
         {
+            focarJanela();
+            
             SwingUtilities.invokeLater(new Runnable()
             {
                 @Override
                 public void run()
                 {
                     TelaPrincipal.this.setEnabled(false);
-
+                    
                     for (File arquivo : arquivos)
                     {
-                        try
+                        if (arquivoJaEstaAberto(arquivo))
                         {
-                            final String conteudo = FileHandle.open(arquivo);
-                            final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-
-                            abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
-
-                            getPainelTabulado().add(abaCodigoFonte);
+                            AbaCodigoFonte aba = obterAbaArquivo(arquivo);
+                            aba.selecionar();
                         }
-                        catch (Exception excecao)
+                        else
                         {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                            try
+                            {
+                                final String conteudo = FileHandle.open(arquivo);
+                                final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+
+                                abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
+
+                                getPainelTabulado().add(abaCodigoFonte);
+                            }
+                            catch (Exception excecao)
+                            {
+                                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+                            }
                         }
                     }
 
-                    TelaPrincipal.this.setEnabled(false);
+                    TelaPrincipal.this.setEnabled(true);
                 }
             });
         }
+    }
+
+    public void focarJanela()
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (janelaMinimizada())
+                {
+                    restaurarJanela();
+                }
+
+                TelaPrincipal.this.toFront();
+                TelaPrincipal.this.requestFocusInWindow();                
+            }
+        });
+    }
+
+    private boolean janelaMinimizada()
+    {
+        return (getExtendedState() & JFrame.ICONIFIED) == JFrame.ICONIFIED;
+    }
+
+    private void restaurarJanela()
+    {
+        setExtendedState(getExtendedState() & (~JFrame.ICONIFIED));
+    }
+
+    private boolean arquivoJaEstaAberto(File arquivo)
+    {
+        AbaCodigoFonte aba = obterAbaArquivo(arquivo);
+
+        return aba != null;
+    }
+
+    public AbaCodigoFonte obterAbaArquivo(File arquivo)
+    {
+        for (Aba aba : getPainelTabulado().getAbas(AbaCodigoFonte.class))
+        {
+            AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
+            PortugolDocumento documento = abaCodigoFonte.getPortugolDocumento();
+
+            if (documento.getFile() != null)
+            {
+                try
+                {
+                    Path caminhoArquivoAba = documento.getFile().toPath();
+                    Path caminhoArquivoAbrir = arquivo.toPath();
+
+                    if (Files.isSameFile(caminhoArquivoAba, caminhoArquivoAbrir))
+                    {
+                        return abaCodigoFonte;
+                    }
+                }
+                catch (IOException excecao)
+                {
+                    LOGGER.log(Level.SEVERE, String.format("Erro ao verificar se o '%s' arquivo já estava aberto em alguma aba", arquivo.getAbsolutePath()), excecao);
+                }
+            }
+        }
+
+        return null;
     }
 
     private void fecharAplicativo()
@@ -203,7 +278,6 @@ public final class TelaPrincipal extends JFrame
 
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
-            Configuracoes.getInstancia().salvar();
             PortugolStudio.getInstancia().finalizar(0);
         }
     }
