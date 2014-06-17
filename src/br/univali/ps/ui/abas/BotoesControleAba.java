@@ -3,7 +3,7 @@ package br.univali.ps.ui.abas;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoListener;
-import br.univali.ps.ui.TelaPrincipalDesktop;
+import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;
@@ -48,7 +48,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private FiltroArquivo filtroTodosSuportados;
     private JFileChooser dialogoSelecaoArquivo;
 
-    public BotoesControleAba(AbaInicial abaInicial, TelaPrincipalDesktop telaPrincipal)
+    public BotoesControleAba(AbaInicial abaInicial, TelaPrincipal telaPrincipal)
     {
         super(abaInicial);
 
@@ -95,14 +95,14 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
     }
 
-    private void configurarAcoes(final TelaPrincipalDesktop telaPrincipalDesktop)
+    private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop)
     {
         configurarAcaoNovoArquivo(telaPrincipalDesktop);
         configurarAcaoAbrirArquivo(telaPrincipalDesktop);
         configurarAcaoExibirTelaInicial(telaPrincipalDesktop);
     }
 
-    private void configurarAcaoNovoArquivo(final TelaPrincipalDesktop telaPrincipal)
+    private void configurarAcaoNovoArquivo(final TelaPrincipal telaPrincipal)
     {
         /*
          * Esta ação não deveria estar exposta.
@@ -126,7 +126,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoAbrirArquivo(final TelaPrincipalDesktop telaPrincipal)
+    private void configurarAcaoAbrirArquivo(final TelaPrincipal telaPrincipal)
     {
         final String nome = "Abrir arquivo";
         final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK);
@@ -140,7 +140,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
                 {
                     final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
-                                        
+
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);
                 }
             }
@@ -152,7 +152,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoExibirTelaInicial(final TelaPrincipalDesktop telaPrincipal)
+    private void configurarAcaoExibirTelaInicial(final TelaPrincipal telaPrincipal)
     {
         final String nome = "Exibir tela inicial";
         final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK);
@@ -177,7 +177,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
     }
 
-    private void instalarObservadores(final TelaPrincipalDesktop telaPrincipal)
+    private void instalarObservadores(final TelaPrincipal telaPrincipal)
     {
         telaPrincipal.getPainelTabulado().adicionaPainelTabuladoListener(this);
 
@@ -273,9 +273,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
             {
                 FabricaDicasInterface.criarDicaInterfaceEstatica(titulo, dica, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
             }
-        }); 
+        });
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()

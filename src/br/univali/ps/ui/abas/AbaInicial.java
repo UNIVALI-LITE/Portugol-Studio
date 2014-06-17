@@ -6,7 +6,7 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaAtalhosTeclado;
-import br.univali.ps.ui.TelaPrincipalDesktop;
+import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
@@ -45,14 +45,13 @@ public final class AbaInicial extends Aba
     private JPopupMenu menuExemplos;
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
-    private Action acaoAbrirCodigoFonte;
 
-    public AbaInicial(TelaPrincipalDesktop telaPrincipalDesktop)
+    public AbaInicial(TelaPrincipal telaPrincipal)
     {
         super();
 
-        setPainelTabulado(telaPrincipalDesktop.getPainelTabulado());
-        setCabecalho(new BotoesControleAba(this, telaPrincipalDesktop));
+        setPainelTabulado(telaPrincipal.getPainelTabulado());
+        setCabecalho(new BotoesControleAba(this, telaPrincipal));
 
         initComponents();
 

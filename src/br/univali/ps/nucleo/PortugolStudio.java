@@ -1,12 +1,10 @@
 package br.univali.ps.nucleo;
 
 import br.univali.ps.DetectorViolacoesThreadSwing;
-import br.univali.ps.TelaPrincipal;
-import br.univali.ps.TelaPrincipalApplet;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Splash;
-import br.univali.ps.ui.TelaPrincipalDesktop;
+import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
@@ -59,7 +57,7 @@ public final class PortugolStudio
     private final Random random = new Random(System.nanoTime());
     private final List<String> dicas = new ArrayList<>();
     private final List<Integer> dicasExibidas = new ArrayList<>();
-    
+
     private String versao = null;
     private boolean depurando = false;
     private String uriAtualizacao = "http://siaiacad17.univali.br/~alice/portugol/studio/";
@@ -272,7 +270,7 @@ public final class PortugolStudio
 
     private void inicializarMecanismoLog()
     {
-        final InputStream inputStream = TelaPrincipalDesktop.class.getResourceAsStream("/logging.properties");
+        final InputStream inputStream = TelaPrincipal.class.getResourceAsStream("/logging.properties");
 
         try
         {
@@ -300,7 +298,7 @@ public final class PortugolStudio
             processarParametroUriAtualizacao(parametros);
         }
     }
-    
+
     private void processarParametroUriAtualizacao(final String[] parametros)
     {
         if (parametroExiste("-atualizacao=*", parametros))
@@ -308,7 +306,7 @@ public final class PortugolStudio
             String parametro = obterParametro("-atualizacao=*", parametros);
 
             String uri = parametro.split("=")[1].trim();
-            
+
             if (uri.length() > 0)
             {
                 try
@@ -317,7 +315,7 @@ public final class PortugolStudio
                 }
                 catch (URISyntaxException excecao)
                 {
-                    
+
                 }
             }
         }
@@ -366,18 +364,15 @@ public final class PortugolStudio
 
     private void processarParametroArquivosIniciais(String[] argumentos)
     {
-        if (!rodandoApplet())
+        if (argumentos != null && argumentos.length > 0)
         {
-            if (argumentos != null && argumentos.length > 0)
+            for (String argumento : argumentos)
             {
-                for (String argumento : argumentos)
-                {
-                    File arquivo = new File(argumento);
+                File arquivo = new File(argumento);
 
-                    if (arquivo.exists() && arquivo.isFile() && arquivo.canRead() && arquivo.getName().toLowerCase().endsWith(".por"))
-                    {
-                        arquivosIniciais.add(arquivo);
-                    }
+                if (arquivo.exists() && arquivo.isFile() && arquivo.canRead() && arquivo.getName().toLowerCase().endsWith(".por"))
+                {
+                    arquivosIniciais.add(arquivo);
                 }
             }
         }
@@ -467,31 +462,28 @@ public final class PortugolStudio
 
     private void carregarPlugins()
     {
-        if (!rodandoApplet())
+        GerenciadorPlugins gerenciadorPlugins = GerenciadorPlugins.getInstance();
+        Configuracoes configuracoes = Configuracoes.getInstancia();
+
+        if (configuracoes.getDiretorioPlugins() != null)
         {
-            GerenciadorPlugins gerenciadorPlugins = GerenciadorPlugins.getInstance();
-            Configuracoes configuracoes = Configuracoes.getInstancia();
+            File diretorioPlugins = configuracoes.getDiretorioPlugins();
 
-            if (configuracoes.getDiretorioPlugins() != null)
+            if (diretorioPlugins.exists())
             {
-                File diretorioPlugins = configuracoes.getDiretorioPlugins();
-
-                if (diretorioPlugins.exists())
+                for (File pastaPlugin : listarPastasPlugins(diretorioPlugins))
                 {
-                    for (File pastaPlugin : listarPastasPlugins(diretorioPlugins))
-                    {
-                        gerenciadorPlugins.incluirDiretorioPlugin(pastaPlugin);
-                    }
+                    gerenciadorPlugins.incluirDiretorioPlugin(pastaPlugin);
                 }
             }
-
-            for (File diretorio : diretoriosPluginsInformadosPorParametro)
-            {
-                gerenciadorPlugins.incluirDiretorioPlugin(diretorio);
-            }
-
-            gerenciadorPlugins.carregarPlugins();
         }
+
+        for (File diretorio : diretoriosPluginsInformadosPorParametro)
+        {
+            gerenciadorPlugins.incluirDiretorioPlugin(diretorio);
+        }
+
+        gerenciadorPlugins.carregarPlugins();
     }
 
     private void carregarBibliotecas()
@@ -522,7 +514,7 @@ public final class PortugolStudio
                 @Override
                 public void run()
                 {
-                    getTelaPrincipal().exibir();
+                    getTelaPrincipal().setVisible(true);
                 }
             });
         }
@@ -563,17 +555,8 @@ public final class PortugolStudio
     {
         if (telaPrincipal == null)
         {
-            if (rodandoApplet())
-            {
-                telaPrincipal = new TelaPrincipalApplet();
-            }
-            else
-            {
-                telaPrincipal = new TelaPrincipalDesktop();
-
-                TelaPrincipalDesktop telaPrincipalDesktop = (TelaPrincipalDesktop) telaPrincipal;
-                telaPrincipalDesktop.setArquivosIniciais(arquivosIniciais);
-            }
+            telaPrincipal = new TelaPrincipal();
+            telaPrincipal.setArquivosIniciais(arquivosIniciais);
         }
 
         return telaPrincipal;
@@ -673,13 +656,8 @@ public final class PortugolStudio
         {
             uriAtualizacao = uriAtualizacao.substring(0, uriAtualizacao.length() - 1);
         }
-        
-        return uriAtualizacao;
-    }
 
-    public boolean rodandoApplet()
-    {
-        return System.getSecurityManager() != null;
+        return uriAtualizacao;
     }
 
     private String obterParametro(String nome, String[] parametros)

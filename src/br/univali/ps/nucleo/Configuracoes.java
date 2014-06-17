@@ -43,7 +43,7 @@ public final class Configuracoes
     private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
     private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "portugol-studio-inicializador.jar");
-    
+
     private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
@@ -63,46 +63,40 @@ public final class Configuracoes
         {
             instancia = new Configuracoes();
         }
-        
+
         return instancia;
     }
 
     private void carregar()
     {
-        if (!PortugolStudio.getInstancia().rodandoApplet())
+        try
         {
-            try
-            {
-                configuracoes.load(new FileReader(caminhoArquivoConfiguracoes));
+            configuracoes.load(new FileReader(caminhoArquivoConfiguracoes));
 
-                exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
-                tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
-                tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
-                temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
-                tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
-                centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
-                exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
+            exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
+            tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
+            tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
+            temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Padrão");
+            tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
+            centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
+            exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
 
-            }
-            catch (IOException excecao)
-            {
-                LOGGER.log(Level.INFO, "Não foi possível carregar as configurações do Portugol Studio. As configurações padrão serão utilizadas", excecao);
-            }
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.INFO, "Não foi possível carregar as configurações do Portugol Studio. As configurações padrão serão utilizadas", excecao);
         }
     }
 
     public void salvar()
     {
-        if (!PortugolStudio.getInstancia().rodandoApplet())
+        try
         {
-            try
-            {
-                configuracoes.store(new FileWriter(caminhoArquivoConfiguracoes), "");
-            }
-            catch (IOException excecao)
-            {
-                LOGGER.log(Level.INFO, "Não foi possível salvar as configurações do Portugol Studio. As configurações padrão serão utilizadas na próxima inicialização", excecao);
-            }
+            configuracoes.store(new FileWriter(caminhoArquivoConfiguracoes), "");
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.INFO, "Não foi possível salvar as configurações do Portugol Studio. As configurações padrão serão utilizadas na próxima inicialização", excecao);
         }
     }
 
@@ -284,7 +278,7 @@ public final class Configuracoes
 
         return caminho;
     }
-    
+
     public File getDiretorioUsuario()
     {
         File diretorioUsuario = new File(".");
@@ -301,7 +295,7 @@ public final class Configuracoes
         catch (Exception ex)
         {
         }
-        
+
         return diretorioUsuario;
     }
 

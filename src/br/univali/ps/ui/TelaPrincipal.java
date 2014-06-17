@@ -1,7 +1,6 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.TelaPrincipal;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.atualizador.ObservadorAtualizacao;
 import br.univali.ps.ui.abas.AbaInicial;
@@ -23,12 +22,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import org.apache.commons.io.FileUtils;
 
-public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
+public final class TelaPrincipal extends JFrame
 {
-    private static final Logger LOGGER = Logger.getLogger(TelaPrincipalDesktop.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
 
     private boolean exibindoPrimeiraVez = true;
-    private Configuracoes configuracoes = null;
     private List<File> arquivosIniciais;
 
     public static void main(final String argumentos[])
@@ -36,25 +34,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
         PortugolStudio.getInstancia().iniciar(argumentos);
     }
 
-    @Override
-    public void exibir()
-    {
-        setVisible(true);
-    }
-
-    @Override
-    public void bloquear()
-    {
-        setEnabled(false);
-    }
-
-    @Override
-    public void desbloquear()
-    {
-        setEnabled(true);
-    }
-
-    public TelaPrincipalDesktop()
+    public TelaPrincipal()
     {
         initComponents();
         configurarJanela();
@@ -70,16 +50,6 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
     private void criaAbas()
     {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
-    }
-
-    public Configuracoes getConfiguracoes()
-    {
-        if (configuracoes == null)
-        {
-            configuracoes = Configuracoes.getInstancia();
-        }
-
-        return configuracoes;
     }
 
     private void configurarJanela()
@@ -123,8 +93,8 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
                     abrirArquivosCodigoFonte(arquivosIniciais);
 
-                    TelaPrincipalDesktop.this.toFront();
-                    TelaPrincipalDesktop.this.requestFocusInWindow();
+                    TelaPrincipal.this.toFront();
+                    TelaPrincipal.this.requestFocusInWindow();
 
                     exibirErrosPluginsBibliotecas();
                     exibirLogAtualizacoes();
@@ -149,8 +119,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
     private void exibirLogAtualizacoes()
     {
-        Configuracoes configuracoes = Configuracoes.getInstancia();
-        File logAtualizacoes = configuracoes.getCaminhoLogAtualizacoes();
+        File logAtualizacoes = Configuracoes.getInstancia().getCaminhoLogAtualizacoes();
 
         if (logAtualizacoes.exists())
         {
@@ -161,7 +130,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
 
                 telaLogAtualizacoes.setAtualizacoes(atualizacoes);
                 telaLogAtualizacoes.setVisible(true);
-                
+
                 FileUtils.deleteQuietly(logAtualizacoes);
             }
             catch (Exception excecao)
@@ -203,7 +172,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                 @Override
                 public void run()
                 {
-                    PortugolStudio.getInstancia().getTelaPrincipal().bloquear();
+                    TelaPrincipal.this.setEnabled(false);
 
                     for (File arquivo : arquivos)
                     {
@@ -222,7 +191,7 @@ public final class TelaPrincipalDesktop extends JFrame implements TelaPrincipal
                         }
                     }
 
-                    PortugolStudio.getInstancia().getTelaPrincipal().desbloquear();
+                    TelaPrincipal.this.setEnabled(false);
                 }
             });
         }

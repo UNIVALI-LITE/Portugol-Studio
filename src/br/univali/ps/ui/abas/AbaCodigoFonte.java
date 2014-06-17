@@ -52,7 +52,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import net.java.balloontip.BalloonTip;
 
-public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, DepuradorListener, UtilizadorPlugins
+public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, DepuradorListener, UtilizadorPlugins
 {
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
@@ -117,8 +117,8 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
         ocultarPainelPlugins();
         ocultarPainelBotoesPlugins();
 
-        painelSaida.getConsole().setAbaCodigoFonte(this);
-        painelPlugins.setAbaCodigoFonte(this);
+        painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
+        painelPlugins.setAbaCodigoFonte(AbaCodigoFonte.this);
 
         btnEnviarAlgoritmo.setVisible(false);//este botão só é exibido no Applet
 
@@ -128,25 +128,27 @@ public class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, Ab
 
     public static void inicializarPool()
     {
-        if (!PortugolStudio.getInstancia().rodandoApplet())
+        try
         {
-            try
+            SwingUtilities.invokeAndWait(new Runnable()
             {
-                SwingUtilities.invokeAndWait(new Runnable()
+                @Override
+                public void run()
                 {
-                    @Override
-                    public void run()
-                    {
-                        //inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando. 
-                        //O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
-                        poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
-                    }
-                });
-            }
-            catch (InterruptedException | InvocationTargetException excecao)
-            {
-                LOGGER.log(Level.INFO, "Não foi possível inicializar o pool de abas de código fonte", excecao);
-            }
+                    //TODO: Verificar se podemos mover este código para um local melhor.
+                    // Antes nós tinhamos o Applet, mas agora. Seguem comentários anteriores:
+                    
+                    /*
+                    inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando. 
+                    O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
+                    */
+                    poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
+                }
+            });
+        }
+        catch (InterruptedException | InvocationTargetException excecao)
+        {
+            LOGGER.log(Level.INFO, "Não foi possível inicializar o pool de abas de código fonte", excecao);
         }
     }
 
