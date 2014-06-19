@@ -98,7 +98,7 @@ public final class TelaAtalhosTeclado extends JDialog
         modelo.registrarDadosAcao(new DadosAcao("Fechar a aba atual", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"), KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Fechar todas as abas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"), KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Selecionar a próxima aba (à direita)", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "proxima_aba.png"), KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.ALT_DOWN_MASK)));
-        modelo.registrarDadosAcao(new DadosAcao("Selecionar a aba anterior (à esquerda)", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "proxima_aba.png"), KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.ALT_DOWN_MASK)));
+        modelo.registrarDadosAcao(new DadosAcao("Selecionar a aba anterior (à esquerda)", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "aba_anterior.png"), KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.ALT_DOWN_MASK)));
     }
     
     private void configurarAparenciaTabela()

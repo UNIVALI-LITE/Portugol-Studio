@@ -38,6 +38,7 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -178,11 +179,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         try
         {
             Image icone = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png"));
-
-            dialogoPesquisar.setIconImage(icone);
-            dialogoSubstituir.setIconImage(icone);
-        }
-        catch (IOException ioe)
+            
+                dialogoPesquisar.setIconImage(icone);
+                dialogoSubstituir.setIconImage(icone);
+            }
+        catch (IOException | IllegalArgumentException ioe)
         {
         }
     }

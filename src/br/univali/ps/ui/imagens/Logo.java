@@ -47,10 +47,10 @@ public class Logo extends javax.swing.JPanel
         logo = new javax.swing.JLabel();
         versao = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(0, 0, 0));
-        setMaximumSize(new java.awt.Dimension(280, 80));
-        setMinimumSize(new java.awt.Dimension(280, 80));
-        setPreferredSize(new java.awt.Dimension(280, 80));
+        setBackground(new java.awt.Color(35, 72, 127));
+        setMaximumSize(new java.awt.Dimension(310, 110));
+        setMinimumSize(new java.awt.Dimension(310, 110));
+        setPreferredSize(new java.awt.Dimension(310, 110));
         addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -64,11 +64,12 @@ public class Logo extends javax.swing.JPanel
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(logo, gridBagConstraints);
 
         versao.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("2.1 RC4");
+        versao.setText("2.2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;

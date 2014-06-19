@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 public class Gradiente extends JPanel {
 
     private static final int scale = 2;
-    private static final Color c1 = new Color(4, 52, 88);
-    private static final Color c2 = new Color(84, 147, 190);
+    private static final Color c1 = new Color(84, 147, 190);
+    private static final Color c2 = new Color(4, 52, 88);
     private static final int size = (c2.getRed() - c1.getRed()) * scale;
 
     @Override

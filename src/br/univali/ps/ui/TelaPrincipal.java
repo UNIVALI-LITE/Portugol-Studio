@@ -30,7 +30,7 @@ public final class TelaPrincipal extends JFrame
 {
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
 
-    private boolean exibindoPrimeiraVez = true;
+    private boolean abrindo = true;
     private List<File> arquivosIniciais;
 
     public static void main(final String argumentos[])
@@ -91,19 +91,32 @@ public final class TelaPrincipal extends JFrame
             @Override
             public void componentShown(ComponentEvent e)
             {
-                if (exibindoPrimeiraVez)
+                if (abrindo)
                 {
-                    exibindoPrimeiraVez = false;
+                    abrindo = false;
 
-                    abrirArquivosCodigoFonte(arquivosIniciais);
-
-                    exibirErrosPluginsBibliotecas();
-                    exibirLogAtualizacoes();
-
-                    baixarNovasAtualizacoes();
+                    if (Configuracoes.getInstancia().isExibirTutorialUso())
+                    {
+                        //TODO: criar e executar tutorial de uso antes de iniciar o Portugol
+                        dispararProcessosAbertura();
+                    }
+                    else
+                    {
+                        dispararProcessosAbertura();
+                    }
                 }
             }
         });
+    }
+
+    private void dispararProcessosAbertura()
+    {
+        abrirArquivosCodigoFonte(arquivosIniciais);
+
+        exibirErrosPluginsBibliotecas();
+        exibirLogAtualizacoes();
+
+        baixarNovasAtualizacoes();
     }
 
     private void exibirErrosPluginsBibliotecas()
@@ -169,14 +182,14 @@ public final class TelaPrincipal extends JFrame
         if (arquivos != null && !arquivos.isEmpty())
         {
             focarJanela();
-            
+
             SwingUtilities.invokeLater(new Runnable()
             {
                 @Override
                 public void run()
                 {
                     TelaPrincipal.this.setEnabled(false);
-                    
+
                     for (File arquivo : arquivos)
                     {
                         if (arquivoJaEstaAberto(arquivo))
@@ -221,7 +234,7 @@ public final class TelaPrincipal extends JFrame
                 }
 
                 TelaPrincipal.this.toFront();
-                TelaPrincipal.this.requestFocusInWindow();                
+                TelaPrincipal.this.requestFocusInWindow();
             }
         });
     }

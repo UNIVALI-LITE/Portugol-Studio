@@ -26,6 +26,7 @@ public final class Configuracoes
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
+    public static final String EXIBIR_TUTORIAL_USO = "exibirTutorialUso";
 
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
@@ -51,6 +52,7 @@ public final class Configuracoes
     private String temaEditor = "Padrão";
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
+    private boolean exibirTutorialUso = true;
 
     private Configuracoes()
     {
@@ -80,7 +82,7 @@ public final class Configuracoes
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
             exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
-
+            exibirTutorialUso = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_TUTORIAL_USO, "true"));
         }
         catch (IOException excecao)
         {
@@ -169,6 +171,21 @@ public final class Configuracoes
         this.exibirAvisoVideoAulas = exibirAvisoVideoAulas;
 
         suporteMudancaPropriedade.firePropertyChange(EXIBIR_AVISO_VIDEO_AULAS, valorAntigo, exibirAvisoVideoAulas);
+    }
+    
+    public void setExibirTutorialUso(boolean exibirTutorialUso)
+    {
+        boolean valorAntigo = this.exibirAvisoVideoAulas;
+
+        this.configuracoes.setProperty(EXIBIR_TUTORIAL_USO, Boolean.toString(exibirTutorialUso));
+        this.exibirTutorialUso = exibirTutorialUso;
+
+        suporteMudancaPropriedade.firePropertyChange(EXIBIR_TUTORIAL_USO, valorAntigo, exibirTutorialUso);
+    }
+
+    public boolean isExibirTutorialUso()
+    {
+        return exibirTutorialUso;
     }
 
     public boolean isExibirOpcoesExecucao()

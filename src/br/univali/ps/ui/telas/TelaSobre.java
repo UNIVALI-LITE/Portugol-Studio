@@ -123,9 +123,10 @@ public final class TelaSobre extends JDialog
     {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        painelLogo = new javax.swing.JPanel();
         logoPortugolStudio = new br.univali.ps.ui.imagens.Logo();
-        rotuloGradiente = new javax.swing.JLabel();
+        painelLogo = new javax.swing.JPanel();
+        gradiente2 = new br.univali.ps.ui.imagens.Gradiente();
+        logo1 = new br.univali.ps.ui.imagens.Logo();
         painelCentro = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         painelConteudo = new javax.swing.JPanel();
@@ -139,33 +140,37 @@ public final class TelaSobre extends JDialog
         botaoLicencas = new javax.swing.JButton();
         botaoSair = new javax.swing.JButton();
 
+        logoPortugolStudio.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 8, 0));
+        logoPortugolStudio.setMaximumSize(new java.awt.Dimension(300, 110));
+        logoPortugolStudio.setMinimumSize(new java.awt.Dimension(300, 110));
+        logoPortugolStudio.setOpaque(false);
+        logoPortugolStudio.setPreferredSize(new java.awt.Dimension(300, 110));
+
         setTitle("Sobre");
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
 
         painelLogo.setPreferredSize(new java.awt.Dimension(777, 95));
-        painelLogo.setLayout(new java.awt.GridBagLayout());
+        painelLogo.setLayout(new java.awt.BorderLayout());
 
-        logoPortugolStudio.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 8, 0));
-        logoPortugolStudio.setOpaque(false);
+        gradiente2.setMinimumSize(new java.awt.Dimension(100, 100));
+        gradiente2.setName(""); // NOI18N
+        gradiente2.setPreferredSize(new java.awt.Dimension(100, 100));
+        gradiente2.setLayout(new java.awt.GridBagLayout());
+
+        logo1.setMaximumSize(new java.awt.Dimension(310, 100));
+        logo1.setMinimumSize(new java.awt.Dimension(310, 100));
+        logo1.setOpaque(false);
+        logo1.setPreferredSize(new java.awt.Dimension(310, 100));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipady = 20;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        painelLogo.add(logoPortugolStudio, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.1;
+        gradiente2.add(logo1, gridBagConstraints);
 
-        rotuloGradiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/fundo_gradiente.jpg"))); // NOI18N
-        rotuloGradiente.setMaximumSize(new java.awt.Dimension(0, 95));
-        rotuloGradiente.setMinimumSize(new java.awt.Dimension(300, 95));
-        rotuloGradiente.setVerifyInputWhenFocusTarget(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 340;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        painelLogo.add(rotuloGradiente, gridBagConstraints);
+        painelLogo.add(gradiente2, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(painelLogo, java.awt.BorderLayout.NORTH);
 
@@ -322,8 +327,10 @@ public final class TelaSobre extends JDialog
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoLicencas;
     private javax.swing.JButton botaoSair;
+    private br.univali.ps.ui.imagens.Gradiente gradiente2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private br.univali.ps.ui.imagens.Logo logo1;
     private br.univali.ps.ui.imagens.Logo logoPortugolStudio;
     private javax.swing.JPanel painelCentro;
     private javax.swing.JPanel painelConteudo;
@@ -332,7 +339,6 @@ public final class TelaSobre extends JDialog
     private javax.swing.JLabel rotuloBitRock;
     private javax.swing.JLabel rotuloDescricao;
     private javax.swing.JLabel rotuloGithub;
-    private javax.swing.JLabel rotuloGradiente;
     private javax.swing.JLabel rotuloOsi;
     private javax.swing.JLabel rotuloUnivali;
     // End of variables declaration//GEN-END:variables

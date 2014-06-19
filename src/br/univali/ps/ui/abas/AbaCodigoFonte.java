@@ -795,8 +795,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnFixarBarraFerramentas.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarBarraFerramentas.setMinimumSize(new java.awt.Dimension(24, 24));
         btnFixarBarraFerramentas.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnFixarBarraFerramentas.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_over.png"))); // NOI18N
-        btnFixarBarraFerramentas.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_pushed.png"))); // NOI18N
         btnFixarBarraFerramentas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarBarraFerramentas.add(btnFixarBarraFerramentas);
 
@@ -882,8 +880,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnFixarPainelStatus.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelStatus.setMinimumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelStatus.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnFixarPainelStatus.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_over.png"))); // NOI18N
-        btnFixarPainelStatus.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_pushed.png"))); // NOI18N
         btnFixarPainelStatus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarPainelStatus.add(btnFixarPainelStatus);
 
@@ -920,8 +916,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnFixarPainelSaida.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelSaida.setMinimumSize(new java.awt.Dimension(24, 24));
         btnFixarPainelSaida.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnFixarPainelSaida.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_over.png"))); // NOI18N
-        btnFixarPainelSaida.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_pushed.png"))); // NOI18N
         btnFixarPainelSaida.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasFixarPainelSaida.add(btnFixarPainelSaida);
 
@@ -1022,8 +1016,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnFixarArvoreSimbolos.setMaximumSize(new java.awt.Dimension(24, 24));
         btnFixarArvoreSimbolos.setMinimumSize(new java.awt.Dimension(24, 24));
         btnFixarArvoreSimbolos.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnFixarArvoreSimbolos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_over.png"))); // NOI18N
-        btnFixarArvoreSimbolos.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/pin_pushed.png"))); // NOI18N
         btnFixarArvoreSimbolos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentasArvore.add(btnFixarArvoreSimbolos);
 
