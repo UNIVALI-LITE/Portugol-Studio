@@ -2,9 +2,7 @@ package br.univali.ps.ui.ajuda;
 
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.PainelTabulado;
-import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.abas.AbaAjuda;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
