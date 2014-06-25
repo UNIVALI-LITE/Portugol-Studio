@@ -18,9 +18,36 @@ import javax.swing.JPanel;
 public class Gradiente extends JPanel {
 
     private static final int scale = 2;
-    private static final Color c1 = new Color(84, 147, 190);
-    private static final Color c2 = new Color(4, 52, 88);
-    private static final int size = (c2.getRed() - c1.getRed()) * scale;
+    private Color cor1 = new Color(84, 147, 190);
+    private Color cor2 = new Color(4, 52, 88);
+    private int size = (cor2.getRed() - cor1.getRed()) * scale;
+
+    private void calcularTamanho()
+    {
+        this.size = (cor2.getRed() - cor1.getRed()) * scale;
+    }
+    
+    public void setCor1(Color cor1)
+    {
+        this.cor1 = cor1;
+        this.calcularTamanho();
+    }
+
+    public void setCor2(Color cor2)
+    {
+        this.cor2 = cor2;
+        this.calcularTamanho();
+    }
+
+    public Color getCor1()
+    {
+        return cor1;
+    }
+
+    public Color getCor2()
+    {
+        return cor2;
+    }
 
     @Override
     public Dimension getPreferredSize() {
@@ -32,7 +59,7 @@ public class Gradiente extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         int w = getWidth();
         int h = getHeight();
-        GradientPaint gp = new GradientPaint(0, 0, c1, 0, h, c2);
+        GradientPaint gp = new GradientPaint(0, 0, cor1, 0, h, cor2);
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, w, h);
     }
