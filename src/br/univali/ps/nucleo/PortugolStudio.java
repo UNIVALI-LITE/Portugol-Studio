@@ -35,6 +35,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
@@ -433,6 +434,9 @@ public final class PortugolStudio
 
         final String[] fontes =
         {
+            "OpenSans-Bold.ttf",
+            "OpenSans-Italic.ttf",
+            "OpenSans-Regular.ttf",
             "dejavu_sans_mono.ttf",
             "dejavu_sans_mono_bold.ttf",
             "dejavu_sans_mono_bold_oblique.ttf",
@@ -454,6 +458,7 @@ public final class PortugolStudio
 
                 LOGGER.log(Level.INFO, mensagem, excecao);
             }
+            javafx.scene.text.Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome), 12);
         }
     }
 

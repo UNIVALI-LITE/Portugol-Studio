@@ -314,8 +314,8 @@
             <zipfileset src="${dist.jar}" excludes="META-INF/*"/>
         </jar>
         <delete dir="${dist.dir}/META-INF"/>
-        <delete file="${dist.jar}"/>
-        <move file="${dist.dir}/temp.jar" tofile="${dist.jar}"/>
+        <delete file="${dist.jar}" failonerror="false"/>
+        <move file="${dist.dir}/temp.jar" tofile="${dist.jar}" failonerror="false"/>
     </target>
     <!--
 
