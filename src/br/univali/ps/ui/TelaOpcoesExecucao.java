@@ -5,8 +5,10 @@ import br.univali.portugol.nucleo.Programa;
 import br.univali.ps.ui.util.IconFactory;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.event.ChangeEvent;
@@ -31,6 +33,13 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         instalarObservadores();
         carregarConfiguracoes();
         
+        try
+        {
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/portugol-studio.png")));
+        }
+        catch (IOException ioe)
+        {
+        }        
     }
     
     private void instalarObservadores()
@@ -206,7 +215,6 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         setTitle("Opções de Execução");
         setModal(true);
         setResizable(false);
-        setType(java.awt.Window.Type.UTILITY);
 
         rotuloFuncaoInicial.setLabelFor(campoFuncaoInicial);
         rotuloFuncaoInicial.setText("Função inicial:");
