@@ -35,7 +35,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
@@ -101,6 +100,8 @@ public final class PortugolStudio
                     
                     studio.abrirArquivos(arquivosIniciais);
                     studio.desconectar();
+                    
+                    finalizar(0);
                 }
                 catch (Mutex.ErroConexaoInstancia erro)
                 {
