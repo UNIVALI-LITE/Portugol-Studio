@@ -1,9 +1,8 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.util.IconFactory;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -13,17 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -74,19 +68,6 @@ public final class AbaAjuda extends Aba
         });
     }
     
-    /*
-    private void configurarWebEngine()
-    {
-        
-        painelFx.setForeground(Color.BLUE);
-        
-        Button button = new Button("Test man");
-        button.layoutXProperty().setValue(10);
-        button.layoutYProperty().setValue(10);
-        
-        painelFx.setScene(new Scene(button));
-    }*/
-
     private void configurarWebEngine()
     {
         Platform.setImplicitExit(false);
@@ -96,11 +77,12 @@ public final class AbaAjuda extends Aba
        
         painelFx.setScene(new Scene(webView));
         
-        File epa = new File("D:\\Usuarios\\Luiz Fernando\\Documents\\Projetos\\Java\\Portugol\\Projetos\\Portugol-Instalador\\arquivos\\compartilhados\\ajuda\\topicos\\linguagem_portugol\\index.html");
+        File diretorioAjuda = Configuracoes.getInstancia().getDiretorioAjuda();
+        File index = new File(diretorioAjuda, "index.html");
         
         try
         {
-            webEngine.load(epa.toURI().toURL().toExternalForm());
+            webEngine.load(index.toURI().toURL().toExternalForm());
         }
         catch (MalformedURLException ex)
         {

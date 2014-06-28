@@ -35,10 +35,10 @@ public final class Configuracoes
     private final File caminhoArquivoConfiguracoes = new File(diretorioConfiguracoes, "configuracoes.properties");
     private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");    
 
-    private final File diretorioInstalacao = new File(".");
-    private final File diretorioTemporario = new File(diretorioInstalacao, "temp");
-    private final File diretorioAjuda = new File(diretorioInstalacao, "ajuda");
-    private final File diretorioExemplos = new File(diretorioInstalacao, "exemplos");
+    private final File diretorioInstalacao = resolverDiretorioInstalacao();
+    private final File diretorioAjuda = resolverDiretorioAjuda();
+    private final File diretorioExemplos = resolverDiretorioExemplos();
+    private final File diretorioTemporario = new File(diretorioInstalacao, "temp");    
     private final File diretorioPlugins = new File(diretorioInstalacao, "plugins");
     private final File diretorioBibliotecas = new File(diretorioInstalacao, "bibliotecas");
     private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
@@ -324,5 +324,43 @@ public final class Configuracoes
     public File getCaminhoInicializadorPortugolStudio()
     {
         return caminhoInicializadorPortugolStudio;
+    }
+    
+    private File resolverDiretorioInstalacao()
+    {
+        if (rodandoNoNetbeans())
+        {
+            File diretorio = new File("./teste");            
+            diretorio.mkdirs();
+            
+            return diretorio;
+        }
+        
+        return new File(".");
+    }
+    
+    private File resolverDiretorioAjuda()
+    {
+        if (rodandoNoNetbeans())
+        {
+            return new File("../Portugol-Studio-Recursos/ajuda");                    
+        }
+        
+        return new File(diretorioInstalacao, "ajuda");
+    }
+    
+    private File resolverDiretorioExemplos()
+    {
+        if (rodandoNoNetbeans())
+        {
+            return new File("../Portugol-Studio-Recursos/exemplos");
+        }
+        
+         return new File(diretorioInstalacao, "exemplos");
+    }
+    
+    private boolean rodandoNoNetbeans()
+    {
+        return System.getProperty("netbeans") != null;
     }
 }
