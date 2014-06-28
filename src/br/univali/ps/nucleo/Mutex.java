@@ -66,26 +66,29 @@ public final class Mutex
     
     public static void destruir()
     {
-        try
+        if (executando && servidorMutex != null)
         {
-            executando = false;
-            servidorMutex.close();
+            try
+            {
+                executando = false;
+                servidorMutex.close();
+            }
+            catch (IOException excecao)
+            {
+
+            }
+
+            try 
+            { 
+                canal.close();
+            }
+            catch (IOException excecao)
+            {
+
+            }
+
+            arquivoMutex.delete();
         }
-        catch (IOException excecao)
-        {
-            
-        }
-        
-        try 
-        { 
-            canal.close();
-        }
-        catch (IOException excecao)
-        {
-            
-        }
-        
-        arquivoMutex.delete();
     }
 
     private static void ouvirConexoes()
