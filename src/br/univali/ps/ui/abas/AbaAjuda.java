@@ -7,17 +7,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -74,6 +78,30 @@ public final class AbaAjuda extends Aba
         
         webView = new WebView();
         webEngine = webView.getEngine();
+        webEngine.setJavaScriptEnabled(true);
+        
+        webEngine.setOnAlert(new EventHandler<WebEvent<String>>()
+        {
+            @Override
+            public void handle(final WebEvent<String> evento)
+            {
+                try
+                {
+                    SwingUtilities.invokeAndWait(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            JOptionPane.showMessageDialog(AbaAjuda.this, evento.getData(), "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                }
+                catch (InterruptedException | InvocationTargetException ex)
+                {
+                    
+                }
+            }
+        });
        
         painelFx.setScene(new Scene(webView));
         
