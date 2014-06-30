@@ -363,4 +363,5 @@ public final class Configuracoes
     {
         return System.getProperty("netbeans") != null;
     }
+    
 }
