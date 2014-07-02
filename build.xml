@@ -210,6 +210,7 @@
     
     <target name="empacotar-ajuda">
         <antcall target="empacotar-recurso">
+            <param name="recurso.excludes" value="**/nbproject/**"/>
             <param name="recurso.src.dir" value="../Portugol-Studio-Recursos/ajuda"/>
             <param name="recurso.dist.dir" value="${dist.dir}/ajuda"/>
         </antcall>
@@ -227,7 +228,7 @@
         <property name="recurso.dist.hash" value="${recurso.dist.dir}/hash"/>
                 
         <mkdir dir="${recurso.dist.dir}"/>
-        <zip file="${recurso.dist.pack}" basedir="${recurso.src.dir}" compress="true" level="9"/>
+        <zip file="${recurso.dist.pack}" basedir="${recurso.src.dir}" compress="true" level="9" excludes="${recurso.excludes}"/>
         <checksum file="${recurso.dist.pack}" algorithm="SHA-512" forceoverwrite="true" todir="${recurso.dist.dir}"/>
         <move file="${recurso.dist.pack}.SHA-512" tofile="${recurso.dist.hash}"/>
     </target>
