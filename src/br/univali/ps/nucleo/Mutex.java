@@ -107,7 +107,7 @@ public final class Mutex
                     }
                     catch (IOException execao)
                     {
-                        LOGGER.log(Level.SEVERE, "Erro ao ouvir conexão no Mutex", execao);
+                        //LOGGER.log(Level.SEVERE, "Erro ao ouvir conexão no Mutex", execao);
                     }
                 }
             }
