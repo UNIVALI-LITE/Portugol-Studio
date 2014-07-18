@@ -12,6 +12,9 @@ import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -57,7 +60,6 @@ public final class AbaAjuda extends Aba
         });
     }
 
-
     private void carregarAjuda()
     {
         Platform.runLater(new Runnable()
@@ -66,20 +68,55 @@ public final class AbaAjuda extends Aba
             public void run()
             {
                 configurarWebEngine();
-                exibirAjuda();
                 configurarAcoes();
             }
         });
     }
-    
+
     private void configurarWebEngine()
     {
         Platform.setImplicitExit(false);
-        
+
         webView = new WebView();
         webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
-        
+
+        configurarObservadorCarregamento(webEngine);
+        configurarTratamentoAlertas(webEngine);
+
+        painelFx.setScene(new Scene(webView));
+
+        File diretorioAjuda = Configuracoes.getInstancia().getDiretorioAjuda();
+        File index = new File(diretorioAjuda, "index.html");
+
+        try
+        {
+            webEngine.load(index.toURI().toURL().toExternalForm());
+        }
+        catch (MalformedURLException ex)
+        {
+            Logger.getLogger(AbaAjuda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void configurarObservadorCarregamento(WebEngine webEngine)
+    {
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> valor, Worker.State estadoAntigo, Worker.State estadoAtual)
+            {
+                if (estadoAtual == Worker.State.SUCCEEDED)
+                {
+                    exibirAjuda();
+                    System.out.println("Eeeee!!");
+                }
+            }
+        });
+    }
+
+    private void configurarTratamentoAlertas(WebEngine webEngine)
+    {
         webEngine.setOnAlert(new EventHandler<WebEvent<String>>()
         {
             @Override
@@ -98,24 +135,23 @@ public final class AbaAjuda extends Aba
                 }
                 catch (InterruptedException | InvocationTargetException ex)
                 {
-                    
+
                 }
             }
         });
-       
-        painelFx.setScene(new Scene(webView));
-        
-        File diretorioAjuda = Configuracoes.getInstancia().getDiretorioAjuda();
-        File index = new File(diretorioAjuda, "index.html");
-        
-        try
+    }
+
+    private void exibirPainelCarregamento()
+    {
+        SwingUtilities.invokeLater(new Runnable()
         {
-            webEngine.load(index.toURI().toURL().toExternalForm());
-        }
-        catch (MalformedURLException ex)
-        {
-            Logger.getLogger(AbaAjuda.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            @Override
+            public void run()
+            {
+                CardLayout layout = (CardLayout) getLayout();
+                layout.show(AbaAjuda.this, "painelCarregamento");
+            }
+        });
     }
 
     private void exibirAjuda()
@@ -132,14 +168,14 @@ public final class AbaAjuda extends Aba
             }
         });
     }
-    
+
     private void configurarAcoes()
     {
         String nome = "Atualizar";
         KeyStroke atalho = KeyStroke.getKeyStroke("F5");
-        
+
         Action acaoAtualizar = new AbstractAction(nome)
-        {            
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -148,12 +184,13 @@ public final class AbaAjuda extends Aba
                     @Override
                     public void run()
                     {
+                        exibirPainelCarregamento();
                         webEngine.reload();
                     }
                 });
             }
         };
-        
+
         getActionMap().put(nome, acaoAtualizar);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
