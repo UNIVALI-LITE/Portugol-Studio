@@ -109,7 +109,6 @@ public final class AbaAjuda extends Aba
                 if (estadoAtual == Worker.State.SUCCEEDED)
                 {
                     exibirAjuda();
-                    System.out.println("Eeeee!!");
                 }
             }
         });
