@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import netscape.javascript.JSObject;
 
 /**
  *
@@ -99,7 +100,7 @@ public final class AbaAjuda extends Aba
         }
     }
 
-    private void configurarObservadorCarregamento(WebEngine webEngine)
+    private void configurarObservadorCarregamento(final WebEngine webEngine)
     {
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
         {
@@ -109,6 +110,9 @@ public final class AbaAjuda extends Aba
                 if (estadoAtual == Worker.State.SUCCEEDED)
                 {
                     exibirAjuda();
+
+                    JSObject jsobj = (JSObject) webEngine.executeScript("window");
+                    jsobj.setMember("portugol", new PontePortugolStudio());
                 }
             }
         });
@@ -192,6 +196,21 @@ public final class AbaAjuda extends Aba
 
         getActionMap().put(nome, acaoAtualizar);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+
+    private final class PontePortugolStudio
+    {
+        public void abrirExemplo(final String codigo)
+        {
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    JOptionPane.showMessageDialog(null, codigo);
+                }
+            });
+        }
     }
 
     @SuppressWarnings("unchecked")
