@@ -513,11 +513,11 @@ public final class AbaInicial extends Aba
         jSeparator2 = new javax.swing.JSeparator();
         conteudoAprender = new javax.swing.JPanel();
         painelAlinhamento5 = new javax.swing.JPanel();
+        rotuloSairProgramando = new javax.swing.JLabel();
         rotuloConhecerLinguagem = new javax.swing.JLabel();
         rotuloAssistirVideoAulas = new javax.swing.JLabel();
         rotuloExplorarExemplos = new javax.swing.JLabel();
         rotuloConhecerBibliotecas = new javax.swing.JLabel();
-        rotuloSairProgramando = new javax.swing.JLabel();
         painelColaborarCreditos = new javax.swing.JPanel();
         painelColaborar = new javax.swing.JPanel();
         painelTituloColaborar = new javax.swing.JPanel();
@@ -617,6 +617,14 @@ public final class AbaInicial extends Aba
         painelAlinhamento5.setOpaque(false);
         painelAlinhamento5.setLayout(new javax.swing.BoxLayout(painelAlinhamento5, javax.swing.BoxLayout.Y_AXIS));
 
+        rotuloSairProgramando.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloSairProgramando.setForeground(new java.awt.Color(255, 255, 255));
+        rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        rotuloSairProgramando.setText("<html><body><div>Sair Programando (Ctrl + N)</div></body></html>");
+        rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloSairProgramando.setName("sairProgramando"); // NOI18N
+        painelAlinhamento5.add(rotuloSairProgramando);
+
         rotuloConhecerLinguagem.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloConhecerLinguagem.setForeground(new java.awt.Color(255, 255, 255));
         rotuloConhecerLinguagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
@@ -648,14 +656,6 @@ public final class AbaInicial extends Aba
         rotuloConhecerBibliotecas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloConhecerBibliotecas.setName("conhecerBibliotecas"); // NOI18N
         painelAlinhamento5.add(rotuloConhecerBibliotecas);
-
-        rotuloSairProgramando.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloSairProgramando.setForeground(new java.awt.Color(255, 255, 255));
-        rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        rotuloSairProgramando.setText("<html><body><div>Sair Programando (Ctrl + N)</div></body></html>");
-        rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloSairProgramando.setName("sairProgramando"); // NOI18N
-        painelAlinhamento5.add(rotuloSairProgramando);
 
         conteudoAprender.add(painelAlinhamento5, java.awt.BorderLayout.CENTER);
 

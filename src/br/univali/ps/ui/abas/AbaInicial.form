@@ -261,6 +261,26 @@
                         <Property name="axis" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
+                        <Component class="javax.swing.JLabel" name="rotuloSairProgramando">
+                          <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Consolas" size="14" style="1"/>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/light_pix.png"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;Sair Programando (Ctrl + N)&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                                <EmptyBorder bottom="8" left="0" right="0" top="8"/>
+                              </Border>
+                            </Property>
+                            <Property name="name" type="java.lang.String" value="sairProgramando" noResource="true"/>
+                          </Properties>
+                        </Component>
                         <Component class="javax.swing.JLabel" name="rotuloConhecerLinguagem">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -339,26 +359,6 @@
                               </Border>
                             </Property>
                             <Property name="name" type="java.lang.String" value="conhecerBibliotecas" noResource="true"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="rotuloSairProgramando">
-                          <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Consolas" size="14" style="1"/>
-                            </Property>
-                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                            </Property>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/light_pix.png"/>
-                            </Property>
-                            <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div&gt;Sair Programando (Ctrl + N)&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
-                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                                <EmptyBorder bottom="8" left="0" right="0" top="8"/>
-                              </Border>
-                            </Property>
-                            <Property name="name" type="java.lang.String" value="sairProgramando" noResource="true"/>
                           </Properties>
                         </Component>
                       </SubComponents>
