@@ -11,14 +11,90 @@
     <description>Builds, tests, and runs the project Portugol-Studio.</description>
     <import file="nbproject/build-impl.xml"/>
     
+    <property name="java.jre.name" value="jre1.8.0_11"/>
+    <property name="instalador.java.dir" value="../Portugol-Instalador/arquivos/java"/>
+    <property name="instalador.java.windows.dir" value="${instalador.java.dir}/java-windows"/>
+    <property name="instalador.java.linux.dir" value="${instalador.java.dir}/java-linux"/>
+    <property name="instalador.java.osx.dir" value="${instalador.java.dir}/java-osx"/>
+    
+    
     <taskdef resource="net/sf/antcontrib/antlib.xml">
         <classpath>
             <pathelement location="ant/ant-contrib-1.0b3.jar"/>
         </classpath>
     </taskdef>
     
+    <target name="baixar-java" depends="verificar-java">
+        <mkdir dir="${instalador.java.dir}"/>
+        
+        <antcall target="baixar-java-windows"/>
+        <antcall target="baixar-java-linux"/>
+        <antcall target="baixar-java-osx"/>
+    </target>
+    
+    <target name="baixar-java-windows" unless="java.windows.baixado">
+        <property name="java.windows.nome" value="${java.jre.name}-windows"/>
+        <echo>Baixando o Java para Windows</echo>
+        <get src="http://installbuilder.bitrock.com/java/${java.windows.nome}.zip" dest="${instalador.java.dir}/${java.windows.nome}.zip" verbose="false" httpusecaches="false"/>
+        <unzip src="${instalador.java.dir}/${java.windows.nome}.zip" dest="${instalador.java.dir}"/>
+        <move todir="${instalador.java.windows.dir}">
+            <fileset dir="${instalador.java.dir}/${java.windows.nome}/java-windows"/>
+        </move>
+        <delete includeemptydirs="true">
+            <fileset dir="${instalador.java.dir}/${java.windows.nome}">
+                <include name="*"/>
+                <include name="**"/>                
+            </fileset>
+            <fileset file="${instalador.java.dir}/${java.windows.nome}.zip"/>
+        </delete>        
+    </target>
+    
+    
+    <target name="baixar-java-linux" unless="java.linux.baixado">
+        <property name="java.linux.nome" value="${java.jre.name}-linux"/>
+        <echo>Baixando o Java para Linux</echo>
+        <get src="http://installbuilder.bitrock.com/java/${java.linux.nome}.zip" dest="${instalador.java.dir}/${java.linux.nome}.zip" verbose="false" httpusecaches="false"/>
+        <unzip src="${instalador.java.dir}/${java.linux.nome}.zip" dest="${instalador.java.dir}"/>
+        <move todir="${instalador.java.linux.dir}">
+            <fileset dir="${instalador.java.dir}/${java.linux.nome}/java-linux"/>
+        </move>
+        <delete includeemptydirs="true">
+            <fileset dir="${instalador.java.dir}/${java.linux.nome}">
+                <include name="*"/>
+                <include name="**"/>                
+            </fileset>
+            <fileset file="${instalador.java.dir}/${java.linux.nome}.zip"/>
+        </delete>        
+    </target>
+    
+    
+    <target name="baixar-java-osx" unless="java.osx.baixado">
+        <property name="java.osx.nome" value="${java.jre.name}-osx"/>
+        <echo>Baixando o Java para Mac OS X</echo>
+        <get src="http://installbuilder.bitrock.com/java/${java.osx.nome}.zip" dest="${instalador.java.dir}/${java.osx.nome}.zip" verbose="false" httpusecaches="false"/>
+        <unzip src="${instalador.java.dir}/${java.osx.nome}.zip" dest="${instalador.java.dir}"/>
+        <move todir="${instalador.java.osx.dir}">
+            <fileset dir="${instalador.java.dir}/${java.osx.nome}/java-osx"/>
+        </move>
+        <delete includeemptydirs="true">
+            <fileset dir="${instalador.java.dir}/${java.osx.nome}">
+                <include name="*"/>
+                <include name="**"/>                
+            </fileset>
+            <fileset file="${instalador.java.dir}/${java.osx.nome}.zip"/>
+        </delete>        
+    </target>
+    
+    <target name="verificar-java">
+        <available file="${instalador.java.windows.dir}" property="java.windows.baixado"/>
+        <available file="${instalador.java.linux.dir}" property="java.linux.baixado"/>
+        <available file="${instalador.java.osx.dir}" property="java.osx.baixado"/>
+    </target>
+    
     <target name="gerar-arquivos-instalador" depends="clean">
         <property name="instalador.dir" value="../Portugol-Instalador/arquivos/compartilhados"/>
+        
+        <antcall target="baixar-java"/>
         
         <delete failonerror="false" includeemptydirs="true">
             <fileset dir="${instalador.dir}">
