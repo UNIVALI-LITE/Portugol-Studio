@@ -404,7 +404,7 @@ public final class PortugolStudio
             {
                 File arquivo = new File(argumento);
 
-                if (arquivo.exists() && arquivo.isFile() && arquivo.canRead() && arquivo.getName().toLowerCase().endsWith(".por"))
+                if (arquivo.exists() && arquivo.isFile() && arquivo.canRead())
                 {
                     arquivosIniciais.add(arquivo);
                 }
