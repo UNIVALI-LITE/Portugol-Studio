@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
 /**
@@ -15,6 +17,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
  */
 public final class GerenciadorTemas
 {
+    private static final Logger LOGGER = Logger.getLogger(GerenciadorTemas.class.getName());
     private static final String PACOTE_TEMA = "";
 
     private final Map<String, String> arquivosTema = new HashMap<>();
@@ -36,7 +39,7 @@ public final class GerenciadorTemas
             arquivosTema.put("Dark", "dark");
             arquivosTema.put("Eclipse", "eclipse");
             arquivosTema.put("IntelliJ IDEA", "idea");
-            arquivosTema.put("Padrão", "default-alt");
+            arquivosTema.put("Portugol Studio", "default-alt");
             arquivosTema.put("Visual Studio", "vs");
         }
 
@@ -47,6 +50,11 @@ public final class GerenciadorTemas
     }
 
     public Theme carregarTema(String nome) throws ExcecaoAplicacao
+    {
+        return carregarTema(nome, true);
+    }
+    
+    private Theme carregarTema(String nome, boolean carregarPadrao) throws ExcecaoAplicacao
     {
         if (arquivosTema.isEmpty())
         {
@@ -64,7 +72,16 @@ public final class GerenciadorTemas
         }
         catch (IOException excecao)
         {
-            throw new ExcecaoAplicacao(String.format("Erro ao carregar o tema '%s'", nome), excecao, ExcecaoAplicacao.Tipo.ERRO);
+            LOGGER.log(Level.SEVERE, String.format("Erro ao carregar o tema '%s'", nome), excecao);
+            
+            if (carregarPadrao)
+            {
+                return carregarTema("Portugol Studio", false);
+            }
+            else
+            {
+                throw new ExcecaoAplicacao(String.format("Erro ao carregar o tema '%s'", nome), excecao, ExcecaoAplicacao.Tipo.ERRO);
+            }
         }
     }
 }
