@@ -235,13 +235,15 @@ public final class GerenciadorAtualizacoes
 
             for (String nomePlugin : pluginsAtualizar)
             {
-
                 String caminhoRemoto = caminhosRemotos.get("plugins").concat("/").concat(nomePlugin);
+                
+                if (Util.caminhoRemotoExiste(caminhoRemoto, clienteHttp))
+                {
+                    File caminhoInstalacao = new File(caminhosInstalacao.get("plugins"), nomePlugin);
+                    File caminhoTemporario = new File(new File(Configuracoes.getInstancia().getDiretorioTemporario(), "plugins"), nomePlugin);
 
-                File caminhoInstalacao = new File(caminhosInstalacao.get("plugins"), nomePlugin);
-                File caminhoTemporario = new File(new File(Configuracoes.getInstancia().getDiretorioTemporario(), "plugins"), nomePlugin);
-
-                tarefas.add(new TarefaAtualizacao(caminhoRemoto, caminhoInstalacao, caminhoTemporario, clienteHttp));
+                    tarefas.add(new TarefaAtualizacao(caminhoRemoto, caminhoInstalacao, caminhoTemporario, clienteHttp));
+                }
             }
         }
 

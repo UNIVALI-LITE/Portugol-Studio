@@ -336,7 +336,7 @@ public final class Configuracoes
             return diretorio;
         }
         
-        return new File(".");
+        return extrairCaminho(new File("."));
     }
     
     private File resolverDiretorioAjuda()
@@ -359,9 +359,28 @@ public final class Configuracoes
          return new File(diretorioInstalacao, "exemplos");
     }
     
-    private boolean rodandoNoNetbeans()
+    public static boolean rodandoNoNetbeans()
     {
         return System.getProperty("netbeans") != null;
+    }
+    
+    public static boolean rodandoNoWindows()
+    {
+        String os = System.getProperty("os.name");
+        
+        return (os != null && os.toLowerCase().contains("win"));
+    }
+    
+    private File extrairCaminho(File arquivo)
+    {
+        try
+        {
+            return arquivo.getCanonicalFile();
+        }
+        catch (IOException ex)
+        {
+            return arquivo.getAbsoluteFile();
+        }
     }
     
 }

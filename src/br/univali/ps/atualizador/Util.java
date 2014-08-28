@@ -20,6 +20,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 public final class Util
 {
     private static final int HTTP_OK = 200;
+    private static final int HTTP_NOT_FOUND = 404;
     private static final int TAMANHO_BUFFER = 131072; // 128 KB
 
     public static void baixarArquivoRemoto(String caminhoArquivoRemoto, File caminhoArquivoDestino, CloseableHttpClient clienteHttp) throws IOException
@@ -44,6 +45,22 @@ public final class Util
         }
     }
 
+    public static boolean caminhoRemotoExiste(String caminhoRemoto, CloseableHttpClient clienteHttp)
+    {
+        HttpGet httpGet = new HttpGet(caminhoRemoto);
+        
+        try (CloseableHttpResponse resposta = clienteHttp.execute(httpGet))
+        {
+            final int resultado = resposta.getStatusLine().getStatusCode();
+
+            return (resultado != HTTP_NOT_FOUND);
+        }
+        catch (IOException excecao)
+        {
+            return false;
+        }
+    }
+    
     private static void salvarArquivo(final InputStream inputStream, final File arquivo) throws IOException
     {
         final byte[] buffer = new byte[TAMANHO_BUFFER];

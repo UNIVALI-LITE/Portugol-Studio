@@ -91,6 +91,8 @@ public final class PortugolStudio
     {
         try
         {
+            exibirParametros(parametros);
+            
             if (Mutex.existeUmaInstanciaExecutando())
             {
                 try
@@ -172,6 +174,7 @@ public final class PortugolStudio
             catch (ExcecaoAplicacao excecaoAplicacao)
             {
                 getTratadorExcecoes().exibirExcecao(excecaoAplicacao);
+                finalizar(1);
             }
 
             Splash.ocultar();
@@ -459,6 +462,16 @@ public final class PortugolStudio
 
                 LOGGER.log(Level.INFO, mensagem, excecao);
             }
+            
+            /* 
+             * Se estiver rodando o projeto dentro do NetBeans com o JDK 7, é possível que JavaFX não seja encontrado
+             * no classpath e um ClassNotFoundException seja gerado.
+             *
+             * Isto é um bug e ocorre quando o NetBeans é executado com o JDK 8. Para executar corretamente, deve-se
+             * alterar o arquivo de configurações do NetBeans (netbeans.conf) para executar com o JDK 7.
+             * 
+             */
+            
             javafx.scene.text.Font.loadFont(Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome), 12);
         }
     }
@@ -507,10 +520,13 @@ public final class PortugolStudio
         {
             File diretorioPlugins = configuracoes.getDiretorioPlugins();
 
+            LOGGER.log(Level.INFO, "Inicializando plugins em: {0}", diretorioPlugins.getAbsolutePath());
+            
             if (diretorioPlugins.exists())
             {
                 for (File pastaPlugin : listarPastasPlugins(diretorioPlugins))
                 {
+                    LOGGER.log(Level.INFO, "Inicializando plugin {0}", pastaPlugin.getAbsolutePath());
                     gerenciadorPlugins.incluirDiretorioPlugin(pastaPlugin);
                 }
             }
@@ -713,5 +729,13 @@ public final class PortugolStudio
         }
 
         return null;
+    }
+    
+    private void exibirParametros(String[] parametros)
+    {
+        for (String parametro : parametros)
+        {
+            LOGGER.log(Level.INFO, "Parametro: {0}", parametro);
+        }
     }
 }

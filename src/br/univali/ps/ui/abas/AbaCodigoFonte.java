@@ -27,7 +27,6 @@ import br.univali.ps.ui.EscopoCursor;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.TelaOpcoesExecucao;
-import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -1248,7 +1247,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 programa.addDepuradorListener(AbaCodigoFonte.this);
                 programa.addDepuradorListener(editor);
                 programa.addDepuradorListener(tree);
-                editor.iniciarDepuracao();
+                
+                editor.iniciarExecucao(depurando);
+                
                 painelSaida.getConsole().registrarComoEntrada(programa);
                 painelSaida.getConsole().registrarComoSaida(programa);
 
@@ -1364,7 +1365,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void run()
             {
                 AbaConsole console = painelSaida.getConsole();
-                editor.pararDepuracao(resultadoExecucao);
+                editor.finalizarExecucao(resultadoExecucao);
+                
                 console.removerPopupLeia();
 
                 if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
@@ -1729,6 +1731,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
     }
 
+    @Override
+    public String obterCodigoFonteUsuario() 
+    {
+        return editor.getPortugolDocumento().getCodigoFonte();
+    }
+    
     @Override
     public void instalarAcaoPlugin(final Plugin plugin, final Action acao)
     {

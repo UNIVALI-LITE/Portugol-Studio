@@ -28,6 +28,7 @@ import org.apache.commons.io.FileUtils;
 
 public final class TelaPrincipal extends JFrame
 {
+
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
 
     private boolean abrindo = true;
@@ -95,6 +96,8 @@ public final class TelaPrincipal extends JFrame
                 {
                     abrindo = false;
 
+                    verificarAtualizacaoCritica();
+
                     if (Configuracoes.getInstancia().isExibirTutorialUso())
                     {
                         //TODO: criar e executar tutorial de uso antes de iniciar o Portugol
@@ -107,6 +110,36 @@ public final class TelaPrincipal extends JFrame
                 }
             }
         });
+    }
+
+    private void verificarAtualizacaoCritica()
+    {
+        File diretorioJava = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "java");
+
+        if (!diretorioJava.exists() && Configuracoes.rodandoNoWindows() && !Configuracoes.rodandoNoNetbeans())
+        {
+            String mensagem = "Caro usuário, foi lançada uma atualização crítica para o Portugol Studio que não pode ser\n"
+                    + "instalada através do sistema de atualização automática.\n\n"
+                    + "Você pode continuar utilizando o Portugol Studio normalmente, mas é altamente recomendável que\n"
+                    + "instale esta atualização.\n\n"
+                    + "Para instalar a atualização, você deve baixar e instalar a versão mais recente do Portugol Studio,\n"
+                    + "disponível no endereço: http://sourceforge.net/projects/portugolstudio.\n\n"
+                    + "Deseja ir agora para o site e baixar a nova versão?";
+
+            int opcao = JOptionPane.showConfirmDialog(TelaPrincipal.this, mensagem, "Portugol Studio", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+            if (opcao == JOptionPane.YES_OPTION)
+            {
+                try
+                {
+                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://sourceforge.net/projects/portugolstudio"));
+                }
+                catch (IOException ex)
+                {
+                    JOptionPane.showMessageDialog(TelaPrincipal.this, "Não foi possível abrir o seu navegador de Internet!\nPara baixar a versão mais recente do Portugol Studio, acesse manualmente o endereço:\n\nhttp://sourceforge.net/projects/portugolstudio", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
     }
 
     private void dispararProcessosAbertura()
@@ -277,7 +310,7 @@ public final class TelaPrincipal extends JFrame
                 }
                 catch (IOException excecao)
                 {
-                    LOGGER.log(Level.SEVERE, String.format("Erro ao verificar se o '%s' arquivo já estava aberto em alguma aba", arquivo.getAbsolutePath()), excecao);
+                    LOGGER.log(Level.SEVERE, String.format("Erro ao verificar se o arquivo '%s' já estava aberto em alguma aba", arquivo.getAbsolutePath()), excecao);
                 }
             }
         }

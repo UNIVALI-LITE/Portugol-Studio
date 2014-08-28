@@ -38,7 +38,6 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -861,11 +860,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return (PortugolDocumento) textArea.getDocument();
     }
 
-    public void iniciarDepuracao()
+    public void iniciarExecucao(boolean depurar)
     {
         limparErroExecucao();
 
-        depurando = true;
+        depurando = depurar;
         ultimaPosicaoCursor = textArea.getCaretPosition();
 
         textArea.setEditable(false);
@@ -874,8 +873,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setHighlightCurrentLine(false);
 
         linhasCodigoDobradas = getLinhasCodigoDobradas();
-
-        textArea.setCodeFoldingEnabled(false);
+        
         btnDepurar.setVisible(false);
         btnProximaInstrucao.setVisible(expandido);
     }
@@ -907,7 +905,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void dobrarLinhasCodigo(List<Integer> linhas)
     {
-        textArea.setCodeFoldingEnabled(true);
+        textArea.getFoldManager().clear();
         textArea.getFoldManager().reparse();
 
         for (int linha : linhas)
@@ -916,10 +914,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    public void pararDepuracao(ResultadoExecucao resultadoExecucao)
+    public void finalizarExecucao(ResultadoExecucao resultadoExecucao)
     {
-        depurando = false;
-
         textArea.setEditable(true);
         textArea.removeAllLineHighlights();
         if (tagDetalhado != null)
@@ -938,6 +934,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         btnDepurar.setVisible(expandido);
         btnProximaInstrucao.setVisible(false);
+        
+        depurando = false;
 
         if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
         {
@@ -1191,13 +1189,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             rolarAtePosicao(line, coluna);
 
             int posicao = textArea.getLineStartOffset(line);
-            Fold dobramento = textArea.getFoldManager().getDeepestFoldContaining(posicao);
-
-            while (dobramento != null)
-            {
-                dobramento.setCollapsed(false);
-                dobramento = dobramento.getParent();
-            }
+            
+            textArea.getFoldManager().ensureOffsetNotInClosedFold(posicao);
         }
         catch (BadLocationException ex)
         {
@@ -1228,6 +1221,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 textArea.removeLineHighlight(tag);
             }
 
+            int offset = textArea.getLineStartOffset(line);
+            
+            textArea.getFoldManager().ensureOffsetNotInClosedFold(offset);
+            
             tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));
 
             ultimaLinhaHighlight = line;
@@ -1248,6 +1245,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
         int offs = elem.getStartOffset() + coluna;
 
+        textArea.getFoldManager().ensureOffsetNotInClosedFold(offs);
+        
         try
         {
             if (tagDetalhado == null)
@@ -1357,12 +1356,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             SearchEvent.Type type = e.getType();
             SearchContext context = e.getSearchContext();
-            SearchResult result = null;
+            SearchResult result;
 
             switch (type)
             {
                 case MARK_ALL:
-                    result = SearchEngine.markAll(textArea, context);
+                    SearchEngine.markAll(textArea, context);
                     break;
                 case FIND:
                     result = SearchEngine.find(textArea, context);

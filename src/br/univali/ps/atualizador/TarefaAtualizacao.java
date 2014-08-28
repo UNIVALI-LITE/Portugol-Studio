@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -14,7 +16,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
  */
 final class TarefaAtualizacao
 {
-    private static final int NUMERO_TENTATIVAS_DOWNLOAD = 3;
+    private static final Logger LOGGER = Logger.getLogger(TarefaAtualizacao.class.getName());
+    private static final int NUMERO_TENTATIVAS_DOWNLOAD = 3;    
 
     private static final String NOME_ARQUIVO_HASH = "hash";
     private static final String NOME_ARQUIVO_PACOTE = "pacote.zip";
@@ -75,15 +78,31 @@ final class TarefaAtualizacao
     {
         for (int tentativa = 1; tentativa <= NUMERO_TENTATIVAS_DOWNLOAD; tentativa++)
         {
-            Util.baixarArquivoRemoto(caminhoPacoteRemoto, caminhoPacoteTemporario, clienteHttp);
+            IOException erro = null;
+            
+            try
+            {
+                Util.baixarArquivoRemoto(caminhoPacoteRemoto, caminhoPacoteTemporario, clienteHttp);
+            }
+            catch (IOException ex)
+            {
+                erro = ex;
+            }
 
-            if (pacoteBaixadoComSucesso())
+            if (erro == null && pacoteBaixadoComSucesso())
             {
                 break;
             }
             else if (tentativa == NUMERO_TENTATIVAS_DOWNLOAD)
             {
-                throw new IOException(String.format("Erro ao baixar o pacote '%s' após %d tentativa(s)", caminhoPacoteTemporario.getAbsolutePath(), NUMERO_TENTATIVAS_DOWNLOAD));
+                if (erro != null)
+                {
+                    throw new IOException(String.format("Erro ao baixar o pacote '%s' após %d tentativa(s)", caminhoPacoteTemporario.getAbsolutePath(), NUMERO_TENTATIVAS_DOWNLOAD), erro);
+                }
+                else
+                {
+                    throw new IOException(String.format("Erro ao baixar o pacote '%s' após %d tentativa(s)", caminhoPacoteTemporario.getAbsolutePath(), NUMERO_TENTATIVAS_DOWNLOAD));
+                }
             }
         }
     }
