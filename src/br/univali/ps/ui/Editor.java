@@ -905,7 +905,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void dobrarLinhasCodigo(List<Integer> linhas)
     {
-        textArea.getFoldManager().clear();
+        // Desabilitar e reabilitar força o parser do editor a reprocessar o
+        // arquivo e desta forma a árvore estrutural de símbolos é atualizada.
+        // Isto é gambiarra, mas por enquanto deixamos assim, mais pra frente
+        // devemos pensar em uma solução melhor
+        
+        textArea.setCodeFoldingEnabled(false);
+        textArea.setCodeFoldingEnabled(true);
+        
         textArea.getFoldManager().reparse();
 
         for (int linha : linhas)
@@ -916,6 +923,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public void finalizarExecucao(ResultadoExecucao resultadoExecucao)
     {
+        depurando = false;
+        
         textArea.setEditable(true);
         textArea.removeAllLineHighlights();
         if (tagDetalhado != null)
@@ -935,7 +944,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDepurar.setVisible(expandido);
         btnProximaInstrucao.setVisible(false);
         
-        depurando = false;
+        
 
         if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
         {
