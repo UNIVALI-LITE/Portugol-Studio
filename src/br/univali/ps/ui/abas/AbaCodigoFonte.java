@@ -51,6 +51,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.EdgedBalloonStyle;
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, DepuradorListener, UtilizadorPlugins
 {
@@ -95,6 +96,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private Action acaoInterromper;
     private Action acaoAumentarFonteArvore;
     private Action acaoDiminuirFonteArvore;
+    
+    private BalloonTip painelFlutuante = null;
 
     protected AbaCodigoFonte()
     {
@@ -1780,12 +1783,76 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
     }
 
+    @Override
+    public void exibirPainelFlutuante(final JComponent origem, final JPanel conteudo, final boolean painelOpaco) 
+    {
+        ocultarPainelFlutuante();
+        
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+            @Override
+            public void run() 
+            {
+                painelFlutuante = criarPainelFlutuante(origem, conteudo, painelOpaco);
+                painelFlutuante.setVisible(true);
+            }
+        });
+    }    
+    
+
+    @Override
+    public void ocultarPainelFlutuante() 
+    {
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+            @Override
+            public void run() 
+            {
+                if (painelFlutuante != null && painelFlutuante.isVisible())
+                {
+                    painelFlutuante.setVisible(false);
+                    painelFlutuante = null;
+                }
+            }
+        });
+    }
+
+    private BalloonTip criarPainelFlutuante(JComponent origem, JPanel conteudo, boolean painelOpaco) 
+    {
+        Color corDica = new Color(255, 255, 210);
+        Color corTexto = Color.BLACK;
+        
+        if (painelOpaco)
+        {
+            corDica = conteudo.getBackground();            
+        }
+        
+        conteudo.setOpaque(painelOpaco);        
+        int largura = (int)Math.min(conteudo.getPreferredSize().getWidth(), 640);
+        int altura = (int)Math.min(conteudo.getPreferredSize().getHeight(), 480);
+        Dimension novoTamanho = new Dimension(largura, altura);
+        conteudo.setPreferredSize(novoTamanho);
+        
+        
+        EdgedBalloonStyle estilo = new EdgedBalloonStyle(corDica, corTexto);
+        BalloonTip tip = new BalloonTip(origem, conteudo, estilo, true);
+        
+        return tip;
+    }
+
+    @Override
+    public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho) 
+    {
+        editor.destacarTrechoCodigoFonte(linha, coluna, tamanho);
+    }
+
     private class AcaoExecutar extends AbstractAction
     {
 
         public AcaoExecutar()
         {
             super("Executar");
+            
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift F6")); // F5 funciona
             putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "resultset_next.png"));
             putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"));

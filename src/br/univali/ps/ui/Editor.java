@@ -61,7 +61,9 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.Element;
+import javax.swing.text.Highlighter;
 import net.java.balloontip.BalloonTip;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
@@ -70,6 +72,7 @@ import org.fife.rsta.ui.search.SearchListener;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
@@ -84,14 +87,13 @@ import org.fife.ui.rtextarea.SearchResult;
  * @author Fillipi Pelz
  * @author Luiz Fernando Noschang
  */
-public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener
-{
+public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener {
+
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
 
-    private static final int[] teclasAutoComplete = new int[]
-    {
+    private static final int[] teclasAutoComplete = new int[]{
         KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD
     };
 
@@ -131,8 +133,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private ReplaceDialog dialogoSubstituir;
     private SearchListener observadorAcaoPesquisaSubstituir;
 
-    public Editor()
-    {
+    private final List<Object> destaquesPlugin = new ArrayList<Object>();    
+
+    public Editor() {
         initComponents();
 
         configurarDialogoPesquisarSubstituir();
@@ -146,17 +149,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarConfiguracoes();
     }
 
-    public SuporteLinguagemPortugol getSuporteLinguagemPortugol()
-    {
+    public SuporteLinguagemPortugol getSuporteLinguagemPortugol() {
         return suporteLinguagemPortugol;
     }
 
-    private void criarMenuTemas()
-    {
+    private void criarMenuTemas() {
         GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
 
-        for (String tema : gerenciadorTemas.listarTemas())
-        {
+        for (String tema : gerenciadorTemas.listarTemas()) {
             JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
 
             itemMenu.setAction(acaoAplicarTema);
@@ -167,34 +167,28 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    private void configurarDialogoPesquisarSubstituir()
-    {
+    private void configurarDialogoPesquisarSubstituir() {
         observadorAcaoPesquisaSubstituir = new FindReplaceSearchListener();
 
         dialogoPesquisar = new FindDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir = new ReplaceDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
 
-        try
-        {
+        try {
             Image icone = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png"));
-            
-                dialogoPesquisar.setIconImage(icone);
-                dialogoSubstituir.setIconImage(icone);
-            }
-        catch (IOException | IllegalArgumentException ioe)
-        {
+
+            dialogoPesquisar.setIconImage(icone);
+            dialogoSubstituir.setIconImage(icone);
+        } catch (IOException | IllegalArgumentException ioe) {
         }
     }
 
-    private void configurarParser()
-    {
+    private void configurarParser() {
         suporteLinguagemPortugol = new SuporteLinguagemPortugol();
         suporteLinguagemPortugol.instalar(textArea);
     }
 
-    private void criarDicasInterface()
-    {
+    private void criarDicasInterface() {
         FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
@@ -205,8 +199,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
 
-    private void configurarTextArea()
-    {
+    private void configurarTextArea() {
         scrollPane.setFoldIndicatorEnabled(true);
         scrollPane.setIconRowHeaderEnabled(true);
         scrollPane.setLineNumbersEnabled(true);
@@ -221,8 +214,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         painelEditor.add(errorStrip, BorderLayout.EAST);
     }
 
-    private void configurarAcoes()
-    {
+    private void configurarAcoes() {
         configurarAcaoAumentarFonte();
         configurarAcaoDiminuirFonte();
         configurarAcaoRecortar();
@@ -241,45 +233,36 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoCentralizarCodigoFonte();
     }
 
-    private void configurarAcaoDesfazer()
-    {
+    private void configurarAcaoDesfazer() {
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "arrow_undo.png");
         RTextArea.getAction(RSyntaxTextArea.UNDO_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
-    private void configurarAcaoRefazer()
-    {
+    private void configurarAcaoRefazer() {
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "arrow_redo.png");
         RTextArea.getAction(RSyntaxTextArea.REDO_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
-    private void configurarAcaoRecortar()
-    {
+    private void configurarAcaoRecortar() {
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cut_red.png");
         RTextArea.getAction(RSyntaxTextArea.CUT_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
-    private void configurarAcaoCopiar()
-    {
+    private void configurarAcaoCopiar() {
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png");
         RTextArea.getAction(RSyntaxTextArea.COPY_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
-    private void configurarAcaoColar()
-    {
+    private void configurarAcaoColar() {
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_paste.png");
         RTextArea.getAction(RSyntaxTextArea.PASTE_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
-    private void configurarAcaoComentar()
-    {
-        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png"))
-        {
+    private void configurarAcaoComentar() {
+        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
+            public void actionPerformed(ActionEvent e) {
+                try {
                     int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
                     int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
 
@@ -294,8 +277,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
                     String[] linhas = codigo.split("\n");
 
-                    for (String linha : linhas)
-                    {
+                    for (String linha : linhas) {
                         codigoComentado.append("//");
                         codigoComentado.append(linha);
                         codigoComentado.append("\n");
@@ -304,9 +286,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     codigo = codigoComentado.toString();
                     textArea.replaceRange(codigo, inicioTexto, fimTexto);
                     textArea.select(inicioSelecao + 2, fimSelecao + (linhas.length * 2));
-                }
-                catch (BadLocationException excecao)
-                {
+                } catch (BadLocationException excecao) {
                     excecao.printStackTrace(System.out);
                 }
             }
@@ -315,15 +295,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnComentar.setAction(acaoComentar);
     }
 
-    private void configurarAcaoDescomentar()
-    {
-        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "uncomment.png"))
-        {
+    private void configurarAcaoDescomentar() {
+        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "uncomment.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
+            public void actionPerformed(ActionEvent e) {
+                try {
                     int linhaInicial = textArea.getLineOfOffset(textArea.getSelectionStart());
                     int linhaFinal = textArea.getLineOfOffset(textArea.getSelectionEnd());
 
@@ -341,19 +317,15 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
                     int deslocamento = 0;
 
-                    for (String linha : linhas)
-                    {
+                    for (String linha : linhas) {
                         int posicaoComentario = linha.indexOf("//");
                         int inicioSelecaoLinha = inicioSelecao - inicioTexto;
                         int fimSelecaoLinha = inicioSelecaoLinha + tamanhoSelecao;
 
-                        if (posicaoComentario >= 0)
-                        {
+                        if (posicaoComentario >= 0) {
                             codigoDescomentado.append(linha.substring(0, posicaoComentario));
                             codigoDescomentado.append(linha.substring(posicaoComentario + 2));
-                        }
-                        else
-                        {
+                        } else {
                             codigoDescomentado.append(linha);
                         }
 
@@ -361,13 +333,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                         posicaoComentario = posicaoComentario + deslocamento;
                         deslocamento = deslocamento + linha.length();
 
-                        if (posicaoComentario >= 0 && posicaoComentario < inicioSelecaoLinha)
-                        {
+                        if (posicaoComentario >= 0 && posicaoComentario < inicioSelecaoLinha) {
                             inicioSelecao = inicioSelecao - 2;
                             fimSelecao = fimSelecao - 2;
-                        }
-                        else if (posicaoComentario >= 0 && posicaoComentario < fimSelecaoLinha)
-                        {
+                        } else if (posicaoComentario >= 0 && posicaoComentario < fimSelecaoLinha) {
                             fimSelecao = fimSelecao - 2;
                         }
                     }
@@ -375,9 +344,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     codigo = codigoDescomentado.toString();
                     textArea.replaceRange(codigo, inicioTexto, fimTexto);
                     textArea.select(inicioSelecao, fimSelecao);
-                }
-                catch (BadLocationException excecao)
-                {
+                } catch (BadLocationException excecao) {
 
                 }
             }
@@ -386,13 +353,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDescomentar.setAction(acaoDescomentar);
     }
 
-    private void configurarAcaoListarTemas()
-    {
-        acaoListarTemas = new AbstractAction("Listar temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png"))
-        {
+    private void configurarAcaoListarTemas() {
+        acaoListarTemas = new AbstractAction("Listar temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 int y = btnTema.getHeight();
                 int x = btnTema.getWidth() - menuTema.getPreferredSize().width;
 
@@ -403,13 +367,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnTema.setAction(acaoListarTemas);
     }
 
-    private void configurarAcaoAplicarTema()
-    {
-        acaoAplicarTema = new AbstractAction("Aplicar tema", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png"))
-        {
+    private void configurarAcaoAplicarTema() {
+        acaoAplicarTema = new AbstractAction("Aplicar tema", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 JMenuItem item = (JMenuItem) e.getSource();
                 String tema = item.getText();
 
@@ -418,13 +379,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         };
     }
 
-    private void configurarAcaoAumentarFonte()
-    {
-        acaoAumentarFonte = new AbstractAction("Aumentar fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
-        {
+    private void configurarAcaoAumentarFonte() {
+        acaoAumentarFonte = new AbstractAction("Aumentar fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 Font fonteAtual = textArea.getFont();
                 float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
 
@@ -435,13 +393,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnAumentarFonte.setAction(acaoAumentarFonte);
     }
 
-    private void configurarAcaoDiminuirFonte()
-    {
-        acaoDiminuirFonte = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
-        {
+    private void configurarAcaoDiminuirFonte() {
+        acaoDiminuirFonte = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 Font fonteAtual = textArea.getFont();
                 float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
 
@@ -452,13 +407,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDiminuirFonte.setAction(acaoDiminuirFonte);
     }
 
-    private void configurarAcaoAlternarModoEditor()
-    {
-        acaoAlternarModoEditor = new AbstractAction("Alternar modo do editor")
-        {
+    private void configurarAcaoAlternarModoEditor() {
+        acaoAlternarModoEditor = new AbstractAction("Alternar modo do editor") {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 btnMaximizar.getAction().actionPerformed(e);
             }
         };
@@ -472,18 +424,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
     }
 
-    private void configurarAcaoPesquisarSubstituir()
-    {
+    private void configurarAcaoPesquisarSubstituir() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
         String nome = "Pesquisar e substituir";
 
-        acaoPesquisarSubstituir = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"))
-        {
+        acaoPesquisarSubstituir = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (dialogoPesquisar.isVisible())
-                {
+            public void actionPerformed(ActionEvent e) {
+                if (dialogoPesquisar.isVisible()) {
                     dialogoPesquisar.setVisible(false);
                 }
 
@@ -498,16 +446,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoCentralizarCodigoFonte()
-    {
+    private void configurarAcaoCentralizarCodigoFonte() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE, InputEvent.SHIFT_DOWN_MASK);
         String nome = "Centralizar código fonte";
 
-        acaoCentralizarCodigoFonte = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "centralizar_codigo.png"))
-        {
+        acaoCentralizarCodigoFonte = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "centralizar_codigo.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 Configuracoes configuracoes = Configuracoes.getInstancia();
                 configuracoes.setCentralizarCodigoFonte(!btnCentralizarCodigoFonte.isSelected());
             }
@@ -520,13 +465,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoExpandir()
-    {
-        acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"))
-        {
+    private void configurarAcaoExpandir() {
+        acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 expandido = true;
                 abaCodigoFonte.expandirEditor();
                 btnMaximizar.setAction(acaoRestaurar);
@@ -536,13 +478,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnMaximizar.setAction(acaoExpandir);
     }
 
-    private void configurarAcaoRestaurar()
-    {
-        acaoRestaurar = new AbstractAction("Restaurar editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png"))
-        {
+    private void configurarAcaoRestaurar() {
+        acaoRestaurar = new AbstractAction("Restaurar editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png")) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 expandido = false;
                 abaCodigoFonte.restaurarEditor();
                 btnMaximizar.setAction(acaoExpandir);
@@ -550,72 +489,56 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         };
     }
 
-    private void instalarObservadores()
-    {
+    private void instalarObservadores() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TAMANHO_FONTE_EDITOR);
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.TEMA_EDITOR);
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.CENTRALIZAR_CODIGO_FONTE);
 
-        textArea.getDocument().addDocumentListener(new DocumentListener()
-        {
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e)
-            {
+            public void insertUpdate(DocumentEvent e) {
                 limparErroExecucao();
+                removerDestaquesPlugins();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e)
-            {
+            public void removeUpdate(DocumentEvent e) {
                 limparErroExecucao();
+                removerDestaquesPlugins();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e)
-            {
+            public void changedUpdate(DocumentEvent e) {
                 limparErroExecucao();
+                removerDestaquesPlugins();
             }
         });
 
         textArea.addCaretListener(Editor.this);
-        textArea.addFocusListener(new FocusAdapter()
-        {
+        textArea.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent e)
-            {
-                if (tagErro != null)
-                {
+            public void focusGained(FocusEvent e) {
+                if (tagErro != null) {
                     rolarAtePosicao(ultimaLinhaErro + 1, ultimaColunaErro);
-                }
-                else
-                {
+                } else {
                     centralizarCodigoFonte();
                 }
             }
         });
 
-        scrollPane.addComponentListener(new ComponentAdapter()
-        {
+        scrollPane.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e)
-            {
-                if (depurando)
-                {
-                    try
-                    {
+            public void componentResized(ComponentEvent e) {
+                if (depurando) {
+                    try {
                         rolarAtePosicao(ultimaLinhaHighlight, ultimaColunaHighlight);
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
 
                     }
-                }
-                else
-                {
-                    if (btnCentralizarCodigoFonte.isSelected())
-                    {
+                } else {
+                    if (btnCentralizarCodigoFonte.isSelected()) {
                         centralizarCodigoFonte();
                     }
                 }
@@ -623,8 +546,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         });
     }
 
-    private void carregarConfiguracoes()
-    {
+    private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
         aplicarTema(configuracoes.getTemaEditor());
@@ -632,12 +554,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         setCentralizarCodigoFonte(configuracoes.isCentralizarCodigoFonte());
     }
 
-    private void configurarBotoes()
-    {
-        for (Component componente : barraFerramentas.getComponents())
-        {
-            if (componente instanceof JButton)
-            {
+    private void configurarBotoes() {
+        for (Component componente : barraFerramentas.getComponents()) {
+            if (componente instanceof JButton) {
                 JButton botao = (JButton) componente;
 
                 botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -651,8 +570,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         ocultarBotoesExecucao();
     }
 
-    public void exibirBotoesExecucao()
-    {
+    public void exibirBotoesExecucao() {
         jSeparator1.setVisible(true);
         btnExecutar.setVisible(true);
         btnInterromper.setVisible(true);
@@ -661,8 +579,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnProximaInstrucao.setVisible(!btnDepurar.getAction().isEnabled());
     }
 
-    public void ocultarBotoesExecucao()
-    {
+    public void ocultarBotoesExecucao() {
         jSeparator1.setVisible(false);
         btnExecutar.setVisible(false);
         btnInterromper.setVisible(false);
@@ -670,23 +587,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnProximaInstrucao.setVisible(false);
     }
 
-    private void setTamanhoFonteEditor(float tamanho)
-    {
-        if ((tamanho != textArea.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
-        {
+    private void setTamanhoFonteEditor(float tamanho) {
+        if ((tamanho != textArea.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE)) {
             textArea.setFont(textArea.getFont().deriveFont(tamanho));
             Configuracoes.getInstancia().setTamanhoFonteEditor(tamanho);
         }
     }
 
-    private void setCentralizarCodigoFonte(boolean centralizarCodigoFonte)
-    {
+    private void setCentralizarCodigoFonte(boolean centralizarCodigoFonte) {
         btnCentralizarCodigoFonte.setSelected(centralizarCodigoFonte);
         centralizarCodigoFonte();
     }
 
-    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
-    {
+    public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte) {
         this.abaCodigoFonte = abaCodigoFonte;
     }
 
@@ -696,8 +609,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
      *
      * @param codigo
      */
-    public void setCodigo(String codigo)
-    {
+    public void setCodigo(String codigo) {
         codigo = codigo.replace("${rn}", "\r\n");
         codigo = codigo.replace("${n}", "\n");
         codigo = codigo.replace("${t}", "\t");
@@ -709,8 +621,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.discardAllEdits();
     }
 
-    public void setEditavel(String editavel)
-    {
+    public void setEditavel(String editavel) {
         boolean edit = Boolean.parseBoolean(editavel);
 
         btnComentar.setVisible(edit);
@@ -720,16 +631,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setEditable(edit);
     }
 
-    public RTextScrollPane getScrollPane()
-    {
+    public RTextScrollPane getScrollPane() {
         return scrollPane;
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-        switch (evt.getPropertyName())
-        {
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
             case Configuracoes.TAMANHO_FONTE_EDITOR:
                 setTamanhoFonteEditor((Float) evt.getNewValue());
                 break;
@@ -744,26 +652,21 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    public void desabilitarCentralizacaoCodigoFonte()
-    {
-        if (btnCentralizarCodigoFonte.isSelected())
-        {
+    public void desabilitarCentralizacaoCodigoFonte() {
+        if (btnCentralizarCodigoFonte.isSelected()) {
             acaoCentralizarCodigoFonte.actionPerformed(null);
         }
     }
 
-    public void adicionarObservadorCursor(CaretListener observador)
-    {
+    public void adicionarObservadorCursor(CaretListener observador) {
         textArea.addCaretListener(observador);
     }
 
-    public Point getPosicaoCursor()
-    {
+    public Point getPosicaoCursor() {
         return new Point(textArea.getCaretOffsetFromLineStart() + 1, textArea.getCaretLineNumber() + 1);
     }
 
-    public void setCodigoFonte(String codigoFonte)
-    {
+    public void setCodigoFonte(String codigoFonte) {
         textArea.setText(removerInformacoesPortugolStudio(codigoFonte));
         textArea.discardAllEdits();
 
@@ -771,78 +674,62 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarInformacoesPortugolStudio(codigoFonte);
     }
 
-    private void carregarInformacoesPortugolStudio(String codigoFonte)
-    {
+    private void carregarInformacoesPortugolStudio(String codigoFonte) {
         String informacoesPortugolStudio = extrairInformacoesPortugolStudio(codigoFonte);
 
         carregarPosicaoCursor(informacoesPortugolStudio);
         carregarDobramentoCodigo(informacoesPortugolStudio);
     }
 
-    private void carregarPosicaoCursor(String informacoesPortugolStudio)
-    {
+    private void carregarPosicaoCursor(String informacoesPortugolStudio) {
         Matcher avaliador = Pattern.compile("@POSICAO-CURSOR[ ]*=[ ]*[0-9]+[ ]*;").matcher(informacoesPortugolStudio);
 
-        if (avaliador.find())
-        {
+        if (avaliador.find()) {
             String linha = avaliador.group();
             String valor = linha.split("=")[1].replace(";", "").trim();
 
-            try
-            {
+            try {
                 textArea.setCaretPosition(Integer.parseInt(valor));
-            }
-            catch (NumberFormatException excecao)
-            {
+            } catch (NumberFormatException excecao) {
                 excecao.printStackTrace(System.out);
             }
         }
     }
 
-    private void carregarDobramentoCodigo(String informacoesPortugolStudio)
-    {
+    private void carregarDobramentoCodigo(String informacoesPortugolStudio) {
         Matcher avaliador = Pattern.compile("@DOBRAMENTO-CODIGO[ ]*=[ ]*\\[([ ]*[0-9]+[ ]*)(,[ ]*[0-9]+[ ]*)*\\];").matcher(informacoesPortugolStudio);
 
-        if (avaliador.find() && textArea.isCodeFoldingEnabled())
-        {
+        if (avaliador.find() && textArea.isCodeFoldingEnabled()) {
             String linha = avaliador.group();
             String valores[] = linha.split("=")[1].replace(";", "").replace("[", "").replace("]", "").split(",");
             List<Integer> linhasDobradas = new ArrayList<>();
 
-            try
-            {
-                for (String valor : valores)
-                {
+            try {
+                for (String valor : valores) {
                     linhasDobradas.add(Integer.parseInt(valor.trim()));
                 }
 
                 dobrarLinhasCodigo(linhasDobradas);
-            }
-            catch (NumberFormatException excecao)
-            {
+            } catch (NumberFormatException excecao) {
                 excecao.printStackTrace(System.out);
             }
         }
     }
 
-    private String extrairInformacoesPortugolStudio(String codigoFonte)
-    {
+    private String extrairInformacoesPortugolStudio(String codigoFonte) {
         Matcher avaliador = Pattern.compile("[\\n]*/\\* \\$\\$\\$ Portugol Studio \\$\\$\\$([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/").matcher(codigoFonte);
 
-        if (avaliador.find())
-        {
+        if (avaliador.find()) {
             return avaliador.group();
         }
 
         return "";
     }
 
-    private String removerInformacoesPortugolStudio(String codigoFonte)
-    {
+    private String removerInformacoesPortugolStudio(String codigoFonte) {
         Matcher avaliador = Pattern.compile("[\\n]*/\\* \\$\\$\\$ Portugol Studio \\$\\$\\$([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/").matcher(codigoFonte);
 
-        if (avaliador.find())
-        {
+        if (avaliador.find()) {
             StringBuilder sb = new StringBuilder(codigoFonte);
 
             sb.replace(avaliador.start(), avaliador.end(), "");
@@ -855,13 +742,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return codigoFonte;
     }
 
-    public PortugolDocumento getPortugolDocumento()
-    {
+    public PortugolDocumento getPortugolDocumento() {
         return (PortugolDocumento) textArea.getDocument();
     }
 
-    public void iniciarExecucao(boolean depurar)
-    {
+    public void iniciarExecucao(boolean depurar) {
         limparErroExecucao();
 
         depurando = depurar;
@@ -873,62 +758,53 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setHighlightCurrentLine(false);
 
         linhasCodigoDobradas = getLinhasCodigoDobradas();
-        
+
         btnDepurar.setVisible(false);
         btnProximaInstrucao.setVisible(expandido);
     }
 
-    public List<Integer> getLinhasCodigoDobradas()
-    {
+    public List<Integer> getLinhasCodigoDobradas() {
         List<Integer> linhas = new ArrayList<>();
 
-        for (int i = 0; i < textArea.getFoldManager().getFoldCount(); i++)
-        {
+        for (int i = 0; i < textArea.getFoldManager().getFoldCount(); i++) {
             adicionarLinhaDobrada(textArea.getFoldManager().getFold(i), linhas);
         }
 
         return linhas;
     }
 
-    private void adicionarLinhaDobrada(Fold dobramento, List<Integer> linhas)
-    {
-        for (int i = 0; i < dobramento.getChildCount(); i++)
-        {
+    private void adicionarLinhaDobrada(Fold dobramento, List<Integer> linhas) {
+        for (int i = 0; i < dobramento.getChildCount(); i++) {
             adicionarLinhaDobrada(dobramento.getChild(i), linhas);
         }
 
-        if (dobramento.isCollapsed())
-        {
+        if (dobramento.isCollapsed()) {
             linhas.add(dobramento.getStartLine());
         }
     }
 
-    private void dobrarLinhasCodigo(List<Integer> linhas)
-    {
+    private void dobrarLinhasCodigo(List<Integer> linhas) {
         // Desabilitar e reabilitar força o parser do editor a reprocessar o
         // arquivo e desta forma a árvore estrutural de símbolos é atualizada.
         // Isto é gambiarra, mas por enquanto deixamos assim, mais pra frente
         // devemos pensar em uma solução melhor
-        
+
         textArea.setCodeFoldingEnabled(false);
         textArea.setCodeFoldingEnabled(true);
-        
+
         textArea.getFoldManager().reparse();
 
-        for (int linha : linhas)
-        {
+        for (int linha : linhas) {
             textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
         }
     }
 
-    public void finalizarExecucao(ResultadoExecucao resultadoExecucao)
-    {
+    public void finalizarExecucao(ResultadoExecucao resultadoExecucao) {
         depurando = false;
-        
+
         textArea.setEditable(true);
         textArea.removeAllLineHighlights();
-        if (tagDetalhado != null)
-        {
+        if (tagDetalhado != null) {
             textArea.getHighlighter().removeHighlight(tagDetalhado);
             tagDetalhado = null;
         }
@@ -943,54 +819,38 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         btnDepurar.setVisible(expandido);
         btnProximaInstrucao.setVisible(false);
-        
-        
 
-        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
-        {
+        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
             destacarErroExecucao(resultadoExecucao.getErro().getLinha(), resultadoExecucao.getErro().getColuna());
-        }
-        else
-        {
+        } else {
             centralizarCodigoFonte();
         }
     }
 
-    private void rolarAtePosicao(int linha, int coluna)
-    {
-        try
-        {
+    private void rolarAtePosicao(int linha, int coluna) {
+        try {
             rolarAtePosicao(textArea.getLineStartOffset(linha) + coluna);
-        }
-        catch (BadLocationException ex)
-        {
+        } catch (BadLocationException ex) {
 
         }
     }
 
-    private void rolarAtePosicao(final int posicao)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    private void rolarAtePosicao(final int posicao) {
+        SwingUtilities.invokeLater(new Runnable() {
 
             @Override
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     int ma = scrollPane.getHeight() / 2;
                     int ml = scrollPane.getWidth() / 2;
 
                     Rectangle areaPosicao = textArea.modelToView(posicao);
 
-                    if (areaPosicao != null)
-                    {
+                    if (areaPosicao != null) {
                         Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
                         textArea.scrollRectToVisible(area);
                     }
-                }
-                catch (BadLocationException ex)
-                {
+                } catch (BadLocationException ex) {
 
                 }
             }
@@ -999,19 +859,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void requestFocus()
-    {
+    public void requestFocus() {
         textArea.requestFocus();
         this.revalidate();
     }
 
-    public RSyntaxTextArea getTextArea()
-    {
+    public RSyntaxTextArea getTextArea() {
         return textArea;
     }
 
-    public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutar, final Action acaoInterromper, final Action acaoDepurar, final Action acaoProximaInstrucao)
-    {
+    public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutar, final Action acaoInterromper, final Action acaoDepurar, final Action acaoProximaInstrucao) {
         configurarAcaoExterna(btnSalvar, acaoSalvar);
         configurarAcaoExterna(btnSalvarComo, acaoSalvarComo);
         configurarAcaoExterna(btnExecutar, acaoExecutar);
@@ -1025,29 +882,23 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         FabricaDicasInterface.criarDicaInterface(btnProximaInstrucao, "Executa a intrução atual do programa e vai para a próxima instrução", acaoProximaInstrucao, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
 
-    private void configurarAcaoExterna(final JButton botao, final Action acaoExterna)
-    {
+    private void configurarAcaoExterna(final JButton botao, final Action acaoExterna) {
         final String nome = (String) acaoExterna.getValue(Action.NAME);
         Icon icone = (Icon) acaoExterna.getValue(Action.SMALL_ICON);
 
-        botao.setAction(new AbstractAction(nome, icone)
-        {
+        botao.setAction(new AbstractAction(nome, icone) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 acaoExterna.actionPerformed(e);
             }
         });
 
         botao.getAction().setEnabled(acaoExterna.isEnabled());
 
-        acaoExterna.addPropertyChangeListener(new PropertyChangeListener()
-        {
+        acaoExterna.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                if (evt.getPropertyName().equals("enabled"))
-                {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("enabled")) {
                     botao.getAction().setEnabled(acaoExterna.isEnabled());
                 }
             }
@@ -1055,79 +906,59 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void caretUpdate(CaretEvent e)
-    {
-        if (tagErro != null)
-        {
-            try
-            {
+    public void caretUpdate(CaretEvent e) {
+        if (tagErro != null) {
+            try {
                 int linhaAtual = textArea.getLineOfOffset(textArea.getCaretPosition());
 
-                if (linhaAtual == ultimaLinhaErro)
-                {
+                if (linhaAtual == ultimaLinhaErro) {
                     textArea.setHighlightCurrentLine(false);
-                }
-                else
-                {
+                } else {
                     textArea.setHighlightCurrentLine(true);
                 }
-            }
-            catch (BadLocationException ex)
-            {
+            } catch (BadLocationException ex) {
 
             }
         }
 
-        if (btnCentralizarCodigoFonte.isSelected())
-        {
+        if (btnCentralizarCodigoFonte.isSelected()) {
             centralizarCodigoFonte();
         }
     }
 
-    private void centralizarCodigoFonte()
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    private void centralizarCodigoFonte() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 rolarAtePosicao(textArea.getCaretPosition());
             }
         });
     }
 
     @Override
-    public void keyPressed(KeyEvent e)
-    {
-        for (int i = 0; i < teclasAutoComplete.length; i++)
-        {
-            if (e.getKeyCode() == teclasAutoComplete[i])
-            {
+    public void keyPressed(KeyEvent e) {
+        for (int i = 0; i < teclasAutoComplete.length; i++) {
+            if (e.getKeyCode() == teclasAutoComplete[i]) {
                 suporteLinguagemPortugol.atualizar(textArea);
                 return;
             }
         }
 
-        if ((e.getKeyCode() == KeyEvent.VK_SPACE) && (e.isControlDown()))
-        {
+        if ((e.getKeyCode() == KeyEvent.VK_SPACE) && (e.isControlDown())) {
             suporteLinguagemPortugol.atualizar(textArea);
         }
     }
 
     @Override
-    public void keyTyped(KeyEvent e)
-    {
+    public void keyTyped(KeyEvent e) {
     }
 
     @Override
-    public void keyReleased(KeyEvent e)
-    {
+    public void keyReleased(KeyEvent e) {
     }
 
-    private void aplicarTema(String nome)
-    {
-        try
-        {
+    private void aplicarTema(String nome) {
+        try {
             GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
             Theme tema = gerenciadorTemas.carregarTema(nome);
 
@@ -1137,56 +968,44 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);
 
-            for (Component componente : menuTema.getComponents())
-            {
+            for (Component componente : menuTema.getComponents()) {
                 JMenuItem item = (JMenuItem) componente;
 
-                if (item.getText().equals(nome))
-                {
+                if (item.getText().equals(nome)) {
                     item.setSelected(true);
-                }
-                else
-                {
+                } else {
                     item.setSelected(false);
                 }
             }
 
             corErro = obterCorErro();
 
-            if (tagErro != null)
-            {
+            if (tagErro != null) {
                 destacarErroExecucao(ultimaLinhaErro + 1, ultimaColunaErro + 1);
             }
-        }
-        catch (ExcecaoAplicacao excecao)
-        {
+        } catch (ExcecaoAplicacao excecao) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
         }
     }
 
     @Override
-    public void depuracaoInicializada(InterfaceDepurador depurador)
-    {
+    public void depuracaoInicializada(InterfaceDepurador depurador) {
 
     }
 
-    private void destacarErroExecucao(int linha, int coluna)
-    {
-        try
-        {
+    private void destacarErroExecucao(int linha, int coluna) {
+        try {
             int line = Math.max(0, linha - 1);
 
             scrollPane.getGutter().addLineTrackingIcon(line, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "stop.png"));
 
-            if (tagErro != null)
-            {
+            if (tagErro != null) {
                 textArea.removeLineHighlight(tagErro);
             }
 
             int linhaAtual = textArea.getLineOfOffset(textArea.getCaretPosition());
 
-            if (linhaAtual == line)
-            {
+            if (linhaAtual == line) {
                 textArea.setHighlightCurrentLine(false);
             }
 
@@ -1198,19 +1017,15 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             rolarAtePosicao(line, coluna);
 
             int posicao = textArea.getLineStartOffset(line);
-            
+
             textArea.getFoldManager().ensureOffsetNotInClosedFold(posicao);
-        }
-        catch (BadLocationException ex)
-        {
+        } catch (BadLocationException ex) {
             ex.printStackTrace(System.out);
         }
     }
 
-    private void limparErroExecucao()
-    {
-        if (tagErro != null)
-        {
+    private void limparErroExecucao() {
+        if (tagErro != null) {
             textArea.removeLineHighlight(tagErro);
             tagErro = null;
             scrollPane.getGutter().removeAllTrackingIcons();
@@ -1219,51 +1034,41 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void highlightLinha(int linha)
-    {
-        try
-        {
+    public void highlightLinha(int linha) {
+        try {
             int line = linha - 1;
 
-            if (tag != null)
-            {
+            if (tag != null) {
                 textArea.removeLineHighlight(tag);
             }
 
             int offset = textArea.getLineStartOffset(line);
-            
+
             textArea.getFoldManager().ensureOffsetNotInClosedFold(offset);
-            
+
             tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));
 
             ultimaLinhaHighlight = line;
             ultimaColunaHighlight = 0;
 
             rolarAtePosicao(line, 0);
-        }
-        catch (BadLocationException ex)
-        {
+        } catch (BadLocationException ex) {
             ex.printStackTrace(System.out);
         }
     }
 
     @Override
-    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
-    {
+    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho) {
         int line = linha - 1;
         Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
         int offs = elem.getStartOffset() + coluna;
 
         textArea.getFoldManager().ensureOffsetNotInClosedFold(offs);
-        
-        try
-        {
-            if (tagDetalhado == null)
-            {
+
+        try {
+            if (tagDetalhado == null) {
                 tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
-            }
-            else
-            {
+            } else {
                 textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs + tamanho);
             }
 
@@ -1272,36 +1077,28 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             rolarAtePosicao(line, coluna);
 
-        }
-        catch (BadLocationException ex)
-        {
+        } catch (BadLocationException ex) {
             Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolo)
-    {
+    public void simbolosAlterados(List<Simbolo> simbolo) {
     }
 
     @Override
-    public void simboloDeclarado(Simbolo simbolo)
-    {
+    public void simboloDeclarado(Simbolo simbolo) {
     }
 
     @Override
-    public void mensagemCompiladorSelecionada(Mensagem mensagem)
-    {
+    public void mensagemCompiladorSelecionada(Mensagem mensagem) {
         int linha = 0;
         int coluna = 0;
 
-        if (mensagem instanceof ErroAnalise)
-        {
+        if (mensagem instanceof ErroAnalise) {
             linha = ((ErroAnalise) mensagem).getLinha();
             coluna = ((ErroAnalise) mensagem).getColuna();
-        }
-        else if (mensagem instanceof AvisoAnalise)
-        {
+        } else if (mensagem instanceof AvisoAnalise) {
             linha = ((AvisoAnalise) mensagem).getLinha();
             coluna = ((AvisoAnalise) mensagem).getColuna();
         }
@@ -1309,80 +1106,109 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         posicionarCursor(linha, coluna);
     }
 
-    public void posicionarCursor(int linha, int coluna)
-    {
-        try
-        {
+    public void posicionarCursor(int linha, int coluna) {
+        try {
             int nova = textArea.getLineStartOffset(linha - 1) + coluna;
 
-            if (nova >= 0 && nova < textArea.getText().length())
-            {
+            if (nova >= 0 && nova < textArea.getText().length()) {
                 textArea.setCaretPosition(nova);
                 textArea.requestFocus();
             }
-        }
-        catch (BadLocationException ex)
-        {
+        } catch (BadLocationException ex) {
             ex.printStackTrace(System.err);
         }
     }
 
     @Override
-    public void simboloRemovido(Simbolo simbolo)
-    {
+    public void simboloRemovido(Simbolo simbolo) {
     }
 
-    private Color obterCorErro()
-    {
+    private Color obterCorErro() {
         Color cor = new Color(1f, 0f, 0f, 0.15f);
 
         // Por enquanto vamos fazer no braço, depois vemos como podemos 
         // incluir e/ou buscar esta informação no tema
-        for (Component componente : menuTema.getComponents())
-        {
+        for (Component componente : menuTema.getComponents()) {
             JMenuItem item = (JMenuItem) componente;
 
-            if (item.isSelected() && item.getText().equals("Dark"))
-            {
+            if (item.isSelected() && item.getText().equals("Dark")) {
                 cor = new Color(1f, 0f, 0f, 0.50f);
             }
         }
 
         return cor;
     }
-
-    private class FindReplaceSearchListener implements SearchListener
+    
+    /**
+     * Cria um destaque em um trecho do código fonte
+     *
+     * @param linha a linha onde deve aparecer o destaque. A linha começa
+     * sempre em 0
+     * @param coluna a coluna (contando em caracteres) onde o destaque inicia.
+     * A coluna começa sempre em 0
+     * @param tamanho a quantidade de caracteres que devem ser destacados a
+     * partir da coluna
+     */
+    public void destacarTrechoCodigoFonte(final int linha, final int coluna, final int tamanho)
     {
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
+                    int offs = elem.getStartOffset() + coluna;
+                    
+                    Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+                    
+                    destaquesPlugin.add(destaque);
+                }
+                catch (BadLocationException ex)
+                {
+
+                }
+                
+                rolarAtePosicao(linha, coluna);
+            }
+        });
+    }
+
+    private void removerDestaquesPlugins()
+    {
+        for (Object destaque : destaquesPlugin)
+        {
+            textArea.getHighlighter().removeHighlight(destaque);
+        }
+    }
+    
+    private class FindReplaceSearchListener implements SearchListener {
 
         @Override
-        public String getSelectedText()
-        {
+        public String getSelectedText() {
             return textArea.getSelectedText();
         }
 
         @Override
-        public void searchEvent(SearchEvent e)
-        {
+        public void searchEvent(SearchEvent e) {
             SearchEvent.Type type = e.getType();
             SearchContext context = e.getSearchContext();
             SearchResult result;
 
-            switch (type)
-            {
+            switch (type) {
                 case MARK_ALL:
                     SearchEngine.markAll(textArea, context);
                     break;
                 case FIND:
                     result = SearchEngine.find(textArea, context);
-                    if (!result.wasFound())
-                    {
+                    if (!result.wasFound()) {
                         reiniciar(context, textArea, e);
                     }
                     break;
                 case REPLACE:
                     result = SearchEngine.replace(textArea, context);
-                    if (!result.wasFound())
-                    {
+                    if (!result.wasFound()) {
                         reiniciar(context, textArea, e);
                     }
                     break;
@@ -1429,25 +1255,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
          break;
          }
          }*/
-        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, SearchEvent e)
-        {
+        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, SearchEvent e) {
             UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 
             String s = "A pesquisa chegou no início do arquivo, deseja recomeçar do final?";
 
-            if (context.getSearchForward())
-            {
+            if (context.getSearchForward()) {
                 s = "A pesquisa chegou no final do arquivo, deseja recomeçar do início?";
             }
 
-            if (JOptionPane.showConfirmDialog(getParent(), s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
-            {
-                if (context.getSearchForward())
-                {
+            if (JOptionPane.showConfirmDialog(getParent(), s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
+                if (context.getSearchForward()) {
                     textArea.setCaretPosition(0);
-                }
-                else
-                {
+                } else {
                     textArea.setCaretPosition(textArea.getText().length() - 1);
                 }
 
