@@ -383,6 +383,7 @@
         <delete file="${plugin.build.dir}/README.TXT" casesensitive="false" failonerror="false"/>
         <delete file="${plugin.build.dir}/lib/portugol-studio-plugins.jar" failonerror="false"/>
         <delete file="${plugin.build.dir}/lib/portugol-nucleo.jar" failonerror="false"/>
+        <delete file="${plugin.build.dir}/lib/portugol-utils.jar" failonerror="false"/>
         <deleteEmptyFolders dir="${plugin.build.dir}/lib"/>
         
         <antcall target="-empacotar-recurso">
