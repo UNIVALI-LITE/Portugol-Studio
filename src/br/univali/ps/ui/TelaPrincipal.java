@@ -96,7 +96,10 @@ public final class TelaPrincipal extends JFrame
                 {
                     abrindo = false;
 
-                    verificarAtualizacaoCritica();
+                    // Por enquanto o André pediu para desativar esta verificação, ela só estará disponível 
+                    // no final do ano
+                    
+                    //verificarAtualizacaoCritica();
 
                     if (Configuracoes.getInstancia().isExibirTutorialUso())
                     {
