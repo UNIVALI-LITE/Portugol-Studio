@@ -300,8 +300,10 @@ public final class GerenciadorAtualizacoes
             for (String nomePlugin : pluginsAtualizar)
             {
                 String caminhoRemoto = caminhosRemotos.get("plugins").concat("/").concat(nomePlugin);
+                String pacotePlugin = caminhoRemoto.concat("/pacote.zip");
+                String hashPlugin = caminhoRemoto.concat("/hash");
 
-                if (Util.caminhoRemotoExiste(caminhoRemoto, clienteHttp))
+                if (Util.caminhoRemotoExiste(pacotePlugin, clienteHttp) && Util.caminhoRemotoExiste(hashPlugin, clienteHttp))
                 {
                     File caminhoInstalacao = new File(caminhosInstalacao.get("plugins"), nomePlugin);
                     File caminhoTemporario = new File(new File(Configuracoes.getInstancia().getDiretorioTemporario(), "plugins"), nomePlugin);
