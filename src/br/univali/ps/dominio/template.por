@@ -5,10 +5,10 @@ programa
 		
 	}
 }
-/* $$$ Portugol Studio $$$
- *
- * Esta seÃ§Ã£o do arquivo guarda informaÃ§Ãµes do Portugol Studio.
- * VocÃª pode apagÃ¡-la se estiver utilizando outro editor.
+/* $$$ Portugol Studio $$$ 
  * 
- * @POSICAO-CURSOR = 33;
+ * Esta seção do arquivo guarda informações do Portugol Studio.
+ * Você pode apagá-la se estiver utilizando outro editor.
+ * 
+ * @POSICAO-CURSOR = 38; 
  */

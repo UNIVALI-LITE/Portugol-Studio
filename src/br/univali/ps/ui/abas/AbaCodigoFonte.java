@@ -300,6 +300,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     if (aba == null)
                     {
                         editor.getPortugolDocumento().setFile(arquivo);
+                        podeSalvar = true;
                         acaoSalvarArquivo.actionPerformed(e);
                     }
                     else

@@ -71,36 +71,20 @@ public final class FileHandle
     public static String read(InputStream inputStream, String charset) throws Exception
     {
         StringBuilder reading = new StringBuilder();
-        BufferedReader reader = null;
 
-        try
+        try (InputStreamReader isr = new InputStreamReader(inputStream, charset); BufferedReader reader = new BufferedReader(isr))
         {
-            String line = null;
-            reader = new BufferedReader(new InputStreamReader(inputStream, charset));
-
-            while ((line = reader.readLine()) != null)
+            int read;
+            char[] buffer = new char[4096];
+            
+            while ((read = reader.read(buffer, 0, buffer.length)) > 0)
             {
-                reading.append(line);
-                reading.append("\n");
+                reading.append(buffer, 0, read);
             }
-
-            reader.close();
-
         }
         catch (IOException ex)
         {
             LOGGER.log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
-            try
-            {
-                reader.close();
-            }
-            catch (IOException ex)
-            {
-                LOGGER.log(Level.SEVERE, null, ex);
-            }
         }
 
         return reading.toString();
