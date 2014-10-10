@@ -1,17 +1,20 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaAtalhosTeclado;
+import br.univali.ps.ui.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -46,6 +49,8 @@ public final class AbaInicial extends Aba
     private JPopupMenu menuExemplos;
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
+    
+    private TelaEditarUriAtualizacao telaEditarUriAtualizacao;
 
     public AbaInicial(TelaPrincipal telaPrincipal)
     {
@@ -63,6 +68,69 @@ public final class AbaInicial extends Aba
         configurarLinks();
         configurarExibicaoAvisoVideoAulas();
         criarMenuExemplos();
+
+        instalarObservadorCombinacoesSecretas();
+        instalarAcoesSecretas();
+    }
+
+    private void instalarObservadorCombinacoesSecretas()
+    {
+        final StringBuilder sb = new StringBuilder();
+
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher()
+        {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e)
+            {
+                if (AbaInicial.this.getPainelTabulado().getAbaSelecionada() == AbaInicial.this && e.getID() == KeyEvent.KEY_PRESSED)
+                {
+                    if (Character.isLetterOrDigit(e.getKeyCode()))
+                    {
+                        sb.append(e.getKeyChar());
+                    }
+                    else if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    {
+                        synchronized (AbaInicial.this)
+                        {
+                            String nome = sb.toString().toUpperCase();
+                            Action acao = getActionMap().get(nome);
+
+                            sb.delete(0, sb.length());
+
+                            if (acao != null)
+                            {
+                                acao.actionPerformed(null);
+                            }
+                        }
+                    }
+                }
+
+                return false;
+            }
+        });
+    }
+
+    private void instalarAcoesSecretas()
+    {
+        instalarAcaoModificarURLAtualizacao();
+    }
+
+    private void instalarAcaoModificarURLAtualizacao()
+    {
+        getActionMap().put("BETA", new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (telaEditarUriAtualizacao == null)
+                {
+                    telaEditarUriAtualizacao = new TelaEditarUriAtualizacao();
+                }
+                
+                telaEditarUriAtualizacao.setLocationRelativeTo(null);
+                telaEditarUriAtualizacao.setVisible(true);
+            }
+        });
     }
 
     private void configurarExibicaoAvisoVideoAulas()
@@ -394,7 +462,7 @@ public final class AbaInicial extends Aba
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setForeground(new Color(255, 255, 130));
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.BOLD));
-                
+
             }
 
             @Override
@@ -490,9 +558,8 @@ public final class AbaInicial extends Aba
     private void criarDicasInterface()
     {
         FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
-        
+
     }
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

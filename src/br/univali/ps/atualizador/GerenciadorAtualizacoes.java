@@ -28,26 +28,35 @@ import org.apache.http.impl.client.HttpClients;
  */
 public final class GerenciadorAtualizacoes
 {
-    private static final int INTERVALO_ENTRE_TENTATIVAS_ATUALIZACAO = 60000; // 1 minuto
+    private static final int INTERVALO_ENTRE_TENTATIVAS_ATUALIZACAO = 10000; // 10 segundos
     private static final int HTTP_OK = 200;
 
     private static final Logger LOGGER = Logger.getLogger(GerenciadorAtualizacoes.class.getName());
-    private static final String uriAtualizacao = PortugolStudio.getInstancia().getUriAtualizacao();
     private static final ExecutorService servicoThread = Executors.newSingleThreadExecutor();
 
-    private static final Map<String, String> caminhosInstalacao = criarMapaCaminhosInstalacao();
-    private static final Map<String, String> caminhosRemotos = criarMapaCaminhosRemotos();
-    private static final File caminhoScriptAtualizacaoLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script");
-    private static final File caminhoScriptAtualizacaoTemporario = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script.temp");
-
-    private static final String caminhoScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.script");
-    private static final String caminhoHashScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.hash");
-
+    private boolean executando = false;
+    private boolean uriModificada = false;
     private ObservadorAtualizacao observadorAtualizacao;
 
-    private static boolean executando = false;
+    private String uriAtualizacao;
+    private String caminhoScriptAtualizacaoRemoto;
+    private String caminhoHashScriptAtualizacaoRemoto;
 
-    private static Map<String, String> criarMapaCaminhosInstalacao()
+    private Map<String, String> caminhosInstalacao;
+    private Map<String, String> caminhosRemotos;
+    private File caminhoScriptAtualizacaoLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script");
+    private File caminhoScriptAtualizacaoTemporario = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script.temp");
+
+    public GerenciadorAtualizacoes()
+    {
+        setUriAtualizacao(PortugolStudio.getInstancia().getUriAtualizacao());
+        setUriAtualizacaoModificada(false);
+
+        caminhoScriptAtualizacaoLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script");
+        caminhoScriptAtualizacaoTemporario = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script.temp");
+    }
+
+    private Map<String, String> criarMapaCaminhosInstalacao()
     {
         Configuracoes configuracoes = Configuracoes.getInstancia();
         Map<String, String> mapaCaminhosInstalacao = new HashMap<>();
@@ -61,7 +70,7 @@ public final class GerenciadorAtualizacoes
         return mapaCaminhosInstalacao;
     }
 
-    private static Map<String, String> criarMapaCaminhosRemotos()
+    private Map<String, String> criarMapaCaminhosRemotos()
     {
         Map<String, String> mapaCaminhosRemotos = new HashMap<>();
 
@@ -74,13 +83,56 @@ public final class GerenciadorAtualizacoes
         return mapaCaminhosRemotos;
     }
 
-    public synchronized void baixarAtualizacoes()
+    public void baixarAtualizacoes()
     {
-        if (!executando)
+        if (!isExecutando())
         {
-            executando = true;
+            setExecutando(true);
+
             servicoThread.execute(new Atualizacao());
         }
+    }
+
+    private synchronized void setExecutando(boolean executando)
+    {
+        this.executando = executando;
+    }
+
+    private synchronized boolean isExecutando()
+    {
+        return executando;
+    }
+
+    synchronized void verificarUriAtualizacao() throws IOException
+    {
+        if (uriModificada)
+        {
+            throw new IOException("A URI de atualizaçao foi modificada");
+        }
+    }
+    
+    private synchronized boolean isUriAtualizacaoModificada()
+    {
+        return uriModificada;
+    }
+
+    private synchronized void setUriAtualizacaoModificada(boolean modificada)
+    {
+        this.uriModificada = modificada;
+    }
+
+    public void setUriAtualizacao(String uriAtualizacao)
+    {
+        this.uriAtualizacao = uriAtualizacao;
+
+        this.caminhoScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.script");
+        this.caminhoHashScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.hash");
+
+        this.caminhosInstalacao = criarMapaCaminhosInstalacao();
+        this.caminhosRemotos = criarMapaCaminhosRemotos();
+
+        setUriAtualizacaoModificada(isExecutando());
+        baixarAtualizacoes();
     }
 
     public void setObservadorAtualizacao(ObservadorAtualizacao observadorAtualizacao)
@@ -106,6 +158,8 @@ public final class GerenciadorAtualizacoes
                     {
                         houveFalhaAtualizacao = false;
 
+                        verificarUriAtualizacao();
+                        
                         criarTarefasAtualizacao(clienteHttp);
                         executarTarefasAtualizacao(clienteHttp);
                     }
@@ -121,12 +175,18 @@ public final class GerenciadorAtualizacoes
                 LOGGER.log(Level.WARNING, String.format("Erro ao fechar o cliente HTTP: %s", excecao.getMessage()), excecao);
             }
 
+            setExecutando(false);
             notificarConclusaoAtualizacao();
         }
 
         private void capturarFalhaAtualizacao(Throwable excecao)
         {
             houveFalhaAtualizacao = true;
+            
+            if (isUriAtualizacaoModificada())
+            {
+                setUriAtualizacaoModificada(false);
+            }
 
             LOGGER.log(Level.WARNING, String.format("Erro ao atualizar o Portugol Studio: %s", excecao.getMessage()), excecao);
 
@@ -156,17 +216,21 @@ public final class GerenciadorAtualizacoes
 
             for (TarefaAtualizacao tarefa : tarefas)
             {
-                if (tarefa.precisaAtualizar())
+                PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();
+                
+                if (tarefa.precisaAtualizar())                   
                 {
-                    tarefa.baixarAtualizacao();
+                    tarefa.baixarAtualizacao();                    
                     houveAtualizacoes = true;
                 }
             }
-
+            
+            PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();
+            
             if (houveAtualizacoes)
             {
                 Util.baixarArquivoRemoto(caminhoScriptAtualizacaoRemoto, caminhoScriptAtualizacaoTemporario, clienteHttp);
-
+                
                 validarScriptAtualizacao(clienteHttp);
             }
         }
@@ -190,7 +254,7 @@ public final class GerenciadorAtualizacoes
             catch (IOException excecao)
             {
                 FileUtils.deleteQuietly(caminhoScriptAtualizacaoTemporario);
-                
+
                 throw excecao;
             }
         }
@@ -236,7 +300,7 @@ public final class GerenciadorAtualizacoes
             for (String nomePlugin : pluginsAtualizar)
             {
                 String caminhoRemoto = caminhosRemotos.get("plugins").concat("/").concat(nomePlugin);
-                
+
                 if (Util.caminhoRemotoExiste(caminhoRemoto, clienteHttp))
                 {
                     File caminhoInstalacao = new File(caminhosInstalacao.get("plugins"), nomePlugin);
@@ -261,7 +325,7 @@ public final class GerenciadorAtualizacoes
             {
                 FileUtils.deleteQuietly(caminhoScriptAtualizacaoLocal);
             }
-            
+
             if (caminhoScriptAtualizacaoTemporario.exists())
             {
                 FileUtils.deleteQuietly(caminhoScriptAtualizacaoTemporario);
@@ -287,7 +351,7 @@ public final class GerenciadorAtualizacoes
                         while ((linha = leitor.readLine()) != null)
                         {
                             linha = linha.trim();
-                            
+
                             if (linha.length() > 0 && !linha.startsWith("#"))
                             {
                                 entradas.add(linha);

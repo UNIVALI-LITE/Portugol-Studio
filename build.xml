@@ -128,7 +128,7 @@
         </for>
     </target> 
     
-    <target name="publicar-atualizacoes-no-servidor" description="Cria os pacotes ZIP e os Hashes para todos os recursos do Portugol Studio e publica no servidor FTP" depends="clean">
+    <target name="publicar-atualizacoes" description="Cria os pacotes ZIP e os Hashes para todos os recursos do Portugol Studio e publica no servidor FTP" depends="clean">
 
         <antcall target="-empacotar-recursos"/>
         <antcall target="-empacotar-aplicacao"/>        
@@ -139,7 +139,25 @@
             <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*" excludes="inicializador-ps.jar"/>
         </copy>
         
-        <antcall target="-atualizar-arquivos-servidor"/>
+        <antcall target="-atualizar-arquivos-servidor">
+            <param name="tipo.atualizacao" value="producao"/>
+        </antcall>
+    </target>
+    
+    <target name="publicar-atualizacoes-de-teste" description="Cria os pacotes ZIP e os Hashes para todos os recursos do Portugol Studio e publica no servidor FTP" depends="clean">
+
+        <antcall target="-empacotar-recursos"/>
+        <antcall target="-empacotar-aplicacao"/>        
+        <antcall target="-compilar-portugol-inicializador"/>
+        
+        <copy todir="${dist.dir}">
+            <fileset file="../Portugol-Studio-Recursos/plugins/plugins.auto"/>
+            <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*" excludes="inicializador-ps.jar"/>
+        </copy>
+        
+        <antcall target="-atualizar-arquivos-servidor">
+            <param name="tipo.atualizacao" value="teste"/>
+        </antcall>
     </target>
     
     <target name="-baixar-java" depends="-verificar-java">
@@ -211,22 +229,32 @@
     
     
     <target name="-atualizar-arquivos-servidor">
+        <condition property="update.path" value="public_html/portugol/studio">
+            <equals arg1="${tipo.atualizacao}" arg2="producao"/>
+        </condition>
+        
+        <condition property="update.path" value="public_html/teste/portugol/studio">
+            <equals arg1="${tipo.atualizacao}" arg2="teste"/>
+        </condition>
+        
         <input message="Informe a senha do FTP" addproperty="dist.ftp.password"/>
         
         <property name="dist.ftp.user" value="alice"/>
         
-        <antcall target="limpar-arquivos-servidor">
+        <antcall target="-limpar-arquivos-servidor">
             <param name="dist.ftp.user" value="${dist.ftp.user}"/>
             <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+            <param name="update.path" value="${update.path}"/>
         </antcall>
         <antcall target="-fazer-upload-arquivos-servidor">
             <param name="dist.ftp.user" value="${dist.ftp.user}"/>
             <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+            <param name="update.path" value="${update.path}"/>
         </antcall>
     </target>
     
     <target name="-fazer-upload-arquivos-servidor">
-        <ftp server="siaiacad17.univali.br" action="send" userid="${dist.ftp.user}" remotedir="public_html/portugol/studio" password="${dist.ftp.password}" verbose="true">
+        <ftp server="siaiacad17.univali.br" action="send" userid="${dist.ftp.user}" remotedir="${update.path}" password="${dist.ftp.password}" verbose="true">
             <fileset dir="${dist.dir}">
                 <include name="*"/>
                 <include name="**"/>
@@ -238,15 +266,17 @@
         <antcall target="-remover-arquivos-servidor">
             <param name="dist.ftp.user" value="${dist.ftp.user}"/>
             <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+            <param name="update.path" value="${update.path}"/>
         </antcall>
         <antcall target="-remover-pastas-servidor">
             <param name="dist.ftp.user" value="${dist.ftp.user}"/>
             <param name="dist.ftp.password" value="${dist.ftp.password}"/>
+            <param name="update.path" value="${update.path}"/>
         </antcall>
     </target>
     
     <target name="-remover-arquivos-servidor">
-        <ftp server="siaiacad17.univali.br" action="del" userid="${dist.ftp.user}" remotedir="public_html/portugol/studio" password="${dist.ftp.password}" verbose="true" >
+        <ftp server="siaiacad17.univali.br" action="del" userid="${dist.ftp.user}" remotedir="${update.path}" password="${dist.ftp.password}" verbose="true" >
             <fileset>
                 <include name="*"/>
                 <include name="**"/>
@@ -255,7 +285,7 @@
     </target>
     
     <target name="-remover-pastas-servidor">
-        <ftp server="siaiacad17.univali.br" action="rmdir" userid="${dist.ftp.user}" remotedir="public_html/portugol/studio" password="${dist.ftp.password}" verbose="true">
+        <ftp server="siaiacad17.univali.br" action="rmdir" userid="${dist.ftp.user}" remotedir="${update.path}" password="${dist.ftp.password}" verbose="true">
             <fileset>
                 <include name="*"/>
                 <include name="**"/>

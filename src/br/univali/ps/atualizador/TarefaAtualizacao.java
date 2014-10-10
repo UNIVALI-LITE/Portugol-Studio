@@ -1,5 +1,6 @@
 package br.univali.ps.atualizador;
 
+import br.univali.ps.nucleo.PortugolStudio;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -53,8 +54,13 @@ final class TarefaAtualizacao
         {
             caminhoTemporario.mkdirs();
 
+            PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();            
             baixarPacote();
+            
+            PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();
             baixarHash();
+            
+            PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();
             descompactarPacote();
 
             caminhoPacoteTemporario.delete();
@@ -81,14 +87,14 @@ final class TarefaAtualizacao
             IOException erro = null;
             
             try
-            {
+            {   
                 Util.baixarArquivoRemoto(caminhoPacoteRemoto, caminhoPacoteTemporario, clienteHttp);
             }
             catch (IOException ex)
             {
                 erro = ex;
             }
-
+            
             if (erro == null && pacoteBaixadoComSucesso())
             {
                 break;
