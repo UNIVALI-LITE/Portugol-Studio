@@ -1383,7 +1383,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 {
                     Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
                     int offs = elem.getStartOffset() + coluna;
-
+                    textArea.getHighlighter().removeAllHighlights();
                     Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
 
                     destaquesPlugin.add(destaque);
