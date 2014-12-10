@@ -337,7 +337,7 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                           <SubComponents>
-                            <Component class="br.univali.ps.ui.Editor" name="editor">
+                            <Component class="br.univali.ps.ui.editor.Editor" name="editor">
                               <Properties>
                                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                   <Dimension value="[350, 22]"/>

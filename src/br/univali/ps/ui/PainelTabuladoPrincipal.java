@@ -37,6 +37,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado
         abaAjuda = new AbaAjuda();
     }
 
+    
     public void setAbaInicial(AbaInicial abaInicial)
     {
         this.abaInicial = abaInicial;

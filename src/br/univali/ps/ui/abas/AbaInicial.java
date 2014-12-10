@@ -237,6 +237,7 @@ public final class AbaInicial extends Aba
                         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         getPainelTabulado().add(abaCodigoFonte);
+                        
                         //abaCodigoFonte.adicionar(getPainelTabulado());
                     }
                     catch (Exception excecao)
