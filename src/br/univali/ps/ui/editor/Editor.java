@@ -151,7 +151,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     public Set<Integer> getLinhasComPontoDeParada(){
-        return ((PSTextArea) textArea).getLinhasComPontoDeParada();
+        return getTextArea().getLinhasComPontoDeParada();
     }
 
     public SuporteLinguagemPortugol getSuporteLinguagemPortugol() {
@@ -879,8 +879,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         this.revalidate();
     }
 
-    public RSyntaxTextArea getTextArea() {
-        return textArea;
+    public PSTextArea getTextArea() {
+        return (PSTextArea)textArea;
     }
 
     public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutar, final Action acaoInterromper, final Action acaoDepurar, final Action acaoProximaInstrucao) {

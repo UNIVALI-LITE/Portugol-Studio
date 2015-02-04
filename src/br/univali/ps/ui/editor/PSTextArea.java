@@ -41,10 +41,16 @@ public class PSTextArea extends RSyntaxTextArea {
     private static final Logger LOGGER = Logger.getLogger(PSTextArea.class.getName());
     private Icon iconeDoPontoDeParada;
     private List<GutterIconInfo> pontosDeParada;
+    
+    private List<PSTextAreaListener> listeners = new ArrayList<>();
 
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         this.pontosDeParada = new ArrayList<>();
+    }
+    
+    public void addListenter(PSTextAreaListener l){
+        listeners.add(l);
     }
 
     public void setIconeDosBreakPoints(Icon icone) {
@@ -70,6 +76,7 @@ public class PSTextArea extends RSyntaxTextArea {
                 if (getLineOfOffset(gutterInfo.getMarkedOffset()) == linha) {
                     gutter.removeTrackingIcon(gutterInfo);
                     pontosDeParada.remove(gutterInfo);
+                    disparaPontosDeParadaAtualizados();
                     return;
                 }
             }
@@ -77,12 +84,19 @@ public class PSTextArea extends RSyntaxTextArea {
             //se não removeu então está inserindo
             GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha, iconeDoPontoDeParada);
             pontosDeParada.add(iconeInfo);
+            disparaPontosDeParadaAtualizados();
 
         } catch (BadLocationException e) {
             //
         }
     }
 
+    private void disparaPontosDeParadaAtualizados(){
+        for (PSTextAreaListener listener : listeners) {
+            listener.pontosDeParaAtualizados(getLinhasComPontoDeParada());
+        }
+    }
+    
     public Set<Integer> getLinhasComPontoDeParada() {
         Set<Integer> pontos = new HashSet<>();
         try {

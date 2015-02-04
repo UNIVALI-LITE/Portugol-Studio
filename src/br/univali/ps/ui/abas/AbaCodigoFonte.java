@@ -29,6 +29,8 @@ import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.PainelTabulado;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaOpcoesExecucao;
+import br.univali.ps.ui.editor.PSTextArea;
+import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -46,6 +48,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -417,6 +420,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void instalarObservadores() {
 
+        getEditor().getTextArea().addListenter(new PSTextAreaListener() {
+
+            @Override
+            public void pontosDeParaAtualizados(Set<Integer> pontosDeParada) {
+                if(programa != null){
+                    programa.setPontosDeParada(pontosDeParada);
+                }
+            }
+        });
+        
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
         configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
@@ -1159,7 +1172,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 programa.adicionarObservadorExecucao(this);
 
                 if (depurar) {
-                    programa.depurar(telaOpcoesExecucao.getParametros(), editor.getLinhasComPontoDeParada());
+                    programa.setPontosDeParada(editor.getLinhasComPontoDeParada());
+                    programa.depurar(telaOpcoesExecucao.getParametros());
                 } else {
                     programa.executar(telaOpcoesExecucao.getParametros());
                 }
