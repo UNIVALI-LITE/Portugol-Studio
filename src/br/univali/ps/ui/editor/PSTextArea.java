@@ -3,19 +3,14 @@ package br.univali.ps.ui.editor;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -45,13 +40,11 @@ public class PSTextArea extends RSyntaxTextArea {
 
     private static final Logger LOGGER = Logger.getLogger(PSTextArea.class.getName());
     private Icon iconeDoPontoDeParada;
-    private Map<Integer, GutterIconInfo> pontosDeParada;
+    private List<GutterIconInfo> pontosDeParada;
 
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
-        this.pontosDeParada = new HashMap<>();
-                
-        //setSize(1, 600);
+        this.pontosDeParada = new ArrayList<>();
     }
 
     public void setIconeDosBreakPoints(Icon icone) {
@@ -72,26 +65,35 @@ public class PSTextArea extends RSyntaxTextArea {
     private void alternaPontoDeParada(int linha) {
         try {
             Gutter gutter = RSyntaxUtilities.getGutter(this);
-            GutterIconInfo infosDoIcone = pontosDeParada.get(linha);
-            if (infosDoIcone != null) {//break point existe na linha
-                gutter.removeTrackingIcon(infosDoIcone);
-                pontosDeParada.remove(linha);
-            } else {//break point não existia e será criado
-                if (iconeDoPontoDeParada == null) {
-                    LOGGER.warning("icone do break point não foi setado! Utilize o método setIconeDosBreakPoints");
+            //tentar remover
+            for (GutterIconInfo gutterInfo : pontosDeParada) {
+                if (getLineOfOffset(gutterInfo.getMarkedOffset()) == linha) {
+                    gutter.removeTrackingIcon(gutterInfo);
+                    pontosDeParada.remove(gutterInfo);
+                    return;
                 }
-                GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha, iconeDoPontoDeParada);
-                pontosDeParada.put(linha, iconeInfo);
-
             }
+
+            //se não removeu então está inserindo
+            GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha, iconeDoPontoDeParada);
+            pontosDeParada.add(iconeInfo);
+
         } catch (BadLocationException e) {
             //
         }
     }
 
     public Set<Integer> getLinhasComPontoDeParada() {
-        return new HashSet<>(pontosDeParada.keySet());
+        Set<Integer> pontos = new HashSet<>();
+        try {
+            for (GutterIconInfo gutterInfo : pontosDeParada) {
+                pontos.add(getLineOfOffset(gutterInfo.getMarkedOffset()));
+            }
+        } catch (BadLocationException ex) {
+        }
+        return pontos;
     }
+    //++++++++++++++++++++++++++++++++++
 
     //++++++++++++++++++++++++++++++++++
     private static class PSTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
