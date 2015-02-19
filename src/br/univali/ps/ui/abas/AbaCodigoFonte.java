@@ -1261,7 +1261,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if (depurar)
                 {
-                    programa.depurar(telaOpcoesExecucao.getParametros(), telaOpcoesExecucao.isDepuracaoDetalhada() && exibirOpcoes);
+                    programa.depurar(telaOpcoesExecucao.getParametros());
                 }
                 else
                 {
