@@ -9,6 +9,7 @@ import br.univali.portugol.ajuda.Topico;
 import br.univali.portugol.ajuda.TopicoHtml;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -266,9 +267,11 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 	private class PreProcessadorConteudoAjuda implements PreProcessadorConteudo
 	{
 
-		private Pattern padraoInicioTagPre = Pattern.compile("<pre[^>]*>([^<]*)</pre>", Pattern.CASE_INSENSITIVE);
-		private Pattern padraoAtributoSrcHref = Pattern.compile("(src|href)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
+		private Pattern padraoInicioTagDiv = Pattern.compile("<div[^>]*>([^<]*)</div>", Pattern.CASE_INSENSITIVE);
+		private Pattern padraoAtributoSrcHrefDataFile = Pattern.compile("(src|href|data-file)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
 		private Pattern padraoAtributoClass = Pattern.compile("(class)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
+		private Pattern padraoAtributoDataFile = Pattern.compile("(data-file)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
+		private Pattern padraoAtributoDataType = Pattern.compile("(data-type)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
 
 		@Override
 		public String processar(String conteudo, Topico topico)
@@ -284,43 +287,66 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 			try
 			{
 				StringBuilder novoConteudo = new StringBuilder(conteudo);
-				Matcher avaliadorTagPre = padraoInicioTagPre.matcher(novoConteudo);
+				Matcher avaliadorTagDiv = padraoInicioTagDiv.matcher(novoConteudo);
 
-				while (avaliadorTagPre.find())
+				while (avaliadorTagDiv.find())
 				{
-					String tag = avaliadorTagPre.group();
-					int inicioTag = avaliadorTagPre.start();
+					String tag = avaliadorTagDiv.group();
+					int inicioTag = avaliadorTagDiv.start();
 
 					Matcher avaliadorAtributoClass = padraoAtributoClass.matcher(tag);
 
 					if (avaliadorAtributoClass.find())
 					{
-						String valor = avaliadorAtributoClass.group(3);
+						String valorClasse = avaliadorAtributoClass.group(3);
 
-						if (valor.toLowerCase().equals("codigo-portugol"))
+						if (valorClasse.toLowerCase().equals("codigo-portugol"))
 						{
-							String codigo = avaliadorTagPre.group(1).trim();
-							codigo = codigo.replace("\r\n", "${rn}");
-							codigo = codigo.replace("\n", "${n}");
-							codigo = codigo.replace("\t", "${t}");
-							codigo = codigo.replace("\"", "${dq}");
-							codigo = codigo.replace("'", "${sq}");
-                                   //codigo = codigo.replace("&", "&amp;");
-							//codigo = codigo.replace("", templateRaiz)
+							Matcher avaliadorDataFile = padraoAtributoDataFile.matcher(tag);
 
-							String tagObject
-									= "  <div>"
-									+ "     <object classid=\"br.univali.ps.ui.EditorAjuda\">"
-									+ "         <param name=\"editavel\" value=\"false\">"
-									+ "         <param name=\"codigo\" value=\"%s\">"
-									+ "     </object>"
-									+ "</div>";
+							if (avaliadorDataFile.find())
+							{
 
-							tagObject = String.format(tagObject, codigo);
+								String diretorioCodigoFonte = avaliadorDataFile.group(3);
+								String codigo;
+								try
+								{
+									codigo = lerCodigoFonte(diretorioCodigoFonte).trim();
+								} catch (Exception excessao)
+								{
+									codigo = "//Erro ao carregar código fonte";
+								}
+								//String codigo = avaliadorTagDiv.group(1).trim();
+								codigo = codigo.replace("\r\n", "${rn}");
+								codigo = codigo.replace("\n", "${n}");
+								codigo = codigo.replace("\t", "${t}");
+								codigo = codigo.replace("\"", "${dq}");
+								codigo = codigo.replace("'", "${sq}");
+								//codigo = codigo.replace("&", "&amp;");							
+								//codigo = codigo.replace("", templateRaiz)
 
-							novoConteudo.replace(inicioTag, inicioTag + tag.length(), tagObject);
+								String tagObject
+										= "  <div class=\"codigo-fonte\">"
+										+ "     <object classid=\"br.univali.ps.ui.ajuda.EditorAjuda\">"
+										+ "         <param name=\"editavel\" value=\"false\">";
 
-							avaliadorTagPre.reset(novoConteudo);
+								Matcher avaliadorDataType = padraoAtributoDataType.matcher(tag);
+								if (avaliadorDataType.find() && avaliadorDataType.group(3).equalsIgnoreCase("sintaxe"))
+								{
+									tagObject
+											+= "			<param name=\"somenteSintatico\" value=\"true\">";
+								}
+								tagObject
+										+= "         <param name=\"codigo\" value=\"%s\">"
+										+ "     </object>"
+										+ "</div>";
+
+								tagObject = String.format(tagObject, codigo);
+
+								novoConteudo.replace(inicioTag, inicioTag + tag.length(), tagObject);
+
+								avaliadorTagDiv.reset(novoConteudo);
+							}
 						}
 					}
 				}
@@ -332,12 +358,25 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 			}
 		}
 
+		private String lerCodigoFonte(String diretorio) throws Exception
+		{
+			//TODO ler codigo fonte
+			if (diretorio.substring(0, 5).equalsIgnoreCase("file:"))
+			{
+				File arquivoCodigoFonte = new File(diretorio.substring(5));
+				return FileHandle.open(arquivoCodigoFonte);
+			} else
+			{
+				throw new Exception();
+			}
+		}
+
 		private String resolverReferenciasArquivos(String conteudo, Topico topico)
 		{
 			try
 			{
 				StringBuilder novoConteudo = new StringBuilder(conteudo);
-				Matcher avaliador = padraoAtributoSrcHref.matcher(novoConteudo);
+				Matcher avaliador = padraoAtributoSrcHrefDataFile.matcher(novoConteudo);
 
 				while (avaliador.find())
 				{
@@ -415,7 +454,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 		{
 			String diretorioIcone = topico.getIcone();
 			File arquivoIcone;
-			if(diretorioIcone == null)
+			if (diretorioIcone == null)
 			{
 				diretorioIcone = Configuracoes.getInstancia().getDiretorioAjuda().getPath();
 				diretorioIcone += "\\recursos\\imagens\\padrao";
@@ -427,8 +466,9 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 					diretorioIcone += "\\arvore_no.png";
 				}
 				arquivoIcone = new File(diretorioIcone);
-				
-			}else{
+
+			} else
+			{
 				arquivoIcone = new File(diretorioIcone);
 				if (!arquivoIcone.isAbsolute())
 				{
@@ -462,7 +502,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
 			novoNome = novoNome.concat(extensao);
 			arquivoIcone = new File(arquivoIcone.toString().replace(nomeCompleto, novoNome));
-			System.out.println(arquivoIcone.getName());///****
 			return IconFactory.createIcon(arquivoIcone);
 		}
 	}
@@ -554,7 +593,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
         painelRolagemConteudo.setBorder(null);
-        painelRolagemConteudo.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        painelRolagemConteudo.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         painelRolagemConteudo.setOpaque(false);
 
         conteudo.setEditable(false);

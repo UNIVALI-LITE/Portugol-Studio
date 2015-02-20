@@ -209,7 +209,7 @@
                     </Property>
                     <Property name="viewportBorder" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="8" left="8" right="8" top="8"/>
+                        <EmptyBorder bottom="8" left="0" right="0" top="8"/>
                       </Border>
                     </Property>
                     <Property name="opaque" type="boolean" value="false"/>

@@ -189,12 +189,21 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
         }
     }
-
+	
     private void configurarParser()
     {
         suporteLinguagemPortugol = new SuporteLinguagemPortugol();
         suporteLinguagemPortugol.instalar(textArea);
     }
+	
+	public void setParsable(boolean parsable){
+		if(parsable){
+			textArea.clearParsers();
+			configurarParser();
+		}else{
+			textArea.clearParsers();
+		}
+	}
 
     private void criarDicasInterface()
     {
@@ -221,7 +230,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         errorStrip = new ErrorStrip(textArea);
         errorStrip.setBackground(new Color(220, 220, 220));
-        painelEditor.add(errorStrip, BorderLayout.EAST);
+		painelEditor.add(errorStrip, BorderLayout.EAST);
     }
 
     private void configurarAcoes()

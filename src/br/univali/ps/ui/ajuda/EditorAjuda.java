@@ -1,15 +1,18 @@
 package br.univali.ps.ui.ajuda;
 
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.PainelTabulado;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -17,68 +20,85 @@ import javax.swing.JPanel;
  */
 public final class EditorAjuda extends JPanel
 {
-    private Editor editor;
-    private Action acaoTenteVoceMesmo;
-    private PainelTabulado painelTabulado;
-    
-    public EditorAjuda()
-    {
-        initComponents();
-        configurarEditor();
-        configurarAcoes();
-        
-        botaoTentar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
-        
-    }
-    
-    private void configurarEditor()
-    {
-        editor = new Editor();
-        editor.getScrollPane().setWheelScrollingEnabled(false);
-        painelEditor.add(editor, BorderLayout.CENTER);
-    }
-    
-    private void configurarAcoes()
-    {
-        configurarAcaoTenteVoceMesmo();
-    }
-    
-    public void setPainelTabulado(PainelTabulado painelTabulado){
-        this.painelTabulado = painelTabulado;
-    }
-    
-    private void configurarAcaoTenteVoceMesmo()
-    {
-        acaoTenteVoceMesmo = new AbstractAction("Tente você mesmo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                AbaCodigoFonte aba = AbaCodigoFonte.novaAba();
-                aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
-                
-                if(painelTabulado == null){
-                    throw new IllegalStateException("O painel tabulado do EditorAjuda não está setado!");
-                }
-                painelTabulado.add(aba);
-            }
-        };
-        
-        botaoTentar.setAction(acaoTenteVoceMesmo);                
-    }
-    
-    public void setCodigo(String codigo)
-    {
-        editor.setCodigo(codigo);
-    }
-    
-    public void setEditavel(String editavel)
-    {
-        editor.setEditavel(editavel);
-    }
-    
-    @SuppressWarnings("unchecked")
+
+	private Editor editor;
+	private Action acaoTenteVoceMesmo;
+	private PainelTabulado painelTabulado;
+
+	public EditorAjuda()
+	{
+		initComponents();
+		configurarEditor();
+		configurarAcoes();
+		botaoTentar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		setPainelTabulado(PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado());
+		//editor.getTextArea().clearParsers(); //--Remove Parsers, para códigos que não devem ser compilados.
+
+	}
+
+	private void configurarEditor()
+	{
+		editor = new Editor();
+		editor.getScrollPane().setWheelScrollingEnabled(false);
+		painelEditor.add(editor, BorderLayout.CENTER);
+	}
+
+	private void configurarAcoes()
+	{
+		configurarAcaoTenteVoceMesmo();
+	}
+
+	public void setPainelTabulado(PainelTabulado painelTabulado)
+	{
+		this.painelTabulado = painelTabulado;
+	}
+
+	private void configurarAcaoTenteVoceMesmo()
+	{
+		acaoTenteVoceMesmo = new AbstractAction("Tente você mesmo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"))
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				AbaCodigoFonte aba = AbaCodigoFonte.novaAba();
+				aba.getEditor().setCodigoFonte(editor.getTextArea().getText());
+
+				if (painelTabulado == null)
+				{
+					throw new IllegalStateException("O painel tabulado do EditorAjuda não está setado!");
+				}
+				painelTabulado.add(aba);
+			}
+		};
+
+		botaoTentar.setAction(acaoTenteVoceMesmo);
+	}
+
+	public void setCodigo(String codigo)
+	{
+		editor.setCodigo(codigo);
+	}
+
+	public void setEditavel(String editavel)
+	{
+		editor.setEditavel(editavel);
+	}
+
+	public void setSomenteSintatico(String somenteSintatico)
+	{
+		boolean sintatico = Boolean.parseBoolean(somenteSintatico);
+		if (sintatico)
+		{
+			editor.setParsable(false);
+			this.remove(painelBotao);
+			this.remove(painelEditor);
+			this.add(painelEditor, BorderLayout.CENTER);
+			this.setBorder(null);
+			painelEditor.setBorder(new LineBorder(new Color(210, 210, 210), 1));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {
