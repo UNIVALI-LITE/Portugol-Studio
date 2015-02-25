@@ -1,11 +1,11 @@
 package br.univali.ps.ui.editor;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.AbaMensagemCompiladorListener;
-import br.univali.portugol.nucleo.depuracao.DepuradorListener;
-import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
+import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
@@ -88,7 +88,7 @@ import org.fife.ui.rtextarea.SearchResult;
  * @author Fillipi Pelz
  * @author Luiz Fernando Noschang
  */
-public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener {
+public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, ObservadorExecucao, AbaMensagemCompiladorListener {
 
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
@@ -883,18 +883,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return (PSTextArea)textArea;
     }
 
-    public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutar, final Action acaoInterromper, final Action acaoDepurar, final Action acaoProximaInstrucao) {
+    public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutarPontoParada, final Action acaoExecutarPasso, final Action acaoInterromper) {
         configurarAcaoExterna(btnSalvar, acaoSalvar);
         configurarAcaoExterna(btnSalvarComo, acaoSalvarComo);
-        configurarAcaoExterna(btnExecutar, acaoExecutar);
+        configurarAcaoExterna(btnExecutar, acaoExecutarPontoParada);
         configurarAcaoExterna(btnInterromper, acaoInterromper);
-        configurarAcaoExterna(btnDepurar, acaoDepurar);
-        configurarAcaoExterna(btnProximaInstrucao, acaoProximaInstrucao);
+        configurarAcaoExterna(btnDepurar, acaoExecutarPasso);
 
-        FabricaDicasInterface.criarDicaInterface(btnDepurar, "Inicia a depuração do programa atual", acaoDepurar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual", acaoExecutar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução/depuração do programa atual", acaoInterromper, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnProximaInstrucao, "Executa a intrução atual do programa e vai para a próxima instrução", acaoProximaInstrucao, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnDepurar, "Executa o programa atual passo a passo", acaoExecutarPasso, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual até o próximo ponto de parada", acaoExecutarPontoParada, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução do programa atual", acaoInterromper, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
 
     private void configurarAcaoExterna(final JButton botao, final Action acaoExterna) {
@@ -1004,10 +1002,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void depuracaoInicializada(InterfaceDepurador depurador) {
+    public void execucaoIniciada(Programa programa) 
+    {
 
     }
 
+    @Override
+    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
+        
+    }
+    
+    
     private void destacarErroExecucao(int linha, int coluna) {
         try {
             int line = Math.max(0, linha - 1);
@@ -1074,7 +1079,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho) {
+    public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
         int line = linha - 1;
         Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
         int offs = elem.getStartOffset() + coluna;

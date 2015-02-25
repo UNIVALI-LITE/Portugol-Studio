@@ -15,8 +15,8 @@ import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
-import br.univali.portugol.nucleo.depuracao.DepuradorListener;
-import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
+import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
+import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.simbolos.Funcao;
 import br.univali.portugol.nucleo.simbolos.Matriz;
 import br.univali.portugol.nucleo.simbolos.Ponteiro;
@@ -61,7 +61,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  * @author Robert Futrell
  * @version 1.0
  */
-public class PortugolOutlineTree extends AbstractTree implements DepuradorListener
+public class PortugolOutlineTree extends AbstractTree implements ObservadorExecucao
 {
 
     private DefaultTreeModel model;
@@ -235,17 +235,22 @@ public class PortugolOutlineTree extends AbstractTree implements DepuradorListen
     ComparadorNos comparador = new ComparadorNos();
 
     @Override
-    public void depuracaoInicializada(InterfaceDepurador depurador)
-    {
+    public void execucaoIniciada(Programa programa) {
+        
     }
 
+    @Override
+    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
+        
+    }    
+    
     @Override
     public void highlightLinha(int linha)
     {
     }
 
     @Override
-    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
+    public void highlightDetalhadoAtual(int linha, int coluna, int tamanho)
     {
     }
 
