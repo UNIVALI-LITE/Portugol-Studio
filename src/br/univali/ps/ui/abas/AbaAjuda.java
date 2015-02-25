@@ -26,7 +26,6 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingWorker;
@@ -35,7 +34,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-
 /**
  *
  * @author Luiz Fernando Noschang
@@ -68,7 +66,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 	{
 		super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
 
-		initComponents();
+		initComponents();		
 		configurarArvore();
 		configurarAcoes();
 
@@ -360,7 +358,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
 		private String lerCodigoFonte(String diretorio) throws Exception
 		{
-			//TODO ler codigo fonte
 			if (diretorio.substring(0, 5).equalsIgnoreCase("file:"))
 			{
 				File arquivoCodigoFonte = new File(diretorio.substring(5));
@@ -522,8 +519,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         arvore = new javax.swing.JTree();
         separador = new javax.swing.JSeparator();
         painelConteudo = new javax.swing.JPanel();
-        painelRolagemConteudo = new javax.swing.JScrollPane();
-        conteudo = new javax.swing.JEditorPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        conteudo = new org.fit.cssbox.swingbox.BrowserPane();
 
         setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         setOpaque(false);
@@ -592,18 +589,9 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelConteudo.setPreferredSize(new java.awt.Dimension(450, 100));
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
-        painelRolagemConteudo.setBorder(null);
-        painelRolagemConteudo.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        painelRolagemConteudo.setOpaque(false);
+        jScrollPane1.setViewportView(conteudo);
 
-        conteudo.setEditable(false);
-        conteudo.setBorder(null);
-        conteudo.setContentType("text/html"); // NOI18N
-        conteudo.setText("");
-        conteudo.setPreferredSize(new java.awt.Dimension(300, 14));
-        painelRolagemConteudo.setViewportView(conteudo);
-
-        painelConteudo.add(painelRolagemConteudo, java.awt.BorderLayout.CENTER);
+        painelConteudo.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         divisorLayout.setRightComponent(painelConteudo);
 
@@ -614,14 +602,14 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvore;
     private javax.swing.JProgressBar barraProgresso;
-    private javax.swing.JEditorPane conteudo;
+    private org.fit.cssbox.swingbox.BrowserPane conteudo;
     private javax.swing.JSplitPane divisorLayout;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel painelAjuda;
     private javax.swing.JPanel painelArvore;
     private javax.swing.JPanel painelCarregamento;
     private javax.swing.JPanel painelConteudo;
     private javax.swing.JScrollPane painelRolagemArvore;
-    private javax.swing.JScrollPane painelRolagemConteudo;
     private javax.swing.JLabel rotuloCarregamento;
     private javax.swing.JLabel rotuloErroCarregamento;
     private javax.swing.JSeparator separador;
