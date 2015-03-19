@@ -15,6 +15,7 @@ import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.execucao.Depurador;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.simbolos.Funcao;
@@ -69,6 +70,15 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private DefaultTreeModel model;
     private PortugolParser parser;
     private Listener listener;
+
+    //usei este map para guardar os últimos valores dos nós da JTree. Quando
+    //um programa é executado o valor de um nó pode mudar muitas vezes durante
+    //a execução. Este map guarda apenas o valor da última modificação. Este valor
+    //é utilizado para atualizar o nó em dois momentos: quando a execução termina
+    //e todos os valores da árvore são atualizados e quando a execução fica pausada 
+    //em um ponto de parada, pois nesse caso também é importante ver o estado atual das
+    //variáveis.
+    private Map<PortugolTreeNode, Object> valoresDosNos = new HashMap<>();
 
     /**
      * Constructor. The tree created will not have its elements sorted
@@ -223,37 +233,20 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-
+        valoresDosNos.clear();
     }
 
     @Override
     public void highlightLinha(int linha) {
+
     }
 
     @Override
     public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
     }
 
-    long ultimaAtualizacao = 0;
-
-    private boolean podeAtualizar() {
-        return System.currentTimeMillis() - ultimaAtualizacao >= TEMPO_ENTRE_ATUALIZACOES;
-    }
-
     private void atualiza(PortugolTreeNode node) {
-        ultimaAtualizacao = System.currentTimeMillis();
         SwingUtilities.invokeLater(new FireChangedEvent(node));
-    }
-
-    private final Map<Simbolo, Long> ultimasModificacoes = new HashMap<>();
-    private static final int TEMPO_ENTRE_ATUALIZACOES = 250;
-
-    private boolean podeModificarSimbolo(Simbolo simbolo) {
-        Long ultimaModificacaoDoSimbolo = ultimasModificacoes.get(simbolo);
-        if (ultimaModificacaoDoSimbolo == null) {
-            ultimaModificacaoDoSimbolo = 0L;
-        }
-        return System.currentTimeMillis() - ultimaModificacaoDoSimbolo >= TEMPO_ENTRE_ATUALIZACOES;
     }
 
     @Override
@@ -261,12 +254,12 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         SourceTreeNode root = (SourceTreeNode) model.getRoot();
         limparModificado(root);
         for (Simbolo simbolo : simbolos) {
-            if (!(simbolo instanceof Funcao) && podeModificarSimbolo(simbolo)) {
+            if (!(simbolo instanceof Funcao)) {
                 PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-                if (node != null) {
+                valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+                if (isEnabled() && node != null) {
                     modificar(simbolo, node);
                     atualiza(node);
-                    ultimasModificacoes.put(simbolo, System.currentTimeMillis());
                 }
             }
         }
@@ -274,33 +267,42 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void simboloRemovido(Simbolo simbolo) {
-        if (podeAtualizar()) {
-            SourceTreeNode root = (SourceTreeNode) model.getRoot();
-            limparModificado(root);
-            if (!(simbolo instanceof Funcao)) {
-                PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-                if (node != null) {
-                    remover(node, simbolo);
-                    node.setDeclarado(false);
-                    atualiza(node);
-                }
+        SourceTreeNode root = (SourceTreeNode) model.getRoot();
+        limparModificado(root);
+        if (!(simbolo instanceof Funcao)) {
+            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+            valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+            if (isEnabled() && node != null) {
+                remover(node, simbolo);
+                node.setDeclarado(false);
+                atualiza(node);
             }
-
         }
     }
 
     @Override
     public void simboloDeclarado(Simbolo simbolo) {
-        if (podeAtualizar()) {
-            SourceTreeNode root = (SourceTreeNode) model.getRoot();
-            limparModificado(root);
-            if (!(simbolo instanceof Funcao)) {
-                PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-                if (node != null) {
-                    inicializar(node, simbolo);
-                    node.setDeclarado(true);
-                    atualiza(node);
-                }
+        SourceTreeNode root = (SourceTreeNode) model.getRoot();
+        limparModificado(root);
+        if (!(simbolo instanceof Funcao)) {
+            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+            valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+            if (isEnabled() && node != null) {
+                inicializar(node, simbolo);
+                node.setDeclarado(true);
+                atualiza(node);
+            }
+        }
+    }
+
+    public void atualizaValoresDosNos() {
+        Enumeration en = ((SourceTreeNode)model.getRoot()).depthFirstEnumeration();
+        while (en.hasMoreElements()) {
+            SourceTreeNode s = (SourceTreeNode) en.nextElement();
+            if(s instanceof PortugolTreeNode){
+                Object valorDoNo = valoresDosNos.get((PortugolTreeNode)s);
+                ((PortugolTreeNode)s).setValor(valorDoNo);
+                model.nodeChanged(s);
             }
         }
     }
@@ -413,19 +415,19 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     private void limparModificado(SourceTreeNode root) {
-        Enumeration en = root.depthFirstEnumeration();
-        while (en.hasMoreElements()) {
-            SourceTreeNode s = (SourceTreeNode) en.nextElement();
-            s.setModificado(false);
+        if (isEnabled()) {
+            Enumeration en = root.depthFirstEnumeration();
+            while (en.hasMoreElements()) {
+                SourceTreeNode s = (SourceTreeNode) en.nextElement();
+                s.setModificado(false);
+            }
         }
     }
 
-    //private Map<Simbolo, PortugolTreeNode>;
     private PortugolTreeNode getPortugolTreeNode(SourceTreeNode root, Simbolo simbolo) {
         NoDeclaracao noDeclaracao = simbolo.getOrigemDoSimbolo();
         PortugolTreeNode node = null; //tentei usar um hash map para associar o simbolo com o nó da JTree, mas ficou mais lento ainda. why??? Usei um TreeMap e deu na mesma, why???
         Enumeration en = root.depthFirstEnumeration();
-        int buscas = 0;//2200 buscas em média no menu do jogo da serpente
         while (en.hasMoreElements()) {
             SourceTreeNode s = (SourceTreeNode) en.nextElement();
             if (s instanceof PortugolTreeNode) {
@@ -435,9 +437,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                     break;
                 }
             }
-            buscas++;
         }
-        //System.out.println("buscas: " + buscas);
         return node;
     }
 

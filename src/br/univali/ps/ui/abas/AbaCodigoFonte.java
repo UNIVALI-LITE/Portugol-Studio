@@ -1140,11 +1140,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento();
     }
 
-    //TODO provavelmente é possível eliminar esse primeiro parâmetro. 
     private void executar(Depurador.Estado estado) {
-        
+        tree.setEnabled(estado != Depurador.Estado.BREAK_POINT);
         if (!programaExecutando())
         {
+            
             AbaMensagemCompilador abaMensagens = painelSaida.getAbaMensagensCompilador();
             abaMensagens.limpar();
 
@@ -1257,6 +1257,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                tree.setEnabled(true);
+                //tree.atualizaValoresDosNos();
                 AbaConsole console = painelSaida.getConsole();
                 editor.finalizarExecucao(resultadoExecucao);
 
@@ -1363,6 +1365,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @Override
     public void highlightLinha(int linha) {
+        tree.setEnabled(true);//quando para a execução a árvore é habilitada
+        tree.atualizaValoresDosNos();
     }
 
     @Override

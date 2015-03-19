@@ -81,6 +81,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
 
     public AstTreeCellRenderer()
     {
+        
         //setBorder(new CompoundBorder(getBorder(), new EmptyBorder(4, 0, 4, 0)));
     }
     
@@ -137,7 +138,10 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noCaso.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        
         return null;
     }
 
@@ -197,7 +201,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -221,7 +227,10 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif"));
+        
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -255,7 +264,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(getIcon(noDeclaracaoVariavel.getTipoDado()));
+        Icon icone = getIcon(noDeclaracaoVariavel.getTipoDado());
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
     
@@ -288,7 +299,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -299,7 +312,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -310,7 +325,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noEscolha.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -321,7 +338,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -476,7 +495,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noPara.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -523,7 +544,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<html>");
         sb.append(noSe.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -569,6 +592,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()){
             component.setForeground(Color.BLUE);
         }
+        component.setDisabledIcon(icon);
         component.setIcon(icon);
         return null;
     }
@@ -588,7 +612,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         }       
         
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lib2.png"));
+        Icon icone= IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lib2.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -642,7 +668,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append(tipo);
         }
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -661,8 +689,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(no.obterValorConstante());
         
         component.setText(sb.toString());
-        component.setIcon(getIcon(tipo));
-        
+        Icon icone = getIcon(tipo);
+        component.setIcon(icone);
+        component.setIcon(icone);
         return null;
     }
 
@@ -686,7 +715,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             }
         }   
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -710,6 +741,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (no.isModificado()) {
             component.setForeground(Color.BLUE);
         }
+        component.setDisabledIcon(icon);
         component.setIcon(icon);
         return null;
     }
@@ -718,7 +750,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(ProgramaTreeNode no)
     {
         component.setText((String) no.getUserObject());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -726,7 +760,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(BibliotecasTreeNode no)
     {
         component.setText((String) no.getUserObject());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
@@ -734,7 +770,9 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(GenericTreeNode no)
     {
         component.setText((String) no.getUserObject());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
