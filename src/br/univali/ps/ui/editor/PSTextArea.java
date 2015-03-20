@@ -41,15 +41,15 @@ public class PSTextArea extends RSyntaxTextArea {
     private static final Logger LOGGER = Logger.getLogger(PSTextArea.class.getName());
     private Icon iconeDoPontoDeParada;
     private List<GutterIconInfo> pontosDeParada;
-    
+
     private List<PSTextAreaListener> listeners = new ArrayList<>();
 
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         this.pontosDeParada = new ArrayList<>();
     }
-    
-    public void addListenter(PSTextAreaListener l){
+
+    public void addListenter(PSTextAreaListener l) {
         listeners.add(l);
     }
 
@@ -68,7 +68,7 @@ public class PSTextArea extends RSyntaxTextArea {
         alternaPontoDeParada(linhaClicada);
     }
 
-    private void alternaPontoDeParada(int linha) {
+    public void alternaPontoDeParada(int linha) {
         try {
             Gutter gutter = RSyntaxUtilities.getGutter(this);
             //tentar remover
@@ -91,12 +91,12 @@ public class PSTextArea extends RSyntaxTextArea {
         }
     }
 
-    private void disparaPontosDeParadaAtualizados(){
+    private void disparaPontosDeParadaAtualizados() {
         for (PSTextAreaListener listener : listeners) {
             listener.pontosDeParaAtualizados(getLinhasComPontoDeParada());
         }
     }
-    
+
     public Set<Integer> getLinhasComPontoDeParada() {
         Set<Integer> pontos = new HashSet<>();
         try {
@@ -108,6 +108,20 @@ public class PSTextArea extends RSyntaxTextArea {
         return pontos;
     }
     //++++++++++++++++++++++++++++++++++
+
+    void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos) {
+        try {
+            List<GutterIconInfo> infos = new ArrayList<>(pontosDeParada);
+            for (GutterIconInfo info : infos) {
+                int linhaNoGutter = getLineOfOffset(info.getMarkedOffset());
+                if (!linhasComPontosDeParadaValidos.contains(linhaNoGutter)) {
+                    alternaPontoDeParada(linhaNoGutter);
+                }
+            }
+        } catch (BadLocationException e) {
+            //
+        }
+    }
 
     //++++++++++++++++++++++++++++++++++
     private static class PSTextAreaEditorKit extends RSyntaxTextAreaEditorKit {

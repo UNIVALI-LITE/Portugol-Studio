@@ -153,6 +153,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     public Set<Integer> getLinhasComPontoDeParada(){
         return getTextArea().getLinhasComPontoDeParada();
     }
+    
+    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos){
+        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
+    }
 
     public SuporteLinguagemPortugol getSuporteLinguagemPortugol() {
         return suporteLinguagemPortugol;
@@ -687,6 +691,25 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         carregarPosicaoCursor(informacoesPortugolStudio);
         carregarDobramentoCodigo(informacoesPortugolStudio);
+        carregarPontosDeParada(informacoesPortugolStudio);
+    }
+    
+    private void carregarPontosDeParada(String informacoesPortugolStudio){
+        Matcher avaliador = Pattern.compile("@PONTOS-DE-PARADA[ ]*=[ ]*([0-9]+(, )?)+;").matcher(informacoesPortugolStudio);
+
+        if (avaliador.find()) {
+            String linha = avaliador.group();
+            String valores[] = linha.split("=")[1].replace(";", "").split(",");
+            try {
+                for (String valor : valores) {
+                    int linhaDoPontoDeParada = Integer.parseInt(valor.trim());
+                    getTextArea().alternaPontoDeParada(linhaDoPontoDeParada);
+                }
+            } catch (NumberFormatException excecao) {
+                excecao.printStackTrace(System.out);
+            }
+            
+        }
     }
 
     private void carregarPosicaoCursor(String informacoesPortugolStudio) {
