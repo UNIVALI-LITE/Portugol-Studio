@@ -1332,7 +1332,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void inserirInformacoesDosPontosDeParada(StringBuilder sb) {
-        List<Integer> linhasComPontoDeParada = new ArrayList<>( editor.getLinhasComPontoDeParada());
+        List<Integer> linhasComPontoDeParada = new ArrayList<>(editor.getLinhasComPontoDeParada());
         StringBuilder linhas = new StringBuilder();
         for (int i = 0; i < linhasComPontoDeParada.size(); i++) {
             linhas.append(linhasComPontoDeParada.get(i).toString());
@@ -1381,8 +1381,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @Override
     public void highlightLinha(int linha) {
-        tree.setEnabled(true);//quando para a execução a árvore é habilitada
-        tree.atualizaValoresDosNos();
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                tree.setEnabled(true);//quando para a execução a árvore é habilitada
+                tree.atualizaValoresDosNos();
+            }
+        });
+
     }
 
     @Override

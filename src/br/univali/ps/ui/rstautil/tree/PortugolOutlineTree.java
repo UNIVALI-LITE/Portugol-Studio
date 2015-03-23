@@ -213,17 +213,6 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         }
     }
 
-    /**
-     * Overridden to also update the UI of the child cell renderer.
-     */
-    @Override
-    public void updateUI() {
-        super.updateUI();
-        // DefaultTreeCellRenderer caches colors, so we can't just call
-        // ((JComponent)getCellRenderer()).updateUI()...
-        //setCellRenderer(new AstTreeCellRenderer());
-    }
-
     ComparadorNos comparador = new ComparadorNos();
 
     @Override
@@ -250,58 +239,79 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolos) {
-        SourceTreeNode root = (SourceTreeNode) model.getRoot();
-        limparModificado(root);
-        for (Simbolo simbolo : simbolos) {
-            if (!(simbolo instanceof Funcao)) {
-                PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-                valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-                if (isEnabled() && node != null) {
-                    modificar(simbolo, node);
-                    atualiza(node);
+    public void simbolosAlterados(final List<Simbolo> simbolos) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                SourceTreeNode root = (SourceTreeNode) model.getRoot();
+                limparModificado(root);
+                for (Simbolo simbolo : simbolos) {
+                    if (!(simbolo instanceof Funcao)) {
+                        PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+                        valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+                        if (isEnabled() && node != null) {
+                            modificar(simbolo, node);
+                            atualiza(node);
+                        }
+                    }
                 }
             }
-        }
+        });
+
     }
 
     @Override
-    public void simboloRemovido(Simbolo simbolo) {
-        SourceTreeNode root = (SourceTreeNode) model.getRoot();
-        limparModificado(root);
-        if (!(simbolo instanceof Funcao)) {
-            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-            valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-            if (isEnabled() && node != null) {
-                remover(node, simbolo);
-                node.setDeclarado(false);
-                atualiza(node);
+    public void simboloRemovido(final Simbolo simbolo) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                SourceTreeNode root = (SourceTreeNode) model.getRoot();
+                limparModificado(root);
+                if (!(simbolo instanceof Funcao)) {
+                    PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+                    valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+                    if (isEnabled() && node != null) {
+                        remover(node, simbolo);
+                        node.setDeclarado(false);
+                        atualiza(node);
+                    }
+                }
             }
-        }
+        });
+
     }
 
     @Override
-    public void simboloDeclarado(Simbolo simbolo) {
-        SourceTreeNode root = (SourceTreeNode) model.getRoot();
-        limparModificado(root);
-        if (!(simbolo instanceof Funcao)) {
-            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-            valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-            if (isEnabled() && node != null) {
-                inicializar(node, simbolo);
-                node.setDeclarado(true);
-                atualiza(node);
+    public void simboloDeclarado(final Simbolo simbolo) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                SourceTreeNode root = (SourceTreeNode) model.getRoot();
+                limparModificado(root);
+                if (!(simbolo instanceof Funcao)) {
+                    PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+                    valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+                    if (isEnabled() && node != null) {
+                        inicializar(node, simbolo);
+                        node.setDeclarado(true);
+                        atualiza(node);
+                    }
+                }
             }
-        }
+        });
+
     }
 
     public void atualizaValoresDosNos() {
-        Enumeration en = ((SourceTreeNode)model.getRoot()).depthFirstEnumeration();
+        Enumeration en = ((SourceTreeNode) model.getRoot()).depthFirstEnumeration();
         while (en.hasMoreElements()) {
             SourceTreeNode s = (SourceTreeNode) en.nextElement();
-            if(s instanceof PortugolTreeNode){
-                Object valorDoNo = valoresDosNos.get((PortugolTreeNode)s);
-                ((PortugolTreeNode)s).setValor(valorDoNo);
+            if (s instanceof PortugolTreeNode) {
+                Object valorDoNo = valoresDosNos.get((PortugolTreeNode) s);
+                ((PortugolTreeNode) s).setValor(valorDoNo);
                 model.nodeChanged(s);
             }
         }

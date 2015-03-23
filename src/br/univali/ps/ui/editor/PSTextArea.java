@@ -73,7 +73,7 @@ public class PSTextArea extends RSyntaxTextArea {
             Gutter gutter = RSyntaxUtilities.getGutter(this);
             //tentar remover
             for (GutterIconInfo gutterInfo : pontosDeParada) {
-                if (getLineOfOffset(gutterInfo.getMarkedOffset()) == linha) {
+                if (getLineOfOffset(gutterInfo.getMarkedOffset()) + 1 == linha) {
                     gutter.removeTrackingIcon(gutterInfo);
                     pontosDeParada.remove(gutterInfo);
                     disparaPontosDeParadaAtualizados();
@@ -81,8 +81,8 @@ public class PSTextArea extends RSyntaxTextArea {
                 }
             }
 
-            //se não removeu então está inserindo
-            GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha, iconeDoPontoDeParada);
+            //se não removeu então está inserindo. A inserção acontece em linha-1 porque o gutter conta as linhas a partir do zero
+            GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha-1, iconeDoPontoDeParada);
             pontosDeParada.add(iconeInfo);
             disparaPontosDeParadaAtualizados();
 
@@ -101,7 +101,8 @@ public class PSTextArea extends RSyntaxTextArea {
         Set<Integer> pontos = new HashSet<>();
         try {
             for (GutterIconInfo gutterInfo : pontosDeParada) {
-                pontos.add(getLineOfOffset(gutterInfo.getMarkedOffset()));
+                int linha = getLineOfOffset(gutterInfo.getMarkedOffset()) + 1;
+                pontos.add(linha);
             }
         } catch (BadLocationException ex) {
         }
@@ -113,7 +114,7 @@ public class PSTextArea extends RSyntaxTextArea {
         try {
             List<GutterIconInfo> infos = new ArrayList<>(pontosDeParada);
             for (GutterIconInfo info : infos) {
-                int linhaNoGutter = getLineOfOffset(info.getMarkedOffset());
+                int linhaNoGutter = getLineOfOffset(info.getMarkedOffset()) + 1;
                 if (!linhasComPontosDeParadaValidos.contains(linhaNoGutter)) {
                     alternaPontoDeParada(linhaNoGutter);
                 }
@@ -177,7 +178,7 @@ public class PSTextArea extends RSyntaxTextArea {
         try {
             int offs = viewToModel(p);
             if (offs > -1) {
-                linha = getLineOfOffset(offs);
+                linha = getLineOfOffset(offs) + 1;
             }
         } catch (BadLocationException ble) {
             ble.printStackTrace(); // Never happens
