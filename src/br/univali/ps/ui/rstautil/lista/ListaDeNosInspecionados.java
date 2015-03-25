@@ -30,14 +30,14 @@ import javax.swing.TransferHandler;
  */
 public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemDaLista> implements ObservadorExecucao {
 
-    private static final String INSTRUCAO = "Arraste um símbolo para inspecioná-lo";
+    private static final String INSTRUCAO = "Arraste uma variável para inspecioná-la";
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
 
     public ListaDeNosInspecionados() {
         model.clear();
         setModel(model);
-        setDropMode(DropMode.INSERT);
+        setDropMode(DropMode.ON);
         setTransferHandler(new TratadorDeArrastamento());
         setCellRenderer(new RenderizadorDosItensDaLista());
     }
@@ -59,6 +59,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     public static class ItemDaLista {
 
+        private static ItemDaLista ultimoItemModificado = null;
+
         private NoDeclaracaoVariavel no;
         private Object valor;
 
@@ -68,6 +70,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         void setValor(Object valor) {
             this.valor = valor;
+            ultimoItemModificado = this;
+        }
+
+        public boolean ehUltimoItemAtualizado() {
+            return this == ultimoItemModificado;
         }
 
         public Object getValor() {
@@ -87,26 +94,27 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private class RenderizadorDosItensDaLista implements ListCellRenderer<ItemDaLista> {
 
         @Override
         public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
             StringBuilder sb = new StringBuilder();
             sb.append("<html>");
-//                if (currentPortugolTreeNode.isDeclarado()) {
-//                    sb.append("<b>");
-//                }
-
+            if (item.ehUltimoItemAtualizado()) {
+                sb.append("<b>");
+            }
             sb.append(item.getNome());
-//                if (currentPortugolTreeNode.isDeclarado()) {
-//                    sb.append("</b>");
-//                }
+            if (item.ehUltimoItemAtualizado()) {
+                sb.append("</b>");
+            }
 
             //tipo
-//                sb.append(" : ");
-//                sb.append("<font color='#888888'>");
-//                sb.append(noDeclaracaoVariavel.getTipoDado().getNome());
-//                sb.append("<font color='#000000'>");
+            sb.append(" : ");
+            sb.append("<font color='#888888'>");
+            sb.append(item.getTipo().getNome());
+            sb.append("<font color='#000000'>");
             //-----------
             if (item.getValor() != null) {
                 Object valor = item.getValor();
@@ -142,25 +150,36 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         return COMPARADOR_NOS.compare(no1, no2) > 0;
     }
 
+    private boolean simboloEhPermitido(Simbolo simbolo) {
+        return simbolo != null && simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVariavel;
+    }
+
     @Override
     public void simbolosAlterados(List<Simbolo> simbolos) {
         boolean itemsAlterados = false;
         for (Simbolo simbolo : simbolos) {
-            if (simbolo != null && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVariavel) {
+            if (simboloEhPermitido(simbolo)) {
                 NoDeclaracaoVariavel noDeclaracao = (NoDeclaracaoVariavel) simbolo.getOrigemDoSimbolo();
-                for (int i = 0; i < model.getSize(); i++) {
-                    ItemDaLista itemDaLista = model.getElementAt(i);
-                    if (mesmoNo(itemDaLista.getNo(), noDeclaracao) && simbolo instanceof Variavel) {
-                        itemDaLista.setValor(((Variavel) simbolo).getValor());
-                        itemsAlterados = true;
-                        break;
-                    }
+                ItemDaLista itemDaLista = getItemDoNo(noDeclaracao);
+                if (itemDaLista != null) {
+                    itemDaLista.setValor(((Variavel) simbolo).getValor());
+                    itemsAlterados = true;
                 }
             }
         }
         if (itemsAlterados) {
             repaint();
         }
+    }
+
+    private ItemDaLista getItemDoNo(NoDeclaracaoVariavel no) {
+        for (int i = 0; i < model.getSize(); i++) {
+            ItemDaLista item = model.getElementAt(i);
+            if (mesmoNo(item.getNo(), no)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -185,9 +204,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     @Override
     public void simboloDeclarado(Simbolo simbolo) {
-        List<Simbolo> lista = new ArrayList<Simbolo>();
-        lista.add(simbolo);
-        simbolosAlterados(lista);
+        if (simbolo instanceof Variavel) {
+            List<Simbolo> lista = new ArrayList<Simbolo>();
+            lista.add(simbolo);
+            simbolosAlterados(lista);
+        }
     }
 
     @Override
@@ -195,12 +216,20 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     }
 
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private class TratadorDeArrastamento extends TransferHandler {
 
         @Override
         public boolean canImport(TransferHandler.TransferSupport support) {
+            NoDeclaracaoVariavel noTransferido = null;
+            try {
+                noTransferido = (NoDeclaracaoVariavel) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+            } catch (Exception e) {
+                return false;
+            }
             support.setShowDropLocation(true);
-            return support.isDrop();
+            return support.isDrop() && !contemNo(noTransferido);
         }
 
         @Override
@@ -215,11 +244,21 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             } catch (Exception e) {
                 return false;
             }
+            if (!contemNo(noTransferido)) {
+                model.addElement(new ItemDaLista(noTransferido));
+                return true;
+            }
+            return false;
+        }
 
-            //JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
-            //DefaultListModel listModel = (DefaultListModel) listaDeNosInspecionados.getModel();
-            model.addElement(new ItemDaLista(noTransferido));
-            return true;
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        private boolean contemNo(NoDeclaracaoVariavel no) {
+            if (no == null) {
+                return false;
+            }
+            return getItemDoNo(no) != null;
         }
     }
 
