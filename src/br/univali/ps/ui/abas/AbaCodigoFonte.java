@@ -5,6 +5,7 @@ import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
+import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.execucao.Depurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
@@ -28,20 +29,25 @@ import br.univali.ps.ui.PainelSaida;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaOpcoesExecucao;
 import br.univali.ps.ui.editor.PSTextAreaListener;
+import br.univali.ps.ui.rstautil.tree.SourceTreeNode;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +60,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 
@@ -108,6 +115,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         initComponents();
         configurarArvoreEstrutural();
         criarPainelTemporario();
+
         carregarConfiguracoes();
 
         configurarSeletorArquivo();
@@ -127,6 +135,36 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorArvoreEditor.setDividerLocation(divisorArvoreEditor.getMinimumDividerLocation());
         divisorEditorConsole.resetToPreferredSizes();
+    }
+
+    public static class NoTransferable implements Transferable {
+
+        public static final DataFlavor NO_DATA_FLAVOR
+                = new DataFlavor(No.class, "No");
+        private No no;
+
+        public NoTransferable(No no) {
+            this.no = no;
+        }
+
+        public No getNo() {
+            return no;
+        }
+
+        @Override
+        public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[]{NO_DATA_FLAVOR};
+        }
+
+        @Override
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return flavor.equals(NO_DATA_FLAVOR);
+        }
+
+        @Override
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            return no;
+        }
     }
 
     public static void inicializarPool() {
@@ -163,6 +201,31 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.setBackground(sPOutlineTree.getBackground());
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
+        tree.setDragEnabled(true);
+        tree.setTransferHandler(new javax.swing.TransferHandler() {
+
+            @Override
+            public boolean canImport(TransferHandler.TransferSupport ts) {
+                return true; //retornando true só para exibir o ícone mais adequado
+            }
+
+            @Override
+            public boolean importData(TransferHandler.TransferSupport ts) {
+                return false;//a árvore não aceita drop
+            }
+
+            @Override
+            protected Transferable createTransferable(JComponent jc) {
+                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
+                No no = (No) treeNode.getUserObject();
+                return new NoTransferable(no);
+            }
+
+            @Override
+            public int getSourceActions(JComponent jc) {
+                return DnDConstants.ACTION_COPY;
+            }
+        });
 
         painelBarraFerramentasArvore.setOpaque(true);
         painelBarraFerramentasArvore.setBackground(Color.WHITE);
@@ -488,7 +551,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void ocultarPainelPlugins() {
         if (divisorArvorePlugins.getParent() != null) {
             painelEsquerda.remove(divisorArvorePlugins);
-            painelEsquerda.add(painelArvore, BorderLayout.CENTER);
+            painelEsquerda.add(divisorArvoreInspetor, BorderLayout.CENTER);
             separadorPlugins.setVisible(false);
             grupoBotoesPlugins.clearSelection();
 
@@ -652,6 +715,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraBotoesPlugins = new javax.swing.JToolBar();
         separadorDireitaPlugins = new javax.swing.JSeparator();
         divisorArvorePlugins = new javax.swing.JSplitPane();
+        divisorArvoreInspetor = new javax.swing.JSplitPane();
         painelArvore = new javax.swing.JPanel();
         painelBarraFerramentasArvore = new javax.swing.JPanel();
         barraFerramentasArvore = new javax.swing.JToolBar();
@@ -663,6 +727,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         sPOutlineTree = new javax.swing.JScrollPane();
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
         separadorPlugins = new javax.swing.JSeparator();
+        scrollInspetor = new javax.swing.JScrollPane();
+        listaDeNosInspecionados = new br.univali.ps.ui.rstautil.lista.ListaDeNosInspecionados();
         painelPlugins = new br.univali.ps.ui.PainelPlugins();
 
         separadorPainelEsquerda.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -939,11 +1005,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelEsquerda.add(painelAcessoPlugins, java.awt.BorderLayout.EAST);
 
         divisorArvorePlugins.setBorder(null);
+        divisorArvorePlugins.setDividerLocation(250);
         divisorArvorePlugins.setDividerSize(8);
         divisorArvorePlugins.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         divisorArvorePlugins.setResizeWeight(0.5);
         divisorArvorePlugins.setOneTouchExpandable(true);
         divisorArvorePlugins.setPreferredSize(new java.awt.Dimension(0, 0));
+
+        divisorArvoreInspetor.setDividerLocation(150);
+        divisorArvoreInspetor.setDividerSize(8);
+        divisorArvoreInspetor.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        divisorArvoreInspetor.setResizeWeight(0.5);
+        divisorArvoreInspetor.setOneTouchExpandable(true);
 
         painelArvore.setMinimumSize(new java.awt.Dimension(250, 250));
         painelArvore.setOpaque(false);
@@ -1037,11 +1110,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelArvore.add(sPOutlineTree, java.awt.BorderLayout.CENTER);
         painelArvore.add(separadorPlugins, java.awt.BorderLayout.PAGE_END);
 
-        divisorArvorePlugins.setLeftComponent(painelArvore);
+        divisorArvoreInspetor.setTopComponent(painelArvore);
+
+        scrollInspetor.setViewportView(listaDeNosInspecionados);
+
+        divisorArvoreInspetor.setBottomComponent(scrollInspetor);
+
+        divisorArvorePlugins.setTopComponent(divisorArvoreInspetor);
 
         painelPlugins.setMinimumSize(new java.awt.Dimension(250, 250));
         painelPlugins.setPreferredSize(new java.awt.Dimension(250, 250));
-        divisorArvorePlugins.setRightComponent(painelPlugins);
+        divisorArvorePlugins.setBottomComponent(painelPlugins);
 
         painelEsquerda.add(divisorArvorePlugins, java.awt.BorderLayout.CENTER);
 
@@ -1827,6 +1906,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JButton btnSalvarComo;
     private javax.swing.JCheckBox campoOpcoesExecucao;
     private javax.swing.JSplitPane divisorArvoreEditor;
+    private javax.swing.JSplitPane divisorArvoreInspetor;
     private javax.swing.JSplitPane divisorArvorePlugins;
     private javax.swing.JSplitPane divisorEditorConsole;
     private br.univali.ps.ui.editor.Editor editor;
@@ -1834,6 +1914,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.Box.Filler filler2;
     private javax.swing.ButtonGroup grupoBotoesPlugins;
     private javax.swing.JSeparator jSeparator1;
+    private br.univali.ps.ui.rstautil.lista.ListaDeNosInspecionados listaDeNosInspecionados;
     private javax.swing.JPanel painelAcessoPlugins;
     private javax.swing.JPanel painelAlinhamentoBotoesPlugins;
     private javax.swing.JPanel painelAlinhamentoEditor;
@@ -1854,6 +1935,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JPanel painelTopo;
     private javax.swing.JLabel rotuloPosicaoCursor;
     private javax.swing.JScrollPane sPOutlineTree;
+    private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JSeparator separadorDireitaPlugins;
     private javax.swing.JToolBar.Separator separadorDosBotoes;
     private javax.swing.JSeparator separadorEditorSaida;
