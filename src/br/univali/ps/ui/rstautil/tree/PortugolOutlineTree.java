@@ -235,12 +235,11 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
     }
 
-    private void atualiza(PortugolTreeNode node) {
-        SwingUtilities.invokeLater(new FireChangedEvent(node));
-    }
-
     @Override
     public void simbolosAlterados(final List<Simbolo> simbolos) {
+        if(!isEnabled()){
+            return;
+        }
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
@@ -253,7 +252,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                         valoresDosNos.put(node, getValorDoSimbolo(simbolo));
                         if (isEnabled() && node != null) {
                             modificar(simbolo, node);
-                            atualiza(node);
+                            model.nodeChanged(node);
                         }
                     }
                 }
@@ -264,6 +263,9 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void simboloRemovido(final Simbolo simbolo) {
+        if (!isEnabled()) {
+            return;
+        }
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
@@ -276,7 +278,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                     if (isEnabled() && node != null) {
                         remover(node, simbolo);
                         node.setDeclarado(false);
-                        atualiza(node);
+                        model.nodeChanged(node);
                     }
                 }
             }
@@ -286,6 +288,9 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void simboloDeclarado(final Simbolo simbolo) {
+        if (!isEnabled()) {
+            return;
+        }
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
@@ -298,7 +303,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                     if (isEnabled() && node != null) {
                         inicializar(node, simbolo);
                         node.setDeclarado(true);
-                        atualiza(node);
+                        model.nodeChanged(node);
                     }
                 }
             }
@@ -337,7 +342,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private void inicializarVariavel(Simbolo simbolo, PortugolTreeNode node) {
         final Object valor = ((Variavel) simbolo).getValor();
         node.setValor(valor);
-        SwingUtilities.invokeLater(new FireChangedEvent(node));
+        model.nodeChanged(node);
     }
 
     private void inicializarVetor(Simbolo simbolo, PortugolTreeNode node) {
@@ -393,7 +398,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         if (simbolo instanceof Variavel) {
             noAlteraldo.setValor(getValorDoSimbolo(simbolo));
             noAlteraldo.setModificado(true);
-            SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
+            model.nodeChanged(noAlteraldo);
         } else if (simbolo instanceof Vetor) {
             final Vetor vetor = (Vetor) simbolo;
             if (noAlteraldo.getChildCount() > vetor.getUltimoIndiceModificado()) {
@@ -401,8 +406,8 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 valorTreenode.setModificado(true);
                 noAlteraldo.setModificado(true);
                 valorTreenode.setValor(getValorDoSimbolo(simbolo));
-                SwingUtilities.invokeLater(new FireChangedEvent(valorTreenode));
-                SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
+                model.nodeChanged(valorTreenode);
+                model.nodeChanged(noAlteraldo);
             }
         } else if (simbolo instanceof Matriz) {
             Matriz matriz = ((Matriz) simbolo);
@@ -414,9 +419,9 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                     ValorTreeNode NoDaColuna = (ValorTreeNode) noDaLinha.getChildAt(matriz.getUltimaColunaModificada());
                     NoDaColuna.setModificado(true);
                     NoDaColuna.setValor(getValorDoSimbolo(simbolo));
-                    SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
-                    SwingUtilities.invokeLater(new FireChangedEvent(noDaLinha));
-                    SwingUtilities.invokeLater(new FireChangedEvent(NoDaColuna));
+                    model.nodeChanged(noAlteraldo);
+                    model.nodeChanged(noDaLinha);
+                    model.nodeChanged(NoDaColuna);
                 }
             }
         } else if (simbolo instanceof Ponteiro) {
@@ -426,12 +431,10 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     private void limparModificado(SourceTreeNode root) {
-        if (isEnabled()) {
-            Enumeration en = root.depthFirstEnumeration();
-            while (en.hasMoreElements()) {
-                SourceTreeNode s = (SourceTreeNode) en.nextElement();
-                s.setModificado(false);
-            }
+        Enumeration en = root.depthFirstEnumeration();
+        while (en.hasMoreElements()) {
+            SourceTreeNode s = (SourceTreeNode) en.nextElement();
+            s.setModificado(false);
         }
     }
 
@@ -495,7 +498,6 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         }
     }
 
-
     /**
      * Listens for events this tree is interested in (events in the associated
      * editor, for example), as well as events in this tree.
@@ -548,17 +550,4 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         }
     }
 
-    private class FireChangedEvent implements Runnable {
-
-        private final SourceTreeNode node;
-
-        public FireChangedEvent(SourceTreeNode node) {
-            this.node = node;
-        }
-
-        @Override
-        public void run() {
-            model.nodeChanged(node);
-        }
-    }
 }
