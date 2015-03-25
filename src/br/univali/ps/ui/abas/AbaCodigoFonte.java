@@ -216,9 +216,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             @Override
             protected Transferable createTransferable(JComponent jc) {
-                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
-                No no = (No) treeNode.getUserObject();
-                return new NoTransferable(no);
+                if (tree.getSelectionPath() != null) {
+                    Object componentSelectionado = tree.getSelectionPath().getLastPathComponent();
+                    if(componentSelectionado != null && componentSelectionado instanceof DefaultMutableTreeNode){
+                        DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
+                        if(treeNode.isLeaf()){
+                            No no = (No) treeNode.getUserObject();
+                            return new NoTransferable(no);
+                        }
+                    }
+                }
+                return null;
             }
 
             @Override
@@ -1252,6 +1260,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     programa.adicionarObservadorExecucao(AbaCodigoFonte.this);
                     programa.adicionarObservadorExecucao(editor);
                     programa.adicionarObservadorExecucao(tree);
+                    programa.adicionarObservadorExecucao(listaDeNosInspecionados);
 
                     editor.iniciarExecucao(depurando);
 
