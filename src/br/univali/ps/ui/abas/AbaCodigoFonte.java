@@ -1229,7 +1229,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void executar(Depurador.Estado estado) {
-        tree.setEnabled(estado != Depurador.Estado.BREAK_POINT);
+        tree.setStatusDaAtualizacaoDosNos(estado != Depurador.Estado.BREAK_POINT);
         if (!programaExecutando()) {
 
             AbaMensagemCompilador abaMensagens = painelSaida.getAbaMensagensCompilador();
@@ -1348,7 +1348,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                tree.setEnabled(true);
+                tree.setStatusDaAtualizacaoDosNos(true);
                 //tree.atualizaValoresDosNos();
                 AbaConsole console = painelSaida.getConsole();
                 editor.finalizarExecucao(resultadoExecucao);
@@ -1473,7 +1473,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             @Override
             public void run() {
-                tree.setEnabled(true);//quando para a execução a árvore é habilitada
+                tree.setStatusDaAtualizacaoDosNos(true);//quando para a execução a árvore é habilitada
                 tree.atualizaValoresDosNos();
             }
         });

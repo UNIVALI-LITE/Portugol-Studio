@@ -71,6 +71,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private DefaultTreeModel model;
     private PortugolParser parser;
     private Listener listener;
+    private boolean atualizacaoHabilitada;
 
     //usei este map para guardar os últimos valores dos nós da JTree. Quando
     //um programa é executado o valor de um nó pode mudar muitas vezes durante
@@ -93,6 +94,9 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         this(false);
     }
 
+    public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada){
+        this.atualizacaoHabilitada = atualizaoAtivada;
+    }
     /**
      * Constructor.
      *
@@ -166,6 +170,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     /**
      * {@inheritDoc}
+     * @return 
      */
     @Override
     public boolean gotoSelectedElement() {
@@ -237,7 +242,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void simbolosAlterados(final List<Simbolo> simbolos) {
-        if(!isEnabled()){
+        if(!atualizacaoHabilitada){
             return;
         }
         SwingUtilities.invokeLater(new Runnable() {
@@ -250,7 +255,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                     if (!(simbolo instanceof Funcao)) {
                         PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
                         valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-                        if (isEnabled() && node != null) {
+                        if (node != null) {
                             modificar(simbolo, node);
                             model.nodeChanged(node);
                         }
@@ -263,7 +268,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void simboloRemovido(final Simbolo simbolo) {
-        if (!isEnabled()) {
+        if (!atualizacaoHabilitada) {
             return;
         }
         SwingUtilities.invokeLater(new Runnable() {
@@ -275,7 +280,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 if (!(simbolo instanceof Funcao)) {
                     PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
                     valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-                    if (isEnabled() && node != null) {
+                    if (node != null) {
                         remover(node, simbolo);
                         node.setDeclarado(false);
                         model.nodeChanged(node);
@@ -288,7 +293,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void simboloDeclarado(final Simbolo simbolo) {
-        if (!isEnabled()) {
+        if (!atualizacaoHabilitada) {
             return;
         }
         SwingUtilities.invokeLater(new Runnable() {
@@ -300,7 +305,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 if (!(simbolo instanceof Funcao)) {
                     PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
                     valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-                    if (isEnabled() && node != null) {
+                    if (node != null) {
                         inicializar(node, simbolo);
                         node.setDeclarado(true);
                         model.nodeChanged(node);
