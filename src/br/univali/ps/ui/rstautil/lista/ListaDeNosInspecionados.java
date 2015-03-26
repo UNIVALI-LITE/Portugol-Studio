@@ -14,8 +14,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.Icon;
@@ -40,6 +45,24 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         setDropMode(DropMode.ON);
         setTransferHandler(new TratadorDeArrastamento());
         setCellRenderer(new RenderizadorDosItensDaLista());
+        addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent fe) {
+                clearSelection();
+            }
+
+        });
+        addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                if (ke.getKeyCode() == KeyEvent.VK_DELETE && getSelectedIndex() >= 0) {
+                    model.remove(getSelectedIndex());
+                }
+            }
+
+        });
     }
 
     @Override
@@ -96,10 +119,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    private class RenderizadorDosItensDaLista implements ListCellRenderer<ItemDaLista> {
+    private class RenderizadorDosItensDaLista extends DefaultListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
+        public Component getListCellRendererComponent(JList<? extends Object> list, Object object, int index, boolean selected, boolean hasFocus) {
+            ItemDaLista item = (ItemDaLista) object;
             StringBuilder sb = new StringBuilder();
             sb.append("<html>");
             if (item.ehUltimoItemAtualizado()) {
@@ -124,17 +148,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 sb.append(" = ").append(valor);
             }
             final String valor = sb.toString();
+            JLabel component = (JLabel) super.getListCellRendererComponent(list, object, index, selected, hasFocus);
             component.setText(valor);
-//                if (currentPortugolTreeNode.isModificado()) {
-//                    component.setForeground(Color.BLUE);
-//                }
             Icon icone = getIcon(item.getTipo());
             component.setIcon(icone);
             component.setDisabledIcon(icone);
             return component;
         }
-
-        private JLabel component = new JLabel("teste");
 
         private Icon getIcon(TipoDado tipoDado) {
             String iconName = "unknown.png";
@@ -253,7 +273,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
         private boolean contemNo(NoDeclaracaoVariavel no) {
             if (no == null) {
                 return false;
