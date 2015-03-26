@@ -1278,6 +1278,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 abaMensagens.selecionar();
             }
         } else {
+            
+            if (estado == Depurador.Estado.BREAK_POINT)
+            {
+                editor.removerHighlightsDepuracao();
+            }
+            
             programa.continuar(estado);
         }
     }
