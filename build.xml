@@ -17,15 +17,23 @@
         </classpath>
     </taskdef>
     
-    <property name="java.jre.name" value="jre1.8.0_11"/>
+    <property name="java.jre.name" value="jre1.8.0_40"/>
     
     <property name="instalador.java.dir" value="../Portugol-Instalador/arquivos/java"/>
-    <property name="instalador.java.windows.dir" value="${instalador.java.dir}/java-windows"/>
-    <property name="instalador.java.linux.dir" value="${instalador.java.dir}/java-linux"/>
-    <property name="instalador.java.osx.dir" value="${instalador.java.dir}/java-osx"/>
+
+    <target name="gerar-distribuicao-cross-platform-64-bits">
+        <antcall target="-gerar-distribuicao-cross-platform">
+            <param name="platform.architecture" value="x64"/>
+        </antcall>
+    </target>
     
+    <target name="gerar-distribuicao-cross-platform-32-bits">
+        <antcall target="-gerar-distribuicao-cross-platform">
+            <param name="platform.architecture" value="x86"/>
+        </antcall>
+    </target>
     
-    <target name="gerar-distribuicao-cross-platform" depends="gerar-arquivos-instalador">
+    <target name="-gerar-distribuicao-cross-platform" depends="gerar-arquivos-instalador">
         <loadproperties srcfile="src/versao.properties"/>
        
         <delete dir="../Portugol-Instalador/arquivos/portugol-studio" includeemptydirs="true" failonerror="false"/>
@@ -51,15 +59,15 @@
             </fileset>
         </copy>
         <copy todir="../Portugol-Instalador/arquivos/portugol-studio/java/java-windows">
-            <fileset dir="../Portugol-Instalador/arquivos/java/java-windows"/>
+            <fileset dir="../Portugol-Instalador/arquivos/java/java-windows/${platform.architecture}"/>
         </copy>
         <copy todir="../Portugol-Instalador/arquivos/portugol-studio/java/java-linux">
-            <fileset dir="../Portugol-Instalador/arquivos/java/java-linux"/>
+            <fileset dir="../Portugol-Instalador/arquivos/java/java-linux/${platform.architecture}"/>
         </copy>
         <copy todir="../Portugol-Instalador/arquivos/portugol-studio/java/java-mac">
-            <fileset dir="../Portugol-Instalador/arquivos/java/java-osx"/>
+            <fileset dir="../Portugol-Instalador/arquivos/java/java-osx/${platform.architecture}"/>
         </copy>
-        <zip destfile="../Portugol-Instalador/arquivos/ps-${portugol.studio.versao}-multi-plataforma.zip" compress="true" level="9">
+        <zip destfile="../Portugol-Instalador/arquivos/ps-${portugol.studio.versao}-multi-plataforma-${platform.architecture}.zip" compress="true" level="9">
             <zipfileset dir="../Portugol-Instalador/arquivos">
                 <include name="portugol-studio"/>
                 <include name="portugol-studio/**"/>
@@ -72,7 +80,7 @@
     <target name="gerar-arquivos-instalador" depends="clean">
         <property name="instalador.dir" value="../Portugol-Instalador/arquivos/compartilhados"/>
         
-        <antcall target="-baixar-java"/>
+        <antcall target="-baixar-distribuicoes-java"/>
         
         <delete failonerror="false" includeemptydirs="true">
             <fileset dir="${instalador.dir}">
@@ -160,71 +168,101 @@
         </antcall>
     </target>
     
-    <target name="-baixar-java" depends="-verificar-java">
+    <target name="baixar-distribuicoes-java">
         <mkdir dir="${instalador.java.dir}"/>
         
-        <antcall target="-baixar-java-windows"/>
-        <antcall target="-baixar-java-linux"/>
-        <antcall target="-baixar-java-osx"/>
+        <antcall target="-baixar-java">
+            <param name="platform.family" value="Windows"/>
+            <param name="platform.name" value="windows"/>
+            <param name="platform.architecture" value="x86"/>
+            <param name="platform.suffix" value=""/>
+        </antcall>
+        
+        <antcall target="-baixar-java">
+            <param name="platform.family" value="Windows"/>
+            <param name="platform.name" value="windows"/>
+            <param name="platform.architecture" value="x64"/>
+            <param name="platform.suffix" value="-x64"/>
+        </antcall>
+        
+        <antcall target="-baixar-java">
+            <param name="platform.family" value="Linux"/>
+            <param name="platform.name" value="linux"/>
+            <param name="platform.architecture" value="x86"/>
+            <param name="platform.suffix" value=""/>
+        </antcall>
+        
+        <antcall target="-baixar-java">
+            <param name="platform.family" value="Linux"/>
+            <param name="platform.name" value="linux"/>
+            <param name="platform.architecture" value="x64"/>
+            <param name="platform.suffix" value="-x64"/>
+        </antcall>
+        
+        
+        <antcall target="-baixar-java">
+            <param name="platform.family" value="Mac OSX"/>
+            <param name="platform.name" value="osx"/>
+            <param name="platform.architecture" value="x86"/>
+            <param name="platform.suffix" value=""/>
+        </antcall>
+        
     </target>
     
-    <target name="-baixar-java-windows" unless="java.windows.baixado">
-        <property name="java.windows.nome" value="${java.jre.name}-windows"/>
-        <echo>Baixando o Java para Windows</echo>
-        <get src="http://installbuilder.bitrock.com/java/${java.windows.nome}.zip" dest="${instalador.java.dir}/${java.windows.nome}.zip" verbose="false" httpusecaches="false"/>
-        <unzip src="${instalador.java.dir}/${java.windows.nome}.zip" dest="${instalador.java.dir}"/>
-        <move todir="${instalador.java.windows.dir}">
-            <fileset dir="${instalador.java.dir}/${java.windows.nome}/java-windows"/>
-        </move>
-        <delete includeemptydirs="true">
-            <fileset dir="${instalador.java.dir}/${java.windows.nome}">
-                <include name="*"/>
-                <include name="**"/>                
-            </fileset>
-            <fileset file="${instalador.java.dir}/${java.windows.nome}.zip"/>
-        </delete>        
-    </target>
-    
-    
-    <target name="-baixar-java-linux" unless="java.linux.baixado">
-        <property name="java.linux.nome" value="${java.jre.name}-linux"/>
-        <echo>Baixando o Java para Linux</echo>
-        <get src="http://installbuilder.bitrock.com/java/${java.linux.nome}.zip" dest="${instalador.java.dir}/${java.linux.nome}.zip" verbose="false" httpusecaches="false"/>
-        <unzip src="${instalador.java.dir}/${java.linux.nome}.zip" dest="${instalador.java.dir}"/>
-        <move todir="${instalador.java.linux.dir}">
-            <fileset dir="${instalador.java.dir}/${java.linux.nome}/java-linux"/>
-        </move>
-        <delete includeemptydirs="true">
-            <fileset dir="${instalador.java.dir}/${java.linux.nome}">
-                <include name="*"/>
-                <include name="**"/>                
-            </fileset>
-            <fileset file="${instalador.java.dir}/${java.linux.nome}.zip"/>
-        </delete>        
-    </target>
-    
-    
-    <target name="-baixar-java-osx" unless="java.osx.baixado">
-        <property name="java.osx.nome" value="${java.jre.name}-osx"/>
-        <echo>Baixando o Java para Mac OS X</echo>
-        <get src="http://installbuilder.bitrock.com/java/${java.osx.nome}.zip" dest="${instalador.java.dir}/${java.osx.nome}.zip" verbose="false" httpusecaches="false"/>
-        <unzip src="${instalador.java.dir}/${java.osx.nome}.zip" dest="${instalador.java.dir}"/>
-        <move todir="${instalador.java.osx.dir}">
-            <fileset dir="${instalador.java.dir}/${java.osx.nome}/java-osx"/>
-        </move>
-        <delete includeemptydirs="true">
-            <fileset dir="${instalador.java.dir}/${java.osx.nome}">
-                <include name="*"/>
-                <include name="**"/>                
-            </fileset>
-            <fileset file="${instalador.java.dir}/${java.osx.nome}.zip"/>
-        </delete>        
+    <target name="-baixar-java">
+        <property name="java.file.name" value="${java.jre.name}-${platform.name}${platform.suffix}"/>
+        <property name="java.file.zip" value="${java.file.name}.zip"/>
+        <property name="java.remote.zip" value="http://installbuilder.bitrock.com/java/${java.file.zip}"/>
+        <property name="java.local.zip" value="${instalador.java.dir}/${java.file.zip}"/>
+        <property name="java.dest.dir" value="${instalador.java.dir}/java-${platform.name}/${platform.architecture}"/>
+        
+        <if>
+            <not>
+                <available file="${java.dest.dir}"/>
+            </not>
+            <then>
+                <echo message="Baixando o Java para ${platform.family} ${platform.architecture}"/>
+                
+                <get src="${java.remote.zip}" dest="${java.local.zip}" verbose="false" httpusecaches="false"/>
+                <unzip src="${java.local.zip}" dest="${instalador.java.dir}"/>
+                
+            
+                <if>
+                    <equals arg1="${platform.name}" arg2="windows"/>
+                    <then>
+                        <move todir="${java.dest.dir}">
+                            <fileset dir="${instalador.java.dir}/${java.file.name}/java-${platform.name}"/>
+                        </move>
+                    </then>
+                    <else>
+                        <move todir="${java.dest.dir}">
+                            <fileset dir="${instalador.java.dir}/${java.file.name}/java-${platform.name}${platform.suffix}"/>
+                        </move>
+                    </else>                       
+                </if>
+                
+                
+
+                <delete includeemptydirs="true">
+                    <fileset dir="${instalador.java.dir}/${java.file.name}">
+                        <include name="*"/>
+                        <include name="**"/>                
+                    </fileset>
+                    <fileset file="${java.local.zip}"/>
+                </delete>
+            </then>
+        </if>        
     </target>
     
     <target name="-verificar-java">
-        <available file="${instalador.java.windows.dir}" property="java.windows.baixado"/>
-        <available file="${instalador.java.linux.dir}" property="java.linux.baixado"/>
-        <available file="${instalador.java.osx.dir}" property="java.osx.baixado"/>
+        <available file="${instalador.java.windows.x86.dir}" property="java.windows.x86.baixado"/>
+        <available file="${instalador.java.windows.x64.dir}" property="java.windows.x64.baixado"/>
+        
+        <available file="${instalador.java.linux.x86.dir}" property="java.linux.x86.baixado"/>
+        <available file="${instalador.java.linux.x64.dir}" property="java.linux.x64.baixado"/>
+        
+        <available file="${instalador.java.osx.x86.dir}" property="java.osx.x86.baixado"/>
+        <available file="${instalador.java.osx.x64.dir}" property="java.osx.x86.baixado"/>
     </target>
     
     
