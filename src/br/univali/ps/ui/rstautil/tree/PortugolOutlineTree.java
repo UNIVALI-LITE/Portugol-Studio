@@ -56,7 +56,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  *
  * You can get this tree automatically updating in response to edits in an
  * <code>RSyntaxTextArea</code> with {@link JavaLanguageSupport} installed by
- * calling {@link #listenTo(RSyntaxTextArea)}. Note that an instance of this
+ * calling {@link #observar(RSyntaxTextArea)}. Note that an instance of this
  * class can only listen to a single editor at a time, so if your application
  * contains multiple instances of RSyntaxTextArea, you'll either need a separate
  * <code>JavaOutlineTree</code> for each one, or call <code>uninstall()</code>
@@ -188,7 +188,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
      * @param textArea
      */
     @Override
-    public void listenTo(RSyntaxTextArea textArea) {
+    public void observar(RSyntaxTextArea textArea) {
         if (this.textArea != null) {
             uninstall();
         }

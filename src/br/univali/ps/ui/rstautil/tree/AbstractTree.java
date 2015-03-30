@@ -18,7 +18,7 @@ public abstract class AbstractTree extends JTree
         }
     }
    
-    public abstract void listenTo(RSyntaxTextArea textArea);
+    public abstract void observar(RSyntaxTextArea textArea);
 
     public abstract boolean gotoSelectedElement();
    

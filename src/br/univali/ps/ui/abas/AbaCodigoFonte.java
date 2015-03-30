@@ -167,30 +167,30 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-    public static void inicializarPool() {
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        //TODO: Verificar se podemos mover este código para um local melhor.
-                        // Antes nós tinhamos o Applet, mas agora. Seguem comentários anteriores:
-
-                        /*
-                         inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando. 
-                         O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
-                         */
-                        poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
-                    } catch (Exception excecao) {
-                        LOGGER.log(Level.SEVERE, "Não foi possível inicializar o pool de abas de código fonte", excecao);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-
-    }
+//    public static void inicializarPool() {
+//        try {
+//            SwingUtilities.invokeAndWait(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        //TODO: Verificar se podemos mover este código para um local melhor.
+//                        // Antes nós tinhamos o Applet, mas agora. Seguem comentários anteriores:
+//
+//                        /*
+//                         inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando. 
+//                         O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
+//                         */
+//                        poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
+//                    } catch (Exception excecao) {
+//                        LOGGER.log(Level.SEVERE, "Não foi possível inicializar o pool de abas de código fonte", excecao);
+//                    }
+//                }
+//            });
+//        } catch (Exception e) {
+//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//        }
+//
+//    }
 
     public static AbaCodigoFonte novaAba() {
         AbaCodigoFonte aba = new AbaCodigoFonte();// poolAbasCodigoFonte.obter();
@@ -540,7 +540,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getAbaMensagensCompilador().adicionaAbaMensagemCompiladorListener(editor);
         adicionarAbaListener(AbaCodigoFonte.this);
         editor.adicionarObservadorCursor(AbaCodigoFonte.this);
-        tree.listenTo(editor.getTextArea());
+        tree.observar(editor.getTextArea());
 
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -560,23 +560,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if (divisorArvorePlugins.getParent() != null) {
             painelEsquerda.remove(divisorArvorePlugins);
             painelEsquerda.add(divisorArvoreInspetor, BorderLayout.CENTER);
-            separadorPlugins.setVisible(false);
+            //separadorPlugins.setVisible(false);
             grupoBotoesPlugins.clearSelection();
 
             for (JToggleButton botao : botoesPlugins.values()) {
                 botao.setSelected(false);
             }
 
-            validate();
+            revalidate();
         }
     }
 
+    
     public void exibirPainelPlugins() {
         if (divisorArvorePlugins.getParent() == null) {
             painelEsquerda.remove(painelArvore);
             painelEsquerda.add(divisorArvorePlugins, BorderLayout.CENTER);
             divisorArvorePlugins.setTopComponent(painelArvore);
-            separadorPlugins.setVisible(true);
+            //separadorPlugins.setVisible(true);
             painelEsquerda.validate();
             divisorArvorePlugins.setDividerLocation(0.5);
             painelEsquerda.validate();
@@ -734,7 +735,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnContrairNosArvore = new javax.swing.JButton();
         sPOutlineTree = new javax.swing.JScrollPane();
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
-        separadorPlugins = new javax.swing.JSeparator();
         scrollInspetor = new javax.swing.JScrollPane();
         listaDeNosInspecionados = new br.univali.ps.ui.rstautil.lista.ListaDeNosInspecionados();
         painelPlugins = new br.univali.ps.ui.PainelPlugins();
@@ -1013,21 +1013,21 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelEsquerda.add(painelAcessoPlugins, java.awt.BorderLayout.EAST);
 
         divisorArvorePlugins.setBorder(null);
-        divisorArvorePlugins.setDividerLocation(250);
         divisorArvorePlugins.setDividerSize(8);
         divisorArvorePlugins.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        divisorArvorePlugins.setResizeWeight(0.5);
+        divisorArvorePlugins.setResizeWeight(1.0);
         divisorArvorePlugins.setOneTouchExpandable(true);
         divisorArvorePlugins.setPreferredSize(new java.awt.Dimension(0, 0));
 
-        divisorArvoreInspetor.setDividerLocation(150);
         divisorArvoreInspetor.setDividerSize(8);
         divisorArvoreInspetor.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        divisorArvoreInspetor.setResizeWeight(0.5);
+        divisorArvoreInspetor.setResizeWeight(1.0);
+        divisorArvoreInspetor.setMinimumSize(new java.awt.Dimension(252, 510));
         divisorArvoreInspetor.setOneTouchExpandable(true);
 
         painelArvore.setMinimumSize(new java.awt.Dimension(250, 250));
         painelArvore.setOpaque(false);
+        painelArvore.setPreferredSize(new java.awt.Dimension(250, 350));
         painelArvore.setLayout(new java.awt.BorderLayout());
 
         painelBarraFerramentasArvore.setBackground(new java.awt.Color(255, 255, 255));
@@ -1116,9 +1116,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         sPOutlineTree.setViewportView(tree);
 
         painelArvore.add(sPOutlineTree, java.awt.BorderLayout.CENTER);
-        painelArvore.add(separadorPlugins, java.awt.BorderLayout.PAGE_END);
 
         divisorArvoreInspetor.setTopComponent(painelArvore);
+
+        scrollInspetor.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        scrollInspetor.setMinimumSize(new java.awt.Dimension(31, 150));
+        scrollInspetor.setPreferredSize(new java.awt.Dimension(266, 200));
 
         scrollInspetor.setViewportView(listaDeNosInspecionados);
 
@@ -1126,8 +1129,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorArvorePlugins.setTopComponent(divisorArvoreInspetor);
 
-        painelPlugins.setMinimumSize(new java.awt.Dimension(250, 250));
-        painelPlugins.setPreferredSize(new java.awt.Dimension(250, 250));
+        painelPlugins.setMinimumSize(new java.awt.Dimension(250, 150));
+        painelPlugins.setPreferredSize(new java.awt.Dimension(250, 150));
         divisorArvorePlugins.setBottomComponent(painelPlugins);
 
         painelEsquerda.add(divisorArvorePlugins, java.awt.BorderLayout.CENTER);
@@ -1148,7 +1151,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void setTamanhoFonteArvore(float tamanho) {
         if ((tamanho != tree.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE)) {
-            tree.setFont(tree.getFont().deriveFont(tamanho));
+            Font novaFonte = tree.getFont().deriveFont(tamanho);
+            tree.setFont(novaFonte);
+            listaDeNosInspecionados.setFont(novaFonte);
             Configuracoes.getInstancia().setTamanhoFonteArvore(tamanho);
         }
     }
@@ -1956,7 +1961,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JSeparator separadorEditorSaida;
     private javax.swing.JSeparator separadorEsquerdalPlugins;
     private javax.swing.JSeparator separadorPainelEsquerda;
-    private javax.swing.JSeparator separadorPlugins;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
     // End of variables declaration//GEN-END:variables
 }

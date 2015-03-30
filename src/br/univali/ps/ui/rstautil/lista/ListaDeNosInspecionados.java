@@ -26,7 +26,7 @@ import javax.swing.DropMode;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 /**
@@ -38,6 +38,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private static final String INSTRUCAO = "Arraste uma variável para inspecioná-la";
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
+
+    boolean programaExecutando = false;
 
     public ListaDeNosInspecionados() {
         model.clear();
@@ -150,6 +152,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             final String valor = sb.toString();
             JLabel component = (JLabel) super.getListCellRendererComponent(list, object, index, selected, hasFocus);
             component.setText(valor);
+            component.setFont(getFont());
             Icon icone = getIcon(item.getTipo());
             component.setIcon(icone);
             component.setDisabledIcon(icone);
@@ -175,6 +178,44 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     }
 
     @Override
+    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
+        programaExecutando = false;
+        //limpa os valores no fim da execução
+        for (int i = 0; i < model.getSize(); i++) {
+            model.getElementAt(i).setValor(null);
+        }
+        ItemDaLista.ultimoItemModificado = null;
+        repaint();
+    }
+
+    @Override
+    public void simboloRemovido(final Simbolo simbolo) {
+        if (!programaExecutando) {//não remove os símbolos durante a execução do programa
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (simboloEhPermitido(simbolo)) {
+                        ItemDaLista item = getItemDoNo((NoDeclaracaoVariavel) simbolo.getOrigemDoSimbolo());
+                        if (item != null) {
+                            model.removeElement(item);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void simboloDeclarado(Simbolo simbolo) {
+        if (simbolo instanceof Variavel) {
+            List<Simbolo> lista = new ArrayList<Simbolo>();
+            lista.add(simbolo);
+            simbolosAlterados(lista);
+        }
+    }
+
+    @Override
     public void simbolosAlterados(List<Simbolo> simbolos) {
         boolean itemsAlterados = false;
         for (Simbolo simbolo : simbolos) {
@@ -192,6 +233,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
+    private boolean contemNo(NoDeclaracaoVariavel no) {
+        if (no == null) {
+            return false;
+        }
+        return getItemDoNo(no) != null;
+    }
+
     private ItemDaLista getItemDoNo(NoDeclaracaoVariavel no) {
         for (int i = 0; i < model.getSize(); i++) {
             ItemDaLista item = model.getElementAt(i);
@@ -204,12 +252,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     @Override
     public void execucaoIniciada(Programa programa) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        programaExecutando = true;
     }
 
     @Override
@@ -220,20 +263,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     @Override
     public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void simboloDeclarado(Simbolo simbolo) {
-        if (simbolo instanceof Variavel) {
-            List<Simbolo> lista = new ArrayList<Simbolo>();
-            lista.add(simbolo);
-            simbolosAlterados(lista);
-        }
-    }
-
-    @Override
-    public void simboloRemovido(Simbolo simbolo) {
-
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -273,12 +302,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        private boolean contemNo(NoDeclaracaoVariavel no) {
-            if (no == null) {
-                return false;
-            }
-            return getItemDoNo(no) != null;
-        }
     }
 
 }
