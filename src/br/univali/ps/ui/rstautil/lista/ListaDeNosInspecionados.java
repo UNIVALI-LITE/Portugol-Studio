@@ -35,7 +35,7 @@ import javax.swing.TransferHandler;
  */
 public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemDaLista> implements ObservadorExecucao {
 
-    private static final String INSTRUCAO = "Arraste uma variável para inspecioná-la";
+    private static final String INSTRUCAO = "Arraste uma das variáveis acima \n para este painél se quiser inspecioná-la";
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
 
@@ -71,14 +71,24 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (getModel().getSize() <= 0) {
-            FontMetrics metrics = g.getFontMetrics();
-            int larguraInstrucao = metrics.stringWidth(INSTRUCAO);
-            int x = getWidth() / 2 - larguraInstrucao / 2;
-            if (x < 0) {
-                x = 0;
-            }
             g.setColor(Color.GRAY);
-            g.drawString(INSTRUCAO, x, getHeight() / 2);
+            FontMetrics metrics = g.getFontMetrics();
+            String texto = INSTRUCAO.replace("\n", "");
+            int larguraInstrucao = metrics.stringWidth(texto);
+            if(larguraInstrucao <= getWidth()){
+                int x = getWidth() / 2 - larguraInstrucao / 2;
+                g.drawString(texto, x, getHeight() / 2);
+            }
+            else{//separa o texto em duas linhas
+                String[] linhas = INSTRUCAO.split("\n");
+                int y = getHeight()/2;
+                for (int i = 0; i < linhas.length; i++) {
+                    String string = linhas[i].trim();
+                    int x = getWidth()/2 - metrics.stringWidth(string)/2;
+                    g.drawString(string, x, y);
+                    y += metrics.getHeight();
+                }
+            }
         }
     }
 
