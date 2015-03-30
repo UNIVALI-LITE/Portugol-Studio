@@ -94,9 +94,10 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         this(false);
     }
 
-    public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada){
+    public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada) {
         this.atualizacaoHabilitada = atualizaoAtivada;
     }
+
     /**
      * Constructor.
      *
@@ -170,7 +171,8 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     /**
      * {@inheritDoc}
-     * @return 
+     *
+     * @return
      */
     @Override
     public boolean gotoSelectedElement() {
@@ -242,7 +244,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     @Override
     public void simbolosAlterados(final List<Simbolo> simbolos) {
-        if(!atualizacaoHabilitada){
+        if (!atualizacaoHabilitada) {
             return;
         }
         SwingUtilities.invokeLater(new Runnable() {
@@ -355,7 +357,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
         for (int i = 0; i < valores.size(); i++) {
             ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i), simbolo.getTipoDado());
-            inserirNo(vtn, node);
+            model.insertNodeInto(vtn, node, node.getChildCount());
         }
     }
 
@@ -370,15 +372,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 ValorTreeNode vtn = new ValorTreeNode(j, list.get(j), simbolo.getTipoDado());
                 valorTreeNode.add(vtn);
             }
-            inserirNo(valorTreeNode, node);
-        }
-    }
-
-    private void inserirNo(ValorTreeNode vtn, PortugolTreeNode node) {
-        try {
-            SwingUtilities.invokeAndWait(new InsertNode(vtn, node));
-        } catch (InterruptedException | InvocationTargetException ex) {
-            Logger.getLogger(PortugolOutlineTree.class.getName()).log(Level.SEVERE, null, ex);
+            model.insertNodeInto(valorTreeNode, node, node.getChildCount());
         }
     }
 
@@ -486,20 +480,8 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     private void removerFilhos(final PortugolTreeNode node) {
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-
-                @Override
-                public void run() {
-                    for (int i = model.getChildCount(node) - 1; i >= 0; i--) {
-                        model.removeNodeFromParent((MutableTreeNode) model.getChild(node, i));
-                    }
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-
+        for (int i = model.getChildCount(node) - 1; i >= 0; i--) {
+            model.removeNodeFromParent((MutableTreeNode) model.getChild(node, i));
         }
     }
 
@@ -539,20 +521,19 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         }
     }
 
-    private class InsertNode implements Runnable {
-
-        private final ValorTreeNode child;
-        private final PortugolTreeNode parent;
-
-        public InsertNode(ValorTreeNode valorTreeNode, PortugolTreeNode node) {
-            this.child = valorTreeNode;
-            this.parent = node;
-        }
-
-        @Override
-        public void run() {
-            model.insertNodeInto(child, parent, parent.getChildCount());
-        }
-    }
-
+//    private class InsertNode implements Runnable {
+//
+//        private final ValorTreeNode child;
+//        private final PortugolTreeNode parent;
+//
+//        public InsertNode(ValorTreeNode valorTreeNode, PortugolTreeNode node) {
+//            this.child = valorTreeNode;
+//            this.parent = node;
+//        }
+//
+//        @Override
+//        public void run() {
+//            model.insertNodeInto(child, parent, parent.getChildCount());
+//        }
+//    }
 }
