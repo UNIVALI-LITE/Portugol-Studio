@@ -71,8 +71,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
 
-    private static final int TAMANHO_POOL_ABAS = 12;
-    private static PoolAbasCodigoFonte poolAbasCodigoFonte;
+    //private static final int TAMANHO_POOL_ABAS = 12;
+    //private static PoolAbasCodigoFonte poolAbasCodigoFonte;
 
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
@@ -551,6 +551,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         adicionarAbaListener(AbaCodigoFonte.this);
         editor.adicionarObservadorCursor(AbaCodigoFonte.this);
         tree.observar(editor.getTextArea());
+        listaDeNosInspecionados.observar(editor.getTextArea());
 
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -1770,25 +1771,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho) {
         editor.destacarTrechoCodigoFonte(linha, coluna, tamanho);
     }
-    /*
-     private class AcaoProximaInstrucao extends AbstractAction {
-
-     public AcaoProximaInstrucao() {
-     super("Próxima instrução");
-     putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("shift F9"));
-     putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "step.png"));
-     putValue(Action.SMALL_ICON, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "step.png"));
-     }
-
-     @Override
-     public void actionPerformed(ActionEvent e) {
-     if (depurando) {
-     if (!painelSaida.getConsole().isLendo()) {
-     depurador.continuar(null);
-     }
-     }
-     }
-     }*/
 
     @Override
     public final void caretUpdate(CaretEvent e) {
@@ -1828,87 +1810,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnFixarPainelStatus.setSelected(false);
 
         restaurarEditor();
-    }
-
-    private static class PoolAbasCodigoFonte extends PoolAbstrato<AbaCodigoFonte> {
-
-        public PoolAbasCodigoFonte(int quantidade) {
-            super(quantidade);
-        }
-
-        @Override
-        protected AbaCodigoFonte criarObjeto() {
-            final AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-
-            /* Ao criar a aba no pool, instalar todos os plugins nela. Fazemos isto dentro pool para
-             * garantir que sempre que uma aba for utilizada, os plugins serão instalados, independente
-             * do local do código fonte aonde ela for inctanciada
-             */
-            try {
-                GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
-            } catch (ErroInstalacaoPlugin erro) {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
-            }
-
-            abaCodigoFonte.adicionarAbaListener(new AbaListener() {
-                @Override
-                public boolean fechandoAba(Aba aba) {
-                    if (abaCodigoFonte.podeFechar()) {
-                        abaCodigoFonte.redefinirAba();
-
-                        /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
-                         * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
-                         * da utilização anterior
-                         */
-                        GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
-
-                        /*
-                         * Logo após, instalamos todos os plugins novamente, para garantir que quando a aba for
-                         * reaproveitada a partir do pool, já estará inicializada com os plugins
-                         */
-                        try {
-                            GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
-                        } catch (ErroInstalacaoPlugin erro) {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
-                        }
-
-                        devolver(abaCodigoFonte);
-
-                        return true;
-                    }
-
-                    return false;
-                }
-            });
-
-            return abaCodigoFonte;
-        }
-    }
-
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception e) {
-
-                }
-                JFrame frame = new JFrame("Teste PsTextArea");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800, 600);
-
-                PainelTabuladoPrincipal tab = new PainelTabuladoPrincipal();
-                PoolAbasCodigoFonte pool = new PoolAbasCodigoFonte(1);
-                AbaCodigoFonte aba = pool.obter();
-                tab.add(aba);
-                frame.getContentPane().add(tab, BorderLayout.CENTER);
-
-                frame.setVisible(true);
-            }
-        });
-
     }
 
 

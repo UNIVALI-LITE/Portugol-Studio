@@ -530,19 +530,4 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         }
     }
 
-//    private class InsertNode implements Runnable {
-//
-//        private final ValorTreeNode child;
-//        private final PortugolTreeNode parent;
-//
-//        public InsertNode(ValorTreeNode valorTreeNode, PortugolTreeNode node) {
-//            this.child = valorTreeNode;
-//            this.parent = node;
-//        }
-//
-//        @Override
-//        public void run() {
-//            model.insertNodeInto(child, parent, parent.getChildCount());
-//        }
-//    }
 }

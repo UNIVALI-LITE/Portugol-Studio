@@ -1,17 +1,21 @@
 package br.univali.ps.ui.rstautil.lista;
 
 import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.ComparadorNos;
+import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,8 +25,13 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -31,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  *
@@ -316,12 +326,12 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 return false;
             }
             support.setShowDropLocation(true);
-            if(!support.isDrop()){
+            if (!support.isDrop()) {
                 return false;
             }
-            
+
             for (NoDeclaracao no : nosTransferidos) {
-                if(!contemNo(no)){
+                if (!contemNo(no)) {
                     return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
                 }
             }
@@ -352,6 +362,74 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    }
+
+    //sempre que o código fonte é alterado este listener é disparado. Toda a árvore sintática
+    //é recriada e é necessário verificar se os símbolos que estão no inspetor ainda existem
+    //no código. Também é possível que os símbolos tenham sido renomeados, ou que o tipo deles
+    //tenha mudado.
+    public void observar(RSyntaxTextArea textArea) {
+        PortugolParser.getParser(textArea).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                if (model.isEmpty()) {
+                    return;//não existem símbolos sendo inspecionados
+                }
+                String name = pce.getPropertyName();
+                if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
+                    Programa programa = (Programa) pce.getNewValue();
+                    final ArvoreSintaticaAbstrataPrograma ast = programa.getArvoreSintaticaAbstrata();
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            //model.clear();
+
+                            try {
+                                final List<NoDeclaracao> nosInspecionados = new ArrayList<>();
+                                ast.aceitar(new VisitanteNulo() {
+
+                                    @Override
+                                    public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
+                                        if (contemNo(noDeclaracaoVariavel)) {
+                                            nosInspecionados.add(noDeclaracaoVariavel);
+                                        }
+
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
+                                        if (contemNo(noDeclaracaoMatriz)) {
+                                            nosInspecionados.add(noDeclaracaoMatriz);
+                                        }
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA {
+                                        if (contemNo(noDeclaracaoVetor)) {
+                                            nosInspecionados.add(noDeclaracaoVetor);
+                                        }
+                                        return null;
+                                    }
+
+                                });
+                                model.clear();
+                                for (NoDeclaracao no : nosInspecionados) {
+                                    model.addElement(new ItemDaLista(no));
+                                }
+                            } catch (Exception e) {
+                                //Logger.getLogger(ListaDeNosInspecionados.class.getName()).log(Level.WARNING, null, e);
+                            }
+
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
 }
