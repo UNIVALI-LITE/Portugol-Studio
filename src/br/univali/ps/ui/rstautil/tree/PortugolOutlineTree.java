@@ -381,7 +381,12 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
             return ((Variavel) simbolo).getValor();
         } else if (simbolo instanceof Vetor) {
             final Vetor vetor = (Vetor) simbolo;
-            return vetor.obterValores().get(vetor.getUltimoIndiceModificado());
+            List valores = vetor.obterValores();
+            int indice = vetor.getUltimoIndiceModificado();
+            if (!valores.isEmpty() && indice >= 0 && indice < valores.size()) {
+                return valores.get(indice);
+            }
+            return null;
         } else if (simbolo instanceof Matriz) {
             Matriz matriz = ((Matriz) simbolo);
             int linha = matriz.getUltimaLinhaModificada();
@@ -390,6 +395,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         } else if (simbolo instanceof Ponteiro) {
             return getValorDoSimbolo(((Ponteiro) simbolo).getSimboloApontado());
         }
+
         return null;
     }
 
@@ -482,6 +488,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private void removerFilhos(final PortugolTreeNode node) {
         for (int i = model.getChildCount(node) - 1; i >= 0; i--) {
             model.removeNodeFromParent((MutableTreeNode) model.getChild(node, i));
+
         }
     }
 
