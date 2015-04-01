@@ -65,9 +65,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 if (ke.getKeyCode() == KeyEvent.VK_DELETE) {
                     int indices[] = getSelectedIndices();
                     int modelSize = model.getSize();
-                    for (int i = indices.length-1; i >= 0; i--) {
+                    for (int i = indices.length - 1; i >= 0; i--) {
                         int indice = indices[i];
-                        if(indice >= 0 && indice < modelSize){
+                        if (indice >= 0 && indice < modelSize) {
                             model.remove(indice);
                         }
                     }
@@ -194,7 +194,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         private Icon getIcon(ItemDaLista item) {
             if (item.ehVetor()) {
                 return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
-            }else if(item.ehMatriz()){
+            } else if (item.ehMatriz()) {
                 return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
             }
             String iconName = "unknown.png";
@@ -309,14 +309,23 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         @Override
         public boolean canImport(TransferHandler.TransferSupport support) {
-            NoDeclaracao noTransferido = null;
+            List<NoDeclaracao> nosTransferidos = null;
             try {
-                noTransferido = (NoDeclaracao) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+                nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
             } catch (Exception e) {
                 return false;
             }
             support.setShowDropLocation(true);
-            return support.isDrop() && !contemNo(noTransferido);
+            if(!support.isDrop()){
+                return false;
+            }
+            
+            for (NoDeclaracao no : nosTransferidos) {
+                if(!contemNo(no)){
+                    return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
+                }
+            }
+            return false;
         }
 
         @Override
@@ -325,17 +334,20 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 return false;
             }
 
-            NoDeclaracao noTransferido = null;
+            List<NoDeclaracao> nosTransferidos = null;
             try {
-                noTransferido = (NoDeclaracao) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+                nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
             } catch (Exception e) {
                 return false;
             }
-            if (!contemNo(noTransferido)) {
-                model.addElement(new ItemDaLista(noTransferido));
-                return true;
+            boolean importou = false;
+            for (NoDeclaracao noTransferido : nosTransferidos) {
+                if (!contemNo(noTransferido)) {
+                    model.addElement(new ItemDaLista(noTransferido));
+                    importou = true;
+                }
             }
-            return false;
+            return importou;
         }
 
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

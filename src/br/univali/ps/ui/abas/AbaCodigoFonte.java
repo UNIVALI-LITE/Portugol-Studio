@@ -62,6 +62,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 
@@ -141,15 +142,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public static class NoTransferable implements Transferable {
 
         public static final DataFlavor NO_DATA_FLAVOR
-                = new DataFlavor(NoDeclaracao.class, "NoDeclaracao");
-        private NoDeclaracao noDeclaracao;
+                = new DataFlavor(List.class, "List");
+        private List<NoDeclaracao> nosDeclaracoes;
 
-        public NoTransferable(NoDeclaracao noDeclaracao) {
-            this.noDeclaracao = noDeclaracao;
+        public NoTransferable(List<NoDeclaracao> nosDeclaracoes) {
+            this.nosDeclaracoes = nosDeclaracoes;
         }
 
-        public NoDeclaracao getNoDeclaracao() {
-            return noDeclaracao;
+        public List<NoDeclaracao> getNos() {
+            return nosDeclaracoes;
         }
 
         @Override
@@ -164,7 +165,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         @Override
         public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-            return noDeclaracao;
+            return nosDeclaracoes;
         }
     }
 
@@ -192,7 +193,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        }
 //
 //    }
-
     public static AbaCodigoFonte novaAba() {
         AbaCodigoFonte aba = new AbaCodigoFonte();// poolAbasCodigoFonte.obter();
         return aba;
@@ -217,20 +217,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             @Override
             protected Transferable createTransferable(JComponent jc) {
-                if (tree.getSelectionPath() != null) {
-                    Object componentSelectionado = tree.getSelectionPath().getLastPathComponent();
-                    if(componentSelectionado != null && componentSelectionado instanceof DefaultMutableTreeNode){
-                        DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
-                        if(treeNode.isLeaf()){
-                            try{
-                                NoDeclaracao noDeclaracao = (NoDeclaracao) treeNode.getUserObject();
-                                return new NoTransferable(noDeclaracao);
-                            }
-                            catch(Exception e){
-                                //caso o nó não seja um NoDeclaracao
+                if (tree.getSelectionPaths().length > 0) {
+                    List<NoDeclaracao> nosSelecionados = new ArrayList<>();
+                    TreePath paths[] = tree.getSelectionPaths();
+                    for (TreePath caminhoSelecionado : paths) {
+                        Object componentSelectionado = caminhoSelecionado.getLastPathComponent();
+                        if (componentSelectionado != null && componentSelectionado instanceof DefaultMutableTreeNode) {
+                            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) caminhoSelecionado.getLastPathComponent();
+                            if (treeNode.isLeaf()) {
+                                try {
+                                    NoDeclaracao noDeclaracao = (NoDeclaracao) treeNode.getUserObject();
+                                    nosSelecionados.add(noDeclaracao);
+                                } catch (Exception e) {
+                                    //caso o nó não seja um NoDeclaracao
+                                }
                             }
                         }
                     }
+                    return new NoTransferable(nosSelecionados);
                 }
                 return null;
             }
@@ -577,7 +581,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-    
     public void exibirPainelPlugins() {
         if (divisorArvorePlugins.getParent() == null) {
             painelEsquerda.remove(painelArvore);
@@ -1289,12 +1292,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 abaMensagens.selecionar();
             }
         } else {
-            
-            if (estado == Depurador.Estado.BREAK_POINT)
-            {
+
+            if (estado == Depurador.Estado.BREAK_POINT) {
                 editor.removerHighlightsDepuracao();
             }
-            
+
             programa.continuar(estado);
         }
     }
