@@ -62,8 +62,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
             @Override
             public void keyReleased(KeyEvent ke) {
-                if (ke.getKeyCode() == KeyEvent.VK_DELETE && getSelectedIndex() >= 0) {
-                    model.remove(getSelectedIndex());
+                if (ke.getKeyCode() == KeyEvent.VK_DELETE) {
+                    int indices[] = getSelectedIndices();
+                    int modelSize = model.getSize();
+                    for (int i = indices.length-1; i >= 0; i--) {
+                        int indice = indices[i];
+                        if(indice >= 0 && indice < modelSize){
+                            model.remove(indice);
+                        }
+                    }
                 }
             }
 
