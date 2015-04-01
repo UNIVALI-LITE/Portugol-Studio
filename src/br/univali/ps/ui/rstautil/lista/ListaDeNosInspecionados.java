@@ -1,7 +1,10 @@
 package br.univali.ps.ui.rstautil.lista;
 
 import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -75,16 +78,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             FontMetrics metrics = g.getFontMetrics();
             String texto = INSTRUCAO.replace("\n", "");
             int larguraInstrucao = metrics.stringWidth(texto);
-            if(larguraInstrucao <= getWidth()){
+            if (larguraInstrucao <= getWidth()) {
                 int x = getWidth() / 2 - larguraInstrucao / 2;
                 g.drawString(texto, x, getHeight() / 2);
-            }
-            else{//separa o texto em duas linhas
+            } else {//separa o texto em duas linhas
                 String[] linhas = INSTRUCAO.split("\n");
-                int y = getHeight()/2;
+                int y = getHeight() / 2;
                 for (int i = 0; i < linhas.length; i++) {
                     String string = linhas[i].trim();
-                    int x = getWidth()/2 - metrics.stringWidth(string)/2;
+                    int x = getWidth() / 2 - metrics.stringWidth(string) / 2;
                     g.drawString(string, x, y);
                     y += metrics.getHeight();
                 }
@@ -96,11 +98,19 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         private static ItemDaLista ultimoItemModificado = null;
 
-        private NoDeclaracaoVariavel no;
+        private final NoDeclaracao noDeclaracao;
         private Object valor;
 
-        public ItemDaLista(NoDeclaracaoVariavel no) {
-            this.no = no;
+        public ItemDaLista(NoDeclaracao no) {
+            this.noDeclaracao = no;
+        }
+
+        boolean ehVetor() {
+            return noDeclaracao instanceof NoDeclaracaoVetor;
+        }
+
+        boolean ehMatriz() {
+            return noDeclaracao instanceof NoDeclaracaoMatriz;
         }
 
         void setValor(Object valor) {
@@ -117,15 +127,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
 
         public String getNome() {
-            return no.getNome();
+            return noDeclaracao.getNome();
         }
 
         public TipoDado getTipo() {
-            return no.getTipoDado();
+            return noDeclaracao.getTipoDado();
         }
 
-        public NoDeclaracaoVariavel getNo() {
-            return no;
+        public NoDeclaracao getNoDeclaracao() {
+            return noDeclaracao;
         }
     }
 
@@ -147,6 +157,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             }
 
             //tipo
+            if (item.ehVetor()) {
+                sb.append("[]");
+            } else if (item.ehMatriz()) {
+                sb.append("[][]");
+            }
             sb.append(" : ");
             sb.append("<font color='#888888'>");
             sb.append(item.getTipo().getNome());
@@ -163,14 +178,20 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             JLabel component = (JLabel) super.getListCellRendererComponent(list, object, index, selected, hasFocus);
             component.setText(valor);
             component.setFont(getFont());
-            Icon icone = getIcon(item.getTipo());
+            Icon icone = getIcon(item);
             component.setIcon(icone);
             component.setDisabledIcon(icone);
             return component;
         }
 
-        private Icon getIcon(TipoDado tipoDado) {
+        private Icon getIcon(ItemDaLista item) {
+            if (item.ehVetor()) {
+                return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+            }else if(item.ehMatriz()){
+                return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
+            }
             String iconName = "unknown.png";
+            TipoDado tipoDado = item.getTipo();
             if (tipoDado != null) {
                 iconName = tipoDado.getNome() + ".png";
             }
@@ -179,7 +200,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     }
 
-    private boolean mesmoNo(NoDeclaracaoVariavel no1, NoDeclaracaoVariavel no2) {
+    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
         return COMPARADOR_NOS.compare(no1, no2) > 0;
     }
 
@@ -243,17 +264,17 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
-    private boolean contemNo(NoDeclaracaoVariavel no) {
+    private boolean contemNo(NoDeclaracao no) {
         if (no == null) {
             return false;
         }
         return getItemDoNo(no) != null;
     }
 
-    private ItemDaLista getItemDoNo(NoDeclaracaoVariavel no) {
+    private ItemDaLista getItemDoNo(NoDeclaracao no) {
         for (int i = 0; i < model.getSize(); i++) {
             ItemDaLista item = model.getElementAt(i);
-            if (mesmoNo(item.getNo(), no)) {
+            if (mesmoNo(item.getNoDeclaracao(), no)) {
                 return item;
             }
         }
@@ -281,9 +302,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         @Override
         public boolean canImport(TransferHandler.TransferSupport support) {
-            NoDeclaracaoVariavel noTransferido = null;
+            NoDeclaracao noTransferido = null;
             try {
-                noTransferido = (NoDeclaracaoVariavel) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+                noTransferido = (NoDeclaracao) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
             } catch (Exception e) {
                 return false;
             }
@@ -297,9 +318,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 return false;
             }
 
-            NoDeclaracaoVariavel noTransferido = null;
+            NoDeclaracao noTransferido = null;
             try {
-                noTransferido = (NoDeclaracaoVariavel) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+                noTransferido = (NoDeclaracao) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
             } catch (Exception e) {
                 return false;
             }

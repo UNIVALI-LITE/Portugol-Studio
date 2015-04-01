@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.No;
+import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.execucao.Depurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
@@ -140,15 +141,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public static class NoTransferable implements Transferable {
 
         public static final DataFlavor NO_DATA_FLAVOR
-                = new DataFlavor(No.class, "No");
-        private No no;
+                = new DataFlavor(NoDeclaracao.class, "NoDeclaracao");
+        private NoDeclaracao noDeclaracao;
 
-        public NoTransferable(No no) {
-            this.no = no;
+        public NoTransferable(NoDeclaracao noDeclaracao) {
+            this.noDeclaracao = noDeclaracao;
         }
 
-        public No getNo() {
-            return no;
+        public NoDeclaracao getNoDeclaracao() {
+            return noDeclaracao;
         }
 
         @Override
@@ -163,7 +164,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         @Override
         public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-            return no;
+            return noDeclaracao;
         }
     }
 
@@ -221,8 +222,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     if(componentSelectionado != null && componentSelectionado instanceof DefaultMutableTreeNode){
                         DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
                         if(treeNode.isLeaf()){
-                            No no = (No) treeNode.getUserObject();
-                            return new NoTransferable(no);
+                            try{
+                                NoDeclaracao noDeclaracao = (NoDeclaracao) treeNode.getUserObject();
+                                return new NoTransferable(noDeclaracao);
+                            }
+                            catch(Exception e){
+                                //caso o nó não seja um NoDeclaracao
+                            }
                         }
                     }
                 }
