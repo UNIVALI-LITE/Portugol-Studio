@@ -389,9 +389,18 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
             return null;
         } else if (simbolo instanceof Matriz) {
             Matriz matriz = ((Matriz) simbolo);
-            int linha = matriz.getUltimaLinhaModificada();
-            int coluna = matriz.getUltimaColunaModificada();
-            return matriz.obterValores().get(linha).get(coluna);
+            int indiceDaLinha = matriz.getUltimaLinhaModificada();
+            int indiceDaColuna = matriz.getUltimaColunaModificada();
+            List linhas = matriz.obterValores();
+            if (!linhas.isEmpty()) {
+                if (indiceDaLinha >= 0 && indiceDaLinha < linhas.size()) {
+                    List linha = (List) linhas.get(indiceDaLinha);
+                    if (!linha.isEmpty() && indiceDaColuna >= 0 && indiceDaColuna < linha.size()) {
+                        return linha.get(indiceDaColuna);
+                    }
+                }
+            }
+            return null;
         } else if (simbolo instanceof Ponteiro) {
             return getValorDoSimbolo(((Ponteiro) simbolo).getSimboloApontado());
         }
