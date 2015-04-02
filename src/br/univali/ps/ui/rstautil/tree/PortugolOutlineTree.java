@@ -10,12 +10,11 @@
  */
 package br.univali.ps.ui.rstautil.tree;
 
+import br.univali.ps.ui.rstautil.ComparadorNos;
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
-import br.univali.portugol.nucleo.execucao.Depurador;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.simbolos.Funcao;
@@ -28,15 +27,10 @@ import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
@@ -55,7 +49,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  *
  * You can get this tree automatically updating in response to edits in an
  * <code>RSyntaxTextArea</code> with {@link JavaLanguageSupport} installed by
- * calling {@link #listenTo(RSyntaxTextArea)}. Note that an instance of this
+ * calling {@link #observar(RSyntaxTextArea)}. Note that an instance of this
  * class can only listen to a single editor at a time, so if your application
  * contains multiple instances of RSyntaxTextArea, you'll either need a separate
  * <code>JavaOutlineTree</code> for each one, or call <code>uninstall()</code>
@@ -70,6 +64,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private DefaultTreeModel model;
     private PortugolParser parser;
     private Listener listener;
+    private boolean atualizacaoHabilitada;
 
     //usei este map para guardar os últimos valores dos nós da JTree. Quando
     //um programa é executado o valor de um nó pode mudar muitas vezes durante
@@ -90,6 +85,10 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     public PortugolOutlineTree(int a) {
         this(false);
+    }
+
+    public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada) {
+        this.atualizacaoHabilitada = atualizaoAtivada;
     }
 
     /**
@@ -165,6 +164,8 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     /**
      * {@inheritDoc}
+     *
+     * @return
      */
     @Override
     public boolean gotoSelectedElement() {
@@ -182,7 +183,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
      * @param textArea
      */
     @Override
-    public void listenTo(RSyntaxTextArea textArea) {
+    public void observar(RSyntaxTextArea textArea) {
         if (this.textArea != null) {
             uninstall();
         }
@@ -213,17 +214,6 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         }
     }
 
-    /**
-     * Overridden to also update the UI of the child cell renderer.
-     */
-    @Override
-    public void updateUI() {
-        super.updateUI();
-        // DefaultTreeCellRenderer caches colors, so we can't just call
-        // ((JComponent)getCellRenderer()).updateUI()...
-        //setCellRenderer(new AstTreeCellRenderer());
-    }
-
     ComparadorNos comparador = new ComparadorNos();
 
     @Override
@@ -245,63 +235,89 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
     }
 
-    private void atualiza(PortugolTreeNode node) {
-        SwingUtilities.invokeLater(new FireChangedEvent(node));
-    }
-
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolos) {
-        SourceTreeNode root = (SourceTreeNode) model.getRoot();
-        limparModificado(root);
-        for (Simbolo simbolo : simbolos) {
-            if (!(simbolo instanceof Funcao)) {
-                PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-                valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-                if (isEnabled() && node != null) {
-                    modificar(simbolo, node);
-                    atualiza(node);
+    public void simbolosAlterados(final List<Simbolo> simbolos) {
+        if (!atualizacaoHabilitada) {
+            return;
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                SourceTreeNode root = (SourceTreeNode) model.getRoot();
+                limparModificado(root);
+                for (Simbolo simbolo : simbolos) {
+                    if (!(simbolo instanceof Funcao)) {
+                        PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+                        valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+                        if (node != null) {
+                            modificar(simbolo, node);
+                            model.nodeChanged(node);
+                        }
+                    }
                 }
             }
-        }
+        });
+
     }
 
     @Override
-    public void simboloRemovido(Simbolo simbolo) {
-        SourceTreeNode root = (SourceTreeNode) model.getRoot();
-        limparModificado(root);
-        if (!(simbolo instanceof Funcao)) {
-            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-            valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-            if (isEnabled() && node != null) {
-                remover(node, simbolo);
-                node.setDeclarado(false);
-                atualiza(node);
-            }
+    public void simboloRemovido(final Simbolo simbolo) {
+        if (!atualizacaoHabilitada) {
+            return;
         }
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                SourceTreeNode root = (SourceTreeNode) model.getRoot();
+                limparModificado(root);
+                if (!(simbolo instanceof Funcao)) {
+                    PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+                    valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+                    if (node != null) {
+                        remover(node, simbolo);
+                        node.setDeclarado(false);
+                        model.nodeChanged(node);
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
-    public void simboloDeclarado(Simbolo simbolo) {
-        SourceTreeNode root = (SourceTreeNode) model.getRoot();
-        limparModificado(root);
-        if (!(simbolo instanceof Funcao)) {
-            PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
-            valoresDosNos.put(node, getValorDoSimbolo(simbolo));
-            if (isEnabled() && node != null) {
-                inicializar(node, simbolo);
-                node.setDeclarado(true);
-                atualiza(node);
-            }
+    public void simboloDeclarado(final Simbolo simbolo) {
+        if (!atualizacaoHabilitada) {
+            return;
         }
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                SourceTreeNode root = (SourceTreeNode) model.getRoot();
+                limparModificado(root);
+                if (!(simbolo instanceof Funcao)) {
+                    PortugolTreeNode node = getPortugolTreeNode(root, simbolo);
+                    valoresDosNos.put(node, getValorDoSimbolo(simbolo));
+                    if (node != null) {
+                        inicializar(node, simbolo);
+                        node.setDeclarado(true);
+                        model.nodeChanged(node);
+                    }
+                }
+            }
+        });
+
     }
 
     public void atualizaValoresDosNos() {
-        Enumeration en = ((SourceTreeNode)model.getRoot()).depthFirstEnumeration();
+        Enumeration en = ((SourceTreeNode) model.getRoot()).depthFirstEnumeration();
         while (en.hasMoreElements()) {
             SourceTreeNode s = (SourceTreeNode) en.nextElement();
-            if(s instanceof PortugolTreeNode){
-                Object valorDoNo = valoresDosNos.get((PortugolTreeNode)s);
-                ((PortugolTreeNode)s).setValor(valorDoNo);
+            if (s instanceof PortugolTreeNode) {
+                Object valorDoNo = valoresDosNos.get((PortugolTreeNode) s);
+                ((PortugolTreeNode) s).setValor(valorDoNo);
                 model.nodeChanged(s);
             }
         }
@@ -326,7 +342,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private void inicializarVariavel(Simbolo simbolo, PortugolTreeNode node) {
         final Object valor = ((Variavel) simbolo).getValor();
         node.setValor(valor);
-        SwingUtilities.invokeLater(new FireChangedEvent(node));
+        model.nodeChanged(node);
     }
 
     private void inicializarVetor(Simbolo simbolo, PortugolTreeNode node) {
@@ -334,7 +350,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
         for (int i = 0; i < valores.size(); i++) {
             ValorTreeNode vtn = new ValorTreeNode(i, valores.get(i), simbolo.getTipoDado());
-            inserirNo(vtn, node);
+            model.insertNodeInto(vtn, node, node.getChildCount());
         }
     }
 
@@ -349,15 +365,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 ValorTreeNode vtn = new ValorTreeNode(j, list.get(j), simbolo.getTipoDado());
                 valorTreeNode.add(vtn);
             }
-            inserirNo(valorTreeNode, node);
-        }
-    }
-
-    private void inserirNo(ValorTreeNode vtn, PortugolTreeNode node) {
-        try {
-            SwingUtilities.invokeAndWait(new InsertNode(vtn, node));
-        } catch (InterruptedException | InvocationTargetException ex) {
-            Logger.getLogger(PortugolOutlineTree.class.getName()).log(Level.SEVERE, null, ex);
+            model.insertNodeInto(valorTreeNode, node, node.getChildCount());
         }
     }
 
@@ -366,15 +374,30 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
             return ((Variavel) simbolo).getValor();
         } else if (simbolo instanceof Vetor) {
             final Vetor vetor = (Vetor) simbolo;
-            return vetor.obterValores().get(vetor.getUltimoIndiceModificado());
+            List valores = vetor.obterValores();
+            int indice = vetor.getUltimoIndiceModificado();
+            if (!valores.isEmpty() && indice >= 0 && indice < valores.size()) {
+                return valores.get(indice);
+            }
+            return null;
         } else if (simbolo instanceof Matriz) {
             Matriz matriz = ((Matriz) simbolo);
-            int linha = matriz.getUltimaLinhaModificada();
-            int coluna = matriz.getUltimaColunaModificada();
-            return matriz.obterValores().get(linha).get(coluna);
+            int indiceDaLinha = matriz.getUltimaLinhaModificada();
+            int indiceDaColuna = matriz.getUltimaColunaModificada();
+            List linhas = matriz.obterValores();
+            if (!linhas.isEmpty()) {
+                if (indiceDaLinha >= 0 && indiceDaLinha < linhas.size()) {
+                    List linha = (List) linhas.get(indiceDaLinha);
+                    if (!linha.isEmpty() && indiceDaColuna >= 0 && indiceDaColuna < linha.size()) {
+                        return linha.get(indiceDaColuna);
+                    }
+                }
+            }
+            return null;
         } else if (simbolo instanceof Ponteiro) {
             return getValorDoSimbolo(((Ponteiro) simbolo).getSimboloApontado());
         }
+
         return null;
     }
 
@@ -382,7 +405,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         if (simbolo instanceof Variavel) {
             noAlteraldo.setValor(getValorDoSimbolo(simbolo));
             noAlteraldo.setModificado(true);
-            SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
+            model.nodeChanged(noAlteraldo);
         } else if (simbolo instanceof Vetor) {
             final Vetor vetor = (Vetor) simbolo;
             if (noAlteraldo.getChildCount() > vetor.getUltimoIndiceModificado()) {
@@ -390,8 +413,8 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 valorTreenode.setModificado(true);
                 noAlteraldo.setModificado(true);
                 valorTreenode.setValor(getValorDoSimbolo(simbolo));
-                SwingUtilities.invokeLater(new FireChangedEvent(valorTreenode));
-                SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
+                model.nodeChanged(valorTreenode);
+                model.nodeChanged(noAlteraldo);
             }
         } else if (simbolo instanceof Matriz) {
             Matriz matriz = ((Matriz) simbolo);
@@ -403,9 +426,9 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                     ValorTreeNode NoDaColuna = (ValorTreeNode) noDaLinha.getChildAt(matriz.getUltimaColunaModificada());
                     NoDaColuna.setModificado(true);
                     NoDaColuna.setValor(getValorDoSimbolo(simbolo));
-                    SwingUtilities.invokeLater(new FireChangedEvent(noAlteraldo));
-                    SwingUtilities.invokeLater(new FireChangedEvent(noDaLinha));
-                    SwingUtilities.invokeLater(new FireChangedEvent(NoDaColuna));
+                    model.nodeChanged(noAlteraldo);
+                    model.nodeChanged(noDaLinha);
+                    model.nodeChanged(NoDaColuna);
                 }
             }
         } else if (simbolo instanceof Ponteiro) {
@@ -415,12 +438,10 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     private void limparModificado(SourceTreeNode root) {
-        if (isEnabled()) {
-            Enumeration en = root.depthFirstEnumeration();
-            while (en.hasMoreElements()) {
-                SourceTreeNode s = (SourceTreeNode) en.nextElement();
-                s.setModificado(false);
-            }
+        Enumeration en = root.depthFirstEnumeration();
+        while (en.hasMoreElements()) {
+            SourceTreeNode s = (SourceTreeNode) en.nextElement();
+            s.setModificado(false);
         }
     }
 
@@ -467,52 +488,10 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     private void removerFilhos(final PortugolTreeNode node) {
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-
-                @Override
-                public void run() {
-                    for (int i = model.getChildCount(node) - 1; i >= 0; i--) {
-                        model.removeNodeFromParent((MutableTreeNode) model.getChild(node, i));
-                    }
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
+        for (int i = model.getChildCount(node) - 1; i >= 0; i--) {
+            model.removeNodeFromParent((MutableTreeNode) model.getChild(node, i));
 
         }
-    }
-
-    private class ComparadorNos implements Comparator<No> {
-
-        @Override
-        public int compare(No o1, No o2) {
-            boolean linha = false;
-            boolean coluna = false;
-            boolean tamanho = false;
-            boolean nome = false;
-
-            if ((o1 instanceof NoDeclaracao)
-                    && (o2 instanceof NoDeclaracao)) {
-                NoDeclaracao dec1 = ((NoDeclaracao) o1);
-                NoDeclaracao dec2 = ((NoDeclaracao) o2);
-                if (dec1.getTrechoCodigoFonteNome() == null) {
-                    return 0;
-                }
-                linha = dec1.getTrechoCodigoFonteNome().getLinha() == dec2.getTrechoCodigoFonteNome().getLinha();
-                coluna = dec1.getTrechoCodigoFonteNome().getColuna() == dec2.getTrechoCodigoFonteNome().getColuna();
-                tamanho = dec1.getTrechoCodigoFonteNome().getTamanhoTexto() == dec2.getTrechoCodigoFonteNome().getTamanhoTexto();
-                nome = dec1.getNome().equals(dec2.getNome());
-
-            }
-            if (linha && coluna && tamanho && nome) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
     }
 
     /**
@@ -551,33 +530,4 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         }
     }
 
-    private class InsertNode implements Runnable {
-
-        private final ValorTreeNode child;
-        private final PortugolTreeNode parent;
-
-        public InsertNode(ValorTreeNode valorTreeNode, PortugolTreeNode node) {
-            this.child = valorTreeNode;
-            this.parent = node;
-        }
-
-        @Override
-        public void run() {
-            model.insertNodeInto(child, parent, parent.getChildCount());
-        }
-    }
-
-    private class FireChangedEvent implements Runnable {
-
-        private final SourceTreeNode node;
-
-        public FireChangedEvent(SourceTreeNode node) {
-            this.node = node;
-        }
-
-        @Override
-        public void run() {
-            model.nodeChanged(node);
-        }
-    }
 }

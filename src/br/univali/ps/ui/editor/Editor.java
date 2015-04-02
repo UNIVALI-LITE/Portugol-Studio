@@ -153,6 +153,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     public Set<Integer> getLinhasComPontoDeParada(){
         return getTextArea().getLinhasComPontoDeParada();
     }
+    
+    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos){
+        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
+    }
 
     public SuporteLinguagemPortugol getSuporteLinguagemPortugol() {
         return suporteLinguagemPortugol;
@@ -553,6 +557,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         });
     }
+    
+    public void removerHighlightsDepuracao()
+    {
+        textArea.removeAllLineHighlights();
+    }
 
     private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
@@ -572,7 +581,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         }
 
-        btnProximaInstrucao.setVisible(false);
         btnSalvar.setVisible(false);
         btnSalvarComo.setVisible(false);
         ocultarBotoesExecucao();
@@ -582,9 +590,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         jSeparator1.setVisible(true);
         btnExecutar.setVisible(true);
         btnInterromper.setVisible(true);
-
         btnDepurar.setVisible(btnDepurar.getAction().isEnabled());
-        btnProximaInstrucao.setVisible(!btnDepurar.getAction().isEnabled());
     }
 
     public void ocultarBotoesExecucao() {
@@ -592,7 +598,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnExecutar.setVisible(false);
         btnInterromper.setVisible(false);
         btnDepurar.setVisible(false);
-        btnProximaInstrucao.setVisible(false);
     }
 
     private void setTamanhoFonteEditor(float tamanho) {
@@ -687,6 +692,25 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         carregarPosicaoCursor(informacoesPortugolStudio);
         carregarDobramentoCodigo(informacoesPortugolStudio);
+        carregarPontosDeParada(informacoesPortugolStudio);
+    }
+    
+    private void carregarPontosDeParada(String informacoesPortugolStudio){
+        Matcher avaliador = Pattern.compile("@PONTOS-DE-PARADA[ ]*=[ ]*([0-9]+(, )?)+;").matcher(informacoesPortugolStudio);
+
+        if (avaliador.find()) {
+            String linha = avaliador.group();
+            String valores[] = linha.split("=")[1].replace(";", "").split(",");
+            try {
+                for (String valor : valores) {
+                    int linhaDoPontoDeParada = Integer.parseInt(valor.trim());
+                    getTextArea().alternaPontoDeParada(linhaDoPontoDeParada);
+                }
+            } catch (NumberFormatException excecao) {
+                excecao.printStackTrace(System.out);
+            }
+            
+        }
     }
 
     private void carregarPosicaoCursor(String informacoesPortugolStudio) {
@@ -773,9 +797,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setHighlightCurrentLine(false);
 
         linhasCodigoDobradas = getLinhasCodigoDobradas();
-
-        btnDepurar.setVisible(false);
-        btnProximaInstrucao.setVisible(expandido);
     }
 
     public List<Integer> getLinhasCodigoDobradas() {
@@ -833,7 +854,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.requestFocusInWindow();
 
         btnDepurar.setVisible(expandido);
-        btnProximaInstrucao.setVisible(false);
 
         if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
             destacarErroExecucao(resultadoExecucao.getErro().getLinha(), resultadoExecucao.getErro().getColuna());
@@ -1329,9 +1349,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnSalvar = new javax.swing.JButton();
         btnSalvarComo = new javax.swing.JButton();
-        btnDepurar = new javax.swing.JButton();
-        btnProximaInstrucao = new javax.swing.JButton();
         btnExecutar = new javax.swing.JButton();
+        btnDepurar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
@@ -1470,28 +1489,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnSalvarComo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnSalvarComo);
 
-        btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnDepurar.setBorderPainted(false);
-        btnDepurar.setFocusable(false);
-        btnDepurar.setHideActionText(true);
-        btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDepurar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnDepurar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnDepurar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnDepurar);
-
-        btnProximaInstrucao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnProximaInstrucao.setBorderPainted(false);
-        btnProximaInstrucao.setFocusable(false);
-        btnProximaInstrucao.setHideActionText(true);
-        btnProximaInstrucao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnProximaInstrucao.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnProximaInstrucao.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnProximaInstrucao.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnProximaInstrucao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnProximaInstrucao);
-
         btnExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         btnExecutar.setBorderPainted(false);
         btnExecutar.setFocusable(false);
@@ -1502,6 +1499,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnExecutar.setPreferredSize(new java.awt.Dimension(24, 24));
         btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnExecutar);
+
+        btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        btnDepurar.setBorderPainted(false);
+        btnDepurar.setFocusable(false);
+        btnDepurar.setHideActionText(true);
+        btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDepurar.setMaximumSize(new java.awt.Dimension(24, 24));
+        btnDepurar.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnDepurar.setPreferredSize(new java.awt.Dimension(24, 24));
+        btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraFerramentas.add(btnDepurar);
 
         btnInterromper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         btnInterromper.setBorderPainted(false);
@@ -1531,7 +1539,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private javax.swing.JButton btnInterromper;
     private javax.swing.JButton btnMaximizar;
     private javax.swing.JButton btnPesquisar;
-    private javax.swing.JButton btnProximaInstrucao;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnSalvarComo;
     private javax.swing.JButton btnTema;
