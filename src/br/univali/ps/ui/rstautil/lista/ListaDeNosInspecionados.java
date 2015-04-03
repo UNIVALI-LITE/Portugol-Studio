@@ -525,6 +525,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 }
                 indiceDaLinha++;
             } while (indiceDaLinha <= ultimaLinhaAtualizada + 1 && indiceDaLinha < totalDeLinhas);
+            if(ultimaLinhaAtualizada >= totalDeLinhas -1){//se é a última linha
+                rolavemVertical++;
+            }
             return rolavemVertical;
         }
 
@@ -542,6 +545,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     rolagem++;
                 }
             } while (indiceDaColuna <= ultimaColunaAtualizada + 1 && indiceDaColuna < totalDeColunas);
+            if(ultimaColunaAtualizada >= totalDeColunas-1 ){//se é a última coluna
+                rolagem++;
+            }
             return rolagem;
         }
 
@@ -777,7 +783,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
                 //linha vertical
                 g.setColor(COR_DA_GRADE);
-                g.drawLine(xDaLinha, (c > 0) ? (alturaDaLinha - MARGEM) : alturaDaLinha, xDaLinha, getHeight());
+                g.drawLine(xDaLinha, (c > 0) ? (alturaDaLinha - 3) : alturaDaLinha, xDaLinha, getHeight());
 
                 //desenha a string do índice
                 String stringDoIndice = String.valueOf(c);
@@ -1098,11 +1104,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         lista.model.addElement(new ItemDaListaParaVetor(5, new NoDeclaracaoVetor("outro vetor", TipoDado.REAL, new NoInteiro(3), false)));
         ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(13, 13, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(13), new NoInteiro(13), false));
         lista.model.addElement(itemMatriz);
-        itemMatriz.set(345, 5, 10);
+        itemMatriz.set(345, 12, 12);
         lista.setPreferredSize(new Dimension(300, 600));
 
         
-        itemVetor.set(34, 12);
+        itemVetor.set(34, 14);
         
         frame.add(lista, BorderLayout.CENTER);
         frame.pack();
