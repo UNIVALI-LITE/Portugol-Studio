@@ -230,6 +230,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                     nosSelecionados.add(noDeclaracao);
                                 } catch (Exception e) {
                                     //caso o nó não seja um NoDeclaracao
+                                    Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.WARNING, e.getMessage(), e);
                                 }
                             }
                         }

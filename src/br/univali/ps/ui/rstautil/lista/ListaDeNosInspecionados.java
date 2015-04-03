@@ -7,20 +7,27 @@ import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
+import br.univali.portugol.nucleo.simbolos.Matriz;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
+import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.ComparadorNos;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -28,16 +35,17 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import javax.swing.DefaultListCellRenderer;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -52,6 +60,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
 
+    //renderizadores
+    private static RenderizadorDeVetor RENDERIZADOR_DE_VETOR = new RenderizadorDeVetor();
+    private JLabel RENDERIZADOR_DE_VARIAVEL = new JLabel();
+    private JLabel RENDERIZADOR_DE_MATRIZ = new JLabel();
+
+    protected static ItemDaLista ultimoItemModificado = null;
+
     boolean programaExecutando = false;
 
     public ListaDeNosInspecionados() {
@@ -59,7 +74,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         setModel(model);
         setDropMode(DropMode.ON);
         setTransferHandler(new TratadorDeArrastamento());
-        setCellRenderer(new RenderizadorDosItensDaLista());
+        setCellRenderer(new RenderizadorDaLista());
         addFocusListener(new FocusAdapter() {
 
             @Override
@@ -111,15 +126,31 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
-    public static class ItemDaLista {
+    public static abstract class ItemDaLista {
 
-        private static ItemDaLista ultimoItemModificado = null;
-
-        private final NoDeclaracao noDeclaracao;
-        private Object valor;
+        protected final NoDeclaracao noDeclaracao;
 
         public ItemDaLista(NoDeclaracao no) {
             this.noDeclaracao = no;
+        }
+
+        abstract Component getRendererComponent();
+
+        Icon getIcone() {
+            if (ehVariavel()) {
+                return getIcon(getTipo());
+            } else if (ehVetor()) {
+                return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+            }
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
+        }
+
+        private Icon getIcon(TipoDado tipoDado) {
+            String iconName = "unknown.png";
+            if (tipoDado != null) {
+                iconName = tipoDado.getNome() + ".png";
+            }
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
         }
 
         boolean ehVetor() {
@@ -130,17 +161,12 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             return noDeclaracao instanceof NoDeclaracaoMatriz;
         }
 
-        void setValor(Object valor) {
-            this.valor = valor;
-            ultimoItemModificado = this;
+        boolean ehVariavel() {
+            return noDeclaracao instanceof NoDeclaracaoVariavel;
         }
 
         public boolean ehUltimoItemAtualizado() {
             return this == ultimoItemModificado;
-        }
-
-        public Object getValor() {
-            return valor;
         }
 
         public String getNome() {
@@ -154,67 +180,452 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         public NoDeclaracao getNoDeclaracao() {
             return noDeclaracao;
         }
+
+        public abstract void limpa();
+    }
+
+    private static class ItemDaListaParaVariavel extends ItemDaLista {
+
+        private Object valor;
+        private static RenderizadorDeVariavel rendererComponent = new RenderizadorDeVariavel();
+
+        public ItemDaListaParaVariavel(NoDeclaracaoVariavel no) {
+            super(no);
+        }
+
+        @Override
+        Component getRendererComponent() {
+            rendererComponent.setItemDaLista(this);
+            return rendererComponent;
+        }
+
+        void setValor(Object valor) {
+            this.valor = valor;
+            ultimoItemModificado = this;
+        }
+
+        public String getValor() {
+            if (valor == null) {
+                return null;
+            }
+            if (valor instanceof Boolean) {
+                valor = ((Boolean) valor) ? "verdadeiro" : "falso";
+            }
+            return valor.toString();
+        }
+
+        @Override
+        public void limpa() {
+            valor = null;
+        }
+    }
+
+    private static class ItemDaListaParaMatriz extends ItemDaLista {
+
+        private Object valores[][];
+
+        public ItemDaListaParaMatriz(int linhas, int colunas, NoDeclaracaoMatriz no) {
+            super(no);
+            if (linhas <= 0) {
+                throw new IllegalArgumentException("quantidade inválida de linhas: " + linhas);
+            }
+            if (colunas <= 0) {
+                throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
+            }
+            valores = new Object[linhas][colunas];
+        }
+
+        int getLinhas() {
+            return valores.length;
+        }
+
+        int getColunas() {
+            if (valores.length > 0) {
+                return valores[0].length;
+            }
+            return 0;
+        }
+
+        Object get(int linha, int coluna) {
+            if (linha >= 0 && linha < valores.length && coluna >= 0 && coluna < valores[0].length) {
+                return valores[linha][coluna];
+            }
+            return null;
+        }
+
+        void set(Object valor, int linha, int coluna) {
+            if (linha >= 0 && linha < valores.length && coluna >= 0 && coluna < valores[0].length) {
+                valores[linha][coluna] = valor;
+                ultimoItemModificado = this;
+            }
+        }
+
+        @Override
+        public void limpa() {
+            for (Object[] linha : valores) {
+                for (int c = 0; c < linha.length; c++) {
+                    linha[c] = null;
+                }
+            }
+        }
+
+        @Override
+        Component getRendererComponent() {
+            return new JLabel();
+        }
+
+    }
+
+    private static class ItemDaListaParaVetor extends ItemDaLista {
+
+        private Object valores[];
+        private int ultimaColunaAtualizada = -1;
+        //private int larguraDasColunas[];
+
+        public ItemDaListaParaVetor(int colunas, NoDeclaracaoVetor no) {
+            super(no);
+            if (colunas <= 0) {
+                throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
+            }
+            valores = new Object[colunas];
+//            larguraDasColunas = new int[colunas];
+//            for (int i = 0; i < colunas; i++) {
+//                larguraDasColunas[i] = 20;
+//            }
+        }
+
+//        int getLarguraDaColuna(int indiceDaColuna){
+//            if(indiceDaColuna >= 0 && indiceDaColuna < larguraDasColunas.length){
+//                return larguraDasColunas[indiceDaColuna];
+//            }
+//            return 20;
+//        }
+//        
+//        void setLarguraDaColuna(int indiceDaColuna, int largura){
+//            if(indiceDaColuna >= 0 && indiceDaColuna < larguraDasColunas.length){
+//                if(largura > larguraDasColunas[indiceDaColuna]){
+//                    larguraDasColunas[indiceDaColuna] = largura;
+//                }
+//            }
+//        }
+        int getColunas() {
+            return valores.length;
+        }
+
+        Object get(int coluna) {
+            if (coluna >= 0 && coluna < valores.length) {
+                return valores[coluna];
+            }
+            return null;
+        }
+
+        void set(Object valor, int coluna) {
+            if (coluna >= 0 && coluna < valores.length) {
+                valores[coluna] = valor;
+                ultimaColunaAtualizada = coluna;
+                ultimoItemModificado = this;
+            }
+        }
+
+        @Override
+        public void limpa() {
+            for (int c = 0; c < valores.length; c++) {
+                valores[c] = null;
+            }
+        }
+
+        int getUltimaColunaAtualizada() {
+            return ultimaColunaAtualizada;
+        }
+
+        @Override
+        Component getRendererComponent() {
+            ListaDeNosInspecionados.RENDERIZADOR_DE_VETOR.setItemDaLista(this);
+            return RENDERIZADOR_DE_VETOR;
+        }
+
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    private class RenderizadorDosItensDaLista extends DefaultListCellRenderer {
+    private static abstract class RenderizadorBase extends JComponent {
+
+        protected final Color COR_DA_GRADE = Color.LIGHT_GRAY;
+        protected final Color COR_DO_TEXTO = Color.DARK_GRAY;
+        protected final Color COR_DO_TEXTO_DESTACADO = Color.BLACK;
+        protected final Color COR_DO_CABECALHO_DESTACADO = Color.GRAY;
+        protected final Color COR_DO_FUNDO_EM_DESTAQUE = new Color(1, 0, 0, 0.2f);//vermelho claro
+        
+        private static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
+        
+        //protected Font fonteCabecalho = null;
+        protected static final int MARGEM = 5;
+
+        protected ItemDaLista itemDaLista;
+
+        protected static final Font FONTE_NORMAL = Font.decode("Verdana-12");
+        protected static final Font FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
+        protected static final Font FONTE_CABECALHO = FONTE_NORMAL.deriveFont(10f);
+        protected static final Font FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
+
+        public RenderizadorBase() {
+            super();
+        }
+
+        /**
+         * @param g
+         * @param y a posição onde o nome será desenha no eixo y
+         * @return a largura da string do nome para que ela possa ser usada como
+         * margem para o resto do desenho
+         */
+        protected int desenhaNome(Graphics g, int x, int y) {
+
+            g.setFont(itemDaLista.ehUltimoItemAtualizado() ? FONTE_DESTAQUE : FONTE_NORMAL);
+            String stringDoNome = itemDaLista.getNome();
+            FontMetrics metrics = g.getFontMetrics();
+            int larguraDoNome = metrics.stringWidth(stringDoNome);
+
+            g.drawString(stringDoNome, x, y + metrics.getAscent());
+            return larguraDoNome;
+        }
+
+        void setItemDaLista(ItemDaLista itemDaLista) {
+            this.itemDaLista = itemDaLista;
+            setPreferredSize(new Dimension(300, getAlturaPreferida()));
+        }
+
+        protected abstract int getAlturaPreferida();
+
+    }
+
+    private static class RenderizadorDeVariavel extends RenderizadorBase {
 
         @Override
-        public Component getListCellRendererComponent(JList<? extends Object> list, Object object, int index, boolean selected, boolean hasFocus) {
-            ItemDaLista item = (ItemDaLista) object;
-            StringBuilder sb = new StringBuilder();
-            sb.append("<html>");
-            if (item.ehUltimoItemAtualizado()) {
-                sb.append("<b>");
+        protected int getAlturaPreferida() {
+            return 20;
+        }
+
+        @Override
+        void setItemDaLista(ItemDaLista itemDaLista) {
+            if (!(itemDaLista instanceof ItemDaListaParaVariavel)) {
+                throw new IllegalArgumentException("Item da lista não é um item de variável!");
             }
-            sb.append(item.getNome());
-            if (item.ehUltimoItemAtualizado()) {
-                sb.append("</b>");
+            super.setItemDaLista(itemDaLista);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            super.paintComponent(g);
+            if (itemDaLista == null) {
+                return;
+            }
+            Icon icone = itemDaLista.getIcone();
+            icone.paintIcon(this, g, 0, MARGEM);
+            int larguraDoNome = desenhaNome(g, icone.getIconWidth(), MARGEM);
+
+            //desenha valor
+            g.setColor(Color.BLACK);
+            g.setFont(itemDaLista.ehUltimoItemAtualizado() ? FONTE_DESTAQUE : FONTE_NORMAL);
+            String stringDoValor = ((ItemDaListaParaVariavel) itemDaLista).getValor();
+            if (stringDoValor != null) {
+                FontMetrics metrics = g.getFontMetrics();
+                int larguraDoValor = metrics.stringWidth(stringDoValor);
+                g.drawString(stringDoValor, icone.getIconWidth() + larguraDoNome + MARGEM + MARGEM, metrics.getDescent() + metrics.getAscent() + 1);
+
+                //desenha caixa do valor
+                g.setColor(COR_DA_GRADE);
+                int larguraDaCaixa = (stringDoValor != null) ? (MARGEM + larguraDoValor + MARGEM) : 50;
+                g.drawRect(icone.getIconWidth() + larguraDoNome + MARGEM, MARGEM, larguraDaCaixa, getHeight() - 1 - MARGEM);
             }
 
-            //tipo
-            if (item.ehVetor()) {
-                sb.append("[]");
-            } else if (item.ehMatriz()) {
-                sb.append("[][]");
+        }
+
+    }
+
+    
+    
+    private static class RenderizadorDeVetor extends RenderizadorBase {
+
+        public RenderizadorDeVetor() {
+            super();
+        }
+
+        @Override
+        void setItemDaLista(ItemDaLista itemDaLista) {
+            if (!(itemDaLista instanceof ItemDaListaParaVetor)) {
+                throw new IllegalArgumentException("Item da lista não é um item de vetor!");
             }
-            sb.append(" : ");
-            sb.append("<font color='#888888'>");
-            sb.append(item.getTipo().getNome());
-            sb.append("<font color='#000000'>");
-            //-----------
-            if (item.getValor() != null) {
-                Object valor = item.getValor();
-                if (valor instanceof Boolean) {
-                    valor = ((Boolean) valor) ? "verdadeiro" : "falso";
+            super.setItemDaLista(itemDaLista);
+        }
+
+        @Override
+        protected int getAlturaPreferida() {
+            FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
+            return metrics.getHeight() * 2;//2 linhas, uma com os valores e outra com os índices
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (itemDaLista != null) {
+                Icon icone = itemDaLista.getIcone();
+                icone.paintIcon(this, g, 0, g.getFontMetrics().getHeight());
+                int larguraDoNome = desenhaNome(g, icone.getIconWidth(), getHeight() / 2);
+                int totalDeColunas = ((ItemDaListaParaVetor) itemDaLista).getColunas();
+                int margemEsquerda = icone.getIconWidth() + larguraDoNome + MARGEM;
+                int colunaInicial = calculaRolagem(margemEsquerda);
+                desenhaGrade(g, 1, totalDeColunas, colunaInicial, margemEsquerda);
+            }
+        }
+        
+        
+        private int calculaRolagem(int margemEsquerda){
+            ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
+            int totalDeColunas = item.getColunas();
+            int xDaColuna = margemEsquerda;
+            int ultimaColunaAtualizada = item.getUltimaColunaAtualizada();
+            int rolagem = 0;//conta quantas células é preciso deslocar para que a última célula atualizada fique visível no componente
+            int larguraDoComponente = getWidth();
+            int indiceDaColuna = 0;
+            do{
+                 xDaColuna += getLarguraDaColuna(indiceDaColuna++);
+                 if(xDaColuna > larguraDoComponente){
+                     rolagem++;
+                 }
+            }
+            while(indiceDaColuna <= ultimaColunaAtualizada + 1 && indiceDaColuna < totalDeColunas);
+            return rolagem;
+        }
+
+//        /***
+//         * @param margemEsquerda
+//         * @return este método verifica se a última célula atualizada pode ser desenhada dentro do componente ou não. Caso
+//         * a célula não possa ser desenha (isso acontece com vetores grandes) o vetor é desenhado a partir da coluna N, onde
+//         * N é calculado para a última célula atualizada sempre esteja vísivel. Isso foi chamado de "rolagem". É, eu sei, esse termo não é grande coisa ;)
+//         */
+//        private boolean precisaFazerRolagem(int margemEsquerda){
+//            ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
+//            int totalDeColunas = item.getColunas();
+//            int xDaColuna = margemEsquerda;
+//            int ultimaColunaAtualizada = item.getUltimaColunaAtualizada();
+//            for (int i = 0; i < totalDeColunas; i++) {
+//                 xDaColuna += getLarguraDaColuna(i);
+//                 if(i == ultimaColunaAtualizada){
+//                     break;
+//                 }
+//            }
+//            //verifica se a última coluna atualizada pode ser desenhada dentro da largura do componente
+//            return xDaColuna > getWidth();
+//        }
+        
+        /**
+         * *
+         * @param indiceDaColuna
+         * @return calcula a largura da string que representa o valor da coluna
+         * e a largura do índice da coluna. Retorna a maior largura encontrada.
+         */
+        private int getLarguraDaColuna(int indiceDaColuna) {
+            ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
+            String stringDoValor = getStringDoValor(indiceDaColuna);
+            String stringDoIndice = String.valueOf(indiceDaColuna);
+            FontMetrics metricsDoValor = getFontMetrics(FONTE_NORMAL);
+            FontMetrics metricsDoIndice = getFontMetrics(FONTE_CABECALHO);
+            if (item.ehUltimoItemAtualizado() && item.getUltimaColunaAtualizada() == indiceDaColuna) {
+                metricsDoIndice = getFontMetrics(FONTE_CABECALHO_DESTAQUE);
+                metricsDoValor = getFontMetrics(FONTE_DESTAQUE);
+            }
+            int larguraDoValor = MARGEM + metricsDoValor.stringWidth(stringDoValor) + MARGEM;
+            int larguraDoIndice = MARGEM + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM;
+            int larguraDaStringVazia = MARGEM + metricsDoValor.stringWidth(RenderizadorBase.STRING_VAZIA) + MARGEM; //a largura retornada nunca será menor que a largura da string vazia
+            return Math.max( Math.max(larguraDaStringVazia, larguraDoIndice), larguraDoValor);
+        }
+
+        private String getStringDoValor(int indice){
+            ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
+            return (item.get(indice) != null) ? item.get(indice).toString() : RenderizadorBase.STRING_VAZIA;
+            //retorna uma string em branco com 4 espaços para representar o valor nulo, assim as células do vetor tem uma largura mesmo quando não existe valor para exibir
+        }
+        
+        private void desenhaGrade(Graphics g, int totalDeLinhas, int totalDeColunas, int colunaInicial, int margemEsquerda) {
+            int alturaDaLinha = getHeight() / (totalDeLinhas + 1);
+            int inicioLinhaHorizontal = (totalDeLinhas > 1) ? (margemEsquerda - 3) : margemEsquerda;
+            int xDaLinha = margemEsquerda;
+            for (int l = 0; l < totalDeLinhas; l++) {
+                int yDaLinha = (l + 1) * alturaDaLinha;
+                xDaLinha = margemEsquerda;
+                for (int c = colunaInicial; c < totalDeColunas; c++) {
+                    ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
+                    boolean podeDestacarEstaColuna = itemDaLista.ehUltimoItemAtualizado() && item.getUltimaColunaAtualizada() == c;
+                    int larguraDaColuna = getLarguraDaColuna(c);
+
+                    //pinta o fundo da coluna que foi alterada por último
+                    if (podeDestacarEstaColuna) {
+                        g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
+                        g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha - 2);
+                    }
+
+                    //desenha o valor da coluna
+                    String stringDoValor = getStringDoValor(c);
+                    g.setFont(podeDestacarEstaColuna ? FONTE_DESTAQUE : FONTE_NORMAL);
+                    FontMetrics metrics = g.getFontMetrics();
+                    int xDoValor = xDaLinha + larguraDaColuna/2 - metrics.stringWidth(stringDoValor)/2;
+                    int yDoValor = MARGEM + alturaDaLinha * 2 - metrics.getAscent() + metrics.getDescent() + 2;
+                    g.setColor(podeDestacarEstaColuna ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
+                    g.drawString(stringDoValor, xDoValor, yDoValor);
+
+                    //linha vertical
+                    g.setColor(COR_DA_GRADE);
+                    g.drawLine(xDaLinha, (c > 0) ? (alturaDaLinha - MARGEM) : alturaDaLinha, xDaLinha, getHeight());
+
+                    //desenha a string do índice
+                    String stringDoIndice = String.valueOf(c);
+                    if (podeDestacarEstaColuna) {
+                        g.setFont(FONTE_CABECALHO_DESTAQUE);
+                        g.setColor(COR_DO_CABECALHO_DESTACADO);
+                    } else {
+                        g.setFont(FONTE_CABECALHO);
+                        g.setColor(COR_DA_GRADE);
+                    }
+                    int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
+                    g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, 13);//desenha índice 
+
+                    xDaLinha += larguraDaColuna;
                 }
-                sb.append(" = ").append(valor);
+
+                //desenha a linha horizontal
+                g.setColor(COR_DA_GRADE);
+                g.drawLine(inicioLinhaHorizontal, yDaLinha, xDaLinha, yDaLinha);//linha horizontal
+
+                //desenha a borda direita
+                g.setColor(COR_DA_GRADE);
+                g.drawLine(xDaLinha, alturaDaLinha, xDaLinha, getHeight());
             }
-            final String valor = sb.toString();
-            JLabel component = (JLabel) super.getListCellRendererComponent(list, object, index, selected, hasFocus);
-            component.setText(valor);
-            component.setFont(getFont());
-            Icon icone = getIcon(item);
-            component.setIcon(icone);
-            component.setDisabledIcon(icone);
-            return component;
+
+            //desenha a borda embaixo
+            g.drawLine(inicioLinhaHorizontal, getHeight() - 1, xDaLinha, getHeight() - 1);
         }
 
-        private Icon getIcon(ItemDaLista item) {
-            if (item.ehVetor()) {
-                return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
-            } else if (item.ehMatriz()) {
-                return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
-            }
-            String iconName = "unknown.png";
-            TipoDado tipoDado = item.getTipo();
-            if (tipoDado != null) {
-                iconName = tipoDado.getNome() + ".png";
-            }
-            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
+    }
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
+
+        private JPanel panel = new JPanel(new BorderLayout());
+
+        public RenderizadorDaLista() {
+            panel.setOpaque(false);
+            panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         }
 
+        @Override
+        public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
+            Component c = item.getRendererComponent();
+            panel.removeAll();
+            panel.add(c, BorderLayout.CENTER);
+            return panel;
+            //existem 3 tipos de ItemDaLista (para variáveis, para vetores e para matrizes)
+            //cada subclasse de ItemDaLista retorna um renderer component diferente.
+        }
     }
 
     private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
@@ -222,7 +633,10 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     }
 
     private boolean simboloEhPermitido(Simbolo simbolo) {
-        return simbolo != null && simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVariavel;
+        return simbolo != null
+                && ((simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVariavel)
+                || (simbolo instanceof Vetor && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVetor)
+                || (simbolo instanceof Matriz && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoMatriz));
     }
 
     @Override
@@ -230,9 +644,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         programaExecutando = false;
         //limpa os valores no fim da execução
         for (int i = 0; i < model.getSize(); i++) {
-            model.getElementAt(i).setValor(null);
+            model.getElementAt(i).limpa();
         }
-        ItemDaLista.ultimoItemModificado = null;
+        ultimoItemModificado = null;
         repaint();
     }
 
@@ -268,10 +682,23 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         boolean itemsAlterados = false;
         for (Simbolo simbolo : simbolos) {
             if (simboloEhPermitido(simbolo)) {
-                NoDeclaracaoVariavel noDeclaracao = (NoDeclaracaoVariavel) simbolo.getOrigemDoSimbolo();
+                NoDeclaracao noDeclaracao = (NoDeclaracao) simbolo.getOrigemDoSimbolo();
                 ItemDaLista itemDaLista = getItemDoNo(noDeclaracao);
                 if (itemDaLista != null) {
-                    itemDaLista.setValor(((Variavel) simbolo).getValor());
+                    if (itemDaLista.ehVariavel()) {
+                        ((ItemDaListaParaVariavel) itemDaLista).setValor(((Variavel) simbolo).getValor());
+                    } else if (itemDaLista.ehMatriz()) {
+                        Matriz matriz = (Matriz) simbolo;
+                        int linha = matriz.getUltimaLinhaModificada();
+                        int coluna = matriz.getUltimaColunaModificada();
+                        Object valor = matriz.getValor(linha, coluna);
+                        ((ItemDaListaParaMatriz) itemDaLista).set(valor, linha, coluna);
+                    } else {
+                        Vetor vetor = (Vetor) simbolo;
+                        int indice = vetor.getUltimoIndiceModificado();
+                        Object valor = vetor.getValor(indice);
+                        ((ItemDaListaParaVetor) itemDaLista).set(valor, indice);
+                    }
                     itemsAlterados = true;
                 }
             }
@@ -309,7 +736,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     }
 
     @Override
-    public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
+    public
+            void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -322,16 +750,19 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             List<NoDeclaracao> nosTransferidos = null;
             try {
                 nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+
             } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
-            support.setShowDropLocation(true);
+
             if (!support.isDrop()) {
                 return false;
             }
 
             for (NoDeclaracao no : nosTransferidos) {
                 if (!contemNo(no)) {
+                    support.setShowDropLocation(true);
                     return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
                 }
             }
@@ -348,20 +779,37 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             try {
                 nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
             } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
             boolean importou = false;
             for (NoDeclaracao noTransferido : nosTransferidos) {
                 if (!contemNo(noTransferido)) {
-                    model.addElement(new ItemDaLista(noTransferido));
+                    adicionaNoModelDaLista(noTransferido);
                     importou = true;
                 }
             }
             return importou;
         }
+    }
 
-        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    private void adicionaNoModelDaLista(NoDeclaracao noTransferido) {
+        if (noTransferido instanceof NoDeclaracaoVariavel) {
+            model.addElement(new ItemDaListaParaVariavel((NoDeclaracaoVariavel) noTransferido));
+        } else if (noTransferido instanceof NoDeclaracaoVetor) {
+            NoDeclaracaoVetor declaracaoVetor = ((NoDeclaracaoVetor) noTransferido);
+            if (declaracaoVetor.getTamanho() != null) {
+                int colunas = ((NoInteiro) declaracaoVetor.getTamanho()).getValor();
+                model.addElement(new ItemDaListaParaVetor(colunas, declaracaoVetor));
+            }
+        } else if (noTransferido instanceof NoDeclaracaoMatriz) {
+            NoDeclaracaoMatriz declaracaoMatriz = ((NoDeclaracaoMatriz) noTransferido);
+            if (((NoInteiro) declaracaoMatriz.getNumeroColunas()) != null && ((NoInteiro) declaracaoMatriz.getNumeroLinhas()) != null) {
+                int colunas = ((NoInteiro) declaracaoMatriz.getNumeroColunas()).getValor();
+                int linhas = ((NoInteiro) declaracaoMatriz.getNumeroLinhas()).getValor();
+                model.addElement(new ItemDaListaParaMatriz(linhas, colunas, declaracaoMatriz));
+            }
+        }
     }
 
     //sempre que o código fonte é alterado este listener é disparado. Toda a árvore sintática
@@ -418,7 +866,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                                 });
                                 model.clear();
                                 for (NoDeclaracao no : nosInspecionados) {
-                                    model.addElement(new ItemDaLista(no));
+                                    adicionaNoModelDaLista(no);
                                 }
                             } catch (Exception e) {
                                 //Logger.getLogger(ListaDeNosInspecionados.class.getName()).log(Level.WARNING, null, e);
@@ -430,6 +878,29 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 }
             }
         });
+    }
+
+    public static void main(String args[]) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 300);
+        frame.setVisible(true);
+        frame.setLayout(new BorderLayout());
+
+        ListaDeNosInspecionados lista = new ListaDeNosInspecionados();
+        ItemDaListaParaVariavel item = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
+        item.setValor(53);
+        lista.model.addElement(item);
+        lista.model.addElement(new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("outra variável", TipoDado.LOGICO, false)));
+        ItemDaListaParaVetor itemVetor = new ItemDaListaParaVetor(15, new NoDeclaracaoVetor("teste", TipoDado.INTEIRO, new NoInteiro(15), false));
+        itemVetor.set(34, 12);
+        lista.model.addElement(itemVetor);
+        lista.model.addElement(new ItemDaListaParaVetor(5, new NoDeclaracaoVetor("outro vetor", TipoDado.REAL, new NoInteiro(3), false)));
+        //lista.model.addElement(new ItemDaListaParaMatriz(5, 5, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(5), new NoInteiro(5), false)));
+        lista.setPreferredSize(new Dimension(300, 600));
+
+        frame.add(lista, BorderLayout.CENTER);
+        frame.pack();
     }
 
 }
