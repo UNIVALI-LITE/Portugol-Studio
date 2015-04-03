@@ -1131,6 +1131,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreInspetor.setTopComponent(painelArvore);
 
         scrollInspetor.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        scrollInspetor.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollInspetor.setMinimumSize(new java.awt.Dimension(31, 150));
         scrollInspetor.setPreferredSize(new java.awt.Dimension(266, 200));
 

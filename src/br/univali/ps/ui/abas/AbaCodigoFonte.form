@@ -959,6 +959,7 @@
                                 <EmptyBorder bottom="5" left="5" right="5" top="5"/>
                               </Border>
                             </Property>
+                            <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
                             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[31, 150]"/>
                             </Property>
