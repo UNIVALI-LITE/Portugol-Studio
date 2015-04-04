@@ -42,12 +42,13 @@ import javax.swing.DropMode;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import javax.swing.UIDefaults;
+import javax.swing.border.Border;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
@@ -410,6 +411,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         protected abstract int getAlturaPreferida();
 
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (isFocusOwner()) {
+                g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+            }
+        }
+
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -440,20 +449,19 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int larguraDoNome = desenhaNome(g, icone.getIconWidth(), MARGEM);
 
             //desenha valor
-
             String stringDoValor = ((ItemDaListaParaVariavel) itemDaLista).getValor();
             if (stringDoValor != null) {
                 g.setFont(itemDaLista.ehUltimoItemAtualizado() ? FONTE_DESTAQUE : FONTE_NORMAL);
                 FontMetrics metrics = g.getFontMetrics();
                 int larguraDoValor = metrics.stringWidth(stringDoValor);
                 int larguraDaCaixa = MARGEM + larguraDoValor + MARGEM;
-                
+
                 //pinta fundo de vermelho para destacar
-                if(itemDaLista.ehUltimoItemAtualizado()){
+                if (itemDaLista.ehUltimoItemAtualizado()) {
                     g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
-                    g.fillRect(icone.getIconWidth() + larguraDoNome + MARGEM + 1, MARGEM +1, larguraDaCaixa-1, getHeight() - 2 - MARGEM);
+                    g.fillRect(icone.getIconWidth() + larguraDoNome + MARGEM + 1, MARGEM + 1, larguraDaCaixa - 1, getHeight() - 2 - MARGEM);
                 }
-                
+
                 g.setColor(Color.BLACK);
                 g.drawString(stringDoValor, icone.getIconWidth() + larguraDoNome + MARGEM + MARGEM, metrics.getDescent() + metrics.getAscent() + 1);
 
@@ -470,8 +478,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private static class RenderizadorDeMatriz extends RenderizadorBase {
 
-        private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(1, 0, 0, 0.085f);
-        
+        private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(1, 0, 0, 0.075f);
+
         public RenderizadorDeMatriz() {
             super();
         }
@@ -525,7 +533,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 }
                 indiceDaLinha++;
             } while (indiceDaLinha <= ultimaLinhaAtualizada + 1 && indiceDaLinha < totalDeLinhas);
-            if(ultimaLinhaAtualizada >= totalDeLinhas -1){//se é a última linha
+            if (ultimaLinhaAtualizada >= totalDeLinhas - 1) {//se é a última linha
                 rolavemVertical++;
             }
             return rolavemVertical;
@@ -545,7 +553,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     rolagem++;
                 }
             } while (indiceDaColuna <= ultimaColunaAtualizada + 1 && indiceDaColuna < totalDeColunas);
-            if(ultimaColunaAtualizada >= totalDeColunas-1 ){//se é a última coluna
+            if (ultimaColunaAtualizada >= totalDeColunas - 1) {//se é a última coluna
                 rolagem++;
             }
             return rolagem;
@@ -590,13 +598,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         private void desenhaGrade(Graphics g, int totalDeLinhas, int totalDeColunas, int colunaInicial, int linhaInicial, int margemEsquerda) {
             int alturaDaLinha = getFontMetrics(FONTE_NORMAL).getHeight();
-            int larguraMaximaDoIndiceDeLinha = MARGEM + getFontMetrics(FONTE_DESTAQUE).stringWidth(String.valueOf(totalDeLinhas - 1)) ;//obtém a largura da string do maior índice de linha
+            int larguraMaximaDoIndiceDeLinha = MARGEM + getFontMetrics(FONTE_DESTAQUE).stringWidth(String.valueOf(totalDeLinhas - 1));//obtém a largura da string do maior índice de linha
             int inicioLinhaHorizontal = margemEsquerda + larguraMaximaDoIndiceDeLinha - 3;
             int xDaLinha = inicioLinhaHorizontal;
-            int ultimaLinhaAlterada = ((ItemDaListaParaMatriz)itemDaLista).getUltimaLinhaAtualizada();
-            int ultimaColunaAlterada = ((ItemDaListaParaMatriz)itemDaLista).getUltimaColunaAtualizada();
+            int ultimaLinhaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaLinhaAtualizada();
+            int ultimaColunaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaColunaAtualizada();
             for (int l = linhaInicial; l < totalDeLinhas; l++) {
-                int yDaLinha = ((l-linhaInicial) + 1) * alturaDaLinha;
+                int yDaLinha = ((l - linhaInicial) + 1) * alturaDaLinha;
                 xDaLinha = inicioLinhaHorizontal;
                 boolean podeDestacarEstaCelula = false;
                 for (int c = colunaInicial; c < totalDeColunas; c++) {
@@ -607,10 +615,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
                     //pinta a linha e a coluna que contém a última célula alterada para ajudar a indentificar visualmente a alteração
                     if (itemDaLista.ehUltimoItemAtualizado() && (l == ultimaLinhaAlterada || c == ultimaColunaAlterada)) {
-                        if(l == ultimaLinhaAlterada && c == ultimaColunaAlterada){//se é exatamente a ultima célula alterada usa uma cor mais forte no fundo
+                        if (l == ultimaLinhaAlterada && c == ultimaColunaAlterada) {//se é exatamente a ultima célula alterada usa uma cor mais forte no fundo
                             g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
-                        }
-                        else{
+                        } else {
                             g.setColor(COR_DA_LINHA_E_COLUNA_EM_DESTAQUE);
                         }
                         g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha - 1);
@@ -621,7 +628,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     g.setFont(podeDestacarEstaCelula ? FONTE_DESTAQUE : FONTE_NORMAL);
                     FontMetrics metrics = g.getFontMetrics();
                     int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
-                    int yDoValor = alturaDaLinha + (alturaDaLinha * (l-linhaInicial)) +   metrics.getAscent() + metrics.getDescent() - 3;
+                    int yDoValor = alturaDaLinha + (alturaDaLinha * (l - linhaInicial)) + metrics.getAscent() + metrics.getDescent() - 3;
                     g.setColor(podeDestacarEstaCelula ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
                     g.drawString(stringDoValor, xDoValor, yDoValor);
 
@@ -656,7 +663,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 }
                 FontMetrics metrics = g.getFontMetrics();
                 int largura = metrics.stringWidth(stringIndiceDaLinha);
-                g.drawString(stringIndiceDaLinha, 
+                g.drawString(stringIndiceDaLinha,
                         inicioLinhaHorizontal - largura - 2, //x
                         alturaDaLinha + (alturaDaLinha * (l - linhaInicial)) + metrics.getAscent() + metrics.getDescent());
 
@@ -817,18 +824,29 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
-        private JPanel panel = new JPanel(new BorderLayout());
+        private final JPanel panel = new JPanel(new BorderLayout());
+        private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(5, 0, 5, 0);
 
         public RenderizadorDaLista() {
-            panel.setOpaque(false);
-            panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+            panel.setBorder(EMPTY_BORDER);
+            UIDefaults defaults = javax.swing.UIManager.getDefaults();
+            panel.setBackground(defaults.getColor("List.selectionBackground"));
         }
 
         @Override
         public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
-            Component c = item.getRendererComponent();
+            JComponent c = (JComponent)item.getRendererComponent();
+            c.setOpaque(false);
+            
             panel.removeAll();
             panel.add(c, BorderLayout.CENTER);
+            
+            if (hasFocus) {
+                panel.setOpaque(true);
+                
+            } else {
+                panel.setOpaque(false);
+            }
             return panel;
             //existem 3 tipos de ItemDaLista (para variáveis, para vetores e para matrizes)
             //cada subclasse de ItemDaLista retorna um renderer component diferente.
@@ -1107,9 +1125,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         itemMatriz.set(345, 12, 12);
         lista.setPreferredSize(new Dimension(300, 600));
 
-        
         itemVetor.set(34, 14);
-        
+
         frame.add(lista, BorderLayout.CENTER);
         frame.pack();
     }
