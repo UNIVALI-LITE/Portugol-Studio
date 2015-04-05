@@ -5,8 +5,12 @@ import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
-import br.univali.portugol.nucleo.asa.No;
+import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.execucao.Depurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
@@ -15,10 +19,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
-import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.plugins.base.ErroInstalacaoPlugin;
-import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
@@ -27,10 +28,12 @@ import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.EscopoCursor;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelSaida;
-import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaOpcoesExecucao;
 import br.univali.ps.ui.editor.PSTextAreaListener;
-import br.univali.ps.ui.rstautil.tree.SourceTreeNode;
+import br.univali.ps.ui.editor.Utils;
+import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.rstautil.lista.ListaDeNosInspecionados;
+import br.univali.ps.ui.rstautil.lista.VisitanteNulo;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -43,7 +46,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -55,6 +57,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -65,6 +69,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
 
@@ -73,7 +78,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     //private static final int TAMANHO_POOL_ABAS = 12;
     //private static PoolAbasCodigoFonte poolAbasCodigoFonte;
-
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
@@ -111,6 +115,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private BalloonTip painelFlutuante = null;
 
+    private boolean simbolosInspecionadosJaForamCarregados = false;//controla se os símbolos inspecionados já foram carregados do arquivo
+    private String codigoFonteAtual;
+
     protected AbaCodigoFonte() {
         super("Sem título", lampadaApagada, true);
 
@@ -137,6 +144,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorArvoreEditor.setDividerLocation(divisorArvoreEditor.getMinimumDividerLocation());
         divisorEditorConsole.resetToPreferredSizes();
+
     }
 
     public static class NoTransferable implements Transferable {
@@ -529,6 +537,21 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void instalarObservadores() {
+        PortugolParser.getParser(getEditor().getTextArea()).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                String name = pce.getPropertyName();
+                Programa programaCompilado = (Programa) pce.getNewValue();
+
+                if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
+                    if (!simbolosInspecionadosJaForamCarregados) {
+                        carregaSimbolosInspecionados(codigoFonteAtual, programaCompilado);
+                        simbolosInspecionadosJaForamCarregados = true;
+                    }
+                }
+            }
+        });
 
         getEditor().getTextArea().addListenter(new PSTextAreaListener() {
 
@@ -672,9 +695,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     public void setCodigoFonte(final String codigoFonte, final File arquivo, final boolean podeSalvar) {
+        this.codigoFonteAtual = codigoFonte;//o código fonte completo (incluindo as informações do PortugolStudio) 
+        //será utilizado mais adiante para carregar os símbolos inspecionados que foram salvos no arquivo
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                simbolosInspecionadosJaForamCarregados = false;
                 AbaCodigoFonte.this.podeSalvar = podeSalvar;
                 editor.setCodigoFonte(codigoFonte);
 
@@ -685,6 +711,99 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 acaoSalvarArquivo.setEnabled(false);
             }
         });
+    }
+
+    private void carregaSimbolosInspecionados(final String codigoFonteCompleto, final Programa programa) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                String regex = "@SIMBOLOS-INSPECIONADOS[ ]*=[ ]* (\\{[a-zA-Z0-9]+, [0-9]+, [0-9]+, [0-9]+\\}[-]?)+;";
+                Matcher avaliador = Pattern.compile(regex).matcher(Utils.extrairInformacoesPortugolStudio(codigoFonteCompleto));
+                if (avaliador.find()) {
+                    String linhas[] = avaliador.group().replace("@SIMBOLOS-INSPECIONADOS = ", "").replaceAll("[\\{\\};]", "").split("-");
+                    for (String linha : linhas) {
+                        String partes[] = linha.trim().split(",");
+                        try {
+                            String nomeDoSimbolo = partes[0].trim();
+                            int linhaDoSimbolo = Integer.valueOf(partes[1].trim());
+                            int colunaDoSimbolo = Integer.valueOf(partes[2].trim());
+                            int tamanhoDoTextoDoSimbolo = Integer.valueOf(partes[3].trim());
+                            NoDeclaracao noDeclaracao = procuraNoDeclaracao(programa, nomeDoSimbolo, linhaDoSimbolo, colunaDoSimbolo, tamanhoDoTextoDoSimbolo);
+                            if (noDeclaracao != null) {
+                                listaDeNosInspecionados.adicionaNo(noDeclaracao);
+                            }
+                        } catch (Exception e) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    //classe usada para procurar por um determinado símbolo dentro da ASA
+    private class ProcuradorDeDeclaracao extends VisitanteNulo {
+
+        private NoDeclaracao noProcurado;
+        private final String nomeDoSimbolo;
+        private final int colunaDoSimbolo;
+        private final int linhaDoSimbolo;
+        private final int tamanhoDoTexto;
+
+        public ProcuradorDeDeclaracao(String nomeDoSimbolo, int linhaDoSimbolo, int colunaDoSimbolo, int tamanhoDoTexto) {
+            this.nomeDoSimbolo = nomeDoSimbolo;
+            this.linhaDoSimbolo = linhaDoSimbolo;
+            this.colunaDoSimbolo = colunaDoSimbolo;
+            this.tamanhoDoTexto = tamanhoDoTexto;
+        }
+
+        boolean encontrou() {
+            return noProcurado != null;
+        }
+
+        NoDeclaracao getNoDeclaracao() {
+            return noProcurado;
+        }
+
+        private void verificarNoDeclaracao(NoDeclaracao no) {
+            boolean mesmoNome = no.getNome().equals(nomeDoSimbolo);
+            boolean mesmaLinha = no.getTrechoCodigoFonteNome().getLinha() == linhaDoSimbolo;
+            boolean mesmaColuna = no.getTrechoCodigoFonteNome().getColuna() == colunaDoSimbolo;
+            boolean mesmoTamanho = no.getTrechoCodigoFonteNome().getTamanhoTexto() == tamanhoDoTexto;
+            boolean encontrouSimbolo = mesmoNome && mesmaLinha && mesmaColuna && mesmoTamanho;
+            if (encontrouSimbolo) {
+                this.noProcurado = no;
+            } 
+        }
+
+        @Override
+        public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
+            verificarNoDeclaracao(noDeclaracaoVariavel);
+            return null;
+        }
+
+        @Override
+        public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA {
+            verificarNoDeclaracao(noDeclaracaoVetor);
+            return null;
+        }
+
+        @Override
+        public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
+            verificarNoDeclaracao(noDeclaracaoMatriz);
+            return null;
+        }
+    }
+
+    private NoDeclaracao procuraNoDeclaracao(Programa programa, final String nomeDoSimbolo, final int linhaDoSimbolo, final int colunaDoSimbolo, final int tamanhoDoTexto) throws ExcecaoVisitaASA {
+        if (programa == null) {
+            return null;
+        }
+        ProcuradorDeDeclaracao procuradorDeSimbolo = new ProcuradorDeDeclaracao(nomeDoSimbolo, linhaDoSimbolo, colunaDoSimbolo, tamanhoDoTexto);
+        programa.getArvoreSintaticaAbstrata().aceitar(procuradorDeSimbolo);
+        return procuradorDeSimbolo.getNoDeclaracao();//retorna null se não encontra o nó
     }
 
     @SuppressWarnings("unchecked")
@@ -1435,10 +1554,26 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inserirInformacoesCursor(sb);
         inserirInformacoesDobramentoCodigo(sb);
         inserirInformacoesDosPontosDeParada(sb);
-
+        inserirInformacoesDosSimbolosInspecionados(sb);
         sb.append("\n */");
 
         return sb.toString();
+    }
+
+    private void inserirInformacoesDosSimbolosInspecionados(StringBuilder sb) {
+        ListModel<ListaDeNosInspecionados.ItemDaLista> model = listaDeNosInspecionados.getModel();
+        StringBuilder sbItems = new StringBuilder();
+        for (int i = 0; i < model.getSize(); i++) {
+            sbItems.append("{");
+            NoDeclaracao no = model.getElementAt(i).getNoDeclaracao();
+            String nome = no.getNome();
+            String linha = String.valueOf(no.getTrechoCodigoFonteNome().getLinha());
+            String coluna = String.valueOf(no.getTrechoCodigoFonteNome().getColuna());
+            String tamanhoDoTexto = String.valueOf(no.getTrechoCodigoFonteNome().getTamanhoTexto());
+            sbItems.append(nome).append(", ").append(linha).append(", ").append(coluna).append(", ").append(tamanhoDoTexto);
+            sbItems.append((i < model.getSize() - 1) ? "}-" : "}");
+        }
+        sb.append(String.format("\n * @SIMBOLOS-INSPECIONADOS = %s;", sbItems));
     }
 
     private void inserirInformacoesDosPontosDeParada(StringBuilder sb) {
@@ -1522,6 +1657,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println(evt.getPropertyName());
         switch (evt.getPropertyName()) {
             case Configuracoes.EXIBIR_OPCOES_EXECUCAO:
 

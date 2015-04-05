@@ -680,7 +680,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     public void setCodigoFonte(String codigoFonte) {
-        textArea.setText(removerInformacoesPortugolStudio(codigoFonte));
+        textArea.setText(Utils.removerInformacoesPortugolStudio(codigoFonte));
         textArea.discardAllEdits();
 
         suporteLinguagemPortugol.atualizar(textArea);
@@ -688,7 +688,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     private void carregarInformacoesPortugolStudio(String codigoFonte) {
-        String informacoesPortugolStudio = extrairInformacoesPortugolStudio(codigoFonte);
+        String informacoesPortugolStudio = Utils.extrairInformacoesPortugolStudio(codigoFonte);
 
         carregarPosicaoCursor(informacoesPortugolStudio);
         carregarDobramentoCodigo(informacoesPortugolStudio);
@@ -748,38 +748,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    private String extrairInformacoesPortugolStudio(String codigoFonte) {
-        int inicio = codigoFonte.lastIndexOf("/* $$$ Portugol Studio $$$");
-        int fim = codigoFonte.lastIndexOf("*/", codigoFonte.length()) + 2;
+    
 
-        if (inicio >= 0 && fim >= inicio) {
-            return codigoFonte.substring(inicio, fim);
-        }
-
-        return "";
-    }
-
-    private String removerInformacoesPortugolStudio(String codigoFonte) {
-        int inicio = codigoFonte.lastIndexOf("/* $$$ Portugol Studio $$$");
-
-        if (inicio >= 0) {
-            // Quando as informações do Portugol Studio são inseridas no arquivo, é adicionada uma quebra de linha
-            // antes do bloco de informações. Ao carregar o arquivo é necessário remover esta quebra para evitar
-            // que o arquivo cresça indefinidamente a cada salvamento. Esta remoção é feita retrocedendo 1 caracter,
-            // que corresponde ao '\n'
-
-            inicio = inicio - 1;
-            StringBuilder sb = new StringBuilder(codigoFonte);
-
-            sb.delete(inicio, codigoFonte.length());
-            codigoFonte = sb.toString();
-        }
-
-        // Remove a tag de cursor que foi incluída nas versões anteriores do Portugol Studio
-        codigoFonte = codigoFonte.replace("/*${cursor}*/", "");
-
-        return codigoFonte;
-    }
+    
 
     public PortugolDocumento getPortugolDocumento() {
         return (PortugolDocumento) textArea.getDocument();

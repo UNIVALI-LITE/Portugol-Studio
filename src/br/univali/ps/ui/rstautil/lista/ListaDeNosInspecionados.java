@@ -27,6 +27,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -107,6 +109,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (getModel().getSize() <= 0) {
+            //desenha a instrução para arrastar os símbolos para a lista
             g.setColor(Color.GRAY);
             FontMetrics metrics = g.getFontMetrics();
             String texto = INSTRUCAO.replace("\n", "");
@@ -127,12 +130,27 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
-    public static abstract class ItemDaLista {
+    public abstract static class ItemDaLista {
 
         protected final NoDeclaracao noDeclaracao;
+        private long ultimaPintura = 0;//timestamp da ultima atualização
+        protected static final long TEMPO_ENTRE_PINTURAS = 200;//no máximo 4 pinturas por segundo
 
         public ItemDaLista(NoDeclaracao no) {
             this.noDeclaracao = no;
+        }
+
+        public boolean podeRepintar() {
+            return System.currentTimeMillis() - ultimaPintura  >= TEMPO_ENTRE_PINTURAS;
+        }
+
+        void resetaTempoDaUltimaAtualizacao() {
+            //resta o momento da atualização de maneira que a próxima chamada para o método podeRepintar retorna true
+            ultimaPintura = System.currentTimeMillis() - TEMPO_ENTRE_PINTURAS;
+        }
+        
+        void guardaTempoDaUltimaPintura(){
+            ultimaPintura = System.currentTimeMillis();
         }
 
         abstract Component getRendererComponent();
@@ -188,7 +206,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private static class ItemDaListaParaVariavel extends ItemDaLista {
 
         private Object valor;
-        private static RenderizadorDeVariavel rendererComponent = RENDERIZADOR_DE_VARIAVEL;
+        private RenderizadorDeVariavel rendererComponent = RENDERIZADOR_DE_VARIAVEL;
 
         public ItemDaListaParaVariavel(NoDeclaracaoVariavel no) {
             super(no);
@@ -304,26 +322,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
             }
             valores = new Object[colunas];
-//            larguraDasColunas = new int[colunas];
-//            for (int i = 0; i < colunas; i++) {
-//                larguraDasColunas[i] = 20;
-//            }
         }
 
-//        int getLarguraDaColuna(int indiceDaColuna){
-//            if(indiceDaColuna >= 0 && indiceDaColuna < larguraDasColunas.length){
-//                return larguraDasColunas[indiceDaColuna];
-//            }
-//            return 20;
-//        }
-//        
-//        void setLarguraDaColuna(int indiceDaColuna, int largura){
-//            if(indiceDaColuna >= 0 && indiceDaColuna < larguraDasColunas.length){
-//                if(largura > larguraDasColunas[indiceDaColuna]){
-//                    larguraDasColunas[indiceDaColuna] = largura;
-//                }
-//            }
-//        }
         int getColunas() {
             return valores.length;
         }
@@ -373,7 +373,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         private static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 
-        //protected Font fonteCabecalho = null;
         protected static final int MARGEM = 5;
 
         protected ItemDaLista itemDaLista;
@@ -412,13 +411,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         protected abstract int getAlturaPreferida();
 
         @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
+        protected void paintComponent(Graphics gr) {
+            super.paintComponent(gr);
             if (isFocusOwner()) {
-                g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+                gr.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
             }
-        }
 
+        }
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -438,8 +437,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
 
         @Override
-        protected void paintComponent(Graphics g) {
-            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        protected void paintComponent(Graphics gr) {
+            Graphics2D g = (Graphics2D) gr;
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             super.paintComponent(g);
             if (itemDaLista == null) {
                 return;
@@ -468,7 +468,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 //desenha caixa do valor
                 g.setColor(COR_DA_GRADE);
                 g.drawRect(icone.getIconWidth() + larguraDoNome + MARGEM, MARGEM, larguraDaCaixa, getHeight() - 1 - MARGEM);
-
             }
 
         }
@@ -825,7 +824,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
-        private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(5, 0, 5, 0);
+        private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 0, 20, 0);
 
         public RenderizadorDaLista() {
             panel.setBorder(EMPTY_BORDER);
@@ -835,15 +834,16 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         @Override
         public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
-            JComponent c = (JComponent)item.getRendererComponent();
+            JComponent c = (JComponent) item.getRendererComponent();
             c.setOpaque(false);
-            
+
             panel.removeAll();
-            panel.add(c, BorderLayout.CENTER);
-            
+            panel.add(c, BorderLayout.CENTER); //o componente que renderiza o item da lista foi inserido em um painel e este painel usa uma EmptyBorder
+            //para separar verticalmente os items da lista, assim os items não ficam muito "grudados" uns nos outros.
+
             if (hasFocus) {
                 panel.setOpaque(true);
-                
+
             } else {
                 panel.setOpaque(false);
             }
@@ -929,11 +929,25 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             }
         }
         if (itemsAlterados) {
-            repaint();
+            //desenha apenas as regiões dos items que podem ser repintados. Os itens são repintados apenas umas poucas vezes por segundo para
+            //evitar problemas de desempenho quando o usuário estiver inspecionados variáveis que são alteradas várias vezes por segundo em um jogo, por exemplo
+            
+            int size = model.getSize();
+            int y = 0;
+            for (int i = 0; i < size; i++) {
+                ItemDaLista item = model.getElementAt(i);
+                Rectangle bounds = item.getRendererComponent().getBounds();
+                if (item.podeRepintar()) {
+                    bounds.translate(0, y);//desloca o retângulo para a posição onde o item está na lista
+                    repaint(bounds);
+                    item.guardaTempoDaUltimaPintura();
+                }
+                y += bounds.y + bounds.height;
+            }
         }
     }
 
-    private boolean contemNo(NoDeclaracao no) {
+    public boolean contemNo(NoDeclaracao no) {
         if (no == null) {
             return false;
         }
@@ -957,12 +971,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     @Override
     public void highlightLinha(int linha) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (int i = 0; i < model.getSize(); i++) {
+            model.getElementAt(i).resetaTempoDaUltimaAtualizacao();
+        }
+        repaint();
     }
 
     @Override
-    public
-            void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
+    public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -1009,7 +1025,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             boolean importou = false;
             for (NoDeclaracao noTransferido : nosTransferidos) {
                 if (!contemNo(noTransferido)) {
-                    adicionaNoModelDaLista(noTransferido);
+                    adicionaNo(noTransferido);
                     importou = true;
                 }
             }
@@ -1017,7 +1033,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
-    private void adicionaNoModelDaLista(NoDeclaracao noTransferido) {
+    
+    
+    public void adicionaNo(NoDeclaracao noTransferido) {
         if (noTransferido instanceof NoDeclaracaoVariavel) {
             model.addElement(new ItemDaListaParaVariavel((NoDeclaracaoVariavel) noTransferido));
         } else if (noTransferido instanceof NoDeclaracaoVetor) {
@@ -1090,7 +1108,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                                 });
                                 model.clear();
                                 for (NoDeclaracao no : nosInspecionados) {
-                                    adicionaNoModelDaLista(no);
+                                    adicionaNo(no);
                                 }
                             } catch (Exception e) {
                                 //Logger.getLogger(ListaDeNosInspecionados.class.getName()).log(Level.WARNING, null, e);
@@ -1112,6 +1130,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         frame.setLayout(new BorderLayout());
 
         ListaDeNosInspecionados lista = new ListaDeNosInspecionados();
+
         ItemDaListaParaVariavel item = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
         item.setValor(53);
         lista.model.addElement(item);
@@ -1130,5 +1149,4 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         frame.add(lista, BorderLayout.CENTER);
         frame.pack();
     }
-
 }
