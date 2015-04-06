@@ -423,6 +423,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             @Override
             public void actionPerformed(ActionEvent ae) {
+                listaDeNosInspecionados.resetaDestaqueDosSimbolos();
                 executar(Depurador.Estado.BREAK_POINT);
             }
         };

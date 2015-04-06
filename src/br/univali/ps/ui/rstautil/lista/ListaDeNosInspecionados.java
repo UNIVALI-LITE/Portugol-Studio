@@ -425,6 +425,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     //separador das casas decimais
                     return String.format(Locale.ENGLISH, "%.2f", valor);
                 }
+                return valor.toString();
             }
             return STRING_VAZIA;
         }
@@ -908,6 +909,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
+    public void resetaDestaqueDosSimbolos(){
+        setStatusDoDestaqueNosSimbolosInspecionados(false);
+        repaint();
+    }
+    
     @Override
     public void simboloRemovido(final Simbolo simbolo) {
         if (!programaExecutando) {//não remove os símbolos durante a execução do programa
@@ -1101,6 +1107,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 model.addElement(new ItemDaListaParaMatriz(linhas, colunas, declaracaoMatriz));
             }
         }
+        //altera o destaque do símbolo recém inserido
+        model.get(model.getSize()-1).setDesenhaDestaques(!programaExecutando);
     }
 
     //sempre que o código fonte é alterado este listener é disparado. Toda a árvore sintática
