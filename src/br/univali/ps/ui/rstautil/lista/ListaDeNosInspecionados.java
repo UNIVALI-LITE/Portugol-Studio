@@ -1058,7 +1058,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             }
 
             for (NoDeclaracao no : nosTransferidos) {
-                if (!contemNo(no)) {
+                if ( !no.constante() && !contemNo(no)) {
                     support.setShowDropLocation(true);
                     return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
                 }
