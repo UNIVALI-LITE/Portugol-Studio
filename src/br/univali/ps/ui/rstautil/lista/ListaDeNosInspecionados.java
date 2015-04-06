@@ -8,6 +8,9 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoInteiro;
+import br.univali.portugol.nucleo.asa.NoMatriz;
+import br.univali.portugol.nucleo.asa.NoValor;
+import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -415,21 +418,20 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         protected abstract int getAlturaPreferida();
 
-        protected String processaStringDoValor(Object valor){
-            if (valor != null){
-                if(itemDaLista.getTipo() == TipoDado.LOGICO){
-                    return (Boolean)valor ? "verdadeiro" : "falso";
-                }
-                else if(itemDaLista.getTipo() == TipoDado.REAL){
+        protected String processaStringDoValor(Object valor) {
+            if (valor != null) {
+                if (itemDaLista.getTipo() == TipoDado.LOGICO) {
+                    return (Boolean) valor ? "verdadeiro" : "falso";
+                } else if (itemDaLista.getTipo() == TipoDado.REAL) {
                     //usando Locale.English para usa o ponto ao invés da vírgula como
                     //separador das casas decimais
-                    return String.format(Locale.ENGLISH, "%.2f", valor);
+                    return String.format(Locale.ENGLISH, "%.1f", valor);
                 }
                 return valor.toString();
             }
             return STRING_VAZIA;
         }
-        
+
         @Override
         protected void paintComponent(Graphics gr) {
             super.paintComponent(gr);
@@ -624,7 +626,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int ultimaColunaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaColunaAtualizada();
             for (int l = linhaInicial; l < totalDeLinhas; l++) {
                 int yDaLinha = ((l - linhaInicial) + 1) * alturaDaLinha;
-                if(yDaLinha > getHeight()){//se a linha não estará vísivel
+                if (yDaLinha > getHeight()) {//se a linha não estará vísivel
                     break;
                 }
                 xDaLinha = inicioLinhaHorizontal;
@@ -634,9 +636,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     podeDestacarEstaCelula = item.podeDesenharDestaque() && ultimaColunaAlterada == c && ultimaLinhaAlterada == l;
 
                     int larguraDaColuna = getLarguraDaColuna(c);
-                    
-                    
-                    
+
                     //pinta a linha e a coluna que contém a última célula alterada para ajudar a indentificar visualmente a alteração
                     if (itemDaLista.podeDesenharDestaque() && (l == ultimaLinhaAlterada || c == ultimaColunaAlterada)) {
                         if (l == ultimaLinhaAlterada && c == ultimaColunaAlterada) {//se é exatamente a ultima célula alterada usa uma cor mais forte no fundo
@@ -674,8 +674,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     g.drawString(stringIndiceDaColuna, xDaLinha + larguraDaColuna / 2 - larguraDoIndiceDeColuna / 2, 13);//desenha índice 
 
                     xDaLinha += larguraDaColuna;
-                    
-                    if(xDaLinha > getWidth()){
+
+                    if (xDaLinha > getWidth()) {
                         break;//as próximas colunas não estarão vísiveis e não precisam ser desenhadas
                     }
                 }
@@ -909,11 +909,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
-    public void resetaDestaqueDosSimbolos(){
+    public void resetaDestaqueDosSimbolos() {
         setStatusDoDestaqueNosSimbolosInspecionados(false);
         repaint();
     }
-    
+
     @Override
     public void simboloRemovido(final Simbolo simbolo) {
         if (!programaExecutando) {//não remove os símbolos durante a execução do programa
@@ -1058,7 +1058,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             }
 
             for (NoDeclaracao no : nosTransferidos) {
-                if ( !no.constante() && !contemNo(no)) {
+                if (!no.constante() && !contemNo(no)) {
                     support.setShowDropLocation(true);
                     return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
                 }
@@ -1090,25 +1090,64 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
-    public void adicionaNo(NoDeclaracao noTransferido) {
-        if (noTransferido instanceof NoDeclaracaoVariavel) {
-            model.addElement(new ItemDaListaParaVariavel((NoDeclaracaoVariavel) noTransferido));
-        } else if (noTransferido instanceof NoDeclaracaoVetor) {
-            NoDeclaracaoVetor declaracaoVetor = ((NoDeclaracaoVetor) noTransferido);
-            if (declaracaoVetor.getTamanho() != null) {
-                int colunas = ((NoInteiro) declaracaoVetor.getTamanho()).getValor();
-                model.addElement(new ItemDaListaParaVetor(colunas, declaracaoVetor));
-            }
-        } else if (noTransferido instanceof NoDeclaracaoMatriz) {
-            NoDeclaracaoMatriz declaracaoMatriz = ((NoDeclaracaoMatriz) noTransferido);
-            if (((NoInteiro) declaracaoMatriz.getNumeroColunas()) != null && ((NoInteiro) declaracaoMatriz.getNumeroLinhas()) != null) {
-                int colunas = ((NoInteiro) declaracaoMatriz.getNumeroColunas()).getValor();
-                int linhas = ((NoInteiro) declaracaoMatriz.getNumeroLinhas()).getValor();
-                model.addElement(new ItemDaListaParaMatriz(linhas, colunas, declaracaoMatriz));
-            }
+    private boolean adicionaNoVariavel(NoDeclaracaoVariavel noTransferido) {
+        ItemDaListaParaVariavel item = new ItemDaListaParaVariavel((NoDeclaracaoVariavel) noTransferido);
+        model.addElement(item);
+//        if(noTransferido.getInicializacao() != null){
+//            if(noTransferido.getInicializacao() instanceof NoValor){
+//                //item.setValor(((NoValor)noTransferido.getInicializacao()).getValor());
+//            }
+//        }
+        return true;
+    }
+
+    private boolean adicionaNoVetor(NoDeclaracaoVetor noTransferido) {
+        NoDeclaracaoVetor declaracaoVetor = noTransferido;
+        int colunas = -1;
+        if (declaracaoVetor.getTamanho() != null) {
+            colunas = ((NoInteiro) declaracaoVetor.getTamanho()).getValor();
+        } else if (declaracaoVetor.getInicializacao() != null) {
+            colunas = ((NoVetor) declaracaoVetor.getInicializacao()).getValores().size();
         }
-        //altera o destaque do símbolo recém inserido
-        model.get(model.getSize()-1).setDesenhaDestaques(!programaExecutando);
+        if (colunas > 0) {
+            ItemDaListaParaVetor item = new ItemDaListaParaVetor(colunas, declaracaoVetor);
+            model.addElement(item);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean adicionaNoMatriz(NoDeclaracaoMatriz noTransferido) {
+        NoDeclaracaoMatriz declaracaoMatriz = ((NoDeclaracaoMatriz) noTransferido);
+        int colunas = -1, linhas = -1;
+        if (declaracaoMatriz.getNumeroColunas() != null && declaracaoMatriz.getNumeroLinhas() != null) {
+            colunas = ((NoInteiro) declaracaoMatriz.getNumeroColunas()).getValor();
+            linhas = ((NoInteiro) declaracaoMatriz.getNumeroLinhas()).getValor();
+        } else if (declaracaoMatriz.getInicializacao() != null) {
+            List<List<Object>> valores = ((NoMatriz) declaracaoMatriz.getInicializacao()).getValores();
+            linhas = valores.size();
+            colunas = valores.get(0).size();
+        }
+        if (colunas > 0 && linhas > 0) {
+            model.addElement(new ItemDaListaParaMatriz(linhas, colunas, declaracaoMatriz));
+            return true;
+        }
+        return false;
+    }
+
+    public void adicionaNo(NoDeclaracao noTransferido) {
+        boolean simboloInserido = false;
+        if (noTransferido instanceof NoDeclaracaoVariavel) {
+            simboloInserido = adicionaNoVariavel((NoDeclaracaoVariavel) noTransferido);
+        } else if (noTransferido instanceof NoDeclaracaoVetor) {
+            simboloInserido = adicionaNoVetor((NoDeclaracaoVetor) noTransferido);
+        } else if (noTransferido instanceof NoDeclaracaoMatriz) {
+            simboloInserido = adicionaNoMatriz((NoDeclaracaoMatriz) noTransferido);
+        }
+        if (simboloInserido) {
+            //altera o destaque do símbolo recém inserido
+            model.get(model.getSize() - 1).setDesenhaDestaques(!programaExecutando);
+        }
     }
 
     //sempre que o código fonte é alterado este listener é disparado. Toda a árvore sintática
