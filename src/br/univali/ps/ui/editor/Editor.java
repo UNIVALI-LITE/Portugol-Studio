@@ -224,6 +224,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         
         Icon iconeBreakPoint = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
         ((PSTextArea)textArea).setIconeDosBreakPoints(iconeBreakPoint);
+        
+        
     }
 
     private void configurarAcoes() {

@@ -19,8 +19,10 @@ import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.editor.PSTextArea;
 import br.univali.ps.ui.rstautil.ComparadorNos;
 import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,6 +35,8 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -50,6 +54,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -63,7 +68,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  */
 public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemDaLista> implements ObservadorExecucao {
 
-    private static final String INSTRUCAO = "Arraste uma das variáveis acima \n para este painél se quiser inspecioná-la";
+    private static final String INSTRUCAO = "Arraste uma variável para \n este painél se quiser inspecioná-la";
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
 
@@ -77,6 +82,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     boolean programaExecutando = false;
 
     private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(0, 0, 10, 0);
+
+    private JTextArea textArea;//necessário para tratar a importação de variáveis para o inspetor de símbolos diretamente do código fonte
+    private Programa ultimoProgramaCompilado;//referência para o programa compilado, 
+    //utilizada para procurar variáveis no programa quando o usuário arrasta uma variável
+    //do código fonte para o inspetor de símbolos
 
     public ListaDeNosInspecionados() {
         model.clear();
@@ -109,6 +119,10 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             }
 
         });
+    }
+
+    public void setTextArea(JTextArea textArea) {
+        this.textArea = textArea;
     }
 
     @Override
@@ -1042,18 +1056,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private class TratadorDeArrastamento extends TransferHandler {
 
-        @Override
-        public boolean canImport(TransferHandler.TransferSupport support) {
+        private boolean podeImportartNosArrastadosDaTree(TransferHandler.TransferSupport support) {
             List<NoDeclaracao> nosTransferidos = null;
+
             try {
                 nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
-
             } catch (Exception e) {
                 e.printStackTrace();
-                return false;
-            }
-
-            if (!support.isDrop()) {
                 return false;
             }
 
@@ -1067,11 +1076,28 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
 
         @Override
-        public boolean importData(TransferHandler.TransferSupport support) {
-            if (!canImport(support)) {
+        public boolean canImport(TransferHandler.TransferSupport support) {
+            DataFlavor flavors[] = support.getDataFlavors();
+            boolean podeImportar = false;
+            for (DataFlavor flavor : flavors) {
+                if (flavor.isFlavorTextType() || flavor == AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR) {
+                    podeImportar = true;
+                    break;
+                }
+            }
+            if (!support.isDrop() || !podeImportar) {
                 return false;
             }
 
+            boolean arrastandoNosDaJTree = support.getTransferable().isDataFlavorSupported(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+            if (arrastandoNosDaJTree) {
+                return podeImportartNosArrastadosDaTree(support);
+            }
+
+            return true;//suporta importação de string
+        }
+
+        private boolean importaNosArrastadosDaJTree(TransferHandler.TransferSupport support) {
             List<NoDeclaracao> nosTransferidos = null;
             try {
                 nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
@@ -1087,6 +1113,41 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 }
             }
             return importou;
+        }
+
+        private boolean importaStringArrastada(TransferHandler.TransferSupport support) {
+            try {
+                String stringArrastada = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+                if (stringArrastada.equals(textArea.getSelectedText())) {
+                    if (stringArrastada.isEmpty() || ultimoProgramaCompilado == null) {
+                        return false;
+                    }
+                    int linha = textArea.getLineOfOffset(textArea.getSelectionStart()) + 1;
+                    int coluna = textArea.getSelectionStart() - textArea.getLineStartOffset(linha-1);
+                    int tamanhoDoTexto = textArea.getSelectionEnd() - textArea.getSelectionStart();
+                    ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(stringArrastada, linha, coluna, tamanhoDoTexto);
+                    ultimoProgramaCompilado.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
+                    if (procuradorDeDeclaracao.encontrou()) {
+                        adicionaNo(procuradorDeDeclaracao.getNoDeclaracao());
+                    }
+                }
+            } catch (Exception e) {
+                return false;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean importData(TransferHandler.TransferSupport support) {
+            if (!canImport(support)) {
+                return false;
+            }
+
+            boolean arrastandoNosDaJTree = support.getTransferable().isDataFlavorSupported(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+            if (arrastandoNosDaJTree) {
+                return importaNosArrastadosDaJTree(support);
+            }
+            return importaStringArrastada(support);
         }
     }
 
@@ -1159,13 +1220,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                if (model.isEmpty()) {
-                    return;//não existem símbolos sendo inspecionados
-                }
                 String name = pce.getPropertyName();
                 if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
-                    Programa programa = (Programa) pce.getNewValue();
-                    final ArvoreSintaticaAbstrataPrograma ast = programa.getArvoreSintaticaAbstrata();
+                    ultimoProgramaCompilado = (Programa) pce.getNewValue();
+                    if (model.isEmpty()) {
+                        return;//não existem símbolos sendo inspecionados, não é necessário re-adicionar os símbolos
+                    }
+                    final ArvoreSintaticaAbstrataPrograma ast = ultimoProgramaCompilado.getArvoreSintaticaAbstrata();
                     SwingUtilities.invokeLater(new Runnable() {
 
                         @Override

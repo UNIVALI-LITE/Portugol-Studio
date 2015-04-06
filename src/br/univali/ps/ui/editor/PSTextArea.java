@@ -4,6 +4,8 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
@@ -47,6 +50,7 @@ public class PSTextArea extends RSyntaxTextArea {
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         this.pontosDeParada = new ArrayList<>();
+        
     }
 
     public void addListenter(PSTextAreaListener l) {
