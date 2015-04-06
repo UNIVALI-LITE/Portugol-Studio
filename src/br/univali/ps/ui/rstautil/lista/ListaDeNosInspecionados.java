@@ -38,6 +38,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -63,7 +64,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
 
-    //renderizadores
+    //renderizadores, servem para renderizar as coisas renderizáveis através de um processo de renderização :)
     private static final RenderizadorDeVetor RENDERIZADOR_DE_VETOR = new RenderizadorDeVetor();
     private static final RenderizadorDeVariavel RENDERIZADOR_DE_VARIAVEL = new RenderizadorDeVariavel();
     private static final RenderizadorDeMatriz RENDERIZADOR_DE_MATRIZ = new RenderizadorDeMatriz();
@@ -71,6 +72,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     protected static ItemDaLista ultimoItemModificado = null;
 
     boolean programaExecutando = false;
+
+    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(0, 0, 10, 0);
 
     public ListaDeNosInspecionados() {
         model.clear();
@@ -136,24 +139,32 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         private long ultimaPintura = 0;//timestamp da ultima atualização
         protected static final long TEMPO_ENTRE_PINTURAS = 200;//no máximo 4 pinturas por segundo
 
+        protected boolean desenhaDestaques = true;//quando o programa está em execução o desenho dos destaques é desativado.
+        //Não adiatanda destacar a última variável atualizada com o programa em execução já que o destaque fica "pulando" freneticamente
+        //de uma variável para outra
+
         public ItemDaLista(NoDeclaracao no) {
             this.noDeclaracao = no;
         }
 
         public boolean podeRepintar() {
-            return System.currentTimeMillis() - ultimaPintura  >= TEMPO_ENTRE_PINTURAS;
+            return System.currentTimeMillis() - ultimaPintura >= TEMPO_ENTRE_PINTURAS;
+        }
+
+        public void setDesenhaDestaques(boolean statusDosDestaques) {
+            desenhaDestaques = statusDosDestaques;
         }
 
         void resetaTempoDaUltimaAtualizacao() {
             //resta o momento da atualização de maneira que a próxima chamada para o método podeRepintar retorna true
             ultimaPintura = System.currentTimeMillis() - TEMPO_ENTRE_PINTURAS;
         }
-        
-        void guardaTempoDaUltimaPintura(){
+
+        void guardaTempoDaUltimaPintura() {
             ultimaPintura = System.currentTimeMillis();
         }
 
-        abstract Component getRendererComponent();
+        abstract RenderizadorBase getRendererComponent();
 
         Icon getIcone() {
             if (ehVariavel()) {
@@ -184,8 +195,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             return noDeclaracao instanceof NoDeclaracaoVariavel;
         }
 
-        public boolean ehUltimoItemAtualizado() {
-            return this == ultimoItemModificado;
+        public boolean podeDesenharDestaque() {
+            return this == ultimoItemModificado && desenhaDestaques;
         }
 
         public String getNome() {
@@ -206,14 +217,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private static class ItemDaListaParaVariavel extends ItemDaLista {
 
         private Object valor;
-        private RenderizadorDeVariavel rendererComponent = RENDERIZADOR_DE_VARIAVEL;
+        private final RenderizadorDeVariavel rendererComponent = RENDERIZADOR_DE_VARIAVEL;
 
         public ItemDaListaParaVariavel(NoDeclaracaoVariavel no) {
             super(no);
         }
 
         @Override
-        Component getRendererComponent() {
+        RenderizadorBase getRendererComponent() {
             rendererComponent.setItemDaLista(this);
             return rendererComponent;
         }
@@ -223,14 +234,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             ultimoItemModificado = this;
         }
 
-        public String getValor() {
-            if (valor == null) {
-                return RenderizadorBase.STRING_VAZIA;
-            }
-            if (valor instanceof Boolean) {
-                valor = ((Boolean) valor) ? "verdadeiro" : "falso";
-            }
-            return valor.toString();
+        public Object getValor() {
+            return valor;
         }
 
         @Override
@@ -303,7 +308,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
 
         @Override
-        Component getRendererComponent() {
+        RenderizadorBase getRendererComponent() {
             RENDERIZADOR_DE_MATRIZ.setItemDaLista(this);
             return RENDERIZADOR_DE_MATRIZ;
         }
@@ -355,7 +360,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
 
         @Override
-        Component getRendererComponent() {
+        RenderizadorBase getRendererComponent() {
             ListaDeNosInspecionados.RENDERIZADOR_DE_VETOR.setItemDaLista(this);
             return RENDERIZADOR_DE_VETOR;
         }
@@ -394,7 +399,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
          */
         protected int desenhaNome(Graphics g, int x, int y) {
 
-            g.setFont(itemDaLista.ehUltimoItemAtualizado() ? FONTE_DESTAQUE : FONTE_NORMAL);
+            g.setFont(itemDaLista.podeDesenharDestaque() ? FONTE_DESTAQUE : FONTE_NORMAL);
             String stringDoNome = itemDaLista.getNome();
             FontMetrics metrics = g.getFontMetrics();
             int larguraDoNome = metrics.stringWidth(stringDoNome);
@@ -410,6 +415,20 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         protected abstract int getAlturaPreferida();
 
+        protected String processaStringDoValor(Object valor){
+            if (valor != null){
+                if(itemDaLista.getTipo() == TipoDado.LOGICO){
+                    return (Boolean)valor ? "verdadeiro" : "falso";
+                }
+                else if(itemDaLista.getTipo() == TipoDado.REAL){
+                    //usando Locale.English para usa o ponto ao invés da vírgula como
+                    //separador das casas decimais
+                    return String.format(Locale.ENGLISH, "%.2f", valor);
+                }
+            }
+            return STRING_VAZIA;
+        }
+        
         @Override
         protected void paintComponent(Graphics gr) {
             super.paintComponent(gr);
@@ -449,15 +468,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int larguraDoNome = desenhaNome(g, icone.getIconWidth(), MARGEM);
 
             //desenha valor
-            String stringDoValor = ((ItemDaListaParaVariavel) itemDaLista).getValor();
+            String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
             if (stringDoValor != null) {
-                g.setFont(itemDaLista.ehUltimoItemAtualizado() ? FONTE_DESTAQUE : FONTE_NORMAL);
+                g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
                 FontMetrics metrics = g.getFontMetrics();
                 int larguraDoValor = metrics.stringWidth(stringDoValor);
                 int larguraDaCaixa = MARGEM + larguraDoValor + MARGEM;
 
                 //pinta fundo de vermelho para destacar
-                if (itemDaLista.ehUltimoItemAtualizado()) {
+                if (itemDaLista.podeDesenharDestaque()) {
                     g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
                     g.fillRect(icone.getIconWidth() + larguraDoNome + MARGEM + 1, MARGEM + 1, larguraDaCaixa - 1, getHeight() - 2 - MARGEM);
                 }
@@ -573,7 +592,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 String stringDoIndice = String.valueOf(indiceDaColuna);
                 FontMetrics metricsDoValor = getFontMetrics(FONTE_NORMAL);
                 FontMetrics metricsDoIndice = getFontMetrics(FONTE_CABECALHO);
-                if (item.ehUltimoItemAtualizado() && item.getUltimaColunaAtualizada() == indiceDaColuna && item.getUltimaLinhaAtualizada() == linha) {
+                if (item.podeDesenharDestaque() && item.getUltimaColunaAtualizada() == indiceDaColuna && item.getUltimaLinhaAtualizada() == linha) {
                     metricsDoIndice = getFontMetrics(FONTE_CABECALHO_DESTAQUE);
                     metricsDoValor = getFontMetrics(FONTE_DESTAQUE);
                 }
@@ -591,8 +610,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         private String getStringDoValor(int linha, int coluna) {
             ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
-            return (item.get(linha, coluna) != null) ? item.get(linha, coluna).toString() : RenderizadorBase.STRING_VAZIA;
-            //retorna uma string em branco com 4 espaços para representar o valor nulo, assim as células do vetor tem uma largura mesmo quando não existe valor para exibir
+            Object valor = item.get(linha, coluna);
+            return processaStringDoValor(valor);
         }
 
         private void desenhaGrade(Graphics g, int totalDeLinhas, int totalDeColunas, int colunaInicial, int linhaInicial, int margemEsquerda) {
@@ -604,16 +623,21 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int ultimaColunaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaColunaAtualizada();
             for (int l = linhaInicial; l < totalDeLinhas; l++) {
                 int yDaLinha = ((l - linhaInicial) + 1) * alturaDaLinha;
+                if(yDaLinha > getHeight()){//se a linha não estará vísivel
+                    break;
+                }
                 xDaLinha = inicioLinhaHorizontal;
                 boolean podeDestacarEstaCelula = false;
                 for (int c = colunaInicial; c < totalDeColunas; c++) {
                     ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
-                    podeDestacarEstaCelula = item.ehUltimoItemAtualizado() && ultimaColunaAlterada == c && ultimaLinhaAlterada == l;
+                    podeDestacarEstaCelula = item.podeDesenharDestaque() && ultimaColunaAlterada == c && ultimaLinhaAlterada == l;
 
                     int larguraDaColuna = getLarguraDaColuna(c);
-
+                    
+                    
+                    
                     //pinta a linha e a coluna que contém a última célula alterada para ajudar a indentificar visualmente a alteração
-                    if (itemDaLista.ehUltimoItemAtualizado() && (l == ultimaLinhaAlterada || c == ultimaColunaAlterada)) {
+                    if (itemDaLista.podeDesenharDestaque() && (l == ultimaLinhaAlterada || c == ultimaColunaAlterada)) {
                         if (l == ultimaLinhaAlterada && c == ultimaColunaAlterada) {//se é exatamente a ultima célula alterada usa uma cor mais forte no fundo
                             g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
                         } else {
@@ -637,7 +661,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
                     //desenha os índices
                     String stringIndiceDaColuna = String.valueOf(c);
-                    if (itemDaLista.ehUltimoItemAtualizado() && c == ultimaColunaAlterada) {
+                    if (itemDaLista.podeDesenharDestaque() && c == ultimaColunaAlterada) {
                         g.setFont(FONTE_CABECALHO_DESTAQUE);
                         g.setColor(COR_DO_CABECALHO_DESTACADO);
                     } else {
@@ -649,11 +673,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     g.drawString(stringIndiceDaColuna, xDaLinha + larguraDaColuna / 2 - larguraDoIndiceDeColuna / 2, 13);//desenha índice 
 
                     xDaLinha += larguraDaColuna;
+                    
+                    if(xDaLinha > getWidth()){
+                        break;//as próximas colunas não estarão vísiveis e não precisam ser desenhadas
+                    }
                 }
 
                 //desenha índice da linha
                 String stringIndiceDaLinha = String.valueOf(l);
-                if (itemDaLista.ehUltimoItemAtualizado() && l == ultimaLinhaAlterada) {
+                if (itemDaLista.podeDesenharDestaque() && l == ultimaLinhaAlterada) {
                     g.setFont(FONTE_CABECALHO_DESTAQUE);
                     g.setColor(COR_DO_CABECALHO_DESTACADO);
                 } else {
@@ -745,7 +773,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             String stringDoIndice = String.valueOf(indiceDaColuna);
             FontMetrics metricsDoValor = getFontMetrics(FONTE_NORMAL);
             FontMetrics metricsDoIndice = getFontMetrics(FONTE_CABECALHO);
-            if (item.ehUltimoItemAtualizado() && item.getUltimaColunaAtualizada() == indiceDaColuna) {
+            if (item.podeDesenharDestaque() && item.getUltimaColunaAtualizada() == indiceDaColuna) {
                 metricsDoIndice = getFontMetrics(FONTE_CABECALHO_DESTAQUE);
                 metricsDoValor = getFontMetrics(FONTE_DESTAQUE);
             }
@@ -757,8 +785,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         private String getStringDoValor(int indice) {
             ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
-            return (item.get(indice) != null) ? item.get(indice).toString() : RenderizadorBase.STRING_VAZIA;
-            //retorna uma string em branco com 4 espaços para representar o valor nulo, assim as células do vetor tem uma largura mesmo quando não existe valor para exibir
+            return processaStringDoValor(item.get(indice));
         }
 
         private void desenhaGrade(Graphics g, int totalDeColunas, int colunaInicial, int margemEsquerda) {
@@ -769,7 +796,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             xDaLinha = margemEsquerda;
             for (int c = colunaInicial; c < totalDeColunas; c++) {
                 ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
-                boolean podeDestacarEstaColuna = itemDaLista.ehUltimoItemAtualizado() && item.getUltimaColunaAtualizada() == c;
+                boolean podeDestacarEstaColuna = itemDaLista.podeDesenharDestaque() && item.getUltimaColunaAtualizada() == c;
                 int larguraDaColuna = getLarguraDaColuna(c);
 
                 //pinta o fundo da coluna que foi alterada por último
@@ -824,7 +851,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
-        private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 0, 20, 0);
 
         public RenderizadorDaLista() {
             panel.setBorder(EMPTY_BORDER);
@@ -872,7 +898,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             model.getElementAt(i).limpa();
         }
         ultimoItemModificado = null;
+        setStatusDoDestaqueNosSimbolosInspecionados(true);
         repaint();
+    }
+
+    private void setStatusDoDestaqueNosSimbolosInspecionados(boolean statusDoDestaque) {
+        for (int i = 0; i < model.getSize(); i++) {
+            model.get(i).setDesenhaDestaques(statusDoDestaque);
+        }
     }
 
     @Override
@@ -931,20 +964,35 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         if (itemsAlterados) {
             //desenha apenas as regiões dos items que podem ser repintados. Os itens são repintados apenas umas poucas vezes por segundo para
             //evitar problemas de desempenho quando o usuário estiver inspecionados variáveis que são alteradas várias vezes por segundo em um jogo, por exemplo
-            
-            int size = model.getSize();
-            int y = 0;
-            for (int i = 0; i < size; i++) {
-                ItemDaLista item = model.getElementAt(i);
-                Rectangle bounds = item.getRendererComponent().getBounds();
-                if (item.podeRepintar()) {
-                    bounds.translate(0, y);//desloca o retângulo para a posição onde o item está na lista
-                    repaint(bounds);
-                    item.guardaTempoDaUltimaPintura();
-                }
-                y += bounds.y + bounds.height;
-            }
+            redenhaItemsDaLista();
+            //repaint();
         }
+    }
+
+    private void redenhaItemsDaLista() {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                int size = model.getSize();
+                int offset = 0;
+                for (int i = 0; i < size; i++) {
+                    ItemDaLista item = model.getElementAt(i);
+                    RenderizadorBase renderizador = item.getRendererComponent();
+                    int alturaDoRenderizador = renderizador.getAlturaPreferida();
+                    Rectangle bounds = new Rectangle(0, 0, getWidth(), alturaDoRenderizador);
+                    Insets insets = EMPTY_BORDER.getBorderInsets(renderizador);
+                    int yOriginal = insets.top;
+                    if (item.podeRepintar()) {
+                        bounds.translate(0, offset);//desloca o retângulo para a posição onde o item está na lista
+                        repaint(bounds);
+                        item.guardaTempoDaUltimaPintura();
+                    }
+                    offset += yOriginal + bounds.height + insets.bottom;
+                }
+            }
+        });
+
     }
 
     public boolean contemNo(NoDeclaracao no) {
@@ -967,12 +1015,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     @Override
     public void execucaoIniciada(Programa programa) {
         programaExecutando = true;
+        setStatusDoDestaqueNosSimbolosInspecionados(false);
     }
 
     @Override
     public void highlightLinha(int linha) {
         for (int i = 0; i < model.getSize(); i++) {
-            model.getElementAt(i).resetaTempoDaUltimaAtualizacao();
+            ItemDaLista item = model.getElementAt(i);
+            item.resetaTempoDaUltimaAtualizacao();
+            item.setDesenhaDestaques(true);
         }
         repaint();
     }
@@ -1033,8 +1084,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
     }
 
-    
-    
     public void adicionaNo(NoDeclaracao noTransferido) {
         if (noTransferido instanceof NoDeclaracaoVariavel) {
             model.addElement(new ItemDaListaParaVariavel((NoDeclaracaoVariavel) noTransferido));
@@ -1145,6 +1194,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         lista.setPreferredSize(new Dimension(300, 600));
 
         itemVetor.set(34, 14);
+
+        lista.redenhaItemsDaLista();
 
         frame.add(lista, BorderLayout.CENTER);
         frame.pack();
