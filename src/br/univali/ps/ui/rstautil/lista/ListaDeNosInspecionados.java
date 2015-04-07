@@ -415,7 +415,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         public RenderizadorBase() {
             super();
-            FONTE_NORMAL = Font.decode("Verdana-12");
+            FONTE_NORMAL = Font.decode("Verdana");
             setTamanhoDaFonte(12f);
             //setTamanhoDaFonte(18);
         }

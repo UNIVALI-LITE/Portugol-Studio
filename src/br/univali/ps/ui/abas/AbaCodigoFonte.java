@@ -123,7 +123,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         super("Sem título", lampadaApagada, true);
 
         initComponents();
-        
+
         configurarArvoreEstrutural();
         criarPainelTemporario();
 
@@ -148,8 +148,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorEditorConsole.resetToPreferredSizes();
 
         listaDeNosInspecionados.setTextArea(editor.getTextArea());
-        
-        
+
     }
 
     public static class NoTransferable implements Transferable {
@@ -216,7 +215,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
         //tree.setDragEnabled(true);
-        
 
         painelBarraFerramentasArvore.setOpaque(true);
         painelBarraFerramentasArvore.setBackground(Color.WHITE);
@@ -499,8 +497,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configurarEditor() {
         editor.setAbaCodigoFonte(AbaCodigoFonte.this);
         editor.configurarAcoesExecucao(acaoSalvarArquivo, acaoSalvarComo, acaoExecutarPontoParada, acaoExecutarPasso, acaoInterromper);
-        
-        
+
     }
 
     private void instalarObservadores() {
@@ -681,12 +678,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void carregaSimbolosInspecionados(final String codigoFonteCompleto, final Programa programa) {
+        if (codigoFonteCompleto == null || programa == null) {
+            return;
+        }
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                String regex = "@SIMBOLOS-INSPECIONADOS[ ]*=[ ]* (\\{[a-zA-Z0-9]+, [0-9]+, [0-9]+, [0-9]+\\}[-]?)+;";
-                Matcher avaliador = Pattern.compile(regex).matcher(Utils.extrairInformacoesPortugolStudio(codigoFonteCompleto));
+                String regex = "@SIMBOLOS-INSPECIONADOS[ ]*=[ ]* (\\{[_a-zA-Z0-9]+, [0-9]+, [0-9]+, [0-9]+\\}[-]?)+;";
+                String informacoes = Utils.extrairInformacoesPortugolStudio(codigoFonteCompleto);
+                Matcher avaliador = Pattern.compile(regex).matcher(informacoes);
                 if (avaliador.find()) {
                     String linhas[] = avaliador.group().replace("@SIMBOLOS-INSPECIONADOS = ", "").replaceAll("[\\{\\};]", "").split("-");
                     for (String linha : linhas) {
@@ -710,6 +711,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     }
 
+    
 
     private NoDeclaracao procuraNoDeclaracao(Programa programa, final String nomeDoSimbolo, final int linhaDoSimbolo, final int colunaDoSimbolo, final int tamanhoDoTexto) throws ExcecaoVisitaASA {
         if (programa == null) {
