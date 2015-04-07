@@ -80,7 +80,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     //private static final int TAMANHO_POOL_ABAS = 12;
     //private static PoolAbasCodigoFonte poolAbasCodigoFonte;
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
-    private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
+    private static final float TAMANHO_MAXIMO_FONTE = 25.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
 
     private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
@@ -1239,7 +1239,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if ((tamanho != tree.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE)) {
             Font novaFonte = tree.getFont().deriveFont(tamanho);
             tree.setFont(novaFonte);
-            listaDeNosInspecionados.setFont(novaFonte);
+            listaDeNosInspecionados.setTamanhoDaFonte(tamanho);
             Configuracoes.getInstancia().setTamanhoFonteArvore(tamanho);
         }
     }
