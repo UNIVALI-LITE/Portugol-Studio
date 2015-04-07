@@ -3,17 +3,27 @@ package br.univali.ps.ui.editor;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -31,6 +41,7 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.IconRowHeader;
 import org.fife.ui.rtextarea.LineNumberList;
+import org.fife.ui.rtextarea.RTATextTransferHandler;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -50,7 +61,35 @@ public class PSTextArea extends RSyntaxTextArea {
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         this.pontosDeParada = new ArrayList<>();
-        
+        setTransferHandler(new RTATextTransferHandler() {
+            @Override
+            public Image getDragImage() {
+                String textoSelecionado = getSelectedText();
+                
+                FontMetrics metrics = getFontMetrics(getFont());
+                final int MARGEM = 5;
+                int larguraDotexto = MARGEM + metrics.stringWidth(textoSelecionado) + MARGEM;
+                int alturaDoTexto = MARGEM + metrics.getHeight() + MARGEM;
+                BufferedImage image = new BufferedImage(larguraDotexto, alturaDoTexto, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = (Graphics2D)image.getGraphics();
+                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                g.setColor(Color.LIGHT_GRAY);
+                g.fillRect(0, 0, larguraDotexto - 1, alturaDoTexto - 1);
+                g.setFont(getFont());
+                g.setColor(Color.DARK_GRAY);
+                g.drawString(textoSelecionado, MARGEM, alturaDoTexto - metrics.getAscent());
+                return image;
+            }
+
+            @Override
+            public Point getDragImageOffset() {
+                Point p = super.getDragImageOffset(); //To change body of generated methods, choose Tools | Templates.
+                p.translate(-16, 0);
+                return p;
+            }
+
+        });
+        setDragEnabled(true);
     }
 
     public void addListenter(PSTextAreaListener l) {
@@ -86,7 +125,7 @@ public class PSTextArea extends RSyntaxTextArea {
             }
 
             //se não removeu então está inserindo. A inserção acontece em linha-1 porque o gutter conta as linhas a partir do zero
-            GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha-1, iconeDoPontoDeParada);
+            GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha - 1, iconeDoPontoDeParada);
             pontosDeParada.add(iconeInfo);
             disparaPontosDeParadaAtualizados();
 

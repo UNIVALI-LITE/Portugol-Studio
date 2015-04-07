@@ -215,49 +215,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.setBackground(sPOutlineTree.getBackground());
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
-        tree.setDragEnabled(true);
-        tree.setTransferHandler(new javax.swing.TransferHandler() {
-
-            @Override
-            public boolean canImport(TransferHandler.TransferSupport ts) {
-                return true; //retornando true só para exibir o ícone mais adequado
-            }
-
-            @Override
-            public boolean importData(TransferHandler.TransferSupport ts) {
-                return false;//a árvore não aceita drop
-            }
-
-            @Override
-            protected Transferable createTransferable(JComponent jc) {
-                if (tree.getSelectionPaths() != null) {
-                    List<NoDeclaracao> nosSelecionados = new ArrayList<>();
-                    TreePath paths[] = tree.getSelectionPaths();
-                    for (TreePath caminhoSelecionado : paths) {
-                        Object componentSelectionado = caminhoSelecionado.getLastPathComponent();
-                        if (componentSelectionado != null && componentSelectionado instanceof DefaultMutableTreeNode) {
-                            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) caminhoSelecionado.getLastPathComponent();
-                            if (treeNode.isLeaf()) {
-                                try {
-                                    NoDeclaracao noDeclaracao = (NoDeclaracao) treeNode.getUserObject();
-                                    nosSelecionados.add(noDeclaracao);
-                                } catch (Exception e) {
-                                    //caso o nó não seja um NoDeclaracao
-                                    Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.WARNING, e.getMessage(), e);
-                                }
-                            }
-                        }
-                    }
-                    return new NoTransferable(nosSelecionados);
-                }
-                return null;
-            }
-
-            @Override
-            public int getSourceActions(JComponent jc) {
-                return DnDConstants.ACTION_COPY;
-            }
-        });
+        //tree.setDragEnabled(true);
+        
 
         painelBarraFerramentasArvore.setOpaque(true);
         painelBarraFerramentasArvore.setBackground(Color.WHITE);
