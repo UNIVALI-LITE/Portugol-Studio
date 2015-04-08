@@ -461,9 +461,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 if (itemDaLista.getTipo() == TipoDado.LOGICO) {
                     return (Boolean) valor ? "verdadeiro" : "falso";
                 } else if (itemDaLista.getTipo() == TipoDado.REAL) {
-                    //usando Locale.English para usa o ponto ao invés da vírgula como
-                    //separador das casas decimais
+                    //usando Locale.English para usar o ponto ao invés da vírgula como separador das casas decimais
                     return String.format(Locale.ENGLISH, "%.1f", valor);
+                }else if(itemDaLista.getTipo() == TipoDado.CADEIA){
+                    String string = valor.toString();
+                    if(string.length() > 7){
+                        return string.substring(0, 7) + "...";//retorna somente os primeiros 7 caracteres
+                    }
+                    return string;
                 }
                 return valor.toString();
             }
