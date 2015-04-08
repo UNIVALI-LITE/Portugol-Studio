@@ -463,9 +463,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 } else if (itemDaLista.getTipo() == TipoDado.REAL) {
                     //usando Locale.English para usar o ponto ao invés da vírgula como separador das casas decimais
                     return String.format(Locale.ENGLISH, "%.1f", valor);
-                }else if(itemDaLista.getTipo() == TipoDado.CADEIA){
+                } else if (itemDaLista.getTipo() == TipoDado.CADEIA) {
                     String string = valor.toString();
-                    if(string.length() > 7){
+                    if (string.length() > 7) {
                         return string.substring(0, 7) + "...";//retorna somente os primeiros 7 caracteres
                     }
                     return string;
@@ -543,7 +543,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private static class RenderizadorDeMatriz extends RenderizadorBase {
 
-        private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(1, 0, 0, 0.075f);
+        private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(1, 0, 0, 0.085f);
 
         public RenderizadorDeMatriz() {
             super();
@@ -623,7 +623,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     rolagem++;
                 }
             } while (indiceDaColuna <= ultimaColunaAtualizada + 1 && indiceDaColuna < totalDeColunas);
-            
+
             boolean precisaDeRolagem = xDaColuna > larguraDoComponente;
             if (precisaDeRolagem && ultimaColunaAtualizada >= totalDeColunas - 1) {//se é a última coluna
                 rolagem++;
@@ -689,13 +689,22 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     int larguraDaColuna = getLarguraDaColuna(c);
 
                     //pinta a linha e a coluna que contém a última célula alterada para ajudar a indentificar visualmente a alteração
-                    if (itemDaLista.podeDesenharDestaque() && (l == ultimaLinhaAlterada || c == ultimaColunaAlterada)) {
-                        if (l == ultimaLinhaAlterada && c == ultimaColunaAlterada) {//se é exatamente a ultima célula alterada usa uma cor mais forte no fundo
+                    if (itemDaLista.podeDesenharDestaque()) {
+                        //se é exatamente a ultima célula alterada usa uma cor mais forte no fundo
+                        if (l == ultimaLinhaAlterada && c == ultimaColunaAlterada) {
                             g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
+                            g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha - 1);
                         } else {
-                            g.setColor(COR_DA_LINHA_E_COLUNA_EM_DESTAQUE);
+                            //só destaca a linha e coluna alterada em matrizes grandes para evitar confusão visual
+                            boolean matrizGrande = item.getLinhas() > 3 && item.getColunas() > 3;
+                            boolean podeDestacarLinha = l == ultimaLinhaAlterada && matrizGrande;
+                            boolean podeDestacarColuna = c == ultimaColunaAlterada && matrizGrande;
+                            if (podeDestacarLinha || podeDestacarColuna) {
+                                g.setColor(COR_DA_LINHA_E_COLUNA_EM_DESTAQUE);
+                                g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha - 1);
+                            }
+
                         }
-                        g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha - 1);
                     }
 
                     //desenha o valor da célula
