@@ -597,7 +597,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 }
                 indiceDaLinha++;
             } while (indiceDaLinha <= ultimaLinhaAtualizada + 1 && indiceDaLinha < totalDeLinhas);
-            if (ultimaLinhaAtualizada >= totalDeLinhas - 1) {//se é a última linha
+            boolean precisaDeRolagem = yDaLinha > alturaDoComponente;
+            if (precisaDeRolagem && ultimaLinhaAtualizada >= totalDeLinhas - 1) {//se é a última linha
                 rolavemVertical++;
             }
             return rolavemVertical;
@@ -617,7 +618,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     rolagem++;
                 }
             } while (indiceDaColuna <= ultimaColunaAtualizada + 1 && indiceDaColuna < totalDeColunas);
-            if (ultimaColunaAtualizada >= totalDeColunas - 1) {//se é a última coluna
+            
+            boolean precisaDeRolagem = xDaColuna > larguraDoComponente;
+            if (precisaDeRolagem && ultimaColunaAtualizada >= totalDeColunas - 1) {//se é a última coluna
                 rolagem++;
             }
             return rolagem;
@@ -978,7 +981,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         if (simboloEhPermitido(simbolo)) {
             List<Simbolo> lista = new ArrayList<Simbolo>();
             lista.add(simbolo);
-            
+
             estaInicializando = simbolo.getOrigemDoSimbolo().getInicializacao() != null;
             simbolosAlterados(lista);
             estaInicializando = false;
@@ -986,7 +989,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     }
 
     private boolean estaInicializando = false;
-    
+
     @Override
     public void simbolosAlterados(List<Simbolo> simbolos) {
         boolean itemsAlterados = false;
@@ -999,12 +1002,24 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                         ((ItemDaListaParaVariavel) itemDaLista).setValor(((Variavel) simbolo).getValor());
                     } else if (itemDaLista.ehMatriz()) {
                         Matriz matriz = (Matriz) simbolo;
-                        int linha = matriz.getUltimaLinhaModificada();
-                        int coluna = matriz.getUltimaColunaModificada();
-                        Object valor = matriz.getValor(linha, coluna);
-                        ((ItemDaListaParaMatriz) itemDaLista).set(valor, linha, coluna);
+                        //quando está inicializando todas as posições da matriz são setadas, quando não 
+                        //está apenas a última posição modificada na matriz é 
+                        //atualizada (cada loop tem apenas uma iteração)
+                        int indiceInicialLinha = (estaInicializando) ? 0 : matriz.getUltimaLinhaModificada();
+                        int indiceFinalLinha = (estaInicializando) ? matriz.getNumeroLinhas() : indiceInicialLinha + 1;
+                        int indiceInicialColuna = (estaInicializando) ? 0 : matriz.getUltimaColunaModificada();
+                        int indiceFinalColuna = (estaInicializando) ? matriz.getNumeroColunas() : indiceInicialColuna + 1;
+                        for (int linha = indiceInicialLinha; linha < indiceFinalLinha; linha++) {
+                            for (int coluna = indiceInicialColuna; coluna < indiceFinalColuna; coluna++) {
+                                Object valor = matriz.getValor(linha, coluna);
+                                ((ItemDaListaParaMatriz) itemDaLista).set(valor, linha, coluna);
+                            }
+                        }
                     } else {
                         Vetor vetor = (Vetor) simbolo;
+                        //quando está inicializando todas as posições do vetor são setadas, quando não 
+                        //está apenas a última posição modificada no vetor é 
+                        //atualizada (o loop tem apenas uma iteração)
                         int indiceInicial = (estaInicializando) ? 0 : vetor.getUltimoIndiceModificado();
                         int indiceFinal = (estaInicializando) ? vetor.getTamanho() : indiceInicial + 1;
                         for (int i = indiceInicial; i < indiceFinal; i++) {
