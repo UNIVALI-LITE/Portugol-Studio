@@ -47,6 +47,7 @@ public final class AbaMensagemCompilador extends Aba
         initComponents();
         configurarAparenciaTabela();
         instalarObservadores();
+        
     }
 
     private void configurarAparenciaTabela()

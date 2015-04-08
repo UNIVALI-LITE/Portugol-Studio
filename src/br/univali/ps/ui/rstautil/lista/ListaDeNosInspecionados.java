@@ -68,7 +68,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  */
 public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemDaLista> implements ObservadorExecucao {
 
-    private static final String INSTRUCAO = "Arraste uma variável para \n este painél se quiser inspecioná-la";
+    private static final String INSTRUCAO = "Arraste uma variável \npara este painél se\n quiser inspecioná-la";
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
 
@@ -130,6 +130,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         super.paintComponent(g);
         if (getModel().getSize() <= 0) {
             //desenha a instrução para arrastar os símbolos para a lista
+            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g.setFont(RenderizadorBase.FONTE_NORMAL);
             g.setColor(Color.GRAY);
             FontMetrics metrics = g.getFontMetrics();
             String texto = INSTRUCAO.replace("\n", "");
@@ -137,7 +139,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             if (larguraInstrucao <= getWidth()) {
                 int x = getWidth() / 2 - larguraInstrucao / 2;
                 g.drawString(texto, x, getHeight() / 2);
-            } else {//separa o texto em duas linhas
+            } else {//separa o texto em váras linhas
                 String[] linhas = INSTRUCAO.split("\n");
                 int y = getHeight() / 2;
                 for (int i = 0; i < linhas.length; i++) {
@@ -385,7 +387,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public void setTamanhoDaFonte(float tamanho){
+    public void setTamanhoDaFonte(float tamanho) {
         RenderizadorBase.setTamanhoDaFonte(tamanho);
         //hack para forçar a JList a refazer a cache. Sem essas linhas o componente não reflete a mudança no tamanho da fonte adequadamente.
         //Idéia retirada desse post: http://stackoverflow.com/questions/7306295/swing-jlist-with-multiline-text-and-dynamic-height?lq=1
@@ -393,7 +395,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         setFixedCellHeight(-1);
         repaint();
     }
-    
+
     private static abstract class RenderizadorBase extends JComponent {
 
         protected final Color COR_DA_GRADE = Color.LIGHT_GRAY;
@@ -443,10 +445,10 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             return larguraDoNome;
         }
 
-        void atualizaDimensoes(){
+        void atualizaDimensoes() {
             setPreferredSize(new Dimension(300, getAlturaPreferida()));
         }
-        
+
         void setItemDaLista(ItemDaLista itemDaLista) {
             this.itemDaLista = itemDaLista;
             atualizaDimensoes();
@@ -552,7 +554,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         @Override
         protected int getAlturaPreferida() {
-            if(itemDaLista == null){
+            if (itemDaLista == null) {
                 return 20;
             }
             FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
@@ -780,7 +782,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             if (itemDaLista != null) {
                 Icon icone = itemDaLista.getIcone();
                 int altura = getAlturaPreferida();
-                icone.paintIcon(this, g, 0, altura/2 + (altura/2 - icone.getIconHeight()));
+                icone.paintIcon(this, g, 0, altura / 2 + (altura / 2 - icone.getIconHeight()));
                 int larguraDoNome = desenhaNome(g, icone.getIconWidth(), getHeight() / 2);
                 int totalDeColunas = ((ItemDaListaParaVetor) itemDaLista).getColunas();
                 int margemEsquerda = icone.getIconWidth() + larguraDoNome + MARGEM;
@@ -973,13 +975,18 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     @Override
     public void simboloDeclarado(Simbolo simbolo) {
-        if (simbolo instanceof Variavel) {
+        if (simboloEhPermitido(simbolo)) {
             List<Simbolo> lista = new ArrayList<Simbolo>();
             lista.add(simbolo);
+            
+            estaInicializando = simbolo.getOrigemDoSimbolo().getInicializacao() != null;
             simbolosAlterados(lista);
+            estaInicializando = false;
         }
     }
 
+    private boolean estaInicializando = false;
+    
     @Override
     public void simbolosAlterados(List<Simbolo> simbolos) {
         boolean itemsAlterados = false;
@@ -998,9 +1005,12 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                         ((ItemDaListaParaMatriz) itemDaLista).set(valor, linha, coluna);
                     } else {
                         Vetor vetor = (Vetor) simbolo;
-                        int indice = vetor.getUltimoIndiceModificado();
-                        Object valor = vetor.getValor(indice);
-                        ((ItemDaListaParaVetor) itemDaLista).set(valor, indice);
+                        int indiceInicial = (estaInicializando) ? 0 : vetor.getUltimoIndiceModificado();
+                        int indiceFinal = (estaInicializando) ? vetor.getTamanho() : indiceInicial + 1;
+                        for (int i = indiceInicial; i < indiceFinal; i++) {
+                            Object valor = vetor.getValor(i);
+                            ((ItemDaListaParaVetor) itemDaLista).set(valor, i);
+                        }
                     }
                     itemsAlterados = true;
                 }

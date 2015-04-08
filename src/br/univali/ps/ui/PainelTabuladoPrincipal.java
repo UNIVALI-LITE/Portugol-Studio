@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 public final class PainelTabuladoPrincipal extends PainelTabulado
@@ -42,7 +43,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado
     {
         this.abaInicial = abaInicial;
         add(abaInicial);
-        setTabComponentAt(indexOfComponent(abaInicial), abaInicial.getCabecalho());
+        //setTabComponentAt(indexOfComponent(abaInicial), abaInicial.getCabecalho());
         setSelectedComponent(abaInicial);
 
         //abaInicial.adicionar(PainelTabuladoPrincipal.this);

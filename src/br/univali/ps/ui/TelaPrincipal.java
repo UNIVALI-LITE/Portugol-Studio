@@ -14,6 +14,7 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaLogAtualizacoes;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public final class TelaPrincipal extends JFrame {
 
     public static void main(final String argumentos[]) {
         PortugolStudio.getInstancia().iniciar(argumentos);
+         
     }
 
     public TelaPrincipal() {
@@ -50,6 +52,7 @@ public final class TelaPrincipal extends JFrame {
 
     private void criaAbas() {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
+        
     }
 
     private void configurarJanela() {
@@ -271,8 +274,7 @@ public final class TelaPrincipal extends JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelTabuladoPrincipal = new br.univali.ps.ui.PainelTabuladoPrincipal();
 

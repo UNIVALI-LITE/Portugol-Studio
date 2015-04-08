@@ -278,8 +278,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelTitulo = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();

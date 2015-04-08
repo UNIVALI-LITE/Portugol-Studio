@@ -187,7 +187,7 @@ public final class PainelPlugins extends JPanel
     {//GEN-HEADEREND:event_botaoFecharActionPerformed
         if (abaCodigoFonte != null)
         {
-            abaCodigoFonte.ocultarPainelPlugins();
+            //abaCodigoFonte.ocultarPainelPlugins();
         }
     }//GEN-LAST:event_botaoFecharActionPerformed
 

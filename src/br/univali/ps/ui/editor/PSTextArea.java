@@ -16,12 +16,14 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -29,6 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
@@ -61,7 +64,7 @@ public class PSTextArea extends RSyntaxTextArea {
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         this.pontosDeParada = new ArrayList<>();
-        setTransferHandler(new RTATextTransferHandler() {
+        setTransferHandler(new RTATextTransferHandler() {//usa a própria classe to RSyntax mas modifica a criação da dragImage
             @Override
             public Image getDragImage() {
                 String textoSelecionado = getSelectedText();
@@ -83,8 +86,8 @@ public class PSTextArea extends RSyntaxTextArea {
 
             @Override
             public Point getDragImageOffset() {
-                Point p = super.getDragImageOffset(); //To change body of generated methods, choose Tools | Templates.
-                p.translate(-16, 0);
+                Point p = super.getDragImageOffset(); 
+                p.translate(-16, 0);//deixa a imagem ao lado do ícone do cursor do mouse
                 return p;
             }
 
@@ -260,9 +263,19 @@ public class PSTextArea extends RSyntaxTextArea {
                 PSTextArea textArea = new PSTextArea(new PortugolDocumento());
                 textArea.setIconeDosBreakPoints(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
                 textArea.setText("asd\nteste\ntoste\ntuste");
-                RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
+                final RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
+                scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 scrollPane.setFoldIndicatorEnabled(true);
                 scrollPane.setIconRowHeaderEnabled(true);
+                scrollPane.setUI(new BasicScrollPaneUI(){
+
+                    @Override
+                    public void paint(Graphics g, JComponent jc) {
+                        g.setClip(new RoundRectangle2D.Float(0, 0, scrollPane.getWidth(), scrollPane.getHeight(), 20, 20));
+                        super.paint(g, jc); 
+                    }
+                    
+                });
                 frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
                 frame.setVisible(true);

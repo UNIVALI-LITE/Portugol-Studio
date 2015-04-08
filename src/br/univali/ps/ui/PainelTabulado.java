@@ -6,6 +6,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 /**
@@ -18,7 +19,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
 
     public PainelTabulado()
     {
-        setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
         
     }    
@@ -30,11 +31,17 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
         if (componente instanceof Aba)
         {
             Aba aba = (Aba)componente;
+           try {
             aba.addComponentListener(this);
             aba.setPainelTabulado(this);
             super.add(aba);
             setTabComponentAt(indexOfComponent(aba), aba.getCabecalho());
             setSelectedComponent(aba);
+           }
+           catch (Exception ex)
+           {
+               ex.printStackTrace(System.err);
+           }
             return aba;
         }
         return super.add(componente);

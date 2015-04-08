@@ -80,7 +80,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private DefaultTreeModel model;
     private PortugolParser parser;
     private Listener listener;
-    private boolean atualizacaoHabilitada;
+    private boolean atualizacaoHabilitada = false;
 
     //usei este map para guardar os últimos valores dos nós da JTree. Quando
     //um programa é executado o valor de um nó pode mudar muitas vezes durante
@@ -104,7 +104,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada) {
-        this.atualizacaoHabilitada = atualizaoAtivada;
+        //this.atualizacaoHabilitada = atualizaoAtivada;
     }
 
     /**

@@ -8,10 +8,15 @@ import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
+import com.alee.global.StyleConstants;
+import static com.alee.laf.panel.WebPanelStyle.shadeWidth;
+import static com.alee.laf.scroll.WebScrollPaneStyle.drawBackground;
+import com.alee.utils.LafUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,11 +27,14 @@ import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicPanelUI;
+import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
@@ -68,6 +76,9 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         super("Console", icone, false);
 
         initComponents();
+        
+        painelRolagem.setUI(new BasicScrollPaneUI());
+        
         console.setComponentPopupMenu(menuConsole);
         this.menuConsoleLimpar.setText("Limpar");
         this.menuConsoleCopiar.setText("Copiar");
@@ -144,8 +155,20 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         carregarConfiguracoes();
 
         handlerDaSaida = new HandlerDaSaida();
+        
+        painelConteudo.setUI(new BorderUI());
     }
 
+    private static class BorderUI extends BasicPanelUI{
+
+        @Override
+        public void paint(Graphics g, JComponent c) {
+            //usa o código do Weblaf para pintar borda ao redor do painel
+            LafUtils.drawWebStyle ( (Graphics2D) g, c, StyleConstants.shadeColor, shadeWidth, 5, drawBackground, false );
+        }
+        
+    }
+    
     private void configurarBarraFerramentas()
     {
         barraFerramentas.setOpaque(false);
@@ -367,8 +390,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         menuConsole = new javax.swing.JPopupMenu();
         menuAumentarFonte = new javax.swing.JMenuItem();
@@ -402,7 +424,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        painelConteudo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 220, 220)));
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
         painelRolagem.setBackground(new java.awt.Color(250, 250, 250));
