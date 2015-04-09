@@ -9,7 +9,6 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoMatriz;
-import br.univali.portugol.nucleo.asa.NoValor;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
@@ -19,7 +18,6 @@ import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.editor.PSTextArea;
 import br.univali.ps.ui.rstautil.ComparadorNos;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
@@ -36,7 +34,6 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -56,9 +53,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
-import javax.swing.UIDefaults;
 import javax.swing.border.Border;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -94,6 +91,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         setDropMode(DropMode.ON);
         setTransferHandler(new TratadorDeArrastamento());
         setCellRenderer(new RenderizadorDaLista());
+        setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         addFocusListener(new FocusAdapter() {
 
             @Override
@@ -934,13 +932,17 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             //usa uma EmptyBorder para separar verticalmente os items da lista, assim os items não ficam muito "grudados" uns nos outros.
 
             //pinta o fundo quando está com o foco no item da lista ou o index é par (zebra)
-            boolean indicePar = index % 2 == 0;
-            if(hasFocus){
+            boolean indiceImpar = index % 2 != 0;
+            
+            boolean pintaSelecao = hasFocus || list.getSelectionModel().isSelectedIndex(index);
+            if(pintaSelecao){
                 panel.setBackground(COR_DA_SELECAO );
-            }else if (indicePar) {
+            }else if (indiceImpar) {
                 panel.setBackground(COR_DA_ZEBRA);
             }
-            panel.setOpaque(hasFocus || indicePar);
+            //desenha o fundo do componente quando está com foco ou quando o índice do 
+            //componente é impar (faz o zebramento)
+            panel.setOpaque( pintaSelecao || indiceImpar );
             return panel;
             //existem 3 tipos de ItemDaLista (para variáveis, para vetores e para matrizes)
             //cada subclasse de ItemDaLista retorna um renderer component diferente.
