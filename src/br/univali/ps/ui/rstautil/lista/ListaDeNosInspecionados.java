@@ -34,6 +34,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -43,10 +44,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -78,7 +82,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     boolean programaExecutando = false;
 
-    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(0, 0, 10, 0);
+    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(10, 0, 30, 0);
 
     private JTextArea textArea;//necessário para tratar a importação de variáveis para o inspetor de símbolos diretamente do código fonte
     private Programa ultimoProgramaCompilado;//referência para o programa compilado, 
@@ -128,7 +132,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         super.paintComponent(g);
         if (getModel().getSize() <= 0) {
             //desenha a instrução para arrastar os símbolos para a lista
-            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
             g.setFont(RenderizadorBase.FONTE_NORMAL);
             g.setColor(Color.GRAY);
             FontMetrics metrics = g.getFontMetrics();
@@ -396,15 +400,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     private static abstract class RenderizadorBase extends JComponent {
 
-        protected final Color COR_DA_GRADE = Color.LIGHT_GRAY;
+        protected final Color COR_DA_GRADE = new Color(0, 0, 0, 0.3f);
         protected final Color COR_DO_TEXTO = Color.DARK_GRAY;
         protected final Color COR_DO_TEXTO_DESTACADO = Color.BLACK;
-        protected final Color COR_DO_CABECALHO_DESTACADO = Color.GRAY;
+        protected final Color COR_DO_CABECALHO_DESTACADO = new Color(0, 0, 0, 0.5f);
         protected final Color COR_DO_FUNDO_EM_DESTAQUE = new Color(1, 0, 0, 0.3f);//vermelho claro
 
         private static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 
-        protected static final int MARGEM = 5;
+        protected static final int MARGEM_HORIZONTAL = 5;
 
         protected ItemDaLista itemDaLista;
 
@@ -429,17 +433,17 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         /**
          * @param g
-         * @param y a posição onde o nome será desenha no eixo y
+         * @param topo a posição onde o nome será desenha no eixo y
          * @return a largura da string do nome para que ela possa ser usada como
          * margem para o resto do desenho
          */
-        protected int desenhaNome(Graphics g, int x, int y) {
+        protected int desenhaNome(Graphics g, int x, int topo) {
             g.setFont(itemDaLista.podeDesenharDestaque() ? FONTE_DESTAQUE : FONTE_NORMAL);
             String stringDoNome = itemDaLista.getNome();
             FontMetrics metrics = g.getFontMetrics();
             int larguraDoNome = metrics.stringWidth(stringDoNome);
 
-            g.drawString(stringDoNome, x, y + metrics.getAscent());
+            g.drawString(stringDoNome, x, topo + metrics.getAscent());
             return larguraDoNome;
         }
 
@@ -489,7 +493,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         @Override
         protected int getAlturaPreferida() {
             FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
-            return metrics.getHeight() + metrics.getDescent();
+            return metrics.getHeight();
         }
 
         @Override
@@ -503,36 +507,36 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         @Override
         protected void paintComponent(Graphics gr) {
             Graphics2D g = (Graphics2D) gr;
-            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
             super.paintComponent(g);
             if (itemDaLista == null) {
                 return;
             }
             Icon icone = itemDaLista.getIcone();
-            icone.paintIcon(this, g, 0, getHeight() / 2 - icone.getIconHeight() / 2 + MARGEM);
-            int larguraDoNome = desenhaNome(g, icone.getIconWidth(), MARGEM);
+            icone.paintIcon(this, g, 0, getHeight() / 2 - icone.getIconHeight() / 2);
+            int larguraDoNome = desenhaNome(g, icone.getIconWidth(), 0);
 
             //desenha valor
             String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
-            if (stringDoValor != null) {
-                g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
-                FontMetrics metrics = g.getFontMetrics();
-                int larguraDoValor = metrics.stringWidth(stringDoValor);
-                int larguraDaCaixa = MARGEM + larguraDoValor + MARGEM;
 
-                //pinta fundo de vermelho para destacar
-                if (itemDaLista.podeDesenharDestaque()) {
-                    g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
-                    g.fillRect(icone.getIconWidth() + larguraDoNome + MARGEM + 1, MARGEM + 1, larguraDaCaixa - 1, getHeight() - 2 - MARGEM);
-                }
+            g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
+            FontMetrics metrics = g.getFontMetrics();
+            int larguraDoValor = metrics.stringWidth(stringDoValor);
+            int larguraDaCaixa = MARGEM_HORIZONTAL + larguraDoValor + MARGEM_HORIZONTAL;
 
-                g.setColor(Color.BLACK);
-                g.drawString(stringDoValor, icone.getIconWidth() + larguraDoNome + MARGEM + MARGEM, metrics.getDescent() + metrics.getAscent() + 1);
+            //pinta fundo de vermelho para destacar
+            if (itemDaLista.podeDesenharDestaque()) {
+                g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
+                g.fillRect(icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL + 1, 0, larguraDaCaixa - 1, getHeight() - 1);
 
                 //desenha caixa do valor
                 g.setColor(COR_DA_GRADE);
-                g.drawRect(icone.getIconWidth() + larguraDoNome + MARGEM, MARGEM, larguraDaCaixa, getHeight() - 1 - MARGEM);
+                g.drawRect(icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL, 0, larguraDaCaixa, getHeight() - 1);
             }
+
+            //desenha valor
+            g.setColor(Color.BLACK);
+            g.drawString(stringDoValor, icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL + MARGEM_HORIZONTAL, metrics.getAscent());
 
         }
 
@@ -558,12 +562,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         @Override
         protected int getAlturaPreferida() {
             if (itemDaLista == null) {
-                return 20;
+                return 20;//retorna um valor default só para ter o que desenhar, em geral isso não deveria acontecer
             }
             FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
             ItemDaListaParaMatriz item = (ItemDaListaParaMatriz) itemDaLista;
-            int linhas = Math.min(item.getLinhas(), 4) + 1;//no máximo 5 linhas são exibidas, incluindo a linha de cabeçalho
-            return metrics.getHeight() * linhas;
+            int alturaDoNome = metrics.getAscent();
+            int alturaDoCabecalho = getFontMetrics(FONTE_CABECALHO).getHeight();
+            int linhasDeConteudo = Math.min(item.getLinhas(), 4);//no máximo 6 linhas são exibidas, incluindo a linha do nome da matriz, a linha de cabeçalho e 4 linhas de conteúdo
+            return alturaDoNome + alturaDoCabecalho + (metrics.getHeight() * linhasDeConteudo);
         }
 
         @Override
@@ -571,16 +577,20 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             super.paintComponent(g);
             if (itemDaLista != null) {
                 Icon icone = itemDaLista.getIcone();
-                int alturaDaLinha = g.getFontMetrics().getHeight() + MARGEM;
-                //altura/2 + (altura/2 - icone.getIconHeight())
-                icone.paintIcon(this, g, 0, alturaDaLinha + (alturaDaLinha - icone.getIconHeight()));
-                int larguraDoNome = desenhaNome(g, icone.getIconWidth(), alturaDaLinha);
+                FontMetrics metrics = g.getFontMetrics(FONTE_NORMAL);
+                //int alturaDaLinha = metrics.getHeight() ;
+                int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
+                icone.paintIcon(this, g, 0, yDoIcone);
+                //g.drawRect(0, yDoIcone, icone.getIconWidth(), icone.getIconHeight());
+                desenhaNome(g, icone.getIconWidth(), 0);
                 int totalDeColunas = ((ItemDaListaParaMatriz) itemDaLista).getColunas();
                 int totalDeLinhas = ((ItemDaListaParaMatriz) itemDaLista).getLinhas();
-                int margemEsquerda = icone.getIconWidth() + larguraDoNome + MARGEM;
+                int margemEsquerda = MARGEM_HORIZONTAL;
+                int margemSuperior = getFontMetrics(FONTE_CABECALHO).getAscent();
                 int colunaInicial = calculaRolagemDasColunas(margemEsquerda);
                 int linhaInicial = calculaRolagemDasLinhas();
-                desenhaGrade(g, totalDeLinhas, totalDeColunas, colunaInicial, linhaInicial, margemEsquerda);
+
+                desenhaGrade(g, totalDeLinhas, totalDeColunas, colunaInicial, linhaInicial, margemEsquerda, margemSuperior);
             }
         }
 
@@ -649,9 +659,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     metricsDoValor = getFontMetrics(FONTE_DESTAQUE);
                 }
 
-                int larguraDoValor = MARGEM + metricsDoValor.stringWidth(stringDoValor) + MARGEM;
-                int larguraDoIndice = MARGEM + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM;
-                int larguraDaStringVazia = MARGEM + metricsDoValor.stringWidth(RenderizadorBase.STRING_VAZIA) + MARGEM; //a largura retornada nunca será menor que a largura da string vazia
+                int larguraDoValor = MARGEM_HORIZONTAL + metricsDoValor.stringWidth(stringDoValor) + MARGEM_HORIZONTAL;
+                int larguraDoIndice = MARGEM_HORIZONTAL + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM_HORIZONTAL;
+                int larguraDaStringVazia = MARGEM_HORIZONTAL + metricsDoValor.stringWidth(RenderizadorBase.STRING_VAZIA) + MARGEM_HORIZONTAL; //a largura retornada nunca será menor que a largura da string vazia
                 int max = Math.max(Math.max(larguraDaStringVazia, larguraDoIndice), larguraDoValor);
                 if (max > maiorLargura) {
                     maiorLargura = max;
@@ -660,21 +670,43 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             return maiorLargura;//retorna a maior largura entre todas os valores de todas as linhas
         }
 
+        private int getLarguraMaximaDasLinhas() {
+            ItemDaListaParaMatriz item = (ItemDaListaParaMatriz) itemDaLista;
+            int larguraMaxima = 0;
+            for (int l = 0; l < item.getLinhas(); l++) {
+                larguraMaxima += getLarguraDaLinha(l);
+            }
+            return larguraMaxima;
+        }
+
+        private int getLarguraDaLinha(int indiceDaLinha) {
+            ItemDaListaParaMatriz item = (ItemDaListaParaMatriz) itemDaLista;
+            if (indiceDaLinha >= 0 && indiceDaLinha < item.getLinhas()) {
+                int larguraDaLinha = 0;
+                for (int coluna = 0; coluna < item.getColunas(); coluna++) {
+                    larguraDaLinha += getLarguraDaColuna(coluna);
+                }
+                return larguraDaLinha;
+            }
+            return 0;
+        }
+
         private String getStringDoValor(int linha, int coluna) {
             ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
             Object valor = item.get(linha, coluna);
             return processaStringDoValor(valor);
         }
 
-        private void desenhaGrade(Graphics g, int totalDeLinhas, int totalDeColunas, int colunaInicial, int linhaInicial, int margemEsquerda) {
+        private void desenhaGrade(Graphics g, int totalDeLinhas, int totalDeColunas, int colunaInicial, int linhaInicial, int margemEsquerda, int margemSuperior) {
             int alturaDaLinha = getFontMetrics(FONTE_NORMAL).getHeight();
-            int larguraMaximaDoIndiceDeLinha = MARGEM + getFontMetrics(FONTE_DESTAQUE).stringWidth(String.valueOf(totalDeLinhas - 1));//obtém a largura da string do maior índice de linha
+            int alturaDoCabecalho = getFontMetrics(FONTE_CABECALHO).getHeight();
+            int larguraMaximaDoIndiceDeLinha = MARGEM_HORIZONTAL + getFontMetrics(FONTE_DESTAQUE).stringWidth(String.valueOf(totalDeLinhas - 1));//obtém a largura da string do maior índice de linha
             int inicioLinhaHorizontal = margemEsquerda + larguraMaximaDoIndiceDeLinha - 3;
             int xDaLinha = inicioLinhaHorizontal;
             int ultimaLinhaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaLinhaAtualizada();
             int ultimaColunaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaColunaAtualizada();
             for (int l = linhaInicial; l < totalDeLinhas; l++) {
-                int yDaLinha = ((l - linhaInicial) + 1) * alturaDaLinha;
+                int yDaLinha = ((l - linhaInicial) + 1) * alturaDaLinha + margemSuperior;
                 if (yDaLinha > getHeight()) {//se a linha não estará vísivel
                     break;
                 }
@@ -710,13 +742,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     g.setFont(podeDestacarEstaCelula ? FONTE_DESTAQUE : FONTE_NORMAL);
                     FontMetrics metrics = g.getFontMetrics();
                     int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
-                    int yDoValor = alturaDaLinha + (alturaDaLinha * (l - linhaInicial)) + metrics.getAscent() + metrics.getDescent() - 3;
+                    int yDoValor = alturaDoCabecalho + (alturaDaLinha * (l - linhaInicial + 1)) + metrics.getAscent() - metrics.getDescent();
                     g.setColor(podeDestacarEstaCelula ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
                     g.drawString(stringDoValor, xDoValor, yDoValor);
 
                     //linha vertical
                     g.setColor(COR_DA_GRADE);
-                    g.drawLine(xDaLinha, alturaDaLinha, xDaLinha, getHeight());
+                    g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
 
                     //desenha os índices
                     if (l == linhaInicial) {
@@ -753,7 +785,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 int largura = metrics.stringWidth(stringIndiceDaLinha);
                 g.drawString(stringIndiceDaLinha,
                         inicioLinhaHorizontal - largura - 2, //x
-                        alturaDaLinha + (alturaDaLinha * (l - linhaInicial)) + metrics.getAscent() + metrics.getDescent());
+                        margemSuperior + alturaDaLinha + (alturaDaLinha * (l - linhaInicial)) + metrics.getAscent() + metrics.getDescent());
 
                 //desenha a linha horizontal
                 g.setColor(COR_DA_GRADE);
@@ -762,7 +794,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
             //desenha a borda direita
             g.setColor(COR_DA_GRADE);
-            g.drawLine(xDaLinha, alturaDaLinha, xDaLinha, getHeight());
+            g.drawLine(xDaLinha, alturaDaLinha + margemSuperior, xDaLinha, getHeight() - 1);
 
             //desenha a borda embaixo
             g.drawLine(inicioLinhaHorizontal, getHeight() - 1, xDaLinha, getHeight() - 1);
@@ -788,7 +820,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         @Override
         protected int getAlturaPreferida() {
             FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
-            return metrics.getHeight() * 2;//2 linhas, uma com os valores e outra com os índices
+            int alturaDoNome = metrics.getAscent();
+            int alturaCabecalho = getFontMetrics(FONTE_CABECALHO).getHeight();
+            return alturaDoNome + alturaCabecalho + metrics.getHeight() + 1;//2 linhas, uma com os valores e outra com os índices
         }
 
         @Override
@@ -796,13 +830,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             super.paintComponent(g);
             if (itemDaLista != null) {
                 Icon icone = itemDaLista.getIcone();
-                int altura = getAlturaPreferida();
-                icone.paintIcon(this, g, 0, altura / 2 + (altura / 2 - icone.getIconHeight()));
-                int larguraDoNome = desenhaNome(g, icone.getIconWidth(), getHeight() / 2);
+                FontMetrics metrics = g.getFontMetrics(FONTE_NORMAL);
+                int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
+                icone.paintIcon(this, g, 0, yDoIcone);
+                desenhaNome(g, icone.getIconWidth(), 0);
                 int totalDeColunas = ((ItemDaListaParaVetor) itemDaLista).getColunas();
-                int margemEsquerda = icone.getIconWidth() + larguraDoNome + MARGEM;
+                int margemEsquerda = MARGEM_HORIZONTAL;// icone.getIconWidth() + larguraDoNome + MARGEM;
+                int margemSuperior = metrics.getAscent();
                 int colunaInicial = calculaRolagem(margemEsquerda);
-                desenhaGrade(g, totalDeColunas, colunaInicial, margemEsquerda);
+                desenhaGrade(g, totalDeColunas, colunaInicial, margemEsquerda, margemSuperior);
             }
         }
 
@@ -839,9 +875,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 metricsDoIndice = getFontMetrics(FONTE_CABECALHO_DESTAQUE);
                 metricsDoValor = getFontMetrics(FONTE_DESTAQUE);
             }
-            int larguraDoValor = MARGEM + metricsDoValor.stringWidth(stringDoValor) + MARGEM;
-            int larguraDoIndice = MARGEM + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM;
-            int larguraDaStringVazia = MARGEM + metricsDoValor.stringWidth(RenderizadorBase.STRING_VAZIA) + MARGEM; //a largura retornada nunca será menor que a largura da string vazia
+            int larguraDoValor = MARGEM_HORIZONTAL + metricsDoValor.stringWidth(stringDoValor) + MARGEM_HORIZONTAL;
+            int larguraDoIndice = MARGEM_HORIZONTAL + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM_HORIZONTAL;
+            int larguraDaStringVazia = MARGEM_HORIZONTAL + metricsDoValor.stringWidth(RenderizadorBase.STRING_VAZIA) + MARGEM_HORIZONTAL; //a largura retornada nunca será menor que a largura da string vazia
             return Math.max(Math.max(larguraDaStringVazia, larguraDoIndice), larguraDoValor);
         }
 
@@ -850,11 +886,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             return processaStringDoValor(item.get(indice));
         }
 
-        private void desenhaGrade(Graphics g, int totalDeColunas, int colunaInicial, int margemEsquerda) {
-            int alturaDaLinha = getHeight() / 2;
+        private void desenhaGrade(Graphics g, int totalDeColunas, int colunaInicial, int margemEsquerda, int margemSuperior) {
+            int alturaDaLinha = g.getFontMetrics(FONTE_NORMAL).getHeight();
             int inicioLinhaHorizontal = margemEsquerda;
             int xDaLinha = inicioLinhaHorizontal;
-            int yDaLinha = alturaDaLinha;
+            int yDaLinha = g.getFontMetrics(FONTE_CABECALHO).getHeight() + margemSuperior;
             xDaLinha = margemEsquerda;
             for (int c = colunaInicial; c < totalDeColunas; c++) {
                 ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
@@ -864,7 +900,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 //pinta o fundo da coluna que foi alterada por último
                 if (podeDestacarEstaColuna) {
                     g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
-                    g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha - 2);
+                    g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha);
                 }
 
                 //desenha o valor da coluna
@@ -878,7 +914,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
                 //linha vertical
                 g.setColor(COR_DA_GRADE);
-                g.drawLine(xDaLinha, (c > 0) ? (alturaDaLinha - 3) : alturaDaLinha, xDaLinha, getHeight());
+                g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
 
                 //desenha a string do índice
                 String stringDoIndice = String.valueOf(c);
@@ -894,17 +930,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
                 xDaLinha += larguraDaColuna;
             }
-
-            //desenha a linha horizontal
             g.setColor(COR_DA_GRADE);
+            //desenha a linha horizontal
             g.drawLine(inicioLinhaHorizontal, yDaLinha, xDaLinha, yDaLinha);//linha horizontal
 
             //desenha a borda direita
-            g.setColor(COR_DA_GRADE);
-            g.drawLine(xDaLinha, alturaDaLinha, xDaLinha, getHeight());
+            g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
 
             //desenha a borda embaixo
-            g.drawLine(inicioLinhaHorizontal, getHeight() - 1, xDaLinha, getHeight() - 1);
+            g.drawLine(inicioLinhaHorizontal, yDaLinha + alturaDaLinha, xDaLinha, yDaLinha + alturaDaLinha);
         }
 
     }
@@ -913,13 +947,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
-        private final Color COR_DA_ZEBRA;//sim, vamos desenhar uma zebra na tela :)
-        private final Color COR_DA_SELECAO;
+        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.08f);
+        private final Color COR_DA_SELECAO = new Color(0, 0, 0, 0.15f);
 
         public RenderizadorDaLista() {
             panel.setBorder(EMPTY_BORDER);
-            COR_DA_ZEBRA = new Color(0, 0, 0, 0.035f);
-            COR_DA_SELECAO = new Color(0, 0, 0, 0.15f);
         }
 
         @Override
@@ -933,16 +965,16 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
             //pinta o fundo quando está com o foco no item da lista ou o index é par (zebra)
             boolean indiceImpar = index % 2 != 0;
-            
+
             boolean pintaSelecao = hasFocus || list.getSelectionModel().isSelectedIndex(index);
-            if(pintaSelecao){
-                panel.setBackground(COR_DA_SELECAO );
-            }else if (indiceImpar) {
+            if (pintaSelecao) {
+                panel.setBackground(COR_DA_SELECAO);
+            } else if (indiceImpar) {
                 panel.setBackground(COR_DA_ZEBRA);
             }
             //desenha o fundo do componente quando está com foco ou quando o índice do 
             //componente é impar (faz o zebramento)
-            panel.setOpaque( pintaSelecao || indiceImpar );
+            panel.setOpaque(pintaSelecao || indiceImpar);
             return panel;
             //existem 3 tipos de ItemDaLista (para variáveis, para vetores e para matrizes)
             //cada subclasse de ItemDaLista retorna um renderer component diferente.
@@ -1361,11 +1393,11 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         frame.setVisible(true);
         frame.setLayout(new BorderLayout());
 
-        ListaDeNosInspecionados lista = new ListaDeNosInspecionados();
+        final ListaDeNosInspecionados lista = new ListaDeNosInspecionados();
 
-        ItemDaListaParaVariavel item = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
-        item.setValor(53);
-        lista.model.addElement(item);
+        ItemDaListaParaVariavel itemVariavel = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
+        itemVariavel.setValor(53);
+        lista.model.addElement(itemVariavel);
         lista.model.addElement(new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("outra variável", TipoDado.LOGICO, false)));
         ItemDaListaParaVetor itemVetor = new ItemDaListaParaVetor(15, new NoDeclaracaoVetor("teste", TipoDado.INTEIRO, new NoInteiro(15), false));
         itemVetor.set(34, 12);
@@ -1373,14 +1405,35 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         lista.model.addElement(new ItemDaListaParaVetor(5, new NoDeclaracaoVetor("outro vetor", TipoDado.REAL, new NoInteiro(3), false)));
         ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(13, 13, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(13), new NoInteiro(13), false));
         lista.model.addElement(itemMatriz);
+        lista.model.addElement(new ItemDaListaParaMatriz(4, 4, new NoDeclaracaoMatriz("umNomeDeVariável bem grande", TipoDado.INTEIRO, new NoInteiro(4), new NoInteiro(4), false)));
         itemMatriz.set(345, 12, 12);
         lista.setPreferredSize(new Dimension(300, 600));
 
         itemVetor.set(34, 14);
-
+        //itemVariavel.setValor(54);
         lista.redenhaItemsDaLista();
 
         frame.add(lista, BorderLayout.CENTER);
+
+        JPanel panelBotoes = new JPanel();
+        panelBotoes.setLayout(new BoxLayout(panelBotoes, BoxLayout.X_AXIS));
+        JButton botaoAumentarFonte = new JButton(new AbstractAction("+") {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                lista.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() + 2);
+            }
+        });
+        JButton botaoDiminuirFonte = new JButton(new AbstractAction("-") {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                lista.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() - 2);
+            }
+        });
+        panelBotoes.add(botaoAumentarFonte);
+        panelBotoes.add(botaoDiminuirFonte);
+        frame.add(panelBotoes, BorderLayout.SOUTH);
         frame.pack();
     }
 }
