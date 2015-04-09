@@ -915,11 +915,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
+        private final Color COR_DA_ZEBRA;//sim, vamos desenhar uma zebra na tela :)
+        private final Color COR_DA_SELECAO;
 
         public RenderizadorDaLista() {
             panel.setBorder(EMPTY_BORDER);
-            UIDefaults defaults = javax.swing.UIManager.getDefaults();
-            panel.setBackground(defaults.getColor("List.selectionBackground"));
+            COR_DA_ZEBRA = new Color(0, 0, 0, 0.035f);
+            COR_DA_SELECAO = new Color(0, 0, 0, 0.15f);
         }
 
         @Override
@@ -931,7 +933,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             panel.add(c, BorderLayout.CENTER); //o componente que renderiza o item da lista foi inserido em um painel e este painel 
             //usa uma EmptyBorder para separar verticalmente os items da lista, assim os items não ficam muito "grudados" uns nos outros.
 
-            panel.setOpaque(hasFocus);//pinta o fundo quando está com o foco no item da lista
+            //pinta o fundo quando está com o foco no item da lista ou o index é par (zebra)
+            boolean indicePar = index % 2 == 0;
+            if(hasFocus){
+                panel.setBackground(COR_DA_SELECAO );
+            }else if (indicePar) {
+                panel.setBackground(COR_DA_ZEBRA);
+            }
+            panel.setOpaque(hasFocus || indicePar);
             return panel;
             //existem 3 tipos de ItemDaLista (para variáveis, para vetores e para matrizes)
             //cada subclasse de ItemDaLista retorna um renderer component diferente.
