@@ -3,60 +3,14 @@ package br.univali.ps.ui.rstautil.lista;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoBitwiseNao;
-import br.univali.portugol.nucleo.asa.NoBloco;
-import br.univali.portugol.nucleo.asa.NoCadeia;
-import br.univali.portugol.nucleo.asa.NoCaracter;
-import br.univali.portugol.nucleo.asa.NoCaso;
-import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
-import br.univali.portugol.nucleo.asa.NoContinue;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
-import br.univali.portugol.nucleo.asa.NoEnquanto;
-import br.univali.portugol.nucleo.asa.NoEscolha;
-import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
-import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
-import br.univali.portugol.nucleo.asa.NoLogico;
 import br.univali.portugol.nucleo.asa.NoMatriz;
-import br.univali.portugol.nucleo.asa.NoMenosUnario;
-import br.univali.portugol.nucleo.asa.NoNao;
-import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseE;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseLeftShift;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseOu;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseXOR;
-import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaDiferenca;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaE;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaIgualdade;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaior;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaiorIgual;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenorIgual;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaOU;
-import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
-import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
-import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
-import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
-import br.univali.portugol.nucleo.asa.NoPara;
-import br.univali.portugol.nucleo.asa.NoPare;
-import br.univali.portugol.nucleo.asa.NoReal;
-import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
-import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
-import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
-import br.univali.portugol.nucleo.asa.NoRetorne;
-import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.portugol.nucleo.asa.NoTitulo;
-import br.univali.portugol.nucleo.asa.NoVaPara;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.simbolos.Matriz;
@@ -1238,7 +1192,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         private boolean podeImportartNosArrastadosDaTree(TransferHandler.TransferSupport support) {
             List<NoDeclaracao> nosTransferidos = null;
-
             try {
                 nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
             } catch (Exception e) {
@@ -1260,6 +1213,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             DataFlavor flavors[] = support.getDataFlavors();
             boolean podeImportar = false;
             for (DataFlavor flavor : flavors) {
+                //aceita apenas texto (que é arrastado do editor) ou uma lista de NoDeclaracao
                 if (flavor.isFlavorTextType() || flavor == AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR) {
                     podeImportar = true;
                     break;
