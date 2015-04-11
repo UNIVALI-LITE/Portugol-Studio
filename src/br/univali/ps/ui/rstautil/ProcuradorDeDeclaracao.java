@@ -1,5 +1,6 @@
 package br.univali.ps.ui.rstautil;
 
+import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoCaso;
@@ -88,6 +89,17 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
             no.getInicializacao().aceitar(this); //tentar encontrar a referência na inicialização
         }
     }
+
+    @Override
+    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
+         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
+            if(!declaracaoEncontrada){
+                declaracao.aceitar(this);
+            }
+        }
+        return null;
+    }
+    
     //+++++++++++++++  DECLARAÇÕES +++++++++++++++++++++++++++++++
     @Override
     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
