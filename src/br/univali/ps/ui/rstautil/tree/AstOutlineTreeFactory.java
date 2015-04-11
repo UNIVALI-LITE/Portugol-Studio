@@ -91,20 +91,8 @@ class AstOutlineTreeFactory implements VisitanteASA
     @Override
     public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
     {
-        BibliotecasTreeNode bibliotecas = new BibliotecasTreeNode();
-
-        for (NoInclusaoBiblioteca inclusao : asap.getListaInclusoesBibliotecas())
-        {
-            bibliotecas.add((LibraryTreeNode) inclusao.aceitar(this));
-        }
         
         ProgramaTreeNode programa = new ProgramaTreeNode();
-        
-        if (bibliotecas.getChildCount() > 0)
-        {
-            programa.add(bibliotecas);
-        }
-        
         List<SourceTreeNode> nos = new ArrayList<>();
         
         for (Iterator<NoDeclaracao> i = asap.getListaDeclaracoesGlobais().iterator(); i.hasNext();)
