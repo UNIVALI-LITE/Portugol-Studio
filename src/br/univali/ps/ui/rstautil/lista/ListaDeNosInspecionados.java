@@ -456,7 +456,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
 
         void atualizaDimensoes() {
-            setPreferredSize(new Dimension(300, getAlturaPreferida()));
+            setPreferredSize(new Dimension(100, getAlturaPreferida()));
         }
 
         void setItemDaLista(ItemDaLista itemDaLista) {
@@ -900,10 +900,17 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int xDaLinha = inicioLinhaHorizontal;
             int yDaLinha = g.getFontMetrics(FONTE_CABECALHO).getHeight() + margemSuperior;
             xDaLinha = margemEsquerda;
+            int larguraDaPrimeiraColuna = 0;
+            int larguraDaUltimaColuna = 0;//largura da última coluna desenhada
+            int indiceDaUltimaColunaDesenhada = 0;
             for (int c = colunaInicial; c < totalDeColunas; c++) {
                 ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
                 boolean podeDestacarEstaColuna = itemDaLista.podeDesenharDestaque() && item.getUltimaColunaAtualizada() == c;
                 int larguraDaColuna = getLarguraDaColuna(c);
+                if(xDaLinha + larguraDaColuna > getWidth()){
+                    larguraDaUltimaColuna = larguraDaColuna;
+                    break;//as próximas colunas não cabem no componente
+                }
 
                 //pinta o fundo da coluna que foi alterada por último
                 if (podeDestacarEstaColuna) {
@@ -911,42 +918,78 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha);
                 }
 
-                //desenha o valor da coluna
-                String stringDoValor = getStringDoValor(c);
-                g.setFont(podeDestacarEstaColuna ? FONTE_DESTAQUE : FONTE_NORMAL);
-                FontMetrics metrics = g.getFontMetrics();
-                int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
-                int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
-                g.setColor(podeDestacarEstaColuna ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
-                g.drawString(stringDoValor, xDoValor, yDoValor);
-
-                //linha vertical
-                g.setColor(COR_DA_GRADE);
-                g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
-
-                //desenha a string do índice
-                String stringDoIndice = String.valueOf(c);
-                if (podeDestacarEstaColuna) {
-                    g.setFont(FONTE_CABECALHO_DESTAQUE);
-                    g.setColor(COR_DO_CABECALHO_DESTACADO);
-                } else {
-                    g.setFont(FONTE_CABECALHO);
-                    g.setColor(COR_DA_GRADE);
+                if (c == colunaInicial) {
+                    larguraDaPrimeiraColuna = larguraDaColuna;
+                    //essa informação é usada no final deste método
                 }
-                int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
-                g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
+                indiceDaUltimaColunaDesenhada = c;
 
+                //desenha o valor da coluna
+                //essa condição não desenha a primeira linha vertical quando a primeira
+                //coluna que será desenhada não é a primeira coluna do vetor. 
+                if (!(c == colunaInicial && colunaInicial > 0) ) {
+                    String stringDoValor = getStringDoValor(c);
+                    g.setFont(podeDestacarEstaColuna ? FONTE_DESTAQUE : FONTE_NORMAL);
+                    FontMetrics metrics = g.getFontMetrics();
+                    int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
+                    int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
+                    g.setColor(podeDestacarEstaColuna ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
+                    g.drawString(stringDoValor, xDoValor, yDoValor);
+
+                    //linha vertical - não desenha a primeira linha vertical quando a primeira
+                    //coluna que será desenhada não é a primeira coluna do vetor
+                    g.setColor(COR_DA_GRADE);
+                    g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
+
+                    //desenha a string do índice
+                    String stringDoIndice = String.valueOf(c);
+                    if (podeDestacarEstaColuna) {
+                        g.setFont(FONTE_CABECALHO_DESTAQUE);
+                        g.setColor(COR_DO_CABECALHO_DESTACADO);
+                    } else {
+                        g.setFont(FONTE_CABECALHO);
+                        g.setColor(COR_DA_GRADE);
+                    }
+                    int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
+                    g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
+
+                } else {//se é a primeira coluna de um vetor que está sendo desenhado com rolagem
+                    //desenha reticências no início do vetor
+                    int x = xDaLinha + larguraDaColuna / 2;
+                    //FontMetrics metrics = g.getFontMetrics();
+                    int y = yDaLinha;// + metrics.getAscent() - metrics.getDescent();
+                    desenhaReticencias(g, x, y);
+                }
+                
                 xDaLinha += larguraDaColuna;
             }
-            g.setColor(COR_DA_GRADE);
-            //desenha a linha horizontal
-            g.drawLine(inicioLinhaHorizontal, yDaLinha, xDaLinha, yDaLinha);//linha horizontal
 
-            //desenha a borda direita
-            g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
+            //desenha a linha horizontal
+            int colunasDoVetor = ((ItemDaListaParaVetor)itemDaLista).getColunas();
+            int offsetLadoEsquerdo = (colunaInicial > 0) ? larguraDaPrimeiraColuna / 2 : 0;
+            int offsetLadoDireito = (indiceDaUltimaColunaDesenhada == colunasDoVetor -1) ? 0 : larguraDaUltimaColuna/2;
+            g.setColor(COR_DA_GRADE);
+            g.drawLine(inicioLinhaHorizontal + offsetLadoEsquerdo, yDaLinha, xDaLinha - offsetLadoDireito, yDaLinha);//linha horizontal
+
+            //desenha a borda direita caso a última coluna do vetor esteja vísivel
+            if(indiceDaUltimaColunaDesenhada == ((ItemDaListaParaVetor)itemDaLista).getColunas() -1 ){
+                g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
+            }
+            else{//desenha reticencias no lado direito
+                desenhaReticencias(g, xDaLinha - larguraDaUltimaColuna + larguraDaUltimaColuna/2, yDaLinha );
+            }
 
             //desenha a borda embaixo
-            g.drawLine(inicioLinhaHorizontal, yDaLinha + alturaDaLinha, xDaLinha, yDaLinha + alturaDaLinha);
+            g.drawLine(inicioLinhaHorizontal + offsetLadoEsquerdo, yDaLinha + alturaDaLinha, xDaLinha - offsetLadoDireito, yDaLinha + alturaDaLinha);
+        }
+
+        private void desenhaReticencias(Graphics g, int x, int y) {
+            g.setColor(COR_DA_GRADE);
+            String reticencias = "...";
+            g.setFont(FONTE_DESTAQUE);
+            FontMetrics metrics = g.getFontMetrics();
+            int larguraDoTexto = metrics.stringWidth(reticencias);
+            g.drawString(reticencias, x - larguraDoTexto/2, y + metrics.getAscent() - metrics.getDescent());
         }
 
     }
@@ -1009,7 +1052,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 //    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
 //        return mesmoNo(no1, no2, false);
 //    }
-
     private boolean simboloEhPermitido(Simbolo simbolo) {
         return simbolo != null
                 && ((simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVariavel)
@@ -1344,7 +1386,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         if (noTransferido instanceof NoDeclaracaoVariavel) {
             simboloInserido = adicionaNoVariavel((NoDeclaracaoVariavel) noTransferido);
         } else if (noTransferido instanceof NoDeclaracaoParametro) {
-            simboloInserido = adicionaNoParametro((NoDeclaracaoParametro)noTransferido );
+            simboloInserido = adicionaNoParametro((NoDeclaracaoParametro) noTransferido);
         } else if (noTransferido instanceof NoDeclaracaoVetor) {
             simboloInserido = adicionaNoVetor((NoDeclaracaoVetor) noTransferido);
         } else if (noTransferido instanceof NoDeclaracaoMatriz) {
@@ -1391,7 +1433,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                                         }
                                         return null;
                                     }
-                                    
+
                                     @Override
                                     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
                                         if (contemNo(noDeclaracaoVariavel, true)) {
