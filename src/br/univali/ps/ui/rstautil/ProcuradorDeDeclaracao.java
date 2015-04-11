@@ -2,6 +2,7 @@ package br.univali.ps.ui.rstautil;
 
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
+import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -33,10 +34,12 @@ import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
 import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
+import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoReferencia;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
+import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.ps.ui.rstautil.lista.VisitanteNulo;
 import java.util.List;
 
@@ -66,7 +69,7 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         return noDeclaracao;
     }
 
-    private void verificarNoDeclaracao(NoDeclaracao no) {
+    private void verificarNoDeclaracao(NoDeclaracao no) throws ExcecaoVisitaASA {
         boolean mesmoNome = no.getNome().equals(nomeDoSimbolo);
         boolean mesmaLinha = no.getTrechoCodigoFonteNome().getLinha() == linhaDoSimbolo;
         boolean mesmaColuna = no.getTrechoCodigoFonteNome().getColuna() == colunaDoSimbolo;
@@ -81,8 +84,11 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         if (encontrouSimbolo) {
             declaracaoEncontrada = true;
         }
+        else{
+            no.getInicializacao().aceitar(this); //tentar encontrar a referência na inicialização
+        }
     }
-
+    //+++++++++++++++  DECLARAÇÕES +++++++++++++++++++++++++++++++
     @Override
     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
         verificarNoDeclaracao(noDeclaracaoVariavel);
@@ -100,7 +106,7 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         verificarNoDeclaracao(noDeclaracaoMatriz);
         return null;
     }
-
+    //+++++++++++++++  REFERÊNCIAS +++++++++++++++++++++++++++++++
     @Override
     public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA {
         verificaNoReferencia(noReferenciaMatriz);
@@ -119,8 +125,6 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         return null;
     }
 
-    
-    
     private void verificaNoReferencia(NoReferencia noReferencia) {
         if (!declaracaoEncontrada) {
             if (noDeclaracao != null && noDeclaracao.getNome().equals(noReferencia.getNome())) {
@@ -129,7 +133,65 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
             }
         }
     }
+    //+++++++++++++++  Nós Top level +++++++++++++++++++++++++++++++
 
+    @Override
+    public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
+        noSe.getCondicao().aceitar(this);
+        if(!declaracaoEncontrada){
+            return super.visitar(noSe);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
+        noCaso.getExpressao().aceitar(this);
+        if(!declaracaoEncontrada){
+            return super.visitar(noCaso); 
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
+        noEscolha.getExpressao().aceitar(this);
+        if(!declaracaoEncontrada){
+            return super.visitar(noEscolha); 
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
+        noEnquanto.getCondicao().aceitar(this);
+        if(!declaracaoEncontrada){
+            return super.visitar(noEnquanto); 
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
+        noFacaEnquanto.getCondicao().aceitar(this);
+        if(!declaracaoEncontrada){
+            return super.visitar(noFacaEnquanto); 
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
+        noPara.getInicializacao().aceitar(this);
+        noPara.getCondicao().aceitar(this);
+        noPara.getIncremento().aceitar(this);
+        if(!declaracaoEncontrada){
+            return super.visitar(noPara); 
+        }
+        return null;
+    }
+    
+    //++++++++++++++++++++++++++++++++++++++++++++++
     @Override
     public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA {
         noMenosUnario.getExpressao().aceitar(this);
@@ -258,6 +320,12 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA {
         visitaOperandos(noOperacaoBitwiseXOR);
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoNao noNao) throws ExcecaoVisitaASA {
+        noNao.getExpressao().aceitar(this);
         return null;
     }
 
