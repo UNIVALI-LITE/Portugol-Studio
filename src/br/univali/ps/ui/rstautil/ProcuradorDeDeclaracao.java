@@ -4,14 +4,14 @@ import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoCaso;
-import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
-import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoMenosUnario;
 import br.univali.portugol.nucleo.asa.NoNao;
@@ -84,23 +84,30 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         }
         if (encontrouSimbolo) {
             declaracaoEncontrada = true;
-        }
-        else{
-            no.getInicializacao().aceitar(this); //tentar encontrar a referência na inicialização
+        } else {
+            if(no.getInicializacao() != null){
+                no.getInicializacao().aceitar(this); //tentar encontrar a referência na inicialização
+            }
         }
     }
 
     @Override
     public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
-         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
-            if(!declaracaoEncontrada){
+        for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
+            if (!declaracaoEncontrada) {
                 declaracao.aceitar(this);
             }
         }
         return null;
     }
-    
+
     //+++++++++++++++  DECLARAÇÕES +++++++++++++++++++++++++++++++
+    @Override
+    public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA {
+        verificarNoDeclaracao(noDeclaracaoParametro);
+        return null;
+    }
+
     @Override
     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
         verificarNoDeclaracao(noDeclaracaoVariavel);
@@ -118,7 +125,9 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         verificarNoDeclaracao(noDeclaracaoMatriz);
         return null;
     }
+
     //+++++++++++++++  REFERÊNCIAS +++++++++++++++++++++++++++++++
+    
     @Override
     public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA {
         verificaNoReferencia(noReferenciaMatriz);
@@ -145,12 +154,25 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
             }
         }
     }
+    
     //+++++++++++++++  Nós Top level +++++++++++++++++++++++++++++++
+
+    @Override
+    public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
+        List<NoDeclaracaoParametro> parametros = declaracaoFuncao.getParametros();
+        for (NoDeclaracaoParametro parametro : parametros) {
+            verificarNoDeclaracao(parametro);
+            if(declaracaoEncontrada){
+                return null;
+            }
+        }
+        return super.visitar(declaracaoFuncao);
+    }
 
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
         noSe.getCondicao().aceitar(this);
-        if(!declaracaoEncontrada){
+        if (!declaracaoEncontrada) {
             return super.visitar(noSe);
         }
         return null;
@@ -159,8 +181,8 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
         noCaso.getExpressao().aceitar(this);
-        if(!declaracaoEncontrada){
-            return super.visitar(noCaso); 
+        if (!declaracaoEncontrada) {
+            return super.visitar(noCaso);
         }
         return null;
     }
@@ -168,8 +190,8 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
         noEscolha.getExpressao().aceitar(this);
-        if(!declaracaoEncontrada){
-            return super.visitar(noEscolha); 
+        if (!declaracaoEncontrada) {
+            return super.visitar(noEscolha);
         }
         return null;
     }
@@ -177,8 +199,8 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
         noEnquanto.getCondicao().aceitar(this);
-        if(!declaracaoEncontrada){
-            return super.visitar(noEnquanto); 
+        if (!declaracaoEncontrada) {
+            return super.visitar(noEnquanto);
         }
         return null;
     }
@@ -186,8 +208,8 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
         noFacaEnquanto.getCondicao().aceitar(this);
-        if(!declaracaoEncontrada){
-            return super.visitar(noFacaEnquanto); 
+        if (!declaracaoEncontrada) {
+            return super.visitar(noFacaEnquanto);
         }
         return null;
     }
@@ -197,30 +219,30 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         noPara.getInicializacao().aceitar(this);
         noPara.getCondicao().aceitar(this);
         noPara.getIncremento().aceitar(this);
-        if(!declaracaoEncontrada){
-            return super.visitar(noPara); 
+        if (!declaracaoEncontrada) {
+            return super.visitar(noPara);
         }
         return null;
     }
-    
+
     //++++++++++++++++++++++++++++++++++++++++++++++
     @Override
     public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA {
         noMenosUnario.getExpressao().aceitar(this);
         return null;
     }
-    
+
     @Override
     public Object visitar(NoBitwiseNao noOperacaoBitwiseNao) throws ExcecaoVisitaASA {
         noOperacaoBitwiseNao.getExpressao().aceitar(this);
         return null;
     }
-    
-    private void visitaOperandos(NoOperacao noOperacao) throws ExcecaoVisitaASA{
+
+    private void visitaOperandos(NoOperacao noOperacao) throws ExcecaoVisitaASA {
         noOperacao.getOperandoEsquerdo().aceitar(this);
         noOperacao.getOperandoDireito().aceitar(this);
     }
-    
+
     @Override
     public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA {
         visitaOperandos(noOperacaoAtribuicao);
