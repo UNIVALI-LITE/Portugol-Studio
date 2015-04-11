@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
@@ -18,6 +19,7 @@ import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.ps.ui.rstautil.lista.VisitanteNulo;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  *
@@ -25,12 +27,12 @@ import java.util.Comparator;
  */
 public class BuscadorDeEscopo {
 
-    public static int getHashCodeDoObjectDeEscopo(NoDeclaracao noProcurado, Programa programa, Comparator<No> comparadorDeNos) throws ExcecaoVisitaASA{
+    public static int getHashCodeDoObjectDeEscopo(NoDeclaracao noProcurado, Programa programa, Comparator<No> comparadorDeNos) throws ExcecaoVisitaASA {
         VisitorDoBuscador buscador = new VisitorDoBuscador(noProcurado, comparadorDeNos);
         programa.getArvoreSintaticaAbstrata().aceitar(buscador);
         return buscador.getHashCodeDoObjectDeEscopo();
     }
-    
+
     //++++++++++++++
     private static class VisitorDoBuscador extends VisitanteNulo {
 
@@ -43,17 +45,17 @@ public class BuscadorDeEscopo {
             this.noProcurado = noProcurado;
             this.comparador = comparador;
         }
-        
-        int getHashCodeDoObjectDeEscopo(){
+
+        int getHashCodeDoObjectDeEscopo() {
             return hashCodeDoObjetoDeEscopo;
         }
-        
+
         @Override
         public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
             hashCodeDoObjetoDeEscopo = asap.hashCode();
             for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
                 declaracao.aceitar(this);
-                if(encontrouEscopo){
+                if (encontrouEscopo) {
                     return null;
                 }
             }
@@ -66,7 +68,7 @@ public class BuscadorDeEscopo {
             if (noCaso.getBlocos() != null) {
                 for (NoBloco filho : noCaso.getBlocos()) {
                     filho.aceitar(this);
-                    if(encontrouEscopo){
+                    if (encontrouEscopo) {
                         return null;
                     }
                 }
@@ -77,9 +79,16 @@ public class BuscadorDeEscopo {
         @Override
         public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
             hashCodeDoObjetoDeEscopo = declaracaoFuncao.hashCode();
+            List<NoDeclaracaoParametro> parametros = declaracaoFuncao.getParametros();
+            for (NoDeclaracaoParametro parametro : parametros) {
+                parametro.aceitar(this);
+                if(encontrouEscopo){
+                    return null;
+                }
+            }
             for (NoBloco filho : declaracaoFuncao.getBlocos()) {
                 filho.aceitar(this);
-                if(encontrouEscopo){
+                if (encontrouEscopo) {
                     return null;
                 }
             }
@@ -88,7 +97,7 @@ public class BuscadorDeEscopo {
 
         @Override
         public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
-            if(comparador.compare(noProcurado, noDeclaracaoMatriz) > 0){
+            if (comparador.compare(noProcurado, noDeclaracaoMatriz) > 0) {
                 encontrouEscopo = true;
             }
             return null;
@@ -96,7 +105,15 @@ public class BuscadorDeEscopo {
 
         @Override
         public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
-             if(comparador.compare(noProcurado, noDeclaracaoVariavel) > 0){
+            if (comparador.compare(noProcurado, noDeclaracaoVariavel) > 0) {
+                encontrouEscopo = true;
+            }
+            return null;
+        }
+
+        @Override
+        public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA {
+            if (comparador.compare(noProcurado, noDeclaracaoParametro) > 0) {
                 encontrouEscopo = true;
             }
             return null;
@@ -104,7 +121,7 @@ public class BuscadorDeEscopo {
 
         @Override
         public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA {
-             if(comparador.compare(noProcurado, noDeclaracaoVetor) > 0){
+            if (comparador.compare(noProcurado, noDeclaracaoVetor) > 0) {
                 encontrouEscopo = true;
             }
             return null;
@@ -115,7 +132,7 @@ public class BuscadorDeEscopo {
             hashCodeDoObjetoDeEscopo = noEnquanto.hashCode();
             for (NoBloco bloco : noEnquanto.getBlocos()) {
                 bloco.aceitar(this);
-                if(encontrouEscopo){
+                if (encontrouEscopo) {
                     return null;
                 }
             }
@@ -127,7 +144,7 @@ public class BuscadorDeEscopo {
             hashCodeDoObjetoDeEscopo = noEscolha.hashCode();
             for (NoCaso caso : noEscolha.getCasos()) {
                 caso.aceitar(this);
-                if(encontrouEscopo){
+                if (encontrouEscopo) {
                     return null;
                 }
             }
@@ -139,7 +156,7 @@ public class BuscadorDeEscopo {
             hashCodeDoObjetoDeEscopo = noFacaEnquanto.hashCode();
             for (NoBloco no : noFacaEnquanto.getBlocos()) {
                 no.aceitar(this);
-                if(encontrouEscopo){
+                if (encontrouEscopo) {
                     return null;
                 }
             }
@@ -151,7 +168,7 @@ public class BuscadorDeEscopo {
             hashCodeDoObjetoDeEscopo = noPara.hashCode();
             for (NoBloco no : noPara.getBlocos()) {
                 no.aceitar(this);
-                if(encontrouEscopo){
+                if (encontrouEscopo) {
                     return null;
                 }
             }
@@ -163,7 +180,7 @@ public class BuscadorDeEscopo {
             hashCodeDoObjetoDeEscopo = noSe.hashCode();
             for (NoBloco no : noSe.getBlocosVerdadeiros()) {
                 no.aceitar(this);
-                if(encontrouEscopo){
+                if (encontrouEscopo) {
                     return null;
                 }
             }
@@ -171,7 +188,7 @@ public class BuscadorDeEscopo {
             if (noSe.getBlocosFalsos() != null) {
                 for (NoBloco no : noSe.getBlocosFalsos()) {
                     no.aceitar(this);
-                    if(encontrouEscopo){
+                    if (encontrouEscopo) {
                         return null;
                     }
                 }

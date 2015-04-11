@@ -3,8 +3,11 @@ package br.univali.ps.ui.rstautil.lista;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoInteiro;
@@ -214,7 +217,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
 
         boolean ehVariavel() {
-            return noDeclaracao instanceof NoDeclaracaoVariavel;
+            return noDeclaracao instanceof NoDeclaracaoVariavel || noDeclaracao instanceof NoDeclaracaoParametro;
         }
 
         public boolean podeDesenharDestaque() {
@@ -240,6 +243,10 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         private Object valor;
         private final RenderizadorDeVariavel rendererComponent = RENDERIZADOR_DE_VARIAVEL;
+
+        public ItemDaListaParaVariavel(NoDeclaracaoParametro noParametro) {
+            super(noParametro);
+        }
 
         public ItemDaListaParaVariavel(NoDeclaracaoVariavel no) {
             super(no);
@@ -983,30 +990,30 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     }
 
     private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2, boolean consideraEscopo) {
-        if(!consideraEscopo){
+        if (!consideraEscopo) {
             return COMPARADOR_NOS.compare(no1, no2) > 0;
         }
-        try{
+        try {
             int hashCodeEscopoNo1 = BuscadorDeEscopo.getHashCodeDoObjectDeEscopo(no1, ultimoProgramaCompilado, COMPARADOR_NOS);
             int hashCodeEscopoNo2 = BuscadorDeEscopo.getHashCodeDoObjectDeEscopo(no2, ultimoProgramaCompilado, COMPARADOR_NOS);
             boolean mesmoEscopo = hashCodeEscopoNo1 == hashCodeEscopoNo2;
             boolean mesmoNome = no1.getNome().equals(no2.getNome());
             boolean mesmoTipo = no1.getTipoDado() == no2.getTipoDado();
             return mesmoEscopo && mesmoNome && mesmoTipo;
-        }
-        catch(ExcecaoVisitaASA e){
-            
+        } catch (ExcecaoVisitaASA e) {
+
         }
         return false;
     }
-    
-    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
-        return mesmoNo(no1, no2, false);
-    }
+
+//    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
+//        return mesmoNo(no1, no2, false);
+//    }
 
     private boolean simboloEhPermitido(Simbolo simbolo) {
         return simbolo != null
                 && ((simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVariavel)
+                || (simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoParametro)
                 || (simbolo instanceof Vetor && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVetor)
                 || (simbolo instanceof Matriz && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoMatriz));
     }
@@ -1161,7 +1168,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
         return null;
     }
-    
+
     private ItemDaLista getItemDoNo(NoDeclaracao no) {
         return getItemDoNo(no, false);
     }
@@ -1288,11 +1295,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private boolean adicionaNoVariavel(NoDeclaracaoVariavel noTransferido) {
         ItemDaListaParaVariavel item = new ItemDaListaParaVariavel((NoDeclaracaoVariavel) noTransferido);
         model.addElement(item);
-//        if(noTransferido.getInicializacao() != null){
-//            if(noTransferido.getInicializacao() instanceof NoValor){
-//                //item.setValor(((NoValor)noTransferido.getInicializacao()).getValor());
-//            }
-//        }
         return true;
     }
 
@@ -1330,10 +1332,19 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         return false;
     }
 
+    private boolean adicionaNoParametro(NoDeclaracaoParametro noTransferido) {
+        //o mesmo renderizador de variável é utilizado para os parâmetros
+        ItemDaListaParaVariavel item = new ItemDaListaParaVariavel(noTransferido);
+        model.addElement(item);
+        return true;
+    }
+
     public void adicionaNo(NoDeclaracao noTransferido) {
         boolean simboloInserido = false;
         if (noTransferido instanceof NoDeclaracaoVariavel) {
             simboloInserido = adicionaNoVariavel((NoDeclaracaoVariavel) noTransferido);
+        } else if (noTransferido instanceof NoDeclaracaoParametro) {
+            simboloInserido = adicionaNoParametro((NoDeclaracaoParametro)noTransferido );
         } else if (noTransferido instanceof NoDeclaracaoVetor) {
             simboloInserido = adicionaNoVetor((NoDeclaracaoVetor) noTransferido);
         } else if (noTransferido instanceof NoDeclaracaoMatriz) {
@@ -1373,11 +1384,27 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                                 ast.aceitar(new VisitanteNulo() {
 
                                     @Override
+                                    public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
+                                        List<NoDeclaracaoParametro> parametros = declaracaoFuncao.getParametros();
+                                        for (NoDeclaracaoParametro parametro : parametros) {
+                                            visitar(parametro);
+                                        }
+                                        return null;
+                                    }
+                                    
+                                    @Override
                                     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
                                         if (contemNo(noDeclaracaoVariavel, true)) {
                                             nosQueSeraoMantidos.add(noDeclaracaoVariavel);
                                         }
+                                        return null;
+                                    }
 
+                                    @Override
+                                    public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA {
+                                        if (contemNo(noDeclaracaoParametro, true)) {
+                                            nosQueSeraoMantidos.add(noDeclaracaoParametro);
+                                        }
                                         return null;
                                     }
 

@@ -105,6 +105,8 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
     public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada) {
         //this.atualizacaoHabilitada = atualizaoAtivada;
+        //a atualização dos valores da árvore está desabilitada, a árvore está mostrando
+        //apenas a estrutura
     }
 
     /**
