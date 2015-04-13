@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class BuscadorDeEscopo {
 
-    public static int getHashCodeDoObjectDeEscopo(NoDeclaracao noProcurado, Programa programa, Comparator<No> comparadorDeNos) throws ExcecaoVisitaASA {
+    public static int getHashCodeDoObjectDeEscopo(NoDeclaracao noProcurado, Programa programa, Comparator<NoDeclaracao> comparadorDeNos) throws ExcecaoVisitaASA {
         VisitorDoBuscador buscador = new VisitorDoBuscador(noProcurado, comparadorDeNos);
         programa.getArvoreSintaticaAbstrata().aceitar(buscador);
         return buscador.getHashCodeDoObjectDeEscopo();
@@ -37,11 +37,11 @@ public class BuscadorDeEscopo {
     private static class VisitorDoBuscador extends VisitanteNulo {
 
         private final NoDeclaracao noProcurado;
-        private final Comparator<No> comparador;
+        private final Comparator<NoDeclaracao> comparador;
         private int hashCodeDoObjetoDeEscopo = -1;
         private boolean encontrouEscopo = false;//usado para podar
 
-        public VisitorDoBuscador(NoDeclaracao noProcurado, Comparator<No> comparador) {
+        public VisitorDoBuscador(NoDeclaracao noProcurado, Comparator<NoDeclaracao> comparador) {
             this.noProcurado = noProcurado;
             this.comparador = comparador;
         }

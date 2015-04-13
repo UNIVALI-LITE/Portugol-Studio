@@ -47,6 +47,7 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.AbstractAction;
@@ -1057,8 +1058,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             return COMPARADOR_NOS.compare(no1, no2) > 0;
         }
         try {
-            int hashCodeEscopoNo1 = BuscadorDeEscopo.getHashCodeDoObjectDeEscopo(no1, ultimoProgramaCompilado, COMPARADOR_NOS);
-            int hashCodeEscopoNo2 = BuscadorDeEscopo.getHashCodeDoObjectDeEscopo(no2, ultimoProgramaCompilado, COMPARADOR_NOS);
+            Comparator<NoDeclaracao> comparadorDeNos = new ComparadorSimplificadoDeNos();
+            int hashCodeEscopoNo1 = BuscadorDeEscopo.getHashCodeDoObjectDeEscopo(no1, ultimoProgramaCompilado, comparadorDeNos);
+            int hashCodeEscopoNo2 = BuscadorDeEscopo.getHashCodeDoObjectDeEscopo(no2, ultimoProgramaCompilado, comparadorDeNos);
             boolean mesmoEscopo = hashCodeEscopoNo1 == hashCodeEscopoNo2;
             boolean mesmoNome = no1.getNome().equals(no2.getNome());
             boolean mesmoTipo = no1.getTipoDado() == no2.getTipoDado();
@@ -1067,6 +1069,19 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         }
         return false;
+    }
+    
+    //este comparador compara apenas nome e tipo das declarações. Ele é usado somente quando o escopo das declarações também está sendo considerado
+    //para determinar se dois nós representam a mesma informação
+    private class ComparadorSimplificadoDeNos implements Comparator<NoDeclaracao>{
+
+        @Override
+        public int compare(NoDeclaracao t, NoDeclaracao t1) {
+            boolean mesmoNome = t.getNome().equals(t1.getNome());
+            boolean mesmoTipo = t.getTipoDado() == t1.getTipoDado();
+            return (mesmoNome && mesmoTipo) ? 1 : -1;
+        }
+        
     }
 
 //    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
