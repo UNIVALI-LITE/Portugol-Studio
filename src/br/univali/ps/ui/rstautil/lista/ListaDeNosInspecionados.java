@@ -3,7 +3,6 @@ package br.univali.ps.ui.rstautil.lista;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -26,6 +25,7 @@ import br.univali.ps.ui.rstautil.ComparadorNos;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -37,6 +37,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -86,7 +87,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
     boolean programaExecutando = false;
 
-    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(10, 0, 30, 0);
+    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 0, 20, 0);
 
     private JTextArea textArea;//necessário para tratar a importação de variáveis para o inspetor de símbolos diretamente do código fonte
     private Programa ultimoProgramaCompilado;//referência para o programa compilado, 
@@ -413,6 +414,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         protected final Color COR_DO_TEXTO_DESTACADO = Color.BLACK;
         protected final Color COR_DO_CABECALHO_DESTACADO = new Color(0, 0, 0, 0.5f);
         protected final Color COR_DO_FUNDO_EM_DESTAQUE = new Color(1, 0, 0, 0.3f);//vermelho claro
+        protected final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5, 1, 3, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1}, 0);
 
         private static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 
@@ -617,7 +619,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     rolavemVertical++;
                 }
                 indiceDaLinha++;
-            } while (indiceDaLinha <= ultimaLinhaAtualizada + 1 && indiceDaLinha < totalDeLinhas);
+            } while (indiceDaLinha <= ultimaLinhaAtualizada + 2 && indiceDaLinha < totalDeLinhas);
             boolean precisaDeRolagem = yDaLinha > alturaDoComponente;
             if (precisaDeRolagem && ultimaLinhaAtualizada >= totalDeLinhas - 1) {//se é a última linha
                 rolavemVertical++;
@@ -638,7 +640,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 if (xDaColuna > larguraDoComponente) {
                     rolagem++;
                 }
-            } while (indiceDaColuna <= ultimaColunaAtualizada + 1 && indiceDaColuna < totalDeColunas);
+            } while (indiceDaColuna <= ultimaColunaAtualizada + 2 && indiceDaColuna < totalDeColunas);
 
             boolean precisaDeRolagem = xDaColuna > larguraDoComponente;
             if (precisaDeRolagem && ultimaColunaAtualizada >= totalDeColunas - 1) {//se é a última coluna
@@ -713,11 +715,15 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int xDaLinha = inicioLinhaHorizontal;
             int ultimaLinhaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaLinhaAtualizada();
             int ultimaColunaAlterada = ((ItemDaListaParaMatriz) itemDaLista).getUltimaColunaAtualizada();
+            int indiceDaUltimaLinhaDesenhada = 0;
+            int indiceDaUltimaColunaDesenhada = 0;
             for (int l = linhaInicial; l < totalDeLinhas; l++) {
                 int yDaLinha = ((l - linhaInicial) + 1) * alturaDaLinha + margemSuperior;
                 if (yDaLinha > getHeight()) {//se a linha não estará vísivel
                     break;
                 }
+                indiceDaUltimaLinhaDesenhada = l;
+                
                 xDaLinha = inicioLinhaHorizontal;
                 boolean podeDestacarEstaCelula = false;
                 for (int c = colunaInicial; c < totalDeColunas; c++) {
@@ -725,6 +731,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     podeDestacarEstaCelula = item.podeDesenharDestaque() && ultimaColunaAlterada == c && ultimaLinhaAlterada == l;
 
                     int larguraDaColuna = getLarguraDaColuna(c);
+                    int larguraDaProximaColuna = (c < totalDeColunas - 1) ? getLarguraDaColuna(c + 1) : 0;
+                    indiceDaUltimaColunaDesenhada = c;
 
                     //pinta a linha e a coluna que contém a última célula alterada para ajudar a indentificar visualmente a alteração
                     if (itemDaLista.podeDesenharDestaque()) {
@@ -756,7 +764,36 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
                     //linha vertical
                     g.setColor(COR_DA_GRADE);
-                    g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
+                    Stroke tracejadoPadrao = ((Graphics2D) g).getStroke();
+                    boolean ehLinhaDeBaixoComRolagem = yDaLinha + alturaDaLinha >= getHeight() && l < totalDeLinhas - 1;
+                    boolean ehLinhaDeCimaComRolagem = l == linhaInicial && linhaInicial > 0;
+                    boolean ehPrimeiraColunaComRolagem = c == colunaInicial && colunaInicial > 0;
+                    boolean ehUltimaColunaComRolagem = xDaLinha + larguraDaColuna + larguraDaProximaColuna > getWidth();
+                    if (ehLinhaDeBaixoComRolagem || ehLinhaDeCimaComRolagem) {//esta é a última linha? (verifica se a próxima linha já estará fora da tela)
+                        ((Graphics2D) g).setStroke(TRACEJADO);
+                    }
+                    if (!ehPrimeiraColunaComRolagem) {//não desenha linha vertical na primeira coluna quando a matriz tem rolagem
+                        if (!ehLinhaDeCimaComRolagem) {
+                            int offset = ehLinhaDeBaixoComRolagem ? 0 : 1;
+                            g.drawLine(xDaLinha, yDaLinha + offset, xDaLinha, yDaLinha + alturaDaLinha - offset);
+                        } else {
+                            g.drawLine(xDaLinha, yDaLinha + alturaDaLinha, xDaLinha, yDaLinha);//essa linha é desenhada de baixo para cima para que o tracejado fique correto
+                        }
+                    }
+                    ((Graphics2D) g).setStroke(tracejadoPadrao);//reseta o tipo de tracejado 
+
+                    //linha horizontal
+                    if (ehPrimeiraColunaComRolagem || ehUltimaColunaComRolagem) {
+                        ((Graphics2D) g).setStroke(TRACEJADO);
+                    }
+                    if (!ehLinhaDeCimaComRolagem ) {
+                        if (!ehPrimeiraColunaComRolagem) {
+                            g.drawLine(xDaLinha, yDaLinha, xDaLinha + larguraDaColuna, yDaLinha);
+                        } else {
+                            g.drawLine(xDaLinha + larguraDaColuna, yDaLinha, xDaLinha, yDaLinha);//desenha da direita para esquerda por causa do tracejado
+                        }
+                    }
+                    ((Graphics2D) g).setStroke(tracejadoPadrao);//reseta o tipo de tracejado 
 
                     //desenha os índices
                     if (l == linhaInicial) {
@@ -775,7 +812,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
                     xDaLinha += larguraDaColuna;
 
-                    if (xDaLinha > getWidth()) {
+                    if (xDaLinha + larguraDaProximaColuna > getWidth()) {
                         break;//as próximas colunas não estarão vísiveis e não precisam ser desenhadas
                     }
                 }
@@ -794,18 +831,21 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 g.drawString(stringIndiceDaLinha,
                         inicioLinhaHorizontal - largura - 2, //x
                         margemSuperior + alturaDaLinha + (alturaDaLinha * (l - linhaInicial)) + metrics.getAscent() + metrics.getDescent());
-
-                //desenha a linha horizontal
-                g.setColor(COR_DA_GRADE);
-                g.drawLine(inicioLinhaHorizontal, yDaLinha, xDaLinha, yDaLinha);//linha horizontal
             }
 
-            //desenha a borda direita
             g.setColor(COR_DA_GRADE);
-            g.drawLine(xDaLinha, alturaDaLinha + margemSuperior, xDaLinha, getHeight() - 1);
+
+            //desenha a borda direita
+            if (indiceDaUltimaColunaDesenhada == totalDeColunas - 1) {
+                int offsetSuperior = (linhaInicial > 0) ? alturaDaLinha : 0;
+                int offsetInferior = (indiceDaUltimaLinhaDesenhada < totalDeLinhas - 1) ? alturaDaLinha : 0;
+                g.drawLine(xDaLinha, alturaDaLinha + margemSuperior + offsetSuperior, xDaLinha, getHeight() - 1 - offsetInferior);
+            }
 
             //desenha a borda embaixo
-            g.drawLine(inicioLinhaHorizontal, getHeight() - 1, xDaLinha, getHeight() - 1);
+            if (indiceDaUltimaLinhaDesenhada == ((ItemDaListaParaMatriz) itemDaLista).getLinhas() - 1) {
+                g.drawLine(inicioLinhaHorizontal, getHeight() - 1, xDaLinha, getHeight() - 1);
+            }
         }
 
     }
@@ -855,7 +895,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int totalDeColunas = item.getColunas();
             int xDaColuna = margemEsquerda;
             int ultimaColunaAtualizada = item.getUltimaColunaAtualizada();
-            int rolagem = 0;//conta quantas células é preciso deslocar para que a última célula atualizada fique visível no componente
+            int rolagem = 0;//conta quantas células é preciso deslocar para que a última coluna atualizada fique visível no componente
             int larguraDoComponente = getWidth();
             int indiceDaColuna = 0;
             do {
@@ -863,7 +903,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 if (xDaColuna > larguraDoComponente) {
                     rolagem++;
                 }
-            } while (indiceDaColuna <= ultimaColunaAtualizada + 1 && indiceDaColuna < totalDeColunas);
+            } while (indiceDaColuna <= ultimaColunaAtualizada + 2 && indiceDaColuna < totalDeColunas);
             return rolagem;
         }
 
@@ -900,15 +940,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             int xDaLinha = inicioLinhaHorizontal;
             int yDaLinha = g.getFontMetrics(FONTE_CABECALHO).getHeight() + margemSuperior;
             xDaLinha = margemEsquerda;
-            int larguraDaPrimeiraColuna = 0;
-            int larguraDaUltimaColuna = 0;//largura da última coluna desenhada
             int indiceDaUltimaColunaDesenhada = 0;
             for (int c = colunaInicial; c < totalDeColunas; c++) {
                 ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
                 boolean podeDestacarEstaColuna = itemDaLista.podeDesenharDestaque() && item.getUltimaColunaAtualizada() == c;
                 int larguraDaColuna = getLarguraDaColuna(c);
-                if(xDaLinha + larguraDaColuna > getWidth()){
-                    larguraDaUltimaColuna = larguraDaColuna;
+                int larguraDaProximaColuna = (c < totalDeColunas - 1) ? getLarguraDaColuna(c + 1) : 0;
+                if (xDaLinha + larguraDaColuna > getWidth()) {
                     break;//as próximas colunas não cabem no componente
                 }
 
@@ -917,17 +955,13 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
                     g.fillRect(xDaLinha + 1, yDaLinha + 1, larguraDaColuna - 1, alturaDaLinha);
                 }
-
-                if (c == colunaInicial) {
-                    larguraDaPrimeiraColuna = larguraDaColuna;
-                    //essa informação é usada no final deste método
-                }
                 indiceDaUltimaColunaDesenhada = c;
 
-                //desenha o valor da coluna
-                //essa condição não desenha a primeira linha vertical quando a primeira
-                //coluna que será desenhada não é a primeira coluna do vetor. 
-                if (!(c == colunaInicial && colunaInicial > 0) ) {
+                boolean ehPrimeiraColunaComRolagem = colunaInicial > 0 && c == colunaInicial;
+                boolean ehUltimaColunaComRolagem = c < totalDeColunas - 1 && (xDaLinha + larguraDaColuna + larguraDaProximaColuna) > getWidth();
+
+                //if (!ehPrimeiraColunaComRolagem && !ehUltimaColunaComRolagem) {
+                    //desenha o valor da coluna
                     String stringDoValor = getStringDoValor(c);
                     g.setFont(podeDestacarEstaColuna ? FONTE_DESTAQUE : FONTE_NORMAL);
                     FontMetrics metrics = g.getFontMetrics();
@@ -935,11 +969,6 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
                     g.setColor(podeDestacarEstaColuna ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
                     g.drawString(stringDoValor, xDoValor, yDoValor);
-
-                    //linha vertical - não desenha a primeira linha vertical quando a primeira
-                    //coluna que será desenhada não é a primeira coluna do vetor
-                    g.setColor(COR_DA_GRADE);
-                    g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
 
                     //desenha a string do índice
                     String stringDoIndice = String.valueOf(c);
@@ -952,44 +981,35 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     }
                     int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
                     g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
+                //}
 
-                } else {//se é a primeira coluna de um vetor que está sendo desenhado com rolagem
-                    //desenha reticências no início do vetor
-                    int x = xDaLinha + larguraDaColuna / 2;
-                    //FontMetrics metrics = g.getFontMetrics();
-                    int y = yDaLinha;// + metrics.getAscent() - metrics.getDescent();
-                    desenhaReticencias(g, x, y);
+                //linha vertical - não desenha a primeira linha vertical quando a primeira
+                //coluna que será desenhada não é a primeira coluna do vetor
+                g.setColor(COR_DA_GRADE);
+                if (!ehPrimeiraColunaComRolagem) {
+                    g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
                 }
-                
-                xDaLinha += larguraDaColuna;
-            }
 
-            //desenha a linha horizontal
-            int colunasDoVetor = ((ItemDaListaParaVetor)itemDaLista).getColunas();
-            int offsetLadoEsquerdo = (colunaInicial > 0) ? larguraDaPrimeiraColuna / 2 : 0;
-            int offsetLadoDireito = (indiceDaUltimaColunaDesenhada == colunasDoVetor -1) ? 0 : larguraDaUltimaColuna/2;
-            g.setColor(COR_DA_GRADE);
-            g.drawLine(inicioLinhaHorizontal + offsetLadoEsquerdo, yDaLinha, xDaLinha - offsetLadoDireito, yDaLinha);//linha horizontal
+                //desenha a linha horizontal
+                g.setColor(COR_DA_GRADE);
+                Stroke tracejadoPadrao = ((Graphics2D) g).getStroke();
+                if (ehPrimeiraColunaComRolagem || ehUltimaColunaComRolagem) {
+                    ((Graphics2D) g).setStroke(TRACEJADO);
+                }
+                int x1 = (!ehPrimeiraColunaComRolagem) ? xDaLinha : xDaLinha + larguraDaColuna;
+                int x2 = (!ehPrimeiraColunaComRolagem) ? xDaLinha + larguraDaColuna : xDaLinha;
+                g.drawLine(x1, yDaLinha, x2, yDaLinha);//linha horizontal
+                g.drawLine(x1, yDaLinha + alturaDaLinha, x2, yDaLinha + alturaDaLinha);//linha horizontal
+
+                xDaLinha += larguraDaColuna;
+
+                ((Graphics2D) g).setStroke(tracejadoPadrao);//restaura o tracejado
+            }
 
             //desenha a borda direita caso a última coluna do vetor esteja vísivel
-            if(indiceDaUltimaColunaDesenhada == ((ItemDaListaParaVetor)itemDaLista).getColunas() -1 ){
+            if (indiceDaUltimaColunaDesenhada == ((ItemDaListaParaVetor) itemDaLista).getColunas() - 1) {
                 g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
             }
-            else{//desenha reticencias no lado direito
-                desenhaReticencias(g, xDaLinha - larguraDaUltimaColuna + larguraDaUltimaColuna/2, yDaLinha );
-            }
-
-            //desenha a borda embaixo
-            g.drawLine(inicioLinhaHorizontal + offsetLadoEsquerdo, yDaLinha + alturaDaLinha, xDaLinha - offsetLadoDireito, yDaLinha + alturaDaLinha);
-        }
-
-        private void desenhaReticencias(Graphics g, int x, int y) {
-            g.setColor(COR_DA_GRADE);
-            String reticencias = "...";
-            g.setFont(FONTE_DESTAQUE);
-            FontMetrics metrics = g.getFontMetrics();
-            int larguraDoTexto = metrics.stringWidth(reticencias);
-            g.drawString(reticencias, x - larguraDoTexto/2, y + metrics.getAscent() - metrics.getDescent());
         }
 
     }
@@ -998,7 +1018,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
-        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.08f);
+        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.09f);
         private final Color COR_DA_SELECAO = new Color(0, 0, 0, 0.15f);
 
         public RenderizadorDaLista() {
@@ -1431,7 +1451,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                                         for (NoDeclaracaoParametro parametro : parametros) {
                                             visitar(parametro);
                                         }
-                                        return null;
+                                        return super.visitar(declaracaoFuncao);
                                     }
 
                                     @Override
@@ -1500,13 +1520,14 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         itemVetor.set(34, 12);
         lista.model.addElement(itemVetor);
         lista.model.addElement(new ItemDaListaParaVetor(5, new NoDeclaracaoVetor("outro vetor", TipoDado.REAL, new NoInteiro(3), false)));
-        ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(13, 13, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(13), new NoInteiro(13), false));
+        ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(30, 30, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(30), new NoInteiro(30), false));
         lista.model.addElement(itemMatriz);
         lista.model.addElement(new ItemDaListaParaMatriz(4, 4, new NoDeclaracaoMatriz("umNomeDeVariável bem grande", TipoDado.INTEIRO, new NoInteiro(4), new NoInteiro(4), false)));
-        itemMatriz.set(345, 12, 12);
+        itemMatriz.set(345, 28, 23);
         lista.setPreferredSize(new Dimension(300, 600));
 
-        itemVetor.set(34, 14);
+        itemVetor.set(78, 11);
+        itemVetor.set(34, 10);
         //itemVariavel.setValor(54);
         lista.redenhaItemsDaLista();
 
@@ -1530,6 +1551,8 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         });
         panelBotoes.add(botaoAumentarFonte);
         panelBotoes.add(botaoDiminuirFonte);
+        botaoAumentarFonte.doClick();
+        botaoAumentarFonte.doClick();
         frame.add(panelBotoes, BorderLayout.SOUTH);
         frame.pack();
     }
