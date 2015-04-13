@@ -525,7 +525,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void pontosDeParaAtualizados(Set<Integer> pontosDeParada) {
                 if (programa != null) {
                     programa.setPontosDeParada(pontosDeParada);
+                    
                 }
+                salvaArquivo();
             }
         });
 
