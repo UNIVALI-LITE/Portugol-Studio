@@ -17,7 +17,7 @@ import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.ps.ui.rstautil.lista.VisitanteNulo;
+import br.univali.ps.ui.rstautil.inspetor.VisitanteNulo;
 import java.util.Comparator;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package br.univali.ps.ui.rstautil.lista;
+package br.univali.ps.ui.rstautil.inspetor;
 
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
@@ -73,7 +73,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  *
  * @author elieser
  */
-public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemDaLista> implements ObservadorExecucao {
+public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> implements ObservadorExecucao {
 
     private static final String INSTRUCAO = "Arraste uma variável \npara este painél se\n quiser inspecioná-la";
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
@@ -95,7 +95,9 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
     //utilizada para procurar variáveis no programa quando o usuário arrasta uma variável
     //do código fonte para o inspetor de símbolos
 
-    public ListaDeNosInspecionados() {
+    private List<InspetorDeSimbolosListener> listeners = new ArrayList<>();
+
+    public InspetorDeSimbolos() {
         model.clear();
         setModel(model);
         setDropMode(DropMode.ON);
@@ -117,16 +119,25 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 if (ke.getKeyCode() == KeyEvent.VK_DELETE) {
                     int indices[] = getSelectedIndices();
                     int modelSize = model.getSize();
+                    boolean listaModificada = false;
                     for (int i = indices.length - 1; i >= 0; i--) {
                         int indice = indices[i];
                         if (indice >= 0 && indice < modelSize) {
                             model.remove(indice);
+                            listaModificada = true;
                         }
+                    }
+                    if(listaModificada){
+                        notificaMudancaNaLista();
                     }
                 }
             }
 
         });
+    }
+
+    public void addListener(InspetorDeSimbolosListener listener) {
+        listeners.add(listener);
     }
 
     public void setTextArea(JTextArea textArea) {
@@ -392,7 +403,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
 
         @Override
         RenderizadorBase getRendererComponent() {
-            ListaDeNosInspecionados.RENDERIZADOR_DE_VETOR.setItemDaLista(this);
+            InspetorDeSimbolos.RENDERIZADOR_DE_VETOR.setItemDaLista(this);
             return RENDERIZADOR_DE_VETOR;
         }
 
@@ -415,7 +426,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         protected final Color COR_DO_TEXTO_DESTACADO = Color.BLACK;
         protected final Color COR_DO_CABECALHO_DESTACADO = new Color(0, 0, 0, 0.5f);
         protected final Color COR_DO_FUNDO_EM_DESTAQUE = new Color(1, 0, 0, 0.3f);//vermelho claro
-        protected final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5, 1, 3, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1}, 0);
+        protected final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5, 1, 3, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 0);
 
         private static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 
@@ -724,7 +735,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     break;
                 }
                 indiceDaUltimaLinhaDesenhada = l;
-                
+
                 xDaLinha = inicioLinhaHorizontal;
                 boolean podeDestacarEstaCelula = false;
                 for (int c = colunaInicial; c < totalDeColunas; c++) {
@@ -787,7 +798,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                     if (ehPrimeiraColunaComRolagem || ehUltimaColunaComRolagem) {
                         ((Graphics2D) g).setStroke(TRACEJADO);
                     }
-                    if (!ehLinhaDeCimaComRolagem ) {
+                    if (!ehLinhaDeCimaComRolagem) {
                         if (!ehPrimeiraColunaComRolagem) {
                             g.drawLine(xDaLinha, yDaLinha, xDaLinha + larguraDaColuna, yDaLinha);
                         } else {
@@ -962,26 +973,26 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                 boolean ehUltimaColunaComRolagem = c < totalDeColunas - 1 && (xDaLinha + larguraDaColuna + larguraDaProximaColuna) > getWidth();
 
                 //if (!ehPrimeiraColunaComRolagem && !ehUltimaColunaComRolagem) {
-                    //desenha o valor da coluna
-                    String stringDoValor = getStringDoValor(c);
-                    g.setFont(podeDestacarEstaColuna ? FONTE_DESTAQUE : FONTE_NORMAL);
-                    FontMetrics metrics = g.getFontMetrics();
-                    int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
-                    int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
-                    g.setColor(podeDestacarEstaColuna ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
-                    g.drawString(stringDoValor, xDoValor, yDoValor);
+                //desenha o valor da coluna
+                String stringDoValor = getStringDoValor(c);
+                g.setFont(podeDestacarEstaColuna ? FONTE_DESTAQUE : FONTE_NORMAL);
+                FontMetrics metrics = g.getFontMetrics();
+                int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
+                int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
+                g.setColor(podeDestacarEstaColuna ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
+                g.drawString(stringDoValor, xDoValor, yDoValor);
 
-                    //desenha a string do índice
-                    String stringDoIndice = String.valueOf(c);
-                    if (podeDestacarEstaColuna) {
-                        g.setFont(FONTE_CABECALHO_DESTAQUE);
-                        g.setColor(COR_DO_CABECALHO_DESTACADO);
-                    } else {
-                        g.setFont(FONTE_CABECALHO);
-                        g.setColor(COR_DA_GRADE);
-                    }
-                    int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
-                    g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
+                //desenha a string do índice
+                String stringDoIndice = String.valueOf(c);
+                if (podeDestacarEstaColuna) {
+                    g.setFont(FONTE_CABECALHO_DESTAQUE);
+                    g.setColor(COR_DO_CABECALHO_DESTACADO);
+                } else {
+                    g.setFont(FONTE_CABECALHO);
+                    g.setColor(COR_DA_GRADE);
+                }
+                int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
+                g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
                 //}
 
                 //linha vertical - não desenha a primeira linha vertical quando a primeira
@@ -1070,10 +1081,10 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         }
         return false;
     }
-    
+
     //este comparador compara apenas nome e tipo das declarações. Ele é usado somente quando o escopo das declarações também está sendo considerado
     //para determinar se dois nós representam a mesma informação
-    private class ComparadorSimplificadoDeNos implements Comparator<NoDeclaracao>{
+    private class ComparadorSimplificadoDeNos implements Comparator<NoDeclaracao> {
 
         @Override
         public int compare(NoDeclaracao t, NoDeclaracao t1) {
@@ -1081,7 +1092,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             boolean mesmoTipo = t.getTipoDado() == t1.getTipoDado();
             return (mesmoNome && mesmoTipo) ? 1 : -1;
         }
-        
+
     }
 
 //    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
@@ -1129,6 +1140,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
                         ItemDaLista item = getItemDoNo((NoDeclaracaoVariavel) simbolo.getOrigemDoSimbolo());
                         if (item != null) {
                             model.removeElement(item);
+                            notificaMudancaNaLista();
                         }
                     }
                 }
@@ -1362,10 +1374,16 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
             }
 
             boolean arrastandoNosDaJTree = support.getTransferable().isDataFlavorSupported(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+            boolean importou = false;
             if (arrastandoNosDaJTree) {
-                return importaNosArrastadosDaJTree(support);
+                importou = importaNosArrastadosDaJTree(support);
+            }else{
+                importou = importaStringArrastada(support);
             }
-            return importaStringArrastada(support);
+            if(importou){
+                notificaMudancaNaLista();
+            }
+            return importou;
         }
     }
 
@@ -1430,6 +1448,12 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         if (simboloInserido) {
             //altera o destaque do símbolo recém inserido
             model.get(model.getSize() - 1).setDesenhaDestaques(!programaExecutando);
+        }
+    }
+
+    private void notificaMudancaNaLista() {
+        for (InspetorDeSimbolosListener listener : listeners) {
+            listener.listaDeSimbolosInpecionadosFoiModificada();
         }
     }
 
@@ -1525,7 +1549,7 @@ public class ListaDeNosInspecionados extends JList<ListaDeNosInspecionados.ItemD
         frame.setVisible(true);
         frame.setLayout(new BorderLayout());
 
-        final ListaDeNosInspecionados lista = new ListaDeNosInspecionados();
+        final InspetorDeSimbolos lista = new InspetorDeSimbolos();
 
         ItemDaListaParaVariavel itemVariavel = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
         itemVariavel.setValor(53);
