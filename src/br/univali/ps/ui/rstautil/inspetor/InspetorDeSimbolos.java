@@ -766,7 +766,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(30, 30, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(30), new NoInteiro(30), false));
         lista.model.addElement(itemMatriz);
         lista.model.addElement(new ItemDaListaParaMatriz(4, 4, new NoDeclaracaoMatriz("umNomeDeVariável bem grande", TipoDado.INTEIRO, new NoInteiro(4), new NoInteiro(4), false)));
-        itemMatriz.set(345, 28, 23);
+        itemMatriz.set(345, 14, 14);
         lista.setPreferredSize(new Dimension(300, 600));
 
         //itemVetor.set(78, 11);

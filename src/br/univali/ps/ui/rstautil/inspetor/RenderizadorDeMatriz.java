@@ -14,7 +14,7 @@ import javax.swing.Icon;
  */
 class RenderizadorDeMatriz extends RenderizadorBase {
 
-    private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(0, 0, 0, 0.1f);
+    private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(0, 0, 0, 0.085f);
 
     public RenderizadorDeMatriz() {
         super();
