@@ -12,10 +12,12 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoMatriz;
 import br.univali.portugol.nucleo.asa.NoVetor;
+import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.simbolos.Matriz;
+import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
@@ -127,7 +129,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                             listaModificada = true;
                         }
                     }
-                    if(listaModificada){
+                    if (listaModificada) {
                         notificaMudancaNaLista();
                     }
                 }
@@ -222,15 +224,18 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
         }
 
         boolean ehVetor() {
-            return noDeclaracao instanceof NoDeclaracaoVetor;
+            return noDeclaracao instanceof NoDeclaracaoVetor
+                    || (noDeclaracao instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro) noDeclaracao).getQuantificador() == Quantificador.VETOR);
         }
 
         boolean ehMatriz() {
-            return noDeclaracao instanceof NoDeclaracaoMatriz;
+            return noDeclaracao instanceof NoDeclaracaoMatriz
+                    || (noDeclaracao instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro) noDeclaracao).getQuantificador() == Quantificador.MATRIZ);
         }
 
         boolean ehVariavel() {
-            return noDeclaracao instanceof NoDeclaracaoVariavel || noDeclaracao instanceof NoDeclaracaoParametro;
+            return noDeclaracao instanceof NoDeclaracaoVariavel
+                    || (noDeclaracao instanceof NoDeclaracaoParametro && ((NoDeclaracaoParametro) noDeclaracao).getQuantificador() == Quantificador.VALOR);
         }
 
         public boolean podeDesenharDestaque() {
@@ -294,6 +299,19 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
 
         public ItemDaListaParaMatriz(int linhas, int colunas, NoDeclaracaoMatriz no) {
             super(no);
+            inicializaDimensoes(linhas, colunas);
+        }
+
+        public ItemDaListaParaMatriz(NoDeclaracaoParametro declaracaoParametro) {
+            super(declaracaoParametro);
+            valores = new Object[0][0];
+        }
+
+        public boolean dimensoesForamInicializadas() {
+            return valores.length > 0 && valores[0].length > 0;
+        }
+
+        public final void inicializaDimensoes(int linhas, int colunas) {
             if (linhas <= 0) {
                 throw new IllegalArgumentException("quantidade inválida de linhas: " + linhas);
             }
@@ -301,6 +319,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                 throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
             }
             valores = new Object[linhas][colunas];
+            limpa();
         }
 
         public int getUltimaColunaAtualizada() {
@@ -365,6 +384,26 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
 
         public ItemDaListaParaVetor(int colunas, NoDeclaracaoVetor no) {
             super(no);
+            setNumeroDeColunas(colunas);
+        }
+
+        public ItemDaListaParaVetor(NoDeclaracaoParametro declaracaoParametro) {
+            super(declaracaoParametro);
+            valores = new Object[0];//cria um array vazio para que os métodos não gerem uma NUllPointerException ao acessaverem um atributo que seria nulo caso não fosse inicializado
+        }
+
+        /**
+         * *
+         * @param colunas Este método é invocado no evento de simbolosAlterados
+         * somente quando este ItemDaListaParaVetor armazena uma instancia de
+         * NoDeclaracaoParametro. Quando este item está ligado com um
+         * NoDeclaracaoVetor é possível obter o tamanho do vetor já na
+         * inicialização do objeto, mas quando este item está ligado com um
+         * NoDeclaracaoParametro é necessário aguardar até que a primeira
+         * atualização do parâmetro aconteça para so então obter a quantidade de
+         * colunas do vetor.
+         */
+        void setNumeroDeColunas(int colunas) {
             if (colunas <= 0) {
                 throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
             }
@@ -407,16 +446,55 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
             return RENDERIZADOR_DE_VETOR;
         }
 
+        //quando este item armazena um NoDeclaracaoParametro só é possível saber a quantidade de colunas
+        //na primeira atualização dos valores do parâmetro, nesse caso o número de colunas é zero (não setado) até que o método
+        //setNumeroDeColunas seja invocado durante a atualização dos símbolos
+        private boolean numeroDeColunasFoiInicializado() {
+            return valores.length > 0;
+        }
+
+    }
+
+    private static class ItemDaListaParaReferencia extends ItemDaLista {
+
+        private ItemDaLista itemReferenciado;
+
+        public ItemDaListaParaReferencia(ItemDaLista itemReferenciado, NoDeclaracao no) {
+            super(no);
+            this.itemReferenciado = itemReferenciado;
+        }
+
+        @Override
+        RenderizadorBase getRendererComponent() {
+            return itemReferenciado.getRendererComponent();
+        }
+
+        @Override
+        public void limpa() {
+            itemReferenciado.limpa();
+        }
+
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public void setTamanhoDaFonte(float tamanho) {
         RenderizadorBase.setTamanhoDaFonte(tamanho);
+        recriaCacheDaAlturaDosItems();
+        repaint();
+    }
+
+    private void recriaCacheDaAlturaDosItems() {
         //hack para forçar a JList a refazer a cache. Sem essas linhas o componente não reflete a mudança no tamanho da fonte adequadamente.
         //Idéia retirada desse post: http://stackoverflow.com/questions/7306295/swing-jlist-with-multiline-text-and-dynamic-height?lq=1
-        setFixedCellHeight(10);
-        setFixedCellHeight(-1);
-        repaint();
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                setFixedCellHeight(10);
+                setFixedCellHeight(-1);
+            }
+        });
+
     }
 
     private static abstract class RenderizadorBase extends JComponent {
@@ -1099,11 +1177,14 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
 //        return mesmoNo(no1, no2, false);
 //    }
     private boolean simboloEhPermitido(Simbolo simbolo) {
-        return simbolo != null
-                && ((simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVariavel)
-                || (simbolo instanceof Variavel && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoParametro)
-                || (simbolo instanceof Vetor && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoVetor)
-                || (simbolo instanceof Matriz && simbolo.getOrigemDoSimbolo() instanceof NoDeclaracaoMatriz));
+        if (simbolo instanceof Ponteiro) {
+            return simboloEhPermitido(((Ponteiro) simbolo).getSimboloApontado());
+        }
+        NoDeclaracao declaracao = simbolo.getOrigemDoSimbolo();
+        return ((simbolo instanceof Variavel && (declaracao instanceof NoDeclaracaoVariavel || declaracao instanceof NoDeclaracaoParametro))
+                || (simbolo instanceof Variavel && (declaracao instanceof NoDeclaracaoParametro || declaracao instanceof NoDeclaracaoParametro))
+                || (simbolo instanceof Vetor && (declaracao instanceof NoDeclaracaoVetor || declaracao instanceof NoDeclaracaoParametro))
+                || (simbolo instanceof Matriz && (declaracao instanceof NoDeclaracaoMatriz || declaracao instanceof NoDeclaracaoParametro)));
     }
 
     @Override
@@ -1171,12 +1252,17 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                 ItemDaLista itemDaLista = getItemDoNo(noDeclaracao);
                 if (itemDaLista != null) {
                     if (itemDaLista.ehVariavel()) {
-                        ((ItemDaListaParaVariavel) itemDaLista).setValor(((Variavel) simbolo).getValor());
+                        Variavel variavel = (!(simbolo instanceof Ponteiro)) ? (Variavel) simbolo : (Variavel) ((Ponteiro) simbolo).getSimboloApontado();
+                        ((ItemDaListaParaVariavel) itemDaLista).setValor(variavel.getValor());
                     } else if (itemDaLista.ehMatriz()) {
                         Matriz matriz = (Matriz) simbolo;
+                        ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
+                        if (!item.dimensoesForamInicializadas()) {//só aconte quando é um parâmetro
+                            item.inicializaDimensoes(matriz.getNumeroLinhas(), matriz.getNumeroColunas());
+                            recriaCacheDaAlturaDosItems();
+                        }
                         //quando está inicializando todas as posições da matriz são setadas, quando não 
-                        //está apenas a última posição modificada na matriz é 
-                        //atualizada (cada loop tem apenas uma iteração)
+                        //está apenas a última posição modificada na matriz é atualizada (cada loop tem apenas uma iteração)
                         int indiceInicialLinha = (estaInicializando) ? 0 : matriz.getUltimaLinhaModificada();
                         int indiceFinalLinha = (estaInicializando) ? matriz.getNumeroLinhas() : indiceInicialLinha + 1;
                         int indiceInicialColuna = (estaInicializando) ? 0 : matriz.getUltimaColunaModificada();
@@ -1184,19 +1270,22 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                         for (int linha = indiceInicialLinha; linha < indiceFinalLinha; linha++) {
                             for (int coluna = indiceInicialColuna; coluna < indiceFinalColuna; coluna++) {
                                 Object valor = matriz.getValor(linha, coluna);
-                                ((ItemDaListaParaMatriz) itemDaLista).set(valor, linha, coluna);
+                                item.set(valor, linha, coluna);
                             }
                         }
                     } else {
                         Vetor vetor = (Vetor) simbolo;
                         //quando está inicializando todas as posições do vetor são setadas, quando não 
-                        //está apenas a última posição modificada no vetor é 
-                        //atualizada (o loop tem apenas uma iteração)
+                        //está apenas a última posição modificada no vetor é atualizada (o loop tem apenas uma iteração)
+                        ItemDaListaParaVetor item = (ItemDaListaParaVetor) itemDaLista;
+                        if (!item.numeroDeColunasFoiInicializado()) {
+                            item.setNumeroDeColunas(vetor.getTamanho());
+                        }
                         int indiceInicial = (estaInicializando) ? 0 : vetor.getUltimoIndiceModificado();
                         int indiceFinal = (estaInicializando) ? vetor.getTamanho() : indiceInicial + 1;
                         for (int i = indiceInicial; i < indiceFinal; i++) {
                             Object valor = vetor.getValor(i);
-                            ((ItemDaListaParaVetor) itemDaLista).set(valor, i);
+                            item.set(valor, i);
                         }
                     }
                     itemsAlterados = true;
@@ -1377,10 +1466,10 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
             boolean importou = false;
             if (arrastandoNosDaJTree) {
                 importou = importaNosArrastadosDaJTree(support);
-            }else{
+            } else {
                 importou = importaStringArrastada(support);
             }
-            if(importou){
+            if (importou) {
                 notificaMudancaNaLista();
             }
             return importou;
@@ -1393,8 +1482,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
         return true;
     }
 
-    private boolean adicionaNoVetor(NoDeclaracaoVetor noTransferido) {
-        NoDeclaracaoVetor declaracaoVetor = noTransferido;
+    private boolean adicionaNoVetor(NoDeclaracaoVetor declaracaoVetor) {
         int colunas = -1;
         if (declaracaoVetor.getTamanho() != null) {
             colunas = ((NoInteiro) declaracaoVetor.getTamanho()).getValor();
@@ -1427,11 +1515,21 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
         return false;
     }
 
-    private boolean adicionaNoParametro(NoDeclaracaoParametro noTransferido) {
-        //o mesmo renderizador de variável é utilizado para os parâmetros
-        ItemDaListaParaVariavel item = new ItemDaListaParaVariavel(noTransferido);
-        model.addElement(item);
-        return true;
+    private boolean adicionaNoParametro(NoDeclaracaoParametro declaracaoParametro) {
+        ItemDaLista item = null;
+        Quantificador quantificador = declaracaoParametro.getQuantificador();
+        if (quantificador == Quantificador.VALOR) {
+            item = new ItemDaListaParaVariavel(declaracaoParametro);
+        } else if (quantificador == Quantificador.VETOR) {
+            item = new ItemDaListaParaVetor(declaracaoParametro);
+        } else if (quantificador == Quantificador.MATRIZ) {
+            item = new ItemDaListaParaMatriz(declaracaoParametro);
+        }
+        if (item != null) {
+            model.addElement(item);
+            return true;
+        }
+        return false;
     }
 
     public void adicionaNo(NoDeclaracao noTransferido) {
@@ -1466,6 +1564,9 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
 
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
+                if (true) {
+                    return;
+                }
                 String name = pce.getPropertyName();
                 if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
                     ultimoProgramaCompilado = (Programa) pce.getNewValue();
