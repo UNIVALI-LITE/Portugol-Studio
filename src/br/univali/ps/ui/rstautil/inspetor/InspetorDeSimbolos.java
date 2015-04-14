@@ -369,6 +369,14 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
         }
 
         @Override
+        public String getNome() {
+            String nome = super.getNome();
+            String linhas = dimensoesForamInicializadas() ? String.valueOf(getLinhas()) : " ? ";
+            String colunas = dimensoesForamInicializadas() ? String.valueOf(getColunas()) : " ? ";
+            return nome + " [" + linhas + "][" + colunas + "]";
+        }
+
+        @Override
         RenderizadorBase getRendererComponent() {
             RENDERIZADOR_DE_MATRIZ.setItemDaLista(this);
             return RENDERIZADOR_DE_MATRIZ;
@@ -429,6 +437,13 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
             }
         }
 
+        @Override
+        public String getNome() {
+            String nome = super.getNome();
+            String colunas = numeroDeColunasFoiInicializado() ? String.valueOf(getColunas()) : " ? ";
+            return nome + " [" + colunas + "]";
+        }
+        
         @Override
         public void limpa() {
             for (int c = 0; c < valores.length; c++) {
