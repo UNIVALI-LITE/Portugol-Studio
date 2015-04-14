@@ -1255,7 +1255,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                         Variavel variavel = (!(simbolo instanceof Ponteiro)) ? (Variavel) simbolo : (Variavel) ((Ponteiro) simbolo).getSimboloApontado();
                         ((ItemDaListaParaVariavel) itemDaLista).setValor(variavel.getValor());
                     } else if (itemDaLista.ehMatriz()) {
-                        Matriz matriz = (Matriz) simbolo;
+                        Matriz matriz = !(simbolo instanceof Ponteiro) ? (Matriz)simbolo : (Matriz)((Ponteiro)simbolo).getSimboloApontado();
                         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
                         if (!item.dimensoesForamInicializadas()) {//só aconte quando é um parâmetro
                             item.inicializaDimensoes(matriz.getNumeroLinhas(), matriz.getNumeroColunas());
@@ -1274,7 +1274,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                             }
                         }
                     } else {
-                        Vetor vetor = (Vetor) simbolo;
+                        Vetor vetor = !(simbolo instanceof Ponteiro) ? (Vetor)simbolo : (Vetor)((Ponteiro)simbolo).getSimboloApontado();
                         //quando está inicializando todas as posições do vetor são setadas, quando não 
                         //está apenas a última posição modificada no vetor é atualizada (o loop tem apenas uma iteração)
                         ItemDaListaParaVetor item = (ItemDaListaParaVetor) itemDaLista;
