@@ -62,7 +62,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import net.java.balloontip.BalloonTip;
+import net.java.balloontip.CustomBalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
+import net.java.balloontip.styles.MinimalBalloonStyle;
+import net.java.balloontip.styles.RoundedBalloonStyle;
+import net.java.balloontip.styles.ToolTipBalloonStyle;
+import net.java.balloontip.utils.TimingUtils;
+import net.java.balloontip.utils.ToolTipUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
@@ -510,6 +516,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 Programa programaCompilado = (Programa) pce.getNewValue();
 
                 if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
+                    if(programa == null){
+                        programa = programaCompilado;
+                    }
+                    
                     if (!simbolosInspecionadosJaForamCarregados) {
                         carregaSimbolosInspecionados(codigoFonteAtual, programaCompilado);
                         simbolosInspecionadosJaForamCarregados = true;
@@ -523,7 +533,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void pontosDeParaAtualizados(Set<Integer> pontosDeParada) {
                 if (programa != null) {
-                    programa.setPontosDeParada(pontosDeParada);
+                    Set<Integer> linhasParaveis = programa.setPontosDeParada(pontosDeParada);
+                    boolean tocouBeep = false;
+                    for (Integer linhaDoPontoDeParada : pontosDeParada) {
+                        if(!linhasParaveis.contains(linhaDoPontoDeParada)){
+                            getEditor().getTextArea().alternaPontoDeParada(linhaDoPontoDeParada);
+                            if(!tocouBeep){
+                                Toolkit.getDefaultToolkit().beep();
+                                TimingUtils.showTimedBalloon(new BalloonTip(getEditor(), "Não é possível colocar um ponto de parada nesta linha!", FabricaDicasInterface.criarEstilo(), false), 3000);
+                                tocouBeep = true;//evita tocar vários beeps
+                            }
+                        }
+                    }
                     
                 }
                 salvaArquivo();
@@ -1515,7 +1536,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println(evt.getPropertyName());
         switch (evt.getPropertyName()) {
             case Configuracoes.EXIBIR_OPCOES_EXECUCAO:
 

@@ -103,7 +103,7 @@ public final class FabricaDicasInterface
         return rotulo;
     }
 
-    private static BalloonTipStyle criarEstilo()
+    public static BalloonTipStyle criarEstilo()
     {
         return new EdgedBalloonStyle(corDica, corTexto);
     }
