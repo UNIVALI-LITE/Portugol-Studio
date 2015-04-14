@@ -1167,8 +1167,9 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
         @Override
         public int compare(NoDeclaracao t, NoDeclaracao t1) {
             boolean mesmoNome = t.getNome().equals(t1.getNome());
-            boolean mesmoTipo = t.getTipoDado() == t1.getTipoDado();
-            return (mesmoNome && mesmoTipo) ? 1 : -1;
+            boolean mesmoTipoDeDados = t.getTipoDado() == t1.getTipoDado();
+            boolean mesmaClasse = t.getClass().equals(t1.getClass());
+            return (mesmoNome && mesmoTipoDeDados && mesmaClasse) ? 1 : -1;
         }
 
     }
@@ -1255,7 +1256,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                         Variavel variavel = (!(simbolo instanceof Ponteiro)) ? (Variavel) simbolo : (Variavel) ((Ponteiro) simbolo).getSimboloApontado();
                         ((ItemDaListaParaVariavel) itemDaLista).setValor(variavel.getValor());
                     } else if (itemDaLista.ehMatriz()) {
-                        Matriz matriz = !(simbolo instanceof Ponteiro) ? (Matriz)simbolo : (Matriz)((Ponteiro)simbolo).getSimboloApontado();
+                        Matriz matriz = !(simbolo instanceof Ponteiro) ? (Matriz) simbolo : (Matriz) ((Ponteiro) simbolo).getSimboloApontado();
                         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
                         if (!item.dimensoesForamInicializadas()) {//só aconte quando é um parâmetro
                             item.inicializaDimensoes(matriz.getNumeroLinhas(), matriz.getNumeroColunas());
@@ -1274,7 +1275,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                             }
                         }
                     } else {
-                        Vetor vetor = !(simbolo instanceof Ponteiro) ? (Vetor)simbolo : (Vetor)((Ponteiro)simbolo).getSimboloApontado();
+                        Vetor vetor = !(simbolo instanceof Ponteiro) ? (Vetor) simbolo : (Vetor) ((Ponteiro) simbolo).getSimboloApontado();
                         //quando está inicializando todas as posições do vetor são setadas, quando não 
                         //está apenas a última posição modificada no vetor é atualizada (o loop tem apenas uma iteração)
                         ItemDaListaParaVetor item = (ItemDaListaParaVetor) itemDaLista;
@@ -1293,13 +1294,17 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
             }
         }
         if (itemsAlterados) {
-            //desenha apenas as regiões dos items que podem ser repintados. Os itens são repintados apenas umas poucas vezes por segundo para
-            //evitar problemas de desempenho quando o usuário estiver inspecionados variáveis que são alteradas várias vezes por segundo em um jogo, por exemplo
             redenhaItemsDaLista();
-            //repaint();
         }
     }
 
+    /**
+     * *
+     * desenha apenas as regiões dos items que podem ser repintados. Os itens
+     * são repintados apenas umas poucas vezes por segundo para evitar problemas
+     * de desempenho quando o usuário estiver inspecionados variáveis que são
+     * alteradas várias vezes por segundo em um jogo, por exemplo.
+     */
     private void redenhaItemsDaLista() {
         SwingUtilities.invokeLater(new Runnable() {
 
@@ -1315,7 +1320,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                     Insets insets = EMPTY_BORDER.getBorderInsets(renderizador);
                     int yOriginal = insets.top;
                     if (item.podeRepintar()) {
-                        bounds.translate(0, offset);//desloca o retângulo para a posição onde o item está na lista
+                        bounds.translate(0, offset);//desloca o retângulo para a posição vertical onde o item está na lista
                         repaint(bounds);
                         item.guardaTempoDaUltimaPintura();
                     }
@@ -1564,27 +1569,22 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
 
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                if (true) {
-                    return;
-                }
                 String name = pce.getPropertyName();
                 if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
                     ultimoProgramaCompilado = (Programa) pce.getNewValue();
                     if (model.isEmpty()) {
                         return;//não existem símbolos sendo inspecionados, não é necessário re-adicionar os símbolos
                     }
-                    final ArvoreSintaticaAbstrataPrograma ast = ultimoProgramaCompilado.getArvoreSintaticaAbstrata();
+                    
                     SwingUtilities.invokeLater(new Runnable() {
 
                         @Override
                         public void run() {
-                            //model.clear();
-
                             try {
                                 //verifica quais nós devem ser mantidos no inspetor, os demais são apagados
                                 final List<NoDeclaracao> nosQueSeraoMantidos = new ArrayList<>();
-                                ast.aceitar(new VisitanteNulo() {
-
+                                ultimoProgramaCompilado.getArvoreSintaticaAbstrata().aceitar(new VisitanteNulo() {
+                                    
                                     @Override
                                     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
                                         List<NoDeclaracaoParametro> parametros = declaracaoFuncao.getParametros();
@@ -1632,7 +1632,7 @@ public class InspetorDeSimbolos extends JList<InspetorDeSimbolos.ItemDaLista> im
                                     adicionaNo(no);
                                 }
                             } catch (Exception e) {
-                                //Logger.getLogger(ListaDeNosInspecionados.class.getName()).log(Level.WARNING, null, e);
+                                e.printStackTrace(System.err);
                             }
 
                         }
