@@ -29,12 +29,10 @@ import br.univali.ps.ui.TelaOpcoesExecucao;
 import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
-import br.univali.ps.ui.rstautil.inspetor.InspetorDeSimbolos;
 import br.univali.ps.ui.rstautil.inspetor.InspetorDeSimbolosListener;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
-import com.alee.laf.panel.WebPanelUI;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -48,6 +46,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1420,17 +1419,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void inserirInformacoesDosSimbolosInspecionados(StringBuilder sb) {
-        ListModel<InspetorDeSimbolos.ItemDaLista> model = listaDeNosInspecionados.getModel();
+        List<NoDeclaracao> model = listaDeNosInspecionados.getNosInspecionados();
         StringBuilder sbItems = new StringBuilder();
-        for (int i = 0; i < model.getSize(); i++) {
+        for (int i = 0; i < model.size(); i++) {
             sbItems.append("{");
-            NoDeclaracao no = model.getElementAt(i).getNoDeclaracao();
+            NoDeclaracao no = model.get(i);
             String nome = no.getNome();
             String linha = String.valueOf(no.getTrechoCodigoFonteNome().getLinha());
             String coluna = String.valueOf(no.getTrechoCodigoFonteNome().getColuna());
             String tamanhoDoTexto = String.valueOf(no.getTrechoCodigoFonteNome().getTamanhoTexto());
             sbItems.append(nome).append(", ").append(linha).append(", ").append(coluna).append(", ").append(tamanhoDoTexto);
-            sbItems.append((i < model.getSize() - 1) ? "}-" : "}");
+            sbItems.append((i < model.size()- 1) ? "}-" : "}");
         }
         sb.append(String.format("\n * @SIMBOLOS-INSPECIONADOS = %s;", sbItems));
     }
