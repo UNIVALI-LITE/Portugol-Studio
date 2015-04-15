@@ -19,6 +19,7 @@ import br.univali.ps.ui.FabricaDicasInterface;
 
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
+import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -148,6 +149,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
+        
+        if(WebLookAndFeel.isInstalled()){
+            br.univali.ps.ui.weblaf.Utils.configuraWeblaf(barraFerramentas);
+        }
     }
 
     public Set<Integer> getLinhasComPontoDeParada(){
@@ -1309,7 +1314,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         painelEditor = new javax.swing.JPanel();
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
         textArea = new PSTextArea(new PortugolDocumento());
-        painelFerramentas = new javax.swing.JPanel();
         barraFerramentas = new javax.swing.JToolBar();
         btnAumentarFonte = new javax.swing.JButton();
         btnDiminuirFonte = new javax.swing.JButton();
@@ -1328,6 +1332,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         setLayout(new java.awt.BorderLayout());
 
+        painelEditor.setOpaque(false);
         painelEditor.setLayout(new java.awt.BorderLayout());
 
         scrollPane.setBorder(null);
@@ -1341,14 +1346,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         add(painelEditor, java.awt.BorderLayout.CENTER);
 
-        painelFerramentas.setBackground(new java.awt.Color(250, 250, 250));
-        painelFerramentas.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        painelFerramentas.setPreferredSize(new java.awt.Dimension(34, 100));
-        painelFerramentas.setLayout(new java.awt.BorderLayout());
-
         barraFerramentas.setFloatable(false);
-        barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
         barraFerramentas.setRollover(true);
+        barraFerramentas.setMaximumSize(new java.awt.Dimension(320, 26));
         barraFerramentas.setOpaque(false);
 
         btnAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
@@ -1495,9 +1495,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
-        painelFerramentas.add(barraFerramentas, java.awt.BorderLayout.CENTER);
-
-        add(painelFerramentas, java.awt.BorderLayout.EAST);
+        add(barraFerramentas, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1518,7 +1516,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPopupMenu menuTema;
     private javax.swing.JPanel painelEditor;
-    private javax.swing.JPanel painelFerramentas;
     private org.fife.ui.rtextarea.RTextScrollPane scrollPane;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea textArea;
     // End of variables declaration//GEN-END:variables

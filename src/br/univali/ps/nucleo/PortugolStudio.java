@@ -355,21 +355,23 @@ public final class PortugolStudio {
     }
 
     private void definirLookAndFeel() {
+        
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    UIManager.put("ScrollPaneUI", WebScrollPaneUI.class.getName());
-                    UIManager.put("ScrollBarUI", WebScrollBarUI.class.getName());
-                    UIManager.put("SplitPaneUI", WebSplitPaneUI.class.getName());
-                    UIManager.put("TabbedPaneUI", WebTabbedPaneUI.class.getName());
-                    UIManager.put("CheckBoxUI", WebCheckBoxUI.class.getName());
-                    UIManager.put("TableHeaderUI", WebTableHeaderUI.class.getName());
-                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException excecao) {
-                    LOGGER.log(Level.INFO, "Não foi possível alterar o Look And Feel para o Look And Feel padrão do sistema operacional");
-                }
+                WebLookAndFeel.install();
+//                try {
+//                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//                    UIManager.put("ScrollPaneUI", WebScrollPaneUI.class.getName());
+//                    UIManager.put("ScrollBarUI", WebScrollBarUI.class.getName());
+//                    UIManager.put("SplitPaneUI", WebSplitPaneUI.class.getName());
+//                    UIManager.put("TabbedPaneUI", WebTabbedPaneUI.class.getName());
+//                    UIManager.put("CheckBoxUI", WebCheckBoxUI.class.getName());
+//                    UIManager.put("TableHeaderUI", WebTableHeaderUI.class.getName());
+//                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException excecao) {
+//                    LOGGER.log(Level.INFO, "Não foi possível alterar o Look And Feel para o Look And Feel padrão do sistema operacional");
+//                }
             }
         });
 

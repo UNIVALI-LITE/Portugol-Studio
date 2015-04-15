@@ -7,6 +7,8 @@ import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -60,6 +62,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         configurarBotoes();
         criarDicasInterface();
         instalarObservadores(telaPrincipal);
+        if(WebLookAndFeel.isInstalled()){
+            ((WebButtonUI)botaoAbrir.getUI()).setRolloverDecoratedOnly(true);
+            ((WebButtonUI)botaoNovoArquivo.getUI()).setRolloverDecoratedOnly(true);
+        }
     }
 
     private void configurarBotoes()
@@ -280,11 +286,14 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         painelTitulo = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
         painelBotoes = new javax.swing.JPanel();
         botaoAbrir = new javax.swing.JButton();
         botaoNovoArquivo = new javax.swing.JButton();
+
+        jMenu1.setText("jMenu1");
 
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(180, 25));
@@ -313,8 +322,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         painelBotoes.setLayout(new java.awt.GridLayout(1, 2));
 
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
-        botaoAbrir.setBorderPainted(false);
-        botaoAbrir.setContentAreaFilled(false);
         botaoAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         botaoAbrir.setFocusable(false);
         botaoAbrir.setHideActionText(true);
@@ -328,8 +335,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         painelBotoes.add(botaoAbrir);
 
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
-        botaoNovoArquivo.setBorderPainted(false);
-        botaoNovoArquivo.setContentAreaFilled(false);
         botaoNovoArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         botaoNovoArquivo.setFocusable(false);
         botaoNovoArquivo.setHideActionText(true);
@@ -347,6 +352,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoAbrir;
     private javax.swing.JButton botaoNovoArquivo;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelTitulo;
     private javax.swing.JLabel titulo;

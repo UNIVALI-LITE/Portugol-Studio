@@ -7,11 +7,16 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
+import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.Utils;
 import com.alee.global.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import static com.alee.laf.panel.WebPanelStyle.shadeWidth;
 import static com.alee.laf.scroll.WebScrollPaneStyle.drawBackground;
+import com.alee.laf.text.WebTextAreaUI;
 import com.alee.utils.LafUtils;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,8 +31,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -77,7 +84,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         initComponents();
         
-        painelRolagem.setUI(new BasicScrollPaneUI());
+        //painelRolagem.setUI(new BasicScrollPaneUI());
         
         console.setComponentPopupMenu(menuConsole);
         this.menuConsoleLimpar.setText("Limpar");
@@ -156,19 +163,11 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         handlerDaSaida = new HandlerDaSaida();
         
-        painelConteudo.setUI(new BorderUI());
-    }
-
-    private static class BorderUI extends BasicPanelUI{
-
-        @Override
-        public void paint(Graphics g, JComponent c) {
-            //usa o código do Weblaf para pintar borda ao redor do painel
-            LafUtils.drawWebStyle ( (Graphics2D) g, c, StyleConstants.shadeColor, shadeWidth, 5, drawBackground, false );
-        }
+        Utils.configuraWeblaf(barraFerramentas);
         
+        //painelRolagem.setBorder(BorderFactory.createLineBorder(Color.RED));
     }
-    
+
     private void configurarBarraFerramentas()
     {
         barraFerramentas.setOpaque(false);
@@ -426,20 +425,21 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
-        painelRolagem.setBackground(new java.awt.Color(250, 250, 250));
+        painelRolagem.setBackground(new java.awt.Color(255, 255, 0));
         painelRolagem.setBorder(null);
-        painelRolagem.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        painelRolagem.setOpaque(false);
 
         console.setEditable(false);
-        console.setBackground(new java.awt.Color(250, 250, 250));
+        console.setBackground(new java.awt.Color(230, 230, 230));
         console.setColumns(20);
-        console.setBorder(null);
+        console.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.LineBorder(new java.awt.Color(220, 220, 220), 1, true), javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         painelRolagem.setViewportView(console);
 
         painelConteudo.add(painelRolagem, java.awt.BorderLayout.CENTER);
 
         painelFerramentas.setBackground(new java.awt.Color(250, 250, 250));
         painelFerramentas.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        painelFerramentas.setOpaque(false);
         painelFerramentas.setPreferredSize(new java.awt.Dimension(34, 100));
         painelFerramentas.setLayout(new java.awt.BorderLayout());
 
@@ -863,5 +863,24 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 g.fillRect(r.x, r.y, width, r.height);
             }
         }
+    }
+    
+    public static void main(String args[]) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                WebLookAndFeel.install();
+                JFrame frame = new JFrame("Teste Aba Console");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(800, 600);
+                
+                AbaConsole aba = new AbaConsole();
+                frame.getContentPane().add(aba, BorderLayout.CENTER);
+                
+                frame.setVisible(true);
+            }
+        });
+
     }
 }

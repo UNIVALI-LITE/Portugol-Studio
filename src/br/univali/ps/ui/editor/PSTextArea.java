@@ -63,6 +63,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
+        setBorder(null);
         this.pontosDeParada = new ArrayList<>();
         setTransferHandler(new RTATextTransferHandler() {//usa a própria classe to RSyntax mas modifica a criação da dragImage
             @Override

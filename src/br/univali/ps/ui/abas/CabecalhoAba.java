@@ -1,6 +1,8 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.PainelTabuladoPrincipal;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.Icon;
@@ -14,6 +16,10 @@ public class CabecalhoAba extends JPanel
     {
         initComponents();
         this.aba = aba;
+        if(WebLookAndFeel.isInstalled()){
+            ((WebButtonUI)botaoFechar.getUI()).setUndecorated(true);
+        }
+        //setUndecorated(true);
     }
 
     protected Aba getAba()
@@ -35,7 +41,7 @@ public class CabecalhoAba extends JPanel
 
     public void setBotaoFecharVisivel(boolean removivel)
     {
-        jBFechar.setVisible(removivel);
+        botaoFechar.setVisible(removivel);
         calculaTamanhoCabecalho();
     }
 
@@ -56,31 +62,26 @@ public class CabecalhoAba extends JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         mniFechar = new javax.swing.JMenuItem();
         mniFecharOutras = new javax.swing.JMenuItem();
         jLIcone = new javax.swing.JLabel();
         jLTitulo = new javax.swing.JLabel();
-        jBFechar = new javax.swing.JButton();
+        botaoFechar = new javax.swing.JButton();
 
         mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        mniFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniFecharActionPerformed(evt);
             }
         });
         jPopupMenu1.add(mniFechar);
 
         mniFecharOutras.setText("Fechar as outras abas");
-        mniFecharOutras.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        mniFecharOutras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniFecharOutrasActionPerformed(evt);
             }
         });
@@ -91,37 +92,32 @@ public class CabecalhoAba extends JPanel
         setMinimumSize(new java.awt.Dimension(110, 25));
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(110, 25));
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light-bulb-code.png"))); // NOI18N
-        add(jLIcone, java.awt.BorderLayout.WEST);
+        add(jLIcone);
 
         jLTitulo.setText("jLabel2");
         jLTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 8, 1, 1));
         jLTitulo.setFocusable(false);
-        add(jLTitulo, java.awt.BorderLayout.CENTER);
+        add(jLTitulo);
 
-        jBFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
-        jBFechar.setBorder(null);
-        jBFechar.setBorderPainted(false);
-        jBFechar.setContentAreaFilled(false);
-        jBFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jBFechar.setFocusPainted(false);
-        jBFechar.setFocusable(false);
-        jBFechar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
-        jBFechar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jBFecharActionPerformed(evt);
+        botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
+        botaoFechar.setBorder(null);
+        botaoFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botaoFechar.setFocusable(false);
+        botaoFechar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
+        botaoFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoFecharActionPerformed(evt);
             }
         });
-        add(jBFechar, java.awt.BorderLayout.LINE_END);
+        add(botaoFechar);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFecharActionPerformed
+    private void botaoFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoFecharActionPerformed
         aba.fechar();
-    }//GEN-LAST:event_jBFecharActionPerformed
+    }//GEN-LAST:event_botaoFecharActionPerformed
 
     private void mniFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharActionPerformed
         aba.fechar();
@@ -139,7 +135,7 @@ public class CabecalhoAba extends JPanel
         }
     }//GEN-LAST:event_mniFecharOutrasActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBFechar;
+    private javax.swing.JButton botaoFechar;
     private javax.swing.JLabel jLIcone;
     private javax.swing.JLabel jLTitulo;
     private javax.swing.JPopupMenu jPopupMenu1;
@@ -149,7 +145,7 @@ public class CabecalhoAba extends JPanel
 
     protected void calculaTamanhoCabecalho()
     {
-        int larguraBotao = (jBFechar.isVisible()) ? jBFechar.getPreferredSize().width : 0;
+        int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;
         int larguraTitulo = jLTitulo.getPreferredSize().width;
         setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3, 16));
@@ -157,6 +153,6 @@ public class CabecalhoAba extends JPanel
 
     boolean isBotaoFecharVisivel()
     {
-        return jBFechar.isVisible();
+        return botaoFechar.isVisible();
     }
 }
