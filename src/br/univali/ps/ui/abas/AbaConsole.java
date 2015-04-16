@@ -7,21 +7,14 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.Utils;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import static com.alee.laf.panel.WebPanelStyle.shadeWidth;
-import static com.alee.laf.scroll.WebScrollPaneStyle.drawBackground;
-import com.alee.laf.text.WebTextAreaUI;
-import com.alee.utils.LafUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,17 +24,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicPanelUI;
-import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
@@ -399,7 +388,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         painelConteudo = new javax.swing.JPanel();
         painelRolagem = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
-        painelFerramentas = new javax.swing.JPanel();
         barraFerramentas = new javax.swing.JToolBar();
         botaoAumentarFonte = new javax.swing.JButton();
         botaoDiminuirFonte = new javax.swing.JButton();
@@ -418,12 +406,12 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         menuConsoleCopiar.setText("jMenuItem2");
         menuConsole.add(menuConsoleCopiar);
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 4));
         setFocusable(false);
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        painelConteudo.setLayout(new java.awt.BorderLayout());
+        painelConteudo.setLayout(new java.awt.BorderLayout(3, 0));
 
         painelRolagem.setBackground(new java.awt.Color(255, 255, 0));
         painelRolagem.setBorder(null);
@@ -436,12 +424,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         painelRolagem.setViewportView(console);
 
         painelConteudo.add(painelRolagem, java.awt.BorderLayout.CENTER);
-
-        painelFerramentas.setBackground(new java.awt.Color(250, 250, 250));
-        painelFerramentas.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        painelFerramentas.setOpaque(false);
-        painelFerramentas.setPreferredSize(new java.awt.Dimension(34, 100));
-        painelFerramentas.setLayout(new java.awt.BorderLayout());
 
         barraFerramentas.setFloatable(false);
         barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -496,9 +478,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         botaoCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(botaoCopiar);
 
-        painelFerramentas.add(barraFerramentas, java.awt.BorderLayout.CENTER);
-
-        painelConteudo.add(painelFerramentas, java.awt.BorderLayout.EAST);
+        painelConteudo.add(barraFerramentas, java.awt.BorderLayout.EAST);
 
         add(painelConteudo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -516,7 +496,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     private javax.swing.JMenuItem menuConsoleLimpar;
     private javax.swing.JMenuItem menuDiminuirFonte;
     private javax.swing.JPanel painelConteudo;
-    private javax.swing.JPanel painelFerramentas;
     private javax.swing.JScrollPane painelRolagem;
     // End of variables declaration//GEN-END:variables
 

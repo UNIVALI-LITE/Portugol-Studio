@@ -20,6 +20,7 @@ import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.toolbar.WebToolBarUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -57,6 +58,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -149,10 +151,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
+        scrollPane.getViewport().setOpaque(false);
         
-        if(WebLookAndFeel.isInstalled()){
-            br.univali.ps.ui.weblaf.Utils.configuraWeblaf(barraFerramentas);
-        }
+        br.univali.ps.ui.weblaf.Utils.configuraWeblaf(barraFerramentas);
+
     }
 
     public Set<Integer> getLinhasComPontoDeParada(){
@@ -1292,12 +1294,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             @Override
             public void run() {
+                WebLookAndFeel.install();
                 JFrame frame = new JFrame("Teste Editor");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(800, 600);
                 
+                JPanel painel = new JPanel(new BorderLayout());
                 Editor editor = new Editor();
-                frame.getContentPane().add(editor, BorderLayout.CENTER);
+                painel.add(editor);
+                br.univali.ps.ui.weblaf.Utils.configuraBorda(painel, Color.GRAY);
+                frame.getContentPane().add(painel, BorderLayout.CENTER);
                 
                 frame.setVisible(true);
             }
@@ -1330,12 +1336,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDepurar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         painelEditor.setOpaque(false);
         painelEditor.setLayout(new java.awt.BorderLayout());
 
         scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
 
         textArea.setBorder(null);
         textArea.setToolTipText("");
@@ -1346,10 +1354,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         add(painelEditor, java.awt.BorderLayout.CENTER);
 
+        barraFerramentas.setBackground(new java.awt.Color(204, 0, 0));
         barraFerramentas.setFloatable(false);
+        barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
         barraFerramentas.setRollover(true);
         barraFerramentas.setMaximumSize(new java.awt.Dimension(320, 26));
-        barraFerramentas.setOpaque(false);
 
         btnAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         btnAumentarFonte.setBorderPainted(false);
@@ -1358,6 +1367,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnAumentarFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAumentarFonte.setMaximumSize(new java.awt.Dimension(24, 24));
         btnAumentarFonte.setMinimumSize(new java.awt.Dimension(24, 24));
+        btnAumentarFonte.setOpaque(false);
         btnAumentarFonte.setPreferredSize(new java.awt.Dimension(24, 24));
         btnAumentarFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnAumentarFonte);
@@ -1495,7 +1505,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
-        add(barraFerramentas, java.awt.BorderLayout.SOUTH);
+        add(barraFerramentas, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
