@@ -68,6 +68,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import static br.univali.ps.ui.weblaf.Utils.configuraWeblaf;
 import static br.univali.ps.ui.weblaf.Utils.configuraBorda;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import javax.swing.plaf.basic.BasicSeparatorUI;
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
 
@@ -166,6 +167,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             ((WebScrollPaneUI)scrollInspetor.getUI()).setDrawBorder(false);
             ((WebScrollPaneUI)scrollInspetor.getUI()).setBorderColor(Color.RED);
             //((WebScrollPaneUI)scrollInspetor.getUI()).setDrawBackground(false);
+            
         }
 
     }
@@ -794,7 +796,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnDepurar = new javax.swing.JButton();
         btnInterromper = new javax.swing.JButton();
         separadorDosBotoes = new javax.swing.JToolBar.Separator();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 10), new java.awt.Dimension(10, 20), new java.awt.Dimension(0, 0));
         btnSalvar = new javax.swing.JButton();
         btnSalvarComo = new javax.swing.JButton();
         editor = new br.univali.ps.ui.editor.Editor();
@@ -842,7 +843,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        painelConteudo.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), null));
         painelConteudo.setFocusable(false);
         painelConteudo.setOpaque(false);
         painelConteudo.setLayout(new java.awt.BorderLayout());
@@ -868,6 +868,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelAlinhamentoEditor.setPreferredSize(new java.awt.Dimension(500, 240));
         painelAlinhamentoEditor.setLayout(new java.awt.BorderLayout());
 
+        painelBotoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 3, 0, 0));
         painelBotoes.setOpaque(false);
         painelBotoes.setLayout(new java.awt.BorderLayout());
 
@@ -909,7 +910,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
         barraFerramentas.add(separadorDosBotoes);
-        barraFerramentas.add(filler2);
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/save.png"))); // NOI18N
         btnSalvar.setBorderPainted(false);
@@ -933,7 +933,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         painelAlinhamentoEditor.add(painelBotoes, java.awt.BorderLayout.WEST);
 
-        editor.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 5, 0));
+        editor.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 10, 0));
         editor.setMinimumSize(new java.awt.Dimension(350, 22));
         editor.setPreferredSize(new java.awt.Dimension(0, 0));
         painelAlinhamentoEditor.add(editor, java.awt.BorderLayout.CENTER);
@@ -973,7 +973,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         painelConsole.add(painelOverlay, gridBagConstraints);
 
-        painelSaida.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 0, 1, 0));
+        painelSaida.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 1, 0));
         painelSaida.setMinimumSize(new java.awt.Dimension(150, 200));
         painelSaida.setPreferredSize(new java.awt.Dimension(200, 200));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -994,7 +994,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         painelInspetorArvore.setMinimumSize(new java.awt.Dimension(150, 510));
         painelInspetorArvore.setOpaque(false);
-        painelInspetorArvore.setPreferredSize(new java.awt.Dimension(250, 233));
+        painelInspetorArvore.setPreferredSize(new java.awt.Dimension(270, 233));
         painelInspetorArvore.setLayout(new java.awt.BorderLayout());
 
         divisorArvoreInspetor.setDividerSize(8);
@@ -1810,7 +1810,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JSplitPane divisorEditorConsole;
     private br.univali.ps.ui.editor.Editor editor;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.ButtonGroup grupoBotoesPlugins;
     private br.univali.ps.ui.rstautil.inspetor.InspetorDeSimbolos listaDeNosInspecionados;
     private javax.swing.JPanel painelAlinhamentoEditor;

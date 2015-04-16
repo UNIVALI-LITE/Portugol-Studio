@@ -197,8 +197,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
-        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.035f);
-        private final Color COR_DA_SELECAO = new Color(0, 0, 0, 0.06f);
+        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.028f);
+        private final Color COR_DA_SELECAO = new Color(0, 0, 0, 0.05f);
 
         public RenderizadorDaLista() {
             panel.setBorder(EMPTY_BORDER);

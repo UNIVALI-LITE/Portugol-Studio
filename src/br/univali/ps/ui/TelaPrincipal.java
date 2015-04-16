@@ -283,7 +283,7 @@ public final class TelaPrincipal extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
 
-        painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 2, 2, 2));
         getContentPane().add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
 
         pack();

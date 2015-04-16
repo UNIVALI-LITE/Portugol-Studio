@@ -19,7 +19,8 @@ import javax.swing.JToolBar;
 public class Utils {
 
     public static final Color COR_DAS_BORDAS = new Color(200, 200, 200);
-    public static final Color COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS = Color.WHITE;// new Color(230, 230, 230);
+    public static final Color COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS = new Color(180, 180, 180);// new Color(230, 230, 230);
+    public static final Color COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS_II = new Color(188, 188, 188);// new Color(230, 230, 230);
     
     public static void configuraWeblaf(JToolBar barraDeFerramentas) {
         if (!WebLookAndFeel.isInstalled()) {

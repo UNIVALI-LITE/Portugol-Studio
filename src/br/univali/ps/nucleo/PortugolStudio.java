@@ -5,7 +5,6 @@ import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipal;
-import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
@@ -13,15 +12,6 @@ import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.weblaf.Utils;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.checkbox.WebCheckBoxUI;
-import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.scroll.WebScrollBarUI;
-import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.laf.splitpane.WebSplitPaneUI;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -52,7 +42,6 @@ import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -364,6 +353,10 @@ public final class PortugolStudio {
             @Override
             public void run() {
                 StyleConstants.darkBorderColor = Utils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
+                //StyleConstants.separatorColor = Color.BLUE;
+                //StyleConstants.separatorUpperColor = Color.RED; 
+                //StyleConstants.separatorLightUpperColor = StyleConstants.separatorColor.darker();
+                //StyleConstants.separatorLightColor = Color.GRAY;// StyleConstants.separatorColor;
                 WebLookAndFeel.install();
             }
         });

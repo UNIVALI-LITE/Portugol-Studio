@@ -5,6 +5,7 @@ import br.univali.ps.ui.abas.AbaAjuda;
 import br.univali.ps.ui.abas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -242,8 +243,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         setFocusable(false);
     }// </editor-fold>//GEN-END:initComponents
