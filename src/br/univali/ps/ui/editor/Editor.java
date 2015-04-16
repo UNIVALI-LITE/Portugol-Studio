@@ -1354,7 +1354,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         add(painelEditor, java.awt.BorderLayout.CENTER);
 
-        barraFerramentas.setBackground(new java.awt.Color(204, 0, 0));
         barraFerramentas.setFloatable(false);
         barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
         barraFerramentas.setRollover(true);

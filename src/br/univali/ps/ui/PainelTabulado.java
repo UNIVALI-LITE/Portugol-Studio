@@ -1,12 +1,16 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.weblaf.HackWebTabbedPaneUI;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.tabbedpane.TabbedPaneStyle;
+import com.alee.laf.tabbedpane.WebTabbedPaneStyle;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 /**
@@ -21,7 +25,10 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener
     {
         setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
-        
+        if(WebLookAndFeel.isInstalled()){
+            
+            setUI(new HackWebTabbedPaneUI());
+        }
     }    
 
   

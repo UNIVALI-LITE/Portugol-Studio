@@ -3,8 +3,6 @@ package br.univali.ps.ui;
 import br.univali.ps.ui.abas.AbaConsole;
 import br.univali.ps.ui.abas.AbaMensagemCompilador;
 import br.univali.ps.ui.abas.AbaEnunciado;
-import br.univali.ps.ui.weblaf.Utils;
-import java.awt.Color;
 
 public final class PainelSaida extends PainelTabulado
 {

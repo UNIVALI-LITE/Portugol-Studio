@@ -10,6 +10,8 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
+import br.univali.ps.ui.weblaf.Utils;
+import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.checkbox.WebCheckBoxUI;
@@ -20,6 +22,7 @@ import com.alee.laf.splitpane.WebSplitPaneUI;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import com.alee.laf.table.WebTableHeaderUI;
 import com.alee.laf.table.WebTableUI;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -355,23 +358,13 @@ public final class PortugolStudio {
     }
 
     private void definirLookAndFeel() {
-        
+
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
+                StyleConstants.darkBorderColor = Utils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
                 WebLookAndFeel.install();
-//                try {
-//                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//                    UIManager.put("ScrollPaneUI", WebScrollPaneUI.class.getName());
-//                    UIManager.put("ScrollBarUI", WebScrollBarUI.class.getName());
-//                    UIManager.put("SplitPaneUI", WebSplitPaneUI.class.getName());
-//                    UIManager.put("TabbedPaneUI", WebTabbedPaneUI.class.getName());
-//                    UIManager.put("CheckBoxUI", WebCheckBoxUI.class.getName());
-//                    UIManager.put("TableHeaderUI", WebTableHeaderUI.class.getName());
-//                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException excecao) {
-//                    LOGGER.log(Level.INFO, "Não foi possível alterar o Look And Feel para o Look And Feel padrão do sistema operacional");
-//                }
             }
         });
 

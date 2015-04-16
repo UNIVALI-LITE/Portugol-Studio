@@ -25,6 +25,7 @@ import br.univali.ps.ui.rstautil.BuscadorDeEscopo;
 import br.univali.ps.ui.rstautil.ComparadorNos;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
+import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -196,8 +197,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
-        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.09f);
-        private final Color COR_DA_SELECAO = new Color(0, 0, 0, 0.15f);
+        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.035f);
+        private final Color COR_DA_SELECAO = new Color(0, 0, 0, 0.06f);
 
         public RenderizadorDaLista() {
             panel.setBorder(EMPTY_BORDER);
@@ -747,6 +748,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     }
 
     public static void main(String args[]) {
+        WebLookAndFeel.install();
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 300);
