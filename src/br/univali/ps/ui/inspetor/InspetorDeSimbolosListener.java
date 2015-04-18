@@ -1,4 +1,4 @@
-package br.univali.ps.ui.rstautil.inspetor;
+package br.univali.ps.ui.inspetor;
 
 /**
  * @author elieser

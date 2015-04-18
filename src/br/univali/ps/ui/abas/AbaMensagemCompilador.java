@@ -53,7 +53,7 @@ public final class AbaMensagemCompilador extends Aba
     private void configurarAparenciaTabela()
     {
         tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+        jScrollPaneTabelaMensagens.getViewport().setOpaque(false);
         tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
@@ -298,8 +298,7 @@ public final class AbaMensagemCompilador extends Aba
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
         tabelaMensagens = new javax.swing.JTable();
@@ -315,6 +314,7 @@ public final class AbaMensagemCompilador extends Aba
 
         tabelaMensagens.setBackground(new java.awt.Color(245, 245, 245));
         tabelaMensagens.setFillsViewportHeight(true);
+        tabelaMensagens.setOpaque(false);
         tabelaMensagens.setRequestFocusEnabled(false);
         tabelaMensagens.setRowHeight(24);
         tabelaMensagens.setSelectionBackground(new java.awt.Color(0, 84, 148));

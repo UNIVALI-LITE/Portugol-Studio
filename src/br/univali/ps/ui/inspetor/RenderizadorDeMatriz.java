@@ -1,6 +1,6 @@
-package br.univali.ps.ui.rstautil.inspetor;
+package br.univali.ps.ui.inspetor;
 
-import static br.univali.ps.ui.rstautil.inspetor.RenderizadorBase.FONTE_NORMAL;
+import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -14,7 +14,7 @@ import javax.swing.Icon;
  */
 class RenderizadorDeMatriz extends RenderizadorBase {
 
-    private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(0, 0, 0, 0.085f);
+    private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(0, 0, 0, 0.045f);
 
     public RenderizadorDeMatriz() {
         super();

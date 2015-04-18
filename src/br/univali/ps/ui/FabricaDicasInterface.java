@@ -49,50 +49,50 @@ public final class FabricaDicasInterface
 
     public static void criarDicaInterfacePara(JComponent componente, String dica, Icon icone, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
     {
-        final BalloonTip tip = new BalloonTip(componente, criarRotulo(dica, icone, 12f), criarEstilo(), orientacao, posicao, 20, 25, false);
-
-        componente.addMouseListener(new MouseAdapter()
-        {
-            @Override
-            public void mouseEntered(MouseEvent e)
-            {
-                tip.refreshLocation();
-            }
-        });
-
-        ToolTipUtils.balloonToToolTip(tip, intervaloInicio, intervaloFim);
+//        final BalloonTip tip = new BalloonTip(componente, criarRotulo(dica, icone, 12f), criarEstilo(), orientacao, posicao, 20, 25, false);
+//
+//        componente.addMouseListener(new MouseAdapter()
+//        {
+//            @Override
+//            public void mouseEntered(MouseEvent e)
+//            {
+//                tip.refreshLocation();
+//            }
+//        });
+//
+//        ToolTipUtils.balloonToToolTip(tip, intervaloInicio, intervaloFim);
     }
 
     public static void criarDicaInterfaceEstatica(JComponent componente, String dica, BalloonTip.Orientation orientacao, BalloonTip.AttachLocation posicao)
     {
-        final JLabel rotulo = criarRotulo(dica, iconePadrao, 12f);
-        final BalloonTip tip = new BalloonTip(componente, rotulo, criarEstilo(), orientacao, posicao, 20, 25, false);
-        
-        FadingUtils.fadeInBalloon(tip, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Timer timer = new Timer(5000, new ActionListener()
-                {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        FadingUtils.fadeOutBalloon(tip, new ActionListener()
-                        {
-                            @Override
-                            public void actionPerformed(ActionEvent e)
-                            {
-                                tip.closeBalloon();
-                            }
-                        }, 1000, 24);
-                    }
-                });
-                
-                timer.setRepeats(false);
-                timer.start();
-            }
-        }, 1000, 24);
+//        final JLabel rotulo = criarRotulo(dica, iconePadrao, 12f);
+//        final BalloonTip tip = new BalloonTip(componente, rotulo, criarEstilo(), orientacao, posicao, 20, 25, false);
+//        
+//        FadingUtils.fadeInBalloon(tip, new ActionListener()
+//        {
+//            @Override
+//            public void actionPerformed(ActionEvent e)
+//            {
+//                Timer timer = new Timer(5000, new ActionListener()
+//                {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e)
+//                    {
+//                        FadingUtils.fadeOutBalloon(tip, new ActionListener()
+//                        {
+//                            @Override
+//                            public void actionPerformed(ActionEvent e)
+//                            {
+//                                tip.closeBalloon();
+//                            }
+//                        }, 1000, 24);
+//                    }
+//                });
+//                
+//                timer.setRepeats(false);
+//                timer.start();
+//            }
+//        }, 1000, 24);
     }
 
     private static JLabel criarRotulo(String texto, Icon icone, float tamanhoFonte)

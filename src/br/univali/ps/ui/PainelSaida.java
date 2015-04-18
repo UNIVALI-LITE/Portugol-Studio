@@ -3,6 +3,10 @@ package br.univali.ps.ui;
 import br.univali.ps.ui.abas.AbaConsole;
 import br.univali.ps.ui.abas.AbaMensagemCompilador;
 import br.univali.ps.ui.abas.AbaEnunciado;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.tabbedpane.TabbedPaneStyle;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
+import javax.swing.plaf.TabbedPaneUI;
 
 public final class PainelSaida extends PainelTabulado
 {
@@ -12,6 +16,7 @@ public final class PainelSaida extends PainelTabulado
 
     public PainelSaida()
     {
+        super();
         initComponents();
 
         abaConsole = new AbaConsole();
@@ -20,8 +25,17 @@ public final class PainelSaida extends PainelTabulado
         abaMensagensCompilador = new AbaMensagemCompilador();
         //abaMensagensCompilador.adicionar(this);
         this.add(abaMensagensCompilador);
-        //Utils.configuraBorda(abaConsole, Color.orange);
+        
     }
+
+    @Override
+    protected TabbedPaneUI criaUi() {
+        WebTabbedPaneUI ui = new WebTabbedPaneUI();
+        ui.setTabbedPaneStyle(TabbedPaneStyle.standalone);
+        return ui;
+    }
+    
+    
 
     public AbaConsole getConsole()
     {

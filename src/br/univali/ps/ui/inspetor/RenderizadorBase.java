@@ -1,4 +1,4 @@
-package br.univali.ps.ui.rstautil.inspetor;
+package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
 import java.awt.BasicStroke;
@@ -22,7 +22,7 @@ abstract class RenderizadorBase extends JComponent {
     protected final Color COR_DO_TEXTO_DESTACADO = Color.BLACK;
     protected final Color COR_DO_CABECALHO_DESTACADO = new Color(0, 0, 0, 0.5f);
     protected final Color COR_DO_FUNDO_EM_DESTAQUE = new Color(1, 0, 0, 0.3f);//vermelho claro
-    protected final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5, 2, 4, 2, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1}, 0);
+    protected final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{4, 2, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1}, 0);
 
     static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 

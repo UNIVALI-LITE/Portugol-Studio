@@ -1,6 +1,6 @@
-package br.univali.ps.ui.rstautil.inspetor;
+package br.univali.ps.ui.inspetor;
 
-import static br.univali.ps.ui.rstautil.inspetor.RenderizadorBase.FONTE_NORMAL;
+import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;

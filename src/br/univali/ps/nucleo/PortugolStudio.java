@@ -9,7 +9,7 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
-import br.univali.ps.ui.weblaf.Utils;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.Color;
@@ -352,7 +352,7 @@ public final class PortugolStudio {
 
             @Override
             public void run() {
-                StyleConstants.darkBorderColor = Utils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
+                StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
                 //StyleConstants.separatorColor = Color.BLUE;
                 //StyleConstants.separatorUpperColor = Color.RED; 
                 //StyleConstants.separatorLightUpperColor = StyleConstants.separatorColor.darker();

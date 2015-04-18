@@ -1,27 +1,20 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.weblaf.Utils;
-import com.alee.global.StyleConstants;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTabbedPane;
+import javax.swing.plaf.TabbedPaneUI;
 
 /**
  *
@@ -36,10 +29,14 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
         painelTabuladoListeners = new ArrayList<>();
         if (WebLookAndFeel.isInstalled()) {
 
-            setUI(new UiDosPaineisTabulados());
+            setUI(criaUi());
         }
     }
 
+    protected TabbedPaneUI criaUi(){
+        return new UiDosPaineisTabulados();
+    }
+    
     private class UiDosPaineisTabulados extends WebTabbedPaneUI {
 
         public UiDosPaineisTabulados() {
@@ -77,7 +74,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
         protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
             super.paintTabBackground(g, tabPlacement, tabIndex, x, y, w, h, isSelected); //To change body of generated methods, choose Tools | Templates.
             GeneralPath path = createTabShape(tabPlacement, x, y, w, h, isSelected);
-            ((Graphics2D) g).setColor(Utils.COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS);
+            ((Graphics2D) g).setColor(WeblafUtils.COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS);
             ((Graphics2D) g).draw(path);
         }
 

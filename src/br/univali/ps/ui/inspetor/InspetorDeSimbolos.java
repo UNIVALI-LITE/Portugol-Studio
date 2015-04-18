@@ -1,4 +1,4 @@
-package br.univali.ps.ui.rstautil.inspetor;
+package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
