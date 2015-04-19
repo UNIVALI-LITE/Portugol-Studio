@@ -41,7 +41,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
@@ -67,8 +66,6 @@ import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.java.balloontip.utils.TimingUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import static br.univali.ps.ui.weblaf.WeblafUtils.configuraWeblaf;
-import com.alee.global.StyleConstants;
 import com.alee.laf.scroll.WebScrollPaneUI;
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
@@ -150,17 +147,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             
-            WeblafUtils.configuraWeblaf(painelEditor);
-            WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DOS_PAINEIS_MAIS_ESCUROS);
+            WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL);
+            WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO);
 
-            //deixa o painel da árvore transparente para aproveitar o gradiente que o weblaf desenha no componente pai
-            scrollOutlineTree.getViewport().setOpaque(false);
-            ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBorder(false);
+            WeblafUtils.configuraWebLaf(scrollInspetor);
+            WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
-
-            scrollInspetor.getViewport().setOpaque(false);
-            ((WebScrollPaneUI) scrollInspetor.getUI()).setDrawBorder(false);
-            ((WebScrollPaneUI) scrollInspetor.getUI()).setBorderColor(Color.RED);
         }
 
     }
@@ -794,7 +786,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         separadorDosBotoes = new javax.swing.JToolBar.Separator();
         btnSalvar = new javax.swing.JButton();
         btnSalvarComo = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
+        separador = new javax.swing.JSeparator();
         editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.PainelSaida();
@@ -988,12 +980,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
         painelEditor.add(painelBotoes, gridBagConstraints);
 
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        separador.setOrientation(javax.swing.SwingConstants.VERTICAL);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        painelEditor.add(jSeparator1, gridBagConstraints);
+        painelEditor.add(separador, gridBagConstraints);
 
         editor.setMinimumSize(new java.awt.Dimension(350, 22));
         editor.setPreferredSize(new java.awt.Dimension(0, 0));
@@ -1003,7 +995,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 3);
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 0, 3);
         painelEditor.add(editor, gridBagConstraints);
 
         divisorEditorConsole.setTopComponent(painelEditor);
@@ -1061,7 +1053,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         scrollOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
 
         tree.setBackground(new java.awt.Color(240, 240, 240));
-        tree.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        tree.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 5, 5));
         tree.setOpaque(false);
         scrollOutlineTree.setViewportView(tree);
 
@@ -1783,7 +1775,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private br.univali.ps.ui.editor.Editor editor;
     private javax.swing.ButtonGroup grupoBotoesPlugins;
     private br.univali.ps.ui.inspetor.InspetorDeSimbolos inspetorDeSimbolos;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelConsole;
     private javax.swing.JPanel painelConteudo;
@@ -1794,6 +1785,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private br.univali.ps.ui.PainelSaida painelSaida;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
+    private javax.swing.JSeparator separador;
     private javax.swing.JToolBar.Separator separadorDosBotoes;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
     // End of variables declaration//GEN-END:variables

@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -71,7 +72,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  */
 public class InspetorDeSimbolos extends JList<ItemDaLista> implements ObservadorExecucao {
 
-    private static final String INSTRUCAO = "Arraste uma variável \npara este painél se\n quiser inspecioná-la";
+    private static final String INSTRUCAO = "Arraste uma variável para este \npainél se quiser inspecioná-la";
     private DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
     private static final ComparadorNos COMPARADOR_NOS = new ComparadorNos();
 
@@ -143,9 +144,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         this.textArea = textArea;
     }
 
+    
     private void desenhaInstrucaoParaArrastarSimbolos(Graphics g) {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
-        g.setFont(RenderizadorBase.FONTE_NORMAL);
+        //g.setFont(RenderizadorBase.FONTE_NORMAL. );
         g.setColor(Color.GRAY);
         FontMetrics metrics = g.getFontMetrics();
         String texto = INSTRUCAO.replace("\n", "");

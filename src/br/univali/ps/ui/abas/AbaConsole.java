@@ -76,10 +76,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
         initComponents();
 
-        painelRolagem.getViewport().setOpaque(false);
-        if (WebLookAndFeel.isInstalled()) {
-            ((WebScrollPaneUI) painelRolagem.getUI()).setDrawBorder(false);
-        }
+        WeblafUtils.configuraWebLaf(painelRolagem);
 
         console.setComponentPopupMenu(menuConsole);
         this.menuConsoleLimpar.setText("Limpar");

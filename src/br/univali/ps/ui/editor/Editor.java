@@ -147,18 +147,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         //criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
-        scrollPane.getViewport().setOpaque(false);
-        
-        //br.univali.ps.ui.weblaf.WeblafUtils.configuraWeblaf(barraFerramentas);
         
         
-//        BarraDeBotoesExpansivel barraDeBotoes = new BarraDeBotoesExpansivel();
-//        barraDeBotoes.adicionaAcao(acaoAumentarFonte, WebComboBoxStyle.collapseIcon );
-//        //(int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, 
-//                    //int anchor, int fill, Insets insets, int ipadx, int ipady)
-//        GridBagConstraints constraints = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
-//        add(barraDeBotoes, constraints);
-        //barraFerramentas.getParent().remove(barraFerramentas);
+        WeblafUtils.configuraWebLaf(scrollPane);
     }
 
     public Set<Integer> getLinhasComPontoDeParada(){
