@@ -1,5 +1,6 @@
 package br.univali.ps.ui.weblaf;
 
+import br.univali.ps.ui.util.IconFactory;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.menu.WebMenuBarUI;
@@ -16,10 +17,11 @@ import javax.swing.JMenuItem;
  */
 public class BarraDeBotoesExpansivel extends JMenuBar {
 
-    private JMenu menu = new JMenu();
+    private final JMenu menu = new JMenu();
 
     public BarraDeBotoesExpansivel() {
-        menu.setIcon(WebComboBoxStyle.expandIcon);
+        
+        menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         add(menu);
         if (WebLookAndFeel.isInstalled()) {
             ((WebMenuBarUI) getUI()).setUndecorated(true);

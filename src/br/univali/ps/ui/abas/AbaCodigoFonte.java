@@ -786,7 +786,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         separadorDosBotoes = new javax.swing.JToolBar.Separator();
         btnSalvar = new javax.swing.JButton();
         btnSalvarComo = new javax.swing.JButton();
-        separador = new javax.swing.JSeparator();
         editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.PainelSaida();
@@ -897,13 +896,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreEditor.setDoubleBuffered(true);
         divisorArvoreEditor.setFocusable(false);
         divisorArvoreEditor.setMinimumSize(new java.awt.Dimension(550, 195));
+        divisorArvoreEditor.setOneTouchExpandable(true);
 
         painelEsquerda.setLayout(new java.awt.BorderLayout());
 
         divisorEditorConsole.setBorder(null);
-        divisorEditorConsole.setDividerSize(8);
+        divisorEditorConsole.setDividerSize(10);
         divisorEditorConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         divisorEditorConsole.setResizeWeight(1.0);
+        divisorEditorConsole.setOneTouchExpandable(true);
 
         painelEditor.setFocusable(false);
         painelEditor.setMinimumSize(new java.awt.Dimension(500, 240));
@@ -980,13 +981,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
         painelEditor.add(painelBotoes, gridBagConstraints);
 
-        separador.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        painelEditor.add(separador, gridBagConstraints);
-
         editor.setMinimumSize(new java.awt.Dimension(350, 22));
         editor.setPreferredSize(new java.awt.Dimension(0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1031,6 +1025,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreInspetor.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         divisorArvoreInspetor.setResizeWeight(1.0);
         divisorArvoreInspetor.setMinimumSize(new java.awt.Dimension(252, 510));
+        divisorArvoreInspetor.setOneTouchExpandable(true);
         divisorArvoreInspetor.setOpaque(false);
 
         scrollInspetor.setBorder(null);
@@ -1785,7 +1780,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private br.univali.ps.ui.PainelSaida painelSaida;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
-    private javax.swing.JSeparator separador;
     private javax.swing.JToolBar.Separator separadorDosBotoes;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
     // End of variables declaration//GEN-END:variables
