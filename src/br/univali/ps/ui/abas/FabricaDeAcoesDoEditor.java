@@ -7,6 +7,7 @@ import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -17,6 +18,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
@@ -27,6 +29,25 @@ import org.fife.rsta.ui.search.ReplaceDialog;
  */
 public class FabricaDeAcoesDoEditor {
 
+    public static BarraDeBotoesExpansivel.Acao criaAcaoExpandirEditor(final JSplitPane splitPaneEditorArvore, final JSplitPane splitPaneEditorConsole) {
+        AbstractAction acaoExpandir = new AbstractAction("Expandir/Restaurar") {
+            
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                boolean estaContraido = splitPaneEditorArvore.getDividerLocation() < splitPaneEditorArvore.getMaximumDividerLocation();
+                if( estaContraido ){
+                    splitPaneEditorArvore.setDividerLocation(1.0);
+                    splitPaneEditorConsole.setDividerLocation(1.0);
+                }
+                else{
+                    splitPaneEditorArvore.setDividerLocation(-1);
+                    splitPaneEditorConsole.setDividerLocation(-1);
+                }
+            }
+        };
+        return BarraDeBotoesExpansivel.criaAcao(acaoExpandir, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"));
+    }
+    
     public static BarraDeBotoesExpansivel.Acao criaAcaoAumentarFonte(final Editor editor) {
         AbstractAction acaoAumentarFonte = new AbstractAction("Aumentar fonte") {
             @Override

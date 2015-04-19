@@ -171,7 +171,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         barraDeBotoes.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoAumentarFonte(editor));
         barraDeBotoes.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoDiminuirFonte(editor));
-        
+        barraDeBotoes.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoExpandirEditor(divisorArvoreEditor, divisorEditorConsole));
         BarraDeBotoesExpansivel.Acao acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
         barraDeBotoes.adicionaAcao(acaoPesquisarSubstituir);
         
