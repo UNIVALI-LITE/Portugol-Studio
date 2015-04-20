@@ -1,16 +1,19 @@
 package br.univali.ps.ui.weblaf;
 
+import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableStyle;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
@@ -61,7 +64,11 @@ public class TesteWeblaf {
                 scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                 WeblafUtils.configuraWebLaf(scroll);
 
-                painelConteudo.add(scroll);
+                JTabbedPane tabbedPane = new PainelTabuladoPrincipal();
+                tabbedPane.addTab("teste", scroll);
+                tabbedPane.addTab("teste 2", AbaCodigoFonte.novaAba());
+                
+                painelConteudo.add(tabbedPane);
 
 //                JPanel painel = new JPanel(new BorderLayout());
 //                painel.setPreferredSize(new Dimension(2000, 2000));

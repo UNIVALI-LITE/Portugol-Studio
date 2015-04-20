@@ -24,11 +24,12 @@ import javax.swing.JToolBar;
  */
 public class WeblafUtils {
 
-    public static final Color COR_DAS_BORDAS = new Color(180, 180, 180);
-    public static final Color COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS = new Color(170, 170, 170);// new Color(230, 230, 230);
+    public static final Color COR_DAS_BORDAS = new Color(200, 200, 200);
+    public static final Color COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS = new Color(210, 210, 210);// new Color(230, 230, 230);
     public static final Color COR_DO_PAINEL_DIREITO = new Color(225, 225, 225);
     public static final Color COR_DO_PAINEL_DE_SAIDA = COR_DO_PAINEL_DIREITO;
     public static final Color COR_DO_PAINEL_PRINCIPAL = Color.WHITE;
+    //public static final Color COR_DAS_BORDAS_II = new Color(211, 211, 211);
 
     public static void configuraWeblaf(JToolBar barraDeFerramentas) {
         if (!WebLookAndFeel.isInstalled()) {
@@ -56,32 +57,34 @@ public class WeblafUtils {
         ((WebScrollBarUI) scroll.getVerticalScrollBar().getUI()).setPaintTrack(false);
     }
 
-    public static void configuraWeblaf(JPanel painel, final Color corDeFundo, boolean mostraBorda) {
+    public static void configuraWeblaf(JPanel painel, final Color corDeFundo, boolean bordaEsquerda, boolean bordaDireita, boolean bordaDeCima, boolean bordaDeBaixo) {
         if (!WebLookAndFeel.isInstalled()) {
             return;
         }
         if (corDeFundo != null) {
-            ((WebPanelUI) painel.getUI()).setPainter(criaPainterComCorSolida(corDeFundo, mostraBorda));
+            ((WebPanelUI) painel.getUI()).setPainter(criaPainterComCorSolida(corDeFundo, bordaEsquerda, bordaDireita, bordaDeCima, bordaDeBaixo));
         }
-        ((WebPanelUI) painel.getUI()).setUndecorated(!mostraBorda);
+        ((WebPanelUI) painel.getUI()).setUndecorated(bordaDeBaixo && bordaDeCima && bordaEsquerda && bordaDireita );
+        ((WebPanelUI) painel.getUI()).setPaintSides(bordaDeCima, bordaEsquerda, bordaDeBaixo, bordaDireita);
     }
 
-    public static WebDecorationPainter criaPainterComCorSolida(Color corDeFundo, boolean desenhaBorda) {
-        return new PainterDeCorSolida(corDeFundo, desenhaBorda);
+    public static WebDecorationPainter criaPainterComCorSolida(Color corDeFundo, boolean bordaEsquerda, boolean bordaDireita, boolean bordaDeCima, boolean bordaDeBaixo) {
+        return new PainterDeCorSolida(corDeFundo, bordaEsquerda, bordaDireita, bordaDeCima, bordaDeBaixo);
     }
 
     private static class PainterDeCorSolida extends WebDecorationPainter<JComponent> {
 
         private final Color corDeFundo;
 
-        public PainterDeCorSolida(Color corDeFundo, boolean desenhaBorda) {
+        public PainterDeCorSolida(Color corDeFundo, boolean bordaEsquerda, boolean bordaDireita, boolean bordaDeCima, boolean bordaDeBaixo) {
             super();
             this.corDeFundo = corDeFundo;
-            if(!desenhaBorda){
+            if(!bordaEsquerda && !bordaDireita && !bordaDeBaixo && !bordaDeCima){
                 shadeWidth = 0;
                 borderColor = null;
                 disabledBorderColor = null;
             }
+            setPaintSides(bordaDeCima, bordaEsquerda, bordaDeBaixo, bordaDireita);
         }
 
         @Override
@@ -93,7 +96,7 @@ public class WeblafUtils {
     }
 
     public static void configuraWeblaf(JPanel painel, final Color corDeFundo) {
-        configuraWeblaf(painel, corDeFundo, true);
+        configuraWeblaf(painel, corDeFundo, true, true, true, true);
     }
 
     public static void configuraWeblaf(JPanel painel) {

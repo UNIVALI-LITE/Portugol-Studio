@@ -143,8 +143,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             
-            WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL);
-            WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO);
+            WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
+            WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
 
             WeblafUtils.configuraWebLaf(scrollInspetor);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
@@ -758,6 +758,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
@@ -767,7 +768,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorArvoreEditor.setBackground(new java.awt.Color(255, 255, 255));
         divisorArvoreEditor.setBorder(null);
-        divisorArvoreEditor.setDividerSize(8);
+        divisorArvoreEditor.setDividerSize(15);
         divisorArvoreEditor.setResizeWeight(1.0);
         divisorArvoreEditor.setDoubleBuffered(true);
         divisorArvoreEditor.setFocusable(false);
@@ -777,7 +778,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelEsquerda.setLayout(new java.awt.BorderLayout());
 
         divisorEditorConsole.setBorder(null);
-        divisorEditorConsole.setDividerSize(10);
+        divisorEditorConsole.setDividerSize(15);
         divisorEditorConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         divisorEditorConsole.setResizeWeight(1.0);
         divisorEditorConsole.setOneTouchExpandable(true);
@@ -897,7 +898,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelInspetorArvore.setPreferredSize(new java.awt.Dimension(270, 233));
         painelInspetorArvore.setLayout(new java.awt.GridBagLayout());
 
-        divisorArvoreInspetor.setDividerSize(8);
+        divisorArvoreInspetor.setDividerSize(15);
         divisorArvoreInspetor.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         divisorArvoreInspetor.setResizeWeight(1.0);
         divisorArvoreInspetor.setMinimumSize(new java.awt.Dimension(252, 510));

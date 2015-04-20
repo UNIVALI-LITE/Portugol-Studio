@@ -4,14 +4,11 @@ import br.univali.ps.ui.abas.AbaConsole;
 import br.univali.ps.ui.abas.AbaMensagemCompilador;
 import br.univali.ps.ui.abas.AbaEnunciado;
 import br.univali.ps.ui.weblaf.WeblafUtils;
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.managers.style.skin.web.WebDecorationPainter;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -48,8 +45,8 @@ public final class PainelSaida extends PainelTabulado {
 
         public PsTabbedPaneUI() {
             setTabbedPaneStyle(TabbedPaneStyle.standalone);
-            setBackgroundPainterAt(0, WeblafUtils.criaPainterComCorSolida(WeblafUtils.COR_DO_PAINEL_DE_SAIDA, false));
-            setBackgroundPainterAt(1, WeblafUtils.criaPainterComCorSolida(WeblafUtils.COR_DO_PAINEL_DE_SAIDA, false));
+            setBackgroundPainterAt(0, WeblafUtils.criaPainterComCorSolida(WeblafUtils.COR_DO_PAINEL_DE_SAIDA, false, false, false, false));
+            setBackgroundPainterAt(1, WeblafUtils.criaPainterComCorSolida(WeblafUtils.COR_DO_PAINEL_DE_SAIDA, false, false, false, false));
         }
     }
     

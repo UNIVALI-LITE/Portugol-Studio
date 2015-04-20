@@ -1,9 +1,12 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.weblaf.PSWebTabbedPaneUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,54 +31,38 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
         setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
         if (WebLookAndFeel.isInstalled()) {
-
             setUI(criaUi());
         }
     }
 
-    protected TabbedPaneUI criaUi(){
-        return new UiDosPaineisTabulados();
+    protected TabbedPaneUI criaUi() {
+        //acabei usando a classe webTabbedPaneUI que eu baixei do githubda weblaf, essa classe tem métodos
+        //que a classe que está no jar não possui (setTabBorderColor e setContentBorderColor)
+        PSWebTabbedPaneUI ui = new PSWebTabbedPaneUI();
+        ui.setTabRunIndent(5);
+        ui.setTabbedPaneStyle(TabbedPaneStyle.attached);
+        ui.setTabBorderColor(WeblafUtils.COR_DAS_BORDAS);
+        //ui.setContentBorderColor(WeblafUtils.COR_DAS_BORDAS_II);
+        
+//ui.setShadeWidth(50);
+        return ui;
     }
-    
+
     private class UiDosPaineisTabulados extends WebTabbedPaneUI {
 
         public UiDosPaineisTabulados() {
             super();
-            //setTabbedPaneStyle(TabbedPaneStyle.attached);
+             
         }
 
-        @Override
-        protected void paintContentBorder(final Graphics g, final int tabPlacement, final int selectedIndex) {
-//            final Graphics2D g2d = (Graphics2D) g;
-//            final Insets bi = tabPane.getInsets();
-//            final int tabAreaSize = getTabAreaLength(tabPlacement);
-//            if (tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM) {
-//                bi.right += 1;
-//            } else {
-//                bi.bottom += 1;
-//            }
-//            // Selected tab bounds
-//            final Rectangle selected = selectedIndex != -1 ? getTabBounds(tabPane, selectedIndex) : null;
-//            g2d.setPaint(Utils.COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS_II);
-//            if (selected != null) {
-//                if (bi.left < selected.x) {
-//                    g2d.drawLine(bi.left, bi.top + tabAreaSize, selected.x, bi.top + tabAreaSize);
-//                }
-//                if (selected.x + selected.width < tabPane.getWidth() - bi.right) {
-//                    g2d.drawLine(selected.x + selected.width, bi.top + tabAreaSize, tabPane.getWidth() - bi.right,
-//                            bi.top + tabAreaSize);
-//                }
-//            } else {
-//                g2d.drawLine(bi.left, bi.top + tabAreaSize, tabPane.getWidth() - bi.right, bi.top + tabAreaSize);
-//            }
-        }
-
+        
         @Override
         protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
             super.paintTabBackground(g, tabPlacement, tabIndex, x, y, w, h, isSelected); //To change body of generated methods, choose Tools | Templates.
             GeneralPath path = createTabShape(tabPlacement, x, y, w, h, isSelected);
             ((Graphics2D) g).setColor(WeblafUtils.COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS);
             ((Graphics2D) g).draw(path);
+            
         }
 
         //código copiado do fonte do weblaf e modificado 
