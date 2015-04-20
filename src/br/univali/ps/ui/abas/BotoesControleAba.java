@@ -4,14 +4,12 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoListener;
 import br.univali.ps.ui.TelaPrincipal;
-import br.univali.ps.ui.swing.filtros.FiltroArquivo;
-import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -25,7 +23,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -45,10 +43,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     private Aba abaAtual;
 
-    private FiltroArquivo filtroExercicio;
-    private FiltroArquivo filtroPrograma;
-    private FiltroArquivo filtroTodosSuportados;
-    private JFileChooser dialogoSelecaoArquivo;
+    //private FiltroArquivo filtroExercicio;
+    //private FiltroArquivo filtroPrograma;
+    //private FiltroArquivo filtroTodosSuportados;
+    private FileDialog dialogoSelecaoArquivo;
 
     public BotoesControleAba(AbaInicial abaInicial, TelaPrincipal telaPrincipal) {
         super(abaInicial);
@@ -83,20 +81,20 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     }
 
     private void configurarSeletorArquivo() {
-        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
-        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
-        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+//        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
+//        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
+//        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
 
-        dialogoSelecaoArquivo = new JFileChooser();
-        dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
-        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
-        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+        dialogoSelecaoArquivo = new FileDialog((JFrame)null);
+        dialogoSelecaoArquivo.setDirectory(Configuracoes.getInstancia().getDiretorioUsuario().getAbsolutePath());
+        dialogoSelecaoArquivo.setMultipleMode(true);// MultiSelectionEnabled(true);
+        //dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
 
-        dialogoSelecaoArquivo.addChoosableFileFilter(filtroExercicio);
-        dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
-        dialogoSelecaoArquivo.addChoosableFileFilter(filtroTodosSuportados);
+        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroExercicio);
+        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
+        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroTodosSuportados);
 
-        dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
+        //dialogoSelecaoArquivo.setFilenameFilter(filtroTodosSuportados);
 
     }
 
@@ -184,8 +182,11 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         acaoAbrirArquivo = new AbstractAction(nome) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION) {
-                    final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
+                dialogoSelecaoArquivo.setMode(FileDialog.LOAD);
+                dialogoSelecaoArquivo.setFile("*.por;*.pex");
+                dialogoSelecaoArquivo.setVisible(true);
+                if (dialogoSelecaoArquivo.getFile() != null) {
+                    final File[] arquivos = dialogoSelecaoArquivo.getFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
 
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);

@@ -2,7 +2,11 @@ package br.univali.ps.ui.weblaf;
 
 import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.global.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.filechooser.FileChooserViewType;
+import com.alee.laf.filechooser.WebFileChooserPanel;
+import com.alee.laf.filechooser.WebFileChooserUI;
 import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.list.WebListUI;
 import com.alee.laf.menu.WebMenuBarUI;
@@ -116,36 +120,16 @@ public class WeblafUtils {
         configuraWeblaf(painel, null);
     }
 
-    private static boolean weblafInstalado = false;
 
     public static void instalaWeblaf() {
-        if (!weblafInstalado) {
+        if (!weblafEstaInstalado()) {
             StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
-
-            //instalando os UIs manualmente para evitar que o FileChooser seja alterado também.
-            UIManager.put("ButtonUI", WebButtonUI.class.getName());
-            UIManager.put("PanelUI", WebPanelUI.class.getName());
-            UIManager.put("TabbedPaneUI", WebTabbedPaneUI.class.getName());
-            UIManager.put("ScrollPaneUI", WebScrollPaneUI.class.getName());
-            UIManager.put("ScrollBarUI", WebScrollBarUI.class.getName());
-            UIManager.put("TableUI", WebTableUI.class.getName());
-            UIManager.put("TableHeaderUI", WebTableHeaderUI.class.getName());
-            UIManager.put("MenuBarUI", WebMenuBarUI.class.getName());
-            UIManager.put("MenuUI", WebMenuUI.class.getName());
-            UIManager.put("MenuItemUI", WebMenuItemUI.class.getName());
-            UIManager.put("ToolBarUI", WebToolBarUI.class.getName());
-           UIManager.put("TreeUI", WebTreeUI.class.getName()); 
-           UIManager.put("SeparatorUI", WebSeparatorUI.class.getName()); 
-           UIManager.put("ListUI", WebListUI.class.getName()); 
-           UIManager.put("LabelUI", WebLabelUI.class.getName()); 
-           UIManager.put("SplitPaneUI", WebSplitPaneUI.class.getName()); 
-           UIManager.put("SplitButtonUI", WebSplitButtonUI.class.getName()); 
-            weblafInstalado = true;
+            WebLookAndFeel.install();
         }
     }
 
     public static boolean weblafEstaInstalado() {
-        return weblafInstalado;
+        return WebLookAndFeel.isInstalled();
     }
 
 }
