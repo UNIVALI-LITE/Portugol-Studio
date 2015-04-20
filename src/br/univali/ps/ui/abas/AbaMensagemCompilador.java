@@ -7,10 +7,14 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.table.WebTableHeaderUI;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -18,6 +22,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -47,12 +52,32 @@ public final class AbaMensagemCompilador extends Aba
         initComponents();
         configurarAparenciaTabela();
         instalarObservadores();
+        WeblafUtils.configuraWebLaf(jScrollPaneTabelaMensagens);
     }
 
+    //esta UI customizada é utilizada para desenhar a linha de baixo do header da tabela com uma cor mais suave
+    private static class PSTableHeaderUI extends WebTableHeaderUI {
+
+        private static final Color corDaLinhaDeBaixo = new Color(176, 176, 176);
+
+        @Override
+        public void paint(Graphics g, JComponent c) {
+            super.paint(g, c);
+            g.setColor(corDaLinhaDeBaixo);
+            g.drawLine(0, header.getHeight() - 1, header.getWidth(), header.getHeight() - 1);
+        }
+
+    }
+    
     private void configurarAparenciaTabela()
     {
-        tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
+        if(WeblafUtils.weblafEstaInstalado()){
+           tabelaMensagens.getTableHeader().setUI(new PSTableHeaderUI());
+        }
+        
+        tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //jScrollPaneTabelaMensagens.getViewport().setOpaque(false);
         tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
@@ -297,8 +322,7 @@ public final class AbaMensagemCompilador extends Aba
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
         tabelaMensagens = new javax.swing.JTable();
@@ -314,6 +338,7 @@ public final class AbaMensagemCompilador extends Aba
 
         tabelaMensagens.setBackground(new java.awt.Color(245, 245, 245));
         tabelaMensagens.setFillsViewportHeight(true);
+        tabelaMensagens.setOpaque(false);
         tabelaMensagens.setRequestFocusEnabled(false);
         tabelaMensagens.setRowHeight(24);
         tabelaMensagens.setSelectionBackground(new java.awt.Color(0, 84, 148));

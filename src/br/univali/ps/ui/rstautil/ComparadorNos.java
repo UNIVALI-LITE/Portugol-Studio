@@ -2,6 +2,7 @@ package br.univali.ps.ui.rstautil;
 
 import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import java.util.Comparator;
 
 /**

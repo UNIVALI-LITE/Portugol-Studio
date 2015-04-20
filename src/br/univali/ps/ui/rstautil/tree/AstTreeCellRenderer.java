@@ -756,15 +756,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         return null;
     }
 
-    @Override
-    public Object visitar(BibliotecasTreeNode no)
-    {
-        component.setText((String) no.getUserObject());
-        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif");
-        component.setIcon(icone);
-        component.setDisabledIcon(icone);
-        return null;
-    }
+
 
     @Override
     public Object visitar(GenericTreeNode no)

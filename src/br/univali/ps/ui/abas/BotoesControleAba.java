@@ -4,11 +4,12 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoListener;
 import br.univali.ps.ui.TelaPrincipal;
-import br.univali.ps.ui.swing.filtros.FiltroArquivo;
-import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -22,13 +23,12 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import net.java.balloontip.BalloonTip;
 
-public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener
-{
+public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
+
     private static final Icon iconeAtivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
     private static final Icon iconeInativo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
 
@@ -43,13 +43,12 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     private Aba abaAtual;
 
-    private FiltroArquivo filtroExercicio;
-    private FiltroArquivo filtroPrograma;
-    private FiltroArquivo filtroTodosSuportados;
-    private JFileChooser dialogoSelecaoArquivo;
+    //private FiltroArquivo filtroExercicio;
+    //private FiltroArquivo filtroPrograma;
+    //private FiltroArquivo filtroTodosSuportados;
+    private FileDialog dialogoSelecaoArquivo;
 
-    public BotoesControleAba(AbaInicial abaInicial, TelaPrincipal telaPrincipal)
-    {
+    public BotoesControleAba(AbaInicial abaInicial, TelaPrincipal telaPrincipal) {
         super(abaInicial);
 
         removeAll();
@@ -60,10 +59,14 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         configurarBotoes();
         criarDicasInterface();
         instalarObservadores(telaPrincipal);
+        if (WeblafUtils.weblafEstaInstalado()) {
+            ((WebButtonUI) botaoAbrir.getUI()).setRolloverDecoratedOnly(true);
+            ((WebButtonUI) botaoNovoArquivo.getUI()).setRolloverDecoratedOnly(true);
+        }
+
     }
 
-    private void configurarBotoes()
-    {
+    private void configurarBotoes() {
         botaoAbrir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoAbrir.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png"));
         botaoAbrir.setRolloverIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png"));
@@ -77,33 +80,81 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void configurarSeletorArquivo()
-    {
-        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
-        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
-        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+    private void configurarSeletorArquivo() {
+//        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
+//        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
+//        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
 
-        dialogoSelecaoArquivo = new JFileChooser();
-        dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
-        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
-        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+        dialogoSelecaoArquivo = new FileDialog((JFrame)null);
+        dialogoSelecaoArquivo.setDirectory(Configuracoes.getInstancia().getDiretorioUsuario().getAbsolutePath());
+        dialogoSelecaoArquivo.setMultipleMode(true);// MultiSelectionEnabled(true);
+        //dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
 
-        dialogoSelecaoArquivo.addChoosableFileFilter(filtroExercicio);
-        dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
-        dialogoSelecaoArquivo.addChoosableFileFilter(filtroTodosSuportados);
+        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroExercicio);
+        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
+        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroTodosSuportados);
 
-        dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
+        //dialogoSelecaoArquivo.setFilenameFilter(filtroTodosSuportados);
+
     }
 
-    private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop)
-    {
+//    //FileChooser hackeado para exibir o look and feel do sistema: http://stackoverflow.com/questions/2282211/windows-look-and-feel-for-jfilechooser
+//    public class PsFileChooser extends JFileChooser {
+//
+//        public void updateUI() {
+//            LookAndFeel old = UIManager.getLookAndFeel();
+//            try {
+//                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//            } catch (Throwable ex) {
+//                old = null;
+//            }
+//
+//            super.updateUI();
+//
+//            if (old != null) {
+//                FilePane filePane = findFilePane(this);
+//                filePane.setViewType(FilePane.VIEWTYPE_DETAILS);
+//                filePane.setViewType(FilePane.VIEWTYPE_LIST);
+//
+//                Color background = UIManager.getColor("Label.background");
+//                setBackground(background);
+//                setOpaque(true);
+//
+//                try {
+//                    UIManager.setLookAndFeel(old);
+//                } catch (UnsupportedLookAndFeelException ignored) {
+//                } // shouldn't get here
+//            }
+//        }
+//
+//        private FilePane findFilePane(Container parent) {
+//            for (Component comp : parent.getComponents()) {
+//                if (FilePane.class.isInstance(comp)) {
+//                    return (FilePane) comp;
+//                }
+//                if (comp instanceof Container) {
+//                    Container cont = (Container) comp;
+//                    if (cont.getComponentCount() > 0) {
+//                        FilePane found = findFilePane(cont);
+//                        if (found != null) {
+//                            return found;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            return null;
+//        }
+//
+//    }
+
+    private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop) {
         configurarAcaoNovoArquivo(telaPrincipalDesktop);
         configurarAcaoAbrirArquivo(telaPrincipalDesktop);
         configurarAcaoExibirTelaInicial(telaPrincipalDesktop);
     }
 
-    private void configurarAcaoNovoArquivo(final TelaPrincipal telaPrincipal)
-    {
+    private void configurarAcaoNovoArquivo(final TelaPrincipal telaPrincipal) {
         /*
          * Esta ação não deveria estar exposta.
          * Futuramente vamos movê-la para o local correto ou encapsulá-la
@@ -111,11 +162,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         final String nome = ACAO_NOVO_ARQUIVO;
         final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK);
 
-        acaoNovoArquivo = new AbstractAction(nome)
-        {
+        acaoNovoArquivo = new AbstractAction(nome) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 telaPrincipal.criarNovoCodigoFonte();
             }
         };
@@ -126,19 +175,18 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoAbrirArquivo(final TelaPrincipal telaPrincipal)
-    {
+    private void configurarAcaoAbrirArquivo(final TelaPrincipal telaPrincipal) {
         final String nome = "Abrir arquivo";
         final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK);
 
-        acaoAbrirArquivo = new AbstractAction(nome)
-        {
+        acaoAbrirArquivo = new AbstractAction(nome) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION)
-                {
-                    final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
+            public void actionPerformed(ActionEvent e) {
+                dialogoSelecaoArquivo.setMode(FileDialog.LOAD);
+                dialogoSelecaoArquivo.setFile("*.por;*.pex");
+                dialogoSelecaoArquivo.setVisible(true);
+                if (dialogoSelecaoArquivo.getFile() != null) {
+                    final File[] arquivos = dialogoSelecaoArquivo.getFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
 
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);
@@ -152,16 +200,13 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoExibirTelaInicial(final TelaPrincipal telaPrincipal)
-    {
+    private void configurarAcaoExibirTelaInicial(final TelaPrincipal telaPrincipal) {
         final String nome = "Exibir tela inicial";
         final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK);
 
-        acaoExibirTelaInicial = new AbstractAction(nome)
-        {
+        acaoExibirTelaInicial = new AbstractAction(nome) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 getAba().selecionar();
             }
         };
@@ -170,122 +215,102 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void criarDicasInterface()
-    {
-        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", acaoAbrirArquivo, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", acaoNovoArquivo, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+    private void criarDicasInterface() {
+        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", acaoAbrirArquivo);
+        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", acaoNovoArquivo);
+        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial);
     }
 
-    private void instalarObservadores(final TelaPrincipal telaPrincipal)
-    {
+    private void instalarObservadores(final TelaPrincipal telaPrincipal) {
         telaPrincipal.getPainelTabulado().adicionaPainelTabuladoListener(this);
 
-        titulo.addMouseListener(new MouseAdapter()
-        {
+        titulo.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e)
-            {
-                if (!(abaAtual instanceof AbaInicial))
-                {
+            public void mouseEntered(MouseEvent e) {
+                if (!(abaAtual instanceof AbaInicial)) {
                     ativar();
                 }
             }
 
             @Override
-            public void mouseExited(MouseEvent e)
-            {
-                if (!(abaAtual instanceof AbaInicial))
-                {
+            public void mouseExited(MouseEvent e) {
+                if (!(abaAtual instanceof AbaInicial)) {
                     desativar();
                 }
             }
 
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 getAba().selecionar();
             }
         });
     }
 
     @Override
-    protected void calculaTamanhoCabecalho()
-    {
+    protected void calculaTamanhoCabecalho() {
 
     }
 
     @Override
-    public void abaSelecionada(Aba aba)
-    {
+    public void abaSelecionada(Aba aba) {
         abaAtual = aba;
 
-        if (abaAtual == this.getAba())
-        {
+        if (abaAtual == this.getAba()) {
             ativar();
-        }
-        else
-        {
+        } else {
             desativar();
         }
     }
 
-    private void desativar()
-    {
+    private void desativar() {
         titulo.setIcon(iconeInativo);
         titulo.setForeground(corInativo);
     }
 
-    private void ativar()
-    {
+    private void ativar() {
         titulo.setIcon(iconeAtivo);
         titulo.setForeground(corAtivo);
     }
 
     @Override
-    public String getTitulo()
-    {
+    public String getTitulo() {
         return "Pagina Inicial";
     }
 
     @Override
-    public void setIcone(Icon icone)
-    {
+    public void setIcone(Icon icone) {
     }
 
     @Override
-    public void setBotaoFecharVisivel(boolean removivel)
-    {
+    public void setBotaoFecharVisivel(boolean removivel) {
     }
 
     @Override
-    public void setTitulo(String titulo)
-    {
+    public void setTitulo(String titulo) {
 
     }
 
-    public void exibirDica(final String dica)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    public void exibirDica(final String dica) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
-                FabricaDicasInterface.criarDicaInterfaceEstatica(titulo, dica, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+            public void run() {
+                FabricaDicasInterface.criarDicaInterfaceEstatica(titulo, dica);
             }
         });
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         painelTitulo = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
         painelBotoes = new javax.swing.JPanel();
         botaoAbrir = new javax.swing.JButton();
         botaoNovoArquivo = new javax.swing.JButton();
+
+        jMenu1.setText("jMenu1");
 
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(180, 25));
@@ -314,8 +339,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         painelBotoes.setLayout(new java.awt.GridLayout(1, 2));
 
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
-        botaoAbrir.setBorderPainted(false);
-        botaoAbrir.setContentAreaFilled(false);
         botaoAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         botaoAbrir.setFocusable(false);
         botaoAbrir.setHideActionText(true);
@@ -329,8 +352,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         painelBotoes.add(botaoAbrir);
 
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
-        botaoNovoArquivo.setBorderPainted(false);
-        botaoNovoArquivo.setContentAreaFilled(false);
         botaoNovoArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         botaoNovoArquivo.setFocusable(false);
         botaoNovoArquivo.setHideActionText(true);
@@ -348,6 +369,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoAbrir;
     private javax.swing.JButton botaoNovoArquivo;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelTitulo;
     private javax.swing.JLabel titulo;

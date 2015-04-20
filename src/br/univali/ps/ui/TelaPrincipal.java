@@ -14,6 +14,7 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaLogAtualizacoes;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public final class TelaPrincipal extends JFrame {
 
     public static void main(final String argumentos[]) {
         PortugolStudio.getInstancia().iniciar(argumentos);
+         
     }
 
     public TelaPrincipal() {
@@ -50,6 +52,7 @@ public final class TelaPrincipal extends JFrame {
 
     private void criaAbas() {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
+        
     }
 
     private void configurarJanela() {
@@ -160,8 +163,8 @@ public final class TelaPrincipal extends JFrame {
         gerenciadorAtualizacoes.setObservadorAtualizacao(new ObservadorAtualizacao() {
             @Override
             public void atualizacaoConcluida() {
-                BotoesControleAba cabecalho = (BotoesControleAba) getPainelTabulado().getAbaInicial().getCabecalho();
-                cabecalho.exibirDica("Foram encontradas novas atualizações. Elas serão instaladas na próxima vez em que o Portugol Studio for iniciado");
+                //BotoesControleAba cabecalho = (BotoesControleAba) getPainelTabulado().getAbaInicial().getCabecalho();
+                FabricaDicasInterface.mostrarNotificacao("Foram encontradas novas atualizações. Elas serão instaladas na próxima vez em que o Portugol Studio for iniciado");
             }
         });
 
@@ -271,8 +274,7 @@ public final class TelaPrincipal extends JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelTabuladoPrincipal = new br.univali.ps.ui.PainelTabuladoPrincipal();
 
@@ -281,7 +283,7 @@ public final class TelaPrincipal extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
 
-        painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 2, 2, 2));
         getContentPane().add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
 
         pack();

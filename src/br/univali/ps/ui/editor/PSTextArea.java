@@ -2,18 +2,29 @@ package br.univali.ps.ui.editor;
 
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.util.IconFactory;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.panel.WebPanelUI;
+import com.alee.laf.text.WebTextAreaUI;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.text.BadLocationException;
@@ -28,6 +39,7 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.IconRowHeader;
 import org.fife.ui.rtextarea.LineNumberList;
+import org.fife.ui.rtextarea.RTATextTransferHandler;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -46,7 +58,40 @@ public class PSTextArea extends RSyntaxTextArea {
 
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
+        setBorder(null);
+        
+        
+        
         this.pontosDeParada = new ArrayList<>();
+        setTransferHandler(new RTATextTransferHandler() {//usa a própria classe to RSyntax mas modifica a criação da dragImage
+            @Override
+            public Image getDragImage() {
+                String textoSelecionado = getSelectedText();
+                
+                FontMetrics metrics = getFontMetrics(getFont());
+                final int MARGEM = 5;
+                int larguraDotexto = MARGEM + metrics.stringWidth(textoSelecionado) + MARGEM;
+                int alturaDoTexto = MARGEM + metrics.getHeight() + MARGEM;
+                BufferedImage image = new BufferedImage(larguraDotexto, alturaDoTexto, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = (Graphics2D)image.getGraphics();
+                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                g.setColor(Color.LIGHT_GRAY);
+                g.fillRect(0, 0, larguraDotexto - 1, alturaDoTexto - 1);
+                g.setFont(getFont());
+                g.setColor(Color.DARK_GRAY);
+                g.drawString(textoSelecionado, MARGEM, alturaDoTexto - metrics.getAscent());
+                return image;
+            }
+
+            @Override
+            public Point getDragImageOffset() {
+                Point p = super.getDragImageOffset(); 
+                p.translate(-16, 0);//deixa a imagem ao lado do ícone do cursor do mouse
+                return p;
+            }
+
+        });
+        setDragEnabled(true);
     }
 
     public void addListenter(PSTextAreaListener l) {
@@ -59,6 +104,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
     @Override
     protected RTextAreaUI createRTextAreaUI() {
+        
         return new PSTextAreaUI(this);
     }
 
@@ -71,6 +117,7 @@ public class PSTextArea extends RSyntaxTextArea {
     public void alternaPontoDeParada(int linha) {
         try {
             Gutter gutter = RSyntaxUtilities.getGutter(this);
+            
             //tentar remover
             for (GutterIconInfo gutterInfo : pontosDeParada) {
                 if (getLineOfOffset(gutterInfo.getMarkedOffset()) + 1 == linha) {
@@ -82,7 +129,7 @@ public class PSTextArea extends RSyntaxTextArea {
             }
 
             //se não removeu então está inserindo. A inserção acontece em linha-1 porque o gutter conta as linhas a partir do zero
-            GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha-1, iconeDoPontoDeParada);
+            GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(linha - 1, iconeDoPontoDeParada);
             pontosDeParada.add(iconeInfo);
             disparaPontosDeParadaAtualizados();
 
@@ -143,6 +190,8 @@ public class PSTextArea extends RSyntaxTextArea {
                 }
 
             });
+            //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
+           iconRowHeader.setBackground(new Color(247, 247, 247));
             return iconRowHeader;
         }
 
@@ -164,15 +213,6 @@ public class PSTextArea extends RSyntaxTextArea {
 
     }
 
-//    @Override
-//    public Dimension getSize() {
-//        Dimension size = super.getSize();
-//        if(size.height == 0 || size.width == 0){
-//            Dimension preferred = super.getPreferredSize();
-//            return new Dimension(preferred.width, preferred.height);
-//        }
-//        return size;
-//    }
     private int pontoParaLinha(Point p) {
         int linha = 0;
         try {
@@ -210,6 +250,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
             @Override
             public void run() {
+                WebLookAndFeel.install();
                 JFrame frame = new JFrame("Teste PsTextArea");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(800, 600);
@@ -217,10 +258,15 @@ public class PSTextArea extends RSyntaxTextArea {
                 PSTextArea textArea = new PSTextArea(new PortugolDocumento());
                 textArea.setIconeDosBreakPoints(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
                 textArea.setText("asd\nteste\ntoste\ntuste");
-                RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
+                final RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
+                scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 scrollPane.setFoldIndicatorEnabled(true);
                 scrollPane.setIconRowHeaderEnabled(true);
-                frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+                
+                JPanel panel = new JPanel(new BorderLayout());
+                panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                panel.add(scrollPane);
+                frame.add(panel, BorderLayout.CENTER);
 
                 frame.setVisible(true);
             }

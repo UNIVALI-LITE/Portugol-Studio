@@ -37,11 +37,11 @@ public abstract class Aba extends JPanel
          this.cabecalho = criarCabecalhoPadrao(titulo, icone, removivel);
      }
     
-    public Aba(CabecalhoAba cabecalhoAba)
-    {
-        this();        
-        this.cabecalho = cabecalhoAba;
-    }
+//    public Aba(CabecalhoAba cabecalhoAba)
+//    {
+//        this();        
+//        this.cabecalho = cabecalhoAba;
+//    }
     
     public static List<Class<? extends Aba>> classesFilhas()
     {

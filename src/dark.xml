@@ -26,9 +26,9 @@
    </secondaryLanguages>
    
    <!-- Gutter styling. -->
-   <gutterBorder color="81969A"/>
-   <lineNumbers fg="81969A"/>
-   <foldIndicator fg="6A8088" iconBg="2f383c"/>
+   <gutterBorder color="1E2324"/>
+   <lineNumbers fg="516268"/>
+   <foldIndicator fg="516268" iconBg="2f383c"/>
    <iconRowHeader activeLineRange="3399ff"/>
    
    <!-- Syntax tokens. -->

@@ -208,6 +208,10 @@ public final class Configuracoes
         return tamanhoFonteArvore;
     }
 
+    public void alterarCentralizarCondigoFonte(){
+        setCentralizarCodigoFonte(!centralizarCodigoFonte);
+    }
+    
     public void setCentralizarCodigoFonte(boolean centralizarCodigoFonte)
     {
         boolean valorAntigo = this.centralizarCodigoFonte;

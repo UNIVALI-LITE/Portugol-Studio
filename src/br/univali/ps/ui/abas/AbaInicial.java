@@ -40,20 +40,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import net.java.balloontip.BalloonTip;
+import javax.swing.plaf.basic.BasicSeparatorUI;
 
-public final class AbaInicial extends Aba
-{
+public final class AbaInicial extends Aba {
+
     private final TelaAtalhosTeclado telaAtalhosTeclado = new TelaAtalhosTeclado();
 
     private JPopupMenu menuExemplos;
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
-    
+
     private TelaEditarUriAtualizacao telaEditarUriAtualizacao;
 
-    public AbaInicial(TelaPrincipal telaPrincipal)
-    {
+    public AbaInicial(TelaPrincipal telaPrincipal) {
         super();
 
         setPainelTabulado(telaPrincipal.getPainelTabulado());
@@ -71,34 +70,30 @@ public final class AbaInicial extends Aba
 
         instalarObservadorCombinacoesSecretas();
         instalarAcoesSecretas();
+
+        jSeparator1.setUI(new BasicSeparatorUI());
+        jSeparator2.setUI(new BasicSeparatorUI());
+        jSeparator3.setUI(new BasicSeparatorUI());
+        jSeparator4.setUI(new BasicSeparatorUI());
     }
 
-    private void instalarObservadorCombinacoesSecretas()
-    {
+    private void instalarObservadorCombinacoesSecretas() {
         final StringBuilder sb = new StringBuilder();
 
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher()
-        {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             @Override
-            public boolean dispatchKeyEvent(KeyEvent e)
-            {
-                if (AbaInicial.this.getPainelTabulado().getAbaSelecionada() == AbaInicial.this && e.getID() == KeyEvent.KEY_PRESSED)
-                {
-                    if (Character.isLetterOrDigit(e.getKeyCode()))
-                    {
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                if (AbaInicial.this.getPainelTabulado().getAbaSelecionada() == AbaInicial.this && e.getID() == KeyEvent.KEY_PRESSED) {
+                    if (Character.isLetterOrDigit(e.getKeyCode())) {
                         sb.append(e.getKeyChar());
-                    }
-                    else if (e.getKeyCode() == KeyEvent.VK_ENTER)
-                    {
-                        synchronized (AbaInicial.this)
-                        {
+                    } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        synchronized (AbaInicial.this) {
                             String nome = sb.toString().toUpperCase();
                             Action acao = getActionMap().get(nome);
 
                             sb.delete(0, sb.length());
 
-                            if (acao != null)
-                            {
+                            if (acao != null) {
                                 acao.actionPerformed(null);
                             }
                         }
@@ -110,47 +105,36 @@ public final class AbaInicial extends Aba
         });
     }
 
-    private void instalarAcoesSecretas()
-    {
+    private void instalarAcoesSecretas() {
         instalarAcaoModificarURLAtualizacao();
     }
 
-    private void instalarAcaoModificarURLAtualizacao()
-    {
-        getActionMap().put("BETA", new AbstractAction()
-        {
+    private void instalarAcaoModificarURLAtualizacao() {
+        getActionMap().put("BETA", new AbstractAction() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (telaEditarUriAtualizacao == null)
-                {
+            public void actionPerformed(ActionEvent e) {
+                if (telaEditarUriAtualizacao == null) {
                     telaEditarUriAtualizacao = new TelaEditarUriAtualizacao();
                 }
-                
+
                 telaEditarUriAtualizacao.setLocationRelativeTo(null);
                 telaEditarUriAtualizacao.setVisible(true);
             }
         });
     }
 
-    private void configurarExibicaoAvisoVideoAulas()
-    {
-        addComponentListener(new ComponentAdapter()
-        {
+    private void configurarExibicaoAvisoVideoAulas() {
+        addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentShown(ComponentEvent e)
-            {
+            public void componentShown(ComponentEvent e) {
                 Configuracoes configuracoes = Configuracoes.getInstancia();
 
-                if (configuracoes.isExibirAvisoVideoAulas())
-                {
+                if (configuracoes.isExibirAvisoVideoAulas()) {
                     configuracoes.setExibirAvisoVideoAulas(false);
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             JOptionPane.showMessageDialog(AbaInicial.this, "Seja bem vindo!!\n\nPara tornar o Portugol Studio ainda melhor, preparamos uma série de vídeoaulas que irão auxiliá-lo no seu aprendizado.\nPara assistí-las, acesse o link \"Assistir Vídeoaulas\" localizado no menu \"Aprender\".\n\nObrigado por utilizar o Portugol Studio e bons estudos!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
@@ -159,14 +143,11 @@ public final class AbaInicial extends Aba
         });
     }
 
-    private void criarMenuExemplos()
-    {
-        try
-        {
+    private void criarMenuExemplos() {
+        try {
             File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
-            if (diretorioExemplos.exists())
-            {
+            if (diretorioExemplos.exists()) {
                 Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png");
                 Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
 
@@ -174,33 +155,25 @@ public final class AbaInicial extends Aba
 
                 List<String[]> entradasIndice = lerIndice(new File(diretorioExemplos, "indice.txt"));
 
-                for (String[] entradaIndice : entradasIndice)
-                {
+                for (String[] entradaIndice : entradasIndice) {
                     JMenuItem item = obterSubniveis(diretorioExemplos, entradaIndice, iconeDiretorio, iconeArquivo);
 
-                    if (item != null)
-                    {
+                    if (item != null) {
                         menuExemplos.add(item);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Não foi possível carregar os exemplos! O diretório de exemplos '%s' não existe!", diretorioExemplos.getPath()), ExcecaoAplicacao.Tipo.ERRO));
             }
-        }
-        catch (Exception excecao)
-        {
+        } catch (Exception excecao) {
             excecao.printStackTrace(System.out);
         }
     }
 
-    private JMenuItem obterSubniveis(File diretorioAtual, String[] entradaIndice, Icon iconeDiretorio, Icon iconeArquivo) throws Exception
-    {
+    private JMenuItem obterSubniveis(File diretorioAtual, String[] entradaIndice, Icon iconeDiretorio, Icon iconeArquivo) throws Exception {
         File caminho = new File(diretorioAtual, entradaIndice[1]);
 
-        if (caminho.isDirectory())
-        {
+        if (caminho.isDirectory()) {
             JMenu submenu = new JMenu(entradaIndice[0]);
 
             submenu.setIcon(iconeDiretorio);
@@ -208,40 +181,30 @@ public final class AbaInicial extends Aba
 
             List<String[]> entradasIndiceSubDiretorio = lerIndice(new File(caminho, "indice.txt"));
 
-            for (String[] entradaIndiceSubDiretorio : entradasIndiceSubDiretorio)
-            {
+            for (String[] entradaIndiceSubDiretorio : entradasIndiceSubDiretorio) {
                 JMenuItem item = obterSubniveis(caminho, entradaIndiceSubDiretorio, iconeDiretorio, iconeArquivo);
 
-                if (item != null)
-                {
+                if (item != null) {
                     submenu.add(item);
                 }
             }
 
-            if (submenu.getSubElements().length > 0)
-            {
+            if (submenu.getSubElements().length > 0) {
                 return submenu;
             }
-        }
-        else
-        {
-            JMenuItem item = new JMenuItem(new AbstractAction(entradaIndice[0], iconeArquivo)
-            {
+        } else {
+            JMenuItem item = new JMenuItem(new AbstractAction(entradaIndice[0], iconeArquivo) {
                 @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    try
-                    {
+                public void actionPerformed(ActionEvent e) {
+                    try {
                         File exemplo = new File(((JMenuItem) e.getSource()).getName());
                         String codigoFonte = FileHandle.open(exemplo);
                         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         getPainelTabulado().add(abaCodigoFonte);
-                        
+
                         //abaCodigoFonte.adicionar(getPainelTabulado());
-                    }
-                    catch (Exception excecao)
-                    {
+                    } catch (Exception excecao) {
                         PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
                     }
                 }
@@ -256,30 +219,22 @@ public final class AbaInicial extends Aba
         return null;
     }
 
-    private List<String[]> lerIndice(File arquivoIndice) throws Exception
-    {
-        if (arquivoIndice.exists())
-        {
+    private List<String[]> lerIndice(File arquivoIndice) throws Exception {
+        if (arquivoIndice.exists()) {
             int cont = 0;
             String linha;
             List<String[]> indice = new ArrayList<>();
 
-            try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8")))
-            {
-                while ((linha = leitor.readLine()) != null)
-                {
+            try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8"))) {
+                while ((linha = leitor.readLine()) != null) {
                     cont += 1;
 
-                    if (linha.trim().length() >= 3 && linha.contains("="))
-                    {
+                    if (linha.trim().length() >= 3 && linha.contains("=")) {
                         String[] entrada = linha.split("=");
 
-                        if (entrada.length == 2)
-                        {
+                        if (entrada.length == 2) {
                             indice.add(entrada);
-                        }
-                        else
-                        {
+                        } else {
                             throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: %s", cont, linha));
                         }
                     }
@@ -289,32 +244,24 @@ public final class AbaInicial extends Aba
             }
 
             return indice;
-        }
-        else
-        {
+        } else {
             throw new Exception(String.format("O arquivo de índice não foi encontrado no diretório: %s", arquivoIndice.getCanonicalPath()));
         }
     }
 
-    private void abrirGitHub()
-    {
-        try
-        {
+    private void abrirGitHub() {
+        try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/Univali-l2s/Portugol"));
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara auxiliar no desenvolvimento do projeto, por favor acesse o seguinte endereço:\n\nhttps://github.com/Univali-l2s/Portugol", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    private void configurarCursorLogos()
-    {
+    private void configurarCursorLogos() {
         logoUnivali.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void configurarAcoes()
-    {
+    private void configurarAcoes() {
         configurarAcaoSairProgramando();
         configurarAcaoConhecerLinguagem();
         configurarAcaoAssistirVideoAulas();
@@ -326,19 +273,13 @@ public final class AbaInicial extends Aba
         configurarAcaoExibirAtalhosTeclado();
     }
 
-    private void configurarAcaoAssistirVideoAulas()
-    {
-        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
-        {
+    private void configurarAcaoAssistirVideoAulas() {
+        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName()) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
+            public void actionPerformed(ActionEvent e) {
+                try {
                     java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://www.youtube.com/user/portugolstudio"));
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara assistir às vídeo aulas, acesse o seguinte endereço:\n\nhttps://www.youtube.com/user/portugolstudio", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -347,13 +288,10 @@ public final class AbaInicial extends Aba
         getActionMap().put(rotuloAssistirVideoAulas.getName(), acao);
     }
 
-    private void configurarAcaoSairProgramando()
-    {
-        Action acao = new AbstractAction(rotuloSairProgramando.getName())
-        {
+    private void configurarAcaoSairProgramando() {
+        Action acao = new AbstractAction(rotuloSairProgramando.getName()) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO).actionPerformed(e);
                 Action action = getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO);
             }
@@ -362,13 +300,10 @@ public final class AbaInicial extends Aba
         getActionMap().put(rotuloSairProgramando.getName(), acao);
     }
 
-    private void configurarAcaoConhecerLinguagem()
-    {
-        Action acao = new AbstractAction(rotuloConhecerLinguagem.getName())
-        {
+    private void configurarAcaoConhecerLinguagem() {
+        Action acao = new AbstractAction(rotuloConhecerLinguagem.getName()) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
             }
         };
@@ -376,13 +311,10 @@ public final class AbaInicial extends Aba
         getActionMap().put(rotuloConhecerLinguagem.getName(), acao);
     }
 
-    private void configurarAcaoConhecerBibliotecas()
-    {
-        Action acao = new AbstractAction(rotuloConhecerBibliotecas.getName())
-        {
+    private void configurarAcaoConhecerBibliotecas() {
+        Action acao = new AbstractAction(rotuloConhecerBibliotecas.getName()) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
             }
         };
@@ -390,13 +322,10 @@ public final class AbaInicial extends Aba
         getActionMap().put(rotuloConhecerBibliotecas.getName(), acao);
     }
 
-    private void configurarAcaoExibirTelaSobre()
-    {
-        Action acao = new AbstractAction(rotuloInformacoesSoftware.getName())
-        {
+    private void configurarAcaoExibirTelaSobre() {
+        Action acao = new AbstractAction(rotuloInformacoesSoftware.getName()) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 PortugolStudio.getInstancia().getTelaSobre().setVisible(true);
             }
         };
@@ -404,13 +333,10 @@ public final class AbaInicial extends Aba
         getActionMap().put(rotuloInformacoesSoftware.getName(), acao);
     }
 
-    private void configurarAcaoAjudarDesenvolvimento()
-    {
-        Action acao = new AbstractAction(rotuloAjudarDesenvolvimento.getName())
-        {
+    private void configurarAcaoAjudarDesenvolvimento() {
+        Action acao = new AbstractAction(rotuloAjudarDesenvolvimento.getName()) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 abrirGitHub();
             }
         };
@@ -418,19 +344,13 @@ public final class AbaInicial extends Aba
         getActionMap().put(rotuloAjudarDesenvolvimento.getName(), acao);
     }
 
-    private void configurarAcaoRelatarBug()
-    {
-        Action acao = new AbstractAction(rotuloRelatarBug.getName())
-        {
+    private void configurarAcaoRelatarBug() {
+        Action acao = new AbstractAction(rotuloRelatarBug.getName()) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
+            public void actionPerformed(ActionEvent e) {
+                try {
                     java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform"));
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara relatar um bug, por favor acesse o seguinte endereço:\n\nhttps://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -439,27 +359,22 @@ public final class AbaInicial extends Aba
         getActionMap().put(rotuloRelatarBug.getName(), acao);
     }
 
-    private void configurarLinks()
-    {
-        MouseListener listener = new MouseAdapter()
-        {
+    private void configurarLinks() {
+        MouseListener listener = new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
                 String nomeAcao = rotulo.getName();
 
                 Action acao = getActionMap().get(nomeAcao);
 
-                if (acao != null)
-                {
+                if (acao != null) {
                     acao.actionPerformed(null);
                 }
             }
 
             @Override
-            public void mouseEntered(MouseEvent e)
-            {
+            public void mouseEntered(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setForeground(new Color(255, 255, 130));
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.BOLD));
@@ -467,8 +382,7 @@ public final class AbaInicial extends Aba
             }
 
             @Override
-            public void mouseExited(MouseEvent e)
-            {
+            public void mouseExited(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setForeground(Color.WHITE);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.PLAIN));
@@ -503,23 +417,17 @@ public final class AbaInicial extends Aba
         rotuloExplorarExemplos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void configurarAcaoExplorarExemplos()
-    {
+    private void configurarAcaoExplorarExemplos() {
         String nome = "explorarExemplos";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.ALT_DOWN_MASK);
 
-        acaoExplorarExemplos = new AbstractAction(nome)
-        {
+        acaoExplorarExemplos = new AbstractAction(nome) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (menuExemplos != null)
-                {
+            public void actionPerformed(ActionEvent e) {
+                if (menuExemplos != null) {
                     selecionar();
                     menuExemplos.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
-                }
-                else
-                {
+                } else {
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao("Não foi possível carregar os exemplos", ExcecaoAplicacao.Tipo.ERRO));
                 }
             }
@@ -533,16 +441,13 @@ public final class AbaInicial extends Aba
         getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoExibirAtalhosTeclado()
-    {
+    private void configurarAcaoExibirAtalhosTeclado() {
         String nome = "atalhosTeclado";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
 
-        acaoExibirAtalhosTeclado = new AbstractAction(nome)
-        {
+        acaoExibirAtalhosTeclado = new AbstractAction(nome) {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 telaAtalhosTeclado.setLocationRelativeTo(null);
                 telaAtalhosTeclado.setVisible(true);
             }
@@ -556,9 +461,8 @@ public final class AbaInicial extends Aba
         getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void criarDicasInterface()
-    {
-        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
+    private void criarDicasInterface() {
+        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI");
 
     }
 
@@ -909,12 +813,9 @@ public final class AbaInicial extends Aba
 
     private void logoUnivaliMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_logoUnivaliMouseClicked
     {//GEN-HEADEREND:event_logoUnivaliMouseClicked
-        try
-        {
+        try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://www.univali.br/computacao"));
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara conhecer o curso de computação da UNIVALI, por favor acesse o seguinte endereço:\n\nhttp://www.univali.br/computacao", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_logoUnivaliMouseClicked

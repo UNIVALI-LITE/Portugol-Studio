@@ -9,7 +9,6 @@ import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.java.balloontip.BalloonTip;
 
 /**
  *
@@ -34,7 +33,7 @@ public class Logo extends javax.swing.JPanel
             }
         });
 
-        FabricaDicasInterface.criarDicaInterface(Logo.this, "Visitar página oficial", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
+        FabricaDicasInterface.criarDicaInterface(Logo.this, "Visitar página oficial");
         versao.setText(PortugolStudio.getInstancia().getVersao());
     }
 

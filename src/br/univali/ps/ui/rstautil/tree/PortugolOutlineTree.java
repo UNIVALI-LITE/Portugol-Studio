@@ -23,16 +23,32 @@ import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 
 import br.univali.ps.ui.rstautil.PortugolParser;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.Element;
@@ -64,7 +80,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     private DefaultTreeModel model;
     private PortugolParser parser;
     private Listener listener;
-    private boolean atualizacaoHabilitada;
+    private boolean atualizacaoHabilitada = false;
 
     //usei este map para guardar os últimos valores dos nós da JTree. Quando
     //um programa é executado o valor de um nó pode mudar muitas vezes durante
@@ -88,7 +104,9 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
     }
 
     public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada) {
-        this.atualizacaoHabilitada = atualizaoAtivada;
+        //this.atualizacaoHabilitada = atualizaoAtivada;
+        //a atualização dos valores da árvore está desabilitada, a árvore está mostrando
+        //apenas a estrutura
     }
 
     /**
@@ -109,6 +127,105 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         setModel(model);
         listener = new Listener();
         addTreeSelectionListener(listener);
+        setDragEnabled(true);
+        setTransferHandler(new TreeTransferHandler());
+    }
+
+    private class TreeTransferHandler extends TransferHandler {
+
+        @Override
+        public boolean canImport(TransferHandler.TransferSupport ts) {
+            return true; //retornando true só para exibir o ícone mais adequado
+        }
+
+        @Override
+        public boolean importData(TransferHandler.TransferSupport ts) {
+            return false;//a árvore não aceita drop
+        }
+
+        @Override
+        public Point getDragImageOffset() {
+            Point p = super.getDragImageOffset(); //To change body of generated methods, choose Tools | Templates.
+            p.translate(-20, 0);//faz com que a imagem fique ao lado direito do ícone de arrastar e soltar
+            return p;
+        }
+
+        @Override
+        public Image getDragImage() {
+            if (getSelectionPaths() == null) {
+                return null;
+            }
+
+            List<String> nomesDosSimbolos = new ArrayList<>();
+            FontMetrics metrics = getFontMetrics(getFont());
+            int larguraDaImagem = 0;
+            for (TreePath path : getSelectionPaths()) {
+                try {
+                    DefaultMutableTreeNode selecionado = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    if (selecionado.isLeaf()) {
+                        NoDeclaracao noDeclaracao = (NoDeclaracao) selecionado.getUserObject();
+                        String nomeDoSimbolo = noDeclaracao.getNome();
+                        nomesDosSimbolos.add(nomeDoSimbolo );
+                        int larguraDoNomeDoSimbolo = metrics.stringWidth(nomeDoSimbolo);
+                        if(larguraDoNomeDoSimbolo > larguraDaImagem){
+                            larguraDaImagem = larguraDoNomeDoSimbolo;   
+                        }
+                    }
+                } catch (Exception e) {
+                    //
+                }
+            }
+            if (!nomesDosSimbolos.isEmpty()) {
+                final int MARGEM = 5;
+                int alturaDaImagem = metrics.getHeight() * nomesDosSimbolos.size();
+                larguraDaImagem = MARGEM + Math.max(larguraDaImagem, 50) + MARGEM;//evita que variáveis com apenas uma letra no nome sejam desenhadas muito pequenas
+                BufferedImage imagem = new BufferedImage(larguraDaImagem, alturaDaImagem, BufferedImage.TYPE_INT_ARGB );
+                Graphics2D g = (Graphics2D)imagem.getGraphics();
+                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                g.setColor(Color.LIGHT_GRAY);
+                g.fillRect(0, 0, larguraDaImagem, alturaDaImagem);
+                g.setFont(getFont());
+                for (int i=0; i < nomesDosSimbolos.size(); ++i) {
+                    int larguraDoNome = metrics.stringWidth(nomesDosSimbolos.get(i));
+                    int xDaString = (nomesDosSimbolos.size() == 1) ? (larguraDaImagem/2 - larguraDoNome/2) : MARGEM;//centraliza caso tenha apenas um símbolo
+                    int yDaString = metrics.getHeight() * (i + 1) - metrics.getDescent();
+                    g.setColor(Color.DARK_GRAY);
+                    g.drawString(nomesDosSimbolos.get(i), xDaString, yDaString);
+                }
+                return imagem;
+            }
+            return null;
+        }
+
+        @Override
+        protected Transferable createTransferable(JComponent jc) {
+            if (getSelectionPaths() != null) {
+                List<NoDeclaracao> nosSelecionados = new ArrayList<>();
+                TreePath paths[] = getSelectionPaths();
+                for (TreePath caminhoSelecionado : paths) {
+                    Object componentSelectionado = caminhoSelecionado.getLastPathComponent();
+                    if (componentSelectionado != null && componentSelectionado instanceof DefaultMutableTreeNode) {
+                        DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) caminhoSelecionado.getLastPathComponent();
+                        if (treeNode.isLeaf()) {
+                            try {
+                                NoDeclaracao noDeclaracao = (NoDeclaracao) treeNode.getUserObject();
+                                nosSelecionados.add(noDeclaracao);
+                            } catch (Exception e) {
+                                //caso o nó não seja um NoDeclaracao
+                                Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.WARNING, e.getMessage(), e);
+                            }
+                        }
+                    }
+                }
+                return new AbaCodigoFonte.NoTransferable(nosSelecionados);
+            }
+            return null;
+        }
+
+        @Override
+        public int getSourceActions(JComponent jc) {
+            return DnDConstants.ACTION_COPY;
+        }
     }
 
     AstOutlineTreeFactory astFactory = new AstOutlineTreeFactory();
