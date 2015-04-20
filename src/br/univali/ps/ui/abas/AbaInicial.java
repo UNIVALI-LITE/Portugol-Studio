@@ -41,7 +41,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicSeparatorUI;
-import net.java.balloontip.BalloonTip;
 
 public final class AbaInicial extends Aba {
 
@@ -463,7 +462,7 @@ public final class AbaInicial extends Aba {
     }
 
     private void criarDicasInterface() {
-        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
+        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI");
 
     }
 

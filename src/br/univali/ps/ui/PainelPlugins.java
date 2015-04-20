@@ -7,10 +7,8 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import net.java.balloontip.BalloonTip;
 
 /**
  * @author Luiz Fernando Noschang
@@ -29,8 +27,8 @@ public final class PainelPlugins extends JPanel
 
     private void criarDicasInterface()
     {
-        FabricaDicasInterface.criarDicaInterface(botaoFechar, "Fecha o painel de plugins", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
-        FabricaDicasInterface.criarDicaInterface(botaoInformacoes, "Exibe informações sobre este plugin", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
+        FabricaDicasInterface.criarDicaInterface(botaoFechar, "Fecha o painel de plugins");
+        FabricaDicasInterface.criarDicaInterface(botaoInformacoes, "Exibe informações sobre este plugin");
     }
 
     public void setPlugin(Plugin plugin)

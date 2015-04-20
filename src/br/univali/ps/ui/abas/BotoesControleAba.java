@@ -32,9 +32,6 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.basic.BasicFileChooserUI;
-import javax.swing.plaf.basic.BasicPanelUI;
-import net.java.balloontip.BalloonTip;
 import sun.swing.FilePane;
 
 public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
@@ -222,9 +219,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     }
 
     private void criarDicasInterface() {
-        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", acaoAbrirArquivo, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", acaoNovoArquivo, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
-        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", acaoAbrirArquivo);
+        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", acaoNovoArquivo);
+        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial);
     }
 
     private void instalarObservadores(final TelaPrincipal telaPrincipal) {
@@ -300,7 +297,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                FabricaDicasInterface.criarDicaInterfaceEstatica(titulo, dica, BalloonTip.Orientation.LEFT_BELOW, BalloonTip.AttachLocation.SOUTH);
+                FabricaDicasInterface.criarDicaInterfaceEstatica(titulo, dica);
             }
         });
     }

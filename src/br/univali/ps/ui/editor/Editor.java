@@ -66,7 +66,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
-import net.java.balloontip.BalloonTip;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
 import org.fife.rsta.ui.search.SearchEvent;
@@ -121,10 +120,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private Action acaoComentar;
     private Action acaoDescomentar;
-    //private Action acaoExpandir;
-    //private Action acaoRestaurar;
     private Action acaoAlternarModoEditor;
-    private Action acaoPesquisarSubstituir;
     private Action acaoCentralizarCodigoFonte;
 
     private FindDialog dialogoPesquisar;
@@ -197,10 +193,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void criarDicasInterface() {
         //FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         //FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", acaoDescomentar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar);
+        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", acaoDescomentar);
         //FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Expande/restaura o tamanho do editor", acaoAlternarModoEditor, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Expande/restaura o tamanho do editor", acaoAlternarModoEditor);
         //FabricaDicasInterface.criarDicaInterface(btnPesquisar, "Pesquisa e/ou substitui um texto no editor", acaoPesquisarSubstituir, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
         //FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
@@ -795,9 +791,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoExterna(btnInterromper, acaoInterromper);
         configurarAcaoExterna(btnDepurar, acaoExecutarPasso);
 
-        FabricaDicasInterface.criarDicaInterface(btnDepurar, "Executa o programa atual passo a passo", acaoExecutarPasso, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual até o próximo ponto de parada", acaoExecutarPontoParada, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução do programa atual", acaoInterromper, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnDepurar, "Executa o programa atual passo a passo", acaoExecutarPasso);
+        FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual até o próximo ponto de parada", acaoExecutarPontoParada);
+        FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução do programa atual", acaoInterromper);
     }
 
     private void configurarAcaoExterna(final JButton botao, final Action acaoExterna) {

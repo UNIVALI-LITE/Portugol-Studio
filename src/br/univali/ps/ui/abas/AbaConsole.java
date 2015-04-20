@@ -11,7 +11,6 @@ import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.scroll.WebScrollPaneUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,7 +26,6 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,16 +33,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
-import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.BalloonTipStyle;
-import net.java.balloontip.styles.EdgedBalloonStyle;
-import net.java.balloontip.utils.FadingUtils;
+
 
 public final class AbaConsole extends Aba implements PropertyChangeListener {
 
@@ -56,10 +50,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
     private boolean executandoPrograma = false;
 
-    private BalloonTip popupLeia;
+    //private BalloonTip popupLeia;
     private final JLabel rotuloPopupLeia;
-    private final BalloonTipStyle estiloPopupLeia;
-    private final ActionListener foo;
+    //private final BalloonTipStyle estiloPopupLeia;
+    private final ActionListener listener;
     private Timer timerPopupLeia;
     private boolean removendoPopup = true;
 
@@ -91,16 +85,16 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         rotuloPopupLeia.setPreferredSize(new Dimension(230, 70));
         rotuloPopupLeia.setFont(rotuloPopupLeia.getFont().deriveFont(12f));
 
-        estiloPopupLeia = new EdgedBalloonStyle(new Color(255, 255, 210), Color.BLACK);
-        popupLeia = new BalloonTip(painelRolagem.getViewport(), rotuloPopupLeia, estiloPopupLeia, BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH, 50, 25, false);
-        popupLeia.setPadding(8);
-        popupLeia.setVisible(false);
+//        estiloPopupLeia = new EdgedBalloonStyle(new Color(255, 255, 210), Color.BLACK);
+//        popupLeia = new BalloonTip(painelRolagem.getViewport(), rotuloPopupLeia, estiloPopupLeia, BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH, 50, 25, false);
+//        popupLeia.setPadding(8);
+//        popupLeia.setVisible(false);
 
-        foo = new ActionListener() {
+        listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (removendoPopup) {
-                    popupLeia.setVisible(false);
+                    //popupLeia.setVisible(false);
                 }/*
                  * else
                  * {
@@ -231,12 +225,12 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
     }
 
-    private void criarDicasInterface() {
-        FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-    }
+//    private void criarDicasInterface() {
+//        FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console");
+//        FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console");
+//        FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console");
+//        FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console");
+//    }
 
     private void instalarObservadores() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
@@ -490,7 +484,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removendoPopup = false;
-                FadingUtils.fadeInBalloon(popupLeia, foo, 500, 24);
+                //FadingUtils.fadeInBalloon(popupLeia, listener, 500, 24);
                 cancelarPopupLeia();
             }
         });
@@ -532,9 +526,9 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
         removendoPopup = true;
 
-        if (popupLeia.isVisible()) {
-            FadingUtils.fadeOutBalloon(popupLeia, foo, 500, 24);
-        }
+//        if (popupLeia.isVisible()) {
+//            FadingUtils.fadeOutBalloon(popupLeia, listener, 500, 24);
+//        }
     }
 
     public void registrarComoSaida(Programa p) {

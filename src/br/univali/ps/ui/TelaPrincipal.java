@@ -163,8 +163,8 @@ public final class TelaPrincipal extends JFrame {
         gerenciadorAtualizacoes.setObservadorAtualizacao(new ObservadorAtualizacao() {
             @Override
             public void atualizacaoConcluida() {
-                BotoesControleAba cabecalho = (BotoesControleAba) getPainelTabulado().getAbaInicial().getCabecalho();
-                cabecalho.exibirDica("Foram encontradas novas atualizações. Elas serão instaladas na próxima vez em que o Portugol Studio for iniciado");
+                //BotoesControleAba cabecalho = (BotoesControleAba) getPainelTabulado().getAbaInicial().getCabecalho();
+                FabricaDicasInterface.mostrarNotificacao("Foram encontradas novas atualizações. Elas serão instaladas na próxima vez em que o Portugol Studio for iniciado");
             }
         });
 
