@@ -139,7 +139,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
 
-        if (WebLookAndFeel.isInstalled()) {
+        if (WeblafUtils.weblafEstaInstalado()) {
             
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             

@@ -11,8 +11,17 @@ import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import java.awt.Color;
+import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.menu.WebMenuBarUI;
+import com.alee.laf.menu.WebMenuItemUI;
+import com.alee.laf.menu.WebMenuUI;
+import com.alee.laf.panel.WebPanelUI;
+import com.alee.laf.scroll.WebScrollBarUI;
+import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
+import com.alee.laf.table.WebTableHeaderUI;
+import com.alee.laf.table.WebTableUI;
+import com.alee.laf.toolbar.WebToolBarUI;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -352,12 +361,14 @@ public final class PortugolStudio {
 
             @Override
             public void run() {
-                StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
-                //StyleConstants.separatorColor = Color.BLUE;
-                //StyleConstants.separatorUpperColor = Color.RED; 
-                //StyleConstants.separatorLightUpperColor = StyleConstants.separatorColor.darker();
-                //StyleConstants.separatorLightColor = Color.GRAY;// StyleConstants.separatorColor;
-                WebLookAndFeel.install();
+                try{
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    WeblafUtils.instalaWeblaf();
+                }
+                catch(Exception e){
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
+                
             }
         });
 

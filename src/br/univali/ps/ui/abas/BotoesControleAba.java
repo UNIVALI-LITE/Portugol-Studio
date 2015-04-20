@@ -7,11 +7,10 @@ import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -28,11 +27,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import sun.swing.FilePane;
 
 public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
 
@@ -66,10 +61,11 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         configurarBotoes();
         criarDicasInterface();
         instalarObservadores(telaPrincipal);
-        if (WebLookAndFeel.isInstalled()) {
+        if (WeblafUtils.weblafEstaInstalado()) {
             ((WebButtonUI) botaoAbrir.getUI()).setRolloverDecoratedOnly(true);
             ((WebButtonUI) botaoNovoArquivo.getUI()).setRolloverDecoratedOnly(true);
         }
+
     }
 
     private void configurarBotoes() {
@@ -91,7 +87,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
         filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
 
-        dialogoSelecaoArquivo = new PsFileChooser();// JFileChooser();
+        dialogoSelecaoArquivo = new JFileChooser();
         dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
@@ -104,55 +100,55 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     }
 
-    //FileChooser hackeado para exibir o look and feel do sistema: http://stackoverflow.com/questions/2282211/windows-look-and-feel-for-jfilechooser
-    public class PsFileChooser extends JFileChooser {
-
-        public void updateUI() {
-            LookAndFeel old = UIManager.getLookAndFeel();
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Throwable ex) {
-                old = null;
-            }
-
-            super.updateUI();
-
-            if (old != null) {
-                FilePane filePane = findFilePane(this);
-                filePane.setViewType(FilePane.VIEWTYPE_DETAILS);
-                filePane.setViewType(FilePane.VIEWTYPE_LIST);
-
-                Color background = UIManager.getColor("Label.background");
-                setBackground(background);
-                setOpaque(true);
-
-                try {
-                    UIManager.setLookAndFeel(old);
-                } catch (UnsupportedLookAndFeelException ignored) {
-                } // shouldn't get here
-            }
-        }
-
-        private FilePane findFilePane(Container parent) {
-            for (Component comp : parent.getComponents()) {
-                if (FilePane.class.isInstance(comp)) {
-                    return (FilePane) comp;
-                }
-                if (comp instanceof Container) {
-                    Container cont = (Container) comp;
-                    if (cont.getComponentCount() > 0) {
-                        FilePane found = findFilePane(cont);
-                        if (found != null) {
-                            return found;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
-    }
+//    //FileChooser hackeado para exibir o look and feel do sistema: http://stackoverflow.com/questions/2282211/windows-look-and-feel-for-jfilechooser
+//    public class PsFileChooser extends JFileChooser {
+//
+//        public void updateUI() {
+//            LookAndFeel old = UIManager.getLookAndFeel();
+//            try {
+//                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//            } catch (Throwable ex) {
+//                old = null;
+//            }
+//
+//            super.updateUI();
+//
+//            if (old != null) {
+//                FilePane filePane = findFilePane(this);
+//                filePane.setViewType(FilePane.VIEWTYPE_DETAILS);
+//                filePane.setViewType(FilePane.VIEWTYPE_LIST);
+//
+//                Color background = UIManager.getColor("Label.background");
+//                setBackground(background);
+//                setOpaque(true);
+//
+//                try {
+//                    UIManager.setLookAndFeel(old);
+//                } catch (UnsupportedLookAndFeelException ignored) {
+//                } // shouldn't get here
+//            }
+//        }
+//
+//        private FilePane findFilePane(Container parent) {
+//            for (Component comp : parent.getComponents()) {
+//                if (FilePane.class.isInstance(comp)) {
+//                    return (FilePane) comp;
+//                }
+//                if (comp instanceof Container) {
+//                    Container cont = (Container) comp;
+//                    if (cont.getComponentCount() > 0) {
+//                        FilePane found = findFilePane(cont);
+//                        if (found != null) {
+//                            return found;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            return null;
+//        }
+//
+//    }
 
     private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop) {
         configurarAcaoNovoArquivo(telaPrincipalDesktop);

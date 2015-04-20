@@ -1,6 +1,7 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
@@ -16,7 +17,7 @@ public class CabecalhoAba extends JPanel
     {
         initComponents();
         this.aba = aba;
-        if(WebLookAndFeel.isInstalled()){
+        if(WeblafUtils.weblafEstaInstalado()){
             ((WebButtonUI)botaoFechar.getUI()).setUndecorated(true);
         }
         //setUndecorated(true);

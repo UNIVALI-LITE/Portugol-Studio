@@ -30,8 +30,8 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
     public PainelTabulado() {
         setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
-        if (WebLookAndFeel.isInstalled()) {
-            setUI(criaUi());
+        if (WeblafUtils.weblafEstaInstalado()) {
+          setUI(criaUi());
         }
     }
 

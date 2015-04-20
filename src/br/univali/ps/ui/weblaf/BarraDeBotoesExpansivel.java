@@ -23,7 +23,7 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
         
         menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         add(menu);
-        if (WebLookAndFeel.isInstalled()) {
+        if (WeblafUtils.weblafEstaInstalado()) {
             ((WebMenuBarUI) getUI()).setUndecorated(true);
         }
     }

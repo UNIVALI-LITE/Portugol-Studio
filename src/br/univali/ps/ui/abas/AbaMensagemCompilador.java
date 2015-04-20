@@ -72,8 +72,8 @@ public final class AbaMensagemCompilador extends Aba
     private void configurarAparenciaTabela()
     {
         
-        if(WebLookAndFeel.isInstalled()){
-            tabelaMensagens.getTableHeader().setUI(new PSTableHeaderUI());
+        if(WeblafUtils.weblafEstaInstalado()){
+           tabelaMensagens.getTableHeader().setUI(new PSTableHeaderUI());
         }
         
         tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

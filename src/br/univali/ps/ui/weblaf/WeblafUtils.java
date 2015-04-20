@@ -1,11 +1,23 @@
 package br.univali.ps.ui.weblaf;
 
-import com.alee.laf.WebLookAndFeel;
+import com.alee.extended.button.WebSplitButtonUI;
+import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.label.WebLabelUI;
+import com.alee.laf.list.WebListUI;
+import com.alee.laf.menu.WebMenuBarUI;
+import com.alee.laf.menu.WebMenuItemUI;
+import com.alee.laf.menu.WebMenuUI;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.laf.separator.WebSeparatorUI;
+import com.alee.laf.splitpane.WebSplitPaneUI;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
+import com.alee.laf.table.WebTableHeaderUI;
+import com.alee.laf.table.WebTableUI;
 import com.alee.laf.toolbar.WebToolBarUI;
+import com.alee.laf.tree.WebTreeUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,6 +29,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 
 /**
  *
@@ -32,7 +45,7 @@ public class WeblafUtils {
     //public static final Color COR_DAS_BORDAS_II = new Color(211, 211, 211);
 
     public static void configuraWeblaf(JToolBar barraDeFerramentas) {
-        if (!WebLookAndFeel.isInstalled()) {
+        if (!WeblafUtils.weblafEstaInstalado()) {
             return;
         }
 
@@ -48,7 +61,7 @@ public class WeblafUtils {
     }
 
     public static void configuraWebLaf(JScrollPane scroll) {
-        if (!WebLookAndFeel.isInstalled()) {
+        if (!WeblafUtils.weblafEstaInstalado()) {
             return;
         }
         scroll.getViewport().setOpaque(false);
@@ -58,13 +71,13 @@ public class WeblafUtils {
     }
 
     public static void configuraWeblaf(JPanel painel, final Color corDeFundo, boolean bordaEsquerda, boolean bordaDireita, boolean bordaDeCima, boolean bordaDeBaixo) {
-        if (!WebLookAndFeel.isInstalled()) {
+        if (!WeblafUtils.weblafEstaInstalado()) {
             return;
         }
         if (corDeFundo != null) {
             ((WebPanelUI) painel.getUI()).setPainter(criaPainterComCorSolida(corDeFundo, bordaEsquerda, bordaDireita, bordaDeCima, bordaDeBaixo));
         }
-        ((WebPanelUI) painel.getUI()).setUndecorated(bordaDeBaixo && bordaDeCima && bordaEsquerda && bordaDireita );
+        ((WebPanelUI) painel.getUI()).setUndecorated(bordaDeBaixo && bordaDeCima && bordaEsquerda && bordaDireita);
         ((WebPanelUI) painel.getUI()).setPaintSides(bordaDeCima, bordaEsquerda, bordaDeBaixo, bordaDireita);
     }
 
@@ -79,7 +92,7 @@ public class WeblafUtils {
         public PainterDeCorSolida(Color corDeFundo, boolean bordaEsquerda, boolean bordaDireita, boolean bordaDeCima, boolean bordaDeBaixo) {
             super();
             this.corDeFundo = corDeFundo;
-            if(!bordaEsquerda && !bordaDireita && !bordaDeBaixo && !bordaDeCima){
+            if (!bordaEsquerda && !bordaDireita && !bordaDeBaixo && !bordaDeCima) {
                 shadeWidth = 0;
                 borderColor = null;
                 disabledBorderColor = null;
@@ -101,6 +114,38 @@ public class WeblafUtils {
 
     public static void configuraWeblaf(JPanel painel) {
         configuraWeblaf(painel, null);
+    }
+
+    private static boolean weblafInstalado = false;
+
+    public static void instalaWeblaf() {
+        if (!weblafInstalado) {
+            StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
+
+            //instalando os UIs manualmente para evitar que o FileChooser seja alterado também.
+            UIManager.put("ButtonUI", WebButtonUI.class.getName());
+            UIManager.put("PanelUI", WebPanelUI.class.getName());
+            UIManager.put("TabbedPaneUI", WebTabbedPaneUI.class.getName());
+            UIManager.put("ScrollPaneUI", WebScrollPaneUI.class.getName());
+            UIManager.put("ScrollBarUI", WebScrollBarUI.class.getName());
+            UIManager.put("TableUI", WebTableUI.class.getName());
+            UIManager.put("TableHeaderUI", WebTableHeaderUI.class.getName());
+            UIManager.put("MenuBarUI", WebMenuBarUI.class.getName());
+            UIManager.put("MenuUI", WebMenuUI.class.getName());
+            UIManager.put("MenuItemUI", WebMenuItemUI.class.getName());
+            UIManager.put("ToolBarUI", WebToolBarUI.class.getName());
+           UIManager.put("TreeUI", WebTreeUI.class.getName()); 
+           UIManager.put("SeparatorUI", WebSeparatorUI.class.getName()); 
+           UIManager.put("ListUI", WebListUI.class.getName()); 
+           UIManager.put("LabelUI", WebLabelUI.class.getName()); 
+           UIManager.put("SplitPaneUI", WebSplitPaneUI.class.getName()); 
+           UIManager.put("SplitButtonUI", WebSplitButtonUI.class.getName()); 
+            weblafInstalado = true;
+        }
+    }
+
+    public static boolean weblafEstaInstalado() {
+        return weblafInstalado;
     }
 
 }
