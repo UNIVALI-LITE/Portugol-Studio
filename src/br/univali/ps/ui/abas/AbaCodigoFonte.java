@@ -149,29 +149,32 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     }
 
+    private BarraDeBotoesExpansivel barraDeBotoesInspetorArvore;
+    private BarraDeBotoesExpansivel barraDeBotoesEditor;
+    
     private void configuraBarraDeBotoesDoPainelArvoreInspetor() {
-        BarraDeBotoesExpansivel barraDeBotoes = new BarraDeBotoesExpansivel();
-        barraDeBotoes.adicionaAcao(FabricaDeAcoesArvoreInspetor.criaAcaoAumentarFonte(this));
-        barraDeBotoes.adicionaAcao(FabricaDeAcoesArvoreInspetor.criaAcaoDiminuirFonte(this));
+        barraDeBotoesInspetorArvore = new BarraDeBotoesExpansivel();
+        barraDeBotoesInspetorArvore.adicionaAcao(FabricaDeAcoesArvoreInspetor.criaAcaoAumentarFonte(this));
+        barraDeBotoesInspetorArvore.adicionaAcao(FabricaDeAcoesArvoreInspetor.criaAcaoDiminuirFonte(this));
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
-        painelInspetorArvore.add(barraDeBotoes, constrainsts);
+        painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
     }
 
     private void configurarBarraDeBotoesDoEditor() {
-        BarraDeBotoesExpansivel barraDeBotoes = new BarraDeBotoesExpansivel();
+        barraDeBotoesEditor = new BarraDeBotoesExpansivel();
 
-        barraDeBotoes.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoAumentarFonte(editor));
-        barraDeBotoes.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoDiminuirFonte(editor));
-        barraDeBotoes.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoExpandirEditor(divisorArvoreEditor, divisorEditorConsole));
+        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoAumentarFonte(editor));
+        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoDiminuirFonte(editor));
+        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoExpandirEditor(divisorArvoreEditor, divisorEditorConsole));
         BarraDeBotoesExpansivel.Acao acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
-        barraDeBotoes.adicionaAcao(acaoPesquisarSubstituir);
+        barraDeBotoesEditor.adicionaAcao(acaoPesquisarSubstituir);
 
-        barraDeBotoes.adicionaMenu(editor.getMenuDosTemas());
+        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas());
 
-        barraDeBotoes.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoCentralizarCodigoFonte(getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)));
+        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoCentralizarCodigoFonte(getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)));
 
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
-        painelEditor.add(barraDeBotoes, constraints);
+        painelEditor.add(barraDeBotoesEditor, constraints);
     }
 
     public static class NoTransferable implements Transferable {
@@ -639,7 +642,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         FabricaDicasInterface.criarDicaInterface(btnDepurar, "Executa o programa passo a passo", acaoExecutarPasso);
         FabricaDicasInterface.criarDicaInterface(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarArquivo);
         FabricaDicasInterface.criarDicaInterface(btnSalvarComo, "Salva uma nova cópia do programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarComo);
-        //FabricaDicasInterface.criarDicaInterface(campoOpcoesExecucao, "Quando ativado, exibe uma tela de configuração antes de cada execução, permitindo informar a função inicial e os parâmetros que serão passados ao programa", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH);
+        
+        
+        FabricaDicasInterface.criarDicaInterface(barraDeBotoesEditor.getMenu(), "Personalizar o editor de código fonte ...");
+        FabricaDicasInterface.criarDicaInterface(barraDeBotoesInspetorArvore.getMenu(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
+        
         //FabricaDicasInterface.criarDicaInterface(tree, "Exibe a estrutura do programa atual, permitindo visualizar as variáveis e funções.");
         //FabricaDicasInterface.criarDicaInterface(btnAumentarFonteArvore, "Aumenta a fonte da árvore de símbolos", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
         //FabricaDicasInterface.criarDicaInterface(btnDiminuirFonteArvore, "Diminui a fonte da árvore de símbolos", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);

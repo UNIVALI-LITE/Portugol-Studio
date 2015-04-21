@@ -1,11 +1,9 @@
 package br.univali.ps.ui.weblaf;
 
 import br.univali.ps.ui.util.IconFactory;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.menu.WebMenuBarUI;
+import java.awt.Cursor;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,9 +21,14 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
         
         menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         add(menu);
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         if (WeblafUtils.weblafEstaInstalado()) {
             ((WebMenuBarUI) getUI()).setUndecorated(true);
         }
+    }
+
+    public JMenu getMenu() {
+        return menu;
     }
 
     public void adicionaAcao(Acao acao) {

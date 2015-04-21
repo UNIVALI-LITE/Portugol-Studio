@@ -131,7 +131,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         console.setCaret(new CursorConsole());
         console.getCaret().setVisible(false);
 
-        configurarBarraFerramentas();
+        
         criarBarraDeBotoes();
         //criarDicasInterface();
         instalarObservadores();
@@ -142,13 +142,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
     }
 
-    private void configurarBarraFerramentas() {
-        barraFerramentas.setOpaque(false);
-        botaoAumentarFonte.setOpaque(false);
-        botaoCopiar.setOpaque(false);
-        botaoDiminuirFonte.setOpaque(false);
-        botaoLimpar.setOpaque(false);
-    }
+    
 
     private void criarBarraDeBotoes() {
         BarraDeBotoesExpansivel barra = new BarraDeBotoesExpansivel();
@@ -197,6 +191,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoDiminuirFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")));        
         barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoLimpar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")));        
         barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoCopiar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png")));        
+        FabricaDicasInterface.criarDicaInterface(barra.getMenu(), "Personalizar a console ...");
         GridBagConstraints constrainsts = new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         this.add(barra, constrainsts);
     }
@@ -317,11 +312,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         menuDiminuirFonte = new javax.swing.JMenuItem();
         menuConsoleLimpar = new javax.swing.JMenuItem();
         menuConsoleCopiar = new javax.swing.JMenuItem();
-        barraFerramentas = new javax.swing.JToolBar();
-        botaoAumentarFonte = new javax.swing.JButton();
-        botaoDiminuirFonte = new javax.swing.JButton();
-        botaoLimpar = new javax.swing.JButton();
-        botaoCopiar = new javax.swing.JButton();
         painelRolagem = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
 
@@ -336,59 +326,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
         menuConsoleCopiar.setText("jMenuItem2");
         menuConsole.add(menuConsoleCopiar);
-
-        barraFerramentas.setFloatable(false);
-        barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        barraFerramentas.setRollover(true);
-        barraFerramentas.setOpaque(false);
-
-        botaoAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoAumentarFonte.setBorderPainted(false);
-        botaoAumentarFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoAumentarFonte.setFocusable(false);
-        botaoAumentarFonte.setHideActionText(true);
-        botaoAumentarFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoAumentarFonte.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoAumentarFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoAumentarFonte.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoAumentarFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoAumentarFonte);
-
-        botaoDiminuirFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoDiminuirFonte.setBorderPainted(false);
-        botaoDiminuirFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoDiminuirFonte.setFocusable(false);
-        botaoDiminuirFonte.setHideActionText(true);
-        botaoDiminuirFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoDiminuirFonte.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoDiminuirFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoDiminuirFonte.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoDiminuirFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoDiminuirFonte);
-
-        botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoLimpar.setBorderPainted(false);
-        botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoLimpar.setFocusable(false);
-        botaoLimpar.setHideActionText(true);
-        botaoLimpar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoLimpar.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoLimpar);
-
-        botaoCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoCopiar.setBorderPainted(false);
-        botaoCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoCopiar.setFocusable(false);
-        botaoCopiar.setHideActionText(true);
-        botaoCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoCopiar.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoCopiar);
 
         setFocusable(false);
         setOpaque(false);
@@ -414,11 +351,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToolBar barraFerramentas;
-    private javax.swing.JButton botaoAumentarFonte;
-    private javax.swing.JButton botaoCopiar;
-    private javax.swing.JButton botaoDiminuirFonte;
-    private javax.swing.JButton botaoLimpar;
     private javax.swing.JTextArea console;
     private javax.swing.JMenuItem menuAumentarFonte;
     private javax.swing.JPopupMenu menuConsole;
