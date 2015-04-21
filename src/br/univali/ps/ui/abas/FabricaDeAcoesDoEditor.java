@@ -92,10 +92,10 @@ public class FabricaDeAcoesDoEditor {
 
     public static JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor) {
 
-        final JMenu menu = new JMenu("Listar Temas");
-        menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png"));
+        final JMenu menu = new JMenu("Temas para as cores ...");
+        menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
 
-        AbstractAction acaoAplicarTema = new AbstractAction("Aplicar tema", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "temas.png")) {
+        AbstractAction acaoAplicarTema = new AbstractAction("Aplicar tema", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JCheckBoxMenuItem itemSelecionado = (JCheckBoxMenuItem) e.getSource();

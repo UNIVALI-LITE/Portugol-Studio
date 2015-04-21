@@ -881,6 +881,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);
+            
+            int xDaDica = getWidth()/2 ;
+            int yDaDica = getHeight()/2  + (int)(Math.random() * 100);
+            FabricaDicasInterface.criarDicaInterfaceEstatica(this, "Usando tema " + nome, new Point(xDaDica, yDaDica));
 
             for (Component componente : menuTemas.getComponents()) {
                 JMenuItem item = (JMenuItem) componente;

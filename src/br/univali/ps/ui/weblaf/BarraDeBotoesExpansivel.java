@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -19,6 +21,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 /**
  *
@@ -36,38 +40,31 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
         if (WeblafUtils.weblafEstaInstalado()) {
             ((WebMenuBarUI) getUI()).setUndecorated(true);
         }
-        
+
     }
 
-    public void adicionaItemParaTamanhoDeFonte(String texto, Icon icone, Action acaoAumentar, Action acaoDiminuir){
-        menu.add(new ItemDeMenuParaAlterarTamanho(texto, icone, acaoAumentar, acaoDiminuir));
+    public void adicionaGrupoDeItems(String texto, Icon icone, Action acoes[]) {
+        menu.add(new ItemDeMenuParaGrupoDeAcoes(texto, icone, acoes));
     }
-    
-    private class ItemDeMenuParaAlterarTamanho extends JPanel {
+
+    private class ItemDeMenuParaGrupoDeAcoes extends JPanel {
 
         private final JLabel label;
-        private final JButton botaoMais;
-        private final JButton botaoMenos;
 
-        public ItemDeMenuParaAlterarTamanho(String texto, Icon icone, Action acaoAumentar, Action acaoDiminuir) {
+        public ItemDeMenuParaGrupoDeAcoes(String texto, Icon icone, Action acoes[]) {
             super();
             setLayout(new FlowLayout(FlowLayout.LEFT, 7, 0));
             label = new JLabel(texto, SwingConstants.LEFT);
             label.setIcon(icone);
-            botaoMais = new JButton(acaoAumentar);
-            botaoMenos = new JButton(acaoDiminuir);
             add(label);
 
-            
-            if (WeblafUtils.weblafEstaInstalado()) {
-                WebButtonGroup textGroup = new WebButtonGroup(true, botaoMais, botaoMenos);
-                textGroup.setButtonsDrawFocus(false);
-                add(textGroup);
-            } else {
-                add(botaoMais);
-                add(botaoMenos);
+            JButton botoes[] = new JButton[acoes.length];
+            for (int i = 0; i < acoes.length; i++) {
+                botoes[i] = new JButton(acoes[i]);
             }
-            //add(new JLabel(""), new GridBagConstraints(3, 0, 1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+            WebButtonGroup textGroup = new WebButtonGroup(true, botoes);
+            textGroup.setButtonsDrawFocus(false);
+            add(textGroup);
         }
 
     }
@@ -84,7 +81,19 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
 
     public void adicionaMenu(JMenu submenu) {
         this.menu.add(submenu);
-    }
+        for (int i = 0; i < submenu.getItemCount(); i++) {
+            submenu.getItem(i).addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mouseEntered(MouseEvent me) {
+                    JMenuItem item =  (JMenuItem)me.getSource();
+                    item.doClick();//dispara a acão do botão apenas passando o mouse em cima do item do menu
+                }
+                
+            });
+        }
+
+     }
 
     public static Acao criaAcao(AbstractAction action, Icon icone) {
         return new Acao(icone, action);

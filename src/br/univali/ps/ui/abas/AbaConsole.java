@@ -7,13 +7,11 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
-import static br.univali.ps.ui.abas.AbaCodigoFonte.VALOR_INCREMENTO_FONTE;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -27,6 +25,7 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -182,9 +181,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
         acaoCopiar.setEnabled(false);
         //+++++++++++++++++++++++++
-        barra.adicionaItemParaTamanhoDeFonte("Tamanho da fonte", iconeFonte, acaoAumentarFonte, acaoDiminuirFonte);
-        //barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoAumentarFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png")));
-        //barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoDiminuirFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")));
+        barra.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
         barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoLimpar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")));
         barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoCopiar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png")));
         FabricaDicasInterface.criarDicaInterface(barra.getMenu(), "Personalizar a console ...");

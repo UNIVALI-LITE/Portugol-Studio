@@ -172,7 +172,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 setTamanhoFonteArvoreInspetor(getTamanhoDaFonteArvoreInspetor() - VALOR_INCREMENTO_FONTE);
             }
         };
-        barraDeBotoesInspetorArvore.adicionaItemParaTamanhoDeFonte("Tamanho da fonte", iconeFonte, acaoAumentarFonte, acaoDiminuirFonte);
+        barraDeBotoesInspetorArvore.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{ acaoAumentarFonte, acaoDiminuirFonte});
 
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
@@ -200,7 +200,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 editor.setTamanhoFonteEditor(novoTamanho);
             }
         };
-        barraDeBotoesEditor.adicionaItemParaTamanhoDeFonte("Tamanho da fonte", iconeFonte, acaoAumentarFonte, acaoDiminuirFonte);
+        barraDeBotoesEditor.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[] {acaoAumentarFonte, acaoDiminuirFonte});
     }
 
     private void configurarBarraDeBotoesDoEditor() {
