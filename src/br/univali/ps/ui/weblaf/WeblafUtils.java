@@ -125,6 +125,9 @@ public class WeblafUtils {
         if (!weblafEstaInstalado()) {
             StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
             WebLookAndFeel.install();
+            WebLookAndFeel.setDecorateDialogs(false);
+            
+            
         }
     }
 
