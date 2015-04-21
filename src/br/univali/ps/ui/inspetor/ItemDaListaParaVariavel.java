@@ -14,7 +14,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
  */
 class ItemDaListaParaVariavel extends ItemDaLista {
     
-    private static final RenderizadorDeVariavel RENDERER = new RenderizadorDeVariavel();
+    private static RenderizadorDeVariavel RENDERER = new RenderizadorDeVariavel();
     
     private Object valor;
     

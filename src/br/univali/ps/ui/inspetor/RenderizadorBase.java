@@ -30,22 +30,25 @@ abstract class RenderizadorBase extends JComponent {
 
     protected ItemDaLista itemDaLista;
 
-    protected static Font FONTE_NORMAL = Font.decode("Verdana-12");
+    protected static Font FONTE_NORMAL = Font.decode("Tahoma-12");
     protected static Font FONTE_DESTAQUE;
     protected static Font FONTE_CABECALHO;
     protected static Font FONTE_CABECALHO_DESTAQUE;
 
     public RenderizadorBase() {
         super();
-        setTamanhoDaFonte(12f);
+        //setTamanhoDaFonte(12f);
         //setTamanhoDaFonte(18);
     }
-
+    
+    
     static void setTamanhoDaFonte(float tamanho) {
-        FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
-        FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
-        FONTE_CABECALHO = FONTE_NORMAL.deriveFont(10f);
-        FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
+        if (FONTE_NORMAL != null) {
+            FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
+            FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
+            FONTE_CABECALHO = FONTE_NORMAL.deriveFont(10f);
+            FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
+        }
     }
 
     /**

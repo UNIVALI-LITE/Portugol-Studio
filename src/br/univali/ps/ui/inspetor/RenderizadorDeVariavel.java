@@ -2,6 +2,7 @@ package br.univali.ps.ui.inspetor;
 
 import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,6 +14,7 @@ import javax.swing.Icon;
  * @author elieser
  */
 class RenderizadorDeVariavel extends RenderizadorBase {
+
 
     @Override
     protected int getAlturaPreferida() {
