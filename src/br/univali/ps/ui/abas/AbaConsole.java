@@ -7,6 +7,7 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
+import static br.univali.ps.ui.abas.AbaCodigoFonte.VALOR_INCREMENTO_FONTE;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
@@ -38,7 +39,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
-
 
 public final class AbaConsole extends Aba implements PropertyChangeListener {
 
@@ -89,7 +89,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 //        popupLeia = new BalloonTip(painelRolagem.getViewport(), rotuloPopupLeia, estiloPopupLeia, BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH, 50, 25, false);
 //        popupLeia.setPadding(8);
 //        popupLeia.setVisible(false);
-
         listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -131,7 +130,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         console.setCaret(new CursorConsole());
         console.getCaret().setVisible(false);
 
-        
         criarBarraDeBotoes();
         //criarDicasInterface();
         instalarObservadores();
@@ -142,28 +140,25 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
     }
 
-    
-
     private void criarBarraDeBotoes() {
         BarraDeBotoesExpansivel barra = new BarraDeBotoesExpansivel();
+
+        Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
+        Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
+        Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
+
         //++++++++++++++++++=
-        AbstractAction acaoAumentarFonte = new AbstractAction("Aumentar Fonte") {
+        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Font fonteAtual = console.getFont();
-                float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
-
-                setTamanhoFonteConsole(novoTamanho);
+                setTamanhoFonteConsole(console.getFont().getSize() + VALOR_INCREMENTO_FONTE);
             }
         };
         //+++++++++++++++++
-        AbstractAction acaoDiminuirFonte = new AbstractAction("Diminuir Fonte") {
+        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Font fonteAtual = console.getFont();
-                float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
-
-                setTamanhoFonteConsole(novoTamanho);
+                setTamanhoFonteConsole(console.getFont().getSize() - VALOR_INCREMENTO_FONTE);
             }
         };
         //+++++++++++++++++++
@@ -187,10 +182,11 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
         acaoCopiar.setEnabled(false);
         //+++++++++++++++++++++++++
-        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoAumentarFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png")));
-        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoDiminuirFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")));        
-        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoLimpar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")));        
-        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoCopiar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png")));        
+        barra.adicionaItemParaTamanhoDeFonte("Tamanho da fonte", iconeFonte, acaoAumentarFonte, acaoDiminuirFonte);
+        //barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoAumentarFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png")));
+        //barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoDiminuirFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")));
+        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoLimpar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")));
+        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoCopiar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png")));
         FabricaDicasInterface.criarDicaInterface(barra.getMenu(), "Personalizar a console ...");
         GridBagConstraints constrainsts = new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         this.add(barra, constrainsts);
@@ -226,7 +222,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 //        FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console");
 //        FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console");
 //    }
-
     private void instalarObservadores() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 

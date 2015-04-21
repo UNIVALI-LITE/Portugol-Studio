@@ -48,32 +48,7 @@ public class FabricaDeAcoesDoEditor {
         return BarraDeBotoesExpansivel.criaAcao(acaoExpandir, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"));
     }
     
-    public static BarraDeBotoesExpansivel.Acao criaAcaoAumentarFonte(final Editor editor) {
-        AbstractAction acaoAumentarFonte = new AbstractAction("Aumentar fonte") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Font fonteAtual = editor.getTextArea().getFont();
-                float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
-
-                editor.setTamanhoFonteEditor(novoTamanho);
-            }
-        };
-        return BarraDeBotoesExpansivel.criaAcao(acaoAumentarFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"));
-    }
-
-    public static BarraDeBotoesExpansivel.Acao criaAcaoDiminuirFonte(final Editor editor) {
-        AbstractAction acaoDiminuirFonte = new AbstractAction("Diminuir fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Font fonteAtual = editor.getTextArea().getFont();
-                float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
-
-                editor.setTamanhoFonteEditor(novoTamanho);
-            }
-        };
-        return BarraDeBotoesExpansivel.criaAcao(acaoDiminuirFonte, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"));
-    }
-
+  
     public static BarraDeBotoesExpansivel.Acao criaAcaoPesquisarSubstituir(final FindDialog dialogoPesquisar, final ReplaceDialog dialogoSubstituir, final ActionMap actionMap, final InputMap inputMap) {
 
         String nome = "Pesquisar e substituir";

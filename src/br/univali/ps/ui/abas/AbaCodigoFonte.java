@@ -151,20 +151,63 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private BarraDeBotoesExpansivel barraDeBotoesInspetorArvore;
     private BarraDeBotoesExpansivel barraDeBotoesEditor;
-    
+
     private void configuraBarraDeBotoesDoPainelArvoreInspetor() {
         barraDeBotoesInspetorArvore = new BarraDeBotoesExpansivel();
-        barraDeBotoesInspetorArvore.adicionaAcao(FabricaDeAcoesArvoreInspetor.criaAcaoAumentarFonte(this));
-        barraDeBotoesInspetorArvore.adicionaAcao(FabricaDeAcoesArvoreInspetor.criaAcaoDiminuirFonte(this));
+
+        Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
+        Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
+        Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
+
+        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setTamanhoFonteArvoreInspetor(getTamanhoDaFonteArvoreInspetor() + VALOR_INCREMENTO_FONTE);
+            }
+        };
+
+        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setTamanhoFonteArvoreInspetor(getTamanhoDaFonteArvoreInspetor() - VALOR_INCREMENTO_FONTE);
+            }
+        };
+        barraDeBotoesInspetorArvore.adicionaItemParaTamanhoDeFonte("Tamanho da fonte", iconeFonte, acaoAumentarFonte, acaoDiminuirFonte);
+
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
+    }
+
+    private void criaControlesDoTamanhoDaFonteDoEditor() {
+        Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
+        Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
+        Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
+
+        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Font fonteAtual = editor.getTextArea().getFont();
+                float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
+                editor.setTamanhoFonteEditor(novoTamanho);
+            }
+        };
+
+        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Font fonteAtual = editor.getTextArea().getFont();
+                float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
+                editor.setTamanhoFonteEditor(novoTamanho);
+            }
+        };
+        barraDeBotoesEditor.adicionaItemParaTamanhoDeFonte("Tamanho da fonte", iconeFonte, acaoAumentarFonte, acaoDiminuirFonte);
     }
 
     private void configurarBarraDeBotoesDoEditor() {
         barraDeBotoesEditor = new BarraDeBotoesExpansivel();
 
-        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoAumentarFonte(editor));
-        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoDiminuirFonte(editor));
+        criaControlesDoTamanhoDaFonteDoEditor();
+
         barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoExpandirEditor(divisorArvoreEditor, divisorEditorConsole));
         BarraDeBotoesExpansivel.Acao acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
         barraDeBotoesEditor.adicionaAcao(acaoPesquisarSubstituir);
@@ -642,15 +685,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         FabricaDicasInterface.criarDicaInterface(btnDepurar, "Executa o programa passo a passo", acaoExecutarPasso);
         FabricaDicasInterface.criarDicaInterface(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarArquivo);
         FabricaDicasInterface.criarDicaInterface(btnSalvarComo, "Salva uma nova cópia do programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarComo);
-        
-        
+
         FabricaDicasInterface.criarDicaInterface(barraDeBotoesEditor.getMenu(), "Personalizar o editor de código fonte ...");
         FabricaDicasInterface.criarDicaInterface(barraDeBotoesInspetorArvore.getMenu(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
-        
+
         //FabricaDicasInterface.criarDicaInterface(tree, "Exibe a estrutura do programa atual, permitindo visualizar as variáveis e funções.");
         //FabricaDicasInterface.criarDicaInterface(btnAumentarFonteArvore, "Aumenta a fonte da árvore de símbolos", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
         //FabricaDicasInterface.criarDicaInterface(btnDiminuirFonteArvore, "Diminui a fonte da árvore de símbolos", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
-
         //FabricaDicasInterface.criarDicaInterface(btnFixarArvoreSimbolos, "Fixa este painel, impedindo que ele seja ocultado ao expandir o editor");
         //FabricaDicasInterface.criarDicaInterface(btnFixarBarraFerramentas, "Fixa este painel, impedindo que ele seja ocultado ao expandir o editor");
         //FabricaDicasInterface.criarDicaInterface(btnFixarPainelSaida, "Fixa este painel, impedindo que ele seja ocultado ao expandir o editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
