@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -97,12 +98,15 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
      */
     public PortugolOutlineTree() {
         this(false);
+        
     }
 
     public PortugolOutlineTree(int a) {
         this(false);
     }
 
+    
+    
     public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada) {
         //this.atualizacaoHabilitada = atualizaoAtivada;
         //a atualização dos valores da árvore está desabilitada, a árvore está mostrando
@@ -135,7 +139,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
 
         @Override
         public boolean canImport(TransferHandler.TransferSupport ts) {
-            return true; //retornando true só para exibir o ícone mais adequado
+            return false;
         }
 
         @Override
