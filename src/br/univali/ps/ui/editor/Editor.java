@@ -871,6 +871,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     public void keyReleased(KeyEvent e) {
     }
 
+    
     public void aplicarTema(String nome) {
         try {
             GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();

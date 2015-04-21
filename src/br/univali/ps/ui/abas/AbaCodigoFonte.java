@@ -212,10 +212,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         BarraDeBotoesExpansivel.Acao acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
         barraDeBotoesEditor.adicionaAcao(acaoPesquisarSubstituir);
 
-        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas());
-
         barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoCentralizarCodigoFonte(getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)));
 
+        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
+        
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
     }

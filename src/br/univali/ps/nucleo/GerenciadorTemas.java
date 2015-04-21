@@ -38,6 +38,7 @@ public final class GerenciadorTemas {
             arquivosTema.put("IntelliJ IDEA", "idea");
             arquivosTema.put("Portugol Studio", "default-alt");
             arquivosTema.put("Visual Studio", "vs");
+            arquivosTema.put("Dark II", "darkII");
         }
 
         List<String> listaTemas = new ArrayList<>(arquivosTema.keySet());
