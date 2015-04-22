@@ -88,7 +88,7 @@ public class FabricaDeAcoesDoEditor {
 
     public static JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor) {
 
-        final JMenu menu = new JMenu("Temas para as cores ...");
+        final JMenu menu = new JMenu("Cores");
         menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
 
         //Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png");

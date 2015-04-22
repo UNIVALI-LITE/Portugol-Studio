@@ -45,24 +45,28 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
         menu.add(new ItemDeMenuParaGrupoDeAcoes(texto, icone, acoes, usarToggleButtons));
     }
 
+    public void adicionaSeparador(){
+        menu.addSeparator();
+    }
+    
     private class ItemDeMenuParaGrupoDeAcoes extends JPanel {
 
         private final JLabel label;
 
         public ItemDeMenuParaGrupoDeAcoes(String texto, Icon icone, Action acoes[], boolean usarToggleButtons) {
-            super();
-            setLayout(new FlowLayout(FlowLayout.LEFT, 7, 0));
+            super(new FlowLayout(FlowLayout.LEFT, 7, 0));
+            setOpaque(false);
             label = new JLabel(texto, SwingConstants.LEFT);
             label.setIcon(icone);
             add(label);
             if (acoes.length <= 3) {
                 criaUmaLinhaDeBotoes(acoes);
             } else {
-                criaDuasLinhasDeBotoes(acoes, usarToggleButtons);
+                criaColunasDeBotoes(acoes, usarToggleButtons);
             }
         }
 
-        private void criaDuasLinhasDeBotoes(Action acoes[], boolean usarTogleButtons) {
+        private void criaColunasDeBotoes(Action acoes[], boolean usarTogleButtons) {
             int colunas = acoes.length / 2;
             int indiceDaAcao = 0;
             WebButtonGroup gruposDasColunas[] = new WebButtonGroup[colunas];
