@@ -30,6 +30,7 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -40,6 +41,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -780,6 +782,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         this.revalidate();
     }
 
+    
     public PSTextArea getTextArea() {
         return (PSTextArea) textArea;
     }

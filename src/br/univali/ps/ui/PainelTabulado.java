@@ -44,7 +44,6 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
         ui.setTabBorderColor(WeblafUtils.COR_DAS_BORDAS);
         //ui.setContentBorderColor(WeblafUtils.COR_DAS_BORDAS_II);
         
-//ui.setShadeWidth(50);
         return ui;
     }
 

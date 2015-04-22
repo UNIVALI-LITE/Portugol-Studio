@@ -468,8 +468,7 @@ public final class AbaInicial extends Aba {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelGradiente = new br.univali.ps.ui.imagens.Gradiente();
         painelCabecalho = new javax.swing.JPanel();
@@ -516,7 +515,7 @@ public final class AbaInicial extends Aba {
         painelAlinhamento7 = new javax.swing.JPanel();
         logoUnivali = new javax.swing.JLabel();
 
-        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
+        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(12, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
@@ -795,10 +794,8 @@ public final class AbaInicial extends Aba {
 
         logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoUnivaliMouseClicked(evt);
             }
         });

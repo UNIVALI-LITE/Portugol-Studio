@@ -46,6 +46,7 @@ public class WeblafUtils {
     public static final Color COR_DO_PAINEL_DIREITO = new Color(225, 225, 225);
     public static final Color COR_DO_PAINEL_DE_SAIDA = COR_DO_PAINEL_DIREITO;
     public static final Color COR_DO_PAINEL_PRINCIPAL = Color.WHITE;
+    public static final Color COR_DA_BORDA_ORIGINAL_NO_WEBLAF = StyleConstants.borderColor;
     //public static final Color COR_DAS_BORDAS_II = new Color(211, 211, 211);
 
     public static void configuraWeblaf(JToolBar barraDeFerramentas) {

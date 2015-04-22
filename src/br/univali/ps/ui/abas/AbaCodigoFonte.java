@@ -811,7 +811,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 

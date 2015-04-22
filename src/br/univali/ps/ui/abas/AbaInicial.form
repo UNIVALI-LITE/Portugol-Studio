@@ -6,7 +6,7 @@
       <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
         <CompoundBorder>
           <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="8" left="8" right="8" top="8"/>
+            <EmptyBorder bottom="8" left="8" right="8" top="12"/>
           </Border>
           <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
             <LineBorder>

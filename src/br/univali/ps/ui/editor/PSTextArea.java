@@ -3,17 +3,18 @@ package br.univali.ps.ui.editor;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.ui.util.IconFactory;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.text.WebTextAreaUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -94,6 +95,7 @@ public class PSTextArea extends RSyntaxTextArea {
         setDragEnabled(true);
     }
 
+    
     public void addListenter(PSTextAreaListener l) {
         listeners.add(l);
     }
@@ -192,6 +194,7 @@ public class PSTextArea extends RSyntaxTextArea {
             });
             //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
            iconRowHeader.setBackground(new Color(247, 247, 247));
+           
             return iconRowHeader;
         }
 
@@ -262,6 +265,8 @@ public class PSTextArea extends RSyntaxTextArea {
                 scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 scrollPane.setFoldIndicatorEnabled(true);
                 scrollPane.setIconRowHeaderEnabled(true);
+                
+                
                 
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));

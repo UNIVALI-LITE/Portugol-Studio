@@ -11,7 +11,7 @@
     </Property>
     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
       <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-        <EmptyBorder bottom="5" left="5" right="5" top="5"/>
+        <EmptyBorder bottom="5" left="5" right="5" top="10"/>
       </Border>
     </Property>
     <Property name="opaque" type="boolean" value="false"/>
