@@ -22,6 +22,7 @@ import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.panel.WebPanelUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -152,6 +153,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarConfiguracoes();
 
         WeblafUtils.configuraWebLaf(scrollPane);
+
     }
 
     public Set<Integer> getLinhasComPontoDeParada() {

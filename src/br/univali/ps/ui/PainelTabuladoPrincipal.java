@@ -16,9 +16,11 @@ import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.LinearGradientPaint;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import javafx.scene.paint.LinearGradient;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -89,14 +92,22 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
                 int larguraDasTabsDaEsquerda = getLarguraDasTabs(0, getSelectedIndex() - 1);
                 int larguraDaTabSelecionada = getTabBounds(tabPane, getSelectedIndex()).width;
                 //int larguraDasTabsDaDireita = getLarguraDasTabs(getSelectedIndex(), getTabCount()-1);
-                int largutaTotal = getLarguraDasTabs(0, getTabCount() - 1);
+                int largutaTotalDasTabs = getLarguraDasTabs(0, getTabCount() - 1);
                 
                 //desenha linha a esquerda da tab selecionada
                 g.drawLine(insets.left, insets.top + altura, larguraDasTabsDaEsquerda, insets.top + altura);
+
                 //desenha linha a direita da tab selecionada
-                if (getSelectedIndex() < getTabCount() - 1) {
-                    g.drawLine(larguraDasTabsDaEsquerda + larguraDaTabSelecionada + 2, insets.top + altura, largutaTotal, insets.top + altura);
-                }
+                g.drawLine(larguraDasTabsDaEsquerda + larguraDaTabSelecionada + 2, insets.top + altura, largutaTotalDasTabs, insets.top + altura);
+                
+                //desenha linha na parte onde não existem tabs, esta linha vai desaparecendo
+                
+                int larguraDaLinhaTransparente = 100;
+                Color cores[] = {COR_DA_BORDA_DE_BAIXO_DAS_ABAS, getBackground()};
+                float distribuicaoDasCores[] = {0.1f, 1f};
+                ((Graphics2D)g).setPaint(new LinearGradientPaint(largutaTotalDasTabs, 0f, largutaTotalDasTabs + larguraDaLinhaTransparente, 2f, distribuicaoDasCores, cores));
+                g.drawLine(largutaTotalDasTabs, insets.top + altura, largutaTotalDasTabs + larguraDaLinhaTransparente, insets.top + altura);
+                
             } else {//existe apenas a aba principal
                 g.setColor(COR_DA_BORDA_DE_BAIXO_DA_ABA_PRINCIPAL);
                 g.drawLine(0, insets.top + altura + 1, getWidth() - 1, insets.top + altura + 1);
