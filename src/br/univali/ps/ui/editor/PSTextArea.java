@@ -1,22 +1,23 @@
 package br.univali.ps.ui.editor;
 
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Shape;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +28,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.ComponentUI;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
@@ -36,6 +38,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaUI;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.IconRowHeader;
@@ -60,21 +63,19 @@ public class PSTextArea extends RSyntaxTextArea {
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         setBorder(null);
-        
-        
-        
+
         this.pontosDeParada = new ArrayList<>();
         setTransferHandler(new RTATextTransferHandler() {//usa a própria classe to RSyntax mas modifica a criação da dragImage
             @Override
             public Image getDragImage() {
                 String textoSelecionado = getSelectedText();
-                
+
                 FontMetrics metrics = getFontMetrics(getFont());
                 final int MARGEM = 5;
                 int larguraDotexto = MARGEM + metrics.stringWidth(textoSelecionado) + MARGEM;
                 int alturaDoTexto = MARGEM + metrics.getHeight() + MARGEM;
                 BufferedImage image = new BufferedImage(larguraDotexto, alturaDoTexto, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g = (Graphics2D)image.getGraphics();
+                Graphics2D g = (Graphics2D) image.getGraphics();
                 g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillRect(0, 0, larguraDotexto - 1, alturaDoTexto - 1);
@@ -86,16 +87,43 @@ public class PSTextArea extends RSyntaxTextArea {
 
             @Override
             public Point getDragImageOffset() {
-                Point p = super.getDragImageOffset(); 
+                Point p = super.getDragImageOffset();
                 p.translate(-16, 0);//deixa a imagem ao lado do ícone do cursor do mouse
                 return p;
             }
 
         });
         setDragEnabled(true);
+        getDocument().addDocumentListener(new DocumentListenerPontosDeParada());
     }
 
-    
+    public void atualizaEstadoDosPontosDeParada(Collection<Integer> pontosDeParada, Set<Integer> linhasParaveis) {
+        for (Integer linhaDoPontoDeParada : pontosDeParada) {
+            if (!linhasParaveis.contains(linhaDoPontoDeParada)) {
+                alternaPontoDeParada(linhaDoPontoDeParada);
+            }
+        }
+    }
+
+    private class DocumentListenerPontosDeParada implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent de) {
+            adicionaPontosDeParaEmTodasAsLinhas();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent de) {
+            adicionaPontosDeParaEmTodasAsLinhas();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent de) {
+            adicionaPontosDeParaEmTodasAsLinhas();
+        }
+
+    }
+
     public void addListenter(PSTextAreaListener l) {
         listeners.add(l);
     }
@@ -106,7 +134,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
     @Override
     protected RTextAreaUI createRTextAreaUI() {
-        
+
         return new PSTextAreaUI(this);
     }
 
@@ -119,7 +147,7 @@ public class PSTextArea extends RSyntaxTextArea {
     public void alternaPontoDeParada(int linha) {
         try {
             Gutter gutter = RSyntaxUtilities.getGutter(this);
-            
+
             //tentar remover
             for (GutterIconInfo gutterInfo : pontosDeParada) {
                 if (getLineOfOffset(gutterInfo.getMarkedOffset()) + 1 == linha) {
@@ -173,8 +201,12 @@ public class PSTextArea extends RSyntaxTextArea {
         }
     }
 
+    public void setarTema(Theme tema) {
+        tema.apply(this);
+    }
+
     //++++++++++++++++++++++++++++++++++
-    private static class PSTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
+    private class PSTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
 
         private PSTextArea textArea;
         private LineNumberList numberList;
@@ -193,8 +225,9 @@ public class PSTextArea extends RSyntaxTextArea {
 
             });
             //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
-           iconRowHeader.setBackground(new Color(247, 247, 247));
-           
+            Color corDeFundo = WeblafUtils.COR_DO_PAINEL_PRINCIPAL;
+            iconRowHeader.setBackground(corDeFundo);
+
             return iconRowHeader;
         }
 
@@ -229,23 +262,45 @@ public class PSTextArea extends RSyntaxTextArea {
         return linha;
     }
 
-    private static class PSTextAreaUI extends RSyntaxTextAreaUI {
-
-        private final EditorKit kit = new PSTextAreaEditorKit();
+    private class PSTextAreaUI extends RSyntaxTextAreaUI {
 
         public PSTextAreaUI(JComponent rSyntaxTextArea) {
             super(rSyntaxTextArea);
         }
 
-        public static ComponentUI createUI(JComponent textArea) {
-            return new PSTextAreaUI(textArea);
-        }
-
         @Override
         public EditorKit getEditorKit(JTextComponent tc) {
-            return kit;
+            return new PSTextAreaEditorKit();
         }
 
+    }
+
+    private boolean existePontoDeParadaNaLinha(int linha) {
+        try {
+            for (GutterIconInfo info : pontosDeParada) {
+                if (getLineOfOffset(info.getMarkedOffset()) + 1 == linha) {
+                    return true;
+                }
+            }
+        } catch (BadLocationException e) {
+
+        }
+        return false;
+    }
+
+    private void adicionaPontosDeParaEmTodasAsLinhas() {
+        Gutter gutter = RSyntaxUtilities.getGutter(this);
+        try {
+            for (int i = 0; i < getLineCount(); i++) {
+                if (!existePontoDeParadaNaLinha(i + 1)) {
+                    GutterIconInfo iconeInfo = gutter.addLineTrackingIcon(i, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
+                    pontosDeParada.add(iconeInfo);
+                }
+            }
+            disparaPontosDeParadaAtualizados();
+        } catch (Exception e) {
+
+        }
     }
 
     public static void main(String args[]) {
@@ -265,9 +320,7 @@ public class PSTextArea extends RSyntaxTextArea {
                 scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 scrollPane.setFoldIndicatorEnabled(true);
                 scrollPane.setIconRowHeaderEnabled(true);
-                
-                
-                
+
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
                 panel.add(scrollPane);

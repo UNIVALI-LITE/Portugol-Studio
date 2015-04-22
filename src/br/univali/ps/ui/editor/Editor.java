@@ -16,13 +16,11 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.abas.FabricaDeAcoesDoEditor;
 
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.panel.WebPanelUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -30,8 +28,6 @@ import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -42,7 +38,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -55,10 +50,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -174,9 +171,33 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void criarMenuTemas() {
         GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-        menuTemas = FabricaDeAcoesDoEditor.criaMenuDosTemas(gerenciadorTemas, this);
+        menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
     }
 
+    public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor) {
+
+        final JMenu menu = new JMenu("Cores");
+        menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
+
+        //Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png");
+        for (String tema : gerenciadorTemas.listarTemas()) {
+            JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
+            itemMenu.setAction(new AbstractAction(tema) {
+
+                @Override
+                public void actionPerformed(ActionEvent evento) {
+                    AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
+                    String tema = itemSelecionado.getText();
+                    editor.aplicarTema(tema);
+                }
+            });
+            itemMenu.setText(tema);
+            itemMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            menu.add(itemMenu);
+        }
+        return menu;
+    }
+    
     private void configurarDialogoPesquisarSubstituir() {
         observadorAcaoPesquisaSubstituir = new FindReplaceSearchListener();
 
@@ -231,7 +252,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.addKeyListener(Editor.this);
 
         errorStrip = new ErrorStrip(textArea);
-        errorStrip.setBackground(new Color(220, 220, 220));
+        //errorStrip.setBackground(textArea.getBackground());
+        //errorStrip.setOpaque(true);
+        errorStrip.setCaretMarkerColor(getBackground());
         painelEditor.add(errorStrip, BorderLayout.EAST);
 
         Icon iconeBreakPoint = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
@@ -883,7 +906,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             Theme tema = gerenciadorTemas.carregarTema(nome);
 
             Font fonte = textArea.getFont();
-            tema.apply(textArea);
+            ((PSTextArea)textArea).setarTema(tema);
+            
 
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);

@@ -62,6 +62,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
 
@@ -87,8 +90,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean podeSalvar = true;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
-    private boolean editorExpandido = false;
-    private boolean painelSaidaFixado = false;
+    //private boolean editorExpandido = false;
+    //private boolean painelSaidaFixado = false;
 
     private JPanel painelTemporario;
 
@@ -172,7 +175,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 setTamanhoFonteArvoreInspetor(getTamanhoDaFonteArvoreInspetor() - VALOR_INCREMENTO_FONTE);
             }
         };
-        barraDeBotoesInspetorArvore.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{ acaoAumentarFonte, acaoDiminuirFonte});
+        barraDeBotoesInspetorArvore.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
 
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
@@ -200,7 +203,79 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 editor.setTamanhoFonteEditor(novoTamanho);
             }
         };
-        barraDeBotoesEditor.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[] {acaoAumentarFonte, acaoDiminuirFonte});
+        barraDeBotoesEditor.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
+    }
+
+    public Action criaAcaoPesquisarSubstituir() {
+
+        String nome = "Pesquisar e substituir";
+
+        AbstractAction acao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (editor.getFindDialog().isVisible()) {
+                    editor.getFindDialog().setVisible(false);
+                }
+
+                editor.getReplaceDialog().setVisible(true);
+            }
+        };
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
+        acao.putValue(Action.ACCELERATOR_KEY, atalho);
+        getActionMap().put(nome, acao);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        return acao;
+    }
+
+    public Action criaAcaoCentralizarCodigoFonte() {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE, InputEvent.SHIFT_DOWN_MASK);
+        String nome = "Centralizar código fonte";
+
+        AbstractAction acaoCentralizarCodigoFonte = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "centralizar_codigo.png")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Configuracoes configuracoes = Configuracoes.getInstancia();
+                configuracoes.alterarCentralizarCondigoFonte();
+            }
+        };
+
+        acaoCentralizarCodigoFonte.putValue(Action.ACCELERATOR_KEY, atalho);
+
+        getActionMap().put(nome, acaoCentralizarCodigoFonte);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        return acaoCentralizarCodigoFonte;
+    }
+
+    private boolean editorEstaExpandido() {
+        boolean divisorArvoreEditorExpandido = divisorArvoreEditor.getDividerLocation() > divisorArvoreEditor.getMaximumDividerLocation();
+        boolean divisorEditorConsoleExpandido = divisorEditorConsole.getDividerLocation() > divisorEditorConsole.getMaximumDividerLocation();
+        return divisorArvoreEditorExpandido && divisorEditorConsoleExpandido;
+    }
+
+    private Action criaAcaoExpandirEditor() {
+        AbstractAction acaoExpandir = new AbstractAction("Expandir/Restaurar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (!editorEstaExpandido()) {
+                    divisorArvoreEditor.setDividerLocation(1.0);
+                    divisorEditorConsole.setDividerLocation(1.0);
+                } else {
+                    divisorArvoreEditor.setDividerLocation(-1);
+                    divisorEditorConsole.setDividerLocation(-1);
+                }
+            }
+        };
+        
+        String nome = (String) acaoExpandir.getValue(AbstractAction.NAME);
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_DOWN_MASK);
+
+        acaoExpandir.putValue(AbstractAction.ACCELERATOR_KEY, atalho);
+
+        getActionMap().put(nome, acaoExpandir);
+        getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
+        
+        return acaoExpandir;
     }
 
     private void configurarBarraDeBotoesDoEditor() {
@@ -208,14 +283,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         criaControlesDoTamanhoDaFonteDoEditor();
 
-        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoExpandirEditor(divisorArvoreEditor, divisorEditorConsole));
-        BarraDeBotoesExpansivel.Acao acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
-        barraDeBotoesEditor.adicionaAcao(acaoPesquisarSubstituir);
+        barraDeBotoesEditor.adicionaAcao(criaAcaoExpandirEditor());
+        //Action acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
+        barraDeBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
 
-        barraDeBotoesEditor.adicionaAcao(FabricaDeAcoesDoEditor.criaAcaoCentralizarCodigoFonte(getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)));
+        barraDeBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
         barraDeBotoesEditor.adicionaSeparador();
         barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
-        
+
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
     }
@@ -578,21 +653,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void pontosDeParaAtualizados(Set<Integer> pontosDeParada) {
                 if (programa != null) {
                     Set<Integer> linhasParaveis = programa.setPontosDeParada(pontosDeParada);
-                    boolean tocouBeep = false;
-                    for (Integer linhaDoPontoDeParada : pontosDeParada) {
-                        if (!linhasParaveis.contains(linhaDoPontoDeParada)) {
-                            getEditor().getTextArea().alternaPontoDeParada(linhaDoPontoDeParada);
-                            if (!tocouBeep) {
-                                Toolkit.getDefaultToolkit().beep();
-                                Point pontoDoClique = getEditor().getMousePosition();
-                                pontoDoClique.translate(0, getEditor().getTextArea().getLineHeight());
-                                FabricaDicasInterface.criarDicaInterfaceEstatica(getEditor(), "Não é possível colocar um ponto de parada nesta linha!", pontoDoClique);
-                                //FabricaDicasInterface.mostrarNotificacao("teste");
-                                tocouBeep = true;//evita tocar vários beeps
-                            }
-                        }
-                    }
-
+                    getEditor().getTextArea().atualizaEstadoDosPontosDeParada( pontosDeParada, linhasParaveis);
                 }
                 salvaArquivo();
             }
@@ -1405,17 +1466,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     public void exibirPainelSaida() {
-        if (editorExpandido && !painelSaidaFixado && divisorEditorConsole.getBottomComponent() != painelConsole) {
-            divisorEditorConsole.setBottomComponent(painelConsole);
-            divisorEditorConsole.setDividerLocation(divisorEditorConsole.getMaximumDividerLocation());
-            validate();
+        if (editorEstaExpandido()) {
+            divisorEditorConsole.setDividerLocation(-1);
+            revalidate();
         }
     }
 
     public void ocultarPainelSaida() {
-        if (editorExpandido && !painelSaidaFixado) {
-            divisorEditorConsole.remove(painelConsole);
-            validate();
+        if (editorEstaExpandido()) {
+            divisorEditorConsole.setDividerLocation(1.0);
+            revalidate();
         }
     }
 

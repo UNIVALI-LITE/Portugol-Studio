@@ -102,9 +102,9 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
         return menu;
     }
 
-    public void adicionaAcao(Acao acao) {
-        JMenuItem item = new JMenuItem(acao.getAction());
-        item.setIcon(acao.getIcone());
+    public void adicionaAcao(Action acao) {
+        JMenuItem item = new JMenuItem(acao);
+        item.setIcon((Icon)acao.getValue(Action.SMALL_ICON));
         menu.add(item);
     }
 
@@ -133,28 +133,28 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
 //        }
     }
 
-    public static Acao criaAcao(AbstractAction action, Icon icone) {
-        return new Acao(icone, action);
-    }
-
-    public static class Acao {
-
-        private Icon icone;
-        private AbstractAction action;
-
-        public Acao(Icon icone, AbstractAction action) {
-            this.icone = icone;
-            this.action = action;
-        }
-
-        public AbstractAction getAction() {
-            return action;
-        }
-
-        Icon getIcone() {
-            return icone;
-        }
-
-    }
+//    public static Acao criaAcao(AbstractAction action, Icon icone) {
+//        return new Acao(icone, action);
+//    }
+//
+//    public static class Acao {
+//
+//        private Icon icone;
+//        private AbstractAction action;
+//
+//        public Acao(Icon icone, AbstractAction action) {
+//            this.icone = icone;
+//            this.action = action;
+//        }
+//
+//        public AbstractAction getAction() {
+//            return action;
+//        }
+//
+//        Icon getIcone() {
+//            return icone;
+//        }
+//
+//    }
 
 }

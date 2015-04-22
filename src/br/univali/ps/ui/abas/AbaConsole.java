@@ -161,7 +161,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
             }
         };
         //+++++++++++++++++++
-        acaoLimpar = new AbstractAction("Limpar") {
+        acaoLimpar = new AbstractAction("Limpar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 limparConsole();
@@ -170,7 +170,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
         acaoLimpar.setEnabled(false);
         //+++++++++++++++++++++++++++++++
-        acaoCopiar = new AbstractAction("Copiar") {
+        acaoCopiar = new AbstractAction("Copiar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 console.selectAll();
@@ -182,8 +182,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         acaoCopiar.setEnabled(false);
         //+++++++++++++++++++++++++
         barra.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
-        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoLimpar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")));
-        barra.adicionaAcao(BarraDeBotoesExpansivel.criaAcao(acaoCopiar, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png")));
+        barra.adicionaAcao(acaoLimpar);
+        barra.adicionaAcao(acaoCopiar);
         FabricaDicasInterface.criarDicaInterface(barra.getMenu(), "Personalizar a console ...");
         GridBagConstraints constrainsts = new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         this.add(barra, constrainsts);

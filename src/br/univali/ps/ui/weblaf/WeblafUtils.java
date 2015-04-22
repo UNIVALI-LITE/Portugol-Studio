@@ -28,6 +28,7 @@ import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.util.Locale;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -127,8 +128,7 @@ public class WeblafUtils {
             StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);
-            
-            
+            Locale.setDefault(new Locale("pt", "br"));
         }
     }
 

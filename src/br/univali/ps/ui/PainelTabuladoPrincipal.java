@@ -8,33 +8,19 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.weblaf.PSWebTabbedPaneUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tabbedpane.TabbedPaneStyle;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.LinearGradientPaint;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
-import javafx.scene.paint.LinearGradient;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -102,10 +88,11 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
                 
                 //desenha linha na parte onde não existem tabs, esta linha vai desaparecendo
                 
-                int larguraDaLinhaTransparente = 100;
+                int larguraDaLinhaTransparente = 250;
                 Color cores[] = {COR_DA_BORDA_DE_BAIXO_DAS_ABAS, getBackground()};
-                float distribuicaoDasCores[] = {0.1f, 1f};
+                float distribuicaoDasCores[] = {0.1f, 0.5f};
                 ((Graphics2D)g).setPaint(new LinearGradientPaint(largutaTotalDasTabs, 0f, largutaTotalDasTabs + larguraDaLinhaTransparente, 2f, distribuicaoDasCores, cores));
+                //g.setColor(new Color(0, 0, 0, 0.06f));
                 g.drawLine(largutaTotalDasTabs, insets.top + altura, largutaTotalDasTabs + larguraDaLinhaTransparente, insets.top + altura);
                 
             } else {//existe apenas a aba principal
