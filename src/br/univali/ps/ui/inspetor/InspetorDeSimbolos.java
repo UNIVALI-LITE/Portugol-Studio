@@ -30,7 +30,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -96,6 +95,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         setTransferHandler(new TratadorDeArrastamento());
         setCellRenderer(new RenderizadorDaLista());
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        instalaObservadores();
+    }
+
+    private void instalaObservadores() {
         addFocusListener(new FocusAdapter() {
 
             @Override
@@ -144,7 +147,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         this.textArea = textArea;
     }
 
-    
     private void desenhaInstrucaoParaArrastarSimbolos(Graphics g) {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         //g.setFont(RenderizadorBase.FONTE_NORMAL. );
@@ -189,7 +191,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
             @Override
             public void run() {
-                setFixedCellHeight(10);
+                setFixedCellHeight(10);//provavelmente poderia ser qualquer outro valor positivo
                 setFixedCellHeight(-1);
             }
         });
@@ -265,9 +267,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     }
 
-//    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
-//        return mesmoNo(no1, no2, false);
-//    }
     private boolean simboloEhPermitido(Simbolo simbolo) {
         if (simbolo instanceof Ponteiro) {
             return simboloEhPermitido(((Ponteiro) simbolo).getSimboloApontado());
@@ -395,7 +394,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             }
         }
         if (itemsAlterados) {
-            redenhaItemsDaLista();
+            redesenhaItemsDaLista();
         }
     }
 
@@ -406,26 +405,28 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
      * de desempenho quando o usuário estiver inspecionados variáveis que são
      * alteradas várias vezes por segundo em um jogo, por exemplo.
      */
-    private void redenhaItemsDaLista() {
+    private void redesenhaItemsDaLista() {
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                int size = model.getSize();
+                int totalDeItems = model.getSize();
                 int offset = 0;
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < totalDeItems; i++) {
                     ItemDaLista item = model.getElementAt(i);
                     RenderizadorBase renderizador = item.getRendererComponent();
                     int alturaDoRenderizador = renderizador.getAlturaPreferida();
                     Rectangle bounds = new Rectangle(0, 0, getWidth(), alturaDoRenderizador);
+
                     Insets insets = EMPTY_BORDER.getBorderInsets(renderizador);
-                    int yOriginal = insets.top;
+                    offset += insets.top;
                     if (item.podeRepintar()) {
                         bounds.translate(0, offset);//desloca o retângulo para a posição vertical onde o item está na lista
                         repaint(bounds);
-                        item.guardaTempoDaUltimaPintura();
+                        item.atualizaMomentoDaUltimaPintura();
                     }
-                    offset += yOriginal + bounds.height + insets.bottom;
+
+                    offset += bounds.height + insets.bottom;
                 }
             }
         });
@@ -776,7 +777,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         //itemVetor.set(78, 11);
         //itemVetor.set(34, 10);
         //itemVariavel.setValor(54);
-        lista.redenhaItemsDaLista();
+        lista.redesenhaItemsDaLista();
 
         frame.add(lista, BorderLayout.CENTER);
 

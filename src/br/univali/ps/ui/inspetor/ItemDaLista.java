@@ -39,7 +39,7 @@ abstract class ItemDaLista {
         ultimaPintura = System.currentTimeMillis() - TEMPO_ENTRE_PINTURAS;
     }
 
-    void guardaTempoDaUltimaPintura() {
+    void atualizaMomentoDaUltimaPintura() {
         ultimaPintura = System.currentTimeMillis();
     }
 
