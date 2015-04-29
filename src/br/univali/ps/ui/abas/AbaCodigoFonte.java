@@ -4,6 +4,7 @@ import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.SetadorPontosParada;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
@@ -30,6 +31,7 @@ import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
+import br.univali.ps.ui.inspetor.VisitanteNulo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
@@ -64,7 +66,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
 
@@ -266,7 +267,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
             }
         };
-        
+
         String nome = (String) acaoExpandir.getValue(AbstractAction.NAME);
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_DOWN_MASK);
 
@@ -274,7 +275,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         getActionMap().put(nome, acaoExpandir);
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
-        
+
         return acaoExpandir;
     }
 
@@ -626,7 +627,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     }
 
-    private void instalarObservadores() {
+        private void instalarObservadores() {
         PortugolParser.getParser(getEditor().getTextArea()).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener() {
 
             @Override
@@ -634,7 +635,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 String name = pce.getPropertyName();
                 Programa programaCompilado = (Programa) pce.getNewValue();
 
-                if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
+                //sempre que a árvore for compilada é necessário verificar 
+                //se é necessário criar um ponto de parada desativado nos novos
+                //nós da árvore
+                //programaCompilado.getArvoreSintaticaAbstrata()
+                
+                if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name)) {
                     if (programa == null) {
                         programa = programaCompilado;
                     }
@@ -643,6 +649,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         carregaSimbolosInspecionados(codigoFonteAtual, programaCompilado);
                         simbolosInspecionadosJaForamCarregados = true;
                     }
+
                 }
             }
         });
@@ -653,7 +660,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void pontosDeParaAtualizados(Set<Integer> pontosDeParada) {
                 if (programa != null) {
                     Set<Integer> linhasParaveis = programa.setPontosDeParada(pontosDeParada);
-                    getEditor().getTextArea().atualizaEstadoDosPontosDeParada( pontosDeParada, linhasParaveis);
+                    getEditor().getTextArea().atualizaEstadoDosPontosDeParada(pontosDeParada, linhasParaveis);
                 }
                 salvaArquivo();
             }
@@ -1197,7 +1204,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     programa.adicionarObservadorExecucao(this);
 
                     Set<Integer> linhasMarcadas = programa.setPontosDeParada(editor.getLinhasComPontoDeParada());
-                    removePontosDeParadaInatingiveis(linhasMarcadas);
+                    //removePontosDeParadaInatingiveis(linhasMarcadas);
                     programa.executar(telaOpcoesExecucao.getParametros(), estado);
                 }
             } catch (ErroCompilacao erroCompilacao) {
@@ -1214,10 +1221,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-    private void removePontosDeParadaInatingiveis(Set<Integer> linhasComPontosDeParadaValidos) {
-        editor.removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
-    }
-
+//    private void removePontosDeParadaInatingiveis(Set<Integer> linhasComPontosDeParadaValidos) {
+//        editor.removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
+//    }
     private void definirDiretorioTrabalho(final Programa programa) {
         if (editor.getPortugolDocumento().getFile() != null) {
             programa.setDiretorioTrabalho(editor.getPortugolDocumento().getFile().getParentFile());

@@ -157,10 +157,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return getTextArea().getLinhasComPontoDeParada();
     }
 
-    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos) {
-        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
-    }
-
+//    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos) {
+//        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
+//    }
     public SuporteLinguagemPortugol getSuporteLinguagemPortugol() {
         return suporteLinguagemPortugol;
     }
@@ -197,7 +196,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
         return menu;
     }
-    
+
     private void configurarDialogoPesquisarSubstituir() {
         observadorAcaoPesquisaSubstituir = new FindReplaceSearchListener();
 
@@ -645,7 +644,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             try {
                 for (String valor : valores) {
                     int linhaDoPontoDeParada = Integer.parseInt(valor.trim());
-                    getTextArea().alternaPontoDeParada(linhaDoPontoDeParada);
+                    getTextArea().setaStatusDoPontoDeParada(linhaDoPontoDeParada, true);
                 }
             } catch (NumberFormatException excecao) {
                 excecao.printStackTrace(System.out);
@@ -807,7 +806,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         this.revalidate();
     }
 
-    
     public PSTextArea getTextArea() {
         return (PSTextArea) textArea;
     }
@@ -899,21 +897,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     public void keyReleased(KeyEvent e) {
     }
 
-    
     public void aplicarTema(String nome) {
         try {
             GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
             Theme tema = gerenciadorTemas.carregarTema(nome);
 
             Font fonte = textArea.getFont();
-            ((PSTextArea)textArea).setarTema(tema);
-            
+            ((PSTextArea) textArea).setarTema(tema);
 
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);
-            
-            int xDaDica = getWidth()/2 ;
-            int yDaDica = getHeight()/2  + (int)(Math.random() * 100);
+
+            int xDaDica = getWidth() / 2;
+            int yDaDica = getHeight() / 2 + (int) (Math.random() * 100);
             FabricaDicasInterface.criarDicaInterfaceEstatica(this, "Usando tema " + nome, new Point(xDaDica, yDaDica));
 
             for (Component componente : menuTemas.getComponents()) {
