@@ -361,14 +361,13 @@ public final class PortugolStudio {
 
             @Override
             public void run() {
-                try{
+                try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     WeblafUtils.instalaWeblaf();
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
-                
+
             }
         });
 
@@ -517,7 +516,6 @@ public final class PortugolStudio {
             telaPrincipal = new TelaPrincipal();
             telaPrincipal.setArquivosIniciais(arquivosIniciais);
         }
-
         return telaPrincipal;
     }
 
