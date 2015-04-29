@@ -128,6 +128,7 @@ public class WeblafUtils {
             StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);
+            WebLookAndFeel.setDecorateFrames(false);
             Locale.setDefault(new Locale("pt", "br"));//corrige o idioma nos diálogos de pesquisar e substituir
             UIManager.put("SplitPane.supportsOneTouchButtons", true);//oneTouchButton nos splitPanes em todas as plataformas
         }

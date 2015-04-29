@@ -9,12 +9,10 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.abas.BotoesControleAba;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaLogAtualizacoes;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
-import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +42,7 @@ public final class TelaPrincipal extends JFrame {
         configurarJanela();
         criaAbas();
         instalarObservadores();
+        
     }
 
     public void setArquivosIniciais(List<File> arquivos) {
