@@ -64,8 +64,8 @@ public class PSWebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvide
     private int tabRunIndent = WebTabbedPaneStyle.tabRunIndent;
     private int tabOverlay = WebTabbedPaneStyle.tabOverlay;
     private TabStretchType tabStretchType = WebTabbedPaneStyle.tabStretchType;
-    private Color tabBorderColor = WeblafUtils.COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS;
-    private Color contentBorderColor = WeblafUtils.COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS;
+    private Color tabBorderColor = WeblafUtils.COR_DAS_BORDAS;
+    private Color contentBorderColor = WeblafUtils.COR_DAS_BORDAS;
     private boolean paintBorderOnlyOnSelectedTab = false;//WebTabbedPaneStyle.paintBorderOnlyOnSelectedTab;
     private boolean forceUseSelectedTabBgColors = true;//WebTabbedPaneStyle.forceUseSelectedTabBgColors;
     private Color backgroundColor = StyleConstants.backgroundColor;// WebTabbedPaneStyle.backgroundColor;

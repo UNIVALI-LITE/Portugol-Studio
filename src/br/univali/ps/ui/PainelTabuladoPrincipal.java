@@ -48,7 +48,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
     public PainelTabuladoPrincipal() {
         initComponents();
         abaAjuda = new AbaAjuda();
-        setBackground(WeblafUtils.BACKGROUND);
+        setBackground(WeblafUtils.BACKGROUND_CLARO);
     }
 
     private class UIPainelTabuladoPrincipal extends PSWebTabbedPaneUI {

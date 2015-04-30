@@ -289,7 +289,7 @@ public class PSTextArea extends RSyntaxTextArea {
             });
             //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
             setOpaque(true);
-            setBackground(WeblafUtils.BACKGROUND);
+            setBackground(WeblafUtils.BACKGROUND_CLARO);
         }
 
         @Override

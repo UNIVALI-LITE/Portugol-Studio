@@ -28,11 +28,15 @@ public final class PainelSaida extends PainelTabulado {
         abaConsole = new AbaConsole();
         add(abaConsole);
         
-        abaConsole.setBackground(Color.BLUE);
+        //abaConsole.setBackground(Color.BLUE);
 
         abaMensagensCompilador = new AbaMensagemCompilador();
         this.add(abaMensagensCompilador);
 
+        if (WeblafUtils.weblafEstaInstalado()) {
+          setUI(criaUi());
+        }
+        
         setSelectedIndex(0);//deixa a console aparecendo quando abre uma nova aba
     }
 
@@ -45,8 +49,8 @@ public final class PainelSaida extends PainelTabulado {
 
         public PsTabbedPaneUI() {
             setTabbedPaneStyle(TabbedPaneStyle.standalone);
-            setBackgroundPainterAt(0, WeblafUtils.criaPainterComCorSolida(WeblafUtils.COR_DO_PAINEL_DE_SAIDA, false, false, false, false));
-            setBackgroundPainterAt(1, WeblafUtils.criaPainterComCorSolida(WeblafUtils.COR_DO_PAINEL_DE_SAIDA, false, false, false, false));
+            setBackgroundPainterAt(0, WeblafUtils.criaPainterComCorSolida(WeblafUtils.BACKGROUND_ESCURO, false, false, false, false));
+            setBackgroundPainterAt(1, WeblafUtils.criaPainterComCorSolida(WeblafUtils.BACKGROUND_ESCURO, false, false, false, false));
         }
     }
     

@@ -139,7 +139,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if (WeblafUtils.weblafEstaInstalado()) {
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
-
+            inspetorDeSimbolos.setBackground(WeblafUtils.BACKGROUND_ESCURO);
             
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
@@ -1047,7 +1047,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         scrollInspetor.setOpaque(false);
         scrollInspetor.setPreferredSize(new java.awt.Dimension(266, 200));
 
-        inspetorDeSimbolos.setBackground(new java.awt.Color(237, 237, 237));
+        inspetorDeSimbolos.setBackground(new java.awt.Color(243, 243, 243));
         inspetorDeSimbolos.setBorder(new javax.swing.border.LineBorder(new Color(0, 0, 0, 0.1f), 1, true));
         scrollInspetor.setViewportView(inspetorDeSimbolos);
 
