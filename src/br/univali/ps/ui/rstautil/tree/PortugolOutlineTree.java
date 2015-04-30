@@ -26,6 +26,8 @@ import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 
 import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.laf.tree.WebTreeUI;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -133,6 +135,10 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         addTreeSelectionListener(listener);
         setDragEnabled(true);
         setTransferHandler(new TreeTransferHandler());
+        
+        if(WeblafUtils.weblafEstaInstalado()){
+            ((WebTreeUI)getUI()).setRightChildIndent(3);
+        }
     }
 
     private class TreeTransferHandler extends TransferHandler {
