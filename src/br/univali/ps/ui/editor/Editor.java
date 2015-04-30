@@ -137,6 +137,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private JMenu menuTemas;
 
     public Editor() {
+        System.out.println("criando editor");
         initComponents();
 
         configurarDialogoPesquisarSubstituir();

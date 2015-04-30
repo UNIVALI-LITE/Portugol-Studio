@@ -652,7 +652,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         getEditor().getTextArea().addListenter(new PSTextAreaListener() {
 
             @Override
-            public void pontosDeParaAtualizados(Set<Integer> pontosDeParada) {
+            public void pontosDeParadaAtualizados(Set<Integer> pontosDeParada) {
                 if (programa != null) {
                     programa.ativaPontosDeParada(pontosDeParada);
                     //getEditor().getTextArea().atualizaEstadoDosPontosDeParada(pontosDeParada, linhasParaveis);

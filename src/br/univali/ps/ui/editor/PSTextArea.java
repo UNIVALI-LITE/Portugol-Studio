@@ -58,17 +58,22 @@ public class PSTextArea extends RSyntaxTextArea {
     private static final Logger LOGGER = Logger.getLogger(PSTextArea.class.getName());
 
     private static Icon iconePontoDeParadaAtivado = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
-    private static Icon iconePontoDeParadaDesativado = criaIconeDesativado(iconePontoDeParadaAtivado);
+    //cria o ícone ativado a partir do arquivo de ícone para evitar um erro no NetBeans
+    //quando se abre a aba de projeto da AbaDeCodigoFonte. 
+    private static Icon iconePontoDeParadaDesativado = criaIconeDesativado(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
 
-    private List<IconePontoDeParada> pontosDeParada;
+    private List<IconePontoDeParada> pontosDeParada = new ArrayList<>();
 
     private List<PSTextAreaListener> listeners = new ArrayList<>();
 
+    public PSTextArea(){
+        this(new RSyntaxDocument("cpp"));
+    }
+    
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         setBorder(null);
 
-        this.pontosDeParada = new ArrayList<>();
         setTransferHandler(new RTATextTransferHandler() {//usa a própria classe to RSyntax mas modifica a criação da dragImage
             @Override
             public Image getDragImage() {
@@ -206,18 +211,19 @@ public class PSTextArea extends RSyntaxTextArea {
     }
 
     public void alternaStatusDoPontoDeParada(int linhaClicada) {
-        if (existePontoDeParadaNaLinha(linhaClicada)) {
-            try {
-                alternaStatusDoPontoDeParada(getIconePontoDeParada(linhaClicada));
-            } catch (BadLocationException e) {
-
+        try {
+            IconePontoDeParada iconePontoDeParada = getIconePontoDeParada(linhaClicada);
+            if (iconePontoDeParada != null) {
+                alternaStatusDoPontoDeParada(iconePontoDeParada);
             }
+        } catch (BadLocationException e) {
+
         }
     }
 
     private void disparaPontosDeParadaAtualizados() {
         for (PSTextAreaListener listener : listeners) {
-            listener.pontosDeParaAtualizados(getLinhasComPontoDeParadaAtivados());
+            listener.pontosDeParadaAtualizados(getLinhasComPontoDeParadaAtivados());
         }
     }
 
@@ -255,6 +261,9 @@ public class PSTextArea extends RSyntaxTextArea {
 
     //++++++++++++++++++++++++++++++++++
     private static Icon criaIconeDesativado(Icon icon) {
+        if(icon == null){
+            return null;
+        }
         BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         icon.paintIcon(null, image.getGraphics(), 0, 0);
         return new ImageIcon(GrayFilter.createDisabledImage(image));
@@ -264,7 +273,7 @@ public class PSTextArea extends RSyntaxTextArea {
     private class PSIconRowHeader extends IconRowHeader {
 
         static final String DICA_DOS_PONTOS_DE_PARADA = "Clique para pausar a execução do programa na linha ";
-        
+
         public PSIconRowHeader(RTextArea textArea) {
             super(textArea);
             addMouseListener(new MouseAdapter() {
@@ -276,7 +285,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
             });
             //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
-            setOpaque(true);
+            //setOpaque(true);
             setBackground(WeblafUtils.COR_DO_PAINEL_PRINCIPAL);
         }
 
@@ -286,12 +295,11 @@ public class PSTextArea extends RSyntaxTextArea {
                 int offset = textArea.viewToModel(e.getPoint());
                 int linha = textArea.getLineOfOffset(offset) + 1;
                 IconePontoDeParada pontoDeParada = getIconePontoDeParada(linha);
-                if(pontoDeParada != null && !pontoDeParada.estaAtivado()){
+                if (pontoDeParada != null && !pontoDeParada.estaAtivado()) {
                     return DICA_DOS_PONTOS_DE_PARADA + linha;
                 }
-            }
-            catch(BadLocationException ex){
-                
+            } catch (BadLocationException ex) {
+
             }
             return null;
         }
@@ -299,7 +307,7 @@ public class PSTextArea extends RSyntaxTextArea {
     }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    private IconRowHeader iconRowHeader;
+    //private IconRowHeader iconRowHeader;
 
     private class PSTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
 
@@ -308,8 +316,8 @@ public class PSTextArea extends RSyntaxTextArea {
 
         @Override
         public IconRowHeader createIconRowHeader(RTextArea textArea) {
-            iconRowHeader = new PSIconRowHeader(textArea);// super.createIconRowHeader(textArea);
-            return iconRowHeader;
+            //return super.createIconRowHeader(textArea);
+            return new PSIconRowHeader(textArea);
         }
 
         @Override
