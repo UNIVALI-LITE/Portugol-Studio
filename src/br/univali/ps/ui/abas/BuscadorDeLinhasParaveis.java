@@ -1,12 +1,12 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.portugol.nucleo.SetadorPontosParada;
+import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.AtivadorDePontosDeParada;
 
 /**
  *
  * @author elieser
  */
-
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
@@ -32,6 +32,7 @@ import br.univali.portugol.nucleo.asa.NoLogico;
 import br.univali.portugol.nucleo.asa.NoMatriz;
 import br.univali.portugol.nucleo.asa.NoMenosUnario;
 import br.univali.portugol.nucleo.asa.NoNao;
+import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
 import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseE;
 import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseLeftShift;
@@ -62,88 +63,56 @@ import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoTitulo;
 import br.univali.portugol.nucleo.asa.NoVaPara;
 import br.univali.portugol.nucleo.asa.NoVetor;
-import br.univali.portugol.nucleo.asa.VisitanteASA;
-import java.util.Collection;
+import br.univali.portugol.nucleo.execucao.Depurador;
+import br.univali.ps.ui.inspetor.VisitanteNulo;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * Esta classe recebe uma coleção de inteiros representado os números das linhas
- * onde o usuário colocou pontos de parada. A árvore é precorrida e em cada nó é
- * feita uma comparação com a linha de código que corresponde ao nó. Se existe
- * um ponto de parada para a linha então um ponto de parada é adicionado no nó
- * da AST. Esta classe também desativa os pontos de parada de todos os outros
- * nós que não estão marcados com 'breakpoints', evitando que se tenha que
- * executar algum método que reseta o estado de parada dos nós antes de cada
- * execução do depurador.
- *
  * @author Luiz Fernando
  * @author Elieser
  */
+public final class BuscadorDeLinhasParaveis extends VisitanteNulo {
 
+    private static final Logger LOGGER = Logger.getLogger(AtivadorDePontosDeParada.class.getName());
 
-public final class BuscadorDeLinhasParaveis implements VisitanteASA {
+    private final Set<Integer> linhasParaveis = new HashSet<>();
 
-    private static final Logger LOGGER = Logger.getLogger(SetadorPontosParada.class.getName());
-    private Set<Integer> linhasDosCandidatosParaPontoDeParada;
+    private static final Set<Class> classesParaveis = new HashSet<>();
 
-    private Set<Integer> linhasComPontoDeParada;//guarda somente os pontos de parada que realmente puderam ser adicionados aos nós, já que nem todo nó pode ser parado
+    static {
+        classesParaveis.add(NoCaso.class);
+        classesParaveis.add(NoChamadaFuncao.class);
+        classesParaveis.add(NoDeclaracaoMatriz.class);
+        classesParaveis.add(NoDeclaracaoVetor.class);
+        classesParaveis.add(NoDeclaracaoParametro.class);
+        classesParaveis.add(NoDeclaracaoVariavel.class);
+        classesParaveis.add(NoEnquanto.class);
+        classesParaveis.add(NoPara.class);
+        classesParaveis.add(NoEscolha.class);
+        classesParaveis.add(NoOperacaoAtribuicao.class);
+        classesParaveis.add(NoOperacao.class);
+        classesParaveis.add(NoSe.class);
+    }
 
-//    private boolean podeParar(int linha)
-//    {
-//        if (linhasDosCandidatosParaPontoDeParada.contains(linha))
-//        {
-//            linhasComPontoDeParada.add(linha);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private boolean podeParar(TrechoCodigoFonte trechoCodigoFonte)
-//    {
-//        int linha = trechoCodigoFonte.getLinha();
-//        if (linhasDosCandidatosParaPontoDeParada.contains(linha))
-//        {
-//            linhasComPontoDeParada.add(linha);
-//            return true;
-//        }
-//        return false;
-//    }
-    private boolean podeParar(NoBloco noBloco) {
-        int linha = noBloco.getTrechoCodigoFonte().getLinha();
-        if (linhasDosCandidatosParaPontoDeParada.contains(linha)) {
-            linhasComPontoDeParada.add(linha);
+    private boolean verificaSePodeParar(NoBloco noBloco) {
+        if (classesParaveis.contains(noBloco.getClass())) {
+            linhasParaveis.add(noBloco.getTrechoCodigoFonte().getLinha());
             return true;
         }
         return false;
     }
 
-    /**
-     *
-     * @param linhasDosPontosDeParada As linhas onde serão aplicados os pontos
-     * de parada
-     * @param asa
-     * @return Uma coleção contendo apenas as linhas onde foram adicionados os
-     * pontos de parada, pois nem todos os nós podem ser parados.
-     */
-    public Set<Integer> setaPontosDeParada(Collection<Integer> linhasDosPontosDeParada, ArvoreSintaticaAbstrataPrograma asa) {
-
-        this.linhasDosCandidatosParaPontoDeParada = new HashSet();
-        for (Integer linha : linhasDosPontosDeParada) {
-            this.linhasDosCandidatosParaPontoDeParada.add(linha);
-        }
-
-        this.linhasComPontoDeParada = new HashSet<>();
-
+    public Set<Integer> getLinhasParaveis(Programa programa) {
+        linhasParaveis.clear();
         try {
-            asa.aceitar(this);
+            programa.getArvoreSintaticaAbstrata().aceitar(this);
         } catch (ExcecaoVisitaASA ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        return linhasComPontoDeParada;
+        return linhasParaveis;
     }
 
     @Override
@@ -168,9 +137,9 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
         NoExpressao expressao = noCaso.getExpressao();
         if (expressao != null) {
-            expressao.definirPontoParada(podeParar(expressao));
+            verificaSePodeParar(expressao);
         } else {
-            noCaso.definirPontoParada(podeParar(noCaso));
+            verificaSePodeParar(noCaso);
         }
 
         if (noCaso.getBlocos() != null) {
@@ -183,19 +152,19 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
 
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
-        chamadaFuncao.definirPontoParada(podeParar(chamadaFuncao));
+        verificaSePodeParar(chamadaFuncao);
         return null;
     }
 
     @Override
     public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA {
-        noContinue.definirPontoParada(podeParar(noContinue));
+        verificaSePodeParar(noContinue);
         return null;
     }
 
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
-        declaracaoFuncao.definirPontoParada(podeParar(declaracaoFuncao));
+        verificaSePodeParar(declaracaoFuncao);
 
         for (NoBloco filho : declaracaoFuncao.getBlocos()) {
             filho.aceitar(this);
@@ -205,25 +174,25 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
 
     @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
-        noDeclaracaoMatriz.definirPontoParada(podeParar(noDeclaracaoMatriz));
+        verificaSePodeParar(noDeclaracaoMatriz);
         return null;
     }
 
     @Override
     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
-        noDeclaracaoVariavel.definirPontoParada(podeParar(noDeclaracaoVariavel));
+        verificaSePodeParar(noDeclaracaoVariavel);
         return null;
     }
 
     @Override
     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA {
-        noDeclaracaoVetor.definirPontoParada(podeParar(noDeclaracaoVetor));
+        noDeclaracaoVetor.definirPontoParada(verificaSePodeParar(noDeclaracaoVetor));
         return null;
     }
 
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
-        noEnquanto.getCondicao().definirPontoParada(podeParar(noEnquanto.getCondicao()));
+        verificaSePodeParar(noEnquanto.getCondicao());
         for (NoBloco bloco : noEnquanto.getBlocos()) {
             bloco.aceitar(this);
         }
@@ -232,7 +201,7 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
 
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
-        noEscolha.definirPontoParada(podeParar(noEscolha));
+        verificaSePodeParar(noEscolha);
         for (NoCaso caso : noEscolha.getCasos()) {
             caso.aceitar(this);
         }
@@ -241,12 +210,12 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
 
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
-        noFacaEnquanto.definirPontoParada(podeParar(noFacaEnquanto));
+        verificaSePodeParar(noFacaEnquanto);
         for (NoBloco no : noFacaEnquanto.getBlocos()) {
             no.aceitar(this);
         }
 
-        noFacaEnquanto.getCondicao().definirPontoParada(podeParar(noFacaEnquanto.getCondicao()));
+        verificaSePodeParar(noFacaEnquanto.getCondicao());
         return null;
     }
 
@@ -287,7 +256,7 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
 
     @Override
     public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA {
-        noOperacaoAtribuicao.definirPontoParada(podeParar(noOperacaoAtribuicao));
+        verificaSePodeParar(noOperacaoAtribuicao);
         return null;
     }
 
@@ -379,7 +348,7 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         NoExpressao condicao = noPara.getCondicao();
-        condicao.definirPontoParada(podeParar(condicao));
+        verificaSePodeParar(condicao);
         for (NoBloco no : noPara.getBlocos()) {
             no.aceitar(this);
         }
@@ -388,7 +357,7 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
 
     @Override
     public Object visitar(NoPare noPare) throws ExcecaoVisitaASA {
-        noPare.definirPontoParada(podeParar(noPare));
+        verificaSePodeParar(noPare);
         return null;
     }
 
@@ -420,7 +389,7 @@ public final class BuscadorDeLinhasParaveis implements VisitanteASA {
 
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
-        noSe.getCondicao().definirPontoParada(podeParar(noSe.getCondicao()));
+        verificaSePodeParar(noSe.getCondicao());
         for (NoBloco no : noSe.getBlocosVerdadeiros()) {
             no.aceitar(this);
         }

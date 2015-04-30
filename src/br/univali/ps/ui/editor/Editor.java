@@ -153,8 +153,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     }
 
-    public Set<Integer> getLinhasComPontoDeParada() {
-        return getTextArea().getLinhasComPontoDeParada();
+    public Set<Integer> getLinhasComPontoDeParadaAtivados() {
+        return getTextArea().getLinhasComPontoDeParadaAtivados();
     }
 
 //    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos) {

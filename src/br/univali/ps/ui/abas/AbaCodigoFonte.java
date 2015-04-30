@@ -4,7 +4,6 @@ import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.SetadorPontosParada;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
@@ -31,7 +30,6 @@ import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
-import br.univali.ps.ui.inspetor.VisitanteNulo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
@@ -62,7 +60,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -627,7 +624,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     }
 
-        private void instalarObservadores() {
+    private void instalarObservadores() {
         PortugolParser.getParser(getEditor().getTextArea()).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener() {
 
             @Override
@@ -635,21 +632,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 String name = pce.getPropertyName();
                 Programa programaCompilado = (Programa) pce.getNewValue();
 
-                //sempre que a árvore for compilada é necessário verificar 
-                //se é necessário criar um ponto de parada desativado nos novos
-                //nós da árvore
-                //programaCompilado.getArvoreSintaticaAbstrata()
-                
-                if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name)) {
-                    if (programa == null) {
-                        programa = programaCompilado;
-                    }
+                if (programa == null) {
+                    programa = programaCompilado;
+                }
 
-                    if (!simbolosInspecionadosJaForamCarregados) {
-                        carregaSimbolosInspecionados(codigoFonteAtual, programaCompilado);
-                        simbolosInspecionadosJaForamCarregados = true;
-                    }
-
+                if (!simbolosInspecionadosJaForamCarregados) {
+                    carregaSimbolosInspecionados(codigoFonteAtual, programaCompilado);
+                    simbolosInspecionadosJaForamCarregados = true;
+                } else {//se não é a primeira compilação
+                    //sempre que a árvore for compilada é necessário verificar 
+                    //quais são as linhas paráveis e adicionar pontos de parada nestas linhas
+                    BuscadorDeLinhasParaveis buscadorDeLinhasParaveis = new BuscadorDeLinhasParaveis();
+                    Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
+                    editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
                 }
             }
         });
@@ -659,8 +654,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void pontosDeParaAtualizados(Set<Integer> pontosDeParada) {
                 if (programa != null) {
-                    Set<Integer> linhasParaveis = programa.setPontosDeParada(pontosDeParada);
-                    getEditor().getTextArea().atualizaEstadoDosPontosDeParada(pontosDeParada, linhasParaveis);
+                    programa.ativaPontosDeParada(pontosDeParada);
+                    //getEditor().getTextArea().atualizaEstadoDosPontosDeParada(pontosDeParada, linhasParaveis);
                 }
                 salvaArquivo();
             }
@@ -1203,8 +1198,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                     programa.adicionarObservadorExecucao(this);
 
-                    Set<Integer> linhasMarcadas = programa.setPontosDeParada(editor.getLinhasComPontoDeParada());
-                    //removePontosDeParadaInatingiveis(linhasMarcadas);
+                    programa.ativaPontosDeParada( editor.getLinhasComPontoDeParadaAtivados() );
                     programa.executar(telaOpcoesExecucao.getParametros(), estado);
                 }
             } catch (ErroCompilacao erroCompilacao) {
@@ -1374,7 +1368,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void inserirInformacoesDosPontosDeParada(StringBuilder sb) {
-        List<Integer> linhasComPontoDeParada = new ArrayList<>(editor.getLinhasComPontoDeParada());
+        List<Integer> linhasComPontoDeParada = new ArrayList<>(editor.getLinhasComPontoDeParadaAtivados());
         StringBuilder linhas = new StringBuilder();
         for (int i = 0; i < linhasComPontoDeParada.size(); i++) {
             linhas.append(linhasComPontoDeParada.get(i).toString());
