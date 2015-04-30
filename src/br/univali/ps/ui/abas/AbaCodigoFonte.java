@@ -634,14 +634,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                String name = pce.getPropertyName();
+                //String name = pce.getPropertyName();
                 Programa programaCompilado = (Programa) pce.getNewValue();
 
                 if (programa == null) {
                     programa = programaCompilado;
                 }
 
-                if (!simbolosInspecionadosJaForamCarregados) {
+                if (!simbolosInspecionadosJaForamCarregados) {//é a primeira compilação?
                     carregaSimbolosInspecionados(codigoFonteAtual, programaCompilado);
                     simbolosInspecionadosJaForamCarregados = true;
                 } else {//se não é a primeira compilação

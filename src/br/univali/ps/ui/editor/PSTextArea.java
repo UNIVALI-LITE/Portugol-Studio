@@ -66,10 +66,10 @@ public class PSTextArea extends RSyntaxTextArea {
 
     private List<PSTextAreaListener> listeners = new ArrayList<>();
 
-    public PSTextArea(){
+    public PSTextArea() {
         this(new RSyntaxDocument("cpp"));
     }
-    
+
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
         setBorder(null);
@@ -141,6 +141,9 @@ public class PSTextArea extends RSyntaxTextArea {
      * @param linhasParaveis
      */
     public void criarPontosDeParadaDesativados(Set<Integer> linhasParaveis) {
+        //remove todos os pontos de parada existentes
+        RSyntaxUtilities.getGutter(this).removeAllTrackingIcons();
+        pontosDeParada.clear();
         for (Integer linha : linhasParaveis) {
             adicionaPontoDeParada(linha);
         }
@@ -261,7 +264,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
     //++++++++++++++++++++++++++++++++++
     private static Icon criaIconeDesativado(Icon icon) {
-        if(icon == null){
+        if (icon == null) {
             return null;
         }
         BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -308,7 +311,6 @@ public class PSTextArea extends RSyntaxTextArea {
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //private IconRowHeader iconRowHeader;
-
     private class PSTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
 
         private PSTextArea textArea;
