@@ -1,6 +1,7 @@
 package br.univali.ps.ui.editor;
 
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
@@ -11,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -168,7 +170,7 @@ public class PSTextArea extends RSyntaxTextArea {
             adicionaPontoDeParada(linha);
         }
         try {
-            IconePontoDeParada pontoDeParada = getPontoDeParada(linha);
+            IconePontoDeParada pontoDeParada = getIconePontoDeParada(linha);
             if (pontoDeParada != null) {
                 if (pontoDeParada.estaAtivado() != ativado) {
                     alternaStatusDoPontoDeParada(pontoDeParada);
@@ -180,7 +182,7 @@ public class PSTextArea extends RSyntaxTextArea {
         disparaPontosDeParadaAtualizados();
     }
 
-    private IconePontoDeParada getPontoDeParada(int linha) throws BadLocationException {
+    private IconePontoDeParada getIconePontoDeParada(int linha) throws BadLocationException {
         for (IconePontoDeParada pontoDeParada : pontosDeParada) {
             GutterIconInfo gutterInfo = pontoDeParada.getGutterInfo();
             int linhaDoGutterInfo = getLineOfOffset(gutterInfo.getMarkedOffset()) + 1;
@@ -206,7 +208,7 @@ public class PSTextArea extends RSyntaxTextArea {
     public void alternaStatusDoPontoDeParada(int linhaClicada) {
         if (existePontoDeParadaNaLinha(linhaClicada)) {
             try {
-                alternaStatusDoPontoDeParada(getPontoDeParada(linhaClicada));
+                alternaStatusDoPontoDeParada(getIconePontoDeParada(linhaClicada));
             } catch (BadLocationException e) {
 
             }
@@ -259,14 +261,10 @@ public class PSTextArea extends RSyntaxTextArea {
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    /**
-     * *
-     * Esta classe é necessária para que seja possível pegar o GutterIconInfo
-     * criado e "embrulhá-lo" em uma instância de PsGutterIconInfo, que permite
-     * trocar o ícone do ponto de parada.
-     */
     private class PSIconRowHeader extends IconRowHeader {
 
+        static final String DICA_DOS_PONTOS_DE_PARADA = "Clique para pausar a execução do programa na linha ";
+        
         public PSIconRowHeader(RTextArea textArea) {
             super(textArea);
             addMouseListener(new MouseAdapter() {
@@ -280,6 +278,22 @@ public class PSTextArea extends RSyntaxTextArea {
             //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
             setOpaque(true);
             setBackground(WeblafUtils.COR_DO_PAINEL_PRINCIPAL);
+        }
+
+        @Override
+        public String getToolTipText(MouseEvent e) {
+            try {
+                int offset = textArea.viewToModel(e.getPoint());
+                int linha = textArea.getLineOfOffset(offset) + 1;
+                IconePontoDeParada pontoDeParada = getIconePontoDeParada(linha);
+                if(pontoDeParada != null && !pontoDeParada.estaAtivado()){
+                    return DICA_DOS_PONTOS_DE_PARADA + linha;
+                }
+            }
+            catch(BadLocationException ex){
+                
+            }
+            return null;
         }
 
     }
