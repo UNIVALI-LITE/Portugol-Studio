@@ -3,6 +3,7 @@ package br.univali.ps.ui.weblaf;
 import br.univali.ps.ui.util.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.menu.WebPopupMenuUI;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ public class BarraDeBotoesExpansivel extends JButton {
     private final JPopupMenu menu;// = new JPopupMenu();
 
     public BarraDeBotoesExpansivel() {
+        super();
         menu = new JPopupMenu();
         menu.setFont(getFont());
         //menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
@@ -38,6 +40,8 @@ public class BarraDeBotoesExpansivel extends JButton {
             ((WebButtonUI) getUI()).setUndecorated(false);
             ((WebButtonUI) getUI()).setLeftRightSpacing(0);
             ((WebButtonUI) getUI()).setRolloverDecoratedOnly(true);
+            
+            ((WebPopupMenuUI)menu.getUI()).setTransparency(1);
         }
 
         addActionListener(new ActionListener() {
