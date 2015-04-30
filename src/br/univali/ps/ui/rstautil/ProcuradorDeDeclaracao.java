@@ -131,6 +131,12 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA {
         verificaNoReferencia(noReferenciaMatriz);
+        if(!declaracaoEncontrada){
+            noReferenciaMatriz.getLinha().aceitar(this);
+            if(!declaracaoEncontrada){
+                noReferenciaMatriz.getColuna().aceitar(this);
+            }
+        }
         return null;
     }
 
@@ -143,6 +149,9 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoReferenciaVetor noReferenciaVetor) throws ExcecaoVisitaASA {
         verificaNoReferencia(noReferenciaVetor);
+        if(!declaracaoEncontrada){
+            noReferenciaVetor.getIndice().aceitar(this);
+        }
         return null;
     }
 
