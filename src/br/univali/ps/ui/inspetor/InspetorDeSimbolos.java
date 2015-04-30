@@ -79,7 +79,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     boolean programaExecutando = false;
 
-    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(20, 0, 20, 0);
+    private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
     private JTextArea textArea;//necessário para tratar a importação de variáveis para o inspetor de símbolos diretamente do código fonte
     private Programa ultimoProgramaCompilado;//referência para o programa compilado, 

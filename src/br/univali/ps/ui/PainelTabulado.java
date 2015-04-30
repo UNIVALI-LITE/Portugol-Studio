@@ -26,10 +26,10 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
     private List<PainelTabuladoListener> painelTabuladoListeners;
 
     public PainelTabulado() {
-        setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
+        setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
         if (WeblafUtils.weblafEstaInstalado()) {
-          setUI(criaUi());
+          //setUI(criaUi());
         }
     }
 
@@ -45,55 +45,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
         return ui;
     }
 
-    private class UiDosPaineisTabulados extends WebTabbedPaneUI {
-
-        public UiDosPaineisTabulados() {
-            super();
-             
-        }
-
-        
-        @Override
-        protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-            super.paintTabBackground(g, tabPlacement, tabIndex, x, y, w, h, isSelected); //To change body of generated methods, choose Tools | Templates.
-            GeneralPath path = createTabShape(tabPlacement, x, y, w, h, isSelected);
-            ((Graphics2D) g).setColor(WeblafUtils.COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS);
-            ((Graphics2D) g).draw(path);
-            
-        }
-
-        //código copiado do fonte do weblaf e modificado 
-        private GeneralPath createTabShape(final int tabPlacement, int x, final int y, int w, final int h,
-                final boolean isSelected) {
-            // Fix for basic layouting of selected left-sided tab x coordinate
-            final Insets insets = tabPane.getInsets();
-            if (isSelected) {
-                // todo fix for other tabPlacement values aswell
-                if (tabPlacement == TOP && x == insets.left) {
-                    x = x - 1;
-                    w = w + 1;
-                }
-            }
-
-            final int actualRound = getRound();
-            final GeneralPath bgShape = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-
-            if (!isSelected) {
-                return bgShape;
-            }
-
-            if (tabPlacement == JTabbedPane.TOP) {
-                bgShape.moveTo(x, y + h + (-1));//getChange(tabShapeType));
-                bgShape.lineTo(x, y + actualRound);
-                bgShape.quadTo(x, y, x + actualRound, y);
-                bgShape.lineTo(x + w - actualRound, y);
-                bgShape.quadTo(x + w, y, x + w, y + actualRound);
-                bgShape.lineTo(x + w, y + h + (-1));//getChange(tabShapeType));
-            }
-            return bgShape;
-        }
-    }
-
+    
     @Override
     public Component add(Component componente) {
         if (componente instanceof Aba) {

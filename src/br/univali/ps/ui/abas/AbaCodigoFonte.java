@@ -140,8 +140,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
 
-            WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
-            WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
+            
+            //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
+            //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
 
             WeblafUtils.configuraWebLaf(scrollInspetor);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
@@ -175,8 +176,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         };
         barraDeBotoesInspetorArvore.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
 
-        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, -2), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
+        painelInspetorArvore.setComponentZOrder(barraDeBotoesInspetorArvore, 0);
     }
 
     private void criaControlesDoTamanhoDaFonteDoEditor() {
@@ -289,8 +291,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesEditor.adicionaSeparador();
         barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
-        GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+        GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 14), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
+        painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
+        //editor.setaBarraDeBotoesDeAcao(barraDeBotoesEditor);
+        
     }
 
     public static class NoTransferable implements Transferable {
@@ -749,8 +754,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         FabricaDicasInterface.criarDicaInterface(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarArquivo);
         FabricaDicasInterface.criarDicaInterface(btnSalvarComo, "Salva uma nova cópia do programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarComo);
 
-        FabricaDicasInterface.criarDicaInterface(barraDeBotoesEditor.getMenu(), "Personalizar o editor de código fonte ...");
-        FabricaDicasInterface.criarDicaInterface(barraDeBotoesInspetorArvore.getMenu(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
+        FabricaDicasInterface.criarDicaInterface(barraDeBotoesEditor.getCompomemtParaAdicionarDica(), "Personalizar o editor de código fonte ...");
+        FabricaDicasInterface.criarDicaInterface(barraDeBotoesInspetorArvore.getCompomemtParaAdicionarDica(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
 
         //FabricaDicasInterface.criarDicaInterface(tree, "Exibe a estrutura do programa atual, permitindo visualizar as variáveis e funções.");
         //FabricaDicasInterface.criarDicaInterface(btnAumentarFonteArvore, "Aumenta a fonte da árvore de símbolos", BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.EAST);
@@ -863,9 +868,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         separadorDosBotoes = new javax.swing.JToolBar.Separator();
         btnSalvar = new javax.swing.JButton();
         btnSalvarComo = new javax.swing.JButton();
+        separadorBotoesPrincipaisEditor = new javax.swing.JSeparator();
         editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.PainelSaida();
+        separadorDireito = new javax.swing.JSeparator();
         painelInspetorArvore = new javax.swing.JPanel();
         divisorArvoreInspetor = new javax.swing.JSplitPane();
         scrollInspetor = new javax.swing.JScrollPane();
@@ -874,7 +881,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
@@ -891,6 +898,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreEditor.setMinimumSize(new java.awt.Dimension(550, 195));
         divisorArvoreEditor.setOneTouchExpandable(true);
 
+        painelEsquerda.setOpaque(false);
         painelEsquerda.setLayout(new java.awt.BorderLayout());
 
         divisorEditorConsole.setBorder(null);
@@ -969,16 +977,23 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 3);
         painelEditor.add(painelBotoes, gridBagConstraints);
+
+        separadorBotoesPrincipaisEditor.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        painelEditor.add(separadorBotoesPrincipaisEditor, gridBagConstraints);
 
         editor.setMinimumSize(new java.awt.Dimension(350, 22));
         editor.setPreferredSize(new java.awt.Dimension(0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -988,6 +1003,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorEditorConsole.setTopComponent(painelEditor);
 
         painelConsole.setDoubleBuffered(false);
+        painelConsole.setOpaque(false);
         painelConsole.setLayout(new java.awt.GridBagLayout());
 
         painelSaida.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 2, 0));
@@ -1006,6 +1022,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorEditorConsole.setRightComponent(painelConsole);
 
         painelEsquerda.add(divisorEditorConsole, java.awt.BorderLayout.CENTER);
+
+        separadorDireito.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        painelEsquerda.add(separadorDireito, java.awt.BorderLayout.EAST);
 
         divisorArvoreEditor.setLeftComponent(painelEsquerda);
 
@@ -1028,14 +1047,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         scrollInspetor.setOpaque(false);
         scrollInspetor.setPreferredSize(new java.awt.Dimension(266, 200));
 
-        inspetorDeSimbolos.setBackground(new java.awt.Color(230, 230, 230));
-        inspetorDeSimbolos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(230, 230, 230), 1, true));
+        inspetorDeSimbolos.setBackground(new java.awt.Color(237, 237, 237));
+        inspetorDeSimbolos.setBorder(new javax.swing.border.LineBorder(new Color(0, 0, 0, 0.1f), 1, true));
         scrollInspetor.setViewportView(inspetorDeSimbolos);
 
         divisorArvoreInspetor.setBottomComponent(scrollInspetor);
 
         scrollOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
         scrollOutlineTree.setBorder(null);
+        scrollOutlineTree.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
         scrollOutlineTree.setOpaque(false);
         scrollOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
@@ -1049,7 +1069,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -1709,6 +1729,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private br.univali.ps.ui.PainelSaida painelSaida;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
+    private javax.swing.JSeparator separadorBotoesPrincipaisEditor;
+    private javax.swing.JSeparator separadorDireito;
     private javax.swing.JToolBar.Separator separadorDosBotoes;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
     // End of variables declaration//GEN-END:variables

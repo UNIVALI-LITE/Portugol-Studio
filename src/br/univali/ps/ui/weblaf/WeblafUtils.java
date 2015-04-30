@@ -1,31 +1,19 @@
 package br.univali.ps.ui.weblaf;
 
-import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.filechooser.FileChooserViewType;
-import com.alee.laf.filechooser.WebFileChooserPanel;
-import com.alee.laf.filechooser.WebFileChooserUI;
-import com.alee.laf.label.WebLabelUI;
-import com.alee.laf.list.WebListUI;
-import com.alee.laf.menu.WebMenuBarUI;
-import com.alee.laf.menu.WebMenuItemUI;
-import com.alee.laf.menu.WebMenuUI;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.laf.separator.WebSeparatorUI;
-import com.alee.laf.splitpane.WebSplitPaneUI;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableUI;
 import com.alee.laf.toolbar.WebToolBarUI;
-import com.alee.laf.tree.WebTreeUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.Locale;
@@ -34,6 +22,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.UIManager;
 
 /**
@@ -43,10 +32,10 @@ import javax.swing.UIManager;
 public class WeblafUtils {
 
     public static final Color COR_DAS_BORDAS = new Color(200, 200, 200);
-    public static final Color COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS = new Color(210, 210, 210);// new Color(230, 230, 230);
+    public static final Color COR_DAS_BORDAS_DOS_PAINEIS_TABULADOS = new Color(200,200, 200).darker();// new Color(230, 230, 230);
     public static final Color COR_DO_PAINEL_DIREITO = new Color(225, 225, 225);
     public static final Color COR_DO_PAINEL_DE_SAIDA = COR_DO_PAINEL_DIREITO;
-    public static final Color COR_DO_PAINEL_PRINCIPAL = Color.WHITE;
+    public static final Color BACKGROUND = new Color(252, 252, 252);
     public static final Color COR_DA_BORDA_ORIGINAL_NO_WEBLAF = StyleConstants.borderColor;
     //public static final Color COR_DAS_BORDAS_II = new Color(211, 211, 211);
 
@@ -66,6 +55,7 @@ public class WeblafUtils {
         }
     }
 
+   
     public static void configuraWebLaf(JScrollPane scroll) {
         if (!WeblafUtils.weblafEstaInstalado()) {
             return;
@@ -74,6 +64,27 @@ public class WeblafUtils {
         ((WebScrollPaneUI) scroll.getUI()).setDrawBorder(false);
         ((WebScrollBarUI) scroll.getHorizontalScrollBar().getUI()).setPaintTrack(false);
         ((WebScrollBarUI) scroll.getVerticalScrollBar().getUI()).setPaintTrack(false);
+
+        //instala um layout no scrollPane que sempre deixa um pequeno espaço
+        //no canto superior direito para que seja exibido o botão de ações
+        scroll.setLayout(new ScrollPaneLayout() {
+
+            @Override
+            public void layoutContainer(Container cntnr) {
+                super.layoutContainer(cntnr);
+                if (vsb.isVisible()) {
+                    Dimension tamanho = vsb.getSize();
+                    Point localizacao = vsb.getLocation();
+                    localizacao.y += 20;
+                    localizacao.x++;
+                    tamanho.height -= 20;
+                    vsb.setSize(tamanho);
+                    vsb.setLocation(localizacao);
+                }
+            }
+
+        });
+
     }
 
     public static void configuraWeblaf(JPanel painel, final Color corDeFundo, boolean bordaEsquerda, boolean bordaDireita, boolean bordaDeCima, boolean bordaDeBaixo) {
@@ -122,10 +133,10 @@ public class WeblafUtils {
         configuraWeblaf(painel, null);
     }
 
-
     public static void instalaWeblaf() {
         if (!weblafEstaInstalado()) {
             StyleConstants.darkBorderColor = WeblafUtils.COR_DAS_BORDAS;//define a cor de borda do weblaf globalmente
+            
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);
             WebLookAndFeel.setDecorateFrames(false);

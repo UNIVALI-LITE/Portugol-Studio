@@ -19,6 +19,7 @@ import br.univali.ps.ui.FabricaDicasInterface;
 
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
@@ -63,6 +64,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
@@ -137,7 +139,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private JMenu menuTemas;
 
     public Editor() {
-        System.out.println("criando editor");
         initComponents();
 
         configurarDialogoPesquisarSubstituir();

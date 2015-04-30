@@ -13,6 +13,7 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaLogAtualizacoes;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -279,6 +280,7 @@ public final class TelaPrincipal extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
+        setBackground(new java.awt.Color(0, 0, 0));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
 

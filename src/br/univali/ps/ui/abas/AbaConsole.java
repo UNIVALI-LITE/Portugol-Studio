@@ -184,8 +184,9 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         barra.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
         barra.adicionaAcao(acaoLimpar);
         barra.adicionaAcao(acaoCopiar);
-        FabricaDicasInterface.criarDicaInterface(barra.getMenu(), "Personalizar a console ...");
-        GridBagConstraints constrainsts = new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+        FabricaDicasInterface.criarDicaInterface(barra.getCompomemtParaAdicionarDica(), "Personalizar a console");
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 2), 0, 0);
+        this.setComponentZOrder(barra, 0);
         this.add(barra, constrainsts);
     }
 
@@ -335,6 +336,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         painelRolagem.setViewportView(console);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;

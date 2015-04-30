@@ -2,19 +2,20 @@ package br.univali.ps.ui.weblaf;
 
 import br.univali.ps.ui.util.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
-import com.alee.laf.menu.WebMenuBarUI;
+import com.alee.laf.button.WebButtonUI;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
@@ -22,19 +23,30 @@ import javax.swing.SwingConstants;
  *
  * @author elieser
  */
-public class BarraDeBotoesExpansivel extends JMenuBar {
+public class BarraDeBotoesExpansivel extends JButton {
 
-    private final JMenu menu = new JMenu();
+    private final JPopupMenu menu;// = new JPopupMenu();
 
     public BarraDeBotoesExpansivel() {
-
-        menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
-        add(menu);
+        menu = new JPopupMenu();
+        menu.setFont(getFont());
+        //menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
+        //add(menu);
+        setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         if (WeblafUtils.weblafEstaInstalado()) {
-            ((WebMenuBarUI) getUI()).setUndecorated(true);
+            ((WebButtonUI) getUI()).setUndecorated(false);
+            ((WebButtonUI) getUI()).setLeftRightSpacing(0);
+            ((WebButtonUI) getUI()).setRolloverDecoratedOnly(true);
         }
 
+        addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                menu.show(BarraDeBotoesExpansivel.this, 0, getHeight());
+            }
+        });
     }
 
     public void adicionaGrupoDeItems(String texto, Icon icone, Action acoes[]) {
@@ -42,13 +54,15 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
     }
 
     public void adicionaGrupoDeItems(String texto, Icon icone, Action acoes[], boolean usarToggleButtons) {
-        menu.add(new ItemDeMenuParaGrupoDeAcoes(texto, icone, acoes, usarToggleButtons));
+        ItemDeMenuParaGrupoDeAcoes item = new ItemDeMenuParaGrupoDeAcoes(texto, icone, acoes, usarToggleButtons);
+        menu.add(item);
+        item.setFont(getFont());
     }
 
-    public void adicionaSeparador(){
+    public void adicionaSeparador() {
         menu.addSeparator();
     }
-    
+
     private class ItemDeMenuParaGrupoDeAcoes extends JPanel {
 
         private final JLabel label;
@@ -58,6 +72,7 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
             setOpaque(false);
             label = new JLabel(texto, SwingConstants.LEFT);
             label.setIcon(icone);
+            label.setFont(getFont());
             add(label);
             if (acoes.length <= 3) {
                 criaUmaLinhaDeBotoes(acoes);
@@ -66,6 +81,7 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
             }
         }
 
+        
         private void criaColunasDeBotoes(Action acoes[], boolean usarTogleButtons) {
             int colunas = acoes.length / 2;
             int indiceDaAcao = 0;
@@ -98,13 +114,15 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
 
     }
 
-    public JMenu getMenu() {
-        return menu;
+    public JComponent getCompomemtParaAdicionarDica() {
+        //return menu;
+        return this;
     }
 
     public void adicionaAcao(Action acao) {
         JMenuItem item = new JMenuItem(acao);
-        item.setIcon((Icon)acao.getValue(Action.SMALL_ICON));
+        item.setIcon((Icon) acao.getValue(Action.SMALL_ICON));
+        item.setFont(getFont());
         menu.add(item);
     }
 
@@ -156,5 +174,4 @@ public class BarraDeBotoesExpansivel extends JMenuBar {
 //        }
 //
 //    }
-
 }
