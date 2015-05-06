@@ -3,6 +3,9 @@ package br.univali.ps.ui.weblaf;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.filechooser.FileChooserViewType;
+import com.alee.laf.filechooser.WebFileChooser;
+import com.alee.laf.filechooser.WebFileChooserUI;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
@@ -17,13 +20,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.Locale;
-import javax.swing.AbstractButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
-import javax.swing.ScrollPaneLayout;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 /**
  *
@@ -39,6 +36,7 @@ public class WeblafUtils {
     public static final Color BACKGROUND_ESCURO = new Color(243, 243, 243);
     public static final Color COR_DA_BORDA_ORIGINAL_NO_WEBLAF = StyleConstants.borderColor;
     //public static final Color COR_DAS_BORDAS_II = new Color(211, 211, 211);
+
 
     public static void configuraWeblaf(JToolBar barraDeFerramentas) {
         if (!WeblafUtils.weblafEstaInstalado()) {

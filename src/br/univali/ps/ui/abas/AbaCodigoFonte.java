@@ -21,11 +21,8 @@ import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.*;
 import br.univali.ps.ui.editor.Editor;
-import br.univali.ps.ui.EscopoCursor;
-import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.PainelSaida;
-import br.univali.ps.ui.TelaOpcoesExecucao;
 import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
@@ -98,7 +95,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private Action acaoSalvarComo;
 
     private FiltroArquivo filtroPrograma;
-    private JFileChooser dialogoSelecaoArquivo;//usando FileDialog ao invés de JFileChooser para evitar os problemas com look and feel
+    //private JFileChooser dialogoSelecaoArquivo;//usando FileDialog ao invés de JFileChooser para evitar os problemas com look and feel
 
     private Action acaoExecutarPontoParada;
     private Action acaoExecutarPasso;
@@ -119,7 +116,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         carregarConfiguracoes();
 
-        configurarSeletorArquivo();
+        //configurarSeletorArquivo();
         configurarAcoes();
         configurarEditor();
         configurarBarraDeBotoesDoEditor();
@@ -380,46 +377,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         setTamanhoFonteArvoreInspetor(configuracoes.getTamanhoFonteArvore());
     }
 
-    protected void configurarSeletorArquivo() {
+    protected JFileChooser criarSeletorArquivo() {
         filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
 
-        dialogoSelecaoArquivo = new PsFileChooser() {
-            @Override
-            public File getSelectedFile() {
-                File arquivo = super.getSelectedFile();
-
-                if (arquivo != null) {
-                    if (!arquivo.getName().toLowerCase().endsWith(".por")) {
-                        arquivo = new File(arquivo.getPath().concat(".por"));
-                    }
-                }
-
-                return arquivo;
-            }
-
-            @Override
-            public void approveSelection() {
-                if (getDialogType() == JFileChooser.SAVE_DIALOG) {
-                    File selectedFile = getSelectedFile();
-
-                    if ((selectedFile != null) && selectedFile.exists()) {
-                        int response = JOptionPane.showConfirmDialog(this, "O arquivo informado já existe.\n Deseja substituí-lo?", "Portugol Studio", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-
-                        if (response != JOptionPane.YES_OPTION) {
-                            return;
-                        }
-                    }
-                }
-
-                super.approveSelection();
-            }
-        };
+        JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserSalvamento();
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
         dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
 
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
+        return dialogoSelecaoArquivo;
     }
 
     protected void configurarAcoes() {
@@ -449,10 +417,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         acaoSalvarComo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save_as.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser dialogoSelecaoArquivo = criarSeletorArquivo();
                 if (editor.getPortugolDocumento().getFile() != null) {
-                    dialogoSelecaoArquivo.setCurrentDirectory(editor.getPortugolDocumento().getFile());
+                    File arquivoAtual = editor.getPortugolDocumento().getFile();
+                    dialogoSelecaoArquivo.setCurrentDirectory(arquivoAtual.getParentFile());
+                    dialogoSelecaoArquivo.setSelectedFile(arquivoAtual);
                 } else {
                     dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
+                    dialogoSelecaoArquivo.setSelectedFile(new File(""));
                 }
 
                 if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION) {

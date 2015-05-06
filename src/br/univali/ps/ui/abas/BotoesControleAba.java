@@ -1,6 +1,7 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoListener;
 import br.univali.ps.ui.TelaPrincipal;
@@ -41,10 +42,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     private Aba abaAtual;
 
-    private FiltroArquivo filtroExercicio;
-    private FiltroArquivo filtroPrograma;
-    private FiltroArquivo filtroTodosSuportados;
-    private JFileChooser dialogoSelecaoArquivo;
+    private static final FiltroArquivo filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
+    private static final FiltroArquivo filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
+    private static final FiltroArquivo filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+    //private JFileChooser dialogoSelecaoArquivo;
 
     public BotoesControleAba(AbaInicial abaInicial, TelaPrincipal telaPrincipal) {
         super(abaInicial);
@@ -52,7 +53,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         removeAll();
         initComponents();
 
-        configurarSeletorArquivo();
+        //criarSeletorArquivo();
         configurarAcoes(telaPrincipal);
         configurarBotoes();
         criarDicasInterface();
@@ -78,12 +79,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void configurarSeletorArquivo() {
-        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
-        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
-        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
-
-        dialogoSelecaoArquivo = new  PsFileChooser();//new JFileChooser();
+    private JFileChooser criarSeletorArquivo() {
+        JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserAbertura();
         dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
@@ -93,9 +90,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         dialogoSelecaoArquivo.addChoosableFileFilter(filtroTodosSuportados);
 
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
+        return dialogoSelecaoArquivo;
 
     }
-
 
     private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop) {
         configurarAcaoNovoArquivo(telaPrincipalDesktop);
@@ -131,6 +128,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         acaoAbrirArquivo = new AbstractAction(nome) {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser dialogoSelecaoArquivo = criarSeletorArquivo();
                 if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION) {
                     final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));

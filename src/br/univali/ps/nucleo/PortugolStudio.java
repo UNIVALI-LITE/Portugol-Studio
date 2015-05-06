@@ -3,6 +3,7 @@ package br.univali.ps.nucleo;
 import br.univali.ps.DetectorViolacoesThreadSwing;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipal;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
@@ -331,8 +332,10 @@ public final class PortugolStudio {
         for (String parametro : parametros) {
             if (nome.endsWith("*") && parametro.startsWith(nome.replace("*", ""))) {
                 return true;
-            } else if (!nome.endsWith("*") && parametro.equals(nome)) {
-                return true;
+            } else {
+                if (!nome.endsWith("*") && parametro.equals(nome)) {
+                    return true;
+                }
             }
         }
 
@@ -362,7 +365,8 @@ public final class PortugolStudio {
             @Override
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
+                    //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     WeblafUtils.instalaWeblaf();
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -603,8 +607,10 @@ public final class PortugolStudio {
         for (String parametro : parametros) {
             if (nome.endsWith("*") && parametro.startsWith(nome.replace("*", ""))) {
                 return parametro;
-            } else if (!nome.endsWith("*") && parametro.equals(nome)) {
-                return parametro;
+            } else {
+                if (!nome.endsWith("*") && parametro.equals(nome)) {
+                    return parametro;
+                }
             }
         }
 
