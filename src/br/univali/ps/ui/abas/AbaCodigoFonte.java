@@ -30,6 +30,7 @@ import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
+import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
@@ -96,8 +97,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private Action acaoSalvarArquivo;
     private Action acaoSalvarComo;
 
-    //private FiltroArquivo filtroPrograma;
-    private FileDialog dialogoSelecaoArquivo;//usando FileDialog ao invés de JFileChooser para evitar os problemas com look and feel
+    private FiltroArquivo filtroPrograma;
+    private JFileChooser dialogoSelecaoArquivo;//usando FileDialog ao invés de JFileChooser para evitar os problemas com look and feel
 
     private Action acaoExecutarPontoParada;
     private Action acaoExecutarPasso;
@@ -140,10 +141,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             inspetorDeSimbolos.setBackground(WeblafUtils.BACKGROUND_ESCURO);
-            
+
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
-
             WeblafUtils.configuraWebLaf(scrollInspetor);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
@@ -295,7 +295,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelEditor.add(barraDeBotoesEditor, constraints);
         painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
         //editor.setaBarraDeBotoesDeAcao(barraDeBotoesEditor);
-        
+
     }
 
     public static class NoTransferable implements Transferable {
@@ -381,47 +381,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     protected void configurarSeletorArquivo() {
-        //filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
+        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
 
-        dialogoSelecaoArquivo = new FileDialog((JFrame) null);
+        dialogoSelecaoArquivo = new PsFileChooser() {
+            @Override
+            public File getSelectedFile() {
+                File arquivo = super.getSelectedFile();
 
-//        {
-//            @Override
-//            public File getSelectedFile() {
-//                File arquivo = super.getSelectedFile();
-//
-//                if (arquivo != null) {
-//                    if (!arquivo.getName().toLowerCase().endsWith(".por")) {
-//                        arquivo = new File(arquivo.getPath().concat(".por"));
-//                    }
-//                }
-//
-//                return arquivo;
-//            }
-//
-//            @Override
-//            public void approveSelection() {
-//                if (getDialogType() == JFileChooser.SAVE_DIALOG) {
-//                    File selectedFile = getSelectedFile();
-//
-//                    if ((selectedFile != null) && selectedFile.exists()) {
-//                        int response = JOptionPane.showConfirmDialog(this, "O arquivo informado já existe.\n Deseja substituí-lo?", "Portugol Studio", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-//
-//                        if (response != JOptionPane.YES_OPTION) {
-//                            return;
-//                        }
-//                    }
-//                }
-//
-//                super.approveSelection();
-//            }
-//        };
-        dialogoSelecaoArquivo.setMultipleMode(true);// setMultiSelectionEnabled(true);
-        //dialogoSelecaoArquivo.setFilenameFilter(filtroPrograma);
-        //dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
-        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
+                if (arquivo != null) {
+                    if (!arquivo.getName().toLowerCase().endsWith(".por")) {
+                        arquivo = new File(arquivo.getPath().concat(".por"));
+                    }
+                }
 
-        //dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
+                return arquivo;
+            }
+
+            @Override
+            public void approveSelection() {
+                if (getDialogType() == JFileChooser.SAVE_DIALOG) {
+                    File selectedFile = getSelectedFile();
+
+                    if ((selectedFile != null) && selectedFile.exists()) {
+                        int response = JOptionPane.showConfirmDialog(this, "O arquivo informado já existe.\n Deseja substituí-lo?", "Portugol Studio", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                        if (response != JOptionPane.YES_OPTION) {
+                            return;
+                        }
+                    }
+                }
+
+                super.approveSelection();
+            }
+        };
+        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
+        dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
+        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+        dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
+
+        dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
     }
 
     protected void configurarAcoes() {
@@ -452,18 +450,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (editor.getPortugolDocumento().getFile() != null) {
-
-                    dialogoSelecaoArquivo.setDirectory(editor.getPortugolDocumento().getFile().getAbsolutePath());
+                    dialogoSelecaoArquivo.setCurrentDirectory(editor.getPortugolDocumento().getFile());
                 } else {
-                    dialogoSelecaoArquivo.setDirectory(Configuracoes.getInstancia().getDiretorioUsuario().getAbsolutePath());
+                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
                 }
 
-                dialogoSelecaoArquivo.setMode(FileDialog.SAVE);
-                dialogoSelecaoArquivo.setVisible(true);
-                dialogoSelecaoArquivo.setFile("*.por;*.pex");
-
-                if (dialogoSelecaoArquivo.getFile() != null) {
-                    File arquivo = dialogoSelecaoArquivo.getFiles()[0];
+                if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION) {
+                    File arquivo = dialogoSelecaoArquivo.getSelectedFile();
                     AbaCodigoFonte aba = PortugolStudio.getInstancia().getTelaPrincipal().obterAbaArquivo(arquivo);
 
                     if (aba == null) {
@@ -1154,9 +1147,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 if (usuarioCancelouSalvamento) {
                     return false;
                 }
-            } else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION) {
-                usuarioCancelouSalvamento = true;
-                return false;
+            } else {
+                if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION) {
+                    usuarioCancelouSalvamento = true;
+                    return false;
+                }
             }
         }
 
@@ -1218,7 +1213,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                     programa.adicionarObservadorExecucao(this);
 
-                    programa.ativaPontosDeParada( editor.getLinhasComPontoDeParadaAtivados() );
+                    programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
                     programa.executar(telaOpcoesExecucao.getParametros(), estado);
                 }
             } catch (ErroCompilacao erroCompilacao) {
@@ -1339,11 +1334,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                      }
                      }
                      */
-                } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
-                    console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
-                    console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
-                } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
-                    console.escreverNoConsole("\nO programa foi interrompido!");
+                } else {
+                    if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
+                        console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                        console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
+                    } else {
+                        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
+                            console.escreverNoConsole("\nO programa foi interrompido!");
+                        }
+                    }
                 }
 
                 ocultarPainelSaida();
