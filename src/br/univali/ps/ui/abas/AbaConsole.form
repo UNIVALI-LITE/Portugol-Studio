@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
-  <NonVisualComponents>
-    <Container class="javax.swing.JPopupMenu" name="menuConsole">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="menuAumentarFonte">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menuDiminuirFonte">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menuConsoleLimpar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menuConsoleCopiar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem2"/>
-          </Properties>
-        </MenuItem>
-      </SubComponents>
-    </Container>
-  </NonVisualComponents>
   <Properties>
     <Property name="focusable" type="boolean" value="false"/>
     <Property name="opaque" type="boolean" value="false"/>

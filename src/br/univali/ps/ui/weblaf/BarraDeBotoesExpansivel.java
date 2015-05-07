@@ -67,6 +67,10 @@ public class BarraDeBotoesExpansivel extends JButton {
         menu.addSeparator();
     }
 
+    public JPopupMenu getPopupMenu() {
+        return menu;
+    }
+
     private class ItemDeMenuParaGrupoDeAcoes extends JPanel {
 
         private final JLabel label;

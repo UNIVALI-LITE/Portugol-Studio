@@ -24,13 +24,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
@@ -71,11 +65,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
         WeblafUtils.configuraWebLaf(painelRolagem);
 
-        console.setComponentPopupMenu(menuConsole);
-        this.menuConsoleLimpar.setText("Limpar");
-        this.menuConsoleCopiar.setText("Copiar");
-        this.menuAumentarFonte.setText("Aumentar fonte");
-        this.menuDiminuirFonte.setText("Diminuir fonte");
         console.setDocument(new DocumentoConsole());
 
         rotuloPopupLeia = new JLabel("<html><body><p>O programa está aguardando a entrada de dados</p></body></html>", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"), JLabel.LEFT);
@@ -129,7 +118,9 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         console.setCaret(new CursorConsole());
         console.getCaret().setVisible(false);
 
-        criarBarraDeBotoes();
+        JPopupMenu popupMenu = criarBarraDeBotoes();
+        console.setComponentPopupMenu(popupMenu);
+        //inicializarMenuDeContexto();
         //criarDicasInterface();
         instalarObservadores();
         console.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
@@ -138,23 +129,21 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         handlerDaSaida = new HandlerDaSaida();
 
     }
-
-    private void criarBarraDeBotoes() {
-        BarraDeBotoesExpansivel barra = new BarraDeBotoesExpansivel();
-
-        Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
+    
+    private JPopupMenu criarBarraDeBotoes() {
+        
         Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
         Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
 
-        //++++++++++++++++++=
-        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais) {
+        //++++ Cria as ações ++++++++
+        Action acaoAumentarFonte = new AbstractAction("", iconeMais) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setTamanhoFonteConsole(console.getFont().getSize() + VALOR_INCREMENTO_FONTE);
             }
         };
         //+++++++++++++++++
-        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos) {
+        Action acaoDiminuirFonte = new AbstractAction("", iconeMenos) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setTamanhoFonteConsole(console.getFont().getSize() - VALOR_INCREMENTO_FONTE);
@@ -180,6 +169,9 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         };
 
         acaoCopiar.setEnabled(false);
+        //++++++++++++++++++++++++++++++++++++++++++++++++
+        BarraDeBotoesExpansivel barra = new BarraDeBotoesExpansivel();
+        Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
         //+++++++++++++++++++++++++
         barra.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
         barra.adicionaAcao(acaoLimpar);
@@ -188,6 +180,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 2), 0, 0);
         this.setComponentZOrder(barra, 0);
         this.add(barra, constrainsts);
+        return barra.getPopupMenu();
     }
 
     public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte) {
@@ -300,25 +293,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        menuConsole = new javax.swing.JPopupMenu();
-        menuAumentarFonte = new javax.swing.JMenuItem();
-        menuDiminuirFonte = new javax.swing.JMenuItem();
-        menuConsoleLimpar = new javax.swing.JMenuItem();
-        menuConsoleCopiar = new javax.swing.JMenuItem();
         painelRolagem = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
-
-        menuAumentarFonte.setText("jMenuItem1");
-        menuConsole.add(menuAumentarFonte);
-
-        menuDiminuirFonte.setText("jMenuItem1");
-        menuConsole.add(menuDiminuirFonte);
-
-        menuConsoleLimpar.setText("jMenuItem1");
-        menuConsole.add(menuConsoleLimpar);
-
-        menuConsoleCopiar.setText("jMenuItem2");
-        menuConsole.add(menuConsoleCopiar);
 
         setFocusable(false);
         setOpaque(false);
@@ -347,11 +323,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea console;
-    private javax.swing.JMenuItem menuAumentarFonte;
-    private javax.swing.JPopupMenu menuConsole;
-    private javax.swing.JMenuItem menuConsoleCopiar;
-    private javax.swing.JMenuItem menuConsoleLimpar;
-    private javax.swing.JMenuItem menuDiminuirFonte;
     private javax.swing.JScrollPane painelRolagem;
     // End of variables declaration//GEN-END:variables
 
@@ -429,16 +400,22 @@ public final class AbaConsole extends Aba implements PropertyChangeListener {
         try {
             if (tipoDado == TipoDado.INTEIRO) {
                 return Integer.parseInt(entrada);
-            } else if (tipoDado == TipoDado.REAL) {
-                return Double.parseDouble(entrada);
-            } else if (tipoDado == TipoDado.CARACTER) {
-                return entrada.charAt(0);
-            } else if (tipoDado == TipoDado.LOGICO) {
-                switch (entrada) {
-                    case "falso":
-                        return false;
-                    case "verdadeiro":
-                        return true;
+            } else {
+                if (tipoDado == TipoDado.REAL) {
+                    return Double.parseDouble(entrada);
+                } else {
+                    if (tipoDado == TipoDado.CARACTER) {
+                        return entrada.charAt(0);
+                    } else {
+                        if (tipoDado == TipoDado.LOGICO) {
+                            switch (entrada) {
+                                case "falso":
+                                    return false;
+                                case "verdadeiro":
+                                    return true;
+                            }
+                        }
+                    }
                 }
             }
 
