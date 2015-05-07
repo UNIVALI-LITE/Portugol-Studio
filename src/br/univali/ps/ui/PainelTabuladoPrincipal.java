@@ -113,10 +113,10 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
         }
     }
 
-    @Override
-    protected TabbedPaneUI criaUi() {
-        return new WebTabbedPaneUI();// new UIPainelTabuladoPrincipal();
-    }
+//    @Override
+//    protected TabbedPaneUI criaUi() {
+//        return new WebTabbedPaneUI();// new UIPainelTabuladoPrincipal();
+//    }
 
     public void setAbaInicial(AbaInicial abaInicial) {
         this.abaInicial = abaInicial;

@@ -261,6 +261,11 @@
                     </Container>
                     <Container class="javax.swing.JPanel" name="painelConsole">
                       <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                            <EmptyBorder bottom="4" left="5" right="16" top="1"/>
+                          </Border>
+                        </Property>
                         <Property name="doubleBuffered" type="boolean" value="false"/>
                         <Property name="opaque" type="boolean" value="false"/>
                       </Properties>
@@ -405,7 +410,6 @@
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="null"/>
                         </Property>
-                        <Property name="verticalScrollBarPolicy" type="int" value="22"/>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[250, 23]"/>
                         </Property>

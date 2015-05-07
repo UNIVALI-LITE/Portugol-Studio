@@ -40,7 +40,7 @@ public final class PainelSaida extends PainelTabulado {
         setSelectedIndex(0);//deixa a console aparecendo quando abre uma nova aba
     }
 
-    @Override
+    //@Override
     protected TabbedPaneUI criaUi() {
         return new PsTabbedPaneUI();
     }

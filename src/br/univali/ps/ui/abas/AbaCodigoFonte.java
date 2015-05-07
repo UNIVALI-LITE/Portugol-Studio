@@ -178,7 +178,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelInspetorArvore.setComponentZOrder(barraDeBotoesInspetorArvore, 0);
     }
 
-    private void criaControlesDoTamanhoDaFonteDoEditor() {
+    private void criaControlesDaFonteDoEditor() {
         Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
         Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
         Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
@@ -278,7 +278,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configurarBarraDeBotoesDoEditor() {
         barraDeBotoesEditor = new BarraDeBotoesExpansivel();
 
-        criaControlesDoTamanhoDaFonteDoEditor();
+        criaControlesDaFonteDoEditor();
 
         barraDeBotoesEditor.adicionaAcao(criaAcaoExpandirEditor());
         //Action acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
@@ -291,7 +291,26 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 14), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
         painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
-        //editor.setaBarraDeBotoesDeAcao(barraDeBotoesEditor);
+
+        //monitora a visibilidade da barra de rolagem vertical do scroll do editor
+        //para poder ajustar a posição do botão de acões do editor. Quando a barra
+        //de rolagem aparece o botão fica mais para a esquerda
+//        editor.getScrollPane().getViewport().addChangeListener(new ChangeListener() {
+//
+//            @Override
+//            public void stateChanged(ChangeEvent e) {
+//                JScrollBar barraVertical = editor.getScrollPane().getVerticalScrollBar();
+//                boolean barraVisivel = barraVertical.isVisible();
+//                int margem = 16;
+//                if(barraVisivel){
+//                    margem += barraVertical.getPreferredSize().width;
+//                }
+//                Insets insets = new Insets(2, 0, 0, margem);//desloca o botão de ações
+//                GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, insets, 0, 0);
+//                painelEditor.add(barraDeBotoesEditor, constraints);
+//                painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
+//            }
+//        });
 
     }
 
@@ -967,6 +986,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorEditorConsole.setTopComponent(painelEditor);
 
+        painelConsole.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 4, 16));
         painelConsole.setDoubleBuffered(false);
         painelConsole.setOpaque(false);
         painelConsole.setLayout(new java.awt.GridBagLayout());
@@ -1020,7 +1040,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         scrollOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
         scrollOutlineTree.setBorder(null);
-        scrollOutlineTree.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
         scrollOutlineTree.setOpaque(false);
         scrollOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));

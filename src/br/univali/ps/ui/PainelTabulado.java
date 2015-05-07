@@ -28,22 +28,19 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
     public PainelTabulado() {
         setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
-        //if (WeblafUtils.weblafEstaInstalado()) {
-          //setUI(criaUi());
-        //}
     }
 
-    protected TabbedPaneUI criaUi() {
-        //acabei usando a classe webTabbedPaneUI que eu baixei do githubda weblaf, essa classe tem métodos
-        //que a classe que está no jar não possui (setTabBorderColor e setContentBorderColor)
-        PSWebTabbedPaneUI ui = new PSWebTabbedPaneUI();
-        ui.setTabRunIndent(5);
-        ui.setTabbedPaneStyle(TabbedPaneStyle.attached);
-        ui.setTabBorderColor(WeblafUtils.COR_DAS_BORDAS);
-        //ui.setContentBorderColor(WeblafUtils.COR_DAS_BORDAS_II);
-        
-        return ui;
-    }
+//    protected TabbedPaneUI criaUi() {
+//        //acabei usando a classe webTabbedPaneUI que eu baixei do githubda weblaf, essa classe tem métodos
+//        //que a classe que está no jar não possui (setTabBorderColor e setContentBorderColor)
+//        PSWebTabbedPaneUI ui = new PSWebTabbedPaneUI();
+//        ui.setTabRunIndent(5);
+//        ui.setTabbedPaneStyle(TabbedPaneStyle.attached);
+//        ui.setTabBorderColor(WeblafUtils.COR_DAS_BORDAS);
+//        //ui.setContentBorderColor(WeblafUtils.COR_DAS_BORDAS_II);
+//        
+//        return ui;
+//    }
 
     
     @Override
