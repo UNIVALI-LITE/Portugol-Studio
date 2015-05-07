@@ -46,8 +46,25 @@ abstract class RenderizadorBase extends JComponent {
         if (FONTE_NORMAL != null) {
             FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
             FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
+            
+            if (FONTE_DESTAQUE == null)
+            {
+                FONTE_DESTAQUE = FONTE_NORMAL;
+            }
+            
             FONTE_CABECALHO = FONTE_NORMAL.deriveFont(10f);
+            
+            if (FONTE_CABECALHO == null)
+            {
+                FONTE_CABECALHO = FONTE_NORMAL;
+            }
+            
             FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
+            
+            if (FONTE_CABECALHO_DESTAQUE == null)
+            {
+                FONTE_CABECALHO_DESTAQUE = FONTE_NORMAL;
+            }
         }
     }
 
