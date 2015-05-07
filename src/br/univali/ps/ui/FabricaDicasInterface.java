@@ -79,6 +79,7 @@ public final class FabricaDicasInterface {
                 notificacao.setContent(texto);
                 notificacao.setDisplayTime(10000);
                 notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "portugol-studio.png"));
+                
                 NotificationManager.showNotification(notificacao);
             }
         });

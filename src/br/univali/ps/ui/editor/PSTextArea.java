@@ -35,12 +35,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
-import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaUI;
-import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
-import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.IconRowHeader;
@@ -273,11 +268,12 @@ public class PSTextArea extends RSyntaxTextArea {
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    private class PSIconRowHeader extends IconRowHeader {
+    //herdando de FoldingAwareIconRowHeader para corrigir o bug que acontecia nos pontos de parada quanto o código estava dobrado
+    private class PSIconRowHeader extends FoldingAwareIconRowHeader {
 
         static final String DICA_DOS_PONTOS_DE_PARADA = "Clique para pausar a execução do programa na linha ";
 
-        public PSIconRowHeader(RTextArea textArea) {
+        public PSIconRowHeader(RSyntaxTextArea textArea) {
             super(textArea);
             addMouseListener(new MouseAdapter() {
 
@@ -318,8 +314,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
         @Override
         public IconRowHeader createIconRowHeader(RTextArea textArea) {
-            //return super.createIconRowHeader(textArea);
-            return new PSIconRowHeader(textArea);
+            return new PSIconRowHeader((RSyntaxTextArea)textArea);
         }
 
         @Override
@@ -403,20 +398,23 @@ public class PSTextArea extends RSyntaxTextArea {
                 JFrame frame = new JFrame("Teste PsTextArea");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(800, 600);
+                frame.setLayout(new BorderLayout());
 
-                PSTextArea textArea = new PSTextArea(new PortugolDocumento());
-                textArea.setIconeDosBreakPoints(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
-                textArea.setText("asd\nteste\ntoste\ntuste");
-                final RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
-                scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-                scrollPane.setFoldIndicatorEnabled(true);
-                scrollPane.setIconRowHeaderEnabled(true);
+                PSTextArea textArea = new PSTextArea();//new PortugolDocumento());
+                textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
+                String codigo = "public class NewJFrame extends javax.swing.JFrame {\n\n}";
+                textArea.setText(codigo);
+                RTextScrollPane scroll = new RTextScrollPane(textArea, true);
+                RSyntaxUtilities.getGutter(textArea).setFoldIndicatorEnabled(true);
+                Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png");
+                try {
+                    RSyntaxUtilities.getGutter(textArea).addLineTrackingIcon(1, icone);
+                } catch (BadLocationException e) {
 
-                JPanel panel = new JPanel(new BorderLayout());
-                panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-                panel.add(scrollPane);
-                frame.add(panel, BorderLayout.CENTER);
-
+                }
+                textArea.setCodeFoldingEnabled(true);
+                frame.add(scroll, BorderLayout.CENTER);
+                frame.pack();
                 frame.setVisible(true);
             }
         });
