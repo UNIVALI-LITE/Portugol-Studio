@@ -620,9 +620,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void propertyChange(PropertyChangeEvent pce) {
                 //String name = pce.getPropertyName();
                 Programa programaCompilado = (Programa) pce.getNewValue();
-                if(programaCompilado.getResultadoAnalise().contemErros()){
-                    System.out.println("erros");
-                }
                 if (programa == null) {
                     programa = programaCompilado;
                 }
