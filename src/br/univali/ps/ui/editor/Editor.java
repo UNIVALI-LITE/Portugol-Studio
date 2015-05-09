@@ -1423,6 +1423,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         painelEditor.setLayout(new java.awt.BorderLayout());
 
         scrollPane.setBorder(null);
+        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setOpaque(false);
 
         textArea.setBorder(null);

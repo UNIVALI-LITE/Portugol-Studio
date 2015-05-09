@@ -101,13 +101,6 @@ public class PSTextArea extends RSyntaxTextArea {
 
     }
 
-//    public void atualizaEstadoDosPontosDeParada(Collection<Integer> pontosDeParada, Set<Integer> linhasParaveis) {
-//        for (Integer linhaDoPontoDeParada : pontosDeParada) {
-//            boolean linhaEhParavel = linhasParaveis.contains(linhaDoPontoDeParada);
-//            setaStatusDoPontoDeParada(linhaDoPontoDeParada, linhaEhParavel);
-//
-//        }
-//    }
     public void addListenter(PSTextAreaListener l) {
         listeners.add(l);
     }
