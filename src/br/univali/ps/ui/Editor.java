@@ -853,7 +853,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return "";
     }
 
-    private String removerInformacoesPortugolStudio(String codigoFonte)
+    public static String removerInformacoesPortugolStudio(String codigoFonte)
     {
         int inicio = codigoFonte.lastIndexOf("/* $$$ Portugol Studio $$$");
 

@@ -1,7 +1,7 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.ui.abas.AbaInicial;
-import br.univali.ps.ui.abas.AbaAjuda;
+import br.univali.ps.ui.abas.abaAjuda.AbaAjuda;
 import br.univali.ps.ui.abas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;

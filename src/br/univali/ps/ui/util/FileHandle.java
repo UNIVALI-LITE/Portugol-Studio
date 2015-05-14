@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 public final class FileHandle
 {
     private static final Logger LOGGER = Logger.getLogger(FileHandle.class.getName());
-    private static final String charsetPadrao = "ISO-8859-1";
+    private static final String charsetPadrao = "UTF-8";
 
     public static void save(String text, File file) throws Exception
     {

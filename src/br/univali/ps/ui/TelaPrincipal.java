@@ -4,6 +4,7 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.atualizador.ObservadorAtualizacao;
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.dominio.PortugolHTMLHighlighter;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.nucleo.PortugolStudio;
