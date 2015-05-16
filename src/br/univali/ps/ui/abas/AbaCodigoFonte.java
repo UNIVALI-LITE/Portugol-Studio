@@ -471,20 +471,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void salvaArquivo() {
-        try {
-            final PortugolDocumento documento = editor.getPortugolDocumento();
+    
+        if (podeSalvar)
+        {
+            try {
+                final PortugolDocumento documento = editor.getPortugolDocumento();
 
-            if (documento.getFile() != null) {
-                String texto = documento.getText(0, documento.getLength());
-                texto = inserirInformacoesPortugolStudio(texto);
+                if (documento.getFile() != null) {
+                    String texto = documento.getText(0, documento.getLength());
+                    texto = inserirInformacoesPortugolStudio(texto);
 
-                FileHandle.save(texto, getArquivoComExtensao(documento.getFile()));
-                documento.setChanged(false);
+                    FileHandle.save(texto, getArquivoComExtensao(documento.getFile()));
+                    documento.setChanged(false);
+                }
+            } catch (BadLocationException ex) {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+            } catch (Exception ex) {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
-        } catch (BadLocationException ex) {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-        } catch (Exception ex) {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
     }
 
