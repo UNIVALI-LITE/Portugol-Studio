@@ -130,10 +130,14 @@ public class PSTextArea extends RSyntaxTextArea {
      */
     public void criarPontosDeParadaDesativados(Set<Integer> linhasParaveis) {
         //remove todos os pontos de parada existentes
+        Set<Integer> pontosAtivados = getLinhasComPontoDeParadaAtivados();
         RSyntaxUtilities.getGutter(this).removeAllTrackingIcons();
         pontosDeParada.clear();
         for (Integer linha : linhasParaveis) {
             adicionaPontoDeParada(linha);
+            if(pontosAtivados.contains(linha)){
+                alternaStatusDoPontoDeParada(linha);
+            }
         }
     }
 
