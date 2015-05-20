@@ -1,15 +1,17 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoListener;
 import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.swing.filtros.FiltroArquivo;
+import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -19,13 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
 
@@ -43,10 +39,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     private Aba abaAtual;
 
-    //private FiltroArquivo filtroExercicio;
-    //private FiltroArquivo filtroPrograma;
-    //private FiltroArquivo filtroTodosSuportados;
-    private FileDialog dialogoSelecaoArquivo;
+    private static final FiltroArquivo filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
+    private static final FiltroArquivo filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
+    private static final FiltroArquivo filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+    //private JFileChooser dialogoSelecaoArquivo;
 
     public BotoesControleAba(AbaInicial abaInicial, TelaPrincipal telaPrincipal) {
         super(abaInicial);
@@ -54,7 +50,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         removeAll();
         initComponents();
 
-        configurarSeletorArquivo();
+        //criarSeletorArquivo();
         configurarAcoes(telaPrincipal);
         configurarBotoes();
         criarDicasInterface();
@@ -80,73 +76,20 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void configurarSeletorArquivo() {
-//        filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
-//        filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
-//        filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
+    private JFileChooser criarSeletorArquivo() {
+        JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserAbertura();
+        dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
+        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
+        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
 
-        dialogoSelecaoArquivo = new FileDialog((JFrame)null);
-        dialogoSelecaoArquivo.setDirectory(Configuracoes.getInstancia().getDiretorioUsuario().getAbsolutePath());
-        dialogoSelecaoArquivo.setMultipleMode(true);// MultiSelectionEnabled(true);
-        //dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
+        dialogoSelecaoArquivo.addChoosableFileFilter(filtroExercicio);
+        dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
+        dialogoSelecaoArquivo.addChoosableFileFilter(filtroTodosSuportados);
 
-        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroExercicio);
-        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
-        //dialogoSelecaoArquivo.addChoosableFileFilter(filtroTodosSuportados);
-
-        //dialogoSelecaoArquivo.setFilenameFilter(filtroTodosSuportados);
+        dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
+        return dialogoSelecaoArquivo;
 
     }
-
-//    //FileChooser hackeado para exibir o look and feel do sistema: http://stackoverflow.com/questions/2282211/windows-look-and-feel-for-jfilechooser
-//    public class PsFileChooser extends JFileChooser {
-//
-//        public void updateUI() {
-//            LookAndFeel old = UIManager.getLookAndFeel();
-//            try {
-//                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//            } catch (Throwable ex) {
-//                old = null;
-//            }
-//
-//            super.updateUI();
-//
-//            if (old != null) {
-//                FilePane filePane = findFilePane(this);
-//                filePane.setViewType(FilePane.VIEWTYPE_DETAILS);
-//                filePane.setViewType(FilePane.VIEWTYPE_LIST);
-//
-//                Color background = UIManager.getColor("Label.background");
-//                setBackground(background);
-//                setOpaque(true);
-//
-//                try {
-//                    UIManager.setLookAndFeel(old);
-//                } catch (UnsupportedLookAndFeelException ignored) {
-//                } // shouldn't get here
-//            }
-//        }
-//
-//        private FilePane findFilePane(Container parent) {
-//            for (Component comp : parent.getComponents()) {
-//                if (FilePane.class.isInstance(comp)) {
-//                    return (FilePane) comp;
-//                }
-//                if (comp instanceof Container) {
-//                    Container cont = (Container) comp;
-//                    if (cont.getComponentCount() > 0) {
-//                        FilePane found = findFilePane(cont);
-//                        if (found != null) {
-//                            return found;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            return null;
-//        }
-//
-//    }
 
     private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop) {
         configurarAcaoNovoArquivo(telaPrincipalDesktop);
@@ -182,11 +125,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         acaoAbrirArquivo = new AbstractAction(nome) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialogoSelecaoArquivo.setMode(FileDialog.LOAD);
-                dialogoSelecaoArquivo.setFile("*.por;*.pex");
-                dialogoSelecaoArquivo.setVisible(true);
-                if (dialogoSelecaoArquivo.getFile() != null) {
-                    final File[] arquivos = dialogoSelecaoArquivo.getFiles();
+                JFileChooser dialogoSelecaoArquivo = criarSeletorArquivo();
+                if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION) {
+                    final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
 
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);

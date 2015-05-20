@@ -26,6 +26,8 @@ import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 
 import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.laf.tree.WebTreeUI;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -46,6 +48,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -97,12 +100,15 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
      */
     public PortugolOutlineTree() {
         this(false);
+        
     }
 
     public PortugolOutlineTree(int a) {
         this(false);
     }
 
+    
+    
     public void setStatusDaAtualizacaoDosNos(boolean atualizaoAtivada) {
         //this.atualizacaoHabilitada = atualizaoAtivada;
         //a atualização dos valores da árvore está desabilitada, a árvore está mostrando
@@ -129,13 +135,17 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         addTreeSelectionListener(listener);
         setDragEnabled(true);
         setTransferHandler(new TreeTransferHandler());
+        
+        if(WeblafUtils.weblafEstaInstalado()){
+            ((WebTreeUI)getUI()).setRightChildIndent(3);
+        }
     }
 
     private class TreeTransferHandler extends TransferHandler {
 
         @Override
         public boolean canImport(TransferHandler.TransferSupport ts) {
-            return true; //retornando true só para exibir o ícone mais adequado
+            return false;
         }
 
         @Override

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Stroke;
 import javax.swing.Icon;
 
@@ -45,6 +46,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (itemDaLista != null) {
+            ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
             Icon icone = itemDaLista.getIcone();
             FontMetrics metrics = g.getFontMetrics(FONTE_NORMAL);
             //int alturaDaLinha = metrics.getHeight() ;

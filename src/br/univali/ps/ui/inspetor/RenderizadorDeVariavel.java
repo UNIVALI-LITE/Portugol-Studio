@@ -14,6 +14,7 @@ import javax.swing.Icon;
  */
 class RenderizadorDeVariavel extends RenderizadorBase {
 
+
     @Override
     protected int getAlturaPreferida() {
         FontMetrics metrics = getFontMetrics(FONTE_NORMAL);

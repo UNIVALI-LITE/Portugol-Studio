@@ -8,6 +8,6 @@ import java.util.Set;
  */
 public interface PSTextAreaListener {
 
-    void pontosDeParaAtualizados(Set<Integer> pontosDeParada);
+    void pontosDeParadaAtualizados(Set<Integer> pontosDeParada);
     
 }

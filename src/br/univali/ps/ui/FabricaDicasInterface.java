@@ -55,8 +55,14 @@ public final class FabricaDicasInterface {
 
     }
 
+    private static WebCustomTooltip ultimaDicaExibida;
+    
     public static void criarDicaInterfaceEstatica(JComponent componente, String dica, Point point) {
-        TooltipManager.showOneTimeTooltip(componente, point, iconePadrao, dica);
+        if(ultimaDicaExibida != null && ultimaDicaExibida.isVisible()){
+            ultimaDicaExibida.setVisible(false);
+        }
+        ultimaDicaExibida = TooltipManager.showOneTimeTooltip(componente, point, iconePadrao, dica);
+        
     }
 
     public static void criarDicaInterfaceEstatica(JComponent componente, String dica) {
@@ -73,6 +79,7 @@ public final class FabricaDicasInterface {
                 notificacao.setContent(texto);
                 notificacao.setDisplayTime(10000);
                 notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "portugol-studio.png"));
+                
                 NotificationManager.showNotification(notificacao);
             }
         });

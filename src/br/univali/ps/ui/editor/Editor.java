@@ -16,10 +16,10 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.abas.FabricaDeAcoesDoEditor;
 
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -50,14 +51,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
@@ -128,7 +135,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private SearchListener observadorAcaoPesquisaSubstituir;
 
     private final List<Object> destaquesPlugin = new ArrayList<>();
-    
+
     private JMenu menuTemas;
 
     public Editor() {
@@ -143,30 +150,53 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         //criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
-        
-        
+
         WeblafUtils.configuraWebLaf(scrollPane);
+
     }
 
-    public Set<Integer> getLinhasComPontoDeParada(){
-        return getTextArea().getLinhasComPontoDeParada();
-    }
-    
-    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos){
-        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
+    public Set<Integer> getLinhasComPontoDeParadaAtivados() {
+        return getTextArea().getLinhasComPontoDeParadaAtivados();
     }
 
+//    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos) {
+//        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
+//    }
     public SuporteLinguagemPortugol getSuporteLinguagemPortugol() {
         return suporteLinguagemPortugol;
     }
 
-    public JMenu getMenuDosTemas(){
+    public JMenu getMenuDosTemas() {
         return menuTemas;
     }
-    
+
     private void criarMenuTemas() {
         GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-        menuTemas = FabricaDeAcoesDoEditor.criaMenuDosTemas(gerenciadorTemas, this);
+        menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
+    }
+
+    public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor) {
+
+        final JMenu menu = new JMenu("Cores");
+        menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
+
+        //Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png");
+        for (String tema : gerenciadorTemas.listarTemas()) {
+            JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
+            itemMenu.setAction(new AbstractAction(tema) {
+
+                @Override
+                public void actionPerformed(ActionEvent evento) {
+                    AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
+                    String tema = itemSelecionado.getText();
+                    editor.aplicarTema(tema);
+                }
+            });
+            itemMenu.setText(tema);
+            itemMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            menu.add(itemMenu);
+        }
+        return menu;
     }
 
     private void configurarDialogoPesquisarSubstituir() {
@@ -174,6 +204,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         dialogoPesquisar = new FindDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
         dialogoSubstituir = new ReplaceDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
+        adicionaMargensNoDialogo(dialogoPesquisar, 20);
+        adicionaMargensNoDialogo(dialogoSubstituir, 20);
         dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
 
         try {
@@ -183,6 +215,15 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             dialogoSubstituir.setIconImage(icone);
         } catch (IOException | IllegalArgumentException ioe) {
         }
+    }
+
+    private void adicionaMargensNoDialogo(JDialog dialogo, int margem) {
+        Dimension tamanho = dialogo.getPreferredSize();
+        ((JComponent) dialogo.getContentPane()).setBorder(BorderFactory.createEmptyBorder(margem, margem, margem, margem));
+        tamanho.setSize(tamanho.width + margem * 2, tamanho.height + margem * 2);
+        dialogo.setPreferredSize(tamanho);
+        dialogo.setMinimumSize(tamanho);
+        dialogo.revalidate();
     }
 
     private void configurarParser() {
@@ -212,13 +253,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.addKeyListener(Editor.this);
 
         errorStrip = new ErrorStrip(textArea);
-        errorStrip.setBackground(new Color(220, 220, 220));
+        //errorStrip.setBackground(textArea.getBackground());
+        //errorStrip.setOpaque(true);
+        errorStrip.setCaretMarkerColor(getBackground());
         painelEditor.add(errorStrip, BorderLayout.EAST);
-        
+
         Icon iconeBreakPoint = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
-        ((PSTextArea)textArea).setIconeDosBreakPoints(iconeBreakPoint);
-        
-        
+        ((PSTextArea) textArea).setIconeDosBreakPoints(iconeBreakPoint);
+
     }
 
     private void configurarAcoes() {
@@ -229,18 +271,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoRefazer();
         configurarAcaoComentar();
         configurarAcaoDescomentar();
-    
-        
+
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
         //configurarAcaoAlternarModoEditor();
     }
-    
-    public ReplaceDialog getReplaceDialog(){
+
+    public ReplaceDialog getReplaceDialog() {
         return this.dialogoSubstituir;
     }
-    
-    public FindDialog getFindDialog(){
+
+    public FindDialog getFindDialog() {
         return this.dialogoPesquisar;
     }
 
@@ -364,8 +405,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         btnDescomentar.setAction(acaoDescomentar);
     }
 
-    
-
 //    private void configurarAcaoAlternarModoEditor() {
 //        acaoAlternarModoEditor = new AbstractAction("Alternar modo do editor") {
 //            @Override
@@ -382,11 +421,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 //        getActionMap().put(nome, acaoAlternarModoEditor);
 //        getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
 //    }
-
-    
-
-    
-
 //    private void configurarAcaoExpandir() {
 //        acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
 //            @Override
@@ -410,7 +444,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 //            }
 //        };
 //    }
-
     private void instalarObservadores() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
@@ -467,9 +500,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         });
     }
-    
-    public void removerHighlightsDepuracao()
-    {
+
+    public void removerHighlightsDepuracao() {
         textArea.removeAllLineHighlights();
     }
 
@@ -604,8 +636,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarDobramentoCodigo(informacoesPortugolStudio);
         carregarPontosDeParada(informacoesPortugolStudio);
     }
-    
-    private void carregarPontosDeParada(String informacoesPortugolStudio){
+
+    private void carregarPontosDeParada(String informacoesPortugolStudio) {
         Matcher avaliador = Pattern.compile("@PONTOS-DE-PARADA[ ]*=[ ]*([0-9]+(, )?)+;").matcher(informacoesPortugolStudio);
 
         if (avaliador.find()) {
@@ -614,12 +646,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             try {
                 for (String valor : valores) {
                     int linhaDoPontoDeParada = Integer.parseInt(valor.trim());
-                    getTextArea().alternaPontoDeParada(linhaDoPontoDeParada);
+                    getTextArea().setaStatusDoPontoDeParada(linhaDoPontoDeParada, true);
                 }
             } catch (NumberFormatException excecao) {
                 excecao.printStackTrace(System.out);
             }
-            
+
         }
     }
 
@@ -657,10 +689,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         }
     }
-
-    
-
-    
 
     public PortugolDocumento getPortugolDocumento() {
         return (PortugolDocumento) textArea.getDocument();
@@ -781,7 +809,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     public PSTextArea getTextArea() {
-        return (PSTextArea)textArea;
+        return (PSTextArea) textArea;
     }
 
     public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutarPontoParada, final Action acaoExecutarPasso, final Action acaoInterromper) {
@@ -877,10 +905,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             Theme tema = gerenciadorTemas.carregarTema(nome);
 
             Font fonte = textArea.getFont();
-            tema.apply(textArea);
+            ((PSTextArea) textArea).setarTema(tema);
 
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);
+
+            int xDaDica = getWidth() / 2;
+            int yDaDica = getHeight() / 2 + (int) (Math.random() * 100);
+            FabricaDicasInterface.criarDicaInterfaceEstatica(this, "Usando tema " + nome, new Point(xDaDica, yDaDica));
 
             for (Component componente : menuTemas.getComponents()) {
                 JMenuItem item = (JMenuItem) componente;
@@ -903,17 +935,15 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void execucaoIniciada(Programa programa) 
-    {
+    public void execucaoIniciada(Programa programa) {
 
     }
 
     @Override
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-        
+
     }
-    
-    
+
     private void destacarErroExecucao(int linha, int coluna) {
         try {
             int line = Math.max(0, linha - 1);
@@ -1189,7 +1219,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         }
     }
-    
+
     public static void main(String args[]) {
         SwingUtilities.invokeLater(new Runnable() {
 
@@ -1199,19 +1229,18 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 JFrame frame = new JFrame("Teste Editor");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(800, 600);
-                
+
                 JPanel painel = new JPanel(new BorderLayout());
                 Editor editor = new Editor();
                 painel.add(editor);
                 WeblafUtils.configuraWeblaf(painel);
                 frame.getContentPane().add(painel, BorderLayout.CENTER);
-                
+
                 frame.setVisible(true);
             }
         });
 
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1394,6 +1423,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         painelEditor.setLayout(new java.awt.BorderLayout());
 
         scrollPane.setBorder(null);
+        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setOpaque(false);
 
         textArea.setBorder(null);

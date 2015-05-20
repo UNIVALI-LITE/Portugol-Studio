@@ -17,10 +17,10 @@ import javax.swing.JComponent;
  */
 abstract class RenderizadorBase extends JComponent {
 
-    protected final Color COR_DA_GRADE = new Color(0, 0, 0, 0.3f);
+    protected final Color COR_DA_GRADE = new Color(0, 0, 0, 0.7f);
     protected final Color COR_DO_TEXTO = Color.DARK_GRAY;
     protected final Color COR_DO_TEXTO_DESTACADO = Color.BLACK;
-    protected final Color COR_DO_CABECALHO_DESTACADO = new Color(0, 0, 0, 0.5f);
+    protected final Color COR_DO_CABECALHO_DESTACADO = new Color(0, 0, 0);
     protected final Color COR_DO_FUNDO_EM_DESTAQUE = new Color(1, 0, 0, 0.3f);//vermelho claro
     protected final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{4, 2, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1}, 0);
 
@@ -30,22 +30,42 @@ abstract class RenderizadorBase extends JComponent {
 
     protected ItemDaLista itemDaLista;
 
-    protected static Font FONTE_NORMAL = Font.decode("Verdana-12");
+    protected static Font FONTE_NORMAL = Font.decode("Tahoma-12");
     protected static Font FONTE_DESTAQUE;
     protected static Font FONTE_CABECALHO;
     protected static Font FONTE_CABECALHO_DESTAQUE;
 
     public RenderizadorBase() {
         super();
-        setTamanhoDaFonte(12f);
+        //setTamanhoDaFonte(12f);
         //setTamanhoDaFonte(18);
     }
-
+    
+    
     static void setTamanhoDaFonte(float tamanho) {
-        FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
-        FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
-        FONTE_CABECALHO = FONTE_NORMAL.deriveFont(10f);
-        FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
+        if (FONTE_NORMAL != null) {
+            FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
+            FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
+            
+            if (FONTE_DESTAQUE == null)
+            {
+                FONTE_DESTAQUE = FONTE_NORMAL;
+            }
+            
+            FONTE_CABECALHO = FONTE_NORMAL.deriveFont(12f);
+            
+            if (FONTE_CABECALHO == null)
+            {
+                FONTE_CABECALHO = FONTE_NORMAL;
+            }
+            
+            FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
+            
+            if (FONTE_CABECALHO_DESTAQUE == null)
+            {
+                FONTE_CABECALHO_DESTAQUE = FONTE_NORMAL;
+            }
+        }
     }
 
     /**
