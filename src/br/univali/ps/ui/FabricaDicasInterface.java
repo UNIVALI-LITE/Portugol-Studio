@@ -20,21 +20,20 @@ import javax.swing.SwingUtilities;
  *
  * @author Luiz Fernando Noschang
  */
-public final class FabricaDicasInterface {
-
-    private static final int intervaloFim = 5000;
-    private static final int intervaloInicio = 1000;
-    private static final Color corDica = new Color(255, 255, 210);
-    private static final Color corTexto = Color.BLACK;
+public final class FabricaDicasInterface
+{
     private static final Icon iconePadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
 
-    public static void criarDicaInterface(JComponent componente, String dica) {
+    public static void criarDicaInterface(JComponent componente, String dica)
+    {
         criarDicaInterfacePara(componente, dica, iconePadrao);
     }
 
-    public static void criarDicaInterface(JComponent componente, String dica, Action acao) {
+    public static void criarDicaInterface(JComponent componente, String dica, Action acao)
+    {
 
-        if ((acao != null) && acao.getValue(Action.ACCELERATOR_KEY) != null) {
+        if ((acao != null) && acao.getValue(Action.ACCELERATOR_KEY) != null)
+        {
             KeyStroke atalho = (KeyStroke) acao.getValue(Action.ACCELERATOR_KEY);
             dica = dica.concat(" (Atalho: ").concat(TradutorAtalhosTeclado.traduzir(atalho)).concat(")");
         }
@@ -42,13 +41,15 @@ public final class FabricaDicasInterface {
         criarDicaInterfacePara(componente, dica, iconePadrao);
     }
 
-    public static void criarDicaInterfacePara(JComponent componente, String dica, Icon icone) {
+    public static void criarDicaInterfacePara(JComponent componente, String dica, Icon icone)
+    {
         final WebCustomTooltip tip = TooltipManager.setTooltip(componente, icone, dica);
-//        final BalloonTip tip = new BalloonTip(componente, criarRotulo(dica, icone, 12f), criarEstilo(), orientacao, posicao, 20, 25, false);
 
-        componente.addMouseListener(new MouseAdapter() {
+        componente.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(MouseEvent e)
+            {
                 tip.updateLocation();
             }
         });
@@ -56,34 +57,38 @@ public final class FabricaDicasInterface {
     }
 
     private static WebCustomTooltip ultimaDicaExibida;
-    
-    public static void criarDicaInterfaceEstatica(JComponent componente, String dica, Point point) {
-        if(ultimaDicaExibida != null && ultimaDicaExibida.isVisible()){
+
+    public static void criarDicaInterfaceEstatica(JComponent componente, String dica, Point point)
+    {
+        if (ultimaDicaExibida != null && ultimaDicaExibida.isVisible())
+        {
             ultimaDicaExibida.setVisible(false);
         }
         ultimaDicaExibida = TooltipManager.showOneTimeTooltip(componente, point, iconePadrao, dica);
-        
+
     }
 
-    public static void criarDicaInterfaceEstatica(JComponent componente, String dica) {
+    public static void criarDicaInterfaceEstatica(JComponent componente, String dica)
+    {
         WebCustomTooltip tip = TooltipManager.setTooltip(componente, iconePadrao, dica);
         TooltipManager.showOneTimeTooltip(tip);
     }
 
-    public static void mostrarNotificacao(final String texto) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public static void mostrarNotificacao(final String texto)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 WebNotificationPopup notificacao = new WebNotificationPopup();
                 notificacao.setContent(texto);
                 notificacao.setDisplayTime(10000);
                 notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "portugol-studio.png"));
-                
+
                 NotificationManager.showNotification(notificacao);
             }
         });
-
     }
-
 }

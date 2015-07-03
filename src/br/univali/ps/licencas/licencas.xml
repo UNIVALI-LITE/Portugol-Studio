@@ -6,11 +6,11 @@
     <recurso nome="Portugol Núcleo" versao="Não disponível" arquivo="licenca-portugol-nucleo.txt" url="https://github.com/UNIVALI-L2S/Portugol-Nucleo">
         <descricao>Compilador da linguagem Portugol 2.0. Inclui: analisador sintático e semântico, gerador de código intermediário, interpretador, depurador e mecanismo de inclusão de bibliotecas</descricao>
     </recurso>
+    <recurso nome="Web Loof And Feel" versao="1.28" arquivo="licenca-weblaf-1.28.txt" url="http://weblookandfeel.com/">
+        <descricao>Look and feel com componentes modernos e estilizados com um visual Web</descricao>
+    </recurso>
     <recurso nome="Zip4j" versao="1.3.1" arquivo="licenca-zip4j-1.3.1.txt" url="http://www.lingala.net/zip4j/index.php">
         <descricao>Biblioteca que permite a compactação e descompactação de arquivos ZIP. Suporta a criação de arquivos com senha e criptografados nos formatos AES 128/256. Permite trabalhar com arquivos divididos em múltiplas partes</descricao>
-    </recurso>
-    <recurso nome="Balloon Tip" versao="1.2.1" arquivo="licenca-balloontip-1.2.1.txt" url="https://balloontip.java.net/">
-        <descricao>Biblioteca que permite a criação de mensagens em forma de balão. Utilizado pelo Portugol Studio na criação das dicas de interface exibidas ao usuário ao repousar o mouse sobre determinadas áreas da tela</descricao>
     </recurso>
     <recurso nome="ANTLR" versao="3.4" arquivo="licenca-antlr-3.4.txt" url="http://www.antlr3.org/">
         <descricao>Gerador de parsers que permitem, ler, processar, executar ou traduzir arquivos binários ou de texto estruturado. Amplamente utilizado na construção de linguagens de programação, ferramentas, bibliotecas e frameworks</descricao>
