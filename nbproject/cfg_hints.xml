@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//NetBeans//DTD Tool Configuration 1.0//EN" "http://www.netbeans.org/dtds/ToolConfiguration-1_0.dtd">
+<configuration>
+    <tool kind="hints" type="text/x-java">
+        <node name="org.netbeans.modules.java.hints.control.RedundantIf">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.WrongPackageSuggestion">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.NoIdClassOnEntitySubclass">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.jdk.ThrowableInitCause">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="StringBuilderAppend">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.IdDefinedInHierarchy">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.RemoveUnnecessaryReturn">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.enumMap">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.SerializableClass">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.PublicClass">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.redundantToString">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.enumSet">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.InitialCapacity.stringBuilder">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.LegalCombinationOfAnnotations">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="Wrong_String_Comparison">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.collectionsToArray">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="eu.easyedu.netbeans.svuid.SerialVersionUidHint">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.NonFinalClass">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.IdClassOverridesEqualsAndHashCode">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.NoBooleanConstructor">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.InitialCapacity.collections">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.UniqueEntityName">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.EqualsMethodHint">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.TopLevelClass">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.ValidAttributes">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.ReplaceBufferByString">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.control.RedundantConditional">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.ManualArrayCopy">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.stringEqualsEmpty">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="unnecessaryContinueLabel">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.ConsistentAccessType">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.StaticAccess">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.PersistenceUnitPresent">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.lengthOneStringIndexOf">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.HideFieldByVar">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.unnecessaryTypeToString">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.JPAAnnotsOnlyOnAccesor">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.jdk.mapreduce.ForLoopToFunctionalHint">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.OnlyEntityOrMappedSuperclassCanUseIdClass">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.StringBuffer2Builder">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.getClassInsteadOfDotClass">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.stringConstructor">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.constantIntern">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.HideField">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.ValidPrimaryTableName">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="unnecessaryBreakLabel">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.BoxingOfBoxingValue">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.HasNoArgConstructor">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.QueriesProperlyDefined">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="AssignmentToItself">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="o.n.m.j2ee.jpa.verification.JPQLValidation">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.SizeEqualsZero">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.MissingHashCode">
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.unnecessaryTempFromString">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.control.RemoveUnnecessary.unnecessaryContinue">
+            <attribute name="enabled" value="false"/>
+        </node>
+    </tool>
+</configuration>
