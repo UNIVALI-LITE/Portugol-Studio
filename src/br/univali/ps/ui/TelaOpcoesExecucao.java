@@ -18,172 +18,132 @@ import javax.swing.event.ChangeListener;
  *
  * @author Luiz Fernando Noschang
  */
-public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeListener, ChangeListener
-{
+public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeListener, ChangeListener {
+
     private Programa programa;
     private String ultimaFuncaoSelecionada;
     private boolean cancelado;
-            
-    
-    public TelaOpcoesExecucao()
-    {
+
+    public TelaOpcoesExecucao() {
         initComponents();
         getRootPane().setDefaultButton(botaoExecutar);
-        
+
         instalarObservadores();
         carregarConfiguracoes();
-        
-        try
-        {
+
+        try {
             this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/portugol-studio.png")));
+        } catch (IOException ioe) {
         }
-        catch (IOException ioe)
-        {
-        }        
     }
-    
-    private void instalarObservadores()
-    {
+
+    private void instalarObservadores() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
-        
+
         configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
-        campoExibirTela.addChangeListener(TelaOpcoesExecucao.this);        
+        campoExibirTela.addChangeListener(TelaOpcoesExecucao.this);
     }
-    
-    private void carregarConfiguracoes()
-    {
+
+    private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
         campoExibirTela.setSelected(configuracoes.isExibirOpcoesExecucao());
     }
 
     @Override
-    public void setVisible(boolean visivel)
-    {
-        if (visivel)
-        {
+    public void setVisible(boolean visivel) {
+        if (visivel) {
             setLocationRelativeTo(null);
             cancelado = true;
         }
-        
+
         super.setVisible(visivel);
     }
-    
-    public void inicializar(Programa programa, boolean depurar)
-    {
+
+    public void inicializar(Programa programa) {
         this.programa = programa;
-        
+
         DefaultComboBoxModel modelo = (DefaultComboBoxModel) campoFuncaoInicial.getModel();
         modelo.removeAllElements();
-        
+
         List<String> funcoes = programa.getFuncoes();
-        
+
         Collections.sort(funcoes);
-        
-        for (String funcao : funcoes)
-        {
+
+        for (String funcao : funcoes) {
             modelo.addElement(funcao);
         }
-        
-        if (!funcoes.isEmpty())
-        {
-            if (funcaoExiste(ultimaFuncaoSelecionada, programa))
-            {
-                campoFuncaoInicial.setSelectedItem(ultimaFuncaoSelecionada);                
-            }
-            else
-            if (funcaoExiste(programa.getFuncaoInicial(), programa))
-            {
+
+        if (!funcoes.isEmpty()) {
+            if (funcaoExiste(ultimaFuncaoSelecionada, programa)) {
+                campoFuncaoInicial.setSelectedItem(ultimaFuncaoSelecionada);
+            } else if (funcaoExiste(programa.getFuncaoInicial(), programa)) {
                 campoFuncaoInicial.setSelectedItem(programa.getFuncaoInicial());
             }
         }
-        
-        if (depurar)
-        {
-            botaoExecutar.setText("Depurar");
-            botaoExecutar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
-            campoDepuracaoDetalhada.setVisible(true);
-        }
-        else
-        {
-            botaoExecutar.setText("Executar");
-            botaoExecutar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"));
-            campoDepuracaoDetalhada.setVisible(false);
-        }
-        
-        if (funcoes.isEmpty())
-        {
+
+        botaoExecutar.setText("Executar");
+        botaoExecutar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"));
+        campoDepuracaoDetalhada.setVisible(false);
+
+        if (funcoes.isEmpty()) {
             rotuloAviso.setVisible(true);
-        }
-        else
-        {
+        } else {
             rotuloAviso.setVisible(false);
         }
     }
 
-    public boolean isCancelado()
-    {
+    public boolean isCancelado() {
         return cancelado;
     }
-    
-    private boolean funcaoExiste(String funcao, Programa programa)
-    {
-        for (String func : programa.getFuncoes())
-        {
-            if (func.equals(funcao))
-            {
+
+    private boolean funcaoExiste(String funcao, Programa programa) {
+        for (String func : programa.getFuncoes()) {
+            if (func.equals(funcao)) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
-    public boolean isExibirTela()
-    {
+
+    public boolean isExibirTela() {
         return campoExibirTela.isSelected();
     }
-    
-    public String[] getParametros()
-    {
-        if (campoParametros.getText() != null)
-        {
+
+    public String[] getParametros() {
+        if (campoParametros.getText() != null) {
             String textoParametros = campoParametros.getText();
 
-            if (textoParametros.length() > 0)
-            {
+            if (textoParametros.length() > 0) {
                 return textoParametros.split("\n");
             }
         }
-        
+
         return null;
-            
+
     }
-    
+
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-        if (evt.getPropertyName().equals(Configuracoes.EXIBIR_OPCOES_EXECUCAO))
-        {
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(Configuracoes.EXIBIR_OPCOES_EXECUCAO)) {
             boolean exibir = (Boolean) evt.getNewValue();
-            
-            if (campoExibirTela.isSelected() != exibir)
-            {
+
+            if (campoExibirTela.isSelected() != exibir) {
                 campoExibirTela.setSelected(exibir);
             }
         }
     }
-    
-    public boolean isDepuracaoDetalhada(){
+
+    public boolean isDepuracaoDetalhada() {
         return campoDepuracaoDetalhada.isSelected();
     }
-    
+
     @Override
-    public void stateChanged(ChangeEvent e)
-    {
+    public void stateChanged(ChangeEvent e) {
         Configuracoes configuracoes = Configuracoes.getInstancia();
         configuracoes.setExibirOpcoesExecucao(campoExibirTela.isSelected());
-    }    
-    
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -317,14 +277,13 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
 
     private void botaoExecutarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_botaoExecutarActionPerformed
     {//GEN-HEADEREND:event_botaoExecutarActionPerformed
-        if (!programa.getFuncoes().isEmpty())
-        {
+        if (!programa.getFuncoes().isEmpty()) {
             String selecionada = (String) campoFuncaoInicial.getSelectedItem();
-            
-            ultimaFuncaoSelecionada = selecionada;                    
+
+            ultimaFuncaoSelecionada = selecionada;
             programa.setFuncaoInicial(selecionada);
         }
-        
+
         cancelado = false;
         setVisible(false);
     }//GEN-LAST:event_botaoExecutarActionPerformed
@@ -335,7 +294,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         campoParametros.requestFocus();
     }//GEN-LAST:event_botaoLimparActionPerformed
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoExecutar;
     private javax.swing.JButton botaoLimpar;

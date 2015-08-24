@@ -3,8 +3,6 @@ package br.univali.ps.ui;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.AbaMensagemCompiladorListener;
-import br.univali.portugol.nucleo.depuracao.DepuradorListener;
-import br.univali.portugol.nucleo.depuracao.InterfaceDepurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
@@ -62,7 +60,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
-import net.java.balloontip.BalloonTip;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
 import org.fife.rsta.ui.search.SearchEvent;
@@ -84,7 +81,7 @@ import org.fife.ui.rtextarea.SearchResult;
  * @author Fillipi Pelz
  * @author Luiz Fernando Noschang
  */
-public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, DepuradorListener, AbaMensagemCompiladorListener
+public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, AbaMensagemCompiladorListener
 {
 
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
@@ -207,14 +204,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void criarDicasInterface()
     {
-        FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", acaoDescomentar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Expande/restaura o tamanho do editor", acaoAlternarModoEditor, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnPesquisar, "Pesquisa e/ou substitui um texto no editor", acaoPesquisarSubstituir, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor");
+        FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor");
+        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar);
+        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", acaoDescomentar);
+        FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor");
+        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Expande/restaura o tamanho do editor", acaoAlternarModoEditor);
+        FabricaDicasInterface.criarDicaInterface(btnPesquisar, "Pesquisa e/ou substitui um texto no editor", acaoPesquisarSubstituir);
+        FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte);
     }
 
     private void configurarTextArea()
@@ -540,7 +537,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             public void actionPerformed(ActionEvent e)
             {
                 expandido = true;
-                abaCodigoFonte.expandirEditor();
+                //abaCodigoFonte.expandirEditor();
                 btnMaximizar.setAction(acaoRestaurar);
             }
         };
@@ -556,7 +553,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             public void actionPerformed(ActionEvent e)
             {
                 expandido = false;
-                abaCodigoFonte.restaurarEditor();
+                //abaCodigoFonte.restaurarEditor();
                 btnMaximizar.setAction(acaoExpandir);
             }
         };
@@ -1039,10 +1036,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoExterna(btnDepurar, acaoDepurar);
         configurarAcaoExterna(btnProximaInstrucao, acaoProximaInstrucao);
 
-        FabricaDicasInterface.criarDicaInterface(btnDepurar, "Inicia a depuração do programa atual", acaoDepurar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual", acaoExecutar, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução/depuração do programa atual", acaoInterromper, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnProximaInstrucao, "Executa a intrução atual do programa e vai para a próxima instrução", acaoProximaInstrucao, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+        FabricaDicasInterface.criarDicaInterface(btnDepurar, "Inicia a depuração do programa atual", acaoDepurar);
+        FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual", acaoExecutar);
+        FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução/depuração do programa atual", acaoInterromper);
+        FabricaDicasInterface.criarDicaInterface(btnProximaInstrucao, "Executa a intrução atual do programa e vai para a próxima instrução", acaoProximaInstrucao);
     }
 
     private void configurarAcaoExterna(final JButton botao, final Action acaoExterna)
@@ -1184,12 +1181,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    @Override
-    public void depuracaoInicializada(InterfaceDepurador depurador)
-    {
-
-    }
-
     private void destacarErroExecucao(int linha, int coluna)
     {
         try
@@ -1238,76 +1229,77 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    @Override
-    public void highlightLinha(int linha)
-    {
-        try
-        {
-            int line = linha - 1;
-
-            if (tag != null)
-            {
-                textArea.removeLineHighlight(tag);
-            }
-
-            int offset = textArea.getLineStartOffset(line);
-
-            textArea.getFoldManager().ensureOffsetNotInClosedFold(offset);
-
-            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));
-
-            ultimaLinhaHighlight = line;
-            ultimaColunaHighlight = 0;
-
-            rolarAtePosicao(line, 0);
-        }
-        catch (BadLocationException ex)
-        {
-            ex.printStackTrace(System.out);
-        }
-    }
-
-    @Override
-    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
-    {
-        int line = linha - 1;
-        Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
-        int offs = elem.getStartOffset() + coluna;
-
-        textArea.getFoldManager().ensureOffsetNotInClosedFold(offs);
-
-        try
-        {
-            if (tagDetalhado == null)
-            {
-                tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
-            }
-            else
-            {
-                textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs + tamanho);
-            }
-
-            ultimaLinhaHighlight = line;
-            ultimaColunaHighlight = coluna;
-
-            rolarAtePosicao(line, coluna);
-
-        }
-        catch (BadLocationException ex)
-        {
-            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Override
-    public void simbolosAlterados(List<Simbolo> simbolo)
-    {
-    }
-
-    @Override
-    public void simboloDeclarado(Simbolo simbolo)
-    {
-    }
+//    
+//    @Override
+//    public void highlightLinha(int linha)
+//    {
+//        try
+//        {
+//            int line = linha - 1;
+//
+//            if (tag != null)
+//            {
+//                textArea.removeLineHighlight(tag);
+//            }
+//
+//            int offset = textArea.getLineStartOffset(line);
+//
+//            textArea.getFoldManager().ensureOffsetNotInClosedFold(offset);
+//
+//            tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));
+//
+//            ultimaLinhaHighlight = line;
+//            ultimaColunaHighlight = 0;
+//
+//            rolarAtePosicao(line, 0);
+//        }
+//        catch (BadLocationException ex)
+//        {
+//            ex.printStackTrace(System.out);
+//        }
+//    }
+//
+//    @Override
+//    public void HighlightDetalhadoAtual(int linha, int coluna, int tamanho)
+//    {
+//        int line = linha - 1;
+//        Element elem = textArea.getDocument().getDefaultRootElement().getElement(line);
+//        int offs = elem.getStartOffset() + coluna;
+//
+//        textArea.getFoldManager().ensureOffsetNotInClosedFold(offs);
+//
+//        try
+//        {
+//            if (tagDetalhado == null)
+//            {
+//                tagDetalhado = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+//            }
+//            else
+//            {
+//                textArea.getHighlighter().changeHighlight(tagDetalhado, offs, offs + tamanho);
+//            }
+//
+//            ultimaLinhaHighlight = line;
+//            ultimaColunaHighlight = coluna;
+//
+//            rolarAtePosicao(line, coluna);
+//
+//        }
+//        catch (BadLocationException ex)
+//        {
+//            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+//
+//    @Override
+//    public void simbolosAlterados(List<Simbolo> simbolo)
+//    {
+//    }
+//
+//    @Override
+//    public void simboloDeclarado(Simbolo simbolo)
+//    {
+//    }
 
     @Override
     public void mensagemCompiladorSelecionada(Mensagem mensagem)
@@ -1347,10 +1339,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    @Override
-    public void simboloRemovido(Simbolo simbolo)
-    {
-    }
+//    @Override
+//    public void simboloRemovido(Simbolo simbolo)
+//    {
+//    }
 
     private Color obterCorErro()
     {

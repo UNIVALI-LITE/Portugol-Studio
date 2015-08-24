@@ -8,23 +8,23 @@ import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
+import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.window.WebPopOver;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.label.WebLabel;
+import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.WebNotificationPopup;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
+import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
@@ -32,10 +32,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
-import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.BalloonTipStyle;
-import net.java.balloontip.styles.EdgedBalloonStyle;
-import net.java.balloontip.utils.FadingUtils;
 
 public final class AbaConsole extends Aba implements PropertyChangeListener
 {
@@ -48,17 +44,13 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     private boolean executandoPrograma = false;
 
-    private BalloonTip popupLeia;
-    private final JLabel rotuloPopupLeia;
-    private final BalloonTipStyle estiloPopupLeia;
-    private final ActionListener foo;
+    private WebPopOver popupLeia = null;
+    private final ActionListener listener;
     private Timer timerPopupLeia;
     private boolean removendoPopup = true;
 
-    private Action acaoAumentarFonte;
-    private Action acaoDiminuirFonte;
-    private Action acaoLimpar;
-    private Action acaoCopiar;
+    private AbstractAction acaoLimpar;
+    private AbstractAction acaoCopiar;
 
     private final HandlerDaSaida handlerDaSaida;
     private AbaCodigoFonte abaCodigoFonte;
@@ -68,40 +60,29 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         super("Console", icone, false);
 
         initComponents();
-        console.setComponentPopupMenu(menuConsole);
-        this.menuConsoleLimpar.setText("Limpar");
-        this.menuConsoleCopiar.setText("Copiar");
-        this.menuAumentarFonte.setText("Aumentar fonte");
-        this.menuDiminuirFonte.setText("Diminuir fonte");
+
+        WeblafUtils.configuraWebLaf(painelRolagem);
+
         console.setDocument(new DocumentoConsole());
 
-        rotuloPopupLeia = new JLabel("<html><body><p>O programa está aguardando a entrada de dados</p></body></html>", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"), JLabel.LEFT);
-        rotuloPopupLeia.setVerticalTextPosition(JLabel.CENTER);
-        rotuloPopupLeia.setIconTextGap(10);
-        rotuloPopupLeia.setPreferredSize(new Dimension(230, 70));
-        rotuloPopupLeia.setFont(rotuloPopupLeia.getFont().deriveFont(12f));
-
-        estiloPopupLeia = new EdgedBalloonStyle(new Color(255, 255, 210), Color.BLACK);
-        popupLeia = new BalloonTip(painelRolagem.getViewport(), rotuloPopupLeia, estiloPopupLeia, BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.NORTH, 50, 25, false);
-        popupLeia.setPadding(8);
-        popupLeia.setVisible(false);
-
-        foo = new ActionListener()
+        listener = new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 if (removendoPopup)
                 {
-                    popupLeia.setVisible(false);
-                }/*
-                 * else
-                 * {
-                 * console.requestFocusInWindow();
-                 * console.setCaretPosition(console.getText().length());
-                 * }
-                 */
-
+                    if (popupLeia != null)
+                    {
+                        popupLeia.dispose();
+                        popupLeia = null;
+                    }
+                }
+                else
+                {
+                    console.requestFocusInWindow();
+                    console.setCaretPosition(console.getText().length());
+                }
             }
         };
 
@@ -113,6 +94,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 painelRolagem.getVerticalScrollBar().setValue(ce.getComponent().getHeight());
             }
         });
+        
         console.getDocument().addDocumentListener(new DocumentListener()
         {
             @Override
@@ -136,9 +118,9 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         console.setCaret(new CursorConsole());
         console.getCaret().setVisible(false);
 
-        configurarBarraFerramentas();
-        criarAcoes();
-        criarDicasInterface();
+        JPopupMenu popupMenu = criarBarraDeBotoes();
+        console.setComponentPopupMenu(popupMenu);
+
         instalarObservadores();
         console.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
         carregarConfiguracoes();
@@ -146,21 +128,103 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         handlerDaSaida = new HandlerDaSaida();
     }
 
-    private void configurarBarraFerramentas()
+    private void exibirPopupLeia()
     {
-        barraFerramentas.setOpaque(false);
-        botaoAumentarFonte.setOpaque(false);
-        botaoCopiar.setOpaque(false);
-        botaoDiminuirFonte.setOpaque(false);
-        botaoLimpar.setOpaque(false);
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                popupLeia = new WebPopOver (painelRolagem);
+                popupLeia.setModal ( false );
+                popupLeia.setMargin ( 8 );
+                popupLeia.setMovable ( false );
+                popupLeia.setCloseOnFocusLoss(false);
+                popupLeia.setLayout (new VerticalFlowLayout());
+                
+                WebLabel label = new WebLabel ( "O programa está aguardando a entrada de dados", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"));
+                label.setFont(label.getFont().deriveFont(12.0f));
+                
+                popupLeia.add(label);                
+                popupLeia.show(painelRolagem);
+                
+                SwingUtilities.invokeLater(new Runnable()
+                { 
+                    @Override
+                    public void run()
+                    {
+                        console.requestFocusInWindow();
+                    }                    
+                });
+            }
+        });
     }
 
-    private void criarAcoes()
+    private JPopupMenu criarBarraDeBotoes()
     {
-        criarAcaoLimpar();
-        criarAcaoCopiar();
-        criarAcaoAumentarFonte();
-        criarAcaoDiminuirFonte();
+
+        Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
+        Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
+
+        //++++ Cria as ações ++++++++
+        Action acaoAumentarFonte = new AbstractAction("", iconeMais)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                setTamanhoFonteConsole(console.getFont().getSize() + VALOR_INCREMENTO_FONTE);
+            }
+        };
+        //+++++++++++++++++
+        Action acaoDiminuirFonte = new AbstractAction("", iconeMenos)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                setTamanhoFonteConsole(console.getFont().getSize() - VALOR_INCREMENTO_FONTE);
+            }
+        };
+        //+++++++++++++++++++
+        acaoLimpar = new AbstractAction("Limpar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                limparConsole();
+            }
+        };
+
+        acaoLimpar.setEnabled(false);
+        //+++++++++++++++++++++++++++++++
+        acaoCopiar = new AbstractAction("Copiar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                console.selectAll();
+                console.copy();
+                console.select(0, 0);
+            }
+        };
+
+        acaoCopiar.setEnabled(false);
+        //++++++++++++++++++++++++++++++++++++++++++++++++
+        BarraDeBotoesExpansivel barra = new BarraDeBotoesExpansivel();
+        Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
+        //+++++++++++++++++++++++++
+        barra.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]
+        {
+            acaoAumentarFonte, acaoDiminuirFonte
+        });
+        barra.adicionaAcao(acaoLimpar);
+        barra.adicionaAcao(acaoCopiar);
+        FabricaDicasInterface.criarDicaInterface(barra.getCompomemtParaAdicionarDica(), "Personalizar a console");
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 2), 0, 0);
+
+        this.add(barra, constrainsts);
+        this.setComponentZOrder(barra, 0);
+
+        return barra.getPopupMenu();
     }
 
     public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)
@@ -171,10 +235,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     public synchronized boolean isLendo()
     {
         DocumentoConsole documento = (DocumentoConsole) console.getDocument();
-        
+
         return documento.lendo;
     }
-            
+
     public void limparConsole()
     {
         console.setText(null);
@@ -193,86 +257,12 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     }
 
-    private void criarAcaoLimpar()
-    {
-        acaoLimpar = new AbstractAction("Limpar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                limparConsole();
-            }
-        };
-
-        acaoLimpar.setEnabled(false);
-
-        menuConsoleLimpar.setAction(acaoLimpar);
-        botaoLimpar.setAction(acaoLimpar);
-    }
-
-    private void criarAcaoCopiar()
-    {
-        acaoCopiar = new AbstractAction("Copiar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_copy.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                console.selectAll();
-                console.copy();
-                console.select(0, 0);
-            }
-        };
-
-        acaoCopiar.setEnabled(false);
-
-        menuConsoleCopiar.setAction(acaoCopiar);
-        botaoCopiar.setAction(acaoCopiar);
-    }
-
-    private void criarAcaoAumentarFonte()
-    {
-        acaoAumentarFonte = new AbstractAction("Aumentar Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_add.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Font fonteAtual = console.getFont();
-                float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
-
-                setTamanhoFonteConsole(novoTamanho);
-            }
-        };
-
-        menuAumentarFonte.setAction(acaoAumentarFonte);
-        botaoAumentarFonte.setAction(acaoAumentarFonte);
-    }
-
-    private void criarAcaoDiminuirFonte()
-    {
-        acaoDiminuirFonte = new AbstractAction("Diminuir Fonte", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font_delete.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Font fonteAtual = console.getFont();
-                float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
-
-                setTamanhoFonteConsole(novoTamanho);
-            }
-        };
-
-        menuDiminuirFonte.setAction(acaoDiminuirFonte);
-        botaoDiminuirFonte.setAction(acaoDiminuirFonte);
-    }
-
-    private void criarDicasInterface()
-    {
-        FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-    }
-
+//    private void criarDicasInterface() {
+//        FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console");
+//        FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console");
+//        FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console");
+//        FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console");
+//    }
     private void instalarObservadores()
     {
         Configuracoes configuracoes = Configuracoes.getInstancia();
@@ -367,140 +357,45 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        menuConsole = new javax.swing.JPopupMenu();
-        menuAumentarFonte = new javax.swing.JMenuItem();
-        menuDiminuirFonte = new javax.swing.JMenuItem();
-        menuConsoleLimpar = new javax.swing.JMenuItem();
-        menuConsoleCopiar = new javax.swing.JMenuItem();
-        painelConteudo = new javax.swing.JPanel();
         painelRolagem = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
-        painelFerramentas = new javax.swing.JPanel();
-        barraFerramentas = new javax.swing.JToolBar();
-        botaoAumentarFonte = new javax.swing.JButton();
-        botaoDiminuirFonte = new javax.swing.JButton();
-        botaoLimpar = new javax.swing.JButton();
-        botaoCopiar = new javax.swing.JButton();
 
-        menuAumentarFonte.setText("jMenuItem1");
-        menuConsole.add(menuAumentarFonte);
-
-        menuDiminuirFonte.setText("jMenuItem1");
-        menuConsole.add(menuDiminuirFonte);
-
-        menuConsoleLimpar.setText("jMenuItem1");
-        menuConsole.add(menuConsoleLimpar);
-
-        menuConsoleCopiar.setText("jMenuItem2");
-        menuConsole.add(menuConsoleCopiar);
-
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setFocusable(false);
         setOpaque(false);
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.GridBagLayout());
 
-        painelConteudo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 220, 220)));
-        painelConteudo.setLayout(new java.awt.BorderLayout());
-
-        painelRolagem.setBackground(new java.awt.Color(250, 250, 250));
+        painelRolagem.setBackground(new java.awt.Color(255, 255, 0));
         painelRolagem.setBorder(null);
-        painelRolagem.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        painelRolagem.setOpaque(false);
 
         console.setEditable(false);
-        console.setBackground(new java.awt.Color(250, 250, 250));
+        console.setBackground(new java.awt.Color(230, 230, 230));
         console.setColumns(20);
-        console.setBorder(null);
+        console.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        console.setOpaque(false);
         painelRolagem.setViewportView(console);
 
-        painelConteudo.add(painelRolagem, java.awt.BorderLayout.CENTER);
-
-        painelFerramentas.setBackground(new java.awt.Color(250, 250, 250));
-        painelFerramentas.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        painelFerramentas.setPreferredSize(new java.awt.Dimension(34, 100));
-        painelFerramentas.setLayout(new java.awt.BorderLayout());
-
-        barraFerramentas.setFloatable(false);
-        barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        barraFerramentas.setRollover(true);
-        barraFerramentas.setOpaque(false);
-
-        botaoAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoAumentarFonte.setBorderPainted(false);
-        botaoAumentarFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoAumentarFonte.setFocusable(false);
-        botaoAumentarFonte.setHideActionText(true);
-        botaoAumentarFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoAumentarFonte.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoAumentarFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoAumentarFonte.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoAumentarFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoAumentarFonte);
-
-        botaoDiminuirFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoDiminuirFonte.setBorderPainted(false);
-        botaoDiminuirFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoDiminuirFonte.setFocusable(false);
-        botaoDiminuirFonte.setHideActionText(true);
-        botaoDiminuirFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoDiminuirFonte.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoDiminuirFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoDiminuirFonte.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoDiminuirFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoDiminuirFonte);
-
-        botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoLimpar.setBorderPainted(false);
-        botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoLimpar.setFocusable(false);
-        botaoLimpar.setHideActionText(true);
-        botaoLimpar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoLimpar.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoLimpar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoLimpar);
-
-        botaoCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        botaoCopiar.setBorderPainted(false);
-        botaoCopiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoCopiar.setFocusable(false);
-        botaoCopiar.setHideActionText(true);
-        botaoCopiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botaoCopiar.setMaximumSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setMinimumSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setPreferredSize(new java.awt.Dimension(24, 24));
-        botaoCopiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(botaoCopiar);
-
-        painelFerramentas.add(barraFerramentas, java.awt.BorderLayout.CENTER);
-
-        painelConteudo.add(painelFerramentas, java.awt.BorderLayout.EAST);
-
-        add(painelConteudo, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 5);
+        add(painelRolagem, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToolBar barraFerramentas;
-    private javax.swing.JButton botaoAumentarFonte;
-    private javax.swing.JButton botaoCopiar;
-    private javax.swing.JButton botaoDiminuirFonte;
-    private javax.swing.JButton botaoLimpar;
     private javax.swing.JTextArea console;
-    private javax.swing.JMenuItem menuAumentarFonte;
-    private javax.swing.JPopupMenu menuConsole;
-    private javax.swing.JMenuItem menuConsoleCopiar;
-    private javax.swing.JMenuItem menuConsoleLimpar;
-    private javax.swing.JMenuItem menuDiminuirFonte;
-    private javax.swing.JPanel painelConteudo;
-    private javax.swing.JPanel painelFerramentas;
     private javax.swing.JScrollPane painelRolagem;
     // End of variables declaration//GEN-END:variables
 
     private final class HandlerDaSaida implements Saida
     {
+
         @Override
         public void limpar() throws Exception
         {
@@ -570,11 +465,11 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
             public void actionPerformed(ActionEvent e)
             {
                 removendoPopup = false;
-                FadingUtils.fadeInBalloon(popupLeia, foo, 500, 24);
-                cancelarPopupLeia();
+                exibirPopupLeia();
             }
         });
 
+        timerPopupLeia.setRepeats(false);
         timerPopupLeia.start();
     }
 
@@ -594,22 +489,31 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
             {
                 return Integer.parseInt(entrada);
             }
-            else if (tipoDado == TipoDado.REAL)
+            else
             {
-                return Double.parseDouble(entrada);
-            }
-            else if (tipoDado == TipoDado.CARACTER)
-            {
-                return entrada.charAt(0);
-            }
-            else if (tipoDado == TipoDado.LOGICO)
-            {
-                switch (entrada)
+                if (tipoDado == TipoDado.REAL)
                 {
-                    case "falso":
-                        return false;
-                    case "verdadeiro":
-                        return true;
+                    return Double.parseDouble(entrada);
+                }
+                else
+                {
+                    if (tipoDado == TipoDado.CARACTER)
+                    {
+                        return entrada.charAt(0);
+                    }
+                    else
+                    {
+                        if (tipoDado == TipoDado.LOGICO)
+                        {
+                            switch (entrada)
+                            {
+                                case "falso":
+                                    return false;
+                                case "verdadeiro":
+                                    return true;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -627,9 +531,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         removendoPopup = true;
 
-        if (popupLeia.isVisible())
+        if (popupLeia != null) 
         {
-            FadingUtils.fadeOutBalloon(popupLeia, foo, 500, 24);
+            popupLeia.dispose();
+            popupLeia = null;
         }
     }
 
@@ -665,7 +570,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 public void run()
                 {
                     AbaConsole.this.selecionar();
-                    
+
                     setLendo(true);
 
                     abaCodigoFonte.exibirPainelSaida();
@@ -675,10 +580,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                     console.setEditable(true);
                     console.setFocusable(true);
 
-                    console.getCaret().setVisible(true);                    
+                    console.getCaret().setVisible(true);
                     console.setCaretPosition(console.getText().length());
                     console.requestFocusInWindow();
-                                        
+
                     agendarPopupLeia();
                 }
             });
@@ -714,10 +619,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 console.setFocusable(false);
 
                 Object valor = obterValorEntrada(tipoDado, getText(limitOffset, getLength() - limitOffset));
-                
+
                 setLendo(false);
                 console.getCaret().setVisible(false);
-                
+
                 if (valor != null)
                 {
                     armazenador.setValor(valor);
@@ -842,5 +747,27 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 g.fillRect(r.x, r.y, width, r.height);
             }
         }
+    }
+
+    public static void main(String args[])
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                WebLookAndFeel.install();
+                JFrame frame = new JFrame("Teste Aba Console");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(800, 600);
+
+                AbaConsole aba = new AbaConsole();
+                frame.getContentPane().add(aba, BorderLayout.CENTER);
+
+                frame.setVisible(true);
+            }
+        });
+
     }
 }

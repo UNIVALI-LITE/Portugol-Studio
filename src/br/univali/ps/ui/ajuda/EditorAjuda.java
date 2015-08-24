@@ -1,7 +1,7 @@
 package br.univali.ps.ui.ajuda;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Editor;
+import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.PainelTabulado;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.IconFactory;
@@ -89,7 +89,7 @@ public final class EditorAjuda extends JPanel
 		boolean sintatico = Boolean.parseBoolean(somenteSintatico);
 		if (sintatico)
 		{
-			editor.setParsable(false);
+			//editor.setParsable(false);
 			this.remove(painelBotao);
 			this.remove(painelEditor);
 			this.add(painelEditor, BorderLayout.CENTER);

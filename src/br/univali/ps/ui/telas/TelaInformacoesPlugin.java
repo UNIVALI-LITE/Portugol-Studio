@@ -150,8 +150,7 @@ public final class TelaInformacoesPlugin extends JDialog
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         painelConteudo = new javax.swing.JPanel();

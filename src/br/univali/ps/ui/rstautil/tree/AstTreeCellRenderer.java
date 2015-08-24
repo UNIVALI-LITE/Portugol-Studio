@@ -65,145 +65,132 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
  * Renderer for the AST tree in the UI.
  *
  */
-class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteASA, OutlineTreeVisitor
-{
+class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteASA, OutlineTreeVisitor {
+
     private static final long serialVersionUID = 1L;
     private PortugolTreeNode currentPortugolTreeNode;
     private JLabel component;
 
-    public AstTreeCellRenderer()
-    {
+    public AstTreeCellRenderer() {
+
         //setBorder(new CompoundBorder(getBorder(), new EmptyBorder(4, 0, 4, 0)));
     }
-    
-    
-    
+
     @Override
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-    {
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         component = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-        
-        if (value != null && value instanceof SourceTreeNode)
-        {
+
+        if (value != null && value instanceof SourceTreeNode) {
             ((SourceTreeNode) value).aceitar(this);
         }
-        
+
         //Dimension tam = component.getSize();
-        
         //component.setSize(new Dimension(tam.width, tam.height + 100));
         //component.setPreferredSize(new Dimension(tam.width, tam.height + 100));
-        
         return component;
     }
-    
-    private Icon getIcon(TipoDado tipoDado){
+
+    private Icon getIcon(TipoDado tipoDado) {
         String iconName = "unknown.png";
         if (tipoDado != null) {
-            iconName = tipoDado.getNome()+".png";
+            iconName = tipoDado.getNome() + ".png";
         }
         return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
     }
 
     @Override
-    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
-    {
+    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noCaso.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+
         return null;
     }
 
     @Override
-    public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(declaracaoFuncao.getNome());
         sb.append('(');
-        
+
         int paramCount = declaracaoFuncao.getParametros().size();
-        
-        for (int i = 0; i < paramCount; i++)
-        {
+
+        for (int i = 0; i < paramCount; i++) {
             NoDeclaracaoParametro param = declaracaoFuncao.getParametros().get(i);
-            
-            sb.append(param.getTipoDado().getNome());	
-            
+
+            sb.append(param.getTipoDado().getNome());
+
             Quantificador quantificador = param.getQuantificador();
-            
+
             if (quantificador == Quantificador.VETOR) {
                 sb.append("[]");
-            } else if (quantificador == Quantificador.MATRIZ){
+            } else if (quantificador == Quantificador.MATRIZ) {
                 sb.append("[][]");
             }
-            
-            if (i < paramCount - 1)
-            {
+
+            if (i < paramCount - 1) {
                 sb.append(", ");
             }
         }
-        
+
         sb.append(')');
-        
-        if (declaracaoFuncao.getTipoDado() != null)
-        {
+
+        if (declaracaoFuncao.getTipoDado() != null) {
             sb.append(" : ");
             sb.append("<font color='#888888'>");
             sb.append(declaracaoFuncao.getTipoDado().getNome());
             Quantificador quantificador = declaracaoFuncao.getQuantificador();
-            
+
             if (quantificador == Quantificador.VETOR) {
                 sb.append("[]");
-            } else if (quantificador == Quantificador.MATRIZ){
+            } else if (quantificador == Quantificador.MATRIZ) {
                 sb.append("[][]");
             }
         }
-        
+
         component.setText(sb.toString());
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
-    {   
+    public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         if (currentPortugolTreeNode.isDeclarado()) {
@@ -216,18 +203,20 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("[][]");
         sb.append(" : ");
         sb.append("<font color='#888888'>");
-        sb.append(noDeclaracaoMatriz.getTipoDado().getNome());	
+        sb.append(noDeclaracaoMatriz.getTipoDado().getNome());
         component.setText(sb.toString());
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif"));
+
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         if (currentPortugolTreeNode.isDeclarado()) {
@@ -241,26 +230,27 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoVariavel.getTipoDado().getNome());
         sb.append("<font color='#000000'>");
-        if (currentPortugolTreeNode != null &&
-                currentPortugolTreeNode.getValor() != null &&
-                !(currentPortugolTreeNode.getValor() instanceof List)) {
+        if (currentPortugolTreeNode != null
+                && currentPortugolTreeNode.getValor() != null
+                && !(currentPortugolTreeNode.getValor() instanceof List)) {
             Object valor = currentPortugolTreeNode.getValor();
-            if (valor instanceof Boolean){
-                valor = ((Boolean)valor) ? "verdadeiro" : "falso";
+            if (valor instanceof Boolean) {
+                valor = ((Boolean) valor) ? "verdadeiro" : "falso";
             }
             sb.append(" = ").append(valor);
-            }
+        }
         final String valor = sb.toString();
         component.setText(valor);
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(getIcon(noDeclaracaoVariavel.getTipoDado()));
+        Icon icone = getIcon(noDeclaracaoVariavel.getTipoDado());
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
-    
-    private Dimension getSise(String s)
-    {
+
+    private Dimension getSise(String s) {
 
         FontMetrics fontMetrics = component.getFontMetrics(component.getFont());
         int width = fontMetrics.stringWidth(s);
@@ -269,8 +259,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     }
 
     @Override
-    public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         if (currentPortugolTreeNode.isDeclarado()) {
@@ -283,259 +272,234 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append("[]");
         sb.append(" : ");
         sb.append("<font color='#888888'>");
-        sb.append(noDeclaracaoVetor.getTipoDado().getNome());	
+        sb.append(noDeclaracaoVetor.getTipoDado().getNome());
         component.setText(sb.toString());
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noEscolha.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoMatriz noMatriz) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoMatriz noMatriz) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoNao noNao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoNao noNao) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaE noOperacaoLogicaE) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaE noOperacaoLogicaE) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaOU noOperacaoLogicaOU) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaOU noOperacaoLogicaOU) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoSubtracao noOperacaoSubtracao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoSubtracao noOperacaoSubtracao) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoMultiplicacao noOperacaoMultiplicacao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoMultiplicacao noOperacaoMultiplicacao) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoPara noPara) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noPara.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoPare noPare) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoPare noPare) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoReal noReal) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoReal noReal) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoReferenciaVetor noReferenciaVetor) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoReferenciaVetor noReferenciaVetor) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoRetorne noRetorne) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoRetorne noRetorne) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoSe noSe) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noSe.getClass().getSimpleName().replace("No", "").toLowerCase());
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "desvio.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoVetor noVetor) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoVetor noVetor) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         if (currentPortugolTreeNode.isDeclarado()) {
@@ -544,12 +508,12 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(noDeclaracaoParametro.getNome());
         if (currentPortugolTreeNode.isDeclarado()) {
             sb.append("</b>");
-        }               
+        }
         Icon icon = null;
         if (noDeclaracaoParametro.getQuantificador() == Quantificador.VETOR) {
             sb.append("[]");
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
-        } else if (noDeclaracaoParametro.getQuantificador() == Quantificador.MATRIZ){
+        } else if (noDeclaracaoParametro.getQuantificador() == Quantificador.MATRIZ) {
             sb.append("[][]");
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
         } else {
@@ -558,148 +522,138 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         sb.append(noDeclaracaoParametro.getTipoDado().getNome());
-        
-        if (currentPortugolTreeNode != null &&
-                currentPortugolTreeNode.getValor() != null &&
-                !(currentPortugolTreeNode.getValor() instanceof List)) {
+
+        if (currentPortugolTreeNode != null
+                && currentPortugolTreeNode.getValor() != null
+                && !(currentPortugolTreeNode.getValor() instanceof List)) {
             sb.append(" = ").append(currentPortugolTreeNode.getValor());
-               }
-        
+        }
+
         component.setText(sb.toString());
-        if (currentPortugolTreeNode.isModificado()){
+        if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
+        component.setDisabledIcon(icon);
         component.setIcon(icon);
         return null;
     }
 
     @Override
-    public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoInclusaoBiblioteca noInclusaoBiblioteca) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append(noInclusaoBiblioteca.getNome());
-        
-        if (noInclusaoBiblioteca.getAlias() != null)
-        {
+
+        if (noInclusaoBiblioteca.getAlias() != null) {
             sb.append(" (");
             sb.append(noInclusaoBiblioteca.getAlias());
             sb.append(")");
-        }       
-        
+        }
+
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lib2.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "lib2.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(NoBitwiseNao noOperacaoBitwiseNao) throws ExcecaoVisitaASA
-    {
+    public Object visitar(NoBitwiseNao noOperacaoBitwiseNao) throws ExcecaoVisitaASA {
         return null;
     }
 
     @Override
-    public Object visitar(PortugolTreeNode node)
-    {
-        try
-        {
+    public Object visitar(PortugolTreeNode node) {
+        try {
             this.currentPortugolTreeNode = node;
             return (node.getASTNode() != null) ? (JLabel) node.getASTNode().aceitar(this) : null;
-        }
-        catch (ExcecaoVisitaASA ex)
-        {
+        } catch (ExcecaoVisitaASA ex) {
             return null;
         }
     }
 
     @Override
-    public Object visitar(LibraryFunctionTreeNode no)
-    {
+    public Object visitar(LibraryFunctionTreeNode no) {
         StringBuilder sb = new StringBuilder("<html>");
         sb.append(no.getMetaDadosFuncao().getNome());
         sb.append('(');
-        
+
         MetaDadosParametros parametros = no.getMetaDadosFuncao().obterMetaDadosParametros();
-        
-        for (int i = 0; i < parametros.quantidade(); i++)
-        {
+
+        for (int i = 0; i < parametros.quantidade(); i++) {
             sb.append(parametros.obter(i).getTipoDado());
-            
-            if (i < parametros.quantidade() - 1)
-            {
+
+            if (i < parametros.quantidade() - 1) {
                 sb.append(", ");
             }
         }
-        
+
         sb.append(')');
-        
+
         TipoDado tipo = no.getMetaDadosFuncao().getTipoDado();
-        
-        if (tipo != null)
-        {
+
+        if (tipo != null) {
             sb.append(" : ");
             sb.append("<font color='#888888'>");
             sb.append(tipo);
         }
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(LibraryVarTreeNode no)
-    {
-        
+    public Object visitar(LibraryVarTreeNode no) {
+
         StringBuilder sb = new StringBuilder("<html>");
         sb.append(no.getMetaDadosConstante().getNome());
-        
+
         sb.append(" : ");
         sb.append("<font color='#888888'>");
         TipoDado tipo = no.getMetaDadosConstante().getTipoDado();
         sb.append(tipo);
-        sb.append("</font> = ");        
+        sb.append("</font> = ");
         sb.append(no.obterValorConstante());
-        
+
         component.setText(sb.toString());
-        component.setIcon(getIcon(tipo));
-        
+        Icon icone = getIcon(tipo);
+        component.setIcon(icone);
+        component.setIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(LibraryTreeNode no)
-    {
+    public Object visitar(LibraryTreeNode no) {
         StringBuilder sb = new StringBuilder("<html>");
 
-        if (no.getErro() != null) 
-        {
+        if (no.getErro() != null) {
             sb.append(no.getErro().getMessage());
-        }
-        else 
-        {
+        } else {
             sb.append(no.getNoInclusaoBiblioteca().getNome());
-            if (no.getNoInclusaoBiblioteca().getAlias() != null)
-            {
+            if (no.getNoInclusaoBiblioteca().getAlias() != null) {
                 sb.append(" (");
                 sb.append(no.getNoInclusaoBiblioteca().getAlias());
                 sb.append(")");
             }
-        }   
+        }
         component.setText(sb.toString());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(ValorTreeNode no)
-    {
+    public Object visitar(ValorTreeNode no) {
         StringBuilder sb = new StringBuilder("<html>[");
         sb.append(no.getPosicao()).append("]");
         Icon icon = getIcon(no.getTipoDado());
         if (no.getValor() != null) {
             Object valor = no.getValor();
-            if (valor instanceof Boolean){
-                valor = ((Boolean)valor) ? "verdadeiro" : "falso";
+            if (valor instanceof Boolean) {
+                valor = ((Boolean) valor) ? "verdadeiro" : "falso";
             }
             sb.append(" = ").append(valor);
         } else if (no.isColuna()) {
@@ -710,31 +664,26 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (no.isModificado()) {
             component.setForeground(Color.BLUE);
         }
+        component.setDisabledIcon(icon);
         component.setIcon(icon);
         return null;
     }
 
     @Override
-    public Object visitar(ProgramaTreeNode no)
-    {
+    public Object visitar(ProgramaTreeNode no) {
         component.setText((String) no.getUserObject());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 
     @Override
-    public Object visitar(BibliotecasTreeNode no)
-    {
+    public Object visitar(GenericTreeNode no) {
         component.setText((String) no.getUserObject());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bibliotecas.gif"));
-        return null;
-    }
-
-    @Override
-    public Object visitar(GenericTreeNode no)
-    {
-        component.setText((String) no.getUserObject());
-        component.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"));
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
         return null;
     }
 

@@ -3,7 +3,6 @@ package br.univali.ps.ui.rstautil.tree;
 
 interface OutlineTreeVisitor
 {
-    public Object visitar(BibliotecasTreeNode no);
     public Object visitar(PortugolTreeNode no);
     public Object visitar(ProgramaTreeNode no);
     public Object visitar(LibraryFunctionTreeNode no);
