@@ -94,11 +94,25 @@ public class CabecalhoAba extends JPanel
         setLayout(new java.awt.BorderLayout());
 
         jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light-bulb-code.png"))); // NOI18N
+        jLIcone.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLIconeMouseClicked(evt);
+            }
+        });
         add(jLIcone, java.awt.BorderLayout.WEST);
 
         jLTitulo.setText("jLabel2");
         jLTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 8, 1, 1));
         jLTitulo.setFocusable(false);
+        jLTitulo.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLTituloMouseClicked(evt);
+            }
+        });
         add(jLTitulo, java.awt.BorderLayout.CENTER);
 
         jBFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
@@ -138,6 +152,21 @@ public class CabecalhoAba extends JPanel
             }
         }
     }//GEN-LAST:event_mniFecharOutrasActionPerformed
+
+    private void jLTituloMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLTituloMouseClicked
+    {//GEN-HEADEREND:event_jLTituloMouseClicked
+        if(evt.getButton() == evt.BUTTON2){
+            aba.fechar();
+        }
+    }//GEN-LAST:event_jLTituloMouseClicked
+
+    private void jLIconeMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLIconeMouseClicked
+    {//GEN-HEADEREND:event_jLIconeMouseClicked
+        if(evt.getButton() == evt.BUTTON2){
+            aba.fechar();
+        }
+    }//GEN-LAST:event_jLIconeMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBFechar;
     private javax.swing.JLabel jLIcone;

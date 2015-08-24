@@ -259,7 +259,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             htmlId++;
             
             File temp = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "temp" + htmlId + ".html");
-            FileHandle.save(topico.getConteudo(), temp);
+            String conteudoHtml = topico.getConteudo();
+            FileHandle.save(conteudoHtml, temp, "UTF-8");
             
             conteudo.setPage("file:///" + temp.getAbsolutePath());
             //conteudo.setPage("file:///C:/Users/ADMIN/Desktop/Git/Portugol-Studio-Recursos/ajuda/topicos/linguagem_portugol/estruturas_controle/index.html");
@@ -344,7 +345,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             try
             {
                 StringBuilder novoConteudo = new StringBuilder(conteudo);
-                Matcher avaliadorTagDiv = padraoInicioTagDiv.matcher(novoConteudo);
+            Matcher avaliadorTagDiv = padraoInicioTagDiv.matcher(novoConteudo);
 
                 while (avaliadorTagDiv.find())
                 {
@@ -385,7 +386,9 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                                 //codigo = codigo.replace("", templateRaiz)
 
                                 String tagObject
-                                        = "  <pre class=\"codigo-fonte\">"
+                                        = "<div class=\"botao-codigo-fonte-container\"> "
+                                        + "<div class=\"codigo-fonte-container\"> "
+                                        + "<div class=\"codigo-fonte\">"
 //                                        + "     <object classid=\"br.univali.ps.ui.ajuda.EditorAjuda\">"
 //                                        + "         <param name=\"editavel\" value=\"false\">";
 //
@@ -399,7 +402,12 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 //                                        += "         <param name=\"codigo\" value=\"%s\">"
 //                                        + "     </object>"
                                         + "%s"
-                                        + "</pre>";
+                                        + "</div>"
+                                        + "</div>"
+                                        + "<div class=\"botao-codigo-fonte\">"
+                                        + "<a href=\"javascript::onbuttonpressed\">botão</a>"
+                                        + "</div>"
+                                        + "</div>";
 
                                 tagObject = String.format(tagObject, codigo);
                                 novoConteudo.replace(inicioTag, inicioTag + tag.length(), tagObject);
@@ -447,7 +455,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                         File caminhoHtml = ((TopicoHtml) topico).getArquivoOrigem().getParentFile();
                         File novoCaminho = new File(caminhoHtml, valor);
 
-                        String novoValor = atributo.replace(valor, "file:".concat(novoCaminho.getCanonicalPath()));
+                        String novoValor = atributo.replace(valor, "file:///".concat(novoCaminho.getCanonicalPath().replace("\\", "/")));
 
                         novoConteudo.replace(posicao, posicao + atributo.length(), novoValor);
                         avaliador.reset(novoConteudo.toString());
@@ -581,8 +589,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         arvore = new javax.swing.JTree();
         separador = new javax.swing.JSeparator();
         painelConteudo = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        conteudo = new br.univali.ps.ui.swingBoxAdapters.PortugolBrowserPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        conteudo = new org.fit.cssbox.swingbox.BrowserPane();
 
         jScrollPane1.setViewportView(jEditorPane1);
 
@@ -653,9 +661,9 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelConteudo.setPreferredSize(new java.awt.Dimension(450, 100));
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setViewportView(conteudo);
+        jScrollPane3.setViewportView(conteudo);
 
-        painelConteudo.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        painelConteudo.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
         divisorLayout.setRightComponent(painelConteudo);
 
@@ -667,11 +675,11 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvore;
     private javax.swing.JProgressBar barraProgresso;
-    private br.univali.ps.ui.swingBoxAdapters.PortugolBrowserPane conteudo;
+    private org.fit.cssbox.swingbox.BrowserPane conteudo;
     private javax.swing.JSplitPane divisorLayout;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel painelAjuda;
     private javax.swing.JPanel painelArvore;
     private javax.swing.JPanel painelCarregamento;

@@ -7,15 +7,18 @@ import java.util.logging.Logger;
 public final class FileHandle
 {
     private static final Logger LOGGER = Logger.getLogger(FileHandle.class.getName());
-    private static final String charsetPadrao = "UTF-8";
+    private static final String charsetPadrao = "ISO-8859-1";
 
-    public static void save(String text, File file) throws Exception
+    public static void save(String text, File file) throws Exception{
+        save(text, file, charsetPadrao);
+    }
+    public static void save(String text, File file, String charset) throws Exception
     {
         {
             BufferedWriter writer = null;
             try
             {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charsetPadrao));
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
                 writer.write(text);
                 writer.flush();
                 writer.close();
