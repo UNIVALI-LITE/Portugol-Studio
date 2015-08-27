@@ -25,8 +25,11 @@ public class PortugolHTMLHighlighter {
             {
                 //Palavras Reservadas
                 case PortugolLexer.ESPACO:
-                    htmlDoPortugol.append(token.getText());
-                    
+                    if(token.getText().equalsIgnoreCase("\t")){
+                        htmlDoPortugol.append("     ");
+                    }else{
+                        htmlDoPortugol.append(token.getText());
+                    }
                     break;
                 case PortugolLexer.PR_PROGRAMA:
                 case PortugolLexer.PR_INCLUA:

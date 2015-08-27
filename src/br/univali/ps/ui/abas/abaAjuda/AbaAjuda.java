@@ -57,7 +57,8 @@ import org.fit.cssbox.swingbox.util.GeneralEventListener;
  *
  * @author Luiz Fernando Noschang
  */
-public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener {
+public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener
+{
 
     private static String templateRaiz
             = "   <html>"
@@ -91,7 +92,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
         rotuloErroCarregamento.setVisible(false);
 
-        addComponentListener(new ComponentAdapter() {
+        addComponentListener(new ComponentAdapter()
+        {
             @Override
             public void componentShown(ComponentEvent e)
             {
@@ -103,16 +105,18 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private void configurarSwingbox()
     {
         conteudo.addHyperlinkListener(new SwingBrowserHyperlinkHandler(ajuda, arvore));
-        conteudo.addGeneralEventListener(new GeneralEventListener() {
+        conteudo.addGeneralEventListener(new GeneralEventListener()
+        {
             private long time;
 
             @Override
             public void generalEventUpdate(GeneralEvent e)
-            {
+            {                
                 if (e.event_type == GeneralEvent.EventType.page_loading_begin)
                 {
                     time = System.currentTimeMillis();
-                } else if (e.event_type == GeneralEvent.EventType.page_loading_end)
+                }
+                else if (e.event_type == GeneralEvent.EventType.page_loading_end)
                 {
                     System.out.println("SwingBox: page loaded in: "
                             + (System.currentTimeMillis() - time) + " ms");
@@ -132,7 +136,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         String nome = "Atualizar tópicos da ajuda";
         KeyStroke atalho = KeyStroke.getKeyStroke("F5");
 
-        acaoAtualizarAjuda = new AbstractAction() {
+        acaoAtualizarAjuda = new AbstractAction()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -152,7 +157,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         String nome = "Recarregar o tópico da ajuda atual";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F5");
 
-        acaoAtualizarTopico = new AbstractAction() {
+        acaoAtualizarTopico = new AbstractAction()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -198,7 +204,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             {
                 barraProgresso.setValue((Integer) evt.getNewValue());
             }
-        } else if (((SwingWorker.StateValue) evt.getNewValue()) == SwingWorker.StateValue.DONE)
+        }
+        else if (((SwingWorker.StateValue) evt.getNewValue()) == SwingWorker.StateValue.DONE)
         {
             try
             {
@@ -210,14 +217,16 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 layout.show(AbaAjuda.this, "painelAjuda");
 
                 conteudo.setText(templateRaiz);
-            } catch (Exception excecao)
+            }
+            catch (Exception excecao)
             {
                 if (excecao.getCause() instanceof ErroCarregamentoAjuda)
                 {
                     ErroCarregamentoAjuda erroCarregamentoAjuda = (ErroCarregamentoAjuda) excecao.getCause();
                     rotuloErroCarregamento.setText(String.format(rotuloErroCarregamento.getText(), erroCarregamentoAjuda.getMessage()));
                     rotuloErroCarregamento.setVisible(true);
-                } else
+                }
+                else
                 {
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
                 }
@@ -242,29 +251,30 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
 
     private static int htmlId = 0;
-    
+
     private void exibirTopico(Topico topico)
     {
-        
+
         try
         {
             //conteudo.setText(topico.getConteudo());
             File tempOld = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "temp" + htmlId + ".html");
-            
+
             if (tempOld.exists())
             {
                 tempOld.delete();
             }
-            
+
             htmlId++;
-            
+
             File temp = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "temp" + htmlId + ".html");
             String conteudoHtml = topico.getConteudo();
             FileHandle.save(conteudoHtml, temp, "UTF-8");
-            
+
             conteudo.setPage("file:///" + temp.getAbsolutePath());
             //conteudo.setPage("file:///C:/Users/ADMIN/Desktop/Git/Portugol-Studio-Recursos/ajuda/topicos/linguagem_portugol/estruturas_controle/index.html");
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Logger.getLogger(AbaAjuda.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -272,7 +282,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         topicoAtual = topico;
     }
 
-    private class Carregador extends SwingWorker<Ajuda, Integer> implements ObservadorCarregamentoAjuda {
+    private class Carregador extends SwingWorker<Ajuda, Integer> implements ObservadorCarregamentoAjuda
+    {
 
         private int numeroTopicos;
 
@@ -323,7 +334,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         }
     }
 
-    private class PreProcessadorConteudoAjuda implements PreProcessadorConteudo {
+    private class PreProcessadorConteudoAjuda implements PreProcessadorConteudo
+    {
 
         private Pattern padraoInicioTagDiv = Pattern.compile("<div[^>]*>([^<]*)</div>", Pattern.CASE_INSENSITIVE);
         private Pattern padraoAtributoSrcHrefDataFile = Pattern.compile("(src|href|data-file)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
@@ -336,8 +348,46 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         {
             conteudo = resolverReferenciasArquivos(conteudo, topico);
             conteudo = inserirComponentesEditor(conteudo);
+            conteudo = colocarDivsForaDeTables(conteudo);
 
             return conteudo;
+        }
+
+        private int indexOf(Pattern pattern, String original, int index)
+        {
+            String search = original.substring(index);
+            Matcher matcher = pattern.matcher(search);
+            return matcher.find() ? matcher.start() + original.length() - search.length() : -1;
+        }
+
+        private String colocarDivsForaDeTables(String conteudo)
+        {
+            String tableStartRegex = "<table[^>]*>";
+            String divStart = "<div class=\"tableContainer\">";
+            String tableEndRegex = "</table>";
+            String divEnd = "</div>";
+            StringBuilder sb = new StringBuilder(conteudo);
+
+            //divStart
+            int index = 0;
+            index = indexOf(Pattern.compile(tableStartRegex), sb.toString(), index);
+            while (index != -1)
+            {
+                sb.insert(index, divStart);
+                index += divStart.length() + 1;
+                index = indexOf(Pattern.compile(tableStartRegex), sb.toString(), index);
+            };
+            //divEnd
+            index = 0;
+            index = indexOf(Pattern.compile(tableEndRegex), sb.toString(), index);
+            while (index != -1)
+            {
+                sb.insert(index+tableEndRegex.length(), divEnd);
+                index += divEnd.length() + 1;
+                index = indexOf(Pattern.compile(tableEndRegex), sb.toString(), index);
+            };
+
+            return sb.toString();
         }
 
         private String inserirComponentesEditor(String conteudo)
@@ -345,7 +395,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             try
             {
                 StringBuilder novoConteudo = new StringBuilder(conteudo);
-            Matcher avaliadorTagDiv = padraoInicioTagDiv.matcher(novoConteudo);
+                Matcher avaliadorTagDiv = padraoInicioTagDiv.matcher(novoConteudo);
 
                 while (avaliadorTagDiv.find())
                 {
@@ -372,7 +422,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                                     codigo = lerCodigoFonte(diretorioCodigoFonte).trim();
                                     codigo = Editor.removerInformacoesPortugolStudio(codigo);
                                     codigo = PortugolHTMLHighlighter.getText(codigo);
-                                } catch (Exception excessao)
+                                }
+                                catch (Exception excessao)
                                 {
                                     codigo = "//Erro ao carregar código fonte";
                                 }
@@ -382,32 +433,26 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                                 //codigo = codigo.replace("\t", "${t}");
                                 //codigo = codigo.replace("\"", "${dq}");
                                 //codigo = codigo.replace("'", "${sq}");
-				//codigo = codigo.replace("&", "&amp;");							
+                                //codigo = codigo.replace("&", "&amp;");							
                                 //codigo = codigo.replace("", templateRaiz)
 
                                 String tagObject
-                                        = "<div class=\"botao-codigo-fonte-container\"> "
-                                        + "<div class=\"codigo-fonte-container\"> "
-                                        + "<div class=\"codigo-fonte\">"
-//                                        + "     <object classid=\"br.univali.ps.ui.ajuda.EditorAjuda\">"
-//                                        + "         <param name=\"editavel\" value=\"false\">";
-//
-//                                Matcher avaliadorDataType = padraoAtributoDataType.matcher(tag);
-//                                if (avaliadorDataType.find() && avaliadorDataType.group(3).equalsIgnoreCase("sintaxe"))
-//                                {
-//                                    tagObject
-//                                            += "			<param name=\"somenteSintatico\" value=\"true\">";
-//                                }
-//                                tagObject
-//                                        += "         <param name=\"codigo\" value=\"%s\">"
-//                                        + "     </object>"
+                                        = "<div class=\"codigo-fonte\">"
+                                        //                                        + "     <object classid=\"br.univali.ps.ui.ajuda.EditorAjuda\">"
+                                        //                                        + "         <param name=\"editavel\" value=\"false\">";
+                                        //
+                                        //                                Matcher avaliadorDataType = padraoAtributoDataType.matcher(tag);
+                                        //                                if (avaliadorDataType.find() && avaliadorDataType.group(3).equalsIgnoreCase("sintaxe"))
+                                        //                                {
+                                        //                                    tagObject
+                                        //                                            += "			<param name=\"somenteSintatico\" value=\"true\">";
+                                        //                                }
+                                        //                                tagObject
+                                        //                                        += "         <param name=\"codigo\" value=\"%s\">"
+                                        //                                        + "     </object>"
                                         + "%s"
                                         + "</div>"
-                                        + "</div>"
-                                        + "<div class=\"botao-codigo-fonte\">"
-                                        + "<a href=\"javascript::onbuttonpressed\">botão</a>"
-                                        + "</div>"
-                                        + "</div>";
+                                        + "<a class=\"botao-codigo-fonte\" href='" + diretorioCodigoFonte + "'>Tente você mesmo</a><div class='hu3'>..</div>";
 
                                 tagObject = String.format(tagObject, codigo);
                                 novoConteudo.replace(inicioTag, inicioTag + tag.length(), tagObject);
@@ -419,7 +464,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 }
 
                 return novoConteudo.toString();
-            } catch (Exception excecao)
+            }
+            catch (Exception excecao)
             {
                 return conteudo;
             }
@@ -431,7 +477,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             {
                 File arquivoCodigoFonte = new File(diretorio.substring(5));
                 return FileHandle.open(arquivoCodigoFonte);
-            } else
+            }
+            else
             {
                 throw new Exception();
             }
@@ -463,7 +510,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 }
 
                 return novoConteudo.toString();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return conteudo;
             }
@@ -494,7 +542,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         return noTopico;
     }
 
-    private static class Renderizador extends DefaultTreeCellRenderer {
+    private static class Renderizador extends DefaultTreeCellRenderer
+    {
 
         @Override
         public Component getTreeCellRendererComponent(JTree arvore, Object valor, boolean selecionado, boolean expandido, boolean folha, int linha, boolean focado)
@@ -526,13 +575,15 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 if (folha)
                 {
                     diretorioIcone += "\\arvore_folha.png";
-                } else
+                }
+                else
                 {
                     diretorioIcone += "\\arvore_no.png";
                 }
                 arquivoIcone = new File(diretorioIcone);
 
-            } else
+            }
+            else
             {
                 arquivoIcone = new File(diretorioIcone);
                 if (!arquivoIcone.isAbsolute())
@@ -552,7 +603,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             if (expandido)
             {
                 novoNome = novoNome.concat("_aberto");
-            } else
+            }
+            else
             {
                 if (!folha)
                 {
