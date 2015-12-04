@@ -136,6 +136,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
             public void run()
             {
                 popupLeia = new WebPopOver (painelRolagem);
+                
                 popupLeia.setModal ( false );
                 popupLeia.setMargin ( 8 );
                 popupLeia.setMovable ( false );
@@ -146,7 +147,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 label.setFont(label.getFont().deriveFont(12.0f));
                 
                 popupLeia.add(label);                
-                popupLeia.show(painelRolagem);
+                popupLeia.show(AbaConsole.this);
                 
                 SwingUtilities.invokeLater(new Runnable()
                 { 
