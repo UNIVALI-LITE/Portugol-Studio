@@ -59,6 +59,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.managers.notification.NotificationManager;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -1259,7 +1260,22 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         painelSaida.getAbaMensagensCompilador().atualizar(resultadoAnalise);
     }
-
+    
+    
+    private void exibirPopupAvisoCompilacao()
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                FabricaDicasInterface.mostrarNotificacao("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "blackboard_steps.png"));
+                
+//                NotificationManager.showNotification ( "O programa contém AVISOS de compilação, verifique a aba 'Mensagens'" );                   
+            }
+        });
+    }
+     
     @Override
     public void execucaoIniciada(final Programa programa) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -1272,7 +1288,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     painelSaida.getConsole().limparConsole();
 
                     if (programa.getResultadoAnalise().contemAvisos()) {
-                        painelSaida.getConsole().escreverNoConsole("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
+                        exibirPopupAvisoCompilacao();
+                        //painelSaida.getConsole().escreverNoConsole("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'\n\n");
                     }
 
                 } catch (Exception ex) {
@@ -1283,7 +1300,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
     }
-
+       
     @Override
     public void execucaoEncerrada(final Programa programa, final ResultadoExecucao resultadoExecucao) {
         SwingUtilities.invokeLater(new Runnable() {

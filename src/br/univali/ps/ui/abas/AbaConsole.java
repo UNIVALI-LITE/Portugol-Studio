@@ -11,11 +11,10 @@ import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.notification.NotificationManager;
-import com.alee.managers.notification.WebNotificationPopup;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +23,6 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
@@ -94,7 +92,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
                 painelRolagem.getVerticalScrollBar().setValue(ce.getComponent().getHeight());
             }
         });
-        
+
         console.getDocument().addDocumentListener(new DocumentListener()
         {
             @Override
@@ -135,28 +133,23 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
             @Override
             public void run()
             {
-                popupLeia = new WebPopOver (painelRolagem);
-                
-                popupLeia.setModal ( false );
-                popupLeia.setMargin ( 8 );
-                popupLeia.setMovable ( false );
+                popupLeia = new WebPopOver(console);
+
+                popupLeia.setModal(false);
+                popupLeia.setMargin(8);
+                popupLeia.setMovable(false);
                 popupLeia.setCloseOnFocusLoss(false);
-                popupLeia.setLayout (new VerticalFlowLayout());
-                
-                WebLabel label = new WebLabel ( "O programa está aguardando a entrada de dados", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"));
+                popupLeia.setLayout(new VerticalFlowLayout());
+
+                WebLabel label = new WebLabel("O programa está aguardando a entrada de dados", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "warning.png"));
                 label.setFont(label.getFont().deriveFont(12.0f));
-                
-                popupLeia.add(label);                
-                popupLeia.show(AbaConsole.this);
-                
-                SwingUtilities.invokeLater(new Runnable()
-                { 
-                    @Override
-                    public void run()
-                    {
-                        console.requestFocusInWindow();
-                    }                    
-                });
+
+                popupLeia.add(label);
+                popupLeia.show(console, PopOverDirection.up);
+
+//                        popupLeia.requestFocus();
+                AbaConsole.this.selecionar();
+                console.requestFocusInWindow();
             }
         });
     }
@@ -532,7 +525,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         removendoPopup = true;
 
-        if (popupLeia != null) 
+        if (popupLeia != null)
         {
             popupLeia.dispose();
             popupLeia = null;

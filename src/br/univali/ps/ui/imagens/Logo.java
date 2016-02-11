@@ -68,7 +68,7 @@ public class Logo extends javax.swing.JPanel
 
         versao.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 255, 153));
-        versao.setText("2.2");
+        versao.setText("versao.properties");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
