@@ -51,7 +51,7 @@ public final class TelaErrosPluginsBibliotecas extends JDialog
         
         try
         {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));
         }
         catch (IOException ioe)
         {

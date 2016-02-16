@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 //TODO: criar sobrecarga com tempo e icone modificáveis!!!!
 public final class FabricaDicasInterface
 {
-    private static final Icon iconePadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
+    private static final Icon iconePadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
 
     public static void criarDicaInterface(JComponent componente, String dica)
     {
@@ -87,7 +87,7 @@ public final class FabricaDicasInterface
                 WebNotificationPopup notificacao = new WebNotificationPopup();
                 notificacao.setContent(texto);
                 notificacao.setDisplayTime(10000);
-                notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "portugol-studio.png"));
+                notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "light-bulb.png"));
 
                 NotificationManager.showNotification(notificacao);
             }
@@ -105,7 +105,7 @@ public final class FabricaDicasInterface
                 WebNotificationPopup notificacao = new WebNotificationPopup();
                 notificacao.setContent(texto);
                 notificacao.setDisplayTime(displayTime);
-                notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "portugol-studio.png"));
+                notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "light-bulb.png"));
 
                 NotificationManager.showNotification(notificacao);
             }

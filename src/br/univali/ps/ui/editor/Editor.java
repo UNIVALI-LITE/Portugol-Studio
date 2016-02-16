@@ -209,7 +209,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
 
         try {
-            Image icone = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png"));
+            Image icone = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png"));
 
             dialogoPesquisar.setIconImage(icone);
             dialogoSubstituir.setIconImage(icone);

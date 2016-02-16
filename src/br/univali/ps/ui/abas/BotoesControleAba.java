@@ -25,8 +25,8 @@ import javax.swing.*;
 
 public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
 
-    private static final Icon iconeAtivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
-    private static final Icon iconeInativo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
+    private static final Icon iconeAtivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
+    private static final Icon iconeInativo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
 
     private static final Color corAtivo = new Color(60, 60, 60);
     private static final Color corInativo = new Color(120, 120, 120);
@@ -65,13 +65,13 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private void configurarBotoes() {
         botaoAbrir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoAbrir.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png"));
-        botaoAbrir.setRolloverIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png"));
-        botaoAbrir.setPressedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png"));
+//        botaoAbrir.setRolloverIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png"));
+//        botaoAbrir.setPressedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_open.png"));
 
         botaoNovoArquivo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoNovoArquivo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"));
-        botaoNovoArquivo.setRolloverIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_add.png"));
-        botaoNovoArquivo.setPressedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_add.png"));
+//        botaoNovoArquivo.setRolloverIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_add.png"));
+//        botaoNovoArquivo.setPressedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_add.png"));
 
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
@@ -266,7 +266,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         titulo.setForeground(new java.awt.Color(62, 62, 62));
-        titulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light-bulb-code_off.png"))); // NOI18N
+        titulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         titulo.setText("Portugol Studio");
         titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
         titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -286,9 +286,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoAbrir.setMinimumSize(new java.awt.Dimension(32, 25));
         botaoAbrir.setPreferredSize(new java.awt.Dimension(32, 25));
-        botaoAbrir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
         botaoAbrir.setRequestFocusEnabled(false);
-        botaoAbrir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_open.png"))); // NOI18N
         botaoAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelBotoes.add(botaoAbrir);
 
@@ -298,9 +296,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoNovoArquivo.setHideActionText(true);
         botaoNovoArquivo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoNovoArquivo.setPreferredSize(new java.awt.Dimension(32, 25));
-        botaoNovoArquivo.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
         botaoNovoArquivo.setRequestFocusEnabled(false);
-        botaoNovoArquivo.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_add.png"))); // NOI18N
         botaoNovoArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelBotoes.add(botaoNovoArquivo);
 

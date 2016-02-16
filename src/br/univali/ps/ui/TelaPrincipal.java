@@ -13,7 +13,6 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaLogAtualizacoes;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
-import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +59,7 @@ public final class TelaPrincipal extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         try {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/portugol-studio.png")));
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/light-bulb.png")));
         } catch (IOException ioe) {
         }
     }

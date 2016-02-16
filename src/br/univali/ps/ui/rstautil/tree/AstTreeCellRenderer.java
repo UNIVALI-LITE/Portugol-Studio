@@ -672,7 +672,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     @Override
     public Object visitar(ProgramaTreeNode no) {
         component.setText((String) no.getUserObject());
-        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;

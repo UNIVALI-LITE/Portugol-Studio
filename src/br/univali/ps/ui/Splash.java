@@ -78,8 +78,8 @@ public final class Splash
             FontMetrics fm = graphics.getFontMetrics();
             List<String> partes = StringUtils.wrap(dica, fm, larguraDica);
 
-            desenharDica(partes, 19, 151, fm.getHeight(), new Color(0, 0, 0, 0.4f));
-            desenharDica(partes, 18, 152, fm.getHeight(), new Color(0, 0, 0, 0.3f));
+//            desenharDica(partes, 19, 151, fm.getHeight(), new Color(0, 0, 0, 0.4f));
+//            desenharDica(partes, 18, 152, fm.getHeight(), new Color(0, 0, 0, 0.3f));
 
             desenharDica(partes, 20, 150, fm.getHeight(), Color.WHITE);
         }
@@ -102,7 +102,7 @@ public final class Splash
         int yProgresso = 107;
         int largura = (int) ((progresso / 100f) * 253);
 
-        graphics.setColor(Color.YELLOW);
+        graphics.setColor(new Color(255,194,0));
 
         if (largura > 0 && progressFlag)
         {

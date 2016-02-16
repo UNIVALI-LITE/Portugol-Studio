@@ -39,8 +39,7 @@ public class Logo extends javax.swing.JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         logo = new javax.swing.JLabel();
@@ -50,10 +49,8 @@ public class Logo extends javax.swing.JPanel
         setMaximumSize(new java.awt.Dimension(310, 110));
         setMinimumSize(new java.awt.Dimension(310, 110));
         setPreferredSize(new java.awt.Dimension(310, 110));
-        addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
             }
         });
@@ -67,7 +64,7 @@ public class Logo extends javax.swing.JPanel
         add(logo, gridBagConstraints);
 
         versao.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        versao.setForeground(new java.awt.Color(255, 255, 153));
+        versao.setForeground(new java.awt.Color(255, 194, 0));
         versao.setText("versao.properties");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

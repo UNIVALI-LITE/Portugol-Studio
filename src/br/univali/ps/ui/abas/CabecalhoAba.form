@@ -58,7 +58,7 @@
     <Component class="javax.swing.JLabel" name="jLIcone">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/light-bulb-code.png"/>
+          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/light_pix.png"/>
         </Property>
       </Properties>
     </Component>
@@ -85,9 +85,6 @@
           <Color id="Cursor em Forma de M&#xe3;o"/>
         </Property>
         <Property name="focusable" type="boolean" value="false"/>
-        <Property name="pressedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"/>
-        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoFecharActionPerformed"/>

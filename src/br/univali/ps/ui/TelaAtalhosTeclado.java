@@ -47,7 +47,7 @@ public final class TelaAtalhosTeclado extends JDialog
         
         try
         {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light-bulb-code.png")));
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));
         }
         catch (IOException ioe)
         {
@@ -84,7 +84,7 @@ public final class TelaAtalhosTeclado extends JDialog
         ModeloAcoes modelo = (ModeloAcoes) tabela.getModel();
         
         modelo.registrarDadosAcao(new DadosAcao("Abrir um arquivo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png"), KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK)));
-        modelo.registrarDadosAcao(new DadosAcao("Exibir tela inicial", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png"), KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK)));
+        modelo.registrarDadosAcao(new DadosAcao("Exibir tela inicial", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"), KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Criar novo arquivo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"), KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Executar programa atual", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F6, KeyEvent.SHIFT_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Depurar programa atual", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "step.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F5, KeyEvent.SHIFT_DOWN_MASK)));

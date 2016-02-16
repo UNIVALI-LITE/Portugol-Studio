@@ -74,8 +74,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public static final float TAMANHO_MAXIMO_FONTE = 25.0f;
     public static final float TAMANHO_MINIMO_FONTE = 10.0f;
 
-    private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code.png");
-    private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light-bulb-code_off.png");
+    private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
+    private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
 
     private final TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
 
@@ -1269,7 +1269,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void run()
             {
-                FabricaDicasInterface.mostrarNotificacao("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "blackboard_steps.png"));
+                FabricaDicasInterface.mostrarNotificacao("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "notification.png"));
                 
 //                NotificationManager.showNotification ( "O programa contém AVISOS de compilação, verifique a aba 'Mensagens'" );                   
             }

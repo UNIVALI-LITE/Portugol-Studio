@@ -2,7 +2,6 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.weblaf.WeblafUtils;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -95,7 +94,7 @@ public class CabecalhoAba extends JPanel
         setPreferredSize(new java.awt.Dimension(110, 25));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light-bulb-code.png"))); // NOI18N
+        jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         add(jLIcone);
 
         jLTitulo.setText("jLabel2");
@@ -107,7 +106,6 @@ public class CabecalhoAba extends JPanel
         botaoFechar.setBorder(null);
         botaoFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoFechar.setFocusable(false);
-        botaoFechar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close_pressed.png"))); // NOI18N
         botaoFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoFecharActionPerformed(evt);

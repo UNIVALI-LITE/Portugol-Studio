@@ -32,7 +32,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         carregarConfiguracoes();
 
         try {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/portugol-studio.png")));
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/light-bulb.png")));
         } catch (IOException ioe) {
         }
     }

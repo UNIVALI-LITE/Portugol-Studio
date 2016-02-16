@@ -55,7 +55,7 @@ public final class EditorAjuda extends JPanel
 
 	private void configurarAcaoTenteVoceMesmo()
 	{
-		acaoTenteVoceMesmo = new AbstractAction("Tente você mesmo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "programa.png"))
+		acaoTenteVoceMesmo = new AbstractAction("Tente você mesmo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"))
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
