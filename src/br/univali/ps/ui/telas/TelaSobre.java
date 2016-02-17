@@ -1,7 +1,12 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
+import com.alee.extended.image.DisplayType;
+import com.alee.extended.image.WebImage;
+import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.tooltip.TooltipManager;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -47,13 +52,15 @@ public final class TelaSobre extends JDialog
         {
         }
 
-        botaoSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoLicencas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        setSize(640, 550);
-        rotuloDescricao.setText(String.format(rotuloDescricao.getText(), PortugolStudio.getInstancia().getVersao()));
+        
+        
+        setSize(750, 550);
+//        rotuloDescricao.setText(String.format(rotuloDescricao.getText(), PortugolStudio.getInstancia().getVersao()));
 
         configurarLinks();
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
+        jScrollPane2.getVerticalScrollBar().setUnitIncrement(16);
+        FabricaDicasInterface.criarDicaInterface(labellicensa, "Veja as Licensas do Software");
     }
 
     private void configurarLinks()
@@ -124,21 +131,26 @@ public final class TelaSobre extends JDialog
         java.awt.GridBagConstraints gridBagConstraints;
 
         logoPortugolStudio = new br.univali.ps.ui.imagens.Logo();
-        painelLogo = new javax.swing.JPanel();
-        gradiente2 = new br.univali.ps.ui.imagens.Gradiente();
+        painelHeader = new javax.swing.JPanel();
         logo1 = new br.univali.ps.ui.imagens.Logo();
-        painelCentro = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
         painelConteudo = new javax.swing.JPanel();
-        rotuloDescricao = new javax.swing.JLabel();
+        tabbedUsuarios = new javax.swing.JTabbedPane();
+        membrosAtivos = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jLabel1 = new javax.swing.JLabel();
+        membrosInativos = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jLabel2 = new javax.swing.JLabel();
+        painelLateral = new javax.swing.JPanel();
+        license = new javax.swing.JPanel();
+        labellicensa = new javax.swing.JLabel();
+        painelFeitoCOm = new javax.swing.JPanel();
+        cima = new javax.swing.JPanel();
         rotuloGithub = new javax.swing.JLabel();
         rotuloOsi = new javax.swing.JLabel();
-        rotuloBitRock = new javax.swing.JLabel();
+        baixo = new javax.swing.JPanel();
         rotuloUnivali = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        painelInferior = new javax.swing.JPanel();
-        botaoLicencas = new javax.swing.JButton();
-        botaoSair = new javax.swing.JButton();
+        rotuloBitRock = new javax.swing.JLabel();
 
         logoPortugolStudio.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 8, 0));
         logoPortugolStudio.setMaximumSize(new java.awt.Dimension(300, 110));
@@ -150,58 +162,91 @@ public final class TelaSobre extends JDialog
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
 
-        painelLogo.setPreferredSize(new java.awt.Dimension(777, 95));
-        painelLogo.setLayout(new java.awt.BorderLayout());
-
-        gradiente2.setMinimumSize(new java.awt.Dimension(100, 100));
-        gradiente2.setName(""); // NOI18N
-        gradiente2.setPreferredSize(new java.awt.Dimension(100, 100));
-        gradiente2.setLayout(new java.awt.GridBagLayout());
+        painelHeader.setBackground(new java.awt.Color(49, 104, 146));
+        painelHeader.setPreferredSize(new java.awt.Dimension(100, 150));
+        painelHeader.setLayout(new java.awt.BorderLayout());
 
         logo1.setMaximumSize(new java.awt.Dimension(310, 100));
         logo1.setMinimumSize(new java.awt.Dimension(310, 100));
         logo1.setOpaque(false);
         logo1.setPreferredSize(new java.awt.Dimension(310, 100));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.1;
-        gradiente2.add(logo1, gridBagConstraints);
+        painelHeader.add(logo1, java.awt.BorderLayout.CENTER);
 
-        painelLogo.add(gradiente2, java.awt.BorderLayout.CENTER);
+        getContentPane().add(painelHeader, java.awt.BorderLayout.PAGE_START);
 
-        getContentPane().add(painelLogo, java.awt.BorderLayout.NORTH);
-
-        painelCentro.setBackground(new java.awt.Color(250, 250, 250));
-        painelCentro.setLayout(new java.awt.BorderLayout());
-        painelCentro.add(jSeparator1, java.awt.BorderLayout.NORTH);
-
+        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         painelConteudo.setOpaque(false);
-        java.awt.GridBagLayout painelConteudoLayout = new java.awt.GridBagLayout();
-        painelConteudoLayout.columnWidths = new int[] {0, 16, 0};
-        painelConteudoLayout.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0};
-        painelConteudo.setLayout(painelConteudoLayout);
+        painelConteudo.setLayout(new java.awt.BorderLayout());
 
-        rotuloDescricao.setBackground(new java.awt.Color(255, 255, 255));
-        rotuloDescricao.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        rotuloDescricao.setText("<html> \t<head> \t\t<style> \t\t \t\t\tp { margin-bottom: 8px; } \t\t\ta { color: blue; }  \t\t\t.atributo { color: black; font-weight : bold;  } \t\t\t.valor    { color: maroon; font-weight: bold;  }  \t\t</style> \t</head> \t<body> \t\t<p> \t\t\t<span class=\"atributo\">Nome do aplicativo: </span> \t\t\t<span class=\"valor\">Portugol Studio</span> \t\t</p> \t\t<p> \t\t\t<span class=\"atributo\">Versão: </span> \t\t\t<span class=\"valor\">%s</span> \t\t</p> \t\t<p> \t\t\t<span class=\"atributo\">Linguagem de Programação: </span> \t\t\t<span class=\"valor\">Java <sup style=\"font-size: smaller;\">TM</sup></span> \t\t</p> \t\t<p> \t\t\t<span class=\"atributo\">Home page: </span> \t\t\t<span class=\"valor\">http://univali-l2s.github.com/Portugol</span> \t\t</p> \t\t<p> \t\t\t<span class=\"atributo\">Orientador: </span> \t\t\t<span class=\"valor\">André Luis Alice Raabe ( <a href='mailto:raabe@univali.br'>raabe@univali.br</a> )</span> \t\t</p> \t\t<span class=\"atributo\">Programadores: </span>  \t\t<ul> \t\t\t<li><span class=\"valor\">Elieser Ademir de Jesus ( <a href='mailto:elieserdejesus@gmail.com'>elieserdejesus@gmail.com</a> )</span></li> \t\t\t<li><span class=\"valor\">Fillipi Domingos Pelz ( <a href='mailto:fillipi.pelz@gmail.com'>fillipi.pelz@gmail.com</a> )</span></li> \t\t\t<li><span class=\"valor\">Luiz Fernando Noschang ( <a href='mailto:noschang@univali.br'>noschang@univali.br</a> )</span></li> \t\t</ul>  \t\t<span class=\"atributo\">Demais colaboradores: </span> \t\t<ul> \t\t\t<li><span class=\"valor\">André Luiz Maciel Santana</span></li> \t\t\t<li><span class=\"valor\">Carlos Alexandre Krueger</span></li> \t\t\t<li><span class=\"valor\">Giordana Maria da Costa Valle</span></li> \t\t\t<li><span class=\"valor\">Nereu Oliveira</span></li> \t\t\t<li><span class=\"valor\">Paula Mannes</span></li><li><span class=\"valor\">Paulo Eduardo Martins</span></li> \t\t\t<li><span class=\"valor\">Roberto Gonçalves Augusto Junior</span></li> \t\t</ul> \t</body> </html>");
-        rotuloDescricao.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        rotuloDescricao.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 8, 8, 8));
-        rotuloDescricao.setPreferredSize(new java.awt.Dimension(200, 45));
-        rotuloDescricao.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 103;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.7;
-        gridBagConstraints.weighty = 1.0;
-        painelConteudo.add(rotuloDescricao, gridBagConstraints);
+        tabbedUsuarios.setBackground(new java.awt.Color(255, 255, 255));
+
+        membrosAtivos.setBackground(new java.awt.Color(255, 255, 255));
+        membrosAtivos.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setOpaque(false);
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/membros/ativos.png"))); // NOI18N
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        jScrollPane1.setViewportView(jLabel1);
+
+        membrosAtivos.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        tabbedUsuarios.addTab("Membros Ativos", membrosAtivos);
+
+        membrosInativos.setBackground(new java.awt.Color(255, 255, 255));
+        membrosInativos.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane2.setOpaque(false);
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/membros/inativos.png"))); // NOI18N
+        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        jScrollPane2.setViewportView(jLabel2);
+
+        membrosInativos.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        tabbedUsuarios.addTab("Membros Inativos", membrosInativos);
+
+        painelConteudo.add(tabbedUsuarios, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(painelConteudo, java.awt.BorderLayout.CENTER);
+
+        painelLateral.setLayout(new java.awt.BorderLayout());
+
+        license.setBackground(new java.awt.Color(255, 255, 51));
+        license.setOpaque(false);
+        license.setPreferredSize(new java.awt.Dimension(150, 50));
+        license.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                licenseMouseClicked(evt);
+            }
+        });
+        license.setLayout(new java.awt.GridLayout(1, 1));
+
+        labellicensa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labellicensa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/license.png"))); // NOI18N
+        labellicensa.setToolTipText("");
+        labellicensa.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                labellicensaMouseClicked(evt);
+            }
+        });
+        license.add(labellicensa);
+
+        painelLateral.add(license, java.awt.BorderLayout.SOUTH);
+
+        painelFeitoCOm.setOpaque(false);
+        painelFeitoCOm.setPreferredSize(new java.awt.Dimension(100, 0));
+        painelFeitoCOm.setLayout(new java.awt.BorderLayout());
+
+        cima.setLayout(new java.awt.BorderLayout());
 
         rotuloGithub.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         rotuloGithub.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -213,13 +258,7 @@ public final class TelaSobre extends JDialog
         rotuloGithub.setName("https://github.com/"); // NOI18N
         rotuloGithub.setPreferredSize(new java.awt.Dimension(82, 90));
         rotuloGithub.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.3;
-        gridBagConstraints.weighty = 0.25;
-        painelConteudo.add(rotuloGithub, gridBagConstraints);
+        cima.add(rotuloGithub, java.awt.BorderLayout.SOUTH);
 
         rotuloOsi.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         rotuloOsi.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -230,13 +269,22 @@ public final class TelaSobre extends JDialog
         rotuloOsi.setName("http://opensource.org/"); // NOI18N
         rotuloOsi.setPreferredSize(new java.awt.Dimension(93, 105));
         rotuloOsi.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.3;
-        gridBagConstraints.weighty = 0.25;
-        painelConteudo.add(rotuloOsi, gridBagConstraints);
+        cima.add(rotuloOsi, java.awt.BorderLayout.NORTH);
+
+        painelFeitoCOm.add(cima, java.awt.BorderLayout.NORTH);
+
+        baixo.setLayout(new java.awt.BorderLayout());
+
+        rotuloUnivali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        rotuloUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/logo_univali.png"))); // NOI18N
+        rotuloUnivali.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 0, 8), null));
+        rotuloUnivali.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        rotuloUnivali.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rotuloUnivali.setName("http://www.univali.br/ensino/graduacao/cttmar/cursos/ciencia-da-computacao/ciencia-da-computacao-itajai/Paginas/default.aspx"); // NOI18N
+        rotuloUnivali.setPreferredSize(new java.awt.Dimension(85, 65));
+        rotuloUnivali.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        baixo.add(rotuloUnivali, java.awt.BorderLayout.NORTH);
 
         rotuloBitRock.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         rotuloBitRock.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -248,98 +296,50 @@ public final class TelaSobre extends JDialog
         rotuloBitRock.setName("http://installbuilder.bitrock.com/"); // NOI18N
         rotuloBitRock.setPreferredSize(new java.awt.Dimension(120, 50));
         rotuloBitRock.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.3;
-        gridBagConstraints.weighty = 0.25;
-        painelConteudo.add(rotuloBitRock, gridBagConstraints);
+        baixo.add(rotuloBitRock, java.awt.BorderLayout.CENTER);
 
-        rotuloUnivali.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        rotuloUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/logo_univali.png"))); // NOI18N
-        rotuloUnivali.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 0, 8), null));
-        rotuloUnivali.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        rotuloUnivali.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rotuloUnivali.setName("http://www.univali.br/ensino/graduacao/cttmar/cursos/ciencia-da-computacao/ciencia-da-computacao-itajai/Paginas/default.aspx"); // NOI18N
-        rotuloUnivali.setPreferredSize(new java.awt.Dimension(85, 65));
-        rotuloUnivali.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.3;
-        gridBagConstraints.weighty = 0.25;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
-        painelConteudo.add(rotuloUnivali, gridBagConstraints);
+        painelFeitoCOm.add(baixo, java.awt.BorderLayout.CENTER);
 
-        painelCentro.add(painelConteudo, java.awt.BorderLayout.CENTER);
-        painelCentro.add(jSeparator2, java.awt.BorderLayout.PAGE_END);
+        painelLateral.add(painelFeitoCOm, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(painelCentro, java.awt.BorderLayout.CENTER);
-
-        painelInferior.setBackground(new java.awt.Color(250, 250, 250));
-        painelInferior.setPreferredSize(new java.awt.Dimension(463, 52));
-        painelInferior.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
-
-        botaoLicencas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/license.png"))); // NOI18N
-        botaoLicencas.setText("Licenças");
-        botaoLicencas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoLicencas.setDefaultCapable(false);
-        botaoLicencas.setFocusPainted(false);
-        botaoLicencas.setFocusable(false);
-        botaoLicencas.setIconTextGap(8);
-        botaoLicencas.setMargin(new java.awt.Insets(2, 8, 2, 8));
-        botaoLicencas.setMaximumSize(new java.awt.Dimension(128, 40));
-        botaoLicencas.setMinimumSize(new java.awt.Dimension(128, 40));
-        botaoLicencas.setPreferredSize(new java.awt.Dimension(128, 40));
-        botaoLicencas.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                botaoLicencasActionPerformed(evt);
-            }
-        });
-        painelInferior.add(botaoLicencas);
-
-        botaoSair.setAction(acaoSair);
-        botaoSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/sair.png"))); // NOI18N
-        botaoSair.setText("Sair");
-        botaoSair.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoSair.setFocusPainted(false);
-        botaoSair.setFocusable(false);
-        botaoSair.setIconTextGap(8);
-        botaoSair.setMargin(new java.awt.Insets(2, 8, 2, 8));
-        botaoSair.setPreferredSize(new java.awt.Dimension(128, 40));
-        painelInferior.add(botaoSair);
-
-        getContentPane().add(painelInferior, java.awt.BorderLayout.SOUTH);
+        getContentPane().add(painelLateral, java.awt.BorderLayout.EAST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoLicencasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLicencasActionPerformed
+    private void licenseMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_licenseMouseClicked
+    {//GEN-HEADEREND:event_licenseMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_licenseMouseClicked
+
+    private void labellicensaMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_labellicensaMouseClicked
+    {//GEN-HEADEREND:event_labellicensaMouseClicked
+        // TODO add your handling code here:
         TelaLicencas telaLicencas = PortugolStudio.getInstancia().getTelaLicencas();
         telaLicencas.setVisible(true);
-    }//GEN-LAST:event_botaoLicencasActionPerformed
+    }//GEN-LAST:event_labellicensaMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoLicencas;
-    private javax.swing.JButton botaoSair;
-    private br.univali.ps.ui.imagens.Gradiente gradiente2;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPanel baixo;
+    private javax.swing.JPanel cima;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel labellicensa;
+    private javax.swing.JPanel license;
     private br.univali.ps.ui.imagens.Logo logo1;
     private br.univali.ps.ui.imagens.Logo logoPortugolStudio;
-    private javax.swing.JPanel painelCentro;
+    private javax.swing.JPanel membrosAtivos;
+    private javax.swing.JPanel membrosInativos;
     private javax.swing.JPanel painelConteudo;
-    private javax.swing.JPanel painelInferior;
-    private javax.swing.JPanel painelLogo;
+    private javax.swing.JPanel painelFeitoCOm;
+    private javax.swing.JPanel painelHeader;
+    private javax.swing.JPanel painelLateral;
     private javax.swing.JLabel rotuloBitRock;
-    private javax.swing.JLabel rotuloDescricao;
     private javax.swing.JLabel rotuloGithub;
     private javax.swing.JLabel rotuloOsi;
     private javax.swing.JLabel rotuloUnivali;
+    private javax.swing.JTabbedPane tabbedUsuarios;
     // End of variables declaration//GEN-END:variables
 }
