@@ -2,9 +2,7 @@ package br.univali.ps.ui.abas.abaAjuda;
 
 import br.univali.portugol.ajuda.Ajuda;
 import br.univali.portugol.ajuda.CarregadorAjuda;
-import br.univali.portugol.ajuda.ErroCaminhoTopicoInvalido;
 import br.univali.portugol.ajuda.ErroCarregamentoAjuda;
-import br.univali.portugol.ajuda.ErroTopicoNaoEncontrado;
 import br.univali.portugol.ajuda.ObservadorCarregamentoAjuda;
 import br.univali.portugol.ajuda.PreProcessadorConteudo;
 import br.univali.portugol.ajuda.Topico;
@@ -12,8 +10,8 @@ import br.univali.portugol.ajuda.TopicoHtml;
 import br.univali.ps.dominio.PortugolHTMLHighlighter;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Editor;
 import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.CardLayout;
@@ -24,8 +22,6 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
-import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -38,18 +34,11 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingWorker;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.text.Document;
-import javax.swing.text.StyledEditorKit;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-import org.fit.cssbox.swingbox.BrowserPane;
 import org.fit.cssbox.swingbox.util.GeneralEvent;
 import org.fit.cssbox.swingbox.util.GeneralEventListener;
 
@@ -432,7 +421,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                                 try
                                 {
                                     codigo = lerCodigoFonte(diretorioCodigoFonte).trim();
-                                    codigo = Editor.removerInformacoesPortugolStudio(codigo);
+                                    codigo = Utils.removerInformacoesPortugolStudio(codigo);
                                     codigo = PortugolHTMLHighlighter.getText(codigo);
                                 }
                                 catch (Exception excessao)

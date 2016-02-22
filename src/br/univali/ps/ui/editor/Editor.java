@@ -267,6 +267,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoRecortar();
         configurarAcaoCopiar();
         configurarAcaoColar();
+        configurarAcaoExcluir();
         configurarAcaoDesfazer();
         configurarAcaoRefazer();
         configurarAcaoComentar();
@@ -308,6 +309,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void configurarAcaoColar() {
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_paste.png");
         RTextArea.getAction(RSyntaxTextArea.PASTE_ACTION).putValue(Action.SMALL_ICON, icone);
+    }
+    
+    private void configurarAcaoExcluir(){
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "trash_can.png");
+        RTextArea.getAction(RSyntaxTextArea.DELETE_ACTION).putValue(Action.SMALL_ICON, icone);
     }
 
     private void configurarAcaoComentar() {

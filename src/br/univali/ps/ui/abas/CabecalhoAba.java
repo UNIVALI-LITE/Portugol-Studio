@@ -62,7 +62,8 @@ public class CabecalhoAba extends JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         mniFechar = new javax.swing.JMenuItem();
@@ -72,29 +73,38 @@ public class CabecalhoAba extends JPanel
         botaoFechar = new javax.swing.JButton();
 
         mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFechar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharActionPerformed(evt);
             }
         });
         jPopupMenu1.add(mniFechar);
 
         mniFecharOutras.setText("Fechar as outras abas");
-        mniFecharOutras.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        mniFecharOutras.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 mniFecharOutrasActionPerformed(evt);
             }
         });
         jPopupMenu1.add(mniFecharOutras);
 
+        setAlignmentY(0.5F);
         setFocusable(false);
-        setMaximumSize(new java.awt.Dimension(300, 25));
+        setMaximumSize(new java.awt.Dimension(300, 30));
         setMinimumSize(new java.awt.Dimension(110, 25));
         setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(110, 25));
+        setPreferredSize(new java.awt.Dimension(110, 30));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
+        jLIcone.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        jLIcone.setAlignmentX(0.5F);
+        jLIcone.setMaximumSize(new java.awt.Dimension(18, 18));
+        jLIcone.setPreferredSize(new java.awt.Dimension(17, 17));
         add(jLIcone);
 
         jLTitulo.setText("jLabel2");
@@ -106,8 +116,10 @@ public class CabecalhoAba extends JPanel
         botaoFechar.setBorder(null);
         botaoFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoFechar.setFocusable(false);
-        botaoFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        botaoFechar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 botaoFecharActionPerformed(evt);
             }
         });

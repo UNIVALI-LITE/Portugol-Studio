@@ -72,9 +72,6 @@ public final class AbaInicial extends Aba {
         instalarAcoesSecretas();
 
 //        jSeparator1.setUI(new BasicSeparatorUI());
-        jSeparator2.setUI(new BasicSeparatorUI());
-        jSeparator3.setUI(new BasicSeparatorUI());
-        jSeparator4.setUI(new BasicSeparatorUI());
     }
 
     private void instalarObservadorCombinacoesSecretas() {
@@ -266,11 +263,11 @@ public final class AbaInicial extends Aba {
         configurarAcaoSairProgramando();
         configurarAcaoConhecerLinguagem();
         configurarAcaoAssistirVideoAulas();
+        configurarAcaoAtualizacoes();
         configurarAcaoConhecerBibliotecas();
         configurarAcaoExibirTelaSobre();
         configurarAcaoAjudarDesenvolvimento();
         configurarAcaoRelatarBug();
-
         configurarAcaoExibirAtalhosTeclado();
     }
 
@@ -287,6 +284,20 @@ public final class AbaInicial extends Aba {
         };
 
         getActionMap().put(rotuloAssistirVideoAulas.getName(), acao);
+    }
+    private void configurarAcaoAtualizacoes() {
+        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName()) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/UNIVALI-LITE/Portugol-Studio/commits/master"));
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara ver as atualizações, acesse o seguinte endereço:\n\nhttps://github.com/UNIVALI-LITE/Portugol-Studio/commits/master", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        };
+
+        getActionMap().put(rotuloUpdate.getName(), acao);
     }
 
     private void configurarAcaoSairProgramando() {
@@ -378,6 +389,7 @@ public final class AbaInicial extends Aba {
             public void mouseEntered(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setForeground(new Color(49,104,146));
+                rotulo.setOpaque(true);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.BOLD));
 
             }
@@ -386,6 +398,7 @@ public final class AbaInicial extends Aba {
             public void mouseExited(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setForeground(new Color(51, 51, 51));
+                rotulo.setOpaque(false);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.PLAIN));
             }
         };
@@ -416,6 +429,9 @@ public final class AbaInicial extends Aba {
 
         rotuloExplorarExemplos.addMouseListener(listener);
         rotuloExplorarExemplos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        rotuloUpdate.addMouseListener(listener);
+        rotuloUpdate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private void configurarAcaoExplorarExemplos() {
@@ -473,6 +489,7 @@ public final class AbaInicial extends Aba {
     private void initComponents()
     {
 
+        rotuloExplorarExemplos = new javax.swing.JLabel();
         painelFundo = new javax.swing.JPanel();
         painelCabecalho = new javax.swing.JPanel();
         painelAlinhamento8 = new javax.swing.JPanel();
@@ -483,40 +500,29 @@ public final class AbaInicial extends Aba {
         logoPS = new br.univali.ps.ui.imagens.Logo();
         painelAmbiente = new javax.swing.JPanel();
         rotuloSlogan = new javax.swing.JLabel();
-        painelConteudo = new javax.swing.JPanel();
-        painelAprender = new javax.swing.JPanel();
-        painelTituloAprender = new javax.swing.JPanel();
-        rotuloAprender = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        conteudoAprender = new javax.swing.JPanel();
+        painelCentral = new javax.swing.JPanel();
+        conteudoIniciando = new javax.swing.JPanel();
         painelAlinhamento5 = new javax.swing.JPanel();
         rotuloSairProgramando = new javax.swing.JLabel();
         rotuloConhecerLinguagem = new javax.swing.JLabel();
         rotuloAssistirVideoAulas = new javax.swing.JLabel();
-        rotuloExplorarExemplos = new javax.swing.JLabel();
         rotuloConhecerBibliotecas = new javax.swing.JLabel();
-        painelColaborarCreditos = new javax.swing.JPanel();
-        painelColaborar = new javax.swing.JPanel();
-        painelTituloColaborar = new javax.swing.JPanel();
-        rotuloColaborar = new javax.swing.JLabel();
-        jSeparator3 = new javax.swing.JSeparator();
         conteudoColaborar = new javax.swing.JPanel();
         painelAlinhamento1 = new javax.swing.JPanel();
         rotuloAtalhosTeclado = new javax.swing.JLabel();
         rotuloRelatarBug = new javax.swing.JLabel();
         rotuloAjudarDesenvolvimento = new javax.swing.JLabel();
         rotuloInformacoesSoftware = new javax.swing.JLabel();
-        painelNovidades = new javax.swing.JPanel();
-        painelTituloNovidades = new javax.swing.JPanel();
-        rotuloNovidades = new javax.swing.JLabel();
-        jSeparator4 = new javax.swing.JSeparator();
-        conteudoAprender1 = new javax.swing.JPanel();
-        rotuloFormaAprender6 = new javax.swing.JLabel();
-        rotuloFormaAprender4 = new javax.swing.JLabel();
-        rotuloFormaAprender5 = new javax.swing.JLabel();
-        rotuloFormaAprender7 = new javax.swing.JLabel();
-        rotuloFormaAprender3 = new javax.swing.JLabel();
-        rotuloFormaAprender2 = new javax.swing.JLabel();
+        rotuloUpdate = new javax.swing.JLabel();
+        painelConteudo = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+
+        rotuloExplorarExemplos.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloExplorarExemplos.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloExplorarExemplos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        rotuloExplorarExemplos.setText("<html><body><div>Explorar os Exemplos (Alt+E)</div></body></html>");
+        rotuloExplorarExemplos.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloExplorarExemplos.setName("explorarExemplos"); // NOI18N
 
         setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(12, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         setOpaque(false);
@@ -592,234 +598,152 @@ public final class AbaInicial extends Aba {
 
         painelFundo.add(painelCabecalho, java.awt.BorderLayout.NORTH);
 
-        painelConteudo.setBackground(new java.awt.Color(228, 241, 254));
-        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(70, 50, 15, 50));
-        painelConteudo.setPreferredSize(new java.awt.Dimension(700, 80));
-        painelConteudo.setRequestFocusEnabled(false);
-        painelConteudo.setLayout(new java.awt.GridLayout(1, 3, 70, 0));
+        painelCentral.setBackground(new java.awt.Color(228, 241, 254));
+        painelCentral.setLayout(new java.awt.BorderLayout());
 
-        painelAprender.setOpaque(false);
-        painelAprender.setLayout(new java.awt.BorderLayout());
+        conteudoIniciando.setBackground(new java.awt.Color(4, 52, 88));
+        conteudoIniciando.setOpaque(false);
+        conteudoIniciando.setPreferredSize(new java.awt.Dimension(296, 200));
+        conteudoIniciando.setLayout(new java.awt.BorderLayout());
 
-        painelTituloAprender.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        painelTituloAprender.setOpaque(false);
-        painelTituloAprender.setLayout(new java.awt.BorderLayout());
-
-        rotuloAprender.setFont(new java.awt.Font("Consolas", 1, 20)); // NOI18N
-        rotuloAprender.setForeground(new java.awt.Color(49, 104, 146));
-        rotuloAprender.setText("Formas de aprender");
-        rotuloAprender.setMaximumSize(new java.awt.Dimension(198, 28));
-        rotuloAprender.setMinimumSize(new java.awt.Dimension(198, 28));
-        rotuloAprender.setPreferredSize(new java.awt.Dimension(198, 28));
-        painelTituloAprender.add(rotuloAprender, java.awt.BorderLayout.CENTER);
-
-        jSeparator2.setBackground(new java.awt.Color(66, 127, 148));
-        jSeparator2.setForeground(new java.awt.Color(49, 104, 146));
-        jSeparator2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 15, 0));
-        painelTituloAprender.add(jSeparator2, java.awt.BorderLayout.SOUTH);
-
-        painelAprender.add(painelTituloAprender, java.awt.BorderLayout.NORTH);
-
-        conteudoAprender.setOpaque(false);
-        conteudoAprender.setLayout(new java.awt.BorderLayout());
-
+        painelAlinhamento5.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        painelAlinhamento5.setMaximumSize(new java.awt.Dimension(2147483647, 500));
         painelAlinhamento5.setOpaque(false);
-        painelAlinhamento5.setLayout(new javax.swing.BoxLayout(painelAlinhamento5, javax.swing.BoxLayout.Y_AXIS));
+        painelAlinhamento5.setPreferredSize(new java.awt.Dimension(572, 250));
+        painelAlinhamento5.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
+        rotuloSairProgramando.setBackground(new java.awt.Color(210, 231, 252));
         rotuloSairProgramando.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloSairProgramando.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        rotuloSairProgramando.setText("<html><body><div>Sair Programando (Ctrl + N)</div></body></html>");
+        rotuloSairProgramando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/programar.png"))); // NOI18N
+        rotuloSairProgramando.setText("<html><body><div>Programar (Ctrl + N)</div></body></html>");
         rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rotuloSairProgramando.setMinimumSize(new java.awt.Dimension(150, 187));
         rotuloSairProgramando.setName("sairProgramando"); // NOI18N
+        rotuloSairProgramando.setPreferredSize(new java.awt.Dimension(150, 187));
+        rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloSairProgramando);
 
+        rotuloConhecerLinguagem.setBackground(new java.awt.Color(210, 231, 252));
         rotuloConhecerLinguagem.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloConhecerLinguagem.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloConhecerLinguagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        rotuloConhecerLinguagem.setText("<html><body><div>Conhecer a Linguagem (F1)</div></body></html>");
+        rotuloConhecerLinguagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloConhecerLinguagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/ajuda.png"))); // NOI18N
+        rotuloConhecerLinguagem.setText("<html><body><div>Ajuda (F1)</div></body></html>");
         rotuloConhecerLinguagem.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloConhecerLinguagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rotuloConhecerLinguagem.setName("conhecerLinguagem"); // NOI18N
+        rotuloConhecerLinguagem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloConhecerLinguagem);
 
+        rotuloAssistirVideoAulas.setBackground(new java.awt.Color(210, 231, 252));
         rotuloAssistirVideoAulas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloAssistirVideoAulas.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloAssistirVideoAulas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        rotuloAssistirVideoAulas.setText("<html><body><div>Assistir Vídeoaulas</div></body></html>");
+        rotuloAssistirVideoAulas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloAssistirVideoAulas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/videoaulas.png"))); // NOI18N
+        rotuloAssistirVideoAulas.setText("<html><body><div>Videoaulas</div></body></html>");
         rotuloAssistirVideoAulas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloAssistirVideoAulas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rotuloAssistirVideoAulas.setName("assistirVideoAulas"); // NOI18N
+        rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloAssistirVideoAulas);
 
-        rotuloExplorarExemplos.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloExplorarExemplos.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloExplorarExemplos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        rotuloExplorarExemplos.setText("<html><body><div>Explorar os Exemplos (Alt+E)</div></body></html>");
-        rotuloExplorarExemplos.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloExplorarExemplos.setName("explorarExemplos"); // NOI18N
-        painelAlinhamento5.add(rotuloExplorarExemplos);
-
+        rotuloConhecerBibliotecas.setBackground(new java.awt.Color(210, 231, 252));
         rotuloConhecerBibliotecas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloConhecerBibliotecas.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloConhecerBibliotecas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        rotuloConhecerBibliotecas.setText("<html><body><div>Conhecer as Bibliotecas (Shift + F1)</div></body></html>");
+        rotuloConhecerBibliotecas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloConhecerBibliotecas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/bibliotecas.png"))); // NOI18N
+        rotuloConhecerBibliotecas.setText("<html><body><div>Bibliotecas (Shift + F1)</div></body></html>");
         rotuloConhecerBibliotecas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloConhecerBibliotecas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rotuloConhecerBibliotecas.setName("conhecerBibliotecas"); // NOI18N
+        rotuloConhecerBibliotecas.setPreferredSize(new java.awt.Dimension(150, 187));
+        rotuloConhecerBibliotecas.setVerifyInputWhenFocusTarget(false);
+        rotuloConhecerBibliotecas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloConhecerBibliotecas);
 
-        conteudoAprender.add(painelAlinhamento5, java.awt.BorderLayout.CENTER);
+        conteudoIniciando.add(painelAlinhamento5, java.awt.BorderLayout.CENTER);
 
-        painelAprender.add(conteudoAprender, java.awt.BorderLayout.CENTER);
+        painelCentral.add(conteudoIniciando, java.awt.BorderLayout.NORTH);
 
-        painelConteudo.add(painelAprender);
-
-        painelColaborarCreditos.setOpaque(false);
-        painelColaborarCreditos.setLayout(new javax.swing.BoxLayout(painelColaborarCreditos, javax.swing.BoxLayout.Y_AXIS));
-
-        painelColaborar.setOpaque(false);
-        painelColaborar.setPreferredSize(new java.awt.Dimension(270, 170));
-        painelColaborar.setLayout(new java.awt.BorderLayout());
-
-        painelTituloColaborar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        painelTituloColaborar.setOpaque(false);
-        painelTituloColaborar.setLayout(new java.awt.BorderLayout());
-
-        rotuloColaborar.setFont(new java.awt.Font("Consolas", 1, 20)); // NOI18N
-        rotuloColaborar.setForeground(new java.awt.Color(49, 104, 146));
-        rotuloColaborar.setText("Ambiente");
-        rotuloColaborar.setToolTipText("");
-        rotuloColaborar.setMaximumSize(new java.awt.Dimension(198, 28));
-        rotuloColaborar.setMinimumSize(new java.awt.Dimension(198, 28));
-        rotuloColaborar.setPreferredSize(new java.awt.Dimension(198, 28));
-        painelTituloColaborar.add(rotuloColaborar, java.awt.BorderLayout.PAGE_START);
-
-        jSeparator3.setBackground(new java.awt.Color(66, 127, 148));
-        jSeparator3.setForeground(new java.awt.Color(49, 104, 146));
-        jSeparator3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 15, 0));
-        painelTituloColaborar.add(jSeparator3, java.awt.BorderLayout.SOUTH);
-
-        painelColaborar.add(painelTituloColaborar, java.awt.BorderLayout.NORTH);
-
+        conteudoColaborar.setBackground(new java.awt.Color(137, 196, 244));
         conteudoColaborar.setOpaque(false);
         conteudoColaborar.setPreferredSize(new java.awt.Dimension(296, 50));
         conteudoColaborar.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento1.setOpaque(false);
         painelAlinhamento1.setPreferredSize(new java.awt.Dimension(296, 10));
-        painelAlinhamento1.setLayout(new javax.swing.BoxLayout(painelAlinhamento1, javax.swing.BoxLayout.Y_AXIS));
+        painelAlinhamento1.setLayout(new javax.swing.BoxLayout(painelAlinhamento1, javax.swing.BoxLayout.X_AXIS));
 
+        rotuloAtalhosTeclado.setBackground(new java.awt.Color(228, 241, 254));
         rotuloAtalhosTeclado.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloAtalhosTeclado.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloAtalhosTeclado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rotuloAtalhosTeclado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         rotuloAtalhosTeclado.setText("<html><body><div>Atalhos do teclado (F11)</div></body></html>");
         rotuloAtalhosTeclado.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloAtalhosTeclado.setName("atalhosTeclado"); // NOI18N
         painelAlinhamento1.add(rotuloAtalhosTeclado);
 
+        rotuloRelatarBug.setBackground(new java.awt.Color(228, 241, 254));
         rotuloRelatarBug.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloRelatarBug.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloRelatarBug.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rotuloRelatarBug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         rotuloRelatarBug.setText("<html><body><div>Relatar um Bug</div></body></html>");
         rotuloRelatarBug.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloRelatarBug.setName("relatarBug"); // NOI18N
         painelAlinhamento1.add(rotuloRelatarBug);
 
+        rotuloAjudarDesenvolvimento.setBackground(new java.awt.Color(228, 241, 254));
         rotuloAjudarDesenvolvimento.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloAjudarDesenvolvimento.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloAjudarDesenvolvimento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rotuloAjudarDesenvolvimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         rotuloAjudarDesenvolvimento.setText("<html><body><div>Ajudar no desenvolvimento</div></body></html>");
         rotuloAjudarDesenvolvimento.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloAjudarDesenvolvimento.setName("ajudarDesenvolvimento"); // NOI18N
         painelAlinhamento1.add(rotuloAjudarDesenvolvimento);
 
+        rotuloInformacoesSoftware.setBackground(new java.awt.Color(228, 241, 254));
         rotuloInformacoesSoftware.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloInformacoesSoftware.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloInformacoesSoftware.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rotuloInformacoesSoftware.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         rotuloInformacoesSoftware.setText("<html><body><div>Sobre (F12)</div></body></html>");
         rotuloInformacoesSoftware.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloInformacoesSoftware.setName("informacoesSoftware"); // NOI18N
         painelAlinhamento1.add(rotuloInformacoesSoftware);
 
+        rotuloUpdate.setBackground(new java.awt.Color(228, 241, 254));
+        rotuloUpdate.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloUpdate.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        rotuloUpdate.setText("<html><body><div>Atualizações</div></body></html>");
+        rotuloUpdate.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloUpdate.setName("updateLog"); // NOI18N
+        painelAlinhamento1.add(rotuloUpdate);
+
         conteudoColaborar.add(painelAlinhamento1, java.awt.BorderLayout.CENTER);
 
-        painelColaborar.add(conteudoColaborar, java.awt.BorderLayout.CENTER);
+        painelCentral.add(conteudoColaborar, java.awt.BorderLayout.SOUTH);
 
-        painelColaborarCreditos.add(painelColaborar);
+        painelConteudo.setBackground(new java.awt.Color(228, 241, 254));
+        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        painelConteudo.setPreferredSize(new java.awt.Dimension(700, 80));
+        painelConteudo.setRequestFocusEnabled(false);
+        painelConteudo.setLayout(new java.awt.BorderLayout());
 
-        painelConteudo.add(painelColaborarCreditos);
+        jPanel1.setBackground(new java.awt.Color(75, 119, 190));
+        jPanel1.setOpaque(false);
+        painelConteudo.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        painelNovidades.setOpaque(false);
-        painelNovidades.setLayout(new java.awt.BorderLayout());
+        painelCentral.add(painelConteudo, java.awt.BorderLayout.CENTER);
 
-        painelTituloNovidades.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        painelTituloNovidades.setOpaque(false);
-        painelTituloNovidades.setLayout(new java.awt.BorderLayout());
-
-        rotuloNovidades.setFont(new java.awt.Font("Consolas", 1, 20)); // NOI18N
-        rotuloNovidades.setForeground(new java.awt.Color(49, 104, 146));
-        rotuloNovidades.setText("Novidades");
-        rotuloNovidades.setToolTipText("");
-        rotuloNovidades.setMaximumSize(new java.awt.Dimension(198, 28));
-        rotuloNovidades.setMinimumSize(new java.awt.Dimension(198, 28));
-        rotuloNovidades.setPreferredSize(new java.awt.Dimension(198, 28));
-        painelTituloNovidades.add(rotuloNovidades, java.awt.BorderLayout.PAGE_START);
-
-        jSeparator4.setBackground(new java.awt.Color(66, 127, 148));
-        jSeparator4.setForeground(new java.awt.Color(49, 104, 146));
-        jSeparator4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 15, 0));
-        painelTituloNovidades.add(jSeparator4, java.awt.BorderLayout.SOUTH);
-
-        painelNovidades.add(painelTituloNovidades, java.awt.BorderLayout.NORTH);
-
-        conteudoAprender1.setOpaque(false);
-        conteudoAprender1.setLayout(new javax.swing.BoxLayout(conteudoAprender1, javax.swing.BoxLayout.Y_AXIS));
-
-        rotuloFormaAprender6.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloFormaAprender6.setForeground(new java.awt.Color(153, 153, 153));
-        rotuloFormaAprender6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        rotuloFormaAprender6.setText("<html><body><div>Correção de travamentos</div></body></html>");
-        rotuloFormaAprender6.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        conteudoAprender1.add(rotuloFormaAprender6);
-
-        rotuloFormaAprender4.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloFormaAprender4.setForeground(new java.awt.Color(153, 153, 153));
-        rotuloFormaAprender4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        rotuloFormaAprender4.setText("<html><body><div>Melhorias na ajuda</div></body></html>");
-        rotuloFormaAprender4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        conteudoAprender1.add(rotuloFormaAprender4);
-
-        rotuloFormaAprender5.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloFormaAprender5.setForeground(new java.awt.Color(153, 153, 153));
-        rotuloFormaAprender5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        rotuloFormaAprender5.setText("<html><body><div>Melhorias nos exemplos</div></body></html>");
-        rotuloFormaAprender5.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        conteudoAprender1.add(rotuloFormaAprender5);
-
-        rotuloFormaAprender7.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloFormaAprender7.setForeground(new java.awt.Color(153, 153, 153));
-        rotuloFormaAprender7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        rotuloFormaAprender7.setText("<html><body><div>Conclusão de código das bibliotecas</div></body></html>");
-        rotuloFormaAprender7.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        conteudoAprender1.add(rotuloFormaAprender7);
-
-        rotuloFormaAprender3.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloFormaAprender3.setForeground(new java.awt.Color(153, 153, 153));
-        rotuloFormaAprender3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        rotuloFormaAprender3.setText("<html><body><div>Atualização automática</div></body></html>");
-        rotuloFormaAprender3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        conteudoAprender1.add(rotuloFormaAprender3);
-
-        rotuloFormaAprender2.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloFormaAprender2.setForeground(new java.awt.Color(153, 153, 153));
-        rotuloFormaAprender2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        rotuloFormaAprender2.setText("<html><body><div>Suporte a plugins</div></body></html>");
-        rotuloFormaAprender2.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        conteudoAprender1.add(rotuloFormaAprender2);
-
-        painelNovidades.add(conteudoAprender1, java.awt.BorderLayout.CENTER);
-
-        painelConteudo.add(painelNovidades);
-
-        painelFundo.add(painelConteudo, java.awt.BorderLayout.CENTER);
+        painelFundo.add(painelCentral, java.awt.BorderLayout.CENTER);
 
         add(painelFundo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -835,12 +759,9 @@ public final class AbaInicial extends Aba {
     }//GEN-LAST:event_logoLiteMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel conteudoAprender;
-    private javax.swing.JPanel conteudoAprender1;
     private javax.swing.JPanel conteudoColaborar;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JPanel conteudoIniciando;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logoLite;
     private br.univali.ps.ui.imagens.Logo logoPS;
     private javax.swing.JLabel logoUnivali;
@@ -849,35 +770,21 @@ public final class AbaInicial extends Aba {
     private javax.swing.JPanel painelAlinhamento8;
     private javax.swing.JPanel painelAlinhamento9;
     private javax.swing.JPanel painelAmbiente;
-    private javax.swing.JPanel painelAprender;
     private javax.swing.JPanel painelCabecalho;
+    private javax.swing.JPanel painelCentral;
     private javax.swing.JPanel painelCentralizacaoLogo;
-    private javax.swing.JPanel painelColaborar;
-    private javax.swing.JPanel painelColaborarCreditos;
     private javax.swing.JPanel painelConteudo;
     private javax.swing.JPanel painelFundo;
-    private javax.swing.JPanel painelNovidades;
-    private javax.swing.JPanel painelTituloAprender;
-    private javax.swing.JPanel painelTituloColaborar;
-    private javax.swing.JPanel painelTituloNovidades;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
-    private javax.swing.JLabel rotuloAprender;
     private javax.swing.JLabel rotuloAssistirVideoAulas;
     private javax.swing.JLabel rotuloAtalhosTeclado;
-    private javax.swing.JLabel rotuloColaborar;
     private javax.swing.JLabel rotuloConhecerBibliotecas;
     private javax.swing.JLabel rotuloConhecerLinguagem;
     private javax.swing.JLabel rotuloExplorarExemplos;
-    private javax.swing.JLabel rotuloFormaAprender2;
-    private javax.swing.JLabel rotuloFormaAprender3;
-    private javax.swing.JLabel rotuloFormaAprender4;
-    private javax.swing.JLabel rotuloFormaAprender5;
-    private javax.swing.JLabel rotuloFormaAprender6;
-    private javax.swing.JLabel rotuloFormaAprender7;
     private javax.swing.JLabel rotuloInformacoesSoftware;
-    private javax.swing.JLabel rotuloNovidades;
     private javax.swing.JLabel rotuloRelatarBug;
     private javax.swing.JLabel rotuloSairProgramando;
     private javax.swing.JLabel rotuloSlogan;
+    private javax.swing.JLabel rotuloUpdate;
     // End of variables declaration//GEN-END:variables
 }
