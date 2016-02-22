@@ -111,7 +111,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
             @Override
             public void generalEventUpdate(GeneralEvent e)
-            {                
+            {
                 if (e.event_type == GeneralEvent.EventType.page_loading_begin)
                 {
                     time = System.currentTimeMillis();
@@ -272,7 +272,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             FileHandle.save(conteudoHtml, temp, "UTF-8");
 
             conteudo.setPage("file:///" + temp.getAbsolutePath());
-            //conteudo.setPage("file:///C:/Users/ADMIN/Desktop/Git/Portugol-Studio-Recursos/ajuda/topicos/linguagem_portugol/estruturas_controle/index.html");
         }
         catch (Exception ex)
         {
@@ -382,7 +381,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             index = indexOf(Pattern.compile(tableEndRegex), sb.toString(), index);
             while (index != -1)
             {
-                sb.insert(index+tableEndRegex.length(), divEnd);
+                sb.insert(index + tableEndRegex.length(), divEnd);
                 index += divEnd.length() + 1;
                 index = indexOf(Pattern.compile(tableEndRegex), sb.toString(), index);
             };
@@ -406,17 +405,30 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
                     if (avaliadorAtributoClass.find())
                     {
-                        String valorClasse = avaliadorAtributoClass.group(3);
+                        final int GRUPO_TIPO = 3;
+                        
+                        String valorClasse = avaliadorAtributoClass.group(GRUPO_TIPO);
 
                         if (valorClasse.toLowerCase().equals("codigo-portugol"))
                         {
                             Matcher avaliadorDataFile = padraoAtributoDataFile.matcher(tag);
+                            Matcher avaliadorDataType = padraoAtributoDataType.matcher(tag);
 
                             if (avaliadorDataFile.find())
                             {
 
-                                String diretorioCodigoFonte = avaliadorDataFile.group(3);
+                                String diretorioCodigoFonte = avaliadorDataFile.group(GRUPO_TIPO);
+                                String tipoDeCodigoFonte;
+                                if (avaliadorDataType.find())
+                                {
+                                    tipoDeCodigoFonte = avaliadorDataType.group(GRUPO_TIPO);
+                                }
+                                else
+                                {
+                                    tipoDeCodigoFonte = "sintaxe";
+                                }
                                 String codigo;
+
                                 try
                                 {
                                     codigo = lerCodigoFonte(diretorioCodigoFonte).trim();
@@ -451,8 +463,11 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                                         //                                        += "         <param name=\"codigo\" value=\"%s\">"
                                         //                                        + "     </object>"
                                         + "%s"
-                                        + "</div>"
-                                        + "<a class=\"botao-codigo-fonte\" href='" + diretorioCodigoFonte + "'>Tente você mesmo</a><div class='hu3'>..</div>";
+                                        + "</div>";
+                                if (tipoDeCodigoFonte.equalsIgnoreCase("exemplo"))
+                                {
+                                    tagObject = tagObject + "<a class=\"botao-codigo-fonte\" href='" + diretorioCodigoFonte + "'>Tente você mesmo</a>";
+                                }
 
                                 tagObject = String.format(tagObject, codigo);
                                 novoConteudo.replace(inicioTag, inicioTag + tag.length(), tagObject);
