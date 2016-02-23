@@ -19,11 +19,15 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -65,6 +69,7 @@ public class painelExemplos extends javax.swing.JPanel
                 }
                 DefaultTreeModel model = new DefaultTreeModel(root);
                 arvoreExemplos.setModel(model);
+                initTreeListner();
             } else {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Não foi possível carregar os exemplos! O diretório de exemplos '%s' não existe!", diretorioExemplos.getPath()), ExcecaoAplicacao.Tipo.ERRO));
             }
@@ -123,7 +128,7 @@ public class painelExemplos extends javax.swing.JPanel
                 return subNode;
             }
         } else {
-            DefaultMutableTreeNode item = new DefaultMutableTreeNode(entradaIndice[0]);
+            DefaultMutableTreeNode item = new ExampleMutableTreeNode(caminho, entradaIndice[0]);
 //            JMenuItem item = new JMenuItem(new AbstractAction(entradaIndice[0], iconeArquivo) {
 //                @Override
 //                public void actionPerformed(ActionEvent e) {
@@ -148,6 +153,31 @@ public class painelExemplos extends javax.swing.JPanel
         }
 
         return null;
+    }
+    
+    private void initTreeListner(){
+        arvoreExemplos.addTreeSelectionListener((TreeSelectionEvent e) ->
+        {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
+            
+            if (node == null) {
+                return;
+            }
+            if(node.isLeaf())
+            {
+                try {
+                    File exemplo = ((ExampleMutableTreeNode) node).getCaminho();
+                    String codigoFonte = FileHandle.open(exemplo);
+                    System.out.println(codigoFonte);
+//                AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+//                abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+//                getPainelTabulado().add(abaCodigoFonte);
+                }
+                catch (Exception ex) {
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                }
+            }
+        });
     }
     
     /**
