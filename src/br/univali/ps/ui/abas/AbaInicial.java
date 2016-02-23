@@ -66,12 +66,8 @@ public final class AbaInicial extends Aba {
         configurarAcoes();
         configurarLinks();
         configurarExibicaoAvisoVideoAulas();
-        criarMenuExemplos();
-
         instalarObservadorCombinacoesSecretas();
         instalarAcoesSecretas();
-
-//        jSeparator1.setUI(new BasicSeparatorUI());
     }
 
     private void instalarObservadorCombinacoesSecretas() {
@@ -138,112 +134,6 @@ public final class AbaInicial extends Aba {
                 }
             }
         });
-    }
-
-    private void criarMenuExemplos() {
-        try {
-            File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
-
-            if (diretorioExemplos.exists()) {
-                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png");
-                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
-
-                menuExemplos = new JPopupMenu();
-
-                List<String[]> entradasIndice = lerIndice(new File(diretorioExemplos, "indice.txt"));
-
-                for (String[] entradaIndice : entradasIndice) {
-                    JMenuItem item = obterSubniveis(diretorioExemplos, entradaIndice, iconeDiretorio, iconeArquivo);
-
-                    if (item != null) {
-                        menuExemplos.add(item);
-                    }
-                }
-            } else {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Não foi possível carregar os exemplos! O diretório de exemplos '%s' não existe!", diretorioExemplos.getPath()), ExcecaoAplicacao.Tipo.ERRO));
-            }
-        } catch (Exception excecao) {
-            excecao.printStackTrace(System.out);
-        }
-    }
-
-    private JMenuItem obterSubniveis(File diretorioAtual, String[] entradaIndice, Icon iconeDiretorio, Icon iconeArquivo) throws Exception {
-        File caminho = new File(diretorioAtual, entradaIndice[1]);
-
-        if (caminho.isDirectory()) {
-            JMenu submenu = new JMenu(entradaIndice[0]);
-
-            submenu.setIcon(iconeDiretorio);
-            submenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-            List<String[]> entradasIndiceSubDiretorio = lerIndice(new File(caminho, "indice.txt"));
-
-            for (String[] entradaIndiceSubDiretorio : entradasIndiceSubDiretorio) {
-                JMenuItem item = obterSubniveis(caminho, entradaIndiceSubDiretorio, iconeDiretorio, iconeArquivo);
-
-                if (item != null) {
-                    submenu.add(item);
-                }
-            }
-
-            if (submenu.getSubElements().length > 0) {
-                return submenu;
-            }
-        } else {
-            JMenuItem item = new JMenuItem(new AbstractAction(entradaIndice[0], iconeArquivo) {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
-                        String codigoFonte = FileHandle.open(exemplo);
-                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-                        getPainelTabulado().add(abaCodigoFonte);
-
-                        //abaCodigoFonte.adicionar(getPainelTabulado());
-                    } catch (Exception excecao) {
-                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-                    }
-                }
-            });
-
-            item.setName(caminho.getAbsolutePath());
-            item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-            return item;
-        }
-
-        return null;
-    }
-
-    private List<String[]> lerIndice(File arquivoIndice) throws Exception {
-        if (arquivoIndice.exists()) {
-            int cont = 0;
-            String linha;
-            List<String[]> indice = new ArrayList<>();
-
-            try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8"))) {
-                while ((linha = leitor.readLine()) != null) {
-                    cont += 1;
-
-                    if (linha.trim().length() >= 3 && linha.contains("=")) {
-                        String[] entrada = linha.split("=");
-
-                        if (entrada.length == 2) {
-                            indice.add(entrada);
-                        } else {
-                            throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: %s", cont, linha));
-                        }
-                    }
-                }
-
-                leitor.close();
-            }
-
-            return indice;
-        } else {
-            throw new Exception(String.format("O arquivo de índice não foi encontrado no diretório: %s", arquivoIndice.getCanonicalPath()));
-        }
     }
 
     private void abrirGitHub() {
@@ -486,8 +376,7 @@ public final class AbaInicial extends Aba {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         rotuloExplorarExemplos = new javax.swing.JLabel();
         painelFundo = new javax.swing.JPanel();
@@ -516,6 +405,7 @@ public final class AbaInicial extends Aba {
         rotuloUpdate = new javax.swing.JLabel();
         painelConteudo = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        painelExemplos1 = new br.univali.ps.ui.swing.components.painelExemplos();
 
         rotuloExplorarExemplos.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloExplorarExemplos.setForeground(new java.awt.Color(51, 51, 51));
@@ -541,10 +431,8 @@ public final class AbaInicial extends Aba {
 
         logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoUnivaliMouseClicked(evt);
             }
         });
@@ -562,10 +450,8 @@ public final class AbaInicial extends Aba {
         logoLite.setMaximumSize(new java.awt.Dimension(64, 64));
         logoLite.setMinimumSize(new java.awt.Dimension(64, 64));
         logoLite.setPreferredSize(new java.awt.Dimension(64, 64));
-        logoLite.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        logoLite.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoLiteMouseClicked(evt);
             }
         });
@@ -739,6 +625,9 @@ public final class AbaInicial extends Aba {
 
         jPanel1.setBackground(new java.awt.Color(75, 119, 190));
         jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(painelExemplos1, java.awt.BorderLayout.CENTER);
+
         painelConteudo.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         painelCentral.add(painelConteudo, java.awt.BorderLayout.CENTER);
@@ -774,6 +663,7 @@ public final class AbaInicial extends Aba {
     private javax.swing.JPanel painelCentral;
     private javax.swing.JPanel painelCentralizacaoLogo;
     private javax.swing.JPanel painelConteudo;
+    private br.univali.ps.ui.swing.components.painelExemplos painelExemplos1;
     private javax.swing.JPanel painelFundo;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
     private javax.swing.JLabel rotuloAssistirVideoAulas;
