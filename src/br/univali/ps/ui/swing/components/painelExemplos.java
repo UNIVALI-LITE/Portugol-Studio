@@ -6,28 +6,14 @@
 package br.univali.ps.ui.swing.components;
 
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.FileHandle;
-import br.univali.ps.ui.util.IconFactory;
-import java.awt.Cursor;
-import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import java.util.Properties;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -47,113 +33,146 @@ public class painelExemplos extends javax.swing.JPanel
         inicializarJTree();
     }
     
-    
     private void inicializarJTree(){
         try {
             File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
             if (diretorioExemplos.exists()) {
-                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png");
-                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
-
+//                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png");
+//                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
                 DefaultMutableTreeNode root = new DefaultMutableTreeNode("Exemplos");
-
-                List<String[]> entradasIndice = lerIndice(new File(diretorioExemplos, "indice.txt"));
-
-                for (String[] entradaIndice : entradasIndice) {
-                    DefaultMutableTreeNode node = obterSubniveis(diretorioExemplos, entradaIndice);
-
-                    if (node != null) {
-                        root.add(node);
-                    }
+                List<DefaultMutableTreeNode> nodes = readIndex(diretorioExemplos);
+                for (DefaultMutableTreeNode node : nodes)
+                {
+                    root.add(node);
                 }
                 DefaultTreeModel model = new DefaultTreeModel(root);
                 arvoreExemplos.setModel(model);
                 initTreeListner();
-            } else {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Não foi possível carregar os exemplos! O diretório de exemplos '%s' não existe!", diretorioExemplos.getPath()), ExcecaoAplicacao.Tipo.ERRO));
             }
-        } catch (Exception excecao) {
-            excecao.printStackTrace(System.out);
+        }
+        catch (Exception exception){
+            
         }
     }
     
-    private List<String[]> lerIndice(File arquivoIndice) throws Exception {
-        if (arquivoIndice.exists()) {
-            int cont = 0;
-            String linha;
-            List<String[]> indice = new ArrayList<>();
-
-            try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8"))) {
-                while ((linha = leitor.readLine()) != null) {
-                    cont += 1;
-
-                    if (linha.trim().length() >= 3 && linha.contains("=")) {
-                        String[] entrada = linha.split("=");
-
-                        if (entrada.length == 2) {
-                            indice.add(entrada);
-                        } else {
-                            throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: %s", cont, linha));
-                        }
-                    }
-                }
-
-                leitor.close();
-            }
-
-            return indice;
-        } else {
-            throw new Exception(String.format("O arquivo de índice não foi encontrado no diretório: %s", arquivoIndice.getCanonicalPath()));
+    private List<DefaultMutableTreeNode> readIndex(File dir){
+        Properties prop = new Properties();
+        List<DefaultMutableTreeNode> nodes = new ArrayList<>();
+        try {
+            File file = new File(dir,"index.properties");
+            prop.load(new FileInputStream(file));
+            for(int i=0; i<Integer.parseInt(prop.getProperty("items")); i++){
+               String item = "item"+i+".";
+               if(prop.getProperty(item+"type").equals("dir")){
+                   DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item+"name"));
+                   List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir.toString()+prop.getProperty(item+"name")));
+                   for (DefaultMutableTreeNode subNode : subNodes)
+                   {
+                       node.add(subNode);
+                   }
+                   nodes.add(node);
+               }
+               else{
+                   DefaultMutableTreeNode leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), new File(dir, prop.getProperty(item+"image")), new File(dir, prop.getProperty(item+"name")));
+                   nodes.add(leaf);
+               }
+               
+           }
         }
+        catch (Exception exception){    
+        }
+        return nodes;
     }
     
-    private DefaultMutableTreeNode obterSubniveis(File diretorioAtual, String[] entradaIndice) throws Exception {
-        File caminho = new File(diretorioAtual, entradaIndice[1]);
-
-        if (caminho.isDirectory()) {
-            DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(entradaIndice[0]);
-
-            List<String[]> entradasIndiceSubDiretorio = lerIndice(new File(caminho, "indice.txt"));
-
-            for (String[] entradaIndiceSubDiretorio : entradasIndiceSubDiretorio) {
-                DefaultMutableTreeNode item = obterSubniveis(caminho, entradaIndiceSubDiretorio);
-
-                if (item != null) {
-                    subNode.add(item);
-                }
-            }
-
-            if (subNode.getChildCount() > 0) {
-                return subNode;
-            }
-        } else {
-            DefaultMutableTreeNode item = new ExampleMutableTreeNode(caminho, entradaIndice[0]);
-//            JMenuItem item = new JMenuItem(new AbstractAction(entradaIndice[0], iconeArquivo) {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    try {
-//                        File exemplo = new File(((JMenuItem) e.getSource()).getName());
-//                        String codigoFonte = FileHandle.open(exemplo);
-//                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-//                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-//                        getPainelTabulado().add(abaCodigoFonte);
+//    private void inicializarJTree(){
+//        try {
+//            File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 //
-//                        //abaCodigoFonte.adicionar(getPainelTabulado());
-//                    } catch (Exception excecao) {
-//                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+//            if (diretorioExemplos.exists()) {
+//                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png");
+//                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
+//
+//                DefaultMutableTreeNode root = new DefaultMutableTreeNode("Exemplos");
+//
+//                List<String[]> entradasIndice = lerIndice(new File(diretorioExemplos, "indice.txt"));
+//
+//                for (String[] entradaIndice : entradasIndice) {
+//                    DefaultMutableTreeNode node = obterSubniveis(diretorioExemplos, entradaIndice);
+//
+//                    if (node != null) {
+//                        root.add(node);
 //                    }
 //                }
-//            });
+//                DefaultTreeModel model = new DefaultTreeModel(root);
+//                arvoreExemplos.setModel(model);
+//                initTreeListner();
+//            } else {
+//                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Não foi possível carregar os exemplos! O diretório de exemplos '%s' não existe!", diretorioExemplos.getPath()), ExcecaoAplicacao.Tipo.ERRO));
+//            }
+//        } catch (Exception excecao) {
+//            excecao.printStackTrace(System.out);
+//        }
+//    }
+//   
+    
+//    private List<String[]> lerIndice(File arquivoIndice) throws Exception {
+//        if (arquivoIndice.exists()) {
+//            int cont = 0;
+//            String linha;
+//            List<String[]> indice = new ArrayList<>();
 //
-//            item.setName(caminho.getAbsolutePath());
-//            item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-            return item;
-        }
-
-        return null;
-    }
+//            try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8"))) {
+//                while ((linha = leitor.readLine()) != null) {
+//                    cont += 1;
+//
+//                    if (linha.trim().length() >= 3 && linha.contains("=")) {
+//                        String[] entrada = linha.split("=");
+//
+//                        if (entrada.length == 2) {
+//                            indice.add(entrada);
+//                        } else {
+//                            throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: %s", cont, linha));
+//                        }
+//                    }
+//                }
+//
+//                leitor.close();
+//            }
+//
+//            return indice;
+//        } else {
+//            throw new Exception(String.format("O arquivo de índice não foi encontrado no diretório: %s", arquivoIndice.getCanonicalPath()));
+//        }
+//    }
+//    
+//    private DefaultMutableTreeNode obterSubniveis(File diretorioAtual, String[] entradaIndice) throws Exception {
+//        File caminho = new File(diretorioAtual, entradaIndice[1]);
+//
+//        if (caminho.isDirectory()) {
+//            DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(entradaIndice[0]);
+//
+//            List<String[]> entradasIndiceSubDiretorio = lerIndice(new File(caminho, "indice.txt"));
+//
+//            for (String[] entradaIndiceSubDiretorio : entradasIndiceSubDiretorio) {
+//                DefaultMutableTreeNode item = obterSubniveis(caminho, entradaIndiceSubDiretorio);
+//
+//                if (item != null) {
+//                    subNode.add(item);
+//                }
+//            }
+//
+//            if (subNode.getChildCount() > 0) {
+//                return subNode;
+//            }
+//        } else {
+//            DefaultMutableTreeNode item = new ExampleMutableTreeNode(caminho, entradaIndice[0]);
+//
+//            return item;
+//        }
+//
+//        return null;
+//    }
     
     private void initTreeListner(){
         arvoreExemplos.addTreeSelectionListener((TreeSelectionEvent e) ->
@@ -166,7 +185,7 @@ public class painelExemplos extends javax.swing.JPanel
             if(node.isLeaf())
             {
                 try {
-                    File exemplo = ((ExampleMutableTreeNode) node).getCaminho();
+                    File exemplo = ((ExampleMutableTreeNode) node).getFile();
                     String codigoFonte = FileHandle.open(exemplo);
                     System.out.println(codigoFonte);
 //                AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();

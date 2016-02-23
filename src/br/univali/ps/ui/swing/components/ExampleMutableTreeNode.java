@@ -14,22 +14,34 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class ExampleMutableTreeNode extends DefaultMutableTreeNode
 {
-    private File caminho;
+    private File file;
+    private File image;
 
-    public ExampleMutableTreeNode(File caminho, Object userObject)
+    public ExampleMutableTreeNode(File file, File image, Object userObject)
     {
         super(userObject);
-        this.caminho = caminho;
+        this.file = file;
+        this.image = image;
     }
 
-    public File getCaminho()
+    public File getImage()
     {
-        return caminho;
+        return image;
     }
 
-    public void setCaminho(File caminho)
+    public void setImage(File image)
     {
-        this.caminho = caminho;
+        this.image = image;
+    }
+
+    public File getFile()
+    {
+        return file;
+    }
+
+    public void setFile(File caminho)
+    {
+        this.file = caminho;
     }
     
     
