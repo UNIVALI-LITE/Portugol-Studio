@@ -8,12 +8,14 @@ package br.univali.ps.ui.swing.components;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.FileHandle;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javax.swing.ImageIcon;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -78,10 +80,10 @@ public class painelExemplos extends javax.swing.JPanel
                    else{
                        DefaultMutableTreeNode leaf;
                         if(Boolean.parseBoolean(prop.getProperty(item+"hasImage"))){
-                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"file"), new File(dir, prop.getProperty(item+"image")), prop.getProperty(item+"name"));
+                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"description"), new File(dir, prop.getProperty(item+"image")), prop.getProperty(item+"name"));
                         }
                         else{
-                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"file"), prop.getProperty(item+"name"));
+                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"description"), prop.getProperty(item+"name"));
                         }
                         nodes.add(leaf);
                    }
@@ -94,95 +96,6 @@ public class painelExemplos extends javax.swing.JPanel
         return nodes;
     }
     
-//    private void inicializarJTree(){
-//        try {
-//            File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
-//
-//            if (diretorioExemplos.exists()) {
-//                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png");
-//                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
-//
-//                DefaultMutableTreeNode root = new DefaultMutableTreeNode("Exemplos");
-//
-//                List<String[]> entradasIndice = lerIndice(new File(diretorioExemplos, "indice.txt"));
-//
-//                for (String[] entradaIndice : entradasIndice) {
-//                    DefaultMutableTreeNode node = obterSubniveis(diretorioExemplos, entradaIndice);
-//
-//                    if (node != null) {
-//                        root.add(node);
-//                    }
-//                }
-//                DefaultTreeModel model = new DefaultTreeModel(root);
-//                arvoreExemplos.setModel(model);
-//                initTreeListner();
-//            } else {
-//                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(String.format("Não foi possível carregar os exemplos! O diretório de exemplos '%s' não existe!", diretorioExemplos.getPath()), ExcecaoAplicacao.Tipo.ERRO));
-//            }
-//        } catch (Exception excecao) {
-//            excecao.printStackTrace(System.out);
-//        }
-//    }
-//   
-    
-//    private List<String[]> lerIndice(File arquivoIndice) throws Exception {
-//        if (arquivoIndice.exists()) {
-//            int cont = 0;
-//            String linha;
-//            List<String[]> indice = new ArrayList<>();
-//
-//            try (BufferedReader leitor = new BufferedReader(new InputStreamReader(new FileInputStream(arquivoIndice), "UTF-8"))) {
-//                while ((linha = leitor.readLine()) != null) {
-//                    cont += 1;
-//
-//                    if (linha.trim().length() >= 3 && linha.contains("=")) {
-//                        String[] entrada = linha.split("=");
-//
-//                        if (entrada.length == 2) {
-//                            indice.add(entrada);
-//                        } else {
-//                            throw new Exception(String.format("A entrada %d do arquivo de índice é inválida: %s", cont, linha));
-//                        }
-//                    }
-//                }
-//
-//                leitor.close();
-//            }
-//
-//            return indice;
-//        } else {
-//            throw new Exception(String.format("O arquivo de índice não foi encontrado no diretório: %s", arquivoIndice.getCanonicalPath()));
-//        }
-//    }
-//    
-//    private DefaultMutableTreeNode obterSubniveis(File diretorioAtual, String[] entradaIndice) throws Exception {
-//        File caminho = new File(diretorioAtual, entradaIndice[1]);
-//
-//        if (caminho.isDirectory()) {
-//            DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(entradaIndice[0]);
-//
-//            List<String[]> entradasIndiceSubDiretorio = lerIndice(new File(caminho, "indice.txt"));
-//
-//            for (String[] entradaIndiceSubDiretorio : entradasIndiceSubDiretorio) {
-//                DefaultMutableTreeNode item = obterSubniveis(caminho, entradaIndiceSubDiretorio);
-//
-//                if (item != null) {
-//                    subNode.add(item);
-//                }
-//            }
-//
-//            if (subNode.getChildCount() > 0) {
-//                return subNode;
-//            }
-//        } else {
-//            DefaultMutableTreeNode item = new ExampleMutableTreeNode(caminho, entradaIndice[0]);
-//
-//            return item;
-//        }
-//
-//        return null;
-//    }
-    
     private void initTreeListner(){
         arvoreExemplos.addTreeSelectionListener((TreeSelectionEvent e) ->
         {
@@ -194,9 +107,13 @@ public class painelExemplos extends javax.swing.JPanel
             if(node.isLeaf())
             {
                 try {
-                    File exemplo = ((ExampleMutableTreeNode) node).getFile();
+                    ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
+                    File exemplo = item.getFile();
                     String codigoFonte = FileHandle.open(exemplo);
-                    System.out.println(codigoFonte);
+                    description.setText(item.getDescription());
+                    if(item.hasImage()){
+                        jLabel1.setIcon(new ImageIcon(item.getImage().toString()));
+                    }
 //                AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
 //                abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
 //                getPainelTabulado().add(abaCodigoFonte);
@@ -222,8 +139,10 @@ public class painelExemplos extends javax.swing.JPanel
         jScrollPane1 = new javax.swing.JScrollPane();
         arvoreExemplos = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        imagePane = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        descriptionPane = new javax.swing.JPanel();
+        description = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -235,33 +154,50 @@ public class painelExemplos extends javax.swing.JPanel
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 128, Short.MAX_VALUE)
-        );
+        jLabel1.setText("jLabel1");
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
-
-        jPanel3.setBackground(new java.awt.Color(51, 51, 51));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
+        javax.swing.GroupLayout imagePaneLayout = new javax.swing.GroupLayout(imagePane);
+        imagePane.setLayout(imagePaneLayout);
+        imagePaneLayout.setHorizontalGroup(
+            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(imagePaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(356, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+        imagePaneLayout.setVerticalGroup(
+            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(imagePaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.SOUTH);
+        jPanel1.add(imagePane, java.awt.BorderLayout.CENTER);
+
+        descriptionPane.setBackground(new java.awt.Color(51, 51, 51));
+        descriptionPane.setForeground(new java.awt.Color(255, 255, 255));
+
+        description.setForeground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout descriptionPaneLayout = new javax.swing.GroupLayout(descriptionPane);
+        descriptionPane.setLayout(descriptionPaneLayout);
+        descriptionPaneLayout.setHorizontalGroup(
+            descriptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(descriptionPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(description)
+                .addContainerGap(390, Short.MAX_VALUE))
+        );
+        descriptionPaneLayout.setVerticalGroup(
+            descriptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(descriptionPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(description)
+                .addContainerGap(75, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(descriptionPane, java.awt.BorderLayout.SOUTH);
 
         jSplitPane1.setRightComponent(jPanel1);
 
@@ -271,9 +207,11 @@ public class painelExemplos extends javax.swing.JPanel
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreExemplos;
+    private javax.swing.JLabel description;
+    private javax.swing.JPanel descriptionPane;
+    private javax.swing.JPanel imagePane;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     // End of variables declaration//GEN-END:variables

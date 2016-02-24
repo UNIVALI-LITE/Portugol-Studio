@@ -32,7 +32,14 @@ public class ExampleMutableTreeNode extends DefaultMutableTreeNode
         this.file = file;
         this.description = description;
     }
-
+    
+    public Boolean hasImage(){
+        if(image.exists()){
+            return true;
+        }
+        return false;
+    }
+    
     public File getImage()
     {
         return image;
@@ -51,6 +58,16 @@ public class ExampleMutableTreeNode extends DefaultMutableTreeNode
     public void setFile(File caminho)
     {
         this.file = caminho;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
     
     
