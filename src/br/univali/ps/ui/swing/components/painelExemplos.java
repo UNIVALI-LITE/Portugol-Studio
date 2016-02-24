@@ -7,14 +7,16 @@ package br.univali.ps.ui.swing.components;
 
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.FileHandle;
-import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -110,13 +112,20 @@ public class painelExemplos extends javax.swing.JPanel
                     ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
                     File exemplo = item.getFile();
                     String codigoFonte = FileHandle.open(exemplo);
-                    description.setText(item.getDescription());
+                    description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
                     if(item.hasImage()){
                         jLabel1.setIcon(new ImageIcon(item.getImage().toString()));
                     }
-//                AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-//                abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-//                getPainelTabulado().add(abaCodigoFonte);
+                    openExample.setAction(new AbstractAction(){
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+                            abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                            PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
+                        }
+                    });
+                    openExample.setText("Explorar Exemplo");
                 }
                 catch (Exception ex) {
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
@@ -142,7 +151,10 @@ public class painelExemplos extends javax.swing.JPanel
         imagePane = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         descriptionPane = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         description = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        openExample = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -154,8 +166,6 @@ public class painelExemplos extends javax.swing.JPanel
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("jLabel1");
-
         javax.swing.GroupLayout imagePaneLayout = new javax.swing.GroupLayout(imagePane);
         imagePane.setLayout(imagePaneLayout);
         imagePaneLayout.setHorizontalGroup(
@@ -163,39 +173,43 @@ public class painelExemplos extends javax.swing.JPanel
             .addGroup(imagePaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(356, Short.MAX_VALUE))
+                .addContainerGap(390, Short.MAX_VALUE))
         );
         imagePaneLayout.setVerticalGroup(
             imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imagePaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(imagePane, java.awt.BorderLayout.CENTER);
 
         descriptionPane.setBackground(new java.awt.Color(51, 51, 51));
+        descriptionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         descriptionPane.setForeground(new java.awt.Color(255, 255, 255));
+        descriptionPane.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
         description.setForeground(new java.awt.Color(255, 255, 255));
+        description.setText("Descrição Legal");
+        description.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel2.add(description, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout descriptionPaneLayout = new javax.swing.GroupLayout(descriptionPane);
-        descriptionPane.setLayout(descriptionPaneLayout);
-        descriptionPaneLayout.setHorizontalGroup(
-            descriptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(descriptionPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(description)
-                .addContainerGap(390, Short.MAX_VALUE))
-        );
-        descriptionPaneLayout.setVerticalGroup(
-            descriptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(descriptionPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(description)
-                .addContainerGap(75, Short.MAX_VALUE))
-        );
+        descriptionPane.add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setBackground(new java.awt.Color(204, 153, 0));
+        jPanel3.setOpaque(false);
+        jPanel3.setPreferredSize(new java.awt.Dimension(400, 25));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        openExample.setText("Explorar Exemplo");
+        openExample.setOpaque(false);
+        jPanel3.add(openExample, java.awt.BorderLayout.EAST);
+
+        descriptionPane.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
         jPanel1.add(descriptionPane, java.awt.BorderLayout.SOUTH);
 
@@ -212,7 +226,10 @@ public class painelExemplos extends javax.swing.JPanel
     private javax.swing.JPanel imagePane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JButton openExample;
     // End of variables declaration//GEN-END:variables
 }

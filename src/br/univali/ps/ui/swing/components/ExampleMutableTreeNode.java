@@ -34,7 +34,7 @@ public class ExampleMutableTreeNode extends DefaultMutableTreeNode
     }
     
     public Boolean hasImage(){
-        if(image.exists()){
+        if(image!=null){
             return true;
         }
         return false;
