@@ -9,6 +9,9 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.FileHandle;
+import com.alee.extended.image.DisplayType;
+import com.alee.extended.image.WebImage;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -113,8 +116,11 @@ public class painelExemplos extends javax.swing.JPanel
                     File exemplo = item.getFile();
                     String codigoFonte = FileHandle.open(exemplo);
                     description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
+                    imagePane.removeAll();
                     if(item.hasImage()){
-                        jLabel1.setIcon(new ImageIcon(item.getImage().toString()));
+                        WebImage image = new WebImage(new ImageIcon(item.getImage().toString()));
+                        image.setDisplayType ( DisplayType.fitComponent );
+                        imagePane.add(image);
                     }
                     openExample.setAction(new AbstractAction(){
                         @Override
@@ -149,43 +155,37 @@ public class painelExemplos extends javax.swing.JPanel
         arvoreExemplos = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         descriptionPane = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         description = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         openExample = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(51, 51, 51));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        jSplitPane1.setDividerLocation(200);
+        jSplitPane1.setDividerLocation(300);
+        jSplitPane1.setOpaque(false);
 
+        jScrollPane1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(210, 231, 252), 2, true));
+
+        arvoreExemplos.setBackground(new java.awt.Color(228, 241, 254));
         jScrollPane1.setViewportView(arvoreExemplos);
 
         jSplitPane1.setLeftComponent(jScrollPane1);
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout imagePaneLayout = new javax.swing.GroupLayout(imagePane);
-        imagePane.setLayout(imagePaneLayout);
-        imagePaneLayout.setHorizontalGroup(
-            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagePaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(390, Short.MAX_VALUE))
-        );
-        imagePaneLayout.setVerticalGroup(
-            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagePaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        imagePane.setBackground(new java.awt.Color(49, 104, 146));
+        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        imagePane.setMinimumSize(new java.awt.Dimension(20, 150));
+        imagePane.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(imagePane, java.awt.BorderLayout.WEST);
 
-        jPanel1.add(imagePane, java.awt.BorderLayout.CENTER);
-
-        descriptionPane.setBackground(new java.awt.Color(51, 51, 51));
+        descriptionPane.setBackground(new java.awt.Color(210, 231, 252));
         descriptionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         descriptionPane.setForeground(new java.awt.Color(255, 255, 255));
         descriptionPane.setLayout(new java.awt.BorderLayout());
@@ -193,8 +193,9 @@ public class painelExemplos extends javax.swing.JPanel
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        description.setForeground(new java.awt.Color(255, 255, 255));
-        description.setText("Descrição Legal");
+        description.setForeground(new java.awt.Color(51, 51, 51));
+        description.setText("Descrição do Exemplo");
+        description.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         description.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel2.add(description, java.awt.BorderLayout.CENTER);
 
@@ -211,7 +212,7 @@ public class painelExemplos extends javax.swing.JPanel
 
         descriptionPane.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
-        jPanel1.add(descriptionPane, java.awt.BorderLayout.SOUTH);
+        jPanel1.add(descriptionPane, java.awt.BorderLayout.CENTER);
 
         jSplitPane1.setRightComponent(jPanel1);
 
@@ -224,7 +225,6 @@ public class painelExemplos extends javax.swing.JPanel
     private javax.swing.JLabel description;
     private javax.swing.JPanel descriptionPane;
     private javax.swing.JPanel imagePane;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

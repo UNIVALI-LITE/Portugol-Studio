@@ -49,7 +49,7 @@ public final class AbaInicial extends Aba {
     private JPopupMenu menuExemplos;
     private Action acaoExplorarExemplos;
     private Action acaoExibirAtalhosTeclado;
-
+    private boolean redimensionouParaBaixaResolucao = false;
     private TelaEditarUriAtualizacao telaEditarUriAtualizacao;
 
     public AbaInicial(TelaPrincipal telaPrincipal) {
@@ -57,9 +57,8 @@ public final class AbaInicial extends Aba {
 
         setPainelTabulado(telaPrincipal.getPainelTabulado());
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
-
-        initComponents();
-
+        initComponents(); 
+        configurarResolucao();
         configurarAcaoExplorarExemplos();
         configurarCursorLogos();
         criarDicasInterface();
@@ -115,7 +114,30 @@ public final class AbaInicial extends Aba {
             }
         });
     }
+    private void configurarResolucao(){
+        addComponentListener(new ComponentAdapter(){
 
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+                if((getSize().width <= 1000 || getSize().height<=750) && !redimensionouParaBaixaResolucao){
+                    redimensionouParaBaixaResolucao = true;
+                    rotuloSairProgramando.setIcon(null);
+                    rotuloAssistirVideoAulas.setIcon(null);
+                    rotuloConhecerBibliotecas.setIcon(null);
+                    rotuloConhecerLinguagem.setIcon(null);
+                    FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
+                }else if(getSize().width > 1000 && getSize().height>750){
+                    redimensionouParaBaixaResolucao = false;
+                    rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
+                    rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
+                    rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
+                    rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
+                }
+            }
+            
+        });
+    }
     private void configurarExibicaoAvisoVideoAulas() {
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -145,8 +167,8 @@ public final class AbaInicial extends Aba {
     }
 
     private void configurarCursorLogos() {
-        logoUnivali.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        logoLite.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//        logoUnivali.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//        logoLite.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private void configurarAcoes() {
@@ -369,23 +391,18 @@ public final class AbaInicial extends Aba {
     }
 
     private void criarDicasInterface() {
-        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI");
-        FabricaDicasInterface.criarDicaInterface(logoLite, "Conhecer o Laboratório de Inovação Tecnológica na Educação");
-
+//        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI");
+//        FabricaDicasInterface.criarDicaInterface(logoLite, "Conhecer o Laboratório de Inovação Tecnológica na Educação");
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         rotuloExplorarExemplos = new javax.swing.JLabel();
         painelFundo = new javax.swing.JPanel();
         painelCabecalho = new javax.swing.JPanel();
-        painelAlinhamento8 = new javax.swing.JPanel();
-        logoUnivali = new javax.swing.JLabel();
-        painelAlinhamento9 = new javax.swing.JPanel();
-        logoLite = new javax.swing.JLabel();
-        painelCentralizacaoLogo = new javax.swing.JPanel();
         logoPS = new br.univali.ps.ui.imagens.Logo();
         painelAmbiente = new javax.swing.JPanel();
         rotuloSlogan = new javax.swing.JLabel();
@@ -414,69 +431,28 @@ public final class AbaInicial extends Aba {
         rotuloExplorarExemplos.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloExplorarExemplos.setName("explorarExemplos"); // NOI18N
 
-        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(12, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         painelFundo.setBackground(new java.awt.Color(49, 104, 146));
         painelFundo.setLayout(new java.awt.BorderLayout());
 
+        painelCabecalho.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelCabecalho.setOpaque(false);
         painelCabecalho.setLayout(new java.awt.BorderLayout());
 
-        painelAlinhamento8.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 50, 0, 10));
-        painelAlinhamento8.setOpaque(false);
-        painelAlinhamento8.setPreferredSize(new java.awt.Dimension(200, 64));
-        painelAlinhamento8.setLayout(new java.awt.BorderLayout());
-
-        logoUnivali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logoUnivali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/univali.png"))); // NOI18N
-        logoUnivali.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoUnivaliMouseClicked(evt);
-            }
-        });
-        painelAlinhamento8.add(logoUnivali, java.awt.BorderLayout.CENTER);
-
-        painelCabecalho.add(painelAlinhamento8, java.awt.BorderLayout.WEST);
-
-        painelAlinhamento9.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 50, 0, 10));
-        painelAlinhamento9.setOpaque(false);
-        painelAlinhamento9.setPreferredSize(new java.awt.Dimension(200, 64));
-        painelAlinhamento9.setLayout(new java.awt.BorderLayout());
-
-        logoLite.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logoLite.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/lite.png"))); // NOI18N
-        logoLite.setMaximumSize(new java.awt.Dimension(64, 64));
-        logoLite.setMinimumSize(new java.awt.Dimension(64, 64));
-        logoLite.setPreferredSize(new java.awt.Dimension(64, 64));
-        logoLite.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoLiteMouseClicked(evt);
-            }
-        });
-        painelAlinhamento9.add(logoLite, java.awt.BorderLayout.CENTER);
-
-        painelCabecalho.add(painelAlinhamento9, java.awt.BorderLayout.EAST);
-
-        painelCentralizacaoLogo.setOpaque(false);
-        painelCentralizacaoLogo.setPreferredSize(new java.awt.Dimension(310, 120));
-
         logoPS.setOpaque(false);
-        logoPS.setPreferredSize(new java.awt.Dimension(300, 120));
-        painelCentralizacaoLogo.add(logoPS);
+        logoPS.setPreferredSize(null);
+        painelCabecalho.add(logoPS, java.awt.BorderLayout.PAGE_START);
 
-        painelCabecalho.add(painelCentralizacaoLogo, java.awt.BorderLayout.CENTER);
-
-        painelAmbiente.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 20, 0, 20));
         painelAmbiente.setOpaque(false);
-        painelAmbiente.setPreferredSize(new java.awt.Dimension(0, 45));
         painelAmbiente.setLayout(new java.awt.BorderLayout());
 
         rotuloSlogan.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloSlogan.setForeground(new java.awt.Color(232, 232, 232));
         rotuloSlogan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rotuloSlogan.setText("Ambiente para Aprender a Programar");
+        rotuloSlogan.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         rotuloSlogan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         painelAmbiente.add(rotuloSlogan, java.awt.BorderLayout.CENTER);
 
@@ -489,13 +465,11 @@ public final class AbaInicial extends Aba {
 
         conteudoIniciando.setBackground(new java.awt.Color(4, 52, 88));
         conteudoIniciando.setOpaque(false);
-        conteudoIniciando.setPreferredSize(new java.awt.Dimension(296, 200));
         conteudoIniciando.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento5.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelAlinhamento5.setMaximumSize(new java.awt.Dimension(2147483647, 500));
         painelAlinhamento5.setOpaque(false);
-        painelAlinhamento5.setPreferredSize(new java.awt.Dimension(572, 250));
         painelAlinhamento5.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
         rotuloSairProgramando.setBackground(new java.awt.Color(210, 231, 252));
@@ -506,9 +480,8 @@ public final class AbaInicial extends Aba {
         rotuloSairProgramando.setText("<html><body><div>Programar (Ctrl + N)</div></body></html>");
         rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rotuloSairProgramando.setMinimumSize(new java.awt.Dimension(150, 187));
+        rotuloSairProgramando.setMinimumSize(new java.awt.Dimension(150, 25));
         rotuloSairProgramando.setName("sairProgramando"); // NOI18N
-        rotuloSairProgramando.setPreferredSize(new java.awt.Dimension(150, 187));
         rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloSairProgramando);
 
@@ -520,6 +493,7 @@ public final class AbaInicial extends Aba {
         rotuloConhecerLinguagem.setText("<html><body><div>Ajuda (F1)</div></body></html>");
         rotuloConhecerLinguagem.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloConhecerLinguagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rotuloConhecerLinguagem.setMinimumSize(new java.awt.Dimension(110, 25));
         rotuloConhecerLinguagem.setName("conhecerLinguagem"); // NOI18N
         rotuloConhecerLinguagem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloConhecerLinguagem);
@@ -532,6 +506,7 @@ public final class AbaInicial extends Aba {
         rotuloAssistirVideoAulas.setText("<html><body><div>Videoaulas</div></body></html>");
         rotuloAssistirVideoAulas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloAssistirVideoAulas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rotuloAssistirVideoAulas.setMinimumSize(new java.awt.Dimension(150, 25));
         rotuloAssistirVideoAulas.setName("assistirVideoAulas"); // NOI18N
         rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloAssistirVideoAulas);
@@ -544,8 +519,8 @@ public final class AbaInicial extends Aba {
         rotuloConhecerBibliotecas.setText("<html><body><div>Bibliotecas (Shift + F1)</div></body></html>");
         rotuloConhecerBibliotecas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloConhecerBibliotecas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rotuloConhecerBibliotecas.setMinimumSize(new java.awt.Dimension(88, 25));
         rotuloConhecerBibliotecas.setName("conhecerBibliotecas"); // NOI18N
-        rotuloConhecerBibliotecas.setPreferredSize(new java.awt.Dimension(150, 187));
         rotuloConhecerBibliotecas.setVerifyInputWhenFocusTarget(false);
         rotuloConhecerBibliotecas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelAlinhamento5.add(rotuloConhecerBibliotecas);
@@ -556,11 +531,11 @@ public final class AbaInicial extends Aba {
 
         conteudoColaborar.setBackground(new java.awt.Color(137, 196, 244));
         conteudoColaborar.setOpaque(false);
-        conteudoColaborar.setPreferredSize(new java.awt.Dimension(296, 50));
+        conteudoColaborar.setPreferredSize(null);
         conteudoColaborar.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento1.setOpaque(false);
-        painelAlinhamento1.setPreferredSize(new java.awt.Dimension(296, 10));
+        painelAlinhamento1.setPreferredSize(null);
         painelAlinhamento1.setLayout(new javax.swing.BoxLayout(painelAlinhamento1, javax.swing.BoxLayout.X_AXIS));
 
         rotuloAtalhosTeclado.setBackground(new java.awt.Color(228, 241, 254));
@@ -618,7 +593,7 @@ public final class AbaInicial extends Aba {
         painelCentral.add(conteudoColaborar, java.awt.BorderLayout.SOUTH);
 
         painelConteudo.setBackground(new java.awt.Color(228, 241, 254));
-        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelConteudo.setPreferredSize(new java.awt.Dimension(700, 80));
         painelConteudo.setRequestFocusEnabled(false);
         painelConteudo.setLayout(new java.awt.BorderLayout());
@@ -637,31 +612,16 @@ public final class AbaInicial extends Aba {
         add(painelFundo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logoUnivaliMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_logoUnivaliMouseClicked
-    {//GEN-HEADEREND:event_logoUnivaliMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_logoUnivaliMouseClicked
-
-    private void logoLiteMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_logoLiteMouseClicked
-    {//GEN-HEADEREND:event_logoLiteMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_logoLiteMouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel conteudoColaborar;
     private javax.swing.JPanel conteudoIniciando;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel logoLite;
     private br.univali.ps.ui.imagens.Logo logoPS;
-    private javax.swing.JLabel logoUnivali;
     private javax.swing.JPanel painelAlinhamento1;
     private javax.swing.JPanel painelAlinhamento5;
-    private javax.swing.JPanel painelAlinhamento8;
-    private javax.swing.JPanel painelAlinhamento9;
     private javax.swing.JPanel painelAmbiente;
     private javax.swing.JPanel painelCabecalho;
     private javax.swing.JPanel painelCentral;
-    private javax.swing.JPanel painelCentralizacaoLogo;
     private javax.swing.JPanel painelConteudo;
     private br.univali.ps.ui.swing.components.painelExemplos painelExemplos1;
     private javax.swing.JPanel painelFundo;

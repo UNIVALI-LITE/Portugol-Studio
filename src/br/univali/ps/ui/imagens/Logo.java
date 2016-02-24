@@ -47,8 +47,8 @@ public class Logo extends javax.swing.JPanel
 
         setBackground(new java.awt.Color(35, 72, 127));
         setMaximumSize(new java.awt.Dimension(310, 110));
-        setMinimumSize(new java.awt.Dimension(310, 110));
-        setPreferredSize(new java.awt.Dimension(310, 110));
+        setMinimumSize(new java.awt.Dimension(310, 50));
+        setPreferredSize(new java.awt.Dimension(310, 10));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -57,11 +57,10 @@ public class Logo extends javax.swing.JPanel
         setLayout(new java.awt.GridBagLayout());
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/logo_ps.png"))); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        add(logo, gridBagConstraints);
+        logo.setMaximumSize(new java.awt.Dimension(293, 150));
+        logo.setMinimumSize(new java.awt.Dimension(293, 50));
+        logo.setPreferredSize(new java.awt.Dimension(293, 75));
+        add(logo, new java.awt.GridBagConstraints());
 
         versao.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         versao.setForeground(new java.awt.Color(255, 194, 0));

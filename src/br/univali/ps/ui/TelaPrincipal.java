@@ -273,7 +273,8 @@ public final class TelaPrincipal extends JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelTabuladoPrincipal = new br.univali.ps.ui.PainelTabuladoPrincipal();
 
