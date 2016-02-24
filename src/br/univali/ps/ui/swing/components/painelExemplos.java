@@ -10,6 +10,7 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.FileHandle;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -61,24 +62,32 @@ public class painelExemplos extends javax.swing.JPanel
         List<DefaultMutableTreeNode> nodes = new ArrayList<>();
         try {
             File file = new File(dir,"index.properties");
-            prop.load(new FileInputStream(file));
-            for(int i=0; i<Integer.parseInt(prop.getProperty("items")); i++){
-               String item = "item"+i+".";
-               if(prop.getProperty(item+"type").equals("dir")){
-                   DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item+"name"));
-                   List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir.toString()+prop.getProperty(item+"name")));
-                   for (DefaultMutableTreeNode subNode : subNodes)
-                   {
-                       node.add(subNode);
+            if(file.exists()){
+                prop.load(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+                for(int i=0; i<Integer.parseInt(prop.getProperty("items")); i++){
+                   String item = "item"+i+".";
+                   if(prop.getProperty(item+"type").equals("dir")){
+                       DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item+"name"));
+                       List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir, prop.getProperty(item+"dir")));
+                       for (DefaultMutableTreeNode subNode : subNodes)
+                       {
+                           node.add(subNode);
+                       }
+                       nodes.add(node);
                    }
-                   nodes.add(node);
+                   else{
+                       DefaultMutableTreeNode leaf;
+                        if(Boolean.parseBoolean(prop.getProperty(item+"hasImage"))){
+                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"file"), new File(dir, prop.getProperty(item+"image")), prop.getProperty(item+"name"));
+                        }
+                        else{
+                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"file"), prop.getProperty(item+"name"));
+                        }
+                        nodes.add(leaf);
+                   }
+
                }
-               else{
-                   DefaultMutableTreeNode leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), new File(dir, prop.getProperty(item+"image")), new File(dir, prop.getProperty(item+"name")));
-                   nodes.add(leaf);
-               }
-               
-           }
+            }
         }
         catch (Exception exception){    
         }

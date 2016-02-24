@@ -16,12 +16,21 @@ public class ExampleMutableTreeNode extends DefaultMutableTreeNode
 {
     private File file;
     private File image;
+    private String description;
 
-    public ExampleMutableTreeNode(File file, File image, Object userObject)
+    public ExampleMutableTreeNode(File file, String description, File image, Object userObject)
     {
         super(userObject);
         this.file = file;
         this.image = image;
+        this.description = description;
+    }
+    
+    public ExampleMutableTreeNode(File file, String description , Object userObject)
+    {
+        super(userObject);
+        this.file = file;
+        this.description = description;
     }
 
     public File getImage()
