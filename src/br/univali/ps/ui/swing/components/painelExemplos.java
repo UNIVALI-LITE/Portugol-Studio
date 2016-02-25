@@ -22,9 +22,11 @@ import java.util.List;
 import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -48,8 +50,6 @@ public class painelExemplos extends javax.swing.JPanel
             File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
             if (diretorioExemplos.exists()) {
-//                Icon iconeDiretorio = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png");
-//                Icon iconeArquivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
                 DefaultMutableTreeNode root = new DefaultMutableTreeNode("Exemplos");
                 List<DefaultMutableTreeNode> nodes = readIndex(diretorioExemplos);
                 for (DefaultMutableTreeNode node : nodes)
@@ -59,10 +59,28 @@ public class painelExemplos extends javax.swing.JPanel
                 DefaultTreeModel model = new DefaultTreeModel(root);
                 arvoreExemplos.setModel(model);
                 initTreeListner();
+                expandJTree();
+                jTreedoClick();
             }
         }
         catch (Exception exception){
-            
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
+        }
+    }
+    
+    private void jTreedoClick(){
+        SwingUtilities.invokeLater(() ->
+        {
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) arvoreExemplos.getModel().getRoot();
+            DefaultMutableTreeNode leaf = root.getLastLeaf();
+            arvoreExemplos.setSelectionPath(new TreePath(leaf.getPath()));
+        });
+        
+    }
+    
+    private void expandJTree(){
+        for(int i=0; i<arvoreExemplos.getRowCount();i++){
+            arvoreExemplos.expandRow(i);
         }
     }
     
@@ -98,7 +116,8 @@ public class painelExemplos extends javax.swing.JPanel
                }
             }
         }
-        catch (Exception exception){    
+        catch (Exception exception){   
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
         }
         return nodes;
     }
@@ -124,7 +143,6 @@ public class painelExemplos extends javax.swing.JPanel
                         image.setDisplayType ( DisplayType.fitComponent );
                         imagePane.add(image);
                         imagePane.setPreferredSize(new Dimension(this.getSize().width/4,0));
-                        System.out.println(this.getSize().width/4);
                     }else{
                         imagePane.setPreferredSize(new Dimension(20,0));
                     }

@@ -39,18 +39,24 @@ public class Logo extends javax.swing.JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+    private void initComponents()
+    {
 
-        logo = new javax.swing.JLabel();
         versao = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
+
+        versao.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        versao.setForeground(new java.awt.Color(255, 194, 0));
+        versao.setText("versao.properties");
 
         setBackground(new java.awt.Color(35, 72, 127));
         setMaximumSize(new java.awt.Dimension(310, 110));
         setMinimumSize(new java.awt.Dimension(310, 50));
         setPreferredSize(new java.awt.Dimension(310, 10));
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 formMouseClicked(evt);
             }
         });
@@ -61,16 +67,6 @@ public class Logo extends javax.swing.JPanel
         logo.setMinimumSize(new java.awt.Dimension(293, 50));
         logo.setPreferredSize(new java.awt.Dimension(293, 75));
         add(logo, new java.awt.GridBagConstraints());
-
-        versao.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        versao.setForeground(new java.awt.Color(255, 194, 0));
-        versao.setText("versao.properties");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(32, 0, 0, 22);
-        add(versao, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_formMouseClicked

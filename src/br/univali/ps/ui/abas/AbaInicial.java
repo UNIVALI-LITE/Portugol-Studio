@@ -437,12 +437,12 @@ public final class AbaInicial extends Aba {
         painelFundo.setBackground(new java.awt.Color(49, 104, 146));
         painelFundo.setLayout(new java.awt.BorderLayout());
 
-        painelCabecalho.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        painelCabecalho.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
         painelCabecalho.setOpaque(false);
         painelCabecalho.setLayout(new java.awt.BorderLayout());
 
         logoPS.setOpaque(false);
-        logoPS.setPreferredSize(null);
+        logoPS.setPreferredSize(new java.awt.Dimension(0, 100));
         painelCabecalho.add(logoPS, java.awt.BorderLayout.PAGE_START);
 
         painelAmbiente.setOpaque(false);
@@ -531,11 +531,9 @@ public final class AbaInicial extends Aba {
 
         conteudoColaborar.setBackground(new java.awt.Color(137, 196, 244));
         conteudoColaborar.setOpaque(false);
-        conteudoColaborar.setPreferredSize(null);
         conteudoColaborar.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento1.setOpaque(false);
-        painelAlinhamento1.setPreferredSize(null);
         painelAlinhamento1.setLayout(new javax.swing.BoxLayout(painelAlinhamento1, javax.swing.BoxLayout.X_AXIS));
 
         rotuloAtalhosTeclado.setBackground(new java.awt.Color(228, 241, 254));

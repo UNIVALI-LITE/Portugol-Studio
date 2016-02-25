@@ -1003,7 +1003,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             int offset = textArea.getLineStartOffset(line);
 
             textArea.getFoldManager().ensureOffsetNotInClosedFold(offset);
-
+            //TODO Configurar cor tdo tema
             tag = textArea.addLineHighlight(line, new Color(0f, 1f, 0f, 0.20f));
 
             ultimaLinhaHighlight = line;
