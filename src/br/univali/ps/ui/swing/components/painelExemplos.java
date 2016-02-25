@@ -43,6 +43,7 @@ public class painelExemplos extends javax.swing.JPanel
     }
     
     private void inicializarJTree(){
+        arvoreExemplos.setCellRenderer(new ExampleTreeRender());
         try {
             File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
