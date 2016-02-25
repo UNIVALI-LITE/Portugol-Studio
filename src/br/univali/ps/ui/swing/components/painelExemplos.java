@@ -12,6 +12,7 @@ import br.univali.ps.ui.util.FileHandle;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -121,6 +122,10 @@ public class painelExemplos extends javax.swing.JPanel
                         WebImage image = new WebImage(new ImageIcon(item.getImage().toString()));
                         image.setDisplayType ( DisplayType.fitComponent );
                         imagePane.add(image);
+                        imagePane.setPreferredSize(new Dimension(this.getSize().width/4,0));
+                        System.out.println(this.getSize().width/4);
+                    }else{
+                        imagePane.setPreferredSize(new Dimension(20,0));
                     }
                     openExample.setAction(new AbstractAction(){
                         @Override
