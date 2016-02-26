@@ -166,7 +166,7 @@
                     </Property>
                     <Property name="opaque" type="boolean" value="false"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[400, 25]"/>
+                      <Dimension value="[400, 35]"/>
                     </Property>
                   </Properties>
                   <Constraints>

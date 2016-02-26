@@ -171,8 +171,7 @@ public class painelExemplos extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -227,7 +226,7 @@ public class painelExemplos extends javax.swing.JPanel
 
         jPanel3.setBackground(new java.awt.Color(204, 153, 0));
         jPanel3.setOpaque(false);
-        jPanel3.setPreferredSize(new java.awt.Dimension(400, 25));
+        jPanel3.setPreferredSize(new java.awt.Dimension(400, 35));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         openExample.setText("Explorar Exemplo");
