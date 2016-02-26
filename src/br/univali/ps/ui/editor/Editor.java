@@ -514,7 +514,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
-        aplicarTema(configuracoes.getTemaEditor());
+                    aplicarTema(configuracoes.getTemaEditor());
         setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
         setCentralizarCodigoFonte(configuracoes.isCentralizarCodigoFonte());
     }

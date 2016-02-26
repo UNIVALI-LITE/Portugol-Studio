@@ -35,9 +35,6 @@ public class ExampleTreeRender extends DefaultTreeCellRenderer {
         label.repaint();
         tree.revalidate();
         this.repaint();
-        System.out.println("expanded "+expanded);
-        System.out.println("Custom  "+ value.toString());
-
         return label;
     }
     
