@@ -605,18 +605,17 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     }
 
     private boolean adicionaNoMatriz(NoDeclaracaoMatriz noTransferido) {
-        NoDeclaracaoMatriz declaracaoMatriz = ((NoDeclaracaoMatriz) noTransferido);
         int colunas = -1, linhas = -1;
-        if (declaracaoMatriz.getNumeroColunas() != null && declaracaoMatriz.getNumeroLinhas() != null) {
-            colunas = ((NoInteiro) declaracaoMatriz.getNumeroColunas()).getValor();
-            linhas = ((NoInteiro) declaracaoMatriz.getNumeroLinhas()).getValor();
-        } else if (declaracaoMatriz.getInicializacao() != null) {
-            List<List<Object>> valores = ((NoMatriz) declaracaoMatriz.getInicializacao()).getValores();
+        if (noTransferido.getNumeroColunas() != null && noTransferido.getNumeroLinhas() != null) {
+            colunas = ((NoInteiro) noTransferido.getNumeroColunas()).getValor();
+            linhas = ((NoInteiro) noTransferido.getNumeroLinhas()).getValor();
+        } else if (noTransferido.getInicializacao() != null) {
+            List<List<Object>> valores = ((NoMatriz) noTransferido.getInicializacao()).getValores();
             linhas = valores.size();
             colunas = valores.get(0).size();
         }
         if (colunas > 0 && linhas > 0) {
-            model.addElement(new ItemDaListaParaMatriz(linhas, colunas, declaracaoMatriz));
+            model.addElement(new ItemDaListaParaMatriz(linhas, colunas, noTransferido));
             return true;
         }
         return false;
