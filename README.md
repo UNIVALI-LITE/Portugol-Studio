@@ -12,7 +12,7 @@ Primeiramente é preciso a IDE [NetBeans](https://netbeans.org/) e ter os Projet
 * Portugol Utils
 * Portugol Studio Recursos
 
->Estes Progetos Podem ser encontrados em nossa [Pagina](https://github.com/UNIVALI-LITE)
+>Estes Projetos Podem ser encontrados em nossa [Pagina](https://github.com/UNIVALI-LITE)
 
 ***
 O **Portugol Studio** é desenvolvido pelo [LITE](http://lite.acad.univali.br/)
