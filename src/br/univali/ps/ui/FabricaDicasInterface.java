@@ -1,7 +1,6 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.ui.util.IconFactory;
-import com.alee.managers.notification.DisplayType;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.WebNotificationPopup;
 import com.alee.managers.tooltip.TooltipManager;
