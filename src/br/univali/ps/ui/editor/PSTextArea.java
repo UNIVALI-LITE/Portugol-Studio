@@ -1,7 +1,5 @@
 package br.univali.ps.ui.editor;
 
-import br.univali.ps.dominio.PortugolDocumento;
-import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
@@ -12,26 +10,20 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.GrayFilter;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
@@ -53,8 +45,6 @@ public class PSTextArea extends RSyntaxTextArea {
     private static final Logger LOGGER = Logger.getLogger(PSTextArea.class.getName());
 
     private static Icon iconePontoDeParadaAtivado = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
-    //cria o ícone ativado a partir do arquivo de ícone para evitar um erro no NetBeans
-    //quando se abre a aba de projeto da AbaDeCodigoFonte. 
     private static Icon iconePontoDeParadaDesativado = criaIconeDesativado(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
 
     private List<IconePontoDeParada> pontosDeParada = new ArrayList<>();
@@ -123,7 +113,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
     /**
      * *
-     * Este método é chamado sempre que o programa é recompilado para criar os
+     * É chamado sempre que o programa é recompilado para criar os
      * ícones de ponto de parada desativados nas linhas que são paráveis
      *
      * @param linhasParaveis
@@ -254,7 +244,6 @@ public class PSTextArea extends RSyntaxTextArea {
         tema.apply(this);
     }
 
-    //++++++++++++++++++++++++++++++++++
     private static Icon criaIconeDesativado(Icon icon) {
         if (icon == null) {
             return null;
@@ -264,7 +253,6 @@ public class PSTextArea extends RSyntaxTextArea {
         return new ImageIcon(GrayFilter.createDisabledImage(image));
     }
 
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //herdando de FoldingAwareIconRowHeader para corrigir o bug que acontecia nos pontos de parada quanto o código estava dobrado
     private class PSIconRowHeader extends FoldingAwareIconRowHeader {
 
@@ -280,7 +268,7 @@ public class PSTextArea extends RSyntaxTextArea {
                 }
 
             });
-            //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
+            //deixa a cor do componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
             setOpaque(true);
             setBackground(WeblafUtils.BACKGROUND_CLARO);
         }
@@ -318,7 +306,6 @@ public class PSTextArea extends RSyntaxTextArea {
         public LineNumberList createLineNumberList(RTextArea textArea) {
             this.textArea = (PSTextArea) textArea;
             numberList = super.createLineNumberList(textArea);
-            //numberList.setBorder(BorderFactory.createLineBorder(Color.RED));
             numberList.addMouseListener(new MouseAdapter() {
 
                 @Override

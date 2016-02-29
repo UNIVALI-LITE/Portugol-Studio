@@ -232,14 +232,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     private void criarDicasInterface() {
-        //FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        //FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar);
-        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", acaoDescomentar);
-        //FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Expande/restaura o tamanho do editor", acaoAlternarModoEditor);
-        //FabricaDicasInterface.criarDicaInterface(btnPesquisar, "Pesquisa e/ou substitui um texto no editor", acaoPesquisarSubstituir, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        //FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+//        FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+//        FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+//        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar);
+//        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", acaoDescomentar);
+//        FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+//        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Expande/restaura o tamanho do editor", acaoAlternarModoEditor);
+//        FabricaDicasInterface.criarDicaInterface(btnPesquisar, "Pesquisa e/ou substitui um texto no editor", acaoPesquisarSubstituir, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
+//        FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
 
     private void configurarTextArea() {
@@ -513,8 +513,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
-
-                    aplicarTema(configuracoes.getTemaEditor());
+        aplicarTema(configuracoes.getTemaEditor());
         setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
         setCentralizarCodigoFonte(configuracoes.isCentralizarCodigoFonte());
     }
@@ -565,7 +564,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     /**
-     * Este método deve ser usado somente para definir o código fonte quando o
+     * Deve ser usado somente para definir o código fonte quando o
      * componente estiver embutido no HTML da ajuda
      *
      * @param codigo
@@ -605,6 +604,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             case Configuracoes.TEMA_EDITOR:
                 aplicarTema((String) evt.getNewValue());
+                FabricaDicasInterface.mostrarNotificacao("Usando tema " + evt.getNewValue(), IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
                 break;
 
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:
@@ -745,9 +745,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         textArea.getFoldManager().reparse();
 
-        for (int linha : linhas) {
+        linhas.stream().forEach((linha) -> {
             textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
-        }
+        });
     }
 
     public void finalizarExecucao(ResultadoExecucao resultadoExecucao) {
@@ -786,23 +786,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     private void rolarAtePosicao(final int posicao) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    int ma = scrollPane.getHeight() / 2;
-                    int ml = scrollPane.getWidth() / 2;
-
-                    Rectangle areaPosicao = textArea.modelToView(posicao);
-
-                    if (areaPosicao != null) {
-                        Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
-                        textArea.scrollRectToVisible(area);
-                    }
-                } catch (BadLocationException ex) {
-
+        SwingUtilities.invokeLater(() -> {
+            try {
+                int ma = scrollPane.getHeight() / 2;
+                int ml = scrollPane.getWidth() / 2;
+                
+                Rectangle areaPosicao = textArea.modelToView(posicao);
+                
+                if (areaPosicao != null) {
+                    Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
+                    textArea.scrollRectToVisible(area);
                 }
+            } catch (BadLocationException ex) {
+                
             }
         });
 
@@ -915,11 +911,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);
-
-            int xDaDica = getWidth() / 2;
-            int yDaDica = getHeight() / 2 + (int) (Math.random() * 100);
-            FabricaDicasInterface.criarDicaInterfaceEstatica(this, "Usando tema " + nome, new Point(xDaDica, yDaDica));
-
+            
             for (Component componente : menuTemas.getComponents()) {
                 JMenuItem item = (JMenuItem) componente;
 

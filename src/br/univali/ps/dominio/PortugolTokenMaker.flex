@@ -259,7 +259,7 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 
 	/* Boolean literals. */
 	"verdadeiro" |
-	"falso" |
+	"falso"                         { addToken(Token.LITERAL_BOOLEAN); }
 
 	/* Data types. */
 	"logico" |
