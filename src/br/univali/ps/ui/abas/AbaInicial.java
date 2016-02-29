@@ -1,6 +1,5 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
@@ -9,7 +8,6 @@ import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaAtalhosTeclado;
 import br.univali.ps.ui.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.TelaPrincipal;
-import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -22,25 +20,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicSeparatorUI;
 
 public final class AbaInicial extends Aba {
 
@@ -126,7 +114,7 @@ public final class AbaInicial extends Aba {
                     rotuloAssistirVideoAulas.setIcon(null);
                     rotuloConhecerBibliotecas.setIcon(null);
                     rotuloConhecerLinguagem.setIcon(null);
-                    FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
+                    FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
                 }else if(getSize().width > 1000 && getSize().height>750){
                     redimensionouParaBaixaResolucao = false;
                     rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
