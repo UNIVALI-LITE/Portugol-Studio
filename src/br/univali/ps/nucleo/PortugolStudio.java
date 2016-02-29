@@ -6,6 +6,7 @@ import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
@@ -161,7 +162,7 @@ public final class PortugolStudio {
             carregarBibliotecas();
             Splash.definirProgresso(90, "step8.png");
 
-            //AbaCodigoFonte.inicializarPool();
+            AbaCodigoFonte.inicializarPool();
             Splash.definirProgresso(100, "step9.png");
 
             try {
