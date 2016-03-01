@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadFactory;
  */
 public final class NamedThreadFactory implements ThreadFactory
 {
-    private static Integer count = -1;
+    private Integer count = -1;
     
     private final String nameFormat;
     private final Integer priority;
