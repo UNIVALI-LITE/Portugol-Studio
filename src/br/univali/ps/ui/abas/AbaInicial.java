@@ -1,6 +1,5 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
@@ -9,7 +8,6 @@ import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaAtalhosTeclado;
 import br.univali.ps.ui.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.TelaPrincipal;
-import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -22,25 +20,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicSeparatorUI;
 
 public final class AbaInicial extends Aba {
 
@@ -147,11 +135,8 @@ public final class AbaInicial extends Aba {
                 if (configuracoes.isExibirAvisoVideoAulas()) {
                     configuracoes.setExibirAvisoVideoAulas(false);
 
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            JOptionPane.showMessageDialog(AbaInicial.this, "Seja bem vindo!!\n\nPara tornar o Portugol Studio ainda melhor, preparamos uma série de vídeoaulas que irão auxiliá-lo no seu aprendizado.\nPara assistí-las, acesse o link \"Assistir Vídeoaulas\" localizado no menu \"Aprender\".\n\nObrigado por utilizar o Portugol Studio e bons estudos!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-                        }
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(AbaInicial.this, "Seja bem vindo!!\n\nPara tornar o Portugol Studio ainda melhor, preparamos uma série de vídeoaulas que irão auxiliá-lo no seu aprendizado.\nPara assistí-las, acesse o link \"Assistir Vídeoaulas\" localizado no menu \"Aprender\".\n\nObrigado por utilizar o Portugol Studio e bons estudos!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                     });
                 }
             }

@@ -10,11 +10,8 @@ import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
-import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -128,30 +125,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     private void exibirPopupLeia()
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                popupLeia = new WebPopOver(console);
-
-                popupLeia.setModal(false);
-                popupLeia.setMargin(8);
-                popupLeia.setMovable(false);
-                popupLeia.setCloseOnFocusLoss(false);
-                popupLeia.setLayout(new VerticalFlowLayout());
-
-                WebLabel label = new WebLabel("O programa está aguardando a entrada de dados", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "warning.png"));
-                label.setFont(label.getFont().deriveFont(12.0f));
-
-                popupLeia.add(label);
-                popupLeia.show(console, PopOverDirection.up);
-
-//                        popupLeia.requestFocus();
-                AbaConsole.this.selecionar();
-                console.requestFocusInWindow();
-            }
-        });
+        FabricaDicasInterface.criarDicaInterfaceEstatica(console, "O programa está aguardando a entrada de dados");
     }
 
     private JPopupMenu criarBarraDeBotoes()
@@ -251,12 +225,6 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     }
 
-//    private void criarDicasInterface() {
-//        FabricaDicasInterface.criarDicaInterface(botaoLimpar, "Limpa o texto existente no console");
-//        FabricaDicasInterface.criarDicaInterface(botaoCopiar, "Copia o texto existente no console");
-//        FabricaDicasInterface.criarDicaInterface(botaoAumentarFonte, "Aumenta o tamanho da fonte do console");
-//        FabricaDicasInterface.criarDicaInterface(botaoDiminuirFonte, "Diminui o tamanho da fonte do console");
-//    }
     private void instalarObservadores()
     {
         Configuracoes configuracoes = Configuracoes.getInstancia();
