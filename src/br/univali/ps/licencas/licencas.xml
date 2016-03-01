@@ -15,10 +15,10 @@
     <recurso nome="ANTLR" versao="3.4" arquivo="licenca-antlr-3.4.txt" url="http://www.antlr3.org/">
         <descricao>Gerador de parsers que permitem, ler, processar, executar ou traduzir arquivos binários ou de texto estruturado. Amplamente utilizado na construção de linguagens de programação, ferramentas, bibliotecas e frameworks</descricao>
     </recurso>    
-    <recurso nome="RSyntaxTextArea" versao="2.5.2" arquivo="licenca-rsyntaxtextarea-2.5.2.txt" url="http://fifesoft.com/rsyntaxtextarea/">
+    <recurso nome="RSyntaxTextArea" versao="2.5.2" arquivo="licenca-rsyntaxtextarea-2.5.2.txt" url="http://bobbylight.github.io/RSyntaxTextArea/">
         <descricao>Componente de texto baseado na API Swing do Java. Provê recursos para destaque e dobramento de código fonte. Indicado para aplicações cujo foco é a edição ou visualização de código fonte</descricao>   
     </recurso>
-    <recurso nome="AutoComplete" versao="2.5.2" arquivo="licenca-autocomplete-2.5.2.txt" url="http://fifesoft.com/autocomplete/">
+    <recurso nome="AutoComplete" versao="2.5.2" arquivo="licenca-autocomplete-2.5.2.txt" url="https://github.com/bobbylight/autocomplete">
         <descricao>Componente de texto baseado na API Swing do Java. Provê recursos para conclusão de código fonte. Dependende do RSyntaxTextArea. Indicado para aplicações cujo foco é a edição ou visualização de código fonte</descricao>   
     </recurso>
     <recurso nome="RSyntaxTextArea Components" versao="2.5.2" arquivo="licenca-rstaui-2.5.2.txt" url="https://github.com/bobbylight/RSTAUI">
@@ -44,5 +44,11 @@
     </recurso>
     <recurso nome="Apache HTTP Components" versao="4.3.2" arquivo="licenca-httpcomponents-4.3.2.txt" url="https://hc.apache.org/">
         <descricao>Biblioteca para realização de conexões e acesso a serviços utilizando o protocolo HTTP. Utilizado pelo Portugol Studio para realizar a verificação e o download de atualizações</descricao>
+    </recurso>
+    <recurso nome="Tritonus" versao="1.4.2" arquivo="licenca-tritonus-1.4.2.txt" url="http://www.tritonus.org/plugins.html">
+        <descricao> Biblioteca que é uma implementação da JAVA Sound API</descricao>
+    </recurso>
+    <recurso nome="MP3 SPI" versao="1.9.5" arquivo="licenca-mp3spi-1.9.5.txt" url="http://www.javazoom.net/mp3spi/mp3spi.html">
+        <descricao>MP3SPI é um Java Service Provider Interface que adiciona o suporte ao formato de audio mp3 a plataforma Java. Suporta Streaming, ID3v2 frames, Equalizador, ....  </descricao>
     </recurso>
 </licencas>

@@ -125,14 +125,13 @@ public final class TelaLicencas extends javax.swing.JDialog
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelAlinhamento = new javax.swing.JPanel();
         painelTabulado = new javax.swing.JTabbedPane();
         painelBotoes = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        jButton1 = new javax.swing.JButton();
+        botaoVisitarPagina = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         jButton2 = new javax.swing.JButton();
         painelConteudo = new javax.swing.JPanel();
@@ -150,23 +149,23 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
         painelBotoes.add(filler1);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/home.png"))); // NOI18N
-        jButton1.setText("Visitar Página");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setDefaultCapable(false);
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
-        jButton1.setIconTextGap(8);
-        jButton1.setMargin(new java.awt.Insets(2, 8, 2, 8));
-        jButton1.setPreferredSize(new java.awt.Dimension(128, 40));
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton1ActionPerformed(evt);
+        botaoVisitarPagina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/home.png"))); // NOI18N
+        botaoVisitarPagina.setText("Visitar Página");
+        botaoVisitarPagina.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botaoVisitarPagina.setDefaultCapable(false);
+        botaoVisitarPagina.setFocusPainted(false);
+        botaoVisitarPagina.setFocusable(false);
+        botaoVisitarPagina.setIconTextGap(8);
+        botaoVisitarPagina.setMargin(new java.awt.Insets(2, 8, 2, 8));
+        botaoVisitarPagina.setMaximumSize(null);
+        botaoVisitarPagina.setMinimumSize(null);
+        botaoVisitarPagina.setPreferredSize(null);
+        botaoVisitarPagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoVisitarPaginaActionPerformed(evt);
             }
         });
-        painelBotoes.add(jButton1);
+        painelBotoes.add(botaoVisitarPagina);
         painelBotoes.add(filler2);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/sair.png"))); // NOI18N
@@ -179,10 +178,8 @@ public final class TelaLicencas extends javax.swing.JDialog
         jButton2.setMaximumSize(new java.awt.Dimension(136, 40));
         jButton2.setMinimumSize(new java.awt.Dimension(136, 40));
         jButton2.setPreferredSize(new java.awt.Dimension(128, 40));
-        jButton2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
@@ -220,8 +217,8 @@ public final class TelaLicencas extends javax.swing.JDialog
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
+    private void botaoVisitarPaginaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_botaoVisitarPaginaActionPerformed
+    {//GEN-HEADEREND:event_botaoVisitarPaginaActionPerformed
         PainelLicenca painelLicenca = (PainelLicenca) painelTabulado.getSelectedComponent();
         Licencas.Recurso recurso = painelLicenca.getRecurso();
             
@@ -236,12 +233,12 @@ public final class TelaLicencas extends javax.swing.JDialog
             
             JOptionPane.showMessageDialog(TelaLicencas.this, "Não foi possível abrir o seu navegador de Internet!\nO endereço da Página Web foi copiado para sua área de transferência", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botaoVisitarPaginaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoVisitarPagina;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel painelAlinhamento;
     private javax.swing.JPanel painelBotoes;
