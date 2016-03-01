@@ -21,6 +21,9 @@ import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.ExcecaoAplicacao;
+import br.univali.ps.plugins.base.ErroInstalacaoPlugin;
+import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.*;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.editor.PSTextAreaListener;
@@ -68,14 +71,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
 
-    //private static final int TAMANHO_POOL_ABAS = 12;
-    //private static PoolAbasCodigoFonte poolAbasCodigoFonte;
+    private static final int TAMANHO_POOL_ABAS = 12;
+    private static PoolAbasCodigoFonte poolAbasCodigoFonte;
     public static final float VALOR_INCREMENTO_FONTE = 2.0f;
     public static final float TAMANHO_MAXIMO_FONTE = 25.0f;
     public static final float TAMANHO_MINIMO_FONTE = 10.0f;
 
     private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
     private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
+
 
     private final TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
 
@@ -345,32 +349,35 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-//    public static void inicializarPool() {
-//        try {
-//            SwingUtilities.invokeAndWait(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        //TODO: Verificar se podemos mover este código para um local melhor.
-//                        // Antes nós tinhamos o Applet, mas agora. Seguem comentários anteriores:
-//
-//                        /*
-//                         inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando. 
-//                         O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
-//                         */
-//                        poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
-//                    } catch (Exception excecao) {
-//                        LOGGER.log(Level.SEVERE, "Não foi possível inicializar o pool de abas de código fonte", excecao);
-//                    }
-//                }
-//            });
-//        } catch (Exception e) {
-//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-//        }
-//
-//    }
+    public static void inicializarPool() {
+        try {            
+            SwingUtilities.invokeAndWait(() ->
+            {
+                try {
+                    //TODO: Verificar se podemos mover este código para um local melhor.
+                    // Antes nós tinhamos o Applet, mas agora. Seguem comentários anteriores:
+                    
+                    /*
+                    inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando.
+                    O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
+                    */
+                    poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
+                } catch (Exception excecao) {
+                    LOGGER.log(Level.SEVERE, "Não foi possível inicializar o pool de abas de código fonte", excecao);
+                }
+            });
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+    }
+    
     public static AbaCodigoFonte novaAba() {
-        AbaCodigoFonte aba = new AbaCodigoFonte();// poolAbasCodigoFonte.obter();
+        if(poolAbasCodigoFonte == null){
+            System.err.println("ATENÇÃO, não foi iniciado um Pool de Abas no inicio do programa. A aba será criada sem cache.");
+            return new AbaCodigoFonte();
+        }
+        AbaCodigoFonte aba = (AbaCodigoFonte) poolAbasCodigoFonte.obter();
         return aba;
     }
 
@@ -1119,10 +1126,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento().isChanged() && podeSalvar;
     }
 
-    private boolean podeFechar() {
-        return !programaExecutando() && (!arquivoModificado() || (arquivoModificado() && !usuarioCancelouSalvamento));
-    }
-
     @Override
     public boolean fechandoAba(Aba aba) {
         this.selecionar();
@@ -1706,16 +1709,27 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return divisorArvoreEditor;
     }
 
-//    private void redefinirAba() {
-//        editor.getPortugolDocumento().setFile(null);
-//        carregarAlgoritmoPadrao();
-//        editor.getTextArea().discardAllEdits();
-//        painelSaida.getConsole().limparConsole();
-//        editor.desabilitarCentralizacaoCodigoFonte();
-//        painelSaida.getAbaMensagensCompilador().limpar();
-//        painelSaida.getAbaMensagensCompilador().selecionar();
-//
-//    }
+    private void redefinirAba() {
+        editor.getPortugolDocumento().setFile(null);
+        carregarAlgoritmoPadrao();
+        editor.getTextArea().discardAllEdits();
+        painelSaida.getConsole().limparConsole();
+        editor.desabilitarCentralizacaoCodigoFonte();
+        painelSaida.getAbaMensagensCompilador().limpar();
+        painelSaida.getAbaMensagensCompilador().selecionar();
+        
+        editor.getPortugolDocumento().setChanged(true);
+        getCabecalho().setTitulo("Sem título");
+        getCabecalho().setIcone(lampadaApagada);
+        podeSalvar = true;
+
+    }
+    
+    private boolean podeFechar()
+    {
+        return !programaExecutando() && (!arquivoModificado() || (arquivoModificado() && !usuarioCancelouSalvamento));
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentas;
@@ -1744,4 +1758,59 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JToolBar.Separator separadorDosBotoes;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
     // End of variables declaration//GEN-END:variables
+
+    private static class PoolAbasCodigoFonte extends PoolAbstrato
+    {
+
+        public PoolAbasCodigoFonte(int tamanho)
+        {
+            super(tamanho);
+        }
+
+        @Override
+        protected AbaCodigoFonte criarObjeto()
+        {
+            AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
+            
+            abaCodigoFonte.adicionarAbaListener(new AbaListener()
+            {
+                @Override
+                public boolean fechandoAba(Aba aba)
+                {
+                    AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
+                    if (abaCodigoFonte.podeFechar())
+                    {
+                        abaCodigoFonte.redefinirAba();
+
+                        /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
+                         * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
+                         * da utilização anterior
+                         */
+                        GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
+
+                        /*
+                         * Logo após, instalamos todos os plugins novamente, para garantir que quando a aba for
+                         * reaproveitada a partir do pool, já estará inicializada com os plugins
+                         */
+                        try
+                        {
+                            GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
+                        }
+                        catch (ErroInstalacaoPlugin erro)
+                        {
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
+                        }
+
+                        devolver(abaCodigoFonte);
+
+                        return true;
+                    }
+
+                    return false;
+                }
+            });
+
+            return abaCodigoFonte;
+        }
+    }
 }
