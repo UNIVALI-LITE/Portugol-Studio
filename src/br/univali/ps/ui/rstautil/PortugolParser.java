@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
+import br.univali.ps.nucleo.NamedThreadFactory;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
@@ -32,7 +33,7 @@ public final class PortugolParser extends AbstractParser
 
     public static final String PROPRIEDADE_PROGRAMA_COMPILADO = "PROGRAMA_COMPILADO";
 
-    private static final ExecutorService service = Executors.newCachedThreadPool();
+    private static final ExecutorService service = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Parser do RSyntaxTextArea)"));
 
     private static final char[] caracteresParada = new char[]
     {
