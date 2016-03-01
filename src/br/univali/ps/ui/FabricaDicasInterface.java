@@ -75,58 +75,46 @@ public final class FabricaDicasInterface
         WebCustomTooltip tip = TooltipManager.setTooltip(componente, iconePadrao, dica);
         TooltipManager.showOneTimeTooltip(tip);
     }
+    
+    public static void criarDicaInterfaceEstatica(JComponent componente,Icon icone, String dica)
+    {
+        WebCustomTooltip tip = TooltipManager.setTooltip(componente, icone, dica);
+        TooltipManager.showOneTimeTooltip(tip);
+    }
 
     public static void mostrarNotificacao(final String texto)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-                WebNotificationPopup notificacao = new WebNotificationPopup();
-                notificacao.setContent(texto);
-                notificacao.setDisplayTime(10000);
-                notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "light-bulb.png"));
-
-                NotificationManager.showNotification(notificacao);
-            }
+        SwingUtilities.invokeLater(() -> {
+            WebNotificationPopup notificacao = new WebNotificationPopup();
+            notificacao.setContent(texto);
+            notificacao.setDisplayTime(10000);
+            notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "light-bulb.png"));
+            
+            NotificationManager.showNotification(notificacao);
         });
     }
     
     public static void mostrarNotificacao(final String texto, int displayTime)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-                WebNotificationPopup notificacao = new WebNotificationPopup();
-                notificacao.setContent(texto);
-                notificacao.setDisplayTime(displayTime);
-                notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "light-bulb.png"));
-
-                NotificationManager.showNotification(notificacao);
-            }
+        SwingUtilities.invokeLater(() -> {
+            WebNotificationPopup notificacao = new WebNotificationPopup();
+            notificacao.setContent(texto);
+            notificacao.setDisplayTime(displayTime);
+            notificacao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "light-bulb.png"));
+            
+            NotificationManager.showNotification(notificacao);
         });
     }
     
     public static void mostrarNotificacao(final String texto, int displayTime, Icon icon)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-                WebNotificationPopup notificacao = new WebNotificationPopup();
-                notificacao.setContent(texto);
-                notificacao.setDisplayTime(displayTime);
-                notificacao.setIcon(icon);
-
-                NotificationManager.showNotification(notificacao);
-            }
+        SwingUtilities.invokeLater(() -> {
+            WebNotificationPopup notificacao = new WebNotificationPopup();
+            notificacao.setContent(texto);
+            notificacao.setDisplayTime(displayTime);
+            notificacao.setIcon(icon);
+            
+            NotificationManager.showNotification(notificacao);
         });
     }
 }
