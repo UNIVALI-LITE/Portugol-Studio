@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public final class Mutex
 {
     private static final Logger LOGGER = Logger.getLogger(Mutex.class.getName());
-    private static final ExecutorService servico = Executors.newCachedThreadPool();
+    private static final ExecutorService servico = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Thread principal)"));
 
     //private static final int PORTA_INICIAL = 49152;
     //private static final int PORTA_FINAL = 65535;

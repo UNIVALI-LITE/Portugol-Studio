@@ -1,6 +1,7 @@
 package br.univali.ps.atualizador;
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.NamedThreadFactory;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,7 +33,7 @@ public final class GerenciadorAtualizacoes
     private static final int HTTP_OK = 200;
 
     private static final Logger LOGGER = Logger.getLogger(GerenciadorAtualizacoes.class.getName());
-    private static final ExecutorService servicoThread = Executors.newSingleThreadExecutor();
+    private static final ExecutorService servicoThread = Executors.newSingleThreadExecutor(new NamedThreadFactory("Portugol Studio (Gerenciador de atualizações)"));
 
     private boolean executando = false;
     private boolean uriModificada = false;
