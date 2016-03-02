@@ -492,7 +492,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             }
 
             for (NoDeclaracao no : nosTransferidos) {
-                if (!no.constante() && !contemNo(no)) {
+                if (!contemNo(no)) {
                     support.setShowDropLocation(true);
                     return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
                 }
