@@ -98,8 +98,12 @@ public final class BuscadorDeLinhasParaveis extends VisitanteNulo {
 
     private boolean verificaSePodeParar(NoBloco noBloco) {
         if (classesParaveis.contains(noBloco.getClass())) {
-            linhasParaveis.add(noBloco.getTrechoCodigoFonte().getLinha());
-            return true;
+            int linha = noBloco.getTrechoCodigoFonte().getLinha();
+            if (linha >= 0)
+            {
+                linhasParaveis.add(linha);
+                return true;
+            }
         }
         return false;
     }
