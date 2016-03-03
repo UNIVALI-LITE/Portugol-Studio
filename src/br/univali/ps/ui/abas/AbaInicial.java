@@ -108,20 +108,24 @@ public final class AbaInicial extends Aba {
             @Override
             public void componentResized(ComponentEvent e)
             {
-                if((getSize().width <= 800 || getSize().height<=600) && !redimensionouParaBaixaResolucao){
-                    redimensionouParaBaixaResolucao = true;
-                    rotuloSairProgramando.setIcon(null);
-                    rotuloAssistirVideoAulas.setIcon(null);
-                    rotuloConhecerBibliotecas.setIcon(null);
-                    rotuloConhecerLinguagem.setIcon(null);
-                    FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
-                }else if(getSize().width > 800 && getSize().height>600){
-                    redimensionouParaBaixaResolucao = false;
-                    rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
-                    rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
-                    rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
-                    rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
-                }
+                SwingUtilities.invokeLater(() -> {
+                    if(getSize().width <= 800 || getSize().height<=600){
+                        if(!redimensionouParaBaixaResolucao){
+                            redimensionouParaBaixaResolucao = true;
+                            rotuloSairProgramando.setIcon(null);
+                            rotuloAssistirVideoAulas.setIcon(null);
+                            rotuloConhecerBibliotecas.setIcon(null);
+                            rotuloConhecerLinguagem.setIcon(null);
+                            FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
+                        }
+                    }else{
+                        redimensionouParaBaixaResolucao = false;
+                        rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
+                        rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
+                        rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
+                        rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
+                    }
+                });
             }
             
         });
