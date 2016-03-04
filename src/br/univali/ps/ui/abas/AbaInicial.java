@@ -20,9 +20,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -87,8 +94,28 @@ public final class AbaInicial extends Aba {
 
     private void instalarAcoesSecretas() {
         instalarAcaoModificarURLAtualizacao();
+        instalarAcaoEaster1();
     }
 
+    private void instalarAcaoEaster1() {
+        getActionMap().put("CAGE", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                    
+                try {
+                    ImageIcon image = new ImageIcon(new URL("http://38.media.tumblr.com/avatar_73b7931eb242_64.png"));
+                    if(image.getIconWidth()>1){
+                        rotuloSairProgramando.setIcon(image);
+                        rotuloAssistirVideoAulas.setIcon(image);
+                        rotuloConhecerBibliotecas.setIcon(image);
+                        rotuloConhecerLinguagem.setIcon(image);
+                        JOptionPane.showMessageDialog(null, image, "Você foi Nick Cageado", JOptionPane.PLAIN_MESSAGE);
+                    }
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+                }                    
+            }
+        });
+    }
     private void instalarAcaoModificarURLAtualizacao() {
         getActionMap().put("BETA", new AbstractAction() {
             @Override
