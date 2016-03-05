@@ -80,7 +80,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
                 rolavemVertical++;
             }
             indiceDaLinha++;
-        } while (indiceDaLinha <= ultimaLinhaAtualizada + 2 && indiceDaLinha < totalDeLinhas);
+        } while (indiceDaLinha <= ultimaLinhaAtualizada && indiceDaLinha < totalDeLinhas);
         boolean precisaDeRolagem = yDaLinha > alturaDoComponente;
         if (precisaDeRolagem && ultimaLinhaAtualizada >= totalDeLinhas - 1) {//se é a última linha
             rolavemVertical++;
@@ -94,14 +94,14 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         int xDaColuna = margemEsquerda;
         int ultimaColunaAtualizada = item.getUltimaColunaAtualizada();
         int rolagem = 0;//conta quantas células é preciso deslocar para que a última célula atualizada fique visível no componente
-        int larguraDoComponente = getWidth();
+        int larguraDoComponente = getWidth() - MARGEM_HORIZONTAL*2;
         int indiceDaColuna = 0;
         do {
             xDaColuna += getLarguraDaColuna(indiceDaColuna++);
             if (xDaColuna > larguraDoComponente) {
                 rolagem++;
             }
-        } while (indiceDaColuna <= ultimaColunaAtualizada + 2 && indiceDaColuna < totalDeColunas);
+        } while (indiceDaColuna <= ultimaColunaAtualizada && indiceDaColuna < totalDeColunas);
 
         boolean precisaDeRolagem = xDaColuna > larguraDoComponente;
         if (precisaDeRolagem && ultimaColunaAtualizada >= totalDeColunas - 1) {//se é a última coluna
