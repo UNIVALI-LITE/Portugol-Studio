@@ -1,6 +1,5 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDicasInterface;
@@ -42,12 +41,10 @@ public final class AbaInicial extends Aba {
 
     public AbaInicial(TelaPrincipal telaPrincipal) {
         super();
-
         setPainelTabulado(telaPrincipal.getPainelTabulado());
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents(); 
         configurarResolucao();
-        configurarAcaoExplorarExemplos();
         configurarCursorLogos();
         criarDicasInterface();
         configurarAcoes();
@@ -323,36 +320,9 @@ public final class AbaInicial extends Aba {
 
         rotuloInformacoesSoftware.addMouseListener(listener);
         rotuloInformacoesSoftware.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        rotuloExplorarExemplos.addMouseListener(listener);
-        rotuloExplorarExemplos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         
         rotuloUpdate.addMouseListener(listener);
         rotuloUpdate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }
-
-    private void configurarAcaoExplorarExemplos() {
-        String nome = "explorarExemplos";
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.ALT_DOWN_MASK);
-
-        acaoExplorarExemplos = new AbstractAction(nome) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (menuExemplos != null) {
-                    selecionar();
-                    menuExemplos.show(rotuloExplorarExemplos, 0, rotuloExplorarExemplos.getHeight());
-                } else {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao("Não foi possível carregar os exemplos", ExcecaoAplicacao.Tipo.ERRO));
-                }
-            }
-        };
-
-        acaoExplorarExemplos.putValue(Action.ACCELERATOR_KEY, atalho);
-
-        getActionMap().put(nome, acaoExplorarExemplos);
-
-        getPainelTabulado().getActionMap().put(nome, acaoExplorarExemplos);
-        getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
     private void configurarAcaoExibirAtalhosTeclado() {
@@ -382,10 +352,8 @@ public final class AbaInicial extends Aba {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
-        rotuloExplorarExemplos = new javax.swing.JLabel();
         painelFundo = new javax.swing.JPanel();
         painelCabecalho = new javax.swing.JPanel();
         logoPS = new br.univali.ps.ui.imagens.Logo();
@@ -408,13 +376,6 @@ public final class AbaInicial extends Aba {
         painelConteudo = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         painelExemplos1 = new br.univali.ps.ui.swing.components.painelExemplos();
-
-        rotuloExplorarExemplos.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloExplorarExemplos.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloExplorarExemplos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        rotuloExplorarExemplos.setText("<html><body><div>Explorar os Exemplos (Alt+E)</div></body></html>");
-        rotuloExplorarExemplos.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloExplorarExemplos.setName("explorarExemplos"); // NOI18N
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -613,7 +574,6 @@ public final class AbaInicial extends Aba {
     private javax.swing.JLabel rotuloAtalhosTeclado;
     private javax.swing.JLabel rotuloConhecerBibliotecas;
     private javax.swing.JLabel rotuloConhecerLinguagem;
-    private javax.swing.JLabel rotuloExplorarExemplos;
     private javax.swing.JLabel rotuloInformacoesSoftware;
     private javax.swing.JLabel rotuloRelatarBug;
     private javax.swing.JLabel rotuloSairProgramando;

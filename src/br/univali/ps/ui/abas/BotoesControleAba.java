@@ -244,14 +244,11 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenu1 = new javax.swing.JMenu();
         painelTitulo = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
         painelBotoes = new javax.swing.JPanel();
         botaoAbrir = new javax.swing.JButton();
         botaoNovoArquivo = new javax.swing.JButton();
-
-        jMenu1.setText("jMenu1");
 
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(180, 25));
@@ -306,7 +303,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoAbrir;
     private javax.swing.JButton botaoNovoArquivo;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelTitulo;
     private javax.swing.JLabel titulo;
