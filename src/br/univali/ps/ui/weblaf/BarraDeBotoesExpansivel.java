@@ -128,7 +128,8 @@ public class BarraDeBotoesExpansivel extends JButton {
     }
 
     public void adicionaAcao(Action acao) {
-        JMenuItem item = new JMenuItem(acao);
+        JMenuItem item = new JMenuItem(acao);        
+        acao.putValue("MenuItem", item);
         item.setIcon((Icon) acao.getValue(Action.SMALL_ICON));
         item.setFont(getFont());
         menu.add(item);
