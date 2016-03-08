@@ -3,16 +3,12 @@ package br.univali.ps.ui;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.ps.ui.util.IconFactory;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *

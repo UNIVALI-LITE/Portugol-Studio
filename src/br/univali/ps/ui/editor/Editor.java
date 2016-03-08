@@ -174,8 +174,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         final JMenu menu = new JMenu("Cores");
         menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
-
-        //Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png");
         for (String tema : gerenciadorTemas.listarTemas()) {
             JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
             itemMenu.setAction(new AbstractAction(tema) {
@@ -653,9 +651,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         textArea.getFoldManager().reparse();
 
-        for (int linha : linhas) {
+        linhas.stream().forEach((linha) -> {
             textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
-        }
+        });
     }
 
     public void finalizarExecucao(ResultadoExecucao resultadoExecucao) {
@@ -692,23 +690,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     private void rolarAtePosicao(final int posicao) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    int ma = scrollPane.getHeight() / 2;
-                    int ml = scrollPane.getWidth() / 2;
-
-                    Rectangle areaPosicao = textArea.modelToView(posicao);
-
-                    if (areaPosicao != null) {
-                        Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
-                        textArea.scrollRectToVisible(area);
-                    }
-                } catch (BadLocationException ex) {
-
+        SwingUtilities.invokeLater(() -> {
+            try {
+                int ma = scrollPane.getHeight() / 2;
+                int ml = scrollPane.getWidth() / 2;
+                
+                Rectangle areaPosicao = textArea.modelToView(posicao);
+                
+                if (areaPosicao != null) {
+                    Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
+                    textArea.scrollRectToVisible(area);
                 }
+            } catch (BadLocationException ex) {
+                
             }
         });
 
@@ -737,12 +731,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         botao.getAction().setEnabled(acaoExterna.isEnabled());
 
-        acaoExterna.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("enabled")) {
-                    botao.getAction().setEnabled(acaoExterna.isEnabled());
-                }
+        acaoExterna.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            if (evt.getPropertyName().equals("enabled")) {
+                botao.getAction().setEnabled(acaoExterna.isEnabled());
             }
         });
     }
@@ -769,11 +760,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     private void centralizarCodigoFonte() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                rolarAtePosicao(textArea.getCaretPosition());
-            }
+        SwingUtilities.invokeLater(() -> {
+            rolarAtePosicao(textArea.getCaretPosition());
         });
     }
 
@@ -1004,29 +992,26 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
      * partir da coluna
      */
     public void destacarTrechoCodigoFonte(final int linha, final int coluna, final int tamanho) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
-                    int offs = elem.getStartOffset() + coluna;
-                    textArea.getHighlighter().removeAllHighlights();
-                    Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
-
-                    destaquesPlugin.add(destaque);
-                } catch (BadLocationException ex) {
-
-                }
-
-                rolarAtePosicao(linha, coluna);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
+                int offs = elem.getStartOffset() + coluna;
+                textArea.getHighlighter().removeAllHighlights();
+                Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+                
+                destaquesPlugin.add(destaque);
+            } catch (BadLocationException ex) {
+                
             }
+            
+            rolarAtePosicao(linha, coluna);
         });
     }
 
     private void removerDestaquesPlugins() {
-        for (Object destaque : destaquesPlugin) {
+        destaquesPlugin.stream().forEach((destaque) -> {
             textArea.getHighlighter().removeHighlight(destaque);
-        }
+        });
     }
 
     private class FindReplaceSearchListener implements SearchListener {
@@ -1123,23 +1108,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                WebLookAndFeel.install();
-                JFrame frame = new JFrame("Teste Editor");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800, 600);
-
-                JPanel painel = new JPanel(new BorderLayout());
-                Editor editor = new Editor();
-                painel.add(editor);
-                WeblafUtils.configuraWeblaf(painel);
-                frame.getContentPane().add(painel, BorderLayout.CENTER);
-
-                frame.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            WebLookAndFeel.install();
+            JFrame frame = new JFrame("Teste Editor");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
+            
+            JPanel painel = new JPanel(new BorderLayout());
+            Editor editor = new Editor();
+            painel.add(editor);
+            WeblafUtils.configuraWeblaf(painel);
+            frame.getContentPane().add(painel, BorderLayout.CENTER);
+            
+            frame.setVisible(true);
         });
 
     }
