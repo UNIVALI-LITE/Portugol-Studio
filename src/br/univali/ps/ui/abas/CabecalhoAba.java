@@ -62,37 +62,12 @@ public class CabecalhoAba extends JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        mniFechar = new javax.swing.JMenuItem();
-        mniFecharOutras = new javax.swing.JMenuItem();
         jLIcone = new javax.swing.JLabel();
         jLTitulo = new javax.swing.JLabel();
         botaoFechar = new javax.swing.JButton();
 
-        mniFechar.setText("Fechar esta aba");
-        mniFechar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                mniFecharActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(mniFechar);
-
-        mniFecharOutras.setText("Fechar as outras abas");
-        mniFecharOutras.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                mniFecharOutrasActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(mniFecharOutras);
-
-        setAlignmentY(0.5F);
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(300, 30));
         setMinimumSize(new java.awt.Dimension(110, 25));
@@ -116,10 +91,8 @@ public class CabecalhoAba extends JPanel
         botaoFechar.setBorder(null);
         botaoFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoFechar.setFocusable(false);
-        botaoFechar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoFecharActionPerformed(evt);
             }
         });
@@ -130,28 +103,10 @@ public class CabecalhoAba extends JPanel
         aba.fechar();
     }//GEN-LAST:event_botaoFecharActionPerformed
 
-    private void mniFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharActionPerformed
-        aba.fechar();
-    }//GEN-LAST:event_mniFecharActionPerformed
-
-    private void mniFecharOutrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFecharOutrasActionPerformed
-        PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) aba.getPainelTabulado();
-
-        for (Aba abaASerFechada : painelTabulado.getAbas(AbaCodigoFonte.class))
-        {
-            if (abaASerFechada != this.aba)
-            {
-                abaASerFechada.fechar();
-            }
-        }
-    }//GEN-LAST:event_mniFecharOutrasActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoFechar;
     private javax.swing.JLabel jLIcone;
     private javax.swing.JLabel jLTitulo;
-    private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JMenuItem mniFechar;
-    private javax.swing.JMenuItem mniFecharOutras;
     // End of variables declaration//GEN-END:variables
 
     protected void calculaTamanhoCabecalho()

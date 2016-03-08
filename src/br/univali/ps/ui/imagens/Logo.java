@@ -73,7 +73,7 @@ public class Logo extends javax.swing.JPanel
     {//GEN-HEADEREND:event_formMouseClicked
         try
         {
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://univali-l2s.github.io/Portugol"));
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://lite.acad.univali.br/portugol/"));
         }
         catch (IOException ex)
         {

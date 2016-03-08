@@ -3,51 +3,34 @@ package br.univali.ps.ui;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.ps.ui.util.IconFactory;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *
  * @author Luiz Fernando Noschang
  */
-public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeListener, ChangeListener {
+public final class TelaOpcoesExecucao extends JDialog{
 
     private Programa programa;
     private String ultimaFuncaoSelecionada;
     private boolean cancelado;
+    private boolean exibirTela = false;
 
     public TelaOpcoesExecucao() {
         initComponents();
         getRootPane().setDefaultButton(botaoExecutar);
-
-        instalarObservadores();
-        carregarConfiguracoes();
-
+        exibirTela = Configuracoes.getInstancia().isExibirOpcoesExecucao();
         try {
             this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/light-bulb.png")));
         } catch (IOException ioe) {
         }
     }
 
-    private void instalarObservadores() {
-        Configuracoes configuracoes = Configuracoes.getInstancia();
-
-        configuracoes.adicionarObservadorConfiguracao(this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
-        campoExibirTela.addChangeListener(TelaOpcoesExecucao.this);
-    }
-
-    private void carregarConfiguracoes() {
-        Configuracoes configuracoes = Configuracoes.getInstancia();
-        campoExibirTela.setSelected(configuracoes.isExibirOpcoesExecucao());
-    }
 
     @Override
     public void setVisible(boolean visivel) {
@@ -83,7 +66,6 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
 
         botaoExecutar.setText("Executar");
         botaoExecutar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "resultset_next.png"));
-        campoDepuracaoDetalhada.setVisible(false);
 
         if (funcoes.isEmpty()) {
             rotuloAviso.setVisible(true);
@@ -97,17 +79,11 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     }
 
     private boolean funcaoExiste(String funcao, Programa programa) {
-        for (String func : programa.getFuncoes()) {
-            if (func.equals(funcao)) {
-                return true;
-            }
-        }
-
-        return false;
+        return programa.getFuncoes().stream().anyMatch((func) -> (func.equals(funcao)));
     }
 
     public boolean isExibirTela() {
-        return campoExibirTela.isSelected();
+        return exibirTela;
     }
 
     public String[] getParametros() {
@@ -123,26 +99,6 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
 
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(Configuracoes.EXIBIR_OPCOES_EXECUCAO)) {
-            boolean exibir = (Boolean) evt.getNewValue();
-
-            if (campoExibirTela.isSelected() != exibir) {
-                campoExibirTela.setSelected(exibir);
-            }
-        }
-    }
-
-    public boolean isDepuracaoDetalhada() {
-        return campoDepuracaoDetalhada.isSelected();
-    }
-
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        Configuracoes configuracoes = Configuracoes.getInstancia();
-        configuracoes.setExibirOpcoesExecucao(campoExibirTela.isSelected());
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -151,8 +107,7 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -161,8 +116,6 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         rotuloParametros = new javax.swing.JLabel();
         painelRolagemParametros = new javax.swing.JScrollPane();
         campoParametros = new javax.swing.JTextArea();
-        campoDepuracaoDetalhada = new javax.swing.JCheckBox();
-        campoExibirTela = new javax.swing.JCheckBox();
         botaoLimpar = new javax.swing.JButton();
         separador = new javax.swing.JSeparator();
         rotuloAviso = new javax.swing.JLabel();
@@ -188,21 +141,11 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
         campoParametros.setRows(5);
         painelRolagemParametros.setViewportView(campoParametros);
 
-        campoDepuracaoDetalhada.setText("Realizar depuração detalhada");
-
-        campoExibirTela.setSelected(true);
-        campoExibirTela.setText("Exibir esta tela antes de cada execução");
-        campoExibirTela.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        campoExibirTela.setFocusPainted(false);
-        campoExibirTela.setFocusable(false);
-
         botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/edit_clear.png"))); // NOI18N
         botaoLimpar.setText("Limpar");
         botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoLimpar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoLimparActionPerformed(evt);
             }
         });
@@ -212,10 +155,8 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
 
         botaoExecutar.setText("Executar");
         botaoExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoExecutar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoExecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoExecutarActionPerformed(evt);
             }
         });
@@ -231,19 +172,15 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
                     .add(campoFuncaoInicial, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(rotuloParametros, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(rotuloFuncaoInicial, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(painelRolagemParametros)
+                    .add(painelRolagemParametros, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(rotuloAviso, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(10, 10, 10)
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(botaoLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(botaoExecutar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(campoExibirTela, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(layout.createSequentialGroup()
-                                .add(campoDepuracaoDetalhada)
-                                .add(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(botaoLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(rotuloAviso, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .add(130, 130, 130)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -256,19 +193,15 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
                 .add(11, 11, 11)
                 .add(rotuloParametros)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(painelRolagemParametros, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 163, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(campoDepuracaoDetalhada)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(botaoLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(campoExibirTela))
+                .add(painelRolagemParametros, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(rotuloAviso, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(separador, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(botaoExecutar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(rotuloAviso, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(botaoLimpar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -298,8 +231,6 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoExecutar;
     private javax.swing.JButton botaoLimpar;
-    private javax.swing.JCheckBox campoDepuracaoDetalhada;
-    private javax.swing.JCheckBox campoExibirTela;
     private javax.swing.JComboBox campoFuncaoInicial;
     private javax.swing.JTextArea campoParametros;
     private javax.swing.JScrollPane jScrollPane1;
@@ -310,4 +241,5 @@ public final class TelaOpcoesExecucao extends JDialog implements PropertyChangeL
     private javax.swing.JLabel rotuloParametros;
     private javax.swing.JSeparator separador;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -35,8 +35,7 @@ public final class TelaLogAtualizacoes extends JDialog
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         painelConteudo = new javax.swing.JPanel();
@@ -95,10 +94,8 @@ public final class TelaLogAtualizacoes extends JDialog
         botaoOK.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoOK.setFocusPainted(false);
         botaoOK.setPreferredSize(new java.awt.Dimension(100, 30));
-        botaoOK.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoOKActionPerformed(evt);
             }
         });
