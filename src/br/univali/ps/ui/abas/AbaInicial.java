@@ -142,7 +142,7 @@ public final class AbaInicial extends Aba {
 
     private void abrirGitHub() {
         try {
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/Univali-l2s/Portugol"));
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/UNIVALI-LITE/Portugol-Studio"));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara auxiliar no desenvolvimento do projeto, por favor acesse o seguinte endereço:\n\nhttps://github.com/Univali-l2s/Portugol", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
         }

@@ -99,7 +99,7 @@ public final class BuscadorDeLinhasParaveis extends VisitanteNulo {
     private boolean verificaSePodeParar(NoBloco noBloco) {
         if (classesParaveis.contains(noBloco.getClass())) {
             int linha = noBloco.getTrechoCodigoFonte().getLinha();
-            if (linha >= 0)
+            if (linha >= 0) 
             {
                 linhasParaveis.add(linha);
                 return true;
@@ -386,7 +386,10 @@ public final class BuscadorDeLinhasParaveis extends VisitanteNulo {
 
     @Override
     public Object visitar(NoRetorne noRetorne) throws ExcecaoVisitaASA {
-        noRetorne.getExpressao().aceitar(this);
+        NoExpressao noExpressao = noRetorne.getExpressao();
+        if (noExpressao != null) {
+            noExpressao.aceitar(this);
+        }
         return null;
     }
 
