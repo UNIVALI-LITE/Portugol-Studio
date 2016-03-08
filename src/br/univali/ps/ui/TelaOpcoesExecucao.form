@@ -49,22 +49,16 @@
                   <Component id="campoFuncaoInicial" alignment="0" max="32767" attributes="0"/>
                   <Component id="rotuloParametros" alignment="0" max="32767" attributes="0"/>
                   <Component id="rotuloFuncaoInicial" alignment="0" max="32767" attributes="0"/>
-                  <Component id="painelRolagemParametros" alignment="0" max="32767" attributes="0"/>
+                  <Component id="painelRolagemParametros" alignment="0" pref="342" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="rotuloAviso" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="botaoLimpar" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="botaoExecutar" min="-2" pref="120" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="campoExibirTela" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="campoDepuracaoDetalhada" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="botaoLimpar" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="rotuloAviso" pref="212" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -81,20 +75,15 @@
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Component id="rotuloParametros" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="painelRolagemParametros" min="-2" pref="163" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="campoDepuracaoDetalhada" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="botaoLimpar" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                  <Component id="campoExibirTela" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="painelRolagemParametros" pref="189" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="rotuloAviso" min="-2" pref="31" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="separador" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="botaoExecutar" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                  <Component id="rotuloAviso" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                  <Component id="botaoLimpar" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -140,22 +129,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JCheckBox" name="campoDepuracaoDetalhada">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Realizar depura&#xe7;&#xe3;o detalhada"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="campoExibirTela">
-      <Properties>
-        <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="Exibir esta tela antes de cada execu&#xe7;&#xe3;o"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor em Forma de M&#xe3;o"/>
-        </Property>
-        <Property name="focusPainted" type="boolean" value="false"/>
-        <Property name="focusable" type="boolean" value="false"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="botaoLimpar">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
