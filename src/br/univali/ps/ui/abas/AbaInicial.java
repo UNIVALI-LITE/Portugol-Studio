@@ -140,7 +140,7 @@ public final class AbaInicial extends Aba {
                             rotuloAssistirVideoAulas.setIcon(null);
                             rotuloConhecerBibliotecas.setIcon(null);
                             rotuloConhecerLinguagem.setIcon(null);
-                            FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
+                            FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
                         }
                     }else{
                         redimensionouParaBaixaResolucao = false;

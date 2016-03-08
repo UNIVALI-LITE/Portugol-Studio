@@ -183,6 +183,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
                     String tema = itemSelecionado.getText();
                     editor.aplicarTema(tema);
+                    FabricaDicasInterface.mostrarNotificacao("Usando tema " + tema, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
                 }
             });
             itemMenu.setText(tema);
@@ -513,7 +514,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             case Configuracoes.TEMA_EDITOR:
                 aplicarTema((String) evt.getNewValue());
-                FabricaDicasInterface.mostrarNotificacao("Usando tema " + evt.getNewValue(), IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
                 break;
 
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:
