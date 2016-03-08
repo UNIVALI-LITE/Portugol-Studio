@@ -478,7 +478,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     /**
-     * Este método deve ser usado somente para definir o código fonte quando o
+     * Deve ser usado somente para definir o código fonte quando o
      * componente estiver embutido no HTML da ajuda
      *
      * @param codigo
@@ -513,6 +513,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             case Configuracoes.TEMA_EDITOR:
                 aplicarTema((String) evt.getNewValue());
+                FabricaDicasInterface.mostrarNotificacao("Usando tema " + evt.getNewValue(), IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
                 break;
 
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:
@@ -797,11 +798,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             textArea.setFont(fonte);
             Configuracoes.getInstancia().setTemaEditor(nome);
-
-            int xDaDica = getWidth() / 2;
-            int yDaDica = getHeight() / 2 + (int) (Math.random() * 100);
-            FabricaDicasInterface.criarDicaInterfaceEstatica(this, "Usando tema " + nome, new Point(xDaDica, yDaDica));
-
+            
             for (Component componente : menuTemas.getComponents()) {
                 JMenuItem item = (JMenuItem) componente;
 

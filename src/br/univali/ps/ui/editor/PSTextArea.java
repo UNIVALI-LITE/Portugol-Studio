@@ -115,7 +115,7 @@ public class PSTextArea extends RSyntaxTextArea {
 
     /**
      * *
-     * Este método é chamado sempre que o programa é recompilado para criar os
+     * É chamado sempre que o programa é recompilado para criar os
      * ícones de ponto de parada desativados nas linhas que são paráveis
      *
      * @param linhasParaveis
