@@ -68,14 +68,18 @@
         <copy todir="../Portugol-Instalador/arquivos/portugol-studio/java/java-mac">
             <fileset dir="../Portugol-Instalador/arquivos/java/java-osx/${platform.architecture}"/>
         </copy>
-        <zip destfile="../Portugol-Instalador/arquivos/ps-${portugol.studio.versao}-multi-plataforma-${platform.architecture}.zip" compress="true" level="9">
-            <zipfileset dir="../Portugol-Instalador/arquivos">
-                <include name="portugol-studio"/>
-                <include name="portugol-studio/**"/>
-                <include name="portugol-studio/*"/>
-            </zipfileset>
-        </zip>
-        <delete dir="../Portugol-Instalador/arquivos/portugol-studio" includeemptydirs="true" failonerror="false"/>
+        <copy todir="../Portugol-Instalador/arquivos/portugol-studio">
+            <fileset file="../Portugol-Instalador/leia.txt"/>
+        </copy>
+        <move file="../Portugol-Instalador/arquivos/portugol-studio" tofile="../Portugol-Instalador/arquivos/portugol-studio-${platform.architecture}"/>
+        <tar destfile="../Portugol-Instalador/arquivos/ps-${portugol.studio.versao}-multi-plataforma-${platform.architecture}.tar.gz" compression="gzip" longfile="posix">
+            <tarfileset dir="../Portugol-Instalador/arquivos" filemode="755" dirmode="755">
+                <include name="portugol-studio-${platform.architecture}"/>
+                <include name="portugol-studio-${platform.architecture}/**"/>
+                <include name="portugol-studio-${platform.architecture}/*"/>
+            </tarfileset>
+        </tar>
+        <delete dir="../Portugol-Instalador/arquivos/portugol-studio-${platform.architecture}" includeemptydirs="true" failonerror="false"/>
     </target>
     
     <target name="gerar-arquivos-instalador" depends="clean">
@@ -205,6 +209,13 @@
             <param name="platform.family" value="Mac OSX"/>
             <param name="platform.name" value="osx"/>
             <param name="platform.architecture" value="x86"/>
+            <param name="platform.suffix" value=""/>
+        </antcall>
+        
+        <antcall target="-baixar-java">
+            <param name="platform.family" value="Mac OSX"/>
+            <param name="platform.name" value="osx"/>
+            <param name="platform.architecture" value="x64"/>
             <param name="platform.suffix" value=""/>
         </antcall>
         
