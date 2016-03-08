@@ -19,7 +19,6 @@ import br.univali.ps.ui.FabricaDicasInterface;
 
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
-import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
@@ -64,7 +63,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
@@ -137,22 +135,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
     private JMenu menuTemas;
+    
+    private boolean centralizar=false;
 
     public Editor() {
         initComponents();
-
         configurarDialogoPesquisarSubstituir();
         configurarParser();
         configurarTextArea();
         configurarAcoes();
-        configurarBotoes();
         criarMenuTemas();
-        //criarDicasInterface();
         instalarObservadores();
         carregarConfiguracoes();
-
         WeblafUtils.configuraWebLaf(scrollPane);
-
     }
 
     public Set<Integer> getLinhasComPontoDeParadaAtivados() {
@@ -229,17 +224,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void configurarParser() {
         suporteLinguagemPortugol = new SuporteLinguagemPortugol();
         suporteLinguagemPortugol.instalar(textArea);
-    }
-
-    private void criarDicasInterface() {
-        //FabricaDicasInterface.criarDicaInterface(btnAumentarFonte, "Aumenta o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        //FabricaDicasInterface.criarDicaInterface(btnDiminuirFonte, "Diminui o tamanho da fonte do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnComentar, "Comenta o trecho de código fonte selecionado no editor", acaoComentar);
-        FabricaDicasInterface.criarDicaInterface(btnDescomentar, "Descomenta o trecho de código fonte selecionado no editor", acaoDescomentar);
-        //FabricaDicasInterface.criarDicaInterface(btnTema, "Altera o tema do editor", BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        FabricaDicasInterface.criarDicaInterface(btnMaximizar, "Expande/restaura o tamanho do editor", acaoAlternarModoEditor);
-        //FabricaDicasInterface.criarDicaInterface(btnPesquisar, "Pesquisa e/ou substitui um texto no editor", acaoPesquisarSubstituir, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
-        //FabricaDicasInterface.criarDicaInterface(btnCentralizarCodigoFonte, "Ativa/desativa a centralização de código fonte. Quando ativado, faz com que o código fonte próximo ao cursor esteja sempre no centro da tela", acaoCentralizarCodigoFonte, BalloonTip.Orientation.RIGHT_ABOVE, BalloonTip.AttachLocation.WEST);
     }
 
     private void configurarTextArea() {
@@ -350,7 +334,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         };
 
-        btnComentar.setAction(acaoComentar);
+//        btnComentar.setAction(acaoComentar);
     }
 
     private void configurarAcaoDescomentar() {
@@ -408,48 +392,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         };
 
-        btnDescomentar.setAction(acaoDescomentar);
+//        btnDescomentar.setAction(acaoDescomentar);
     }
 
-//    private void configurarAcaoAlternarModoEditor() {
-//        acaoAlternarModoEditor = new AbstractAction("Alternar modo do editor") {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                btnMaximizar.getAction().actionPerformed(e);
-//            }
-//        };
-//
-//        String nome = (String) acaoAlternarModoEditor.getValue(AbstractAction.NAME);
-//        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_DOWN_MASK);
-//
-//        acaoAlternarModoEditor.putValue(AbstractAction.ACCELERATOR_KEY, atalho);
-//
-//        getActionMap().put(nome, acaoAlternarModoEditor);
-//        getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
-//    }
-//    private void configurarAcaoExpandir() {
-//        acaoExpandir = new AbstractAction("Expandir editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                expandido = true;
-//                abaCodigoFonte.expandirEditor();
-//                btnMaximizar.setAction(acaoRestaurar);
-//            }
-//        };
-//
-//        btnMaximizar.setAction(acaoExpandir);
-//    }
-//
-//    private void configurarAcaoRestaurar() {
-//        acaoRestaurar = new AbstractAction("Restaurar editor", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png")) {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                expandido = false;
-//                abaCodigoFonte.restaurarEditor();
-//                btnMaximizar.setAction(acaoExpandir);
-//            }
-//        };
-//    }
     private void instalarObservadores() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
@@ -499,7 +444,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
                     }
                 } else {
-                    if (btnCentralizarCodigoFonte.isSelected()) {
+                    if (centralizar) {
                         centralizarCodigoFonte();
                     }
                 }
@@ -513,39 +458,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
-
-                    aplicarTema(configuracoes.getTemaEditor());
+        aplicarTema(configuracoes.getTemaEditor());
         setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
         setCentralizarCodigoFonte(configuracoes.isCentralizarCodigoFonte());
-    }
-
-    private void configurarBotoes() {
-        for (Component componente : barraFerramentas.getComponents()) {
-            if (componente instanceof JButton) {
-                JButton botao = (JButton) componente;
-
-                botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                botao.setOpaque(false);
-            }
-        }
-
-        btnSalvar.setVisible(false);
-        btnSalvarComo.setVisible(false);
-        ocultarBotoesExecucao();
-    }
-
-    public void exibirBotoesExecucao() {
-        jSeparator1.setVisible(true);
-        btnExecutar.setVisible(true);
-        btnInterromper.setVisible(true);
-        btnDepurar.setVisible(btnDepurar.getAction().isEnabled());
-    }
-
-    public void ocultarBotoesExecucao() {
-        jSeparator1.setVisible(false);
-        btnExecutar.setVisible(false);
-        btnInterromper.setVisible(false);
-        btnDepurar.setVisible(false);
     }
 
     public void setTamanhoFonteEditor(float tamanho) {
@@ -556,7 +471,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     private void setCentralizarCodigoFonte(boolean centralizarCodigoFonte) {
-        btnCentralizarCodigoFonte.setSelected(centralizarCodigoFonte);
+        centralizar = centralizarCodigoFonte;
         centralizarCodigoFonte();
     }
 
@@ -584,11 +499,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public void setEditavel(String editavel) {
         boolean edit = Boolean.parseBoolean(editavel);
-
-        btnComentar.setVisible(edit);
-        btnDescomentar.setVisible(edit);
-        btnPesquisar.setVisible(edit);
-        btnMaximizar.setVisible(edit);
         textArea.setEditable(edit);
     }
 
@@ -614,9 +524,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     public void desabilitarCentralizacaoCodigoFonte() {
-        if (btnCentralizarCodigoFonte.isSelected()) {
-            acaoCentralizarCodigoFonte.actionPerformed(null);
-        }
+        centralizar=false;
     }
 
     public void adicionarObservadorCursor(CaretListener observador) {
@@ -768,8 +676,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setCaretPosition(ultimaPosicaoCursor);
         textArea.requestFocusInWindow();
 
-        btnDepurar.setVisible(expandido);
-
         if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
             destacarErroExecucao(resultadoExecucao.getErro().getLinha(), resultadoExecucao.getErro().getColuna());
         } else {
@@ -818,18 +724,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return (PSTextArea) textArea;
     }
 
-    public void configurarAcoesExecucao(final Action acaoSalvar, final Action acaoSalvarComo, final Action acaoExecutarPontoParada, final Action acaoExecutarPasso, final Action acaoInterromper) {
-        configurarAcaoExterna(btnSalvar, acaoSalvar);
-        configurarAcaoExterna(btnSalvarComo, acaoSalvarComo);
-        configurarAcaoExterna(btnExecutar, acaoExecutarPontoParada);
-        configurarAcaoExterna(btnInterromper, acaoInterromper);
-        configurarAcaoExterna(btnDepurar, acaoExecutarPasso);
-
-        FabricaDicasInterface.criarDicaInterface(btnDepurar, "Executa o programa atual passo a passo", acaoExecutarPasso);
-        FabricaDicasInterface.criarDicaInterface(btnExecutar, "Executa o programa atual até o próximo ponto de parada", acaoExecutarPontoParada);
-        FabricaDicasInterface.criarDicaInterface(btnInterromper, "Interrompe a execução do programa atual", acaoInterromper);
-    }
-
     private void configurarAcaoExterna(final JButton botao, final Action acaoExterna) {
         final String nome = (String) acaoExterna.getValue(Action.NAME);
         Icon icone = (Icon) acaoExterna.getValue(Action.SMALL_ICON);
@@ -869,7 +763,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         }
 
-        if (btnCentralizarCodigoFonte.isSelected()) {
+        if (centralizar) {
             centralizarCodigoFonte();
         }
     }
@@ -937,6 +831,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         } catch (ExcecaoAplicacao excecao) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+        }catch (NullPointerException exception){
+            System.out.println("Bug muito loco do net feijões");
         }
     }
 
@@ -1253,174 +1149,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        barraFerramentas = new javax.swing.JToolBar();
-        btnAumentarFonte = new javax.swing.JButton();
-        btnDiminuirFonte = new javax.swing.JButton();
-        btnPesquisar = new javax.swing.JButton();
-        btnComentar = new javax.swing.JButton();
-        btnDescomentar = new javax.swing.JButton();
-        btnMaximizar = new javax.swing.JButton();
-        btnCentralizarCodigoFonte = new javax.swing.JButton();
-        btnTema = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
-        btnSalvar = new javax.swing.JButton();
-        btnSalvarComo = new javax.swing.JButton();
-        btnExecutar = new javax.swing.JButton();
-        btnDepurar = new javax.swing.JButton();
-        btnInterromper = new javax.swing.JButton();
         painelEditor = new javax.swing.JPanel();
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
         textArea = new PSTextArea(new PortugolDocumento());
-
-        barraFerramentas.setFloatable(false);
-        barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        barraFerramentas.setRollover(true);
-        barraFerramentas.setMaximumSize(new java.awt.Dimension(320, 26));
-
-        btnAumentarFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnAumentarFonte.setBorderPainted(false);
-        btnAumentarFonte.setFocusable(false);
-        btnAumentarFonte.setHideActionText(true);
-        btnAumentarFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAumentarFonte.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnAumentarFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnAumentarFonte.setOpaque(false);
-        btnAumentarFonte.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnAumentarFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnAumentarFonte);
-
-        btnDiminuirFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnDiminuirFonte.setBorderPainted(false);
-        btnDiminuirFonte.setFocusable(false);
-        btnDiminuirFonte.setHideActionText(true);
-        btnDiminuirFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDiminuirFonte.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnDiminuirFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnDiminuirFonte.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnDiminuirFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnDiminuirFonte);
-
-        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnPesquisar.setBorderPainted(false);
-        btnPesquisar.setFocusable(false);
-        btnPesquisar.setHideActionText(true);
-        btnPesquisar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnPesquisar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnPesquisar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnPesquisar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnPesquisar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnPesquisar);
-
-        btnComentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnComentar.setBorderPainted(false);
-        btnComentar.setFocusable(false);
-        btnComentar.setHideActionText(true);
-        btnComentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnComentar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnComentar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnComentar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnComentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnComentar);
-
-        btnDescomentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnDescomentar.setBorderPainted(false);
-        btnDescomentar.setFocusable(false);
-        btnDescomentar.setHideActionText(true);
-        btnDescomentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDescomentar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnDescomentar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnDescomentar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnDescomentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnDescomentar);
-
-        btnMaximizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnMaximizar.setBorderPainted(false);
-        btnMaximizar.setFocusable(false);
-        btnMaximizar.setHideActionText(true);
-        btnMaximizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMaximizar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnMaximizar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnMaximizar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnMaximizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnMaximizar);
-
-        btnCentralizarCodigoFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnCentralizarCodigoFonte.setBorderPainted(false);
-        btnCentralizarCodigoFonte.setFocusable(false);
-        btnCentralizarCodigoFonte.setHideActionText(true);
-        btnCentralizarCodigoFonte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCentralizarCodigoFonte.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnCentralizarCodigoFonte.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnCentralizarCodigoFonte.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnCentralizarCodigoFonte.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnCentralizarCodigoFonte);
-
-        btnTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnTema.setBorderPainted(false);
-        btnTema.setFocusable(false);
-        btnTema.setHideActionText(true);
-        btnTema.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnTema.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnTema.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnTema.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnTema.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnTema);
-        barraFerramentas.add(jSeparator1);
-
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnSalvar.setBorderPainted(false);
-        btnSalvar.setFocusable(false);
-        btnSalvar.setHideActionText(true);
-        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalvar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnSalvar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnSalvar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnSalvar);
-
-        btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnSalvarComo.setBorderPainted(false);
-        btnSalvarComo.setFocusable(false);
-        btnSalvarComo.setHideActionText(true);
-        btnSalvarComo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalvarComo.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnSalvarComo.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnSalvarComo.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnSalvarComo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnSalvarComo);
-
-        btnExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnExecutar.setBorderPainted(false);
-        btnExecutar.setFocusable(false);
-        btnExecutar.setHideActionText(true);
-        btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnExecutar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnExecutar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnExecutar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnExecutar);
-
-        btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnDepurar.setBorderPainted(false);
-        btnDepurar.setFocusable(false);
-        btnDepurar.setHideActionText(true);
-        btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDepurar.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnDepurar.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnDepurar.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnDepurar);
-
-        btnInterromper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        btnInterromper.setBorderPainted(false);
-        btnInterromper.setFocusable(false);
-        btnInterromper.setHideActionText(true);
-        btnInterromper.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnInterromper.setMaximumSize(new java.awt.Dimension(24, 24));
-        btnInterromper.setMinimumSize(new java.awt.Dimension(24, 24));
-        btnInterromper.setPreferredSize(new java.awt.Dimension(24, 24));
-        btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraFerramentas.add(btnInterromper);
 
         setOpaque(false);
         setLayout(new java.awt.GridBagLayout());
@@ -1447,21 +1178,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToolBar barraFerramentas;
-    private javax.swing.JButton btnAumentarFonte;
-    private javax.swing.JButton btnCentralizarCodigoFonte;
-    private javax.swing.JButton btnComentar;
-    private javax.swing.JButton btnDepurar;
-    private javax.swing.JButton btnDescomentar;
-    private javax.swing.JButton btnDiminuirFonte;
-    private javax.swing.JButton btnExecutar;
-    private javax.swing.JButton btnInterromper;
-    private javax.swing.JButton btnMaximizar;
-    private javax.swing.JButton btnPesquisar;
-    private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton btnSalvarComo;
-    private javax.swing.JButton btnTema;
-    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPanel painelEditor;
     private org.fife.ui.rtextarea.RTextScrollPane scrollPane;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea textArea;
