@@ -1,6 +1,7 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
@@ -221,18 +222,8 @@ public final class TelaLicencas extends javax.swing.JDialog
     {//GEN-HEADEREND:event_botaoVisitarPaginaActionPerformed
         PainelLicenca painelLicenca = (PainelLicenca) painelTabulado.getSelectedComponent();
         Licencas.Recurso recurso = painelLicenca.getRecurso();
-            
-        try
-        {
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create(recurso.getUrl()));
-        }
-        catch (IOException ex)
-        {
-            StringSelection stringSelection = new StringSelection(recurso.getUrl());
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
-            
-            JOptionPane.showMessageDialog(TelaLicencas.this, "Não foi possível abrir o seu navegador de Internet!\nO endereço da Página Web foi copiado para sua área de transferência", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-        }
+        
+        WebConnectionUtils.abrirSite(recurso.getUrl());
     }//GEN-LAST:event_botaoVisitarPaginaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

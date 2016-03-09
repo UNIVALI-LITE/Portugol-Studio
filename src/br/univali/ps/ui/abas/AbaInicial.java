@@ -2,6 +2,7 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.TelaAtalhosTeclado;
@@ -19,13 +20,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -172,11 +170,7 @@ public final class AbaInicial extends Aba {
     }
 
     private void abrirGitHub() {
-        try {
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/UNIVALI-LITE/Portugol-Studio"));
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara auxiliar no desenvolvimento do projeto, por favor acesse o seguinte endereço:\n\nhttps://github.com/Univali-l2s/Portugol", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-        }
+        WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio");
     }
 
     private void configurarCursorLogos() {
@@ -200,11 +194,7 @@ public final class AbaInicial extends Aba {
         Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName()) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://www.youtube.com/user/portugolstudio"));
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara assistir às vídeo aulas, acesse o seguinte endereço:\n\nhttps://www.youtube.com/user/portugolstudio", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-                }
+                WebConnectionUtils.abrirSite("https://www.youtube.com/user/portugolstudio");
             }
         };
 
@@ -214,11 +204,7 @@ public final class AbaInicial extends Aba {
         Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName()) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://github.com/UNIVALI-LITE/Portugol-Studio/commits/master"));
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara ver as atualizações, acesse o seguinte endereço:\n\nhttps://github.com/UNIVALI-LITE/Portugol-Studio/commits/master", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-                }
+                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/commits/master");
             }
         };
 
@@ -285,11 +271,7 @@ public final class AbaInicial extends Aba {
         Action acao = new AbstractAction(rotuloRelatarBug.getName()) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform"));
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(AbaInicial.this, "Não foi possível abrir o seu navegador de Internet!\nPara relatar um bug, por favor acesse o seguinte endereço:\n\nhttps://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-                }
+                WebConnectionUtils.abrirSite("https://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform");
             }
         };
 
