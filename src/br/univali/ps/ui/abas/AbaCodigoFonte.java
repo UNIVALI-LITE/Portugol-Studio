@@ -62,7 +62,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
 import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.managers.notification.NotificationManager;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -91,7 +90,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean podeSalvar = true;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
-    private boolean exibirOpcoesExecucao = false;
     //private boolean editorExpandido = false;
     //private boolean painelSaidaFixado = false;
 
@@ -106,6 +104,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private Action acaoExecutarPontoParada;
     private Action acaoExecutarPasso;
     private Action acaoInterromper;
+    private Action acaoExibirOpcoesExecucao;
 
     //private Action acaoAumentarFonteArvore;
     //private Action acaoDiminuirFonteArvore;
@@ -211,23 +210,32 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     public Action criaAcaoOpcoesExecucao() {
         String nome = "Exibir Opções de Execucao";
-        AbstractAction acao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png")) {
+        if(Configuracoes.getInstancia().isExibirOpcoesExecucao()){
+           nome= "Parar de Exibir Opções de Execução";
+        }
+        
+        acaoExibirOpcoesExecucao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JMenuItem item = (JMenuItem) getValue("MenuItem");
-                exibirOpcoesExecucao=!exibirOpcoesExecucao;
-                if(exibirOpcoesExecucao){
-                    item.setText("Parar de Exibir Opções de Execução");
-                }else{
-                    item.setText("Exibir Opções de Execução");
-                }
+                
+                Configuracoes.getInstancia().setExibirOpcoesExecucao(!Configuracoes.getInstancia().isExibirOpcoesExecucao());
+                
             }
         };
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK);
-        acao.putValue(Action.ACCELERATOR_KEY, atalho);
-        getActionMap().put(nome, acao);
+        acaoExibirOpcoesExecucao.putValue(Action.ACCELERATOR_KEY, atalho);
+        getActionMap().put(nome, acaoExibirOpcoesExecucao);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        return acao;
+        return acaoExibirOpcoesExecucao;
+    }
+    
+    private void atualizarAcaoExibirOpcoesExecucao(){
+        JMenuItem item = (JMenuItem) acaoExibirOpcoesExecucao.getValue("MenuItem");
+        if(Configuracoes.getInstancia().isExibirOpcoesExecucao()){
+            item.setText("Parar de Exibir Opções de Execução");
+        }else{
+            item.setText("Exibir Opções de Execução");
+        }
     }
     
     public Action criaAcaoPesquisarSubstituir() {
@@ -409,7 +417,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void carregarConfiguracoes() {
         Configuracoes configuracoes = Configuracoes.getInstancia();
         setTamanhoFonteArvoreInspetor(configuracoes.getTamanhoFonteArvore());
-        exibirOpcoesExecucao = configuracoes.isExibirOpcoesExecucao();
     }
 
     protected JFileChooser criarSeletorArquivo() {
@@ -651,7 +658,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
         configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
-        configuracoes.adicionarObservadorConfiguracao(telaOpcoesExecucao, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
         configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.TAMANHO_FONTE_ARVORE);
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         painelSaida.getAbaMensagensCompilador().adicionaAbaMensagemCompiladorListener(editor);
@@ -1109,12 +1115,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     exibirResultadoAnalise(programa.getResultadoAnalise());
                 }
 
-                if (exibirOpcoesExecucao) {
+                if (Configuracoes.getInstancia().isExibirOpcoesExecucao()) {
                     telaOpcoesExecucao.inicializar(programa);
                     telaOpcoesExecucao.setVisible(true);
                 }
 
-                if ((!exibirOpcoesExecucao) || (exibirOpcoesExecucao && !telaOpcoesExecucao.isCancelado())) {
+                if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucao.isCancelado())) {
                     programa.adicionarObservadorExecucao(AbaCodigoFonte.this);
                     programa.adicionarObservadorExecucao(editor);
                     programa.adicionarObservadorExecucao(tree);
@@ -1188,7 +1194,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void run()
             {
-                FabricaDicasInterface.mostrarNotificacao("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "notification.png"));               
+                FabricaDicasInterface.mostrarNotificacao("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "notification.png"));               
             }
         });
     }
@@ -1365,14 +1371,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
             case Configuracoes.EXIBIR_OPCOES_EXECUCAO:
-
-                boolean exibirTela = (Boolean) evt.getNewValue();
-                break;
+                atualizarAcaoExibirOpcoesExecucao();
+            break;
 
             case Configuracoes.TAMANHO_FONTE_ARVORE:
                 setTamanhoFonteArvoreInspetor((Float) evt.getNewValue());
-
-                break;
+            break;
         }
     }
 

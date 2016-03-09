@@ -19,9 +19,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -84,8 +91,28 @@ public final class AbaInicial extends Aba {
 
     private void instalarAcoesSecretas() {
         instalarAcaoModificarURLAtualizacao();
+        instalarAcaoEaster1();
     }
 
+    private void instalarAcaoEaster1() {
+        getActionMap().put("CAGE", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                    
+                try {
+                    ImageIcon image = new ImageIcon(new URL("http://38.media.tumblr.com/avatar_73b7931eb242_64.png"));
+                    if(image.getIconWidth()>1){
+                        rotuloSairProgramando.setIcon(image);
+                        rotuloAssistirVideoAulas.setIcon(image);
+                        rotuloConhecerBibliotecas.setIcon(image);
+                        rotuloConhecerLinguagem.setIcon(image);
+                        JOptionPane.showMessageDialog(null, image, "Você foi Nick Cageado", JOptionPane.PLAIN_MESSAGE);
+                    }
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+                }                    
+            }
+        });
+    }
     private void instalarAcaoModificarURLAtualizacao() {
         getActionMap().put("BETA", new AbstractAction() {
             @Override
@@ -105,20 +132,24 @@ public final class AbaInicial extends Aba {
             @Override
             public void componentResized(ComponentEvent e)
             {
-                if((getSize().width <= 800 || getSize().height<=600) && !redimensionouParaBaixaResolucao){
-                    redimensionouParaBaixaResolucao = true;
-                    rotuloSairProgramando.setIcon(null);
-                    rotuloAssistirVideoAulas.setIcon(null);
-                    rotuloConhecerBibliotecas.setIcon(null);
-                    rotuloConhecerLinguagem.setIcon(null);
-                    FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", 5000, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
-                }else if(getSize().width > 800 && getSize().height>600){
-                    redimensionouParaBaixaResolucao = false;
-                    rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
-                    rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
-                    rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
-                    rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
-                }
+                SwingUtilities.invokeLater(() -> {
+                    if(getSize().width <= 800 || getSize().height<=600){
+                        if(!redimensionouParaBaixaResolucao){
+                            redimensionouParaBaixaResolucao = true;
+                            rotuloSairProgramando.setIcon(null);
+                            rotuloAssistirVideoAulas.setIcon(null);
+                            rotuloConhecerBibliotecas.setIcon(null);
+                            rotuloConhecerLinguagem.setIcon(null);
+                            FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
+                        }
+                    }else{
+                        redimensionouParaBaixaResolucao = false;
+                        rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
+                        rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
+                        rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
+                        rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
+                    }
+                });
             }
             
         });
