@@ -30,41 +30,35 @@ abstract class RenderizadorBase extends JComponent {
 
     protected ItemDaLista itemDaLista;
 
-    protected static Font FONTE_NORMAL = Font.decode("Tahoma-12");
+    protected static Font FONTE_NORMAL = Font.decode(Font.SANS_SERIF + "-12");
     protected static Font FONTE_DESTAQUE;
     protected static Font FONTE_CABECALHO;
     protected static Font FONTE_CABECALHO_DESTAQUE;
 
     public RenderizadorBase() {
         super();
-        //setTamanhoDaFonte(12f);
-        //setTamanhoDaFonte(18);
+        setTamanhoDaFonte(12f);
     }
-    
-    
+
     static void setTamanhoDaFonte(float tamanho) {
-        if (FONTE_NORMAL != null) {
-            FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
-            FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
-            
-            if (FONTE_DESTAQUE == null)
-            {
-                FONTE_DESTAQUE = FONTE_NORMAL;
-            }
-            
-            FONTE_CABECALHO = FONTE_NORMAL.deriveFont(12f);
-            
-            if (FONTE_CABECALHO == null)
-            {
-                FONTE_CABECALHO = FONTE_NORMAL;
-            }
-            
-            FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
-            
-            if (FONTE_CABECALHO_DESTAQUE == null)
-            {
-                FONTE_CABECALHO_DESTAQUE = FONTE_NORMAL;
-            }
+        assert (FONTE_NORMAL != null);
+        FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
+        FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
+
+        if (FONTE_DESTAQUE == null) {
+            FONTE_DESTAQUE = FONTE_NORMAL;
+        }
+
+        FONTE_CABECALHO = FONTE_NORMAL.deriveFont(12f);
+
+        if (FONTE_CABECALHO == null) {
+            FONTE_CABECALHO = FONTE_NORMAL;
+        }
+
+        FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
+
+        if (FONTE_CABECALHO_DESTAQUE == null) {
+            FONTE_CABECALHO_DESTAQUE = FONTE_NORMAL;
         }
     }
 

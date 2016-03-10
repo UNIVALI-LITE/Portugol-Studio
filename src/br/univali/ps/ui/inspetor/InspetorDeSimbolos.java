@@ -8,11 +8,14 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoMatriz;
+import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.simbolos.Matriz;
@@ -47,6 +50,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -527,18 +532,19 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             List<NoDeclaracao> nosTransferidos = null;
             try {
                 nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-            boolean importou = false;
-            for (NoDeclaracao noTransferido : nosTransferidos) {
-                if (!contemNo(noTransferido)) {
-                    adicionaNo(noTransferido);
-                    importou = true;
+
+                boolean importou = false;
+                for (NoDeclaracao noTransferido : nosTransferidos) {
+                    if (!contemNo(noTransferido)) {
+                        adicionaNo(noTransferido);
+                        importou = true;
+                    }
                 }
+                return importou;
+            } catch (Exception e) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);
             }
-            return importou;
+            return false;
         }
 
         private boolean importaStringArrastada(TransferHandler.TransferSupport support) {
@@ -589,10 +595,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return true;
     }
 
-    private boolean adicionaNoVetor(NoDeclaracaoVetor declaracaoVetor) {
+    private boolean adicionaNoVetor(NoDeclaracaoVetor declaracaoVetor) throws ExcecaoVisitaASA {
         int colunas = -1;
         if (declaracaoVetor.getTamanho() != null) {
-            colunas = ((NoInteiro) declaracaoVetor.getTamanho()).getValor();
+            colunas = obtemValorDeExpressaoDoTipoInteiro(declaracaoVetor.getTamanho());
         } else if (declaracaoVetor.getInicializacao() != null) {
             colunas = ((NoVetor) declaracaoVetor.getInicializacao()).getValores().size();
         }
@@ -604,19 +610,49 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return false;
     }
 
-    private boolean adicionaNoMatriz(NoDeclaracaoMatriz noTransferido) {
-        NoDeclaracaoMatriz declaracaoMatriz = ((NoDeclaracaoMatriz) noTransferido);
+    private Integer obtemValorDeExpressaoDoTipoInteiro(NoExpressao expressao) throws ExcecaoVisitaASA {
+        if (expressao == null)
+            return null;
+        
+        if (expressao instanceof NoInteiro) {
+            return ((NoInteiro) expressao).getValor();
+        }
+
+        //se a expressão é uma referência para uma variável é necessário encontrar a declaração da variável para obter o seu valor
+        if (expressao instanceof NoReferenciaVariavel) {
+            if (ultimoProgramaCompilado == null) //se não existe um programa então não é possível encontrar um símbolo
+            {
+                return null;
+            }
+
+            NoReferenciaVariavel noReferencia = (NoReferenciaVariavel) expressao;
+            TrechoCodigoFonte trechoFonte = noReferencia.getTrechoCodigoFonte();
+            int linha = trechoFonte.getLinha();
+            int coluna = trechoFonte.getColuna();
+            int tamanho = trechoFonte.getTamanhoTexto();
+            String nomeDoSimbolo = noReferencia.getNome();
+            ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(nomeDoSimbolo, linha, coluna, tamanho);
+            ultimoProgramaCompilado.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
+            if (procuradorDeDeclaracao.encontrou()) {
+                NoDeclaracao noDeclaracao = procuradorDeDeclaracao.getNoDeclaracao();
+                return obtemValorDeExpressaoDoTipoInteiro(noDeclaracao.getInicializacao()); 
+            }
+        }
+        return null;
+    }
+
+    private boolean adicionaNoMatriz(NoDeclaracaoMatriz noTransferido) throws ExcecaoVisitaASA {
         int colunas = -1, linhas = -1;
-        if (declaracaoMatriz.getNumeroColunas() != null && declaracaoMatriz.getNumeroLinhas() != null) {
-            colunas = ((NoInteiro) declaracaoMatriz.getNumeroColunas()).getValor();
-            linhas = ((NoInteiro) declaracaoMatriz.getNumeroLinhas()).getValor();
-        } else if (declaracaoMatriz.getInicializacao() != null) {
-            List<List<Object>> valores = ((NoMatriz) declaracaoMatriz.getInicializacao()).getValores();
+        if (noTransferido.getNumeroColunas() != null && noTransferido.getNumeroLinhas() != null) {
+            colunas = obtemValorDeExpressaoDoTipoInteiro(noTransferido.getNumeroColunas());
+            linhas = obtemValorDeExpressaoDoTipoInteiro(noTransferido.getNumeroLinhas());
+        } else if (noTransferido.getInicializacao() != null) {
+            List<List<Object>> valores = ((NoMatriz) noTransferido.getInicializacao()).getValores();
             linhas = valores.size();
             colunas = valores.get(0).size();
         }
         if (colunas > 0 && linhas > 0) {
-            model.addElement(new ItemDaListaParaMatriz(linhas, colunas, declaracaoMatriz));
+            model.addElement(new ItemDaListaParaMatriz(linhas, colunas, noTransferido));
             return true;
         }
         return false;
@@ -639,7 +675,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return false;
     }
 
-    public void adicionaNo(NoDeclaracao noTransferido) {
+    public void adicionaNo(NoDeclaracao noTransferido) throws ExcecaoVisitaASA {
         boolean simboloInserido = false;
         if (noTransferido instanceof NoDeclaracaoVariavel) {
             simboloInserido = adicionaNoVariavel((NoDeclaracaoVariavel) noTransferido);

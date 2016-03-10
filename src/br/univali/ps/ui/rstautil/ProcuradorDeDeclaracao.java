@@ -117,6 +117,10 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA {
         verificarNoDeclaracao(noDeclaracaoVetor);
+        if (noDeclaracaoVetor.getTamanho() != null)
+        {
+            noDeclaracaoVetor.getTamanho().aceitar(this);
+        }
         return null;
     }
 
