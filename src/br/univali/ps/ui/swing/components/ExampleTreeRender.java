@@ -7,10 +7,8 @@ package br.univali.ps.ui.swing.components;
 
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Component;
-import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JTree;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
