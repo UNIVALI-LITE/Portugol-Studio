@@ -4,8 +4,6 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.BorderLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -17,7 +15,6 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
