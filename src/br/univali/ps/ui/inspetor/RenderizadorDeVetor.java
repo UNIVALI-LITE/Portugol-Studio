@@ -58,14 +58,14 @@ class RenderizadorDeVetor extends RenderizadorBase {
         int xDaColuna = margemEsquerda;
         int ultimaColunaAtualizada = item.getUltimaColunaAtualizada();
         int rolagem = 0;//conta quantas células é preciso deslocar para que a última coluna atualizada fique visível no componente
-        int larguraDoComponente = getWidth();
+        int larguraUtilDoComponente = getWidth() - MARGEM_HORIZONTAL*2;
         int indiceDaColuna = 0;
         do {
             xDaColuna += getLarguraDaColuna(indiceDaColuna++);
-            if (xDaColuna > larguraDoComponente) {
+            if (xDaColuna > larguraUtilDoComponente) {
                 rolagem++;
             }
-        } while (indiceDaColuna <= ultimaColunaAtualizada + 2 && indiceDaColuna < totalDeColunas);
+        } while (indiceDaColuna <= ultimaColunaAtualizada && indiceDaColuna < totalDeColunas);
         return rolagem;
     }
 
