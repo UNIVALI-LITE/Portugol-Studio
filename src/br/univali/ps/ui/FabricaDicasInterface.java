@@ -89,7 +89,6 @@ public final class FabricaDicasInterface
     public static void mostrarNotificacao(final String texto,final int displayTime,final Icon icon)
     {
         SwingUtilities.invokeLater(() -> {
-            
             if(PortugolStudio.getInstancia().getTelaPrincipal().isActive())
             {
                 WebNotificationPopup notificacao = new WebNotificationPopup();

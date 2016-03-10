@@ -1,17 +1,9 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
-import com.alee.extended.image.DisplayType;
-import com.alee.extended.image.WebImage;
-import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.tooltip.TooltipManager;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Desktop;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -22,11 +14,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 /**
  *
@@ -75,17 +63,7 @@ public final class TelaSobre extends JDialog
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                try
-                {
-                    Desktop.getDesktop().browse(java.net.URI.create(rotulo.getName()));
-                }
-                catch (IOException excecao)
-                {
-                    StringSelection stringSelection = new StringSelection(rotulo.getName());
-                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
-
-                    JOptionPane.showMessageDialog(TelaSobre.this, "Não foi possível abrir o seu navegador de Internet!\nO endereço web foi copiado para sua área de transferência", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-                }
+                WebConnectionUtils.abrirSite(rotulo.getName());
             }
         });
     }
