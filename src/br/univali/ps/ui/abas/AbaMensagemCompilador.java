@@ -332,7 +332,7 @@ public final class AbaMensagemCompilador extends Aba
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        jScrollPaneTabelaMensagens.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
+        jScrollPaneTabelaMensagens.setBorder(null);
         jScrollPaneTabelaMensagens.setFocusable(false);
         jScrollPaneTabelaMensagens.setOpaque(false);
 

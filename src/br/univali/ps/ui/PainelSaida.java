@@ -67,7 +67,6 @@ public final class PainelSaida extends PainelTabulado {
                 frame.setLayout(new BorderLayout());
 
                 JPanel painelConteudo = new JPanel();
-                painelConteudo.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
                 WeblafUtils.configuraWeblaf(painelConteudo, Color.WHITE);
 
                 PainelSaida painelSaida = new PainelSaida();
