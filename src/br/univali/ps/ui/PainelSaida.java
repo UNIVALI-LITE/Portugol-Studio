@@ -24,7 +24,7 @@ public final class PainelSaida extends PainelTabulado {
     public PainelSaida() {
         super();
         initComponents();
-
+        
         abaConsole = new AbaConsole();
         add(abaConsole);
         
@@ -34,25 +34,12 @@ public final class PainelSaida extends PainelTabulado {
         this.add(abaMensagensCompilador);
 
         if (WeblafUtils.weblafEstaInstalado()) {
-          setUI(criaUi());
+          ((WebTabbedPaneUI)getUI()).setShadeWidth(0);
         }
         
         setSelectedIndex(0);//deixa a console aparecendo quando abre uma nova aba
     }
 
-    //@Override
-    protected TabbedPaneUI criaUi() {
-        return new PsTabbedPaneUI();
-    }
-
-    private static class PsTabbedPaneUI extends WebTabbedPaneUI {
-
-        public PsTabbedPaneUI() {
-            setTabbedPaneStyle(TabbedPaneStyle.standalone);
-            setBackgroundPainterAt(0, WeblafUtils.criaPainterComCorSolida(WeblafUtils.BACKGROUND_ESCURO, false, false, false, false));
-            setBackgroundPainterAt(1, WeblafUtils.criaPainterComCorSolida(WeblafUtils.BACKGROUND_ESCURO, false, false, false, false));
-        }
-    }
     
     public AbaConsole getConsole() {
         return abaConsole;
