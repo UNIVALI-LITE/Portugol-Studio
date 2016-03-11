@@ -12,6 +12,7 @@ import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,9 +56,9 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         super("Console", icone, false);
 
         initComponents();
-
+        
         WeblafUtils.configuraWebLaf(painelRolagem);
-
+        
         console.setDocument(new DocumentoConsole());
 
         listener = new ActionListener()

@@ -50,7 +50,7 @@ public class painelExemplos extends javax.swing.JPanel
             File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
             if (diretorioExemplos.exists()) {
-                DefaultMutableTreeNode root = new DefaultMutableTreeNode("Exemplos");
+                DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
                 List<DefaultMutableTreeNode> nodes = readIndex(diretorioExemplos);
                 for (DefaultMutableTreeNode node : nodes)
                 {
@@ -62,6 +62,7 @@ public class painelExemplos extends javax.swing.JPanel
                 expandJTree();
                 jTreedoClick();
             }
+            
         }
         catch (Exception exception){
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
@@ -174,8 +175,6 @@ public class painelExemplos extends javax.swing.JPanel
     private void initComponents() {
 
         jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        arvoreExemplos = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
         descriptionPane = new javax.swing.JPanel();
@@ -183,6 +182,11 @@ public class painelExemplos extends javax.swing.JPanel
         description = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         openExample = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        arvoreExemplos = new javax.swing.JTree();
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -191,13 +195,6 @@ public class painelExemplos extends javax.swing.JPanel
 
         jSplitPane1.setDividerLocation(300);
         jSplitPane1.setOpaque(false);
-
-        jScrollPane1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(210, 231, 252), 2, true));
-
-        arvoreExemplos.setBackground(new java.awt.Color(228, 241, 254));
-        jScrollPane1.setViewportView(arvoreExemplos);
-
-        jSplitPane1.setLeftComponent(jScrollPane1);
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -216,6 +213,7 @@ public class painelExemplos extends javax.swing.JPanel
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        description.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         description.setForeground(new java.awt.Color(51, 51, 51));
         description.setText("Descrição do Exemplo");
         description.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -239,6 +237,29 @@ public class painelExemplos extends javax.swing.JPanel
 
         jSplitPane1.setRightComponent(jPanel1);
 
+        jPanel4.setOpaque(false);
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jPanel5.setBackground(new java.awt.Color(49, 104, 146));
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        jLabel1.setText("Exemplos");
+        jPanel5.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        jPanel4.add(jPanel5, java.awt.BorderLayout.NORTH);
+
+        jScrollPane1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(210, 231, 252), 2, true));
+
+        arvoreExemplos.setBackground(new java.awt.Color(228, 241, 254));
+        jScrollPane1.setViewportView(arvoreExemplos);
+
+        jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jSplitPane1.setLeftComponent(jPanel4);
+
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -248,9 +269,12 @@ public class painelExemplos extends javax.swing.JPanel
     private javax.swing.JLabel description;
     private javax.swing.JPanel descriptionPane;
     private javax.swing.JPanel imagePane;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JButton openExample;

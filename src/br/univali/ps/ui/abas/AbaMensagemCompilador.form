@@ -28,11 +28,7 @@
     <Container class="javax.swing.JScrollPane" name="jScrollPaneTabelaMensagens">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-            <LineBorder>
-              <Color PropertyName="color" blue="d2" green="d2" red="d2" type="rgb"/>
-            </LineBorder>
-          </Border>
+          <Border info="null"/>
         </Property>
         <Property name="focusable" type="boolean" value="false"/>
         <Property name="opaque" type="boolean" value="false"/>

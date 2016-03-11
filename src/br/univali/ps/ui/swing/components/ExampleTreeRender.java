@@ -9,6 +9,7 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
@@ -16,6 +17,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  * @author Alisson
  */
 public class ExampleTreeRender extends DefaultTreeCellRenderer {
+    
+    public ExampleTreeRender() {
+        setBorder(new EmptyBorder(7, 7, 7, 7));
+    }   
+    
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus){
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);

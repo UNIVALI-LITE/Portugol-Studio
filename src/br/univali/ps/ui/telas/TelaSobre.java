@@ -4,6 +4,8 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -31,6 +33,11 @@ public final class TelaSobre extends JDialog
         setLocationRelativeTo(null);
         configurarAcaoSair();
         initComponents();
+        
+        if (WeblafUtils.weblafEstaInstalado()) {
+          ((WebTabbedPaneUI)tabbedUsuarios.getUI()).setShadeWidth(0);
+        }
+        
         try
         {
             this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));

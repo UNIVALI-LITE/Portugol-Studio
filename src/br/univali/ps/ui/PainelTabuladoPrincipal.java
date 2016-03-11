@@ -6,15 +6,9 @@ import br.univali.ps.ui.abas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.weblaf.PSWebTabbedPaneUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.LinearGradientPaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -22,10 +16,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.TabbedPaneUI;
 
 public final class PainelTabuladoPrincipal extends PainelTabulado {
 
@@ -47,72 +39,12 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
 
     public PainelTabuladoPrincipal() {
         initComponents();
+        if (WeblafUtils.weblafEstaInstalado()) {
+          ((WebTabbedPaneUI)getUI()).setShadeWidth(0);
+        }
         abaAjuda = new AbaAjuda();
         setBackground(WeblafUtils.BACKGROUND_CLARO);
     }
-
-    private class UIPainelTabuladoPrincipal extends PSWebTabbedPaneUI {
-
-        //cores das linhas que são desenhadas embaixo das tabs
-        private final Color COR_DA_BORDA_DE_BAIXO_DA_ABA_PRINCIPAL = new Color(214, 214, 214);
-        private final Color COR_DA_BORDA_DE_BAIXO_DAS_ABAS = new Color(187, 187, 187);
-        
-        public UIPainelTabuladoPrincipal() {
-            setTabBorderColor(WeblafUtils.COR_DA_BORDA_ORIGINAL_NO_WEBLAF);
-        }
-
-        @Override
-        protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-
-            final Insets insets = tabPane.getInsets();
-            insets.top += 1;
-            if (tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM) {
-                insets.right += 1;
-            } else {
-                insets.bottom += 1;
-            }
-
-            int altura = getTabAreaLength(tabPlacement);
-            
-            
-            if (getTabCount() > 1) {//se existe mais de uma aba
-                g.setColor(COR_DA_BORDA_DE_BAIXO_DAS_ABAS);
-                int larguraDasTabsDaEsquerda = getLarguraDasTabs(0, getSelectedIndex() - 1);
-                int larguraDaTabSelecionada = getTabBounds(tabPane, getSelectedIndex()).width;
-                //int larguraDasTabsDaDireita = getLarguraDasTabs(getSelectedIndex(), getTabCount()-1);
-                int largutaTotalDasTabs = getLarguraDasTabs(0, getTabCount() - 1);
-                
-                //desenha linha a esquerda da tab selecionada
-                g.drawLine(insets.left, insets.top + altura, larguraDasTabsDaEsquerda, insets.top + altura);
-
-                //desenha linha a direita da tab selecionada
-                g.drawLine(larguraDasTabsDaEsquerda + larguraDaTabSelecionada + 2, insets.top + altura, largutaTotalDasTabs, insets.top + altura);
-                
-                //desenha linha na parte onde não existem tabs, esta linha vai desaparecendo
-                
-                int larguraDaLinhaTransparente = 250;
-                Color cores[] = {COR_DA_BORDA_DE_BAIXO_DAS_ABAS, getBackground()};
-                float distribuicaoDasCores[] = {0.1f, 0.5f};
-                ((Graphics2D)g).setPaint(new LinearGradientPaint(largutaTotalDasTabs, 0f, largutaTotalDasTabs + larguraDaLinhaTransparente, 2f, distribuicaoDasCores, cores));
-                //g.setColor(new Color(0, 0, 0, 0.06f));
-                g.drawLine(largutaTotalDasTabs, insets.top + altura, largutaTotalDasTabs + larguraDaLinhaTransparente, insets.top + altura);
-                
-            } else {//existe apenas a aba principal
-                g.setColor(COR_DA_BORDA_DE_BAIXO_DA_ABA_PRINCIPAL);
-                g.drawLine(0, insets.top + altura + 1, getWidth() - 1, insets.top + altura + 1);
-            }
-
-        }
-
-        private int getLarguraDasTabs(int indiceInicial, int indiceFinal) {
-            int larguraDasTabs = 0;
-            for (int i = indiceInicial; i <= indiceFinal; i++) {
-                larguraDasTabs += getTabBounds(tabPane, i).width;
-            }
-            return larguraDasTabs;
-        }
-    }
-
 //    @Override
 //    protected TabbedPaneUI criaUi() {
 //        return new WebTabbedPaneUI();// new UIPainelTabuladoPrincipal();
