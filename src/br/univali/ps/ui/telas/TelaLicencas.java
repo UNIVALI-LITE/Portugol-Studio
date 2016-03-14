@@ -33,7 +33,7 @@ public final class TelaLicencas extends javax.swing.JDialog
         initComponents();
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(webButton1);
-            WeblafUtils.configurarBotao(botaoSair);
+            WeblafUtils.configurarBotao(webButton2);
 }
         setTitle("Licenças");
         setSize(640, 550);
@@ -131,16 +131,24 @@ public final class TelaLicencas extends javax.swing.JDialog
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        painelAlinhamento = new javax.swing.JPanel();
+        painelTabulado = new javax.swing.JTabbedPane();
         painelBotoes = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         webButton1 = new com.alee.laf.button.WebButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
-        botaoSair = new com.alee.laf.button.WebButton();
+        webButton2 = new com.alee.laf.button.WebButton();
         painelConteudo = new javax.swing.JPanel();
         painelCarregamento = new javax.swing.JPanel();
         rotuloCarregando = new javax.swing.JLabel();
-        painelAlinhamento = new javax.swing.JPanel();
-        painelTabulado = new javax.swing.JTabbedPane();
+
+        painelAlinhamento.setBackground(new java.awt.Color(228, 241, 254));
+        painelAlinhamento.setLayout(new java.awt.BorderLayout());
+
+        painelTabulado.setBackground(new java.awt.Color(228, 241, 254));
+        painelTabulado.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        painelTabulado.setFocusable(false);
+        painelAlinhamento.add(painelTabulado, java.awt.BorderLayout.CENTER);
 
         painelBotoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
         painelBotoes.setOpaque(false);
@@ -158,14 +166,16 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelBotoes.add(webButton1);
         painelBotoes.add(filler2);
 
-        botaoSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/stop.png"))); // NOI18N
-        botaoSair.setText("Sair");
-        botaoSair.addActionListener(new java.awt.event.ActionListener() {
+        webButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/sair.png"))); // NOI18N
+        webButton2.setText("Sair");
+        webButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoSairActionPerformed(evt);
+                webButton2ActionPerformed(evt);
             }
         });
-        painelBotoes.add(botaoSair);
+        painelBotoes.add(webButton2);
+
+        painelAlinhamento.add(painelBotoes, java.awt.BorderLayout.SOUTH);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(659, 526));
@@ -177,7 +187,6 @@ public final class TelaLicencas extends javax.swing.JDialog
 
         painelCarregamento.setBackground(new java.awt.Color(255, 255, 255));
         painelCarregamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
-        painelCarregamento.setOpaque(false);
         painelCarregamento.setLayout(new java.awt.BorderLayout());
 
         rotuloCarregando.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
@@ -189,15 +198,6 @@ public final class TelaLicencas extends javax.swing.JDialog
 
         painelConteudo.add(painelCarregamento, java.awt.BorderLayout.CENTER);
 
-        painelAlinhamento.setOpaque(false);
-        painelAlinhamento.setLayout(new java.awt.BorderLayout());
-
-        painelTabulado.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        painelTabulado.setFocusable(false);
-        painelAlinhamento.add(painelTabulado, java.awt.BorderLayout.CENTER);
-
-        painelConteudo.add(painelAlinhamento, java.awt.BorderLayout.PAGE_START);
-
         getContentPane().add(painelConteudo, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -206,16 +206,14 @@ public final class TelaLicencas extends javax.swing.JDialog
     private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
         PainelLicenca painelLicenca = (PainelLicenca) painelTabulado.getSelectedComponent();
         Licencas.Recurso recurso = painelLicenca.getRecurso();
-
         WebConnectionUtils.abrirSite(recurso.getUrl());
     }//GEN-LAST:event_webButton1ActionPerformed
 
-    private void botaoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSairActionPerformed
-         dispose();
-    }//GEN-LAST:event_botaoSairActionPerformed
+    private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
+        dispose();
+    }//GEN-LAST:event_webButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.alee.laf.button.WebButton botaoSair;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JPanel painelAlinhamento;
@@ -225,5 +223,6 @@ public final class TelaLicencas extends javax.swing.JDialog
     private javax.swing.JTabbedPane painelTabulado;
     private javax.swing.JLabel rotuloCarregando;
     private com.alee.laf.button.WebButton webButton1;
+    private com.alee.laf.button.WebButton webButton2;
     // End of variables declaration//GEN-END:variables
 }
