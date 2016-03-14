@@ -3,6 +3,7 @@ package br.univali.ps.ui.telas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -129,7 +130,7 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelTabulado = new javax.swing.JTabbedPane();
         painelBotoes = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        botaoVisitarPagina = new javax.swing.JButton();
+        botaoVisitarPagina1 = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         jButton2 = new javax.swing.JButton();
         painelConteudo = new javax.swing.JPanel();
@@ -147,23 +148,23 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
         painelBotoes.add(filler1);
 
-        botaoVisitarPagina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/home.png"))); // NOI18N
-        botaoVisitarPagina.setText("Visitar Página");
-        botaoVisitarPagina.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoVisitarPagina.setDefaultCapable(false);
-        botaoVisitarPagina.setFocusPainted(false);
-        botaoVisitarPagina.setFocusable(false);
-        botaoVisitarPagina.setIconTextGap(8);
-        botaoVisitarPagina.setMargin(new java.awt.Insets(2, 8, 2, 8));
-        botaoVisitarPagina.setMaximumSize(null);
-        botaoVisitarPagina.setMinimumSize(null);
-        botaoVisitarPagina.setPreferredSize(null);
-        botaoVisitarPagina.addActionListener(new java.awt.event.ActionListener() {
+        botaoVisitarPagina1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/home.png"))); // NOI18N
+        botaoVisitarPagina1.setText("Visitar Página");
+        botaoVisitarPagina1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botaoVisitarPagina1.setDefaultCapable(false);
+        botaoVisitarPagina1.setFocusPainted(false);
+        botaoVisitarPagina1.setFocusable(false);
+        botaoVisitarPagina1.setIconTextGap(8);
+        botaoVisitarPagina1.setMargin(new java.awt.Insets(2, 8, 2, 8));
+        botaoVisitarPagina1.setMaximumSize(null);
+        botaoVisitarPagina1.setMinimumSize(null);
+        botaoVisitarPagina1.setPreferredSize(null);
+        botaoVisitarPagina1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoVisitarPaginaActionPerformed(evt);
             }
         });
-        painelBotoes.add(botaoVisitarPagina);
+        painelBotoes.add(botaoVisitarPagina1);
         painelBotoes.add(filler2);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/sair.png"))); // NOI18N
@@ -210,21 +211,19 @@ public final class TelaLicencas extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
-    {//GEN-HEADEREND:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void botaoVisitarPaginaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_botaoVisitarPaginaActionPerformed
-    {//GEN-HEADEREND:event_botaoVisitarPaginaActionPerformed
+    private void botaoVisitarPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVisitarPaginaActionPerformed
         PainelLicenca painelLicenca = (PainelLicenca) painelTabulado.getSelectedComponent();
         Licencas.Recurso recurso = painelLicenca.getRecurso();
-        
+
         WebConnectionUtils.abrirSite(recurso.getUrl());
     }//GEN-LAST:event_botaoVisitarPaginaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoVisitarPagina;
+    private javax.swing.JButton botaoVisitarPagina1;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JButton jButton2;

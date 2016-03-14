@@ -2,6 +2,7 @@ package br.univali.ps.ui.weblaf;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBarUI;
@@ -136,7 +137,22 @@ public class WeblafUtils {
             UIManager.put("SplitPane.supportsOneTouchButtons", true);//oneTouchButton nos splitPanes em todas as plataformas
         }
     }
-
+    
+    public  static void configurarBotao(WebButton botao){
+        botao.setMargin ( 10 );
+//        botao.setFontSize ( 20 );
+        botao.setRound ( 0 );
+        botao.setShadeWidth ( 0 );
+        botao.setInnerShadeWidth ( 0 );
+        botao.setDrawSides ( false, false, false, false );
+        botao.setForeground ( Color.WHITE );
+        botao.setSelectedForeground ( Color.WHITE );
+        botao.setTopBgColor ( new Color (49,104,146) );
+        botao.setTopSelectedBgColor ( Color.DARK_GRAY );
+        botao.setBottomBgColor ( new Color (49,104,146) );
+        botao.setBottomSelectedBgColor ( Color.DARK_GRAY );
+    }
+    
     public static boolean weblafEstaInstalado() {
         return WebLookAndFeel.isInstalled();
     }

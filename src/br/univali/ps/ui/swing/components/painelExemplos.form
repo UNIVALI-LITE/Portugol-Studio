@@ -150,10 +150,9 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="openExample">
+                    <Component class="com.alee.laf.button.WebButton" name="openExample">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Explorar Exemplo"/>
-                        <Property name="opaque" type="boolean" value="false"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
