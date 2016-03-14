@@ -96,7 +96,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         return component;
     }
 
-    private Icon getIcon(TipoDado tipoDado) {
+    private Icon getIcon(TipoDado tipoDado, Boolean constante) {
         String iconName = "unknown.png";
         if (tipoDado != null) {
             iconName = tipoDado.getNome() + ".png";
@@ -244,7 +244,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        Icon icone = getIcon(noDeclaracaoVariavel.getTipoDado());
+        Icon icone = getIcon(noDeclaracaoVariavel.getTipoDado(), noDeclaracaoVariavel.constante());
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
@@ -311,7 +311,8 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
-        sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
+//        sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
+        sb.append("faca-enquanto");
         component.setText(sb.toString());
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
         component.setIcon(icone);
