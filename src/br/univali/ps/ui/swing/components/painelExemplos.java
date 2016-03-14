@@ -9,9 +9,10 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.FileHandle;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
-import java.awt.Color;
+import com.alee.laf.button.WebButton;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -41,6 +42,9 @@ public class painelExemplos extends javax.swing.JPanel
     public painelExemplos()
     {
         initComponents();
+        if(WeblafUtils.weblafEstaInstalado()){
+            WeblafUtils.configurarBotao(openExample);
+        }
         inicializarJTree();
     }
     
@@ -181,7 +185,7 @@ public class painelExemplos extends javax.swing.JPanel
         jPanel2 = new javax.swing.JPanel();
         description = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        openExample = new javax.swing.JButton();
+        openExample = new com.alee.laf.button.WebButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -228,7 +232,6 @@ public class painelExemplos extends javax.swing.JPanel
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         openExample.setText("Explorar Exemplo");
-        openExample.setOpaque(false);
         jPanel3.add(openExample, java.awt.BorderLayout.EAST);
 
         descriptionPane.add(jPanel3, java.awt.BorderLayout.SOUTH);
@@ -277,6 +280,6 @@ public class painelExemplos extends javax.swing.JPanel
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JButton openExample;
+    private com.alee.laf.button.WebButton openExample;
     // End of variables declaration//GEN-END:variables
 }
