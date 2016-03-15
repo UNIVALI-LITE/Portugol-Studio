@@ -688,6 +688,12 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(GenericTreeNode no) {
         component.setText((String) no.getUserObject());
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        if(no.getUserObject().equals("verdadeiro")){
+            icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "true.png");
+        }else if(no.getUserObject().equals("falso")){
+            icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "false.png");
+        }
+        
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
