@@ -688,6 +688,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(GenericTreeNode no) {
         component.setText((String) no.getUserObject());
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        
         if(no.getUserObject().equals("verdadeiro")){
             icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "true.png");
         }else if(no.getUserObject().equals("falso")){
@@ -701,16 +702,28 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
 
     @Override
     public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        component.setText("continue");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        return null;
     }
 
     @Override
     public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        component.setText("titulo");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        return null;
     }
 
     @Override
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        component.setText("va-para");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        return null;
     }
 }
