@@ -214,7 +214,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             component.setForeground(Color.BLUE);
         }
 
-        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.png");
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
@@ -282,7 +282,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.png");
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
