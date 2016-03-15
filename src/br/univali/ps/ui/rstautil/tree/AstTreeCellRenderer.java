@@ -99,7 +99,12 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     private Icon getIcon(TipoDado tipoDado, Boolean constante) {
         String iconName = "unknown.png";
         if (tipoDado != null) {
-            iconName = tipoDado.getNome() + ".png";
+            if(constante){
+                iconName = tipoDado.getNome() + "_c.png";
+            }
+            else{
+                iconName = tipoDado.getNome() + ".png";
+            }
         }
         return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
     }
@@ -518,7 +523,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append("[][]");
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
         } else {
-            icon = getIcon(noDeclaracaoParametro.getTipoDado());
+            icon = getIcon(noDeclaracaoParametro.getTipoDado(), noDeclaracaoParametro.constante());
         }
         sb.append(" : ");
         sb.append("<font color='#888888'>");
@@ -619,7 +624,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(no.obterValorConstante());
 
         component.setText(sb.toString());
-        Icon icone = getIcon(tipo);
+        Icon icone = getIcon(tipo, false);
         component.setIcon(icone);
         component.setIcon(icone);
         return null;
@@ -650,7 +655,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(ValorTreeNode no) {
         StringBuilder sb = new StringBuilder("<html>[");
         sb.append(no.getPosicao()).append("]");
-        Icon icon = getIcon(no.getTipoDado());
+        Icon icon = getIcon(no.getTipoDado(), false);
         if (no.getValor() != null) {
             Object valor = no.getValor();
             if (valor instanceof Boolean) {
