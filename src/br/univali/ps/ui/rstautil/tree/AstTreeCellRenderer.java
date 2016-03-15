@@ -96,10 +96,15 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         return component;
     }
 
-    private Icon getIcon(TipoDado tipoDado) {
+    private Icon getIcon(TipoDado tipoDado, Boolean constante) {
         String iconName = "unknown.png";
         if (tipoDado != null) {
-            iconName = tipoDado.getNome() + ".png";
+            if(constante){
+                iconName = tipoDado.getNome() + "_c.png";
+            }
+            else{
+                iconName = tipoDado.getNome() + ".png";
+            }
         }
         return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
     }
@@ -244,7 +249,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        Icon icone = getIcon(noDeclaracaoVariavel.getTipoDado());
+        Icon icone = getIcon(noDeclaracaoVariavel.getTipoDado(), noDeclaracaoVariavel.constante());
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
@@ -311,7 +316,8 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
-        sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
+//        sb.append(noFacaEnquanto.getClass().getSimpleName().replace("No", "").toLowerCase());
+        sb.append("faca-enquanto");
         component.setText(sb.toString());
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "loop.png");
         component.setIcon(icone);
@@ -517,7 +523,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             sb.append("[][]");
             icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
         } else {
-            icon = getIcon(noDeclaracaoParametro.getTipoDado());
+            icon = getIcon(noDeclaracaoParametro.getTipoDado(), noDeclaracaoParametro.constante());
         }
         sb.append(" : ");
         sb.append("<font color='#888888'>");
@@ -618,7 +624,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         sb.append(no.obterValorConstante());
 
         component.setText(sb.toString());
-        Icon icone = getIcon(tipo);
+        Icon icone = getIcon(tipo, false);
         component.setIcon(icone);
         component.setIcon(icone);
         return null;
@@ -649,7 +655,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(ValorTreeNode no) {
         StringBuilder sb = new StringBuilder("<html>[");
         sb.append(no.getPosicao()).append("]");
-        Icon icon = getIcon(no.getTipoDado());
+        Icon icon = getIcon(no.getTipoDado(), false);
         if (no.getValor() != null) {
             Object valor = no.getValor();
             if (valor instanceof Boolean) {
@@ -682,6 +688,13 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     public Object visitar(GenericTreeNode no) {
         component.setText((String) no.getUserObject());
         Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        
+        if(no.getUserObject().equals("verdadeiro")){
+            icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "true.png");
+        }else if(no.getUserObject().equals("falso")){
+            icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "false.png");
+        }
+        
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
@@ -689,16 +702,28 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
 
     @Override
     public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        component.setText("continue");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        return null;
     }
 
     @Override
     public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        component.setText("titulo");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        return null;
     }
 
     @Override
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        component.setText("va-para");
+        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png");
+        component.setIcon(icone);
+        component.setDisabledIcon(icone);
+        return null;
     }
 }
