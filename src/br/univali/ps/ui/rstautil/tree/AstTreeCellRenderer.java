@@ -108,6 +108,20 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         }
         return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
     }
+    private Icon getMatrixIcon(TipoDado tipoDado) {
+        String iconName = "unknown.png";
+        if (tipoDado != null) {
+            iconName ="matriz_" +tipoDado.getNome() + ".png";
+        }
+        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
+    }
+    private Icon getVectorIcon(TipoDado tipoDado) {
+        String iconName = "unknown.png";
+        if (tipoDado != null) {
+            iconName ="vetor_" +tipoDado.getNome() + ".png";
+        }
+        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
+    }
 
     @Override
     public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
@@ -213,8 +227,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-
-        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.png");
+        Icon icone = getMatrixIcon(noDeclaracaoMatriz.getTipoDado());
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
@@ -282,7 +295,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         if (currentPortugolTreeNode.isModificado()) {
             component.setForeground(Color.BLUE);
         }
-        Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.png");
+        Icon icone = getVectorIcon(noDeclaracaoVetor.getTipoDado());
         component.setIcon(icone);
         component.setDisabledIcon(icone);
         return null;
@@ -518,10 +531,10 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
         Icon icon = null;
         if (noDeclaracaoParametro.getQuantificador() == Quantificador.VETOR) {
             sb.append("[]");
-            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+            icon = getVectorIcon(noDeclaracaoParametro.getTipoDado());
         } else if (noDeclaracaoParametro.getQuantificador() == Quantificador.MATRIZ) {
             sb.append("[][]");
-            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
+            icon = getMatrixIcon(noDeclaracaoParametro.getTipoDado());
         } else {
             icon = getIcon(noDeclaracaoParametro.getTipoDado(), noDeclaracaoParametro.constante());
         }
@@ -663,7 +676,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
             }
             sb.append(" = ").append(valor);
         } else if (no.isColuna()) {
-            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+            icon = getVectorIcon(no.getTipoDado());;
         }
         component.setText(sb.toString());
         //component.setPreferredSize(new Dimension(200,20));
