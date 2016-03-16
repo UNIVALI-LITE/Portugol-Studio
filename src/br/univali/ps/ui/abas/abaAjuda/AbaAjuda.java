@@ -575,14 +575,14 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             if (diretorioIcone == null)
             {
                 diretorioIcone = Configuracoes.getInstancia().getDiretorioAjuda().getPath();
-                diretorioIcone += "\\recursos\\imagens\\padrao";
+                diretorioIcone += "/recursos/imagens/padrao";
                 if (folha)
                 {
-                    diretorioIcone += "\\arvore_folha.png";
+                    diretorioIcone += "/arvore_folha.png";
                 }
                 else
                 {
-                    diretorioIcone += "\\arvore_no.png";
+                    diretorioIcone += "/arvore_no.png";
                 }
                 arquivoIcone = new File(diretorioIcone);
 
