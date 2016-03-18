@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
@@ -331,7 +332,15 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             List<Simbolo> lista = new ArrayList<>();
             lista.add(simbolo);
 
-            estaInicializando = simbolo.getOrigemDoSimbolo().getInicializacao() != null;
+            NoDeclaracao declaracao = simbolo.getOrigemDoSimbolo();
+            
+            if (declaracao instanceof NoDeclaracaoInicializavel)
+            {
+                NoExpressao inicializacao = ((NoDeclaracaoInicializavel) declaracao).getInicializacao();
+                
+                estaInicializando = inicializacao != null;
+            }
+            
             simbolosAlterados(lista);
             estaInicializando = false;
         }
@@ -634,8 +643,13 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(nomeDoSimbolo, linha, coluna, tamanho);
             ultimoProgramaCompilado.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
             if (procuradorDeDeclaracao.encontrou()) {
+                
                 NoDeclaracao noDeclaracao = procuradorDeDeclaracao.getNoDeclaracao();
-                return obtemValorDeExpressaoDoTipoInteiro(noDeclaracao.getInicializacao()); 
+                
+                if (noDeclaracao instanceof NoDeclaracaoInicializavel)
+                {
+                    return obtemValorDeExpressaoDoTipoInteiro( ((NoDeclaracaoInicializavel)noDeclaracao).getInicializacao());
+                }
             }
         }
         return null;
