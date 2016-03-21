@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.portugol.nucleo.CausaErroAoTentarObterDeclaracaoDoSimbolo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.ErroAoTentarObterDeclaracaoDoSimbolo;
 import br.univali.portugol.nucleo.ErroCompilacao;
@@ -242,7 +243,10 @@ public class TelaRenomearSimbolo extends JDialog
         }
         catch (ErroAoTentarObterDeclaracaoDoSimbolo ex)
         {
-            throw new ExcecaoAplicacao(ex.getMensagem(), ExcecaoAplicacao.Tipo.ERRO);
+            if (ex.getCausa() == CausaErroAoTentarObterDeclaracaoDoSimbolo.PROGRAMA_CONTEM_ERROS)
+            {
+                throw new ExcecaoAplicacao("Não é possível renomear um programa que contém erros. Arrume os erros e tente novamente", ExcecaoAplicacao.Tipo.ERRO);
+            }
         }
     }
 

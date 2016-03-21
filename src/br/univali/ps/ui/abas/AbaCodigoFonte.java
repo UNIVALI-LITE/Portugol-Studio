@@ -70,6 +70,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -683,6 +685,33 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         editor.getTextArea().requestFocusInWindow();
                     }
                 });
+            }
+        });
+        
+        tree.addTreeSelectionListener(new TreeSelectionListener()
+        {
+
+            @Override
+            public void valueChanged(TreeSelectionEvent e)
+            {
+                TreePath path = e.getNewLeadSelectionPath();
+                
+                if (path != null)
+                {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    Object obj = node.getUserObject();
+                    TrechoCodigoFonte trechoCodigoFonte = null;
+
+                    if (obj instanceof NoDeclaracao)
+                    {
+                        trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
+                    }
+
+                    if (trechoCodigoFonte != null)
+                    {
+                        editor.selecionarTexto(trechoCodigoFonte.getLinha() - 1, trechoCodigoFonte.getColuna(), trechoCodigoFonte.getTamanhoTexto());
+                    }
+                }
             }
         });
         

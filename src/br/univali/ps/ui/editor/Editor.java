@@ -651,12 +651,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
 
         dobrarLinhasCodigo(dobramentos);
-        
+
         for (Integer pontoParada : pontosParada)
         {
             getTextArea().setaStatusDoPontoDeParada(pontoParada, true);
         }
-        
+
         suporteLinguagemPortugol.atualizar(textArea);
         SwingUtilities.invokeLater(() ->
         {
@@ -809,9 +809,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         textArea.getFoldManager().reparse();
 
-        linhas.stream().forEach((linha) -> 
-                {
-                    textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
+        linhas.stream().forEach((linha) ->
+        {
+            textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
         });
     }
 
@@ -857,9 +857,24 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    public void rolarAtePosicao(final int posicao) {
-        SwingUtilities.invokeLater(() -> {
-            try {
+    public void selecionarTexto(int linha, int coluna, int tamanho)
+    {
+        Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
+        int offs = elem.getStartOffset() + coluna;
+        int end = offs + tamanho;
+
+        textArea.getFoldManager().ensureOffsetNotInClosedFold(offs);
+        textArea.select(offs, end);
+        rolarAtePosicao(offs);
+        textArea.requestFocusInWindow();
+    }
+
+    private void rolarAtePosicao(final int posicao)
+    {
+        SwingUtilities.invokeLater(() ->
+        {
+            try
+            {
                 int ma = scrollPane.getHeight() / 2;
                 int ml = scrollPane.getWidth() / 2;
                 
@@ -904,12 +919,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         botao.getAction().setEnabled(acaoExterna.isEnabled());
 
-        acaoExterna.addPropertyChangeListener((PropertyChangeEvent evt) -> 
-                {
-                    if (evt.getPropertyName().equals("enabled"))
-                    {
-                        botao.getAction().setEnabled(acaoExterna.isEnabled());
-                    }
+        acaoExterna.addPropertyChangeListener((PropertyChangeEvent evt) ->
+        {
+            if (evt.getPropertyName().equals("enabled"))
+            {
+                botao.getAction().setEnabled(acaoExterna.isEnabled());
+            }
         });
     }
 
@@ -945,9 +960,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void centralizarCodigoFonte()
     {
-        SwingUtilities.invokeLater(() -> 
-                {
-                    rolarAtePosicao(textArea.getCaretPosition());
+        SwingUtilities.invokeLater(() ->
+        {
+            rolarAtePosicao(textArea.getCaretPosition());
         });
     }
 
@@ -1158,6 +1173,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     @Override
     public void mensagemCompiladorSelecionada(Mensagem mensagem)
     {
+        exibirMensagemCompilador(mensagem);
+    }
+
+    public void exibirMensagemCompilador(Mensagem mensagem)
+    {
         int linha = 0;
         int coluna = 0;
 
@@ -1174,7 +1194,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         posicionarCursor(linha, coluna);
     }
-
+    
     public void posicionarCursor(int linha, int coluna)
     {
         try
@@ -1183,8 +1203,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             if (nova >= 0 && nova < textArea.getText().length())
             {
+                textArea.getFoldManager().ensureOffsetNotInClosedFold(nova);                
                 textArea.setCaretPosition(nova);
-                textArea.requestFocus();
+                
+                rolarAtePosicao(nova);
+                textArea.requestFocusInWindow();
             }
         }
         catch (BadLocationException ex)
@@ -1229,31 +1252,31 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
      */
     public void destacarTrechoCodigoFonte(final int linha, final int coluna, final int tamanho)
     {
-        SwingUtilities.invokeLater(() -> 
-                {
-                    try
-                    {
-                        Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
-                        int offs = elem.getStartOffset() + coluna;
-                        textArea.getHighlighter().removeAllHighlights();
-                        Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+        SwingUtilities.invokeLater(() ->
+        {
+            try
+            {
+                Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
+                int offs = elem.getStartOffset() + coluna;
+                textArea.getHighlighter().removeAllHighlights();
+                Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
 
-                        destaquesPlugin.add(destaque);
-                    }
-                    catch (BadLocationException ex)
-                    {
+                destaquesPlugin.add(destaque);
+            }
+            catch (BadLocationException ex)
+            {
 
-                    }
+            }
 
-                    rolarAtePosicao(linha, coluna);
+            rolarAtePosicao(linha, coluna);
         });
     }
 
     private void removerDestaquesPlugins()
     {
-        destaquesPlugin.stream().forEach((destaque) -> 
-                {
-                    textArea.getHighlighter().removeHighlight(destaque);
+        destaquesPlugin.stream().forEach((destaque) ->
+        {
+            textArea.getHighlighter().removeHighlight(destaque);
         });
     }
 
@@ -1364,20 +1387,20 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public static void main(String args[])
     {
-        SwingUtilities.invokeLater(() -> 
-                {
-                    WebLookAndFeel.install();
-                    JFrame frame = new JFrame("Teste Editor");
-                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frame.setSize(800, 600);
+        SwingUtilities.invokeLater(() ->
+        {
+            WebLookAndFeel.install();
+            JFrame frame = new JFrame("Teste Editor");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
 
-                    JPanel painel = new JPanel(new BorderLayout());
-                    Editor editor = new Editor();
-                    painel.add(editor);
-                    WeblafUtils.configuraWeblaf(painel);
-                    frame.getContentPane().add(painel, BorderLayout.CENTER);
+            JPanel painel = new JPanel(new BorderLayout());
+            Editor editor = new Editor();
+            painel.add(editor);
+            WeblafUtils.configuraWeblaf(painel);
+            frame.getContentPane().add(painel, BorderLayout.CENTER);
 
-                    frame.setVisible(true);
+            frame.setVisible(true);
         });
 
     }

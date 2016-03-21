@@ -65,6 +65,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.folding.Fold;
 
 /**
  * A tree view showing the outline of Java source, similar to the "Outline" view
@@ -140,7 +141,6 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         model = new DefaultTreeModel(new DefaultMutableTreeNode("Nothing"));
         setModel(model);
         listener = new Listener();
-        addTreeSelectionListener(listener);
         setDragEnabled(true);
         setTransferHandler(new TreeTransferHandler());
 
@@ -290,9 +290,9 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         {
             model.setRoot(root);
             refresh();
-            
+
             model.reload();
-            TreeUtils.expandAll(PortugolOutlineTree.this, true);
+            RstaTreeUtils.expandAll(PortugolOutlineTree.this, true);
         });
 
     }
@@ -315,8 +315,11 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
             int offs = elem.getStartOffset() + trechoCodigoFonte.getColuna();
             int end = offs + trechoCodigoFonte.getTamanhoTexto();
 
+            System.out.println("Linha: " + linha);
+            
+            textArea.getFoldManager().ensureOffsetNotInClosedFold(offs);
             textArea.select(offs, end);
-            textArea.requestFocus();
+            textArea.requestFocusInWindow();
         }
     }
 
@@ -748,7 +751,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
      * Listens for events this tree is interested in (events in the associated
      * editor, for example), as well as events in this tree.
      */
-    private class Listener implements PropertyChangeListener, TreeSelectionListener
+    private class Listener implements PropertyChangeListener
     {
 
         /**
@@ -767,19 +770,5 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 update(programa);
             }
         }
-
-        /**
-         * Selects the corresponding element in the text editor when a user
-         * clicks on a node in this tree.
-         */
-        @Override
-        public void valueChanged(TreeSelectionEvent e)
-        {
-            TreePath newPath = e.getNewLeadSelectionPath();
-            if (newPath != null)
-            {
-                gotoElementAtPath(newPath);
-            }
-        }       
     }
 }
