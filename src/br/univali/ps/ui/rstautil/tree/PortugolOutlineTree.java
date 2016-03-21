@@ -260,7 +260,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
                 refresh();
 
                 model.reload();
-                TreeUtils.expandAll(PortugolOutlineTree.this, true);
+                RstaTreeUtils.expandAll(PortugolOutlineTree.this, true);
             }
         });
 
