@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaOpcoesExecucao;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
@@ -9,6 +10,7 @@ import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.execucao.Depurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
@@ -31,6 +33,7 @@ import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
+import br.univali.ps.ui.rstautil.tree.PortugolOutlineTree;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -65,6 +68,10 @@ import javax.swing.text.BadLocationException;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
 
@@ -678,7 +685,61 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 });
             }
         });
+        
+        tree.addMouseListener(new MouseAdapter()
+        {         
+            @Override
+            public void mousePressed(MouseEvent e)
+            {
+                if (e.getClickCount() == 2)
+                {
+                    int selRow = tree.getRowForLocation(e.getX(), e.getY());
 
+                    if (selRow != -1)
+                    {
+                        TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                        Object obj = node.getUserObject();
+
+                        if (obj instanceof NoDeclaracao)
+                        {
+                            if ((programa != null && programa.isExecutando()))
+                            {
+                                JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
+                                editor.getTextArea().requestFocusInWindow();
+                            }
+                            else
+                            {
+                                TrechoCodigoFonte trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
+
+                                try
+                                {
+                                    String programa = editor.getPortugolDocumento().getCodigoFonte();
+                                    int linha = trechoCodigoFonte.getLinha();
+                                    int coluna = trechoCodigoFonte.getColuna() + 1;
+
+                                    TelaRenomearSimbolo telaRenomearSimbolo = PortugolStudio.getInstancia().getTelaRenomearSimbolo();
+                                    telaRenomearSimbolo.exibir(programa, linha, coluna);
+
+                                    if (telaRenomearSimbolo.usuarioAceitouRenomear())
+                                    {
+                                        String programaRenomeado = Portugol.renomearSimbolo(programa, linha, coluna, telaRenomearSimbolo.getNovoNome());
+                                        editor.setCodigoFonteRenomeado(programaRenomeado);
+                                    }
+                                    
+                                    editor.getTextArea().requestFocusInWindow();
+                                }
+                                catch(ExcecaoAplicacao | ErroAoRenomearSimbolo ex)
+                                {
+                                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     protected void criarDicasInterface() {

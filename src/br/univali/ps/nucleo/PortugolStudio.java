@@ -5,6 +5,8 @@ import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
+import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.TelaRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaAtalhosTeclado;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -74,6 +76,8 @@ public final class PortugolStudio
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
     private TelaLicencas telaLicencas = null;
+    private TelaRenomearSimbolo telaRenomearSimbolo = null;        
+    
     private TelaDicas telaDicas = null;
     private TelaAtalhosTeclado telaAtalhosTeclado = null;
         
@@ -435,23 +439,17 @@ public final class PortugolStudio
     private void definirLookAndFeel()
     {
 
-        SwingUtilities.invokeLater(new Runnable()
+        SwingUtilities.invokeLater(() ->
         {
-
-            @Override
-            public void run()
+            try
             {
-                try
-                {
-                    FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
-                    //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    WeblafUtils.instalaWeblaf();
-                }
-                catch (Exception e)
-                {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-
+                FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
+                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                WeblafUtils.instalaWeblaf();
+            }
+            catch (Exception e)
+            {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
         });
 
@@ -736,6 +734,18 @@ public final class PortugolStudio
         telaLicencas.setLocationRelativeTo(null);
 
         return telaLicencas;
+    }
+
+    public TelaRenomearSimbolo getTelaRenomearSimbolo()
+    {
+        if (telaRenomearSimbolo == null)
+        {
+            telaRenomearSimbolo = new TelaRenomearSimbolo();                    
+        }
+        
+        telaRenomearSimbolo.setLocationRelativeTo(null);
+        
+        return telaRenomearSimbolo;
     }
 
     public String getUriAtualizacao()

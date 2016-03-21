@@ -11,11 +11,11 @@ import javax.swing.table.AbstractTableModel;
 /**
  *
  * @author Luiz Fernando Noschang
- * @Fillipi Pelz
+ * @author Fillipi Pelz
  */
 public final class ResultadoAnaliseTableModel extends AbstractTableModel
 {
-    private List<Mensagem> mensagens = new ArrayList<Mensagem>();
+    private List<Mensagem> mensagens = new ArrayList<>();
     
     public Mensagem getMensagem(int indice)
     {
@@ -46,18 +46,17 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
         {
             Mensagem mensagem = mensagens.get(linha);
             
-            if (coluna == 0)
+            switch (coluna)
             {
-                return getTipoMensagem(mensagem);
+                case 0:
+                    return getTipoMensagem(mensagem);
+                case 1:
+                    return getLinha(mensagem);
+                case 2:
+                    return mensagem.getMensagem();
+                default:
+                    break;
             }
-            else if (coluna == 1)
-            {
-                return getLinha(mensagem);
-            }
-            else if (coluna == 2)
-            {
-                return mensagem.getMensagem();
-            }             
         }
 
         return null;
@@ -66,17 +65,16 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
     @Override
     public String getColumnName(int indice)
     {
-        if (indice == 0)
+        switch (indice)
         {
-            return " ";
-        }
-        else if (indice == 1)
-        {
-            return "Linha";
-        }
-        else if (indice == 2)
-        {
-            return "Mensagem";            
+            case 0:
+                return " ";
+            case 1:
+                return "Linha";
+            case 2:
+                return "Mensagem";
+            default:
+                break;            
         }
 
         return null;
@@ -85,17 +83,16 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
     @Override
     public Class<?> getColumnClass(int indice)
     {
-        if (indice == 0)
+        switch (indice)
         {
-            return Icon.class;
-        }
-        else if (indice == 1)
-        {
-            return Integer.class;
-        }
-        else if (indice == 2)
-        {
-            return String.class;
+            case 0:
+                return Icon.class;
+            case 1:
+                return Integer.class;
+            case 2:
+                return String.class;
+            default:
+                break;
         }
         
         return null;
@@ -103,7 +100,7 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
 
     public void setResultadoAnalise(ResultadoAnalise resultadoAnalise)
     {
-        mensagens = new ArrayList<Mensagem>();
+        mensagens = new ArrayList<>();
         
         if (resultadoAnalise != null)
         {
@@ -150,7 +147,5 @@ public final class ResultadoAnaliseTableModel extends AbstractTableModel
         }
 
         return linha;
-    }
-
-    
+    }   
 }
