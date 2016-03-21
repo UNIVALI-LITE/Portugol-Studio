@@ -38,7 +38,7 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener, TreeSelectionListener
 {
-    private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif");
+    private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
     private static final int tamanhoFonte = 12;
     
     public AbaDocumentacaoBiblioteca()
@@ -427,14 +427,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         divisor = new javax.swing.JSplitPane();
-        painelArvore = new javax.swing.JPanel();
         painelRolagemArvore = new javax.swing.JScrollPane();
         arvoreBibliotecas = new javax.swing.JTree();
-        separador = new javax.swing.JSeparator();
         painelRolagemConteudo = new javax.swing.JScrollPane();
         painelHtml = new javax.swing.JTextPane();
 
@@ -442,33 +439,29 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        divisor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
+        divisor.setBackground(new java.awt.Color(250, 250, 250));
+        divisor.setBorder(null);
         divisor.setDividerLocation(250);
         divisor.setDividerSize(8);
 
-        painelArvore.setMinimumSize(new java.awt.Dimension(200, 22));
-        painelArvore.setLayout(new java.awt.BorderLayout());
-
-        painelRolagemArvore.setBackground(new java.awt.Color(255, 255, 255));
+        painelRolagemArvore.setBackground(new java.awt.Color(250, 250, 250));
         painelRolagemArvore.setBorder(null);
         painelRolagemArvore.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
+        painelRolagemArvore.setPreferredSize(new java.awt.Dimension(200, 336));
+
+        arvoreBibliotecas.setBackground(new java.awt.Color(250, 250, 250));
         painelRolagemArvore.setViewportView(arvoreBibliotecas);
 
-        painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
+        divisor.setLeftComponent(painelRolagemArvore);
 
-        separador.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        painelArvore.add(separador, java.awt.BorderLayout.LINE_END);
-
-        divisor.setLeftComponent(painelArvore);
-
-        painelRolagemConteudo.setBackground(new java.awt.Color(245, 245, 245));
+        painelRolagemConteudo.setBackground(new java.awt.Color(250, 250, 250));
         painelRolagemConteudo.setBorder(null);
         painelRolagemConteudo.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         painelRolagemConteudo.setMinimumSize(new java.awt.Dimension(350, 37));
 
         painelHtml.setEditable(false);
-        painelHtml.setBackground(new java.awt.Color(245, 245, 245));
-        painelHtml.setBorder(null);
+        painelHtml.setBackground(new java.awt.Color(250, 250, 250));
+        painelHtml.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         painelHtml.setContentType("text/html"); // NOI18N
         painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
         painelRolagemConteudo.setViewportView(painelHtml);
@@ -480,11 +473,9 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreBibliotecas;
     private javax.swing.JSplitPane divisor;
-    private javax.swing.JPanel painelArvore;
     private javax.swing.JTextPane painelHtml;
     private javax.swing.JScrollPane painelRolagemArvore;
     private javax.swing.JScrollPane painelRolagemConteudo;
-    private javax.swing.JSeparator separador;
     // End of variables declaration//GEN-END:variables
 
     private String montarAssinaturaFuncao(MetaDadosFuncao metaDadosFuncao)
@@ -746,7 +737,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     {
         if (valor instanceof MetaDadosFuncao)
         {
-            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDeBiblioteca.png");
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png");
         }
         else if (valor instanceof MetaDadosConstante)
         {
@@ -756,7 +747,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         }
         else if (valor instanceof MetaDadosBiblioteca)
         {
-            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.gif");
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
         }
         
         return null;
