@@ -20,7 +20,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,19 +95,19 @@ public final class AbaInicial extends Aba {
     }
 
     private void instalarAcaoEaster1() {
-        getActionMap().put("CAGE", new AbstractAction() {
+        getActionMap().put("RICK", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {                    
                 try {
-                    ImageIcon image = new ImageIcon(new URL("http://38.media.tumblr.com/avatar_73b7931eb242_64.png"));
-                    if(image.getIconWidth()>1){
-                        rotuloSairProgramando.setIcon(image);
-                        rotuloAssistirVideoAulas.setIcon(image);
-                        rotuloConhecerBibliotecas.setIcon(image);
-                        rotuloConhecerLinguagem.setIcon(image);
-                        JOptionPane.showMessageDialog(null, image, "Você foi Nick Cageado", JOptionPane.PLAIN_MESSAGE);
+                    ImageIcon gif = new ImageIcon(new URL("http://lite.acad.univali.br/~alice/portugol/resources/rick/image.gif"));
+                    if(gif.getIconWidth()>1){
+                        rotuloSairProgramando.setIcon(gif);
+                        rotuloAssistirVideoAulas.setIcon(gif);
+                        rotuloConhecerBibliotecas.setIcon(gif);
+                        rotuloConhecerLinguagem.setIcon(gif);
+                        JOptionPane.showMessageDialog(null, gif, "Never gonna", JOptionPane.PLAIN_MESSAGE);
                     }
-                } catch (MalformedURLException ex) {
+                } catch (Exception ex) {
                     Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
                 }                    
             }

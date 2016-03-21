@@ -9,12 +9,15 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.FileHandle;
+import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -35,13 +38,14 @@ import javax.swing.tree.TreePath;
  */
 public class painelExemplos extends javax.swing.JPanel
 {
-
+    WebImage imagemPadrao;
     /**
      * Creates new form painelExemplos
      */
     public painelExemplos()
     {
         initComponents();
+        imagemPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"light-bulb.png"));
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(openExample);
         }
@@ -62,6 +66,8 @@ public class painelExemplos extends javax.swing.JPanel
                 }
                 DefaultTreeModel model = new DefaultTreeModel(root);
                 arvoreExemplos.setModel(model);
+                arvoreExemplos.setRootVisible(false);
+                arvoreExemplos.setShowsRootHandles(true);
                 initTreeListner();
                 expandJTree();
                 jTreedoClick();
@@ -77,7 +83,7 @@ public class painelExemplos extends javax.swing.JPanel
         SwingUtilities.invokeLater(() ->
         {
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) arvoreExemplos.getModel().getRoot();
-            DefaultMutableTreeNode leaf = root.getLastLeaf();
+            DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) root.getFirstChild();
             arvoreExemplos.setSelectionPath(new TreePath(leaf.getPath()));
         });
         
@@ -138,6 +144,7 @@ public class painelExemplos extends javax.swing.JPanel
             if(node.isLeaf())
             {
                 try {
+                    
                     ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
                     File exemplo = item.getFile();
                     String codigoFonte = FileHandle.open(exemplo);
@@ -161,11 +168,29 @@ public class painelExemplos extends javax.swing.JPanel
                         }
                     });
                     openExample.setText("Explorar Exemplo");
+                    openExample.setVisible(true);
                 }
                 catch (Exception ex) {
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
                 }
             }
+            else{
+                description.setText("<html><head></head><body>Selecione os Itens na árvore ao lado para visualizar os exemplos. Você pode também explorar um exemplo clickando no botão 'Explorar Exemplo' ou apertando a tecla 'enter' na navegação com o teclado.</body></html>");
+                imagePane.removeAll();
+                imagemPadrao.setDisplayType ( DisplayType.fitComponent );
+                imagePane.add(imagemPadrao);
+                imagePane.setPreferredSize(new Dimension(150,0));
+                openExample.setVisible(false);
+            }
+        });
+        arvoreExemplos.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode()== KeyEvent.VK_ENTER){
+                    openExample.doClick();
+                }
+            }
+            
         });
     }
     
