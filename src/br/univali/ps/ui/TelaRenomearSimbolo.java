@@ -11,6 +11,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
@@ -20,8 +21,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -41,7 +44,7 @@ import javax.swing.event.DocumentListener;
 public class TelaRenomearSimbolo extends JDialog
 {
     private static final int ATRASO_ATUALIZACAO_STATUS = 350;
-    
+
     private String codigoFonte;
     private int linha;
     private int coluna;
@@ -56,6 +59,14 @@ public class TelaRenomearSimbolo extends JDialog
     public TelaRenomearSimbolo()
     {
         initComponents();
+
+        try
+        {
+            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/light-bulb.png")));
+        }
+        catch (IOException ioe)
+        {
+        }
 
         botaoAceitar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -123,7 +134,7 @@ public class TelaRenomearSimbolo extends JDialog
                 {
                     timer.stop();
                 }
-                
+
                 aceitou = false;
                 dispose();
             }
@@ -204,7 +215,7 @@ public class TelaRenomearSimbolo extends JDialog
     private void dispararTimerAtualizacao()
     {
         acaoAceitar.setEnabled(false);
-        
+
         if (timer == null)
         {
             timer = new Timer(ATRASO_ATUALIZACAO_STATUS, (ActionEvent e)
@@ -236,7 +247,9 @@ public class TelaRenomearSimbolo extends JDialog
             campoNomeAtual.setText(declaracaoDoSimbolo.getNome());
             campoNovoNome.setText("");
             acaoAceitar.setEnabled(false);
-            
+
+            definirTituloJanela();
+
             atualizarInformacoes();
 
             setVisible(true);
@@ -250,6 +263,43 @@ public class TelaRenomearSimbolo extends JDialog
         }
     }
 
+    private void definirTituloJanela()
+    {
+        if (declaracaoDoSimbolo instanceof NoDeclaracaoVariavel)
+        {
+            setTitle("Renomear variável");
+        }
+        else if (declaracaoDoSimbolo instanceof NoDeclaracaoVetor)
+        {
+            setTitle("Renomear vetor");
+        }
+        else if (declaracaoDoSimbolo instanceof NoDeclaracaoMatriz)
+        {
+            setTitle("Renomear matriz");
+        }
+        else if (declaracaoDoSimbolo instanceof NoDeclaracaoFuncao)
+        {
+            setTitle("Renomear função");
+        }
+        else if (declaracaoDoSimbolo instanceof NoDeclaracaoParametro)
+        {
+            NoDeclaracaoParametro parametro = (NoDeclaracaoParametro) declaracaoDoSimbolo;
+
+            if (parametro.getQuantificador() == Quantificador.VALOR)
+            {
+                setTitle("Renomear variável");
+            }
+            else if (parametro.getQuantificador() == Quantificador.VETOR)
+            {
+                setTitle("Renomear vetor");
+            }
+            else if (parametro.getQuantificador() == Quantificador.MATRIZ)
+            {
+                setTitle("Renomear matriz");
+            }
+        }
+    }
+
     public boolean usuarioAceitouRenomear()
     {
         return aceitou;
@@ -259,7 +309,7 @@ public class TelaRenomearSimbolo extends JDialog
     {
         return campoNovoNome.getText().trim();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
@@ -338,7 +388,7 @@ public class TelaRenomearSimbolo extends JDialog
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(painelCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 324, Short.MAX_VALUE)
+                        .addGap(0, 233, Short.MAX_VALUE)
                         .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botaoAceitar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
