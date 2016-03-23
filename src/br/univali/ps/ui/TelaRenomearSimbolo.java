@@ -17,19 +17,15 @@ import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -260,6 +256,14 @@ public class TelaRenomearSimbolo extends JDialog
             {
                 throw new ExcecaoAplicacao("Não é possível renomear um programa que contém erros. Arrume os erros e tente novamente", ExcecaoAplicacao.Tipo.ERRO);
             }
+            else if (ex.getCausa() == CausaErroAoTentarObterDeclaracaoDoSimbolo.SIMBOLO_NAO_ENCONTRADO)
+            {
+                throw new ExcecaoAplicacao("Não é possível renomear pois o cursor do teclado não está posicionado sobre o nome de uma variável, vetor, matriz ou função", ExcecaoAplicacao.Tipo.ERRO);
+            }
+            else
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO);
+            }
         }
     }
 
@@ -267,7 +271,14 @@ public class TelaRenomearSimbolo extends JDialog
     {
         if (declaracaoDoSimbolo instanceof NoDeclaracaoVariavel)
         {
-            setTitle("Renomear variável");
+            if (declaracaoDoSimbolo.constante())
+            {
+                setTitle("Renomear constante");
+            }
+            else
+            {
+                setTitle("Renomear variável");
+            }
         }
         else if (declaracaoDoSimbolo instanceof NoDeclaracaoVetor)
         {
@@ -287,7 +298,14 @@ public class TelaRenomearSimbolo extends JDialog
 
             if (parametro.getQuantificador() == Quantificador.VALOR)
             {
-                setTitle("Renomear variável");
+                if (parametro.constante())
+                {
+                    setTitle("Renomear constante");
+                }
+                else
+                {
+                    setTitle("Renomear variável");
+                }
             }
             else if (parametro.getQuantificador() == Quantificador.VETOR)
             {

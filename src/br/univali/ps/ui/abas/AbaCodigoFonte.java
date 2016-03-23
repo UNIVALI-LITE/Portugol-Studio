@@ -33,7 +33,6 @@ import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
-import br.univali.ps.ui.rstautil.tree.PortugolOutlineTree;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
@@ -75,7 +74,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins {
+public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, ObservadorExecucao, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins
+{
 
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
@@ -88,7 +88,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
     private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
-
 
     private final TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
 
@@ -121,7 +120,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean simbolosInspecionadosJaForamCarregados = false;//controla se os símbolos inspecionados já foram carregados do arquivo
     private String codigoFonteAtual;
 
-    protected AbaCodigoFonte() {
+    protected AbaCodigoFonte()
+    {
         super("Sem título", lampadaApagada, true);
 
         initComponents();
@@ -149,7 +149,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
 
-        if (WeblafUtils.weblafEstaInstalado()) {
+        if (WeblafUtils.weblafEstaInstalado())
+        {
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             inspetorDeSimbolos.setBackground(WeblafUtils.BACKGROUND_ESCURO);
@@ -166,70 +167,90 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private BarraDeBotoesExpansivel barraDeBotoesInspetorArvore;
     private BarraDeBotoesExpansivel barraDeBotoesEditor;
 
-    private void configuraBarraDeBotoesDoPainelArvoreInspetor() {
+    private void configuraBarraDeBotoesDoPainelArvoreInspetor()
+    {
         barraDeBotoesInspetorArvore = new BarraDeBotoesExpansivel();
 
         Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
         Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
         Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
 
-        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais) {
+        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais)
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 setTamanhoFonteArvoreInspetor(getTamanhoDaFonteArvoreInspetor() + VALOR_INCREMENTO_FONTE);
             }
         };
 
-        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos) {
+        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos)
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 setTamanhoFonteArvoreInspetor(getTamanhoDaFonteArvoreInspetor() - VALOR_INCREMENTO_FONTE);
             }
         };
-        barraDeBotoesInspetorArvore.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
+        barraDeBotoesInspetorArvore.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]
+        {
+            acaoAumentarFonte, acaoDiminuirFonte
+        });
 
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, -2), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
         painelInspetorArvore.setComponentZOrder(barraDeBotoesInspetorArvore, 0);
     }
 
-    private void criaControlesDaFonteDoEditor() {
+    private void criaControlesDaFonteDoEditor()
+    {
         Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
         Icon iconeMais = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png");
         Icon iconeMenos = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "minus.png");
 
-        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais) {
+        AbstractAction acaoAumentarFonte = new AbstractAction("", iconeMais)
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 Font fonteAtual = editor.getTextArea().getFont();
                 float novoTamanho = fonteAtual.getSize() + VALOR_INCREMENTO_FONTE;
                 editor.setTamanhoFonteEditor(novoTamanho);
             }
         };
 
-        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos) {
+        AbstractAction acaoDiminuirFonte = new AbstractAction("", iconeMenos)
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 Font fonteAtual = editor.getTextArea().getFont();
                 float novoTamanho = fonteAtual.getSize() - VALOR_INCREMENTO_FONTE;
                 editor.setTamanhoFonteEditor(novoTamanho);
             }
         };
-        barraDeBotoesEditor.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]{acaoAumentarFonte, acaoDiminuirFonte});
+        barraDeBotoesEditor.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]
+        {
+            acaoAumentarFonte, acaoDiminuirFonte
+        });
     }
 
-    public Action criaAcaoOpcoesExecucao() {
+    public Action criaAcaoOpcoesExecucao()
+    {
         String nome = "Exibir Opções de Execucao";
-        if(Configuracoes.getInstancia().isExibirOpcoesExecucao()){
-           nome= "Parar de Exibir Opções de Execução";
+        if (Configuracoes.getInstancia().isExibirOpcoesExecucao())
+        {
+            nome = "Parar de Exibir Opções de Execução";
         }
-        
-        acaoExibirOpcoesExecucao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png")) {
+
+        acaoExibirOpcoesExecucao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                
+            public void actionPerformed(ActionEvent e)
+            {
+
                 Configuracoes.getInstancia().setExibirOpcoesExecucao(!Configuracoes.getInstancia().isExibirOpcoesExecucao());
-                
+
             }
         };
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK);
@@ -238,24 +259,32 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
         return acaoExibirOpcoesExecucao;
     }
-    
-    private void atualizarAcaoExibirOpcoesExecucao(){
+
+    private void atualizarAcaoExibirOpcoesExecucao()
+    {
         JMenuItem item = (JMenuItem) acaoExibirOpcoesExecucao.getValue("MenuItem");
-        if(Configuracoes.getInstancia().isExibirOpcoesExecucao()){
+        if (Configuracoes.getInstancia().isExibirOpcoesExecucao())
+        {
             item.setText("Parar de Exibir Opções de Execução");
-        }else{
+        }
+        else
+        {
             item.setText("Exibir Opções de Execução");
         }
     }
-    
-    public Action criaAcaoPesquisarSubstituir() {
+
+    public Action criaAcaoPesquisarSubstituir()
+    {
 
         String nome = "Pesquisar e substituir";
 
-        AbstractAction acao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png")) {
+        AbstractAction acao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (editor.getFindDialog().isVisible()) {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (editor.getFindDialog().isVisible())
+                {
                     editor.getFindDialog().setVisible(false);
                 }
 
@@ -269,18 +298,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acao;
     }
 
-    public Action criaAcaoCentralizarCodigoFonte() {
+    public Action criaAcaoCentralizarCodigoFonte()
+    {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE, InputEvent.SHIFT_DOWN_MASK);
         String nome = "Centralizar código fonte";
-        AbstractAction acaoCentralizarCodigoFonte = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "centralizar_codigo.png")) {
+        AbstractAction acaoCentralizarCodigoFonte = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "centralizar_codigo.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 JMenuItem item = (JMenuItem) getValue("MenuItem");
                 Configuracoes configuracoes = Configuracoes.getInstancia();
                 configuracoes.alterarCentralizarCondigoFonte();
-                if(configuracoes.isCentralizarCodigoFonte()){
+                if (configuracoes.isCentralizarCodigoFonte())
+                {
                     item.setText("Descentralizar Código Fonte");
-                }else{
+                }
+                else
+                {
                     item.setText("Centralizar Código Fonte");
                 }
             }
@@ -293,23 +328,30 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acaoCentralizarCodigoFonte;
     }
 
-    private boolean editorEstaExpandido() {
+    private boolean editorEstaExpandido()
+    {
         boolean divisorArvoreEditorExpandido = divisorArvoreEditor.getDividerLocation() > divisorArvoreEditor.getMaximumDividerLocation();
         boolean divisorEditorConsoleExpandido = divisorEditorConsole.getDividerLocation() > divisorEditorConsole.getMaximumDividerLocation();
         return divisorArvoreEditorExpandido && divisorEditorConsoleExpandido;
     }
 
-    private Action criaAcaoExpandirEditor() {
-        AbstractAction acaoExpandir = new AbstractAction("Expandir", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
+    private Action criaAcaoExpandirEditor()
+    {
+        AbstractAction acaoExpandir = new AbstractAction("Expandir", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent ae)
+            {
                 JMenuItem item = (JMenuItem) getValue("MenuItem");
-                if (!editorEstaExpandido()) {
+                if (!editorEstaExpandido())
+                {
                     divisorArvoreEditor.setDividerLocation(1.0);
                     divisorEditorConsole.setDividerLocation(1.0);
                     item.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png"));
                     item.setText("Restaurar");
-                } else {
+                }
+                else
+                {
                     divisorArvoreEditor.setDividerLocation(-1);
                     divisorEditorConsole.setDividerLocation(-1);
                     item.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"));
@@ -329,7 +371,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acaoExpandir;
     }
 
-    private void configurarBarraDeBotoesDoEditor() {
+    private void configurarBarraDeBotoesDoEditor()
+    {
         barraDeBotoesEditor = new BarraDeBotoesExpansivel();
 
         criaControlesDaFonteDoEditor();
@@ -347,61 +390,80 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
     }
 
-    public static class NoTransferable implements Transferable {
+    public static class NoTransferable implements Transferable
+    {
 
         public static final DataFlavor NO_DATA_FLAVOR
                 = new DataFlavor(List.class, "List");
         private List<NoDeclaracao> nosDeclaracoes;
 
-        public NoTransferable(List<NoDeclaracao> nosDeclaracoes) {
+        public NoTransferable(List<NoDeclaracao> nosDeclaracoes)
+        {
             this.nosDeclaracoes = nosDeclaracoes;
         }
 
-        public List<NoDeclaracao> getNos() {
+        public List<NoDeclaracao> getNos()
+        {
             return nosDeclaracoes;
         }
 
         @Override
-        public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[]{NO_DATA_FLAVOR};
+        public DataFlavor[] getTransferDataFlavors()
+        {
+            return new DataFlavor[]
+            {
+                NO_DATA_FLAVOR
+            };
         }
 
         @Override
-        public boolean isDataFlavorSupported(DataFlavor flavor) {
+        public boolean isDataFlavorSupported(DataFlavor flavor)
+        {
             return flavor.equals(NO_DATA_FLAVOR);
         }
 
         @Override
-        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
+        {
             return nosDeclaracoes;
         }
     }
 
-    public static void inicializarPool() {
-        try {            
-            SwingUtilities.invokeAndWait(() ->
-            {
-                try {
-                    //TODO: Verificar se podemos mover este código para um local melhor.
-                    // Antes nós tinhamos o Applet, mas agora. Seguem comentários anteriores:
-                    
-                    /*
+    public static void inicializarPool()
+    {
+        try
+        {
+            SwingUtilities.invokeAndWait(()
+                    -> 
+                    {
+                        try
+                        {
+                            //TODO: Verificar se podemos mover este código para um local melhor.
+                            // Antes nós tinhamos o Applet, mas agora. Seguem comentários anteriores:
+
+                            /*
                     inicializei o pool aqui para evitar chamar o construtor da classe AbaCodigoFonte quando o Applet está rodando.
                     O construtor de AbaCodigoFonte inicializa um FileChooser e utiliza a classe File, e isso causa uma exceção no Applet não assinado.
-                    */
-                    poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
-                } catch (Exception excecao) {
-                    LOGGER.log(Level.SEVERE, "Não foi possível inicializar o pool de abas de código fonte", excecao);
-                }
+                             */
+                            poolAbasCodigoFonte = new PoolAbasCodigoFonte(TAMANHO_POOL_ABAS);
+                        }
+                        catch (Exception excecao)
+                        {
+                            LOGGER.log(Level.SEVERE, "Não foi possível inicializar o pool de abas de código fonte", excecao);
+                        }
             });
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
-    
-    public static AbaCodigoFonte novaAba() {
-        if(poolAbasCodigoFonte == null){
+
+    public static AbaCodigoFonte novaAba()
+    {
+        if (poolAbasCodigoFonte == null)
+        {
             System.err.println("ATENÇÃO, não foi iniciado um Pool de Abas no inicio do programa. A aba será criada sem cache.");
             return new AbaCodigoFonte();
         }
@@ -409,13 +471,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return aba;
     }
 
-    private void configurarArvoreEstrutural() {
+    private void configurarArvoreEstrutural()
+    {
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
 
     }
 
-    private void criarPainelTemporario() {
+    private void criarPainelTemporario()
+    {
         painelTemporario = new JPanel();
         painelTemporario.setBorder(null);
         painelTemporario.setLayout(new GridLayout(1, 1));
@@ -424,12 +488,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelTemporario.setBackground(Color.RED);
     }
 
-    private void carregarConfiguracoes() {
+    private void carregarConfiguracoes()
+    {
         Configuracoes configuracoes = Configuracoes.getInstancia();
         setTamanhoFonteArvoreInspetor(configuracoes.getTamanhoFonteArvore());
     }
 
-    protected JFileChooser criarSeletorArquivo() {
+    protected JFileChooser criarSeletorArquivo()
+    {
         filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
 
         JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserSalvamento();
@@ -442,44 +508,57 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return dialogoSelecaoArquivo;
     }
 
-    protected void configurarAcoes() {
+    protected void configurarAcoes()
+    {
         configurarAcaoSalvarArquivo();
         configurarAcaoSalvarComo();
         configurarAcaoExecutarPontoParada();
         configurarAcaoExecutarPasso();
         configurarAcaoInterromper();
     }
-    
-    private void configurarAcaoSalvarComo() {
+
+    private void configurarAcaoSalvarComo()
+    {
         final String nome = "Salvar como";
         final KeyStroke atalho = KeyStroke.getKeyStroke("shift ctrl S");
 
-        acaoSalvarComo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save_as.png")) {
+        acaoSalvarComo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save_as.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 JFileChooser dialogoSelecaoArquivo = criarSeletorArquivo();
-                if (editor.getPortugolDocumento().getFile() != null) {
+                if (editor.getPortugolDocumento().getFile() != null)
+                {
                     File arquivoAtual = editor.getPortugolDocumento().getFile();
                     dialogoSelecaoArquivo.setCurrentDirectory(arquivoAtual.getParentFile());
                     dialogoSelecaoArquivo.setSelectedFile(arquivoAtual);
-                } else {
+                }
+                else
+                {
                     dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
                     dialogoSelecaoArquivo.setSelectedFile(new File(""));
                 }
 
-                if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION) {
+                if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION)
+                {
                     File arquivo = dialogoSelecaoArquivo.getSelectedFile();
                     AbaCodigoFonte aba = PortugolStudio.getInstancia().getTelaPrincipal().obterAbaArquivo(arquivo);
 
-                    if (aba == null) {
+                    if (aba == null)
+                    {
                         editor.getPortugolDocumento().setFile(arquivo);
                         podeSalvar = true;
                         acaoSalvarArquivo.actionPerformed(e);
-                    } else {
+                    }
+                    else
+                    {
                         JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", "Portugol Studio", JOptionPane.WARNING_MESSAGE);
                         usuarioCancelouSalvamento = true;
                     }
-                } else {
+                }
+                else
+                {
                     usuarioCancelouSalvamento = true;
                 }
             }
@@ -491,47 +570,62 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnSalvarComo.setAction(acaoSalvarComo);
     }
 
-    private void salvaArquivo() {
-    
+    private void salvaArquivo()
+    {
+
         if (podeSalvar)
         {
-            try {
+            try
+            {
                 final PortugolDocumento documento = editor.getPortugolDocumento();
 
-                if (documento.getFile() != null) {
+                if (documento.getFile() != null)
+                {
                     String texto = documento.getText(0, documento.getLength());
                     texto = inserirInformacoesPortugolStudio(texto);
 
                     FileHandle.save(texto, getArquivoComExtensao(documento.getFile()));
                     documento.setChanged(false);
                 }
-            } catch (BadLocationException ex) {
+            }
+            catch (BadLocationException ex)
+            {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         }
     }
 
-    private File getArquivoComExtensao(File arquivo) {
+    private File getArquivoComExtensao(File arquivo)
+    {
         int indiceExtensao = arquivo.getAbsolutePath().indexOf(".por");
-        if (indiceExtensao < 0) {//não tem extensão
+        if (indiceExtensao < 0)
+        {//não tem extensão
             return new File(arquivo.getAbsolutePath() + ".por");
         }
         return arquivo;
     }
 
-    private void configurarAcaoSalvarArquivo() {
+    private void configurarAcaoSalvarArquivo()
+    {
         final String nome = (String) "Salvar arquivo";
         final KeyStroke atalho = KeyStroke.getKeyStroke("ctrl S");
 
-        acaoSalvarArquivo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save.png")) {
+        acaoSalvarArquivo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save.png"))
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 final PortugolDocumento documento = editor.getPortugolDocumento();
-                if (documento.getFile() != null) {
+                if (documento.getFile() != null)
+                {
                     salvaArquivo();
-                } else {
+                }
+                else
+                {
                     acaoSalvarComo.actionPerformed(e);
                 }
             }
@@ -545,12 +639,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void configurarAcaoExecutarPontoParada() {
+    private void configurarAcaoExecutarPontoParada()
+    {
 
-        acaoExecutarPontoParada = new AbstractAction("Executar") {
+        acaoExecutarPontoParada = new AbstractAction("Executar")
+        {
 
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent ae)
+            {
                 inspetorDeSimbolos.resetaDestaqueDosSimbolos();
                 executar(Depurador.Estado.BREAK_POINT);
             }
@@ -570,11 +667,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnExecutar.setAction(acaoExecutarPontoParada);
     }
 
-    private void configurarAcaoExecutarPasso() {
+    private void configurarAcaoExecutarPasso()
+    {
 
-        acaoExecutarPasso = new AbstractAction("Depurar") {
+        acaoExecutarPasso = new AbstractAction("Depurar")
+        {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent ae)
+            {
                 executar(Depurador.Estado.STEP_OVER);
             }
         };
@@ -593,11 +693,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnDepurar.setAction(acaoExecutarPasso);
     }
 
-    private void configurarAcaoInterromper() {
+    private void configurarAcaoInterromper()
+    {
 
-        acaoInterromper = new AbstractAction("Interromper") {
+        acaoInterromper = new AbstractAction("Interromper")
+        {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent ae)
+            {
                 interromper();
             }
 
@@ -618,25 +721,33 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper.setAction(acaoInterromper);
     }
 
-    private void configurarEditor() {
+    private void configurarEditor()
+    {
         editor.setAbaCodigoFonte(AbaCodigoFonte.this);
     }
 
-    private void instalarObservadores() {
-        PortugolParser.getParser(getEditor().getTextArea()).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener() {
+    private void instalarObservadores()
+    {
+        PortugolParser.getParser(getEditor().getTextArea()).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener()
+        {
 
             @Override
-            public void propertyChange(PropertyChangeEvent pce) {
+            public void propertyChange(PropertyChangeEvent pce)
+            {
                 //String name = pce.getPropertyName();
                 Programa programaCompilado = (Programa) pce.getNewValue();
-                if (programa == null) {
+                if (programa == null)
+                {
                     programa = programaCompilado;
                 }
 
-                if (!simbolosInspecionadosJaForamCarregados) {//é a primeira compilação?
+                if (!simbolosInspecionadosJaForamCarregados)
+                {//é a primeira compilação?
                     carregaSimbolosInspecionados(codigoFonteAtual, programaCompilado);
                     simbolosInspecionadosJaForamCarregados = true;
-                } else {//se não é a primeira compilação
+                }
+                else
+                {//se não é a primeira compilação
                     //sempre que a árvore for compilada é necessário verificar 
                     //quais são as linhas paráveis e adicionar pontos de parada nestas linhas
                     BuscadorDeLinhasParaveis buscadorDeLinhasParaveis = new BuscadorDeLinhasParaveis();
@@ -646,21 +757,26 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
 
-        getEditor().getTextArea().addListenter(new PSTextAreaListener() {
+        getEditor().getTextArea().addListenter(new PSTextAreaListener()
+        {
 
             @Override
-            public void pontosDeParadaAtualizados(Set<Integer> pontosDeParada) {
-                if (programa != null) {
+            public void pontosDeParadaAtualizados(Set<Integer> pontosDeParada)
+            {
+                if (programa != null)
+                {
                     programa.ativaPontosDeParada(pontosDeParada);
                 }
                 salvaArquivo();
             }
         });
 
-        inspetorDeSimbolos.addListener(new InspetorDeSimbolosListener() {
+        inspetorDeSimbolos.addListener(new InspetorDeSimbolosListener()
+        {
 
             @Override
-            public void listaDeSimbolosInpecionadosFoiModificada() {
+            public void listaDeSimbolosInpecionadosFoiModificada()
+            {
                 salvaArquivo();
             }
         });
@@ -676,18 +792,37 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.observar(editor.getTextArea());
         inspetorDeSimbolos.observar(editor.getTextArea());
 
-        addComponentListener(new ComponentAdapter() {
+        addComponentListener(new ComponentAdapter()
+        {
             @Override
-            public void componentShown(final ComponentEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        editor.getTextArea().requestFocusInWindow();
-                    }
+            public void componentShown(final ComponentEvent e)
+            {
+                SwingUtilities.invokeLater(()
+                        -> 
+                        {
+                            editor.getTextArea().requestFocusInWindow();
+
+                            if (Configuracoes.getInstancia().isExibirAvisoRenomear())
+                            {
+                                JOptionPane.showMessageDialog(AbaCodigoFonte.this, ""
+                                        + "O Portugol Studio tem uma novidade! Agora você pode renomear elementos do seu programa\n"
+                                        + "como, por exemplo, variáveis e funções."
+                                        + "\n\n"
+                                        + "Na árvore estrutural do programa, localizada ao lado direito do editor de código fonte, -->\n"
+                                        + "dê um duplo clique sobre o nome do elemento que você quer renomear."
+                                        + "\n\n"
+                                        + "Você também pode renomear através do editor de código fonte, posicionando o cursor do teclado\n"
+                                        + "sobre o nome do elemento e pressionando a combinação de teclas: Ctrl + R."
+                                        + "\n\n"
+                                        + "Que a força esteja com você!!!"
+                                
+                                , "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                                Configuracoes.getInstancia().setExibirAvisoRenomear(false);
+                            }
                 });
             }
         });
-        
+
         tree.addTreeSelectionListener(new TreeSelectionListener()
         {
 
@@ -695,7 +830,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void valueChanged(TreeSelectionEvent e)
             {
                 TreePath path = e.getNewLeadSelectionPath();
-                
+
                 if (path != null)
                 {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
@@ -714,9 +849,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
             }
         });
-        
+
         tree.addMouseListener(new MouseAdapter()
-        {         
+        {
             @Override
             public void mousePressed(MouseEvent e)
             {
@@ -756,10 +891,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                         String programaRenomeado = Portugol.renomearSimbolo(programa, linha, coluna, telaRenomearSimbolo.getNovoNome());
                                         editor.setCodigoFonteRenomeado(programaRenomeado);
                                     }
-                                    
-                                    editor.getTextArea().requestFocusInWindow();
                                 }
-                                catch(ExcecaoAplicacao | ErroAoRenomearSimbolo ex)
+                                catch (ExcecaoAplicacao | ErroAoRenomearSimbolo ex)
                                 {
                                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
                                 }
@@ -771,7 +904,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
     }
 
-    protected void criarDicasInterface() {
+    protected void criarDicasInterface()
+    {
         FabricaDicasInterface.criarTooltip(btnExecutar, "Executa o programa até o próximo ponto de parada", acaoExecutarPontoParada);
         FabricaDicasInterface.criarTooltip(btnInterromper, "Interrompe a execução/depuração do programa atual", acaoInterromper);
         FabricaDicasInterface.criarTooltip(btnDepurar, "Executa o programa passo a passo", acaoExecutarPasso);
@@ -781,19 +915,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         FabricaDicasInterface.criarTooltip(barraDeBotoesInspetorArvore.getCompomemtParaAdicionarDica(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
     }
 
-    protected PainelSaida getPainelSaida() {
+    protected PainelSaida getPainelSaida()
+    {
         return this.painelSaida;
     }
 
-    public Editor getEditor() {
+    public Editor getEditor()
+    {
         return editor;
     }
 
-    private void configurarCursorBotoes() {
+    private void configurarCursorBotoes()
+    {
         barraFerramentas.setOpaque(false);
 
-        for (Component componente : barraFerramentas.getComponents()) {
-            if (componente instanceof JButton) {
+        for (Component componente : barraFerramentas.getComponents())
+        {
+            if (componente instanceof JButton)
+            {
                 JButton botao = (JButton) componente;
 
                 botao.setOpaque(false);
@@ -802,12 +941,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-    public void setCodigoFonte(final String codigoFonte, final File arquivo, final boolean podeSalvar) {
+    public void setCodigoFonte(final String codigoFonte, final File arquivo, final boolean podeSalvar)
+    {
         this.codigoFonteAtual = codigoFonte;//o código fonte completo (incluindo as informações do PortugolStudio) 
         //será utilizado mais adiante para carregar os símbolos inspecionados que foram salvos no arquivo
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 simbolosInspecionadosJaForamCarregados = false;
                 AbaCodigoFonte.this.podeSalvar = podeSalvar;
                 editor.setCodigoFonte(codigoFonte);
@@ -821,31 +963,41 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
     }
 
-    private void carregaSimbolosInspecionados(final String codigoFonteCompleto, final Programa programa) {
-        if (codigoFonteCompleto == null || programa == null) {
+    private void carregaSimbolosInspecionados(final String codigoFonteCompleto, final Programa programa)
+    {
+        if (codigoFonteCompleto == null || programa == null)
+        {
             return;
         }
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable()
+        {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 String regex = "@SIMBOLOS-INSPECIONADOS[ ]*=[ ]* (\\{[_a-zA-Z0-9]+, [0-9]+, [0-9]+, [0-9]+\\}[-]?)+;";
                 String informacoes = Utils.extrairInformacoesPortugolStudio(codigoFonteCompleto);
                 Matcher avaliador = Pattern.compile(regex).matcher(informacoes);
-                if (avaliador.find()) {
+                if (avaliador.find())
+                {
                     String linhas[] = avaliador.group().replace("@SIMBOLOS-INSPECIONADOS = ", "").replaceAll("[\\{\\};]", "").split("-");
-                    for (String linha : linhas) {
+                    for (String linha : linhas)
+                    {
                         String partes[] = linha.trim().split(",");
-                        try {
+                        try
+                        {
                             String nomeDoSimbolo = partes[0].trim();
                             int linhaDoSimbolo = Integer.valueOf(partes[1].trim());
                             int colunaDoSimbolo = Integer.valueOf(partes[2].trim());
                             int tamanhoDoTextoDoSimbolo = Integer.valueOf(partes[3].trim());
                             NoDeclaracao noDeclaracao = procuraNoDeclaracao(programa, nomeDoSimbolo, linhaDoSimbolo, colunaDoSimbolo, tamanhoDoTextoDoSimbolo);
-                            if (noDeclaracao != null) {
+                            if (noDeclaracao != null)
+                            {
                                 inspetorDeSimbolos.adicionaNo(noDeclaracao);
                             }
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e)
+                        {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
                     }
@@ -855,8 +1007,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     }
 
-    private NoDeclaracao procuraNoDeclaracao(Programa programa, final String nomeDoSimbolo, final int linhaDoSimbolo, final int colunaDoSimbolo, final int tamanhoDoTexto) throws ExcecaoVisitaASA {
-        if (programa == null) {
+    private NoDeclaracao procuraNoDeclaracao(Programa programa, final String nomeDoSimbolo, final int linhaDoSimbolo, final int colunaDoSimbolo, final int tamanhoDoTexto) throws ExcecaoVisitaASA
+    {
+        if (programa == null)
+        {
             return null;
         }
         ProcuradorDeDeclaracao procuradorDeSimbolo = new ProcuradorDeDeclaracao(nomeDoSimbolo, linhaDoSimbolo, colunaDoSimbolo, tamanhoDoTexto);
@@ -1097,19 +1251,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         add(painelConteudo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void interromper() {
-        if (programa != null) {
+    private void interromper()
+    {
+        if (programa != null)
+        {
             programa.interromper();
             programa = null;
         }
     }
 
-    public float getTamanhoDaFonteArvoreInspetor() {
+    public float getTamanhoDaFonteArvoreInspetor()
+    {
         return tree.getFont().getSize();
     }
 
-    public void setTamanhoFonteArvoreInspetor(float tamanho) {
-        if ((tamanho != tree.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE)) {
+    public void setTamanhoFonteArvoreInspetor(float tamanho)
+    {
+        if ((tamanho != tree.getFont().getSize()) && (tamanho >= TAMANHO_MINIMO_FONTE) && (tamanho <= TAMANHO_MAXIMO_FONTE))
+        {
             Font novaFonte = tree.getFont().deriveFont(tamanho);
             tree.setFont(novaFonte);
             inspetorDeSimbolos.setTamanhoDaFonte(tamanho);
@@ -1118,58 +1277,73 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public void documentoModificado(boolean modificado) {
-        if (podeSalvar) {
+    public void documentoModificado(boolean modificado)
+    {
+        if (podeSalvar)
+        {
             acaoSalvarArquivo.setEnabled(modificado);
-        } else {
+        }
+        else
+        {
             acaoSalvarArquivo.setEnabled(false);
         }
 
-        if (programa != null && !programa.isExecutando()) {
+        if (programa != null && !programa.isExecutando())
+        {
             programa = null;
         }
 
-        if (modificado && podeSalvar) {
+        if (modificado && podeSalvar)
+        {
             getCabecalho().setForegroung(Color.RED);
             getCabecalho().setIcone(lampadaApagada);
-        } else {
+        }
+        else
+        {
             getCabecalho().setForegroung(Color.BLACK);
             getCabecalho().setIcone(lampadaAcesa);
         }
     }
 
-    private boolean programaExecutando() {
+    private boolean programaExecutando()
+    {
         return (programa != null) && programa.isExecutando();
     }
 
-    private boolean arquivoModificado() {
+    private boolean arquivoModificado()
+    {
         return editor.getPortugolDocumento().isChanged() && podeSalvar;
     }
 
     @Override
-    public boolean fechandoAba(Aba aba) {
+    public boolean fechandoAba(Aba aba)
+    {
         this.selecionar();
         usuarioCancelouSalvamento = false;
 
-        if (programaExecutando()) {
+        if (programaExecutando())
+        {
             JOptionPane.showMessageDialog(this, String.format("O programa desta aba (%s) ainda está em execução.\nEncerre o programa antes de fechar a aba.", getCabecalho().getTitulo()), "Aviso", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
-        if (arquivoModificado()) {
+        if (arquivoModificado())
+        {
             int resp = JOptionPane.showConfirmDialog(this, String.format("O documento '%s' possui modificações, deseja Salvá-las?", getCabecalho().getTitulo()), "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
 
-            if (resp == JOptionPane.YES_OPTION) {
+            if (resp == JOptionPane.YES_OPTION)
+            {
                 acaoSalvarArquivo.actionPerformed(null);
 
-                if (usuarioCancelouSalvamento) {
+                if (usuarioCancelouSalvamento)
+                {
                     return false;
                 }
-            } else {
-                if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION) {
-                    usuarioCancelouSalvamento = true;
-                    return false;
-                }
+            }
+            else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION)
+            {
+                usuarioCancelouSalvamento = true;
+                return false;
             }
         }
 
@@ -1177,41 +1351,52 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public void nomeArquivoAlterado(String nome) {
-        if (nome != null) {
+    public void nomeArquivoAlterado(String nome)
+    {
+        if (nome != null)
+        {
             getCabecalho().setTitulo(nome);
-        } else {
+        }
+        else
+        {
             getCabecalho().setTitulo("Sem título");
             getCabecalho().setForeground(Color.RED);
         }
     }
 
-    public PortugolDocumento getPortugolDocumento() {
+    public PortugolDocumento getPortugolDocumento()
+    {
         return editor.getPortugolDocumento();
     }
 
-    private void executar(Depurador.Estado estado) {
+    private void executar(Depurador.Estado estado)
+    {
         tree.setStatusDaAtualizacaoDosNos(estado != Depurador.Estado.BREAK_POINT);
-        if (!programaExecutando()) {
+        if (!programaExecutando())
+        {
 
             AbaMensagemCompilador abaMensagens = painelSaida.getAbaMensagensCompilador();
             abaMensagens.limpar();
 
-            try {
+            try
+            {
                 programa = Portugol.compilar(editor.getPortugolDocumento().getCodigoFonte());
                 programa.setArquivoOrigem(editor.getPortugolDocumento().getFile());
-                definirDiretorioTrabalho(programa);                
+                definirDiretorioTrabalho(programa);
 
-                if (programa.getResultadoAnalise().contemAvisos()) {
+                if (programa.getResultadoAnalise().contemAvisos())
+                {
                     exibirResultadoAnalise(programa.getResultadoAnalise());
                 }
 
-                if (Configuracoes.getInstancia().isExibirOpcoesExecucao()) {
+                if (Configuracoes.getInstancia().isExibirOpcoesExecucao())
+                {
                     telaOpcoesExecucao.inicializar(programa);
                     telaOpcoesExecucao.setVisible(true);
                 }
 
-                if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucao.isCancelado())) {
+                if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucao.isCancelado()))
+                {
                     programa.adicionarObservadorExecucao(AbaCodigoFonte.this);
                     programa.adicionarObservadorExecucao(editor);
                     programa.adicionarObservadorExecucao(tree);
@@ -1227,13 +1412,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
                     programa.executar(telaOpcoesExecucao.getParametros(), estado);
                 }
-            } catch (ErroCompilacao erroCompilacao) {
+            }
+            catch (ErroCompilacao erroCompilacao)
+            {
                 exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
                 abaMensagens.selecionar();
             }
-        } else {
+        }
+        else
+        {
 
-            if (estado == Depurador.Estado.BREAK_POINT) {
+            if (estado == Depurador.Estado.BREAK_POINT)
+            {
                 editor.removerHighlightsDepuracao();
             }
 
@@ -1244,23 +1434,34 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //    private void removePontosDeParadaInatingiveis(Set<Integer> linhasComPontosDeParadaValidos) {
 //        editor.removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
 //    }
-    private void definirDiretorioTrabalho(final Programa programa) {
-        if (editor.getPortugolDocumento().getFile() != null) {
+    private void definirDiretorioTrabalho(final Programa programa)
+    {
+        if (editor.getPortugolDocumento().getFile() != null)
+        {
             programa.setDiretorioTrabalho(editor.getPortugolDocumento().getFile().getParentFile());
-        } else {
-            try {
+        }
+        else
+        {
+            try
+            {
                 programa.setDiretorioTrabalho(new File(System.getProperty("user.dir")));
-            } catch (SecurityException | IllegalArgumentException | NullPointerException excecao) {
+            }
+            catch (SecurityException | IllegalArgumentException | NullPointerException excecao)
+            {
                 programa.setDiretorioTrabalho(new File("."));
                 LOGGER.log(Level.INFO, "Impossível obter o diretório do usuário. Definindo o diretório atual como diretório de trabalho", excecao);
             }
         }
     }
 
-    private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise) {
-        for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos()) {
-            if (erro instanceof ErroExpressoesForaEscopoPrograma) {
-                try {
+    private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise)
+    {
+        for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
+        {
+            if (erro instanceof ErroExpressoesForaEscopoPrograma)
+            {
+                try
+                {
                     ErroExpressoesForaEscopoPrograma erroEx = (ErroExpressoesForaEscopoPrograma) erro;
                     int posicao = erroEx.getPosicao();
                     int linha = editor.getTextArea().getLineOfOffset(posicao);
@@ -1268,7 +1469,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                     erroEx.setLinha(linha + 1);
                     erroEx.setColuna(coluna + 1);
-                } catch (BadLocationException ex) {
+                }
+                catch (BadLocationException ex)
+                {
 
                 }
             }
@@ -1276,8 +1479,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         painelSaida.getAbaMensagensCompilador().atualizar(resultadoAnalise);
     }
-    
-    
+
     private void exibirPopupAvisoCompilacao()
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -1285,27 +1487,34 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void run()
             {
-                FabricaDicasInterface.mostrarNotificacao("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "notification.png"));               
+                FabricaDicasInterface.mostrarNotificacao("O programa contém AVISOS de compilação, verifique a aba 'Mensagens'", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "notification.png"));
             }
         });
     }
-     
+
     @Override
-    public void execucaoIniciada(final Programa programa) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void execucaoIniciada(final Programa programa)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 acaoInterromper.setEnabled(true);
                 painelSaida.getConsole().selecionar();
 
-                try {
+                try
+                {
                     painelSaida.getConsole().limparConsole();
 
-                    if (programa.getResultadoAnalise().contemAvisos()) {
+                    if (programa.getResultadoAnalise().contemAvisos())
+                    {
                         exibirPopupAvisoCompilacao();
                     }
 
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
                 }
 
@@ -1313,12 +1522,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
     }
-       
+
     @Override
-    public void execucaoEncerrada(final Programa programa, final ResultadoExecucao resultadoExecucao) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void execucaoEncerrada(final Programa programa, final ResultadoExecucao resultadoExecucao)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 tree.setStatusDaAtualizacaoDosNos(true);
                 //tree.atualizaValoresDosNos();
                 AbaConsole console = painelSaida.getConsole();
@@ -1326,17 +1538,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 console.removerPopupLeia();
 
-                if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) {
+                if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
+                {
                     console.escreverNoConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
-                } else {
-                    if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
-                        console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
-                        console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
-                    } else {
-                        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
-                            console.escreverNoConsole("\nO programa foi interrompido!");
-                        }
-                    }
+                }
+                else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
+                {
+                    console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                    console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
+                }
+                else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
+                {
+                    console.escreverNoConsole("\nO programa foi interrompido!");
                 }
 
                 ocultarPainelSaida();
@@ -1346,7 +1559,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
     }
 
-    private String inserirInformacoesPortugolStudio(String texto) {
+    private String inserirInformacoesPortugolStudio(String texto)
+    {
         StringBuilder sb = new StringBuilder(texto);
 
         sb.append("\n/* $$$ Portugol Studio $$$ ");
@@ -1364,10 +1578,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return sb.toString();
     }
 
-    private void inserirInformacoesDosSimbolosInspecionados(StringBuilder sb) {
+    private void inserirInformacoesDosSimbolosInspecionados(StringBuilder sb)
+    {
         List<NoDeclaracao> model = inspetorDeSimbolos.getNosInspecionados();
         StringBuilder sbItems = new StringBuilder();
-        for (int i = 0; i < model.size(); i++) {
+        for (int i = 0; i < model.size(); i++)
+        {
             sbItems.append("{");
             NoDeclaracao no = model.get(i);
             String nome = no.getNome();
@@ -1380,36 +1596,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         sb.append(String.format("\n * @SIMBOLOS-INSPECIONADOS = %s;", sbItems));
     }
 
-    private void inserirInformacoesDosPontosDeParada(StringBuilder sb) {
+    private void inserirInformacoesDosPontosDeParada(StringBuilder sb)
+    {
         List<Integer> linhasComPontoDeParada = new ArrayList<>(editor.getLinhasComPontoDeParadaAtivados());
         StringBuilder linhas = new StringBuilder();
-        for (int i = 0; i < linhasComPontoDeParada.size(); i++) {
+        for (int i = 0; i < linhasComPontoDeParada.size(); i++)
+        {
             linhas.append(linhasComPontoDeParada.get(i).toString());
-            if (i < linhasComPontoDeParada.size() - 1) {
+            if (i < linhasComPontoDeParada.size() - 1)
+            {
                 linhas.append(", ");
             }
         }
         sb.append(String.format("\n * @PONTOS-DE-PARADA = %s;", linhas));
     }
 
-    private void inserirInformacoesCursor(final StringBuilder sb) {
+    private void inserirInformacoesCursor(final StringBuilder sb)
+    {
         final int posicaoCursor = editor.getTextArea().getCaretPosition();
 
-        if (posicaoCursor >= 0) {
+        if (posicaoCursor >= 0)
+        {
             sb.append(String.format("\n * @POSICAO-CURSOR = %d; ", posicaoCursor));
         }
     }
 
-    private void inserirInformacoesDobramentoCodigo(final StringBuilder sb) {
+    private void inserirInformacoesDobramentoCodigo(final StringBuilder sb)
+    {
         final List<Integer> linhasCodigoDobradas = editor.getLinhasCodigoDobradas();
 
-        if (linhasCodigoDobradas != null && !linhasCodigoDobradas.isEmpty()) {
+        if (linhasCodigoDobradas != null && !linhasCodigoDobradas.isEmpty())
+        {
             StringBuilder linhas = new StringBuilder("[");
 
-            for (int i = 0; i < linhasCodigoDobradas.size(); i++) {
+            for (int i = 0; i < linhasCodigoDobradas.size(); i++)
+            {
                 linhas.append(linhasCodigoDobradas.get(i).toString());
 
-                if (i < linhasCodigoDobradas.size() - 1) {
+                if (i < linhasCodigoDobradas.size() - 1)
+                {
                     linhas.append(", ");
                 }
             }
@@ -1420,20 +1645,25 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-    public String getCodigoFonte() {
+    public String getCodigoFonte()
+    {
         return getEditor().getTextArea().getText();
     }
 
     @Override
-    public void simboloRemovido(Simbolo simbolo) {
+    public void simboloRemovido(Simbolo simbolo)
+    {
     }
 
     @Override
-    public void highlightLinha(int linha) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void highlightLinha(int linha)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 tree.setStatusDaAtualizacaoDosNos(true);//quando para a execução a árvore é habilitada
                 tree.atualizaValoresDosNos();
             }
@@ -1442,70 +1672,89 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
+    public void highlightDetalhadoAtual(int linha, int coluna, int tamanho)
+    {
     }
 
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolo) {
+    public void simbolosAlterados(List<Simbolo> simbolo)
+    {
     }
 
     @Override
-    public void simboloDeclarado(Simbolo simbolo) {
+    public void simboloDeclarado(Simbolo simbolo)
+    {
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
+    public void stateChanged(ChangeEvent e)
+    {
         Configuracoes configuracoes = Configuracoes.getInstancia();
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        switch (evt.getPropertyName()) {
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        switch (evt.getPropertyName())
+        {
             case Configuracoes.EXIBIR_OPCOES_EXECUCAO:
                 atualizarAcaoExibirOpcoesExecucao();
-            break;
+                break;
 
             case Configuracoes.TAMANHO_FONTE_ARVORE:
                 setTamanhoFonteArvoreInspetor((Float) evt.getNewValue());
-            break;
+                break;
         }
     }
 
-    public void exibirPainelSaida() {
-        if (editorEstaExpandido()) {
+    public void exibirPainelSaida()
+    {
+        if (editorEstaExpandido())
+        {
             divisorEditorConsole.setDividerLocation(-1);
             revalidate();
         }
     }
 
-    public void ocultarPainelSaida() {
-        if (editorEstaExpandido()) {
+    public void ocultarPainelSaida()
+    {
+        if (editorEstaExpandido())
+        {
             divisorEditorConsole.setDividerLocation(1.0);
             revalidate();
         }
     }
 
-    private void atualizarStatusCursor() {
+    private void atualizarStatusCursor()
+    {
         caretUpdate(null);
     }
 
-    private void carregarAlgoritmoPadrao() {
+    private void carregarAlgoritmoPadrao()
+    {
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
     }
 
-    private static String carregarTemplate() {
-        try {
+    private static String carregarTemplate()
+    {
+        try
+        {
             return FileHandle.read(ClassLoader.getSystemResourceAsStream("br/univali/ps/dominio/template.por"));
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return "";
         }
     }
 
     @Override
-    public void instalarPlugin(final Plugin plugin) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void instalarPlugin(final Plugin plugin)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 final JToggleButton botaoPlugin = new JToggleButton();
 
                 botaoPlugin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1515,12 +1764,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 botaoPlugin.setIconTextGap(0);
                 botaoPlugin.setHorizontalAlignment(JToggleButton.CENTER);
 
-                botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone16x16())) {
+                botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone16x16()))
+                {
                     @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (botaoPlugin.isSelected()) {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        if (botaoPlugin.isSelected())
+                        {
                             exibirPlugin(plugin);
-                        } 
+                        }
                     }
                 });
 
@@ -1531,23 +1783,28 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
     }
 
-    private void criarDicaInterfacePlugin(Plugin plugin, JToggleButton botaoPlugin) {
+    private void criarDicaInterfacePlugin(Plugin plugin, JToggleButton botaoPlugin)
+    {
         MetaDadosPlugin metaDadosPlugin = plugin.getMetaDados();
         String dica = String.format("Plugin %s:\n\n %s", metaDadosPlugin.getNome(), metaDadosPlugin.getDescricao());
 
         FabricaDicasInterface.criarTooltip(botaoPlugin, dica);
     }
 
-    private void exibirPlugin(Plugin plugin) {
+    private void exibirPlugin(Plugin plugin)
+    {
         //painelPlugins.setPlugin(plugin);
         //exibirPainelPlugins();
     }
 
     @Override
-    public void desinstalarPlugin(final Plugin plugin) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void desinstalarPlugin(final Plugin plugin)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 JToggleButton botaoPlugin = botoesPlugins.get(plugin);
 
                 //barraBotoesPlugins.remove(botaoPlugin);
@@ -1566,15 +1823,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public String obterCodigoFonteUsuario() {
+    public String obterCodigoFonteUsuario()
+    {
         return editor.getPortugolDocumento().getCodigoFonte();
     }
 
     @Override
-    public void instalarAcaoPlugin(final Plugin plugin, final Action acao) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void instalarAcaoPlugin(final Plugin plugin, final Action acao)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 JButton botaoAcao = new JButton(acao);
 
                 botaoAcao.setBorderPainted(false);
@@ -1595,10 +1856,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public void desinstalarAcaoPlugin(Plugin plugin, final Action acao) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void desinstalarAcaoPlugin(Plugin plugin, final Action acao)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 JButton botaoAcao = mapaBotoesAcoesPlugins.get(acao);
 
                 barraFerramentas.remove(botaoAcao);
@@ -1608,12 +1872,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public void exibirPainelFlutuante(final JComponent origem, final JPanel conteudo, final boolean painelOpaco) {
+    public void exibirPainelFlutuante(final JComponent origem, final JPanel conteudo, final boolean painelOpaco)
+    {
         ocultarPainelFlutuante();
 
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 //painelFlutuante = criarPainelFlutuante(origem, conteudo, painelOpaco);
                 //painelFlutuante.setVisible(true);
             }
@@ -1621,10 +1888,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public void ocultarPainelFlutuante() {
-        SwingUtilities.invokeLater(new Runnable() {
+    public void ocultarPainelFlutuante()
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
 //                if (painelFlutuante != null && painelFlutuante.isVisible()) {
 //                    painelFlutuante.setVisible(false);
 //                    painelFlutuante = null;
@@ -1653,31 +1923,37 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        return tip;
 //    }
     @Override
-    public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho) {
+    public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho)
+    {
         editor.destacarTrechoCodigoFonte(linha, coluna, tamanho);
     }
 
     @Override
-    public final void caretUpdate(CaretEvent e) {
+    public final void caretUpdate(CaretEvent e)
+    {
         Point posicao = editor.getPosicaoCursor();
         EscopoCursor escopo = EscopoCursor.localizar(editor.getTextArea());
 
         //rotuloPosicaoCursor.setText(String.format("Escopo: %s, Nivel: %d, Linha: %d, Coluna: %d", escopo.getNome(), escopo.getProfundidade(), posicao.y, posicao.x));
     }
 
-    protected JButton getBtnSalvar() {
+    protected JButton getBtnSalvar()
+    {
         return btnSalvar;
     }
 
-    protected JButton getBtnSalvarComo() {
+    protected JButton getBtnSalvarComo()
+    {
         return btnSalvarComo;
     }
 
-    protected JSplitPane getDivisorEditorArvore() {
+    protected JSplitPane getDivisorEditorArvore()
+    {
         return divisorArvoreEditor;
     }
 
-    private void redefinirAba() {
+    private void redefinirAba()
+    {
         editor.getPortugolDocumento().setFile(null);
         carregarAlgoritmoPadrao();
         editor.getTextArea().discardAllEdits();
@@ -1685,19 +1961,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         editor.desabilitarCentralizacaoCodigoFonte();
         painelSaida.getAbaMensagensCompilador().limpar();
         painelSaida.getAbaMensagensCompilador().selecionar();
-        
+
         editor.getPortugolDocumento().setChanged(true);
         getCabecalho().setTitulo("Sem título");
         getCabecalho().setIcone(lampadaApagada);
         podeSalvar = true;
 
     }
-    
+
     private boolean podeFechar()
     {
         return !programaExecutando() && (!arquivoModificado() || (arquivoModificado() && !usuarioCancelouSalvamento));
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentas;
@@ -1739,7 +2015,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         protected AbaCodigoFonte criarObjeto()
         {
             AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-            
+
             abaCodigoFonte.adicionarAbaListener(new AbaListener()
             {
                 @Override

@@ -1,5 +1,7 @@
 package br.univali.ps.ui.editor;
 
+import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
+import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -16,6 +18,7 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.FabricaDicasInterface;
+import br.univali.ps.ui.TelaRenomearSimbolo;
 
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
 import br.univali.ps.ui.util.IconFactory;
@@ -36,6 +39,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
@@ -63,6 +67,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
@@ -79,8 +84,8 @@ import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
-import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
@@ -101,12 +106,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
 
-    private static final int[] teclasAutoComplete = new int[]
+    private static final int[] TECLAS_AUTO_COMPLETE = new int[]
     {
         KeyEvent.VK_EQUALS, KeyEvent.VK_PERIOD
     };
 
-    private boolean expandido = false;
     private boolean depurando = false;
     private int ultimaPosicaoCursor;
     private int ultimaLinhaHighlight = 0;
@@ -131,6 +135,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Action acaoAlternarModoEditor;
     private Action acaoCentralizarCodigoFonte;
 
+    private Action acaoRenomearSimboloNoCursor;
+
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
     private SearchListener observadorAcaoPesquisaSubstituir;
@@ -140,6 +146,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private JMenu menuTemas;
 
     private boolean centralizar = false;
+    private boolean executandoPrograma = false;
 
     public Editor()
     {
@@ -199,15 +206,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
     public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor)
     {
+        JMenu menu = new JMenu("Cores");
 
-        final JMenu menu = new JMenu("Cores");
         menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
+
         for (String tema : gerenciadorTemas.listarTemas())
         {
             JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
+
             itemMenu.setAction(new AbstractAction(tema)
             {
-
                 @Override
                 public void actionPerformed(ActionEvent evento)
                 {
@@ -217,10 +225,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     FabricaDicasInterface.mostrarNotificacao("Usando tema " + tema, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
                 }
             });
+
             itemMenu.setText(tema);
             itemMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
             menu.add(itemMenu);
         }
+
         return menu;
     }
 
@@ -294,10 +305,189 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoRefazer();
         configurarAcaoComentar();
         configurarAcaoDescomentar();
+        configurarAcaoRenomearSimboloNoCursor();
 
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
         //configurarAcaoAlternarModoEditor();
+    }
+
+    private void configurarAcaoRenomearSimboloNoCursor()
+    {
+        String nome = "Renomear";
+
+        acaoRenomearSimboloNoCursor = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (!isExecutandoPrograma())
+                {
+                    try
+                    {
+                        MetadadosDoSimboloSobOCursorDoTeclado metadados = obterMetadadosDoSimboloSobOCursorDoTeclado();
+
+                        String programa = getPortugolDocumento().getCodigoFonte();
+                        TelaRenomearSimbolo telaRenomearSimbolo = PortugolStudio.getInstancia().getTelaRenomearSimbolo();
+                        telaRenomearSimbolo.exibir(programa, metadados.getLinha(), metadados.getColuna());
+
+                        if (telaRenomearSimbolo.usuarioAceitouRenomear())
+                        {
+                            String programaRenomeado = Portugol.renomearSimbolo(programa, metadados.getLinha(), metadados.getColuna(), telaRenomearSimbolo.getNovoNome());
+                            setCodigoFonteRenomeado(programaRenomeado);
+                        }
+
+                        getTextArea().requestFocusInWindow();
+                    }
+                    catch (ExcecaoAplicacao | ErroAoRenomearSimbolo ex)
+                    {
+                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(Editor.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
+                    textArea.requestFocusInWindow();
+                }
+            }
+        };
+
+        textArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK), nome);
+        textArea.getActionMap().put(nome, acaoRenomearSimboloNoCursor);
+    }
+
+    public MetadadosDoSimboloSobOCursorDoTeclado obterMetadadosDoSimboloSobOCursorDoTeclado()
+    {
+        MetadadosDoSimboloSobOCursorDoTeclado metadados = new MetadadosDoSimboloSobOCursorDoTeclado();
+        metadados.setExisteSimboloSobOCursor(false);
+
+        if (getTextArea().getSelectedText() != null)
+        {
+            getTextArea().setCaretPosition(getTextArea().getSelectionStart());
+        }
+
+        int linha = getTextArea().getCaretLineNumber();
+        int coluna = getTextArea().getCaretOffsetFromLineStart();
+        int posicaoCursor = getTextArea().getCaretPosition();
+
+        List<Token> listaDeTokensDaLinha = converterEmListaPlana(getPortugolDocumento().getTokenListForLine(linha));
+
+        for (int i = 0; i < listaDeTokensDaLinha.size(); i++)
+        {
+            Token tokenAtual = listaDeTokensDaLinha.get(i);
+            Token proximoToken;
+
+            if (tokenAtual.containsPosition(posicaoCursor) || tokenAtual.getType() == Token.NULL)
+            {
+                boolean tokenEncontrado = (tokenAtual.isIdentifier() || tokenEhQualificador(tokenAtual));
+                
+                if (!tokenEncontrado)
+                {
+                    if (tokenAnteriorEhIdentificador(i, listaDeTokensDaLinha))
+                    {
+                        i = i - 1;
+                        tokenEncontrado = true;
+                    }
+                }
+                
+                if (tokenEncontrado)
+                {
+                    tokenAtual = retrocederAteInicioDaReferenciaDoSimbolo(i, listaDeTokensDaLinha);
+                    proximoToken = tokenAtual.getNextToken();
+
+                    if (tokenEhQualificador(proximoToken))
+                    {
+                        metadados.setEscopoDoSimbolo(tokenAtual.getLexeme());
+                        metadados.setNomeDoSimbolo(proximoToken.getNextToken().getLexeme());
+                    }
+                    else
+                    {
+                        metadados.setNomeDoSimbolo(tokenAtual.getLexeme());
+                    }
+
+                    coluna = tokenAtual.getOffset() - getTextArea().getLineStartOffsetOfCurrentLine();
+                    metadados.setExisteSimboloSobOCursor(true);
+
+                    break;
+                }
+            }
+        }
+
+        metadados.setLinha(linha + 1);
+        metadados.setColuna(coluna + 1);
+
+        return metadados;
+    }
+    
+    private boolean tokenAnteriorEhIdentificador(int indice, List<Token> listaDeTokensDaLinha)
+    {
+        indice = indice - 1;
+        
+        if (indice >= 0)
+        {
+            Token tokenAnterior = listaDeTokensDaLinha.get(indice);
+            
+            return tokenAnterior.isIdentifier();
+        }
+        
+        return false;
+    }
+        
+    private Token retrocederAteInicioDaReferenciaDoSimbolo(int indiceAtual, List<Token> listaDeTokensDaLinha)
+    {
+        Token tokenAtual = listaDeTokensDaLinha.get(indiceAtual);
+
+        while (tokenAtual.isIdentifier() || tokenEhQualificador(tokenAtual))
+        {
+            indiceAtual = indiceAtual - 1;
+
+            if (indiceAtual >= 0)
+            {
+                tokenAtual = listaDeTokensDaLinha.get(indiceAtual);
+            }
+        }
+
+        if (!tokenAtual.isIdentifier() && !tokenEhQualificador(tokenAtual))
+        {
+            indiceAtual = indiceAtual + 1;
+            tokenAtual = listaDeTokensDaLinha.get(indiceAtual);
+        }
+
+        return tokenAtual;
+    }
+
+    private boolean tokenEhQualificador(Token token)
+    {
+        if (token.getType() != Token.NULL)
+        {
+            return token.isSingleChar('.');
+        }
+        
+        return false;
+    }
+
+    private List<Token> converterEmListaPlana(Token listaDeTokensDaLinha)
+    {
+        Token token = listaDeTokensDaLinha;
+        List<Token> lista = new ArrayList<>();
+
+        while (token != null)
+        {
+            lista.add(token);
+            token = token.getNextToken();
+        }
+
+        return lista;
+    }
+
+    private synchronized void setExecutandoPrograma(boolean executandoPrograma)
+    {
+        this.executandoPrograma = executandoPrograma;
+    }
+
+    private synchronized boolean isExecutandoPrograma()
+    {
+        return executandoPrograma;
     }
 
     public ReplaceDialog getReplaceDialog()
@@ -635,33 +825,49 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public void setCodigoFonteRenomeado(String codigoFonteRenomeado)
     {
-        int posicaoCursor = textArea.getSelectionStart();
-        List<Integer> dobramentos = getLinhasCodigoDobradas();
-        Set<Integer> pontosParada = getLinhasComPontoDeParadaAtivados();
-
-        textArea.setText(Utils.removerInformacoesPortugolStudio(codigoFonteRenomeado));
-
         try
         {
+            if (textArea.getSelectedText() != null)
+            {
+                textArea.setCaretPosition(textArea.getSelectionStart());
+            }
+
+            int linha = textArea.getCaretLineNumber();
+            int coluna = textArea.getCaretOffsetFromLineStart();
+
+            List<Integer> dobramentos = getLinhasCodigoDobradas();
+            Set<Integer> pontosParada = getLinhasComPontoDeParadaAtivados();
+
+            textArea.setText(Utils.removerInformacoesPortugolStudio(codigoFonteRenomeado));
+
+            dobrarLinhasCodigo(dobramentos);
+
+            for (Integer pontoParada : pontosParada)
+            {
+                getTextArea().setaStatusDoPontoDeParada(pontoParada, true);
+            }
+
+            suporteLinguagemPortugol.atualizar(textArea);
+            
+            int comprimentoLinha = textArea.getLineEndOffset(linha) - textArea.getLineStartOffset(linha);
+            
+            if (coluna > comprimentoLinha - 1)
+            {
+                coluna = comprimentoLinha - 1;
+            }
+
+            int posicaoCursor = textArea.getLineStartOffset(linha) + coluna;
+            
             textArea.setCaretPosition(posicaoCursor);
-        }
-        catch (NumberFormatException excecao)
-        {
-            excecao.printStackTrace(System.out);
-        }
-
-        dobrarLinhasCodigo(dobramentos);
-
-        for (Integer pontoParada : pontosParada)
-        {
-            getTextArea().setaStatusDoPontoDeParada(pontoParada, true);
-        }
-
-        suporteLinguagemPortugol.atualizar(textArea);
-        SwingUtilities.invokeLater(() ->
-        {
+            textArea.getFoldManager().ensureOffsetNotInClosedFold(posicaoCursor);
             textArea.requestFocusInWindow();
-        });
+
+            rolarAtePosicao(posicaoCursor);
+        }
+        catch (BadLocationException ex)
+        {
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+        }
     }
 
     public void setCodigoFonte(String codigoFonte)
@@ -809,9 +1015,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         textArea.getFoldManager().reparse();
 
-        linhas.stream().forEach((linha) ->
-        {
-            textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
+        linhas.stream().forEach((linha)
+                -> 
+                {
+                    textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
         });
     }
 
@@ -871,22 +1078,26 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void rolarAtePosicao(final int posicao)
     {
-        SwingUtilities.invokeLater(() ->
-        {
-            try
-            {
-                int ma = scrollPane.getHeight() / 2;
-                int ml = scrollPane.getWidth() / 2;
+        SwingUtilities.invokeLater(()
+                -> 
+                {
+                    try
+                    {
+                        int ma = scrollPane.getHeight() / 2;
+                        int ml = scrollPane.getWidth() / 2;
                 
-                Rectangle areaPosicao = textArea.modelToView(posicao);
-                
-                if (areaPosicao != null) {
-                    Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
-                    textArea.scrollRectToVisible(area);
-                }
-            } catch (BadLocationException ex) {
-                
-            }
+                        Rectangle areaPosicao = textArea.modelToView(posicao);
+
+                        if (areaPosicao != null)
+                        {
+                            Rectangle area = new Rectangle(areaPosicao.x - ml, areaPosicao.y - ma, scrollPane.getWidth(), scrollPane.getHeight());
+                            textArea.scrollRectToVisible(area);
+                        }
+                    }
+                    catch (BadLocationException ex)
+                    {
+
+                    }
         });
 
     }
@@ -919,12 +1130,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         botao.getAction().setEnabled(acaoExterna.isEnabled());
 
-        acaoExterna.addPropertyChangeListener((PropertyChangeEvent evt) ->
-        {
-            if (evt.getPropertyName().equals("enabled"))
-            {
-                botao.getAction().setEnabled(acaoExterna.isEnabled());
-            }
+        acaoExterna.addPropertyChangeListener((PropertyChangeEvent evt)
+                -> 
+                {
+                    if (evt.getPropertyName().equals("enabled"))
+                    {
+                        botao.getAction().setEnabled(acaoExterna.isEnabled());
+                    }
         });
     }
 
@@ -960,18 +1172,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void centralizarCodigoFonte()
     {
-        SwingUtilities.invokeLater(() ->
-        {
-            rolarAtePosicao(textArea.getCaretPosition());
+        SwingUtilities.invokeLater(()
+                -> 
+                {
+                    rolarAtePosicao(textArea.getCaretPosition());
         });
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-        for (int i = 0; i < teclasAutoComplete.length; i++)
+        for (int i = 0; i < TECLAS_AUTO_COMPLETE.length; i++)
         {
-            if (e.getKeyCode() == teclasAutoComplete[i])
+            if (e.getKeyCode() == TECLAS_AUTO_COMPLETE[i])
             {
                 suporteLinguagemPortugol.atualizar(textArea);
                 return;
@@ -1041,13 +1254,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     @Override
     public void execucaoIniciada(Programa programa)
     {
-
+        setExecutandoPrograma(true);
     }
 
     @Override
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao)
     {
-
+        setExecutandoPrograma(false);
     }
 
     private void destacarErroExecucao(int linha, int coluna)
@@ -1194,7 +1407,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         posicionarCursor(linha, coluna);
     }
-    
+
     public void posicionarCursor(int linha, int coluna)
     {
         try
@@ -1203,9 +1416,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             if (nova >= 0 && nova < textArea.getText().length())
             {
-                textArea.getFoldManager().ensureOffsetNotInClosedFold(nova);                
+                textArea.getFoldManager().ensureOffsetNotInClosedFold(nova);
                 textArea.setCaretPosition(nova);
-                
+
                 rolarAtePosicao(nova);
                 textArea.requestFocusInWindow();
             }
@@ -1252,31 +1465,33 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
      */
     public void destacarTrechoCodigoFonte(final int linha, final int coluna, final int tamanho)
     {
-        SwingUtilities.invokeLater(() ->
-        {
-            try
-            {
-                Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
-                int offs = elem.getStartOffset() + coluna;
-                textArea.getHighlighter().removeAllHighlights();
-                Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
+        SwingUtilities.invokeLater(()
+                -> 
+                {
+                    try
+                    {
+                        Element elem = textArea.getDocument().getDefaultRootElement().getElement(linha);
+                        int offs = elem.getStartOffset() + coluna;
+                        textArea.getHighlighter().removeAllHighlights();
+                        Object destaque = textArea.getHighlighter().addHighlight(offs, offs + tamanho, new ChangeableHighlightPainter(new Color(0f, 1f, 0f, 0.15f)));
 
-                destaquesPlugin.add(destaque);
-            }
-            catch (BadLocationException ex)
-            {
+                        destaquesPlugin.add(destaque);
+                    }
+                    catch (BadLocationException ex)
+                    {
 
-            }
+                    }
 
-            rolarAtePosicao(linha, coluna);
+                    rolarAtePosicao(linha, coluna);
         });
     }
 
     private void removerDestaquesPlugins()
     {
-        destaquesPlugin.stream().forEach((destaque) ->
-        {
-            textArea.getHighlighter().removeHighlight(destaque);
+        destaquesPlugin.stream().forEach((destaque)
+                -> 
+                {
+                    textArea.getHighlighter().removeHighlight(destaque);
         });
     }
 
@@ -1387,20 +1602,21 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public static void main(String args[])
     {
-        SwingUtilities.invokeLater(() ->
-        {
-            WebLookAndFeel.install();
-            JFrame frame = new JFrame("Teste Editor");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 600);
+        SwingUtilities.invokeLater(()
+                -> 
+                {
+                    WebLookAndFeel.install();
+                    JFrame frame = new JFrame("Teste Editor");
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setSize(800, 600);
 
-            JPanel painel = new JPanel(new BorderLayout());
-            Editor editor = new Editor();
-            painel.add(editor);
-            WeblafUtils.configuraWeblaf(painel);
-            frame.getContentPane().add(painel, BorderLayout.CENTER);
+                    JPanel painel = new JPanel(new BorderLayout());
+                    Editor editor = new Editor();
+                    painel.add(editor);
+                    WeblafUtils.configuraWeblaf(painel);
+                    frame.getContentPane().add(painel, BorderLayout.CENTER);
 
-            frame.setVisible(true);
+                    frame.setVisible(true);
         });
 
     }
