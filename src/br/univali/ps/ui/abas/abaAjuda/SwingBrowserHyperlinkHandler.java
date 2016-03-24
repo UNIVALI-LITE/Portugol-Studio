@@ -28,6 +28,7 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.util.FileHandle;
 import java.awt.Cursor;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -54,10 +55,17 @@ import org.fit.cssbox.swingbox.util.DefaultHyperlinkHandler;
  *
  * @author burgetr
  */
-public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler {
+public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
+{
 
     private final Ajuda ajuda;
     private final JTree arvore;
+
+    private enum Tipo
+    {
+
+        PORLOCAL, HTMLLOCAL
+    }
 
     public SwingBrowserHyperlinkHandler(Ajuda ajuda, JTree arvore)
     {
@@ -65,64 +73,91 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler {
         this.arvore = arvore;
     }
 
+    private Tipo decodificarTipo(HyperlinkEvent evt) throws TipoUrlInvalidoException
+    {
+        String protocol = evt.getURL().getProtocol();
+        switch (protocol)
+        {
+            case "file":
+                String tipoArquivo = evt.getURL().getPath();
+                tipoArquivo = tipoArquivo.substring(tipoArquivo.lastIndexOf(".") + 1);
+                switch (tipoArquivo)
+                {
+                    case "por":
+                        return Tipo.PORLOCAL;
+                    case "html":
+                        return Tipo.HTMLLOCAL;
+                    default:
+                        throw new TipoUrlInvalidoException(tipoArquivo);
+                }
+            default:
+                throw new TipoUrlInvalidoException(protocol);
+        }
+    }
+
+    private void tratarPorLocal(HyperlinkEvent evt) throws Exception
+    {
+        final JComponent componente = (JComponent) evt.getSource();
+
+        File arquivo = new File(evt.getURL().toURI());
+        String codigoFonte = FileHandle.open(arquivo);
+        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+
+        abaCodigoFonte.setCodigoFonte(codigoFonte, null, true);
+        abaCodigoFonte.getEditor().getPortugolDocumento().setChanged(true);
+
+        PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
+    }
+
     @Override
     public void hyperlinkUpdate(HyperlinkEvent evt)
     {
-        if (evt.getEventType() ==  HyperlinkEvent.EventType.ACTIVATED)
+        if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
         {
+            //Age caso o usuário clique no link.
+            String url = evt.getURL().getPath();
             try
             {
-                final JComponent componente = (JComponent) evt.getSource();
-                
-                SwingUtilities.invokeLater(() -> { componente.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR)); });
-                
-                String url = evt.getURL().toString();
-                
-                url = url.replace(evt.getURL().getProtocol(), "");
-                url = url.replace("\\", "/");
-                
-                if (url.charAt(0) == ':')
+                switch (decodificarTipo(evt))
                 {
-                    url = url.substring(1);
+                    case PORLOCAL:
+                        tratarPorLocal(evt);
+                    case HTMLLOCAL:
+                        loadPage((JEditorPane) evt.getSource(), evt);
                 }
-                
-                if (url.charAt(0) == '/')
-                {
-                    url = url.substring(1);
-                }
-                
-                File arquivo = new File(url);
-                String codigoFonte = FileHandle.open(arquivo);
-                AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-                
-                abaCodigoFonte.setCodigoFonte(codigoFonte, null, true);
-                abaCodigoFonte.getEditor().getPortugolDocumento().setChanged(true);
-                
-                PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
-            }
-            catch (Exception ex)
+
+            } catch (TipoUrlInvalidoException ex)
             {
-                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                Logger.getLogger(SwingBrowserHyperlinkHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex)
+            {
+                Logger.getLogger(SwingBrowserHyperlinkHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if (evt.getEventType() == HyperlinkEvent.EventType.ENTERED)
+        {
+            //Se o usuário só ficar em cima do link, muda a forma do mouse
+            SwingUtilities.invokeLater(() ->
+            {
+                ((JComponent) evt.getSource()).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            });
+        } else if (evt.getEventType() == HyperlinkEvent.EventType.EXITED)
+        {
+            //Se o usuário sair de cima do link, volta o mouse ao normal
+            SwingUtilities.invokeLater(() ->
+            {
+                ((JComponent) evt.getSource()).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            });
         }
     }
 
     @Override
     protected void loadPage(JEditorPane pane, HyperlinkEvent evt)
     {
-        Pattern padraoJavaScript = Pattern.compile("^javascript:exibirConteudo\\('(.+)'\\)$");
-
         try
         {
-            String diretorioTopico = evt.getDescription();
-            Matcher padraoJavaScriptMatcher = padraoJavaScript.matcher(diretorioTopico);
+            String diretorioTopico = evt.getURL().getPath();
 
-            if (padraoJavaScriptMatcher.find())
-            {
-                diretorioTopico = padraoJavaScriptMatcher.group(1);
-            }
-
-            Topico topico = ajuda.obterTopicoPeloDiretorio(diretorioTopico);
+            Topico topico = ajuda.obterTopicoPeloDiretorio(diretorioTopico.substring(diretorioTopico.lastIndexOf("topicos")));
 
             TreePath caminhoTopicoNaArvore = localizarTopicoNaArvore((DefaultMutableTreeNode) arvore.getModel().getRoot(), topico);
 
@@ -137,7 +172,7 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler {
         }
 
     }
-    
+
     private TreePath localizarTopicoNaArvore(DefaultMutableTreeNode raiz, Topico topico)
     {
         Enumeration<DefaultMutableTreeNode> e = raiz.depthFirstEnumeration();
