@@ -49,7 +49,7 @@ public class painelExemplos extends javax.swing.JPanel
         editor = new Editor();
         editor.setExampleEditor();
         codePanel.add(editor);
-        imagemPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/programar.png"));
+        imagemPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/exemplos.png"));
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(openExample);
         }
