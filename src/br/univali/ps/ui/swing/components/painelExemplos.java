@@ -18,6 +18,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -200,6 +202,14 @@ public class painelExemplos extends javax.swing.JPanel
                 }
             }
             
+        });
+        arvoreExemplos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount()==2){
+                    openExample.doClick();
+                }
+            }            
         });
     }
     
