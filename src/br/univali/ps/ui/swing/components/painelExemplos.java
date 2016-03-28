@@ -155,7 +155,7 @@ public class painelExemplos extends javax.swing.JPanel
                     examplePane.setVisible(true);
                     description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
                     imagePane.removeAll();
-                    dataPane.setPreferredSize(new Dimension(this.getSize().width/4,0));
+                    dataPane.setPreferredSize(new Dimension(rightPane.getSize().width*2/3,0));
                     if(item.hasImage()){
                         WebImage image = new WebImage(new ImageIcon(item.getImage().toString()));
                         image.setDisplayType ( DisplayType.fitComponent );
@@ -184,7 +184,7 @@ public class painelExemplos extends javax.swing.JPanel
             }
             else{
                 examplePane.setVisible(false);
-                dataPane.setPreferredSize(new Dimension(this.getSize().width,0));
+                dataPane.setPreferredSize(new Dimension(rightPane.getSize().width,0));
                 description.setText("<html><head></head><body>Selecione os Itens na árvore ao lado para visualizar os exemplos. Você pode também explorar um exemplo clicando no botão 'Explorar Exemplo' ou apertando a tecla 'Enter' na navegação com o teclado.</body></html>");
                 imagePane.removeAll();
                 imagemPadrao.setDisplayType ( DisplayType.fitComponent );
@@ -213,7 +213,7 @@ public class painelExemplos extends javax.swing.JPanel
     private void initComponents() {
 
         jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
+        rightPane = new javax.swing.JPanel();
         dataPane = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         description = new javax.swing.JLabel();
@@ -236,18 +236,17 @@ public class painelExemplos extends javax.swing.JPanel
         jSplitPane1.setDividerLocation(300);
         jSplitPane1.setOpaque(false);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        rightPane.setBackground(new java.awt.Color(255, 255, 255));
+        rightPane.setOpaque(false);
+        rightPane.setLayout(new java.awt.BorderLayout());
 
         dataPane.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel2.setMaximumSize(null);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         description.setBackground(new java.awt.Color(51, 51, 51));
-        description.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        description.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         description.setForeground(new java.awt.Color(255, 255, 255));
         description.setText("Descrição do Exemplo");
         description.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -271,20 +270,17 @@ public class painelExemplos extends javax.swing.JPanel
         imagePane.setLayout(new java.awt.BorderLayout());
         dataPane.add(imagePane, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(dataPane, java.awt.BorderLayout.WEST);
+        rightPane.add(dataPane, java.awt.BorderLayout.WEST);
 
         examplePane.setForeground(new java.awt.Color(255, 255, 255));
         examplePane.setLayout(new java.awt.BorderLayout());
 
-        codePanel.setMaximumSize(null);
-        codePanel.setMinimumSize(null);
-        codePanel.setPreferredSize(null);
         codePanel.setLayout(new java.awt.BorderLayout());
         examplePane.add(codePanel, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(examplePane, java.awt.BorderLayout.CENTER);
+        rightPane.add(examplePane, java.awt.BorderLayout.CENTER);
 
-        jSplitPane1.setRightComponent(jPanel1);
+        jSplitPane1.setRightComponent(rightPane);
 
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
@@ -300,7 +296,7 @@ public class painelExemplos extends javax.swing.JPanel
 
         jPanel4.add(jPanel5, java.awt.BorderLayout.NORTH);
 
-        jScrollPane1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(210, 231, 252), 2, true));
+        jScrollPane1.setBorder(null);
 
         arvoreExemplos.setBackground(new java.awt.Color(228, 241, 254));
         jScrollPane1.setViewportView(arvoreExemplos);
@@ -322,12 +318,12 @@ public class painelExemplos extends javax.swing.JPanel
     private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private com.alee.laf.button.WebButton openExample;
+    private javax.swing.JPanel rightPane;
     // End of variables declaration//GEN-END:variables
 }
