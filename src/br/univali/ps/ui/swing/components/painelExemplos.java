@@ -41,6 +41,7 @@ import javax.swing.tree.TreePath;
 public class painelExemplos extends javax.swing.JPanel
 {
     WebImage imagemPadrao;
+    WebImage imagemPastaPadrao;
     Editor editor;
     /**
      * Creates new form painelExemplos
@@ -52,6 +53,9 @@ public class painelExemplos extends javax.swing.JPanel
         editor.setExampleEditor();
         codePanel.add(editor);
         imagemPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/exemplos.png"));
+        imagemPastaPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/ajuda_exemplos.png"));
+        imagemPadrao.setDisplayType ( DisplayType.fitComponent );
+        imagemPastaPadrao.setDisplayType ( DisplayType.fitComponent );
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(openExample);
         }
@@ -155,6 +159,7 @@ public class painelExemplos extends javax.swing.JPanel
                     File exemplo = item.getFile();
                     String codigoFonte = FileHandle.open(exemplo);
                     examplePane.setVisible(true);
+                    description.setVisible(true);
                     description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
                     imagePane.removeAll();
                     dataPane.setPreferredSize(new Dimension(rightPane.getSize().width*2/3,0));
@@ -187,10 +192,9 @@ public class painelExemplos extends javax.swing.JPanel
             else{
                 examplePane.setVisible(false);
                 dataPane.setPreferredSize(new Dimension(rightPane.getSize().width,0));
-                description.setText("<html><head></head><body>Selecione os Itens na árvore ao lado para visualizar os exemplos. Você pode também explorar um exemplo clicando no botão 'Explorar Exemplo' ou apertando a tecla 'Enter' na navegação com o teclado.</body></html>");
+                description.setVisible(false);
                 imagePane.removeAll();
-                imagemPadrao.setDisplayType ( DisplayType.fitComponent );
-                imagePane.add(imagemPadrao);
+                imagePane.add(imagemPastaPadrao);
                 buttonPanel.setVisible(false);
             }
         });
@@ -201,7 +205,6 @@ public class painelExemplos extends javax.swing.JPanel
                     openExample.doClick();
                 }
             }
-            
         });
         arvoreExemplos.addMouseListener(new MouseAdapter() {
             @Override
