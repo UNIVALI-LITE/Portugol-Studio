@@ -201,7 +201,8 @@ public class painelExemplos extends javax.swing.JPanel
         arvoreExemplos.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                if(e.getKeyCode()== KeyEvent.VK_ENTER){
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
+                if(e.getKeyCode()== KeyEvent.VK_ENTER && node.isLeaf()){
                     openExample.doClick();
                 }
             }
