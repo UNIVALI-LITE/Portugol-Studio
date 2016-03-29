@@ -390,7 +390,7 @@ public final class AbaInicial extends Aba {
         rotuloUpdate = new javax.swing.JLabel();
         painelConteudo = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        painelExemplos1 = new br.univali.ps.ui.swing.components.painelExemplos();
+        painelExemplos1 = new br.univali.ps.ui.swing.components.PainelExemplos();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -582,7 +582,7 @@ public final class AbaInicial extends Aba {
     private javax.swing.JPanel painelCabecalho;
     private javax.swing.JPanel painelCentral;
     private javax.swing.JPanel painelConteudo;
-    private br.univali.ps.ui.swing.components.painelExemplos painelExemplos1;
+    private br.univali.ps.ui.swing.components.PainelExemplos painelExemplos1;
     private javax.swing.JPanel painelFundo;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
     private javax.swing.JLabel rotuloAssistirVideoAulas;

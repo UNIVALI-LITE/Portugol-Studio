@@ -467,7 +467,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                   <SubComponents>
-                    <Component class="br.univali.ps.ui.swing.components.painelExemplos" name="painelExemplos1">
+                    <Component class="br.univali.ps.ui.swing.components.PainelExemplos" name="painelExemplos1">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                           <BorderConstraints direction="Center"/>
