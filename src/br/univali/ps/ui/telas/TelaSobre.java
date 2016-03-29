@@ -51,7 +51,7 @@ public final class TelaSobre extends JDialog
         configurarLinks();
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(16);
-        FabricaDicasInterface.criarDicaInterface(labellicensa, "Veja as Licensas do Software");
+        FabricaDicasInterface.criarTooltip(labellicensa, "Veja as Licensas do Software");
     }
 
     private void configurarLinks()

@@ -157,9 +157,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     }
 
     private void criarDicasInterface() {
-        FabricaDicasInterface.criarDicaInterface(botaoAbrir, "Abre um programa ou exercício existente no computador", acaoAbrirArquivo);
-        FabricaDicasInterface.criarDicaInterface(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", acaoNovoArquivo);
-        FabricaDicasInterface.criarDicaInterface(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial);
+        FabricaDicasInterface.criarTooltip(botaoAbrir, "Abre um programa ou exercício existente no computador", acaoAbrirArquivo);
+        FabricaDicasInterface.criarTooltip(botaoNovoArquivo, "Cria uma nova aba contendo um modelo básico de programa", acaoNovoArquivo);
+        FabricaDicasInterface.criarTooltip(titulo, "Exibe a tela inicial do Portugol Studio", acaoExibirTelaInicial);
     }
 
     private void instalarObservadores(final TelaPrincipal telaPrincipal) {
@@ -235,7 +235,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                FabricaDicasInterface.criarDicaInterfaceEstatica(titulo, dica);
+                FabricaDicasInterface.criarTooltipEstatica(titulo, dica);
             }
         });
     }

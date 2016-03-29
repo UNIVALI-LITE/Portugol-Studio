@@ -7,6 +7,7 @@ package br.univali.ps.ui.swing.components;
 
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.util.FileHandle;
@@ -16,6 +17,8 @@ import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -53,7 +56,7 @@ public class painelExemplos extends javax.swing.JPanel
         editor.setExampleEditor();
         codePanel.add(editor);
         imagemPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/exemplos.png"));
-        imagemPastaPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/ajuda_exemplos.png"));
+        imagemPastaPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/lite.png"));
         imagemPadrao.setDisplayType ( DisplayType.fitComponent );
         imagemPastaPadrao.setDisplayType ( DisplayType.fitComponent );
         if(WeblafUtils.weblafEstaInstalado()){
