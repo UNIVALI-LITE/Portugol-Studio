@@ -7,18 +7,17 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.ui.telas.utils.DicaInterface;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import java.awt.Image;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -38,6 +37,11 @@ public class TelaDicas extends javax.swing.JFrame {
         File dir = new File(IconFactory.CAMINHO_IMAGENS,"dicas");
         dicas = loadHints(dir);
         atualiza(item);
+        exibirSempre.setSelected(true);
+        if(WeblafUtils.weblafEstaInstalado()){
+            WeblafUtils.configurarBotao(webButton1);
+            WeblafUtils.configurarBotao(webButton2);
+        }
     }
     
     private void atualiza(Integer indice){
@@ -93,15 +97,14 @@ public class TelaDicas extends javax.swing.JFrame {
         hintPane = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
         descriptionPane = new javax.swing.JPanel();
-        descriptionLabel = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        descriptionLabel = new javax.swing.JLabel();
+        webButton1 = new com.alee.laf.button.WebButton();
+        webButton2 = new com.alee.laf.button.WebButton();
         scrollPane = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         optionPane = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton3 = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
+        exibirSempre = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,11 +128,6 @@ public class TelaDicas extends javax.swing.JFrame {
         descriptionPane.setOpaque(false);
         descriptionPane.setLayout(new java.awt.BorderLayout(0, 5));
 
-        descriptionLabel.setText("Texto");
-        descriptionLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        descriptionLabel.setPreferredSize(new java.awt.Dimension(28, 60));
-        descriptionPane.add(descriptionLabel, java.awt.BorderLayout.CENTER);
-
         titleLabel.setBackground(new java.awt.Color(49, 104, 146));
         titleLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -138,29 +136,40 @@ public class TelaDicas extends javax.swing.JFrame {
         titleLabel.setOpaque(true);
         descriptionPane.add(titleLabel, java.awt.BorderLayout.PAGE_START);
 
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        descriptionLabel.setBackground(new java.awt.Color(250, 250, 250));
+        descriptionLabel.setText("Texto");
+        descriptionLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        descriptionLabel.setOpaque(true);
+        descriptionLabel.setPreferredSize(new java.awt.Dimension(28, 60));
+        jPanel1.add(descriptionLabel, java.awt.BorderLayout.CENTER);
+
+        webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/previous.png"))); // NOI18N
+        webButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(webButton1, java.awt.BorderLayout.LINE_START);
+
+        webButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/next.png"))); // NOI18N
+        webButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(webButton2, java.awt.BorderLayout.LINE_END);
+
+        descriptionPane.add(jPanel1, java.awt.BorderLayout.CENTER);
+
         hintPane.add(descriptionPane, java.awt.BorderLayout.SOUTH);
 
         carrouselPane.add(hintPane, java.awt.BorderLayout.CENTER);
 
         scrollPane.setOpaque(false);
         scrollPane.setLayout(new java.awt.BorderLayout());
-
-        jButton1.setText("Próximo");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        scrollPane.add(jButton1, java.awt.BorderLayout.EAST);
-
-        jButton2.setText("Anterior");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        scrollPane.add(jButton2, java.awt.BorderLayout.WEST);
-
         carrouselPane.add(scrollPane, java.awt.BorderLayout.SOUTH);
 
         mainPanel.add(carrouselPane, java.awt.BorderLayout.CENTER);
@@ -169,14 +178,10 @@ public class TelaDicas extends javax.swing.JFrame {
         optionPane.setPreferredSize(new java.awt.Dimension(0, 30));
         optionPane.setLayout(new java.awt.BorderLayout());
 
-        jCheckBox1.setBackground(new java.awt.Color(250, 250, 250));
-        jCheckBox1.setText("Não mostrar novamente");
-        jCheckBox1.setOpaque(false);
-        optionPane.add(jCheckBox1, java.awt.BorderLayout.CENTER);
-
-        jButton3.setText("Sair");
-        optionPane.add(jButton3, java.awt.BorderLayout.EAST);
-        optionPane.add(jSeparator1, java.awt.BorderLayout.PAGE_START);
+        exibirSempre.setBackground(new java.awt.Color(250, 250, 250));
+        exibirSempre.setText("Mostrar Dicas ao Iniciar");
+        exibirSempre.setOpaque(false);
+        optionPane.add(exibirSempre, java.awt.BorderLayout.CENTER);
 
         mainPanel.add(optionPane, java.awt.BorderLayout.SOUTH);
 
@@ -185,34 +190,33 @@ public class TelaDicas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        item=item-1;
+    private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
+        item--;
         if(item<0){
             item=dicas.size()-1;
         }
         atualiza(item);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_webButton1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        item=(item+1)%dicas.size();
-        atualiza(item);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
+       item=(item+1)%dicas.size();
+       atualiza(item);
+    }//GEN-LAST:event_webButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel carrouselPane;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JPanel descriptionPane;
+    private javax.swing.JCheckBox exibirSempre;
     private javax.swing.JPanel hintPane;
     private javax.swing.JPanel imagePane;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel optionPane;
     private javax.swing.JPanel scrollPane;
     private javax.swing.JLabel titleLabel;
+    private com.alee.laf.button.WebButton webButton1;
+    private com.alee.laf.button.WebButton webButton2;
     // End of variables declaration//GEN-END:variables
 }
