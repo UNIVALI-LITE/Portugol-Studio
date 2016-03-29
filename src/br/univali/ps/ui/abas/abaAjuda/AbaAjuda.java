@@ -204,8 +204,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
                 CardLayout layout = (CardLayout) getLayout();
                 layout.show(AbaAjuda.this, "painelAjuda");
-
-                conteudo.setText(templateRaiz);
+                
+                arvore.setSelectionRow(0);
             }
             catch (Exception excecao)
             {
