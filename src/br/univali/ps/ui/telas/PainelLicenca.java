@@ -1,5 +1,6 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.telas.utils.Licencas;
 import javax.swing.SwingUtilities;
 
 /**

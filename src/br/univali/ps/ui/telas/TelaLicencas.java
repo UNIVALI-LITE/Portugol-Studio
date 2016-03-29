@@ -1,5 +1,6 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.telas.utils.Licencas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.util.IconFactory;

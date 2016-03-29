@@ -5,19 +5,80 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.telas.utils.DicaInterface;
+import br.univali.ps.ui.util.IconFactory;
+import com.alee.extended.image.DisplayType;
+import com.alee.extended.image.WebImage;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author LITE
  */
 public class TelaDicas extends javax.swing.JFrame {
 
+    private List<DicaInterface> dicas;
+    private Integer item=0;
+    
     /**
      * Creates new form TelaDicas
      */
     public TelaDicas() {
         initComponents();
+        this.setTitle("Dicas de Inteface");
+        File dir = new File(IconFactory.CAMINHO_IMAGENS,"dicas");
+        dicas = loadHints(dir);
+        atualiza(item);
+    }
+    
+    private void atualiza(Integer indice){
+        System.out.println("indice: "+indice);
+        imagePane.removeAll();
+        DicaInterface dicaInterface=dicas.get(indice);
+        WebImage image = new WebImage(dicaInterface.getImagem());
+        image.setDisplayType ( DisplayType.fitComponent );
+        imagePane.add(image);
+        titleLabel.setText("<html><head></head><body>"+(indice+1)+"/"+dicas.size()+" - "+dicaInterface.getTitulo()+"</body></html>");
+        descriptionLabel.setText("<html><head></head><body>"+dicaInterface.getDescricao()+"</body></html>");
+    }
+    
+    private List<DicaInterface> loadHints(File dir){
+        List<DicaInterface> lista = new ArrayList<>();
+        Properties prop = new Properties();
+        try {
+            InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(dir+"/index.properties");
+            prop.load(new InputStreamReader(resourceAsStream, "UTF-8"));
+            for(int i=0; i<Integer.parseInt(prop.getProperty("dicas")); i++){
+                String nome = "dica"+i+".";
+                String titulo = prop.getProperty(nome+"title");
+                String descricao = prop.getProperty(nome+"description");
+                InputStream imageStream = ClassLoader.getSystemClassLoader().getResourceAsStream(dir+"/"+prop.getProperty(nome+"image"));
+                Image imagem = ImageIO.read(imageStream);
+                DicaInterface dica = new DicaInterface(titulo, descricao, imagem);
+                lista.add(dica);
+            }
+            return lista;
+        }
+        catch(Exception e){
+            
+        }
+        return null;
     }
 
+    public static void main(String[] args) {
+        TelaDicas dicas = new TelaDicas();
+        dicas.setVisible(true);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,7 +93,8 @@ public class TelaDicas extends javax.swing.JFrame {
         hintPane = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
         descriptionPane = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        descriptionLabel = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -43,52 +105,73 @@ public class TelaDicas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        mainPanel.setBackground(new java.awt.Color(228, 241, 254));
         mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setMinimumSize(new java.awt.Dimension(640, 480));
+        mainPanel.setPreferredSize(new java.awt.Dimension(640, 480));
         mainPanel.setLayout(new java.awt.BorderLayout(0, 15));
 
+        carrouselPane.setOpaque(false);
         carrouselPane.setLayout(new java.awt.BorderLayout());
 
+        hintPane.setOpaque(false);
         hintPane.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout imagePaneLayout = new javax.swing.GroupLayout(imagePane);
-        imagePane.setLayout(imagePaneLayout);
-        imagePaneLayout.setHorizontalGroup(
-            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
-        );
-        imagePaneLayout.setVerticalGroup(
-            imagePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 202, Short.MAX_VALUE)
-        );
-
+        imagePane.setBackground(new java.awt.Color(51, 51, 51));
+        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        imagePane.setLayout(new java.awt.BorderLayout());
         hintPane.add(imagePane, java.awt.BorderLayout.CENTER);
 
-        descriptionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        descriptionPane.setLayout(new java.awt.BorderLayout());
+        descriptionPane.setOpaque(false);
+        descriptionPane.setLayout(new java.awt.BorderLayout(0, 5));
 
-        jLabel1.setText("Texto");
-        descriptionPane.add(jLabel1, java.awt.BorderLayout.CENTER);
+        descriptionLabel.setText("Texto");
+        descriptionLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        descriptionLabel.setPreferredSize(new java.awt.Dimension(28, 60));
+        descriptionPane.add(descriptionLabel, java.awt.BorderLayout.CENTER);
+
+        titleLabel.setBackground(new java.awt.Color(49, 104, 146));
+        titleLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        titleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel.setText("Título");
+        titleLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        titleLabel.setOpaque(true);
+        descriptionPane.add(titleLabel, java.awt.BorderLayout.PAGE_START);
 
         hintPane.add(descriptionPane, java.awt.BorderLayout.SOUTH);
 
         carrouselPane.add(hintPane, java.awt.BorderLayout.CENTER);
 
+        scrollPane.setOpaque(false);
         scrollPane.setLayout(new java.awt.BorderLayout());
 
         jButton1.setText("Próximo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         scrollPane.add(jButton1, java.awt.BorderLayout.EAST);
 
         jButton2.setText("Anterior");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         scrollPane.add(jButton2, java.awt.BorderLayout.WEST);
 
         carrouselPane.add(scrollPane, java.awt.BorderLayout.SOUTH);
 
         mainPanel.add(carrouselPane, java.awt.BorderLayout.CENTER);
 
+        optionPane.setOpaque(false);
         optionPane.setPreferredSize(new java.awt.Dimension(0, 30));
         optionPane.setLayout(new java.awt.BorderLayout());
 
+        jCheckBox1.setBackground(new java.awt.Color(250, 250, 250));
         jCheckBox1.setText("Não mostrar novamente");
+        jCheckBox1.setOpaque(false);
         optionPane.add(jCheckBox1, java.awt.BorderLayout.CENTER);
 
         jButton3.setText("Sair");
@@ -97,14 +180,28 @@ public class TelaDicas extends javax.swing.JFrame {
 
         mainPanel.add(optionPane, java.awt.BorderLayout.SOUTH);
 
-        getContentPane().add(mainPanel, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        item=item-1;
+        if(item<0){
+            item=dicas.size()-1;
+        }
+        atualiza(item);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        item=(item+1)%dicas.size();
+        atualiza(item);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel carrouselPane;
+    private javax.swing.JLabel descriptionLabel;
     private javax.swing.JPanel descriptionPane;
     private javax.swing.JPanel hintPane;
     private javax.swing.JPanel imagePane;
@@ -112,10 +209,10 @@ public class TelaDicas extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel optionPane;
     private javax.swing.JPanel scrollPane;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

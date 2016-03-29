@@ -9,6 +9,7 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.Editor;
+import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
@@ -61,6 +62,8 @@ public class PainelExemplos extends javax.swing.JPanel
             WeblafUtils.configurarBotao(openExample);
         }
         inicializarJTree();
+        TelaDicas dicas = new TelaDicas();
+        dicas.setVisible(true);
     }
     
     private void inicializarJTree(){
