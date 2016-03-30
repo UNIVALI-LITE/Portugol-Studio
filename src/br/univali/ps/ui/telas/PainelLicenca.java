@@ -49,8 +49,7 @@ final class PainelLicenca extends javax.swing.JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPInformacoes = new javax.swing.JPanel();
@@ -64,7 +63,6 @@ final class PainelLicenca extends javax.swing.JPanel
         jSPLicenca = new javax.swing.JScrollPane();
         jTALicenca = new javax.swing.JTextArea();
 
-        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
@@ -116,22 +114,21 @@ final class PainelLicenca extends javax.swing.JPanel
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         jPInformacoes.add(jLDescricao, gridBagConstraints);
 
-        jSPDescricao.setBackground(new java.awt.Color(255, 255, 255));
-        jSPDescricao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
-        jSPDescricao.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        jSPDescricao.setBackground(new java.awt.Color(228, 241, 254));
+        jSPDescricao.setBorder(null);
         jSPDescricao.setMaximumSize(new java.awt.Dimension(32767, 92));
         jSPDescricao.setMinimumSize(new java.awt.Dimension(39, 92));
         jSPDescricao.setPreferredSize(new java.awt.Dimension(166, 92));
 
         jTADescricao.setEditable(false);
+        jTADescricao.setBackground(new java.awt.Color(228, 241, 254));
         jTADescricao.setColumns(20);
         jTADescricao.setLineWrap(true);
         jTADescricao.setWrapStyleWord(true);
         jTADescricao.setAutoscrolls(false);
-        jTADescricao.setBorder(null);
+        jTADescricao.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jTADescricao.setFocusable(false);
         jTADescricao.setMinimumSize(new java.awt.Dimension(100, 50));
-        jTADescricao.setPreferredSize(new java.awt.Dimension(160, 50));
         jTADescricao.setRequestFocusEnabled(false);
         jTADescricao.setVerifyInputWhenFocusTarget(false);
         jSPDescricao.setViewportView(jTADescricao);
@@ -153,14 +150,14 @@ final class PainelLicenca extends javax.swing.JPanel
         gridBagConstraints.weightx = 1.0;
         jPInformacoes.add(jLLicenca, gridBagConstraints);
 
-        jSPLicenca.setBackground(new java.awt.Color(255, 255, 255));
-        jSPLicenca.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
-        jSPLicenca.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        jSPLicenca.setBackground(new java.awt.Color(228, 241, 254));
+        jSPLicenca.setBorder(null);
 
         jTALicenca.setEditable(false);
+        jTALicenca.setBackground(new java.awt.Color(228, 241, 254));
         jTALicenca.setColumns(20);
         jTALicenca.setRows(5);
-        jTALicenca.setBorder(null);
+        jTALicenca.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jTALicenca.setFocusable(false);
         jTALicenca.setVerifyInputWhenFocusTarget(false);
         jSPLicenca.setViewportView(jTALicenca);

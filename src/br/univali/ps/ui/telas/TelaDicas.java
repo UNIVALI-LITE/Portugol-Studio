@@ -160,10 +160,10 @@ public class TelaDicas extends JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         mainPanel.setBackground(new java.awt.Color(228, 241, 254));
-        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         mainPanel.setMinimumSize(new java.awt.Dimension(640, 480));
         mainPanel.setPreferredSize(new java.awt.Dimension(640, 480));
-        mainPanel.setLayout(new java.awt.BorderLayout(0, 15));
+        mainPanel.setLayout(new java.awt.BorderLayout());
 
         carrouselPane.setOpaque(false);
         carrouselPane.setLayout(new java.awt.BorderLayout());
@@ -177,7 +177,7 @@ public class TelaDicas extends JDialog {
         hintPane.add(imagePane, java.awt.BorderLayout.CENTER);
 
         descriptionPane.setOpaque(false);
-        descriptionPane.setLayout(new java.awt.BorderLayout(0, 5));
+        descriptionPane.setLayout(new java.awt.BorderLayout());
 
         titleLabel.setBackground(new java.awt.Color(49, 104, 146));
         titleLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -187,6 +187,7 @@ public class TelaDicas extends JDialog {
         titleLabel.setOpaque(true);
         descriptionPane.add(titleLabel, java.awt.BorderLayout.PAGE_START);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -225,6 +226,7 @@ public class TelaDicas extends JDialog {
 
         mainPanel.add(carrouselPane, java.awt.BorderLayout.CENTER);
 
+        optionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
         optionPane.setOpaque(false);
         optionPane.setPreferredSize(new java.awt.Dimension(0, 30));
         optionPane.setLayout(new java.awt.BorderLayout());

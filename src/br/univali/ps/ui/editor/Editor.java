@@ -131,7 +131,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
     private SearchListener observadorAcaoPesquisaSubstituir;
-
+    private boolean isExamplable = false;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
     private JMenu menuTemas;
@@ -171,6 +171,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
     
     public void setExampleEditor(){
+        isExamplable = true;
+        aplicarTema(PortugolStudio.getInstancia().getGerenciadorTemas().getNomeTemaPadrao());
         scrollPane.setIconRowHeaderEnabled(false);
         painelEditor.remove(errorStrip);
         this.setEditavel("false");
@@ -530,7 +532,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 break;
 
             case Configuracoes.TEMA_EDITOR:
-                aplicarTema((String) evt.getNewValue());
+                if(!isExamplable){
+                    aplicarTema((String) evt.getNewValue());
+                }
                 break;
 
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:

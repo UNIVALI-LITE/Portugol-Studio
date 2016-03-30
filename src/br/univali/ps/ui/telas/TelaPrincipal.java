@@ -11,8 +11,6 @@ import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
-import br.univali.ps.ui.telas.TelaLogAtualizacoes;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.event.*;
@@ -24,7 +22,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import org.apache.commons.io.FileUtils;
 
@@ -98,6 +95,18 @@ public final class TelaPrincipal extends JFrame
             {
                 fecharAplicativo();
             }
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                Configuracoes configuracoes = Configuracoes.getInstancia();
+                if(configuracoes.isExibirDicasInterface()){
+                    SwingUtilities.invokeLater(() -> {
+                        PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
+                    });
+                }
+            }
+            
+            
         });
 
         addComponentListener(new ComponentAdapter()

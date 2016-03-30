@@ -34,7 +34,9 @@ public final class TradutorAtalhosTeclado
             if (codigo.equals(valor))
                 codigo = mapeamento.get(valor);
         }
-        
+        if(modificadores.isEmpty()){
+            return codigo;
+        }
         return modificadores.concat("+").concat(codigo);
     }
 }

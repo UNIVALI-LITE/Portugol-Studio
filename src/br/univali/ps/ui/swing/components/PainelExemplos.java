@@ -9,7 +9,6 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.Editor;
-import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
@@ -17,6 +16,8 @@ import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
@@ -42,8 +44,10 @@ import javax.swing.tree.TreePath;
  */
 public class PainelExemplos extends javax.swing.JPanel
 {
-    WebImage imagemPadrao;
-    WebImage imagemPastaPadrao;
+    WebImage imagem;
+    Icon imagemPadrao;
+    Icon imagemPastaPadrao;
+    
     Editor editor;
     /**
      * Creates new form painelExemplos
@@ -54,14 +58,21 @@ public class PainelExemplos extends javax.swing.JPanel
         editor = new Editor();
         editor.setExampleEditor();
         codePanel.add(editor);
-        imagemPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/exemplos.png"));
-        imagemPastaPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/lite.png"));
-        imagemPadrao.setDisplayType ( DisplayType.fitComponent );
-        imagemPastaPadrao.setDisplayType ( DisplayType.fitComponent );
+        imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/exemplos.png");
+        imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/lite.png");
+        imagem = new WebImage(imagemPastaPadrao);
+        imagem.setDisplayType ( DisplayType.fitComponent );
+        imagePane.add(imagem);
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(openExample);
         }
         inicializarJTree();
+        rightPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                atualizarPainelDireita();
+            }
+        });
     }
     
     private void inicializarJTree(){
@@ -147,57 +158,7 @@ public class PainelExemplos extends javax.swing.JPanel
     private void initTreeListner(){
         arvoreExemplos.addTreeSelectionListener((TreeSelectionEvent e) ->
         {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
-            
-            if (node == null) {
-                return;
-            }
-            if(node.isLeaf())
-            {
-                try {
-                    
-                    ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
-                    File exemplo = item.getFile();
-                    String codigoFonte = FileHandle.open(exemplo);
-                    examplePane.setVisible(true);
-                    description.setVisible(true);
-                    description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
-                    imagePane.removeAll();
-                    dataPane.setPreferredSize(new Dimension(rightPane.getSize().width*2/3,0));
-                    if(item.hasImage()){
-                        WebImage image = new WebImage(new ImageIcon(item.getImage().toString()));
-                        image.setDisplayType ( DisplayType.fitComponent );
-                        imagePane.add(image);
-                    }
-                    else{
-                        imagePane.add(imagemPadrao);
-                    }
-                    editor.setCodigoFonte(codigoFonte);
-                    editor.rolarAtePosicao(0);
-                    openExample.setAction(new AbstractAction(){
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-                            abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-                            PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
-                        }
-                    });
-                    openExample.setText("Explorar Exemplo");
-                    buttonPanel.setVisible(true);
-                }
-                catch (Exception ex) {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-                }
-            }
-            else{
-                examplePane.setVisible(false);
-                dataPane.setPreferredSize(new Dimension(rightPane.getSize().width,0));
-                description.setVisible(false);
-                imagePane.removeAll();
-                imagePane.add(imagemPastaPadrao);
-                buttonPanel.setVisible(false);
-            }
+            atualizarPainelDireita();
         });
         arvoreExemplos.addKeyListener(new KeyAdapter() {
             @Override
@@ -216,6 +177,56 @@ public class PainelExemplos extends javax.swing.JPanel
                 }
             }            
         });
+    }
+
+    private void atualizarPainelDireita() {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
+        if (node == null) {
+            return;
+        }
+        if(node.isLeaf())
+        {
+            try {
+
+                ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
+                File exemplo = item.getFile();
+                String codigoFonte = FileHandle.open(exemplo);
+                examplePane.setVisible(true);
+                description.setVisible(true);
+                description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
+                dataPane.setPreferredSize(new Dimension(rightPane.getSize().width*2/3,0));
+                if(item.hasImage()){
+                    imagem.setIcon(new ImageIcon(item.getImage().toString()));
+                }
+                else{
+                    imagem.setIcon(imagemPadrao);
+                }
+                editor.setCodigoFonte(codigoFonte);
+                editor.rolarAtePosicao(0);
+                openExample.setAction(new AbstractAction(){
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                        PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
+                    }
+                });
+                openExample.setText("Explorar Exemplo");
+                buttonPanel.setVisible(true);
+            }
+            catch (Exception ex) {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+            }
+        }
+        else{
+            examplePane.setVisible(false);
+            dataPane.setPreferredSize(new Dimension(rightPane.getSize().width,0));
+            description.setVisible(false);
+            imagem.setIcon(imagemPastaPadrao);
+            buttonPanel.setVisible(false);
+        }
+        rightPane.validate();
     }
     
     /**

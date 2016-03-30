@@ -43,7 +43,6 @@ public final class TelaAtalhosTeclado extends JDialog
         configurarAcoes();
         configurarDadosAcoes();
         configurarAparenciaTabela();
-        btnFechar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.setIconImage(IconFactory.getDefaultWindowIcon());
     }
     
@@ -65,9 +64,6 @@ public final class TelaAtalhosTeclado extends JDialog
                 setVisible(false);
             }
         };
-        
-        btnFechar.setAction(acaoFechar);
-        
         getRootPane().getActionMap().put(nome, acaoFechar);
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
@@ -76,6 +72,9 @@ public final class TelaAtalhosTeclado extends JDialog
     {
         ModeloAcoes modelo = (ModeloAcoes) tabela.getModel();
         
+        modelo.registrarDadosAcao(new DadosAcao("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)));
+        modelo.registrarDadosAcao(new DadosAcao("Dicas de Interface", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0)));
+        modelo.registrarDadosAcao(new DadosAcao("Bibliotecas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Abrir um arquivo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png"), KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Exibir tela inicial", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"), KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Criar novo arquivo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"), KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK)));
@@ -237,13 +236,16 @@ public final class TelaAtalhosTeclado extends JDialog
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         painelRolagem = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
-        btnFechar = new javax.swing.JButton();
 
         setTitle("Atalhos do Teclado");
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         painelRolagem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
 
@@ -252,36 +254,14 @@ public final class TelaAtalhosTeclado extends JDialog
         tabela.setFillsViewportHeight(true);
         painelRolagem.setViewportView(tabela);
 
-        btnFechar.setText("OK");
-        btnFechar.setFocusPainted(false);
+        jPanel1.add(painelRolagem, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(painelRolagem, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(painelRolagem, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnFechar;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane painelRolagem;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables

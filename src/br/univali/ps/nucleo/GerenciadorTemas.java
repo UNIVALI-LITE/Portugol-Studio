@@ -29,7 +29,7 @@ public final class GerenciadorTemas {
     GerenciadorTemas() {
 
     }
-
+    
     public List<String> listarTemas() {
         if (arquivosTema.isEmpty()) {            
             arquivosTema.put("Dark", "dark");
@@ -45,7 +45,11 @@ public final class GerenciadorTemas {
 
         return listaTemas;
     }
-
+    
+    public String getNomeTemaPadrao(){
+        return "Portugol Studio";
+    }
+    
     public Theme carregarTema(String nome) throws ExcecaoAplicacao {
         return carregarTema(nome, true);
     }
