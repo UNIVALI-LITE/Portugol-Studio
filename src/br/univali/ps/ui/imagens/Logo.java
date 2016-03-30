@@ -20,9 +20,7 @@ public class Logo extends javax.swing.JPanel
     public Logo()
     {
         initComponents();
-
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
         addComponentListener(new ComponentAdapter()
         {
             @Override

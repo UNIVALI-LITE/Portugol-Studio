@@ -35,7 +35,7 @@ import javax.swing.KeyStroke;
  */
 public class TelaDicas extends JDialog {
 
-    private List<DicaInterface> dicas;
+    private final List<DicaInterface> dicas;
     private Integer item=0;
     
     /**
