@@ -35,6 +35,11 @@ public final class SuporteLinguagemPortugol
         this.provedorConclusao.setConclusaoCodigo(conclusaoCodigo);
     }
 
+    public DobramentoCodigoPortugol getDobramentoCodigoPortugol()
+    {
+        return dobramentoCodigoPortugol;
+    }
+    
     public void atualizar(RSyntaxTextArea textArea)
     {
         textArea.forceReparsing(portugolParser);

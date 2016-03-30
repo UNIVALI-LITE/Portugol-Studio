@@ -61,24 +61,20 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         
         console.setDocument(new DocumentoConsole());
 
-        listener = new ActionListener()
+        listener = (ActionEvent e) ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
+            if (removendoPopup)
             {
-                if (removendoPopup)
+                if (popupLeia != null)
                 {
-                    if (popupLeia != null)
-                    {
-                        popupLeia.dispose();
-                        popupLeia = null;
-                    }
+                    popupLeia.dispose();
+                    popupLeia = null;
                 }
-                else
-                {
-                    console.requestFocusInWindow();
-                    console.setCaretPosition(console.getText().length());
-                }
+            }
+            else
+            {
+                console.requestFocusInWindow();
+                console.setCaretPosition(console.getText().length());
             }
         };
 
@@ -422,14 +418,10 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     private void agendarPopupLeia()
     {
-        timerPopupLeia = new Timer(4000, new ActionListener()
+        timerPopupLeia = new Timer(4000, (ActionEvent e) ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                removendoPopup = false;
-                exibirPopupLeia();
-            }
+            removendoPopup = false;
+            exibirPopupLeia();
         });
 
         timerPopupLeia.setRepeats(false);
@@ -527,28 +519,24 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         @Override
         public void solicitaEntrada(final TipoDado tipoDado, final Armazenador armazenador) throws Exception
         {
-            SwingUtilities.invokeLater(new Runnable()
+            SwingUtilities.invokeLater(() ->
             {
-                @Override
-                public void run()
-                {
-                    AbaConsole.this.selecionar();
-
-                    setLendo(true);
-
-                    abaCodigoFonte.exibirPainelSaida();
-                    DocumentoConsole.this.armazenador = armazenador;
-                    DocumentoConsole.this.tipoDado = tipoDado;
-
-                    console.setEditable(true);
-                    console.setFocusable(true);
-
-                    console.getCaret().setVisible(true);
-                    console.setCaretPosition(console.getText().length());
-                    console.requestFocusInWindow();
-
-                    agendarPopupLeia();
-                }
+                AbaConsole.this.selecionar();
+                
+                setLendo(true);
+                
+                abaCodigoFonte.exibirPainelSaida();
+                DocumentoConsole.this.armazenador = armazenador;
+                DocumentoConsole.this.tipoDado = tipoDado;
+                
+                console.setEditable(true);
+                console.setFocusable(true);
+                
+                console.getCaret().setVisible(true);
+                console.setCaretPosition(console.getText().length());
+                console.requestFocusInWindow();
+                
+                agendarPopupLeia();
             });
         }
 

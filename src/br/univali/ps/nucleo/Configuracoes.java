@@ -26,6 +26,7 @@ public final class Configuracoes
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
+    public static final String EXIBIR_AVISO_RENOMEAR = "exibirAvisoRenomear";
     public static final String EXIBIR_TUTORIAL_USO = "exibirTutorialUso";
     public static final String EXIBIR_DICAS_INTERFACE = "exibirDicasInterface";
 
@@ -53,6 +54,7 @@ public final class Configuracoes
     private String temaEditor = "Portugol Studio";
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
+    private boolean exibirAvisoRenomear = true;
     private boolean exibirTutorialUso = true;
     private boolean exibirDicasInterface = true;
     
@@ -86,6 +88,7 @@ public final class Configuracoes
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
             exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
+            exibirAvisoRenomear = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_RENOMEAR, "true"));
             exibirTutorialUso = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_TUTORIAL_USO, "true"));
             exibirDicasInterface = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_DICAS_INTERFACE, "true"));
         }
@@ -187,6 +190,21 @@ public final class Configuracoes
         this.exibirAvisoVideoAulas = exibirAvisoVideoAulas;
 
         suporteMudancaPropriedade.firePropertyChange(EXIBIR_AVISO_VIDEO_AULAS, valorAntigo, exibirAvisoVideoAulas);
+    }
+
+    public boolean isExibirAvisoRenomear()
+    {
+        return exibirAvisoRenomear;
+    }
+
+    public void setExibirAvisoRenomear(boolean exibirAvisoRenomear)
+    {
+        boolean valorAntigo = this.exibirAvisoRenomear;
+
+        this.configuracoes.setProperty(EXIBIR_AVISO_RENOMEAR, Boolean.toString(exibirAvisoRenomear));
+        this.exibirAvisoRenomear = exibirAvisoRenomear;
+
+        suporteMudancaPropriedade.firePropertyChange(EXIBIR_AVISO_VIDEO_AULAS, valorAntigo, exibirAvisoRenomear);
     }
     
     public void setExibirTutorialUso(boolean exibirTutorialUso)

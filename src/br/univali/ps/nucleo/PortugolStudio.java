@@ -5,6 +5,7 @@ import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
+import br.univali.ps.ui.TelaRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaAtalhosTeclado;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -13,13 +14,11 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
-import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,7 +40,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
@@ -74,6 +72,8 @@ public final class PortugolStudio
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
     private TelaLicencas telaLicencas = null;
+    private TelaRenomearSimbolo telaRenomearSimbolo = null;        
+    
     private TelaDicas telaDicas = null;
     private TelaAtalhosTeclado telaAtalhosTeclado = null;
         
@@ -435,23 +435,17 @@ public final class PortugolStudio
     private void definirLookAndFeel()
     {
 
-        SwingUtilities.invokeLater(new Runnable()
+        SwingUtilities.invokeLater(() ->
         {
-
-            @Override
-            public void run()
+            try
             {
-                try
-                {
-                    FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
-                    //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    WeblafUtils.instalaWeblaf();
-                }
-                catch (Exception e)
-                {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-
+                FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
+                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                WeblafUtils.instalaWeblaf();
+            }
+            catch (Exception e)
+            {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
         });
 
@@ -736,6 +730,18 @@ public final class PortugolStudio
         telaLicencas.setLocationRelativeTo(null);
 
         return telaLicencas;
+    }
+
+    public TelaRenomearSimbolo getTelaRenomearSimbolo()
+    {
+        if (telaRenomearSimbolo == null)
+        {
+            telaRenomearSimbolo = new TelaRenomearSimbolo();                    
+        }
+        
+        telaRenomearSimbolo.setLocationRelativeTo(null);
+        
+        return telaRenomearSimbolo;
     }
 
     public String getUriAtualizacao()

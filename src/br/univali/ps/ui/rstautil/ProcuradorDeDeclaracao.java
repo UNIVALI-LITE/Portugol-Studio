@@ -6,12 +6,14 @@ import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
+import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoMenosUnario;
 import br.univali.portugol.nucleo.asa.NoNao;
@@ -85,9 +87,15 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         if (encontrouSimbolo) {
             declaracaoEncontrada = true;
         } else {
-            if(no.getInicializacao() != null){
-                no.getInicializacao().aceitar(this); //tentar encontrar a referência na inicialização
-            }
+            
+            if (no instanceof NoDeclaracaoInicializavel)
+            {
+                NoExpressao inicializacao = ((NoDeclaracaoInicializavel) no).getInicializacao();
+                
+                if(inicializacao != null){
+                    inicializacao.aceitar(this); //tentar encontrar a referência na inicialização
+                }
+            }            
         }
     }
 
