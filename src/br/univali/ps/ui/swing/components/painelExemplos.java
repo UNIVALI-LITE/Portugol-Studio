@@ -62,8 +62,6 @@ public class PainelExemplos extends javax.swing.JPanel
             WeblafUtils.configurarBotao(openExample);
         }
         inicializarJTree();
-        TelaDicas dicas = new TelaDicas();
-        dicas.setVisible(true);
     }
     
     private void inicializarJTree(){

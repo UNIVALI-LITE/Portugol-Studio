@@ -5,9 +5,8 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoPrincipal;
-import br.univali.ps.ui.TelaAtalhosTeclado;
-import br.univali.ps.ui.TelaEditarUriAtualizacao;
-import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.telas.TelaEditarUriAtualizacao;
+import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -20,9 +19,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,16 +28,13 @@ import javax.swing.ImageIcon;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 public final class AbaInicial extends Aba {
 
-    private final TelaAtalhosTeclado telaAtalhosTeclado = new TelaAtalhosTeclado();
 
-    private JPopupMenu menuExemplos;
-    private Action acaoExplorarExemplos;
+
     private Action acaoExibirAtalhosTeclado;
     private boolean redimensionouParaBaixaResolucao = false;
     private TelaEditarUriAtualizacao telaEditarUriAtualizacao;
@@ -56,7 +49,7 @@ public final class AbaInicial extends Aba {
         criarDicasInterface();
         configurarAcoes();
         configurarLinks();
-        configurarExibicaoAvisoVideoAulas();
+        configurarExibicaoTelaDicas();
         instalarObservadorCombinacoesSecretas();
         instalarAcoesSecretas();
     }
@@ -154,17 +147,14 @@ public final class AbaInicial extends Aba {
             
         });
     }
-    private void configurarExibicaoAvisoVideoAulas() {
+    private void configurarExibicaoTelaDicas() {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
                 Configuracoes configuracoes = Configuracoes.getInstancia();
-
-                if (configuracoes.isExibirAvisoVideoAulas()) {
-                    configuracoes.setExibirAvisoVideoAulas(false);
-
+                if(configuracoes.isExibirDicasInterface()){
                     SwingUtilities.invokeLater(() -> {
-                        JOptionPane.showMessageDialog(AbaInicial.this, "Seja bem vindo!!\n\nPara tornar o Portugol Studio ainda melhor, preparamos uma série de vídeoaulas que irão auxiliá-lo no seu aprendizado.\nPara assistí-las, acesse o link \"Assistir Vídeoaulas\" localizado no menu \"Aprender\".\n\nObrigado por utilizar o Portugol Studio e bons estudos!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                        PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
             }
@@ -347,8 +337,7 @@ public final class AbaInicial extends Aba {
         acaoExibirAtalhosTeclado = new AbstractAction(nome) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                telaAtalhosTeclado.setLocationRelativeTo(null);
-                telaAtalhosTeclado.setVisible(true);
+                PortugolStudio.getInstancia().getTelaAtalhosTeclado().setVisible(true);
             }
         };
 

@@ -4,7 +4,7 @@ import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.FabricaDicasInterface;
 import br.univali.ps.ui.PainelTabuladoListener;
-import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.util.IconFactory;

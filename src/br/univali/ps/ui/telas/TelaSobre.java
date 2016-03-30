@@ -37,14 +37,7 @@ public final class TelaSobre extends JDialog
         if (WeblafUtils.weblafEstaInstalado()) {
           ((WebTabbedPaneUI)tabbedUsuarios.getUI()).setShadeWidth(0);
         }
-        
-        try
-        {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));
-        }
-        catch (IOException ioe)
-        {
-        }
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
         setSize(750, 550);
 //        rotuloDescricao.setText(String.format(rotuloDescricao.getText(), PortugolStudio.getInstancia().getVersao()));
 

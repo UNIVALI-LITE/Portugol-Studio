@@ -38,9 +38,9 @@ public final class TelaInformacoesPlugin extends JDialog
         super();
         setModal(true);
         setLocationRelativeTo(null);
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
         configurarAcaoSair();
         initComponents();
-
         setSize(new Dimension(640, 480));
     }
 

@@ -5,17 +5,21 @@ import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
-import br.univali.ps.ui.TelaPrincipal;
+import br.univali.ps.ui.telas.TelaAtalhosTeclado;
+import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
+import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,6 +41,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
@@ -69,11 +74,13 @@ public final class PortugolStudio
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
     private TelaLicencas telaLicencas = null;
-
+    private TelaDicas telaDicas = null;
+    private TelaAtalhosTeclado telaAtalhosTeclado = null;
+        
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
     private GerenciadorAtualizacoes gerenciadorAtualizacoes = null;
-
+    
     private PortugolStudio()
     {
 
@@ -669,6 +676,30 @@ public final class PortugolStudio
         telaSobre.setLocationRelativeTo(null);
 
         return telaSobre;
+    }
+
+    public TelaAtalhosTeclado getTelaAtalhosTeclado()
+    {
+        if (telaAtalhosTeclado == null)
+        {
+            telaAtalhosTeclado = new TelaAtalhosTeclado();
+        }
+
+        telaAtalhosTeclado.setLocationRelativeTo(null);
+
+        return telaAtalhosTeclado;
+    }
+    
+    public TelaDicas getTelaDicas()
+    {
+        if (telaDicas == null)
+        {
+            telaDicas = new TelaDicas();
+        }
+
+        telaDicas.setLocationRelativeTo(null);
+
+        return telaDicas;
     }
 
     public TelaInformacoesPlugin getTelaInformacoesPlugin()

@@ -8,6 +8,7 @@ package br.univali.ps.ui.util;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,8 +26,25 @@ public class IconFactory {
     public static final String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/grande";
     public static final String CAMINHO_IMAGENS = "br/univali/ps/ui/imagens";
     private static final Icon iconePadrao = criarIconePadrao();
-
+    private static final Image iconePadraoJanela = loadDefautlIcon();
+    
     private static Map<String, Icon> icones = new TreeMap<String, Icon>();
+    
+    private static Image loadDefautlIcon(){
+        Image image = null;
+        try
+        {
+            image = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png"));
+        }
+        catch (IOException ioe)
+        {
+        }
+        return image;
+    }
+    
+    public static Image getDefaultWindowIcon(){
+        return iconePadraoJanela;
+    }
     
     private static Icon criarIconePadrao()
     {

@@ -40,13 +40,7 @@ public final class TelaLicencas extends javax.swing.JDialog
         setSize(640, 550);
         setLocationRelativeTo(null);
         
-        try
-        {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));
-        }
-        catch (IOException ioe)
-        {
-        }
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
 
         addComponentListener(new ComponentAdapter()
         {

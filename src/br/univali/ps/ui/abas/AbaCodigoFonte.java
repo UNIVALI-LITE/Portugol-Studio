@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.ui.telas.TelaOpcoesExecucao;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;

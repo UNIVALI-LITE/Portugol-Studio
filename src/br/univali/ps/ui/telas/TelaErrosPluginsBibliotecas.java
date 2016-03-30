@@ -48,14 +48,7 @@ public final class TelaErrosPluginsBibliotecas extends JDialog
         
         setSize(new Dimension(610, 350));
         getRootPane().setDefaultButton(jBSair);
-        
-        try
-        {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));
-        }
-        catch (IOException ioe)
-        {
-        }
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
     }
     
     private void configurarTabela()
@@ -292,8 +285,7 @@ public final class TelaErrosPluginsBibliotecas extends JDialog
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelConteudo = new javax.swing.JPanel();
         jLblMensagem = new javax.swing.JLabel();

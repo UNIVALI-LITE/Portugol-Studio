@@ -5,12 +5,16 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.telas.utils.DicaInterface;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,12 +22,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.KeyStroke;
 
 /**
  *
  * @author LITE
  */
-public class TelaDicas extends javax.swing.JFrame {
+public class TelaDicas extends JDialog {
 
     private List<DicaInterface> dicas;
     private Integer item=0;
@@ -33,6 +43,7 @@ public class TelaDicas extends javax.swing.JFrame {
      */
     public TelaDicas() {
         initComponents();
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
         this.setTitle("Dicas de Inteface");
         File dir = new File(IconFactory.CAMINHO_IMAGENS,"dicas");
         dicas = loadHints(dir);
@@ -42,10 +53,50 @@ public class TelaDicas extends javax.swing.JFrame {
             WeblafUtils.configurarBotao(webButton1);
             WeblafUtils.configurarBotao(webButton2);
         }
+        configurarNavegacaoPeloTeclado();
+        setModal(true);
+    }
+    
+    private void configurarNavegacaoPeloTeclado()
+    {
+        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getRootPane().getActionMap();
+        
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "Proxima");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "Anterior");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Fechar");
+        
+        actionMap.put("Proxima", new AbstractAction() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                webButton2.doClick();
+            }
+        });
+        
+        
+        actionMap.put("Anterior", new AbstractAction() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                webButton1.doClick();
+            }
+        });
+        
+         actionMap.put("Fechar", new AbstractAction() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                dispose();
+            }
+        });
     }
     
     private void atualiza(Integer indice){
-        System.out.println("indice: "+indice);
+        
         imagePane.removeAll();
         DicaInterface dicaInterface=dicas.get(indice);
         WebImage image = new WebImage(dicaInterface.getImagem());
@@ -106,7 +157,7 @@ public class TelaDicas extends javax.swing.JFrame {
         optionPane = new javax.swing.JPanel();
         exibirSempre = new javax.swing.JCheckBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         mainPanel.setBackground(new java.awt.Color(228, 241, 254));
         mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -181,6 +232,11 @@ public class TelaDicas extends javax.swing.JFrame {
         exibirSempre.setBackground(new java.awt.Color(250, 250, 250));
         exibirSempre.setText("Mostrar Dicas ao Iniciar");
         exibirSempre.setOpaque(false);
+        exibirSempre.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                exibirSempreStateChanged(evt);
+            }
+        });
         optionPane.add(exibirSempre, java.awt.BorderLayout.CENTER);
 
         mainPanel.add(optionPane, java.awt.BorderLayout.SOUTH);
@@ -202,6 +258,11 @@ public class TelaDicas extends javax.swing.JFrame {
        item=(item+1)%dicas.size();
        atualiza(item);
     }//GEN-LAST:event_webButton2ActionPerformed
+
+    private void exibirSempreStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_exibirSempreStateChanged
+        Configuracoes configuracoes = Configuracoes.getInstancia();
+        configuracoes.setExibirDicasInterface(exibirSempre.isSelected());
+    }//GEN-LAST:event_exibirSempreStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
