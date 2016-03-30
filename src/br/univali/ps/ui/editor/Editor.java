@@ -1076,7 +1076,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.requestFocusInWindow();
     }
 
-    private void rolarAtePosicao(final int posicao)
+    public void rolarAtePosicao(final int posicao)
     {
         SwingUtilities.invokeLater(()
                 -> 

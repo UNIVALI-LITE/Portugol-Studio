@@ -823,29 +823,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
 
-        tree.addTreeSelectionListener(new TreeSelectionListener()
+        tree.addTreeSelectionListener((TreeSelectionEvent e) ->
         {
-
-            @Override
-            public void valueChanged(TreeSelectionEvent e)
+            TreePath path = e.getNewLeadSelectionPath();
+            
+            if (path != null)
             {
-                TreePath path = e.getNewLeadSelectionPath();
-
-                if (path != null)
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                Object obj = node.getUserObject();
+                TrechoCodigoFonte trechoCodigoFonte = null;
+                
+                if (obj instanceof NoDeclaracao)
                 {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                    Object obj = node.getUserObject();
-                    TrechoCodigoFonte trechoCodigoFonte = null;
-
-                    if (obj instanceof NoDeclaracao)
-                    {
-                        trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
-                    }
-
-                    if (trechoCodigoFonte != null)
-                    {
-                        editor.selecionarTexto(trechoCodigoFonte.getLinha() - 1, trechoCodigoFonte.getColuna(), trechoCodigoFonte.getTamanhoTexto());
-                    }
+                    trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
+                }
+                
+                if (trechoCodigoFonte != null)
+                {
+                    editor.selecionarTexto(trechoCodigoFonte.getLinha() - 1, trechoCodigoFonte.getColuna(), trechoCodigoFonte.getTamanhoTexto());
                 }
             }
         });
