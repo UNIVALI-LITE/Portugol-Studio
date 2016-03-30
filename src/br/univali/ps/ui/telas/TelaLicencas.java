@@ -1,19 +1,17 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.telas.utils.Licencas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.WebConnectionUtils;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -33,19 +31,12 @@ public final class TelaLicencas extends javax.swing.JDialog
         initComponents();
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(webButton1);
-            WeblafUtils.configurarBotao(webButton2);
-}
+        }
         setTitle("Licenças");
         setSize(640, 550);
         setLocationRelativeTo(null);
         
-        try
-        {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));
-        }
-        catch (IOException ioe)
-        {
-        }
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
 
         addComponentListener(new ComponentAdapter()
         {
@@ -134,10 +125,7 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelAlinhamento = new javax.swing.JPanel();
         painelTabulado = new javax.swing.JTabbedPane();
         painelBotoes = new javax.swing.JPanel();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         webButton1 = new com.alee.laf.button.WebButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
-        webButton2 = new com.alee.laf.button.WebButton();
         painelConteudo = new javax.swing.JPanel();
         painelCarregamento = new javax.swing.JPanel();
         rotuloCarregando = new javax.swing.JLabel();
@@ -153,8 +141,7 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelBotoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
         painelBotoes.setOpaque(false);
         painelBotoes.setPreferredSize(new java.awt.Dimension(10, 48));
-        painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
-        painelBotoes.add(filler1);
+        painelBotoes.setLayout(new java.awt.BorderLayout());
 
         webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/home.png"))); // NOI18N
         webButton1.setText("Visitar Página");
@@ -163,17 +150,7 @@ public final class TelaLicencas extends javax.swing.JDialog
                 webButton1ActionPerformed(evt);
             }
         });
-        painelBotoes.add(webButton1);
-        painelBotoes.add(filler2);
-
-        webButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/sair.png"))); // NOI18N
-        webButton2.setText("Sair");
-        webButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                webButton2ActionPerformed(evt);
-            }
-        });
-        painelBotoes.add(webButton2);
+        painelBotoes.add(webButton1, java.awt.BorderLayout.EAST);
 
         painelAlinhamento.add(painelBotoes, java.awt.BorderLayout.SOUTH);
 
@@ -209,13 +186,7 @@ public final class TelaLicencas extends javax.swing.JDialog
         WebConnectionUtils.abrirSite(recurso.getUrl());
     }//GEN-LAST:event_webButton1ActionPerformed
 
-    private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
-        dispose();
-    }//GEN-LAST:event_webButton2ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.JPanel painelAlinhamento;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelCarregamento;
@@ -223,6 +194,5 @@ public final class TelaLicencas extends javax.swing.JDialog
     private javax.swing.JTabbedPane painelTabulado;
     private javax.swing.JLabel rotuloCarregando;
     private com.alee.laf.button.WebButton webButton1;
-    private com.alee.laf.button.WebButton webButton2;
     // End of variables declaration//GEN-END:variables
 }

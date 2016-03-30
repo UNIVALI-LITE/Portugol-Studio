@@ -2,6 +2,10 @@ package br.univali.ps.ui;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.util.IconFactory;
+import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.window.WebPopOver;
+import com.alee.laf.button.WebButton;
+import com.alee.laf.label.WebLabel;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.WebNotificationPopup;
 import com.alee.managers.tooltip.TooltipManager;
@@ -30,12 +34,12 @@ public final class FabricaDicasInterface
     private static final Icon ICONE_LAMPADA_GRANDE = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "light-bulb.png");
     private static final int TEMPO_PADRAO = 5000;
 
-    public static void criarDicaInterface(JComponent componente, String dica)
+    public static void criarTooltip(JComponent componente, String dica)
     {
-        criarDicaInterfacePara(componente, dica, ICONE_LAMPADA_PEQUENA);
+        criarTooltipPara(componente, dica, ICONE_LAMPADA_PEQUENA);
     }
-
-    public static void criarDicaInterface(JComponent componente, String dica, Action acao)
+    
+    public static void criarTooltip(JComponent componente, String dica, Action acao)
     {
 
         if ((acao != null) && acao.getValue(Action.ACCELERATOR_KEY) != null)
@@ -44,10 +48,10 @@ public final class FabricaDicasInterface
             dica = dica.concat(" (Atalho: ").concat(TradutorAtalhosTeclado.traduzir(atalho)).concat(")");
         }
 
-        criarDicaInterfacePara(componente, dica, ICONE_LAMPADA_PEQUENA);
+        criarTooltipPara(componente, dica, ICONE_LAMPADA_PEQUENA);
     }
 
-    public static void criarDicaInterfacePara(JComponent componente, String dica, Icon icone)
+    public static void criarTooltipPara(JComponent componente, String dica, Icon icone)
     {
         final WebCustomTooltip tip = TooltipManager.setTooltip(componente, icone, dica);
 
@@ -59,12 +63,11 @@ public final class FabricaDicasInterface
                 tip.updateLocation();
             }
         });
-
     }
 
     private static WebCustomTooltip ultimaDicaExibida;
 
-    public static void criarDicaInterfaceEstatica(JComponent componente, String dica, Point point)
+    public static void criarTooltipEstatica(JComponent componente, String dica, Point point)
     {
         if (ultimaDicaExibida != null && ultimaDicaExibida.isVisible())
         {
@@ -74,16 +77,27 @@ public final class FabricaDicasInterface
 
     }
 
-    public static void criarDicaInterfaceEstatica(JComponent componente, String dica)
+    public static void criarTooltipEstatica(JComponent componente, String dica)
     {
         WebCustomTooltip tip = TooltipManager.setTooltip(componente, ICONE_LAMPADA_PEQUENA, dica);
         TooltipManager.showOneTimeTooltip(tip);
     }
     
-    public static void criarDicaInterfaceEstatica(JComponent componente,Icon icone, String dica)
+    public static void criaTooltipEstatica(JComponent componente,Icon icone, String dica)
     {
         WebCustomTooltip tip = TooltipManager.setTooltip(componente, icone, dica);
         TooltipManager.showOneTimeTooltip(tip);
+    }
+    
+    public static void mostrarPopUp(JComponent componente, String texto)
+    {
+        WebPopOver popOver = new WebPopOver ();
+        popOver.setCloseOnFocusLoss ( true );
+        popOver.setMargin ( 10 );
+        popOver.setLayout ( new VerticalFlowLayout () );
+        popOver.add ( new WebLabel (texto) );
+        popOver.show (componente);
+
     }
 
     public static void mostrarNotificacao(final String texto,final int displayTime,final Icon icon)

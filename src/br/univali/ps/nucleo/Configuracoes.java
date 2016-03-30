@@ -27,6 +27,7 @@ public final class Configuracoes
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
     public static final String EXIBIR_TUTORIAL_USO = "exibirTutorialUso";
+    public static final String EXIBIR_DICAS_INTERFACE = "exibirDicasInterface";
 
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
@@ -53,7 +54,10 @@ public final class Configuracoes
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
     private boolean exibirTutorialUso = true;
-
+    private boolean exibirDicasInterface = true;
+    
+    
+    
     private Configuracoes()
     {
         carregar();
@@ -83,6 +87,7 @@ public final class Configuracoes
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
             exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
             exibirTutorialUso = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_TUTORIAL_USO, "true"));
+            exibirDicasInterface = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_DICAS_INTERFACE, "true"));
         }
         catch (IOException excecao)
         {
@@ -102,6 +107,17 @@ public final class Configuracoes
         }
     }
 
+    public boolean isExibirDicasInterface() {
+        return exibirDicasInterface;
+    }
+
+    public void setExibirDicasInterface(boolean exibirDicasInterface) {
+        boolean oldValue = this.exibirDicasInterface;
+        this.configuracoes.setProperty(EXIBIR_DICAS_INTERFACE, Boolean.toString(exibirDicasInterface));
+        this.exibirDicasInterface = exibirDicasInterface;
+        suporteMudancaPropriedade.firePropertyChange(EXIBIR_DICAS_INTERFACE, oldValue, exibirDicasInterface);
+    }
+    
     public float getTamanhoFonteConsole()
     {
         return tamanhoFonteConsole;

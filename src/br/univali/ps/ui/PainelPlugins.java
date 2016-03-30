@@ -27,8 +27,8 @@ public final class PainelPlugins extends JPanel
 
     private void criarDicasInterface()
     {
-        FabricaDicasInterface.criarDicaInterface(botaoFechar, "Fecha o painel de plugins");
-        FabricaDicasInterface.criarDicaInterface(botaoInformacoes, "Exibe informações sobre este plugin");
+        FabricaDicasInterface.criarTooltip(botaoFechar, "Fecha o painel de plugins");
+        FabricaDicasInterface.criarTooltip(botaoInformacoes, "Exibe informações sobre este plugin");
     }
 
     public void setPlugin(Plugin plugin)

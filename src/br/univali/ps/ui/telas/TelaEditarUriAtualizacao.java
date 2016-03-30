@@ -1,10 +1,11 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.telas;
 
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.TratadorExcecoes;
+import br.univali.ps.ui.util.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -55,14 +56,10 @@ public final class TelaEditarUriAtualizacao extends JDialog
         caixaSelecaoUri.setModel(listaUris);
         caixaSelecaoUri.setRenderer(new Renderer());
         caixaSelecaoUri.setEditor(new Editor());
-
         getRootPane().setDefaultButton(botaoOK);
-
-        setIconImage(PortugolStudio.getInstancia().getTelaPrincipal().getIconImage());
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
         setModal(true);
-
         carregarUris();
-
         addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -117,8 +114,7 @@ public final class TelaEditarUriAtualizacao extends JDialog
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         rotuloTitulo = new javax.swing.JLabel();
         botaoOK = new javax.swing.JButton();
@@ -134,10 +130,8 @@ public final class TelaEditarUriAtualizacao extends JDialog
         botaoOK.setText("OK");
         botaoOK.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoOK.setFocusPainted(false);
-        botaoOK.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoOKActionPerformed(evt);
             }
         });

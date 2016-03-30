@@ -19,14 +19,7 @@ public final class TelaLogAtualizacoes extends JDialog
         initComponents();
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(botaoOK);
-        
-        try
-        {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png")));
-        }
-        catch (IOException ioe)
-        {
-        }
+        this.setIconImage(IconFactory.getDefaultWindowIcon());
     }
     
     public void setAtualizacoes(String atualizacoes)

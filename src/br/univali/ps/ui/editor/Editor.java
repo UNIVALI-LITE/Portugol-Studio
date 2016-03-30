@@ -131,7 +131,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
     private SearchListener observadorAcaoPesquisaSubstituir;
-
+    private boolean isExamplable = false;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
     private JMenu menuTemas;
@@ -169,7 +169,26 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
         menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
     }
-
+    
+    public void setExampleEditor(){
+        isExamplable = true;
+        aplicarTema(PortugolStudio.getInstancia().getGerenciadorTemas().getNomeTemaPadrao());
+        scrollPane.setIconRowHeaderEnabled(false);
+        painelEditor.remove(errorStrip);
+        this.setEditavel("false");
+        scrollPane.setOpaque(true);
+        painelEditor.setBackground(getTextArea().getBackground());
+        scrollPane.setBackground(getTextArea().getBackground());
+        this.setBackground(getTextArea().getBackground());
+        scrollPane.getHorizontalScrollBar().getParent().getParent().setBackground(getTextArea().getBackground());
+        
+        getTextArea().addPropertyChangeListener("background", (PropertyChangeEvent evt) -> {
+            painelEditor.setBackground(getTextArea().getBackground());
+            scrollPane.setBackground(getTextArea().getBackground());
+            Editor.this.setBackground(getTextArea().getBackground());
+            scrollPane.getHorizontalScrollBar().getParent().setBackground(getTextArea().getBackground());
+        });
+    }
     public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor) {
 
         final JMenu menu = new JMenu("Cores");
@@ -513,7 +532,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 break;
 
             case Configuracoes.TEMA_EDITOR:
-                aplicarTema((String) evt.getNewValue());
+                if(!isExamplable){
+                    aplicarTema((String) evt.getNewValue());
+                }
                 break;
 
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:
@@ -690,7 +711,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
     }
 
-    private void rolarAtePosicao(final int posicao) {
+    public void rolarAtePosicao(final int posicao) {
         SwingUtilities.invokeLater(() -> {
             try {
                 int ma = scrollPane.getHeight() / 2;

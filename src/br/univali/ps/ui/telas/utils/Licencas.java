@@ -1,4 +1,4 @@
-package br.univali.ps.ui.telas;
+package br.univali.ps.ui.telas.utils;
 
 import static javax.xml.bind.JAXBContext.newInstance;
 

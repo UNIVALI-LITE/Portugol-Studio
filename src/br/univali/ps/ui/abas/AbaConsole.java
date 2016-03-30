@@ -126,7 +126,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     private void exibirPopupLeia()
     {
-        FabricaDicasInterface.criarDicaInterfaceEstatica(console, "O programa está aguardando a entrada de dados");
+        FabricaDicasInterface.criarTooltipEstatica(console, "O programa está aguardando a entrada de dados");
     }
 
     private JPopupMenu criarBarraDeBotoes()
@@ -187,7 +187,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         });
         barra.adicionaAcao(acaoLimpar);
         barra.adicionaAcao(acaoCopiar);
-        FabricaDicasInterface.criarDicaInterface(barra.getCompomemtParaAdicionarDica(), "Personalizar a console");
+        FabricaDicasInterface.criarTooltip(barra.getCompomemtParaAdicionarDica(), "Personalizar a console");
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 2), 0, 0);
 
         this.add(barra, constrainsts);

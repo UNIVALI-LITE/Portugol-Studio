@@ -8,23 +8,29 @@ package br.univali.ps.ui.swing.components;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.util.FileHandle;
 import br.univali.ps.ui.util.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
-import com.alee.laf.button.WebButton;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
@@ -36,20 +42,37 @@ import javax.swing.tree.TreePath;
  *
  * @author Alisson
  */
-public class painelExemplos extends javax.swing.JPanel
+public class PainelExemplos extends javax.swing.JPanel
 {
-    WebImage imagemPadrao;
+    WebImage imagem;
+    Icon imagemPadrao;
+    Icon imagemPastaPadrao;
+    
+    Editor editor;
     /**
      * Creates new form painelExemplos
      */
-    public painelExemplos()
+    public PainelExemplos()
     {
         initComponents();
-        imagemPadrao = new WebImage(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"light-bulb.png"));
+        editor = new Editor();
+        editor.setExampleEditor();
+        codePanel.add(editor);
+        imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/exemplos.png");
+        imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/lite.png");
+        imagem = new WebImage(imagemPastaPadrao);
+        imagem.setDisplayType ( DisplayType.fitComponent );
+        imagePane.add(imagem);
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(openExample);
         }
         inicializarJTree();
+        rightPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                atualizarPainelDireita();
+            }
+        });
     }
     
     private void inicializarJTree(){
@@ -69,7 +92,7 @@ public class painelExemplos extends javax.swing.JPanel
                 arvoreExemplos.setRootVisible(false);
                 arvoreExemplos.setShowsRootHandles(true);
                 initTreeListner();
-                expandJTree();
+//                expandJTree();
                 jTreedoClick();
             }
             
@@ -107,10 +130,9 @@ public class painelExemplos extends javax.swing.JPanel
                    if(prop.getProperty(item+"type").equals("dir")){
                        DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item+"name"));
                        List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir, prop.getProperty(item+"dir")));
-                       for (DefaultMutableTreeNode subNode : subNodes)
-                       {
+                       subNodes.stream().forEach((subNode) -> {
                            node.add(subNode);
-                       }
+                       });
                        nodes.add(node);
                    }
                    else{
@@ -127,7 +149,7 @@ public class painelExemplos extends javax.swing.JPanel
                }
             }
         }
-        catch (Exception exception){   
+        catch (IOException | NumberFormatException exception){   
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
         }
         return nodes;
@@ -136,62 +158,75 @@ public class painelExemplos extends javax.swing.JPanel
     private void initTreeListner(){
         arvoreExemplos.addTreeSelectionListener((TreeSelectionEvent e) ->
         {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
-            
-            if (node == null) {
-                return;
-            }
-            if(node.isLeaf())
-            {
-                try {
-                    
-                    ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
-                    File exemplo = item.getFile();
-                    String codigoFonte = FileHandle.open(exemplo);
-                    description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
-                    imagePane.removeAll();
-                    if(item.hasImage()){
-                        WebImage image = new WebImage(new ImageIcon(item.getImage().toString()));
-                        image.setDisplayType ( DisplayType.fitComponent );
-                        imagePane.add(image);
-                        imagePane.setPreferredSize(new Dimension(this.getSize().width/4,0));
-                    }else{
-                        imagePane.setPreferredSize(new Dimension(20,0));
-                    }
-                    openExample.setAction(new AbstractAction(){
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-                            abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-                            PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
-                        }
-                    });
-                    openExample.setText("Explorar Exemplo");
-                    openExample.setVisible(true);
-                }
-                catch (Exception ex) {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-                }
-            }
-            else{
-                description.setText("<html><head></head><body>Selecione os Itens na árvore ao lado para visualizar os exemplos. Você pode também explorar um exemplo clickando no botão 'Explorar Exemplo' ou apertando a tecla 'enter' na navegação com o teclado.</body></html>");
-                imagePane.removeAll();
-                imagemPadrao.setDisplayType ( DisplayType.fitComponent );
-                imagePane.add(imagemPadrao);
-                imagePane.setPreferredSize(new Dimension(150,0));
-                openExample.setVisible(false);
-            }
+            atualizarPainelDireita();
         });
         arvoreExemplos.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                if(e.getKeyCode()== KeyEvent.VK_ENTER){
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
+                if(e.getKeyCode()== KeyEvent.VK_ENTER && node.isLeaf()){
                     openExample.doClick();
                 }
             }
-            
         });
+        arvoreExemplos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount()==2){
+                    openExample.doClick();
+                }
+            }            
+        });
+    }
+
+    private void atualizarPainelDireita() {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
+        if (node == null) {
+            return;
+        }
+        if(node.isLeaf())
+        {
+            try {
+
+                ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
+                File exemplo = item.getFile();
+                String codigoFonte = FileHandle.open(exemplo);
+                examplePane.setVisible(true);
+                description.setVisible(true);
+                description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
+                dataPane.setPreferredSize(new Dimension(rightPane.getSize().width*2/3,0));
+                if(item.hasImage()){
+                    imagem.setIcon(new ImageIcon(item.getImage().toString()));
+                }
+                else{
+                    imagem.setIcon(imagemPadrao);
+                }
+                editor.setCodigoFonte(codigoFonte);
+                editor.rolarAtePosicao(0);
+                openExample.setAction(new AbstractAction(){
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                        PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
+                    }
+                });
+                openExample.setText("Explorar Exemplo");
+                buttonPanel.setVisible(true);
+            }
+            catch (Exception ex) {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+            }
+        }
+        else{
+            examplePane.setVisible(false);
+            dataPane.setPreferredSize(new Dimension(rightPane.getSize().width,0));
+            description.setVisible(false);
+            imagem.setIcon(imagemPastaPadrao);
+            buttonPanel.setVisible(false);
+        }
+        rightPane.validate();
     }
     
     /**
@@ -201,16 +236,19 @@ public class painelExemplos extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
-        imagePane = new javax.swing.JPanel();
-        descriptionPane = new javax.swing.JPanel();
+        rightPane = new javax.swing.JPanel();
+        dataPane = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         description = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        buttonPanel = new javax.swing.JPanel();
         openExample = new com.alee.laf.button.WebButton();
+        imagePane = new javax.swing.JPanel();
+        examplePane = new javax.swing.JPanel();
+        codePanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -223,47 +261,52 @@ public class painelExemplos extends javax.swing.JPanel
         setLayout(new java.awt.BorderLayout());
 
         jSplitPane1.setDividerLocation(300);
-        jSplitPane1.setOpaque(false);
 
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        rightPane.setBackground(new java.awt.Color(255, 255, 255));
+        rightPane.setOpaque(false);
+        rightPane.setLayout(new java.awt.BorderLayout());
+
+        dataPane.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        description.setBackground(new java.awt.Color(51, 51, 51));
+        description.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        description.setForeground(new java.awt.Color(255, 255, 255));
+        description.setText("Descrição do Exemplo");
+        description.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel2.add(description, java.awt.BorderLayout.CENTER);
+
+        buttonPanel.setBackground(new java.awt.Color(204, 153, 0));
+        buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        buttonPanel.setOpaque(false);
+        buttonPanel.setLayout(new java.awt.BorderLayout());
+
+        openExample.setText("Explorar Exemplo");
+        buttonPanel.add(openExample, java.awt.BorderLayout.EAST);
+
+        jPanel2.add(buttonPanel, java.awt.BorderLayout.SOUTH);
+
+        dataPane.add(jPanel2, java.awt.BorderLayout.SOUTH);
 
         imagePane.setBackground(new java.awt.Color(49, 104, 146));
         imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         imagePane.setMinimumSize(new java.awt.Dimension(20, 150));
         imagePane.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(imagePane, java.awt.BorderLayout.WEST);
+        dataPane.add(imagePane, java.awt.BorderLayout.CENTER);
 
-        descriptionPane.setBackground(new java.awt.Color(210, 231, 252));
-        descriptionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        descriptionPane.setForeground(new java.awt.Color(255, 255, 255));
-        descriptionPane.setLayout(new java.awt.BorderLayout());
+        rightPane.add(dataPane, java.awt.BorderLayout.WEST);
 
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        examplePane.setForeground(new java.awt.Color(255, 255, 255));
+        examplePane.setLayout(new java.awt.BorderLayout());
 
-        description.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        description.setForeground(new java.awt.Color(51, 51, 51));
-        description.setText("Descrição do Exemplo");
-        description.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        description.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        jPanel2.add(description, java.awt.BorderLayout.CENTER);
+        codePanel.setLayout(new java.awt.BorderLayout());
+        examplePane.add(codePanel, java.awt.BorderLayout.CENTER);
 
-        descriptionPane.add(jPanel2, java.awt.BorderLayout.CENTER);
+        rightPane.add(examplePane, java.awt.BorderLayout.CENTER);
 
-        jPanel3.setBackground(new java.awt.Color(204, 153, 0));
-        jPanel3.setOpaque(false);
-        jPanel3.setPreferredSize(new java.awt.Dimension(400, 35));
-        jPanel3.setLayout(new java.awt.BorderLayout());
-
-        openExample.setText("Explorar Exemplo");
-        jPanel3.add(openExample, java.awt.BorderLayout.EAST);
-
-        descriptionPane.add(jPanel3, java.awt.BorderLayout.SOUTH);
-
-        jPanel1.add(descriptionPane, java.awt.BorderLayout.CENTER);
-
-        jSplitPane1.setRightComponent(jPanel1);
+        jSplitPane1.setRightComponent(rightPane);
 
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
@@ -279,7 +322,7 @@ public class painelExemplos extends javax.swing.JPanel
 
         jPanel4.add(jPanel5, java.awt.BorderLayout.NORTH);
 
-        jScrollPane1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(210, 231, 252), 2, true));
+        jScrollPane1.setBorder(null);
 
         arvoreExemplos.setBackground(new java.awt.Color(228, 241, 254));
         jScrollPane1.setViewportView(arvoreExemplos);
@@ -294,17 +337,19 @@ public class painelExemplos extends javax.swing.JPanel
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreExemplos;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JPanel codePanel;
+    private javax.swing.JPanel dataPane;
     private javax.swing.JLabel description;
-    private javax.swing.JPanel descriptionPane;
+    private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private com.alee.laf.button.WebButton openExample;
+    private javax.swing.JPanel rightPane;
     // End of variables declaration//GEN-END:variables
 }

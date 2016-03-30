@@ -20,9 +20,7 @@ public class Logo extends javax.swing.JPanel
     public Logo()
     {
         initComponents();
-
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
         addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -33,7 +31,7 @@ public class Logo extends javax.swing.JPanel
             }
         });
 
-        FabricaDicasInterface.criarDicaInterface(Logo.this, "Visitar página oficial");
+        FabricaDicasInterface.criarTooltip(Logo.this, "Visitar página oficial");
         versao.setText(PortugolStudio.getInstancia().getVersao());
     }
 
