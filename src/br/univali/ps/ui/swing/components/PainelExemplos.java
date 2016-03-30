@@ -225,7 +225,8 @@ public class PainelExemplos extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         rightPane = new javax.swing.JPanel();
@@ -249,7 +250,6 @@ public class PainelExemplos extends javax.swing.JPanel
         setLayout(new java.awt.BorderLayout());
 
         jSplitPane1.setDividerLocation(300);
-        jSplitPane1.setOpaque(false);
 
         rightPane.setBackground(new java.awt.Color(255, 255, 255));
         rightPane.setOpaque(false);

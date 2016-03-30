@@ -22,19 +22,22 @@ import javax.swing.ImageIcon;
  */
 public class IconFactory {
 
+    private static final Map<String, Icon> icones = new TreeMap<>();
+    
     public static final String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/pequeno";
     public static final String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/grande";
     public static final String CAMINHO_IMAGENS = "br/univali/ps/ui/imagens";
-    private static final Icon iconePadrao = criarIconePadrao();
-    private static final Image iconePadraoJanela = loadDefautlIcon();
     
-    private static Map<String, Icon> icones = new TreeMap<String, Icon>();
+    private static Icon iconePadrao = null;
+    private static Image iconePadraoJanela = null;
     
-    private static Image loadDefautlIcon(){
+    
+    
+    private static Image loadDefautWindowlIcon(){
         Image image = null;
         try
         {
-            image = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png"));
+            image = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png"));
         }
         catch (IOException ioe)
         {
@@ -42,7 +45,13 @@ public class IconFactory {
         return image;
     }
     
-    public static Image getDefaultWindowIcon(){
+    public static Image getDefaultWindowIcon()
+    {
+        if (iconePadraoJanela == null)
+        {
+            iconePadraoJanela = loadDefautWindowlIcon();
+        }
+        
         return iconePadraoJanela;
     }
     
@@ -50,7 +59,10 @@ public class IconFactory {
     {
         try
         {
-            return createIcon(CAMINHO_ICONES_PEQUENOS, "unkown.png");
+            String path = getFilePath(CAMINHO_ICONES_PEQUENOS, "unknown.png");
+            InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(path);
+            
+            return new ImageIcon(ImageIO.read(resourceAsStream));
         }
         catch (Exception ex)
         {
@@ -90,7 +102,7 @@ public class IconFactory {
                 
                 if (!icones.containsKey(filePath))
                 {
-                    iconInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+                    iconInputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(filePath);
                     icones.put(filePath, new ImageIcon(ImageIO.read(iconInputStream)));
                 }
                 
@@ -102,7 +114,12 @@ public class IconFactory {
             }
         }
         catch (Exception ex) 
-        {
+        {           
+            if (iconePadrao == null)
+            {
+                iconePadrao = criarIconePadrao();
+            }
+            
             return iconePadrao;
         }
     }
