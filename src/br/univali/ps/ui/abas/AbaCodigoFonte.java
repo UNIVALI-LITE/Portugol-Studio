@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaOpcoesExecucao;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;

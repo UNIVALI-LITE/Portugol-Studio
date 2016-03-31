@@ -5,7 +5,7 @@ import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
-import br.univali.ps.ui.TelaRenomearSimbolo;
+import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaAtalhosTeclado;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;

@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.telas;
 
 import br.univali.portugol.nucleo.CausaErroAoTentarObterDeclaracaoDoSimbolo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
@@ -14,6 +14,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -62,6 +63,11 @@ public class TelaRenomearSimbolo extends JDialog
         }
         catch (IOException ioe)
         {
+        }
+        
+        if(WeblafUtils.weblafEstaInstalado()){
+            WeblafUtils.configurarBotao(botaoAceitar);
+            WeblafUtils.configurarBotao(botaoCancelar);
         }
 
         botaoAceitar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -330,111 +336,112 @@ public class TelaRenomearSimbolo extends JDialog
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
-        painelCampos = new javax.swing.JPanel();
+        main = new javax.swing.JPanel();
+        variaveis = new javax.swing.JPanel();
+        aviso = new javax.swing.JPanel();
+        labelInfo = new javax.swing.JLabel();
+        nomes = new javax.swing.JPanel();
+        novoNome = new javax.swing.JPanel();
+        campoNovoNome = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        nomeAtual = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         campoNomeAtual = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        campoNovoNome = new javax.swing.JTextField();
-        labelInfo = new javax.swing.JLabel();
-        botaoAceitar = new javax.swing.JButton();
-        botaoCancelar = new javax.swing.JButton();
+        botoes = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        botaoCancelar = new com.alee.laf.button.WebButton();
+        botaoAceitar = new com.alee.laf.button.WebButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
+        setPreferredSize(null);
         setResizable(false);
 
-        painelCampos.setBorder(javax.swing.BorderFactory.createTitledBorder("Renomear:"));
+        main.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        main.setPreferredSize(new java.awt.Dimension(350, 175));
+        main.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("Nome atual:");
+        variaveis.setLayout(new java.awt.BorderLayout());
 
-        campoNomeAtual.setEditable(false);
-
-        jLabel2.setText("Novo nome:");
+        aviso.setLayout(new java.awt.BorderLayout());
 
         labelInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         labelInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfo.setText("Você deve informar um novo nome");
+        labelInfo.setPreferredSize(new java.awt.Dimension(194, 30));
+        aviso.add(labelInfo, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout painelCamposLayout = new javax.swing.GroupLayout(painelCampos);
-        painelCampos.setLayout(painelCamposLayout);
-        painelCamposLayout.setHorizontalGroup(
-            painelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelCamposLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(painelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(campoNomeAtual, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelCamposLayout.createSequentialGroup()
-                        .addGroup(painelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(campoNovoNome, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap())
-        );
-        painelCamposLayout.setVerticalGroup(
-            painelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelCamposLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoNomeAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoNovoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        variaveis.add(aviso, java.awt.BorderLayout.CENTER);
 
-        botaoAceitar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/yes.png"))); // NOI18N
-        botaoAceitar.setText("Aceitar");
+        nomes.setLayout(new java.awt.BorderLayout());
 
-        botaoCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
+        novoNome.setLayout(new java.awt.BorderLayout());
+        novoNome.add(campoNovoNome, java.awt.BorderLayout.CENTER);
+
+        jLabel2.setText("Novo nome:");
+        novoNome.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+
+        nomes.add(novoNome, java.awt.BorderLayout.SOUTH);
+
+        nomeAtual.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText("Nome atual:");
+        nomeAtual.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        campoNomeAtual.setEditable(false);
+        nomeAtual.add(campoNomeAtual, java.awt.BorderLayout.PAGE_END);
+
+        nomes.add(nomeAtual, java.awt.BorderLayout.NORTH);
+
+        variaveis.add(nomes, java.awt.BorderLayout.NORTH);
+
+        main.add(variaveis, java.awt.BorderLayout.CENTER);
+
+        botoes.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
+
         botaoCancelar.setText("Cancelar");
+        jPanel1.add(botaoCancelar);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(painelCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 233, Short.MAX_VALUE)
-                        .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botaoAceitar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(painelCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botaoAceitar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        botaoAceitar.setText("Aceitar");
+        botaoAceitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoAceitarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoAceitar);
+
+        botoes.add(jPanel1, java.awt.BorderLayout.EAST);
+
+        main.add(botoes, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(main, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botaoAceitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAceitarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoAceitarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoAceitar;
-    private javax.swing.JButton botaoCancelar;
+    private javax.swing.JPanel aviso;
+    private com.alee.laf.button.WebButton botaoAceitar;
+    private com.alee.laf.button.WebButton botaoCancelar;
+    private javax.swing.JPanel botoes;
     private javax.swing.JTextField campoNomeAtual;
     private javax.swing.JTextField campoNovoNome;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelInfo;
-    private javax.swing.JPanel painelCampos;
+    private javax.swing.JPanel main;
+    private javax.swing.JPanel nomeAtual;
+    private javax.swing.JPanel nomes;
+    private javax.swing.JPanel novoNome;
+    private javax.swing.JPanel variaveis;
     // End of variables declaration//GEN-END:variables
 }
