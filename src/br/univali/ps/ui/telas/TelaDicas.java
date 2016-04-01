@@ -47,7 +47,7 @@ public class TelaDicas extends JDialog {
         configurarCores();
         this.setIconImage(IconFactory.getDefaultWindowIcon());
         this.setTitle("Dicas de Inteface");
-        File dir = new File(IconFactory.CAMINHO_IMAGENS,"dicas");
+        String dir = IconFactory.CAMINHO_IMAGENS+"/dicas";
         dicas = loadHints(dir);
         atualiza(item);
         exibirSempre.setSelected(true);
@@ -114,7 +114,7 @@ public class TelaDicas extends JDialog {
         descriptionLabel.setText("<html><head></head><body>"+dicaInterface.getDescricao()+"</body></html>");
     }
     
-    private List<DicaInterface> loadHints(File dir){
+    private List<DicaInterface> loadHints(String dir){
         List<DicaInterface> lista = new ArrayList<>();
         Properties prop = new Properties();
         try {
