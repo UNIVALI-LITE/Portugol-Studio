@@ -7,8 +7,9 @@ package br.univali.ps.ui.telas;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.telas.utils.DicaInterface;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
@@ -43,6 +44,7 @@ public class TelaDicas extends JDialog {
      */
     public TelaDicas() {
         initComponents();
+        configurarCores();
         this.setIconImage(IconFactory.getDefaultWindowIcon());
         this.setTitle("Dicas de Inteface");
         String dir = IconFactory.CAMINHO_IMAGENS+"/dicas";
@@ -50,11 +52,17 @@ public class TelaDicas extends JDialog {
         atualiza(item);
         exibirSempre.setSelected(true);
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(webButton1);
-            WeblafUtils.configurarBotao(webButton2);
+            WeblafUtils.configurarBotao(webButton1,15);
+            WeblafUtils.configurarBotao(webButton2,15);
         }
         configurarNavegacaoPeloTeclado();
         setModal(true);
+    }
+    
+    private void configurarCores(){
+        titleLabel.setBackground(ColorController.FUNDO_ESCURO);
+        mainPanel.setBackground(ColorController.FUNDO_CLARO);
+//        descriptionLabel.setBackground(ColorController.BRANCO);
     }
     
     private void configurarNavegacaoPeloTeclado()
@@ -151,7 +159,9 @@ public class TelaDicas extends JDialog {
         titleLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         descriptionLabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         webButton1 = new com.alee.laf.button.WebButton();
+        jPanel3 = new javax.swing.JPanel();
         webButton2 = new com.alee.laf.button.WebButton();
         scrollPane = new javax.swing.JPanel();
         optionPane = new javax.swing.JPanel();
@@ -162,7 +172,7 @@ public class TelaDicas extends JDialog {
         mainPanel.setBackground(new java.awt.Color(228, 241, 254));
         mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         mainPanel.setMinimumSize(new java.awt.Dimension(640, 480));
-        mainPanel.setPreferredSize(new java.awt.Dimension(640, 480));
+        mainPanel.setPreferredSize(new java.awt.Dimension(640, 550));
         mainPanel.setLayout(new java.awt.BorderLayout());
 
         carrouselPane.setOpaque(false);
@@ -191,12 +201,14 @@ public class TelaDicas extends JDialog {
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        descriptionLabel.setBackground(new java.awt.Color(250, 250, 250));
-        descriptionLabel.setText("Texto");
-        descriptionLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        descriptionLabel.setOpaque(true);
-        descriptionLabel.setPreferredSize(new java.awt.Dimension(28, 60));
+        descriptionLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        descriptionLabel.setMaximumSize(new java.awt.Dimension(34, 150));
+        descriptionLabel.setMinimumSize(new java.awt.Dimension(34, 125));
+        descriptionLabel.setPreferredSize(new java.awt.Dimension(34, 125));
         jPanel1.add(descriptionLabel, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new java.awt.GridBagLayout());
 
         webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/previous.png"))); // NOI18N
         webButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -204,7 +216,12 @@ public class TelaDicas extends JDialog {
                 webButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(webButton1, java.awt.BorderLayout.LINE_START);
+        jPanel2.add(webButton1, new java.awt.GridBagConstraints());
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
+
+        jPanel3.setOpaque(false);
+        jPanel3.setLayout(new java.awt.GridBagLayout());
 
         webButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/next.png"))); // NOI18N
         webButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -212,7 +229,9 @@ public class TelaDicas extends JDialog {
                 webButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(webButton2, java.awt.BorderLayout.LINE_END);
+        jPanel3.add(webButton2, new java.awt.GridBagConstraints());
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.LINE_END);
 
         descriptionPane.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -275,6 +294,8 @@ public class TelaDicas extends JDialog {
     private javax.swing.JPanel hintPane;
     private javax.swing.JPanel imagePane;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel optionPane;
     private javax.swing.JPanel scrollPane;

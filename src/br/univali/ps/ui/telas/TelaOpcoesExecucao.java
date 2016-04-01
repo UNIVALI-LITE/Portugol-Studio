@@ -2,7 +2,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.portugol.nucleo.Programa;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;

@@ -1,6 +1,6 @@
 package br.univali.ps.ui.weblaf;
 
-import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.table.WebTableHeaderUI;

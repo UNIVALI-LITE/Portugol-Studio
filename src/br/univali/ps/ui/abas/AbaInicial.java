@@ -2,12 +2,13 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.ui.WebConnectionUtils;
-import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.utils.WebConnectionUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.telas.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.telas.TelaPrincipal;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.KeyEventDispatcher;
@@ -47,6 +48,7 @@ public final class AbaInicial extends Aba {
         setPainelTabulado(telaPrincipal.getPainelTabulado());
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents(); 
+        configurarCores();
         configurarResolucao();
         configurarCursorLogos();
         criarDicasInterface();
@@ -54,6 +56,22 @@ public final class AbaInicial extends Aba {
         configurarLinks();
         instalarObservadorCombinacoesSecretas();
         instalarAcoesSecretas();
+    }
+    private void configurarCores(){
+        painelFundo.setBackground(ColorController.FUNDO_ESCURO);
+        painelCentral.setBackground(ColorController.FUNDO_CLARO);
+        conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
+        rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloAssistirVideoAulas.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloAtalhosTeclado.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloConhecerBibliotecas.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloConhecerLinguagem.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloDicasInterface.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloInformacoesSoftware.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloRelatarBug.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloSlogan.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloUpdate.setBackground(ColorController.FUNDO_MEDIO);
     }
 
     private void instalarObservadorCombinacoesSecretas() {
@@ -277,7 +295,7 @@ public final class AbaInicial extends Aba {
             @Override
             public void mouseEntered(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
-                rotulo.setForeground(new Color(49,104,146));
+                rotulo.setForeground(ColorController.FUNDO_ESCURO);
                 rotulo.setOpaque(true);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.BOLD));
 
@@ -286,7 +304,7 @@ public final class AbaInicial extends Aba {
             @Override
             public void mouseExited(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
-                rotulo.setForeground(new Color(51, 51, 51));
+                rotulo.setForeground(ColorController.PRETO);
                 rotulo.setOpaque(false);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.PLAIN));
             }
@@ -392,12 +410,11 @@ public final class AbaInicial extends Aba {
         rotuloConhecerBibliotecas = new javax.swing.JLabel();
         painelConteudo = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        painelExemplos1 = new br.univali.ps.ui.swing.components.PainelExemplos();
+        painelExemplos1 = new br.univali.ps.ui.paineis.PainelExemplos();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        painelFundo.setBackground(new java.awt.Color(49, 104, 146));
         painelFundo.setLayout(new java.awt.BorderLayout());
 
         painelCabecalho.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
@@ -423,7 +440,6 @@ public final class AbaInicial extends Aba {
 
         painelFundo.add(painelCabecalho, java.awt.BorderLayout.NORTH);
 
-        conteudoColaborar.setBackground(new java.awt.Color(228, 241, 254));
         conteudoColaborar.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento1.setOpaque(false);
@@ -487,7 +503,6 @@ public final class AbaInicial extends Aba {
 
         painelFundo.add(conteudoColaborar, java.awt.BorderLayout.SOUTH);
 
-        painelCentral.setBackground(new java.awt.Color(228, 241, 254));
         painelCentral.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelCentral.setLayout(new java.awt.BorderLayout());
 
@@ -557,8 +572,8 @@ public final class AbaInicial extends Aba {
 
         painelCentral.add(conteudoIniciando, java.awt.BorderLayout.NORTH);
 
-        painelConteudo.setBackground(new java.awt.Color(228, 241, 254));
         painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        painelConteudo.setOpaque(false);
         painelConteudo.setPreferredSize(new java.awt.Dimension(700, 80));
         painelConteudo.setRequestFocusEnabled(false);
         painelConteudo.setLayout(new java.awt.BorderLayout());
@@ -590,7 +605,7 @@ public final class AbaInicial extends Aba {
     private javax.swing.JPanel painelCabecalho;
     private javax.swing.JPanel painelCentral;
     private javax.swing.JPanel painelConteudo;
-    private br.univali.ps.ui.swing.components.PainelExemplos painelExemplos1;
+    private br.univali.ps.ui.paineis.PainelExemplos painelExemplos1;
     private javax.swing.JPanel painelFundo;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
     private javax.swing.JLabel rotuloAssistirVideoAulas;

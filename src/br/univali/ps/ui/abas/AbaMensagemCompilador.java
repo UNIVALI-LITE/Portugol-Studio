@@ -8,7 +8,7 @@ import br.univali.portugol.nucleo.analise.semantica.erros.ErroSemanticoNaoTratad
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Cursor;
 import java.awt.Dimension;

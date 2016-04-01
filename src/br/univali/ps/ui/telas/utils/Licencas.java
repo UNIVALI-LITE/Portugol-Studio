@@ -3,7 +3,7 @@ package br.univali.ps.ui.telas.utils;
 import static javax.xml.bind.JAXBContext.newInstance;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.util.FileHandle;
+import br.univali.ps.ui.utils.FileHandle;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

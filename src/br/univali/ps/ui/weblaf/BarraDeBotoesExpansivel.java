@@ -1,6 +1,6 @@
 package br.univali.ps.ui.weblaf;
 
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.menu.WebPopupMenuUI;

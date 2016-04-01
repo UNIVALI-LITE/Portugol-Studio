@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.paineis.utils;
 
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.weblaf.PSWebTabbedPaneUI;

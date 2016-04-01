@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.swing.components;
+package br.univali.ps.ui.paineis;
 
+import br.univali.ps.ui.paineis.utils.ExampleTreeRender;
+import br.univali.ps.ui.paineis.utils.ExampleMutableTreeNode;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.Editor;
-import br.univali.ps.ui.util.FileHandle;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
@@ -55,6 +58,7 @@ public class PainelExemplos extends javax.swing.JPanel
     public PainelExemplos()
     {
         initComponents();
+        configurarCores();
         editor = new Editor();
         editor.setExampleEditor();
         codePanel.add(editor);
@@ -73,6 +77,13 @@ public class PainelExemplos extends javax.swing.JPanel
                 atualizarPainelDireita();
             }
         });
+    }
+    
+    private void configurarCores(){
+        arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
+        painelTitulo.setBackground(ColorController.FUNDO_ESCURO);
+        imagePane.setBackground(ColorController.FUNDO_ESCURO);
+        jPanel2.setBackground(ColorController.PRETO);
     }
     
     private void inicializarJTree(){
@@ -236,8 +247,7 @@ public class PainelExemplos extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         rightPane = new javax.swing.JPanel();
@@ -250,7 +260,7 @@ public class PainelExemplos extends javax.swing.JPanel
         examplePane = new javax.swing.JPanel();
         codePanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        painelTitulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         arvoreExemplos = new javax.swing.JTree();
@@ -268,7 +278,6 @@ public class PainelExemplos extends javax.swing.JPanel
 
         dataPane.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         description.setBackground(new java.awt.Color(51, 51, 51));
@@ -290,7 +299,6 @@ public class PainelExemplos extends javax.swing.JPanel
 
         dataPane.add(jPanel2, java.awt.BorderLayout.SOUTH);
 
-        imagePane.setBackground(new java.awt.Color(49, 104, 146));
         imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         imagePane.setMinimumSize(new java.awt.Dimension(20, 150));
         imagePane.setLayout(new java.awt.BorderLayout());
@@ -311,20 +319,19 @@ public class PainelExemplos extends javax.swing.JPanel
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jPanel5.setBackground(new java.awt.Color(49, 104, 146));
-        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel5.setLayout(new java.awt.BorderLayout());
+        painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelTitulo.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         jLabel1.setText("Exemplos");
-        jPanel5.add(jLabel1, java.awt.BorderLayout.CENTER);
+        painelTitulo.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jPanel4.add(jPanel5, java.awt.BorderLayout.NORTH);
+        jPanel4.add(painelTitulo, java.awt.BorderLayout.NORTH);
 
         jScrollPane1.setBorder(null);
 
-        arvoreExemplos.setBackground(new java.awt.Color(228, 241, 254));
+        arvoreExemplos.setBackground(new java.awt.Color(240, 240, 240));
         jScrollPane1.setViewportView(arvoreExemplos);
 
         jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -346,10 +353,10 @@ public class PainelExemplos extends javax.swing.JPanel
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private com.alee.laf.button.WebButton openExample;
+    private javax.swing.JPanel painelTitulo;
     private javax.swing.JPanel rightPane;
     // End of variables declaration//GEN-END:variables
 }

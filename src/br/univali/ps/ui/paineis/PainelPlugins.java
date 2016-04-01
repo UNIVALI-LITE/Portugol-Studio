@@ -1,8 +1,9 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.paineis;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import java.awt.BorderLayout;
@@ -84,8 +85,7 @@ public final class PainelPlugins extends JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelBarraFerramentas = new javax.swing.JPanel();
         painelAlinhamentoFerramentas = new javax.swing.JPanel();
@@ -138,10 +138,8 @@ public final class PainelPlugins extends JPanel
         botaoInformacoes.setOpaque(false);
         botaoInformacoes.setPreferredSize(new java.awt.Dimension(22, 22));
         botaoInformacoes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botaoInformacoes.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoInformacoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoInformacoesActionPerformed(evt);
             }
         });
@@ -156,10 +154,8 @@ public final class PainelPlugins extends JPanel
         botaoFechar.setOpaque(false);
         botaoFechar.setPreferredSize(new java.awt.Dimension(22, 22));
         botaoFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botaoFechar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoFecharActionPerformed(evt);
             }
         });

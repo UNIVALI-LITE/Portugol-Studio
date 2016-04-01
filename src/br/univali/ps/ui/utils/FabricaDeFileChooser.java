@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.utils;
 
 import java.io.File;
 import javax.swing.JFileChooser;

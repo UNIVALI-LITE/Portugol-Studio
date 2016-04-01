@@ -1,9 +1,10 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.paineis.PainelLicenca;
 import br.univali.ps.ui.telas.utils.Licencas;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.WebConnectionUtils;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.WebConnectionUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

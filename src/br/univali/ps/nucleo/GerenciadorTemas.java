@@ -1,6 +1,6 @@
 package br.univali.ps.nucleo;
 
-import br.univali.ps.ui.util.PackageClassesGetter;
+import br.univali.ps.ui.utils.PackageClassesGetter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

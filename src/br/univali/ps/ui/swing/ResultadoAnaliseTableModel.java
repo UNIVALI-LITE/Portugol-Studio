@@ -2,7 +2,7 @@ package br.univali.ps.ui.swing;
 
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.mensagens.*;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;

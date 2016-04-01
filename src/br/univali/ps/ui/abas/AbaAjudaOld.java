@@ -1,7 +1,7 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;

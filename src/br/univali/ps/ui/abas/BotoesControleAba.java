@@ -1,13 +1,13 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.ui.FabricaDeFileChooser;
-import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.PainelTabuladoListener;
+import br.univali.ps.ui.utils.FabricaDeFileChooser;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.paineis.utils.PainelTabuladoListener;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;
