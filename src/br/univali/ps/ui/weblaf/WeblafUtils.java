@@ -28,6 +28,7 @@ import javax.swing.*;
  */
 public class WeblafUtils {
 
+    public static final Integer DEFAULT_MARGIN = 10;
     public static final Color COR_DAS_BORDAS = new Color(200, 200, 200);
     public static final Color BACKGROUND_CLARO = new Color(250, 250, 250);
     public static final Color BACKGROUND_ESCURO = new Color(243, 243, 243);
@@ -141,8 +142,8 @@ public class WeblafUtils {
         }
     }
     
-    public  static void configurarBotao(WebButton botao, Color corPrincipal, Color corTexto){
-        botao.setMargin ( 10 );
+    public  static void configurarBotao(WebButton botao, Color corPrincipal, Color corTexto, Integer margin){
+        botao.setMargin (margin);
 //        botao.setFontSize ( 20 );
         botao.setRound ( 0 );
         botao.setShadeWidth ( 0 );
@@ -155,6 +156,12 @@ public class WeblafUtils {
         botao.setBottomBgColor (corPrincipal);
         botao.setBottomSelectedBgColor ( ColorController.PRETO );
         botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+    public  static void configurarBotao(WebButton botao, Color corPrincipal, Color corTexto){
+        configurarBotao(botao, corPrincipal, corTexto, DEFAULT_MARGIN);
+    }
+    public  static void configurarBotao(WebButton botao, Integer margin){
+        configurarBotao(botao, ColorController.FUNDO_ESCURO, ColorController.BRANCO, margin);
     }
     public  static void configurarBotao(WebButton botao, Color corPrincipal){
         configurarBotao(botao, corPrincipal, ColorController.BRANCO);
