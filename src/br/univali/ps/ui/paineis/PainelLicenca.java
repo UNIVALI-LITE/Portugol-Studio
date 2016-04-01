@@ -1,5 +1,6 @@
 package br.univali.ps.ui.paineis;
 
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.telas.utils.Licencas;
 import javax.swing.SwingUtilities;
 
@@ -15,7 +16,7 @@ public final class PainelLicenca extends javax.swing.JPanel
     public PainelLicenca(Licencas.Recurso recurso)
     {
         initComponents();
-        
+        configurarCores();
         jLNome.setText(String.format(htmlRotulos, "Nome", recurso.getNome()));
         jLVersao.setText(String.format(htmlRotulos, "Versão", recurso.getVersao()));
         jLUrl.setText(String.format(htmlRotulos, "Página Web", recurso.getUrl()));
@@ -25,7 +26,11 @@ public final class PainelLicenca extends javax.swing.JPanel
         
         this.recurso = recurso;
     }
-
+    private void configurarCores(){
+        jTALicenca.setBackground(ColorController.FUNDO_CLARO);
+        jTADescricao.setBackground(ColorController.FUNDO_CLARO);
+        jPInformacoes.setBackground(ColorController.BRANCO);
+    }
     public Licencas.Recurso getRecurso()
     {
         return recurso;
@@ -121,7 +126,7 @@ public final class PainelLicenca extends javax.swing.JPanel
         jSPDescricao.setPreferredSize(new java.awt.Dimension(166, 92));
 
         jTADescricao.setEditable(false);
-        jTADescricao.setBackground(new java.awt.Color(228, 241, 254));
+        jTADescricao.setBackground(new java.awt.Color(240, 240, 240));
         jTADescricao.setColumns(20);
         jTADescricao.setLineWrap(true);
         jTADescricao.setWrapStyleWord(true);
@@ -154,7 +159,7 @@ public final class PainelLicenca extends javax.swing.JPanel
         jSPLicenca.setBorder(null);
 
         jTALicenca.setEditable(false);
-        jTALicenca.setBackground(new java.awt.Color(228, 241, 254));
+        jTALicenca.setBackground(new java.awt.Color(240, 240, 240));
         jTALicenca.setColumns(20);
         jTALicenca.setRows(5);
         jTALicenca.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));

@@ -2,6 +2,7 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
@@ -47,6 +48,7 @@ public final class AbaInicial extends Aba {
         setPainelTabulado(telaPrincipal.getPainelTabulado());
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents(); 
+        configurarCores();
         configurarResolucao();
         configurarCursorLogos();
         criarDicasInterface();
@@ -54,6 +56,10 @@ public final class AbaInicial extends Aba {
         configurarLinks();
         instalarObservadorCombinacoesSecretas();
         instalarAcoesSecretas();
+    }
+    private void configurarCores(){
+        painelFundo.setBackground(ColorController.FUNDO_ESCURO);
+        painelCentral.setBackground(ColorController.FUNDO_CLARO);
     }
 
     private void instalarObservadorCombinacoesSecretas() {
@@ -397,7 +403,6 @@ public final class AbaInicial extends Aba {
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        painelFundo.setBackground(new java.awt.Color(49, 104, 146));
         painelFundo.setLayout(new java.awt.BorderLayout());
 
         painelCabecalho.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
@@ -487,7 +492,6 @@ public final class AbaInicial extends Aba {
 
         painelFundo.add(conteudoColaborar, java.awt.BorderLayout.SOUTH);
 
-        painelCentral.setBackground(new java.awt.Color(228, 241, 254));
         painelCentral.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelCentral.setLayout(new java.awt.BorderLayout());
 
