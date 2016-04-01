@@ -13,6 +13,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Color;
@@ -56,7 +57,7 @@ public class TelaRenomearSimbolo extends JDialog
     public TelaRenomearSimbolo()
     {
         initComponents();
-
+        configurarCores();
         try
         {
             this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/light-bulb.png")));
@@ -108,6 +109,10 @@ public class TelaRenomearSimbolo extends JDialog
         });
 
         criarAcoes();
+    }
+    
+    private void configurarCores(){
+        main.setBackground(ColorController.FUNDO_CLARO);
     }
 
     private void criarAcoes()
@@ -363,8 +368,10 @@ public class TelaRenomearSimbolo extends JDialog
         main.setPreferredSize(new java.awt.Dimension(350, 175));
         main.setLayout(new java.awt.BorderLayout());
 
+        variaveis.setOpaque(false);
         variaveis.setLayout(new java.awt.BorderLayout());
 
+        aviso.setOpaque(false);
         aviso.setLayout(new java.awt.BorderLayout());
 
         labelInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -375,8 +382,10 @@ public class TelaRenomearSimbolo extends JDialog
 
         variaveis.add(aviso, java.awt.BorderLayout.CENTER);
 
+        nomes.setOpaque(false);
         nomes.setLayout(new java.awt.BorderLayout());
 
+        novoNome.setOpaque(false);
         novoNome.setLayout(new java.awt.BorderLayout());
         novoNome.add(campoNovoNome, java.awt.BorderLayout.CENTER);
 
@@ -385,6 +394,7 @@ public class TelaRenomearSimbolo extends JDialog
 
         nomes.add(novoNome, java.awt.BorderLayout.SOUTH);
 
+        nomeAtual.setOpaque(false);
         nomeAtual.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setText("Nome atual:");
@@ -399,6 +409,7 @@ public class TelaRenomearSimbolo extends JDialog
 
         main.add(variaveis, java.awt.BorderLayout.CENTER);
 
+        botoes.setOpaque(false);
         botoes.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 2, 10, 0));

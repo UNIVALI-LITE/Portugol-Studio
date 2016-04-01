@@ -7,6 +7,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.telas.utils.DicaInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
@@ -43,6 +44,7 @@ public class TelaDicas extends JDialog {
      */
     public TelaDicas() {
         initComponents();
+        configurarCores();
         this.setIconImage(IconFactory.getDefaultWindowIcon());
         this.setTitle("Dicas de Inteface");
         File dir = new File(IconFactory.CAMINHO_IMAGENS,"dicas");
@@ -55,6 +57,12 @@ public class TelaDicas extends JDialog {
         }
         configurarNavegacaoPeloTeclado();
         setModal(true);
+    }
+    
+    private void configurarCores(){
+        titleLabel.setBackground(ColorController.FUNDO_ESCURO);
+        mainPanel.setBackground(ColorController.FUNDO_CLARO);
+        descriptionLabel.setBackground(ColorController.BRANCO);
     }
     
     private void configurarNavegacaoPeloTeclado()

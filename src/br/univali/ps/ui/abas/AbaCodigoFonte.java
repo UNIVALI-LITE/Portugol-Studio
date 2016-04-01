@@ -130,7 +130,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         super("Sem título", lampadaApagada, true);
 
         initComponents();
-
+        configurarCores();
         configurarArvoreEstrutural();
         criarPainelTemporario();
 
@@ -168,7 +168,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
 
     }
-
+    
+    private void configurarCores(){
+        painelConteudo.setBackground(ColorController.BRANCO);
+    }
+    
     private BarraDeBotoesExpansivel barraDeBotoesInspetorArvore;
     private BarraDeBotoesExpansivel barraDeBotoesEditor;
 
@@ -1055,7 +1059,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         setLayout(new java.awt.BorderLayout());
 
         painelConteudo.setFocusable(false);
-        painelConteudo.setOpaque(false);
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
         divisorArvoreEditor.setBackground(new java.awt.Color(255, 255, 255));

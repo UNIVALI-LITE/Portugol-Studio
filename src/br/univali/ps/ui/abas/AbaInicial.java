@@ -60,6 +60,18 @@ public final class AbaInicial extends Aba {
     private void configurarCores(){
         painelFundo.setBackground(ColorController.FUNDO_ESCURO);
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
+        conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
+        rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloAssistirVideoAulas.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloAtalhosTeclado.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloConhecerBibliotecas.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloConhecerLinguagem.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloDicasInterface.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloInformacoesSoftware.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloRelatarBug.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloSlogan.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloUpdate.setBackground(ColorController.FUNDO_MEDIO);
     }
 
     private void instalarObservadorCombinacoesSecretas() {
@@ -283,7 +295,7 @@ public final class AbaInicial extends Aba {
             @Override
             public void mouseEntered(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
-                rotulo.setForeground(new Color(49,104,146));
+                rotulo.setForeground(ColorController.FUNDO_ESCURO);
                 rotulo.setOpaque(true);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.BOLD));
 
@@ -292,7 +304,7 @@ public final class AbaInicial extends Aba {
             @Override
             public void mouseExited(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
-                rotulo.setForeground(new Color(51, 51, 51));
+                rotulo.setForeground(ColorController.PRETO);
                 rotulo.setOpaque(false);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.PLAIN));
             }
@@ -428,7 +440,6 @@ public final class AbaInicial extends Aba {
 
         painelFundo.add(painelCabecalho, java.awt.BorderLayout.NORTH);
 
-        conteudoColaborar.setBackground(new java.awt.Color(228, 241, 254));
         conteudoColaborar.setLayout(new java.awt.BorderLayout());
 
         painelAlinhamento1.setOpaque(false);
@@ -561,8 +572,8 @@ public final class AbaInicial extends Aba {
 
         painelCentral.add(conteudoIniciando, java.awt.BorderLayout.NORTH);
 
-        painelConteudo.setBackground(new java.awt.Color(228, 241, 254));
         painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        painelConteudo.setOpaque(false);
         painelConteudo.setPreferredSize(new java.awt.Dimension(700, 80));
         painelConteudo.setRequestFocusEnabled(false);
         painelConteudo.setLayout(new java.awt.BorderLayout());

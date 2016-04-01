@@ -1,5 +1,6 @@
 package br.univali.ps.ui.weblaf;
 
+import br.univali.ps.ui.ColorController;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -31,9 +32,6 @@ public class WeblafUtils {
     public static final Color BACKGROUND_CLARO = new Color(250, 250, 250);
     public static final Color BACKGROUND_ESCURO = new Color(243, 243, 243);
     public static final Color COR_DA_BORDA_ORIGINAL_NO_WEBLAF = StyleConstants.borderColor;
-    public static final Color COR_AZUL_PRINCIPAL = new Color (49,104,146);
-    public static final Color COR_TEXTO_BOTAO = new Color (250, 250, 250);
-    public static final Color COR_AZUL_CLARO = new Color (228,241,254);
     
 
 
@@ -151,19 +149,19 @@ public class WeblafUtils {
         botao.setInnerShadeWidth ( 0 );
         botao.setDrawSides ( false, false, false, false );
         botao.setForeground ( corTexto );
-        botao.setSelectedForeground ( Color.WHITE );
+        botao.setSelectedForeground ( ColorController.BRANCO );
         botao.setTopBgColor (corPrincipal);
-        botao.setTopSelectedBgColor ( Color.DARK_GRAY );
+        botao.setTopSelectedBgColor ( ColorController.PRETO );
         botao.setBottomBgColor (corPrincipal);
-        botao.setBottomSelectedBgColor ( Color.DARK_GRAY );
+        botao.setBottomSelectedBgColor ( ColorController.PRETO );
         botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     public  static void configurarBotao(WebButton botao, Color corPrincipal){
-        configurarBotao(botao, corPrincipal, COR_TEXTO_BOTAO);
+        configurarBotao(botao, corPrincipal, ColorController.BRANCO);
     }
     
     public  static void configurarBotao(WebButton botao){
-        configurarBotao(botao, COR_AZUL_PRINCIPAL);
+        configurarBotao(botao, ColorController.FUNDO_ESCURO);
     }
     
     public static boolean weblafEstaInstalado() {

@@ -1,6 +1,7 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
@@ -33,7 +34,7 @@ public final class TelaSobre extends JDialog
         setLocationRelativeTo(null);
         configurarAcaoSair();
         initComponents();
-        
+        configurarCores();
         if (WeblafUtils.weblafEstaInstalado()) {
           ((WebTabbedPaneUI)tabbedUsuarios.getUI()).setShadeWidth(0);
         }
@@ -45,6 +46,12 @@ public final class TelaSobre extends JDialog
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(16);
         FabricaDicasInterface.criarTooltip(labellicensa, "Veja as Licensas do Software");
+    }
+    
+    private void configurarCores(){
+        painelHeader.setBackground(ColorController.FUNDO_ESCURO);
+        painelConteudo.setBackground(ColorController.FUNDO_CLARO);
+        paineInferior.setBackground(ColorController.FUNDO_MEDIO);
     }
 
     private void configurarLinks()
@@ -88,8 +95,7 @@ public final class TelaSobre extends JDialog
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         logoPortugolStudio = new br.univali.ps.ui.imagens.Logo();
         metaData = new javax.swing.JPanel();
@@ -138,7 +144,6 @@ public final class TelaSobre extends JDialog
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
 
-        painelHeader.setBackground(new java.awt.Color(49, 104, 146));
         painelHeader.setPreferredSize(new java.awt.Dimension(100, 150));
         painelHeader.setLayout(new java.awt.BorderLayout());
 
@@ -163,7 +168,6 @@ public final class TelaSobre extends JDialog
 
         mainpanel.setLayout(new java.awt.BorderLayout());
 
-        painelConteudo.setBackground(new java.awt.Color(228, 241, 254));
         painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
@@ -205,7 +209,6 @@ public final class TelaSobre extends JDialog
 
         getContentPane().add(mainpanel, java.awt.BorderLayout.CENTER);
 
-        paineInferior.setBackground(new java.awt.Color(210, 231, 252));
         paineInferior.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         paineInferior.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
@@ -251,10 +254,8 @@ public final class TelaSobre extends JDialog
         labellicensa.setMaximumSize(new java.awt.Dimension(48, 40));
         labellicensa.setMinimumSize(new java.awt.Dimension(48, 40));
         labellicensa.setPreferredSize(null);
-        labellicensa.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        labellicensa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labellicensaMouseClicked(evt);
             }
         });
