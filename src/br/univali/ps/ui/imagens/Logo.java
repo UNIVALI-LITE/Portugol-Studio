@@ -2,7 +2,7 @@ package br.univali.ps.ui.imagens;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaInicial;
-import br.univali.ps.ui.FabricaDicasInterface;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import java.awt.Cursor;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

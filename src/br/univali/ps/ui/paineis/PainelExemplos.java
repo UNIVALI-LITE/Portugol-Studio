@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.swing.components;
+package br.univali.ps.ui.paineis;
 
+import br.univali.ps.ui.paineis.utils.ExampleTreeRender;
+import br.univali.ps.ui.paineis.utils.ExampleMutableTreeNode;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.Editor;
-import br.univali.ps.ui.util.FileHandle;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
@@ -236,8 +238,7 @@ public class PainelExemplos extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         rightPane = new javax.swing.JPanel();

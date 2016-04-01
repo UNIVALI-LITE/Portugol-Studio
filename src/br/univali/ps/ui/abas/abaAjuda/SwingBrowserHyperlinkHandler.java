@@ -25,7 +25,7 @@ import br.univali.portugol.ajuda.ErroTopicoNaoEncontrado;
 import br.univali.portugol.ajuda.Topico;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.util.FileHandle;
+import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Cursor;
 import java.io.File;
 import java.net.URISyntaxException;

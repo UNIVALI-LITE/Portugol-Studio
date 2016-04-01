@@ -26,7 +26,7 @@ import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
-import br.univali.ps.ui.EscopoCursor;
+import br.univali.ps.ui.utils.EscopoCursor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

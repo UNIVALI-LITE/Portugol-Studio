@@ -477,7 +477,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                   <SubComponents>
-                    <Component class="br.univali.ps.ui.swing.components.PainelExemplos" name="painelExemplos1">
+                    <Component class="br.univali.ps.ui.paineis.PainelExemplos" name="painelExemplos1">
                       <Properties>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="null"/>

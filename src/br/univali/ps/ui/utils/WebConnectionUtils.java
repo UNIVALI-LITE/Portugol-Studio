@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui;
+package br.univali.ps.ui.utils;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;

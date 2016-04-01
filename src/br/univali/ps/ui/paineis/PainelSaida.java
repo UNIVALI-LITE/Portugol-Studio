@@ -1,5 +1,6 @@
-package br.univali.ps.ui;
+package br.univali.ps.ui.paineis;
 
+import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.abas.AbaConsole;
 import br.univali.ps.ui.abas.AbaMensagemCompilador;
 import br.univali.ps.ui.abas.AbaEnunciado;

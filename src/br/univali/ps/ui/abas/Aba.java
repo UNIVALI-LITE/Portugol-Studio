@@ -1,7 +1,7 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.PainelTabulado;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.paineis.utils.PainelTabulado;
+import br.univali.ps.ui.utils.IconFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;

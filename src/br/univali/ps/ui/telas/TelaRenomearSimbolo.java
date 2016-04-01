@@ -13,7 +13,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Color;
 import java.awt.Cursor;

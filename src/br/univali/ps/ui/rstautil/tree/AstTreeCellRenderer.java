@@ -56,7 +56,7 @@ import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametros;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;

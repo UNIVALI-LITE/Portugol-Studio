@@ -1,6 +1,6 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Color;

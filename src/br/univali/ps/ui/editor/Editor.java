@@ -17,11 +17,11 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.FabricaDicasInterface;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 
 import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;

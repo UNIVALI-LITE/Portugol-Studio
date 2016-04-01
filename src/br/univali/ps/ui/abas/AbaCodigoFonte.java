@@ -1,5 +1,9 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.ui.utils.EscopoCursor;
+import br.univali.ps.ui.utils.FabricaDeFileChooser;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.paineis.PainelSaida;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaOpcoesExecucao;
@@ -35,8 +39,8 @@ import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
-import br.univali.ps.ui.util.FileHandle;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.*;
@@ -1036,7 +1040,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         separadorBotoesPrincipaisEditor = new javax.swing.JSeparator();
         editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
-        painelSaida = new br.univali.ps.ui.PainelSaida();
+        painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
         separadorDireito = new javax.swing.JSeparator();
         painelInspetorArvore = new javax.swing.JPanel();
         divisorArvoreInspetor = new javax.swing.JSplitPane();
@@ -1990,7 +1994,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelEsquerda;
     private javax.swing.JPanel painelInspetorArvore;
-    private br.univali.ps.ui.PainelSaida painelSaida;
+    private br.univali.ps.ui.paineis.PainelSaida painelSaida;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
     private javax.swing.JSeparator separadorBotoesPrincipaisEditor;

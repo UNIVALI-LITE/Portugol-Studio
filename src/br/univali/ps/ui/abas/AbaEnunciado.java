@@ -1,6 +1,6 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import javax.swing.Icon;
 
 public final class AbaEnunciado extends Aba

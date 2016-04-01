@@ -14,7 +14,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.lang.reflect.Method;

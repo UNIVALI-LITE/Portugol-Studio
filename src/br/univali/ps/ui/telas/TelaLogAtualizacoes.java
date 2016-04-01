@@ -1,6 +1,6 @@
 package br.univali.ps.ui.telas;
 
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JDialog;

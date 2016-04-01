@@ -3,7 +3,7 @@ package br.univali.ps.ui.telas;
 import br.univali.ps.plugins.base.Autor;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;

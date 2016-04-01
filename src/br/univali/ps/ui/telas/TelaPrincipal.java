@@ -8,11 +8,11 @@ import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
-import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.util.FileHandle;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -360,7 +360,7 @@ public final class TelaPrincipal extends JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        painelTabuladoPrincipal = new br.univali.ps.ui.PainelTabuladoPrincipal();
+        painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
@@ -375,6 +375,6 @@ public final class TelaPrincipal extends JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private br.univali.ps.ui.PainelTabuladoPrincipal painelTabuladoPrincipal;
+    private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.swing.components;
+package br.univali.ps.ui.paineis.utils;
 
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JTree;

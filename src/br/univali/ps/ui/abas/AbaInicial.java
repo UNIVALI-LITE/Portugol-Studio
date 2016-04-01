@@ -2,12 +2,12 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.ui.WebConnectionUtils;
-import br.univali.ps.ui.FabricaDicasInterface;
-import br.univali.ps.ui.PainelTabuladoPrincipal;
+import br.univali.ps.ui.utils.WebConnectionUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.telas.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.telas.TelaPrincipal;
-import br.univali.ps.ui.util.IconFactory;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.KeyEventDispatcher;
@@ -392,7 +392,7 @@ public final class AbaInicial extends Aba {
         rotuloConhecerBibliotecas = new javax.swing.JLabel();
         painelConteudo = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        painelExemplos1 = new br.univali.ps.ui.swing.components.PainelExemplos();
+        painelExemplos1 = new br.univali.ps.ui.paineis.PainelExemplos();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -590,7 +590,7 @@ public final class AbaInicial extends Aba {
     private javax.swing.JPanel painelCabecalho;
     private javax.swing.JPanel painelCentral;
     private javax.swing.JPanel painelConteudo;
-    private br.univali.ps.ui.swing.components.PainelExemplos painelExemplos1;
+    private br.univali.ps.ui.paineis.PainelExemplos painelExemplos1;
     private javax.swing.JPanel painelFundo;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
     private javax.swing.JLabel rotuloAssistirVideoAulas;
