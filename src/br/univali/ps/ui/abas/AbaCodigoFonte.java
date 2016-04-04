@@ -170,7 +170,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
     
     private void configurarCores(){
-        painelConteudo.setBackground(ColorController.BRANCO);
+        painelConteudo.setBackground(ColorController.COR_PRINCIPAL);
+        inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
     }
     
     private BarraDeBotoesExpansivel barraDeBotoesInspetorArvore;
@@ -1221,7 +1222,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         scrollInspetor.setPreferredSize(new java.awt.Dimension(266, 200));
 
         inspetorDeSimbolos.setBackground(new java.awt.Color(243, 243, 243));
-        inspetorDeSimbolos.setBorder(new javax.swing.border.LineBorder(new Color(0, 0, 0, 0.1f), 1, true));
         scrollInspetor.setViewportView(inspetorDeSimbolos);
 
         divisorArvoreInspetor.setBottomComponent(scrollInspetor);

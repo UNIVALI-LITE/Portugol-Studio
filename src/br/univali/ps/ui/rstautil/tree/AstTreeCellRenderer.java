@@ -56,6 +56,7 @@ import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametros;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
@@ -85,6 +86,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         component = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+        component.setForeground(ColorController.COR_LETRA);
 
         if (value != null && value instanceof SourceTreeNode) {
             ((SourceTreeNode) value).aceitar(this);

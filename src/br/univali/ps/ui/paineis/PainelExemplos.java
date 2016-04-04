@@ -83,7 +83,8 @@ public class PainelExemplos extends javax.swing.JPanel
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         painelTitulo.setBackground(ColorController.FUNDO_ESCURO);
         imagePane.setBackground(ColorController.FUNDO_ESCURO);
-        jPanel2.setBackground(ColorController.PRETO);
+        description.setForeground(ColorController.COR_PRINCIPAL);
+        jPanel2.setBackground(ColorController.COR_LETRA);
     }
     
     private void inicializarJTree(){

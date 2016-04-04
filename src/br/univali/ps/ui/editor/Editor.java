@@ -17,6 +17,7 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 
@@ -159,8 +160,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         instalarObservadores();
         carregarConfiguracoes();
         WeblafUtils.configuraWebLaf(scrollPane);
+        configurarCores();
     }
-
+    private void configurarCores(){
+        errorStrip.setBackground(ColorController.COR_PRINCIPAL);
+    }
+    
     public Set<Integer> getLinhasComPontoDeParadaAtivados()
     {
         return getTextArea().getLinhasComPontoDeParadaAtivados();
@@ -187,7 +192,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     public void setExampleEditor(){
         isExamplable = true;
-        aplicarTema(PortugolStudio.getInstancia().getGerenciadorTemas().getNomeTemaPadrao());
         scrollPane.setIconRowHeaderEnabled(false);
         painelEditor.remove(errorStrip);
         this.setEditavel("false");
@@ -292,7 +296,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         Icon iconeBreakPoint = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
         ((PSTextArea) textArea).setIconeDosBreakPoints(iconeBreakPoint);
-
     }
 
     private void configurarAcoes()

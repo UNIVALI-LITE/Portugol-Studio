@@ -5,7 +5,9 @@
  */
 package br.univali.ps.ui.paineis.utils;
 
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
+import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JTree;
@@ -28,6 +30,13 @@ public class ExampleTreeRender extends DefaultTreeCellRenderer {
         JLabel label = (JLabel) this ;
 
 //        label.setSize(label.getHeight(),value.toString().length());
+        
+        setForeground(ColorController.COR_LETRA);
+        if(selected){
+//            setBackground(ColorController.COR_LETRA);
+            setBackground(Color.PINK);
+            setForeground(ColorController.COR_PRINCIPAL);
+        }
         label.setText(value.toString());
         if(leaf){
             if(selected){
@@ -38,9 +47,7 @@ public class ExampleTreeRender extends DefaultTreeCellRenderer {
         }else{
             label.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png"));
         }
-        label.repaint();
-        tree.revalidate();
-        this.repaint();
+        
         return label;
     }
     

@@ -150,21 +150,21 @@ public class WeblafUtils {
         botao.setInnerShadeWidth ( 0 );
         botao.setDrawSides ( false, false, false, false );
         botao.setForeground ( corTexto );
-        botao.setSelectedForeground ( ColorController.BRANCO );
+        botao.setSelectedForeground (ColorController.COR_PRINCIPAL );
         botao.setTopBgColor (corPrincipal);
-        botao.setTopSelectedBgColor ( ColorController.PRETO );
+        botao.setTopSelectedBgColor (ColorController.COR_LETRA );
         botao.setBottomBgColor (corPrincipal);
-        botao.setBottomSelectedBgColor ( ColorController.PRETO );
+        botao.setBottomSelectedBgColor (ColorController.COR_LETRA );
         botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     public  static void configurarBotao(WebButton botao, Color corPrincipal, Color corTexto){
         configurarBotao(botao, corPrincipal, corTexto, DEFAULT_MARGIN);
     }
     public  static void configurarBotao(WebButton botao, Integer margin){
-        configurarBotao(botao, ColorController.FUNDO_ESCURO, ColorController.BRANCO, margin);
+        configurarBotao(botao, ColorController.FUNDO_ESCURO, ColorController.COR_PRINCIPAL, margin);
     }
     public  static void configurarBotao(WebButton botao, Color corPrincipal){
-        configurarBotao(botao, corPrincipal, ColorController.BRANCO);
+        configurarBotao(botao, corPrincipal, ColorController.COR_PRINCIPAL);
     }
     
     public  static void configurarBotao(WebButton botao){
