@@ -24,6 +24,7 @@ import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.BuscadorDeEscopo;
 import br.univali.ps.ui.rstautil.ComparadorNos;
@@ -102,6 +103,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         setCellRenderer(new RenderizadorDaLista());
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         instalaObservadores();
+        configurarCores();
+    }
+    
+    private void configurarCores(){
+        setBackground(ColorController.COR_DESTAQUE);
     }
 
     private void instalaObservadores() {
@@ -156,7 +162,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private void desenhaInstrucaoParaArrastarSimbolos(Graphics g) {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         //g.setFont(RenderizadorBase.FONTE_NORMAL. );
-        g.setColor(Color.GRAY);
+        g.setColor(ColorController.COR_DESTAQUE);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(ColorController.COR_LETRA);
         FontMetrics metrics = g.getFontMetrics();
         String texto = INSTRUCAO.replace("\n", "");
         int larguraInstrucao = metrics.stringWidth(texto);

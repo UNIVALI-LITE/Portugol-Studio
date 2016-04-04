@@ -1,20 +1,18 @@
 package br.univali.ps.ui.paineis;
 
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.abas.AbaConsole;
 import br.univali.ps.ui.abas.AbaMensagemCompilador;
 import br.univali.ps.ui.abas.AbaEnunciado;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.TabbedPaneUI;
 
 public final class PainelSaida extends PainelTabulado {
 
@@ -39,6 +37,12 @@ public final class PainelSaida extends PainelTabulado {
         }
         
         setSelectedIndex(0);//deixa a console aparecendo quando abre uma nova aba
+        configurarCores();
+    }
+    
+    private void configurarCores(){
+        setBackground(ColorController.COR_DESTAQUE);
+        
     }
 
     

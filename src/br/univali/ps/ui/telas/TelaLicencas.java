@@ -167,9 +167,10 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelCarregamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
         painelCarregamento.setLayout(new java.awt.BorderLayout());
 
+        rotuloCarregando.setBackground(new java.awt.Color(0, 0, 0));
         rotuloCarregando.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         rotuloCarregando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloCarregando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/hourglass.png"))); // NOI18N
+        rotuloCarregando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/loading.gif"))); // NOI18N
         rotuloCarregando.setText("Carregando as licenças, por favor aguarde...");
         rotuloCarregando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         painelCarregamento.add(rotuloCarregando, java.awt.BorderLayout.CENTER);
