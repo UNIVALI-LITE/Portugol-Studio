@@ -146,79 +146,56 @@
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JButton" name="btnExecutar">
+                                <Component class="com.alee.laf.button.WebButton" name="btnExecutar">
                                   <Properties>
                                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                       <Image iconType="3" name="/br/univali/ps/ui/icones/grande/resultset_next.png"/>
                                     </Property>
-                                    <Property name="borderPainted" type="boolean" value="false"/>
-                                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                                      <Color id="Cursor Padr&#xe3;o"/>
-                                    </Property>
-                                    <Property name="enabled" type="boolean" value="false"/>
-                                    <Property name="focusPainted" type="boolean" value="false"/>
                                     <Property name="focusable" type="boolean" value="false"/>
                                     <Property name="hideActionText" type="boolean" value="true"/>
                                     <Property name="horizontalTextPosition" type="int" value="0"/>
                                     <Property name="verticalTextPosition" type="int" value="3"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JButton" name="btnDepurar">
+                                <Component class="com.alee.laf.button.WebButton" name="btnDepurar">
                                   <Properties>
                                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                       <Image iconType="3" name="/br/univali/ps/ui/icones/grande/step.png"/>
                                     </Property>
-                                    <Property name="borderPainted" type="boolean" value="false"/>
-                                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                                      <Color id="Cursor Padr&#xe3;o"/>
-                                    </Property>
-                                    <Property name="enabled" type="boolean" value="false"/>
-                                    <Property name="focusPainted" type="boolean" value="false"/>
                                     <Property name="focusable" type="boolean" value="false"/>
                                     <Property name="hideActionText" type="boolean" value="true"/>
                                     <Property name="horizontalTextPosition" type="int" value="0"/>
                                     <Property name="verticalTextPosition" type="int" value="3"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JButton" name="btnInterromper">
+                                <Component class="com.alee.laf.button.WebButton" name="btnInterromper">
                                   <Properties>
                                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                       <Image iconType="3" name="/br/univali/ps/ui/icones/grande/stop.png"/>
                                     </Property>
-                                    <Property name="borderPainted" type="boolean" value="false"/>
-                                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                                      <Color id="Cursor Padr&#xe3;o"/>
-                                    </Property>
                                     <Property name="enabled" type="boolean" value="false"/>
-                                    <Property name="focusPainted" type="boolean" value="false"/>
                                     <Property name="focusable" type="boolean" value="false"/>
                                     <Property name="hideActionText" type="boolean" value="true"/>
                                     <Property name="horizontalTextPosition" type="int" value="0"/>
                                     <Property name="verticalTextPosition" type="int" value="3"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JButton" name="btnSalvar">
+                                <Component class="com.alee.laf.button.WebButton" name="btnSalvar">
                                   <Properties>
                                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                       <Image iconType="3" name="/br/univali/ps/ui/icones/grande/save.png"/>
                                     </Property>
-                                    <Property name="borderPainted" type="boolean" value="false"/>
-                                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                                      <Color id="Cursor Padr&#xe3;o"/>
-                                    </Property>
-                                    <Property name="focusPainted" type="boolean" value="false"/>
                                     <Property name="focusable" type="boolean" value="false"/>
                                     <Property name="hideActionText" type="boolean" value="true"/>
                                     <Property name="horizontalTextPosition" type="int" value="0"/>
                                     <Property name="verticalTextPosition" type="int" value="3"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JButton" name="btnSalvarComo">
+                                <Component class="com.alee.laf.button.WebButton" name="btnSalvarComo">
                                   <Properties>
                                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                                       <Image iconType="3" name="/br/univali/ps/ui/icones/grande/save_as.png"/>
                                     </Property>
-                                    <Property name="borderPainted" type="boolean" value="false"/>
                                     <Property name="focusable" type="boolean" value="false"/>
                                     <Property name="hideActionText" type="boolean" value="true"/>
                                     <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -359,9 +336,6 @@
                       <SubComponents>
                         <Component class="br.univali.ps.ui.inspetor.InspetorDeSimbolos" name="inspetorDeSimbolos">
                           <Properties>
-                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="f3" green="f3" red="f3" type="rgb"/>
-                            </Property>
                             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                               <StringArray count="0"/>
                             </Property>

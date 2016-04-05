@@ -1,6 +1,7 @@
 package br.univali.ps.ui.weblaf;
 
 import br.univali.ps.ui.ColorController;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -19,6 +20,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Locale;
 import javax.swing.*;
 
@@ -142,7 +145,8 @@ public class WeblafUtils {
         }
     }
     
-    public  static void configurarBotao(WebButton botao, Color corPrincipal, Color corTexto, Integer margin){
+    public  static void configurarBotao(WebButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin){
+        
         botao.setMargin (margin);
 //        botao.setFontSize ( 20 );
         botao.setRound ( 0 );
@@ -150,15 +154,37 @@ public class WeblafUtils {
         botao.setInnerShadeWidth ( 0 );
         botao.setDrawSides ( false, false, false, false );
         botao.setForeground ( corTexto );
-        botao.setSelectedForeground (ColorController.COR_PRINCIPAL );
-        botao.setTopBgColor (corPrincipal);
-        botao.setTopSelectedBgColor (ColorController.COR_LETRA );
-        botao.setBottomBgColor (corPrincipal);
-        botao.setBottomSelectedBgColor (ColorController.COR_LETRA );
+        botao.setSelectedForeground (corTextoHover);
+        botao.setTopBgColor (corBgPrincipal);
+        botao.setTopSelectedBgColor (corBgHover );
+        botao.setBottomBgColor (corBgPrincipal);
+        botao.setBottomSelectedBgColor (corBgHover);
         botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botao.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botao.setTopBgColor(corBgHover);
+                botao.setBottomBgColor(corBgHover);
+                botao.setForeground(corTextoHover);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botao.setTopBgColor(corBgPrincipal);
+                botao.setBottomBgColor(corBgPrincipal);
+                botao.setForeground(corTexto);
+            }
+            
+        });
+    }
+    public  static void configurarBotao(WebButton botao, Color corBgPrincipal, Color corTexto, Integer margin){
+        configurarBotao(botao, corBgPrincipal, corTexto, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, margin);
     }
     public  static void configurarBotao(WebButton botao, Color corPrincipal, Color corTexto){
         configurarBotao(botao, corPrincipal, corTexto, DEFAULT_MARGIN);
+    }
+    public  static void configurarBotao(WebButton botao, Color corPrincipal, Integer margin){
+        configurarBotao(botao, corPrincipal, ColorController.COR_LETRA, margin);
     }
     public  static void configurarBotao(WebButton botao, Integer margin){
         configurarBotao(botao, ColorController.FUNDO_ESCURO, ColorController.COR_PRINCIPAL, margin);

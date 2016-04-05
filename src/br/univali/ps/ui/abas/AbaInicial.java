@@ -8,6 +8,7 @@ import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.telas.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.utils.IconFactory;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -77,8 +78,7 @@ public final class AbaInicial extends Aba {
         rotuloRelatarBug.setForeground(ColorController.COR_LETRA);
         rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
         rotuloSairProgramando.setForeground(ColorController.COR_LETRA);
-        rotuloSlogan.setBackground(ColorController.FUNDO_MEDIO);
-        rotuloSlogan.setForeground(ColorController.COR_LETRA);
+        rotuloSlogan.setForeground(new Color(250, 250, 250));
         rotuloUpdate.setBackground(ColorController.FUNDO_MEDIO);
         rotuloUpdate.setForeground(ColorController.COR_LETRA);
     }

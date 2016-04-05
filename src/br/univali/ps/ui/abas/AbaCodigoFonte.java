@@ -75,7 +75,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -158,13 +157,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
-            inspetorDeSimbolos.setBackground(WeblafUtils.BACKGROUND_ESCURO);
 
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
+            WeblafUtils.configurarBotao(btnExecutar,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(btnDepurar,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(btnInterromper,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(btnSalvar,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(btnSalvarComo,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         }
 
     }
@@ -1036,11 +1039,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelEditor = new javax.swing.JPanel();
         painelBotoes = new javax.swing.JPanel();
         barraFerramentas = new javax.swing.JToolBar();
-        btnExecutar = new javax.swing.JButton();
-        btnDepurar = new javax.swing.JButton();
-        btnInterromper = new javax.swing.JButton();
-        btnSalvar = new javax.swing.JButton();
-        btnSalvarComo = new javax.swing.JButton();
+        btnExecutar = new com.alee.laf.button.WebButton();
+        btnDepurar = new com.alee.laf.button.WebButton();
+        btnInterromper = new com.alee.laf.button.WebButton();
+        btnSalvar = new com.alee.laf.button.WebButton();
+        btnSalvarComo = new com.alee.laf.button.WebButton();
         editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
@@ -1092,10 +1095,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraFerramentas.setOpaque(false);
 
         btnExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/resultset_next.png"))); // NOI18N
-        btnExecutar.setBorderPainted(false);
-        btnExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnExecutar.setEnabled(false);
-        btnExecutar.setFocusPainted(false);
         btnExecutar.setFocusable(false);
         btnExecutar.setHideActionText(true);
         btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1103,10 +1102,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraFerramentas.add(btnExecutar);
 
         btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/step.png"))); // NOI18N
-        btnDepurar.setBorderPainted(false);
-        btnDepurar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnDepurar.setEnabled(false);
-        btnDepurar.setFocusPainted(false);
         btnDepurar.setFocusable(false);
         btnDepurar.setHideActionText(true);
         btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1114,10 +1109,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraFerramentas.add(btnDepurar);
 
         btnInterromper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/stop.png"))); // NOI18N
-        btnInterromper.setBorderPainted(false);
-        btnInterromper.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnInterromper.setEnabled(false);
-        btnInterromper.setFocusPainted(false);
         btnInterromper.setFocusable(false);
         btnInterromper.setHideActionText(true);
         btnInterromper.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1125,9 +1117,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraFerramentas.add(btnInterromper);
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/save.png"))); // NOI18N
-        btnSalvar.setBorderPainted(false);
-        btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnSalvar.setFocusPainted(false);
         btnSalvar.setFocusable(false);
         btnSalvar.setHideActionText(true);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1135,7 +1124,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraFerramentas.add(btnSalvar);
 
         btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/save_as.png"))); // NOI18N
-        btnSalvarComo.setBorderPainted(false);
         btnSalvarComo.setFocusable(false);
         btnSalvarComo.setHideActionText(true);
         btnSalvarComo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1207,7 +1195,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         scrollInspetor.setOpaque(false);
         scrollInspetor.setPreferredSize(new java.awt.Dimension(266, 200));
 
-        inspetorDeSimbolos.setBackground(new java.awt.Color(243, 243, 243));
         scrollInspetor.setViewportView(inspetorDeSimbolos);
 
         divisorArvoreInspetor.setBottomComponent(scrollInspetor);
@@ -1966,11 +1953,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentas;
-    private javax.swing.JButton btnDepurar;
-    private javax.swing.JButton btnExecutar;
-    private javax.swing.JButton btnInterromper;
-    private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton btnSalvarComo;
+    private com.alee.laf.button.WebButton btnDepurar;
+    private com.alee.laf.button.WebButton btnExecutar;
+    private com.alee.laf.button.WebButton btnInterromper;
+    private com.alee.laf.button.WebButton btnSalvar;
+    private com.alee.laf.button.WebButton btnSalvarComo;
     private javax.swing.JSplitPane divisorArvoreEditor;
     private javax.swing.JSplitPane divisorArvoreInspetor;
     private javax.swing.JSplitPane divisorEditorConsole;

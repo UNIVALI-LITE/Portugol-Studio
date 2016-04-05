@@ -68,7 +68,7 @@ public class PainelExemplos extends javax.swing.JPanel
         imagem.setDisplayType ( DisplayType.fitComponent );
         imagePane.add(imagem);
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(openExample);
+            WeblafUtils.configurarBotao(openExample,ColorController.FUNDO_ESCURO,ColorController.COR_PRINCIPAL, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 10);
         }
         inicializarJTree();
         rightPane.addComponentListener(new ComponentAdapter() {
