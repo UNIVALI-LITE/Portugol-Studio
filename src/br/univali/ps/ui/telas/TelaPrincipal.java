@@ -62,6 +62,7 @@ public final class TelaPrincipal extends JFrame
         criaAbas();
         instalarObservadores();
         configurarCores();
+        
     }
     
     private void configurarCores(){

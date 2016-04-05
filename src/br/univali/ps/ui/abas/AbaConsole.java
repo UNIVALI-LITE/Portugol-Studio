@@ -120,7 +120,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         handlerDaSaida = new HandlerDaSaida();
     }
-
+    
     private void exibirPopupLeia()
     {
         FabricaDicasInterface.criarTooltipEstatica(console, "O programa está aguardando a entrada de dados");
