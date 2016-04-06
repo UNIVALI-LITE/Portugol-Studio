@@ -35,26 +35,28 @@ public final class GerenciadorAtualizacoes
     private static final Logger LOGGER = Logger.getLogger(GerenciadorAtualizacoes.class.getName());
     private static final ExecutorService servicoThread = Executors.newSingleThreadExecutor(new NamedThreadFactory("Portugol Studio (Gerenciador de atualizações)"));
 
+    private final File caminhoScriptAtualizacaoLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script");
+    private final File caminhoScriptAtualizacaoTemporario = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script.temp");
+    
+    private final File caminhoInicializadorLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "inicializador-ps.jar");
+    private final File caminhoInicializadorTemporario = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "inicializador-ps.jar");
+    private final File caminhoInicializadorAntigo = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "inicializador-ps-antigo.jar");
+
     private boolean executando = false;
     private boolean uriModificada = false;
     private ObservadorAtualizacao observadorAtualizacao;
 
     private String uriAtualizacao;
-    private String caminhoScriptAtualizacaoRemoto;
-    private String caminhoHashScriptAtualizacaoRemoto;
+    private String caminhoInicializadorRemoto;
+    private String caminhoHashInicializadorRemoto;
 
     private Map<String, String> caminhosInstalacao;
     private Map<String, String> caminhosRemotos;
-    private File caminhoScriptAtualizacaoLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script");
-    private File caminhoScriptAtualizacaoTemporario = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script.temp");
 
     public GerenciadorAtualizacoes()
     {
-        setUriAtualizacao(PortugolStudio.getInstancia().getUriAtualizacao());
+        setUriAtualizacao(Configuracoes.getInstancia().getUriAtualizacao());
         setUriAtualizacaoModificada(false);
-
-        caminhoScriptAtualizacaoLocal = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script");
-        caminhoScriptAtualizacaoTemporario = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "atualizacao.script.temp");
     }
 
     private Map<String, String> criarMapaCaminhosInstalacao()
@@ -111,7 +113,7 @@ public final class GerenciadorAtualizacoes
             throw new IOException("A URI de atualizaçao foi modificada");
         }
     }
-    
+
     private synchronized boolean isUriAtualizacaoModificada()
     {
         return uriModificada;
@@ -126,8 +128,8 @@ public final class GerenciadorAtualizacoes
     {
         this.uriAtualizacao = uriAtualizacao;
 
-        this.caminhoScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.script");
-        this.caminhoHashScriptAtualizacaoRemoto = uriAtualizacao.concat("/atualizacao.hash");
+        this.caminhoInicializadorRemoto = uriAtualizacao.concat("/inicializador-ps.jar");
+        this.caminhoHashInicializadorRemoto = uriAtualizacao.concat("/inicializador-ps.hash");
 
         this.caminhosInstalacao = criarMapaCaminhosInstalacao();
         this.caminhosRemotos = criarMapaCaminhosRemotos();
@@ -160,7 +162,7 @@ public final class GerenciadorAtualizacoes
                         houveFalhaAtualizacao = false;
 
                         verificarUriAtualizacao();
-                        
+
                         criarTarefasAtualizacao(clienteHttp);
                         executarTarefasAtualizacao(clienteHttp);
                     }
@@ -183,7 +185,7 @@ public final class GerenciadorAtualizacoes
         private void capturarFalhaAtualizacao(Throwable excecao)
         {
             houveFalhaAtualizacao = true;
-            
+
             if (isUriAtualizacaoModificada())
             {
                 setUriAtualizacaoModificada(false);
@@ -218,46 +220,95 @@ public final class GerenciadorAtualizacoes
             for (TarefaAtualizacao tarefa : tarefas)
             {
                 PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();
-                
-                if (tarefa.precisaAtualizar())                   
+
+                if (tarefa.precisaAtualizar())
                 {
-                    tarefa.baixarAtualizacao();                    
+                    tarefa.baixarAtualizacao();
                     houveAtualizacoes = true;
                 }
             }
-            
+
+            PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();
+
+            atualizarInicializador(clienteHttp);
+        }
+        
+        private void atualizarInicializador(CloseableHttpClient clienteHttp) throws IOException
+        {
+            String hashInicializadorLocal = Util.calcularHashArquivo(caminhoInicializadorLocal);
+            String hashInicializadorRemoto = Util.obterHashRemoto(caminhoHashInicializadorRemoto, clienteHttp);
+                
             PortugolStudio.getInstancia().getGerenciadorAtualizacoes().verificarUriAtualizacao();
             
-            if (houveAtualizacoes)
+            if (!hashInicializadorLocal.equals(hashInicializadorRemoto))
             {
-                Util.baixarArquivoRemoto(caminhoScriptAtualizacaoRemoto, caminhoScriptAtualizacaoTemporario, clienteHttp);
-                
-                validarScriptAtualizacao(clienteHttp);
+                caminhoInicializadorTemporario.getParentFile().mkdirs();
+                Util.baixarArquivoRemoto(caminhoInicializadorRemoto, caminhoInicializadorTemporario, clienteHttp);
+
+                validarInicializador(clienteHttp);                
+                instalarInicializador();
             }
         }
 
-        private void validarScriptAtualizacao(CloseableHttpClient clienteHttp) throws IOException
+        private void validarInicializador(CloseableHttpClient clienteHttp) throws IOException
         {
             try
             {
-                String hashAtualizacaoLocal = Util.calcularHashArquivo(caminhoScriptAtualizacaoTemporario);
-                String hashAtualizacaoRemoto = Util.obterHashRemoto(caminhoHashScriptAtualizacaoRemoto, clienteHttp);
+                String hashInicializadorLocal = Util.calcularHashArquivo(caminhoInicializadorTemporario);
+                String hashInicializadorRemoto = Util.obterHashRemoto(caminhoHashInicializadorRemoto, clienteHttp);
 
-                if (!hashAtualizacaoLocal.equals(hashAtualizacaoRemoto))
+                if (!hashInicializadorLocal.equals(hashInicializadorRemoto))
                 {
                     throw new IOException("O script de atualização do Portugol Studio não foi baixado corretamente");
-                }
-                else
-                {
-                    caminhoScriptAtualizacaoTemporario.renameTo(caminhoScriptAtualizacaoLocal);
                 }
             }
             catch (IOException excecao)
             {
-                FileUtils.deleteQuietly(caminhoScriptAtualizacaoTemporario);
+                FileUtils.deleteQuietly(caminhoInicializadorTemporario);
 
                 throw excecao;
             }
+        }
+
+        private void instalarInicializador() throws IOException
+        {
+            PortugolStudio.getInstancia().setAtualizandoInicializador(true);
+            
+            int step = 0;
+            
+            try
+            {                
+                step++;
+                FileUtils.moveFile(caminhoInicializadorLocal, caminhoInicializadorAntigo);
+                
+                step++;
+                FileUtils.moveFile(caminhoInicializadorTemporario, caminhoInicializadorLocal);
+                
+                step++;
+                houveAtualizacoes = true;
+            }
+            catch (IOException ex)
+            {
+                try
+                {
+                    if (step >= 2)
+                    {
+                        FileUtils.deleteQuietly(caminhoInicializadorLocal);
+                        FileUtils.deleteQuietly(caminhoInicializadorTemporario);
+                        FileUtils.moveFile(caminhoInicializadorAntigo, caminhoInicializadorLocal);
+                    }
+                }
+                catch (IOException ex1)
+                {
+                    Logger.getLogger(GerenciadorAtualizacoes.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                
+                PortugolStudio.getInstancia().setAtualizandoInicializador(false);
+                
+                throw ex;
+            }            
+            
+            PortugolStudio.getInstancia().setAtualizandoInicializador(false);
         }
 
         private void criarTarefasAtualizacao(CloseableHttpClient clienteHttp)
@@ -328,10 +379,15 @@ public final class GerenciadorAtualizacoes
             {
                 FileUtils.deleteQuietly(caminhoScriptAtualizacaoLocal);
             }
-
+            
             if (caminhoScriptAtualizacaoTemporario.exists())
             {
                 FileUtils.deleteQuietly(caminhoScriptAtualizacaoTemporario);
+            }
+            
+            if (caminhoInicializadorTemporario.exists())
+            {
+                FileUtils.deleteQuietly(caminhoInicializadorTemporario);
             }
         }
 

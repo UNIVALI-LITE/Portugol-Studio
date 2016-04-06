@@ -65,7 +65,7 @@ public final class TelaEditarUriAtualizacao extends JDialog
             @Override
             public void componentShown(ComponentEvent e)
             {
-                caixaSelecaoUri.getEditor().setItem(null);
+                caixaSelecaoUri.getEditor().setItem(Configuracoes.getInstancia().getUriAtualizacao());
             }
         });
     }
@@ -177,6 +177,8 @@ public final class TelaEditarUriAtualizacao extends JDialog
             String uri = (String) caixaSelecaoUri.getSelectedItem();
             URL url = new URL(uri);
 
+            Configuracoes.getInstancia().setUriAtualizacao(url.toString());
+            
             GerenciadorAtualizacoes gerenciadorAtualizacoes = PortugolStudio.getInstancia().getGerenciadorAtualizacoes();
             gerenciadorAtualizacoes.setUriAtualizacao(url.toString());
 

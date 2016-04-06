@@ -65,7 +65,7 @@ public final class Util
     {
         final byte[] buffer = new byte[TAMANHO_BUFFER];
 
-        int bytesRead = 0;
+        int bytesRead;
 
         try (OutputStream fileOutputStream = new FileOutputStream(arquivo))
         {

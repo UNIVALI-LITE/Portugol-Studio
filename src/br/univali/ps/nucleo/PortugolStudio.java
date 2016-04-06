@@ -65,7 +65,9 @@ public final class PortugolStudio
 
     private String versao = null;
     private boolean depurando = false;
-    private String uriAtualizacao = "http://siaiacad17.univali.br/~alice/portugol/studio/";
+    
+    /* Garante que o Portugol Studio não seja fechado enquanto o jar inicializador-ps.jar está sendo substituído. Assim evitamos problemas com a atualização */
+    private boolean atualizandoInicializador = false;
 
     private TelaSobre telaSobre = null;
     private TelaPrincipal telaPrincipal = null;
@@ -192,6 +194,18 @@ public final class PortugolStudio
 
     public void finalizar(int codigo)
     {
+        while (PortugolStudio.getInstancia().isAtualizandoInicializador())
+        {
+            try
+            {
+                Thread.sleep(100);
+            }
+            catch (InterruptedException ex)
+            {
+                Logger.getLogger(PortugolStudio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         Mutex.destruir();
         Configuracoes.getInstancia().salvar();
         System.exit(codigo);
@@ -357,7 +371,7 @@ public final class PortugolStudio
             {
                 try
                 {
-                    uriAtualizacao = new URI(uri).toString();
+                    Configuracoes.getInstancia().setUriAtualizacao(new URI(uri).toString());
                 }
                 catch (URISyntaxException excecao)
                 {
@@ -744,14 +758,14 @@ public final class PortugolStudio
         return telaRenomearSimbolo;
     }
 
-    public String getUriAtualizacao()
+    public synchronized boolean isAtualizandoInicializador()
     {
-        if (uriAtualizacao.endsWith("/"))
-        {
-            uriAtualizacao = uriAtualizacao.substring(0, uriAtualizacao.length() - 1);
-        }
+        return atualizandoInicializador;
+    }
 
-        return uriAtualizacao;
+    public synchronized void setAtualizandoInicializador(boolean atualizandoInicializador)
+    {
+        this.atualizandoInicializador = atualizandoInicializador;
     }
 
     private String obterParametro(String nome, String[] parametros)
