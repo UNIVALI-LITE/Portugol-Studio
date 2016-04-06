@@ -102,7 +102,7 @@ public final class Splash
         int yProgresso = 107;
         int largura = (int) ((progresso / 100f) * 253);
 
-        graphics.setColor(new Color(255,194,0));
+        graphics.setColor(ColorController.PROGRESS_BAR);
 
         if (largura > 0 && progressFlag)
         {

@@ -55,8 +55,15 @@ public class PSMainTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI
 
     @Override
     protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-        g.setColor(ColorController.COR_PRINCIPAL);
-        g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
+        
+        if(isSelected){
+            g.setColor(ColorController.COR_PRINCIPAL);
+            g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
+        }
+        else{
+            g.setColor(ColorController.FUNDO_MEDIO);
+            g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
+        }
     }
     
     
@@ -66,21 +73,17 @@ public class PSMainTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI
             if(isSelected){
                 g.setColor(ColorController.COR_PRINCIPAL);
                 g.fillRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
-                g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
             }else{
                 g.setColor(ColorController.FUNDO_MEDIO);
                 g.fillRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
-                g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
             }
         }else{
             if(isSelected){
                 g.setColor(ColorController.COR_PRINCIPAL);
                 g.fillRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
-                g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
             }else{
                 g.setColor(ColorController.COR_DESTAQUE);
                 g.fillRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
-                g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
             }
         }
         

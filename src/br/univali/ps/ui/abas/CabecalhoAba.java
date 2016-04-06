@@ -1,9 +1,8 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButtonUI;
-import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.Icon;
 import javax.swing.JPanel;
@@ -19,9 +18,13 @@ public class CabecalhoAba extends JPanel
         if(WeblafUtils.weblafEstaInstalado()){
             ((WebButtonUI)botaoFechar.getUI()).setUndecorated(true);
         }
-        //setUndecorated(true);
+        configurarCores();
+        //setUndecorated(true)
     }
-
+    
+    private void configurarCores(){
+        jLTitulo.setForeground(ColorController.COR_LETRA);
+    }
     protected Aba getAba()
     {
         return aba;
@@ -55,10 +58,6 @@ public class CabecalhoAba extends JPanel
         return jLIcone.getIcon();
     }
 
-    public void setForegroung(Color cor)
-    {
-        jLTitulo.setForeground(cor);
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

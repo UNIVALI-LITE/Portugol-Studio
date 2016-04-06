@@ -66,8 +66,8 @@ public final class TelaPrincipal extends JFrame
     }
     
     private void configurarCores(){
-        mainPanel.setBackground(ColorController.COR_DESTAQUE);
-//        mainPanel.setBackground(ColorController.FUNDO_CLARO);
+//        mainPanel.setBackground(ColorController.COR_DESTAQUE);
+        mainPanel.setBackground(ColorController.FUNDO_CLARO);
         painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
     }
 

@@ -1271,13 +1271,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         if (modificado && podeSalvar)
         {
-            getCabecalho().setForegroung(Color.RED);
+//            getCabecalho().setForegroung(ColorController.FUNDO_MEDIO);
             getCabecalho().setIcone(lampadaApagada);
+            if(!getCabecalho().getTitulo().endsWith("*")){
+                getCabecalho().setTitulo(getCabecalho().getTitulo()+"*");
+            }
         }
         else
         {
-            getCabecalho().setForegroung(Color.BLACK);
+//            getCabecalho().setForegroung(ColorController.COR_LETRA);
             getCabecalho().setIcone(lampadaAcesa);
+            if(getCabecalho().getTitulo().endsWith("*")){
+                getCabecalho().setTitulo(getCabecalho().getTitulo().substring(0, getCabecalho().getTitulo().length()-1));
+            }
         }
     }
 
@@ -1336,7 +1342,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         else
         {
             getCabecalho().setTitulo("Sem título");
-            getCabecalho().setForeground(Color.RED);
         }
     }
 
@@ -1939,7 +1944,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getAbaMensagensCompilador().selecionar();
 
         editor.getPortugolDocumento().setChanged(true);
-        getCabecalho().setTitulo("Sem título");
+        getCabecalho().setTitulo("Sem título*");
         getCabecalho().setIcone(lampadaApagada);
         podeSalvar = true;
 

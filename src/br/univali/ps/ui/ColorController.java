@@ -20,7 +20,8 @@ public final class ColorController {
                 new Color(255,255,255),
                 new Color(49,104,146),
                 new Color(210,231,252),
-                new Color(228,241,254)
+                new Color(228,241,254),
+                new Color(255,194,0)
             };
     }
     private static Color[] getDarkTheme(){
@@ -29,8 +30,9 @@ public final class ColorController {
                 new Color(100,100,100),
                 new Color(51,51,51),
                 new Color(30,30,30),
-                new Color(100,100,100),
-                new Color(51,51,51)
+                new Color(80,80,80),
+                new Color(90,90,90),
+                new Color(255,194,0)
             };
     }
     
@@ -41,4 +43,5 @@ public final class ColorController {
     public static final Color FUNDO_ESCURO = THEME[3];
     public static final Color FUNDO_MEDIO = THEME[4];
     public static final Color FUNDO_CLARO = THEME[5];
+    public static final Color PROGRESS_BAR = THEME[6];
 }
