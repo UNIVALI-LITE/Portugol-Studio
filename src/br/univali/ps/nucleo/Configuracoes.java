@@ -29,24 +29,25 @@ public final class Configuracoes
     public static final String EXIBIR_AVISO_RENOMEAR = "exibirAvisoRenomear";
     public static final String EXIBIR_TUTORIAL_USO = "exibirTutorialUso";
     public static final String EXIBIR_DICAS_INTERFACE = "exibirDicasInterface";
+    public static final String URI_ATUALIZACAO = "uriAtualizacao";
 
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
 
     private final File diretorioConfiguracoes = resolverDiretorioConfiguracoes();
     private final File caminhoArquivoConfiguracoes = new File(diretorioConfiguracoes, "configuracoes.properties");
-    private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");    
+    private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");
 
     private final File diretorioInstalacao = resolverDiretorioInstalacao();
     private final File diretorioAjuda = resolverDiretorioAjuda();
     private final File diretorioExemplos = resolverDiretorioExemplos();
-    private final File diretorioTemporario = new File(diretorioInstalacao, "temp");    
+    private final File diretorioTemporario = new File(diretorioInstalacao, "temp");
     private final File diretorioPlugins = new File(diretorioInstalacao, "plugins");
     private final File diretorioBibliotecas = new File(diretorioInstalacao, "bibliotecas");
     private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
-    private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "inicializador-ps.jar");    
-    
+    private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "inicializador-ps.jar");
+
     private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
@@ -57,9 +58,8 @@ public final class Configuracoes
     private boolean exibirAvisoRenomear = true;
     private boolean exibirTutorialUso = true;
     private boolean exibirDicasInterface = true;
-    
-    
-    
+    private String uriAtualizacao = "http://lite.acad.univali.br/~alice/portugol/studio/";
+
     private Configuracoes()
     {
         carregar();
@@ -91,6 +91,7 @@ public final class Configuracoes
             exibirAvisoRenomear = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_RENOMEAR, "true"));
             exibirTutorialUso = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_TUTORIAL_USO, "true"));
             exibirDicasInterface = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_DICAS_INTERFACE, "true"));
+            uriAtualizacao = configuracoes.getProperty(URI_ATUALIZACAO, "http://lite.acad.univali.br/~alice/portugol/studio/");
         }
         catch (IOException excecao)
         {
@@ -110,17 +111,19 @@ public final class Configuracoes
         }
     }
 
-    public boolean isExibirDicasInterface() {
+    public boolean isExibirDicasInterface()
+    {
         return exibirDicasInterface;
     }
 
-    public void setExibirDicasInterface(boolean exibirDicasInterface) {
+    public void setExibirDicasInterface(boolean exibirDicasInterface)
+    {
         boolean oldValue = this.exibirDicasInterface;
         this.configuracoes.setProperty(EXIBIR_DICAS_INTERFACE, Boolean.toString(exibirDicasInterface));
         this.exibirDicasInterface = exibirDicasInterface;
         suporteMudancaPropriedade.firePropertyChange(EXIBIR_DICAS_INTERFACE, oldValue, exibirDicasInterface);
     }
-    
+
     public float getTamanhoFonteConsole()
     {
         return tamanhoFonteConsole;
@@ -206,7 +209,7 @@ public final class Configuracoes
 
         suporteMudancaPropriedade.firePropertyChange(EXIBIR_AVISO_VIDEO_AULAS, valorAntigo, exibirAvisoRenomear);
     }
-    
+
     public void setExibirTutorialUso(boolean exibirTutorialUso)
     {
         boolean valorAntigo = this.exibirAvisoVideoAulas;
@@ -242,10 +245,11 @@ public final class Configuracoes
         return tamanhoFonteArvore;
     }
 
-    public void alterarCentralizarCondigoFonte(){
+    public void alterarCentralizarCondigoFonte()
+    {
         setCentralizarCodigoFonte(!centralizarCodigoFonte);
     }
-    
+
     public void setCentralizarCodigoFonte(boolean centralizarCodigoFonte)
     {
         boolean valorAntigo = this.centralizarCodigoFonte;
@@ -259,6 +263,25 @@ public final class Configuracoes
     public boolean isCentralizarCodigoFonte()
     {
         return centralizarCodigoFonte;
+    }
+    
+    public String getUriAtualizacao()
+    {
+        if (uriAtualizacao.endsWith("/"))
+        {
+            uriAtualizacao = uriAtualizacao.substring(0, uriAtualizacao.length() - 1);
+        }
+        return uriAtualizacao;
+    }
+
+    public void setUriAtualizacao(String uriAtualizacao)
+    {
+        String valorAntigo = this.uriAtualizacao;
+        
+        this.configuracoes.setProperty(URI_ATUALIZACAO, uriAtualizacao);
+        this.uriAtualizacao = uriAtualizacao;
+        
+        suporteMudancaPropriedade.firePropertyChange(URI_ATUALIZACAO, valorAntigo, uriAtualizacao);        
     }
 
     public void adicionarObservadorConfiguracoes(PropertyChangeListener observador)
@@ -363,52 +386,52 @@ public final class Configuracoes
     {
         return caminhoInicializadorPortugolStudio;
     }
-    
+
     private File resolverDiretorioInstalacao()
     {
         if (rodandoNoNetbeans())
         {
-            File diretorio = new File("./teste");            
+            File diretorio = new File("./teste");
             diretorio.mkdirs();
-            
+
             return diretorio;
         }
-        
+
         return extrairCaminho(new File("."));
     }
-    
+
     private File resolverDiretorioAjuda()
     {
         if (rodandoNoNetbeans())
         {
-            return new File("../Portugol-Studio-Recursos/ajuda");                    
+            return new File("../Portugol-Studio-Recursos/ajuda");
         }
-        
+
         return new File(diretorioInstalacao, "ajuda");
     }
-    
+
     private File resolverDiretorioExemplos()
     {
         if (rodandoNoNetbeans())
         {
             return new File("../Portugol-Studio-Recursos/exemplos");
         }
-        
-         return new File(diretorioInstalacao, "exemplos");
+
+        return new File(diretorioInstalacao, "exemplos");
     }
-    
+
     public static boolean rodandoNoNetbeans()
     {
         return System.getProperty("netbeans") != null;
     }
-    
+
     public static boolean rodandoNoWindows()
     {
         String os = System.getProperty("os.name");
-        
+
         return (os != null && os.toLowerCase().contains("win"));
     }
-    
+
     private File extrairCaminho(File arquivo)
     {
         try
@@ -420,5 +443,4 @@ public final class Configuracoes
             return arquivo.getAbsoluteFile();
         }
     }
-    
 }

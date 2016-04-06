@@ -145,11 +145,11 @@
 
         <antcall target="-empacotar-recursos"/>
         <antcall target="-empacotar-aplicacao"/>        
-        <antcall target="-compilar-portugol-inicializador"/>
+        <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/>
         
         <copy todir="${dist.dir}">
             <fileset file="../Portugol-Studio-Recursos/plugins/plugins.auto"/>
-            <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*" excludes="inicializador-ps.jar"/>
+            <fileset dir="../Portugol-Studio-Inicializador/dist"/>
         </copy>
         
         <antcall target="-atualizar-arquivos-servidor">
@@ -165,7 +165,7 @@
         
         <copy todir="${dist.dir}">
             <fileset file="../Portugol-Studio-Recursos/plugins/plugins.auto"/>
-            <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*" excludes="inicializador-ps.jar"/>
+            <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/>
         </copy>
         
         <antcall target="-atualizar-arquivos-servidor">
@@ -328,8 +328,10 @@
     <target name="-remover-arquivos-servidor">
         <ftp server="siaiacad17.univali.br" action="del" userid="${dist.ftp.user}" remotedir="${update.path}" password="${dist.ftp.password}" verbose="true" >
             <fileset>
+                <exclude name="atualizacao.script"/>
+                <exclude name="atualizacao.hash"/>
                 <include name="*"/>
-                <include name="**"/>
+                <include name="**"/>                
             </fileset>
         </ftp>
     </target>
@@ -520,6 +522,7 @@
         <delete dir="${dist.dir}/META-INF"/>
         <delete file="${dist.jar}" failonerror="false"/>
         <move file="${dist.dir}/temp.jar" tofile="${dist.jar}" failonerror="false"/>
+        <delete file="${dist.dir}/README.TXT" casesensitive="false" failonerror="false"/>
     </target>
     
     <!--
