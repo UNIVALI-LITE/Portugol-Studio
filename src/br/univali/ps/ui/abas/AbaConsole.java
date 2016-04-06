@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.execucao.es.Armazenador;
 import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
@@ -119,7 +120,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         handlerDaSaida = new HandlerDaSaida();
     }
-
+    
     private void exibirPopupLeia()
     {
         FabricaDicasInterface.criarTooltipEstatica(console, "O programa está aguardando a entrada de dados");

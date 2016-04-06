@@ -68,7 +68,7 @@ public class PainelExemplos extends javax.swing.JPanel
         imagem.setDisplayType ( DisplayType.fitComponent );
         imagePane.add(imagem);
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(openExample);
+            WeblafUtils.configurarBotao(openExample,ColorController.FUNDO_ESCURO,ColorController.COR_PRINCIPAL, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 10);
         }
         inicializarJTree();
         rightPane.addComponentListener(new ComponentAdapter() {
@@ -83,7 +83,8 @@ public class PainelExemplos extends javax.swing.JPanel
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         painelTitulo.setBackground(ColorController.FUNDO_ESCURO);
         imagePane.setBackground(ColorController.FUNDO_ESCURO);
-        jPanel2.setBackground(ColorController.PRETO);
+        description.setForeground(ColorController.COR_PRINCIPAL);
+        jPanel2.setBackground(ColorController.COR_LETRA);
     }
     
     private void inicializarJTree(){

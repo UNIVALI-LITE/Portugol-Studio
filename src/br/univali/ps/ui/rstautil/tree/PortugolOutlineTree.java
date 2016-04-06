@@ -10,8 +10,6 @@
  */
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
-import br.univali.portugol.nucleo.Portugol;
 import br.univali.ps.ui.rstautil.ComparadorNos;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
@@ -24,9 +22,6 @@ import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
-import br.univali.ps.nucleo.ExcecaoAplicacao;
-import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 
 import br.univali.ps.ui.rstautil.PortugolParser;
@@ -40,8 +35,6 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -54,18 +47,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.folding.Fold;
 
 /**
  * A tree view showing the outline of Java source, similar to the "Outline" view
@@ -143,12 +132,13 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         listener = new Listener();
         setDragEnabled(true);
         setTransferHandler(new TreeTransferHandler());
-
+        
         if (WeblafUtils.weblafEstaInstalado())
         {
             ((WebTreeUI) getUI()).setRightChildIndent(3);
         }
     }
+    
 
     private class TreeTransferHandler extends TransferHandler
     {

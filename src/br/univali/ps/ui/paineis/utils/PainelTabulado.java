@@ -1,21 +1,16 @@
 package br.univali.ps.ui.paineis.utils;
 
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.weblaf.PSWebTabbedPaneUI;
+import br.univali.ps.ui.weblaf.PSMainTabbedPaneUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
-import com.alee.laf.tabbedpane.TabbedPaneStyle;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
+import java.awt.Cursor;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTabbedPane;
-import javax.swing.plaf.TabbedPaneUI;
 
 /**
  *
@@ -28,6 +23,7 @@ public class PainelTabulado extends JTabbedPane implements ComponentListener {
     public PainelTabulado() {
         setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         painelTabuladoListeners = new ArrayList<>();
+        
     }
 
 //    protected TabbedPaneUI criaUi() {

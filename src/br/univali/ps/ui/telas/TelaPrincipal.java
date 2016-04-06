@@ -8,6 +8,7 @@ import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.Aba;
@@ -60,7 +61,14 @@ public final class TelaPrincipal extends JFrame
         configurarJanela();
         criaAbas();
         instalarObservadores();
-
+        configurarCores();
+        
+    }
+    
+    private void configurarCores(){
+//        mainPanel.setBackground(ColorController.COR_DESTAQUE);
+        mainPanel.setBackground(ColorController.FUNDO_CLARO);
+        painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
     }
 
     public void setArquivosIniciais(List<File> arquivos)
@@ -360,6 +368,7 @@ public final class TelaPrincipal extends JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mainPanel = new javax.swing.JPanel();
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -368,13 +377,18 @@ public final class TelaPrincipal extends JFrame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
 
+        mainPanel.setLayout(new java.awt.BorderLayout());
+
         painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        getContentPane().add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
+        mainPanel.add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel mainPanel;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
     // End of variables declaration//GEN-END:variables
 }

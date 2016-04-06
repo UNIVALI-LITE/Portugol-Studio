@@ -29,7 +29,7 @@ public final class PainelLicenca extends javax.swing.JPanel
     private void configurarCores(){
         jTALicenca.setBackground(ColorController.FUNDO_CLARO);
         jTADescricao.setBackground(ColorController.FUNDO_CLARO);
-        jPInformacoes.setBackground(ColorController.BRANCO);
+        jPInformacoes.setBackground(ColorController.COR_PRINCIPAL);
     }
     public Licencas.Recurso getRecurso()
     {

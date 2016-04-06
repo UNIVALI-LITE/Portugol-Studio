@@ -1,5 +1,6 @@
 package br.univali.ps.ui.editor;
 
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
@@ -22,6 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.StyleConstants;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
@@ -84,7 +86,6 @@ public class PSTextArea extends RSyntaxTextArea {
 //
 //        });
 //        setDragEnabled(true);
-
     }
 
     public void addListenter(PSTextAreaListener l) {
@@ -268,7 +269,7 @@ public class PSTextArea extends RSyntaxTextArea {
             });
             //deixa a cor da componente onde aparecem os ícones dos pontos de parada com uma cor mais suave
             setOpaque(true);
-            setBackground(WeblafUtils.BACKGROUND_CLARO);
+            setBackground(ColorController.COR_PRINCIPAL);
         }
 
         @Override

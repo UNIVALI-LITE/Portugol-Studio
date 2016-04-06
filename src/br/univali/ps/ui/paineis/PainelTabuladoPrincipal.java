@@ -7,6 +7,7 @@ import br.univali.ps.ui.abas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.weblaf.PSMainTabbedPaneUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.BorderLayout;
@@ -43,8 +44,8 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
         if (WeblafUtils.weblafEstaInstalado()) {
           ((WebTabbedPaneUI)getUI()).setShadeWidth(0);
         }
+        this.setUI(new PSMainTabbedPaneUI());
         abaAjuda = new AbaAjuda();
-        setBackground(WeblafUtils.BACKGROUND_CLARO);
     }
 //    @Override
 //    protected TabbedPaneUI criaUi() {

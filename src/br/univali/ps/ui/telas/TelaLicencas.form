@@ -136,12 +136,15 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="rotuloCarregando">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Consolas" size="18" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icones/grande/hourglass.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/grande/loading.gif"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Carregando as licen&#xe7;as, por favor aguarde..."/>
                 <Property name="horizontalTextPosition" type="int" value="4"/>

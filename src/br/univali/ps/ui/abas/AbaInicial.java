@@ -1,7 +1,6 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
@@ -62,16 +61,26 @@ public final class AbaInicial extends Aba {
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
         conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
         rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloAjudarDesenvolvimento.setForeground(ColorController.COR_LETRA);
         rotuloAssistirVideoAulas.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloAssistirVideoAulas.setForeground(ColorController.COR_LETRA);
         rotuloAtalhosTeclado.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloAtalhosTeclado.setForeground(ColorController.COR_LETRA);
         rotuloConhecerBibliotecas.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloConhecerBibliotecas.setForeground(ColorController.COR_LETRA);
         rotuloConhecerLinguagem.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloConhecerLinguagem.setForeground(ColorController.COR_LETRA);
         rotuloDicasInterface.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloDicasInterface.setForeground(ColorController.COR_LETRA);
         rotuloInformacoesSoftware.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloInformacoesSoftware.setForeground(ColorController.COR_LETRA);
         rotuloRelatarBug.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloRelatarBug.setForeground(ColorController.COR_LETRA);
         rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
-        rotuloSlogan.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloSairProgramando.setForeground(ColorController.COR_LETRA);
+        rotuloSlogan.setForeground(new Color(250, 250, 250));
         rotuloUpdate.setBackground(ColorController.FUNDO_MEDIO);
+        rotuloUpdate.setForeground(ColorController.COR_LETRA);
     }
 
     private void instalarObservadorCombinacoesSecretas() {
@@ -304,7 +313,7 @@ public final class AbaInicial extends Aba {
             @Override
             public void mouseExited(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
-                rotulo.setForeground(ColorController.PRETO);
+                rotulo.setForeground(ColorController.COR_LETRA);
                 rotulo.setOpaque(false);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.PLAIN));
             }
