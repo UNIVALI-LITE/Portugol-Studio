@@ -3,7 +3,6 @@ package br.univali.ps.ui.rstautil;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;

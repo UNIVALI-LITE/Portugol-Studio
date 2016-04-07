@@ -13,7 +13,6 @@ import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -185,12 +184,16 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         barra.adicionaAcao(acaoLimpar);
         barra.adicionaAcao(acaoCopiar);
         FabricaDicasInterface.criarTooltip(barra.getCompomemtParaAdicionarDica(), "Personalizar a console");
-        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 2), 0, 0);
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(5, 0, 0, 20), 0, 0);
 
         this.add(barra, constrainsts);
         this.setComponentZOrder(barra, 0);
-
+        if (WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configurarBotao(barra,ColorController.COR_DESTAQUE,ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+        }
         return barra.getPopupMenu();
+        
     }
 
     public void setAbaCodigoFonte(AbaCodigoFonte abaCodigoFonte)

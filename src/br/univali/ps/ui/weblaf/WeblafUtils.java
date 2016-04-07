@@ -67,23 +67,23 @@ public class WeblafUtils {
 
         //instala um layout no scrollPane que sempre deixa um pequeno espaço
         //no canto superior direito para que seja exibido o botão de ações
-        scroll.setLayout(new ScrollPaneLayout() {
-
-            @Override
-            public void layoutContainer(Container cntnr) {
-                super.layoutContainer(cntnr);
-                if (vsb.isVisible()) {
-                    Dimension tamanho = vsb.getSize();
-                    Point localizacao = vsb.getLocation();
-                    localizacao.y += 20;
-                    localizacao.x++;
-                    tamanho.height -= 20;
-                    vsb.setSize(tamanho);
-                    vsb.setLocation(localizacao);
-                }
-            }
-
-        });
+//        scroll.setLayout(new ScrollPaneLayout() {
+//
+//            @Override
+//            public void layoutContainer(Container cntnr) {
+//                super.layoutContainer(cntnr);
+//                if (vsb.isVisible()) {
+//                    Dimension tamanho = vsb.getSize();
+//                    Point localizacao = vsb.getLocation();
+//                    localizacao.y += 20;
+//                    localizacao.x++;
+//                    tamanho.height -= 20;
+//                    vsb.setSize(tamanho);
+//                    vsb.setLocation(localizacao);
+//                }
+//            }
+//
+//        });
 
     }
 

@@ -168,6 +168,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(btnInterromper,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvar,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvarComo,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barraDeBotoesEditor,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barraDeBotoesInspetorArvore,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         }
 
     }
@@ -210,7 +212,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             acaoAumentarFonte, acaoDiminuirFonte
         });
 
-        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, -2), 0, 0);
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 15), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
         painelInspetorArvore.setComponentZOrder(barraDeBotoesInspetorArvore, 0);
     }
@@ -398,7 +400,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesEditor.adicionaSeparador();
         barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
-        GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 14), 0, 0);
+        GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 30), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
         painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
     }
@@ -767,6 +769,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
                     editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
                 }
+                //Gambiarra pro botão não sumir :3
+                SwingUtilities.invokeLater(() -> {
+                    painelEditor.repaint();
+                });
             }
         });
 
