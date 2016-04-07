@@ -66,6 +66,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
@@ -79,7 +80,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     private JLabel component;
 
     public AstTreeCellRenderer() {
-
+        setBorder(new EmptyBorder(7, 7, 7, 7));
         //setBorder(new CompoundBorder(getBorder(), new EmptyBorder(4, 0, 4, 0)));
     }
 

@@ -9,6 +9,7 @@ import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
@@ -28,13 +29,16 @@ public class ExampleTreeRender extends DefaultTreeCellRenderer {
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus){
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         JLabel label = (JLabel) this ;
-
-//        label.setSize(label.getHeight(),value.toString().length());
+        
         
         setForeground(ColorController.COR_LETRA);
 //        if(selected){
+//            setOpaque(true);
 //            setBackground(ColorController.COR_DESTAQUE);
 //            setForeground(black);
+//        }
+//        else{
+//            setOpaque(false);
 //        }
         label.setText(value.toString());
         if(leaf){

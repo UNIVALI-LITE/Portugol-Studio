@@ -25,6 +25,7 @@ import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 
 import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.tree.WebTreeUI;
 import java.awt.Color;
@@ -137,6 +138,7 @@ public class PortugolOutlineTree extends AbstractTree implements ObservadorExecu
         {
             ((WebTreeUI) getUI()).setRightChildIndent(3);
         }
+        setUI(new PSTreeUI());
     }
     
 
