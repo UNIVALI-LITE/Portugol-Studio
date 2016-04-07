@@ -5,7 +5,9 @@ import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.weblaf.PSOutTabbedPaneUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -46,6 +48,12 @@ public final class TelaSobre extends JDialog
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(16);
         FabricaDicasInterface.criarTooltip(labellicensa, "Veja as Licensas do Software");
+        tabbedUsuarios.setUI(new PSOutTabbedPaneUI());
+        if (WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configuraWebLaf(jScrollPane1);
+            WeblafUtils.configuraWebLaf(jScrollPane2);
+        }
     }
     
     private void configurarCores(){

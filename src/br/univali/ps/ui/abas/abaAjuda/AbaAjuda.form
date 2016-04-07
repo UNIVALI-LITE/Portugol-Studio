@@ -167,6 +167,7 @@
                         <EmptyBorder bottom="8" left="4" right="4" top="8"/>
                       </Border>
                     </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -180,6 +181,9 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JTree" name="arvore">
+                      <Properties>
+                        <Property name="opaque" type="boolean" value="false"/>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>

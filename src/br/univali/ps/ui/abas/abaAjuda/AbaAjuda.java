@@ -10,10 +10,13 @@ import br.univali.portugol.ajuda.TopicoHtml;
 import br.univali.ps.dominio.PortugolHTMLHighlighter;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.weblaf.PSTreeUI;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -89,6 +92,21 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 carregarAjuda();
             }
         });
+        arvore.setUI(new PSTreeUI());
+        configurarCores();
+        if (WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configuraWebLaf(painelRolagemArvore);
+            WeblafUtils.configuraWebLaf(jScrollPane1);
+            WeblafUtils.configuraWebLaf(jScrollPane3);
+        }
+    }
+    
+    private void configurarCores(){
+        divisorLayout.setBackground(ColorController.COR_PRINCIPAL);
+        painelAjuda.setBackground(ColorController.COR_PRINCIPAL);
+        painelArvore.setBackground(ColorController.COR_PRINCIPAL);
+        painelCarregamento.setBackground(ColorController.COR_PRINCIPAL);
     }
 
     private void configurarSwingbox()
@@ -604,22 +622,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             String extensao = nomeCompleto.substring(nomeCompleto.lastIndexOf("."), nomeCompleto.length());
             String novoNome = nomeCompleto.replace(extensao, "");
 
-            if (expandido)
-            {
-                novoNome = novoNome.concat("_aberto");
-            }
-            else
-            {
-                if (!folha)
-                {
-                    novoNome = novoNome.concat("_fechado");
-                }
-            }
-
-            if (selecionado)
-            {
-                novoNome = novoNome.concat("_selecionado");
-            }
+            
 
             novoNome = novoNome.concat(extensao);
             arquivoIcone = new File(arquivoIcone.toString().replace(nomeCompleto, novoNome));
@@ -629,8 +632,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jEditorPane1 = new javax.swing.JEditorPane();
@@ -703,6 +705,9 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelRolagemArvore.setBackground(new java.awt.Color(255, 255, 255));
         painelRolagemArvore.setBorder(null);
         painelRolagemArvore.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
+        painelRolagemArvore.setOpaque(false);
+
+        arvore.setOpaque(false);
         painelRolagemArvore.setViewportView(arvore);
 
         painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
