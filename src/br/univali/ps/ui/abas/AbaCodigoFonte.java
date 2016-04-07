@@ -1202,10 +1202,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         scrollOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
         scrollOutlineTree.setBorder(null);
         scrollOutlineTree.setMinimumSize(new java.awt.Dimension(250, 23));
-        scrollOutlineTree.setOpaque(false);
         scrollOutlineTree.setPreferredSize(new java.awt.Dimension(250, 2));
 
-        tree.setBackground(new java.awt.Color(240, 240, 240));
+        tree.setBackground(new java.awt.Color(153, 51, 0));
         tree.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 5, 5));
         tree.setOpaque(false);
         scrollOutlineTree.setViewportView(tree);

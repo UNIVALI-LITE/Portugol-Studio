@@ -14,6 +14,7 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
@@ -71,6 +72,7 @@ public class PainelExemplos extends javax.swing.JPanel
             WeblafUtils.configurarBotao(openExample,ColorController.FUNDO_ESCURO,ColorController.COR_PRINCIPAL, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 10);
         }
         inicializarJTree();
+        
         rightPane.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -89,6 +91,7 @@ public class PainelExemplos extends javax.swing.JPanel
     
     private void inicializarJTree(){
         arvoreExemplos.setCellRenderer(new ExampleTreeRender());
+        arvoreExemplos.setUI(new PSTreeUI());
         try {
             File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
