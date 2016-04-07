@@ -8,12 +8,13 @@ package br.univali.ps.ui.weblaf;
 import br.univali.ps.ui.ColorController;
 import java.awt.Graphics;
 import java.awt.Insets;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 /**
  *
  * @author LITE
  */
-public class PSOutTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
+public class PSOutTabbedPaneUI extends BasicTabbedPaneUI {
 
     
 //    @Override

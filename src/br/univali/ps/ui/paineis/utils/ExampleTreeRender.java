@@ -32,10 +32,10 @@ public class ExampleTreeRender extends DefaultTreeCellRenderer {
 //        label.setSize(label.getHeight(),value.toString().length());
         
         setForeground(ColorController.COR_LETRA);
-        if(selected){
-//            setBackground(ColorController.COR_LETRA);
-            setForeground(black);
-        }
+//        if(selected){
+//            setBackground(ColorController.COR_DESTAQUE);
+//            setForeground(black);
+//        }
         label.setText(value.toString());
         if(leaf){
             if(selected){
