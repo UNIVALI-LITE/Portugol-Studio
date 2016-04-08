@@ -652,7 +652,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
         jScrollPane1.setViewportView(jEditorPane1);
 
-        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         setOpaque(false);
         setLayout(new java.awt.CardLayout());
 
@@ -675,7 +674,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 .add(painelCarregamentoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(rotuloCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(barraProgresso, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE))
                 .addContainerGap())
         );
         painelCarregamentoLayout.setVerticalGroup(
@@ -686,7 +685,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(barraProgresso, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                .add(rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

@@ -14,7 +14,10 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.weblaf.PSTreeUI;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.lang.reflect.Method;
@@ -22,7 +25,6 @@ import java.net.URI;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -47,7 +49,18 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         
         initComponents();
         configurarAparenciaArvore();
-        instalarObservadores();        
+        instalarObservadores();
+        arvoreBibliotecas.setUI(new PSTreeUI());
+        configurarCores();
+        if (WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configuraWebLaf(painelRolagemArvore);
+            WeblafUtils.configuraWebLaf(painelRolagemConteudo);
+        }
+    }
+    
+    private void configurarCores(){
+        main.setBackground(ColorController.COR_PRINCIPAL);
     }
     
     private void configurarAparenciaArvore()
@@ -268,7 +281,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             "            {" +
             "                font-weight: bold;" +
             
-            "                color: rgb(0, 0, 140);" +
+            "                color: rgb(255,194,0);" +
             "            }" +
             "            " +
             "            h1" +
@@ -289,7 +302,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             "            " +
             "            .palavra_reservada" +
             "            {" +
-            "                color: rgb(150, 0, 0);" +
+            "                color: rgb(49,104,146);" +
             "                font-weight: bold;" +                
             "            }" +
             "            " +
@@ -360,13 +373,14 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             "                font-family: \"Arial\";" +
             "                font-size: " + tamanhoFonte + "pt;                " +
             "                line-height: 150%;" +
+            "                color: rgb(51,51,51);"+
             "            }" +
             "            " +
             "            a" +
             "            {" +
             "                font-weight: bold;" +
             
-            "                color: rgb(0, 0, 140);" +
+            "                color: rgb(255,194,0);" +
             "            }" +
             "            " +
             "            h1" +
@@ -387,7 +401,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             "            " +
             "            .palavra_reservada" +
             "            {" +
-            "                color: rgb(150, 0, 0);" +
+            "                color: rgb(49,104,146);" +
             "                font-weight: bold;" +
             "            }" +
             "            " +
@@ -429,27 +443,32 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        main = new javax.swing.JPanel();
         divisor = new javax.swing.JSplitPane();
         painelRolagemArvore = new javax.swing.JScrollPane();
         arvoreBibliotecas = new javax.swing.JTree();
         painelRolagemConteudo = new javax.swing.JScrollPane();
         painelHtml = new javax.swing.JTextPane();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
+
+        main.setLayout(new java.awt.BorderLayout());
 
         divisor.setBackground(new java.awt.Color(250, 250, 250));
         divisor.setBorder(null);
         divisor.setDividerLocation(250);
         divisor.setDividerSize(8);
+        divisor.setOpaque(false);
 
         painelRolagemArvore.setBackground(new java.awt.Color(250, 250, 250));
         painelRolagemArvore.setBorder(null);
         painelRolagemArvore.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
+        painelRolagemArvore.setOpaque(false);
         painelRolagemArvore.setPreferredSize(new java.awt.Dimension(200, 336));
 
         arvoreBibliotecas.setBackground(new java.awt.Color(250, 250, 250));
+        arvoreBibliotecas.setOpaque(false);
         painelRolagemArvore.setViewportView(arvoreBibliotecas);
 
         divisor.setLeftComponent(painelRolagemArvore);
@@ -468,11 +487,14 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 
         divisor.setRightComponent(painelRolagemConteudo);
 
-        add(divisor, java.awt.BorderLayout.CENTER);
+        main.add(divisor, java.awt.BorderLayout.CENTER);
+
+        add(main, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreBibliotecas;
     private javax.swing.JSplitPane divisor;
+    private javax.swing.JPanel main;
     private javax.swing.JTextPane painelHtml;
     private javax.swing.JScrollPane painelRolagemArvore;
     private javax.swing.JScrollPane painelRolagemConteudo;

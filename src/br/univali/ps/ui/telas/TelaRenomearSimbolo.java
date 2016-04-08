@@ -412,6 +412,7 @@ public class TelaRenomearSimbolo extends JDialog
         botoes.setOpaque(false);
         botoes.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
 
         botaoCancelar.setText("Cancelar");
