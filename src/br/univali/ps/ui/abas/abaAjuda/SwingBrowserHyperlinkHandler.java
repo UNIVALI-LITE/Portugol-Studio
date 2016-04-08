@@ -28,24 +28,16 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Cursor;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import org.fit.cssbox.swingbox.demo.SwingBrowser;
 
 import org.fit.cssbox.swingbox.util.DefaultHyperlinkHandler;
 

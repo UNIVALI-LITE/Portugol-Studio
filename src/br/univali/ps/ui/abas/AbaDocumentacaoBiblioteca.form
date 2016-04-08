@@ -2,11 +2,6 @@
 
 <Form version="1.7" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
-    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-        <EmptyBorder bottom="8" left="8" right="8" top="8"/>
-      </Border>
-    </Property>
     <Property name="opaque" type="boolean" value="false"/>
   </Properties>
   <AuxValues>
@@ -24,26 +19,16 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
-    <Container class="javax.swing.JSplitPane" name="divisor">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="fa" green="fa" red="fa" type="rgb"/>
-        </Property>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
-        </Property>
-        <Property name="dividerLocation" type="int" value="250"/>
-        <Property name="dividerSize" type="int" value="8"/>
-      </Properties>
+    <Container class="javax.swing.JPanel" name="main">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="Center"/>
         </Constraint>
       </Constraints>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="painelRolagemArvore">
+        <Container class="javax.swing.JSplitPane" name="divisor">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="fa" green="fa" red="fa" type="rgb"/>
@@ -51,78 +36,102 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
-            <Property name="viewportBorder" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                <EmptyBorder bottom="8" left="4" right="4" top="8"/>
-              </Border>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[200, 336]"/>
-            </Property>
+            <Property name="dividerLocation" type="int" value="250"/>
+            <Property name="dividerSize" type="int" value="8"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
           <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-              <JSplitPaneConstraints position="left"/>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+              <BorderConstraints direction="Center"/>
             </Constraint>
           </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTree" name="arvoreBibliotecas">
+            <Container class="javax.swing.JScrollPane" name="painelRolagemArvore">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="fa" green="fa" red="fa" type="rgb"/>
-                </Property>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JScrollPane" name="painelRolagemConteudo">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="fa" green="fa" red="fa" type="rgb"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="viewportBorder" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                <EmptyBorder bottom="8" left="8" right="8" top="8"/>
-              </Border>
-            </Property>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[350, 37]"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-              <JSplitPaneConstraints position="right"/>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTextPane" name="painelHtml">
-              <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="fa" green="fa" red="fa" type="rgb"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="viewportBorder" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder bottom="15" left="15" right="15" top="15"/>
+                    <EmptyBorder bottom="8" left="4" right="4" top="8"/>
                   </Border>
                 </Property>
-                <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xd;&#xa;  &lt;head&gt;&#xd;&#xa;&#xd;&lt;style type=&quot;text/css&quot;&gt;&#xa;&#x9;body&#xa;&#x9;{&#xa;&#x9;     font-family: &quot;Arial&quot;;&#xa;&#x9;     font-size: 14pt;&#xa;&#x9;     line-height: 150%;&#xa;&#x9;}&#xa;&#xa;&#x9;h1&#xa;&#x9;{&#xa;&#x9;       font-size: 14pt;&#xa;&#x9;}&#xa;&lt;/style&gt;&#xa;  &lt;/head&gt;&#xd;&#xa;  &lt;body&gt;&#xd;&#xa;    &lt;h1&gt;Selecione um item na &#xe1;rvore &#xe0; esquerda para visualizar sua documenta&#xe7;&#xe3;o&lt;/h1&gt;&#xa;  &lt;/body&gt;&#xd;&#xa;&lt;/html&gt;&#xd;&#xa;"/>
+                <Property name="opaque" type="boolean" value="false"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[200, 336]"/>
+                </Property>
               </Properties>
-            </Component>
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="left"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTree" name="arvoreBibliotecas">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="fa" green="fa" red="fa" type="rgb"/>
+                    </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JScrollPane" name="painelRolagemConteudo">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="fa" green="fa" red="fa" type="rgb"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="viewportBorder" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder bottom="8" left="8" right="8" top="8"/>
+                  </Border>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[350, 37]"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="right"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextPane" name="painelHtml">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="fa" green="fa" red="fa" type="rgb"/>
+                    </Property>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder bottom="15" left="15" right="15" top="15"/>
+                      </Border>
+                    </Property>
+                    <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
+                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xd;&#xa;  &lt;head&gt;&#xd;&#xa;&#xd;&lt;style type=&quot;text/css&quot;&gt;&#xa;&#x9;body&#xa;&#x9;{&#xa;&#x9;     font-family: &quot;Arial&quot;;&#xa;&#x9;     font-size: 14pt;&#xa;&#x9;     line-height: 150%;&#xa;&#x9;}&#xa;&#xa;&#x9;h1&#xa;&#x9;{&#xa;&#x9;       font-size: 14pt;&#xa;&#x9;}&#xa;&lt;/style&gt;&#xa;  &lt;/head&gt;&#xd;&#xa;  &lt;body&gt;&#xd;&#xa;    &lt;h1&gt;Selecione um item na &#xe1;rvore &#xe0; esquerda para visualizar sua documenta&#xe7;&#xe3;o&lt;/h1&gt;&#xa;  &lt;/body&gt;&#xd;&#xa;&lt;/html&gt;&#xd;&#xa;"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
       </SubComponents>

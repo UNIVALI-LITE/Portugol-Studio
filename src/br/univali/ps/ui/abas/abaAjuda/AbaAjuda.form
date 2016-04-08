@@ -15,20 +15,6 @@
     </Container>
   </NonVisualComponents>
   <Properties>
-    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-      <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-        <CompoundBorder>
-          <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="8" left="8" right="8" top="8"/>
-          </Border>
-          <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-            <LineBorder>
-              <Color PropertyName="color" blue="d2" green="d2" red="d2" type="rgb"/>
-            </LineBorder>
-          </Border>
-        </CompoundBorder>
-      </Border>
-    </Property>
     <Property name="opaque" type="boolean" value="false"/>
   </Properties>
   <AuxValues>
@@ -61,7 +47,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="rotuloCarregamento" max="32767" attributes="0"/>
                       <Component id="barraProgresso" max="32767" attributes="0"/>
-                      <Component id="rotuloErroCarregamento" alignment="1" pref="638" max="32767" attributes="0"/>
+                      <Component id="rotuloErroCarregamento" alignment="1" pref="656" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -75,7 +61,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="barraProgresso" min="-2" pref="31" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="rotuloErroCarregamento" pref="201" max="32767" attributes="0"/>
+                  <Component id="rotuloErroCarregamento" pref="219" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -167,6 +153,7 @@
                         <EmptyBorder bottom="8" left="4" right="4" top="8"/>
                       </Border>
                     </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -180,6 +167,9 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JTree" name="arvore">
+                      <Properties>
+                        <Property name="opaque" type="boolean" value="false"/>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>

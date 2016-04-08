@@ -1,9 +1,12 @@
 package br.univali.ps.ui.weblaf;
 
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.menu.WebPopupMenuUI;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -24,7 +27,7 @@ import javax.swing.SwingConstants;
  *
  * @author elieser
  */
-public class BarraDeBotoesExpansivel extends JButton {
+public class BarraDeBotoesExpansivel extends WebButton {
 
     private final JPopupMenu menu;// = new JPopupMenu();
 
@@ -36,13 +39,6 @@ public class BarraDeBotoesExpansivel extends JButton {
         //add(menu);
         setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        if (WeblafUtils.weblafEstaInstalado()) {
-            ((WebButtonUI) getUI()).setUndecorated(false);
-            ((WebButtonUI) getUI()).setLeftRightSpacing(0);
-            ((WebButtonUI) getUI()).setRolloverDecoratedOnly(true);
-            
-            ((WebPopupMenuUI)menu.getUI()).setTransparency(1);
-        }
 
         addActionListener(new ActionListener() {
 

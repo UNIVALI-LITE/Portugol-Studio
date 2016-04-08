@@ -5,7 +5,6 @@
  */
 package br.univali.ps.ui.abas.abaAjuda;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JTree;
