@@ -57,10 +57,10 @@ import br.univali.portugol.nucleo.asa.NoTitulo;
 import br.univali.portugol.nucleo.asa.NoVaPara;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
-import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.ps.ui.rstautil.tree.filters.ASTFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,11 +70,13 @@ import java.util.List;
 class AstOutlineTreeFactory implements VisitanteASA
 {
     private SourceTreeNode root;
+    private ASTFilter filter;
 
     public SourceTreeNode createTree(ArvoreSintaticaAbstrata asa)
     {
         this.root = new GenericTreeNode("Remove me!");
-            
+        this.filter = new AcceptAllFilter();
+
         try
         {
             asa.aceitar(this);
@@ -83,39 +85,56 @@ class AstOutlineTreeFactory implements VisitanteASA
         {
             ex.printStackTrace(System.err);
         }
-        
+
         return root;
     }
-    
-    
+
+    public SourceTreeNode createFilteredTree(ArvoreSintaticaAbstrata asa, ASTFilter filter)
+    {
+        this.root = new GenericTreeNode("Remove me!");
+        this.filter = filter;
+
+        try
+        {
+            asa.aceitar(this);
+        }
+        catch (ExcecaoVisitaASA ex)
+        {
+            ex.printStackTrace(System.err);
+        }
+
+        return root;
+    }
+
     @Override
     public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
     {
-        
         ProgramaTreeNode programa = new ProgramaTreeNode();
         List<SourceTreeNode> nos = new ArrayList<>();
-        
+
         for (Iterator<NoDeclaracao> i = asap.getListaDeclaracoesGlobais().iterator(); i.hasNext();)
         {
             NoDeclaracao td = i.next();
             PortugolTreeNode dmtn = (PortugolTreeNode) td.aceitar(this);
-            nos.add(dmtn);
+
+            if (dmtn != null)
+            {
+                nos.add(dmtn);
+            }
         }
-        
+
         Collections.sort(nos, new ComparadorNos());
-        
+
         for (SourceTreeNode no : nos)
         {
             programa.add(no);
         }
 
-        //root.add(bibliotecas);
-        
-        root.add(programa);  
-        
+        root.add(programa);
+
         return null;
     }
-    
+
     @Override
     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
     {
@@ -130,25 +149,25 @@ class AstOutlineTreeFactory implements VisitanteASA
             MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(inclusao.getNome());
             LibraryTreeNode raizBiblioteca = new LibraryTreeNode(inclusao, metaDadosBiblioteca);
             /*
-            MetaDadosFuncoes metaDadosFuncoes = metaDadosBiblioteca.obterMetaDadosFuncoes();
+             MetaDadosFuncoes metaDadosFuncoes = metaDadosBiblioteca.obterMetaDadosFuncoes();
 
-            if (metaDadosFuncoes != null && !metaDadosFuncoes.vazio())
-            {
-                for (MetaDadosFuncao metaDadosFuncao : metaDadosFuncoes)
-                {
-                    raizBiblioteca.add(new LibraryFunctionTreeNode(metaDadosBiblioteca, metaDadosFuncao));
-                }
-            }
+             if (metaDadosFuncoes != null && !metaDadosFuncoes.vazio())
+             {
+             for (MetaDadosFuncao metaDadosFuncao : metaDadosFuncoes)
+             {
+             raizBiblioteca.add(new LibraryFunctionTreeNode(metaDadosBiblioteca, metaDadosFuncao));
+             }
+             }
 
-            MetaDadosConstantes metaDadosConstantes = metaDadosBiblioteca.getMetaDadosConstantes();
+             MetaDadosConstantes metaDadosConstantes = metaDadosBiblioteca.getMetaDadosConstantes();
 
-            if (metaDadosConstantes != null && !metaDadosConstantes.vazio())
-            {
-                for (MetaDadosConstante metaDadosConstante : metaDadosConstantes)
-                {
-                    raizBiblioteca.add(new LibraryVarTreeNode(metaDadosBiblioteca, metaDadosConstante));
-                }
-            }*/
+             if (metaDadosConstantes != null && !metaDadosConstantes.vazio())
+             {
+             for (MetaDadosConstante metaDadosConstante : metaDadosConstantes)
+             {
+             raizBiblioteca.add(new LibraryVarTreeNode(metaDadosBiblioteca, metaDadosConstante));
+             }
+             }*/
 
             return raizBiblioteca;
         }
@@ -157,24 +176,27 @@ class AstOutlineTreeFactory implements VisitanteASA
             return new LibraryTreeNode(erro);
         }
     }
-    
-     @Override
+
+    @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
     {
         PortugolTreeNode node = new PortugolTreeNode(declaracaoFuncao);
-        
+
         List<NoDeclaracaoParametro> parametros = declaracaoFuncao.getParametros();
 
         if (parametros != null)
         {
             for (NoDeclaracaoParametro parametro : parametros)
             {
-                node.add((PortugolTreeNode)parametro.aceitar(this));
+                if (filter.accepts(parametro))
+                {
+                    node.add((PortugolTreeNode) parametro.aceitar(this));
+                }
             }
-        } 
-       
-         List<NoBloco> body = declaracaoFuncao.getBlocos();
-       
+        }
+
+        List<NoBloco> body = declaracaoFuncao.getBlocos();
+
         if (body != null)
         {
             for (int i = 0; i < body.size(); i++)
@@ -182,53 +204,81 @@ class AstOutlineTreeFactory implements VisitanteASA
                 Object no = body.get(i).aceitar(this);
                 if (no != null)
                 {
-                    node.add((PortugolTreeNode)no);
+                    node.add((PortugolTreeNode) no);
                 }
             }
         }
 
-        return node;
+        if (filter.accepts(declaracaoFuncao) || node.getChildCount() > 0)
+        {
+            return node;
+        }
+
+        return null;
     }
 
     @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
     {
-        return new PortugolTreeNode(noDeclaracaoMatriz);
+        if (filter.accepts(noDeclaracaoMatriz))
+        {
+            return new PortugolTreeNode(noDeclaracaoMatriz);
+        }
+
+        return null;
     }
 
     @Override
     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA
     {
-        return new PortugolTreeNode(noDeclaracaoVariavel);
+        if (filter.accepts(noDeclaracaoVariavel))
+        {
+            return new PortugolTreeNode(noDeclaracaoVariavel);
+        }
+
+        return null;
     }
 
     @Override
     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
     {
-        return new PortugolTreeNode(noDeclaracaoVetor);
+        if (filter.accepts(noDeclaracaoVetor))
+        {
+            return new PortugolTreeNode(noDeclaracaoVetor);
+        }
+
+        return null;
     }
-    
+
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA
     {
         PortugolTreeNode node = new PortugolTreeNode(noEnquanto);
         boolean folha = true;
+        
         List<NoBloco> blocos = noEnquanto.getBlocos();
-        if (blocos != null){
+        
+        if (blocos != null)
+        {
             for (NoBloco noBloco : blocos)
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noBloco.aceitar(this);
 
-                if (ptn != null){
+                if (ptn != null)
+                {
                     node.add(ptn);
                     folha = false;
                 }
             }
         }
-        if (!folha)        
+        if (!folha)
+        {
             return node;
+        }
         else
+        {
             return null;
+        }
     }
 
     @Override
@@ -236,22 +286,30 @@ class AstOutlineTreeFactory implements VisitanteASA
     {
         PortugolTreeNode node = new PortugolTreeNode(noEscolha);
         boolean folha = true;
+        
         List<NoCaso> casos = noEscolha.getCasos();
-        if (casos != null){
+        
+        if (casos != null)
+        {
             for (NoCaso noCaso : casos)
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noCaso.aceitar(this);
 
-                if (ptn != null){
+                if (ptn != null)
+                {
                     node.add(ptn);
                     folha = false;
                 }
             }
         }
-        if (!folha)        
+        if (!folha)
+        {
             return node;
+        }
         else
+        {
             return null;
+        }
     }
 
     @Override
@@ -259,129 +317,170 @@ class AstOutlineTreeFactory implements VisitanteASA
     {
         PortugolTreeNode node = new PortugolTreeNode(noCaso);
         boolean folha = true;
+        
         List<NoBloco> blocos = noCaso.getBlocos();
-        if (blocos != null){
+        
+        if (blocos != null)
+        {
             for (NoBloco noBloco : blocos)
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noBloco.aceitar(this);
 
-                if (ptn != null){
+                if (ptn != null)
+                {
                     node.add(ptn);
                     folha = false;
                 }
             }
         }
-        if (!folha)        
+        if (!folha)
+        {
             return node;
+        }
         else
+        {
             return null;
+        }
     }
-    
+
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA
     {
         PortugolTreeNode node = new PortugolTreeNode(noFacaEnquanto);
         boolean folha = true;
+        
         List<NoBloco> blocos = noFacaEnquanto.getBlocos();
-        if (blocos != null){
+        
+        if (blocos != null)
+        {
             for (NoBloco noBloco : blocos)
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noBloco.aceitar(this);
 
-                if (ptn != null){
+                if (ptn != null)
+                {
                     node.add(ptn);
                     folha = false;
                 }
             }
         }
-        if (!folha)        
+        if (!folha)
+        {
             return node;
+        }
         else
+        {
             return null;
+        }
     }
-    
+
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA
     {
         PortugolTreeNode node = new PortugolTreeNode(noPara);
         boolean folha = true;
-        if (noPara.getInicializacao() != null){
+        
+        if (noPara.getInicializacao() != null)
+        {
             Object no = noPara.getInicializacao().aceitar(this);
-            if (no != null) {
-                node.add((PortugolTreeNode)no);
+            
+            if (no != null)
+            {
+                node.add((PortugolTreeNode) no);
                 folha = false;
             }
         }
+        
         List<NoBloco> blocos = noPara.getBlocos();
-        if (blocos != null){
+        
+        if (blocos != null)
+        {
             for (NoBloco noBloco : blocos)
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noBloco.aceitar(this);
 
-                if (ptn != null){
+                if (ptn != null)
+                {
                     node.add(ptn);
                     folha = false;
                 }
             }
         }
-        if (!folha)        
+        if (!folha)
+        {
             return node;
+        }
         else
+        {
             return null;
+        }
     }
-    
+
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA
     {
         PortugolTreeNode node = new PortugolTreeNode(noSe);
         boolean folha = true;
+        
         List<NoBloco> blocosVerdadeiros = noSe.getBlocosVerdadeiros();
-        if (blocosVerdadeiros != null){
+        
+        if (blocosVerdadeiros != null)
+        {
             GenericTreeNode noverdadeiro = new GenericTreeNode("verdadeiro");
             boolean folhaverdadeiro = true;
+            
             for (NoBloco noBloco : blocosVerdadeiros)
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noBloco.aceitar(this);
 
-                if (ptn != null){
+                if (ptn != null)
+                {
                     noverdadeiro.add(ptn);
                     folhaverdadeiro = false;
                 }
             }
-        
-            if (!folhaverdadeiro) {
-                node.add(noverdadeiro); 
+
+            if (!folhaverdadeiro)
+            {
+                node.add(noverdadeiro);
                 folha = false;
-            }    
-            
+            }
+
         }
-        
+
         List<NoBloco> blocosFalsos = noSe.getBlocosFalsos();
-        if (blocosFalsos != null){  
+        
+        if (blocosFalsos != null)
+        {
             GenericTreeNode falsos = new GenericTreeNode("falso");
-            
             boolean folhafalso = true;
-            for (NoBloco noBloco : blocosFalsos )
+            
+            for (NoBloco noBloco : blocosFalsos)
             {
                 PortugolTreeNode ptn = (PortugolTreeNode) noBloco.aceitar(this);
 
-                if (ptn != null){
+                if (ptn != null)
+                {
                     falsos.add(ptn);
                     folhafalso = false;
                 }
             }
-            if (!folhafalso){
+            if (!folhafalso)
+            {
                 node.add(falsos);
                 folha = false;
             }
         }
-        
-        if (!folha)        
+
+        if (!folha)
+        {
             return node;
+        }
         else
+        {
             return null;
+        }
     }
-    
 
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA
@@ -545,8 +644,6 @@ class AstOutlineTreeFactory implements VisitanteASA
         return null;
     }
 
-    
-
     @Override
     public Object visitar(NoPare noPare) throws ExcecaoVisitaASA
     {
@@ -583,7 +680,6 @@ class AstOutlineTreeFactory implements VisitanteASA
         return null;
     }
 
-
     @Override
     public Object visitar(NoVetor noVetor) throws ExcecaoVisitaASA
     {
@@ -597,20 +693,23 @@ class AstOutlineTreeFactory implements VisitanteASA
     }
 
     @Override
-    public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA {
+    public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA {
+    public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA {
+    public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     private class ComparadorNos implements Comparator<SourceTreeNode>
     {
         @Override
@@ -618,12 +717,12 @@ class AstOutlineTreeFactory implements VisitanteASA
         {
             Object o1 = no1.getUserObject();
             Object o2 = no2.getUserObject();
-            
+
             if ((o1 instanceof NoDeclaracao) && (o2 instanceof NoDeclaracao))
             {
                 NoDeclaracao nd1 = (NoDeclaracao) o1;
                 NoDeclaracao nd2 = (NoDeclaracao) o2;
-                
+
                 if ((!(nd1 instanceof NoDeclaracaoFuncao)) && (nd2 instanceof NoDeclaracaoFuncao))
                 {
                     return -1;
@@ -634,11 +733,20 @@ class AstOutlineTreeFactory implements VisitanteASA
                 }
                 else
                 {
-                    return nd1.getNome().compareTo(nd2.getNome());                            
-                }                
+                    return nd1.getNome().compareTo(nd2.getNome());
+                }
             }
-            
+
             return o1.toString().compareTo(o2.toString());
+        }
+    }
+
+    private final class AcceptAllFilter implements ASTFilter
+    {
+        @Override
+        public boolean accepts(No no)
+        {
+            return true;
         }
     }
 }

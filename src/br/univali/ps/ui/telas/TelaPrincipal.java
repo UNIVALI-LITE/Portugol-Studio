@@ -247,40 +247,36 @@ public final class TelaPrincipal extends JFrame
         {
             focarJanela();
 
-            SwingUtilities.invokeLater(new Runnable()
+            SwingUtilities.invokeLater(() ->
             {
-                @Override
-                public void run()
+                TelaPrincipal.this.setEnabled(false);
+                
+                for (File arquivo : arquivos)
                 {
-                    TelaPrincipal.this.setEnabled(false);
-
-                    for (File arquivo : arquivos)
+                    if (arquivoJaEstaAberto(arquivo))
                     {
-                        if (arquivoJaEstaAberto(arquivo))
+                        AbaCodigoFonte aba = obterAbaArquivo(arquivo);
+                        aba.selecionar();
+                    }
+                    else
+                    {
+                        try
                         {
-                            AbaCodigoFonte aba = obterAbaArquivo(arquivo);
-                            aba.selecionar();
+                            final String conteudo = FileHandle.open(arquivo);
+                            final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+                            
+                            abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
+                            
+                            getPainelTabulado().add(abaCodigoFonte);
                         }
-                        else
+                        catch (Exception excecao)
                         {
-                            try
-                            {
-                                final String conteudo = FileHandle.open(arquivo);
-                                final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-
-                                abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
-
-                                getPainelTabulado().add(abaCodigoFonte);
-                            }
-                            catch (Exception excecao)
-                            {
-                                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-                            }
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
                         }
                     }
-
-                    TelaPrincipal.this.setEnabled(true);
                 }
+                
+                TelaPrincipal.this.setEnabled(true);
             });
         }
     }

@@ -66,6 +66,11 @@ public class BarraDeBotoesExpansivel extends WebButton {
     public JPopupMenu getPopupMenu() {
         return menu;
     }
+    
+    public void adicionarComponente(JComponent component)
+    {
+        menu.add(component);
+    }
 
     private class ItemDeMenuParaGrupoDeAcoes extends JPanel {
 
