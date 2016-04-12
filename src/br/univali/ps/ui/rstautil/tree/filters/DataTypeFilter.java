@@ -60,20 +60,24 @@ public final class DataTypeFilter implements ASTFilter
     {
         rejectAll();
 
-        acceptedDataTypes.addAll(Arrays.asList(new TipoDado[]
+        List<TipoDado> types = Arrays.asList(new TipoDado[]
         {
             TipoDado.CADEIA, TipoDado.CARACTER, TipoDado.INTEIRO, TipoDado.LOGICO, TipoDado.REAL
-        }));
+        });
+        
+        for (TipoDado tipoDado : types)
+        {
+            accept(tipoDado);
+        }
     }
     
     public void rejectAll()
     {
         List<TipoDado> types = new ArrayList<>(acceptedDataTypes);
-        acceptedDataTypes.clear();
         
         for (TipoDado dataType : types)
         {
-            fireDataTypeRejected(dataType);
+            reject(dataType);
         }
     }
 

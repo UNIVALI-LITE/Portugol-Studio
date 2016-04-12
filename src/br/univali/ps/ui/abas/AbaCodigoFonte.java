@@ -33,13 +33,12 @@ import br.univali.ps.plugins.base.ErroInstalacaoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.*;
 import br.univali.ps.ui.editor.Editor;
-import br.univali.ps.ui.editor.PSTextAreaListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
-import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
-import br.univali.ps.ui.rstautil.tree.filters.PortugolASTFilterListener;
+import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.view.DataTypeFilterView;
+import br.univali.ps.ui.rstautil.tree.filters.view.SymbolTypeFilterView;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
@@ -211,13 +210,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
             acaoAumentarFonte, acaoDiminuirFonte
         });
-        
-        
+
         DataTypeFilterView dataTypeFilterView = new DataTypeFilterView();
         dataTypeFilterView.setFilter(tree.getFilter().getDataTypeFilter());
-        
+
+        SymbolTypeFilterView symbolTypeFilterView = new SymbolTypeFilterView();
+        symbolTypeFilterView.setFilter(tree.getFilter().getSymbolTypeFilter());
+
         barraDeBotoesInspetorArvore.adicionaSeparador();
         barraDeBotoesInspetorArvore.adicionarComponente(dataTypeFilterView);
+
+        barraDeBotoesInspetorArvore.adicionaSeparador();
+        barraDeBotoesInspetorArvore.adicionarComponente(symbolTypeFilterView);
 
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 15), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
@@ -406,7 +410,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
         barraDeBotoesEditor.adicionaSeparador();
         barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
-        
+
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 30), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
         painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
@@ -456,7 +460,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         try
         {
             SwingUtilities.invokeAndWait(()
-                    ->
+                    -> 
                     {
                         try
                         {
@@ -473,7 +477,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         {
                             LOGGER.log(Level.SEVERE, "Não foi possível inicializar o pool de abas de código fonte", excecao);
                         }
-                    });
+            });
         }
         catch (Exception e)
         {
@@ -497,13 +501,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
-        
+
         tree.getFilter().enableDataTypeFilter();
         tree.getFilter().getDataTypeFilter().acceptAll();
-        
-        tree.getFilter().addListener(() -> 
-        {
-            salvaArquivo();
+
+        tree.getFilter().addListener(()
+                -> 
+                {
+                    salvaArquivo();
         });
     }
 
@@ -784,26 +789,29 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
                 }
                 //Gambiarra pro botão não sumir :3
-                SwingUtilities.invokeLater(() ->
-                {
-                    painelEditor.repaint();
+                SwingUtilities.invokeLater(()
+                        -> 
+                        {
+                            painelEditor.repaint();
                 });
             }
         });
 
-        getEditor().getTextArea().addListenter((Set<Integer> pontosDeParada) -> 
-        {
-            if (programa != null)
-            {
-                programa.ativaPontosDeParada(pontosDeParada);
-            }
-            
-            salvaArquivo();
+        getEditor().getTextArea().addListenter((Set<Integer> pontosDeParada)
+                -> 
+                {
+                    if (programa != null)
+                    {
+                        programa.ativaPontosDeParada(pontosDeParada);
+                    }
+
+                    salvaArquivo();
         });
 
-        inspetorDeSimbolos.addListener(() -> 
-        {
-            salvaArquivo();
+        inspetorDeSimbolos.addListener(()
+                -> 
+                {
+                    salvaArquivo();
         });
 
         Configuracoes configuracoes = Configuracoes.getInstancia();
@@ -822,7 +830,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void componentShown(final ComponentEvent e)
             {
                 SwingUtilities.invokeLater(()
-                        ->
+                        -> 
                         {
                             editor.getTextArea().requestFocusInWindow();
 
@@ -841,30 +849,31 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                         + "Que a força esteja com você!!!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
                                 Configuracoes.getInstancia().setExibirAvisoRenomear(false);
                             }
-                        });
+                });
             }
         });
 
-        tree.addTreeSelectionListener((TreeSelectionEvent e) ->
-        {
-            TreePath path = e.getNewLeadSelectionPath();
-
-            if (path != null)
-            {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                Object obj = node.getUserObject();
-                TrechoCodigoFonte trechoCodigoFonte = null;
-
-                if (obj instanceof NoDeclaracao)
+        tree.addTreeSelectionListener((TreeSelectionEvent e)
+                -> 
                 {
-                    trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
-                }
+                    TreePath path = e.getNewLeadSelectionPath();
 
-                if (trechoCodigoFonte != null)
-                {
-                    editor.selecionarTexto(trechoCodigoFonte.getLinha() - 1, trechoCodigoFonte.getColuna(), trechoCodigoFonte.getTamanhoTexto());
-                }
-            }
+                    if (path != null)
+                    {
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                        Object obj = node.getUserObject();
+                        TrechoCodigoFonte trechoCodigoFonte = null;
+
+                        if (obj instanceof NoDeclaracao)
+                        {
+                            trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
+                        }
+
+                        if (trechoCodigoFonte != null)
+                        {
+                            editor.selecionarTexto(trechoCodigoFonte.getLinha() - 1, trechoCodigoFonte.getColuna(), trechoCodigoFonte.getTamanhoTexto());
+                        }
+                    }
         });
 
         tree.addMouseListener(new MouseAdapter()
@@ -962,22 +971,29 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         this.codigoFonteAtual = codigoFonte;//o código fonte completo (incluindo as informações do PortugolStudio) 
         //será utilizado mais adiante para carregar os símbolos inspecionados que foram salvos no arquivo
-        SwingUtilities.invokeLater(() ->
-        {
-            simbolosInspecionadosJaForamCarregados = false;
-            AbaCodigoFonte.this.podeSalvar = podeSalvar;
-            editor.setCodigoFonte(codigoFonte);
-            carregarInformacoesFiltrosArvore(codigoFonte);
-            
-            PortugolDocumento document = editor.getPortugolDocumento();
-            document.setFile(arquivo);
-            document.setChanged(false);
-            
-            acaoSalvarArquivo.setEnabled(false);
+        SwingUtilities.invokeLater(()
+                -> 
+                {
+                    simbolosInspecionadosJaForamCarregados = false;
+                    AbaCodigoFonte.this.podeSalvar = podeSalvar;
+                    editor.setCodigoFonte(codigoFonte);
+                    carregarInformacoesFiltroArvore(codigoFonte);
+
+                    PortugolDocumento document = editor.getPortugolDocumento();
+                    document.setFile(arquivo);
+                    document.setChanged(false);
+
+                    acaoSalvarArquivo.setEnabled(false);
         });
     }
-    
-    private void carregarInformacoesFiltrosArvore(String codigoFonte)
+
+    private void carregarInformacoesFiltroArvore(String codigoFonte)
+    {
+        carregarInformacoesFiltroArvoreTipoDado(codigoFonte);
+        carregarInformacoesFiltroArvoreTipoSimbolo(codigoFonte);
+    }
+
+    private void carregarInformacoesFiltroArvoreTipoDado(String codigoFonte)
     {
         DataTypeFilter dataTypeFilter = tree.getFilter().getDataTypeFilter();
         Matcher avaliador = Pattern.compile("@FILTRO-ARVORE-TIPOS-DE-DADO[ ]*=[ ]*([ ]*(inteiro|real|logico|cadeia|caracter)[ ]*)(,[ ]*(inteiro|real|logico|cadeia|caracter)[ ]*)*;").matcher(codigoFonte);
@@ -986,9 +1002,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
             String linha = avaliador.group();
             String valores[] = linha.split("=")[1].replace(";", "").split(",");
-            
+
             dataTypeFilter.rejectAll();
-            
+
             for (String tipo : valores)
             {
                 dataTypeFilter.accept(TipoDado.obterTipoDadoPeloNome(tipo.trim()));
@@ -999,7 +1015,30 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             dataTypeFilter.acceptAll();
         }
     }
-    
+
+    private void carregarInformacoesFiltroArvoreTipoSimbolo(String codigoFonte)
+    {
+        SymbolTypeFilter symbolTypeFilter = tree.getFilter().getSymbolTypeFilter();
+        Matcher avaliador = Pattern.compile("@FILTRO-ARVORE-TIPOS-DE-SIMBOLO[ ]*=[ ]*([ ]*(variavel|vetor|matriz|funcao)[ ]*)(,[ ]*(variavel|vetor|matriz|funcao)[ ]*)*;").matcher(codigoFonte);
+
+        if (avaliador.find())
+        {
+            String linha = avaliador.group();
+            String valores[] = linha.split("=")[1].replace(";", "").split(",");
+
+            symbolTypeFilter.rejectAll();
+
+            for (String tipoSimbolo : valores)
+            {
+                symbolTypeFilter.accept(SymbolTypeFilter.SymbolType.valueOf(tipoSimbolo.trim().toUpperCase()));
+            }
+        }
+        else
+        {
+            symbolTypeFilter.acceptAll();
+        }
+    }
+
     private void carregaSimbolosInspecionados(final String codigoFonteCompleto, final Programa programa)
     {
         if (codigoFonteCompleto == null || programa == null)
@@ -1514,7 +1553,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inserirInformacoesDosPontosDeParada(sb);
         inserirInformacoesDosSimbolosInspecionados(sb);
         inserirInformacoesFiltroArvore(sb);
-        
+
         sb.append("\n */");
 
         return sb.toString();
@@ -1552,12 +1591,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
         sb.append(String.format("\n * @PONTOS-DE-PARADA = %s;", linhas));
     }
-    
+
     private void inserirInformacoesFiltroArvore(StringBuilder sb)
+    {
+        inserirInformacoesFiltroArvoreTipoDado(sb);
+        inserirInformacoesFiltroArvoreTipoSimbolo(sb);                
+    }
+
+    private void inserirInformacoesFiltroArvoreTipoDado(StringBuilder sb)
     {
         StringBuilder tipos = new StringBuilder();
         DataTypeFilter dataTypeFilter = tree.getFilter().getDataTypeFilter();
-        
+
         if (!dataTypeFilter.getAcceptedDataTypes().isEmpty())
         {
             for (TipoDado tipo : TipoDado.values())
@@ -1568,11 +1613,34 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     tipos.append(", ");
                 }
             }
-            
+
             // Remove a última vírgula
-            tipos = tipos.delete(tipos.length() - 2, tipos.length());            
+            tipos = tipos.delete(tipos.length() - 2, tipos.length());
 
             sb.append(String.format("\n * @FILTRO-ARVORE-TIPOS-DE-DADO = %s;", tipos));
+        }
+    }
+    
+    private void inserirInformacoesFiltroArvoreTipoSimbolo(StringBuilder sb)
+    {
+        StringBuilder tipos = new StringBuilder();
+        SymbolTypeFilter symbolTypeFilter = tree.getFilter().getSymbolTypeFilter();
+
+        if (!symbolTypeFilter.getAcceptedSymbolTypes().isEmpty())
+        {
+            for (SymbolTypeFilter.SymbolType tipoSimbolo : SymbolTypeFilter.SymbolType.values())
+            {
+                if (symbolTypeFilter.isAccepting(tipoSimbolo))
+                {
+                    tipos.append(tipoSimbolo.toString().toLowerCase());
+                    tipos.append(", ");
+                }
+            }
+
+            // Remove a última vírgula
+            tipos = tipos.delete(tipos.length() - 2, tipos.length());
+
+            sb.append(String.format("\n * @FILTRO-ARVORE-TIPOS-DE-SIMBOLO = %s;", tipos));
         }
     }
 
@@ -1653,11 +1721,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             revalidate();
         }
     }
-    
+
     private void carregarAlgoritmoPadrao()
     {
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
-        carregarInformacoesFiltrosArvore(TEMPLATE_ALGORITMO);
+        carregarInformacoesFiltroArvore(TEMPLATE_ALGORITMO);
     }
 
     private static String carregarTemplate()
@@ -1881,6 +1949,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         editor.getPortugolDocumento().setChanged(true);
         getCabecalho().setTitulo("Sem título*");
         getCabecalho().setIcone(lampadaApagada);
+        
+        tree.getFilter().getDataTypeFilter().acceptAll();
+        tree.getFilter().getSymbolTypeFilter().acceptAll();
+        
         podeSalvar = true;
 
     }
@@ -1895,57 +1967,59 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         @Override
         public void execucaoIniciada(final Programa programa)
         {
-            SwingUtilities.invokeLater(() ->
-            {
-                acaoInterromper.setEnabled(true);
-                painelSaida.getConsole().selecionar();
-                
-                try
-                {
-                    painelSaida.getConsole().limparConsole();
-                    
-                    if (programa.getResultadoAnalise().contemAvisos())
+            SwingUtilities.invokeLater(()
+                    -> 
                     {
-                        exibirPopupAvisoCompilacao();
-                    }
+                        acaoInterromper.setEnabled(true);
+                        painelSaida.getConsole().selecionar();
 
-                }
-                catch (Exception ex)
-                {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-                }
-                
-                painelSaida.getConsole().setExecutandoPrograma(true);
+                        try
+                        {
+                            painelSaida.getConsole().limparConsole();
+
+                            if (programa.getResultadoAnalise().contemAvisos())
+                            {
+                                exibirPopupAvisoCompilacao();
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                        }
+
+                        painelSaida.getConsole().setExecutandoPrograma(true);
             });
         }
 
         @Override
         public void execucaoEncerrada(final Programa programa, final ResultadoExecucao resultadoExecucao)
         {
-            SwingUtilities.invokeLater(() ->
-            {
-                AbaConsole console = painelSaida.getConsole();
-                editor.finalizarExecucao(resultadoExecucao);
+            SwingUtilities.invokeLater(()
+                    -> 
+                    {
+                        AbaConsole console = painelSaida.getConsole();
+                        editor.finalizarExecucao(resultadoExecucao);
 
-                console.removerPopupLeia();
+                        console.removerPopupLeia();
 
-                if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
-                {
-                    console.escreverNoConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
-                }
-                else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
-                {
-                    console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
-                    console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
-                }
-                else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
-                {
-                    console.escreverNoConsole("\nO programa foi interrompido!");
-                }
+                        if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL)
+                        {
+                            console.escreverNoConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+                        }
+                        else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
+                        {
+                            console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                            console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
+                        }
+                        else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
+                        {
+                            console.escreverNoConsole("\nO programa foi interrompido!");
+                        }
 
-                ocultarPainelSaida();
-                acaoInterromper.setEnabled(false);
-                painelSaida.getConsole().setExecutandoPrograma(false);
+                        ocultarPainelSaida();
+                        acaoInterromper.setEnabled(false);
+                        painelSaida.getConsole().setExecutandoPrograma(false);
             });
         }
     }

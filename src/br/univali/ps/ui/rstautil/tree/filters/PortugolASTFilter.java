@@ -12,13 +12,17 @@ public final class PortugolASTFilter extends CompoundFilter
 {
     private final List<PortugolASTFilterListener> listeners = new ArrayList<>();
     private final DataTypeFilter dataTypeFilter = new DataTypeFilter(true);
+    private final SymbolTypeFilter symbolTypeFilter = new SymbolTypeFilter(true);
     
     public PortugolASTFilter()
     {
         ChangeListener listener = new ChangeListener();
         
         dataTypeFilter.addListener(listener);
+        symbolTypeFilter.addListener(listener);
+        
         enableDataTypeFilter();
+        enableSymbolTypeFilter();
     }
     
     public void addListener(PortugolASTFilterListener listener)
@@ -57,17 +61,39 @@ public final class PortugolASTFilter extends CompoundFilter
         fireFilterChanged();
     }
     
+    public void enableSymbolTypeFilter()
+    {
+        addFilter(symbolTypeFilter);
+        fireFilterChanged();
+    }
+    
+    public void disableSymbolTypeFilter()
+    {
+        removeFilter(symbolTypeFilter);
+        fireFilterChanged();
+    }
+    
     public boolean isDataTypeFilterEnabled()
     {
         return isFilterEnabled(dataTypeFilter);
+    }
+    
+    public boolean isSymbolTypeFilterEnabled()
+    {
+        return isFilterEnabled(symbolTypeFilter);
     }
 
     public DataTypeFilter getDataTypeFilter()
     {
         return dataTypeFilter;
     }
+
+    public SymbolTypeFilter getSymbolTypeFilter()
+    {
+        return symbolTypeFilter;
+    }
     
-    private final class ChangeListener implements DataTypeFilterListener
+    private final class ChangeListener implements DataTypeFilterListener, SymbolTypeFilterListener
     {
         @Override
         public void dataTypeAccepted(TipoDado dataType) 
@@ -77,6 +103,18 @@ public final class PortugolASTFilter extends CompoundFilter
 
         @Override
         public void dataTypeRejected(TipoDado dataType) 
+        {
+            fireFilterChanged();
+        }
+
+        @Override
+        public void symbolTypeAccepted(SymbolTypeFilter.SymbolType symbolType)
+        {
+            fireFilterChanged();
+        }
+
+        @Override
+        public void symbolTypeRejected(SymbolTypeFilter.SymbolType symbolType)
         {
             fireFilterChanged();
         }

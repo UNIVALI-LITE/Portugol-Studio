@@ -8,6 +8,7 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilterListener;
 import br.univali.ps.ui.rstautil.tree.filters.PortugolASTFilter;
+import br.univali.ps.ui.rstautil.tree.filters.PortugolASTFilterListener;
 import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.tree.WebTreeUI;
@@ -82,7 +83,7 @@ public class PortugolOutlineTree extends JTree
     
     private void configurarFiltro()
     {
-        filter.getDataTypeFilter().addListener(new FilterListener());
+        filter.addListener(new FilterListener());
     }
 
     public void observar(RSyntaxTextArea textArea)
@@ -292,16 +293,10 @@ public class PortugolOutlineTree extends JTree
         }
     }
     
-    private final class FilterListener implements DataTypeFilterListener
+    private final class FilterListener implements PortugolASTFilterListener
     {
         @Override
-        public void dataTypeAccepted(TipoDado dataType)
-        {
-            buildTree();
-        }
-
-        @Override
-        public void dataTypeRejected(TipoDado dataType)
+        public void filterChanged()
         {
             buildTree();
         }
