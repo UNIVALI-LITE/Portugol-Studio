@@ -265,7 +265,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         try
         {
             //conteudo.setText(topico.getConteudo());
-            File tempOld = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "temp" + htmlId + ".html");
+            File tempOld = new File("ajudaTemp" + htmlId + ".html");
 
             if (tempOld.exists())
             {
@@ -274,7 +274,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
             htmlId++;
 
-            File temp = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "temp" + htmlId + ".html");
+            File temp = new File("ajudaTemp" + htmlId + ".html");
             String conteudoHtml = topico.getConteudo();
             FileHandle.save(conteudoHtml, temp, "UTF-8");
 
