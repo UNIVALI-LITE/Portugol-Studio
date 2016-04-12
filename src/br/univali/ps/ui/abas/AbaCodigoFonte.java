@@ -1,6 +1,5 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.utils.EscopoCursor;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.PainelSaida;
@@ -19,11 +18,9 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.execucao.Depurador;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
-import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucaoBasico;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
-import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -41,6 +38,7 @@ import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolosListener;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
+import br.univali.ps.ui.rstautil.tree.filters.PortugolASTFilterListener;
 import br.univali.ps.ui.rstautil.tree.filters.view.DataTypeFilterView;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.utils.FileHandle;
@@ -68,8 +66,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
@@ -82,7 +78,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, CaretListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins
+public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins
 {
 
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
@@ -146,7 +142,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configuraBarraDeBotoesDoPainelArvoreInspetor();
         instalarObservadores();
         configurarCursorBotoes();
-        atualizarStatusCursor();
         carregarAlgoritmoPadrao();
 
         criarDicasInterface();
@@ -216,6 +211,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
             acaoAumentarFonte, acaoDiminuirFonte
         });
+        
+        
+        DataTypeFilterView dataTypeFilterView = new DataTypeFilterView();
+        dataTypeFilterView.setFilter(tree.getFilter().getDataTypeFilter());
+        
+        barraDeBotoesInspetorArvore.adicionaSeparador();
+        barraDeBotoesInspetorArvore.adicionarComponente(dataTypeFilterView);
 
         GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 15), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
@@ -405,13 +407,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesEditor.adicionaSeparador();
         barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
         
-        DataTypeFilterView dataTypeFilterView = new DataTypeFilterView();
-        dataTypeFilterView.setFilter(tree.getFilter().getDataTypeFilter());
-        
-        barraDeBotoesEditor.adicionaSeparador();
-        barraDeBotoesEditor.adicionarComponente(dataTypeFilterView);
-        
-
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 30), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
         painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
@@ -506,6 +501,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.getFilter().enableDataTypeFilter();
         tree.getFilter().getDataTypeFilter().acceptAll();
         
+        tree.getFilter().addListener(() -> 
+        {
+            salvaArquivo();
+        });
     }
 
     private void criarPainelTemporario()
@@ -792,28 +791,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
 
-        getEditor().getTextArea().addListenter(new PSTextAreaListener()
+        getEditor().getTextArea().addListenter((Set<Integer> pontosDeParada) -> 
         {
-
-            @Override
-            public void pontosDeParadaAtualizados(Set<Integer> pontosDeParada)
+            if (programa != null)
             {
-                if (programa != null)
-                {
-                    programa.ativaPontosDeParada(pontosDeParada);
-                }
-                salvaArquivo();
+                programa.ativaPontosDeParada(pontosDeParada);
             }
+            
+            salvaArquivo();
         });
 
-        inspetorDeSimbolos.addListener(new InspetorDeSimbolosListener()
+        inspetorDeSimbolos.addListener(() -> 
         {
-
-            @Override
-            public void listaDeSimbolosInpecionadosFoiModificada()
-            {
-                salvaArquivo();
-            }
+            salvaArquivo();
         });
 
         Configuracoes configuracoes = Configuracoes.getInstancia();
@@ -823,7 +813,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         editor.getPortugolDocumento().addPortugolDocumentoListener(AbaCodigoFonte.this);
         painelSaida.getAbaMensagensCompilador().adicionaAbaMensagemCompiladorListener(editor);
         adicionarAbaListener(AbaCodigoFonte.this);
-        editor.adicionarObservadorCursor(AbaCodigoFonte.this);
         tree.observar(editor.getTextArea());
         inspetorDeSimbolos.observar(editor.getTextArea());
 
@@ -978,6 +967,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             simbolosInspecionadosJaForamCarregados = false;
             AbaCodigoFonte.this.podeSalvar = podeSalvar;
             editor.setCodigoFonte(codigoFonte);
+            carregarInformacoesFiltrosArvore(codigoFonte);
             
             PortugolDocumento document = editor.getPortugolDocumento();
             document.setFile(arquivo);
@@ -986,7 +976,30 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             acaoSalvarArquivo.setEnabled(false);
         });
     }
+    
+    private void carregarInformacoesFiltrosArvore(String codigoFonte)
+    {
+        DataTypeFilter dataTypeFilter = tree.getFilter().getDataTypeFilter();
+        Matcher avaliador = Pattern.compile("@FILTRO-ARVORE-TIPOS-DE-DADO[ ]*=[ ]*([ ]*(inteiro|real|logico|cadeia|caracter)[ ]*)(,[ ]*(inteiro|real|logico|cadeia|caracter)[ ]*)*;").matcher(codigoFonte);
 
+        if (avaliador.find())
+        {
+            String linha = avaliador.group();
+            String valores[] = linha.split("=")[1].replace(";", "").split(",");
+            
+            dataTypeFilter.rejectAll();
+            
+            for (String tipo : valores)
+            {
+                dataTypeFilter.accept(TipoDado.obterTipoDadoPeloNome(tipo.trim()));
+            }
+        }
+        else
+        {
+            dataTypeFilter.acceptAll();
+        }
+    }
+    
     private void carregaSimbolosInspecionados(final String codigoFonteCompleto, final Programa programa)
     {
         if (codigoFonteCompleto == null || programa == null)
@@ -1640,15 +1653,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             revalidate();
         }
     }
-
-    private void atualizarStatusCursor()
-    {
-        caretUpdate(null);
-    }
-
+    
     private void carregarAlgoritmoPadrao()
     {
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
+        carregarInformacoesFiltrosArvore(TEMPLATE_ALGORITMO);
     }
 
     private static String carregarTemplate()
@@ -1842,15 +1851,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho)
     {
         editor.destacarTrechoCodigoFonte(linha, coluna, tamanho);
-    }
-
-    @Override
-    public final void caretUpdate(CaretEvent e)
-    {
-        Point posicao = editor.getPosicaoCursor();
-        EscopoCursor escopo = EscopoCursor.localizar(editor.getTextArea());
-
-        //rotuloPosicaoCursor.setText(String.format("Escopo: %s, Nivel: %d, Linha: %d, Coluna: %d", escopo.getNome(), escopo.getProfundidade(), posicao.y, posicao.x));
     }
 
     protected JButton getBtnSalvar()

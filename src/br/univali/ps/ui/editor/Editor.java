@@ -888,7 +888,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         carregarPosicaoCursor(informacoesPortugolStudio);
         carregarDobramentoCodigo(informacoesPortugolStudio);
-        //carregarFiltroArvoreTiposDados(informacoesPortugolStudio);
         carregarPontosDeParada(informacoesPortugolStudio);
     }
 
@@ -944,32 +943,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             String linha = avaliador.group();
             String valores[] = linha.split("=")[1].replace(";", "").replace("[", "").replace("]", "").split(",");
-            List<Integer> linhasDobradas = new ArrayList<>();
-
-            try
-            {
-                for (String valor : valores)
-                {
-                    linhasDobradas.add(Integer.parseInt(valor.trim()));
-                }
-
-                dobrarLinhasCodigo(linhasDobradas);
-            }
-            catch (NumberFormatException excecao)
-            {
-                excecao.printStackTrace(System.out);
-            }
-        }
-    }
-    
-    private void carregarFiltroArvoreTiposDados(String informacoesPortugolStudio)
-    {
-        Matcher avaliador = Pattern.compile("@FILTRO-ARVORE-TIPOS-DE-DADO[ ]*=[ ]*([ ]*(inteiro|real|logico|cadeia|caracter)[ ]*)(,[ ]*(inteiro|real|logico|cadeia|caracter)[ ]*)*;").matcher(informacoesPortugolStudio);
-
-        if (avaliador.find() && textArea.isCodeFoldingEnabled())
-        {
-            String linha = avaliador.group();
-            String valores[] = linha.split("=")[1].replace(";", "").split(",");
             List<Integer> linhasDobradas = new ArrayList<>();
 
             try

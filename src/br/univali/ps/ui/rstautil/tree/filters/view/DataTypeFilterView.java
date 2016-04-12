@@ -3,6 +3,7 @@ package br.univali.ps.ui.rstautil.tree.filters.view;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilterListener;
+import java.awt.Cursor;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 
@@ -19,8 +20,22 @@ public class DataTypeFilterView extends javax.swing.JPanel
     public DataTypeFilterView()
     {
         initComponents();
+        configureButtons();
     }
 
+    private void configureButtons()
+    {
+        Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+        
+        buttonCadeia.setCursor(cursor);
+        buttonCaracter.setCursor(cursor);
+        buttonInteiro.setCursor(cursor);
+        buttonLogico.setCursor(cursor);
+        buttonReal.setCursor(cursor);
+        buttonShortcuts.setCursor(cursor);
+        buttonShowAll.setCursor(cursor);
+    }
+    
     public void setFilter(DataTypeFilter filter)
     {
         if (this.filter != null)
@@ -117,8 +132,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         buttonInteiro = new javax.swing.JToggleButton();
@@ -129,78 +143,66 @@ public class DataTypeFilterView extends javax.swing.JPanel
         buttonShowAll = new javax.swing.JButton();
         buttonShortcuts = new javax.swing.JButton();
 
-        setMinimumSize(new java.awt.Dimension(336, 197));
+        setMaximumSize(new java.awt.Dimension(332, 174));
+        setMinimumSize(new java.awt.Dimension(332, 174));
         setOpaque(false);
+        setPreferredSize(new java.awt.Dimension(332, 174));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Filtrar símbolos por tipo de dado");
+        jLabel1.setText("Filtrar árvore estrutural por tipo de dado");
 
         buttonInteiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/inteiro.png"))); // NOI18N
         buttonInteiro.setText("inteiro");
-        buttonInteiro.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonInteiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonInteiroActionPerformed(evt);
             }
         });
 
         buttonReal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/real.png"))); // NOI18N
         buttonReal.setText("real");
-        buttonReal.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonReal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRealActionPerformed(evt);
             }
         });
 
         buttonLogico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/logico.png"))); // NOI18N
         buttonLogico.setText("lógico");
-        buttonLogico.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonLogico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonLogicoActionPerformed(evt);
             }
         });
 
         buttonCaracter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/caracter.png"))); // NOI18N
         buttonCaracter.setText("caracter");
-        buttonCaracter.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonCaracter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCaracterActionPerformed(evt);
             }
         });
 
         buttonCadeia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
         buttonCadeia.setText("cadeia");
-        buttonCadeia.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonCadeia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCadeiaActionPerformed(evt);
             }
         });
 
         buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonShowAll.setText("Exibir Todos");
-        buttonShowAll.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonShowAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonShowAllActionPerformed(evt);
             }
         });
 
         buttonShortcuts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonShortcuts.setText("Atalhos do Teclado");
-        buttonShortcuts.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonShortcuts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonShortcutsActionPerformed(evt);
             }
         });
@@ -247,7 +249,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
                 .addComponent(buttonShowAll)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonShortcuts)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

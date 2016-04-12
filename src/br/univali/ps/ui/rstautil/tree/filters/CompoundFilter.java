@@ -41,4 +41,9 @@ public abstract class CompoundFilter implements ASTFilter
             filters.remove(filter);
         }
     }
+    
+    protected boolean isFilterEnabled(ASTFilter filter)
+    {
+        return filters.contains(filter);
+    }
 }
