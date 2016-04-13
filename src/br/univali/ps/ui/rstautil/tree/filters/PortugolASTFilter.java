@@ -134,6 +134,21 @@ public final class PortugolASTFilter extends CompoundFilter
         @Override
         public void symbolTypeAccepted(SymbolTypeFilter.SymbolType symbolType)
         {
+            if (symbolType == SymbolTypeFilter.SymbolType.FUNCAO)
+            {
+                if (getDataTypeFilter().getAcceptedDataTypes().isEmpty())
+                {
+                    getDataTypeFilter().acceptAll();
+                }
+            }
+            else 
+            {
+                if (getDataTypeFilter().getAcceptedDataTypes().isEmpty() || (getDataTypeFilter().getAcceptedDataTypes().size() == 1 && getDataTypeFilter().isAccepting(TipoDado.VAZIO)))
+                {
+                    getDataTypeFilter().acceptAll();
+                }
+            }
+            
             fireFilterChanged();
         }
 
