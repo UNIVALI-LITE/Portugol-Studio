@@ -264,12 +264,11 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         buttonMatrixes = new javax.swing.JToggleButton();
         buttonFunctions = new javax.swing.JToggleButton();
         buttonShowAll = new javax.swing.JToggleButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(175, 30), new java.awt.Dimension(175, 30), new java.awt.Dimension(175, 30));
 
-        setMaximumSize(new java.awt.Dimension(385, 150));
-        setMinimumSize(new java.awt.Dimension(385, 150));
+        setMaximumSize(new java.awt.Dimension(250, 150));
+        setMinimumSize(new java.awt.Dimension(250, 150));
         setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(385, 150));
+        setPreferredSize(new java.awt.Dimension(250, 150));
         setLayout(new java.awt.BorderLayout());
 
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -277,16 +276,16 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         titleLabel.setPreferredSize(new java.awt.Dimension(206, 20));
         add(titleLabel, java.awt.BorderLayout.NORTH);
 
-        alignmentPanel.setMaximumSize(new java.awt.Dimension(385, 135));
-        alignmentPanel.setMinimumSize(new java.awt.Dimension(385, 135));
+        alignmentPanel.setMaximumSize(new java.awt.Dimension(250, 130));
+        alignmentPanel.setMinimumSize(new java.awt.Dimension(250, 130));
         alignmentPanel.setOpaque(false);
-        alignmentPanel.setPreferredSize(new java.awt.Dimension(385, 135));
+        alignmentPanel.setPreferredSize(new java.awt.Dimension(250, 130));
         alignmentPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
         buttonVariables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonVariables.setSelected(true);
-        buttonVariables.setText("Variáveis (Ctrl+Shift+A)");
-        buttonVariables.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonVariables.setText("Variáveis");
+        buttonVariables.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonVariables.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonVariables.addActionListener(new java.awt.event.ActionListener()
         {
@@ -299,8 +298,8 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonArrays.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonArrays.setSelected(true);
-        buttonArrays.setText("Vetores (Ctrl+Shift+E)");
-        buttonArrays.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonArrays.setText("Vetores");
+        buttonArrays.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonArrays.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonArrays.addActionListener(new java.awt.event.ActionListener()
         {
@@ -313,8 +312,8 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonMatrixes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonMatrixes.setSelected(true);
-        buttonMatrixes.setText("Matrizes (Ctrl+Shift+M)");
-        buttonMatrixes.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonMatrixes.setText("Matrizes");
+        buttonMatrixes.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonMatrixes.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonMatrixes.addActionListener(new java.awt.event.ActionListener()
         {
@@ -327,8 +326,8 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonFunctions.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonFunctions.setSelected(true);
-        buttonFunctions.setText("Funções (Ctrl+Shift+F)");
-        buttonFunctions.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonFunctions.setText("Funções");
+        buttonFunctions.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonFunctions.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonFunctions.addActionListener(new java.awt.event.ActionListener()
         {
@@ -341,8 +340,8 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonShowAll.setSelected(true);
-        buttonShowAll.setText("Todos (Ctrl+Shift+T)");
-        buttonShowAll.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonShowAll.setText("Todos");
+        buttonShowAll.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonShowAll.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonShowAll.addActionListener(new java.awt.event.ActionListener()
         {
@@ -352,7 +351,6 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
             }
         });
         alignmentPanel.add(buttonShowAll);
-        alignmentPanel.add(filler1);
 
         add(alignmentPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -390,7 +388,6 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
     private javax.swing.JToggleButton buttonMatrixes;
     private javax.swing.JToggleButton buttonShowAll;
     private javax.swing.JToggleButton buttonVariables;
-    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -74,6 +74,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.event.TreeSelectionEvent;
+import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -226,6 +227,60 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 tree.getFilter().getSymbolNameFilter().setSearchString(searchTextField1.getText());
             }
         });
+        
+        String cancelFilterName = "cancelFilterByName";
+        Action cancelFilterByNameAction = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                searchTextField1.setText("");
+                tree.getFilter().getSymbolNameFilter().setSearchString("");
+
+                SwingUtilities.invokeLater(() ->
+                {
+                    editor.getTextArea().requestFocusInWindow();
+                });
+            }
+        };
+        
+        searchTextField1.getActionMap().put(cancelFilterName, cancelFilterByNameAction);
+        searchTextField1.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelFilterName);
+        
+        String doFilterName = "doFilterByName";
+        Action doFilterByNameAction = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                tree.getFilter().getSymbolNameFilter().setSearchString(searchTextField1.getText());
+                
+                SwingUtilities.invokeLater(() ->
+                {
+                    editor.getTextArea().requestFocusInWindow();
+                });
+            }
+        };
+        
+        searchTextField1.getActionMap().put(doFilterName, doFilterByNameAction);
+        searchTextField1.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), doFilterName);
+        
+        String filterName = "filterByName";
+        Action filterByNameAction = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtilities.invokeLater(() ->
+                {
+                    searchTextField1.requestFocusInWindow();
+                    searchTextField1.selectAll();
+                });
+            }
+        };
+        
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ctrl L"), filterName);
+        getActionMap().put(filterName, filterByNameAction);
 
         barraDeBotoesInspetorArvore.adicionaSeparador();
         barraDeBotoesInspetorArvore.adicionarComponente(dataTypeFilterView);
@@ -1282,7 +1337,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         searchTextField1.setMaximumSize(null);
         searchTextField1.setMinimumSize(null);
-        searchTextField1.setPlaceholder("Pesquisar (Ctrl+P)");
+        searchTextField1.setPlaceholder("Localizar (Ctrl+L)");
         searchTextField1.setPreferredSize(null);
         searchPanel.add(searchTextField1, java.awt.BorderLayout.CENTER);
         searchPanel.add(filler1, java.awt.BorderLayout.EAST);

@@ -290,13 +290,12 @@ public class DataTypeFilterView extends javax.swing.JPanel
         buttonCadeia = new javax.swing.JToggleButton();
         buttonVazio = new javax.swing.JToggleButton();
         buttonShowAll = new javax.swing.JToggleButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(175, 30), new java.awt.Dimension(175, 30), new java.awt.Dimension(175, 30));
 
-        setMaximumSize(new java.awt.Dimension(385, 190));
-        setMinimumSize(new java.awt.Dimension(385, 190));
+        setMaximumSize(new java.awt.Dimension(250, 190));
+        setMinimumSize(new java.awt.Dimension(250, 190));
         setName(""); // NOI18N
         setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(385, 190));
+        setPreferredSize(new java.awt.Dimension(250, 190));
         setLayout(new java.awt.BorderLayout());
 
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -304,16 +303,16 @@ public class DataTypeFilterView extends javax.swing.JPanel
         titleLabel.setPreferredSize(new java.awt.Dimension(195, 20));
         add(titleLabel, java.awt.BorderLayout.NORTH);
 
-        alignmentPanel.setMaximumSize(new java.awt.Dimension(385, 175));
-        alignmentPanel.setMinimumSize(new java.awt.Dimension(385, 175));
+        alignmentPanel.setMaximumSize(new java.awt.Dimension(250, 170));
+        alignmentPanel.setMinimumSize(new java.awt.Dimension(250, 170));
         alignmentPanel.setOpaque(false);
-        alignmentPanel.setPreferredSize(new java.awt.Dimension(385, 175));
+        alignmentPanel.setPreferredSize(new java.awt.Dimension(250, 170));
         alignmentPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
         buttonInteiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonInteiro.setSelected(true);
-        buttonInteiro.setText("Inteiro (Alt+Shift+I)");
-        buttonInteiro.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonInteiro.setText("Inteiro");
+        buttonInteiro.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonInteiro.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/inteiro.png"))); // NOI18N
         buttonInteiro.addActionListener(new java.awt.event.ActionListener()
         {
@@ -326,8 +325,8 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
         buttonReal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonReal.setSelected(true);
-        buttonReal.setText("Real (Alt+Shift+R)");
-        buttonReal.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonReal.setText("Real");
+        buttonReal.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonReal.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/real.png"))); // NOI18N
         buttonReal.addActionListener(new java.awt.event.ActionListener()
         {
@@ -340,8 +339,8 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
         buttonCaracter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonCaracter.setSelected(true);
-        buttonCaracter.setText("Caracter (Alt+Shift+A)");
-        buttonCaracter.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonCaracter.setText("Caracter");
+        buttonCaracter.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonCaracter.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/caracter.png"))); // NOI18N
         buttonCaracter.addActionListener(new java.awt.event.ActionListener()
         {
@@ -354,8 +353,8 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
         buttonLogico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonLogico.setSelected(true);
-        buttonLogico.setText("Lógico (Alt+Shift+L)");
-        buttonLogico.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonLogico.setText("Lógico");
+        buttonLogico.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonLogico.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/logico.png"))); // NOI18N
         buttonLogico.addActionListener(new java.awt.event.ActionListener()
         {
@@ -368,8 +367,8 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
         buttonCadeia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonCadeia.setSelected(true);
-        buttonCadeia.setText("Cadeia (Alt+Shift+C)");
-        buttonCadeia.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonCadeia.setText("Cadeia");
+        buttonCadeia.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonCadeia.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
         buttonCadeia.addActionListener(new java.awt.event.ActionListener()
         {
@@ -382,8 +381,8 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
         buttonVazio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonVazio.setSelected(true);
-        buttonVazio.setText("Vazio (Alt+Shift+V)");
-        buttonVazio.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonVazio.setText("Vazio");
+        buttonVazio.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonVazio.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         buttonVazio.addActionListener(new java.awt.event.ActionListener()
         {
@@ -396,8 +395,8 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
         buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonShowAll.setSelected(true);
-        buttonShowAll.setText("Todos (Alt+Shift+T)");
-        buttonShowAll.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonShowAll.setText("Todos");
+        buttonShowAll.setPreferredSize(new java.awt.Dimension(110, 30));
         buttonShowAll.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         buttonShowAll.addActionListener(new java.awt.event.ActionListener()
         {
@@ -407,7 +406,6 @@ public class DataTypeFilterView extends javax.swing.JPanel
             }
         });
         alignmentPanel.add(buttonShowAll);
-        alignmentPanel.add(filler1);
 
         add(alignmentPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -457,7 +455,6 @@ public class DataTypeFilterView extends javax.swing.JPanel
     private javax.swing.JToggleButton buttonReal;
     private javax.swing.JToggleButton buttonShowAll;
     private javax.swing.JToggleButton buttonVazio;
-    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
