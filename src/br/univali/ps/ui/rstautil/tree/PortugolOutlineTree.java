@@ -2,11 +2,9 @@ package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
-import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 
 import br.univali.ps.ui.rstautil.PortugolParser;
-import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilterListener;
 import br.univali.ps.ui.rstautil.tree.filters.PortugolASTFilter;
 import br.univali.ps.ui.rstautil.tree.filters.PortugolASTFilterListener;
 import br.univali.ps.ui.weblaf.PSTreeUI;

@@ -104,6 +104,11 @@ public final class DataTypeFilter implements ASTFilter
         return acceptedDataTypes.contains(dataType);
     }
 
+    public boolean isAcceptingAll()
+    {
+        return isAccepting(TipoDado.CADEIA) && isAccepting(TipoDado.CARACTER) && isAccepting(TipoDado.INTEIRO) && isAccepting(TipoDado.LOGICO) && isAccepting(TipoDado.REAL);
+    }
+            
     public List<TipoDado> getAcceptedDataTypes()
     {
         return new ArrayList<>(acceptedDataTypes);

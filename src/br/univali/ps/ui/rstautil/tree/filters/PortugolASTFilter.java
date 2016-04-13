@@ -118,5 +118,29 @@ public final class PortugolASTFilter extends CompoundFilter
         {
             fireFilterChanged();
         }
+
+        @Override
+        public void constantsAccepted()
+        {
+            fireFilterChanged();
+        }
+
+        @Override
+        public void constantsRejected()
+        {
+            fireFilterChanged();
+        }
+
+        @Override
+        public void variablesAccepted()
+        {
+            fireFilterChanged();
+        }
+
+        @Override
+        public void variablesRejected()
+        {
+            fireFilterChanged();
+        }
     }
 }

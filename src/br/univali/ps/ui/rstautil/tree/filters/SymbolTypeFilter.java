@@ -65,7 +65,7 @@ import java.util.logging.Logger;
  *
  * @author Luiz Fernando Noschang
  */
-public class SymbolTypeFilter implements ASTFilter
+public final class SymbolTypeFilter implements ASTFilter
 {
     public static enum SymbolType
     {
@@ -75,6 +75,9 @@ public class SymbolTypeFilter implements ASTFilter
     private final List<SymbolType> acceptedSymbolTypes = new ArrayList<>();
     private final List<SymbolTypeFilterListener> listeners = new ArrayList<>();
     private final SymbolTypeVisitor visitor = new SymbolTypeVisitor();
+
+    private boolean acceptConstants = true;
+    private boolean acceptVariables = true;
 
     public SymbolTypeFilter(boolean acceptAll)
     {
@@ -116,10 +119,42 @@ public class SymbolTypeFilter implements ASTFilter
         }
     }
 
+    private void fireConstantsRejected()
+    {
+        for (SymbolTypeFilterListener listener : listeners)
+        {
+            listener.constantsRejected();
+        }
+    }
+
+    private void fireVariablesRejected()
+    {
+        for (SymbolTypeFilterListener listener : listeners)
+        {
+            listener.variablesRejected();
+        }
+    }
+
+    private void fireConstantsAccepted()
+    {
+        for (SymbolTypeFilterListener listener : listeners)
+        {
+            listener.constantsAccepted();
+        }
+    }
+
+    private void fireVariablesAccepted()
+    {
+        for (SymbolTypeFilterListener listener : listeners)
+        {
+            listener.variablesAccepted();
+        }
+    }
+
     public void acceptAll()
     {
         rejectAll();
-        
+
         List<SymbolType> types = Arrays.asList(new SymbolType[]
         {
             SymbolType.VARIAVEL, SymbolType.VETOR, SymbolType.MATRIZ, SymbolType.FUNCAO
@@ -130,16 +165,22 @@ public class SymbolTypeFilter implements ASTFilter
         {
             accept(type);
         }
+
+        acceptConstants();
+        acceptVariables();
     }
 
     public void rejectAll()
     {
         List<SymbolType> types = new ArrayList<>(acceptedSymbolTypes);
-        
+
         for (SymbolType symbolType : types)
         {
             reject(symbolType);
         }
+
+        acceptVariables();
+        acceptConstants();
     }
 
     public void accept(SymbolType symbolType)
@@ -160,9 +201,48 @@ public class SymbolTypeFilter implements ASTFilter
         }
     }
 
+    public void rejectConstants()
+    {
+        acceptConstants = false;
+        fireConstantsRejected();
+    }
+
+    public void rejectVariables()
+    {
+        acceptVariables = false;
+        fireVariablesRejected();
+    }
+
+    public void acceptVariables()
+    {
+        acceptVariables = true;
+        fireVariablesAccepted();
+    }
+
+    public void acceptConstants()
+    {
+        acceptConstants = true;
+        fireConstantsAccepted();
+    }
+
     public boolean isAccepting(SymbolType symbolType)
     {
         return acceptedSymbolTypes.contains(symbolType);
+    }
+
+    public boolean isAcceptingConstants()
+    {
+        return acceptConstants;
+    }
+
+    public boolean isAcceptingVariables()
+    {
+        return acceptVariables;
+    }
+
+    public boolean isAcceptingAll()
+    {
+        return isAcceptingConstants() && isAcceptingVariables() && isAccepting(SymbolType.MATRIZ) && isAccepting(SymbolType.FUNCAO) && isAccepting(SymbolType.VARIAVEL) && isAccepting(SymbolType.VETOR);
     }
 
     public List<SymbolType> getAcceptedSymbolTypes()
@@ -180,11 +260,11 @@ public class SymbolTypeFilter implements ASTFilter
         catch (ExcecaoVisitaASA ex)
         {
             Logger.getLogger(SymbolTypeFilter.class.getName()).log(Level.SEVERE, null, ex);
-            
+
             return false;
         }
     }
-    
+
     private final class SymbolTypeVisitor implements VisitanteASA
     {
         @Override
@@ -196,29 +276,49 @@ public class SymbolTypeFilter implements ASTFilter
         @Override
         public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
         {
-            return acceptedSymbolTypes.contains(SymbolType.MATRIZ);
+            if ((noDeclaracaoMatriz.constante() && acceptConstants) || (!noDeclaracaoMatriz.constante() && acceptVariables))
+            {
+                return acceptedSymbolTypes.contains(SymbolType.MATRIZ);
+            }
+
+            return false;
         }
 
         @Override
         public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
         {
-            boolean isVariable = (noDeclaracaoParametro.getQuantificador() == Quantificador.VALOR && acceptedSymbolTypes.contains(SymbolType.VARIAVEL));
-            boolean isArray = (noDeclaracaoParametro.getQuantificador() == Quantificador.VETOR && acceptedSymbolTypes.contains(SymbolType.VETOR));
-            boolean isMatrix = (noDeclaracaoParametro.getQuantificador() == Quantificador.MATRIZ && acceptedSymbolTypes.contains(SymbolType.MATRIZ));
-            
-            return isVariable || isArray || isMatrix;
+            if (acceptVariables)
+            {
+                boolean isVariable = (noDeclaracaoParametro.getQuantificador() == Quantificador.VALOR && acceptedSymbolTypes.contains(SymbolType.VARIAVEL));
+                boolean isArray = (noDeclaracaoParametro.getQuantificador() == Quantificador.VETOR && acceptedSymbolTypes.contains(SymbolType.VETOR));
+                boolean isMatrix = (noDeclaracaoParametro.getQuantificador() == Quantificador.MATRIZ && acceptedSymbolTypes.contains(SymbolType.MATRIZ));
+
+                return isVariable || isArray || isMatrix;
+            }
+
+            return false;
         }
 
         @Override
         public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA
         {
-            return acceptedSymbolTypes.contains(SymbolType.VARIAVEL);
+            if ((noDeclaracaoVariavel.constante() && acceptConstants) || (!noDeclaracaoVariavel.constante() && acceptVariables))
+            {
+                return acceptedSymbolTypes.contains(SymbolType.VARIAVEL);
+            }
+
+            return false;
         }
 
         @Override
         public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
         {
-            return acceptedSymbolTypes.contains(SymbolType.VETOR);
+            if ((noDeclaracaoVetor.constante() && acceptConstants) || (!noDeclaracaoVetor.constante() && acceptVariables))
+            {
+                return acceptedSymbolTypes.contains(SymbolType.VETOR);
+            }
+
+            return false;
         }
 
         @Override

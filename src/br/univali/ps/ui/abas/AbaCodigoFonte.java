@@ -79,7 +79,6 @@ import javax.swing.tree.TreePath;
 
 public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins
 {
-
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
 
@@ -213,9 +212,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         DataTypeFilterView dataTypeFilterView = new DataTypeFilterView();
         dataTypeFilterView.setFilter(tree.getFilter().getDataTypeFilter());
+        dataTypeFilterView.registerActions(this);
 
         SymbolTypeFilterView symbolTypeFilterView = new SymbolTypeFilterView();
         symbolTypeFilterView.setFilter(tree.getFilter().getSymbolTypeFilter());
+        symbolTypeFilterView.registerActions(this);
 
         barraDeBotoesInspetorArvore.adicionaSeparador();
         barraDeBotoesInspetorArvore.adicionarComponente(dataTypeFilterView);

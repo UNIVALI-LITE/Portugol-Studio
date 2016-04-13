@@ -1,11 +1,16 @@
 package br.univali.ps.ui.rstautil.tree.filters.view;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilterListener;
 import java.awt.Cursor;
-import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -32,8 +37,125 @@ public class DataTypeFilterView extends javax.swing.JPanel
         buttonInteiro.setCursor(cursor);
         buttonLogico.setCursor(cursor);
         buttonReal.setCursor(cursor);
-        buttonShortcuts.setCursor(cursor);
         buttonShowAll.setCursor(cursor);
+    }
+    
+    public void registerActions(AbaCodigoFonte abaCodigoFonte)
+    {
+        registerToggleCadeiaAction(abaCodigoFonte);
+        registerToggleCaracterAction(abaCodigoFonte);
+        registerToggleInteiroAction(abaCodigoFonte);
+        registerToggleLogicoAction(abaCodigoFonte);
+        registerToggleRealAction(abaCodigoFonte);
+        registerShowAllAction(abaCodigoFonte);
+    }
+    
+    private void registerToggleInteiroAction(AbaCodigoFonte abaCodigoFonte)
+    {
+        String name = "DataTypeFilter_inteiro";
+        Action action = new AbstractAction("Inteiro (Alt+Shift+I)")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                buttonInteiro.doClick();
+            }
+        };
+        
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift I");
+        
+        abaCodigoFonte.getActionMap().put(name, action);
+        abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
+    }
+    
+    private void registerToggleCadeiaAction(AbaCodigoFonte abaCodigoFonte)
+    {
+        String name = "DataTypeFilter_cadeia";
+        Action action = new AbstractAction("Cadeia (Alt+Shift+C)")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                buttonCadeia.doClick();
+            }
+        };
+        
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift C");
+        
+        abaCodigoFonte.getActionMap().put(name, action);
+        abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
+    }
+    
+    private void registerToggleRealAction(AbaCodigoFonte abaCodigoFonte)
+    {
+        String name = "DataTypeFilter_real";
+        Action action = new AbstractAction("Real (Alt+Shift+R)")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                buttonReal.doClick();
+            }
+        };
+        
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift R");
+        
+        abaCodigoFonte.getActionMap().put(name, action);
+        abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
+    }
+    
+    private void registerToggleCaracterAction(AbaCodigoFonte abaCodigoFonte)
+    {
+        String name = "DataTypeFilter_caracter";
+        Action action = new AbstractAction("Caracter (Alt+Shift+A)")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                buttonCaracter.doClick();
+            }
+        };
+        
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift A");
+        
+        abaCodigoFonte.getActionMap().put(name, action);
+        abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
+    }
+    
+    private void registerToggleLogicoAction(AbaCodigoFonte abaCodigoFonte)
+    {
+        String name = "DataTypeFilter_logico";
+        Action action = new AbstractAction("Lógico (Alt+Shift+L)")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                buttonLogico.doClick();
+            }
+        };
+        
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift L");
+        
+        abaCodigoFonte.getActionMap().put(name, action);
+        abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
+    }
+    
+    private void registerShowAllAction(AbaCodigoFonte abaCodigoFonte)
+    {
+        String name = "DataTypeFilter_all";
+        Action action = new AbstractAction("Todos (Alt+Shift+T)")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                buttonShowAll.doClick();
+            }
+        };
+        
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift T");
+        
+        abaCodigoFonte.getActionMap().put(name, action);
+        abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
     }
     
     public void setFilter(DataTypeFilter filter)
@@ -57,15 +179,14 @@ public class DataTypeFilterView extends javax.swing.JPanel
             buttonInteiro.setEnabled(true);
             buttonLogico.setEnabled(true);
             buttonReal.setEnabled(true);
-            buttonShowAll.setEnabled(true);
-            buttonShortcuts.setEnabled(true);
-            
+            buttonShowAll.setEnabled(true);            
             
             buttonCadeia.setSelected(filter.isAccepting(TipoDado.CADEIA));
             buttonCaracter.setSelected(filter.isAccepting(TipoDado.CARACTER));
             buttonInteiro.setSelected(filter.isAccepting(TipoDado.INTEIRO));
             buttonLogico.setSelected(filter.isAccepting(TipoDado.LOGICO));
-            buttonReal.setSelected(filter.isAccepting(TipoDado.REAL));
+            buttonReal.setSelected(filter.isAccepting(TipoDado.REAL));            
+            buttonShowAll.setSelected(filter.isAcceptingAll());
         }
         else
         {
@@ -75,7 +196,6 @@ public class DataTypeFilterView extends javax.swing.JPanel
             buttonLogico.setEnabled(false);
             buttonReal.setEnabled(false);
             buttonShowAll.setEnabled(false);
-            buttonShortcuts.setEnabled(false);
         }
     }
 
@@ -95,11 +215,14 @@ public class DataTypeFilterView extends javax.swing.JPanel
     {
         if (filter != null)
         {
-            filter.accept(TipoDado.CADEIA);
-            filter.accept(TipoDado.CARACTER);
-            filter.accept(TipoDado.INTEIRO);
-            filter.accept(TipoDado.LOGICO);
-            filter.accept(TipoDado.REAL);
+            if (buttonShowAll.isSelected())
+            {
+                filter.acceptAll();
+            }
+            else
+            {
+                filter.rejectAll();
+            }
         }
     }
     
@@ -132,136 +255,127 @@ public class DataTypeFilterView extends javax.swing.JPanel
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
-        jLabel1 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        alignmentPanel = new javax.swing.JPanel();
         buttonInteiro = new javax.swing.JToggleButton();
         buttonReal = new javax.swing.JToggleButton();
-        buttonLogico = new javax.swing.JToggleButton();
         buttonCaracter = new javax.swing.JToggleButton();
+        buttonLogico = new javax.swing.JToggleButton();
         buttonCadeia = new javax.swing.JToggleButton();
-        buttonShowAll = new javax.swing.JButton();
-        buttonShortcuts = new javax.swing.JButton();
+        buttonShowAll = new javax.swing.JToggleButton();
 
-        setMaximumSize(new java.awt.Dimension(332, 174));
-        setMinimumSize(new java.awt.Dimension(332, 174));
+        setMaximumSize(new java.awt.Dimension(385, 150));
+        setMinimumSize(new java.awt.Dimension(385, 150));
+        setName(""); // NOI18N
         setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(332, 174));
+        setPreferredSize(new java.awt.Dimension(385, 150));
+        setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Filtrar árvore estrutural por tipo de dado");
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleLabel.setText("Filtrar árvore estrutural por tipo de dado");
+        titleLabel.setPreferredSize(new java.awt.Dimension(195, 20));
+        add(titleLabel, java.awt.BorderLayout.NORTH);
 
-        buttonInteiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/inteiro.png"))); // NOI18N
-        buttonInteiro.setText("inteiro");
-        buttonInteiro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        alignmentPanel.setMaximumSize(new java.awt.Dimension(385, 135));
+        alignmentPanel.setMinimumSize(new java.awt.Dimension(385, 135));
+        alignmentPanel.setOpaque(false);
+        alignmentPanel.setPreferredSize(new java.awt.Dimension(385, 135));
+        alignmentPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+
+        buttonInteiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        buttonInteiro.setSelected(true);
+        buttonInteiro.setText("Inteiro (Alt+Shift+I)");
+        buttonInteiro.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonInteiro.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/inteiro.png"))); // NOI18N
+        buttonInteiro.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 buttonInteiroActionPerformed(evt);
             }
         });
+        alignmentPanel.add(buttonInteiro);
 
-        buttonReal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/real.png"))); // NOI18N
-        buttonReal.setText("real");
-        buttonReal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        buttonReal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        buttonReal.setSelected(true);
+        buttonReal.setText("Real (Alt+Shift+R)");
+        buttonReal.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonReal.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/real.png"))); // NOI18N
+        buttonReal.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 buttonRealActionPerformed(evt);
             }
         });
+        alignmentPanel.add(buttonReal);
 
-        buttonLogico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/logico.png"))); // NOI18N
-        buttonLogico.setText("lógico");
-        buttonLogico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonLogicoActionPerformed(evt);
-            }
-        });
-
-        buttonCaracter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/caracter.png"))); // NOI18N
-        buttonCaracter.setText("caracter");
-        buttonCaracter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        buttonCaracter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        buttonCaracter.setSelected(true);
+        buttonCaracter.setText("Caracter (Alt+Shift+A)");
+        buttonCaracter.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonCaracter.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/caracter.png"))); // NOI18N
+        buttonCaracter.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 buttonCaracterActionPerformed(evt);
             }
         });
+        alignmentPanel.add(buttonCaracter);
 
-        buttonCadeia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
-        buttonCadeia.setText("cadeia");
-        buttonCadeia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        buttonLogico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        buttonLogico.setSelected(true);
+        buttonLogico.setText("Lógico (Alt+Shift+L)");
+        buttonLogico.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonLogico.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/logico.png"))); // NOI18N
+        buttonLogico.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonLogicoActionPerformed(evt);
+            }
+        });
+        alignmentPanel.add(buttonLogico);
+
+        buttonCadeia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        buttonCadeia.setSelected(true);
+        buttonCadeia.setText("Cadeia (Alt+Shift+C)");
+        buttonCadeia.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonCadeia.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
+        buttonCadeia.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 buttonCadeiaActionPerformed(evt);
             }
         });
+        alignmentPanel.add(buttonCadeia);
 
-        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonShowAll.setText("Exibir Todos");
-        buttonShowAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        buttonShowAll.setSelected(true);
+        buttonShowAll.setText("Todos (Alt+Shift+T)");
+        buttonShowAll.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonShowAll.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        buttonShowAll.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 buttonShowAllActionPerformed(evt);
             }
         });
+        alignmentPanel.add(buttonShowAll);
 
-        buttonShortcuts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonShortcuts.setText("Atalhos do Teclado");
-        buttonShortcuts.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonShortcutsActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(buttonInteiro, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonReal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonLogico, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonShowAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonCaracter, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonCadeia, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(buttonShortcuts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonInteiro)
-                    .addComponent(buttonReal)
-                    .addComponent(buttonLogico))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonCaracter)
-                    .addComponent(buttonCadeia))
-                .addGap(18, 18, 18)
-                .addComponent(buttonShowAll)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonShortcuts)
-                .addGap(0, 10, Short.MAX_VALUE))
-        );
+        add(alignmentPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonInteiroActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonInteiroActionPerformed
     {//GEN-HEADEREND:event_buttonInteiroActionPerformed
         updateFilter();
     }//GEN-LAST:event_buttonInteiroActionPerformed
-
-    private void buttonShowAllActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonShowAllActionPerformed
-    {//GEN-HEADEREND:event_buttonShowAllActionPerformed
-        showAll();
-    }//GEN-LAST:event_buttonShowAllActionPerformed
 
     private void buttonRealActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonRealActionPerformed
     {//GEN-HEADEREND:event_buttonRealActionPerformed
@@ -283,20 +397,20 @@ public class DataTypeFilterView extends javax.swing.JPanel
         updateFilter();
     }//GEN-LAST:event_buttonCadeiaActionPerformed
 
-    private void buttonShortcutsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonShortcutsActionPerformed
-    {//GEN-HEADEREND:event_buttonShortcutsActionPerformed
-        JOptionPane.showMessageDialog(DataTypeFilterView.this, "Será implementado!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_buttonShortcutsActionPerformed
+    private void buttonShowAllActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonShowAllActionPerformed
+    {//GEN-HEADEREND:event_buttonShowAllActionPerformed
+        showAll();
+    }//GEN-LAST:event_buttonShowAllActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel alignmentPanel;
     private javax.swing.JToggleButton buttonCadeia;
     private javax.swing.JToggleButton buttonCaracter;
     private javax.swing.JToggleButton buttonInteiro;
     private javax.swing.JToggleButton buttonLogico;
     private javax.swing.JToggleButton buttonReal;
-    private javax.swing.JButton buttonShortcuts;
-    private javax.swing.JButton buttonShowAll;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JToggleButton buttonShowAll;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
