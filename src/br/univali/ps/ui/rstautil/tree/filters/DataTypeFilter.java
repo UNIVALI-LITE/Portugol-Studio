@@ -62,7 +62,7 @@ public final class DataTypeFilter implements ASTFilter
 
         List<TipoDado> types = Arrays.asList(new TipoDado[]
         {
-            TipoDado.CADEIA, TipoDado.CARACTER, TipoDado.INTEIRO, TipoDado.LOGICO, TipoDado.REAL
+            TipoDado.CADEIA, TipoDado.CARACTER, TipoDado.INTEIRO, TipoDado.LOGICO, TipoDado.REAL, TipoDado.VAZIO
         });
         
         for (TipoDado tipoDado : types)
@@ -106,7 +106,7 @@ public final class DataTypeFilter implements ASTFilter
 
     public boolean isAcceptingAll()
     {
-        return isAccepting(TipoDado.CADEIA) && isAccepting(TipoDado.CARACTER) && isAccepting(TipoDado.INTEIRO) && isAccepting(TipoDado.LOGICO) && isAccepting(TipoDado.REAL);
+        return isAccepting(TipoDado.CADEIA) && isAccepting(TipoDado.CARACTER) && isAccepting(TipoDado.INTEIRO) && isAccepting(TipoDado.LOGICO) && isAccepting(TipoDado.REAL) && isAccepting(TipoDado.VAZIO);
     }
             
     public List<TipoDado> getAcceptedDataTypes()

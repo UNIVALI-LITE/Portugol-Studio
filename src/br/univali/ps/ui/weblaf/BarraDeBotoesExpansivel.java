@@ -44,7 +44,15 @@ public final class BarraDeBotoesExpansivel extends WebButton
 
         addActionListener((ActionEvent ae) -> 
         {
-            menu.show(BarraDeBotoesExpansivel.this, 0, getHeight());
+            if (!menu.isVisible())
+            {
+                
+                menu.show(BarraDeBotoesExpansivel.this, 0, getHeight());
+            }
+            else
+            {
+                menu.setVisible(false);
+            }
         });
     }
 

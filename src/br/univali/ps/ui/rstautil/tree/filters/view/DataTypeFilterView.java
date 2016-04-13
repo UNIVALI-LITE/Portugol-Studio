@@ -19,8 +19,8 @@ import javax.swing.KeyStroke;
 public class DataTypeFilterView extends javax.swing.JPanel
 {
     private final DataTypeFilterListener listener = new FilterListener();
-    
-    private DataTypeFilter filter; 
+
+    private DataTypeFilter filter;
 
     public DataTypeFilterView()
     {
@@ -31,7 +31,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
     private void configureButtons()
     {
         Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-        
+
         buttonCadeia.setCursor(cursor);
         buttonCaracter.setCursor(cursor);
         buttonInteiro.setCursor(cursor);
@@ -39,7 +39,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
         buttonReal.setCursor(cursor);
         buttonShowAll.setCursor(cursor);
     }
-    
+
     public void registerActions(AbaCodigoFonte abaCodigoFonte)
     {
         registerToggleCadeiaAction(abaCodigoFonte);
@@ -47,9 +47,10 @@ public class DataTypeFilterView extends javax.swing.JPanel
         registerToggleInteiroAction(abaCodigoFonte);
         registerToggleLogicoAction(abaCodigoFonte);
         registerToggleRealAction(abaCodigoFonte);
+        registerToggleVazioAction(abaCodigoFonte);
         registerShowAllAction(abaCodigoFonte);
     }
-    
+
     private void registerToggleInteiroAction(AbaCodigoFonte abaCodigoFonte)
     {
         String name = "DataTypeFilter_inteiro";
@@ -61,13 +62,13 @@ public class DataTypeFilterView extends javax.swing.JPanel
                 buttonInteiro.doClick();
             }
         };
-        
+
         KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift I");
-        
+
         abaCodigoFonte.getActionMap().put(name, action);
         abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
     }
-    
+
     private void registerToggleCadeiaAction(AbaCodigoFonte abaCodigoFonte)
     {
         String name = "DataTypeFilter_cadeia";
@@ -79,13 +80,13 @@ public class DataTypeFilterView extends javax.swing.JPanel
                 buttonCadeia.doClick();
             }
         };
-        
+
         KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift C");
-        
+
         abaCodigoFonte.getActionMap().put(name, action);
         abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
     }
-    
+
     private void registerToggleRealAction(AbaCodigoFonte abaCodigoFonte)
     {
         String name = "DataTypeFilter_real";
@@ -97,13 +98,13 @@ public class DataTypeFilterView extends javax.swing.JPanel
                 buttonReal.doClick();
             }
         };
-        
+
         KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift R");
-        
+
         abaCodigoFonte.getActionMap().put(name, action);
         abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
     }
-    
+
     private void registerToggleCaracterAction(AbaCodigoFonte abaCodigoFonte)
     {
         String name = "DataTypeFilter_caracter";
@@ -115,13 +116,13 @@ public class DataTypeFilterView extends javax.swing.JPanel
                 buttonCaracter.doClick();
             }
         };
-        
+
         KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift A");
-        
+
         abaCodigoFonte.getActionMap().put(name, action);
         abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
     }
-    
+
     private void registerToggleLogicoAction(AbaCodigoFonte abaCodigoFonte)
     {
         String name = "DataTypeFilter_logico";
@@ -133,13 +134,31 @@ public class DataTypeFilterView extends javax.swing.JPanel
                 buttonLogico.doClick();
             }
         };
-        
+
         KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift L");
-        
+
         abaCodigoFonte.getActionMap().put(name, action);
         abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
     }
     
+    private void registerToggleVazioAction(AbaCodigoFonte abaCodigoFonte)
+    {
+        String name = "DataTypeFilter_vazio";
+        Action action = new AbstractAction("Vazio (Alt+Shift+V)")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                buttonVazio.doClick();
+            }
+        };
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift V");
+
+        abaCodigoFonte.getActionMap().put(name, action);
+        abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
+    }
+
     private void registerShowAllAction(AbaCodigoFonte abaCodigoFonte)
     {
         String name = "DataTypeFilter_all";
@@ -151,13 +170,13 @@ public class DataTypeFilterView extends javax.swing.JPanel
                 buttonShowAll.doClick();
             }
         };
-        
+
         KeyStroke keyStroke = KeyStroke.getKeyStroke("alt shift T");
-        
+
         abaCodigoFonte.getActionMap().put(name, action);
         abaCodigoFonte.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
     }
-    
+
     public void setFilter(DataTypeFilter filter)
     {
         if (this.filter != null)
@@ -179,13 +198,15 @@ public class DataTypeFilterView extends javax.swing.JPanel
             buttonInteiro.setEnabled(true);
             buttonLogico.setEnabled(true);
             buttonReal.setEnabled(true);
-            buttonShowAll.setEnabled(true);            
-            
+            buttonVazio.setEnabled(true);
+            buttonShowAll.setEnabled(true);
+
             buttonCadeia.setSelected(filter.isAccepting(TipoDado.CADEIA));
             buttonCaracter.setSelected(filter.isAccepting(TipoDado.CARACTER));
             buttonInteiro.setSelected(filter.isAccepting(TipoDado.INTEIRO));
             buttonLogico.setSelected(filter.isAccepting(TipoDado.LOGICO));
-            buttonReal.setSelected(filter.isAccepting(TipoDado.REAL));            
+            buttonReal.setSelected(filter.isAccepting(TipoDado.REAL));
+            buttonVazio.setSelected(filter.isAccepting(TipoDado.VAZIO));
             buttonShowAll.setSelected(filter.isAcceptingAll());
         }
         else
@@ -195,6 +216,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
             buttonInteiro.setEnabled(false);
             buttonLogico.setEnabled(false);
             buttonReal.setEnabled(false);
+            buttonVazio.setEnabled(false);
             buttonShowAll.setEnabled(false);
         }
     }
@@ -208,9 +230,10 @@ public class DataTypeFilterView extends javax.swing.JPanel
             toggleDataType(filter, TipoDado.INTEIRO, buttonInteiro);
             toggleDataType(filter, TipoDado.LOGICO, buttonLogico);
             toggleDataType(filter, TipoDado.REAL, buttonReal);
+            toggleDataType(filter, TipoDado.VAZIO, buttonVazio);
         }
     }
-    
+
     private void showAll()
     {
         if (filter != null)
@@ -225,7 +248,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
             }
         }
     }
-    
+
     private void toggleDataType(DataTypeFilter filter, TipoDado dataType, JToggleButton button)
     {
         if (button.isSelected())
@@ -237,7 +260,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
             filter.reject(dataType);
         }
     }
-    
+
     private final class FilterListener implements DataTypeFilterListener
     {
         @Override
@@ -252,7 +275,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
             updateStatus();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
@@ -265,13 +288,15 @@ public class DataTypeFilterView extends javax.swing.JPanel
         buttonCaracter = new javax.swing.JToggleButton();
         buttonLogico = new javax.swing.JToggleButton();
         buttonCadeia = new javax.swing.JToggleButton();
+        buttonVazio = new javax.swing.JToggleButton();
         buttonShowAll = new javax.swing.JToggleButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(175, 30), new java.awt.Dimension(175, 30), new java.awt.Dimension(175, 30));
 
-        setMaximumSize(new java.awt.Dimension(385, 150));
-        setMinimumSize(new java.awt.Dimension(385, 150));
+        setMaximumSize(new java.awt.Dimension(385, 190));
+        setMinimumSize(new java.awt.Dimension(385, 190));
         setName(""); // NOI18N
         setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(385, 150));
+        setPreferredSize(new java.awt.Dimension(385, 190));
         setLayout(new java.awt.BorderLayout());
 
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -279,10 +304,10 @@ public class DataTypeFilterView extends javax.swing.JPanel
         titleLabel.setPreferredSize(new java.awt.Dimension(195, 20));
         add(titleLabel, java.awt.BorderLayout.NORTH);
 
-        alignmentPanel.setMaximumSize(new java.awt.Dimension(385, 135));
-        alignmentPanel.setMinimumSize(new java.awt.Dimension(385, 135));
+        alignmentPanel.setMaximumSize(new java.awt.Dimension(385, 175));
+        alignmentPanel.setMinimumSize(new java.awt.Dimension(385, 175));
         alignmentPanel.setOpaque(false);
-        alignmentPanel.setPreferredSize(new java.awt.Dimension(385, 135));
+        alignmentPanel.setPreferredSize(new java.awt.Dimension(385, 175));
         alignmentPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
         buttonInteiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
@@ -355,6 +380,20 @@ public class DataTypeFilterView extends javax.swing.JPanel
         });
         alignmentPanel.add(buttonCadeia);
 
+        buttonVazio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        buttonVazio.setSelected(true);
+        buttonVazio.setText("Vazio (Alt+Shift+V)");
+        buttonVazio.setPreferredSize(new java.awt.Dimension(175, 30));
+        buttonVazio.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
+        buttonVazio.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonVazioActionPerformed(evt);
+            }
+        });
+        alignmentPanel.add(buttonVazio);
+
         buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
         buttonShowAll.setSelected(true);
         buttonShowAll.setText("Todos (Alt+Shift+T)");
@@ -368,6 +407,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
             }
         });
         alignmentPanel.add(buttonShowAll);
+        alignmentPanel.add(filler1);
 
         add(alignmentPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -402,6 +442,11 @@ public class DataTypeFilterView extends javax.swing.JPanel
         showAll();
     }//GEN-LAST:event_buttonShowAllActionPerformed
 
+    private void buttonVazioActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonVazioActionPerformed
+    {//GEN-HEADEREND:event_buttonVazioActionPerformed
+        updateFilter();
+    }//GEN-LAST:event_buttonVazioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel alignmentPanel;
@@ -411,6 +456,8 @@ public class DataTypeFilterView extends javax.swing.JPanel
     private javax.swing.JToggleButton buttonLogico;
     private javax.swing.JToggleButton buttonReal;
     private javax.swing.JToggleButton buttonShowAll;
+    private javax.swing.JToggleButton buttonVazio;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

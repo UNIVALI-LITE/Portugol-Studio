@@ -13,6 +13,7 @@ public final class PortugolASTFilter extends CompoundFilter
     private final List<PortugolASTFilterListener> listeners = new ArrayList<>();
     private final DataTypeFilter dataTypeFilter = new DataTypeFilter(true);
     private final SymbolTypeFilter symbolTypeFilter = new SymbolTypeFilter(true);
+    private final SymbolNameFilter symbolNameFilter = new SymbolNameFilter();
     
     public PortugolASTFilter()
     {
@@ -20,6 +21,7 @@ public final class PortugolASTFilter extends CompoundFilter
         
         dataTypeFilter.addListener(listener);
         symbolTypeFilter.addListener(listener);
+        symbolNameFilter.addListener(listener);
         
         enableDataTypeFilter();
         enableSymbolTypeFilter();
@@ -73,6 +75,18 @@ public final class PortugolASTFilter extends CompoundFilter
         fireFilterChanged();
     }
     
+    public void enableSymbolNameFilter()
+    {
+        addFilter(symbolNameFilter);
+        fireFilterChanged();
+    }
+    
+    public void disableSymbolNameFilter()
+    {
+        removeFilter(symbolNameFilter);
+        fireFilterChanged();
+    }
+    
     public boolean isDataTypeFilterEnabled()
     {
         return isFilterEnabled(dataTypeFilter);
@@ -83,6 +97,11 @@ public final class PortugolASTFilter extends CompoundFilter
         return isFilterEnabled(symbolTypeFilter);
     }
 
+    public boolean isSymbolNameFilterEnabled()
+    {
+        return isFilterEnabled(symbolNameFilter);
+    }
+    
     public DataTypeFilter getDataTypeFilter()
     {
         return dataTypeFilter;
@@ -92,8 +111,13 @@ public final class PortugolASTFilter extends CompoundFilter
     {
         return symbolTypeFilter;
     }
+
+    public SymbolNameFilter getSymbolNameFilter()
+    {
+        return symbolNameFilter;
+    }
     
-    private final class ChangeListener implements DataTypeFilterListener, SymbolTypeFilterListener
+    private final class ChangeListener implements DataTypeFilterListener, SymbolTypeFilterListener, SymbolNameFilterListener
     {
         @Override
         public void dataTypeAccepted(TipoDado dataType) 
@@ -139,6 +163,12 @@ public final class PortugolASTFilter extends CompoundFilter
 
         @Override
         public void variablesRejected()
+        {
+            fireFilterChanged();
+        }
+
+        @Override
+        public void searchStringChanged(String searchString)
         {
             fireFilterChanged();
         }
