@@ -1,0 +1,191 @@
+package br.univali.ps.ui.rstautil.tree;
+
+import br.univali.ps.ui.utils.IconFactory;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+/**
+ *
+ * @author Luiz Fernando Noschang
+ */
+public class SearchTextField extends JTextField
+{
+    private static final Icon SEARCH_ICON = getIcon();
+    private static final int SEARCH_DELAY = 500;
+
+    private final Insets originalInsets;
+    private String placeholder = "Pesquisar...";
+    private Action searchAction;
+    
+    private Timer searchTimer;
+
+    private static Icon getIcon()
+    {
+        Icon icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png");
+        
+        if (icon == null)
+        {
+            BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            Graphics graphics = image.getGraphics();
+            
+            graphics.setColor(new Color(0, 0, 0, 0));
+            graphics.clearRect(0, 0, 16, 16);
+            graphics.dispose();
+            
+            icon = new ImageIcon(image);
+        }
+        
+        return icon;
+    }
+    
+    public SearchTextField()
+    {
+        initComponents();
+
+        this.addFocusListener(new FocusAdapter()
+        {
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                SearchTextField.this.repaint();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e)
+            {
+                SearchTextField.this.repaint();
+            }
+        });
+        
+        originalInsets = getInsets();
+        int textX = originalInsets.left + SEARCH_ICON.getIconWidth() + 2;
+        setMargin(new Insets(2, textX, 2, 2));
+        
+        getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void insertUpdate(DocumentEvent e)
+            {
+                doSearch();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e)
+            {
+                doSearch();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e)
+            {
+                doSearch();
+            }
+            
+            private void doSearch()
+            {
+                if (searchTimer == null)
+                {
+                    searchTimer = new Timer(SEARCH_DELAY, (ActionEvent e) ->
+                    {
+                        if (getSearchAction() != null)
+                        {
+                            getSearchAction().actionPerformed(e);
+                        }
+                    });
+                    
+                    searchTimer.setInitialDelay(SEARCH_DELAY);
+                    searchTimer.setRepeats(false);
+                    searchTimer.start();
+                }
+                else
+                {
+                    searchTimer.restart();
+                }
+            }
+        });
+    }
+
+    public Action getSearchAction()
+    {
+        return searchAction;
+    }
+
+    public void setSearchAction(Action searchAction)
+    {
+        this.searchAction = searchAction;
+    }
+    
+    public String getPlaceholder()
+    {
+        return placeholder;
+    }
+
+    public void setPlaceholder(String placeholder)
+    {
+        this.placeholder = placeholder;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        if (!this.hasFocus() && this.getText().equals(""))
+        {
+            Color previousColor = getForeground();
+            
+            setForeground(Color.GRAY);
+            setText(placeholder);
+            
+            super.paintComponent(g);
+
+            setForeground(previousColor);
+            setText("");
+        }
+        else
+        {        
+            super.paintComponent(g);
+        }
+        
+        if (SEARCH_ICON != null)
+        {
+            int iconHeight = SEARCH_ICON.getIconHeight();
+
+            int x = originalInsets.left;
+            int y = (this.getHeight() - iconHeight) / 2;
+
+            SEARCH_ICON.paintIcon(this, g, x, y);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents()
+    {
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+}

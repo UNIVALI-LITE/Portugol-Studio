@@ -14,6 +14,7 @@ import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -194,6 +195,11 @@ public final class PortugolStudio
 
     public void finalizar(int codigo)
     {
+        if (PortugolStudio.getInstancia().isAtualizandoInicializador())
+        {
+            FabricaDicasInterface.mostrarNotificacao("O Portugol Studio está finalizando uma ação e encerrará em instantes", 2000);
+        }
+        
         while (PortugolStudio.getInstancia().isAtualizandoInicializador())
         {
             try
