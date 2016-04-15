@@ -1,11 +1,11 @@
 package br.univali.ps.ui.weblaf;
 
 import br.univali.ps.ui.ColorController;
-import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
@@ -13,17 +13,15 @@ import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Locale;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -143,6 +141,27 @@ public class WeblafUtils {
             Locale.setDefault(new Locale("pt", "br"));//corrige o idioma nos diálogos de pesquisar e substituir
             UIManager.put("SplitPane.supportsOneTouchButtons", true);//oneTouchButton nos splitPanes em todas as plataformas
         }
+    }
+    
+    public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin){
+        botao.setMargin (margin);
+//        botao.setFontSize ( 20 );
+        botao.setRound ( 0 );
+        botao.setShadeWidth ( 0 );
+        botao.setInnerShadeWidth ( 0 );
+        botao.setDrawSides ( false, false, false, false );
+        botao.setForeground ( corTexto );
+        botao.setTopBgColor (corBgPrincipal);
+        botao.setBottomBgColor (corBgPrincipal);
+        botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botao.setSelectedForeground(corTextoHover);
+        botao.setTopSelectedBgColor(corBgHover);
+        botao.setBottomSelectedBgColor(corBgHover);
+        
+    }
+    public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin, Integer size){
+        botao.setPreferredWidth(size);
+        configurarToogleBotao(botao, corBgPrincipal, corTexto, corBgHover, corTextoHover, margin);
     }
     
     public  static void configurarBotao(WebButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin){

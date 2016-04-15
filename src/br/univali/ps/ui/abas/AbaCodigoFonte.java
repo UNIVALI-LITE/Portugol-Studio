@@ -74,7 +74,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.text.PlainDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -288,7 +287,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesInspetorArvore.adicionaSeparador();
         barraDeBotoesInspetorArvore.adicionarComponente(symbolTypeFilterView);
 
-        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 15), 0, 0);
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 0), 0, 0);
         painelInspetorArvore.add(barraDeBotoesInspetorArvore, constrainsts);
         painelInspetorArvore.setComponentZOrder(barraDeBotoesInspetorArvore, 0);
     }

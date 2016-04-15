@@ -1,9 +1,12 @@
 package br.univali.ps.ui.rstautil.tree.filters.view;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilterListener;
+import br.univali.ps.ui.weblaf.WeblafUtils;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -31,12 +34,14 @@ public class DataTypeFilterView extends javax.swing.JPanel
     private void configureButtons()
     {
         Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-
-        buttonCadeia.setCursor(cursor);
-        buttonCaracter.setCursor(cursor);
-        buttonInteiro.setCursor(cursor);
-        buttonLogico.setCursor(cursor);
-        buttonReal.setCursor(cursor);
+        WeblafUtils.configurarToogleBotao(buttonCadeia, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
+        WeblafUtils.configurarToogleBotao(buttonCaracter,ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
+        WeblafUtils.configurarToogleBotao(buttonInteiro, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
+        WeblafUtils.configurarToogleBotao(buttonLogico, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
+        WeblafUtils.configurarToogleBotao(buttonReal, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
+        WeblafUtils.configurarToogleBotao(buttonVazio, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
+        WeblafUtils.configurarToogleBotao(buttonShowAll, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2);
+        
         buttonShowAll.setCursor(cursor);
     }
 
@@ -278,183 +283,144 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
+        buttonShowAll = new com.alee.laf.button.WebToggleButton();
         alignmentPanel = new javax.swing.JPanel();
-        buttonInteiro = new javax.swing.JToggleButton();
-        buttonReal = new javax.swing.JToggleButton();
-        buttonCaracter = new javax.swing.JToggleButton();
-        buttonLogico = new javax.swing.JToggleButton();
-        buttonCadeia = new javax.swing.JToggleButton();
-        buttonVazio = new javax.swing.JToggleButton();
-        buttonShowAll = new javax.swing.JToggleButton();
+        buttonInteiro = new com.alee.laf.button.WebToggleButton();
+        buttonReal = new com.alee.laf.button.WebToggleButton();
+        buttonCaracter = new com.alee.laf.button.WebToggleButton();
+        buttonLogico = new com.alee.laf.button.WebToggleButton();
+        buttonCadeia = new com.alee.laf.button.WebToggleButton();
+        buttonVazio = new com.alee.laf.button.WebToggleButton();
 
-        setMaximumSize(new java.awt.Dimension(250, 190));
-        setMinimumSize(new java.awt.Dimension(250, 190));
         setName(""); // NOI18N
         setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(250, 190));
         setLayout(new java.awt.BorderLayout());
 
-        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Filtrar árvore estrutural por tipo de dado");
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        titleLabel.setText("Tipo de Dado");
+        titleLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        titleLabel.setFocusable(false);
         titleLabel.setPreferredSize(new java.awt.Dimension(195, 20));
-        add(titleLabel, java.awt.BorderLayout.NORTH);
+        jPanel1.add(titleLabel, java.awt.BorderLayout.CENTER);
 
-        alignmentPanel.setMaximumSize(new java.awt.Dimension(250, 170));
-        alignmentPanel.setMinimumSize(new java.awt.Dimension(250, 170));
+        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/warning.png"))); // NOI18N
+        buttonShowAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonShowAllActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buttonShowAll, java.awt.BorderLayout.EAST);
+
+        add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        alignmentPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 10, 10));
         alignmentPanel.setOpaque(false);
-        alignmentPanel.setPreferredSize(new java.awt.Dimension(250, 170));
-        alignmentPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+        alignmentPanel.setLayout(new java.awt.GridLayout(3, 2, 10, 10));
 
-        buttonInteiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonInteiro.setSelected(true);
+        buttonInteiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/inteiro.png"))); // NOI18N
         buttonInteiro.setText("Inteiro");
-        buttonInteiro.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonInteiro.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/inteiro.png"))); // NOI18N
-        buttonInteiro.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonInteiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonInteiroActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonInteiro);
 
-        buttonReal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonReal.setSelected(true);
+        buttonReal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/real.png"))); // NOI18N
         buttonReal.setText("Real");
-        buttonReal.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonReal.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/real.png"))); // NOI18N
-        buttonReal.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonReal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRealActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonReal);
 
-        buttonCaracter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonCaracter.setSelected(true);
+        buttonCaracter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/caracter.png"))); // NOI18N
         buttonCaracter.setText("Caracter");
-        buttonCaracter.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonCaracter.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/caracter.png"))); // NOI18N
-        buttonCaracter.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonCaracter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCaracterActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonCaracter);
 
-        buttonLogico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonLogico.setSelected(true);
+        buttonLogico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/logico.png"))); // NOI18N
         buttonLogico.setText("Lógico");
-        buttonLogico.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonLogico.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/logico.png"))); // NOI18N
-        buttonLogico.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonLogico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonLogicoActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonLogico);
 
-        buttonCadeia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonCadeia.setSelected(true);
+        buttonCadeia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
         buttonCadeia.setText("Cadeia");
-        buttonCadeia.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonCadeia.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
-        buttonCadeia.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonCadeia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCadeiaActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonCadeia);
 
-        buttonVazio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonVazio.setSelected(true);
+        buttonVazio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
         buttonVazio.setText("Vazio");
-        buttonVazio.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonVazio.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/unknown.png"))); // NOI18N
-        buttonVazio.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonVazio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonVazioActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonVazio);
 
-        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonShowAll.setSelected(true);
-        buttonShowAll.setText("Todos");
-        buttonShowAll.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonShowAll.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonShowAll.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                buttonShowAllActionPerformed(evt);
-            }
-        });
-        alignmentPanel.add(buttonShowAll);
-
         add(alignmentPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonInteiroActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonInteiroActionPerformed
-    {//GEN-HEADEREND:event_buttonInteiroActionPerformed
+    private void buttonInteiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInteiroActionPerformed
         updateFilter();
     }//GEN-LAST:event_buttonInteiroActionPerformed
 
-    private void buttonRealActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonRealActionPerformed
-    {//GEN-HEADEREND:event_buttonRealActionPerformed
+    private void buttonRealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRealActionPerformed
         updateFilter();
     }//GEN-LAST:event_buttonRealActionPerformed
 
-    private void buttonLogicoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonLogicoActionPerformed
-    {//GEN-HEADEREND:event_buttonLogicoActionPerformed
-        updateFilter();
-    }//GEN-LAST:event_buttonLogicoActionPerformed
-
-    private void buttonCaracterActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonCaracterActionPerformed
-    {//GEN-HEADEREND:event_buttonCaracterActionPerformed
+    private void buttonCaracterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCaracterActionPerformed
         updateFilter();
     }//GEN-LAST:event_buttonCaracterActionPerformed
 
-    private void buttonCadeiaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonCadeiaActionPerformed
-    {//GEN-HEADEREND:event_buttonCadeiaActionPerformed
+    private void buttonLogicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLogicoActionPerformed
+        updateFilter();
+    }//GEN-LAST:event_buttonLogicoActionPerformed
+
+    private void buttonCadeiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadeiaActionPerformed
         updateFilter();
     }//GEN-LAST:event_buttonCadeiaActionPerformed
 
-    private void buttonShowAllActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonShowAllActionPerformed
-    {//GEN-HEADEREND:event_buttonShowAllActionPerformed
-        showAll();
-    }//GEN-LAST:event_buttonShowAllActionPerformed
-
-    private void buttonVazioActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonVazioActionPerformed
-    {//GEN-HEADEREND:event_buttonVazioActionPerformed
+    private void buttonVazioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVazioActionPerformed
         updateFilter();
     }//GEN-LAST:event_buttonVazioActionPerformed
+
+    private void buttonShowAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonShowAllActionPerformed
+        showAll();
+    }//GEN-LAST:event_buttonShowAllActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel alignmentPanel;
-    private javax.swing.JToggleButton buttonCadeia;
-    private javax.swing.JToggleButton buttonCaracter;
-    private javax.swing.JToggleButton buttonInteiro;
-    private javax.swing.JToggleButton buttonLogico;
-    private javax.swing.JToggleButton buttonReal;
-    private javax.swing.JToggleButton buttonShowAll;
-    private javax.swing.JToggleButton buttonVazio;
+    private com.alee.laf.button.WebToggleButton buttonCadeia;
+    private com.alee.laf.button.WebToggleButton buttonCaracter;
+    private com.alee.laf.button.WebToggleButton buttonInteiro;
+    private com.alee.laf.button.WebToggleButton buttonLogico;
+    private com.alee.laf.button.WebToggleButton buttonReal;
+    private com.alee.laf.button.WebToggleButton buttonShowAll;
+    private com.alee.laf.button.WebToggleButton buttonVazio;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
