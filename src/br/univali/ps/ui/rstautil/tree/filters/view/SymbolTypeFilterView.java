@@ -4,6 +4,7 @@ import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilterListener;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -31,11 +32,17 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
     private void configureButtons()
     {
-        WeblafUtils.configurarToogleBotao(buttonArrays, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
-        WeblafUtils.configurarToogleBotao(buttonFunctions, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
-        WeblafUtils.configurarToogleBotao(buttonMatrixes, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
-        WeblafUtils.configurarToogleBotao(buttonVariables, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10, 100);
+        WeblafUtils.configurarToogleBotao(buttonArrays, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
+        WeblafUtils.configurarToogleBotao(buttonFunctions, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
+        WeblafUtils.configurarToogleBotao(buttonMatrixes, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
+        WeblafUtils.configurarToogleBotao(buttonVariables, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonShowAll, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2);
+        
+        FabricaDicasInterface.criarTooltip(buttonVariables, "ctrl+shift+a");
+        FabricaDicasInterface.criarTooltip(buttonFunctions, "ctrl+shift+f");
+        FabricaDicasInterface.criarTooltip(buttonMatrixes, "ctrl+shift+m");
+        FabricaDicasInterface.criarTooltip(buttonArrays, "ctrl+shift+e");
+        FabricaDicasInterface.criarTooltip(buttonShowAll, "Selecionar Todos: ctrl+shift+t");
     }
 
     public void setFilter(SymbolTypeFilter filter)
@@ -272,7 +279,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/warning.png"))); // NOI18N
+        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/puzzleicon.png"))); // NOI18N
         buttonShowAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonShowAllActionPerformed(evt);
@@ -282,6 +289,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         titleLabel.setText("Tipo de Símbolo");
+        titleLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         titleLabel.setPreferredSize(new java.awt.Dimension(206, 20));
         jPanel1.add(titleLabel, java.awt.BorderLayout.CENTER);
 
@@ -293,6 +301,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonVariables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
         buttonVariables.setText("Variáveis");
+        buttonVariables.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonVariables.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonVariablesActionPerformed(evt);
@@ -302,6 +311,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonArrays.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/vetor_caracter.png"))); // NOI18N
         buttonArrays.setText("Vetores");
+        buttonArrays.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonArrays.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonArraysActionPerformed(evt);
@@ -311,6 +321,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonMatrixes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/matriz_real.png"))); // NOI18N
         buttonMatrixes.setText("Matrizes");
+        buttonMatrixes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonMatrixes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonMatrixesActionPerformed(evt);
@@ -320,6 +331,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
         buttonFunctions.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/funcaoDoUsuario.png"))); // NOI18N
         buttonFunctions.setText("Funções");
+        buttonFunctions.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonFunctions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonFunctionsActionPerformed(evt);

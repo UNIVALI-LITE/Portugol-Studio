@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
@@ -143,8 +144,16 @@ public class WeblafUtils {
         }
     }
     
+    public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover){
+        Insets insets= new Insets(10, 20, 10, 10);
+        configurarToogleBotao(botao, corBgPrincipal, corTexto, corBgHover, corTextoHover, insets);
+    }
     public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin){
-        botao.setMargin (margin);
+        Insets insets= new Insets(margin, margin, margin, margin);
+        configurarToogleBotao(botao, corBgPrincipal, corTexto, corBgHover, corTextoHover, insets);
+    }    
+public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Insets margin){
+        botao.setMargin(margin);
 //        botao.setFontSize ( 20 );
         botao.setRound ( 0 );
         botao.setShadeWidth ( 0 );
@@ -157,9 +166,8 @@ public class WeblafUtils {
         botao.setSelectedForeground(corTextoHover);
         botao.setTopSelectedBgColor(corBgHover);
         botao.setBottomSelectedBgColor(corBgHover);
-        
     }
-    public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin, Integer size){
+    public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Insets margin, Integer size){
         botao.setPreferredWidth(size);
         configurarToogleBotao(botao, corBgPrincipal, corTexto, corBgHover, corTextoHover, margin);
     }
