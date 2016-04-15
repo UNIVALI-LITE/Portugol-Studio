@@ -42,13 +42,15 @@ public class DataTypeFilterView extends javax.swing.JPanel
         WeblafUtils.configurarToogleBotao(buttonVazio, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonShowAll, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2);
         
-        FabricaDicasInterface.criarTooltip(buttonCadeia, "alt+shift+c");
-        FabricaDicasInterface.criarTooltip(buttonCaracter, "alt+shift+a");
-        FabricaDicasInterface.criarTooltip(buttonInteiro, "alt+shift+i");
-        FabricaDicasInterface.criarTooltip(buttonLogico, "alt+shift+l");
-        FabricaDicasInterface.criarTooltip(buttonReal, "alt+shift+r");
-        FabricaDicasInterface.criarTooltip(buttonVazio, "alt+shift+v");
-        FabricaDicasInterface.criarTooltip(buttonShowAll, "Selecionar Todos: alt+shift+t");
+        String texto = "Exibir/Ocultar símbolos deste tipo (Alt+Shift+";
+        
+        FabricaDicasInterface.criarTooltip(buttonCadeia, texto+"C)");
+        FabricaDicasInterface.criarTooltip(buttonCaracter, texto+"A)");
+        FabricaDicasInterface.criarTooltip(buttonInteiro, texto+"I)");
+        FabricaDicasInterface.criarTooltip(buttonLogico, texto+"L)");
+        FabricaDicasInterface.criarTooltip(buttonReal, texto+"R)");
+        FabricaDicasInterface.criarTooltip(buttonVazio, texto+"V)");
+        FabricaDicasInterface.criarTooltip(buttonShowAll, "Exibir/Ocultar todos os tipos de dados: Alt+Shift+T");
     }
 
     public void registerActions(AbaCodigoFonte abaCodigoFonte)

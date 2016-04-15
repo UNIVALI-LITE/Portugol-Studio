@@ -38,11 +38,13 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         WeblafUtils.configurarToogleBotao(buttonVariables, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonShowAll, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2);
         
-        FabricaDicasInterface.criarTooltip(buttonVariables, "ctrl+shift+a");
-        FabricaDicasInterface.criarTooltip(buttonFunctions, "ctrl+shift+f");
-        FabricaDicasInterface.criarTooltip(buttonMatrixes, "ctrl+shift+m");
-        FabricaDicasInterface.criarTooltip(buttonArrays, "ctrl+shift+e");
-        FabricaDicasInterface.criarTooltip(buttonShowAll, "Selecionar Todos: ctrl+shift+t");
+        String texto = "Exibir/Ocultar (Ctrl+Shift+";
+        
+        FabricaDicasInterface.criarTooltip(buttonVariables, texto+"A)");
+            FabricaDicasInterface.criarTooltip(buttonFunctions, texto+"F)");
+        FabricaDicasInterface.criarTooltip(buttonMatrixes, texto+"M)");
+        FabricaDicasInterface.criarTooltip(buttonArrays, texto+"E)");
+        FabricaDicasInterface.criarTooltip(buttonShowAll, "Exibir/Ocultar todos símbolos: Ctrl+Shift+T");
     }
 
     public void setFilter(SymbolTypeFilter filter)
