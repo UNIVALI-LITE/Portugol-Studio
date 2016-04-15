@@ -1,8 +1,11 @@
 package br.univali.ps.ui.rstautil.tree.filters.view;
 
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilterListener;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -29,13 +32,19 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
     private void configureButtons()
     {
-        Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-
-        buttonFunctions.setCursor(cursor);
-        buttonVariables.setCursor(cursor);
-        buttonMatrixes.setCursor(cursor);
-        buttonArrays.setCursor(cursor);
-        buttonShowAll.setCursor(cursor);
+        WeblafUtils.configurarToogleBotao(buttonArrays, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
+        WeblafUtils.configurarToogleBotao(buttonFunctions, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
+        WeblafUtils.configurarToogleBotao(buttonMatrixes, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
+        WeblafUtils.configurarToogleBotao(buttonVariables, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
+        WeblafUtils.configurarToogleBotao(buttonShowAll, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2);
+        
+        String texto = "Exibir/Ocultar (Ctrl+Shift+";
+        
+        FabricaDicasInterface.criarTooltip(buttonVariables, texto+"A)");
+            FabricaDicasInterface.criarTooltip(buttonFunctions, texto+"F)");
+        FabricaDicasInterface.criarTooltip(buttonMatrixes, texto+"M)");
+        FabricaDicasInterface.criarTooltip(buttonArrays, texto+"E)");
+        FabricaDicasInterface.criarTooltip(buttonShowAll, "Exibir/Ocultar todos símbolos: Ctrl+Shift+T");
     }
 
     public void setFilter(SymbolTypeFilter filter)
@@ -254,140 +263,116 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        buttonShowAll = new com.alee.laf.button.WebToggleButton();
         titleLabel = new javax.swing.JLabel();
         alignmentPanel = new javax.swing.JPanel();
-        buttonVariables = new javax.swing.JToggleButton();
-        buttonArrays = new javax.swing.JToggleButton();
-        buttonMatrixes = new javax.swing.JToggleButton();
-        buttonFunctions = new javax.swing.JToggleButton();
-        buttonShowAll = new javax.swing.JToggleButton();
+        buttonVariables = new com.alee.laf.button.WebToggleButton();
+        buttonArrays = new com.alee.laf.button.WebToggleButton();
+        buttonMatrixes = new com.alee.laf.button.WebToggleButton();
+        buttonFunctions = new com.alee.laf.button.WebToggleButton();
 
-        setMaximumSize(new java.awt.Dimension(250, 150));
-        setMinimumSize(new java.awt.Dimension(250, 150));
         setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(250, 150));
         setLayout(new java.awt.BorderLayout());
 
-        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Filtrar árvore estrutural por tipo de símbolo");
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/puzzleicon.png"))); // NOI18N
+        buttonShowAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonShowAllActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buttonShowAll, java.awt.BorderLayout.EAST);
+
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        titleLabel.setText("Tipo de Símbolo");
+        titleLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         titleLabel.setPreferredSize(new java.awt.Dimension(206, 20));
-        add(titleLabel, java.awt.BorderLayout.NORTH);
+        jPanel1.add(titleLabel, java.awt.BorderLayout.CENTER);
 
-        alignmentPanel.setMaximumSize(new java.awt.Dimension(250, 130));
-        alignmentPanel.setMinimumSize(new java.awt.Dimension(250, 130));
+        add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        alignmentPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 10, 10));
         alignmentPanel.setOpaque(false);
-        alignmentPanel.setPreferredSize(new java.awt.Dimension(250, 130));
-        alignmentPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+        alignmentPanel.setLayout(new java.awt.GridLayout(2, 2, 10, 10));
 
-        buttonVariables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonVariables.setSelected(true);
+        buttonVariables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
         buttonVariables.setText("Variáveis");
-        buttonVariables.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonVariables.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonVariables.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonVariables.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        buttonVariables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonVariablesActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonVariables);
 
-        buttonArrays.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonArrays.setSelected(true);
+        buttonArrays.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/vetor_caracter.png"))); // NOI18N
         buttonArrays.setText("Vetores");
-        buttonArrays.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonArrays.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonArrays.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonArrays.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        buttonArrays.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonArraysActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonArrays);
 
-        buttonMatrixes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonMatrixes.setSelected(true);
+        buttonMatrixes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/matriz_real.png"))); // NOI18N
         buttonMatrixes.setText("Matrizes");
-        buttonMatrixes.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonMatrixes.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonMatrixes.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonMatrixes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        buttonMatrixes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonMatrixesActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonMatrixes);
 
-        buttonFunctions.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonFunctions.setSelected(true);
+        buttonFunctions.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/funcaoDoUsuario.png"))); // NOI18N
         buttonFunctions.setText("Funções");
-        buttonFunctions.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonFunctions.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonFunctions.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        buttonFunctions.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        buttonFunctions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonFunctionsActionPerformed(evt);
             }
         });
         alignmentPanel.add(buttonFunctions);
 
-        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
-        buttonShowAll.setSelected(true);
-        buttonShowAll.setText("Todos");
-        buttonShowAll.setPreferredSize(new java.awt.Dimension(110, 30));
-        buttonShowAll.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
-        buttonShowAll.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                buttonShowAllActionPerformed(evt);
-            }
-        });
-        alignmentPanel.add(buttonShowAll);
-
         add(alignmentPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonVariablesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonVariablesActionPerformed
-    {//GEN-HEADEREND:event_buttonVariablesActionPerformed
-        updateFilter();
-    }//GEN-LAST:event_buttonVariablesActionPerformed
+    private void buttonShowAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonShowAllActionPerformed
+        showAll();
+    }//GEN-LAST:event_buttonShowAllActionPerformed
 
-    private void buttonArraysActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonArraysActionPerformed
-    {//GEN-HEADEREND:event_buttonArraysActionPerformed
-        updateFilter();
-    }//GEN-LAST:event_buttonArraysActionPerformed
-
-    private void buttonMatrixesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonMatrixesActionPerformed
-    {//GEN-HEADEREND:event_buttonMatrixesActionPerformed
-        updateFilter();
-    }//GEN-LAST:event_buttonMatrixesActionPerformed
-
-    private void buttonFunctionsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonFunctionsActionPerformed
-    {//GEN-HEADEREND:event_buttonFunctionsActionPerformed
+    private void buttonFunctionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFunctionsActionPerformed
         updateFilter();
     }//GEN-LAST:event_buttonFunctionsActionPerformed
 
-    private void buttonShowAllActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonShowAllActionPerformed
-    {//GEN-HEADEREND:event_buttonShowAllActionPerformed
-        showAll();
-    }//GEN-LAST:event_buttonShowAllActionPerformed
+    private void buttonMatrixesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMatrixesActionPerformed
+        updateFilter();
+    }//GEN-LAST:event_buttonMatrixesActionPerformed
+
+    private void buttonArraysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonArraysActionPerformed
+        updateFilter();
+    }//GEN-LAST:event_buttonArraysActionPerformed
+
+    private void buttonVariablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVariablesActionPerformed
+        updateFilter();
+    }//GEN-LAST:event_buttonVariablesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel alignmentPanel;
-    private javax.swing.JToggleButton buttonArrays;
-    private javax.swing.JToggleButton buttonFunctions;
-    private javax.swing.JToggleButton buttonMatrixes;
-    private javax.swing.JToggleButton buttonShowAll;
-    private javax.swing.JToggleButton buttonVariables;
+    private com.alee.laf.button.WebToggleButton buttonArrays;
+    private com.alee.laf.button.WebToggleButton buttonFunctions;
+    private com.alee.laf.button.WebToggleButton buttonMatrixes;
+    private com.alee.laf.button.WebToggleButton buttonShowAll;
+    private com.alee.laf.button.WebToggleButton buttonVariables;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
