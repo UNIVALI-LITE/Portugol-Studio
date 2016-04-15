@@ -1163,8 +1163,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         grupoBotoesPlugins = new javax.swing.ButtonGroup();
@@ -1188,7 +1187,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         treePanel = new javax.swing.JPanel();
         searchPanel = new javax.swing.JPanel();
         searchTextField1 = new br.univali.ps.ui.rstautil.tree.SearchTextField();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 25), new java.awt.Dimension(50, 25), new java.awt.Dimension(50, 25));
         scrollOutlineTree = new javax.swing.JScrollPane();
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
         scrollInspetor = new javax.swing.JScrollPane();
@@ -1331,6 +1329,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         treePanel.setOpaque(false);
         treePanel.setLayout(new java.awt.BorderLayout());
 
+        searchPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 35));
         searchPanel.setOpaque(false);
         searchPanel.setLayout(new java.awt.BorderLayout());
 
@@ -1339,7 +1338,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         searchTextField1.setPlaceholder("Localizar (Ctrl+L)");
         searchTextField1.setPreferredSize(null);
         searchPanel.add(searchTextField1, java.awt.BorderLayout.CENTER);
-        searchPanel.add(filler1, java.awt.BorderLayout.EAST);
 
         treePanel.add(searchPanel, java.awt.BorderLayout.NORTH);
 
@@ -2180,7 +2178,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JSplitPane divisorArvoreInspetor;
     private javax.swing.JSplitPane divisorEditorConsole;
     private br.univali.ps.ui.editor.Editor editor;
-    private javax.swing.Box.Filler filler1;
     private javax.swing.ButtonGroup grupoBotoesPlugins;
     private br.univali.ps.ui.inspetor.InspetorDeSimbolos inspetorDeSimbolos;
     private javax.swing.JPanel painelBotoes;
