@@ -372,37 +372,4 @@ public class PSTextArea extends RSyntaxTextArea {
             }
         }
     }
-
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                WebLookAndFeel.install();
-                JFrame frame = new JFrame("Teste PsTextArea");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800, 600);
-                frame.setLayout(new BorderLayout());
-
-                PSTextArea textArea = new PSTextArea();//new PortugolDocumento());
-                textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
-                String codigo = "public class NewJFrame extends javax.swing.JFrame {\n\n}";
-                textArea.setText(codigo);
-                RTextScrollPane scroll = new RTextScrollPane(textArea, true);
-                RSyntaxUtilities.getGutter(textArea).setFoldIndicatorEnabled(true);
-                Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png");
-                try {
-                    RSyntaxUtilities.getGutter(textArea).addLineTrackingIcon(1, icone);
-                } catch (BadLocationException e) {
-
-                }
-                textArea.setCodeFoldingEnabled(true);
-                frame.add(scroll, BorderLayout.CENTER);
-                frame.pack();
-                frame.setVisible(true);
-            }
-        });
-
-    }
-
 }

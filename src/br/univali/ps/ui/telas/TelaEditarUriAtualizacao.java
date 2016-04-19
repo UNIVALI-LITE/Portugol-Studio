@@ -126,7 +126,6 @@ public final class TelaEditarUriAtualizacao extends JDialog
 
         rotuloTitulo.setText("Informe a nova URI de onde as atualizações serão obtidas:");
 
-        botaoOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/yes.png"))); // NOI18N
         botaoOK.setText("OK");
         botaoOK.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoOK.setFocusPainted(false);

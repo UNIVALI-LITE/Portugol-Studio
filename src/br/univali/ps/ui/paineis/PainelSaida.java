@@ -4,8 +4,6 @@ import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.abas.AbaConsole;
 import br.univali.ps.ui.abas.AbaMensagemCompilador;
-import br.univali.ps.ui.abas.AbaEnunciado;
-import br.univali.ps.ui.weblaf.PSMainTabbedPaneUI;
 import br.univali.ps.ui.weblaf.PSOutTabbedPaneUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
@@ -20,7 +18,6 @@ public final class PainelSaida extends PainelTabulado {
 
     private final AbaConsole abaConsole;
     private final AbaMensagemCompilador abaMensagensCompilador;
-    private AbaEnunciado abaEnunciado;
 
     public PainelSaida() {
         super();
@@ -56,10 +53,6 @@ public final class PainelSaida extends PainelTabulado {
 
     public AbaMensagemCompilador getAbaMensagensCompilador() {
         return abaMensagensCompilador;
-    }
-
-    public AbaEnunciado getEnunciadoAba() {
-        return abaEnunciado;
     }
     
     public static void main(final String args[]) {

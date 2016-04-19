@@ -82,7 +82,6 @@ public final class TelaLogAtualizacoes extends JDialog
         painelBotoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
         painelBotoes.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 0));
 
-        botaoOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/yes.png"))); // NOI18N
         botaoOK.setText("OK");
         botaoOK.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoOK.setFocusPainted(false);

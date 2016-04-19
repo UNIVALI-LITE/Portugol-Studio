@@ -116,7 +116,6 @@ public final class PainelPlugins extends JPanel
         painelAlinhamentoNome.setLayout(new java.awt.BorderLayout());
 
         rotuloNome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        rotuloNome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/temas.png"))); // NOI18N
         rotuloNome.setText("Plugin");
         rotuloNome.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 0, 0));
         rotuloNome.setIconTextGap(6);

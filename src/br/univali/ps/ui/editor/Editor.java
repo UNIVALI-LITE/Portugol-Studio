@@ -211,9 +211,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor)
     {
         JMenu menu = new JMenu("Cores");
-
-        menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cores.png"));
-
+        
         for (String tema : gerenciadorTemas.listarTemas())
         {
             JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
@@ -541,7 +539,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarAcaoComentar()
     {
-        acaoComentar = new AbstractAction("Comentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "comment.png"))
+        acaoComentar = new AbstractAction("Comentar")
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -585,7 +583,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarAcaoDescomentar()
     {
-        acaoDescomentar = new AbstractAction("Descomentar", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "uncomment.png"))
+        acaoDescomentar = new AbstractAction("Descomentar")
         {
             @Override
             public void actionPerformed(ActionEvent e)

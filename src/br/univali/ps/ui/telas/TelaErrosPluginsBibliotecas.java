@@ -91,7 +91,7 @@ public final class TelaErrosPluginsBibliotecas extends JDialog
         String nome = "OK";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
-        acaoSair = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "yes.png"))
+        acaoSair = new AbstractAction(nome)
         {
             @Override
             public void actionPerformed(ActionEvent e)
