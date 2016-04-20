@@ -1,10 +1,13 @@
 # Portugol-Studio
 O [Portugol Studio](http://lite.acad.univali.br/portugol/) é um ambiente para aprender a programar, voltado para os iniciantes em programação que falam o idioma português. Possui uma sintaxe fácil, diversos exemplos e materiais de apoio à aprendizagem. Também possibilita a criação de jogos e outras aplicações.
 ***
+
+[![Complilação Download](#projetos-necessarios)](http://lite.acad.univali.br/portugol/)
+
 ## Compilando o Portugol
 Se você está interessado em ajudar no desenvolvimento do  **Portugol Studio**, ou testar a versão mais atual do sistema, é necessário seguir alguns passos.
 Primeiramente é preciso a IDE [NetBeans](https://netbeans.org/) e ter os Projetos que fazem parte do Portugol Studio
-##### Projetos Necessários
+### Projetos Necessários
 * Portugol Ajuda
 * Portugol Núcleo
 * Portugol Relator de Erros
