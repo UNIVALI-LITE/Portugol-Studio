@@ -90,6 +90,6 @@ public final class FileHandle
             LOGGER.log(Level.SEVERE, null, ex);
         }
 
-        return reading.toString();
+        return reading.toString().replaceAll("\r\n", "\n");
     }
 }
