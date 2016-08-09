@@ -35,8 +35,19 @@ public final class ColorController {
                 new Color(255,194,0)
             };
     }
+    private static Color[] getASHTheme(){
+        return new Color[]{
+                new Color(251,251,251),
+                new Color(58,70,76),
+                new Color(38,50,56),
+                new Color(28,40,46),
+                new Color(38,50,56),
+                new Color(48,60,66),
+                new Color(255,194,0)
+            };
+    }
     
-    private static final Color[] THEME= getDefaultTheme();
+    private static final Color[] THEME= getASHTheme();
     public static final Color COR_LETRA = THEME[0];
     public static final Color COR_DESTAQUE = THEME[1];
     public static final Color COR_PRINCIPAL = THEME[2];
