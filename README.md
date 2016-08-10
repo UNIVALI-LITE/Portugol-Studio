@@ -2,6 +2,8 @@
 
 [![Gitter](https://badges.gitter.im/UNIVALI-LITE/Portugol-Studio.svg)](https://gitter.im/UNIVALI-LITE/Portugol-Studio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+[![ReviewNinja](https://app.review.ninja/2157104/badge)](https://app.review.ninja/UNIVALI-LITE/Portugol-Studio)
+
 O [Portugol Studio](http://lite.acad.univali.br/portugol/) é um ambiente para aprender a programar, voltado para os iniciantes em programação que falam o idioma português. Possui uma sintaxe fácil, diversos exemplos e materiais de apoio à aprendizagem. Também possibilita a criação de jogos e outras aplicações.
 ***
 
