@@ -68,6 +68,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -164,6 +165,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
     private void configurarCores(){
         errorStrip.setBackground(ColorController.COR_PRINCIPAL);
+        
+        scrollPane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
+        scrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, null);
     }
     
     public Set<Integer> getLinhasComPontoDeParadaAtivados()
