@@ -55,6 +55,7 @@ public class PortugolOutlineTree extends JTree
     private void configurarAparencia()
     {
         setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        
         setRowHeight(0);
         setRootVisible(false);
         setCellRenderer(new AstTreeCellRenderer());

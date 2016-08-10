@@ -10,7 +10,7 @@
    <baseFont size="12"/>
    
    <!--  General editor colors. -->
-   <background color="333333"/>
+   <background color="263238"/>
    <caret color="c1cbc2"/>
    <selection bg="404E51" roundedEdges="false"/>
    <currentLineHighlight color="2F393C" fade="false"/>
@@ -34,8 +34,8 @@
    <!-- Syntax tokens. -->
    <tokenStyles>
       <style token="IDENTIFIER" fg="E0E2E4"/>
-      <style token="RESERVED_WORD" fg="93C763" bold="true"/>
-      <style token="RESERVED_WORD_2" fg="93C763" bold="true"/>
+      <style token="RESERVED_WORD" fg="F1433C" bold="true"/>
+      <style token="RESERVED_WORD_2" fg="F1433C" bold="true"/>
       <style token="ANNOTATION" fg="E8E2B7"/>
       <style token="COMMENT_DOCUMENTATION" fg="6C788C"/>
       <style token="COMMENT_EOL" fg="66747B"/>
@@ -43,15 +43,15 @@
       <style token="COMMENT_KEYWORD" fg="ae9fbf"/>
       <style token="COMMENT_MARKUP" fg="ae9fbf"/>
       <style token="FUNCTION" fg="E0E2E4"/>
-      <style token="DATA_TYPE" fg="678CB1" bold="true"/>
-      <style token="LITERAL_BOOLEAN" fg="93C763" bold="true"/>
-      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="FFCD22"/>
-      <style token="LITERAL_NUMBER_FLOAT" fg="FFCD22"/>
-      <style token="LITERAL_NUMBER_HEXADECIMAL" fg="FFCD22"/>
-      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="EC7600"/>
-      <style token="LITERAL_CHAR" fg="EC7600"/>
-      <style token="LITERAL_BACKQUOTE" fg="EC7600"/>
-      <style token="MARKUP_TAG_DELIMITER" fg="678CB1"/>
+      <style token="DATA_TYPE" fg="00F0C0" bold="true"/>
+      <style token="LITERAL_BOOLEAN" fg="F1433C" bold="true"/>
+      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="45BEFF"/>
+      <style token="LITERAL_NUMBER_FLOAT" fg="45BEFF"/>
+      <style token="LITERAL_NUMBER_HEXADECIMAL" fg="45BEFF"/>
+      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="F19494"/>
+      <style token="LITERAL_CHAR" fg="F19494"/>
+      <style token="LITERAL_BACKQUOTE" fg="F19494"/>
+      <style token="MARKUP_TAG_DELIMITER" fg="00F0C0"/>
       <style token="MARKUP_TAG_NAME" fg="ABBFD3"/>
       <style token="MARKUP_TAG_ATTRIBUTE" fg="B3B689"/>
       <style token="MARKUP_TAG_ATTRIBUTE_VALUE" fg="e1e2cf"/>
