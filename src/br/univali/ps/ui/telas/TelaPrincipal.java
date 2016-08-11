@@ -180,7 +180,7 @@ public final class TelaPrincipal extends JFrame
         exibirErrosPluginsBibliotecas();
         exibirLogAtualizacoes();
 
-        baixarNovasAtualizacoes();
+        //baixarNovasAtualizacoes();
     }
 
     private void exibirErrosPluginsBibliotecas()
