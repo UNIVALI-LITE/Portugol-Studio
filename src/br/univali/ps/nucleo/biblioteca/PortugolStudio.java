@@ -7,9 +7,13 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
-@PropriedadesBiblioteca(tipo = TipoBiblioteca.COMPARTILHADA)
+@PropriedadesBiblioteca(tipo = TipoBiblioteca.RESERVADA)
 @DocumentacaoBiblioteca(
         descricao = "Esta biblioteca permite executar algumas ações dentro do Portugol Studio a partir dos programas ",
         versao = "1.0"
@@ -37,18 +41,32 @@ public final class PortugolStudio extends Biblioteca
     )
     public void minimizar() throws ErroExecucaoBiblioteca
     {
-        setUltimoEstado(br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState());
-        br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.ICONIFIED);
+        try {
+            SwingUtilities.invokeAndWait(() -> {
+                setUltimoEstado(br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState());
+                br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.ICONIFIED);
+            });
+        } catch (InterruptedException | InvocationTargetException ex) {
+            throw new ErroExecucaoBiblioteca(ex);
+        }
+        
     }
 
     @Override
     protected void finalizar() throws ErroExecucaoBiblioteca
     {
-        if (br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState() == JFrame.ICONIFIED)
-        {
-            br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(getUltimoEstado());
-            br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().toFront();
-            br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().requestFocusInWindow();
+        try {
+            SwingUtilities.invokeAndWait(() -> {
+                if (br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState() == JFrame.ICONIFIED)
+                {
+                    br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(getUltimoEstado());
+                    br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().toFront();
+                    br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().requestFocusInWindow();
+                }
+            });
+        } catch (InterruptedException | InvocationTargetException ex) {
+            throw new ErroExecucaoBiblioteca(ex);
         }
+        
     }
 }
