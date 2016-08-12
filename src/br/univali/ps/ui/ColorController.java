@@ -40,14 +40,14 @@ public final class ColorController {
                 new Color(251,251,251),
                 new Color(58,70,76),
                 new Color(38,50,56),
-                new Color(28,40,46),
+                new Color(18,30,36),
                 new Color(38,50,56),
-                new Color(48,60,66),
-                new Color(255,194,0)
+                new Color(68,80,86),
+                new Color(241,67,60)
             };
     }
     
-    private static final Color[] THEME= getDefaultTheme();
+    private static final Color[] THEME= getASHTheme();
     public static final Color COR_LETRA = THEME[0];
     public static final Color COR_DESTAQUE = THEME[1];
     public static final Color COR_PRINCIPAL = THEME[2];
