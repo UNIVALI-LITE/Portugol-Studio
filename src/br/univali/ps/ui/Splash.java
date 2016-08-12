@@ -123,7 +123,7 @@ public final class Splash
         String caminho = String.format("br/univali/ps/ui/imagens/splash/%s", step);
         Image imagem = carregarImagem(caminho);
 
-        graphics.drawImage(imagem, 327, 29, null);
+        graphics.drawImage(imagem, 354, 91, null);
     }
 
     public static void ocultar()

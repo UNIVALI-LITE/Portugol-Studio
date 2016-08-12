@@ -35,7 +35,7 @@ public final class TelaPrincipal extends JFrame
     private List<File> arquivosIniciais;
 
     public static void main(final String argumentos[])
-    {
+    {try {               Thread.sleep(1500);} catch (InterruptedException ex) {Logger.getLogger(PortugolStudio.class.getName()).log(Level.SEVERE, null, ex);}
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
 
@@ -79,7 +79,6 @@ public final class TelaPrincipal extends JFrame
     private void criaAbas()
     {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
-
     }
 
     private void configurarJanela()
@@ -363,8 +362,10 @@ public final class TelaPrincipal extends JFrame
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         mainPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -373,10 +374,27 @@ public final class TelaPrincipal extends JFrame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
 
-        mainPanel.setLayout(new java.awt.BorderLayout());
+        mainPanel.setLayout(new java.awt.GridBagLayout());
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 0));
+        jPanel1.setMaximumSize(new java.awt.Dimension(200, 60));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 10;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        mainPanel.add(jPanel1, gridBagConstraints);
 
         painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        mainPanel.add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 13;
+        gridBagConstraints.gridheight = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        mainPanel.add(painelTabuladoPrincipal, gridBagConstraints);
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
@@ -384,6 +402,7 @@ public final class TelaPrincipal extends JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainPanel;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
     // End of variables declaration//GEN-END:variables

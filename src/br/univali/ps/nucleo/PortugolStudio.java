@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -43,6 +44,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
@@ -602,7 +604,16 @@ public final class PortugolStudio
                 @Override
                 public void run()
                 {
+                    getTelaPrincipal().dispose();
+                    getTelaPrincipal().setExtendedState(JFrame.NORMAL);
+                    getTelaPrincipal().setUndecorated(true);
+                    
+                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+                    getTelaPrincipal().setBounds(bounds);
+                    getTelaPrincipal().setLocationRelativeTo(null);
+                    
                     getTelaPrincipal().setVisible(true);
+                    
                 }
             });
         }
