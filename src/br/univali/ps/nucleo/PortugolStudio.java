@@ -1,5 +1,7 @@
 package br.univali.ps.nucleo;
 
+import br.univali.portugol.nucleo.Portugol;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.ps.DetectorViolacoesThreadSwing;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
@@ -567,7 +569,14 @@ public final class PortugolStudio
 
     private void carregarBibliotecas()
     {
-        // Implementar depois
+        try 
+        {
+            Portugol.getGerenciadorBibliotecas().registrarBibliotecaExterna(br.univali.ps.nucleo.biblioteca.PortugolStudio.class);
+        }
+        catch (ErroCarregamentoBiblioteca ex)
+        {
+            Logger.getLogger(PortugolStudio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private List<File> listarPastasPlugins(File diretorioPlugins)

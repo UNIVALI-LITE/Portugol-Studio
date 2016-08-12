@@ -47,7 +47,7 @@ public final class ColorController {
             };
     }
     
-    private static final Color[] THEME= getDefaultTheme();
+    private static final Color[] THEME= getASHTheme();
     public static final Color COR_LETRA = THEME[0];
     public static final Color COR_DESTAQUE = THEME[1];
     public static final Color COR_PRINCIPAL = THEME[2];
