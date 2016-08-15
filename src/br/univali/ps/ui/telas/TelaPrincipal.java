@@ -14,6 +14,7 @@ import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -62,7 +63,13 @@ public final class TelaPrincipal extends JFrame
         criaAbas();
         instalarObservadores();
         configurarCores();
-        
+        configurarBotoes();
+    }
+    
+    private void configurarBotoes(){
+        if(WeblafUtils.weblafEstaInstalado()){
+            WeblafUtils.configurarBotao(closeButton,ColorController.FUNDO_MEDIO,ColorController.COR_PRINCIPAL, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, 5);
+        }
     }
     
     private void configurarCores(){
@@ -364,9 +371,13 @@ public final class TelaPrincipal extends JFrame
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        webButton1 = new com.alee.laf.button.WebButton();
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        closeButton = new com.alee.laf.button.WebButton();
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
+
+        webButton1.setText("webButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
@@ -378,6 +389,17 @@ public final class TelaPrincipal extends JFrame
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 0));
         jPanel1.setMaximumSize(new java.awt.Dimension(200, 60));
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(closeButton);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 10;
         gridBagConstraints.gridy = 0;
@@ -401,9 +423,15 @@ public final class TelaPrincipal extends JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        fecharAplicativo();
+    }//GEN-LAST:event_closeButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.alee.laf.button.WebButton closeButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainPanel;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
+    private com.alee.laf.button.WebButton webButton1;
     // End of variables declaration//GEN-END:variables
 }
