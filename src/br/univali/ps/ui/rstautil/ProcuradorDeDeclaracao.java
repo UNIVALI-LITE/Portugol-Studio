@@ -135,6 +135,14 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
         verificarNoDeclaracao(noDeclaracaoMatriz);
+        if (noDeclaracaoMatriz.getNumeroColunas()!= null)
+        {
+            noDeclaracaoMatriz.getNumeroColunas().aceitar(this);
+        }
+        if (noDeclaracaoMatriz.getNumeroLinhas()!= null)
+        {
+            noDeclaracaoMatriz.getNumeroLinhas().aceitar(this);
+        }
         return null;
     }
 
