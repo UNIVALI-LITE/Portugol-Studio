@@ -14,7 +14,8 @@ import javax.swing.Icon;
  *
  * @author elieser
  */
-abstract class ItemDaLista {
+public abstract class ItemDaLista {
+
     protected final NoDeclaracao noDeclaracao;
     private long ultimaPintura = 0; //timestamp da ultima atualização
     protected static final long TEMPO_ENTRE_PINTURAS = 200; //no máximo 4 pinturas por segundo
@@ -91,5 +92,5 @@ abstract class ItemDaLista {
     }
 
     public abstract void limpa();
-    
+
 }
