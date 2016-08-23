@@ -83,8 +83,8 @@ public class PainelExemplos extends javax.swing.JPanel
     
     private void configurarCores(){
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
-        painelTitulo.setBackground(ColorController.FUNDO_ESCURO);
-        imagePane.setBackground(ColorController.FUNDO_ESCURO);
+        painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
+        imagePane.setBackground(ColorController.COR_PRINCIPAL);
         description.setForeground(ColorController.COR_PRINCIPAL);
         jPanel2.setBackground(ColorController.COR_LETRA);
     }

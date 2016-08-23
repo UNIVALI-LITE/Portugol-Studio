@@ -57,7 +57,7 @@ public final class AbaInicial extends Aba {
         instalarAcoesSecretas();
     }
     private void configurarCores(){
-        painelFundo.setBackground(ColorController.FUNDO_ESCURO);
+        painelFundo.setBackground(ColorController.COR_PRINCIPAL);
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
         conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
         rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);

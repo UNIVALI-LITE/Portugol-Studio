@@ -56,6 +56,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         configurarBotoes();
         criarDicasInterface();
         instalarObservadores(telaPrincipal);
+        titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
             WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
@@ -186,7 +187,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     private void desativar() {
         titulo.setIcon(iconeInativo);
-        titulo.setForeground(ColorController.FUNDO_ESCURO);
+        titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
             WeblafUtils.configurarBotao(botaoNovoArquivo, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);

@@ -24,7 +24,6 @@ public class ExampleTreeRender extends DefaultTreeCellRenderer {
     public ExampleTreeRender() {
         setBorder(new EmptyBorder(7, 7, 7, 7));
     }   
-    Color black = new Color(51, 51, 51);
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus){
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);

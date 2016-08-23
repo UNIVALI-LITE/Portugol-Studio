@@ -32,7 +32,7 @@ public class PSTreeUI extends BasicTreeUI {
             g.fillRect(0, 0, tree.getWidth(), tree.getHeight());
         }
         if (tree.getSelectionCount() > 0) {
-            g.setColor(ColorController.FUNDO_MEDIO);
+            g.setColor(ColorController.COR_DESTAQUE);
             //@see http://ateraimemo.com/Swing/TreeRowSelection.html
             for (int i : tree.getSelectionRows()) {
                 Rectangle r = tree.getRowBounds(i);
@@ -43,7 +43,7 @@ public class PSTreeUI extends BasicTreeUI {
         
         if (tree.getLeadSelectionPath() != null) {
             Rectangle r = tree.getRowBounds(getRowForPath(tree, tree.getLeadSelectionPath()));
-            g.setColor(tree.hasFocus() ? ColorController.FUNDO_MEDIO.darker() : ColorController.FUNDO_MEDIO);
+            g.setColor(tree.hasFocus() ? ColorController.FUNDO_MEDIO.brighter(): ColorController.FUNDO_MEDIO);
 //            g.drawRect(0, r.y, tree.getWidth() - 1, r.height - 1);
         }
     }
