@@ -69,14 +69,24 @@
             <Property name="alignment" type="int" value="2"/>
           </Layout>
           <SubComponents>
-            <Component class="com.alee.laf.button.WebButton" name="closeButton">
+            <Component class="com.alee.laf.button.WebButton" name="iconifyButton">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/window_close.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/white_min.png"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="iconifyButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="com.alee.laf.button.WebButton" name="closeButton1">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/white_close.png"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeButton1ActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

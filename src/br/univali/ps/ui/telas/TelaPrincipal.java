@@ -68,7 +68,8 @@ public final class TelaPrincipal extends JFrame
     
     private void configurarBotoes(){
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(closeButton,ColorController.FUNDO_MEDIO,ColorController.COR_PRINCIPAL, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(closeButton1,ColorController.FUNDO_CLARO,ColorController.COR_PRINCIPAL, ColorController.PROGRESS_BAR, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(iconifyButton,ColorController.FUNDO_CLARO,ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
         }
     }
     
@@ -374,7 +375,8 @@ public final class TelaPrincipal extends JFrame
         webButton1 = new com.alee.laf.button.WebButton();
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        closeButton = new com.alee.laf.button.WebButton();
+        iconifyButton = new com.alee.laf.button.WebButton();
+        closeButton1 = new com.alee.laf.button.WebButton();
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
         webButton1.setText("webButton1");
@@ -392,13 +394,21 @@ public final class TelaPrincipal extends JFrame
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
-        closeButton.addActionListener(new java.awt.event.ActionListener() {
+        iconifyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_min.png"))); // NOI18N
+        iconifyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeButtonActionPerformed(evt);
+                iconifyButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(closeButton);
+        jPanel1.add(iconifyButton);
+
+        closeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_close.png"))); // NOI18N
+        closeButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(closeButton1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 10;
@@ -423,12 +433,17 @@ public final class TelaPrincipal extends JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+    private void iconifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iconifyButtonActionPerformed
+        PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_iconifyButtonActionPerformed
+
+    private void closeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButton1ActionPerformed
         fecharAplicativo();
-    }//GEN-LAST:event_closeButtonActionPerformed
+    }//GEN-LAST:event_closeButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.alee.laf.button.WebButton closeButton;
+    private com.alee.laf.button.WebButton closeButton1;
+    private com.alee.laf.button.WebButton iconifyButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainPanel;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
