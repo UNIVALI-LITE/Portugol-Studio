@@ -438,10 +438,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     }
 
     private ItemDaLista getItemDoNo(NoDeclaracao no) {
-        ComparadorDeNos comparador = new ComparadorDeNos();
         for (int i = 0; i < model.getSize(); i++) {
             ItemDaLista item = model.getElementAt(i);
-            if (comparador.mesmoNo(item.getNoDeclaracao(), no)) {
+            if (mesmoNo(item.getNoDeclaracao(), no)) {
                 return item;
             }
         }
@@ -701,8 +700,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private Simbolo getSimboloDoNo(NoDeclaracao noDeclaracao) {
         for (Simbolo simbolo : cacheDeSimbolos) {
-            ComparadorDeNos comparadorDeNos = new ComparadorDeNos();
-            if (comparadorDeNos.mesmoNo(noDeclaracao, simbolo.getOrigemDoSimbolo())) {
+            if (mesmoNo(noDeclaracao, simbolo.getOrigemDoSimbolo())) {
                 return simbolo;
             }
         }
@@ -780,6 +778,22 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             }
 
         }
+    }
+    
+    private boolean nosTemMesmoEscopo(NoDeclaracao no1, NoDeclaracao no2) {
+        TrechoCodigoFonte trecho1 = no1.getTrechoCodigoFonte();
+        TrechoCodigoFonte trecho2 = no2.getTrechoCodigoFonte();
+        if (trecho1 != null && trecho2 != null) {
+            return trecho1.getLinha() == trecho2.getLinha(); // se as 2 declarações estão na mesma linha então estão no mesmo escopo
+        }
+        return false;
+    }
+    
+    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
+        boolean mesmoEscopo = nosTemMesmoEscopo(no1, no2);
+        boolean mesmoNome = no1.getNome().equals(no2.getNome());
+        boolean mesmoTipo = no1.getTipoDado() == no2.getTipoDado();
+        return mesmoEscopo && mesmoNome && mesmoTipo;
     }
 
     //sempre que o código fonte é alterado este listener é disparado. Toda a árvore sintática
