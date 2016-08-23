@@ -304,7 +304,7 @@ public final class AbaInicial extends Aba {
             @Override
             public void mouseEntered(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
-                rotulo.setForeground(ColorController.FUNDO_ESCURO);
+                rotulo.setBackground(ColorController.COR_DESTAQUE);
                 rotulo.setOpaque(true);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.BOLD));
 
@@ -313,7 +313,7 @@ public final class AbaInicial extends Aba {
             @Override
             public void mouseExited(MouseEvent e) {
                 JLabel rotulo = (JLabel) e.getSource();
-                rotulo.setForeground(ColorController.COR_LETRA);
+                rotulo.setBackground(ColorController.COR_PRINCIPAL);
                 rotulo.setOpaque(false);
                 //rotulo.setFont(rotulo.getFont().deriveFont(Font.PLAIN));
             }
