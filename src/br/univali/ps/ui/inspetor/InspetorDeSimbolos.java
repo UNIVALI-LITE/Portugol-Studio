@@ -40,6 +40,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -47,8 +48,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,11 +72,11 @@ import javax.swing.border.Border;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
- *
  * @author elieser
  */
 public class InspetorDeSimbolos extends JList<ItemDaLista> implements ObservadorExecucao {
 
+    private static final Logger LOGGER = Logger.getLogger(InspetorDeSimbolos.class.getName());
     private static final String INSTRUCAO = "Arraste uma variável para este \npainél se quiser inspecioná-la";
     private final DefaultListModel<ItemDaLista> model = new DefaultListModel<>();
 
@@ -247,10 +248,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             //cada subclasse de ItemDaLista retorna um renderer component diferente.
         }
     }
-
-    
-
-    
 
     private boolean simboloEhPermitido(Simbolo simbolo) {
         if (simbolo instanceof Ponteiro) {
@@ -433,30 +430,22 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     }
 
-    public boolean contemNo(NoDeclaracao no, boolean consideraEscopo) {
+    public boolean contemNo(NoDeclaracao no) {
         if (no == null) {
             return false;
         }
-        return getItemDoNo(no, consideraEscopo) != null;
+        return getItemDoNo(no) != null;
     }
 
-    public boolean contemNo(NoDeclaracao no) {
-        return contemNo(no, false);
-    }
-
-    private ItemDaLista getItemDoNo(NoDeclaracao no, boolean consideraEscopo) {
-        ComparadorDeNos comparador = new ComparadorDeNos(ultimoProgramaCompilado);
+    private ItemDaLista getItemDoNo(NoDeclaracao no) {
+        ComparadorDeNos comparador = new ComparadorDeNos();
         for (int i = 0; i < model.getSize(); i++) {
             ItemDaLista item = model.getElementAt(i);
-            if (comparador.mesmoNo(item.getNoDeclaracao(), no, consideraEscopo)) {
+            if (comparador.mesmoNo(item.getNoDeclaracao(), no)) {
                 return item;
             }
         }
         return null;
-    }
-
-    private ItemDaLista getItemDoNo(NoDeclaracao no) {
-        return getItemDoNo(no, false);
     }
 
     @Override
@@ -487,16 +476,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             List<NoDeclaracao> nosTransferidos = null;
             try {
                 nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            for (NoDeclaracao no : nosTransferidos) {
-                if (!contemNo(no)) {
-                    support.setShowDropLocation(true);
-                    return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
+                for (NoDeclaracao no : nosTransferidos) {
+                    if (!contemNo(no)) {
+                        support.setShowDropLocation(true);
+                        return true;//basta que um dos nós transferidos ainda não esteja no inspetor e deve ser possível adicionar este nó na lista
+                    }
                 }
+            } catch (IOException | UnsupportedFlavorException e) {
+                LOGGER.log(Level.SEVERE, null, e);
             }
             return false;
         }
@@ -662,12 +649,21 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private boolean adicionaNoParametro(NoDeclaracaoParametro declaracaoParametro) {
         ItemDaLista item = null;
         Quantificador quantificador = declaracaoParametro.getQuantificador();
-        if (quantificador == Quantificador.VALOR) {
-            item = new ItemDaListaParaVariavel(declaracaoParametro);
-        } else if (quantificador == Quantificador.VETOR) {
-            item = new ItemDaListaParaVetor(declaracaoParametro);
-        } else if (quantificador == Quantificador.MATRIZ) {
-            item = new ItemDaListaParaMatriz(declaracaoParametro);
+        if (null == quantificador)
+            return false;
+        
+        switch (quantificador) {
+            case VALOR:
+                item = new ItemDaListaParaVariavel(declaracaoParametro);
+                break;
+            case VETOR:
+                item = new ItemDaListaParaVetor(declaracaoParametro);
+                break;
+            case MATRIZ:
+                item = new ItemDaListaParaMatriz(declaracaoParametro);
+                break;
+            default:
+                break;
         }
         if (item != null) {
             model.addElement(item);
@@ -690,7 +686,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         if (simboloInserido) {
             //altera o destaque do símbolo recém inserido
             model.get(model.getSize() - 1).setDesenhaDestaques(!programaExecutando);
-            
+
             //atualiza o item do inspetor
             ItemDaLista item = getItemDoNo(noTransferido);
             if (item != null) {
@@ -705,15 +701,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private Simbolo getSimboloDoNo(NoDeclaracao noDeclaracao) {
         for (Simbolo simbolo : cacheDeSimbolos) {
-            boolean consideraEscopo = true;
-            ComparadorDeNos comparadorDeNos = new ComparadorDeNos(ultimoProgramaCompilado);
-            if (comparadorDeNos.mesmoNo(noDeclaracao, simbolo.getOrigemDoSimbolo(), consideraEscopo)) {
+            ComparadorDeNos comparadorDeNos = new ComparadorDeNos();
+            if (comparadorDeNos.mesmoNo(noDeclaracao, simbolo.getOrigemDoSimbolo())) {
                 return simbolo;
             }
         }
         return null;
     }
-    
+
     private void notificaMudancaNaLista() {
         for (InspetorDeSimbolosListener listener : listeners) {
             listener.listaDeSimbolosInpecionadosFoiModificada();
@@ -745,7 +740,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
                     @Override
                     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
-                        if (contemNo(noDeclaracaoVariavel, true)) {
+                        if (contemNo(noDeclaracaoVariavel)) {
                             nosQueSeraoMantidos.add(noDeclaracaoVariavel);
                         }
                         return null;
@@ -753,7 +748,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
                     @Override
                     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA {
-                        if (contemNo(noDeclaracaoParametro, true)) {
+                        if (contemNo(noDeclaracaoParametro)) {
                             nosQueSeraoMantidos.add(noDeclaracaoParametro);
                         }
                         return null;
@@ -761,7 +756,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
                     @Override
                     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA {
-                        if (contemNo(noDeclaracaoMatriz, true)) {
+                        if (contemNo(noDeclaracaoMatriz)) {
                             nosQueSeraoMantidos.add(noDeclaracaoMatriz);
                         }
                         return null;
@@ -769,7 +764,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
                     @Override
                     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA {
-                        if (contemNo(noDeclaracaoVetor, true)) {
+                        if (contemNo(noDeclaracaoVetor)) {
                             nosQueSeraoMantidos.add(noDeclaracaoVetor);
                         }
                         return null;
