@@ -36,6 +36,7 @@ import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -69,6 +70,7 @@ public class PainelExemplos extends javax.swing.JPanel
         imagem.setDisplayType ( DisplayType.fitComponent );
         imagePane.add(imagem);
         if(WeblafUtils.weblafEstaInstalado()){
+            WeblafUtils.configuraWebLaf(jScrollPane1);
             WeblafUtils.configurarBotao(openExample,ColorController.FUNDO_ESCURO,ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10);
         }
         inicializarJTree();
@@ -87,6 +89,8 @@ public class PainelExemplos extends javax.swing.JPanel
         imagePane.setBackground(ColorController.COR_DESTAQUE);
         description.setForeground(ColorController.COR_LETRA);
         jPanel2.setBackground(ColorController.FUNDO_MEDIO);
+        jScrollPane1.setBackground(ColorController.FUNDO_CLARO);
+        jScrollPane1.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
     }
     
     private void inicializarJTree(){
