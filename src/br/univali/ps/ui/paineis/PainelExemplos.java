@@ -18,6 +18,7 @@ import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -33,12 +34,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -47,34 +51,33 @@ import javax.swing.tree.TreePath;
  *
  * @author Alisson
  */
-public class PainelExemplos extends javax.swing.JPanel
-{
-    WebImage imagem;
+public class PainelExemplos extends javax.swing.JPanel {
+
+    private static final Logger LOGGER = Logger.getLogger(PainelExemplos.class.getName());
+
+    //WebImage imagem;
     Icon imagemPadrao;
     Icon imagemPastaPadrao;
-    
+
     Editor editor;
+
     /**
      * Creates new form painelExemplos
      */
-    public PainelExemplos()
-    {
+    public PainelExemplos() {
         initComponents();
         configurarCores();
         editor = new Editor();
         editor.setExampleEditor();
         codePanel.add(editor);
-        imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/exemplos.png");
-        imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"lite/lite.png");
-        imagem = new WebImage(imagemPastaPadrao);
-        imagem.setDisplayType ( DisplayType.fitComponent );
-        imagePane.add(imagem);
-        if(WeblafUtils.weblafEstaInstalado()){
+        imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/exemplos.png");
+        imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
+        if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(jScrollPane1);
-            WeblafUtils.configurarBotao(openExample,ColorController.FUNDO_ESCURO,ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(openExample, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10);
         }
         inicializarJTree();
-        
+
         rightPane.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -82,8 +85,8 @@ public class PainelExemplos extends javax.swing.JPanel
             }
         });
     }
-    
-    private void configurarCores(){
+
+    private void configurarCores() {
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         imagePane.setBackground(ColorController.COR_DESTAQUE);
@@ -92,8 +95,8 @@ public class PainelExemplos extends javax.swing.JPanel
         jScrollPane1.setBackground(ColorController.FUNDO_CLARO);
         jScrollPane1.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
     }
-    
-    private void inicializarJTree(){
+
+    private void inicializarJTree() {
         arvoreExemplos.setCellRenderer(new ExampleTreeRender());
         arvoreExemplos.setUI(new PSTreeUI());
         try {
@@ -102,8 +105,7 @@ public class PainelExemplos extends javax.swing.JPanel
             if (diretorioExemplos.exists()) {
                 DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
                 List<DefaultMutableTreeNode> nodes = readIndex(diretorioExemplos);
-                for (DefaultMutableTreeNode node : nodes)
-                {
+                for (DefaultMutableTreeNode node : nodes) {
                     root.add(node);
                 }
                 DefaultTreeModel model = new DefaultTreeModel(root);
@@ -114,76 +116,71 @@ public class PainelExemplos extends javax.swing.JPanel
 //                expandJTree();
                 jTreedoClick();
             }
-            
-        }
-        catch (Exception exception){
+
+        } catch (Exception exception) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
         }
     }
-    
-    private void jTreedoClick(){
-        SwingUtilities.invokeLater(() ->
-        {
+
+    private void jTreedoClick() {
+        SwingUtilities.invokeLater(()
+                -> {
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) arvoreExemplos.getModel().getRoot();
             DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) root.getFirstChild();
             arvoreExemplos.setSelectionPath(new TreePath(leaf.getPath()));
         });
-        
+
     }
-    
-    private void expandJTree(){
-        for(int i=0; i<arvoreExemplos.getRowCount();i++){
+
+    private void expandJTree() {
+        for (int i = 0; i < arvoreExemplos.getRowCount(); i++) {
             arvoreExemplos.expandRow(i);
         }
     }
-    
-    private List<DefaultMutableTreeNode> readIndex(File dir){
+
+    private List<DefaultMutableTreeNode> readIndex(File dir) {
         Properties prop = new Properties();
         List<DefaultMutableTreeNode> nodes = new ArrayList<>();
         try {
-            File file = new File(dir,"index.properties");
-            if(file.exists()){
+            File file = new File(dir, "index.properties");
+            if (file.exists()) {
                 prop.load(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-                for(int i=0; i<Integer.parseInt(prop.getProperty("items")); i++){
-                   String item = "item"+i+".";
-                   if(prop.getProperty(item+"type").equals("dir")){
-                       DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item+"name"));
-                       List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir, prop.getProperty(item+"dir")));
-                       subNodes.stream().forEach((subNode) -> {
-                           node.add(subNode);
-                       });
-                       nodes.add(node);
-                   }
-                   else{
-                       DefaultMutableTreeNode leaf;
-                        if(Boolean.parseBoolean(prop.getProperty(item+"hasImage"))){
-                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"description"), new File(dir, prop.getProperty(item+"image")), prop.getProperty(item+"name"));
-                        }
-                        else{
-                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item+"file")), prop.getProperty(item+"description"), prop.getProperty(item+"name"));
+                for (int i = 0; i < Integer.parseInt(prop.getProperty("items")); i++) {
+                    String item = "item" + i + ".";
+                    if (prop.getProperty(item + "type").equals("dir")) {
+                        DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item + "name"));
+                        List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir, prop.getProperty(item + "dir")));
+                        subNodes.stream().forEach((subNode) -> {
+                            node.add(subNode);
+                        });
+                        nodes.add(node);
+                    } else {
+                        DefaultMutableTreeNode leaf;
+                        if (Boolean.parseBoolean(prop.getProperty(item + "hasImage"))) {
+                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item + "file")), prop.getProperty(item + "description"), new File(dir, prop.getProperty(item + "image")), prop.getProperty(item + "name"));
+                        } else {
+                            leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item + "file")), prop.getProperty(item + "description"), prop.getProperty(item + "name"));
                         }
                         nodes.add(leaf);
-                   }
+                    }
 
-               }
+                }
             }
-        }
-        catch (IOException | NumberFormatException exception){   
+        } catch (IOException | NumberFormatException exception) {
             PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
         }
         return nodes;
     }
-    
-    private void initTreeListner(){
-        arvoreExemplos.addTreeSelectionListener((TreeSelectionEvent e) ->
-        {
+
+    private void initTreeListner() {
+        arvoreExemplos.addTreeSelectionListener((TreeSelectionEvent e) -> {
             atualizarPainelDireita();
         });
         arvoreExemplos.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
-                if(e.getKeyCode()== KeyEvent.VK_ENTER && node.isLeaf()){
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && node.isLeaf()) {
                     openExample.doClick();
                 }
             }
@@ -191,20 +188,28 @@ public class PainelExemplos extends javax.swing.JPanel
         arvoreExemplos.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount()==2){
+                if (e.getClickCount() == 2) {
                     openExample.doClick();
                 }
-            }            
+            }
         });
     }
 
+    private WebImage criaWebImage(Icon icone) {
+        WebImage imagem = new WebImage(icone);
+        imagem.setDisplayType(DisplayType.fitComponent);
+        return imagem;
+    }
+
     private void atualizarPainelDireita() {
+
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
         if (node == null) {
             return;
         }
-        if(node.isLeaf())
-        {
+        
+        Icon icone = imagemPadrao;
+        if (node.isLeaf()) {
             try {
 
                 ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
@@ -212,20 +217,17 @@ public class PainelExemplos extends javax.swing.JPanel
                 String codigoFonte = FileHandle.open(exemplo);
                 examplePane.setVisible(true);
                 description.setVisible(true);
-                description.setText("<html><head></head><body>"+item.getDescription()+"</body></html>");
-                dataPane.setPreferredSize(new Dimension(rightPane.getSize().width*2/3,0));
-                if(item.hasImage()){
-                    imagem.setIcon(new ImageIcon(item.getImage().toString()));
-                }
-                else{
-                    imagem.setIcon(imagemPadrao);
-                }
+                description.setText("<html><head></head><body>" + item.getDescription() + "</body></html>");
+                
+                if (item.hasImage()) {
+                    icone = new ImageIcon(item.getImage().getAbsolutePath());
+                } 
+
                 editor.setCodigoFonte(codigoFonte);
                 editor.rolarAtePosicao(0);
-                openExample.setAction(new AbstractAction(){
+                openExample.setAction(new AbstractAction() {
                     @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
+                    public void actionPerformed(ActionEvent e) {
                         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
@@ -233,21 +235,24 @@ public class PainelExemplos extends javax.swing.JPanel
                 });
                 openExample.setText("Explorar Exemplo");
                 buttonPanel.setVisible(true);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
-        }
-        else{
+        } else {
             examplePane.setVisible(false);
-            dataPane.setPreferredSize(new Dimension(rightPane.getSize().width,0));
+            dataPane.setPreferredSize(new Dimension(rightPane.getSize().width, 0));
             description.setVisible(false);
-            imagem.setIcon(imagemPastaPadrao);
+            icone = imagemPastaPadrao;
             buttonPanel.setVisible(false);
         }
-        rightPane.validate();
+        
+        imagePane.removeAll();
+        imagePane.add(criaWebImage(icone));
+        
+        rightPane.revalidate();
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -256,6 +261,7 @@ public class PainelExemplos extends javax.swing.JPanel
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
         rightPane = new javax.swing.JPanel();
@@ -282,7 +288,7 @@ public class PainelExemplos extends javax.swing.JPanel
 
         rightPane.setBackground(new java.awt.Color(255, 255, 255));
         rightPane.setOpaque(false);
-        rightPane.setLayout(new java.awt.BorderLayout());
+        rightPane.setLayout(new java.awt.GridBagLayout());
 
         dataPane.setLayout(new java.awt.BorderLayout());
 
@@ -308,11 +314,14 @@ public class PainelExemplos extends javax.swing.JPanel
         dataPane.add(jPanel2, java.awt.BorderLayout.SOUTH);
 
         imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        imagePane.setMinimumSize(new java.awt.Dimension(20, 150));
         imagePane.setLayout(new java.awt.BorderLayout());
         dataPane.add(imagePane, java.awt.BorderLayout.CENTER);
 
-        rightPane.add(dataPane, java.awt.BorderLayout.WEST);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.65;
+        gridBagConstraints.weighty = 1.0;
+        rightPane.add(dataPane, gridBagConstraints);
 
         examplePane.setForeground(new java.awt.Color(255, 255, 255));
         examplePane.setLayout(new java.awt.BorderLayout());
@@ -320,7 +329,11 @@ public class PainelExemplos extends javax.swing.JPanel
         codePanel.setLayout(new java.awt.BorderLayout());
         examplePane.add(codePanel, java.awt.BorderLayout.CENTER);
 
-        rightPane.add(examplePane, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.34;
+        gridBagConstraints.weighty = 1.0;
+        rightPane.add(examplePane, gridBagConstraints);
 
         jSplitPane1.setRightComponent(rightPane);
 
