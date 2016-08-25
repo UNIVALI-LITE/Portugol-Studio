@@ -1,4 +1,4 @@
-package br.univali.ps.ui.inspetor;
+package br.univali.ps.nucleo;
 
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;

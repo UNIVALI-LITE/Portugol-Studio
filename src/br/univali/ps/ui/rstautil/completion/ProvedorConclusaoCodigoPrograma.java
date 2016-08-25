@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.ModoAcesso;
+import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
@@ -18,14 +19,26 @@ import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseXOR;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoPare;
+import br.univali.portugol.nucleo.asa.NoReal;
+import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
+import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
+import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
+import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
+import br.univali.portugol.nucleo.asa.NoTitulo;
+import br.univali.portugol.nucleo.asa.NoVaPara;
+import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
+import br.univali.ps.nucleo.VisitanteNulo;
 import br.univali.ps.ui.utils.EscopoCursor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -91,7 +104,7 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
         return Collections.emptyList();
     }
 
-    final class FabricaConclusaoCodigoPrograma extends VisitanteASABasico
+    final class FabricaConclusaoCodigoPrograma extends VisitanteNulo
     {
         private List<Completion> completions;
         private boolean lendoAlias;

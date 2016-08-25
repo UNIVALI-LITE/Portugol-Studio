@@ -63,7 +63,7 @@ import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoTitulo;
 import br.univali.portugol.nucleo.asa.NoVaPara;
 import br.univali.portugol.nucleo.asa.NoVetor;
-import br.univali.ps.ui.inspetor.VisitanteNulo;
+import br.univali.ps.nucleo.VisitanteNulo;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
