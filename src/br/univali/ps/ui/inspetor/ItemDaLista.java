@@ -47,20 +47,17 @@ public abstract class ItemDaLista {
     abstract RenderizadorBase getRendererComponent();
 
     Icon getIcone() {
-        if (ehVariavel()) {
-            return getIcon(getTipo());
-        } else if (ehVetor()) {
-            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor.gif");
+        String icone = "unknown";
+        TipoDado tipo = getTipo();
+        if (tipo != null) {
+            if (ehVariavel()) {
+                icone = tipo.getNome();
+            }
+            else { // vetores e matrizes usam o mesmo ícone
+                icone = "vetor_" + tipo.getNome();
+            }
         }
-        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz.gif");
-    }
-
-    private Icon getIcon(TipoDado tipoDado) {
-        String iconName = "unknown.png";
-        if (tipoDado != null) {
-            iconName = tipoDado.getNome() + ".png";
-        }
-        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, iconName);
+        return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, icone + ".png");
     }
 
     boolean ehVetor() {
