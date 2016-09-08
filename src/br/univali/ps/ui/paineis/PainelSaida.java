@@ -24,6 +24,7 @@ public final class PainelSaida extends PainelTabulado {
         initComponents();
         
         abaConsole = new AbaConsole();
+        
         add(abaConsole);
         
         //abaConsole.setBackground(Color.BLUE);
@@ -38,14 +39,26 @@ public final class PainelSaida extends PainelTabulado {
         setSelectedIndex(0);//deixa a console aparecendo quando abre uma nova aba
         
         this.setUI(new PSOutTabbedPaneUI());
-        configurarCores();
-    }
-    
-    private void configurarCores(){
-        setBackground(ColorController.COR_DESTAQUE);
-        
     }
 
+    @Override
+    public void setBackground(Color bg) {
+        super.setBackground(bg); //To change body of generated methods, choose Tools | Templates.
+        if(abaConsole!=null){
+            abaConsole.setBackground(bg);
+        }
+    }
+
+    @Override
+    public void setForeground(Color fg) {
+        super.setForeground(fg); //To change body of generated methods, choose Tools | Templates.
+        if(abaConsole!=null){
+            abaConsole.setForeground(fg);
+        }
+    }
+    
+    
+    
     
     public AbaConsole getConsole() {
         return abaConsole;

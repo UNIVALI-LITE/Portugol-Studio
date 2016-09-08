@@ -2,6 +2,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
@@ -25,8 +26,7 @@ import javax.swing.KeyStroke;
  *
  * @author Luiz Fernando Noschang
  */
-public final class TelaSobre extends JDialog
-{
+public final class TelaSobre extends JDialog implements Themeable{
     private Action acaoSair;
 
     public TelaSobre()
@@ -37,9 +37,7 @@ public final class TelaSobre extends JDialog
         configurarAcaoSair();
         initComponents();
         configurarCores();
-        if (WeblafUtils.weblafEstaInstalado()) {
-          ((WebTabbedPaneUI)tabbedUsuarios.getUI()).setShadeWidth(0);
-        }
+        
         this.setIconImage(IconFactory.getDefaultWindowIcon());
         setSize(750, 550);
 //        rotuloDescricao.setText(String.format(rotuloDescricao.getText(), PortugolStudio.getInstancia().getVersao()));
@@ -56,10 +54,14 @@ public final class TelaSobre extends JDialog
         }
     }
     
-    private void configurarCores(){
+    @Override
+    public void configurarCores(){
         painelHeader.setBackground(ColorController.FUNDO_ESCURO);
         painelConteudo.setBackground(ColorController.FUNDO_CLARO);
         paineInferior.setBackground(ColorController.FUNDO_MEDIO);
+        if (WeblafUtils.weblafEstaInstalado()) {
+          ((WebTabbedPaneUI)tabbedUsuarios.getUI()).setShadeWidth(0);
+        }
     }
 
     private void configurarLinks()

@@ -2,6 +2,7 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
@@ -31,7 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public final class AbaInicial extends Aba {
+public final class AbaInicial extends Aba implements Themeable{
 
 
 
@@ -56,7 +57,8 @@ public final class AbaInicial extends Aba {
         instalarObservadorCombinacoesSecretas();
         instalarAcoesSecretas();
     }
-    private void configurarCores(){
+    @Override
+    public void configurarCores(){
         painelFundo.setBackground(ColorController.COR_PRINCIPAL);
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
         conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);

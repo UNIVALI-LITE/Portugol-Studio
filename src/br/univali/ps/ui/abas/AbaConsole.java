@@ -119,6 +119,26 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         handlerDaSaida = new HandlerDaSaida();
     }
+
+    @Override
+    public void setBackground(Color bg) {
+        super.setBackground(bg); //To change body of generated methods, choose Tools | Templates.
+        if(console!=null){
+            console.setBackground(bg);
+        }
+    }
+
+    @Override
+    public void setForeground(Color fg) {
+        super.setForeground(fg); //To change body of generated methods, choose Tools | Templates.
+        if(console!=null){
+            console.setForeground(fg);
+        }
+    }
+    
+    
+    
+    
     
     private void exibirPopupLeia()
     {

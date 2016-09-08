@@ -15,6 +15,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.Themeable;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
@@ -38,7 +39,7 @@ import javax.swing.tree.DefaultTreeModel;
  *
  * @author Luiz Fernando
  */
-public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener, TreeSelectionListener
+public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkListener, TreeSelectionListener, Themeable
 {
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
     private static final int tamanhoFonte = 12;
@@ -59,7 +60,8 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         }
     }
     
-    private void configurarCores(){
+    @Override
+    public void configurarCores(){
         main.setBackground(ColorController.COR_PRINCIPAL);
     }
     
