@@ -70,7 +70,7 @@ class ItemDaListaParaVetor extends ItemDaLista {
     public String getNome() {
         String nome = super.getNome();
         String colunas = numeroDeColunasFoiInicializado() ? String.valueOf(getColunas()) : " ? ";
-        return nome + " [" + colunas + "]";
+        return nome + " [ " + colunas + " ]";
     }
 
     @Override

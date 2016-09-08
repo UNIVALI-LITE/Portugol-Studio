@@ -53,7 +53,8 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
             icone.paintIcon(this, g, 0, yDoIcone);
             //g.drawRect(0, yDoIcone, icone.getIconWidth(), icone.getIconHeight());
-            desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
+            g.setColor(corTexto);
+            desenhaNome(g, icone.getIconWidth(), 0);
             int totalDeColunas = ((ItemDaListaParaMatriz) itemDaLista).getColunas();
             int totalDeLinhas = ((ItemDaListaParaMatriz) itemDaLista).getLinhas();
             int margemEsquerda = MARGEM_HORIZONTAL;
@@ -177,12 +178,12 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         FontMetrics metrics = g.getFontMetrics();
         int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
         int yDoValor = alturaDoCabecalho + (alturaDaLinha * (linha - linhaInicial + 1)) + metrics.getAscent() - metrics.getDescent();
-        g.setColor(podeDestacarEstaCelula ? COR_DO_TEXTO_DESTACADO : COR_DO_TEXTO);
+        g.setColor(podeDestacarEstaCelula ? corTextoDestacado : corTexto);
         g.drawString(stringDoValor, xDoValor, yDoValor);
     }
 
     private void desenhaLinhaVerticalDaCelula(Graphics g, int xDaLinha, int yDaLinha, int alturaDaLinha, boolean ehLinhaDeCimaComRolagem, boolean ehLinhaDeBaixoComRolagem, boolean ehPrimeiraColunaComRolagem) {
-        g.setColor(COR_DA_GRADE);
+        g.setColor(corGrade);
         Stroke tracejadoPadrao = ((Graphics2D) g).getStroke();
 
         if (ehLinhaDeBaixoComRolagem || ehLinhaDeCimaComRolagem) {//esta é a última linha? (verifica se a próxima linha já estará fora da tela)
@@ -222,7 +223,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             g.setColor(COR_DO_CABECALHO_DESTACADO);
         } else {
             g.setFont(FONTE_CABECALHO);
-            g.setColor(COR_DA_GRADE);
+            g.setColor(corGrade);
         }
         int larguraDoIndiceDeColuna = g.getFontMetrics().stringWidth(stringIndiceDaColuna);
         //índice da coluna
@@ -237,7 +238,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             g.setColor(COR_DO_CABECALHO_DESTACADO);
         } else {
             g.setFont(FONTE_CABECALHO);
-            g.setColor(COR_DA_GRADE);
+            g.setColor(corGrade);
         }
         FontMetrics metrics = g.getFontMetrics();
         int largura = metrics.stringWidth(stringIndiceDaLinha);
@@ -247,7 +248,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     }
 
     private void desenhaBordaDireita(Graphics g, int linhaInicial, int totalDeLinhas, int xDaLinha, int alturaDaLinha, int margemSuperior, int indiceDaUltimaColunaDesenhada, int indiceDaUltimaLinhaDesenhada, int totalDeColunas ){
-        g.setColor(COR_DA_GRADE);
+        g.setColor(corGrade);
         if (indiceDaUltimaColunaDesenhada == totalDeColunas - 1) {
             int offsetSuperior = (linhaInicial > 0) ? alturaDaLinha : 0;
             int offsetInferior = (indiceDaUltimaLinhaDesenhada < totalDeLinhas - 1) ? alturaDaLinha : 0;

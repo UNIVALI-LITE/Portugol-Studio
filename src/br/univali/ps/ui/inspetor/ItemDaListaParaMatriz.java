@@ -96,7 +96,7 @@ class ItemDaListaParaMatriz extends ItemDaLista {
         String nome = super.getNome();
         String linhas = dimensoesForamInicializadas() ? String.valueOf(getLinhas()) : " ? ";
         String colunas = dimensoesForamInicializadas() ? String.valueOf(getColunas()) : " ? ";
-        return nome + " [" + linhas + "][" + colunas + "]";
+        return nome + " [ " + linhas + " ][ " + colunas + " ]";
     }
 
     @Override

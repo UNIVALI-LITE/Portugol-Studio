@@ -25,7 +25,6 @@ import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
-import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
@@ -104,11 +103,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         setCellRenderer(new RenderizadorDaLista());
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         instalaObservadores();
-        configurarCores();
-    }
-
-    private void configurarCores() {
-        setBackground(ColorController.COR_DESTAQUE);
     }
 
     private void instalaObservadores() {
@@ -163,9 +157,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private void desenhaInstrucaoParaArrastarSimbolos(Graphics g) {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         //g.setFont(RenderizadorBase.FONTE_NORMAL. );
-        g.setColor(ColorController.COR_DESTAQUE);
+        g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(ColorController.COR_LETRA);
+        g.setColor(getForeground());
         FontMetrics metrics = g.getFontMetrics();
         String texto = INSTRUCAO.replace("\n", "");
         int larguraInstrucao = metrics.stringWidth(texto);
@@ -225,11 +219,16 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
         @Override
         public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
-            JComponent c = (JComponent) item.getRendererComponent();
-            c.setOpaque(false);
+            RenderizadorBase renderizador = item.getRendererComponent();
+            Color corTexto = getForeground();
+            Color corTextoDestacado = corTexto.brighter();
+            Color corGrade = corTexto.darker(); //cor das linhas das matrizes e vetores
+            renderizador.setCores(corTexto, corTextoDestacado, corGrade);
+            
+            renderizador.setOpaque(false);
 
             panel.removeAll();
-            panel.add(c, BorderLayout.CENTER); //o componente que renderiza o item da lista foi inserido em um painel e este painel 
+            panel.add(renderizador, BorderLayout.CENTER); //o componente que renderiza o item da lista foi inserido em um painel e este painel 
             //usa uma EmptyBorder para separar verticalmente os items da lista, assim os items não ficam muito "grudados" uns nos outros.
 
             //pinta o fundo quando está com o foco no item da lista ou o index é par (zebra)
