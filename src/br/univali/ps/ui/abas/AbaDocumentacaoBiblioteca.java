@@ -21,6 +21,10 @@ import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Component;
 import java.awt.Desktop;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.lang.reflect.Method;
 import java.net.URI;
 import javax.swing.Icon;
@@ -682,21 +686,38 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             }
             else
             {
+                String nome = "";
                 MetaDadosBiblioteca metaDadosBiblioteca = (MetaDadosBiblioteca) noBiblioteca.getUserObject();
 
                 if (valor instanceof MetaDadosFuncao)
                 {
                     exibirDocumentacao(metaDadosBiblioteca, (MetaDadosFuncao) valor);
+                    nome = ((MetaDadosFuncao) valor).getNome();
                 }
                 else if (valor instanceof MetaDadosConstante)
                 {
                     exibirDocumentacao(metaDadosBiblioteca, (MetaDadosConstante) valor);
+                    nome = ((MetaDadosConstante) valor).getNome();
                 }
                 else if (valor instanceof MetaDadosBiblioteca)
                 {
                     exibirDocumentacao((MetaDadosBiblioteca) valor);
                 }
-            }
+                //Criar Arquivos HTML das Bibliotecas
+//                try
+//                {
+//                    File fileHtml = new File("C:/Users/Adson Estevesa/Desktop/ArquivosBiblitecaHTML/"+metaDadosBiblioteca.getNome()+"_"+nome+".html");
+//                    fileHtml.createNewFile();
+//                    BufferedWriter bw = new BufferedWriter(new FileWriter(fileHtml.getAbsoluteFile()));
+//                    bw.write(painelHtml.getText());
+//                    bw.close();
+//                }
+//                catch(Exception ex)
+//                {
+//                    System.out.println(ex);
+//                }
+                
+            }            
         }
     }
     
