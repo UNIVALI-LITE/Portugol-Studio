@@ -10,6 +10,7 @@ import br.univali.ps.ui.paineis.utils.ExampleMutableTreeNode;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.Themeable;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.utils.FileHandle;
@@ -51,7 +52,7 @@ import javax.swing.tree.TreePath;
  *
  * @author Alisson
  */
-public class PainelExemplos extends javax.swing.JPanel {
+public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
     private static final Logger LOGGER = Logger.getLogger(PainelExemplos.class.getName());
 
@@ -72,10 +73,6 @@ public class PainelExemplos extends javax.swing.JPanel {
         codePanel.add(editor);
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/exemplos.png");
         imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
-        if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configuraWebLaf(jScrollPane1);
-            WeblafUtils.configurarBotao(openExample, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10);
-        }
         inicializarJTree();
 
         rightPane.addComponentListener(new ComponentAdapter() {
@@ -86,7 +83,7 @@ public class PainelExemplos extends javax.swing.JPanel {
         });
     }
 
-    private void configurarCores() {
+    public void configurarCores() {
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         imagePane.setBackground(ColorController.COR_DESTAQUE);
@@ -94,6 +91,10 @@ public class PainelExemplos extends javax.swing.JPanel {
         jPanel2.setBackground(ColorController.FUNDO_MEDIO);
         jScrollPane1.setBackground(ColorController.FUNDO_CLARO);
         jScrollPane1.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
+        if (WeblafUtils.weblafEstaInstalado()) {
+            WeblafUtils.configuraWebLaf(jScrollPane1);
+            WeblafUtils.configurarBotao(openExample, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10);
+        }
     }
 
     private void inicializarJTree() {

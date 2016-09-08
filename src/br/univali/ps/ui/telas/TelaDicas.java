@@ -8,6 +8,7 @@ package br.univali.ps.ui.telas;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.Themeable;
 import br.univali.ps.ui.telas.utils.DicaInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
@@ -34,7 +35,7 @@ import javax.swing.KeyStroke;
  *
  * @author LITE
  */
-public class TelaDicas extends JDialog {
+public class TelaDicas extends JDialog implements Themeable{
 
     private final List<DicaInterface> dicas;
     private Integer item=0;
@@ -51,15 +52,17 @@ public class TelaDicas extends JDialog {
         dicas = loadHints(dir);
         atualiza(item);
         exibirSempre.setSelected(true);
-        if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(webButton1,15);
-            WeblafUtils.configurarBotao(webButton2,15);
-        }
+        
         configurarNavegacaoPeloTeclado();
         setModal(true);
     }
     
-    private void configurarCores(){
+    @Override
+    public void configurarCores(){
+        if(WeblafUtils.weblafEstaInstalado()){
+            WeblafUtils.configurarBotao(webButton1,15);
+            WeblafUtils.configurarBotao(webButton2,15);
+        }
         titleLabel.setBackground(ColorController.FUNDO_ESCURO);
         mainPanel.setBackground(ColorController.FUNDO_CLARO);
 //        descriptionLabel.setBackground(ColorController.BRANCO);

@@ -77,8 +77,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins
-{
+public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListener, AbaListener, PropertyChangeListener, ChangeListener, UtilizadorPlugins, Themeable{
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
 
@@ -125,15 +124,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     protected AbaCodigoFonte()
     {
         super("Sem título", lampadaApagada, true);
-
         initComponents();
-        configurarCores();
         configurarArvoreEstrutural();
         criarPainelTemporario();
-
         carregarConfiguracoes();
-
-        //configurarSeletorArquivo();
         configurarAcoes();
         configurarEditor();
         configurarBarraDeBotoesDoEditor();
@@ -141,20 +135,23 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         instalarObservadores();
         configurarCursorBotoes();
         carregarAlgoritmoPadrao();
-
         criarDicasInterface();
-
-        //ocultarPainelPlugins();
-        //ocultarPainelBotoesPlugins();
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
-
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
+        configurarCores();
+    }
 
+    @Override
+    public void configurarCores()
+    {
+        scrollOutlineTree.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
+        painelConteudo.setBackground(ColorController.COR_PRINCIPAL);
+        painelSaida.setForeground(ColorController.COR_LETRA);
+        inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
+        inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado())
         {
-
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
-
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
@@ -168,15 +165,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(barraDeBotoesEditor, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraDeBotoesInspetorArvore, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         }
-
-    }
-
-    private void configurarCores()
-    {
-        scrollOutlineTree.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
-        painelConteudo.setBackground(ColorController.COR_PRINCIPAL);
-        inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
-        inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
     }
 
     private BarraDeBotoesExpansivel barraDeBotoesInspetorArvore;

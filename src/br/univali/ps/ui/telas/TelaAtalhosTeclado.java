@@ -1,20 +1,16 @@
 package br.univali.ps.ui.telas;
 
-import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.utils.TradutorAtalhosTeclado;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -30,8 +26,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author Luiz Fernando Noschang
  */
-public final class TelaAtalhosTeclado extends JDialog
-{
+public final class TelaAtalhosTeclado extends JDialog{
     private Action acaoFechar;
     
     public TelaAtalhosTeclado()

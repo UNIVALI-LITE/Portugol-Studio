@@ -1,14 +1,14 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.Themeable;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
-public class CabecalhoAba extends JPanel
-{
+public class CabecalhoAba extends JPanel implements Themeable{
     private final Aba aba;
 
     public CabecalhoAba(Aba aba)
@@ -22,7 +22,8 @@ public class CabecalhoAba extends JPanel
         //setUndecorated(true)
     }
     
-    private void configurarCores(){
+    @Override
+    public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
     }
     protected Aba getAba()
