@@ -17,6 +17,10 @@ class RenderizadorDeMatriz extends RenderizadorBase {
 
     private static final Color COR_DA_LINHA_E_COLUNA_EM_DESTAQUE = new Color(0, 0, 0, 0.045f);
 
+    public RenderizadorDeMatriz() {
+        super();
+    }
+
     @Override
     void setItemDaLista(ItemDaLista itemDaLista) {
         if (!(itemDaLista instanceof ItemDaListaParaMatriz)) {

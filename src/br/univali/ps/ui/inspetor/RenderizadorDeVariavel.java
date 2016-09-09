@@ -1,6 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,9 +9,11 @@ import java.awt.RenderingHints;
 import javax.swing.Icon;
 
 /**
- @author elieser
+ *
+ * @author elieser
  */
 class RenderizadorDeVariavel extends RenderizadorBase {
+
 
     @Override
     protected int getAlturaPreferida() {
@@ -41,6 +44,7 @@ class RenderizadorDeVariavel extends RenderizadorBase {
 
         //desenha valor
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
+
         g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
         FontMetrics metrics = g.getFontMetrics();
         int larguraDoValor = metrics.stringWidth(stringDoValor);
