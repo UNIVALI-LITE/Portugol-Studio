@@ -84,10 +84,6 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             }
             indiceDaLinha++;
         } while (indiceDaLinha <= ultimaLinhaAtualizada && indiceDaLinha < totalDeLinhas);
-        boolean precisaDeRolagem = yDaLinha > alturaDoComponente;
-//        if (precisaDeRolagem && ultimaLinhaAtualizada >= totalDeLinhas - 1) {//se é a última linha
-//            rolavemVertical++;
-//        }
         return rolavemVertical;
     }
 
