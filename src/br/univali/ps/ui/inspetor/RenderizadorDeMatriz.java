@@ -276,7 +276,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         int indiceDaUltimaColunaDesenhada = 0;
         for (int linhaAtual = linhaInicial; linhaAtual < totalDeLinhas; linhaAtual++) {
             int yDaLinha = ((linhaAtual - linhaInicial) + 1) * alturaDaLinha + margemSuperior;
-            if (yDaLinha > getHeight()) {//se a linha não estará vísivel
+            if (yDaLinha >= getHeight()) {//se a linha não estará vísivel
                 break;
             }
             indiceDaUltimaLinhaDesenhada = linhaAtual;
