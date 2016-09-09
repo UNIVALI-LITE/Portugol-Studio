@@ -53,8 +53,11 @@ public abstract class ItemDaLista {
             if (ehVariavel()) {
                 icone = tipo.getNome();
             }
-            else { // vetores e matrizes usam o mesmo ícone
+            else if(ehVetor()) { // vetores e matrizes usam o mesmo ícone
                 icone = "vetor_" + tipo.getNome();
+            }
+            else {
+                icone = "matriz_" + tipo.getNome();
             }
         }
         return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, icone + ".png");
