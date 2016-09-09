@@ -40,7 +40,7 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         Icon icone = itemDaLista.getIcone();
         icone.paintIcon(this, g, 0, getHeight() / 2 - icone.getIconHeight() / 2);
         g.setColor(corTexto);
-        int larguraDoNome = desenhaNome(g, icone.getIconWidth(), 0);
+        int larguraDoNome = desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
 
         //desenha valor
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());

@@ -44,7 +44,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
             icone.paintIcon(this, g, 0, yDoIcone);
             g.setColor(corTexto);
-            desenhaNome(g, icone.getIconWidth(), 0);
+            desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
             int totalDeColunas = ((ItemDaListaParaVetor) itemDaLista).getColunas();
             int margemEsquerda = MARGEM_HORIZONTAL;// icone.getIconWidth() + larguraDoNome + MARGEM;
             int margemSuperior = metrics.getAscent();

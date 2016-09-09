@@ -54,7 +54,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             icone.paintIcon(this, g, 0, yDoIcone);
             //g.drawRect(0, yDoIcone, icone.getIconWidth(), icone.getIconHeight());
             g.setColor(corTexto);
-            desenhaNome(g, icone.getIconWidth(), 0);
+            desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
             int totalDeColunas = ((ItemDaListaParaMatriz) itemDaLista).getColunas();
             int totalDeLinhas = ((ItemDaListaParaMatriz) itemDaLista).getLinhas();
             int margemEsquerda = MARGEM_HORIZONTAL;
