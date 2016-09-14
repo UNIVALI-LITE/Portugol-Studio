@@ -50,7 +50,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -59,7 +61,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -93,7 +94,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private final List<InspetorDeSimbolosListener> listeners = new ArrayList<>();
 
-    private final List<Simbolo> cacheDeSimbolos = new ArrayList<>(); // armazena os símbolos modificados para poder atualizá-los quando um nó é inserido no inspetor
+    private final Set<Simbolo> cacheDeSimbolos = new HashSet<>(); // armazena os símbolos modificados para poder atualizá-los quando um nó é inserido no inspetor
 
     public InspetorDeSimbolos() {
         model.clear();
