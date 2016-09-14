@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import javax.swing.Icon;
@@ -70,10 +71,11 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
         int totalDeLinhas = item.getLinhas();
         int alturaDaLinha = getFontMetrics(FONTE_NORMAL).getHeight();
-        int yDaLinha = alturaDaLinha;//já inicia do cabeçalho em diante
+        int yDaLinha = alturaDaLinha + getAlturaDoCabecalho();// já inicia do cabeçalho em diante
         int ultimaLinhaAtualizada = item.getUltimaLinhaAtualizada();
         int rolavemVertical = 0;//conta quantas células é preciso deslocar para que a última célula atualizada fique visível no componente
-        int alturaDoComponente = getHeight();
+        Insets insets = getInsets();
+        int alturaDoComponente = getHeight() - (insets.top + insets.bottom);
         int indiceDaLinha = 1;//pula o cabeçalho
         do {
             yDaLinha += alturaDaLinha;
@@ -82,10 +84,6 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             }
             indiceDaLinha++;
         } while (indiceDaLinha <= ultimaLinhaAtualizada && indiceDaLinha < totalDeLinhas);
-        boolean precisaDeRolagem = yDaLinha > alturaDoComponente;
-        if (precisaDeRolagem && ultimaLinhaAtualizada >= totalDeLinhas - 1) {//se é a última linha
-            rolavemVertical++;
-        }
         return rolavemVertical;
     }
 
@@ -262,9 +260,13 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         }
     }
     
+    private int getAlturaDoCabecalho() {
+        return getFontMetrics(FONTE_CABECALHO).getHeight();
+    }
+    
     private void desenhaGrade(Graphics g, int totalDeLinhas, int totalDeColunas, int colunaInicial, int linhaInicial, int margemEsquerda, int margemSuperior) {
         int alturaDaLinha = getFontMetrics(FONTE_NORMAL).getHeight();
-        int alturaDoCabecalho = getFontMetrics(FONTE_CABECALHO).getHeight();
+        int alturaDoCabecalho = getAlturaDoCabecalho();
         int larguraMaximaDoIndiceDeLinha = MARGEM_HORIZONTAL + getFontMetrics(FONTE_DESTAQUE).stringWidth(String.valueOf(totalDeLinhas - 1));//obtém a largura da string do maior índice de linha
         int inicioLinhaHorizontal = margemEsquerda + larguraMaximaDoIndiceDeLinha - 3;
         int xDaLinha = inicioLinhaHorizontal;
@@ -274,7 +276,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         int indiceDaUltimaColunaDesenhada = 0;
         for (int linhaAtual = linhaInicial; linhaAtual < totalDeLinhas; linhaAtual++) {
             int yDaLinha = ((linhaAtual - linhaInicial) + 1) * alturaDaLinha + margemSuperior;
-            if (yDaLinha > getHeight()) {//se a linha não estará vísivel
+            if (yDaLinha >= getHeight()) {//se a linha não estará vísivel
                 break;
             }
             indiceDaUltimaLinhaDesenhada = linhaAtual;
