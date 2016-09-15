@@ -85,7 +85,6 @@ class AstOutlineTreeFactory implements VisitanteASA
         {
             ex.printStackTrace(System.err);
         }
-
         return root;
     }
 
