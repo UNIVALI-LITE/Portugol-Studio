@@ -979,8 +979,23 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setFocusable(false);
         textArea.setRequestFocusEnabled(false);
         textArea.setHighlightCurrentLine(false);
+        
+        resetaSelecaoDoTexto(); // corrige o problema descrito na issue #157
 
         linhasCodigoDobradas = getLinhasCodigoDobradas();
+    }
+    
+    private boolean temTextSelecionado()
+    {
+        return textArea.getSelectedText() != null && !textArea.getSelectedText().isEmpty();
+    }
+    
+    private void resetaSelecaoDoTexto()
+    {
+        if (temTextSelecionado())
+        {
+            textArea.setSelectionEnd(textArea.getSelectionStart()); // limpa a seleção
+        }
     }
 
     public List<Integer> getLinhasCodigoDobradas()
