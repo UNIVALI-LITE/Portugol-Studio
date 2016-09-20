@@ -30,6 +30,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseOu;
 import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
 import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseXOR;
 import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogica;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaDiferenca;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaE;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaIgualdade;
@@ -406,55 +407,13 @@ public final class SymbolTypeFilter implements ASTFilter
         }
 
         @Override
-        public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA
-        {
-            return false;
-        }
-
-        @Override
-        public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA
+        public Object visitar(NoOperacaoLogica noOperacaoLogica) throws ExcecaoVisitaASA
         {
             return false;
         }
 
         @Override
         public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA
-        {
-            return false;
-        }
-
-        @Override
-        public Object visitar(NoOperacaoLogicaE noOperacaoLogicaE) throws ExcecaoVisitaASA
-        {
-            return false;
-        }
-
-        @Override
-        public Object visitar(NoOperacaoLogicaOU noOperacaoLogicaOU) throws ExcecaoVisitaASA
-        {
-            return false;
-        }
-
-        @Override
-        public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA
-        {
-            return false;
-        }
-
-        @Override
-        public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA
-        {
-            return false;
-        }
-
-        @Override
-        public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA
-        {
-            return false;
-        }
-
-        @Override
-        public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA
         {
             return false;
         }

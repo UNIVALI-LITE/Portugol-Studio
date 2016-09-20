@@ -25,6 +25,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseOu;
 import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
 import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseXOR;
 import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogica;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaDiferenca;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaE;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaIgualdade;
@@ -285,50 +286,8 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     }
 
     @Override
-    public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaDiferenca);
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoOperacaoLogicaE noOperacaoLogicaE) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaE);
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaIgualdade);
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaMaior);
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaMaiorIgual);
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaMenor);
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaMenorIgual);
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoOperacaoLogicaOU noOperacaoLogicaOU) throws ExcecaoVisitaASA {
-        visitaOperandos(noOperacaoLogicaOU);
+    public Object visitar(NoOperacaoLogica noOperacaoLogica) throws ExcecaoVisitaASA {
+        visitaOperandos(noOperacaoLogica);
         return null;
     }
 
