@@ -151,7 +151,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado())
         {
+
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
+
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
