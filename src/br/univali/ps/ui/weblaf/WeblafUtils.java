@@ -6,9 +6,13 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.checkbox.WebCheckBoxUI;
+import com.alee.laf.combobox.WebComboBox;
+import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
 import java.awt.Color;
@@ -22,7 +26,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Locale;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -38,7 +42,7 @@ public class WeblafUtils {
     
 
 
-    public static void configuraWeblaf(JToolBar barraDeFerramentas) {
+     public static void configuraWeblaf(JToolBar barraDeFerramentas) {
         if (!WeblafUtils.weblafEstaInstalado()) {
             return;
         }
@@ -52,6 +56,73 @@ public class WeblafUtils {
 
             }
         }
+    }
+    
+    public static void configuraWebLaf(WebComboBox field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+       ((WebComboBoxUI) field.getUI()).setDrawBorder(false);
+       ((WebComboBoxUI) field.getUI()).setRound(0);
+//       ((WebComboBoxUI) field.getUI()).setExpandedBgColor(ColorController.COR_DESTAQUE);
+//       ((WebComboBoxUI) field.getUI()).setWebColoredBackground(false);
+//       ((WebComboBoxUI) field.getUI()).s 
+       
+//       field.setBorder(new EmptyBorder(15,15,15,15));
+//       field.setOpaque(true);
+//       field.setBackground(ColorController.COR_DESTAQUE);
+//       field.setForeground(ColorController.FUNDO_ESCURO);
+    }
+    public static void configuraWebLaf(JTextArea field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+//       ((WebTextAreaUI) field.getUI()).setDrawBorder(false);
+//       ((WebTextAreaUI) field.getUI()).setDrawBackground(true);
+       field.setBorder(new EmptyBorder(15,15,15,15));
+       field.setOpaque(true);
+       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.COR_LETRA);
+    }
+    public static void configuraWebLaf(JTextField field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+       ((WebTextFieldUI) field.getUI()).setDrawBorder(false);
+       ((WebTextFieldUI) field.getUI()).setDrawBackground(true);
+       field.setBorder(new EmptyBorder(15,15,15,15));
+       field.setOpaque(true);
+       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.COR_LETRA);
+    }
+    public static void configuraWebLaf(JTextField field, int margin, int leftMargin) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+       ((WebTextFieldUI) field.getUI()).setDrawBorder(false);
+       ((WebTextFieldUI) field.getUI()).setDrawBackground(true);
+       field.setBorder(new EmptyBorder(margin, leftMargin, margin, margin));
+       field.setOpaque(true);
+       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.COR_LETRA);
+    }
+    
+    public static void configuraWebLaf(JCheckBox field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+       ((WebCheckBoxUI) field.getUI()).setBorderColor(ColorController.COR_PRINCIPAL);
+       ((WebCheckBoxUI) field.getUI()).setRound(0);
+       ((WebCheckBoxUI) field.getUI()).setDarkBorderColor(ColorController.COR_PRINCIPAL);
+       ((WebCheckBoxUI) field.getUI()).setShadeWidth(0);
+       ((WebCheckBoxUI) field.getUI()).setBottomBgColor(ColorController.COR_PRINCIPAL);
+       ((WebCheckBoxUI) field.getUI()).setTopBgColor(ColorController.COR_PRINCIPAL);
+       ((WebCheckBoxUI) field.getUI()).setBottomSelectedBgColor(ColorController.COR_DESTAQUE);
+       ((WebCheckBoxUI) field.getUI()).setTopSelectedBgColor(ColorController.COR_DESTAQUE);
+//       ((WebCheckBoxUI) field.getUI()).setDrawBackground(true);
+       field.setOpaque(false);
+//       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.COR_LETRA);
     }
 
    
@@ -85,6 +156,7 @@ public class WeblafUtils {
 //        });
 
     }
+
 
     public static void configuraWeblaf(JPanel painel, final Color corDeFundo, boolean bordaEsquerda, boolean bordaDireita, boolean bordaDeCima, boolean bordaDeBaixo) {
         if (!WeblafUtils.weblafEstaInstalado()) {
