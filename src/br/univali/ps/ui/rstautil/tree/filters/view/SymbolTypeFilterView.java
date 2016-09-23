@@ -6,7 +6,6 @@ import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilterListener;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.weblaf.WeblafUtils;
-import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -41,7 +40,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         String texto = "Exibir/Ocultar (Ctrl+Shift+";
         
         FabricaDicasInterface.criarTooltip(buttonVariables, texto+"A)");
-            FabricaDicasInterface.criarTooltip(buttonFunctions, texto+"F)");
+        FabricaDicasInterface.criarTooltip(buttonFunctions, texto+"F)");
         FabricaDicasInterface.criarTooltip(buttonMatrixes, texto+"M)");
         FabricaDicasInterface.criarTooltip(buttonArrays, texto+"E)");
         FabricaDicasInterface.criarTooltip(buttonShowAll, "Exibir/Ocultar todos símbolos: Ctrl+Shift+T");

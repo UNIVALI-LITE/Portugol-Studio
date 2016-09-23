@@ -153,7 +153,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
-
+            WeblafUtils.configuraWebLaf(searchTextField1, 5, 25);
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
