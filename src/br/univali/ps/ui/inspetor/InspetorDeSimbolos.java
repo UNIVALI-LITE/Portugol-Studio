@@ -307,9 +307,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     @Override
     public void simboloDeclarado(Simbolo simbolo) {
         if (simboloEhPermitido(simbolo)) {
-            List<Simbolo> lista = new ArrayList<>();
-            lista.add(simbolo);
-
             NoDeclaracao declaracao = simbolo.getOrigemDoSimbolo();
 
             if (declaracao instanceof NoDeclaracaoInicializavel) {
@@ -318,7 +315,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 estaInicializando = inicializacao != null;
             }
 
-            simbolosAlterados(lista);
+            atualizaNoDeclaracaoDeSimbolo(simbolo);
             estaInicializando = false;
         }
     }
@@ -375,23 +372,40 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
+    private boolean atualizaNoDeclaracaoDeSimbolo(Simbolo simbolo)
+    {
+        
+        if (!cacheDeSimbolos.contains(simbolo)) 
+        {
+            cacheDeSimbolos.add(simbolo);
+        }
+        
+        NoDeclaracao noDeclaracao = (NoDeclaracao) simbolo.getOrigemDoSimbolo();
+        ItemDaLista itemDaLista = getItemDoNo(noDeclaracao);
+        
+        if (itemDaLista != null) 
+        {
+            alteraItemDoInspetor(itemDaLista, simbolo);
+            return true; //retorna verdadeiro quando atualiza o símbolo no inspetor
+        }
+
+        return false;
+    }
+    
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolos) {
-        boolean itemsAlterados = false;
-        for (Simbolo simbolo : simbolos) {
-            if (simboloEhPermitido(simbolo)) {
-                if (!cacheDeSimbolos.contains(simbolo)) {
-                    cacheDeSimbolos.add(simbolo);
-                }
-                NoDeclaracao noDeclaracao = (NoDeclaracao) simbolo.getOrigemDoSimbolo();
-                ItemDaLista itemDaLista = getItemDoNo(noDeclaracao);
-                if (itemDaLista != null) {
-                    alteraItemDoInspetor(itemDaLista, simbolo);
-                    itemsAlterados = true;
-                }
+    public void simbolosAlterados(List<Simbolo> simbolos) 
+    {
+        boolean simbolosAlterados = false;
+        for (Simbolo simbolo : simbolos) 
+        {
+            if (simboloEhPermitido(simbolo)) 
+            {
+                simbolosAlterados |= atualizaNoDeclaracaoDeSimbolo(simbolo);
             }
         }
-        if (itemsAlterados) {
+        
+        if (simbolosAlterados) 
+        {
             redesenhaItemsDaLista();
         }
     }
