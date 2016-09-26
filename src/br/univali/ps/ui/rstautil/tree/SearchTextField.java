@@ -2,6 +2,8 @@ package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -26,7 +28,7 @@ public class SearchTextField extends JTextField
     private static final int SEARCH_DELAY = 500;
 
     private final Insets originalInsets;
-    private String placeholder = "Pesquisar...";
+    private String placeholder = "Localizar (Control + L)";
     private Action searchAction;
     
     private Timer searchTimer;
@@ -53,6 +55,8 @@ public class SearchTextField extends JTextField
     public SearchTextField()
     {
         initComponents();
+        
+        setText("");
 
         this.addFocusListener(new FocusAdapter()
         {
@@ -137,24 +141,25 @@ public class SearchTextField extends JTextField
         this.placeholder = placeholder;
     }
 
+    private boolean podePintarPlaceholder()
+    {
+        return !this.hasFocus() && this.getText().equals("");
+    }
+    
     @Override
     protected void paintComponent(Graphics g)
     {
-        if (!this.hasFocus() && this.getText().equals(""))
+        super.paintComponent(g);
+        if (podePintarPlaceholder())
         {
-            Color previousColor = getForeground();
+            Font fonte = getFont();
+            g.setFont(fonte);
+            g.setColor(getForeground());
+            FontMetrics metrics = getFontMetrics(fonte);
+            int textoY = getHeight()/2 + (metrics.getDescent() + metrics.getAscent())/2;
+            int textoX = (SEARCH_ICON != null) ? (SEARCH_ICON.getIconWidth() * 2) : originalInsets.left;
+            g.drawString(placeholder, textoX, textoY);
             
-            setForeground(Color.GRAY);
-            setText(placeholder);
-            
-            super.paintComponent(g);
-
-            setForeground(previousColor);
-            setText("");
-        }
-        else
-        {        
-            super.paintComponent(g);
         }
         
         if (SEARCH_ICON != null)
