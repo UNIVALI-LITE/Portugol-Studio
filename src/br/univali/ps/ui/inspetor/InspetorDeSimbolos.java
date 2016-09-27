@@ -396,8 +396,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     public void simbolosAlterados(List<Simbolo> simbolos) 
     {
         boolean simbolosAlterados = false;
-        for (Simbolo simbolo : simbolos) 
+        int size = simbolos.size();
+        for (int i = 0; i < size; ++i)
         {
+            Simbolo simbolo = simbolos.get(i);
             if (simboloEhPermitido(simbolo)) 
             {
                 simbolosAlterados |= atualizaNoDeclaracaoDeSimbolo(simbolo);
