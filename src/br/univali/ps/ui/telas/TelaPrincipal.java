@@ -373,6 +373,7 @@ public final class TelaPrincipal extends JFrame
         java.awt.GridBagConstraints gridBagConstraints;
 
         webButton1 = new com.alee.laf.button.WebButton();
+        maximizeButton = new com.alee.laf.button.WebButton();
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         iconifyButton = new com.alee.laf.button.WebButton();
@@ -380,6 +381,13 @@ public final class TelaPrincipal extends JFrame
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
         webButton1.setText("webButton1");
+
+        maximizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_min.png"))); // NOI18N
+        maximizeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maximizeButtonActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Portugol Studio");
@@ -441,11 +449,21 @@ public final class TelaPrincipal extends JFrame
         fecharAplicativo();
     }//GEN-LAST:event_closeButton1ActionPerformed
 
+    private void maximizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maximizeButtonActionPerformed
+        int state = PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState();
+        if(state==JFrame.MAXIMIZED_BOTH){
+            PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.NORMAL);
+        }else{
+            PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+    }//GEN-LAST:event_maximizeButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton closeButton1;
     private com.alee.laf.button.WebButton iconifyButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainPanel;
+    private com.alee.laf.button.WebButton maximizeButton;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
     private com.alee.laf.button.WebButton webButton1;
     // End of variables declaration//GEN-END:variables
