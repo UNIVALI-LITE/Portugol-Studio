@@ -1,9 +1,5 @@
 package br.univali.ps;
 
-import br.univali.ps.nucleo.PortugolStudio;
-import java.net.URL;
-import java.util.Scanner;
-
 /**
  *
  * @author Elieser
