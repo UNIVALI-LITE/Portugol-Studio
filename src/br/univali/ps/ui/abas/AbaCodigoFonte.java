@@ -740,7 +740,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void actionPerformed(ActionEvent ae)
             {
                 inspetorDeSimbolos.resetaDestaqueDosSimbolos();
-                executar(Depurador.Estado.BREAK_POINT);
+                executar(Programa.Estado.BREAK_POINT);
             }
         };
 
@@ -766,7 +766,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                executar(Depurador.Estado.STEP_OVER);
+                executar(Programa.Estado.STEP_OVER);
             }
         };
 
@@ -1498,7 +1498,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento();
     }
 
-    private void executar(Depurador.Estado estado)
+    private void executar(Programa.Estado estado)
     {
         if (!programaExecutando())
         {
@@ -1547,7 +1547,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         else
         {
 
-            if (estado == Depurador.Estado.BREAK_POINT)
+            if (estado == Programa.Estado.BREAK_POINT)
             {
                 editor.removerHighlightsDepuracao();
             }
