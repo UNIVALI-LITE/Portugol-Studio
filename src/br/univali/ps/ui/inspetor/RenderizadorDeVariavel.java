@@ -1,7 +1,6 @@
 package br.univali.ps.ui.inspetor;
 
 import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
-import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,31 +37,39 @@ class RenderizadorDeVariavel extends RenderizadorBase {
             return;
         }
         Icon icone = itemDaLista.getIcone();
-        icone.paintIcon(this, g, 0, getHeight() / 2 - icone.getIconHeight() / 2);
-        g.setColor(corTexto);
-        int larguraDoNome = desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
+        
+        int x = MARGEM; // x inicial
+        
+        icone.paintIcon(this, g, x, getHeight() / 2 - icone.getIconHeight() / 2);
+        
+        boolean podeDestacar = itemDaLista.podeDesenharDestaque();
+        
+        x += icone.getIconWidth() + MARGEM;
+        g.setColor(podeDestacar ? COR_TEXTO_DESTACADO : COR_NOME);
+        int larguraNome = desenhaNome(g, x, 0);
 
-        //desenha valor
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
 
         g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
         FontMetrics metrics = g.getFontMetrics();
-        int larguraDoValor = metrics.stringWidth(stringDoValor);
-        int larguraDaCaixa = MARGEM_HORIZONTAL + larguraDoValor + MARGEM_HORIZONTAL;
+        int larguraValor = metrics.stringWidth(stringDoValor);
+        int larguraCaixa = MARGEM + larguraValor + MARGEM;
 
-        //pinta fundo de vermelho para destacar
-        if (itemDaLista.podeDesenharDestaque()) {
+        int xCaixaValor = x + larguraNome + MARGEM;
+        
+        if (podeDestacar) 
+        {
             g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
-            g.fillRect(icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL + 1, 0, larguraDaCaixa - 1, getHeight() - 1);
+            g.fillRect(xCaixaValor + 1, 0, larguraCaixa - 1, getHeight() - 1);
 
             //desenha caixa do valor
-            g.setColor(corGrade);
-            g.drawRect(icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL, 0, larguraDaCaixa, getHeight() - 1);
+            g.setColor(COR_GRADE);
+            g.drawRect(xCaixaValor, 0, larguraCaixa, getHeight() - 1);
         }
 
         //desenha valor
-        g.setColor(corTexto);
-        g.drawString(stringDoValor, icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL + MARGEM_HORIZONTAL, metrics.getAscent());
+        g.setColor(podeDestacar ? COR_TEXTO_DESTACADO : COR_TEXTO);
+        g.drawString(stringDoValor, xCaixaValor + MARGEM, metrics.getAscent());
 
     }
 

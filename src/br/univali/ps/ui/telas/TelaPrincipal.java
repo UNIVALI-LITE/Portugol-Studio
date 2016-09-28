@@ -246,6 +246,7 @@ public class TelaPrincipal extends javax.swing.JPanel
     {
         final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
         painelTabuladoPrincipal.add(abaCodigoFonte);
+        abaCodigoFonte.carregarAlgoritmoPadrao();
         revalidate();
     }
 

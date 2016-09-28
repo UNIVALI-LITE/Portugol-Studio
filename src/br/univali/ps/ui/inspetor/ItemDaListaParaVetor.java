@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.inspetor;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 
@@ -18,61 +19,68 @@ class ItemDaListaParaVetor extends ItemDaLista {
 
     private Object[] valores;
     private int ultimaColunaAtualizada = -1;
-    //private int larguraDasColunas[];
+    private boolean valoresForamInicializados = false;
+    
+    private String stringDimensao = "[ ? ]";
 
     public ItemDaListaParaVetor(int colunas, NoDeclaracaoVetor no) {
         super(no);
         setNumeroDeColunas(colunas);
     }
 
-    public ItemDaListaParaVetor(NoDeclaracaoParametro declaracaoParametro) {
+    public ItemDaListaParaVetor(NoDeclaracaoParametro declaracaoParametro) 
+    {
         super(declaracaoParametro);
-        valores = new Object[0]; //cria um array vazio para que os métodos não gerem uma NUllPointerException ao acessaverem um atributo que seria nulo caso não fosse inicializado
-    } //cria um array vazio para que os métodos não gerem uma NUllPointerException ao acessaverem um atributo que seria nulo caso não fosse inicializado
+        valores = new Object[0]; 
+    }  //cria um array vazio para que os métodos não gerem uma NUllPointerException ao acessaverem um atributo que seria nulo caso não fosse inicializado
 
-    /**
-     * *
-     * @param colunas Este método é invocado no evento de simbolosAlterados
-     * somente quando este ItemDaListaParaVetor armazena uma instancia de
-     * NoDeclaracaoParametro. Quando este item está ligado com um
-     * NoDeclaracaoVetor é possível obter o tamanho do vetor já na inicialização
-     * do objeto, mas quando este item está ligado com um NoDeclaracaoParametro
-     * é necessário aguardar até que a primeira atualização do parâmetro
-     * aconteça para so então obter a quantidade de colunas do vetor.
-     */
     void setNumeroDeColunas(int colunas) {
-        if (colunas <= 0) {
+        if (colunas < 0) {
             throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
         }
-        valores = new Object[colunas];
+        if (valores == null || colunas != valores.length)
+        {
+            valores = new Object[colunas];
+        }
+        atualizaStringDimensao();
     }
 
     int getColunas() {
         return valores.length;
     }
 
-    Object get(int coluna) {
+    protected Object get(int coluna) {
         if (coluna >= 0 && coluna < valores.length) {
             return valores[coluna];
         }
         return null;
     }
 
-    void set(Object valor, int coluna) {
-        if (coluna >= 0 && coluna < valores.length) {
+    protected void set(Object valor, int coluna) {
+        boolean colunaValida = coluna >= 0 && coluna < valores.length;
+        if (colunaValida && valores[coluna] != valor && valor != Programa.OBJETO_NULO) {
             valores[coluna] = valor;
-            ultimaColunaAtualizada = coluna;
+            if (valoresForamInicializados)
+            {
+                ultimaColunaAtualizada = coluna;
+            }
             InspetorDeSimbolos.ultimoItemModificado = this;
         }
     }
 
-    @Override
-    public String getNome() {
-        String nome = super.getNome();
-        String colunas = numeroDeColunasFoiInicializado() ? String.valueOf(getColunas()) : " ? ";
-        return nome + " [ " + colunas + " ]";
+    public String getStringDimensao() 
+    {
+        return stringDimensao;
     }
 
+    private void atualizaStringDimensao()
+    {
+        if (numeroDeColunasFoiInicializado())
+        {
+            stringDimensao = " [ " + String.valueOf(getColunas()) + " ]";
+        }
+    }
+    
     @Override
     public void limpa() {
         for (int c = 0; c < valores.length; c++) {
@@ -95,6 +103,44 @@ class ItemDaListaParaVetor extends ItemDaLista {
     //setNumeroDeColunas seja invocado durante a atualização dos símbolos
     boolean numeroDeColunasFoiInicializado() {
         return valores.length > 0;
+    }
+
+    @Override
+    public void atualiza(Programa programa) {
+        int ID = getIdParaInspecao();
+        if (valoresForamInicializados) // atualiza apenas o último elemento alterado no vetor
+        {
+            Object valor = programa.getValorNoVetorInspecionado(ID); // último valor modificado
+            int coluna = programa.getUltimaColunaAlteradaNoVetor(ID);
+            set(valor, coluna);
+        }
+        else // elementos da view ainda não foram inicializados, é necessário coletar todos os dados do vetor para exibí-los na view
+        {
+            int tamanhoVetor = programa.getTamanhoVetor(ID);
+            setNumeroDeColunas(tamanhoVetor); //inicializa a view se necessário
+            
+            boolean valoresSaoValidos = false;
+            for (int coluna = 0; coluna < tamanhoVetor; coluna++) {
+                Object valor = programa.getValorNoVetorInspecionado(ID, coluna); 
+                set(valor, coluna);
+                
+                /** Desconsidera as atualizações se só houverem objetos nulos no vetor. 
+                    Isso é necessário porque em uma execução passo a
+                    passo o Inspetor pode solicitar esses valores antes que a
+                    execução do programa tenha passado pela linha que inicialia o
+                    vetor. Nesse caso todos os valores são nulos, e
+                    não faria sentido considerar que o vetor já está
+                    inicializado. É necessário esperar até que o vetor tenha sido preenchido
+                    com valores válidos para só então considerá-lo como inicializado.
+                 */
+                valoresSaoValidos |= valor != Programa.OBJETO_NULO; 
+            }
+            
+            if (valoresSaoValidos)
+            {
+                valoresForamInicializados = true;
+            }
+        }
     }
 
 }

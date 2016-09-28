@@ -1,8 +1,9 @@
 package br.univali.ps.ui.rstautil;
 
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
+import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
@@ -43,7 +44,7 @@ import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.ps.nucleo.VisitanteNulo;
+import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import java.util.List;
 
 //classe usada para procurar por um determinado símbolo dentro da ASA
@@ -100,7 +101,7 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     }
 
     @Override
-    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
+    public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA {
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
             if (!declaracaoEncontrada) {
                 declaracao.aceitar(this);
@@ -245,9 +246,25 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
 
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
-        noPara.getInicializacao().aceitar(this);
-        noPara.getCondicao().aceitar(this);
-        noPara.getIncremento().aceitar(this);
+        
+        NoBloco inicializacao = noPara.getInicializacao();
+        if (inicializacao != null)
+        {
+            inicializacao.aceitar(this);
+        }
+        
+        NoExpressao condicao = noPara.getCondicao();
+        if (condicao != null)
+        {
+             condicao.aceitar(this);
+        }
+        
+        NoExpressao incremento = noPara.getIncremento();
+        if (incremento != null)
+        {
+            incremento.aceitar(this);
+        }
+        
         if (!declaracaoEncontrada) {
             return super.visitar(noPara);
         }

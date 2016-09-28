@@ -1,7 +1,7 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrata;
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.asa.ASA;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
@@ -72,7 +72,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     private SourceTreeNode root;
     private ASTFilter filter;
 
-    public SourceTreeNode createTree(ArvoreSintaticaAbstrata asa)
+    public SourceTreeNode createTree(ASA asa)
     {
         this.root = new GenericTreeNode("Remove me!");
         this.filter = new AcceptAllFilter();
@@ -88,7 +88,7 @@ class AstOutlineTreeFactory implements VisitanteASA
         return root;
     }
 
-    public SourceTreeNode createFilteredTree(ArvoreSintaticaAbstrata asa, ASTFilter filter)
+    public SourceTreeNode createFilteredTree(ASA asa, ASTFilter filter)
     {
         this.root = new GenericTreeNode("Remove me!");
         this.filter = filter;
@@ -106,7 +106,7 @@ class AstOutlineTreeFactory implements VisitanteASA
     }
 
     @Override
-    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
+    public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA
     {
         ProgramaTreeNode programa = new ProgramaTreeNode();
         List<SourceTreeNode> nos = new ArrayList<>();

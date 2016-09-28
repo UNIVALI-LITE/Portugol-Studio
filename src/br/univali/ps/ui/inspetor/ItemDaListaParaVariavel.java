@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.inspetor;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 
@@ -34,8 +35,11 @@ class ItemDaListaParaVariavel extends ItemDaLista {
     }
 
     void setValor(Object valor) {
-        this.valor = valor;
-        InspetorDeSimbolos.ultimoItemModificado = this;
+        if (this.valor != valor && valor != Programa.OBJETO_NULO)
+        {
+            this.valor = valor;
+            InspetorDeSimbolos.ultimoItemModificado = this;
+        }
     }
 
     public Object getValor() {
@@ -46,5 +50,11 @@ class ItemDaListaParaVariavel extends ItemDaLista {
     public void limpa() {
         valor = null;
     }
-    
+
+    @Override
+    public void atualiza(Programa programa) {
+        Object valor = programa.getValorVariavelInspecionada(getIdParaInspecao());
+        setValor(valor);
+    }
+   
 }

@@ -181,7 +181,7 @@ public class TelaRenomearSimbolo extends JDialog
 
                 try
                 {
-                    Portugol.compilar(codigoRenomeado);
+                    Portugol.compilarParaAnalise(codigoRenomeado);
                 }
                 catch (ErroCompilacao erro)
                 {

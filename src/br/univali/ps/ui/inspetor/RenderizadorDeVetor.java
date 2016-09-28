@@ -31,7 +31,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
         FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
         int alturaDoNome = metrics.getAscent();
         int alturaCabecalho = getFontMetrics(FONTE_CABECALHO).getHeight();
-        return alturaDoNome + alturaCabecalho + metrics.getHeight() + 1;//2 linhas, uma com os valores e outra com os índices
+        return alturaDoNome + MARGEM + alturaCabecalho + metrics.getHeight() + 1;//2 linhas, uma com os valores e outra com os índices
     }
 
     @Override
@@ -42,13 +42,25 @@ class RenderizadorDeVetor extends RenderizadorBase {
             Icon icone = itemDaLista.getIcone();
             FontMetrics metrics = g.getFontMetrics(FONTE_NORMAL);
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
-            icone.paintIcon(this, g, 0, yDoIcone);
-            g.setColor(corTexto);
-            desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
+            int x = MARGEM;
+            icone.paintIcon(this, g, x, yDoIcone);
+            g.setColor(itemDaLista.podeDesenharDestaque() ? COR_TEXTO_DESTACADO : COR_NOME);
+
+            x += icone.getIconWidth() + MARGEM;
+            int larguraNome = desenhaNome(g, x, 0);
+            
+            //desenha dimensão
+            x += larguraNome + MARGEM;
+            g.setFont(FONTE_CABECALHO);
+            g.setColor(COR_NOME);
+            String stringDimensao = ((ItemDaListaParaVetor)itemDaLista).getStringDimensao();
+            g.drawString(stringDimensao, x, metrics.getAscent());
+            
             int totalDeColunas = ((ItemDaListaParaVetor) itemDaLista).getColunas();
-            int margemEsquerda = MARGEM_HORIZONTAL;// icone.getIconWidth() + larguraDoNome + MARGEM;
-            int margemSuperior = metrics.getAscent();
+            int margemEsquerda = MARGEM * 2;
+            int margemSuperior = metrics.getAscent() + MARGEM;
             int colunaInicial = calculaRolagem(margemEsquerda);
+            
             desenhaGrade(g, totalDeColunas, colunaInicial, margemEsquerda, margemSuperior);
         }
     }
@@ -59,7 +71,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
         int xDaColuna = margemEsquerda;
         int ultimaColunaAtualizada = item.getUltimaColunaAtualizada();
         int rolagem = 0;//conta quantas células é preciso deslocar para que a última coluna atualizada fique visível no componente
-        int larguraUtilDoComponente = getWidth() - MARGEM_HORIZONTAL*2;
+        int larguraUtilDoComponente = getWidth() - MARGEM*2;
         int indiceDaColuna = 0;
         do {
             xDaColuna += getLarguraDaColuna(indiceDaColuna++);
@@ -86,9 +98,9 @@ class RenderizadorDeVetor extends RenderizadorBase {
             metricsDoIndice = getFontMetrics(FONTE_CABECALHO_DESTAQUE);
             metricsDoValor = getFontMetrics(FONTE_DESTAQUE);
         }
-        int larguraDoValor = MARGEM_HORIZONTAL + metricsDoValor.stringWidth(stringDoValor) + MARGEM_HORIZONTAL;
-        int larguraDoIndice = MARGEM_HORIZONTAL + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM_HORIZONTAL;
-        int larguraDaStringVazia = MARGEM_HORIZONTAL + metricsDoValor.stringWidth(RenderizadorBase.STRING_VAZIA) + MARGEM_HORIZONTAL; //a largura retornada nunca será menor que a largura da string vazia
+        int larguraDoValor = MARGEM + metricsDoValor.stringWidth(stringDoValor) + MARGEM;
+        int larguraDoIndice = MARGEM + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM;
+        int larguraDaStringVazia = MARGEM + metricsDoValor.stringWidth(RenderizadorBase.STRING_VAZIA) + MARGEM; //a largura retornada nunca será menor que a largura da string vazia
         return Math.max(Math.max(larguraDaStringVazia, larguraDoIndice), larguraDoValor);
     }
 
@@ -130,7 +142,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
             FontMetrics metrics = g.getFontMetrics();
             int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
             int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
-            g.setColor(podeDestacarEstaColuna ? corTextoDestacado : corTexto);
+            g.setColor(podeDestacarEstaColuna ? COR_TEXTO_DESTACADO : COR_TEXTO);
             g.drawString(stringDoValor, xDoValor, yDoValor);
 
             //desenha a string do índice
@@ -140,7 +152,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
                 g.setColor(COR_DO_CABECALHO_DESTACADO);
             } else {
                 g.setFont(FONTE_CABECALHO);
-                g.setColor(corGrade);
+                g.setColor(COR_GRADE);
             }
             int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
             g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
@@ -148,13 +160,13 @@ class RenderizadorDeVetor extends RenderizadorBase {
 
                 //linha vertical - não desenha a primeira linha vertical quando a primeira
             //coluna que será desenhada não é a primeira coluna do vetor
-            g.setColor(corGrade);
+            g.setColor(COR_GRADE);
             if (!ehPrimeiraColunaComRolagem) {
                 g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
             }
 
             //desenha a linha horizontal
-            g.setColor(corGrade);
+            g.setColor(COR_GRADE);
             Stroke tracejadoPadrao = ((Graphics2D) g).getStroke();
             if (ehPrimeiraColunaComRolagem || ehUltimaColunaComRolagem) {
                 ((Graphics2D) g).setStroke(TRACEJADO);

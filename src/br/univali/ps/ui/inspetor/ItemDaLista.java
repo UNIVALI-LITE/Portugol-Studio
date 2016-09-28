@@ -1,6 +1,8 @@
 package br.univali.ps.ui.inspetor;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
@@ -9,6 +11,7 @@ import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.ui.utils.IconFactory;
 import javax.swing.Icon;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInspecionavel;
 
 /**
  *
@@ -17,31 +20,24 @@ import javax.swing.Icon;
 public abstract class ItemDaLista {
 
     protected final NoDeclaracao noDeclaracao;
-    private long ultimaPintura = 0; //timestamp da ultima atualização
-    protected static final long TEMPO_ENTRE_PINTURAS = 200; //no máximo 4 pinturas por segundo
+    
+    protected final int ID;
+
     protected boolean desenhaDestaques = true; //quando o programa está em execução o desenho dos destaques é desativado.
     //Não adiatanda destacar a última variável atualizada com o programa em execução já que o destaque fica "pulando" freneticamente
     //de uma variável para outra
 
     public ItemDaLista(NoDeclaracao no) {
         this.noDeclaracao = no;
+        ID = ((NoDeclaracaoInspecionavel) no).getIdParaInspecao();
     }
 
-    public boolean podeRepintar() {
-        return System.currentTimeMillis() - ultimaPintura >= TEMPO_ENTRE_PINTURAS;
+    public int getIdParaInspecao() {
+        return ID;
     }
 
     public void setDesenhaDestaques(boolean statusDosDestaques) {
         desenhaDestaques = statusDosDestaques;
-    }
-
-    void resetaTempoDaUltimaAtualizacao() {
-        //resta o momento da atualização de maneira que a próxima chamada para o método podeRepintar retorna true
-        ultimaPintura = System.currentTimeMillis() - TEMPO_ENTRE_PINTURAS;
-    }
-
-    void atualizaMomentoDaUltimaPintura() {
-        ultimaPintura = System.currentTimeMillis();
     }
 
     abstract RenderizadorBase getRendererComponent();
@@ -92,5 +88,7 @@ public abstract class ItemDaLista {
     }
 
     public abstract void limpa();
+    
+    public abstract void atualiza(Programa programa);
 
 }

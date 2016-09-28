@@ -9,15 +9,9 @@ import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
-import br.univali.ps.nucleo.NamedThreadFactory;
-import br.univali.ps.nucleo.PortugolStudio;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -28,12 +22,12 @@ import org.fife.ui.rsyntaxtextarea.parser.DefaultParserNotice;
 import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
 import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 
-public final class PortugolParser extends AbstractParser
+public class PortugolParser extends AbstractParser
 {
 
     public static final String PROPRIEDADE_PROGRAMA_COMPILADO = "PROGRAMA_COMPILADO";
 
-    private static final ExecutorService service = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Parser do RSyntaxTextArea)"));
+    //private static final ExecutorService service = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Parser do RSyntaxTextArea)"));
 
     private static final char[] caracteresParada = new char[]
     {
@@ -70,42 +64,7 @@ public final class PortugolParser extends AbstractParser
         return null;
     }
 
-    private final class ParseTask implements Callable<ParseResult>
-    {
-
-        private final RSyntaxDocument documento;
-
-        public ParseTask(RSyntaxDocument documento)
-        {
-            this.documento = documento;
-        }
-
-        @Override
-        public ParseResult call() throws Exception
-        {
-            DefaultParseResult resultado = new DefaultParseResult(PortugolParser.this);
-
-            resultado.setParsedLines(0, documento.getDefaultRootElement().getElementCount() - 1);
-
-            try
-            {
-                Programa programa = Portugol.compilar(documento.getText(0, documento.getLength()));
-
-                if (programa.getResultadoAnalise().contemAvisos())
-                {
-                    notificarErrosAvisos(programa.getResultadoAnalise(), documento, resultado);
-                }
-
-                support.firePropertyChange(PROPRIEDADE_PROGRAMA_COMPILADO, null, programa);
-            }
-            catch (ErroCompilacao erroCompilacao)
-            {
-                notificarErrosAvisos(erroCompilacao.getResultadoAnalise(), documento, resultado);
-            }
-
-            return resultado;
-        }
-    }
+    
 
     private void notificarErrosAvisos(ResultadoAnalise resultadoAnalise, RSyntaxDocument documento, DefaultParseResult resultado)
     {
@@ -206,15 +165,36 @@ public final class PortugolParser extends AbstractParser
     @Override
     public ParseResult parse(RSyntaxDocument documento, String estilo)
     {
-        try
+        DefaultParseResult resultado = new DefaultParseResult(PortugolParser.this);
+
+        resultado.setParsedLines(0, documento.getDefaultRootElement().getElementCount() - 1);
+
+        try 
         {
-            return service.submit(new ParseTask(documento)).get();
+            String codigo = documento.getText(0, documento.getLength());
+            if (!codigo.isEmpty()) 
+            {
+                Programa programa = Portugol.compilarParaAnalise(codigo);
+
+                if (programa.getResultadoAnalise().contemAvisos()) 
+                {
+                    notificarErrosAvisos(programa.getResultadoAnalise(), documento, resultado);
+                }
+
+                support.firePropertyChange(PROPRIEDADE_PROGRAMA_COMPILADO, null, programa);
+            }
         }
-        catch (InterruptedException | ExecutionException ex)
+        catch (ErroCompilacao erroCompilacao) 
         {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new Exception("Ocorreu um erro de parsing", ex));
-            return new DefaultParseResult(this);
+            notificarErrosAvisos(erroCompilacao.getResultadoAnalise(), documento, resultado);
         }
+        catch(BadLocationException badLocationEx)
+        {
+            //
+        }
+
+        return resultado;
+
     }
 
     private boolean caracterParadaEncontrado(char caracter)

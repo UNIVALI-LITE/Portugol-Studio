@@ -12,16 +12,16 @@ import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
-import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 
-import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
+import br.univali.ps.ui.rstautil.SuportePortugolImpl;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
@@ -73,7 +73,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
@@ -136,7 +135,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Color corErro;
 
     private ErrorStrip errorStrip;
-    private SuporteLinguagemPortugol suporteLinguagemPortugol;
+    private SuportePortugol suporteLinguagemPortugol;
 
     private Action acaoComentar;
     private Action acaoDescomentar;
@@ -161,7 +160,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     public Editor()
     {
-        this(false); 
+        this(false);
     }
     
     public Editor(boolean editorParaExemplo)
@@ -253,7 +252,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return getTextArea().getLinhasComPontoDeParadaAtivados();
     }
 
-    public SuporteLinguagemPortugol getSuporteLinguagemPortugol()
+    public SuportePortugol getSuporteLinguagemPortugol()
     {
         return suporteLinguagemPortugol;
     }
@@ -332,10 +331,35 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarParser()
     {
-        suporteLinguagemPortugol = new SuporteLinguagemPortugol();
+        suporteLinguagemPortugol = criaSuportePortugol();
         suporteLinguagemPortugol.instalar(textArea);
     }
 
+    private SuportePortugol criaSuportePortugol()
+    {
+        if (isExamplable)
+        {
+            return new SuportePortugolExemplos(); // não usa parser para os exemplos, assim evitamos um monte de compilações desnecessárias no código    
+        }
+        
+        return new SuportePortugolImpl();
+    }
+    
+    private class SuportePortugolExemplos extends SuportePortugolImpl  
+    {
+
+        @Override
+        public void atualizar(RSyntaxTextArea textArea) {
+            //não invoca o parser no editor de exemplos
+        }
+
+        @Override
+        public void instalar(RSyntaxTextArea textArea) {
+            super.instalar(textArea);
+            textArea.removeParser(getPortugolParser()); // o editor usado para exemplos não usa o parser
+        }
+    }
+    
     private void configurarTextArea()
     {
         scrollPane.setFoldIndicatorEnabled(true);
@@ -1364,6 +1388,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         setExecutandoPrograma(false);
     }
 
+    @Override
+    public void execucaoPausada() {
+        //setEnabled(false);
+    }
+
+    @Override
+    public void execucaoResumida() {
+        //setEnabled(true);
+    }
+
     private void destacarErroExecucao(int linha, int coluna)
     {
         try
@@ -1474,16 +1508,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolo)
-    {
-    }
-
-    @Override
-    public void simboloDeclarado(Simbolo simbolo)
-    {
-    }
-
-    @Override
     public void mensagemCompiladorSelecionada(Mensagem mensagem)
     {
         exibirMensagemCompilador(mensagem);
@@ -1512,6 +1536,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         try
         {
+            if (linha <= 0)
+            {
+                return;
+            }
+            
             int nova = textArea.getLineStartOffset(linha - 1) + coluna;
 
             if (nova >= 0 && nova < textArea.getText().length())
@@ -1527,11 +1556,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             ex.printStackTrace(System.err);
         }
-    }
-
-    @Override
-    public void simboloRemovido(Simbolo simbolo)
-    {
     }
 
     private Color obterCorErro()

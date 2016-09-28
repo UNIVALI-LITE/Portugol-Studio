@@ -19,29 +19,26 @@ import javax.swing.SwingUtilities;
         descricao = "Esta biblioteca permite executar algumas ações dentro do Portugol Studio a partir dos programas ",
         versao = "1.0"
 )
-public final class PortugolStudio extends Biblioteca
-{
+public final class PortugolStudio extends Biblioteca {
+
     private static int ultimoEstado = JFrame.MAXIMIZED_BOTH;
 
-    private static synchronized  void setUltimoEstado(int ultimoEstado)
-    {
+    private static synchronized void setUltimoEstado(int ultimoEstado) {
         PortugolStudio.ultimoEstado = ultimoEstado;
     }
 
-    private static synchronized int getUltimoEstado() 
-    {
+    private static synchronized int getUltimoEstado() {
         return ultimoEstado;
     }
-    
-        @DocumentacaoFuncao(
+
+    @DocumentacaoFuncao(
             descricao = "Minimiza a janela principal do Portugol Studio",
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
             }
     )
-    public void minimizar() throws ErroExecucaoBiblioteca
-    {
+    public void minimizar() throws ErroExecucaoBiblioteca, InterruptedException {
         try {
             SwingUtilities.invokeAndWait(() -> {
                 setUltimoEstado(Lancador.getJFrame().getExtendedState());
@@ -54,8 +51,7 @@ public final class PortugolStudio extends Biblioteca
     }
 
     @Override
-    protected void finalizar() throws ErroExecucaoBiblioteca
-    {
+    public void finalizar() throws ErroExecucaoBiblioteca {
         try {
             SwingUtilities.invokeAndWait(() -> {
                 if (Lancador.getJFrame().getExtendedState() == JFrame.ICONIFIED)

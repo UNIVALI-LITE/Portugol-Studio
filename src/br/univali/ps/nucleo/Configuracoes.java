@@ -42,6 +42,7 @@ public final class Configuracoes
     private final File diretorioAjuda = resolverDiretorioAjuda();
     private final File diretorioExemplos = resolverDiretorioExemplos();
     private final File diretorioTemporario = new File(diretorioInstalacao, "temp");
+    private final File diretorioCompilacao = new File(diretorioTemporario, "compilacao");
     private final File diretorioPlugins = new File(diretorioInstalacao, "plugins");
     private final File diretorioBibliotecas = new File(diretorioInstalacao, "bibliotecas");
     private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
@@ -314,6 +315,11 @@ public final class Configuracoes
         return diretorioTemporario;
     }
 
+    public File getDiretorioCompilacao()
+    {
+        return diretorioCompilacao;
+    }
+    
     public File getDiretorioAjuda()
     {
         return diretorioAjuda;

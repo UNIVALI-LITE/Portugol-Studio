@@ -5,19 +5,16 @@ import br.univali.ps.ui.rstautil.completion.ProvedorConclusaoCodigoPortugol;
 import br.univali.ps.ui.rstautil.completion.RenderizadorConclusaoCodigoPortugol;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.Completion;
-import org.fife.ui.autocomplete.FunctionCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 
-public final class SuporteLinguagemPortugol
+public class SuportePortugolImpl implements SuportePortugol
 {
     private final PortugolParser portugolParser;
     private final AutoCompletion conclusaoCodigo;
@@ -25,7 +22,7 @@ public final class SuporteLinguagemPortugol
     private final DobramentoCodigoPortugol dobramentoCodigoPortugol;
     private final RenderizadorConclusaoCodigoPortugol renderizador;
 
-    public SuporteLinguagemPortugol()
+    public SuportePortugolImpl()
     {
         this.portugolParser = new PortugolParser();
         this.renderizador = new RenderizadorConclusaoCodigoPortugol();
@@ -35,21 +32,25 @@ public final class SuporteLinguagemPortugol
         this.provedorConclusao.setConclusaoCodigo(conclusaoCodigo);
     }
 
+    @Override
     public DobramentoCodigoPortugol getDobramentoCodigoPortugol()
     {
         return dobramentoCodigoPortugol;
     }
     
+    @Override
     public void atualizar(RSyntaxTextArea textArea)
     {
         textArea.forceReparsing(portugolParser);
     }
 
+    @Override
     public PortugolParser getPortugolParser()
     {
         return portugolParser;
     }
 
+    @Override
     public void instalar(RSyntaxTextArea textArea)
     {
         textArea.addParser(portugolParser); // Deve ser a primeira coisa a ser configurada

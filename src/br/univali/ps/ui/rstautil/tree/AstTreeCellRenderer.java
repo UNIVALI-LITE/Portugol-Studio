@@ -1,6 +1,6 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoCadeia;
@@ -127,7 +127,7 @@ class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteAS
     }
 
     @Override
-    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
+    public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA {
         return null;
     }
 

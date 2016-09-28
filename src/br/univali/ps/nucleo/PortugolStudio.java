@@ -35,18 +35,21 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -54,6 +57,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  *
@@ -141,7 +145,7 @@ public final class PortugolStudio
 
                     finalizar(0);
                 }
-                catch (MutexImpl.ErroConexaoInstancia erro)
+                catch (Mutex.ErroConexaoInstancia erro)
                 {
                     // Se o arquivo de Mutex existe, mas não foi possível abrir a conexão para a instância,
                     // então provavelmente o aplicativo foi fechado de forma inesperada deixando o arquivo pra trás.
@@ -154,13 +158,13 @@ public final class PortugolStudio
                 iniciarNovaInstancia(parametros);
             }
         }
-        catch (MutexImpl.ErroCriacaoMutex erro)
+        catch (Mutex.ErroCriacaoMutex erro)
         {
             getTratadorExcecoes().exibirExcecao(erro);
         }
     }
 
-    private void iniciarNovaInstancia(String[] parametros) throws MutexImpl.ErroCriacaoMutex
+    private void iniciarNovaInstancia(String[] parametros) throws Mutex.ErroCriacaoMutex
     {
         LOGGER.log(Level.INFO, "Iniciando nova instancia do PS");
         if (versaoJavaCorreta())
@@ -369,6 +373,21 @@ public final class PortugolStudio
         {
             JOptionPane.showMessageDialog(null, "Não foi possível determinar a versão do Java. O Portugol Studio será encerrado!", "Portugol Studio", JOptionPane.ERROR_MESSAGE);
             return false;
+        }
+    }
+
+    private void inicializarMecanismoLog()
+    {
+        final InputStream inputStream = TelaPrincipal.class.getResourceAsStream("/logging.properties");
+
+        try
+        {
+            LogManager.getLogManager().readConfiguration(inputStream);
+        }
+        catch (final IOException excecao)
+        {
+            Logger.getAnonymousLogger().severe("Não foi possível localizar o arquivo de configuração de log 'logging.properties'");
+            Logger.getAnonymousLogger().log(Level.SEVERE, excecao.getMessage(), excecao);
         }
     }
 

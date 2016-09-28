@@ -1,6 +1,5 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.swing.weblaf.PSTableHeaderUI;
 import br.univali.ps.ui.swing.AjustadorLinhaTabelaMensagensCompilador;
 import br.univali.ps.ui.swing.RenderizadorTabelaMensagensCompilador;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
@@ -11,8 +10,8 @@ import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.table.WebTableHeaderUI;
+import com.alee.utils.SwingUtils;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
@@ -46,8 +45,10 @@ public final class AbaMensagemCompilador extends Aba
         if(WeblafUtils.weblafEstaInstalado()){
            tabelaMensagens.getTableHeader().setUI(new WebTableHeaderUI());
         }
+        
         tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //jScrollPaneTabelaMensagens.getViewport().setOpaque(false);
+        //tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
 
@@ -65,6 +66,9 @@ public final class AbaMensagemCompilador extends Aba
 
         tabelaMensagens.addComponentListener(ajustadorLinha);
         tabelaModel.addTableModelListener(ajustadorLinha);
+
+        //tabelaMensagens.setShowGrid(false);
+        //tabelaMensagens.setIntercellSpacing(new Dimension(0, 0));
 
         configurarCursorItensTabela();
     }
@@ -92,7 +96,10 @@ public final class AbaMensagemCompilador extends Aba
             }
         }
 
-        tabelaModel.setResultadoAnalise(resultadoAnalise);
+        SwingUtils.invokeLater(() -> {
+            tabelaModel.setResultadoAnalise(resultadoAnalise);
+        });
+        
     }
 
     void limpar()
@@ -173,6 +180,7 @@ public final class AbaMensagemCompilador extends Aba
         tabelaMensagens.setSelectionBackground(new java.awt.Color(0, 84, 148));
         tabelaMensagens.setShowHorizontalLines(false);
         tabelaMensagens.setShowVerticalLines(false);
+        //tabelaMensagens.getTableHeader().setReorderingAllowed(false);
         jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
 
         add(jScrollPaneTabelaMensagens, java.awt.BorderLayout.CENTER);

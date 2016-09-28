@@ -1,6 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.ps.ui.swing.ColorController;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,16 +18,17 @@ import javax.swing.JComponent;
  */
 abstract class RenderizadorBase extends JComponent {
 
-    protected Color corGrade = new Color(0, 0, 0, 0.7f);
-    protected Color corTexto = Color.DARK_GRAY;
-    protected Color corTextoDestacado = Color.BLACK;
-    protected final Color COR_DO_CABECALHO_DESTACADO = new Color(0, 0, 0);
-    protected final Color COR_DO_FUNDO_EM_DESTAQUE = new Color(1, 0, 0, 0.3f);//vermelho claro
-    protected final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{4, 2, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1}, 0);
+    protected static final Color COR_GRADE = new Color(1, 1, 1, 0.35f);
+    protected static final Color COR_TEXTO = Color.GRAY;
+    protected static final Color COR_NOME = Color.LIGHT_GRAY;
+    protected static final Color COR_TEXTO_DESTACADO = Color.WHITE;
+    protected static final Color COR_DO_CABECALHO_DESTACADO = COR_TEXTO_DESTACADO;
+    protected static final Color COR_DO_FUNDO_EM_DESTAQUE = ColorController.FUNDO_ESCURO;// new Color(1, 0, 0, 0.3f);//vermelho claro
+    protected static final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{4, 2, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1}, 0);
 
     static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 
-    protected static final int MARGEM_HORIZONTAL = 5;
+    protected static final int MARGEM = 5;
 
     protected ItemDaLista itemDaLista;
 
@@ -40,12 +42,6 @@ abstract class RenderizadorBase extends JComponent {
         setTamanhoDaFonte(12f);
     }
 
-    public final void setCores(Color corTexto, Color corTextoDestacado, Color corGrade) {
-        this.corTexto = corTexto;
-        this.corTextoDestacado = corTextoDestacado;
-        this.corGrade = corGrade;
-    }
-    
     static void setTamanhoDaFonte(float tamanho) {
         assert (FONTE_NORMAL != null);
         FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
