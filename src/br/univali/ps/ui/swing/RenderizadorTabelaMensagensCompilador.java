@@ -1,5 +1,6 @@
 package br.univali.ps.ui.swing;
 
+import br.univali.ps.ui.ColorController;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.Icon;
@@ -17,8 +18,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 public final class RenderizadorTabelaMensagensCompilador extends DefaultTableCellRenderer
 {
     
-    private final Color corImpar = Color.WHITE;
-    private final Color corPar = new Color(235, 235, 235);
+    private final Color corImpar = ColorController.COR_PRINCIPAL;
+    private final Color corPar = ColorController.COR_DESTAQUE;
+    private final Color corLetra = ColorController.COR_LETRA;
 
     public RenderizadorTabelaMensagensCompilador()
     {
@@ -36,6 +38,7 @@ public final class RenderizadorTabelaMensagensCompilador extends DefaultTableCel
         setVerticalAlignment((column < 2) ? JLabel.CENTER : JLabel.TOP);
         setIcon((column == 0) ? (Icon) value : null);
         setHorizontalAlignment((column == 0) ? SwingConstants.CENTER : SwingConstants.LEADING);
+        setForeground(corLetra);
         if (column > 0)
         {
             valor = value.toString();
