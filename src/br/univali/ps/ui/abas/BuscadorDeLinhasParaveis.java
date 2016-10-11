@@ -2,12 +2,12 @@ package br.univali.ps.ui.abas;
 
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.AtivadorDePontosDeParada;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 
 /**
  *
  * @author elieser
  */
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
@@ -119,7 +119,7 @@ public final class BuscadorDeLinhasParaveis extends VisitanteNulo {
     }
 
     @Override
-    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
+    public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA {
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
             declaracao.aceitar(this);
         }

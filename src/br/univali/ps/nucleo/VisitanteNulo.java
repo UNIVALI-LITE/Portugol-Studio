@@ -1,6 +1,6 @@
 package br.univali.ps.nucleo;
 
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
@@ -17,7 +17,6 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
-import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
@@ -64,7 +63,7 @@ import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
-    public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA {
+    public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA {
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
             declaracao.aceitar(this);
         }
@@ -103,8 +102,7 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
-        for (NoBloco filho : declaracaoFuncao.getBlocos())
-        {
+        for (NoBloco filho : declaracaoFuncao.getBlocos()) {
             filho.aceitar(this);
         }
         return null;
@@ -127,8 +125,7 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
-        for (NoBloco bloco : noEnquanto.getBlocos())
-        {
+        for (NoBloco bloco : noEnquanto.getBlocos()) {
             bloco.aceitar(this);
         }
         return null;
@@ -136,8 +133,7 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
-        for (NoCaso caso : noEscolha.getCasos())
-        {
+        for (NoCaso caso : noEscolha.getCasos()) {
             caso.aceitar(this);
         }
         return null;
@@ -145,8 +141,7 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
-        for (NoBloco no : noFacaEnquanto.getBlocos())
-        {
+        for (NoBloco no : noFacaEnquanto.getBlocos()) {
             no.aceitar(this);
         }
         return null;
@@ -279,8 +274,7 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
-        for (NoBloco no : noPara.getBlocos())
-        {
+        for (NoBloco no : noPara.getBlocos()) {
             no.aceitar(this);
         }
         return null;
@@ -318,15 +312,12 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
-        for (NoBloco no : noSe.getBlocosVerdadeiros())
-        {
+        for (NoBloco no : noSe.getBlocosVerdadeiros()) {
             no.aceitar(this);
         }
 
-        if (noSe.getBlocosFalsos() != null)
-        {
-            for (NoBloco no : noSe.getBlocosFalsos())
-            {
+        if (noSe.getBlocosFalsos() != null) {
+            for (NoBloco no : noSe.getBlocosFalsos()) {
                 no.aceitar(this);
             }
         }

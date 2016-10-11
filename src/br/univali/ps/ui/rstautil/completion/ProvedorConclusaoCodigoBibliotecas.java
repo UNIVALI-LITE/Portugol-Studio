@@ -4,7 +4,7 @@ import static br.univali.portugol.nucleo.asa.Quantificador.MATRIZ;
 import static br.univali.portugol.nucleo.asa.Quantificador.VETOR;
 
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.Quantificador;
@@ -116,7 +116,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
         }
 
         @Override
-        public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
+        public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA
         {
             for (NoInclusaoBiblioteca inclusao : asap.getListaInclusoesBibliotecas())
             {

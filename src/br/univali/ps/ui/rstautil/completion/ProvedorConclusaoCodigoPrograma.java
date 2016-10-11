@@ -3,10 +3,9 @@ package br.univali.ps.ui.rstautil.completion;
 import static br.univali.ps.ui.rstautil.completion.ParametroConclusaoASA.TipoConclusao.ATRIBUICAO_VALOR;
 import static br.univali.ps.ui.rstautil.completion.ParametroConclusaoASA.TipoConclusao.INDICE_VETOR;
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.asa.ArvoreSintaticaAbstrataPrograma;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.ModoAcesso;
-import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
@@ -19,23 +18,11 @@ import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseXOR;
 import br.univali.portugol.nucleo.asa.NoPara;
-import br.univali.portugol.nucleo.asa.NoPare;
-import br.univali.portugol.nucleo.asa.NoReal;
-import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
-import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
-import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
-import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.portugol.nucleo.asa.NoTitulo;
-import br.univali.portugol.nucleo.asa.NoVaPara;
-import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
-import br.univali.portugol.nucleo.asa.VisitanteASA;
-import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.ps.nucleo.VisitanteNulo;
@@ -113,7 +100,7 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
         private List<ParameterizedCompletion.Parameter> parametros;
         private String local;
 
-        public List<Completion> criarConclusoes(ArvoreSintaticaAbstrataPrograma asa)
+        public List<Completion> criarConclusoes(ASAPrograma asa)
         {
             this.completions = new ArrayList<>();
 
@@ -137,7 +124,7 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
         }
 
         @Override
-        public Object visitar(ArvoreSintaticaAbstrataPrograma asap) throws ExcecaoVisitaASA
+        public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA
         {
             if (asap.getListaInclusoesBibliotecas() != null)
             {
