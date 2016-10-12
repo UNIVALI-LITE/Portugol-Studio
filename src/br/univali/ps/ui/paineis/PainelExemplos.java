@@ -230,7 +230,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, Configuracoes.rodandoNoNetbeans());
                         PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
                     }
                 });

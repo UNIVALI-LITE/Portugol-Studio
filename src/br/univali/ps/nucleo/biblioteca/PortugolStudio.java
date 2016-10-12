@@ -35,13 +35,13 @@ public final class PortugolStudio extends Biblioteca {
                 @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
             }
     )
-    public void minimizar() throws ErroExecucaoBiblioteca {
+    public void minimizar() throws ErroExecucaoBiblioteca, InterruptedException {
         try {
             SwingUtilities.invokeAndWait(() -> {
                 setUltimoEstado(br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState());
                 br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.ICONIFIED);
             });
-        } catch (InterruptedException | InvocationTargetException ex) {
+        } catch (InvocationTargetException ex) {
             throw new ErroExecucaoBiblioteca(ex);
         }
 

@@ -89,7 +89,7 @@ public final class PortugolParser extends AbstractParser
 
             try
             {
-                Programa programa = Portugol.compilar(documento.getText(0, documento.getLength()));
+                Programa programa = Portugol.compilarParaAnalise(documento.getText(0, documento.getLength()));
 
                 if (programa.getResultadoAnalise().contemAvisos())
                 {
