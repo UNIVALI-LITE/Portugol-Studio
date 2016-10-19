@@ -43,7 +43,7 @@ import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.ps.nucleo.VisitanteNulo;
+import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import java.util.List;
 
 //classe usada para procurar por um determinado símbolo dentro da ASA
