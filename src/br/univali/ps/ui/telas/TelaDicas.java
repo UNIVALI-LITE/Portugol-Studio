@@ -14,6 +14,7 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -60,12 +61,13 @@ public class TelaDicas extends JDialog implements Themeable{
     @Override
     public void configurarCores(){
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(webButton1,15);
-            WeblafUtils.configurarBotao(webButton2,15);
+            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_CLARO, Color.white, ColorController.FUNDO_ESCURO, Color.orange, 15);
+            WeblafUtils.configurarBotao(webButton2, ColorController.FUNDO_CLARO, Color.white, ColorController.FUNDO_ESCURO, Color.orange, 15);
         }
         titleLabel.setBackground(ColorController.FUNDO_ESCURO);
         mainPanel.setBackground(ColorController.FUNDO_CLARO);
-//        descriptionLabel.setBackground(ColorController.BRANCO);
+        descriptionLabel.setForeground(ColorController.COR_LETRA);
+        exibirSempre.setForeground(ColorController.COR_LETRA);
     }
     
     private void configurarNavegacaoPeloTeclado()
