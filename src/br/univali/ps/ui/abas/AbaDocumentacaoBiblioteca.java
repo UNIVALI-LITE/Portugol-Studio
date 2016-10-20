@@ -733,7 +733,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
                 DefaultMutableTreeNode no = (DefaultMutableTreeNode) valor;
                 Method metodo = no.getUserObject().getClass().getMethod("getNome");
                 metodo.setAccessible(true);
-
+                setForeground(ColorController.COR_LETRA);
                 rotulo.setIcon(getIcone(no.getUserObject()));
                 rotulo.setText((String) metodo.invoke(no.getUserObject()));
             }
