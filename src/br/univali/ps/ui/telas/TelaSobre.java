@@ -47,6 +47,7 @@ public final class TelaSobre extends JDialog implements Themeable{
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(16);
         FabricaDicasInterface.criarTooltip(labellicensa, "Veja as Licensas do Software");
         tabbedUsuarios.setUI(new PSOutTabbedPaneUI());
+        
         if (WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configuraWebLaf(jScrollPane1);
@@ -62,6 +63,7 @@ public final class TelaSobre extends JDialog implements Themeable{
         if (WeblafUtils.weblafEstaInstalado()) {
           ((WebTabbedPaneUI)tabbedUsuarios.getUI()).setShadeWidth(0);
         }
+        tabbedUsuarios.setForeground(ColorController.COR_LETRA);
     }
 
     private void configurarLinks()
