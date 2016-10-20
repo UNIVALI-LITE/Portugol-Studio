@@ -12,6 +12,7 @@ import java.awt.SplashScreen;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -27,6 +28,9 @@ public final class Splash
     private static boolean progressFlag = true;
     private static boolean hintFlag = true;
     private static String dica;
+    private static int ano = Calendar.getInstance().get(Calendar.YEAR);
+    private static String direitos = "Lite 2009 - "+ano+" | Todos os direitos reservados";
+    private static boolean flagDireitos = false;
 
     public static void exibir(String dica, int progresso)
     {
@@ -62,8 +66,16 @@ public final class Splash
             desenharBarraProgresso(progresso);
             desenharCodigoFonte(step);
             desenharDica(Splash.dica);
-
+            desenharDireitos();
             splash.update();
+        }
+    }
+    
+    private static void desenharDireitos(){
+        if(!flagDireitos){
+            graphics.setColor(ColorController.COR_LETRA);
+            graphics.drawString(direitos, 375, 330);
+            flagDireitos=true;
         }
     }
 
