@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Leia</title>
+		<meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/estilos/ajuda.css"/>
+        <link rel="stylesheet" type="text/css" href="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/estilos/SyntaxHighlighter.css"/>
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/SyntaxHighlighter/shCore.js"></script>
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/SyntaxHighlighter/shBrushPortugol.js"></script>
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/jquery-1.11.1.min.js"></script>
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/exemplos.js"></script>
+    </head>
+    <body>
+        <div>
+            <h1>Leia</h1>
+            <p>Em alguns problemas, precisamos que o usuário digite um valor a ser armazenado. Por exemplo, se quisermos elaborar um algoritmo para calcular a média de nota dos alunos, precisaremos que o usuário informe ao algoritmo quais as suas notas. No portugol a instrução de entrada de dados via teclado é chamada de "leia", pois segue a ideia de que o algoritmo está lendo dados do ambiente externo(usuário) para poder utilizá-los.</p>
+			<p>O Comando leia é utilizado quando se deseja obter informações do teclado do computador, ou seja, é um comando de entrada de dados. Esse comando aguarda um valor a ser digitado e o atribui diretamente na variável.</p>
+            <p>Para utilizar o comando leia, você deverá escrever este comando e entre parênteses colocar a(s) variavel (eis) que você quer que recebam os valores a serem digitados. A sintaxe deste comando está exemplificada a seguir:</p>
+			<div class="codigo-fonte"><span class="porTipoDeclaracao">inteiro</span> <span class="porID">x</span>
+<span class="porTipoDeclaracao">cadeia</span> <span class="porID">y</span>
+<span class="porTipoDeclaracao">real</span> <span class="porID">z</span>
+
+<span class="porComentario">//chamando o comando leia
+</span><span class="porID">leia</span><span class="porAgrupamentos">(</span><span class="porID">x</span><span class="porAgrupamentos">)</span>
+<span class="porID">leia</span><span class="porAgrupamentos">(</span><span class="porID">y</span><span class="porDesconhecido">,</span><span class="porID">z</span><span class="porAgrupamentos">)</span>
+</div>
+			<p>Note que para armazenar um valor em uma variável, é necessário que a mesma já tenha sido declarada anteriormente. Assim como no comando escreva, se quisermos que o usuário entre com dados sucessivos, basta separar as variáveis dentro dos parênteses com vírgula.</p>
+			<p>O fluxograma abaixo ilustra um algoritmo que lê as variáveis: idade, salario, nome, sobrenome, nota1, nota2 e nota3.</p>
+			<img src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/recursos/imagens/Leia.jpg" alt='Fluxograma ilustrando um algoritmo que lê variaveis.'>
+			<p>O exemplo a seguir ilustra em portugol o mesmo algoritmo do fluxograma acima.</p>
+			<div class="codigo-fonte"><span class="porPalavraReservada">programa</span>
+<span class="porAgrupamentos">{</span>
+    <span class="porPalavraReservada">funcao</span> <span class="porID">inicio</span><span class="porAgrupamentos">(</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">{</span>
+          <span class="porTipoDeclaracao">inteiro</span> <span class="porID">idade</span>
+          <span class="porTipoDeclaracao">real</span> <span class="porID">salario</span><span class="porDesconhecido">,</span> <span class="porID">nota1</span><span class="porDesconhecido">,</span> <span class="porID">nota2</span><span class="porDesconhecido">,</span> <span class="porID">nota3</span>
+          <span class="porTipoDeclaracao">cadeia</span> <span class="porID">nome</span><span class="porDesconhecido">,</span> <span class="porID">sobrenome</span>
+          
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Informe a sua idade: "</span><span class="porAgrupamentos">)</span>
+          <span class="porID">leia</span> <span class="porAgrupamentos">(</span><span class="porID">idade</span><span class="porAgrupamentos">)</span>                    <span class="porComentario">//lê o valor digitado para "idade"
+</span>          
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Informe seu salario: "</span><span class="porAgrupamentos">)</span>
+          <span class="porID">leia</span> <span class="porAgrupamentos">(</span><span class="porID">salario</span><span class="porAgrupamentos">)</span>                    <span class="porComentario">//lê o valor digitado para "salario"
+</span>          
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Informe o seu nome e sobrenome: "</span><span class="porAgrupamentos">)</span>
+          <span class="porID">leia</span> <span class="porAgrupamentos">(</span><span class="porID">nome</span><span class="porDesconhecido">,</span> <span class="porID">sobrenome</span><span class="porAgrupamentos">)</span>          <span class="porComentario">//lê o valor digitado para "nome" e "sobrenome"
+</span>          
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Informe as suas três notas: "</span><span class="porAgrupamentos">)</span>
+          <span class="porID">leia</span> <span class="porAgrupamentos">(</span><span class="porID">nota1</span><span class="porDesconhecido">,</span> <span class="porID">nota2</span><span class="porDesconhecido">,</span> <span class="porID">nota3</span><span class="porAgrupamentos">)</span>     <span class="porComentario">//lê o valor digitado para "nota1", "nota2" e "nota3"
+</span>
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Seu nome é:"</span><span class="porDesconhecido">+</span><span class="porID">nome</span><span class="porDesconhecido">+</span><span class="porTexto">" "</span><span class="porDesconhecido">+</span><span class="porID">sobrenome</span><span class="porDesconhecido">+</span><span class="porTexto">"\n"</span><span class="porAgrupamentos">)</span>
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Você tem "</span><span class="porDesconhecido">+</span><span class="porID">idade</span><span class="porDesconhecido">+</span><span class="porTexto">" anos e ganha de salario "</span><span class="porDesconhecido">+</span><span class="porID">salario</span><span class="porDesconhecido">+</span><span class="porTexto">"\n"</span><span class="porAgrupamentos">)</span>
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Suas três notas foram:\n"</span><span class="porAgrupamentos">)</span>
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Nota 1: "</span><span class="porDesconhecido">+</span><span class="porID">nota1</span><span class="porDesconhecido">+</span><span class="porTexto">"\n"</span><span class="porAgrupamentos">)</span>
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Nota 2: "</span><span class="porDesconhecido">+</span><span class="porID">nota2</span><span class="porDesconhecido">+</span><span class="porTexto">"\n"</span><span class="porAgrupamentos">)</span>
+          <span class="porID">escreva</span><span class="porAgrupamentos">(</span><span class="porTexto">"Nota 3: "</span><span class="porDesconhecido">+</span><span class="porID">nota3</span><span class="porDesconhecido">+</span><span class="porTexto">"\n"</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">}</span>
+<span class="porAgrupamentos">}</span></div><a class="botao-codigo-fonte" href='file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/recursos/exemplos/entrada_saida/leia/exemplo2.por'>Tente você mesmo</a>
+        </div>
+    </body>
+</html>

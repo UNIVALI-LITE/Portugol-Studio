@@ -103,7 +103,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
     
     private void configurarCores(){
-        WeblafUtils.configuraWebLaf(barraProgresso);
         divisorLayout.setBackground(ColorController.COR_PRINCIPAL);
         painelAjuda.setBackground(ColorController.COR_PRINCIPAL);
         painelArvore.setBackground(ColorController.COR_PRINCIPAL);
@@ -212,7 +211,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         {
             if (evt.getPropertyName().equals("progress"))
             {
-                barraProgresso.setValue((Integer) evt.getNewValue());
+               // barraProgresso.setValue((Integer) evt.getNewValue());
             }
         }
         else if (((SwingWorker.StateValue) evt.getNewValue()) == SwingWorker.StateValue.DONE)
@@ -642,8 +641,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         jEditorPane1 = new javax.swing.JEditorPane();
         painelCarregamento = new javax.swing.JPanel();
         rotuloCarregamento = new javax.swing.JLabel();
-        barraProgresso = new javax.swing.JProgressBar();
         rotuloErroCarregamento = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         painelAjuda = new javax.swing.JPanel();
         divisorLayout = new javax.swing.JSplitPane();
         painelArvore = new javax.swing.JPanel();
@@ -659,39 +658,24 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         setOpaque(false);
         setLayout(new java.awt.CardLayout());
 
+        painelCarregamento.setLayout(new java.awt.BorderLayout());
+
         rotuloCarregamento.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         rotuloCarregamento.setText("Carregando os tópicos da ajuda por favor aguarde...");
         rotuloCarregamento.setPreferredSize(new java.awt.Dimension(256, 20));
+        painelCarregamento.add(rotuloCarregamento, java.awt.BorderLayout.NORTH);
 
         rotuloErroCarregamento.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         rotuloErroCarregamento.setForeground(new java.awt.Color(255, 0, 0));
         rotuloErroCarregamento.setText("<html><body><p>Erro ao carregar a ajuda: %s</p></body></html>");
         rotuloErroCarregamento.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         rotuloErroCarregamento.setPreferredSize(new java.awt.Dimension(256, 20));
+        painelCarregamento.add(rotuloErroCarregamento, java.awt.BorderLayout.SOUTH);
 
-        org.jdesktop.layout.GroupLayout painelCarregamentoLayout = new org.jdesktop.layout.GroupLayout(painelCarregamento);
-        painelCarregamento.setLayout(painelCarregamentoLayout);
-        painelCarregamentoLayout.setHorizontalGroup(
-            painelCarregamentoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(painelCarregamentoLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(painelCarregamentoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(rotuloCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(barraProgresso, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        painelCarregamentoLayout.setVerticalGroup(
-            painelCarregamentoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(painelCarregamentoLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(rotuloCarregamento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(barraProgresso, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/load.gif"))); // NOI18N
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        painelCarregamento.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         add(painelCarregamento, "painelCarregamento");
 
@@ -738,10 +722,10 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvore;
-    private javax.swing.JProgressBar barraProgresso;
     private org.fit.cssbox.swingbox.BrowserPane conteudo;
     private javax.swing.JSplitPane divisorLayout;
     private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel painelAjuda;

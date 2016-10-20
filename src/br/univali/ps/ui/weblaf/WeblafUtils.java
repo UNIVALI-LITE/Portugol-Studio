@@ -97,6 +97,11 @@ public class WeblafUtils {
        ((WebProgressBarUI)field.getUI()).setBgTop(ColorController.FUNDO_ESCURO);
        ((WebProgressBarUI)field.getUI()).setIndeterminateBorder(null);
        ((WebProgressBarUI)field.getUI()).setPaintIndeterminateBorder(false);
+       ((WebProgressBarUI)field.getUI()).setInnerRound(0);
+       ((WebProgressBarUI)field.getUI()).setRound(0);
+       ((WebProgressBarUI)field.getUI()).setHighlightWhite(ColorController.PROGRESS_BAR);
+       ((WebProgressBarUI)field.getUI()).setShadeWidth(0);
+       ((WebProgressBarUI)field.getUI()).setHighlightDarkWhite(ColorController.PROGRESS_BAR);
        field.setBorder(new EmptyBorder(15,15,15,15));
        field.setOpaque(true);
        field.setBackground(ColorController.COR_DESTAQUE);
