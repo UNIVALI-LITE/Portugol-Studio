@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.abas;
+package br.univali.ps.ui.abas.abaBibliotecas;
 
 import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.Quantificador;
@@ -16,15 +16,16 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.Themeable;
+import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Component;
 import java.awt.Desktop;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URI;
 import javax.swing.Icon;
@@ -47,6 +48,10 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 {
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
     private static final int tamanhoFonte = 12;
+    private String constanteHTML;
+    private String bibliotecaHTML;
+    private String erroHTML;
+    private String funcaoHTML;
     
     public AbaDocumentacaoBiblioteca()
     {
@@ -62,11 +67,33 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             WeblafUtils.configuraWebLaf(painelRolagemArvore);
             WeblafUtils.configuraWebLaf(painelRolagemConteudo);
         }
+        constanteHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html");
+        erroHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html");
+        bibliotecaHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html");
+        funcaoHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html");
     }
     
     @Override
     public void configurarCores(){
         main.setBackground(ColorController.COR_PRINCIPAL);
+    }
+    
+    private String carregarHTML(String caminho)
+    {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho)));
+            String str;
+            while ((str = in.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        String base = contentBuilder.toString();
+        
+        return base;
     }
     
     private void configurarAparenciaArvore()
@@ -113,141 +140,17 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
      private String montarHtmlErroCarregamento(ErroCarregamentoBiblioteca erro)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
-            
-            "                color: rgb(0, 0, 140);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(150, 0, 0);" +
-            "                font-weight: bold;" +                
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"erro\">" +
-            "" + erro.getMessage() +
-            "         </div>" +                                            
-            "         <br><hr/>" +
-            "    </body>" +
-            "</html>";
+        String base = erroHTML;
         
         base = base.replace("${nomeBiblioteca}", erro.getNome());
+        base = base.replace("${erro}", erro.getMessage());
 
         return base;
     }
     
     private String montarHtmlBiblioteca(MetaDadosBiblioteca metaDadosBiblioteca)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
-            
-            "                color: rgb(0, 0, 140);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(150, 0, 0);" +
-            "                font-weight: bold;" +                
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"versao\">" +
-            "                <b>Versão:</b> ${versao}" +
-            "         </div><br>" +                                
-            "         <div id=\"descricao\">" +
-            "                <b>Descrição:</b> ${descricao}" +
-            "         </div>" +    
-            //"         ${constantes}"+
-            //"         ${funcoes}"+
-            "         <br><hr/>" +
-            "    </body>" +
-            "</html>";
+        String base = bibliotecaHTML;
         
         base = base.replace("${nomeBiblioteca}", metaDadosBiblioteca.getNome());
         base = base.replace("${versao}", metaDadosBiblioteca.getDocumentacao().versao());
@@ -270,69 +173,8 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
     private String montarHtmlConstante(String nomeBiblioteca, MetaDadosConstante metaDadosConstante)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
+        String base = constanteHTML;
             
-            "                color: rgb(255,194,0);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(49,104,146);" +
-            "                font-weight: bold;" +                
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "            ${assinatura}" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"descricao\">" +
-            "                <b>Descrição:</b> ${descricao}" +
-            "         </div>" +                
-            "         <br><hr/>" +
-            "         ${referencia}" +
-            "    </body>" +
-            "</html>";
         
         base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
         base = base.replace("${assinatura}", montarAssinaturaConstante(metaDadosConstante));
@@ -368,72 +210,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
     private String montarHtmlFuncao(String nomeBiblioteca, MetaDadosFuncao metaDadosFuncao)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "                color: rgb(51,51,51);"+
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
-            
-            "                color: rgb(255,194,0);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(49,104,146);" +
-            "                font-weight: bold;" +
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "            ${assinatura}" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"descricao\">" +
-            "                <b>Descrição:</b> ${descricao}" +
-            "         </div>" +                
-            "         ${parametros}" +
-            "         ${retorno}" +
-            "         <br><hr/>" +
-            "         ${autores}" +
-            "    </body>" +
-            "</html>";
+        String base = funcaoHTML;
         
         base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
         base = base.replace("${assinatura}", montarAssinaturaFuncao(metaDadosFuncao));

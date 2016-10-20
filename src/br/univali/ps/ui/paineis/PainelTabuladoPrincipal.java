@@ -3,7 +3,7 @@ package br.univali.ps.ui.paineis;
 import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.abaAjuda.AbaAjuda;
-import br.univali.ps.ui.abas.AbaDocumentacaoBiblioteca;
+import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
