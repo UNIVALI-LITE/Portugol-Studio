@@ -10,6 +10,8 @@ import com.alee.laf.checkbox.WebCheckBoxUI;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.panel.WebPanelUI;
+import com.alee.laf.progressbar.WebProgressBar;
+import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.text.WebTextFieldUI;
@@ -84,6 +86,24 @@ public class WeblafUtils {
        field.setBackground(ColorController.COR_DESTAQUE);
        field.setForeground(ColorController.COR_LETRA);
     }
+    
+    public static void configuraWebLaf(JProgressBar field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+       ((WebProgressBarUI)field.getUI()).setProgressTopColor(ColorController.PROGRESS_BAR);
+       ((WebProgressBarUI)field.getUI()).setProgressBottomColor(ColorController.PROGRESS_BAR);
+       ((WebProgressBarUI)field.getUI()).setBgBottom(ColorController.FUNDO_ESCURO);
+       ((WebProgressBarUI)field.getUI()).setBgTop(ColorController.FUNDO_ESCURO);
+       ((WebProgressBarUI)field.getUI()).setIndeterminateBorder(null);
+       ((WebProgressBarUI)field.getUI()).setPaintIndeterminateBorder(false);
+       field.setBorder(new EmptyBorder(15,15,15,15));
+       field.setOpaque(true);
+       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.COR_LETRA);
+       field.setBorderPainted(false);
+    }
+    
     public static void configuraWebLaf(JTextField field) {
        if (!WeblafUtils.weblafEstaInstalado()) {
            return;

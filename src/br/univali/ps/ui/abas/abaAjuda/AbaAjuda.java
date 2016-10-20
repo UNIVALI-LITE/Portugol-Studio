@@ -103,10 +103,13 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
     
     private void configurarCores(){
+        WeblafUtils.configuraWebLaf(barraProgresso);
         divisorLayout.setBackground(ColorController.COR_PRINCIPAL);
         painelAjuda.setBackground(ColorController.COR_PRINCIPAL);
         painelArvore.setBackground(ColorController.COR_PRINCIPAL);
         painelCarregamento.setBackground(ColorController.COR_PRINCIPAL);
+        rotuloCarregamento.setForeground(ColorController.COR_LETRA);
+        rotuloErroCarregamento.setForeground(ColorController.COR_LETRA);
     }
 
     private void configurarSwingbox()
