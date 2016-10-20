@@ -579,6 +579,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 Topico topico = (Topico) conteudoNo;
                 String titulo = topico.getTitulo();
                 Icon icone = obterIcone(topico, selecionado, expandido, folha);
+                setForeground(ColorController.COR_LETRA);
                 renderizador.setText(titulo);
                 renderizador.setIcon(icone);
             }
