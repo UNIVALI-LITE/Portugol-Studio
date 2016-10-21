@@ -48,10 +48,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 {
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
     private static final int tamanhoFonte = 12;
-    private String constanteHTML;
-    private String bibliotecaHTML;
-    private String erroHTML;
-    private String funcaoHTML;
+    private final String css;
+    private final String constanteHTML;
+    private final String bibliotecaHTML;
+    private final String erroHTML;
+    private final String funcaoHTML;
     
     public AbaDocumentacaoBiblioteca()
     {
@@ -67,10 +68,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             WeblafUtils.configuraWebLaf(painelRolagemArvore);
             WeblafUtils.configuraWebLaf(painelRolagemConteudo);
         }
-        constanteHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html");
-        erroHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html");
-        bibliotecaHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html");
-        funcaoHTML = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html");
+        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/estilo.css");
+        constanteHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html"));
+        erroHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
+        bibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));
+        funcaoHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html"));
     }
     
     @Override
@@ -94,6 +96,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         String base = contentBuilder.toString();
         
         return base;
+    }
+    
+    private String colocarCSS(String HTML)
+    {
+       return HTML.replace("/*${css}*/", css);
     }
     
     private void configurarAparenciaArvore()
