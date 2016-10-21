@@ -4,7 +4,8 @@ body
 	font-family: "Arial"; 
 	font-size:  12 pt;                 
 	line-height: 150%; 
-	color: rgb(51,51,51);
+	color: #f2f2f2;
+        background-color: #3A464C; 
 } 
  
 a 

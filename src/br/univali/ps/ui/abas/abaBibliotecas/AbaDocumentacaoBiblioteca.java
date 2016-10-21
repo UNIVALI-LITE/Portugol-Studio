@@ -77,7 +77,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
     @Override
     public void configurarCores(){
-        main.setBackground(ColorController.COR_PRINCIPAL);
+        painelHtml.setBackground(ColorController.COR_DESTAQUE);
+        divisor.setBackground(ColorController.COR_DESTAQUE);
+        jPanel1.setBackground(ColorController.COR_DESTAQUE);
+        painelArvore.setBackground(ColorController.FUNDO_CLARO);
+        
     }
     
     private String carregarHTML(String caminho)
@@ -233,23 +237,39 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        main = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         divisor = new javax.swing.JSplitPane();
-        painelRolagemArvore = new javax.swing.JScrollPane();
-        arvoreBibliotecas = new javax.swing.JTree();
         painelRolagemConteudo = new javax.swing.JScrollPane();
         painelHtml = new javax.swing.JTextPane();
+        painelArvore = new javax.swing.JPanel();
+        painelRolagemArvore = new javax.swing.JScrollPane();
+        arvoreBibliotecas = new javax.swing.JTree();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        main.setLayout(new java.awt.BorderLayout());
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         divisor.setBackground(new java.awt.Color(250, 250, 250));
         divisor.setBorder(null);
         divisor.setDividerLocation(250);
         divisor.setDividerSize(8);
-        divisor.setOpaque(false);
+
+        painelRolagemConteudo.setBackground(new java.awt.Color(250, 250, 250));
+        painelRolagemConteudo.setBorder(null);
+        painelRolagemConteudo.setMinimumSize(new java.awt.Dimension(350, 37));
+        painelRolagemConteudo.setOpaque(false);
+
+        painelHtml.setEditable(false);
+        painelHtml.setBackground(new java.awt.Color(250, 250, 250));
+        painelHtml.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        painelHtml.setContentType("text/html"); // NOI18N
+        painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t     color : #f2f2f2\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
+        painelRolagemConteudo.setViewportView(painelHtml);
+
+        divisor.setRightComponent(painelRolagemConteudo);
+
+        painelArvore.setLayout(new java.awt.BorderLayout());
 
         painelRolagemArvore.setBackground(new java.awt.Color(250, 250, 250));
         painelRolagemArvore.setBorder(null);
@@ -261,30 +281,19 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         arvoreBibliotecas.setOpaque(false);
         painelRolagemArvore.setViewportView(arvoreBibliotecas);
 
-        divisor.setLeftComponent(painelRolagemArvore);
+        painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
 
-        painelRolagemConteudo.setBackground(new java.awt.Color(250, 250, 250));
-        painelRolagemConteudo.setBorder(null);
-        painelRolagemConteudo.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        painelRolagemConteudo.setMinimumSize(new java.awt.Dimension(350, 37));
+        divisor.setLeftComponent(painelArvore);
 
-        painelHtml.setEditable(false);
-        painelHtml.setBackground(new java.awt.Color(250, 250, 250));
-        painelHtml.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        painelHtml.setContentType("text/html"); // NOI18N
-        painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
-        painelRolagemConteudo.setViewportView(painelHtml);
+        jPanel1.add(divisor, java.awt.BorderLayout.CENTER);
 
-        divisor.setRightComponent(painelRolagemConteudo);
-
-        main.add(divisor, java.awt.BorderLayout.CENTER);
-
-        add(main, java.awt.BorderLayout.CENTER);
+        add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreBibliotecas;
     private javax.swing.JSplitPane divisor;
-    private javax.swing.JPanel main;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel painelArvore;
     private javax.swing.JTextPane painelHtml;
     private javax.swing.JScrollPane painelRolagemArvore;
     private javax.swing.JScrollPane painelRolagemConteudo;
