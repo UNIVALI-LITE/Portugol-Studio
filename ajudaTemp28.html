@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Declaração de Constante</title>
+        <link rel="stylesheet" type="text/css" href="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/estilos/ajuda.css"/>
+        <link rel="stylesheet" type="text/css" href="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/estilos/SyntaxHighlighter.css"/>
+		<meta charset="utf-8">
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/SyntaxHighlighter/shCore.js"></script>
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/SyntaxHighlighter/shBrushPortugol.js"></script>
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/jquery-1.11.1.min.js"></script>
+        <script src="file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/scripts/exemplos.js"></script>
+    </head>
+    <body>
+        <div>
+            <h1>Declaração de Constante</h1>
+            <p>Existem algumas situações em que precisamos que um determinado parâmetro não tenha seu valor alterado durante a execução do programa. Para isso, existem as constantes. Constante é um identificador cujo valor associado não pode ser alterado pelo programa durante a sua execução.</p>
+            <p>Para declarar uma constante basta adicionar a palavra reservada <span class="palavra-reservada">const</span> seguida do tipo de dado, pelo nome da constante e atribuir um valor a ela.</p>
+			<div class="codigo-fonte"><span class="porPalavraReservada">const</span> <span class="porTipoDeclaracao">inteiro</span> <span class="porID">NOME_DA_CONSTANTE</span> <span class="porDesconhecido">=</span> <span class="porNumeros">3</span>
+<span class="porPalavraReservada">const</span> <span class="porTipoDeclaracao">real</span> <span class="porID">NOME_DA_CONSTANTE2</span> <span class="porDesconhecido">=</span> <span class="porNumeros">45</span></div>            
+			<p>Por uma questão de convenção, é aconselhável deixar o nome da sua constante em caixa alta (todas as letras em maiúsculo)</p>
+            <p>Para melhor compreensão deste conceito, confira o exemplo abaixo.</p>
+        </div>
+		<div class="codigo-fonte"><span class="porPalavraReservada">programa</span>
+<span class="porAgrupamentos">{</span>
+    <span class="porComentario">//Constante global do tipo de dado real 
+</span>    <span class="porPalavraReservada">const</span> <span class="porTipoDeclaracao">real</span> <span class="porID">aceleracao_gravidade</span> <span class="porDesconhecido">=</span> <span class="porNumeros">9.78</span>
+
+    <span class="porPalavraReservada">funcao</span> <span class="porID">inicio</span><span class="porAgrupamentos">(</span><span class="porAgrupamentos">)</span>
+    <span class="porAgrupamentos">{</span>
+        <span class="porComentario">//Vetor constante local do tipo de dado caracter
+</span>        <span class="porPalavraReservada">const</span> <span class="porTipoDeclaracao">caracter</span> <span class="porID">vogais</span><span class="porAgrupamentos">[</span><span class="porNumeros">5</span><span class="porAgrupamentos">]</span> <span class="porDesconhecido">=</span> <span class="porAgrupamentos">{</span><span class="porTexto">'a'</span><span class="porDesconhecido">,</span><span class="porTexto">'e'</span><span class="porDesconhecido">,</span><span class="porTexto">'i'</span><span class="porDesconhecido">,</span><span class="porTexto">'o'</span><span class="porDesconhecido">,</span><span class="porTexto">'u'</span><span class="porAgrupamentos">}</span>
+
+        <span class="porComentario">//Matriz constante local do tipo de dado inteiro
+</span>        <span class="porPalavraReservada">const</span> <span class="porTipoDeclaracao">inteiro</span> <span class="porID">teclado_numerico</span><span class="porAgrupamentos">[</span><span class="porAgrupamentos">]</span><span class="porAgrupamentos">[</span><span class="porAgrupamentos">]</span> <span class="porDesconhecido">=</span> <span class="porAgrupamentos">{</span><span class="porAgrupamentos">{</span><span class="porNumeros">1</span><span class="porDesconhecido">,</span><span class="porNumeros">2</span><span class="porDesconhecido">,</span><span class="porNumeros">3</span><span class="porAgrupamentos">}</span><span class="porDesconhecido">,</span><span class="porAgrupamentos">{</span><span class="porNumeros">4</span><span class="porDesconhecido">,</span><span class="porNumeros">5</span><span class="porDesconhecido">,</span><span class="porNumeros">6</span><span class="porAgrupamentos">}</span><span class="porDesconhecido">,</span><span class="porAgrupamentos">{</span><span class="porNumeros">7</span><span class="porDesconhecido">,</span><span class="porNumeros">8</span><span class="porDesconhecido">,</span><span class="porNumeros">9</span><span class="porAgrupamentos">}</span><span class="porAgrupamentos">}</span>
+    <span class="porAgrupamentos">}</span>
+<span class="porAgrupamentos">}</span></div><a class="botao-codigo-fonte" href='file:///C:/Users/lite/Documents/Github/Portugol-Studio-Recursos/ajuda/recursos/exemplos/declaracoes/constante/exemplo2.por'>Tente você mesmo</a>
+    </body>
+</html>
