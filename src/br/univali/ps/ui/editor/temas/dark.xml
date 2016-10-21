@@ -21,19 +21,19 @@
    <hyperlinks fg="A082BD"/>
    <secondaryLanguages>
       <language index="1" bg="334455"/>
-      <language index="2" bg="223322"/>
+      <language index="2" bg="00F0C0"/>
       <language index="3" bg="ffe0f0"/>
    </secondaryLanguages>
    
    <!-- Gutter styling. -->
    <gutterBorder color="1E2324"/>
    <lineNumbers fg="516268"/>
-   <foldIndicator fg="516268" iconBg="2f383c"/>
+   <foldIndicator fg="516268" iconBg="263238"/>
    <iconRowHeader activeLineRange="3399ff"/>
    
    <!-- Syntax tokens. -->
    <tokenStyles>
-      <style token="IDENTIFIER" fg="E0E2E4"/>
+      <style token="IDENTIFIER" fg="FBFBFB"/>
       <style token="RESERVED_WORD" fg="F1433C" bold="true"/>
       <style token="RESERVED_WORD_2" fg="F1433C" bold="true"/>
       <style token="ANNOTATION" fg="E8E2B7"/>
@@ -42,14 +42,14 @@
       <style token="COMMENT_MULTILINE" fg="66747B"/>
       <style token="COMMENT_KEYWORD" fg="ae9fbf"/>
       <style token="COMMENT_MARKUP" fg="ae9fbf"/>
-      <style token="FUNCTION" fg="E0E2E4"/>
+      <style token="FUNCTION" fg="FBFBFB"/>
       <style token="DATA_TYPE" fg="45BEFF" bold="true"/><!-- 00F0C0-->
       <style token="LITERAL_BOOLEAN" fg="F1433C" bold="true"/>
       <style token="LITERAL_NUMBER_DECIMAL_INT" fg="00F0C0"/>
       <style token="LITERAL_NUMBER_FLOAT" fg="00F0C0"/>
       <style token="LITERAL_NUMBER_HEXADECIMAL" fg="00F0C0"/>
       <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="FFC200"/>
-      <style token="LITERAL_CHAR" fg="F19494"/>
+      <style token="LITERAL_CHAR" fg="FFC200"/>
       <style token="LITERAL_BACKQUOTE" fg="F19494"/>
       <style token="MARKUP_TAG_DELIMITER" fg="00F0C0"/>
       <style token="MARKUP_TAG_NAME" fg="ABBFD3"/>
@@ -62,12 +62,12 @@
       <style token="REGEX" fg="d39745"/>
       <style token="SEPARATOR" fg="E8E2B7"/>
       <style token="VARIABLE" fg="ae9fbf" bold="true"/>
-      <style token="WHITESPACE" fg="E0E2E4"/>
+      <style token="WHITESPACE" fg="FBFBFB"/>
       
-      <style token="ERROR_IDENTIFIER" fg="E0E2E4" bg="04790e"/>
-      <style token="ERROR_NUMBER_FORMAT" fg="E0E2E4" bg="04790e"/>
-      <style token="ERROR_STRING_DOUBLE" fg="E0E2E4" bg="04790e"/>
-      <style token="ERROR_CHAR" fg="E0E2E4" bg="04790e"/>
+      <style token="ERROR_IDENTIFIER" fg="FBFBFB" bg="04790e"/>
+      <style token="ERROR_NUMBER_FORMAT" fg="FBFBFB" bg="04790e"/>
+      <style token="ERROR_STRING_DOUBLE" fg="FBFBFB" bg="04790e"/>
+      <style token="ERROR_CHAR" fg="FBFBFB" bg="04790e"/>
    </tokenStyles>
 
 </RSyntaxTheme>
