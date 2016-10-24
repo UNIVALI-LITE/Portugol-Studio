@@ -25,6 +25,8 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -103,10 +105,13 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     }
     
     private void configurarCores(){
-        divisorLayout.setBackground(ColorController.COR_PRINCIPAL);
-        painelAjuda.setBackground(ColorController.COR_PRINCIPAL);
-        painelArvore.setBackground(ColorController.COR_PRINCIPAL);
-        painelCarregamento.setBackground(ColorController.COR_PRINCIPAL);
+        divisorLayout.setBackground(ColorController.COR_DESTAQUE);
+        painelAjuda.setBackground(ColorController.COR_DESTAQUE);
+        jScrollPane3.setBackground(ColorController.COR_DESTAQUE);
+        painelArvore.setBackground(ColorController.FUNDO_CLARO);
+        painelCarregamento.setBackground(ColorController.COR_DESTAQUE);
+        rotuloCarregamento.setForeground(ColorController.COR_LETRA);
+        rotuloErroCarregamento.setForeground(ColorController.COR_LETRA);
     }
 
     private void configurarSwingbox()
@@ -209,7 +214,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         {
             if (evt.getPropertyName().equals("progress"))
             {
-                barraProgresso.setValue((Integer) evt.getNewValue());
+               // barraProgresso.setValue((Integer) evt.getNewValue());
             }
         }
         else if (((SwingWorker.StateValue) evt.getNewValue()) == SwingWorker.StateValue.DONE)
@@ -261,11 +266,10 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     private void exibirTopico(Topico topico)
     {
-
         try
         {
             //conteudo.setText(topico.getConteudo());
-            File tempOld = new File("ajudaTemp" + htmlId + ".html");
+            File tempOld = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "ajudaTemp" + htmlId + ".html");
 
             if (tempOld.exists())
             {
@@ -274,11 +278,13 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
             htmlId++;
 
-            File temp = new File("ajudaTemp" + htmlId + ".html");
+            File temp =  new File(Configuracoes.getInstancia().getDiretorioTemporario(), "ajudaTemp" + htmlId + ".html");
+            temp.getParentFile().mkdirs();
+            
             String conteudoHtml = topico.getConteudo();
             FileHandle.save(conteudoHtml, temp, "UTF-8");
 
-            conteudo.setPage("file:///" + temp.getAbsolutePath());
+            conteudo.setPage("file:///" + temp.getAbsolutePath().replace(" ", "%20"));
         }
         catch (Exception ex)
         {
@@ -440,6 +446,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                                 {
                                     codigo = lerCodigoFonte(diretorioCodigoFonte).trim();
                                     codigo = Utils.removerInformacoesPortugolStudio(codigo);
+                                    codigo = codigo.replace("\t", "    ");
                                     codigo = PortugolHTMLHighlighter.getText(codigo);
                                 }
                                 catch (Exception excessao)
@@ -579,6 +586,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 Topico topico = (Topico) conteudoNo;
                 String titulo = topico.getTitulo();
                 Icon icone = obterIcone(topico, selecionado, expandido, folha);
+                setForeground(ColorController.COR_LETRA);
                 renderizador.setText(titulo);
                 renderizador.setIcon(icone);
             }
@@ -638,14 +646,13 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         jEditorPane1 = new javax.swing.JEditorPane();
         painelCarregamento = new javax.swing.JPanel();
         rotuloCarregamento = new javax.swing.JLabel();
-        barraProgresso = new javax.swing.JProgressBar();
         rotuloErroCarregamento = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         painelAjuda = new javax.swing.JPanel();
         divisorLayout = new javax.swing.JSplitPane();
         painelArvore = new javax.swing.JPanel();
         painelRolagemArvore = new javax.swing.JScrollPane();
         arvore = new javax.swing.JTree();
-        separador = new javax.swing.JSeparator();
         painelConteudo = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         conteudo = new org.fit.cssbox.swingbox.BrowserPane();
@@ -655,39 +662,25 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         setOpaque(false);
         setLayout(new java.awt.CardLayout());
 
+        painelCarregamento.setLayout(new java.awt.BorderLayout());
+
         rotuloCarregamento.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         rotuloCarregamento.setText("Carregando os tópicos da ajuda por favor aguarde...");
+        rotuloCarregamento.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
         rotuloCarregamento.setPreferredSize(new java.awt.Dimension(256, 20));
+        painelCarregamento.add(rotuloCarregamento, java.awt.BorderLayout.NORTH);
 
         rotuloErroCarregamento.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         rotuloErroCarregamento.setForeground(new java.awt.Color(255, 0, 0));
         rotuloErroCarregamento.setText("<html><body><p>Erro ao carregar a ajuda: %s</p></body></html>");
         rotuloErroCarregamento.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         rotuloErroCarregamento.setPreferredSize(new java.awt.Dimension(256, 20));
+        painelCarregamento.add(rotuloErroCarregamento, java.awt.BorderLayout.SOUTH);
 
-        org.jdesktop.layout.GroupLayout painelCarregamentoLayout = new org.jdesktop.layout.GroupLayout(painelCarregamento);
-        painelCarregamento.setLayout(painelCarregamentoLayout);
-        painelCarregamentoLayout.setHorizontalGroup(
-            painelCarregamentoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(painelCarregamentoLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(painelCarregamentoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(rotuloCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(barraProgresso, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        painelCarregamentoLayout.setVerticalGroup(
-            painelCarregamentoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(painelCarregamentoLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(rotuloCarregamento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(barraProgresso, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 31, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(rotuloErroCarregamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/load.gif"))); // NOI18N
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        painelCarregamento.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         add(painelCarregamento, "painelCarregamento");
 
@@ -697,7 +690,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         divisorLayout.setDividerSize(8);
 
         painelArvore.setMinimumSize(new java.awt.Dimension(200, 37));
-        painelArvore.setOpaque(false);
         painelArvore.setPreferredSize(new java.awt.Dimension(250, 100));
         painelArvore.setLayout(new java.awt.BorderLayout());
 
@@ -710,9 +702,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelRolagemArvore.setViewportView(arvore);
 
         painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
-
-        separador.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        painelArvore.add(separador, java.awt.BorderLayout.EAST);
 
         divisorLayout.setLeftComponent(painelArvore);
 
@@ -734,10 +723,10 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvore;
-    private javax.swing.JProgressBar barraProgresso;
     private org.fit.cssbox.swingbox.BrowserPane conteudo;
     private javax.swing.JSplitPane divisorLayout;
     private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel painelAjuda;
@@ -747,6 +736,5 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private javax.swing.JScrollPane painelRolagemArvore;
     private javax.swing.JLabel rotuloCarregamento;
     private javax.swing.JLabel rotuloErroCarregamento;
-    private javax.swing.JSeparator separador;
     // End of variables declaration//GEN-END:variables
 }

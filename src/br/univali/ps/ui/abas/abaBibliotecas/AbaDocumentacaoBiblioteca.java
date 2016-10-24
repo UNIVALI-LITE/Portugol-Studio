@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.abas;
+package br.univali.ps.ui.abas.abaBibliotecas;
 
 import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.Quantificador;
@@ -16,15 +16,16 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.Themeable;
+import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.Component;
 import java.awt.Desktop;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URI;
 import javax.swing.Icon;
@@ -47,6 +48,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 {
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
     private static final int tamanhoFonte = 12;
+    private final String css;
+    private final String constanteHTML;
+    private final String bibliotecaHTML;
+    private final String erroHTML;
+    private final String funcaoHTML;
     
     public AbaDocumentacaoBiblioteca()
     {
@@ -62,11 +68,43 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             WeblafUtils.configuraWebLaf(painelRolagemArvore);
             WeblafUtils.configuraWebLaf(painelRolagemConteudo);
         }
+        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/estilo.css");
+        constanteHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html"));
+        erroHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
+        bibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));
+        funcaoHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html"));
     }
     
     @Override
     public void configurarCores(){
-        main.setBackground(ColorController.COR_PRINCIPAL);
+        painelHtml.setBackground(ColorController.COR_DESTAQUE);
+        divisor.setBackground(ColorController.COR_DESTAQUE);
+        jPanel1.setBackground(ColorController.COR_DESTAQUE);
+        painelArvore.setBackground(ColorController.FUNDO_CLARO);
+        
+    }
+    
+    private String carregarHTML(String caminho)
+    {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho)));
+            String str;
+            while ((str = in.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        String base = contentBuilder.toString();
+        
+        return base;
+    }
+    
+    private String colocarCSS(String HTML)
+    {
+       return HTML.replace("/*${css}*/", css);
     }
     
     private void configurarAparenciaArvore()
@@ -113,141 +151,17 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
      private String montarHtmlErroCarregamento(ErroCarregamentoBiblioteca erro)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
-            
-            "                color: rgb(0, 0, 140);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(150, 0, 0);" +
-            "                font-weight: bold;" +                
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"erro\">" +
-            "" + erro.getMessage() +
-            "         </div>" +                                            
-            "         <br><hr/>" +
-            "    </body>" +
-            "</html>";
+        String base = erroHTML;
         
         base = base.replace("${nomeBiblioteca}", erro.getNome());
+        base = base.replace("${erro}", erro.getMessage());
 
         return base;
     }
     
     private String montarHtmlBiblioteca(MetaDadosBiblioteca metaDadosBiblioteca)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
-            
-            "                color: rgb(0, 0, 140);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(150, 0, 0);" +
-            "                font-weight: bold;" +                
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"versao\">" +
-            "                <b>Versão:</b> ${versao}" +
-            "         </div><br>" +                                
-            "         <div id=\"descricao\">" +
-            "                <b>Descrição:</b> ${descricao}" +
-            "         </div>" +    
-            //"         ${constantes}"+
-            //"         ${funcoes}"+
-            "         <br><hr/>" +
-            "    </body>" +
-            "</html>";
+        String base = bibliotecaHTML;
         
         base = base.replace("${nomeBiblioteca}", metaDadosBiblioteca.getNome());
         base = base.replace("${versao}", metaDadosBiblioteca.getDocumentacao().versao());
@@ -259,7 +173,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
     private String destacarPalavrasReservadas(String texto)
     {
-        texto = texto.replace("<tipo>", "<span class=\"palavra_reservada\">");
+        texto = texto.replace("<tipo>", "<span class=\"tipo_reservado\">");
         texto = texto.replace("</tipo>", "</span>");
         
         texto = texto.replace("<param>", "<b>");
@@ -270,69 +184,8 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
     private String montarHtmlConstante(String nomeBiblioteca, MetaDadosConstante metaDadosConstante)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
+        String base = constanteHTML;
             
-            "                color: rgb(255,194,0);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(49,104,146);" +
-            "                font-weight: bold;" +                
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "            ${assinatura}" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"descricao\">" +
-            "                <b>Descrição:</b> ${descricao}" +
-            "         </div>" +                
-            "         <br><hr/>" +
-            "         ${referencia}" +
-            "    </body>" +
-            "</html>";
         
         base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
         base = base.replace("${assinatura}", montarAssinaturaConstante(metaDadosConstante));
@@ -357,83 +210,18 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         StringBuilder sb = new StringBuilder();
         
         sb.append("<h2>");
-        sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", metaDadosConstante.getTipoDado().getNome()));
+        sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", metaDadosConstante.getTipoDado().getNome()));
         sb.append(metaDadosConstante.getNome());
-        sb.append(" = ");
+        sb.append(" = <span class=\"porTipoDeclaracao\">");
         sb.append(metaDadosConstante.getValor());
-        sb.append("</h2>");
+        sb.append("</span></h2>");
         
         return sb.toString();
     }
     
     private String montarHtmlFuncao(String nomeBiblioteca, MetaDadosFuncao metaDadosFuncao)
     {
-        String base = 
-            "<html>" +
-            "    <head>" +
-            "        <style type=\"text/css\">" +
-            "            " +
-            "            body" +
-            "            {" +
-
-            "                font-family: \"Arial\";" +
-            "                font-size: " + tamanhoFonte + "pt;                " +
-            "                line-height: 150%;" +
-            "                color: rgb(51,51,51);"+
-            "            }" +
-            "            " +
-            "            a" +
-            "            {" +
-            "                font-weight: bold;" +
-            
-            "                color: rgb(255,194,0);" +
-            "            }" +
-            "            " +
-            "            h1" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            h2" +
-            "            {" +
-            "                font-size: " + (tamanhoFonte + 2) + "pt;" +
-            "            }" +
-            "            " +
-            "            li" +
-            "            {" +
-            "                margin-bottom: 10px;" +
-            "            }" +
-            "            " +
-            "            " +
-            "            .palavra_reservada" +
-            "            {" +
-            "                color: rgb(49,104,146);" +
-            "                font-weight: bold;" +
-            "            }" +
-            "            " +
-            "            .parametro" +
-            "            {" +
-            "                font-weight: bold;" +
-            "                list-style-type: circle;" +
-            "            }" +
-            "            " +
-            "        </style>" +
-            "    </head>" +
-            "    <body>" +
-            "        <div id=\"cabecalho\">" +
-            "            <h1>Biblioteca ${nomeBiblioteca}</h1>" +
-            "            ${assinatura}" +
-            "        </div>" +
-            "        <hr/><br>" +
-            "         <div id=\"descricao\">" +
-            "                <b>Descrição:</b> ${descricao}" +
-            "         </div>" +                
-            "         ${parametros}" +
-            "         ${retorno}" +
-            "         <br><hr/>" +
-            "         ${autores}" +
-            "    </body>" +
-            "</html>";
+        String base = funcaoHTML;
         
         base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
         base = base.replace("${assinatura}", montarAssinaturaFuncao(metaDadosFuncao));
@@ -449,23 +237,39 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        main = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         divisor = new javax.swing.JSplitPane();
-        painelRolagemArvore = new javax.swing.JScrollPane();
-        arvoreBibliotecas = new javax.swing.JTree();
         painelRolagemConteudo = new javax.swing.JScrollPane();
         painelHtml = new javax.swing.JTextPane();
+        painelArvore = new javax.swing.JPanel();
+        painelRolagemArvore = new javax.swing.JScrollPane();
+        arvoreBibliotecas = new javax.swing.JTree();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        main.setLayout(new java.awt.BorderLayout());
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         divisor.setBackground(new java.awt.Color(250, 250, 250));
         divisor.setBorder(null);
         divisor.setDividerLocation(250);
         divisor.setDividerSize(8);
-        divisor.setOpaque(false);
+
+        painelRolagemConteudo.setBackground(new java.awt.Color(250, 250, 250));
+        painelRolagemConteudo.setBorder(null);
+        painelRolagemConteudo.setMinimumSize(new java.awt.Dimension(350, 37));
+        painelRolagemConteudo.setOpaque(false);
+
+        painelHtml.setEditable(false);
+        painelHtml.setBackground(new java.awt.Color(250, 250, 250));
+        painelHtml.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        painelHtml.setContentType("text/html"); // NOI18N
+        painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t     color : #f2f2f2\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
+        painelRolagemConteudo.setViewportView(painelHtml);
+
+        divisor.setRightComponent(painelRolagemConteudo);
+
+        painelArvore.setLayout(new java.awt.BorderLayout());
 
         painelRolagemArvore.setBackground(new java.awt.Color(250, 250, 250));
         painelRolagemArvore.setBorder(null);
@@ -477,30 +281,19 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         arvoreBibliotecas.setOpaque(false);
         painelRolagemArvore.setViewportView(arvoreBibliotecas);
 
-        divisor.setLeftComponent(painelRolagemArvore);
+        painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
 
-        painelRolagemConteudo.setBackground(new java.awt.Color(250, 250, 250));
-        painelRolagemConteudo.setBorder(null);
-        painelRolagemConteudo.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        painelRolagemConteudo.setMinimumSize(new java.awt.Dimension(350, 37));
+        divisor.setLeftComponent(painelArvore);
 
-        painelHtml.setEditable(false);
-        painelHtml.setBackground(new java.awt.Color(250, 250, 250));
-        painelHtml.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        painelHtml.setContentType("text/html"); // NOI18N
-        painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
-        painelRolagemConteudo.setViewportView(painelHtml);
+        jPanel1.add(divisor, java.awt.BorderLayout.CENTER);
 
-        divisor.setRightComponent(painelRolagemConteudo);
-
-        main.add(divisor, java.awt.BorderLayout.CENTER);
-
-        add(main, java.awt.BorderLayout.CENTER);
+        add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreBibliotecas;
     private javax.swing.JSplitPane divisor;
-    private javax.swing.JPanel main;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel painelArvore;
     private javax.swing.JTextPane painelHtml;
     private javax.swing.JScrollPane painelRolagemArvore;
     private javax.swing.JScrollPane painelRolagemConteudo;
@@ -511,8 +304,8 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         StringBuilder sb = new StringBuilder();
         
         sb.append("<h2>");
-        sb.append("funcao ");
-        sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", metaDadosFuncao.getTipoDado().getNome()));
+        sb.append("<span class=\"palavra_reservada\">funcao</span> ");
+        sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", metaDadosFuncao.getTipoDado().getNome()));
         sb.append(metaDadosFuncao.getNome());
         sb.append("(");
         
@@ -520,11 +313,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         {
             if (parametro.getTipoDado() == TipoDado.TODOS)
             {
-                sb.append("<span class=\"palavra_reservada\">*</span> ");
+                sb.append("<span class=\"tipo_reservado\">*</span> ");
             }
             else 
             {
-                sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", parametro.getTipoDado().getNome()));
+                sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", parametro.getTipoDado().getNome()));
             }            
             
             if (parametro.getModoAcesso() == ModoAcesso.POR_REFERENCIA)
@@ -733,7 +526,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
                 DefaultMutableTreeNode no = (DefaultMutableTreeNode) valor;
                 Method metodo = no.getUserObject().getClass().getMethod("getNome");
                 metodo.setAccessible(true);
-
+                setForeground(ColorController.COR_LETRA);
                 rotulo.setIcon(getIcone(no.getUserObject()));
                 rotulo.setText((String) metodo.invoke(no.getUserObject()));
             }
