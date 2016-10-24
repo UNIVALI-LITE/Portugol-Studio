@@ -173,7 +173,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     
     private String destacarPalavrasReservadas(String texto)
     {
-        texto = texto.replace("<tipo>", "<span class=\"palavra_reservada\">");
+        texto = texto.replace("<tipo>", "<span class=\"tipo_reservado\">");
         texto = texto.replace("</tipo>", "</span>");
         
         texto = texto.replace("<param>", "<b>");
@@ -210,11 +210,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         StringBuilder sb = new StringBuilder();
         
         sb.append("<h2>");
-        sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", metaDadosConstante.getTipoDado().getNome()));
+        sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", metaDadosConstante.getTipoDado().getNome()));
         sb.append(metaDadosConstante.getNome());
-        sb.append(" = ");
+        sb.append(" = <span class=\"porTipoDeclaracao\">");
         sb.append(metaDadosConstante.getValor());
-        sb.append("</h2>");
+        sb.append("</span></h2>");
         
         return sb.toString();
     }
@@ -304,8 +304,8 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         StringBuilder sb = new StringBuilder();
         
         sb.append("<h2>");
-        sb.append("funcao ");
-        sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", metaDadosFuncao.getTipoDado().getNome()));
+        sb.append("<span class=\"palavra_reservada\">funcao</span> ");
+        sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", metaDadosFuncao.getTipoDado().getNome()));
         sb.append(metaDadosFuncao.getNome());
         sb.append("(");
         
@@ -313,11 +313,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         {
             if (parametro.getTipoDado() == TipoDado.TODOS)
             {
-                sb.append("<span class=\"palavra_reservada\">*</span> ");
+                sb.append("<span class=\"tipo_reservado\">*</span> ");
             }
             else 
             {
-                sb.append(String.format("<span class=\"palavra_reservada\">%s</span> ", parametro.getTipoDado().getNome()));
+                sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", parametro.getTipoDado().getNome()));
             }            
             
             if (parametro.getModoAcesso() == ModoAcesso.POR_REFERENCIA)
