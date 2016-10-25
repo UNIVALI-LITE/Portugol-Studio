@@ -64,6 +64,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -316,8 +317,15 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         popup.setBackground(ColorController.COR_PRINCIPAL);
         popup.setForeground(ColorController.COR_LETRA);
         Component[] sons = popup.getComponents();
-        for (Component son : sons) {
-            son.setForeground(ColorController.COR_LETRA);
+        for (int i=0; i<sons.length;i++) {
+            sons[i].setForeground(ColorController.COR_LETRA);
+        }
+        JMenu it = (JMenu) sons[sons.length-1];
+        it.getPopupMenu().setBackground(ColorController.COR_PRINCIPAL);
+        it.getPopupMenu().setForeground(ColorController.COR_LETRA);
+        Component[] itens =  it.getPopupMenu().getComponents();
+        for (int i=0; i<itens.length;i++) {
+            itens[i].setForeground(ColorController.COR_LETRA);
         }
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
