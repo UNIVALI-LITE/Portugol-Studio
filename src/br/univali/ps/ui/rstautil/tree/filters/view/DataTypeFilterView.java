@@ -32,6 +32,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
     private void configureButtons()
     {
+        titleLabel.setForeground(ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonCadeia, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonCaracter,ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonInteiro, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);

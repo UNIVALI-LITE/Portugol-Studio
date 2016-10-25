@@ -31,6 +31,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
 
     private void configureButtons()
     {
+        titleLabel.setForeground(ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonArrays, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonFunctions, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonMatrixes, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);

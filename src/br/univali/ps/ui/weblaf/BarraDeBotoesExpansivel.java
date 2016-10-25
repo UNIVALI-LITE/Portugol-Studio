@@ -4,13 +4,10 @@ import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.menu.WebPopupMenuUI;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -34,9 +31,11 @@ public final class BarraDeBotoesExpansivel extends WebButton
     public BarraDeBotoesExpansivel()
     {
         super();
-
+        
         menu = new JPopupMenu();
         menu.setFont(getFont());
+        menu.setBackground(ColorController.COR_DESTAQUE);
+        menu.setForeground(ColorController.COR_LETRA);
         //menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         //add(menu);
         setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
@@ -66,6 +65,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
         ItemDeMenuParaGrupoDeAcoes item = new ItemDeMenuParaGrupoDeAcoes(texto, icone, acoes, usarToggleButtons);
         menu.add(item);
         item.setFont(getFont());
+        
     }
 
     public void adicionaSeparador()
@@ -95,6 +95,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
             label = new JLabel(texto, SwingConstants.LEFT);
             label.setIcon(icone);
             label.setFont(getFont());
+            label.setForeground(ColorController.COR_LETRA);
 
             add(label);
 
@@ -139,11 +140,12 @@ public final class BarraDeBotoesExpansivel extends WebButton
 
         private void criaUmaLinhaDeBotoes(Action acoes[])
         {
-            JButton botoes[] = new JButton[acoes.length];
+            JButton botoes[] = new WebButton[acoes.length];
 
             for (int i = 0; i < acoes.length; i++)
             {
-                botoes[i] = new JButton(acoes[i]);
+                botoes[i] = new WebButton(acoes[i]);
+                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_PRINCIPAL, Color.orange, ColorController.FUNDO_CLARO, Color.GRAY, 5);
             }
 
             WebButtonGroup textGroup = new WebButtonGroup(true, botoes);
@@ -165,6 +167,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
 
         item.setIcon((Icon) acao.getValue(Action.SMALL_ICON));
         item.setFont(getFont());
+        item.setForeground(ColorController.COR_LETRA);
 
         menu.add(item);
     }

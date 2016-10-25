@@ -68,6 +68,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -311,7 +312,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoComentar();
         configurarAcaoDescomentar();
         configurarAcaoRenomearSimboloNoCursor();
-
+        JPopupMenu popup = textArea.getPopupMenu();
+        popup.setBackground(ColorController.COR_PRINCIPAL);
+        popup.setForeground(ColorController.COR_LETRA);
+        Component[] sons = popup.getComponents();
+        for (Component son : sons) {
+            son.setForeground(ColorController.COR_LETRA);
+        }
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
         //configurarAcaoAlternarModoEditor();

@@ -464,8 +464,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
         barraDeBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraDeBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
-        barraDeBotoesEditor.adicionaSeparador();
-        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
+//        barraDeBotoesEditor.adicionaSeparador();
+//        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 30), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
