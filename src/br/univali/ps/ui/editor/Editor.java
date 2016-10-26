@@ -313,20 +313,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoComentar();
         configurarAcaoDescomentar();
         configurarAcaoRenomearSimboloNoCursor();
-        JPopupMenu popup = textArea.getPopupMenu();
-        popup.setBackground(ColorController.COR_PRINCIPAL);
-        popup.setForeground(ColorController.COR_LETRA);
-        Component[] sons = popup.getComponents();
-        for (int i=0; i<sons.length;i++) {
-            sons[i].setForeground(ColorController.COR_LETRA);
-        }
-        JMenu it = (JMenu) sons[sons.length-1];
-        it.getPopupMenu().setBackground(ColorController.COR_PRINCIPAL);
-        it.getPopupMenu().setForeground(ColorController.COR_LETRA);
-        Component[] itens =  it.getPopupMenu().getComponents();
-        for (int i=0; i<itens.length;i++) {
-            itens[i].setForeground(ColorController.COR_LETRA);
-        }
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
         //configurarAcaoAlternarModoEditor();
