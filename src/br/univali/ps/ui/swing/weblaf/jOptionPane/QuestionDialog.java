@@ -9,13 +9,17 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 /**
  *
  * @author lite
  */
 public class QuestionDialog extends javax.swing.JDialog implements Themeable{
-
+    int pX, pY;
+    
     /**
      * Creates new form QuestionDialog
      */
@@ -28,7 +32,32 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         WeblafUtils.configurarBotao(webButton2);
         WeblafUtils.configurarBotao(webButton3);
         WeblafUtils.configurarBotao(webButton4);
+        
+        
+    
+        titleLabel.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent me) {
+                    // Get x,y and store them
+                    pX = me.getX();
+                    pY = me.getY();
+
+                }
+
+                 public void mouseDragged(MouseEvent me) {
+
+                    setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
+                }
+            });
+
+            titleLabel.addMouseMotionListener(new MouseMotionAdapter() {
+                public void mouseDragged(MouseEvent me) {
+
+                    setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
+                }
+            });
     }
+    
+    
     
     @Override
     public void configurarCores() {
@@ -47,8 +76,10 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
         mainpane = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         webButton3 = new com.alee.laf.button.WebButton();
         webButton4 = new com.alee.laf.button.WebButton();
@@ -61,10 +92,21 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/ajuda.png"))); // NOI18N
+        jPanel3.setPreferredSize(new java.awt.Dimension(450, 200));
+        jPanel3.setLayout(new java.awt.BorderLayout());
 
+        mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        mainpane.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/ajuda.png"))); // NOI18N
+        mainpane.add(jLabel1, java.awt.BorderLayout.LINE_START);
+
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 2, 2, 2));
         jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
 
         webButton3.setText("Sim");
         jPanel2.add(webButton3);
@@ -73,43 +115,24 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         jPanel2.add(webButton4);
 
         webButton2.setText("Cancelar");
+        webButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webButton2ActionPerformed(evt);
+            }
+        });
         jPanel2.add(webButton2);
 
+        jPanel1.add(jPanel2, java.awt.BorderLayout.SOUTH);
+
+        textLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textLabel.setText("taxtLabel");
+        jPanel1.add(textLabel, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout mainpaneLayout = new javax.swing.GroupLayout(mainpane);
-        mainpane.setLayout(mainpaneLayout);
-        mainpaneLayout.setHorizontalGroup(
-            mainpaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainpaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGroup(mainpaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainpaneLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(mainpaneLayout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(textLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(18, Short.MAX_VALUE))))
-        );
-        mainpaneLayout.setVerticalGroup(
-            mainpaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainpaneLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel1)
-                .addContainerGap(35, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(textLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        mainpane.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(mainpane, java.awt.BorderLayout.CENTER);
+        jPanel3.add(mainpane, java.awt.BorderLayout.CENTER);
 
+        titlePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         titlePane.setLayout(new java.awt.BorderLayout());
 
         titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
@@ -117,6 +140,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         titlePane.add(titleLabel, java.awt.BorderLayout.CENTER);
 
         webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_close.png"))); // NOI18N
+        webButton1.setFocusable(false);
         webButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 webButton1ActionPerformed(evt);
@@ -124,7 +148,9 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         });
         titlePane.add(webButton1, java.awt.BorderLayout.EAST);
 
-        getContentPane().add(titlePane, java.awt.BorderLayout.PAGE_START);
+        jPanel3.add(titlePane, java.awt.BorderLayout.PAGE_START);
+
+        getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -132,6 +158,10 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_webButton1ActionPerformed
+
+    private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_webButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,7 +207,9 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel mainpane;
     private javax.swing.JLabel textLabel;
     private javax.swing.JLabel titleLabel;
