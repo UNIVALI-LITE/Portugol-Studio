@@ -5,7 +5,7 @@ import br.univali.ps.ui.telas.utils.Licencas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;

@@ -1,6 +1,5 @@
 package br.univali.ps.ui.swing;
 
-import br.univali.ps.ui.ColorController;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.Icon;

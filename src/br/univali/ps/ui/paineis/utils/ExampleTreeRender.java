@@ -5,7 +5,7 @@
  */
 package br.univali.ps.ui.paineis.utils;
 
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;

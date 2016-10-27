@@ -1,6 +1,6 @@
-package br.univali.ps.ui.weblaf;
+package br.univali.ps.ui.swing.weblaf;
 
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -26,7 +26,11 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -231,7 +235,12 @@ public class WeblafUtils {
 
     public static void instalaWeblaf() {
         if (!weblafEstaInstalado()) {
-            
+            Icon info = new ImageIcon();
+            try {
+                info = new ImageIcon(ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream("br/univali/ps/ui/icones/grande/lite/ajuda.png")));
+            } catch (IOException ex) {
+                Logger.getLogger(WeblafUtils.class.getName()).log(Level.SEVERE, null, ex);
+            }
             StyleConstants.darkBorderColor = null;//define a cor de borda do weblaf globalmente
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);
@@ -314,7 +323,7 @@ public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrin
         configurarBotao(botao, ColorController.FUNDO_ESCURO, ColorController.COR_PRINCIPAL, margin);
     }
     public  static void configurarBotao(WebButton botao, Color corPrincipal){
-        configurarBotao(botao, corPrincipal, ColorController.COR_PRINCIPAL);
+        configurarBotao(botao, corPrincipal, ColorController.COR_LETRA);
     }
     
     public  static void configurarBotao(WebButton botao){

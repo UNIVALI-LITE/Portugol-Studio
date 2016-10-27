@@ -1,4 +1,4 @@
-package br.univali.ps.ui.swing;
+package br.univali.ps.ui.swing.weblaf;
 
 import com.alee.laf.table.WebTableHeaderUI;
 import java.awt.Color;

@@ -1,7 +1,7 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.utils.PainelTabuladoListener;
@@ -9,7 +9,7 @@ import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;

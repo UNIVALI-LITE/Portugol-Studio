@@ -1,6 +1,6 @@
-package br.univali.ps.ui.weblaf;
+package br.univali.ps.ui.swing.weblaf;
 
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButton;

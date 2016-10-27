@@ -17,7 +17,7 @@ import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;

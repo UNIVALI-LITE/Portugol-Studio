@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.weblaf;
+package br.univali.ps.ui.swing.weblaf;
 
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;

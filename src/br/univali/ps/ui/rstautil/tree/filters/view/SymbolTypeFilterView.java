@@ -1,11 +1,11 @@
 package br.univali.ps.ui.rstautil.tree.filters.view;
 
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilterListener;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;

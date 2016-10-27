@@ -1,6 +1,6 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.swing.PSTableHeaderUI;
+import br.univali.ps.ui.swing.weblaf.PSTableHeaderUI;
 import br.univali.ps.ui.swing.AjustadorLinhaTabelaMensagensCompilador;
 import br.univali.ps.ui.swing.RenderizadorTabelaMensagensCompilador;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
@@ -9,7 +9,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
