@@ -180,8 +180,8 @@ public final class PortugolStudio
             carregarBibliotecas();
             Splash.definirProgresso(90, "step8.png");
 
-            AbaCodigoFonte.inicializarPool();
-            Splash.definirProgresso(100, "step9.png");
+            //AbaCodigoFonte.inicializarPool();
+            //Splash.definirProgresso(100, "step9.png");
 
             try
             {
