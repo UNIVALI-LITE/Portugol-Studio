@@ -18,11 +18,13 @@ import br.univali.ps.ui.weblaf.WeblafUtils;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.swing.*;
 import org.apache.commons.io.FileUtils;
@@ -36,7 +38,11 @@ public final class TelaPrincipal extends JFrame
     private List<File> arquivosIniciais;
 
     public static void main(final String argumentos[])
-    {try {               Thread.sleep(1500);} catch (InterruptedException ex) {Logger.getLogger(PortugolStudio.class.getName()).log(Level.SEVERE, null, ex);}
+    {
+        inicializarMecanismoLog(); //o log é a primeira coisa a ser iniciada, assim você consegue logar os detalhes de inicialização
+        
+        LOGGER.log(Level.INFO, "Iniciando main...");
+        
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
 
@@ -53,9 +59,26 @@ public final class TelaPrincipal extends JFrame
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        LOGGER.log(Level.INFO, "Iniciando PS com {0} argumentos", argumentos.length);
         PortugolStudio.getInstancia().iniciar(argumentos);
     }
 
+    private static void inicializarMecanismoLog()
+    {
+        final InputStream inputStream = TelaPrincipal.class.getResourceAsStream("/logging.properties");
+
+        try
+        {
+            LogManager.getLogManager().readConfiguration(inputStream);
+        }
+        catch (final IOException excecao)
+        {
+            Logger.getAnonymousLogger().severe("Não foi possível localizar o arquivo de configuração de log 'logging.properties'");
+            Logger.getAnonymousLogger().log(Level.SEVERE, excecao.getMessage(), excecao);
+        }
+    }
+
+    
     public TelaPrincipal()
     {
         initComponents();

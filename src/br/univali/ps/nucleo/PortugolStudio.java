@@ -30,7 +30,6 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -42,7 +41,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -149,7 +147,7 @@ public final class PortugolStudio
             String dica = obterProximaDica();
             Splash.exibir(dica, 9);
 
-            inicializarMecanismoLog();
+            //inicializarMecanismoLog();
             Splash.definirProgresso(18, "step2.png");
 
             instalarDetectorExcecoesNaoTratadas();
@@ -335,21 +333,6 @@ public final class PortugolStudio
         {
             JOptionPane.showMessageDialog(null, "Não foi possível determinar a versão do Java. O Portugol Studio será encerrado!", "Portugol Studio", JOptionPane.ERROR_MESSAGE);
             return false;
-        }
-    }
-
-    private void inicializarMecanismoLog()
-    {
-        final InputStream inputStream = TelaPrincipal.class.getResourceAsStream("/logging.properties");
-
-        try
-        {
-            LogManager.getLogManager().readConfiguration(inputStream);
-        }
-        catch (final IOException excecao)
-        {
-            Logger.getAnonymousLogger().severe("Não foi possível localizar o arquivo de configuração de log 'logging.properties'");
-            Logger.getAnonymousLogger().log(Level.SEVERE, excecao.getMessage(), excecao);
         }
     }
 
