@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -22,6 +24,8 @@ import javax.swing.ImageIcon;
  */
 public class IconFactory {
 
+    private static final Logger LOGGER = Logger.getLogger(IconFactory.class.getName());
+    
     private static final Map<String, Icon> icones = new TreeMap<>();
     
     public static final String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/pequeno";
@@ -110,7 +114,15 @@ public class IconFactory {
             }
             finally
             {
-                try { iconInputStream.close();} catch (Exception ex) {}
+                try { 
+                    if (iconInputStream != null)
+                    {
+                        iconInputStream.close();
+                    }
+                } 
+                catch (Exception ex) {
+                    LOGGER.log(Level.SEVERE, null, ex);
+                }
             }
         }
         catch (Exception ex) 
