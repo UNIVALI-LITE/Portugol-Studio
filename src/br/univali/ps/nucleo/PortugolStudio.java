@@ -92,7 +92,7 @@ public final class PortugolStudio
     
     private PortugolStudio()
     {   
-        mutex = new Mutex(servico);
+        mutex = new MutexImpl(servico);
     }
 
     public static PortugolStudio getInstancia()
@@ -115,7 +115,7 @@ public final class PortugolStudio
             {
                 try
                 {
-                    Mutex.InstanciaPortugolStudio studio = mutex.conectarInstanciaPortugolStudio();
+                    InstanciaPortugolStudio studio = mutex.conectarInstanciaPortugolStudio();
                     processarParametroArquivosIniciais(parametros);
 
                     studio.abrirArquivos(arquivosIniciais);
@@ -123,7 +123,7 @@ public final class PortugolStudio
 
                     finalizar(0);
                 }
-                catch (Mutex.ErroConexaoInstancia erro)
+                catch (MutexImpl.ErroConexaoInstancia erro)
                 {
                     // Se o arquivo de Mutex existe, mas não foi possível abrir a conexão para a instância,
                     // então provavelmente o aplicativo foi fechado de forma inesperada deixando o arquivo pra trás.
@@ -136,13 +136,13 @@ public final class PortugolStudio
                 iniciarNovaInstancia(parametros);
             }
         }
-        catch (Mutex.ErroCriacaoMutex erro)
+        catch (MutexImpl.ErroCriacaoMutex erro)
         {
             getTratadorExcecoes().exibirExcecao(erro);
         }
     }
 
-    private void iniciarNovaInstancia(String[] parametros) throws Mutex.ErroCriacaoMutex
+    private void iniciarNovaInstancia(String[] parametros) throws MutexImpl.ErroCriacaoMutex
     {
         LOGGER.log(Level.INFO, "Iniciando nova instancia do PS");
         if (versaoJavaCorreta())
