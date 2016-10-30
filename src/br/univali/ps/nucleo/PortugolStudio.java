@@ -88,9 +88,11 @@ public final class PortugolStudio
     private TratadorExcecoes tratadorExcecoes = null;
     private GerenciadorAtualizacoes gerenciadorAtualizacoes = null;
     
+    private final Mutex mutex;
+    
     private PortugolStudio()
-    {
-
+    {   
+        mutex = new Mutex(servico);
     }
 
     public static PortugolStudio getInstancia()
@@ -109,11 +111,11 @@ public final class PortugolStudio
         {
             exibirParametros(parametros);
 
-            if (Mutex.existeUmaInstanciaExecutando())
+            if (mutex.existeUmaInstanciaExecutando())
             {
                 try
                 {
-                    Mutex.InstanciaPortugolStudio studio = Mutex.conectarInstanciaPortugolStudio();
+                    Mutex.InstanciaPortugolStudio studio = mutex.conectarInstanciaPortugolStudio();
                     processarParametroArquivosIniciais(parametros);
 
                     studio.abrirArquivos(arquivosIniciais);
@@ -146,7 +148,7 @@ public final class PortugolStudio
         if (versaoJavaCorreta())
         {
             
-            Mutex.criar(servico);
+            mutex.inicializar();
             LOGGER.log(Level.INFO, "Mutex criado!");
 
             String dica = obterProximaDica();
@@ -228,7 +230,7 @@ public final class PortugolStudio
             }
         }
         
-        Mutex.destruir();
+        mutex.finalizar();
         Configuracoes.getInstancia().salvar();
         System.exit(codigo);
         

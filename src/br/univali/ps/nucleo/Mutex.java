@@ -21,32 +21,35 @@ import java.util.logging.Logger;
  *
  * @author Luiz Fernando Noschang
  */
-public class Mutex
+public final class Mutex
 {
     private static final Logger LOGGER = Logger.getLogger(Mutex.class.getName());
 
-    private static final String localhost = "127.0.0.1";
-    private static final File arquivoMutex = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "mutex");
+    private static final String LOCALHOST = "127.0.0.1";
+    private final File arquivoMutex = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "mutex");
 
-    private static FileChannel canal;
-    private static ServerSocket servidorMutex;
-    private static boolean executando = false;
+    private FileChannel canal;
+    private ServerSocket servidorMutex;
+    private boolean executando = false;
     
-    private static InstanciaPortugolStudio instancia = null;
+    private InstanciaPortugolStudio instancia = null;
     
-    private static ExecutorService servico;
+    private final ExecutorService servico;
 
-    public static boolean existeUmaInstanciaExecutando()
+    public Mutex(ExecutorService servico) 
+    {
+        this.servico = servico;
+    }
+
+    public boolean existeUmaInstanciaExecutando()
     {
         return arquivoMutex.exists();
     }
 
-    public static void criar(ExecutorService servico) throws ErroCriacaoMutex
+    public void inicializar() throws ErroCriacaoMutex
     {
         try
         {
-            Mutex.servico = servico;
-            
             servidorMutex = new ServerSocket(0);
 
             canal = new RandomAccessFile(arquivoMutex, "rw").getChannel();
@@ -62,7 +65,7 @@ public class Mutex
         }
     }
     
-    public static void destruir()
+    public void finalizar()
     {
         if (executando && servidorMutex != null)
         {
@@ -82,14 +85,14 @@ public class Mutex
             }
             catch (IOException excecao)
             {
-
+                LOGGER.log(Level.WARNING, null, excecao);
             }
 
             arquivoMutex.delete();
         }
     }
 
-    private static void ouvirConexoes()
+    private void ouvirConexoes()
     {
         servico.execute(new Runnable()
         {
@@ -154,17 +157,17 @@ public class Mutex
         }
     }
     
-    public static InstanciaPortugolStudio conectarInstanciaPortugolStudio() throws ErroConexaoInstancia
+    public InstanciaPortugolStudio conectarInstanciaPortugolStudio() throws ErroConexaoInstancia
     {
         if (instancia == null)
         {
-            instancia = new InstanciaPortugolStudio();
+            instancia = new InstanciaPortugolStudio(lerPortaMutex());
         }
         
         return instancia;
     }
     
-    private static int lerPortaMutex() throws ErroConexaoInstancia
+    private int lerPortaMutex() throws ErroConexaoInstancia
     {
         try (BufferedReader reader = new BufferedReader(new FileReader(arquivoMutex)))
         {
@@ -198,11 +201,11 @@ public class Mutex
     {
         private final Socket socket;
 
-        public InstanciaPortugolStudio() throws ErroConexaoInstancia
+        public InstanciaPortugolStudio(int portaMutex) throws ErroConexaoInstancia
         {
             try
             {
-                socket = new Socket(localhost, lerPortaMutex());
+                socket = new Socket(LOCALHOST, portaMutex);
             }
             catch (IOException excecao)
             {
