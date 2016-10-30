@@ -140,9 +140,12 @@ public final class PortugolStudio
 
     private void iniciarNovaInstancia(String[] parametros) throws Mutex.ErroCriacaoMutex
     {
+        LOGGER.log(Level.INFO, "Iniciando nova instancia do PS");
         if (versaoJavaCorreta())
         {
+            
             Mutex.criar();
+            LOGGER.log(Level.INFO, "Mutex criado!");
 
             String dica = obterProximaDica();
             Splash.exibir(dica, 9);
@@ -159,30 +162,39 @@ public final class PortugolStudio
             instalarDetectorVialacoesNaThreadSwing();
             Splash.definirProgresso(45, "step4.png");
 
+            LOGGER.log(Level.INFO, "Instalando LAF...");
             definirLookAndFeel();
             Splash.definirProgresso(54, "step5.png");
+            LOGGER.log(Level.INFO, "LAF Instalado!");
 
+            LOGGER.log(Level.INFO, "Carregando e configurando fontes...");
             registrarFontes();
             Splash.definirProgresso(63, "step5.png");
 
             definirFontePadraoInterface();
             Splash.definirProgresso(72, "step6.png");
+            LOGGER.log(Level.INFO, "Fontes configuradas!");
 
             /* 
              * Os plugins devem sempre ser carregados antes de inicializar o Pool de abas, 
              * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
              */
+            LOGGER.log(Level.INFO, "Carregando plugins e bibliotecas...");
             carregarPlugins();
             Splash.definirProgresso(81, "step7.png");
 
             carregarBibliotecas();
             Splash.definirProgresso(90, "step8.png");
+            LOGGER.log(Level.INFO, "Plugins e bibliotecas carregados!");
 
+            LOGGER.log(Level.INFO, "Inicializando pool de abas...");
             AbaCodigoFonte.inicializarPool();
             Splash.definirProgresso(100, "step9.png");
+            LOGGER.log(Level.INFO, "Pool inicializado!");
 
             try
             {
+                LOGGER.log(Level.INFO, "Exibindo tela principal");
                 exibirTelaPrincipal();
             }
             catch (ExcecaoAplicacao excecaoAplicacao)

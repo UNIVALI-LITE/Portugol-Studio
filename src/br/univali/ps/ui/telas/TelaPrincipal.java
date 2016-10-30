@@ -142,8 +142,9 @@ public final class TelaPrincipal extends JFrame
                         PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
+                
+                LOGGER.log(Level.INFO, "Janela principal aberta!");
             }
-            
             
         });
 
