@@ -79,8 +79,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     public void configurarCores(){
         painelHtml.setBackground(ColorController.COR_DESTAQUE);
         divisor.setBackground(ColorController.COR_DESTAQUE);
-        jPanel1.setBackground(ColorController.COR_DESTAQUE);
-        painelArvore.setBackground(ColorController.FUNDO_CLARO);
+        //painelArvore.setBackground(ColorController.FUNDO_CLARO);
         
     }
     
@@ -235,20 +234,17 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
-        jPanel1 = new javax.swing.JPanel();
         divisor = new javax.swing.JSplitPane();
         painelRolagemConteudo = new javax.swing.JScrollPane();
         painelHtml = new javax.swing.JTextPane();
-        painelArvore = new javax.swing.JPanel();
         painelRolagemArvore = new javax.swing.JScrollPane();
         arvoreBibliotecas = new javax.swing.JTree();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
 
         divisor.setBackground(new java.awt.Color(250, 250, 250));
         divisor.setBorder(null);
@@ -269,31 +265,27 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 
         divisor.setRightComponent(painelRolagemConteudo);
 
-        painelArvore.setLayout(new java.awt.BorderLayout());
-
         painelRolagemArvore.setBackground(new java.awt.Color(250, 250, 250));
         painelRolagemArvore.setBorder(null);
         painelRolagemArvore.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
+        painelRolagemArvore.setMinimumSize(new java.awt.Dimension(200, 37));
         painelRolagemArvore.setOpaque(false);
         painelRolagemArvore.setPreferredSize(new java.awt.Dimension(200, 336));
 
         arvoreBibliotecas.setBackground(new java.awt.Color(250, 250, 250));
+        arvoreBibliotecas.setMaximumSize(new java.awt.Dimension(400, 64));
+        arvoreBibliotecas.setMinimumSize(new java.awt.Dimension(200, 0));
         arvoreBibliotecas.setOpaque(false);
+        arvoreBibliotecas.setPreferredSize(new java.awt.Dimension(200, 64));
         painelRolagemArvore.setViewportView(arvoreBibliotecas);
 
-        painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
+        divisor.setLeftComponent(painelRolagemArvore);
 
-        divisor.setLeftComponent(painelArvore);
-
-        jPanel1.add(divisor, java.awt.BorderLayout.CENTER);
-
-        add(jPanel1, java.awt.BorderLayout.CENTER);
+        add(divisor, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreBibliotecas;
     private javax.swing.JSplitPane divisor;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel painelArvore;
     private javax.swing.JTextPane painelHtml;
     private javax.swing.JScrollPane painelRolagemArvore;
     private javax.swing.JScrollPane painelRolagemConteudo;
