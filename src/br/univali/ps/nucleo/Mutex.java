@@ -14,7 +14,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,13 +21,10 @@ import java.util.logging.Logger;
  *
  * @author Luiz Fernando Noschang
  */
-public final class Mutex
+public class Mutex
 {
     private static final Logger LOGGER = Logger.getLogger(Mutex.class.getName());
-    private static final ExecutorService servico = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Thread principal)"));
 
-    //private static final int PORTA_INICIAL = 49152;
-    //private static final int PORTA_FINAL = 65535;
     private static final String localhost = "127.0.0.1";
     private static final File arquivoMutex = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "mutex");
 
@@ -37,16 +33,20 @@ public final class Mutex
     private static boolean executando = false;
     
     private static InstanciaPortugolStudio instancia = null;
+    
+    private static ExecutorService servico;
 
     public static boolean existeUmaInstanciaExecutando()
     {
         return arquivoMutex.exists();
     }
 
-    public static void criar() throws ErroCriacaoMutex
+    public static void criar(ExecutorService servico) throws ErroCriacaoMutex
     {
         try
         {
+            Mutex.servico = servico;
+            
             servidorMutex = new ServerSocket(0);
 
             canal = new RandomAccessFile(arquivoMutex, "rw").getChannel();

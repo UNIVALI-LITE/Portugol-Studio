@@ -36,17 +36,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
  *
@@ -57,6 +57,8 @@ public final class PortugolStudio
 {
 
     private static final Logger LOGGER = Logger.getLogger(PortugolStudio.class.getName());
+    private final ExecutorService servico = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Thread principal)"));
+    
     private static PortugolStudio instancia = null;
 
     private final List<File> arquivosIniciais = new ArrayList<>();
@@ -144,7 +146,7 @@ public final class PortugolStudio
         if (versaoJavaCorreta())
         {
             
-            Mutex.criar();
+            Mutex.criar(servico);
             LOGGER.log(Level.INFO, "Mutex criado!");
 
             String dica = obterProximaDica();
@@ -229,6 +231,8 @@ public final class PortugolStudio
         Mutex.destruir();
         Configuracoes.getInstancia().salvar();
         System.exit(codigo);
+        
+        servico.shutdownNow();
     }
 
     public String obterProximaDica()
