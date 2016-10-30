@@ -19,7 +19,6 @@ import br.univali.ps.ui.weblaf.PSTreeUI;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -39,11 +38,9 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -57,8 +54,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private static final Logger LOGGER = Logger.getLogger(PainelExemplos.class.getName());
 
     //WebImage imagem;
-    Icon imagemPadrao;
-    Icon imagemPastaPadrao;
+    private Icon imagemPadrao;
+    private Icon imagemPastaPadrao;
 
     Editor editor;
 
@@ -70,7 +67,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         configurarCores();
         editor = new Editor();
         editor.setExampleEditor();
-        codePanel.add(editor);
+        examplePane.add(editor);
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/exemplos.png");
         imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
         inicializarJTree();
@@ -273,7 +270,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         openExample = new com.alee.laf.button.WebButton();
         imagePane = new javax.swing.JPanel();
         examplePane = new javax.swing.JPanel();
-        codePanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         painelTitulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -326,10 +322,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         examplePane.setForeground(new java.awt.Color(255, 255, 255));
         examplePane.setLayout(new java.awt.BorderLayout());
-
-        codePanel.setLayout(new java.awt.BorderLayout());
-        examplePane.add(codePanel, java.awt.BorderLayout.CENTER);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.34;
@@ -367,7 +359,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreExemplos;
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JPanel codePanel;
     private javax.swing.JPanel dataPane;
     private javax.swing.JLabel description;
     private javax.swing.JPanel examplePane;
