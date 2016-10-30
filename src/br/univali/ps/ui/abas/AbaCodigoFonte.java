@@ -81,7 +81,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
 
-    private static final int TAMANHO_POOL_ABAS = 12;
+    private static final int TAMANHO_POOL_ABAS = 1;
     private static PoolAbasCodigoFonte poolAbasCodigoFonte;
     public static final float VALOR_INCREMENTO_FONTE = 2.0f;
     public static final float TAMANHO_MAXIMO_FONTE = 25.0f;
