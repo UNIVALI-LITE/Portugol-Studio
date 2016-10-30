@@ -465,8 +465,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesEditor.adicionaSeparador();
         barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
-        GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 30), 0, 0);
+        GridBagConstraints constraints = new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);
+        painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
     }
 
     public static class NoTransferable implements Transferable
@@ -1260,7 +1261,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 0, 0, 3);
         painelEditor.add(editor, gridBagConstraints);
 
         divisorEditorConsole.setTopComponent(painelEditor);
