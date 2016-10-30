@@ -80,9 +80,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         });
     }
 
+    @Override
     public void configurarCores() {
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
-        painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         imagePane.setBackground(ColorController.COR_DESTAQUE);
         description.setForeground(ColorController.COR_LETRA);
         jPanel2.setBackground(ColorController.FUNDO_MEDIO);
@@ -258,7 +258,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -271,7 +272,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         imagePane = new javax.swing.JPanel();
         examplePane = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        painelTitulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         arvoreExemplos = new javax.swing.JTree();
@@ -333,15 +333,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        painelTitulo.setLayout(new java.awt.BorderLayout());
-
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         jLabel1.setText("Exemplos");
-        painelTitulo.add(jLabel1, java.awt.BorderLayout.CENTER);
-
-        jPanel4.add(painelTitulo, java.awt.BorderLayout.NORTH);
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel4.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jScrollPane1.setBorder(null);
 
@@ -369,7 +365,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private com.alee.laf.button.WebButton openExample;
-    private javax.swing.JPanel painelTitulo;
     private javax.swing.JPanel rightPane;
     // End of variables declaration//GEN-END:variables
 }
