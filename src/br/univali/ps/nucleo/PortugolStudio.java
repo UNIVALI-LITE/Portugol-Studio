@@ -92,9 +92,19 @@ public final class PortugolStudio
     
     private PortugolStudio()
     {   
-        mutex = new MutexImpl(servico);
+        mutex = criaMutex();
     }
 
+    private Mutex criaMutex()
+    {
+        if (!Configuracoes.rodandoNoNetbeans())
+        {
+            return new MutexImpl(servico); // cria um mutex que permite apenas uma instância
+        }
+        
+        return new MutexNulo(); // retorna um mutex nulo que não faz nada
+    }
+    
     public static PortugolStudio getInstancia()
     {
         if (instancia == null)
@@ -149,7 +159,7 @@ public final class PortugolStudio
         {
             
             mutex.inicializar();
-            LOGGER.log(Level.INFO, "Mutex criado!");
+            LOGGER.log(Level.INFO, "Mutex ({0}) inicializado!", mutex.getClass().getSimpleName());
 
             String dica = obterProximaDica();
             Splash.exibir(dica, 9);
@@ -823,5 +833,28 @@ public final class PortugolStudio
         {
             LOGGER.log(Level.INFO, "Parametro: {0}", parametro);
         }
+    }
+    
+    
+    private class MutexNulo extends MutexImpl
+    {
+
+        public MutexNulo()
+        {
+            super(null);
+        }
+
+        @Override
+        public boolean existeUmaInstanciaExecutando()
+        {
+            return false;
+        }
+
+        @Override
+        public void finalizar() { }
+
+        @Override
+        public void inicializar() throws ErroCriacaoMutex { }
+        
     }
 }
