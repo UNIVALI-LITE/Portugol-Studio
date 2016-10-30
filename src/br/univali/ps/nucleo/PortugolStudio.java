@@ -488,12 +488,14 @@ public final class PortugolStudio
                     "tahomabd.ttf"
                 };
 
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        GraphicsEnvironment ambienteGrafico = GraphicsEnvironment.getLocalGraphicsEnvironment();
         for (String nome : fontes)
         {
             try
             {
-                Font fonte = Font.createFont(Font.TRUETYPE_FONT, Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome));
-                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fonte);
+                Font fonte = Font.createFont(Font.TRUETYPE_FONT, classLoader.getResourceAsStream(path + nome));
+                ambienteGrafico.registerFont(fonte);
             }
             catch (FontFormatException | IOException excecao)
             {
@@ -506,33 +508,33 @@ public final class PortugolStudio
 
     private void definirFontePadraoInterface()
     {
-        try
-        {
-            SwingUtilities.invokeAndWait(() ->
-            {
-                Enumeration keys = UIManager.getDefaults().keys();
-
-                while (keys.hasMoreElements())
-                {
-                    Object key = keys.nextElement();
-                    Object value = UIManager.get(key);
-
-                    if (value instanceof javax.swing.plaf.FontUIResource)
-                    {
-                        /*
-                         * Não está funcionando. O swing altera a fonte padrão para a maioria dos componentes,
-                         * mas não todos. Além disso, o tamanho da fonte da árvore estrutural para de funcionar
-                         *
-                         */
-                        //UIManager.put(key, new Font("Tahoma", Font.PLAIN, 11));
-                    }
-                }
-            });
-        }
-        catch (InterruptedException | InvocationTargetException excecao)
-        {
-            LOGGER.log(Level.INFO, "Não foi possível definir uma fonte padrão na interface do usuário", excecao);
-        }
+//        try
+//        {
+//            SwingUtilities.invokeAndWait(() ->
+//            {
+//                Enumeration keys = UIManager.getDefaults().keys();
+//
+//                while (keys.hasMoreElements())
+//                {
+//                    Object key = keys.nextElement();
+//                    Object value = UIManager.get(key);
+//
+//                    if (value instanceof javax.swing.plaf.FontUIResource)
+//                    {
+//                        /*
+//                         * Não está funcionando. O swing altera a fonte padrão para a maioria dos componentes,
+//                         * mas não todos. Além disso, o tamanho da fonte da árvore estrutural para de funcionar
+//                         *
+//                         */
+//                        //UIManager.put(key, new Font("Tahoma", Font.PLAIN, 11));
+//                    }
+//                }
+//            });
+//        }
+//        catch (InterruptedException | InvocationTargetException excecao)
+//        {
+//            LOGGER.log(Level.INFO, "Não foi possível definir uma fonte padrão na interface do usuário", excecao);
+//        }
     }
 
     private void carregarPlugins()
