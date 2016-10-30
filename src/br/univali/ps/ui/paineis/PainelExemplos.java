@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.paineis;
 
 import br.univali.ps.ui.paineis.utils.ExampleTreeRender;
@@ -85,7 +80,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         imagePane.setBackground(ColorController.COR_DESTAQUE);
         description.setForeground(ColorController.COR_LETRA);
-        jPanel2.setBackground(ColorController.FUNDO_MEDIO);
+        //jPanel2.setBackground(ColorController.FUNDO_MEDIO);
         scrollArvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         scrollArvoreExemplos.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         if (WeblafUtils.weblafEstaInstalado()) {
@@ -238,7 +233,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             }
         } else {
             examplePane.setVisible(false);
-            dataPane.setPreferredSize(new Dimension(painelDireita.getSize().width, 0));
+            //dataPane.setPreferredSize(new Dimension(painelDireita.getSize().width, 0));
             description.setVisible(false);
             icone = imagemPastaPadrao;
             botaoAbrirExemplo.setVisible(false);
@@ -264,11 +259,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         jSplitPane1 = new javax.swing.JSplitPane();
         painelDireita = new javax.swing.JPanel();
-        dataPane = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        imagePane = new javax.swing.JPanel();
         description = new javax.swing.JLabel();
         botaoAbrirExemplo = new com.alee.laf.button.WebButton();
-        imagePane = new javax.swing.JPanel();
         examplePane = new javax.swing.JPanel();
         painelEsquerda = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
@@ -286,9 +279,15 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelDireita.setOpaque(false);
         painelDireita.setLayout(new java.awt.GridBagLayout());
 
-        dataPane.setLayout(new java.awt.BorderLayout());
-
-        jPanel2.setLayout(new java.awt.GridBagLayout());
+        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        imagePane.setLayout(new java.awt.BorderLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.65;
+        gridBagConstraints.weighty = 1.0;
+        painelDireita.add(imagePane, gridBagConstraints);
 
         description.setBackground(new java.awt.Color(51, 51, 51));
         description.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -296,33 +295,27 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         description.setText("Descrição do Exemplo");
         description.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanel2.add(description, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        painelDireita.add(description, gridBagConstraints);
 
         botaoAbrirExemplo.setText("Explorar Exemplo");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        jPanel2.add(botaoAbrirExemplo, gridBagConstraints);
-
-        dataPane.add(jPanel2, java.awt.BorderLayout.SOUTH);
-
-        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        imagePane.setLayout(new java.awt.BorderLayout());
-        dataPane.add(imagePane, java.awt.BorderLayout.CENTER);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.65;
-        gridBagConstraints.weighty = 1.0;
-        painelDireita.add(dataPane, gridBagConstraints);
+        painelDireita.add(botaoAbrirExemplo, gridBagConstraints);
 
         examplePane.setForeground(new java.awt.Color(255, 255, 255));
         examplePane.setLayout(new java.awt.BorderLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.34;
         gridBagConstraints.weighty = 1.0;
@@ -355,11 +348,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
-    private javax.swing.JPanel dataPane;
     private javax.swing.JLabel description;
     private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel painelDireita;
