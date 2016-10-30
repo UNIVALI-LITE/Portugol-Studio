@@ -63,6 +63,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jLIcone = new javax.swing.JLabel();
         jLTitulo = new javax.swing.JLabel();
@@ -73,19 +74,22 @@ public class CabecalhoAba extends JPanel implements Themeable{
         setMinimumSize(new java.awt.Dimension(110, 25));
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(110, 30));
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
+        setLayout(new java.awt.GridBagLayout());
 
         jLIcone.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         jLIcone.setAlignmentX(0.5F);
         jLIcone.setMaximumSize(new java.awt.Dimension(18, 18));
         jLIcone.setPreferredSize(new java.awt.Dimension(17, 17));
-        add(jLIcone);
+        add(jLIcone, new java.awt.GridBagConstraints());
 
         jLTitulo.setText("jLabel2");
         jLTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 8, 1, 1));
         jLTitulo.setFocusable(false);
-        add(jLTitulo);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        add(jLTitulo, gridBagConstraints);
 
         botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
         botaoFechar.setBorder(null);
@@ -96,7 +100,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
                 botaoFecharActionPerformed(evt);
             }
         });
-        add(botaoFechar);
+        add(botaoFechar, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoFecharActionPerformed

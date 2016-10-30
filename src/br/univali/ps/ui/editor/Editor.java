@@ -28,11 +28,13 @@ import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -64,14 +66,14 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
@@ -106,7 +108,7 @@ import org.fife.ui.rtextarea.SearchResult;
 public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, ObservadorExecucao, AbaMensagemCompiladorListener
 {
 
-    private static final float VALOR_INCREMENTO_FONTE = 2.0f;
+    //private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
 
@@ -144,16 +146,25 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
     private SearchListener observadorAcaoPesquisaSubstituir;
-    private boolean isExamplable = false;
+    private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
     private JMenu menuTemas;
 
     private boolean centralizar = false;
     private boolean executandoPrograma = false;
+    
+    private static final int DESLOCAMENTO_VERTICAL_DOS_COMPONENTES = 32; // quantos pixels os componentes serão empurrados para baixo para dar espaço para a engrenagem de configuração do editor
+    private static final int MARGEM_LATERAL = 10; // margems aplicadas na view port do editor
 
     public Editor()
     {
+        this(false); 
+    }
+    
+    public Editor(boolean editorParaExemplo)
+    {
+        this.isExamplable = editorParaExemplo; 
         initComponents();
         configurarDialogoPesquisarSubstituir();
         configurarParser();
@@ -162,14 +173,107 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         criarMenuTemas();
         instalarObservadores();
         carregarConfiguracoes();
-        WeblafUtils.configuraWebLaf(scrollPane);
-        configurarCores();
+        configurarAparencia();
     }
-    private void configurarCores(){
+    
+    private void configuraAparenciaParaEditorPadrao()
+    {
         errorStrip.setBackground(ColorController.COR_PRINCIPAL);
         
+        
+        /***
+            Usando um Layout customizado para "empurrar" a barra de rolagem vertical 
+            e o errorStrip mais para baixo e deixar um pequeno retângulo livre no canto
+            superior direito para mostrar a "engrenagem" de configuração do editor .
+            
+            O mesmo gerenciador de layout customizado já é utilizado para aplicar margens
+            nas laterais do editor de código e evitar que o texto do código fonte fique
+            totalmente colado nas bordas do scrollPane.
+        */
+        scrollPane.setLayout(new ScrollPaneLayout()
+        {
+
+            @Override
+            public void layoutContainer(Container parent)
+            {
+                super.layoutContainer(parent);
+                
+                //aplica as margens na viewport do editor
+                Rectangle viewPortBounds = viewport.getBounds();
+                viewPortBounds.translate(MARGEM_LATERAL, 0);
+                viewPortBounds.setSize(viewPortBounds.width - MARGEM_LATERAL, viewPortBounds.height);
+                this.viewport.setBounds(viewPortBounds);
+                
+                deslocaComponenteVerticalmente(vsb, DESLOCAMENTO_VERTICAL_DOS_COMPONENTES);
+            }
+            
+        });
+        
+        //a abordagem utilizada acima não funcionou para o BorderLayout, por isso foi criada uma classe adaptadora
+        this.setLayout(new BorderLayoutAdapter(getLayout()));
+    }
+    
+    private void configurarAparencia(){
+        
+        WeblafUtils.configuraWebLaf(scrollPane);
+
         scrollPane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         scrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, null);
+
+        if (!isExamplable)
+        {
+            configuraAparenciaParaEditorPadrao();
+        }
+        else{
+            configuraAparenciaEditorExemplo();
+        }
+        
+    }
+    
+    private void configuraAparenciaEditorExemplo()
+    {
+        scrollPane.setIconRowHeaderEnabled(false);
+        remove(errorStrip);
+        setEditavel("false");
+        scrollPane.setOpaque(true);
+        setBackground(getTextArea().getBackground());
+        scrollPane.setBackground(getTextArea().getBackground());
+        this.setBackground(getTextArea().getBackground());
+        scrollPane.getHorizontalScrollBar().getParent().getParent().setBackground(getTextArea().getBackground());
+        
+        getTextArea().addPropertyChangeListener("background", (PropertyChangeEvent evt) -> {
+            setBackground(getTextArea().getBackground());
+            scrollPane.setBackground(getTextArea().getBackground());
+            scrollPane.getHorizontalScrollBar().getParent().setBackground(getTextArea().getBackground());
+        });    
+    }
+    
+    private void deslocaComponenteVerticalmente(JComponent componente, int deslocamento)
+    {
+        Rectangle bounds = componente.getBounds();
+        bounds.translate(0, deslocamento);
+        bounds.setSize(bounds.width, bounds.height - deslocamento);
+        componente.setBounds(bounds);
+    }
+    
+    private class BorderLayoutAdapter extends BorderLayout
+    {
+        private final LayoutManager layoutOriginal;
+
+        public BorderLayoutAdapter(LayoutManager borderLayout)
+        {
+            this.layoutOriginal = borderLayout;
+        }
+        
+        @Override
+        public void layoutContainer(Container parent)
+        {
+            layoutOriginal.layoutContainer(parent);
+            if (errorStrip.isVisible())
+            {
+                deslocaComponenteVerticalmente(errorStrip, DESLOCAMENTO_VERTICAL_DOS_COMPONENTES);
+            }
+        }
     }
     
     public Set<Integer> getLinhasComPontoDeParadaAtivados()
@@ -177,9 +281,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return getTextArea().getLinhasComPontoDeParadaAtivados();
     }
 
-//    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos) {
-//        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
-//    }
     public SuporteLinguagemPortugol getSuporteLinguagemPortugol()
     {
         return suporteLinguagemPortugol;
@@ -196,24 +297,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
     }
     
-    public void setExampleEditor(){
-        isExamplable = true;
-        scrollPane.setIconRowHeaderEnabled(false);
-        painelEditor.remove(errorStrip);
-        this.setEditavel("false");
-        scrollPane.setOpaque(true);
-        painelEditor.setBackground(getTextArea().getBackground());
-        scrollPane.setBackground(getTextArea().getBackground());
-        this.setBackground(getTextArea().getBackground());
-        scrollPane.getHorizontalScrollBar().getParent().getParent().setBackground(getTextArea().getBackground());
-        
-        getTextArea().addPropertyChangeListener("background", (PropertyChangeEvent evt) -> {
-            painelEditor.setBackground(getTextArea().getBackground());
-            scrollPane.setBackground(getTextArea().getBackground());
-            Editor.this.setBackground(getTextArea().getBackground());
-            scrollPane.getHorizontalScrollBar().getParent().setBackground(getTextArea().getBackground());
-        });
-    }
     public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor)
     {
         JMenu menu = new JMenu("Cores");
@@ -296,7 +379,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         //errorStrip.setBackground(textArea.getBackground());
         //errorStrip.setOpaque(true);
         errorStrip.setCaretMarkerColor(getBackground());
-        painelEditor.add(errorStrip, BorderLayout.EAST);
+        
+        add(errorStrip, BorderLayout.EAST);
 
         Icon iconeBreakPoint = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
         ((PSTextArea) textArea).setIconeDosBreakPoints(iconeBreakPoint);
@@ -313,6 +397,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoComentar();
         configurarAcaoDescomentar();
         configurarAcaoRenomearSimboloNoCursor();
+
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
         //configurarAcaoAlternarModoEditor();
@@ -1632,6 +1717,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
                     JPanel painel = new JPanel(new BorderLayout());
                     Editor editor = new Editor();
+                    editor.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    editor.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                    
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < 60; i++)
+                    {   
+                        builder.append("linha ").append(String.valueOf(i)).append("\n");
+                    }
+                    editor.setCodigoFonte(builder.toString());
+                    
                     painel.add(editor);
                     WeblafUtils.configuraWeblaf(painel);
                     frame.getContentPane().add(painel, BorderLayout.CENTER);
@@ -1643,18 +1738,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+    private void initComponents()
+    {
 
-        painelEditor = new javax.swing.JPanel();
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
         textArea = new PSTextArea(new PortugolDocumento());
 
         setOpaque(false);
-        setLayout(new java.awt.GridBagLayout());
-
-        painelEditor.setOpaque(false);
-        painelEditor.setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.BorderLayout());
 
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -1665,17 +1756,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         textArea.setCodeFoldingEnabled(true);
         scrollPane.setViewportView(textArea);
 
-        painelEditor.add(scrollPane, java.awt.BorderLayout.CENTER);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(painelEditor, gridBagConstraints);
+        add(scrollPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel painelEditor;
     private org.fife.ui.rtextarea.RTextScrollPane scrollPane;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea textArea;
     // End of variables declaration//GEN-END:variables

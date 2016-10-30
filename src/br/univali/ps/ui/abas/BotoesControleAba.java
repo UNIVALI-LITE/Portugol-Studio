@@ -234,10 +234,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        painelTitulo = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
-        painelBotoes = new javax.swing.JPanel();
         botaoAbrir = new com.alee.laf.button.WebButton();
         botaoNovoArquivo = new com.alee.laf.button.WebButton();
 
@@ -247,11 +246,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         setMinimumSize(new java.awt.Dimension(180, 25));
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(180, 25));
-        setLayout(new java.awt.BorderLayout());
-
-        painelTitulo.setOpaque(false);
-        painelTitulo.setPreferredSize(new java.awt.Dimension(120, 16));
-        painelTitulo.setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.GridBagLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         titulo.setForeground(new java.awt.Color(62, 62, 62));
@@ -261,29 +256,24 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         titulo.setMinimumSize(new java.awt.Dimension(100, 16));
         titulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        painelTitulo.add(titulo, java.awt.BorderLayout.CENTER);
-
-        add(painelTitulo, java.awt.BorderLayout.CENTER);
-
-        painelBotoes.setOpaque(false);
-        painelBotoes.setLayout(new java.awt.GridLayout(1, 2));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(titulo, gridBagConstraints);
 
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setHideActionText(true);
-        painelBotoes.add(botaoAbrir);
+        add(botaoAbrir, new java.awt.GridBagConstraints());
 
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
         botaoNovoArquivo.setHideActionText(true);
-        painelBotoes.add(botaoNovoArquivo);
-
-        add(painelBotoes, java.awt.BorderLayout.EAST);
+        add(botaoNovoArquivo, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton botaoAbrir;
     private com.alee.laf.button.WebButton botaoNovoArquivo;
-    private javax.swing.JPanel painelBotoes;
-    private javax.swing.JPanel painelTitulo;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

@@ -32,22 +32,20 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public final class AbaInicial extends Aba implements Themeable{
-
-
+public final class AbaInicial extends Aba implements Themeable
+{
 
     private Action acaoExibirAtalhosTeclado;
     private Action acaoExibirDicasInterface;
     private boolean redimensionouParaBaixaResolucao = false;
     private TelaEditarUriAtualizacao telaEditarUriAtualizacao;
-    
-    
-    
-    public AbaInicial(TelaPrincipal telaPrincipal) {
+
+    public AbaInicial(TelaPrincipal telaPrincipal)
+    {
         super();
         setPainelTabulado(telaPrincipal.getPainelTabulado());
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
-        initComponents(); 
+        initComponents();
         configurarCores();
         configurarResolucao();
         configurarCursorLogos();
@@ -57,9 +55,10 @@ public final class AbaInicial extends Aba implements Themeable{
         instalarObservadorCombinacoesSecretas();
         instalarAcoesSecretas();
     }
+
     @Override
-    public void configurarCores(){
-        painelFundo.setBackground(ColorController.COR_PRINCIPAL);
+    public void configurarCores()
+    {
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
         conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
         rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);
@@ -85,23 +84,32 @@ public final class AbaInicial extends Aba implements Themeable{
         rotuloUpdate.setForeground(ColorController.COR_LETRA);
     }
 
-    private void instalarObservadorCombinacoesSecretas() {
+    private void instalarObservadorCombinacoesSecretas()
+    {
         final StringBuilder sb = new StringBuilder();
 
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher()
+        {
             @Override
-            public boolean dispatchKeyEvent(KeyEvent e) {
-                if (AbaInicial.this.getPainelTabulado().getAbaSelecionada() == AbaInicial.this && e.getID() == KeyEvent.KEY_PRESSED) {
-                    if (Character.isLetterOrDigit(e.getKeyCode())) {
+            public boolean dispatchKeyEvent(KeyEvent e)
+            {
+                if (AbaInicial.this.getPainelTabulado().getAbaSelecionada() == AbaInicial.this && e.getID() == KeyEvent.KEY_PRESSED)
+                {
+                    if (Character.isLetterOrDigit(e.getKeyCode()))
+                    {
                         sb.append(e.getKeyChar());
-                    } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                        synchronized (AbaInicial.this) {
+                    }
+                    else if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    {
+                        synchronized (AbaInicial.this)
+                        {
                             String nome = sb.toString().toUpperCase();
                             Action acao = getActionMap().get(nome);
 
                             sb.delete(0, sb.length());
 
-                            if (acao != null) {
+                            if (acao != null)
+                            {
                                 acao.actionPerformed(null);
                             }
                         }
@@ -113,35 +121,48 @@ public final class AbaInicial extends Aba implements Themeable{
         });
     }
 
-    private void instalarAcoesSecretas() {
+    private void instalarAcoesSecretas()
+    {
         instalarAcaoModificarURLAtualizacao();
         instalarAcaoEaster1();
     }
 
-    private void instalarAcaoEaster1() {
-        getActionMap().put("RICK", new AbstractAction() {
+    private void instalarAcaoEaster1()
+    {
+        getActionMap().put("RICK", new AbstractAction()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {                    
-                try {
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
                     ImageIcon gif = new ImageIcon(new URL("http://lite.acad.univali.br/~alice/portugol/resources/rick/image.gif"));
-                    if(gif.getIconWidth()>1){
+                    if (gif.getIconWidth() > 1)
+                    {
                         rotuloSairProgramando.setIcon(gif);
                         rotuloAssistirVideoAulas.setIcon(gif);
                         rotuloConhecerBibliotecas.setIcon(gif);
                         rotuloConhecerLinguagem.setIcon(gif);
                         JOptionPane.showMessageDialog(null, gif, "Never gonna", JOptionPane.PLAIN_MESSAGE);
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
-                }                    
+                }
             }
         });
     }
-    private void instalarAcaoModificarURLAtualizacao() {
-        getActionMap().put("BETA", new AbstractAction() {
+
+    private void instalarAcaoModificarURLAtualizacao()
+    {
+        getActionMap().put("BETA", new AbstractAction()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (telaEditarUriAtualizacao == null) {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (telaEditarUriAtualizacao == null)
+                {
                     telaEditarUriAtualizacao = new TelaEditarUriAtualizacao();
                 }
 
@@ -150,45 +171,56 @@ public final class AbaInicial extends Aba implements Themeable{
             }
         });
     }
-    private void configurarResolucao(){
-        addComponentListener(new ComponentAdapter(){
+
+    private void configurarResolucao()
+    {
+        addComponentListener(new ComponentAdapter()
+        {
 
             @Override
             public void componentResized(ComponentEvent e)
             {
-                SwingUtilities.invokeLater(() -> {
-                    if(getSize().width <= 800 || getSize().height<=600){
-                        if(!redimensionouParaBaixaResolucao){
-                            redimensionouParaBaixaResolucao = true;
-                            rotuloSairProgramando.setIcon(null);
-                            rotuloAssistirVideoAulas.setIcon(null);
-                            rotuloConhecerBibliotecas.setIcon(null);
-                            rotuloConhecerLinguagem.setIcon(null);
-                            FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
-                        }
-                    }else{
-                        redimensionouParaBaixaResolucao = false;
-                        rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
-                        rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
-                        rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
-                        rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
-                    }
+                SwingUtilities.invokeLater(() -> 
+                        {
+                            if (getSize().width <= 800 || getSize().height <= 600)
+                            {
+                                if (!redimensionouParaBaixaResolucao)
+                                {
+                                    redimensionouParaBaixaResolucao = true;
+                                    rotuloSairProgramando.setIcon(null);
+                                    rotuloAssistirVideoAulas.setIcon(null);
+                                    rotuloConhecerBibliotecas.setIcon(null);
+                                    rotuloConhecerLinguagem.setIcon(null);
+                                    FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
+                                }
+                            }
+                            else
+                            {
+                                redimensionouParaBaixaResolucao = false;
+                                rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
+                                rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
+                                rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
+                                rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
+                            }
                 });
             }
-            
+
         });
     }
 
-    private void abrirGitHub() {
+    private void abrirGitHub()
+    {
         WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio");
     }
 
-    private void configurarCursorLogos() {
+    private void configurarCursorLogos()
+    {
 //        logoUnivali.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //        logoLite.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void configurarAcoes() {
+    private void configurarAcoes()
+    {
         configurarAcaoSairProgramando();
         configurarAcaoConhecerLinguagem();
         configurarAcaoAssistirVideoAulas();
@@ -201,20 +233,27 @@ public final class AbaInicial extends Aba implements Themeable{
         configurarAcaoDicasInterface();
     }
 
-    private void configurarAcaoAssistirVideoAulas() {
-        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName()) {
+    private void configurarAcaoAssistirVideoAulas()
+    {
+        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 WebConnectionUtils.abrirSite("https://www.youtube.com/user/portugolstudio");
             }
         };
 
         getActionMap().put(rotuloAssistirVideoAulas.getName(), acao);
     }
-    private void configurarAcaoAtualizacoes() {
-        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName()) {
+
+    private void configurarAcaoAtualizacoes()
+    {
+        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/commits/master");
             }
         };
@@ -222,10 +261,13 @@ public final class AbaInicial extends Aba implements Themeable{
         getActionMap().put(rotuloUpdate.getName(), acao);
     }
 
-    private void configurarAcaoSairProgramando() {
-        Action acao = new AbstractAction(rotuloSairProgramando.getName()) {
+    private void configurarAcaoSairProgramando()
+    {
+        Action acao = new AbstractAction(rotuloSairProgramando.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO).actionPerformed(e);
                 Action action = getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO);
             }
@@ -234,10 +276,13 @@ public final class AbaInicial extends Aba implements Themeable{
         getActionMap().put(rotuloSairProgramando.getName(), acao);
     }
 
-    private void configurarAcaoConhecerLinguagem() {
-        Action acao = new AbstractAction(rotuloConhecerLinguagem.getName()) {
+    private void configurarAcaoConhecerLinguagem()
+    {
+        Action acao = new AbstractAction(rotuloConhecerLinguagem.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
             }
         };
@@ -245,10 +290,13 @@ public final class AbaInicial extends Aba implements Themeable{
         getActionMap().put(rotuloConhecerLinguagem.getName(), acao);
     }
 
-    private void configurarAcaoConhecerBibliotecas() {
-        Action acao = new AbstractAction(rotuloConhecerBibliotecas.getName()) {
+    private void configurarAcaoConhecerBibliotecas()
+    {
+        Action acao = new AbstractAction(rotuloConhecerBibliotecas.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
             }
         };
@@ -256,10 +304,13 @@ public final class AbaInicial extends Aba implements Themeable{
         getActionMap().put(rotuloConhecerBibliotecas.getName(), acao);
     }
 
-    private void configurarAcaoExibirTelaSobre() {
-        Action acao = new AbstractAction(rotuloInformacoesSoftware.getName()) {
+    private void configurarAcaoExibirTelaSobre()
+    {
+        Action acao = new AbstractAction(rotuloInformacoesSoftware.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 PortugolStudio.getInstancia().getTelaSobre().setVisible(true);
             }
         };
@@ -267,10 +318,13 @@ public final class AbaInicial extends Aba implements Themeable{
         getActionMap().put(rotuloInformacoesSoftware.getName(), acao);
     }
 
-    private void configurarAcaoAjudarDesenvolvimento() {
-        Action acao = new AbstractAction(rotuloAjudarDesenvolvimento.getName()) {
+    private void configurarAcaoAjudarDesenvolvimento()
+    {
+        Action acao = new AbstractAction(rotuloAjudarDesenvolvimento.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 abrirGitHub();
             }
         };
@@ -278,10 +332,13 @@ public final class AbaInicial extends Aba implements Themeable{
         getActionMap().put(rotuloAjudarDesenvolvimento.getName(), acao);
     }
 
-    private void configurarAcaoRelatarBug() {
-        Action acao = new AbstractAction(rotuloRelatarBug.getName()) {
+    private void configurarAcaoRelatarBug()
+    {
+        Action acao = new AbstractAction(rotuloRelatarBug.getName())
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 WebConnectionUtils.abrirSite("https://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform");
             }
         };
@@ -289,22 +346,27 @@ public final class AbaInicial extends Aba implements Themeable{
         getActionMap().put(rotuloRelatarBug.getName(), acao);
     }
 
-    private void configurarLinks() {
-        MouseListener listener = new MouseAdapter() {
+    private void configurarLinks()
+    {
+        MouseListener listener = new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 JLabel rotulo = (JLabel) e.getSource();
                 String nomeAcao = rotulo.getName();
 
                 Action acao = getActionMap().get(nomeAcao);
 
-                if (acao != null) {
+                if (acao != null)
+                {
                     acao.actionPerformed(null);
                 }
             }
 
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(MouseEvent e)
+            {
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setBackground(ColorController.COR_DESTAQUE);
                 rotulo.setOpaque(true);
@@ -313,7 +375,8 @@ public final class AbaInicial extends Aba implements Themeable{
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(MouseEvent e)
+            {
                 JLabel rotulo = (JLabel) e.getSource();
                 rotulo.setBackground(ColorController.COR_PRINCIPAL);
                 rotulo.setOpaque(false);
@@ -341,24 +404,27 @@ public final class AbaInicial extends Aba implements Themeable{
 
         rotuloAtalhosTeclado.addMouseListener(listener);
         rotuloAtalhosTeclado.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloDicasInterface.addMouseListener(listener);
         rotuloDicasInterface.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         rotuloInformacoesSoftware.addMouseListener(listener);
         rotuloInformacoesSoftware.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         rotuloUpdate.addMouseListener(listener);
         rotuloUpdate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void configurarAcaoExibirAtalhosTeclado() {
+    private void configurarAcaoExibirAtalhosTeclado()
+    {
         String nome = "atalhosTeclado";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
 
-        acaoExibirAtalhosTeclado = new AbstractAction(nome) {
+        acaoExibirAtalhosTeclado = new AbstractAction(nome)
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 PortugolStudio.getInstancia().getTelaAtalhosTeclado().setVisible(true);
             }
         };
@@ -370,14 +436,17 @@ public final class AbaInicial extends Aba implements Themeable{
         getPainelTabulado().getActionMap().put(nome, acaoExibirAtalhosTeclado);
         getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
-    
-    private void configurarAcaoDicasInterface() {
+
+    private void configurarAcaoDicasInterface()
+    {
         String nome = "dicasInterface";
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
 
-        acaoExibirDicasInterface = new AbstractAction(nome) {
+        acaoExibirDicasInterface = new AbstractAction(nome)
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
             }
         };
@@ -390,54 +459,47 @@ public final class AbaInicial extends Aba implements Themeable{
         getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
-    private void criarDicasInterface() {
+    private void criarDicasInterface()
+    {
 //        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI");
 //        FabricaDicasInterface.criarDicaInterface(logoLite, "Conhecer o Laboratório de Inovação Tecnológica na Educação");
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        painelFundo = new javax.swing.JPanel();
-        painelCabecalho = new javax.swing.JPanel();
         logoPS = new br.univali.ps.ui.imagens.Logo();
-        painelAmbiente = new javax.swing.JPanel();
         rotuloSlogan = new javax.swing.JLabel();
+        painelCentral = new javax.swing.JPanel();
+        botoesGrandes = new javax.swing.JPanel();
+        rotuloSairProgramando = new javax.swing.JLabel();
+        rotuloConhecerLinguagem = new javax.swing.JLabel();
+        rotuloAssistirVideoAulas = new javax.swing.JLabel();
+        rotuloConhecerBibliotecas = new javax.swing.JLabel();
+        painelExemplos = new br.univali.ps.ui.paineis.PainelExemplos();
         conteudoColaborar = new javax.swing.JPanel();
-        painelAlinhamento1 = new javax.swing.JPanel();
         rotuloDicasInterface = new javax.swing.JLabel();
         rotuloAtalhosTeclado = new javax.swing.JLabel();
         rotuloRelatarBug = new javax.swing.JLabel();
         rotuloAjudarDesenvolvimento = new javax.swing.JLabel();
         rotuloInformacoesSoftware = new javax.swing.JLabel();
         rotuloUpdate = new javax.swing.JLabel();
-        painelCentral = new javax.swing.JPanel();
-        conteudoIniciando = new javax.swing.JPanel();
-        painelAlinhamento5 = new javax.swing.JPanel();
-        rotuloSairProgramando = new javax.swing.JLabel();
-        rotuloConhecerLinguagem = new javax.swing.JLabel();
-        rotuloAssistirVideoAulas = new javax.swing.JLabel();
-        rotuloConhecerBibliotecas = new javax.swing.JLabel();
-        painelConteudo = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        painelExemplos1 = new br.univali.ps.ui.paineis.PainelExemplos();
 
         setOpaque(false);
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.GridBagLayout());
 
-        painelFundo.setLayout(new java.awt.BorderLayout());
-
-        painelCabecalho.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
-        painelCabecalho.setOpaque(false);
-        painelCabecalho.setLayout(new java.awt.BorderLayout());
-
+        logoPS.setMinimumSize(new java.awt.Dimension(310, 100));
         logoPS.setOpaque(false);
         logoPS.setPreferredSize(new java.awt.Dimension(0, 100));
-        painelCabecalho.add(logoPS, java.awt.BorderLayout.PAGE_START);
-
-        painelAmbiente.setOpaque(false);
-        painelAmbiente.setLayout(new java.awt.BorderLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        add(logoPS, gridBagConstraints);
 
         rotuloSlogan.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloSlogan.setForeground(new java.awt.Color(232, 232, 232));
@@ -445,86 +507,16 @@ public final class AbaInicial extends Aba implements Themeable{
         rotuloSlogan.setText("Ambiente para Aprender a Programar");
         rotuloSlogan.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         rotuloSlogan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        painelAmbiente.add(rotuloSlogan, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        add(rotuloSlogan, gridBagConstraints);
 
-        painelCabecalho.add(painelAmbiente, java.awt.BorderLayout.SOUTH);
+        painelCentral.setLayout(new java.awt.GridBagLayout());
 
-        painelFundo.add(painelCabecalho, java.awt.BorderLayout.NORTH);
-
-        conteudoColaborar.setLayout(new java.awt.BorderLayout());
-
-        painelAlinhamento1.setOpaque(false);
-        painelAlinhamento1.setLayout(new javax.swing.BoxLayout(painelAlinhamento1, javax.swing.BoxLayout.X_AXIS));
-
-        rotuloDicasInterface.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloDicasInterface.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloDicasInterface.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloDicasInterface.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloDicasInterface.setText("<html><body><div>Dicas Interface (F3)</div></body></html>");
-        rotuloDicasInterface.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloDicasInterface.setName("dicasInterface"); // NOI18N
-        painelAlinhamento1.add(rotuloDicasInterface);
-
-        rotuloAtalhosTeclado.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloAtalhosTeclado.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloAtalhosTeclado.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloAtalhosTeclado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloAtalhosTeclado.setText("<html><body><div>Atalhos do teclado (F11)</div></body></html>");
-        rotuloAtalhosTeclado.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloAtalhosTeclado.setName("atalhosTeclado"); // NOI18N
-        painelAlinhamento1.add(rotuloAtalhosTeclado);
-
-        rotuloRelatarBug.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloRelatarBug.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloRelatarBug.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloRelatarBug.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloRelatarBug.setText("<html><body><div>Relatar um Bug</div></body></html>");
-        rotuloRelatarBug.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloRelatarBug.setName("relatarBug"); // NOI18N
-        painelAlinhamento1.add(rotuloRelatarBug);
-
-        rotuloAjudarDesenvolvimento.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloAjudarDesenvolvimento.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloAjudarDesenvolvimento.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloAjudarDesenvolvimento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloAjudarDesenvolvimento.setText("<html><body><div>Ajudar no desenvolvimento</div></body></html>");
-        rotuloAjudarDesenvolvimento.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloAjudarDesenvolvimento.setName("ajudarDesenvolvimento"); // NOI18N
-        painelAlinhamento1.add(rotuloAjudarDesenvolvimento);
-
-        rotuloInformacoesSoftware.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloInformacoesSoftware.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloInformacoesSoftware.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloInformacoesSoftware.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloInformacoesSoftware.setText("<html><body><div>Sobre (F12)</div></body></html>");
-        rotuloInformacoesSoftware.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloInformacoesSoftware.setName("informacoesSoftware"); // NOI18N
-        painelAlinhamento1.add(rotuloInformacoesSoftware);
-
-        rotuloUpdate.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloUpdate.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloUpdate.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloUpdate.setText("<html><body><div>Atualizações</div></body></html>");
-        rotuloUpdate.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloUpdate.setName("updateLog"); // NOI18N
-        painelAlinhamento1.add(rotuloUpdate);
-
-        conteudoColaborar.add(painelAlinhamento1, java.awt.BorderLayout.CENTER);
-
-        painelFundo.add(conteudoColaborar, java.awt.BorderLayout.SOUTH);
-
-        painelCentral.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        painelCentral.setLayout(new java.awt.BorderLayout());
-
-        conteudoIniciando.setBackground(new java.awt.Color(4, 52, 88));
-        conteudoIniciando.setOpaque(false);
-        conteudoIniciando.setLayout(new java.awt.BorderLayout());
-
-        painelAlinhamento5.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        painelAlinhamento5.setMaximumSize(new java.awt.Dimension(2147483647, 500));
-        painelAlinhamento5.setOpaque(false);
-        painelAlinhamento5.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
+        botoesGrandes.setMinimumSize(new java.awt.Dimension(630, 127));
+        botoesGrandes.setOpaque(false);
+        botoesGrandes.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
         rotuloSairProgramando.setBackground(new java.awt.Color(210, 231, 252));
         rotuloSairProgramando.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
@@ -537,7 +529,7 @@ public final class AbaInicial extends Aba implements Themeable{
         rotuloSairProgramando.setMinimumSize(new java.awt.Dimension(150, 25));
         rotuloSairProgramando.setName("sairProgramando"); // NOI18N
         rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        painelAlinhamento5.add(rotuloSairProgramando);
+        botoesGrandes.add(rotuloSairProgramando);
 
         rotuloConhecerLinguagem.setBackground(new java.awt.Color(210, 231, 252));
         rotuloConhecerLinguagem.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
@@ -550,7 +542,7 @@ public final class AbaInicial extends Aba implements Themeable{
         rotuloConhecerLinguagem.setMinimumSize(new java.awt.Dimension(110, 25));
         rotuloConhecerLinguagem.setName("conhecerLinguagem"); // NOI18N
         rotuloConhecerLinguagem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        painelAlinhamento5.add(rotuloConhecerLinguagem);
+        botoesGrandes.add(rotuloConhecerLinguagem);
 
         rotuloAssistirVideoAulas.setBackground(new java.awt.Color(210, 231, 252));
         rotuloAssistirVideoAulas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
@@ -563,7 +555,7 @@ public final class AbaInicial extends Aba implements Themeable{
         rotuloAssistirVideoAulas.setMinimumSize(new java.awt.Dimension(150, 25));
         rotuloAssistirVideoAulas.setName("assistirVideoAulas"); // NOI18N
         rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        painelAlinhamento5.add(rotuloAssistirVideoAulas);
+        botoesGrandes.add(rotuloAssistirVideoAulas);
 
         rotuloConhecerBibliotecas.setBackground(new java.awt.Color(210, 231, 252));
         rotuloConhecerBibliotecas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
@@ -577,47 +569,107 @@ public final class AbaInicial extends Aba implements Themeable{
         rotuloConhecerBibliotecas.setName("conhecerBibliotecas"); // NOI18N
         rotuloConhecerBibliotecas.setVerifyInputWhenFocusTarget(false);
         rotuloConhecerBibliotecas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        painelAlinhamento5.add(rotuloConhecerBibliotecas);
+        botoesGrandes.add(rotuloConhecerBibliotecas);
 
-        conteudoIniciando.add(painelAlinhamento5, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        painelCentral.add(botoesGrandes, gridBagConstraints);
 
-        painelCentral.add(conteudoIniciando, java.awt.BorderLayout.NORTH);
+        painelExemplos.setBorder(null);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        painelCentral.add(painelExemplos, gridBagConstraints);
 
-        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        painelConteudo.setOpaque(false);
-        painelConteudo.setPreferredSize(new java.awt.Dimension(700, 80));
-        painelConteudo.setRequestFocusEnabled(false);
-        painelConteudo.setLayout(new java.awt.BorderLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(painelCentral, gridBagConstraints);
 
-        jPanel1.setBackground(new java.awt.Color(75, 119, 190));
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        conteudoColaborar.setOpaque(false);
+        conteudoColaborar.setLayout(new javax.swing.BoxLayout(conteudoColaborar, javax.swing.BoxLayout.X_AXIS));
 
-        painelExemplos1.setBorder(null);
-        jPanel1.add(painelExemplos1, java.awt.BorderLayout.CENTER);
+        rotuloDicasInterface.setBackground(new java.awt.Color(210, 231, 252));
+        rotuloDicasInterface.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloDicasInterface.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloDicasInterface.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloDicasInterface.setText("<html><body><div>Dicas Interface (F3)</div></body></html>");
+        rotuloDicasInterface.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloDicasInterface.setName("dicasInterface"); // NOI18N
+        conteudoColaborar.add(rotuloDicasInterface);
 
-        painelConteudo.add(jPanel1, java.awt.BorderLayout.CENTER);
+        rotuloAtalhosTeclado.setBackground(new java.awt.Color(210, 231, 252));
+        rotuloAtalhosTeclado.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloAtalhosTeclado.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloAtalhosTeclado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloAtalhosTeclado.setText("<html><body><div>Atalhos do teclado (F11)</div></body></html>");
+        rotuloAtalhosTeclado.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloAtalhosTeclado.setName("atalhosTeclado"); // NOI18N
+        conteudoColaborar.add(rotuloAtalhosTeclado);
 
-        painelCentral.add(painelConteudo, java.awt.BorderLayout.CENTER);
+        rotuloRelatarBug.setBackground(new java.awt.Color(210, 231, 252));
+        rotuloRelatarBug.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloRelatarBug.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloRelatarBug.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloRelatarBug.setText("<html><body><div>Relatar um Bug</div></body></html>");
+        rotuloRelatarBug.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloRelatarBug.setName("relatarBug"); // NOI18N
+        conteudoColaborar.add(rotuloRelatarBug);
 
-        painelFundo.add(painelCentral, java.awt.BorderLayout.CENTER);
+        rotuloAjudarDesenvolvimento.setBackground(new java.awt.Color(210, 231, 252));
+        rotuloAjudarDesenvolvimento.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloAjudarDesenvolvimento.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloAjudarDesenvolvimento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloAjudarDesenvolvimento.setText("<html><body><div>Ajudar no desenvolvimento</div></body></html>");
+        rotuloAjudarDesenvolvimento.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloAjudarDesenvolvimento.setName("ajudarDesenvolvimento"); // NOI18N
+        conteudoColaborar.add(rotuloAjudarDesenvolvimento);
 
-        add(painelFundo, java.awt.BorderLayout.CENTER);
+        rotuloInformacoesSoftware.setBackground(new java.awt.Color(210, 231, 252));
+        rotuloInformacoesSoftware.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloInformacoesSoftware.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloInformacoesSoftware.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloInformacoesSoftware.setText("<html><body><div>Sobre (F12)</div></body></html>");
+        rotuloInformacoesSoftware.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloInformacoesSoftware.setName("informacoesSoftware"); // NOI18N
+        conteudoColaborar.add(rotuloInformacoesSoftware);
+
+        rotuloUpdate.setBackground(new java.awt.Color(210, 231, 252));
+        rotuloUpdate.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
+        rotuloUpdate.setForeground(new java.awt.Color(51, 51, 51));
+        rotuloUpdate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rotuloUpdate.setText("<html><body><div>Atualizações</div></body></html>");
+        rotuloUpdate.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloUpdate.setName("updateLog"); // NOI18N
+        conteudoColaborar.add(rotuloUpdate);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(conteudoColaborar, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel botoesGrandes;
     private javax.swing.JPanel conteudoColaborar;
-    private javax.swing.JPanel conteudoIniciando;
-    private javax.swing.JPanel jPanel1;
     private br.univali.ps.ui.imagens.Logo logoPS;
-    private javax.swing.JPanel painelAlinhamento1;
-    private javax.swing.JPanel painelAlinhamento5;
-    private javax.swing.JPanel painelAmbiente;
-    private javax.swing.JPanel painelCabecalho;
     private javax.swing.JPanel painelCentral;
-    private javax.swing.JPanel painelConteudo;
-    private br.univali.ps.ui.paineis.PainelExemplos painelExemplos1;
-    private javax.swing.JPanel painelFundo;
+    private br.univali.ps.ui.paineis.PainelExemplos painelExemplos;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
     private javax.swing.JLabel rotuloAssistirVideoAulas;
     private javax.swing.JLabel rotuloAtalhosTeclado;
