@@ -1,6 +1,6 @@
 package br.univali.ps.ui.paineis;
 
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.telas.utils.Licencas;
 import javax.swing.SwingUtilities;
 

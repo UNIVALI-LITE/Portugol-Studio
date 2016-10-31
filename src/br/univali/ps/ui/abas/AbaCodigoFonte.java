@@ -1,5 +1,7 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.PainelSaida;
@@ -42,8 +44,8 @@ import br.univali.ps.ui.rstautil.tree.filters.view.SymbolTypeFilterView;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.BarraDeBotoesExpansivel;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.BarraDeBotoesExpansivel;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -464,8 +466,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraDeBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
         barraDeBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraDeBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
-        barraDeBotoesEditor.adicionaSeparador();
-        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
+//        barraDeBotoesEditor.adicionaSeparador();
+//        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
         GridBagConstraints constraints = new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(-5, 0, 0, 30), 0, 0);
         painelEditor.add(barraDeBotoesEditor, constraints);

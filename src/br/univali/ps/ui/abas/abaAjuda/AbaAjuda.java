@@ -10,13 +10,13 @@ import br.univali.portugol.ajuda.TopicoHtml;
 import br.univali.ps.dominio.PortugolHTMLHighlighter;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.PSTreeUI;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.PSTreeUI;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -112,6 +112,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelCarregamento.setBackground(ColorController.COR_DESTAQUE);
         rotuloCarregamento.setForeground(ColorController.COR_LETRA);
         rotuloErroCarregamento.setForeground(ColorController.COR_LETRA);
+        painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
+        jLabel1.setForeground(ColorController.COR_LETRA);
     }
 
     private void configurarSwingbox()
@@ -653,6 +655,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelArvore = new javax.swing.JPanel();
         painelRolagemArvore = new javax.swing.JScrollPane();
         arvore = new javax.swing.JTree();
+        painelTitulo = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         painelConteudo = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         conteudo = new org.fit.cssbox.swingbox.BrowserPane();
@@ -662,6 +666,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         setOpaque(false);
         setLayout(new java.awt.CardLayout());
 
+        painelCarregamento.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 1, 1));
         painelCarregamento.setLayout(new java.awt.BorderLayout());
 
         rotuloCarregamento.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -689,6 +694,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         divisorLayout.setBorder(null);
         divisorLayout.setDividerSize(8);
 
+        painelArvore.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelArvore.setMinimumSize(new java.awt.Dimension(200, 37));
         painelArvore.setPreferredSize(new java.awt.Dimension(250, 100));
         painelArvore.setLayout(new java.awt.BorderLayout());
@@ -702,6 +708,16 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelRolagemArvore.setViewportView(arvore);
 
         painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
+
+        painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelTitulo.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/help.png"))); // NOI18N
+        jLabel2.setText("Ajuda");
+        painelTitulo.add(jLabel2, java.awt.BorderLayout.CENTER);
+
+        painelArvore.add(painelTitulo, java.awt.BorderLayout.NORTH);
 
         divisorLayout.setLeftComponent(painelArvore);
 
@@ -727,6 +743,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private javax.swing.JSplitPane divisorLayout;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel painelAjuda;
@@ -734,6 +751,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private javax.swing.JPanel painelCarregamento;
     private javax.swing.JPanel painelConteudo;
     private javax.swing.JScrollPane painelRolagemArvore;
+    private javax.swing.JPanel painelTitulo;
     private javax.swing.JLabel rotuloCarregamento;
     private javax.swing.JLabel rotuloErroCarregamento;
     // End of variables declaration//GEN-END:variables

@@ -1,8 +1,8 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.ColorController;
-import br.univali.ps.ui.Themeable;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;

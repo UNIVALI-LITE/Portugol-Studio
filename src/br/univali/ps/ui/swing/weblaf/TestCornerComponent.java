@@ -1,4 +1,4 @@
-package br.univali.ps.ui.weblaf;
+package br.univali.ps.ui.swing.weblaf;
 
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.*;

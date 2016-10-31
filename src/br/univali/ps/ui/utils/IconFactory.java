@@ -41,7 +41,7 @@ public class IconFactory {
         Image image = null;
         try
         {
-            image = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png"));
+            image = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/light-bulb.png"));
         }
         catch (IOException ioe)
         {

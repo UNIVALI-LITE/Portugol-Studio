@@ -1,12 +1,12 @@
 package br.univali.ps.ui.rstautil.tree.filters.view;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilterListener;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -32,6 +32,7 @@ public class DataTypeFilterView extends javax.swing.JPanel
 
     private void configureButtons()
     {
+        titleLabel.setForeground(ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonCadeia, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonCaracter,ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonInteiro, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);

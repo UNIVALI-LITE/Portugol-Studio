@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package br.univali.ps.ui.weblaf;
+package br.univali.ps.ui.swing.weblaf;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;

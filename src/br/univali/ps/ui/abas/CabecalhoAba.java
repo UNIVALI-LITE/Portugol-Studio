@@ -1,8 +1,8 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.ColorController;
-import br.univali.ps.ui.Themeable;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;
 import javax.swing.Icon;

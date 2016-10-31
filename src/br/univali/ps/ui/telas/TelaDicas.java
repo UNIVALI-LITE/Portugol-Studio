@@ -7,11 +7,11 @@ package br.univali.ps.ui.telas;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.nucleo.Configuracoes;
-import br.univali.ps.ui.ColorController;
-import br.univali.ps.ui.Themeable;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.telas.utils.DicaInterface;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import java.awt.Color;

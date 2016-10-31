@@ -1,13 +1,13 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.ColorController;
-import br.univali.ps.ui.Themeable;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.PSOutTabbedPaneUI;
-import br.univali.ps.ui.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.PSOutTabbedPaneUI;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.event.ActionEvent;

@@ -1,27 +1,27 @@
-package br.univali.ps.ui.weblaf;
+package br.univali.ps.ui.swing.weblaf;
 
-import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.menu.WebPopupMenuUI;
+import com.alee.laf.menu.WebMenuItem;
+import com.alee.laf.menu.WebPopupMenu;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -29,14 +29,21 @@ import javax.swing.SwingConstants;
  */
 public final class BarraDeBotoesExpansivel extends WebButton
 {
-    private final JPopupMenu menu;// = new JPopupMenu();
+    private final WebPopupMenu menu;// = new JPopupMenu();
 
     public BarraDeBotoesExpansivel()
     {
         super();
-
-        menu = new JPopupMenu();
+        
+        menu = new WebPopupMenu();
         menu.setFont(getFont());
+        menu.setBorderColor(ColorController.FUNDO_ESCURO);
+        menu.setCornerWidth(0);
+        menu.setMargin(5);
+        menu.setRound(0);
+        menu.setShadeWidth(0);
+        menu.setBackground(ColorController.FUNDO_ESCURO);
+        menu.setForeground(ColorController.COR_LETRA);
         //menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         //add(menu);
         setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
@@ -66,11 +73,15 @@ public final class BarraDeBotoesExpansivel extends WebButton
         ItemDeMenuParaGrupoDeAcoes item = new ItemDeMenuParaGrupoDeAcoes(texto, icone, acoes, usarToggleButtons);
         menu.add(item);
         item.setFont(getFont());
+        
     }
 
     public void adicionaSeparador()
     {
-        menu.addSeparator();
+        JPanel jp = new JPanel();
+        jp.setBackground(ColorController.COR_DESTAQUE);
+        jp.setPreferredSize(new Dimension(200, 2));
+        menu.add(jp);
     }
 
     public JPopupMenu getPopupMenu()
@@ -95,6 +106,8 @@ public final class BarraDeBotoesExpansivel extends WebButton
             label = new JLabel(texto, SwingConstants.LEFT);
             label.setIcon(icone);
             label.setFont(getFont());
+            setBorder(new EmptyBorder(5,0,5,0));
+            label.setForeground(ColorController.COR_LETRA);
 
             add(label);
 
@@ -139,11 +152,12 @@ public final class BarraDeBotoesExpansivel extends WebButton
 
         private void criaUmaLinhaDeBotoes(Action acoes[])
         {
-            JButton botoes[] = new JButton[acoes.length];
+            JButton botoes[] = new WebButton[acoes.length];
 
             for (int i = 0; i < acoes.length; i++)
             {
-                botoes[i] = new JButton(acoes[i]);
+                botoes[i] = new WebButton(acoes[i]);
+                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_PRINCIPAL, Color.orange, ColorController.FUNDO_CLARO, Color.GRAY, 5);
             }
 
             WebButtonGroup textGroup = new WebButtonGroup(true, botoes);
@@ -160,12 +174,17 @@ public final class BarraDeBotoesExpansivel extends WebButton
 
     public void adicionaAcao(Action acao)
     {
-        JMenuItem item = new JMenuItem(acao);
+        WebMenuItem item = new WebMenuItem(acao);
         acao.putValue("MenuItem", item);
 
         item.setIcon((Icon) acao.getValue(Action.SMALL_ICON));
         item.setFont(getFont());
-
+        item.setForeground(ColorController.COR_LETRA);
+        item.setAcceleratorFg(ColorController.FUNDO_CLARO);
+        item.setAcceleratorDisabledFg(ColorController.FUNDO_CLARO);
+        item.setAcceleratorBg(ColorController.FUNDO_ESCURO);
+        item.setSelectedTopBg(ColorController.COR_PRINCIPAL);
+        item.setSelectedBottomBg(ColorController.COR_PRINCIPAL);
         menu.add(item);
     }
 

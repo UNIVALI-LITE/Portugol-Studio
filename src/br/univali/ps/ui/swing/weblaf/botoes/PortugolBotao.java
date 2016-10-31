@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.weblaf.botoes;
+package br.univali.ps.ui.swing.weblaf.botoes;
 
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.painter.ColorPainter;
