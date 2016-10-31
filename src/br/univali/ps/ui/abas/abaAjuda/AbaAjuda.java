@@ -666,6 +666,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         setOpaque(false);
         setLayout(new java.awt.CardLayout());
 
+        painelCarregamento.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 1, 1));
         painelCarregamento.setLayout(new java.awt.BorderLayout());
 
         rotuloCarregamento.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N

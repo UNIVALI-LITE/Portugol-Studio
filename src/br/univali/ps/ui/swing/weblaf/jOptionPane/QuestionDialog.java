@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.JFrame;
 
 /**
  *
@@ -22,8 +23,11 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     
     /**
      * Creates new form QuestionDialog
+     * @param parent
+     * @param modal
+     * @param text
      */
-    public QuestionDialog(java.awt.Frame parent, boolean modal, String text) {
+    public QuestionDialog(JFrame parent, boolean modal, String text) {
         super(parent, modal);
         initComponents();
         textLabel.setText("<html><body>"+text+"</body></html>");
@@ -36,6 +40,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         
     
         titleLabel.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mousePressed(MouseEvent me) {
                     // Get x,y and store them
                     pX = me.getX();
@@ -43,6 +48,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
 
                 }
 
+                @Override
                  public void mouseDragged(MouseEvent me) {
 
                     setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
@@ -50,6 +56,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             });
 
             titleLabel.addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
                 public void mouseDragged(MouseEvent me) {
 
                     setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
