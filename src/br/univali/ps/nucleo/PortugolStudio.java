@@ -36,17 +36,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
  *
@@ -57,6 +57,8 @@ public final class PortugolStudio
 {
 
     private static final Logger LOGGER = Logger.getLogger(PortugolStudio.class.getName());
+    private final ExecutorService servico = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Thread principal)"));
+    
     private static PortugolStudio instancia = null;
 
     private final List<File> arquivosIniciais = new ArrayList<>();
@@ -86,11 +88,23 @@ public final class PortugolStudio
     private TratadorExcecoes tratadorExcecoes = null;
     private GerenciadorAtualizacoes gerenciadorAtualizacoes = null;
     
+    private final Mutex mutex;
+    
     private PortugolStudio()
-    {
-
+    {   
+        mutex = criaMutex();
     }
 
+    private Mutex criaMutex()
+    {
+        if (!Configuracoes.rodandoNoNetbeans())
+        {
+            return new MutexImpl(servico); // cria um mutex que permite apenas uma instância
+        }
+        
+        return new MutexNulo(); // retorna um mutex nulo que não faz nada
+    }
+    
     public static PortugolStudio getInstancia()
     {
         if (instancia == null)
@@ -107,11 +121,11 @@ public final class PortugolStudio
         {
             exibirParametros(parametros);
 
-            if (Mutex.existeUmaInstanciaExecutando())
+            if (mutex.existeUmaInstanciaExecutando())
             {
                 try
                 {
-                    Mutex.InstanciaPortugolStudio studio = Mutex.conectarInstanciaPortugolStudio();
+                    InstanciaPortugolStudio studio = mutex.conectarInstanciaPortugolStudio();
                     processarParametroArquivosIniciais(parametros);
 
                     studio.abrirArquivos(arquivosIniciais);
@@ -119,7 +133,7 @@ public final class PortugolStudio
 
                     finalizar(0);
                 }
-                catch (Mutex.ErroConexaoInstancia erro)
+                catch (MutexImpl.ErroConexaoInstancia erro)
                 {
                     // Se o arquivo de Mutex existe, mas não foi possível abrir a conexão para a instância,
                     // então provavelmente o aplicativo foi fechado de forma inesperada deixando o arquivo pra trás.
@@ -132,17 +146,20 @@ public final class PortugolStudio
                 iniciarNovaInstancia(parametros);
             }
         }
-        catch (Mutex.ErroCriacaoMutex erro)
+        catch (MutexImpl.ErroCriacaoMutex erro)
         {
             getTratadorExcecoes().exibirExcecao(erro);
         }
     }
 
-    private void iniciarNovaInstancia(String[] parametros) throws Mutex.ErroCriacaoMutex
+    private void iniciarNovaInstancia(String[] parametros) throws MutexImpl.ErroCriacaoMutex
     {
+        LOGGER.log(Level.INFO, "Iniciando nova instancia do PS");
         if (versaoJavaCorreta())
         {
-            Mutex.criar();
+            
+            mutex.inicializar();
+            LOGGER.log(Level.INFO, "Mutex ({0}) inicializado!", mutex.getClass().getSimpleName());
 
             String dica = obterProximaDica();
             Splash.exibir(dica, 9);
@@ -159,30 +176,39 @@ public final class PortugolStudio
             instalarDetectorVialacoesNaThreadSwing();
             Splash.definirProgresso(45, "step4.png");
 
+            LOGGER.log(Level.INFO, "Instalando LAF...");
             definirLookAndFeel();
             Splash.definirProgresso(54, "step5.png");
+            LOGGER.log(Level.INFO, "LAF Instalado!");
 
+            LOGGER.log(Level.INFO, "Carregando e configurando fontes...");
             registrarFontes();
             Splash.definirProgresso(63, "step5.png");
 
             definirFontePadraoInterface();
             Splash.definirProgresso(72, "step6.png");
+            LOGGER.log(Level.INFO, "Fontes configuradas!");
 
             /* 
              * Os plugins devem sempre ser carregados antes de inicializar o Pool de abas, 
              * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
              */
-            carregarPlugins();
+            LOGGER.log(Level.INFO, "Carregando plugins e bibliotecas...");
+            //carregarPlugins();
             Splash.definirProgresso(81, "step7.png");
 
             carregarBibliotecas();
             Splash.definirProgresso(90, "step8.png");
+            LOGGER.log(Level.INFO, "Plugins e bibliotecas carregados!");
 
+            LOGGER.log(Level.INFO, "Inicializando pool de abas...");
             AbaCodigoFonte.inicializarPool();
             Splash.definirProgresso(100, "step9.png");
+            LOGGER.log(Level.INFO, "Pool inicializado!");
 
             try
             {
+                LOGGER.log(Level.INFO, "Exibindo tela principal");
                 exibirTelaPrincipal();
             }
             catch (ExcecaoAplicacao excecaoAplicacao)
@@ -214,9 +240,11 @@ public final class PortugolStudio
             }
         }
         
-        Mutex.destruir();
+        mutex.finalizar();
         Configuracoes.getInstancia().salvar();
         System.exit(codigo);
+        
+        servico.shutdownNow();
     }
 
     public String obterProximaDica()
@@ -476,12 +504,14 @@ public final class PortugolStudio
                     "tahomabd.ttf"
                 };
 
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        GraphicsEnvironment ambienteGrafico = GraphicsEnvironment.getLocalGraphicsEnvironment();
         for (String nome : fontes)
         {
             try
             {
-                Font fonte = Font.createFont(Font.TRUETYPE_FONT, Thread.currentThread().getContextClassLoader().getResourceAsStream(path + nome));
-                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fonte);
+                Font fonte = Font.createFont(Font.TRUETYPE_FONT, classLoader.getResourceAsStream(path + nome));
+                ambienteGrafico.registerFont(fonte);
             }
             catch (FontFormatException | IOException excecao)
             {
@@ -494,33 +524,33 @@ public final class PortugolStudio
 
     private void definirFontePadraoInterface()
     {
-        try
-        {
-            SwingUtilities.invokeAndWait(() ->
-            {
-                Enumeration keys = UIManager.getDefaults().keys();
-
-                while (keys.hasMoreElements())
-                {
-                    Object key = keys.nextElement();
-                    Object value = UIManager.get(key);
-
-                    if (value instanceof javax.swing.plaf.FontUIResource)
-                    {
-                        /*
-                         * Não está funcionando. O swing altera a fonte padrão para a maioria dos componentes,
-                         * mas não todos. Além disso, o tamanho da fonte da árvore estrutural para de funcionar
-                         *
-                         */
-                        //UIManager.put(key, new Font("Tahoma", Font.PLAIN, 11));
-                    }
-                }
-            });
-        }
-        catch (InterruptedException | InvocationTargetException excecao)
-        {
-            LOGGER.log(Level.INFO, "Não foi possível definir uma fonte padrão na interface do usuário", excecao);
-        }
+//        try
+//        {
+//            SwingUtilities.invokeAndWait(() ->
+//            {
+//                Enumeration keys = UIManager.getDefaults().keys();
+//
+//                while (keys.hasMoreElements())
+//                {
+//                    Object key = keys.nextElement();
+//                    Object value = UIManager.get(key);
+//
+//                    if (value instanceof javax.swing.plaf.FontUIResource)
+//                    {
+//                        /*
+//                         * Não está funcionando. O swing altera a fonte padrão para a maioria dos componentes,
+//                         * mas não todos. Além disso, o tamanho da fonte da árvore estrutural para de funcionar
+//                         *
+//                         */
+//                        //UIManager.put(key, new Font("Tahoma", Font.PLAIN, 11));
+//                    }
+//                }
+//            });
+//        }
+//        catch (InterruptedException | InvocationTargetException excecao)
+//        {
+//            LOGGER.log(Level.INFO, "Não foi possível definir uma fonte padrão na interface do usuário", excecao);
+//        }
     }
 
     private void carregarPlugins()
@@ -803,5 +833,28 @@ public final class PortugolStudio
         {
             LOGGER.log(Level.INFO, "Parametro: {0}", parametro);
         }
+    }
+    
+    
+    private class MutexNulo extends MutexImpl
+    {
+
+        public MutexNulo()
+        {
+            super(null);
+        }
+
+        @Override
+        public boolean existeUmaInstanciaExecutando()
+        {
+            return false;
+        }
+
+        @Override
+        public void finalizar() { }
+
+        @Override
+        public void inicializar() throws ErroCriacaoMutex { }
+        
     }
 }

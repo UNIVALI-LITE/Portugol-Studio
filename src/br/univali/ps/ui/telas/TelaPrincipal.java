@@ -98,7 +98,7 @@ public final class TelaPrincipal extends JFrame
     
     private void configurarCores(){
 //        mainPanel.setBackground(ColorController.COR_DESTAQUE);
-        mainPanel.setBackground(ColorController.FUNDO_CLARO);
+        getContentPane().setBackground(ColorController.FUNDO_CLARO);
         painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
     }
 
@@ -142,8 +142,9 @@ public final class TelaPrincipal extends JFrame
                         PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
+                
+                LOGGER.log(Level.INFO, "Janela principal aberta!");
             }
-            
             
         });
 
@@ -207,7 +208,7 @@ public final class TelaPrincipal extends JFrame
     {
         abrirArquivosCodigoFonte(arquivosIniciais);
 
-        exibirErrosPluginsBibliotecas();
+//        exibirErrosPluginsBibliotecas();
         exibirLogAtualizacoes();
 
         //baixarNovasAtualizacoes();
@@ -397,7 +398,6 @@ public final class TelaPrincipal extends JFrame
 
         webButton1 = new com.alee.laf.button.WebButton();
         maximizeButton = new com.alee.laf.button.WebButton();
-        mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         iconifyButton = new com.alee.laf.button.WebButton();
         closeButton1 = new com.alee.laf.button.WebButton();
@@ -417,8 +417,7 @@ public final class TelaPrincipal extends JFrame
         setBackground(new java.awt.Color(0, 0, 0));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new java.awt.Dimension(700, 520));
-
-        mainPanel.setLayout(new java.awt.GridBagLayout());
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 0));
         jPanel1.setMaximumSize(new java.awt.Dimension(200, 60));
@@ -442,24 +441,19 @@ public final class TelaPrincipal extends JFrame
         jPanel1.add(closeButton1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 10;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        mainPanel.add(jPanel1, gridBagConstraints);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
+        getContentPane().add(jPanel1, gridBagConstraints);
 
         painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 13;
-        gridBagConstraints.gridheight = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        mainPanel.add(painelTabuladoPrincipal, gridBagConstraints);
-
-        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(painelTabuladoPrincipal, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -485,7 +479,6 @@ public final class TelaPrincipal extends JFrame
     private com.alee.laf.button.WebButton closeButton1;
     private com.alee.laf.button.WebButton iconifyButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel mainPanel;
     private com.alee.laf.button.WebButton maximizeButton;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
     private com.alee.laf.button.WebButton webButton1;
