@@ -208,7 +208,7 @@ public final class TelaPrincipal extends JFrame
     {
         abrirArquivosCodigoFonte(arquivosIniciais);
 
-        exibirErrosPluginsBibliotecas();
+//        exibirErrosPluginsBibliotecas();
         exibirLogAtualizacoes();
 
         //baixarNovasAtualizacoes();
