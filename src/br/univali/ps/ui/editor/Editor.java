@@ -123,6 +123,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private int ultimaColunaHighlight = 0;
     private AbaCodigoFonte abaCodigoFonte;
 
+    private final List<EditorListener> listeners = new ArrayList<>();
+    
     private List<Integer> linhasCodigoDobradas = new ArrayList<>();
 
     private Object tag = null;
@@ -179,37 +181,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void configuraAparenciaParaEditorPadrao()
     {
         errorStrip.setBackground(ColorController.COR_PRINCIPAL);
-        
-        
-        /***
-            Usando um Layout customizado para "empurrar" a barra de rolagem vertical 
-            e o errorStrip mais para baixo e deixar um pequeno retângulo livre no canto
-            superior direito para mostrar a "engrenagem" de configuração do editor .
-            
-            O mesmo gerenciador de layout customizado já é utilizado para aplicar margens
-            nas laterais do editor de código e evitar que o texto do código fonte fique
-            totalmente colado nas bordas do scrollPane.
-        */
-        scrollPane.setLayout(new ScrollPaneLayout()
-        {
 
-            @Override
-            public void layoutContainer(Container parent)
-            {
-                super.layoutContainer(parent);
-                
-                //aplica as margens na viewport do editor
-                Rectangle viewPortBounds = viewport.getBounds();
-                viewPortBounds.translate(MARGEM_LATERAL, 0);
-                viewPortBounds.setSize(viewPortBounds.width - MARGEM_LATERAL, viewPortBounds.height);
-                this.viewport.setBounds(viewPortBounds);
-                
-                deslocaComponenteVerticalmente(vsb, DESLOCAMENTO_VERTICAL_DOS_COMPONENTES);
-            }
-            
-        });
-        
-        //a abordagem utilizada acima não funcionou para o BorderLayout, por isso foi criada uma classe adaptadora
         this.setLayout(new BorderLayoutAdapter(getLayout()));
     }
     
@@ -813,8 +785,31 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 }
             }
         });
+        
+        scrollPane.getVerticalScrollBar().addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                notificaListeners(false);
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e)
+            {
+                notificaListeners(true);
+            }
+        });
     }
 
+    private void notificaListeners(boolean rolagemVerticalVisivel)
+    {
+        for (EditorListener listener : listeners)
+        {
+            listener.visibilidadeDaBarraDeRolagemVerticalMudou(rolagemVerticalVisivel);
+        }
+    }
+    
     public void removerHighlightsDepuracao()
     {
         textArea.removeAllLineHighlights();
@@ -1735,6 +1730,19 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         });
 
     }
+    
+    public void addListener(EditorListener listener)
+    {
+        if (!listeners.contains(listener))
+        {
+            listeners.add(listener);
+        }
+    }
+    
+    public void removeListener(EditorListener listener)
+    {
+        listeners.remove(listener);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1749,6 +1757,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
         scrollPane.setOpaque(false);
 
         textArea.setBorder(null);
