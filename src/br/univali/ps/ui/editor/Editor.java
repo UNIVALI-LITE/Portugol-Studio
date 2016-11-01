@@ -181,26 +181,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void configuraAparenciaParaEditorPadrao()
     {
         errorStrip.setBackground(ColorController.COR_PRINCIPAL);
-        
-        scrollPane.setLayout(new ScrollPaneLayout()
-        {
 
-            @Override
-            public void layoutContainer(Container parent)
-            {
-                super.layoutContainer(parent);
-                
-                //aplica a margem na viewport do editor
-                Rectangle viewPortBounds = viewport.getBounds();
-                viewPortBounds.translate(MARGEM_LATERAL, 0);
-                viewPortBounds.setSize(viewPortBounds.width - MARGEM_LATERAL, viewPortBounds.height);
-                this.viewport.setBounds(viewPortBounds);
-                
-                deslocaComponenteVerticalmente(vsb, DESLOCAMENTO_VERTICAL_DOS_COMPONENTES);
-            }
-            
-        });
-        
         this.setLayout(new BorderLayoutAdapter(getLayout()));
     }
     
@@ -1776,6 +1757,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
         scrollPane.setOpaque(false);
 
         textArea.setBorder(null);

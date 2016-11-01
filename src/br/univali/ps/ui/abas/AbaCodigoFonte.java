@@ -153,6 +153,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.setForeground(ColorController.COR_LETRA);
         inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
+        treePanel.setBackground(new Color(35,47,53));
+        
         if (WeblafUtils.weblafEstaInstalado())
         {
 
@@ -474,7 +476,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     private void adicionaBotaoConfiguracaoInspetor(int margemDireita)
     {
-        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, 
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 1, 1, 1, 0, 0, 
                 GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, 
                     new Insets(0, 0, 0, margemDireita), 0, 0);
         
@@ -1318,12 +1320,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorEditorConsole.setTopComponent(painelEditor);
 
-        painelConsole.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 4, 16));
         painelConsole.setDoubleBuffered(false);
         painelConsole.setOpaque(false);
         painelConsole.setLayout(new java.awt.GridBagLayout());
 
-        painelSaida.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 2, 0));
+        painelSaida.setBorder(null);
         painelSaida.setMinimumSize(new java.awt.Dimension(150, 200));
         painelSaida.setPreferredSize(new java.awt.Dimension(200, 200));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1352,15 +1353,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreInspetor.setOneTouchExpandable(true);
         divisorArvoreInspetor.setOpaque(false);
 
-        treePanel.setOpaque(false);
         treePanel.setLayout(new java.awt.GridBagLayout());
 
         campoBusca.setMaximumSize(null);
         campoBusca.setPlaceholder("Localizar (Ctrl+L)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         treePanel.add(campoBusca, gridBagConstraints);
@@ -1377,7 +1377,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -1387,7 +1387,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         scrollInspetor.setBorder(null);
         scrollInspetor.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollInspetor.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         scrollInspetor.setMinimumSize(new java.awt.Dimension(31, 150));
         scrollInspetor.setOpaque(false);
         scrollInspetor.setPreferredSize(new java.awt.Dimension(266, 200));
