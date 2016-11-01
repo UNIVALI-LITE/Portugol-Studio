@@ -204,10 +204,13 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         barra.adicionaAcao(acaoLimpar);
         barra.adicionaAcao(acaoCopiar);
         FabricaDicasInterface.criarTooltip(barra.getCompomemtParaAdicionarDica(), "Personalizar a console");
-        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(5, 0, 0, 10), 0, 0);
+        GridBagConstraints constrainsts = new GridBagConstraints(0, 0, 1, 1, 0, 0, 
+                GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, 
+                    new Insets(0, 0, 0, 0), 0, 0);
 
         this.add(barra, constrainsts);
-        //this.setComponentZOrder(barra, 0);
+        this.setComponentZOrder(barra, 0);
+        
         if (WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configurarBotao(barra,ColorController.COR_DESTAQUE,ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
