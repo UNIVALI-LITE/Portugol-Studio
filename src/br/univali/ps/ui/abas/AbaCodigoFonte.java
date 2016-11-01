@@ -142,6 +142,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarCores();
     }
 
+    public void reseta()
+    {
+        painelSaida.selecionaConsole();
+    }
+    
     @Override
     public void configurarCores()
     {
@@ -549,6 +554,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             return new AbaCodigoFonte();
         }
         AbaCodigoFonte aba = (AbaCodigoFonte) poolAbasCodigoFonte.obter();
+        aba.reseta();
         return aba;
     }
 

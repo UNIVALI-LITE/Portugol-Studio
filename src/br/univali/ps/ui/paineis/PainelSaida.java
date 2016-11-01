@@ -1,6 +1,5 @@
 package br.univali.ps.ui.paineis;
 
-import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.abas.AbaConsole;
 import br.univali.ps.ui.abas.AbaMensagemCompilador;
@@ -36,9 +35,14 @@ public final class PainelSaida extends PainelTabulado {
           ((WebTabbedPaneUI)getUI()).setShadeWidth(0);
         }
         
-        setSelectedIndex(0);//deixa a console aparecendo quando abre uma nova aba
+        selecionaConsole(); //deixa a console aparecendo quando abre uma nova aba
         
         this.setUI(new PSOutTabbedPaneUI());
+    }
+    
+    public void selecionaConsole()
+    {
+        setSelectedIndex(0);        
     }
 
     @Override
