@@ -1,7 +1,6 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.AtivadorDePontosDeParada;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 
 /**
@@ -20,7 +19,7 @@ import java.util.logging.Logger;
  */
 public final class BuscadorDeLinhasParaveis extends VisitanteNulo {
 
-    private static final Logger LOGGER = Logger.getLogger(AtivadorDePontosDeParada.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BuscadorDeLinhasParaveis.class.getName());
 
     private final Set<Integer> linhasParaveis = new HashSet<>();
 
