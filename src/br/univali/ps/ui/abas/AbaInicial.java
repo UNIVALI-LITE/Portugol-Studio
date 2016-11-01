@@ -79,7 +79,7 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloRelatarBug.setForeground(ColorController.COR_LETRA);
         rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
         rotuloSairProgramando.setForeground(ColorController.COR_LETRA);
-        rotuloSlogan.setForeground(new Color(250, 250, 250));
+//        rotuloSlogan.setForeground(new Color(250, 250, 250));
         rotuloUpdate.setBackground(ColorController.FUNDO_MEDIO);
         rotuloUpdate.setForeground(ColorController.COR_LETRA);
     }
@@ -472,7 +472,6 @@ public final class AbaInicial extends Aba implements Themeable
         java.awt.GridBagConstraints gridBagConstraints;
 
         logoPS = new br.univali.ps.ui.imagens.Logo();
-        rotuloSlogan = new javax.swing.JLabel();
         painelCentral = new javax.swing.JPanel();
         botoesGrandes = new javax.swing.JPanel();
         rotuloSairProgramando = new javax.swing.JLabel();
@@ -491,26 +490,17 @@ public final class AbaInicial extends Aba implements Themeable
         setOpaque(false);
         setLayout(new java.awt.GridBagLayout());
 
+        logoPS.setMaximumSize(new java.awt.Dimension(310, 200));
         logoPS.setMinimumSize(new java.awt.Dimension(310, 100));
         logoPS.setOpaque(false);
-        logoPS.setPreferredSize(new java.awt.Dimension(0, 100));
+        logoPS.setPreferredSize(new java.awt.Dimension(0, 180));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
         add(logoPS, gridBagConstraints);
-
-        rotuloSlogan.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloSlogan.setForeground(new java.awt.Color(232, 232, 232));
-        rotuloSlogan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloSlogan.setText("Ambiente para Aprender a Programar");
-        rotuloSlogan.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
-        rotuloSlogan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        add(rotuloSlogan, gridBagConstraints);
 
         painelCentral.setLayout(new java.awt.GridBagLayout());
 
@@ -679,7 +669,6 @@ public final class AbaInicial extends Aba implements Themeable
     private javax.swing.JLabel rotuloInformacoesSoftware;
     private javax.swing.JLabel rotuloRelatarBug;
     private javax.swing.JLabel rotuloSairProgramando;
-    private javax.swing.JLabel rotuloSlogan;
     private javax.swing.JLabel rotuloUpdate;
     // End of variables declaration//GEN-END:variables
 }

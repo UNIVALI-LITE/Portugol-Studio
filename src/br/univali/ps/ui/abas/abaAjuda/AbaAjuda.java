@@ -109,9 +109,12 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelAjuda.setBackground(ColorController.COR_DESTAQUE);
         scrollConteudo.setBackground(ColorController.COR_DESTAQUE);
         painelArvore.setBackground(ColorController.FUNDO_CLARO);
+        
         painelCarregamento.setBackground(ColorController.COR_DESTAQUE);
         rotuloCarregamento.setForeground(ColorController.COR_LETRA);
         rotuloErroCarregamento.setForeground(ColorController.COR_LETRA);
+        jLabel2.setForeground(ColorController.COR_LETRA);
+        painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         iconeCarregamento.setForeground(ColorController.COR_LETRA);
     }
 
