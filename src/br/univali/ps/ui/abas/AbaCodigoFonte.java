@@ -34,6 +34,7 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.plugins.base.ErroInstalacaoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.editor.Editor;
+import br.univali.ps.ui.editor.EditorListener;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
@@ -101,8 +102,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean podeSalvar = true;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
-    //private boolean editorExpandido = false;
-    //private boolean painelSaidaFixado = false;
 
     private JPanel painelTemporario;
 
@@ -471,7 +470,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        barraDeBotoesEditor.adicionaSeparador();
 //        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
-        GridBagConstraints constraints = new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+        adicionaBotaoConfiguracaoEditor(0);
+    }
+    
+    private void adicionaBotaoConfiguracaoEditor(int margemDireita)
+    {
+        GridBagConstraints constraints = new GridBagConstraints(1, 0, 1, 1, 0, 0, 
+                    GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, 
+                            new Insets(0, 0, 0, margemDireita), 0, 0);
+        
         painelEditor.add(barraDeBotoesEditor, constraints);
         painelEditor.setComponentZOrder(barraDeBotoesEditor, 0);
     }
@@ -859,7 +866,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
 
-        getEditor().getTextArea().addListenter((Set<Integer> pontosDeParada)
+        editor.getTextArea().addListenter((Set<Integer> pontosDeParada)
                 -> 
                 {
                     if (programa != null)
@@ -868,6 +875,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     }
 
                     salvaArquivo();
+        });
+        
+        editor.addListener(new EditorListener()
+        {
+            @Override
+            public void visibilidadeDaBarraDeRolagemVerticalMudou(boolean rolagemVisivel)
+            {
+                //reposiciona o botão de configuração do editor sempre que a visibilidade da barra de rolagem vertical do editor muda
+                int margemDireita = rolagemVisivel ? 32 : 0;
+                adicionaBotaoConfiguracaoEditor(margemDireita);
+            }
         });
 
         inspetorDeSimbolos.addListener(()
