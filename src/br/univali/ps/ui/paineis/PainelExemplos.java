@@ -77,9 +77,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         description.setForeground(ColorController.COR_LETRA);
         scrollArvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         scrollArvoreExemplos.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
+        labelTitulo.setForeground(ColorController.COR_LETRA);
+        labelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
-            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
     }
 
@@ -247,8 +249,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -327,6 +328,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
         labelTitulo.setText("Exemplos");
         labelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        labelTitulo.setOpaque(true);
         painelEsquerda.add(labelTitulo, java.awt.BorderLayout.NORTH);
 
         scrollArvoreExemplos.setBorder(null);

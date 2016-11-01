@@ -23,7 +23,6 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
@@ -78,7 +77,11 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     @Override
     public void configurarCores(){
         painelHtml.setBackground(ColorController.COR_DESTAQUE);
+        setBackground(ColorController.COR_DESTAQUE);
         divisor.setBackground(ColorController.COR_DESTAQUE);
+        jLabel2.setForeground(ColorController.COR_LETRA);
+        painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
+        painelArvore.setBackground(ColorController.FUNDO_CLARO);
         //painelArvore.setBackground(ColorController.FUNDO_CLARO);
         
     }
@@ -237,18 +240,16 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     private void initComponents()
     {
 
-        jPanel1 = new javax.swing.JPanel();
         divisor = new javax.swing.JSplitPane();
         painelRolagemConteudo = new javax.swing.JScrollPane();
         painelHtml = new javax.swing.JTextPane();
         painelArvore = new javax.swing.JPanel();
         painelRolagemArvore = new javax.swing.JScrollPane();
         arvoreBibliotecas = new javax.swing.JTree();
+        painelTitulo = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
-        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
 
         divisor.setBackground(new java.awt.Color(250, 250, 250));
         divisor.setBorder(null);
@@ -269,6 +270,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 
         divisor.setRightComponent(painelRolagemConteudo);
 
+        painelArvore.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelArvore.setLayout(new java.awt.BorderLayout());
 
         painelRolagemArvore.setBackground(new java.awt.Color(250, 250, 250));
@@ -285,18 +287,31 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         arvoreBibliotecas.setPreferredSize(new java.awt.Dimension(200, 64));
         painelRolagemArvore.setViewportView(arvoreBibliotecas);
 
-        divisor.setLeftComponent(painelRolagemArvore);
+        painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
+
+        painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelTitulo.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/help.png"))); // NOI18N
+        jLabel2.setText("Ajuda");
+        painelTitulo.add(jLabel2, java.awt.BorderLayout.CENTER);
+
+        painelArvore.add(painelTitulo, java.awt.BorderLayout.NORTH);
+
+        divisor.setLeftComponent(painelArvore);
 
         add(divisor, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arvoreBibliotecas;
     private javax.swing.JSplitPane divisor;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel painelArvore;
     private javax.swing.JTextPane painelHtml;
     private javax.swing.JScrollPane painelRolagemArvore;
     private javax.swing.JScrollPane painelRolagemConteudo;
+    private javax.swing.JPanel painelTitulo;
     // End of variables declaration//GEN-END:variables
 
     private String montarAssinaturaFuncao(MetaDadosFuncao metaDadosFuncao)
