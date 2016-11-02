@@ -1283,6 +1283,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         setExecutandoPrograma(false);
     }
 
+    @Override
+    public void execucaoPausada() {
+        //setEnabled(false);
+    }
+
+    @Override
+    public void execucaoResumida() {
+        //setEnabled(true);
+    }
+
     private void destacarErroExecucao(int linha, int coluna)
     {
         try

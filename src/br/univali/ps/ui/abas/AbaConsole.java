@@ -20,6 +20,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -32,6 +35,8 @@ import javax.swing.text.PlainDocument;
 public final class AbaConsole extends Aba implements PropertyChangeListener
 {
 
+    private static final Logger LOGGER = Logger.getLogger(AbaConsole.class.getName());
+    
     private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
@@ -380,63 +385,70 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
     {
 
         @Override
-        public void limpar() throws Exception
+        public void limpar() throws InterruptedException  
         {
             escreveConsole(null);
         }
 
         @Override
-        public void escrever(String valor) throws Exception
+        public void escrever(String valor) throws InterruptedException
         {
             escreveConsole(valor);
         }
 
         @Override
-        public void escrever(boolean valor) throws Exception
+        public void escrever(boolean valor) throws InterruptedException
         {
             escreveConsole((valor) ? "verdadeiro" : "falso");
         }
 
         @Override
-        public void escrever(int valor) throws Exception
+        public void escrever(int valor) throws InterruptedException
         {
             escreveConsole(String.valueOf(valor));
         }
 
         @Override
-        public void escrever(double valor) throws Exception
+        public void escrever(double valor) throws InterruptedException
         {
             escreveConsole(String.valueOf(valor));
         }
 
         @Override
-        public void escrever(char valor) throws Exception
+        public void escrever(char valor) throws InterruptedException
         {
             escreveConsole(String.valueOf(valor));
         }
 
-        private void escreveConsole(final String texto) throws Exception
+        private void escreveConsole(final String texto) throws InterruptedException
         {
-            SwingUtilities.invokeAndWait(new Runnable()
+            try
             {
-                @Override
-                public void run()
+                SwingUtilities.invokeAndWait(new Runnable()
                 {
-                    AbaConsole.this.selecionar();
-
-                    console.requestFocusInWindow();
-                    abaCodigoFonte.exibirPainelSaida();
-
-                    if (texto != null)
+                    @Override
+                    public void run()
                     {
-                        console.append(texto);
+                        AbaConsole.this.selecionar();
+                        
+                        console.requestFocusInWindow();
+                        abaCodigoFonte.exibirPainelSaida();
+                        
+                        if (texto != null)
+                        {
+                            console.append(texto);
+                        }
+                        else
+                        {
+                            console.setText(null);
+                        }
                     }
-                    else
-                    {
-                        console.setText(null);
-                    }
-                }
-            });
+                });
+            }
+            catch(InvocationTargetException ex)
+            {
+                LOGGER.log(Level.WARNING, null, ex);
+            }
         }
     }
 
@@ -541,7 +553,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         private TipoDado tipoDado;
 
         @Override
-        public void solicitaEntrada(final TipoDado tipoDado, final Armazenador armazenador) throws Exception
+        public void solicitaEntrada(final TipoDado tipoDado, final Armazenador armazenador) throws InterruptedException
         {
             SwingUtilities.invokeLater(() ->
             {

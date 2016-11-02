@@ -481,6 +481,16 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     }
 
     @Override
+    public void execucaoPausada() {
+
+    }
+
+    @Override
+    public void execucaoResumida() {
+        
+    }
+    
+    @Override
     public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

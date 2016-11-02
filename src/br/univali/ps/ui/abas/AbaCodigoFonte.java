@@ -2090,9 +2090,31 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                         ocultarPainelSaida();
                         acaoInterromper.setEnabled(false);
+                        setaAtivacaoBotoesExecucao(true);
                         painelSaida.getConsole().setExecutandoPrograma(false);
             });
         }
+
+        @Override
+        public void execucaoPausada() {
+            SwingUtilities.invokeLater(() -> {
+                setaAtivacaoBotoesExecucao(false);
+            });
+        }
+
+        @Override
+        public void execucaoResumida() {
+            SwingUtilities.invokeLater(() -> {
+                setaAtivacaoBotoesExecucao(true);
+            });
+        }
+        
+        private void setaAtivacaoBotoesExecucao(boolean ativados)
+        {
+            acaoExecutarPasso.setEnabled(ativados);
+            acaoExecutarPontoParada.setEnabled(ativados);
+        }
+
     }
 
 //    private static class PoolAbasCodigoFonte extends PoolAbstrato
