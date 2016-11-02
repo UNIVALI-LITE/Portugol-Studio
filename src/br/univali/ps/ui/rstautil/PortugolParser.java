@@ -89,14 +89,18 @@ public final class PortugolParser extends AbstractParser
 
             try
             {
-                Programa programa = Portugol.compilarParaAnalise(documento.getText(0, documento.getLength()));
-
-                if (programa.getResultadoAnalise().contemAvisos())
+                String codigo = documento.getText(0, documento.getLength());
+                if (!codigo.isEmpty())
                 {
-                    notificarErrosAvisos(programa.getResultadoAnalise(), documento, resultado);
+                    Programa programa = Portugol.compilarParaAnalise(codigo);
+                    
+                    if (programa.getResultadoAnalise().contemAvisos())
+                    {
+                        notificarErrosAvisos(programa.getResultadoAnalise(), documento, resultado);
+                    }
+                    
+                    support.firePropertyChange(PROPRIEDADE_PROGRAMA_COMPILADO, null, programa);
                 }
-
-                support.firePropertyChange(PROPRIEDADE_PROGRAMA_COMPILADO, null, programa);
             }
             catch (ErroCompilacao erroCompilacao)
             {
