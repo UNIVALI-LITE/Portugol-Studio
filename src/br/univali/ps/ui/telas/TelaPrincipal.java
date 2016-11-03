@@ -43,6 +43,7 @@ public class TelaPrincipal extends javax.swing.JPanel
 {
     private boolean abrindo = true;
     private List<File> arquivosIniciais;
+    
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
     /**
     /**
@@ -62,6 +63,7 @@ public class TelaPrincipal extends javax.swing.JPanel
     
     private void configurarCores(){
 //        mainPanel.setBackground(ColorController.COR_DESTAQUE);
+        setBackground(ColorController.FUNDO_CLARO);
         painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
     }
     

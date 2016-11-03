@@ -67,7 +67,7 @@ public class BorderPanel extends JPanel {
             
             buttonsPanel = new JPanel();
             textPanel = new JLabel();
-            textPanel.setText("Graph Automatools");
+            textPanel.setText("Portugol Studio");
             textPanel.setForeground(ColorController.COR_LETRA);
             textPanel.setHorizontalAlignment(JLabel.CENTER);
             

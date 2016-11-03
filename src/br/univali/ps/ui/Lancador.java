@@ -2,18 +2,13 @@ package br.univali.ps.ui;
 
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.telas.TelaPrincipal;
-import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.window.ComponentResizer;
-import br.univali.ps.ui.window.OutsidePanel;
 import com.alee.laf.WebLookAndFeel;
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -23,7 +18,34 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicFileChooserUI;
-
+import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.atualizador.GerenciadorAtualizacoes;
+import br.univali.ps.atualizador.ObservadorAtualizacao;
+import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.ui.abas.AbaInicial;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
+import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import javax.swing.*;
+import org.apache.commons.io.FileUtils;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -41,6 +63,7 @@ public class Lancador {
     private static boolean maximazed=false;
     private TelaPrincipal mainWindow;
     private final static Lancador application = new Lancador();
+    
     private static final Logger LOGGER = Logger.getLogger(Lancador.class.getName());
 
     
