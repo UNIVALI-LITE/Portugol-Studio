@@ -155,6 +155,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private boolean centralizar = false;
     private boolean executandoPrograma = false;
 
+    public Editor()
+    {
+        this(false);
+    }
+    
     public Editor(boolean editorParaExemplo)
     {
         initComponents();
