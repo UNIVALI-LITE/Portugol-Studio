@@ -9,7 +9,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -103,11 +105,13 @@ public class BorderPanel extends JPanel {
                         Dimension d = Lancador.getOlder_size();
                         Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                         Lancador.getJFrame().setSize(d);
+                        Lancador.getJFrame().setLocationRelativeTo(null);
                         Lancador.setMaximazed(false);
                     }else{
                         Dimension d = Lancador.getJFrame().getSize();
                         Lancador.setOlder_size(d);
-                        Lancador.getJFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+                        Lancador.getJFrame().setBounds(bounds);
                         Lancador.setMaximazed(true);
                     }
                 }
