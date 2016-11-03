@@ -1,5 +1,6 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.ui.Lancador;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -140,7 +141,7 @@ class MutexImpl implements Mutex
                 {
                     if (linha.equals("focarJanela"))
                     {
-                        PortugolStudio.getInstancia().getTelaPrincipal().focarJanela();
+                        Lancador.getInstance().focarJanela();
                     }
                     else if (linha.trim().length() > 0)
                     {

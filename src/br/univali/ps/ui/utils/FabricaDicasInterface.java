@@ -1,13 +1,11 @@
 package br.univali.ps.ui.utils;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.Lancador;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.window.WebPopOver;
-import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.notification.NotificationManager;
-import com.alee.managers.notification.WebNotificationPopup;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import java.awt.Point;
@@ -103,13 +101,13 @@ public final class FabricaDicasInterface
     public static void mostrarNotificacao(final String texto,final int displayTime,final Icon icon)
     {
         SwingUtilities.invokeLater(() -> {
-            if(PortugolStudio.getInstancia().getTelaPrincipal().isActive())
+            if(Lancador.getJFrame().isActive())
             {
-                WebNotificationPopup notificacao = new WebNotificationPopup();
-                notificacao.setContent(texto);
-                notificacao.setDisplayTime(displayTime);
-                notificacao.setIcon(icon);
-                NotificationManager.showNotification(notificacao);
+//                
+//                notificacao.setContent(texto);
+//                notificacao.setDisplayTime(displayTime);
+//                notificacao.setIcon(icon);
+                NotificationManager.showNotification(texto, icon);
             }else{
                 Timer timer = new Timer(5000, new AbstractAction() {
                     @Override

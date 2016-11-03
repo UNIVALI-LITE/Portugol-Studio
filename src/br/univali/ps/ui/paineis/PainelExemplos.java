@@ -14,7 +14,6 @@ import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

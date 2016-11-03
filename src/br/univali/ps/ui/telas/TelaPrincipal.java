@@ -1,124 +1,71 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.univali.ps.ui.telas;
 
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.atualizador.ObservadorAtualizacao;
 import br.univali.ps.dominio.PortugolDocumento;
-import br.univali.ps.ui.abas.AbaInicial;
-import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.abas.AbaInicial;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
-import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
-import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.utils.FileHandle;
-import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import java.awt.event.*;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import org.apache.commons.io.FileUtils;
 
-public final class TelaPrincipal extends JFrame
+/**
+ *
+ * @author lite
+ */
+public class TelaPrincipal extends javax.swing.JPanel
 {
-
-    private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
-
     private boolean abrindo = true;
     private List<File> arquivosIniciais;
-
-    public static void main(final String argumentos[])
-    {
-        inicializarMecanismoLog(); //o log é a primeira coisa a ser iniciada, assim você consegue logar os detalhes de inicialização
-        
-        LOGGER.log(Level.INFO, "Iniciando main...");
-        
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
-
-        try
-        {
-            SwingUtilities.invokeAndWait(() ->
-            {
-                Thread.currentThread().setName("Portugol-Studio (Swing)");
-            });
-
-        }
-        catch (InterruptedException | InvocationTargetException ex)
-        {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        LOGGER.log(Level.INFO, "Iniciando PS com {0} argumentos", argumentos.length);
-        PortugolStudio.getInstancia().iniciar(argumentos);
-    }
-
-    private static void inicializarMecanismoLog()
-    {
-        final InputStream inputStream = TelaPrincipal.class.getResourceAsStream("/logging.properties");
-
-        try
-        {
-            LogManager.getLogManager().readConfiguration(inputStream);
-        }
-        catch (final IOException excecao)
-        {
-            Logger.getAnonymousLogger().severe("Não foi possível localizar o arquivo de configuração de log 'logging.properties'");
-            Logger.getAnonymousLogger().log(Level.SEVERE, excecao.getMessage(), excecao);
-        }
-    }
-
-    
+    private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
+    /**
+    /**
+     * Creates new form TelaInicial
+     */
     public TelaPrincipal()
     {
         initComponents();
-        configurarJanela();
         criaAbas();
-        instalarObservadores();
         configurarCores();
-        configurarBotoes();
+        instalarObservadores();
     }
-    
-    private void configurarBotoes(){
-        if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(closeButton1,ColorController.FUNDO_CLARO,ColorController.COR_PRINCIPAL, ColorController.PROGRESS_BAR, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(iconifyButton,ColorController.FUNDO_CLARO,ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
-        }
-    }
-    
-    private void configurarCores(){
-//        mainPanel.setBackground(ColorController.COR_DESTAQUE);
-        getContentPane().setBackground(ColorController.FUNDO_CLARO);
-        painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
-    }
-
-    public void setArquivosIniciais(List<File> arquivos)
-    {
-        this.arquivosIniciais = arquivos;
-    }
-
     private void criaAbas()
     {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
     }
-
-    private void configurarJanela()
-    {
-        setLocationRelativeTo(null);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setIconImage(IconFactory.getDefaultWindowIcon());
+    
+    private void configurarCores(){
+//        mainPanel.setBackground(ColorController.COR_DESTAQUE);
+        painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
     }
-
+    
+    
     private void instalarObservadores()
     {
         instalarObservadorJanela();
@@ -276,7 +223,7 @@ public final class TelaPrincipal extends JFrame
     {
         if (arquivos != null && !arquivos.isEmpty())
         {
-            focarJanela();
+            Lancador.getInstance().focarJanela();
 
             SwingUtilities.invokeLater(() ->
             {
@@ -311,34 +258,12 @@ public final class TelaPrincipal extends JFrame
             });
         }
     }
-
-    public void focarJanela()
+    public void setArquivosIniciais(List<File> arquivos)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if (janelaMinimizada())
-                {
-                    restaurarJanela();
-                }
-
-                TelaPrincipal.this.toFront();
-                TelaPrincipal.this.requestFocusInWindow();
-            }
-        });
+        this.arquivosIniciais = arquivos;
     }
-
-    private boolean janelaMinimizada()
-    {
-        return (getExtendedState() & JFrame.ICONIFIED) == JFrame.ICONIFIED;
-    }
-
-    private void restaurarJanela()
-    {
-        setExtendedState(getExtendedState() & (~JFrame.ICONIFIED));
-    }
+    
+    
 
     private boolean arquivoJaEstaAberto(File arquivo)
     {
@@ -390,97 +315,27 @@ public final class TelaPrincipal extends JFrame
     {
         return painelTabuladoPrincipal;
     }
-
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+    private void initComponents()
+    {
 
-        webButton1 = new com.alee.laf.button.WebButton();
-        maximizeButton = new com.alee.laf.button.WebButton();
-        jPanel1 = new javax.swing.JPanel();
-        iconifyButton = new com.alee.laf.button.WebButton();
-        closeButton1 = new com.alee.laf.button.WebButton();
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
-        webButton1.setText("webButton1");
-
-        maximizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_min.png"))); // NOI18N
-        maximizeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maximizeButtonActionPerformed(evt);
-            }
-        });
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Portugol Studio");
-        setBackground(new java.awt.Color(0, 0, 0));
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new java.awt.Dimension(700, 520));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 0));
-        jPanel1.setMaximumSize(new java.awt.Dimension(200, 60));
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
-
-        iconifyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_min.png"))); // NOI18N
-        iconifyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                iconifyButtonActionPerformed(evt);
-            }
-        });
-        jPanel1.add(iconifyButton);
-
-        closeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_close.png"))); // NOI18N
-        closeButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(closeButton1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        getContentPane().add(jPanel1, gridBagConstraints);
+        setLayout(new java.awt.BorderLayout());
 
         painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(painelTabuladoPrincipal, gridBagConstraints);
-
-        pack();
+        add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void iconifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iconifyButtonActionPerformed
-        PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_iconifyButtonActionPerformed
-
-    private void closeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButton1ActionPerformed
-        fecharAplicativo();
-    }//GEN-LAST:event_closeButton1ActionPerformed
-
-    private void maximizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maximizeButtonActionPerformed
-        int state = PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState();
-        if(state==JFrame.MAXIMIZED_BOTH){
-            PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.NORMAL);
-        }else{
-            PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.MAXIMIZED_BOTH);
-        }
-    }//GEN-LAST:event_maximizeButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.alee.laf.button.WebButton closeButton1;
-    private com.alee.laf.button.WebButton iconifyButton;
-    private javax.swing.JPanel jPanel1;
-    private com.alee.laf.button.WebButton maximizeButton;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
-    private com.alee.laf.button.WebButton webButton1;
     // End of variables declaration//GEN-END:variables
 }
