@@ -142,19 +142,23 @@ public class Lancador {
         PortugolStudio.getInstancia().iniciar(argumentos);
         
         
-        try {
-            final WebLookAndFeel webLookAndFeel = new WebLookAndFeel();
-            //Field defaultsTable = WebLookAndFeel.class.getField("table");
-            //webLookAndFeel.getDefaults().remove("FileChooserUI");
-            webLookAndFeel.getDefaults().put("FileChooserUI", BasicFileChooserUI.class);
+       
+            SwingUtilities.invokeLater(() ->
+            {
+                try
+                {
+                    final WebLookAndFeel webLookAndFeel = new WebLookAndFeel();
+                    //Field defaultsTable = WebLookAndFeel.class.getField("table");
+                    //webLookAndFeel.getDefaults().remove("FileChooserUI");
+                    webLookAndFeel.getDefaults().put("FileChooserUI", BasicFileChooserUI.class);
+                    javax.swing.UIManager.setLookAndFeel(webLookAndFeel);
+                }
+                catch (UnsupportedLookAndFeelException ex)
+                {
+                    Logger.getLogger(Lancador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             
-                    
-            javax.swing.UIManager.setLookAndFeel(webLookAndFeel);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }  catch (SecurityException ex) {
-            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
