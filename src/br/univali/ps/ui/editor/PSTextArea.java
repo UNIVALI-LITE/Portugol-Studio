@@ -1,10 +1,6 @@
 package br.univali.ps.ui.editor;
 
 import br.univali.ps.ui.ColorController;
-import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.weblaf.WeblafUtils;
-import com.alee.laf.WebLookAndFeel;
-import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,12 +14,9 @@ import javax.swing.GrayFilter;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
-import javax.swing.text.StyleConstants;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
@@ -31,7 +24,6 @@ import org.fife.ui.rtextarea.IconRowHeader;
 import org.fife.ui.rtextarea.LineNumberList;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
  * @author elieser
@@ -86,6 +78,12 @@ public class PSTextArea extends RSyntaxTextArea {
 //
 //        });
 //        setDragEnabled(true);
+    }
+
+    @Override
+    public void setText(String t) {
+        System.out.println("setando texto (" + t.length() + " chars) no PSTextArea ");
+        super.setText(t);
     }
 
     public void addListenter(PSTextAreaListener l) {

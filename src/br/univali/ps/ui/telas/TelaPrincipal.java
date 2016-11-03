@@ -245,6 +245,7 @@ public final class TelaPrincipal extends JFrame
     {
         final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
         painelTabuladoPrincipal.add(abaCodigoFonte);
+        abaCodigoFonte.carregarAlgoritmoPadrao();
         revalidate();
     }
 

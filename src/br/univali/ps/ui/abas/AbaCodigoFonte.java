@@ -133,7 +133,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configuraBarraDeBotoesDoPainelArvoreInspetor();
         instalarObservadores();
         configurarCursorBotoes();
-        carregarAlgoritmoPadrao();
+        //carregarAlgoritmoPadrao();
         criarDicasInterface();
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
@@ -1793,7 +1793,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-    private void carregarAlgoritmoPadrao()
+    public void carregarAlgoritmoPadrao()
     {
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
         carregarInformacoesFiltroArvore(TEMPLATE_ALGORITMO);
@@ -2010,7 +2010,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void redefinirAba()
     {
         editor.getPortugolDocumento().setFile(null);
-        carregarAlgoritmoPadrao();
+        //carregarAlgoritmoPadrao();
         editor.getTextArea().discardAllEdits();
         painelSaida.getConsole().limparConsole();
         editor.desabilitarCentralizacaoCodigoFonte();
