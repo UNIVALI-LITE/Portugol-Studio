@@ -32,14 +32,12 @@ public class PSTextArea extends RSyntaxTextArea {
 
     private static final Logger LOGGER = Logger.getLogger(PSTextArea.class.getName());
 
-    private static Icon iconePontoDeParadaAtivado = null;//IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png");
-    //cria o ícone ativado a partir do arquivo de ícone para evitar um erro no NetBeans
-    //quando se abre a aba de projeto da AbaDeCodigoFonte. 
-    private static Icon iconePontoDeParadaDesativado = null;//criaIconeDesativado(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "bug.png"));
+    private static Icon iconePontoDeParadaAtivado = null;
+    private static Icon iconePontoDeParadaDesativado = null;
 
-    private List<IconePontoDeParada> pontosDeParada = new ArrayList<>();
+    private final List<IconePontoDeParada> pontosDeParada = new ArrayList<>();
 
-    private List<PSTextAreaListener> listeners = new ArrayList<>();
+    private final List<PSTextAreaListener> listeners = new ArrayList<>();
 
     public PSTextArea() {
         this(new RSyntaxDocument("cpp"));
@@ -47,37 +45,6 @@ public class PSTextArea extends RSyntaxTextArea {
 
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
-//        setBorder(null);
-//
-//        setTransferHandler(new RTATextTransferHandler() {//usa a própria classe to RSyntax mas modifica a criação da dragImage
-//            @Override
-//            public Image getDragImage() {
-//                String textoSelecionado = getSelectedText();
-//
-//                FontMetrics metrics = getFontMetrics(getFont());
-//                final int MARGEM = 5;
-//                int larguraDotexto = MARGEM + metrics.stringWidth(textoSelecionado) + MARGEM;
-//                int alturaDoTexto = MARGEM + metrics.getHeight() + MARGEM;
-//                BufferedImage image = new BufferedImage(larguraDotexto, alturaDoTexto, BufferedImage.TYPE_INT_ARGB);
-//                Graphics2D g = (Graphics2D) image.getGraphics();
-//                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//                g.setColor(Color.LIGHT_GRAY);
-//                g.fillRect(0, 0, larguraDotexto - 1, alturaDoTexto - 1);
-//                g.setFont(getFont());
-//                g.setColor(Color.DARK_GRAY);
-//                g.drawString(textoSelecionado, MARGEM, alturaDoTexto - metrics.getAscent());
-//                return image;
-//            }
-//
-//            @Override
-//            public Point getDragImageOffset() {
-//                Point p = super.getDragImageOffset();
-//                p.translate(-16, 0);//deixa a imagem ao lado do ícone do cursor do mouse
-//                return p;
-//            }
-//
-//        });
-//        setDragEnabled(true);
     }
 
     @Override

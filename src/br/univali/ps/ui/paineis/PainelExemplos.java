@@ -68,8 +68,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     public PainelExemplos() {
         initComponents();
         configurarCores();
-        editor = new Editor();
-        editor.setExampleEditor();
+        editor = new Editor(true);
         codePanel.add(editor);
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/exemplos.png");
         imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");

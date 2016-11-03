@@ -1163,7 +1163,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper = new com.alee.laf.button.WebButton();
         btnSalvar = new com.alee.laf.button.WebButton();
         btnSalvarComo = new com.alee.laf.button.WebButton();
-        editor = new br.univali.ps.ui.editor.Editor();
+        editor = new br.univali.ps.ui.editor.Editor(false);
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
         painelInspetorArvore = new javax.swing.JPanel();

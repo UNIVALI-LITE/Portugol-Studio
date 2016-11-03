@@ -18,10 +18,13 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ColorController;
+import br.univali.ps.ui.rstautil.DobramentoCodigoPortugol;
+import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 
-import br.univali.ps.ui.rstautil.SuporteLinguagemPortugol;
+import br.univali.ps.ui.rstautil.SuportePortugolImpl;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
 import com.alee.laf.WebLookAndFeel;
@@ -84,10 +87,12 @@ import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
+import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
@@ -130,7 +135,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Color corErro;
 
     private ErrorStrip errorStrip;
-    private SuporteLinguagemPortugol suporteLinguagemPortugol;
+    private SuportePortugol suporteLinguagemPortugol;
 
     private Action acaoComentar;
     private Action acaoDescomentar;
@@ -142,7 +147,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
     private SearchListener observadorAcaoPesquisaSubstituir;
-    private boolean isExamplable = false;
+    private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
     private JMenu menuTemas;
@@ -150,9 +155,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private boolean centralizar = false;
     private boolean executandoPrograma = false;
 
-    public Editor()
+    public Editor(boolean editorParaExemplo)
     {
         initComponents();
+        this.isExamplable = editorParaExemplo;
+        
         configurarDialogoPesquisarSubstituir();
         configurarParser();
         configurarTextArea();
@@ -162,40 +169,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         carregarConfiguracoes();
         WeblafUtils.configuraWebLaf(scrollPane);
         configurarCores();
-    }
-    private void configurarCores(){
-        errorStrip.setBackground(ColorController.COR_PRINCIPAL);
         
-        scrollPane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
-        scrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, null);
+        
+        if (editorParaExemplo)
+        {
+            configuraComoEdigorParaExemplo();
+        }
     }
     
-    public Set<Integer> getLinhasComPontoDeParadaAtivados()
-    {
-        return getTextArea().getLinhasComPontoDeParadaAtivados();
-    }
-
-//    public void removePontosDeParadaInvalidos(Set<Integer> linhasComPontosDeParadaValidos) {
-//        getTextArea().removePontosDeParadaInvalidos(linhasComPontosDeParadaValidos);
-//    }
-    public SuporteLinguagemPortugol getSuporteLinguagemPortugol()
-    {
-        return suporteLinguagemPortugol;
-    }
-
-    public JMenu getMenuDosTemas()
-    {
-        return menuTemas;
-    }
-
-    private void criarMenuTemas()
-    {
-        GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-        menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
-    }
-    
-    public void setExampleEditor(){
-        isExamplable = true;
+    private void configuraComoEdigorParaExemplo(){
+        //isExamplable = true;
         scrollPane.setIconRowHeaderEnabled(false);
         painelEditor.remove(errorStrip);
         this.setEditavel("false");
@@ -212,6 +195,36 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             scrollPane.getHorizontalScrollBar().getParent().setBackground(getTextArea().getBackground());
         });
     }
+    
+    private void configurarCores(){
+        errorStrip.setBackground(ColorController.COR_PRINCIPAL);
+        
+        scrollPane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
+        scrollPane.setCorner(JScrollPane.LOWER_LEFT_CORNER, null);
+    }
+    
+    public Set<Integer> getLinhasComPontoDeParadaAtivados()
+    {
+        return getTextArea().getLinhasComPontoDeParadaAtivados();
+    }
+
+    public SuportePortugol getSuporteLinguagemPortugol()
+    {
+        return suporteLinguagemPortugol;
+    }
+
+    public JMenu getMenuDosTemas()
+    {
+        return menuTemas;
+    }
+
+    private void criarMenuTemas()
+    {
+        GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
+        menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
+    }
+    
+    
     public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor)
     {
         JMenu menu = new JMenu("Cores");
@@ -275,10 +288,35 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarParser()
     {
-        suporteLinguagemPortugol = new SuporteLinguagemPortugol();
+        suporteLinguagemPortugol = criaSuportePortugol();
         suporteLinguagemPortugol.instalar(textArea);
     }
 
+    private SuportePortugol criaSuportePortugol()
+    {
+        if (isExamplable)
+        {
+            return new SuportePortugolExemplos(); // não usa parser para os exemplos, assim evitamos um monte de compilações desnecessárias no código    
+        }
+        
+        return new SuportePortugolImpl();
+    }
+    
+    private class SuportePortugolExemplos extends SuportePortugolImpl  
+    {
+
+        @Override
+        public void atualizar(RSyntaxTextArea textArea) {
+            //não invoca o parser no editor de exemplos
+        }
+
+        @Override
+        public void instalar(RSyntaxTextArea textArea) {
+            super.instalar(textArea);
+            textArea.removeParser(getPortugolParser()); // o editor usado para exemplos não usa o parser
+        }
+    }
+    
     private void configurarTextArea()
     {
         scrollPane.setFoldIndicatorEnabled(true);
@@ -1641,7 +1679,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     frame.setSize(800, 600);
 
                     JPanel painel = new JPanel(new BorderLayout());
-                    Editor editor = new Editor();
+                    Editor editor = new Editor(false);
                     painel.add(editor);
                     WeblafUtils.configuraWeblaf(painel);
                     frame.getContentPane().add(painel, BorderLayout.CENTER);

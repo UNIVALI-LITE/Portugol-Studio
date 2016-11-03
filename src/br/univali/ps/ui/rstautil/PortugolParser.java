@@ -28,7 +28,7 @@ import org.fife.ui.rsyntaxtextarea.parser.DefaultParserNotice;
 import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
 import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 
-public final class PortugolParser extends AbstractParser
+public class PortugolParser extends AbstractParser
 {
 
     public static final String PROPRIEDADE_PROGRAMA_COMPILADO = "PROGRAMA_COMPILADO";
