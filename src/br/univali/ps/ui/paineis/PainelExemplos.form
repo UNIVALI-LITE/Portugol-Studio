@@ -101,6 +101,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Explorar Exemplo"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoAbrirExemploActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="botaoAbrirExemplo.setVisible(false);"/>
               </AuxValues>

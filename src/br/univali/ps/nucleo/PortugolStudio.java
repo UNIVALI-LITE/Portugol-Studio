@@ -77,6 +77,7 @@ public final class PortugolStudio
     private boolean atualizandoInicializador = false;
 
     private TelaSobre telaSobre = null;
+    private OutsidePanel outSidePanel;
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
@@ -478,6 +479,7 @@ public final class PortugolStudio
             {
                 FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
                 //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                
                 WeblafUtils.instalaWeblaf();
             }
             catch (Exception e)
@@ -620,16 +622,18 @@ public final class PortugolStudio
                 public void run()
                 {
                     Lancador.getJFrame().setUndecorated(true);
-                    Lancador.getJFrame().add(new OutsidePanel());
+                    outSidePanel = new OutsidePanel();
+                    Lancador.getJFrame().add(outSidePanel);
+                    telaPrincipal = outSidePanel.getTelaPrincipal();
                     Lancador.getJFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     Lancador.getJFrame().pack();
                     Lancador.getJFrame().setLocationRelativeTo(null);
                     Lancador.getJFrame().setVisible(true);
                     Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                     
-                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-                    getTelaPrincipal().setBounds(bounds);
-                    getTelaPrincipal().setVisible(true);
+//                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+//                    Lancador.getJFrame().setBounds(bounds);
+//                    Lancador.getJFrame().setVisible(true);
                     
                 }
             });
