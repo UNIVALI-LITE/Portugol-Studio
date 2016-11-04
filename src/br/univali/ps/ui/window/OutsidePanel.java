@@ -40,6 +40,10 @@ public class OutsidePanel extends javax.swing.JPanel
             
         });
     }
+    
+    public TelaPrincipal getTelaPrincipal(){
+        return this.telaPrincipal1;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

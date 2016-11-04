@@ -87,6 +87,7 @@
                     <EmptyBorder bottom="8" left="0" right="0" top="8"/>
                   </Border>
                 </Property>
+                <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[150, 25]"/>

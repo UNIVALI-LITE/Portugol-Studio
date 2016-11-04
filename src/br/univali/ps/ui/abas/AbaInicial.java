@@ -9,7 +9,6 @@ import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.telas.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -187,11 +186,19 @@ public final class AbaInicial extends Aba implements Themeable
                                 if (!redimensionouParaBaixaResolucao)
                                 {
                                     redimensionouParaBaixaResolucao = true;
-                                    rotuloSairProgramando.setIcon(null);
-                                    rotuloAssistirVideoAulas.setIcon(null);
-                                    rotuloConhecerBibliotecas.setIcon(null);
-                                    rotuloConhecerLinguagem.setIcon(null);
-                                    FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
+                                    rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar32.png"));
+                                    rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas32.png"));
+                                    rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas32.png"));
+                                    rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda32.png"));
+//                                    rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+//                                    rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.TRAILING);
+//                                    rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+//                                    rotuloAssistirVideoAulas.setHorizontalTextPosition(javax.swing.SwingConstants.TRAILING);
+//                                    rotuloConhecerBibliotecas.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+//                                    rotuloConhecerBibliotecas.setHorizontalTextPosition(javax.swing.SwingConstants.TRAILING);
+//                                    rotuloConhecerLinguagem.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+//                                    rotuloConhecerLinguagem.setHorizontalTextPosition(javax.swing.SwingConstants.TRAILING);
+                                    //FabricaDicasInterface.mostrarNotificacao("Utilize uma resolução maior para melhor uso do Portugol Studio", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
                                 }
                             }
                             else
@@ -201,6 +208,14 @@ public final class AbaInicial extends Aba implements Themeable
                                 rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
                                 rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
                                 rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
+//                                rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+//                                rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+//                                rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+//                                rotuloAssistirVideoAulas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+//                                rotuloConhecerBibliotecas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+//                                rotuloConhecerBibliotecas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+//                                rotuloConhecerLinguagem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+//                                rotuloConhecerLinguagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
                             }
                 });
             }
@@ -515,6 +530,7 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/programar.png"))); // NOI18N
         rotuloSairProgramando.setText("<html><body><div>Programar (Ctrl + N)</div></body></html>");
         rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        rotuloSairProgramando.setFocusable(false);
         rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rotuloSairProgramando.setMinimumSize(new java.awt.Dimension(150, 25));
         rotuloSairProgramando.setName("sairProgramando"); // NOI18N

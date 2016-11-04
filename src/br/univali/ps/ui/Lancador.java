@@ -2,14 +2,11 @@ package br.univali.ps.ui;
 
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.window.ComponentResizer;
-import com.alee.laf.WebLookAndFeel;
 import java.awt.Dimension;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.basic.BasicFileChooserUI;
 import br.univali.ps.nucleo.PortugolStudio;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +29,6 @@ public class Lancador {
     private static JFrame frame = new JFrame();
     private static Dimension older_size;
     private static boolean maximazed=false;
-    private TelaPrincipal mainWindow;
     private final static Lancador application = new Lancador();
     
     private static final Logger LOGGER = Logger.getLogger(Lancador.class.getName());
