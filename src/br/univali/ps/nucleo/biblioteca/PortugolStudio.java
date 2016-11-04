@@ -7,6 +7,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
+import br.univali.ps.ui.Lancador;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,8 +44,8 @@ public final class PortugolStudio extends Biblioteca
     {
         try {
             SwingUtilities.invokeAndWait(() -> {
-                setUltimoEstado(br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState());
-                br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(JFrame.ICONIFIED);
+                setUltimoEstado(Lancador.getJFrame().getExtendedState());
+                Lancador.getJFrame().setExtendedState(JFrame.ICONIFIED);
             });
         } catch (InterruptedException | InvocationTargetException ex) {
             throw new ErroExecucaoBiblioteca(ex);
@@ -57,11 +58,11 @@ public final class PortugolStudio extends Biblioteca
     {
         try {
             SwingUtilities.invokeAndWait(() -> {
-                if (br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().getExtendedState() == JFrame.ICONIFIED)
+                if (Lancador.getJFrame().getExtendedState() == JFrame.ICONIFIED)
                 {
-                    br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().setExtendedState(getUltimoEstado());
-                    br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().toFront();
-                    br.univali.ps.nucleo.PortugolStudio.getInstancia().getTelaPrincipal().requestFocusInWindow();
+                    Lancador.getJFrame().setExtendedState(getUltimoEstado());
+                    Lancador.getJFrame().toFront();
+                    Lancador.getJFrame().requestFocusInWindow();
                 }
             });
         } catch (InterruptedException | InvocationTargetException ex) {

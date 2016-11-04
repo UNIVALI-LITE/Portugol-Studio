@@ -5,6 +5,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.ps.DetectorViolacoesThreadSwing;
 import br.univali.ps.atualizador.GerenciadorAtualizacoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
@@ -18,6 +19,7 @@ import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.window.OutsidePanel;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -75,6 +77,7 @@ public final class PortugolStudio
     private boolean atualizandoInicializador = false;
 
     private TelaSobre telaSobre = null;
+    private OutsidePanel outSidePanel;
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
@@ -476,6 +479,7 @@ public final class PortugolStudio
             {
                 FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
                 //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                
                 WeblafUtils.instalaWeblaf();
             }
             catch (Exception e)
@@ -617,15 +621,19 @@ public final class PortugolStudio
                 @Override
                 public void run()
                 {
-                    getTelaPrincipal().dispose();
-                    getTelaPrincipal().setExtendedState(JFrame.NORMAL);
-                    getTelaPrincipal().setUndecorated(true);
+                    Lancador.getJFrame().setUndecorated(true);
+                    outSidePanel = new OutsidePanel();
+                    Lancador.getJFrame().add(outSidePanel);
+                    telaPrincipal = outSidePanel.getTelaPrincipal();
+                    Lancador.getJFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    Lancador.getJFrame().pack();
+                    Lancador.getJFrame().setLocationRelativeTo(null);
+                    Lancador.getJFrame().setVisible(true);
+                    Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                     
-                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-                    getTelaPrincipal().setBounds(bounds);
-                    getTelaPrincipal().setLocationRelativeTo(null);
-                    
-                    getTelaPrincipal().setVisible(true);
+//                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+//                    Lancador.getJFrame().setBounds(bounds);
+//                    Lancador.getJFrame().setVisible(true);
                     
                 }
             });

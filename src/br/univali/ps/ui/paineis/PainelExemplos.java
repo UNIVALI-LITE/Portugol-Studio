@@ -12,9 +12,9 @@ import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.telas.TelaPrincipal;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -219,7 +219,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                     public void actionPerformed(ActionEvent e) {
                         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
-                        PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
+                        TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
+                        t.getPainelTabulado().add(abaCodigoFonte);
                     }
                 });
                 botaoAbrirExemplo.setText("Explorar Exemplo");
@@ -249,7 +250,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -300,6 +302,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         botaoAbrirExemplo.setVisible(false);
         botaoAbrirExemplo.setText("Explorar Exemplo");
+        botaoAbrirExemplo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                botaoAbrirExemploActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -342,6 +351,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botaoAbrirExemploActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAbrirExemploActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoAbrirExemploActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
