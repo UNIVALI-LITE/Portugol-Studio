@@ -36,7 +36,7 @@ public final class RenderizadorTabelaMensagensCompilador extends DefaultTableCel
         setBorder(new EmptyBorder(4, 4, 4, 4));
         setVerticalAlignment((column < 2) ? JLabel.CENTER : JLabel.TOP);
         setIcon((column == 0) ? (Icon) value : null);
-        setHorizontalAlignment((column == 0) ? SwingConstants.CENTER : SwingConstants.LEADING);
+        setHorizontalAlignment((column < 2) ? SwingConstants.CENTER : SwingConstants.LEADING);
         setForeground(corLetra);
         if (column > 0)
         {

@@ -45,10 +45,9 @@ public final class AbaMensagemCompilador extends Aba
         if(WeblafUtils.weblafEstaInstalado()){
            tabelaMensagens.getTableHeader().setUI(new PSTableHeaderUI());
         }
-        
+        WeblafUtils.configuraWebLaf(tabelaMensagens);
         tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //jScrollPaneTabelaMensagens.getViewport().setOpaque(false);
-        tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
 
@@ -62,9 +61,7 @@ public final class AbaMensagemCompilador extends Aba
 
         tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderizador);
         tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderizador);
-        tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderizador);
-        
-        WeblafUtils.configuraWebLaf(tabelaMensagens);
+        tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderizador);     
 
         AjustadorLinhaTabelaMensagensCompilador ajustadorLinha = new AjustadorLinhaTabelaMensagensCompilador(tabelaMensagens);
 

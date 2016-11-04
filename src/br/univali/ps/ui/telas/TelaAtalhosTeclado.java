@@ -1,5 +1,7 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.swing.RenderizadorTabelaAtalhos;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.TradutorAtalhosTeclado;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
@@ -90,9 +92,7 @@ public final class TelaAtalhosTeclado extends JDialog{
     
     private void configurarAparenciaTabela()
     {
-        tabela.setRowHeight(20);
-        tabela.getTableHeader().setResizingAllowed(false);
-        tabela.getTableHeader().setReorderingAllowed(false);
+        WeblafUtils.configuraWebLaf(tabela);
 
         tabela.getColumnModel().getColumn(0).setMaxWidth(32);
         
@@ -100,7 +100,7 @@ public final class TelaAtalhosTeclado extends JDialog{
         tabela.getColumnModel().getColumn(2).setMinWidth(110);
         tabela.getColumnModel().getColumn(2).setPreferredWidth(110);
 
-        Renderizador renderizador = new Renderizador();
+        RenderizadorTabelaAtalhos renderizador = new RenderizadorTabelaAtalhos();
 
         tabela.getColumnModel().getColumn(0).setCellRenderer(renderizador);
         tabela.getColumnModel().getColumn(1).setCellRenderer(renderizador);
@@ -108,41 +108,7 @@ public final class TelaAtalhosTeclado extends JDialog{
         
         tabela.setShowGrid(false);
         tabela.setIntercellSpacing(new Dimension(0, 0));
-    }
-    
-    private final class Renderizador extends DefaultTableCellRenderer
-    {
-        public Renderizador()
-        {
-            setFocusable(false);
-        }
         
-        @Override
-        public Component getTableCellRendererComponent(JTable tabela, Object valor, boolean selecionado, boolean focado, int linha, int coluna)
-        {
-            JLabel rotulo = (JLabel) super.getTableCellRendererComponent(tabela, valor, selecionado, focado, linha, coluna);
-            
-            rotulo.setIcon(null);
-            rotulo.setText(null);
-            rotulo.setForeground(Color.BLACK);
-            rotulo.setBackground(Color.WHITE);
-            rotulo.setOpaque(true);
-            rotulo.setHorizontalAlignment(JLabel.LEADING);
-            rotulo.setVerticalAlignment(JLabel.CENTER);
-            
-            if (coluna == 0)
-            {
-                rotulo.setHorizontalAlignment(JLabel.CENTER);
-                rotulo.setIcon((Icon) valor);
-            }
-            
-            if (coluna > 0)
-            {
-                rotulo.setText((String) valor);
-            }
-            
-            return rotulo;
-        }
     }
     
     private final class DadosAcao

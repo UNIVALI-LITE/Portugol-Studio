@@ -244,6 +244,9 @@ public class WeblafUtils {
 //       ((WebTableUI) field.getUI()).setScrollPaneBackgroundColor(ColorController.FUNDO_CLARO);
        field.getTableHeader().setDefaultRenderer(new WebHeaderRenderer());
        field.getTableHeader().setForeground(ColorController.COR_LETRA);
+       field.getTableHeader().setResizingAllowed(false);
+       field.getTableHeader().setReorderingAllowed(false);
+       field.setRowHeight(20);
     }
     
     public static void configuraWebTables()
@@ -252,6 +255,7 @@ public class WeblafUtils {
         WebTableStyle.headerTopBgColor =  ColorController.COR_PRINCIPAL;
         WebTableStyle.headerBottomLineColor = null;
         WebTableStyle.headerTopLineColor = null;
+        WebTableStyle.foreground = null;
         WebTableStyle.headerMargin = new Insets(0,0,0,0);
         WebTableStyle.gridColor = null;
         WebTableStyle.showHorizontalLines = false;
