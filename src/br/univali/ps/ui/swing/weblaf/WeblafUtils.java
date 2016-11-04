@@ -1,6 +1,7 @@
 package br.univali.ps.ui.swing.weblaf;
 
 import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.WebHeaderRenderer;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -14,6 +15,9 @@ import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.laf.table.WebTableCorner;
+import com.alee.laf.table.WebTableStyle;
+import com.alee.laf.table.WebTableUI;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
@@ -232,6 +236,28 @@ public class WeblafUtils {
     public static void configuraWeblaf(JPanel painel) {
         configuraWeblaf(painel, null);
     }
+    
+    public static void configuraWebLaf(JTable field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+//       ((WebTableUI) field.getUI()).setScrollPaneBackgroundColor(ColorController.FUNDO_CLARO);
+       field.getTableHeader().setDefaultRenderer(new WebHeaderRenderer());
+       field.getTableHeader().setForeground(ColorController.COR_LETRA);
+    }
+    
+    public static void configuraWebTables()
+    {
+        WebTableStyle.headerBottomBgColor = ColorController.COR_PRINCIPAL;
+        WebTableStyle.headerTopBgColor =  ColorController.COR_PRINCIPAL;
+        WebTableStyle.headerBottomLineColor = null;
+        WebTableStyle.headerTopLineColor = null;
+        WebTableStyle.headerMargin = new Insets(0,0,0,0);
+        WebTableStyle.gridColor = null;
+        WebTableStyle.showHorizontalLines = false;
+        WebTableStyle.showVerticalLines = false;
+        
+    }
 
     public static void instalaWeblaf() {
         if (!weblafEstaInstalado()) {
@@ -241,6 +267,7 @@ public class WeblafUtils {
             } catch (IOException ex) {
                 Logger.getLogger(WeblafUtils.class.getName()).log(Level.SEVERE, null, ex);
             }
+            configuraWebTables();
             StyleConstants.darkBorderColor = null;//define a cor de borda do weblaf globalmente
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);

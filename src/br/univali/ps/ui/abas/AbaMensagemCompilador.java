@@ -63,6 +63,8 @@ public final class AbaMensagemCompilador extends Aba
         tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderizador);
         tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderizador);
         tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderizador);
+        
+        WeblafUtils.configuraWebLaf(tabelaMensagens);
 
         AjustadorLinhaTabelaMensagensCompilador ajustadorLinha = new AjustadorLinhaTabelaMensagensCompilador(tabelaMensagens);
 
