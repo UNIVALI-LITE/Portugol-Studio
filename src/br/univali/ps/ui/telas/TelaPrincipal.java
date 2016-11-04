@@ -22,6 +22,9 @@ import br.univali.ps.ui.utils.FileHandle;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -43,6 +46,7 @@ public class TelaPrincipal extends javax.swing.JPanel
 {
     private boolean abrindo = true;
     private List<File> arquivosIniciais;
+    int pX, pY;
     
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
     /**
@@ -55,6 +59,26 @@ public class TelaPrincipal extends javax.swing.JPanel
         criaAbas();
         configurarCores();
         instalarObservadores();
+        addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                // Get x,y and store them
+                pX = me.getX();
+                pY = me.getY();
+
+            }
+
+             public void mouseDragged(MouseEvent me) {
+
+                Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+            }
+        });
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent me) {
+
+                Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+            }
+        });
     }
     private void criaAbas()
     {
@@ -63,7 +87,7 @@ public class TelaPrincipal extends javax.swing.JPanel
     
     private void configurarCores(){
 //        mainPanel.setBackground(ColorController.COR_DESTAQUE);
-        setBackground(ColorController.FUNDO_CLARO);
+        setBackground(ColorController.FUNDO_ESCURO);
         painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
     }
     
@@ -330,9 +354,8 @@ public class TelaPrincipal extends javax.swing.JPanel
 
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 0, 0, 0));
         setLayout(new java.awt.BorderLayout());
-
-        painelTabuladoPrincipal.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 

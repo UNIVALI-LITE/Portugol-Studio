@@ -41,8 +41,6 @@ import javax.swing.JPanel;
 public class BorderPanel extends JPanel {
 
         private JPanel buttonsPanel;
-        private JLabel textPanel;
-        private JLabel iconPanel;
         
         private WebButton closeButton;
         private Image close;
@@ -51,7 +49,6 @@ public class BorderPanel extends JPanel {
         private WebButton minButton;
         private Image min;
         private Image icon;
-        int pX, pY;
 
         public BorderPanel() {
             
@@ -68,13 +65,6 @@ public class BorderPanel extends JPanel {
             setLayout(new BorderLayout());
             
             buttonsPanel = new JPanel();
-            textPanel = new JLabel();
-            textPanel.setText("Portugol Studio");
-            textPanel.setForeground(ColorController.COR_LETRA);
-            textPanel.setHorizontalAlignment(JLabel.CENTER);
-            
-            iconPanel = new JLabel();
-            iconPanel.setIcon(new ImageIcon(icon));
             
             setBackground(ColorController.FUNDO_ESCURO);
             buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -126,32 +116,6 @@ public class BorderPanel extends JPanel {
             buttonsPanel.add(maxButton);
             buttonsPanel.add(closeButton);
             
-            
-            add(iconPanel, BorderLayout.WEST);
-            add(textPanel, BorderLayout.CENTER);
-            add(buttonsPanel, BorderLayout.EAST);
-            
-            
-            
-            addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent me) {
-                    // Get x,y and store them
-                    pX = me.getX();
-                    pY = me.getY();
-
-                }
-
-                 public void mouseDragged(MouseEvent me) {
-
-                    frame.setLocation(frame.getLocation().x + me.getX() - pX,frame.getLocation().y + me.getY() - pY);
-                }
-            });
-
-            addMouseMotionListener(new MouseMotionAdapter() {
-                public void mouseDragged(MouseEvent me) {
-
-                    frame.setLocation(frame.getLocation().x + me.getX() - pX,frame.getLocation().y + me.getY() - pY);
-                }
-            });
+            add(buttonsPanel, BorderLayout.EAST);            
         }
     }

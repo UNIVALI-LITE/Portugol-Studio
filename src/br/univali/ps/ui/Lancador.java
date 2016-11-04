@@ -111,25 +111,7 @@ public class Lancador {
 
         LOGGER.log(Level.INFO, "Iniciando PS com {0} argumentos", argumentos.length);
         PortugolStudio.getInstancia().iniciar(argumentos);
-        
-        
-       
-            SwingUtilities.invokeLater(() ->
-            {
-                try
-                {
-                    final WebLookAndFeel webLookAndFeel = new WebLookAndFeel();
-                    //Field defaultsTable = WebLookAndFeel.class.getField("table");
-                    //webLookAndFeel.getDefaults().remove("FileChooserUI");
-                    webLookAndFeel.getDefaults().put("FileChooserUI", BasicFileChooserUI.class);
-                    javax.swing.UIManager.setLookAndFeel(webLookAndFeel);
-                }
-                catch (UnsupportedLookAndFeelException ex)
-                {
-                    Logger.getLogger(Lancador.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            
+                    
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
