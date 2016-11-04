@@ -10,6 +10,8 @@ import br.univali.ps.ui.telas.TelaPrincipal;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
@@ -27,17 +29,17 @@ public class OutsidePanel extends javax.swing.JPanel
     {
         initComponents();
         setBorder(new LineBorder(ColorController.FUNDO_ESCURO, 5));
-        addComponentListener(new ComponentAdapter(){
+        
+        telaPrincipal1.getPainelTabulado().addPropertyChangeListener(new PropertyChangeListener()
+        {
             @Override
-            public void componentResized(ComponentEvent e)
+            public void propertyChange(PropertyChangeEvent evt)
             {
-                super.componentResized(e); //To change body of generated methods, choose Tools | Templates.
                 SwingUtilities.invokeLater(() ->
                 {
                     OutsidePanel.this.repaint();
                 });
             }
-            
         });
     }
     
