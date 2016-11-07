@@ -13,7 +13,9 @@ import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.progressbar.WebProgressBarUI;
+import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
+import com.alee.laf.scroll.WebScrollPaneStyle;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.table.WebTableCorner;
 import com.alee.laf.table.WebTableStyle;
@@ -169,6 +171,14 @@ public class WeblafUtils {
         ((WebScrollPaneUI) scroll.getUI()).setDrawBorder(false);
         ((WebScrollBarUI) scroll.getHorizontalScrollBar().getUI()).setPaintTrack(false);
         ((WebScrollBarUI) scroll.getVerticalScrollBar().getUI()).setPaintTrack(false);
+        scroll.setCorner(ScrollPaneConstants.UPPER_RIGHT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.UPPER_TRAILING_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.UPPER_LEADING_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_LEFT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_TRAILING_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_LEADING_CORNER, null);
 
         //instala um layout no scrollPane que sempre deixa um pequeno espaço
         //no canto superior direito para que seja exibido o botão de ações
@@ -276,13 +286,12 @@ public class WeblafUtils {
         WebTableStyle.headerBottomBgColor = ColorController.COR_PRINCIPAL;
         WebTableStyle.headerTopBgColor =  ColorController.COR_PRINCIPAL;
         WebTableStyle.headerBottomLineColor = null;
-        WebTableStyle.headerTopLineColor = null;
+        WebTableStyle.headerTopLineColor = ColorController.COR_PRINCIPAL;
         WebTableStyle.foreground = ColorController.COR_LETRA;
         WebTableStyle.headerMargin = new Insets(0,0,0,0);
         WebTableStyle.gridColor = null;
         WebTableStyle.showHorizontalLines = false;
         WebTableStyle.showVerticalLines = false;
-        
     }
 
     public static void instalaWeblaf() {
