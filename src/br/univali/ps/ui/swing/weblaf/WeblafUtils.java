@@ -1,6 +1,7 @@
 package br.univali.ps.ui.swing.weblaf;
 
 import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.WebHeaderRenderer;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -12,14 +13,20 @@ import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.progressbar.WebProgressBarUI;
+import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
+import com.alee.laf.scroll.WebScrollPaneStyle;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.laf.table.WebTableCorner;
+import com.alee.laf.table.WebTableStyle;
+import com.alee.laf.table.WebTableUI;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -33,6 +40,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -163,6 +171,14 @@ public class WeblafUtils {
         ((WebScrollPaneUI) scroll.getUI()).setDrawBorder(false);
         ((WebScrollBarUI) scroll.getHorizontalScrollBar().getUI()).setPaintTrack(false);
         ((WebScrollBarUI) scroll.getVerticalScrollBar().getUI()).setPaintTrack(false);
+        scroll.setCorner(ScrollPaneConstants.UPPER_RIGHT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.UPPER_TRAILING_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.UPPER_LEADING_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_LEFT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_TRAILING_CORNER, null);
+        scroll.setCorner(ScrollPaneConstants.LOWER_LEADING_CORNER, null);
 
         //instala um layout no scrollPane que sempre deixa um pequeno espaço
         //no canto superior direito para que seja exibido o botão de ações
@@ -232,6 +248,51 @@ public class WeblafUtils {
     public static void configuraWeblaf(JPanel painel) {
         configuraWeblaf(painel, null);
     }
+    
+    public static void configuraWebLaf(JTable field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+//       ((WebTableUI) field.getUI()).setScrollPaneBackgroundColor(ColorController.PROGRESS_BAR);
+       field.getTableHeader().setDefaultRenderer(new WebHeaderRenderer());
+       field.getTableHeader().setForeground(ColorController.COR_LETRA);
+       field.getTableHeader().setResizingAllowed(false);
+       field.getTableHeader().setReorderingAllowed(false);
+       field.setShowGrid(false);
+       field.setIntercellSpacing(new Dimension(0, 0));
+       field.setRowHeight(20);
+    }
+    public static void configuraWebLaf(JTable field, TableCellRenderer renderer, int columns) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+//       ((WebTableUI) field.getUI()).setScrollPaneBackgroundColor(ColorController.PROGRESS_BAR);
+       field.getTableHeader().setDefaultRenderer(new WebHeaderRenderer());
+       field.getTableHeader().setForeground(ColorController.COR_LETRA);
+       field.getTableHeader().setResizingAllowed(false);
+       field.getTableHeader().setReorderingAllowed(false);
+       field.setShowGrid(false);
+       field.setIntercellSpacing(new Dimension(0, 0));
+       field.setRowHeight(20);
+       field.getTableHeader().setEnabled(true);
+       for (int i = 0; i < columns; i++)
+       {
+           field.getColumnModel().getColumn(i).setCellRenderer(renderer);
+       }
+    }
+    
+    public static void configuraWebTables()
+    {
+        WebTableStyle.headerBottomBgColor = ColorController.COR_PRINCIPAL;
+        WebTableStyle.headerTopBgColor =  ColorController.COR_PRINCIPAL;
+        WebTableStyle.headerBottomLineColor = null;
+        WebTableStyle.headerTopLineColor = ColorController.COR_PRINCIPAL;
+        WebTableStyle.foreground = ColorController.COR_LETRA;
+        WebTableStyle.headerMargin = new Insets(0,0,0,0);
+        WebTableStyle.gridColor = null;
+        WebTableStyle.showHorizontalLines = false;
+        WebTableStyle.showVerticalLines = false;
+    }
 
     public static void instalaWeblaf() {
         if (!weblafEstaInstalado()) {
@@ -241,6 +302,7 @@ public class WeblafUtils {
             } catch (IOException ex) {
                 Logger.getLogger(WeblafUtils.class.getName()).log(Level.SEVERE, null, ex);
             }
+            configuraWebTables();
             StyleConstants.darkBorderColor = null;//define a cor de borda do weblaf globalmente
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);

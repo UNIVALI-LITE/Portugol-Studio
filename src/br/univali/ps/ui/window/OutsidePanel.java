@@ -40,6 +40,7 @@ public class OutsidePanel extends javax.swing.JPanel
                     OutsidePanel.this.repaint();
                 });
             }
+            
         });
     }
     

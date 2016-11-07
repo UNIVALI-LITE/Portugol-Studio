@@ -1,8 +1,10 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.RenderizadorTabelaAtalhos;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.TradutorAtalhosTeclado;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -66,7 +68,6 @@ public final class TelaAtalhosTeclado extends JDialog{
     private void configurarDadosAcoes()
     {
         ModeloAcoes modelo = (ModeloAcoes) tabela.getModel();
-        
         modelo.registrarDadosAcao(new DadosAcao("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)));
         modelo.registrarDadosAcao(new DadosAcao("Dicas de Interface", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0)));
         modelo.registrarDadosAcao(new DadosAcao("Bibliotecas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK)));
@@ -90,9 +91,7 @@ public final class TelaAtalhosTeclado extends JDialog{
     
     private void configurarAparenciaTabela()
     {
-        tabela.setRowHeight(20);
-        tabela.getTableHeader().setResizingAllowed(false);
-        tabela.getTableHeader().setReorderingAllowed(false);
+        
 
         tabela.getColumnModel().getColumn(0).setMaxWidth(32);
         
@@ -100,49 +99,11 @@ public final class TelaAtalhosTeclado extends JDialog{
         tabela.getColumnModel().getColumn(2).setMinWidth(110);
         tabela.getColumnModel().getColumn(2).setPreferredWidth(110);
 
-        Renderizador renderizador = new Renderizador();
+        RenderizadorTabelaAtalhos renderizador = new RenderizadorTabelaAtalhos();
 
-        tabela.getColumnModel().getColumn(0).setCellRenderer(renderizador);
-        tabela.getColumnModel().getColumn(1).setCellRenderer(renderizador);
-        tabela.getColumnModel().getColumn(2).setCellRenderer(renderizador);
+        WeblafUtils.configuraWebLaf(tabela, renderizador, tabela.getColumnCount());
         
-        tabela.setShowGrid(false);
-        tabela.setIntercellSpacing(new Dimension(0, 0));
-    }
-    
-    private final class Renderizador extends DefaultTableCellRenderer
-    {
-        public Renderizador()
-        {
-            setFocusable(false);
-        }
         
-        @Override
-        public Component getTableCellRendererComponent(JTable tabela, Object valor, boolean selecionado, boolean focado, int linha, int coluna)
-        {
-            JLabel rotulo = (JLabel) super.getTableCellRendererComponent(tabela, valor, selecionado, focado, linha, coluna);
-            
-            rotulo.setIcon(null);
-            rotulo.setText(null);
-            rotulo.setForeground(Color.BLACK);
-            rotulo.setBackground(Color.WHITE);
-            rotulo.setOpaque(true);
-            rotulo.setHorizontalAlignment(JLabel.LEADING);
-            rotulo.setVerticalAlignment(JLabel.CENTER);
-            
-            if (coluna == 0)
-            {
-                rotulo.setHorizontalAlignment(JLabel.CENTER);
-                rotulo.setIcon((Icon) valor);
-            }
-            
-            if (coluna > 0)
-            {
-                rotulo.setText((String) valor);
-            }
-            
-            return rotulo;
-        }
     }
     
     private final class DadosAcao
@@ -229,7 +190,8 @@ public final class TelaAtalhosTeclado extends JDialog{
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel1 = new javax.swing.JPanel();
         painelRolagem = new javax.swing.JScrollPane();
@@ -245,7 +207,6 @@ public final class TelaAtalhosTeclado extends JDialog{
         painelRolagem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
 
         tabela.setModel(new ModeloAcoes());
-        tabela.setEnabled(false);
         tabela.setFillsViewportHeight(true);
         painelRolagem.setViewportView(tabela);
 

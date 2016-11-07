@@ -78,7 +78,7 @@ public final class PainelSaida extends PainelTabulado {
             @Override
             public void run() {
 
-                WebLookAndFeel.install();
+                WeblafUtils.instalaWeblaf();
 
                 JFrame frame = new JFrame();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

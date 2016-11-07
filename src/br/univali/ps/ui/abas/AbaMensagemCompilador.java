@@ -10,6 +10,7 @@ import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import com.alee.laf.table.WebTableHeaderUI;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -43,12 +44,10 @@ public final class AbaMensagemCompilador extends Aba
     {
         
         if(WeblafUtils.weblafEstaInstalado()){
-           tabelaMensagens.getTableHeader().setUI(new PSTableHeaderUI());
+           tabelaMensagens.getTableHeader().setUI(new WebTableHeaderUI());
         }
-        
         tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //jScrollPaneTabelaMensagens.getViewport().setOpaque(false);
-        tabelaMensagens.setRowHeight(20);
         tabelaMensagens.setModel(tabelaModel);
         tabelaModel.addTableModelListener(tabelaMensagens);
 
@@ -60,17 +59,12 @@ public final class AbaMensagemCompilador extends Aba
 
         RenderizadorTabelaMensagensCompilador renderizador = new RenderizadorTabelaMensagensCompilador();
 
-        tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderizador);
-        tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderizador);
-        tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderizador);
+        WeblafUtils.configuraWebLaf(tabelaMensagens, renderizador, tabelaMensagens.getColumnCount());    
 
         AjustadorLinhaTabelaMensagensCompilador ajustadorLinha = new AjustadorLinhaTabelaMensagensCompilador(tabelaMensagens);
 
         tabelaMensagens.addComponentListener(ajustadorLinha);
         tabelaModel.addTableModelListener(ajustadorLinha);
-
-        tabelaMensagens.setShowGrid(false);
-        tabelaMensagens.setIntercellSpacing(new Dimension(0, 0));
 
         configurarCursorItensTabela();
     }
@@ -156,8 +150,7 @@ public final class AbaMensagemCompilador extends Aba
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
         tabelaMensagens = new javax.swing.JTable();
@@ -180,7 +173,6 @@ public final class AbaMensagemCompilador extends Aba
         tabelaMensagens.setSelectionBackground(new java.awt.Color(0, 84, 148));
         tabelaMensagens.setShowHorizontalLines(false);
         tabelaMensagens.setShowVerticalLines(false);
-        tabelaMensagens.getTableHeader().setReorderingAllowed(false);
         jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
 
         add(jScrollPaneTabelaMensagens, java.awt.BorderLayout.CENTER);

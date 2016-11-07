@@ -273,18 +273,10 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         painelArvore.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelArvore.setLayout(new java.awt.BorderLayout());
 
-        painelRolagemArvore.setBackground(new java.awt.Color(250, 250, 250));
-        painelRolagemArvore.setBorder(null);
         painelRolagemArvore.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 8, 4));
-        painelRolagemArvore.setMinimumSize(new java.awt.Dimension(200, 37));
         painelRolagemArvore.setOpaque(false);
-        painelRolagemArvore.setPreferredSize(new java.awt.Dimension(200, 336));
 
-        arvoreBibliotecas.setBackground(new java.awt.Color(250, 250, 250));
-        arvoreBibliotecas.setMaximumSize(new java.awt.Dimension(400, 64));
-        arvoreBibliotecas.setMinimumSize(new java.awt.Dimension(200, 0));
         arvoreBibliotecas.setOpaque(false);
-        arvoreBibliotecas.setPreferredSize(new java.awt.Dimension(200, 64));
         painelRolagemArvore.setViewportView(arvoreBibliotecas);
 
         painelArvore.add(painelRolagemArvore, java.awt.BorderLayout.CENTER);
@@ -293,8 +285,8 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         painelTitulo.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/help.png"))); // NOI18N
-        jLabel2.setText("Ajuda");
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/biblioteca.png"))); // NOI18N
+        jLabel2.setText("Bibliotecas");
         painelTitulo.add(jLabel2, java.awt.BorderLayout.CENTER);
 
         painelArvore.add(painelTitulo, java.awt.BorderLayout.NORTH);
