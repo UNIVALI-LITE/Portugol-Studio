@@ -184,10 +184,10 @@ public final class AbaInicial extends Aba implements Themeable
                                 if (!redimensionouParaBaixaResolucao)
                                 {
                                     redimensionouParaBaixaResolucao = true;
-                                    rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar32.png"));
-                                    rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas32.png"));
-                                    rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas32.png"));
-                                    rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda32.png"));
+                                    rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar64.png"));
+                                    rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas64.png"));
+                                    rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas64.png"));
+                                    rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda64.png"));
 //                                    rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
 //                                    rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.TRAILING);
 //                                    rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
