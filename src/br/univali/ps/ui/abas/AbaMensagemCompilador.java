@@ -45,7 +45,6 @@ public final class AbaMensagemCompilador extends Aba
         if(WeblafUtils.weblafEstaInstalado()){
            tabelaMensagens.getTableHeader().setUI(new PSTableHeaderUI());
         }
-        WeblafUtils.configuraWebLaf(tabelaMensagens);
         tabelaMensagens.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //jScrollPaneTabelaMensagens.getViewport().setOpaque(false);
         tabelaMensagens.setModel(tabelaModel);
@@ -59,17 +58,12 @@ public final class AbaMensagemCompilador extends Aba
 
         RenderizadorTabelaMensagensCompilador renderizador = new RenderizadorTabelaMensagensCompilador();
 
-        tabelaMensagens.getColumnModel().getColumn(0).setCellRenderer(renderizador);
-        tabelaMensagens.getColumnModel().getColumn(1).setCellRenderer(renderizador);
-        tabelaMensagens.getColumnModel().getColumn(2).setCellRenderer(renderizador);     
+        WeblafUtils.configuraWebLaf(tabelaMensagens, renderizador, tabelaMensagens.getColumnCount());    
 
         AjustadorLinhaTabelaMensagensCompilador ajustadorLinha = new AjustadorLinhaTabelaMensagensCompilador(tabelaMensagens);
 
         tabelaMensagens.addComponentListener(ajustadorLinha);
         tabelaModel.addTableModelListener(ajustadorLinha);
-
-        tabelaMensagens.setShowGrid(false);
-        tabelaMensagens.setIntercellSpacing(new Dimension(0, 0));
 
         configurarCursorItensTabela();
     }

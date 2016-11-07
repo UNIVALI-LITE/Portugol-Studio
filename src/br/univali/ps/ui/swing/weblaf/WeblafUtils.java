@@ -24,6 +24,7 @@ import com.alee.managers.style.skin.web.WebDecorationPainter;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -37,6 +38,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -241,12 +243,32 @@ public class WeblafUtils {
        if (!WeblafUtils.weblafEstaInstalado()) {
            return;
        }
-//       ((WebTableUI) field.getUI()).setScrollPaneBackgroundColor(ColorController.FUNDO_CLARO);
+//       ((WebTableUI) field.getUI()).setScrollPaneBackgroundColor(ColorController.PROGRESS_BAR);
        field.getTableHeader().setDefaultRenderer(new WebHeaderRenderer());
        field.getTableHeader().setForeground(ColorController.COR_LETRA);
        field.getTableHeader().setResizingAllowed(false);
        field.getTableHeader().setReorderingAllowed(false);
+       field.setShowGrid(false);
+       field.setIntercellSpacing(new Dimension(0, 0));
        field.setRowHeight(20);
+    }
+    public static void configuraWebLaf(JTable field, TableCellRenderer renderer, int columns) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+//       ((WebTableUI) field.getUI()).setScrollPaneBackgroundColor(ColorController.PROGRESS_BAR);
+       field.getTableHeader().setDefaultRenderer(new WebHeaderRenderer());
+       field.getTableHeader().setForeground(ColorController.COR_LETRA);
+       field.getTableHeader().setResizingAllowed(false);
+       field.getTableHeader().setReorderingAllowed(false);
+       field.setShowGrid(false);
+       field.setIntercellSpacing(new Dimension(0, 0));
+       field.setRowHeight(20);
+       field.getTableHeader().setEnabled(true);
+       for (int i = 0; i < columns; i++)
+       {
+           field.getColumnModel().getColumn(i).setCellRenderer(renderer);
+       }
     }
     
     public static void configuraWebTables()
@@ -255,7 +277,7 @@ public class WeblafUtils {
         WebTableStyle.headerTopBgColor =  ColorController.COR_PRINCIPAL;
         WebTableStyle.headerBottomLineColor = null;
         WebTableStyle.headerTopLineColor = null;
-        WebTableStyle.foreground = null;
+        WebTableStyle.foreground = ColorController.COR_LETRA;
         WebTableStyle.headerMargin = new Insets(0,0,0,0);
         WebTableStyle.gridColor = null;
         WebTableStyle.showHorizontalLines = false;

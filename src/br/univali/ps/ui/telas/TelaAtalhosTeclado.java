@@ -1,10 +1,10 @@
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.RenderizadorTabelaAtalhos;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.TradutorAtalhosTeclado;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -68,7 +68,6 @@ public final class TelaAtalhosTeclado extends JDialog{
     private void configurarDadosAcoes()
     {
         ModeloAcoes modelo = (ModeloAcoes) tabela.getModel();
-        
         modelo.registrarDadosAcao(new DadosAcao("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)));
         modelo.registrarDadosAcao(new DadosAcao("Dicas de Interface", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0)));
         modelo.registrarDadosAcao(new DadosAcao("Bibliotecas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK)));
@@ -92,7 +91,7 @@ public final class TelaAtalhosTeclado extends JDialog{
     
     private void configurarAparenciaTabela()
     {
-        WeblafUtils.configuraWebLaf(tabela);
+        
 
         tabela.getColumnModel().getColumn(0).setMaxWidth(32);
         
@@ -102,12 +101,8 @@ public final class TelaAtalhosTeclado extends JDialog{
 
         RenderizadorTabelaAtalhos renderizador = new RenderizadorTabelaAtalhos();
 
-        tabela.getColumnModel().getColumn(0).setCellRenderer(renderizador);
-        tabela.getColumnModel().getColumn(1).setCellRenderer(renderizador);
-        tabela.getColumnModel().getColumn(2).setCellRenderer(renderizador);
+        WeblafUtils.configuraWebLaf(tabela, renderizador, tabela.getColumnCount());
         
-        tabela.setShowGrid(false);
-        tabela.setIntercellSpacing(new Dimension(0, 0));
         
     }
     
@@ -195,7 +190,8 @@ public final class TelaAtalhosTeclado extends JDialog{
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel1 = new javax.swing.JPanel();
         painelRolagem = new javax.swing.JScrollPane();
@@ -211,7 +207,6 @@ public final class TelaAtalhosTeclado extends JDialog{
         painelRolagem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
 
         tabela.setModel(new ModeloAcoes());
-        tabela.setEnabled(false);
         tabela.setFillsViewportHeight(true);
         painelRolagem.setViewportView(tabela);
 
