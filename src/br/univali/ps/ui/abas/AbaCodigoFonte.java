@@ -1535,25 +1535,22 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento();
     }
 
-    private void executar(Programa.Estado estado) throws InterruptedException, ErroCompilacao
+    private boolean programaCompiladoEhValido()
     {
-        if (programaCompilado == null || programaCompilado.isCancelled())
-        {
-            try
-            {
-                String codigoFonte = editor.getPortugolDocumento().getCodigoFonte();
-                programaCompilado = Portugol.compilarParaExecucao(codigoFonte);
-            }
-            catch(ErroCompilacao erroCompilacao)
-            {
-                exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
-            }
-        }
-        
-        Programa programa = null;
+        return programaCompilado != null && !programaCompilado.isCancelled();
+    }
+    
+    private Future<Programa> compilaParaExecucao() throws ErroCompilacao
+    {
+        String codigoFonte = editor.getPortugolDocumento().getCodigoFonte();
+        return Portugol.compilarParaExecucao(codigoFonte);
+    }
+    
+    private Programa getProgramaCompilado() throws ErroCompilacao, InterruptedException
+    {
         try
         {
-            programa = programaCompilado.get();
+            return programaCompilado.get();
         }
         catch(ExecutionException excecao)
         {
@@ -1566,7 +1563,26 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 LOGGER.log(Level.SEVERE, null, excecao);
             }
         }
+        return null;
+    }
+    
+    boolean observadoresProgramaInicializados = false;
+    
+    private void executar(Programa.Estado estado) throws InterruptedException, ErroCompilacao
+    {
+        boolean precisaRecompilar = !programaCompiladoEhValido();
+        if (precisaRecompilar)
+        {
+            programaCompilado = compilaParaExecucao(); // retorna um Future<Programa>, pois o programa é compilado em background
+        }
         
+        Programa programa = getProgramaCompilado();
+        if (programa == null)
+        {
+            LOGGER.log(Level.SEVERE, "Não foi possível obter a instância de Programa!");
+            return;
+        }
+
         if (!programa.isExecutando())
         {
 
@@ -1591,15 +1607,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucao.isCancelado()))
                 {
-                    programa.adicionarObservadorExecucao(new ObservadorExecucao());
-                    programa.adicionarObservadorExecucao(editor);
-                    programa.adicionarObservadorExecucao(inspetorDeSimbolos);
+                    if (!observadoresProgramaInicializados)
+                    {
+                        programa.adicionarObservadorExecucao(new ObservadorExecucao());
+                        programa.adicionarObservadorExecucao(editor);
+                        programa.adicionarObservadorExecucao(inspetorDeSimbolos);
+
+                        painelSaida.getConsole().registrarComoEntrada(programa);
+                        painelSaida.getConsole().registrarComoSaida(programa);
+                        
+                        observadoresProgramaInicializados = true;
+                    }
 
                     editor.iniciarExecucao(depurando);
-
-                    painelSaida.getConsole().registrarComoEntrada(programa);
-                    painelSaida.getConsole().registrarComoSaida(programa);
-
                     programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
                     programa.executar(telaOpcoesExecucao.getParametros(), estado);
                 }
