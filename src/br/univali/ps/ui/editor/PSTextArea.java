@@ -47,12 +47,6 @@ public class PSTextArea extends RSyntaxTextArea {
         super(doc);
     }
 
-    @Override
-    public void setText(String t) {
-        System.out.println("setando texto (" + t.length() + " chars) no PSTextArea ");
-        super.setText(t);
-    }
-
     public void addListenter(PSTextAreaListener l) {
         listeners.add(l);
     }
