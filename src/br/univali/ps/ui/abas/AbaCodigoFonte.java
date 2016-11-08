@@ -1417,6 +1417,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
     
+//    private Future<Programa> compilaParaExecucao() throws ErroCompilacao
+//    {
+//        String codigoFonte = editor.getPortugolDocumento().getCodigoFonte();
+//        return Portugol.compilarParaExecucao(codigoFonte);
+//    }
+    
     private void compilaProgramaParaExecucao()
     {
         if (programaCompilado != null && !programaCompilado.isCancelled()) 
@@ -1535,17 +1541,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento();
     }
 
-    private boolean programaCompiladoEhValido()
-    {
-        return programaCompilado != null && !programaCompilado.isCancelled();
-    }
-    
-    private Future<Programa> compilaParaExecucao() throws ErroCompilacao
-    {
-        String codigoFonte = editor.getPortugolDocumento().getCodigoFonte();
-        return Portugol.compilarParaExecucao(codigoFonte);
-    }
-    
     private Programa getProgramaCompilado() throws ErroCompilacao, InterruptedException
     {
         try
@@ -1566,15 +1561,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return null;
     }
     
-    boolean observadoresProgramaInicializados = false;
-    
     private void executar(Programa.Estado estado) throws InterruptedException, ErroCompilacao
     {
-        boolean precisaRecompilar = !programaCompiladoEhValido();
-        if (precisaRecompilar)
-        {
-            programaCompilado = compilaParaExecucao(); // retorna um Future<Programa>, pois o programa é compilado em background
-        }
+        //compilaProgramaParaExecucao();
         
         Programa programa = getProgramaCompilado();
         if (programa == null)
@@ -1607,17 +1596,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucao.isCancelado()))
                 {
-                    if (!observadoresProgramaInicializados)
-                    {
-                        programa.adicionarObservadorExecucao(new ObservadorExecucao());
-                        programa.adicionarObservadorExecucao(editor);
-                        programa.adicionarObservadorExecucao(inspetorDeSimbolos);
+                    programa.adicionarObservadorExecucao(new ObservadorExecucao());
+                    programa.adicionarObservadorExecucao(editor);
+                    programa.adicionarObservadorExecucao(inspetorDeSimbolos);
 
-                        painelSaida.getConsole().registrarComoEntrada(programa);
-                        painelSaida.getConsole().registrarComoSaida(programa);
-                        
-                        observadoresProgramaInicializados = true;
-                    }
+                    painelSaida.getConsole().registrarComoEntrada(programa);
+                    painelSaida.getConsole().registrarComoSaida(programa);
 
                     editor.iniciarExecucao(depurando);
                     programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
@@ -2180,6 +2164,25 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         setaAtivacaoBotoesExecucao(true);
                         painelSaida.getConsole().setExecutandoPrograma(false);
             });
+            
+            /***
+             *      Quando termina a exceução o programa compilado é invalidado, forçando a 
+             * recompilação do programa na próxima execução. A ideia original era reutilizar
+             * o programa compilado para evitar novas compilações, entretanto essa tarefa se 
+             * mostrou mais complicada do que parecia. O problema é que quando um programa é
+             * compilado para execução as inicializações dos atributos acontecem, e quando
+             * esta mesmo programa é re-executado essas inicializações não acontecem novamente.
+             * Com isso, a segunda execução do programa vai utilizar atributos cujos valores
+             * não são reinicializados a cada nova execução. Uma solução seria gerar todo o código
+             * de inicialização de atributos em um método específico e reinvocar este método no início
+             * da execução dos programas.
+             */
+            programaCompilado.cancel(true);
+            
+            // solicita uma nova compilação em background
+            compilaProgramaParaExecucao();
+            
+            
         }
 
         @Override
