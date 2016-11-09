@@ -285,41 +285,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         repaint();
     }
 
-    @Override
-    public void simboloRemovido(final Simbolo simbolo) {
-        if (!programaExecutando) {//não remove os símbolos durante a execução do programa
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (simboloEhPermitido(simbolo)) {
-                        ItemDaLista item = getItemDoNo((NoDeclaracaoVariavel) simbolo.getOrigemDoSimbolo());
-                        if (item != null) {
-                            model.removeElement(item);
-                            notificaMudancaNaLista();
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    @Override
-    public void simboloDeclarado(Simbolo simbolo) {
-        if (simboloEhPermitido(simbolo)) {
-            NoDeclaracao declaracao = simbolo.getOrigemDoSimbolo();
-
-            if (declaracao instanceof NoDeclaracaoInicializavel) {
-                NoExpressao inicializacao = ((NoDeclaracaoInicializavel) declaracao).getInicializacao();
-
-                estaInicializando = inicializacao != null;
-            }
-
-            atualizaNoDeclaracaoDeSimbolo(simbolo);
-            estaInicializando = false;
-        }
-    }
-
     private boolean estaInicializando = false;
 
     private void alteraVariavel(Variavel variavel, ItemDaListaParaVariavel item) {
@@ -390,26 +355,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
 
         return false;
-    }
-    
-    @Override
-    public void simbolosAlterados(List<Simbolo> simbolos) 
-    {
-        boolean simbolosAlterados = false;
-        int size = simbolos.size();
-        for (int i = 0; i < size; ++i)
-        {
-            Simbolo simbolo = simbolos.get(i);
-            if (simboloEhPermitido(simbolo)) 
-            {
-                simbolosAlterados |= atualizaNoDeclaracaoDeSimbolo(simbolo);
-            }
-        }
-        
-        if (simbolosAlterados) 
-        {
-            redesenhaItemsDaLista();
-        }
     }
 
     /**

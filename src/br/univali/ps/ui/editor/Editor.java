@@ -18,8 +18,6 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.ColorController;
-import br.univali.ps.ui.rstautil.DobramentoCodigoPortugol;
-import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
@@ -87,12 +85,10 @@ import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
-import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
-import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
@@ -1447,16 +1443,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
-    public void simbolosAlterados(List<Simbolo> simbolo)
-    {
-    }
-
-    @Override
-    public void simboloDeclarado(Simbolo simbolo)
-    {
-    }
-
-    @Override
     public void mensagemCompiladorSelecionada(Mensagem mensagem)
     {
         exibirMensagemCompilador(mensagem);
@@ -1500,11 +1486,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             ex.printStackTrace(System.err);
         }
-    }
-
-    @Override
-    public void simboloRemovido(Simbolo simbolo)
-    {
     }
 
     private Color obterCorErro()
