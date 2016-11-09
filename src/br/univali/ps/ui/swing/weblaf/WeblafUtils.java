@@ -11,15 +11,12 @@ import com.alee.laf.checkbox.WebCheckBoxUI;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.progressbar.WebProgressBarUI;
-import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
-import com.alee.laf.scroll.WebScrollPaneStyle;
 import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.laf.table.WebTableCorner;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterListener;
 import com.alee.laf.table.WebTableStyle;
-import com.alee.laf.table.WebTableUI;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.managers.style.skin.web.WebDecorationPainter;
@@ -29,6 +26,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
@@ -179,6 +177,14 @@ public class WeblafUtils {
         scroll.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, null);
         scroll.setCorner(ScrollPaneConstants.LOWER_TRAILING_CORNER, null);
         scroll.setCorner(ScrollPaneConstants.LOWER_LEADING_CORNER, null);
+        
+        ScrollPaneLayout layout = (ScrollPaneLayout) scroll.getLayout();
+        JScrollBar horizontal = layout.getHorizontalScrollBar();
+        JScrollBar vertical = layout.getVerticalScrollBar();
+        vertical.setUI(new PSScrollBarUI());
+        horizontal.setUI(new PSScrollBarUI());
+        
+        //((WebScrollBarUI) vertical.getUI()).setPainter(painter);
 
         //instala um layout no scrollPane que sempre deixa um pequeno espaço
         //no canto superior direito para que seja exibido o botão de ações

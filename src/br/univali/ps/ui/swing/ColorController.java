@@ -37,13 +37,18 @@ public final class ColorController {
     }
     private static Color[] getASHTheme(){
         return new Color[]{
-                new Color(251,251,251),
+                //new Color(251,251,251),
+                new Color(205,205,205),
                 new Color(58,70,76),
                 new Color(38,50,56),
                 new Color(18,30,36),
                 new Color(38,50,56),
                 new Color(68,80,86),
-                new Color(241,67,60)
+                new Color(241,67,60),
+                new Color(255,194,0),
+                new Color(69,189,255),
+                new Color(240,67,59),
+                new Color(0,239,192)
             };
     }
     
@@ -55,4 +60,8 @@ public final class ColorController {
     public static final Color FUNDO_MEDIO = THEME[4];
     public static final Color FUNDO_CLARO = THEME[5];
     public static final Color PROGRESS_BAR = THEME[6];
+    public static final Color AMARELO = THEME[7];
+    public static final Color AZUL = THEME[8];
+    public static final Color VERMELHO = THEME[9];
+    public static final Color VERDE = THEME[10];
 }
