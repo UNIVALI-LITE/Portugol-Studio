@@ -43,27 +43,15 @@ public final class TelaSobre extends JDialog implements Themeable{
 //        rotuloDescricao.setText(String.format(rotuloDescricao.getText(), PortugolStudio.getInstancia().getVersao()));
 
         configurarLinks();
-        jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
-        jScrollPane2.getVerticalScrollBar().setUnitIncrement(16);
         FabricaDicasInterface.criarTooltip(labellicensa, "Veja as Licensas do Software");
-        tabbedUsuarios.setUI(new PSOutTabbedPaneUI());
         
-        if (WeblafUtils.weblafEstaInstalado())
-        {
-            WeblafUtils.configuraWebLaf(jScrollPane1);
-            WeblafUtils.configuraWebLaf(jScrollPane2);
-        }
     }
     
     @Override
     public void configurarCores(){
-        painelHeader.setBackground(ColorController.FUNDO_ESCURO);
-        painelConteudo.setBackground(ColorController.FUNDO_CLARO);
-        paineInferior.setBackground(ColorController.FUNDO_MEDIO);
-        if (WeblafUtils.weblafEstaInstalado()) {
-          ((WebTabbedPaneUI)tabbedUsuarios.getUI()).setShadeWidth(0);
-        }
-        tabbedUsuarios.setForeground(ColorController.COR_LETRA);
+        painelConteudo.setBackground(ColorController.COR_PRINCIPAL);
+        paineInferior.setBackground(ColorController.FUNDO_ESCURO);
+        jLabel1.setBackground(ColorController.COR_PRINCIPAL);
     }
 
     private void configurarLinks()
@@ -107,24 +95,18 @@ public final class TelaSobre extends JDialog implements Themeable{
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         logoPortugolStudio = new br.univali.ps.ui.imagens.Logo();
         metaData = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        painelHeader = new javax.swing.JPanel();
-        logo1 = new br.univali.ps.ui.imagens.Logo();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         mainpanel = new javax.swing.JPanel();
         painelConteudo = new javax.swing.JPanel();
-        tabbedUsuarios = new javax.swing.JTabbedPane();
-        membrosAtivos = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
-        membrosInativos = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        logo1 = new br.univali.ps.ui.imagens.Logo();
         jLabel2 = new javax.swing.JLabel();
         paineInferior = new javax.swing.JPanel();
         rotuloGithub = new javax.swing.JLabel();
@@ -156,66 +138,30 @@ public final class TelaSobre extends JDialog implements Themeable{
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
 
-        painelHeader.setPreferredSize(new java.awt.Dimension(100, 150));
-        painelHeader.setLayout(new java.awt.BorderLayout());
-
-        logo1.setMaximumSize(new java.awt.Dimension(310, 100));
-        logo1.setMinimumSize(new java.awt.Dimension(310, 100));
-        logo1.setOpaque(false);
-        logo1.setPreferredSize(new java.awt.Dimension(310, 100));
-        painelHeader.add(logo1, java.awt.BorderLayout.CENTER);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel1.setOpaque(false);
-        jPanel1.setPreferredSize(new java.awt.Dimension(100, 200));
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Versão 2.5");
-        jPanel1.add(jLabel5, java.awt.BorderLayout.SOUTH);
-
-        painelHeader.add(jPanel1, java.awt.BorderLayout.EAST);
-
-        getContentPane().add(painelHeader, java.awt.BorderLayout.PAGE_START);
-
         mainpanel.setLayout(new java.awt.BorderLayout());
 
         painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
-        tabbedUsuarios.setBackground(new java.awt.Color(255, 255, 255));
-
-        membrosAtivos.setBackground(new java.awt.Color(255, 255, 255));
-        membrosAtivos.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane1.setOpaque(false);
-
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/membros/ativos.png"))); // NOI18N
+        jLabel1.setBackground(new java.awt.Color(102, 102, 255));
+        jLabel1.setText("<html>   <head>     <style>       body{         background-color: rgb(38,50,56);         color: rgb(205,205,205);       }       .ativo b{         color: rgb(0,239,192);       }       .inativo b{         color: rgb(255,194,0);       }       h1{         color: rgb(69,189,255);       }     </style>   </head>   <body>     <h1> Membros Ativos </h1>     <div class=\"ativo\">       <b>Adson Marques Da Silva Esteves :</b> Atua no projeto como programador e designer     </div>     <div class=\"ativo\">       <b>Alisson Steffens Henrique :</b> Atua no projeto como programador e designer     </div>     <div class=\"ativo\">       <b>André Luis Alice Raabe :</b> Atua no projeto como coordenador     </div>     <div class=\"ativo\">       <b>André Luiz Maciel Santana :</b> Atua no projeto como orientador     </div>     <div class=\"ativo\">       <b>Elieser A. de Jesus :</b> Atua no projeto como programador e designer     </div>     <div class=\"ativo\">       <b>Luiz Fernando Noschang :</b> Atua no projeto como programador e designer     </div>     <div class=\"ativo\">       <b>Paulo Eduardo Martins :</b> Atua no projeto como programador e editor de conteúdo     </div>     <h1> Membros Inativos </h1>     <div class=\"inativo\">       <b>Carlos Alexangre Krueger :</b> Atuou no projeto como editor de conteúdo     </div>     <div class=\"inativo\">       <b>Fillipi Pelz :</b> Atuou no projeto como programador     </div>     <div class=\"inativo\">       <b>Giordana M. da C. Valle :</b> Atuou no projeto como editora de conteúdo     </div>     <div class=\"inativo\">       <b>Nereu Oliveira :</b> Atuou no projeto como programador     </div>     <div class=\"inativo\">       <b>Paula Mannes :</b> Atuou no projeto como programadora     </div>     <div class=\"inativo\">       <b>Roberto Gonçalves Augusto Júnior :</b> Atuou no projeto como editor de conteúdo     </div>     </body> </html> ");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        jScrollPane1.setViewportView(jLabel1);
+        painelConteudo.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        membrosAtivos.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
-        tabbedUsuarios.addTab("Membros Ativos", membrosAtivos);
+        logo1.setMaximumSize(new java.awt.Dimension(310, 100));
+        logo1.setMinimumSize(new java.awt.Dimension(310, 100));
+        logo1.setOpaque(false);
+        jPanel1.add(logo1);
 
-        membrosInativos.setBackground(new java.awt.Color(255, 255, 255));
-        membrosInativos.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane2.setOpaque(false);
-
-        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/membros/inativos.png"))); // NOI18N
-        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        jScrollPane2.setViewportView(jLabel2);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/logo_lite.png"))); // NOI18N
+        jPanel1.add(jLabel2);
 
-        membrosInativos.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        tabbedUsuarios.addTab("Membros Inativos", membrosInativos);
-
-        painelConteudo.add(tabbedUsuarios, java.awt.BorderLayout.CENTER);
+        painelConteudo.add(jPanel1, java.awt.BorderLayout.WEST);
 
         mainpanel.add(painelConteudo, java.awt.BorderLayout.CENTER);
 
@@ -266,8 +212,10 @@ public final class TelaSobre extends JDialog implements Themeable{
         labellicensa.setMaximumSize(new java.awt.Dimension(48, 40));
         labellicensa.setMinimumSize(new java.awt.Dimension(48, 40));
         labellicensa.setPreferredSize(null);
-        labellicensa.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        labellicensa.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 labellicensaMouseClicked(evt);
             }
         });
@@ -289,24 +237,17 @@ public final class TelaSobre extends JDialog implements Themeable{
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labellicensa;
     private br.univali.ps.ui.imagens.Logo logo1;
     private br.univali.ps.ui.imagens.Logo logoPortugolStudio;
     private javax.swing.JPanel mainpanel;
-    private javax.swing.JPanel membrosAtivos;
-    private javax.swing.JPanel membrosInativos;
     private javax.swing.JPanel metaData;
     private javax.swing.JPanel paineInferior;
     private javax.swing.JPanel painelConteudo;
-    private javax.swing.JPanel painelHeader;
     private javax.swing.JLabel rotuloBitRock;
     private javax.swing.JLabel rotuloGithub;
     private javax.swing.JLabel rotuloOsi;
     private javax.swing.JLabel rotuloUnivali;
-    private javax.swing.JTabbedPane tabbedUsuarios;
     // End of variables declaration//GEN-END:variables
 }
