@@ -81,7 +81,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
-            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
     }
 

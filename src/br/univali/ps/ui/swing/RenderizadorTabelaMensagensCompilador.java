@@ -53,6 +53,10 @@ public final class RenderizadorTabelaMensagensCompilador extends DefaultTableCel
         {
             setBackground((row % 2 == 0) ? corPar : corImpar);
         }
+        else{
+            setBackground(ColorController.AZUL);
+            setForeground(ColorController.COR_PRINCIPAL);
+        }
         return renderizador;
     }
     

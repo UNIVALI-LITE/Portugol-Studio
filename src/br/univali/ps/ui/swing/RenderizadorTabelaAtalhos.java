@@ -44,6 +44,9 @@ public class RenderizadorTabelaAtalhos extends DefaultTableCellRenderer
         if (!selecionado)
         {
             setBackground((linha % 2 == 0) ? corPar : corImpar);
+        }else{
+            setBackground(ColorController.AZUL);
+            setForeground(ColorController.COR_PRINCIPAL);
         }
         if (coluna == 0)
         {
