@@ -122,7 +122,7 @@ public class Lancador {
                 }
 
                 ComponentResizer cr = new ComponentResizer();
-                cr.setMinimumSize(new Dimension(300, 300));
+                cr.setMinimumSize(new Dimension(800, 600));
                 cr.setMaximumSize(new Dimension(1920,1080));
                 cr.registerComponent(frame);
                 cr.setSnapSize(new Dimension(10, 10));
