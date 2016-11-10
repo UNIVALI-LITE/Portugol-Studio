@@ -28,6 +28,8 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Cursor;
 import java.io.File;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,8 +92,8 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
     private void tratarPorLocal(HyperlinkEvent evt) throws Exception
     {
         final JComponent componente = (JComponent) evt.getSource();
-
-        File arquivo = new File(evt.getURL().toURI());
+        URL fixedURL = new URL(evt.getURL().toString().replace(" ", "%20"));
+        File arquivo = new File(fixedURL.toURI());
         String codigoFonte = FileHandle.open(arquivo);
         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
 
@@ -114,8 +116,10 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
                 {
                     case PORLOCAL:
                         tratarPorLocal(evt);
+                    break;
                     case HTMLLOCAL:
                         loadPage((JEditorPane) evt.getSource(), evt);
+                    break;
                 }
 
             } catch (TipoUrlInvalidoException ex)
