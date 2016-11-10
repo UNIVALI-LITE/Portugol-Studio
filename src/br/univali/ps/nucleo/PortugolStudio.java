@@ -19,6 +19,9 @@ import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaSobre;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.telas.Sobre;
+import br.univali.ps.ui.window.DialogBorderPanel;
+import br.univali.ps.ui.window.OuterStaticPanel;
 import br.univali.ps.ui.window.OutsidePanel;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -45,8 +48,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 
@@ -76,7 +81,7 @@ public final class PortugolStudio
     /* Garante que o Portugol Studio não seja fechado enquanto o jar inicializador-ps.jar está sendo substituído. Assim evitamos problemas com a atualização */
     private boolean atualizandoInicializador = false;
 
-    private TelaSobre telaSobre = null;
+    private JDialog telaSobre = null;
     private OutsidePanel outSidePanel;
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
@@ -721,11 +726,12 @@ public final class PortugolStudio
         return gerenciadorAtualizacoes;
     }
 
-    public TelaSobre getTelaSobre()
+    public JDialog getTelaSobre()
     {
         if (telaSobre == null)
         {
             telaSobre = new TelaSobre();
+            
         }
 
         telaSobre.setLocationRelativeTo(null);

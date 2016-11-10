@@ -48,6 +48,7 @@ public class BorderPanel extends JPanel {
         private Image max;
         private WebButton minButton;
         private Image min;
+        private JLabel label;
         private Image icon;
 
         public BorderPanel() {
