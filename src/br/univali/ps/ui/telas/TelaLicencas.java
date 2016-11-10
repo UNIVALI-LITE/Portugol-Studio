@@ -3,24 +3,29 @@ package br.univali.ps.ui.telas;
 import br.univali.ps.ui.paineis.PainelLicenca;
 import br.univali.ps.ui.telas.utils.Licencas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.PSOutTabbedPaneUI;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public final class TelaLicencas extends javax.swing.JDialog
-{
+public final class TelaLicencas extends javax.swing.JDialog implements Themeable{
     private final List<PainelLicenca> paineis = new ArrayList<>();
     private Action acaoSair;
     private boolean carregado = false;
@@ -31,7 +36,7 @@ public final class TelaLicencas extends javax.swing.JDialog
 
         initComponents();
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(webButton1);
+            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
         setTitle("Licenças");
         setSize(640, 550);
@@ -56,6 +61,20 @@ public final class TelaLicencas extends javax.swing.JDialog
         });
 
         configurarAcaoSair();
+        configurarCores();
+    }
+    
+    @Override
+    public void configurarCores()
+    {
+        rotuloCarregando.setBackground(ColorController.COR_PRINCIPAL);
+        painelCarregamento.setBackground(ColorController.COR_PRINCIPAL);
+        painelConteudo.setBackground(ColorController.FUNDO_CLARO);
+        painelAlinhamento.setBackground(ColorController.FUNDO_CLARO);
+        painelTabulado.setUI(new PSOutTabbedPaneUI());
+        painelAlinhamento.setForeground(ColorController.COR_LETRA);
+        painelTabulado.setForeground(ColorController.COR_LETRA);
+        painelBotoes.setForeground(ColorController.COR_LETRA);
     }
 
     private void configurarAcaoSair()
@@ -88,13 +107,13 @@ public final class TelaLicencas extends javax.swing.JDialog
 
     private void criarPaineis()
     {
-        SwingUtilities.invokeLater(new Runnable()
+        Thread thread = new Thread(new Runnable()
         {
             @Override
             public void run()
             {
                 Licencas licencas = Licencas.carregar();
-
+                               
                 for (final Licencas.Recurso recurso : licencas.getRecursos())
                 {
                     if (recurso.getNome().equals("Portugol Studio"))
@@ -102,26 +121,35 @@ public final class TelaLicencas extends javax.swing.JDialog
                         recurso.setVersao(PortugolStudio.getInstancia().getVersao());
                     }
 
-                    PainelLicenca painelLicenca = new PainelLicenca(recurso);
-                    paineis.add(painelLicenca);
-
-                    painelTabulado.add(recurso.getNome(), painelLicenca);
-                    painelTabulado.setIconAt(painelTabulado.getTabCount() - 1, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));                    
+                    SwingUtilities.invokeLater(() ->
+                    {
+                        PainelLicenca painelLicenca = new PainelLicenca(recurso);
+                        paineis.add(painelLicenca);
+                        painelLicenca.setBackground(ColorController.COR_PRINCIPAL);
+                        painelLicenca.setForeground(ColorController.COR_LETRA);
+                        painelTabulado.add(recurso.getNome(), painelLicenca);
+                        painelTabulado.setIconAt(painelTabulado.getTabCount() - 1, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
+                    });
                 }
-                
-                painelConteudo.remove(painelCarregamento);
-                painelConteudo.add(painelAlinhamento, BorderLayout.CENTER);
-                
-                validate();
-                redefinirPaineis();
-                carregado = true;
+                SwingUtilities.invokeLater(() ->
+                {
+                    painelConteudo.remove(painelCarregamento);
+                    painelConteudo.add(painelAlinhamento, BorderLayout.CENTER);
+
+                    validate();
+                    redefinirPaineis();
+                    carregado = true;
+                });
             }
         });
+        thread.start();
+        
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         painelAlinhamento = new javax.swing.JPanel();
         painelTabulado = new javax.swing.JTabbedPane();
@@ -144,10 +172,11 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelBotoes.setPreferredSize(new java.awt.Dimension(10, 48));
         painelBotoes.setLayout(new java.awt.BorderLayout());
 
-        webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/home.png"))); // NOI18N
         webButton1.setText("Visitar Página");
-        webButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        webButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 webButton1ActionPerformed(evt);
             }
         });
@@ -164,15 +193,15 @@ public final class TelaLicencas extends javax.swing.JDialog
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
         painelCarregamento.setBackground(new java.awt.Color(255, 255, 255));
-        painelCarregamento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
+        painelCarregamento.setOpaque(false);
         painelCarregamento.setLayout(new java.awt.BorderLayout());
 
         rotuloCarregando.setBackground(new java.awt.Color(0, 0, 0));
         rotuloCarregando.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         rotuloCarregando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloCarregando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/loading.gif"))); // NOI18N
-        rotuloCarregando.setText("Carregando as licenças, por favor aguarde...");
+        rotuloCarregando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/load.gif"))); // NOI18N
         rotuloCarregando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        rotuloCarregando.setOpaque(true);
         painelCarregamento.add(rotuloCarregando, java.awt.BorderLayout.CENTER);
 
         painelConteudo.add(painelCarregamento, java.awt.BorderLayout.CENTER);
@@ -197,4 +226,6 @@ public final class TelaLicencas extends javax.swing.JDialog
     private javax.swing.JLabel rotuloCarregando;
     private com.alee.laf.button.WebButton webButton1;
     // End of variables declaration//GEN-END:variables
+
+    
 }

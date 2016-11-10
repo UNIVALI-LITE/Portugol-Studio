@@ -1,6 +1,7 @@
 package br.univali.ps.ui.paineis;
 
 import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.utils.Licencas;
 import javax.swing.SwingUtilities;
 
@@ -10,7 +11,7 @@ import javax.swing.SwingUtilities;
  */
 public final class PainelLicenca extends javax.swing.JPanel
 {
-    private final String htmlRotulos = "<html><body><div><b>%s:</b> %s</div></body></html>";
+    private final String htmlRotulos = "<html><head><style>b{ color: rgb(0,239,192); }</style></head><body><div><b>%s:</b> %s</div></body></html>";
     private final Licencas.Recurso recurso;
     
     public PainelLicenca(Licencas.Recurso recurso)
@@ -23,13 +24,22 @@ public final class PainelLicenca extends javax.swing.JPanel
         
         jTADescricao.setText(recurso.getDescricao());
         jTALicenca.setText(recurso.getLicenca());        
-        
+        WeblafUtils.configuraWebLaf(jSPLicenca);
+        WeblafUtils.configuraWebLaf(jSPDescricao);
         this.recurso = recurso;
     }
     private void configurarCores(){
         jTALicenca.setBackground(ColorController.FUNDO_CLARO);
         jTADescricao.setBackground(ColorController.FUNDO_CLARO);
         jPInformacoes.setBackground(ColorController.COR_PRINCIPAL);
+        jTALicenca.setForeground(ColorController.COR_LETRA);
+        jTADescricao.setForeground(ColorController.COR_LETRA);
+        jPInformacoes.setForeground(ColorController.COR_LETRA);
+        jLDescricao.setForeground(ColorController.COR_LETRA);
+        jLLicenca.setForeground(ColorController.COR_LETRA);;
+        jLNome.setForeground(ColorController.COR_LETRA);
+        jLUrl.setForeground(ColorController.COR_LETRA);
+        jLVersao.setForeground(ColorController.COR_LETRA);
     }
     public Licencas.Recurso getRecurso()
     {
@@ -54,7 +64,8 @@ public final class PainelLicenca extends javax.swing.JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPInformacoes = new javax.swing.JPanel();
@@ -109,7 +120,7 @@ public final class PainelLicenca extends javax.swing.JPanel
         jPInformacoes.add(jLUrl, gridBagConstraints);
 
         jLDescricao.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLDescricao.setText("<html><body><b>Descrição:</b></body></html>");
+        jLDescricao.setText("<html><head><style>b{ color: rgb(0,239,192); }</style></head><body><b>Descrição:</b></body></html>");
         jLDescricao.setPreferredSize(new java.awt.Dimension(200, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -146,7 +157,7 @@ public final class PainelLicenca extends javax.swing.JPanel
         jPInformacoes.add(jSPDescricao, gridBagConstraints);
 
         jLLicenca.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLLicenca.setText("<html><body><b>Licença:</b></body></html>");
+        jLLicenca.setText("<html><head><style>b{ color: rgb(0,239,192); }</style></head><body><b>Licença:</b></body></html>");
         jLLicenca.setPreferredSize(new java.awt.Dimension(200, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
