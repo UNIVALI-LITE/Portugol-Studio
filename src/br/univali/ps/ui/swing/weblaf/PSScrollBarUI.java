@@ -24,6 +24,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
  */
 public class PSScrollBarUI extends BasicScrollBarUI {
     private boolean mouseOver = false;
+    private boolean mousePressed=false;
     private int barRem = 1;
     private MouseAdapter mouseAdapter;
 
@@ -40,6 +41,18 @@ public class PSScrollBarUI extends BasicScrollBarUI {
             public void mouseExited(MouseEvent e)
             {
                 mouseOver = false;
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e)
+            {
+                mousePressed=true;
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {
+                mousePressed=false;
             }
             
         };
@@ -120,11 +133,11 @@ public class PSScrollBarUI extends BasicScrollBarUI {
         }
         Insets insets = scrollbar.getInsets();
         Rectangle thumbR = getThumbBounds();
-        if(mouseOver){
+        if(mouseOver || mousePressed){
             g.setColor(ColorController.FUNDO_ESCURO);
         }
         else{
-            g.setColor(ColorController.FUNDO_CLARO);
+            g.setColor(ColorController.FUNDO_CLARO.brighter());
         }
         if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
             g.fillRect(thumbR.x+barRem, thumbR.y, thumbR.width-barRem*2, thumbR.height);
