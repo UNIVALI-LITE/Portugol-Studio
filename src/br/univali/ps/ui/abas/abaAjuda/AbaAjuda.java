@@ -723,6 +723,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
         divisorLayout.setLeftComponent(painelArvore);
 
+        conteudo.setOpaque(false);
         scrollConteudo.setViewportView(conteudo);
 
         divisorLayout.setRightComponent(scrollConteudo);
