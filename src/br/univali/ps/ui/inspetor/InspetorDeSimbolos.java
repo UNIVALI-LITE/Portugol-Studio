@@ -89,6 +89,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     //do código fonte para o inspetor de símbolos
 
     private final Timer timerAtualizacao;
+    private static final int TEMPO_ATUALIZACAO = 250;
     
     private final List<InspetorDeSimbolosListener> listeners = new ArrayList<>();
 
@@ -101,7 +102,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         instalaObservadores();
         
-        timerAtualizacao = new Timer(500, (ev) -> { // atualiza inspetor a cada 500 ms quando o programa está executando
+        timerAtualizacao = new Timer(TEMPO_ATUALIZACAO, (ev) -> { // atualiza inspetor a cada TEMPO_ATUALIZACAO ms quando o programa está executando
             atualizaValoresVariaveisInspecionadas();
         });
         
