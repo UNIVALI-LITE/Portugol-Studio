@@ -26,7 +26,6 @@ import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
@@ -46,13 +45,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -70,7 +65,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  * @author elieser
@@ -88,13 +82,12 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
     private JTextArea textArea;//necessário para tratar a importação de variáveis para o inspetor de símbolos diretamente do código fonte
-    private Programa ultimoProgramaCompilado;//referência para o programa compilado, 
+    
+    private Programa programa;//referência para o programa compilado, 
     //utilizada para procurar variáveis no programa quando o usuário arrasta uma variável
     //do código fonte para o inspetor de símbolos
 
     private final List<InspetorDeSimbolosListener> listeners = new ArrayList<>();
-
-    private final Set<Simbolo> cacheDeSimbolos = new HashSet<>(); // armazena os símbolos modificados para poder atualizá-los quando um nó é inserido no inspetor
 
     public InspetorDeSimbolos() {
         model.clear();
@@ -106,6 +99,22 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         instalaObservadores();
     }
 
+    public void setPrograma(Programa programa)
+    {
+        /***
+            Sempre que o código fonte é alterado a AbaCodigoFonte seta o 'programa' no inspetor de símbolos.
+            Toda a árvore sintática é recriada e é necessário verificar se os símbolos que 
+            estão no inspetor ainda existem no código. Também é possível que os símbolos 
+            tenham sido renomeados, ou que o tipo deles tenha mudado.
+        */ 
+    
+        this.programa = programa;
+        if (model.isEmpty()) {
+            return;//não existem símbolos sendo inspecionados, não é necessário reconstruir a lista de símbolos inspecionados
+        }
+        SwingUtilities.invokeLater(new TarefaReconstrucaoNosInspecionados());
+    }
+    
     private void instalaObservadores() {
         addFocusListener(new FocusAdapter() {
 
@@ -270,7 +279,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
         ultimoItemModificado = null;
         setStatusDoDestaqueNosSimbolosInspecionados(true);
-        cacheDeSimbolos.clear();
         repaint();
     }
 
@@ -287,8 +295,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private boolean estaInicializando = false;
 
-    private void alteraVariavel(Variavel variavel, ItemDaListaParaVariavel item) {
-        item.setValor(variavel.getValor());
+    private void alteraVariavel(Object valor, ItemDaListaParaVariavel item) {
+        item.setValor(valor);
     }
 
     private void alteraMatriz(Matriz matriz, ItemDaListaParaMatriz item) {
@@ -324,27 +332,31 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    private void alteraItemDoInspetor(ItemDaLista itemDaLista, Simbolo simbolo) {
-        if (itemDaLista.ehVariavel()) {
-            Variavel variavel = (!(simbolo instanceof Ponteiro)) ? (Variavel) simbolo : (Variavel) ((Ponteiro) simbolo).getSimboloApontado();
-            alteraVariavel(variavel, (ItemDaListaParaVariavel) itemDaLista);
-        } else if (itemDaLista.ehMatriz()) {
-            Matriz matriz = !(simbolo instanceof Ponteiro) ? (Matriz) simbolo : (Matriz) ((Ponteiro) simbolo).getSimboloApontado();
-            alteraMatriz(matriz, ((ItemDaListaParaMatriz) itemDaLista));
-        } else {
-            Vetor vetor = !(simbolo instanceof Ponteiro) ? (Vetor) simbolo : (Vetor) ((Ponteiro) simbolo).getSimboloApontado();
-            alteraVetor(vetor, (ItemDaListaParaVetor) itemDaLista);
+    private void alteraItemDoInspetor(ItemDaLista itemDaLista, Object valorVariavel) 
+    {
+        if (valorVariavel == Programa.OBJETO_NULO) // não atualiza o inspetor se a variável ainda não recebeu um valor válido durante a execução do programa
+        {
+            return;
+        }
+        
+        if (itemDaLista.ehVariavel()) 
+        {
+            alteraVariavel(valorVariavel, (ItemDaListaParaVariavel) itemDaLista);
+        } 
+        else if (itemDaLista.ehMatriz()) 
+        {
+            //Matriz matriz = !(simbolo instanceof Ponteiro) ? (Matriz) simbolo : (Matriz) ((Ponteiro) simbolo).getSimboloApontado();
+            //alteraMatriz(matriz, ((ItemDaListaParaMatriz) itemDaLista));
+        } 
+        else 
+        {
+            //Vetor vetor = !(simbolo instanceof Ponteiro) ? (Vetor) simbolo : (Vetor) ((Ponteiro) simbolo).getSimboloApontado();
+            //alteraVetor(vetor, (ItemDaListaParaVetor) itemDaLista);
         }
     }
 
     private boolean atualizaNoDeclaracaoDeSimbolo(Simbolo simbolo)
     {
-        
-        if (!cacheDeSimbolos.contains(simbolo)) 
-        {
-            cacheDeSimbolos.add(simbolo);
-        }
-        
         NoDeclaracao noDeclaracao = (NoDeclaracao) simbolo.getOrigemDoSimbolo();
         ItemDaLista itemDaLista = getItemDoNo(noDeclaracao);
         
@@ -416,18 +428,53 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     }
 
     @Override
-    public void highlightLinha(int linha) {
-        for (int i = 0; i < model.getSize(); i++) {
-            ItemDaLista item = model.getElementAt(i);
-            item.resetaTempoDaUltimaAtualizacao();
-            item.setDesenhaDestaques(true);
-        }
-        repaint();
+    public void highlightLinha(int linha) 
+    {
+        SwingUtilities.invokeLater(() -> {
+            
+            if (programa == null)
+            {
+                return;
+            }
+            
+            for (int i = 0; i < model.getSize(); i++) 
+            {
+            
+                ItemDaLista item = model.getElementAt(i);
+                
+                int linhaDeclaracao = item.getNoDeclaracao().getTrechoCodigoFonte().getLinha();
+                Object valor = programa.getValorVariavelInspecionada(linhaDeclaracao);
+                if (valor != null)
+                {
+                    alteraItemDoInspetor(item, valor);
+                }
+            
+                item.resetaTempoDaUltimaAtualizacao();
+                item.setDesenhaDestaques(true);
+            }
+        
+            repaint();
+        });
     }
 
     @Override
-    public void execucaoPausada() {
-
+    public void execucaoPausada() 
+    {
+        if (programa == null)
+        {
+            return;
+        }
+        
+        System.out.println("Execução pausada para leitura");
+        for (int i = 0; i < model.getSize(); i++) 
+        {
+            ItemDaLista item = model.get(i);
+            int linhaDeclaracao = item.getNoDeclaracao().getTrechoCodigoFonte().getLinha();
+            Object valor = programa.getValorVariavelInspecionada(linhaDeclaracao);
+            alteraItemDoInspetor(item, valor);
+        }
+        
+        redesenhaItemsDaLista();
     }
 
     @Override
@@ -437,7 +484,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     
     @Override
     public void highlightDetalhadoAtual(int linha, int coluna, int tamanho) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -505,14 +552,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             try {
                 String stringArrastada = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                 if (stringArrastada.equals(textArea.getSelectedText())) {
-                    if (stringArrastada.isEmpty() || ultimoProgramaCompilado == null) {
+                    if (stringArrastada.isEmpty() || programa == null) {
                         return false;
                     }
                     int linha = textArea.getLineOfOffset(textArea.getSelectionStart()) + 1;
                     int coluna = textArea.getSelectionStart() - textArea.getLineStartOffset(linha - 1);
                     int tamanhoDoTexto = textArea.getSelectionEnd() - textArea.getSelectionStart();
                     ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(stringArrastada, linha, coluna, tamanhoDoTexto);
-                    ultimoProgramaCompilado.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
+                    programa.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
                     if (procuradorDeDeclaracao.encontrou()) {
                         adicionaNo(procuradorDeDeclaracao.getNoDeclaracao());
                     }
@@ -575,7 +622,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
         //se a expressão é uma referência para uma variável é necessário encontrar a declaração da variável para obter o seu valor
         if (expressao instanceof NoReferenciaVariavel) {
-            if (ultimoProgramaCompilado == null) //se não existe um programa então não é possível encontrar um símbolo
+            if (programa == null) //se não existe um programa então não é possível encontrar um símbolo
             {
                 return null;
             }
@@ -587,7 +634,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             int tamanho = trechoFonte.getTamanhoTexto();
             String nomeDoSimbolo = noReferencia.getNome();
             ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(nomeDoSimbolo, linha, coluna, tamanho);
-            ultimoProgramaCompilado.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
+            programa.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
             if (procuradorDeDeclaracao.encontrou()) {
 
                 NoDeclaracao noDeclaracao = procuradorDeDeclaracao.getNoDeclaracao();
@@ -643,6 +690,18 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return false;
     }
 
+    private void atualizaVariaveisInspecionadasNoPrograma()
+    {
+        if (programa != null)
+        {
+            for (int i = 0; i < model.getSize(); i++) {
+                ItemDaLista item = model.get(i);
+                int linhaDeclaracao = item.getNoDeclaracao().getTrechoCodigoFonte().getLinha();
+                programa.inspecionaVariavel(linhaDeclaracao);
+            }
+        }
+    }
+    
     public void adicionaNo(NoDeclaracao noTransferido) throws ExcecaoVisitaASA {
         boolean simboloInserido = false;
         if (noTransferido instanceof NoDeclaracaoVariavel) {
@@ -657,26 +716,19 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         if (simboloInserido) {
             //altera o destaque do símbolo recém inserido
             model.get(model.getSize() - 1).setDesenhaDestaques(!programaExecutando);
+            
+            atualizaVariaveisInspecionadasNoPrograma();
+            
+            int linhaDeclaracao = noTransferido.getTrechoCodigoFonte().getLinha();
 
             //atualiza o item do inspetor
             ItemDaLista item = getItemDoNo(noTransferido);
-            if (item != null) {
-                Simbolo simbolo = getSimboloDoNo(noTransferido);
-                if (simbolo != null) {
-                    alteraItemDoInspetor(item, simbolo);
-                    redesenhaItemsDaLista();
-                }
+            if (item != null && programa != null) {
+                Object valorVariavel = programa.getValorVariavelInspecionada(linhaDeclaracao);
+                alteraItemDoInspetor(item, valorVariavel);
+                redesenhaItemsDaLista();
             }
         }
-    }
-
-    private Simbolo getSimboloDoNo(NoDeclaracao noDeclaracao) {
-        for (Simbolo simbolo : cacheDeSimbolos) {
-            if (mesmoNo(noDeclaracao, simbolo.getOrigemDoSimbolo())) {
-                return simbolo;
-            }
-        }
-        return null;
     }
 
     private void notificaMudancaNaLista() {
@@ -685,11 +737,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    private class TarefaDeReconstrucaoDaListaDeNosInspecionados implements Runnable {
+    private class TarefaReconstrucaoNosInspecionados implements Runnable {
 
         @Override
         public void run() {
-            if (ultimoProgramaCompilado == null) {
+            if (programa == null) {
                 return;
             }
             try {
@@ -697,7 +749,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 //verifica quais nós devem ser mantidos no inspetor, os demais são apagados
                 final List<NoDeclaracao> nosQueSeraoMantidos = new ArrayList<>();
 
-                ultimoProgramaCompilado.getArvoreSintaticaAbstrata().aceitar(new VisitanteNulo() {
+                programa.getArvoreSintaticaAbstrata().aceitar(new VisitanteNulo() {
 
                     @Override
                     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
@@ -741,10 +793,15 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                     }
 
                 });
+                
                 model.clear();
+                
                 for (NoDeclaracao no : nosQueSeraoMantidos) {
                     adicionaNo(no);
                 }
+                
+                atualizaVariaveisInspecionadasNoPrograma();
+                
             } catch (ExcecaoVisitaASA e) {
                 e.printStackTrace(System.err);
             }
@@ -766,27 +823,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         boolean mesmoNome = no1.getNome().equals(no2.getNome());
         boolean mesmoTipo = no1.getTipoDado() == no2.getTipoDado();
         return mesmoEscopo && mesmoNome && mesmoTipo;
-    }
-
-    //sempre que o código fonte é alterado este listener é disparado. Toda a árvore sintática
-    //é recriada e é necessário verificar se os símbolos que estão no inspetor ainda existem
-    //no código. Também é possível que os símbolos tenham sido renomeados, ou que o tipo deles
-    //tenha mudado.
-    public void observar(RSyntaxTextArea textArea) {
-        PortugolParser.getParser(textArea).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent pce) {
-                String name = pce.getPropertyName();
-                if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name)) {
-                    ultimoProgramaCompilado = (Programa) pce.getNewValue();
-                    if (model.isEmpty()) {
-                        return;//não existem símbolos sendo inspecionados, não é necessário reconstruir a lista de símbolos inspecionados
-                    }
-                    SwingUtilities.invokeLater(new TarefaDeReconstrucaoDaListaDeNosInspecionados());
-                }
-            }
-        });
     }
 
     public static void main(String args[]) {

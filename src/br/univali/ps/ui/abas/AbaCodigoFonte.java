@@ -8,6 +8,7 @@ import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaOpcoesExecucao;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
+import br.univali.portugol.nucleo.ListenerCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
@@ -94,7 +95,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private final Map<Plugin, JToggleButton> botoesPlugins = new HashMap<>();
     private final Map<Action, JButton> mapaBotoesAcoesPlugins = new HashMap<>();
 
-    private Future<Programa> programaCompilado = null;
+    private Programa programa = null;
 
     private boolean podeSalvar = true;
     private boolean usuarioCancelouSalvamento = false;
@@ -856,26 +857,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
 
-        getEditor().getTextArea().addListenter((Set<Integer> pontosDeParada) -> {
+        getEditor().getTextArea().addListenter((pontosDeParada) -> {
             
-            if (programaCompilado != null) {
-                try
-                {
-                    System.out.println("Acessando programaCompilado para ativar pontos de parada no programa");
-                    Programa programa = programaCompilado.get();
-                    programa.ativaPontosDeParada(pontosDeParada);
-                }
-                catch(Exception e)
-                {
-                    LOGGER.log(Level.SEVERE, null, e);
-                }
+            if (programa != null) {
+                programa.ativaPontosDeParada(pontosDeParada);
             }
 
             salvaArquivo();
         });
 
         inspetorDeSimbolos.addListener(() -> {
-                    salvaArquivo();
+            
+            salvaArquivo();
+            
         });
 
         Configuracoes configuracoes = Configuracoes.getInstancia();
@@ -886,7 +880,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getAbaMensagensCompilador().adicionaAbaMensagemCompiladorListener(editor);
         adicionarAbaListener(AbaCodigoFonte.this);
         tree.observar(editor.getTextArea());
-        inspetorDeSimbolos.observar(editor.getTextArea());
 
         addComponentListener(new ComponentAdapter()
         {
@@ -952,7 +945,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         {
                             try 
                             {
-                                if (programaCompilado != null && programaCompilado.get().isExecutando()) 
+                                if (programa != null && programa.isExecutando()) 
                                 {
                                     JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
                                     editor.getTextArea().requestFocusInWindow();
@@ -1373,19 +1366,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void interromper()
     {
-        if (programaCompilado != null)
+        if (programa != null)
         {
-            try
-            {
-                System.out.println("Acessando programa compilado para interromper execução (interromper())");
-                Programa programa = programaCompilado.get();
-                programa.interromper();
-                //programaCompilado = null;
-            }
-            catch(Exception e)
-            {
-                LOGGER.log(Level.SEVERE, null, e);
-            }
+            programa.interromper();
         }
     }
 
@@ -1417,29 +1400,29 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
     
-//    private Future<Programa> compilaParaExecucao() throws ErroCompilacao
-//    {
-//        String codigoFonte = editor.getPortugolDocumento().getCodigoFonte();
-//        return Portugol.compilarParaExecucao(codigoFonte);
-//    }
+    private void setPrograma(Programa programaCompilado)
+    {
+        programa = programaCompilado;
+        inspetorDeSimbolos.setPrograma(programa);
+    }
     
     private void compilaProgramaParaExecucao()
     {
-        if (programaCompilado != null && !programaCompilado.isCancelled()) 
-        {
-            programaCompilado.cancel(true);
-        }
-
-        try 
-        {
-            LOGGER.log(Level.INFO, "Documento modificado, invocando compilação para execução {0} ", Thread.currentThread().getName());
+        
             String codigoFonte = editor.getTextArea().getText();
-            programaCompilado = Portugol.compilarParaExecucao(codigoFonte);
-        } 
-        catch (ErroCompilacao erroCompilacao) 
-        {
-            exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
-        }
+            final ListenerCompilacao listener = new ListenerCompilacao() {
+                @Override
+                public void compilacaoParaExecucaoFinalizada(Programa programaCompilado) {
+                    setPrograma(programaCompilado);
+                }
+
+                @Override
+                public void errosDeCompilacaoDetectados(ErroCompilacao erro) {
+                    programa = erro.getResultadoAnalise().getPrograma();
+                }
+            };
+            
+            Portugol.compilarParaExecucao(codigoFonte, listener);
     }
     
     @Override
@@ -1447,9 +1430,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         compilaProgramaParaExecucao();
         
-        atualizaStatusAcaoSalvar(modificado);
+        SwingUtilities.invokeLater(() -> {
+        
+            atualizaStatusAcaoSalvar(modificado);
 
-        atualizaCabecalho(modificado);
+            atualizaCabecalho(modificado);
+        
+        });
     }
     
     private void atualizaCabecalho(boolean documentoFoiModificado)
@@ -1483,20 +1470,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         this.selecionar();
         usuarioCancelouSalvamento = false;
 
-        if (programaCompilado != null && !programaCompilado.isCancelled())
+        if (programa != null)
         {
-            try
-            {
-                Programa programa = programaCompilado.get();
-                if (programa.isExecutando())
-                {
-                    JOptionPane.showMessageDialog(this, String.format("O programa desta aba (%s) ainda está em execução.\nEncerre o programa antes de fechar a aba.", getCabecalho().getTitulo()), "Aviso", JOptionPane.WARNING_MESSAGE);
-                    return false;
-                }
-            }
-            catch(Exception e)
-            {
-                //LOGGER.log(Level.SEVERE, null, e);
+            if (programa.isExecutando()) {
+                JOptionPane.showMessageDialog(this, String.format("O programa desta aba (%s) ainda está em execução.\nEncerre o programa antes de fechar a aba.", getCabecalho().getTitulo()), "Aviso", JOptionPane.WARNING_MESSAGE);
+                return false;
             }
         }
 
@@ -1541,34 +1519,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento();
     }
 
-    private Programa getProgramaCompilado() throws ErroCompilacao, InterruptedException
-    {
-        try
-        {
-            return programaCompilado.get();
-        }
-        catch(ExecutionException excecao)
-        {
-            if (excecao.getCause() instanceof ErroCompilacao)
-            {
-                throw (ErroCompilacao)excecao.getCause();
-            }
-            else
-            {
-                LOGGER.log(Level.SEVERE, null, excecao);
-            }
-        }
-        return null;
-    }
-    
     private void executar(Programa.Estado estado) throws InterruptedException, ErroCompilacao
     {
-        //compilaProgramaParaExecucao();
-        
-        Programa programa = getProgramaCompilado();
         if (programa == null)
         {
-            LOGGER.log(Level.SEVERE, "Não foi possível obter a instância de Programa!");
+            LOGGER.log(Level.SEVERE, "O programa está nulo, não é possível executar!");
             return;
         }
 
@@ -1596,16 +1551,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucao.isCancelado()))
                 {
-                    programa.adicionarObservadorExecucao(new ObservadorExecucao());
-                    programa.adicionarObservadorExecucao(editor);
-                    programa.adicionarObservadorExecucao(inspetorDeSimbolos);
-
-                    painelSaida.getConsole().registrarComoEntrada(programa);
-                    painelSaida.getConsole().registrarComoSaida(programa);
-
-                    editor.iniciarExecucao(depurando);
-                    programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
-                    programa.executar(telaOpcoesExecucao.getParametros(), estado);
+                    ResultadoAnalise resultadoAnalise = programa.getResultadoAnalise();
+                    if (!resultadoAnalise.contemErros())
+                    {
+                        programa.adicionarObservadorExecucao(new ObservadorExecucao());
+                        programa.adicionarObservadorExecucao(editor);
+                        programa.adicionarObservadorExecucao(inspetorDeSimbolos);
+                        
+                        painelSaida.getConsole().registrarComoEntrada(programa);
+                        painelSaida.getConsole().registrarComoSaida(programa);
+                        
+                        editor.iniciarExecucao(depurando);
+                        programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
+                        programa.executar(telaOpcoesExecucao.getParametros(), estado);
+                    }
+                    else
+                    {
+                        exibirResultadoAnalise(resultadoAnalise);
+                    }
                 }
             }
             catch (Exception e)
@@ -1646,30 +1609,34 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void exibirResultadoAnalise(ResultadoAnalise resultadoAnalise)
     {
-        for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
-        {
-            if (erro instanceof ErroExpressoesForaEscopoPrograma)
+        SwingUtilities.invokeLater(() -> {
+            
+            for (ErroSintatico erro : resultadoAnalise.getErrosSintaticos())
             {
-                try
+                if (erro instanceof ErroExpressoesForaEscopoPrograma)
                 {
-                    ErroExpressoesForaEscopoPrograma erroEx = (ErroExpressoesForaEscopoPrograma) erro;
-                    int posicao = erroEx.getPosicao();
-                    int linha = editor.getTextArea().getLineOfOffset(posicao);
-                    int coluna = posicao - editor.getTextArea().getLineStartOffset(linha);
-
-                    erroEx.setLinha(linha + 1);
-                    erroEx.setColuna(coluna + 1);
-                }
-                catch (BadLocationException ex)
-                {
-
+                    try
+                    {
+                        ErroExpressoesForaEscopoPrograma erroEx = (ErroExpressoesForaEscopoPrograma) erro;
+                        int posicao = erroEx.getPosicao();
+                        int linha = editor.getTextArea().getLineOfOffset(posicao);
+                        int coluna = posicao - editor.getTextArea().getLineStartOffset(linha);
+                        
+                        erroEx.setLinha(linha + 1);
+                        erroEx.setColuna(coluna + 1);
+                    }
+                    catch (BadLocationException ex)
+                    {
+                        
+                    }
                 }
             }
-        }
 
-        AbaMensagemCompilador abaMensagensCompilador = painelSaida.getAbaMensagensCompilador();
-        abaMensagensCompilador.atualizar(resultadoAnalise);
-        abaMensagensCompilador.selecionar();
+            AbaMensagemCompilador abaMensagensCompilador = painelSaida.getAbaMensagensCompilador();
+            abaMensagensCompilador.atualizar(resultadoAnalise);
+            abaMensagensCompilador.selecionar();
+        
+        });            
         
     }
 
@@ -2166,47 +2133,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             });
             
             /***
-             *      Quando termina a exceução o programa compilado é invalidado, forçando a 
-             * recompilação do programa na próxima execução. A ideia original era reutilizar
-             * o programa compilado para evitar novas compilações, entretanto essa tarefa se 
-             * mostrou mais complicada do que parecia. O problema é que quando um programa é
-             * compilado para execução as inicializações dos atributos acontecem, e quando
-             * esta mesmo programa é re-executado essas inicializações não acontecem novamente.
+             * Quando termina a exceução acontece a recompilação do programa. 
+             * A ideia original era reutilizar o programa compilado para evitar novas 
+             * compilações, entretanto essa tarefa se mostrou mais complicada do que parecia. 
+             * O problema é que quando um programa é compilado para execução as inicializações 
+             * dos atributos acontecem, e quando esta mesmo programa é re-executado essas inicializações não acontecem novamente.
              * Com isso, a segunda execução do programa vai utilizar atributos cujos valores
              * não são reinicializados a cada nova execução. Uma solução seria gerar todo o código
              * de inicialização de atributos em um método específico e reinvocar este método no início
              * da execução dos programas.
              */
-            programaCompilado.cancel(true);
             
             // solicita uma nova compilação em background
             compilaProgramaParaExecucao();
-            
-            
+
         }
 
         @Override
         public void execucaoPausada() {
-            SwingUtilities.invokeLater(() -> {
-                setaAtivacaoBotoesExecucao(false);
-            });
+            setaAtivacaoBotoesExecucao(false);
         }
 
         @Override
         public void execucaoResumida() {
-            SwingUtilities.invokeLater(() -> {
-                setaAtivacaoBotoesExecucao(true);
-            });
-        }
-        
-        private void setaAtivacaoBotoesExecucao(boolean ativados)
-        {
-            acaoExecutarPasso.setEnabled(ativados);
-            acaoExecutarPontoParada.setEnabled(ativados);
+            setaAtivacaoBotoesExecucao(true);
         }
 
     }
 
+    private void setaAtivacaoBotoesExecucao(boolean ativados) 
+    {
+        SwingUtilities.invokeLater(() -> {
+            
+            acaoExecutarPasso.setEnabled(ativados);
+            acaoExecutarPontoParada.setEnabled(ativados);
+        
+        });
+    }
+    
+    
 //    private static class PoolAbasCodigoFonte extends PoolAbstrato
 //    {
 //

@@ -10,6 +10,7 @@ import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.ui.swing.ResultadoAnaliseTableModel;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.weblaf.WeblafUtils;
+import com.alee.utils.SwingUtils;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -98,7 +99,10 @@ public final class AbaMensagemCompilador extends Aba
             }
         }
 
-        tabelaModel.setResultadoAnalise(resultadoAnalise);
+        SwingUtils.invokeLater(() -> {
+            tabelaModel.setResultadoAnalise(resultadoAnalise);
+        });
+        
     }
 
     void limpar()
