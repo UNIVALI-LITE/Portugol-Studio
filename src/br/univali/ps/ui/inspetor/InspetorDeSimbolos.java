@@ -63,6 +63,7 @@ import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 
@@ -87,6 +88,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     //utilizada para procurar variáveis no programa quando o usuário arrasta uma variável
     //do código fonte para o inspetor de símbolos
 
+    private final Timer timerAtualizacao;
+    
     private final List<InspetorDeSimbolosListener> listeners = new ArrayList<>();
 
     public InspetorDeSimbolos() {
@@ -97,6 +100,12 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         setCellRenderer(new RenderizadorDaLista());
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         instalaObservadores();
+        
+        timerAtualizacao = new Timer(500, (ev) -> { // atualiza inspetor a cada 500 ms quando o programa está executando
+            atualizaValoresVariaveisInspecionadas();
+        });
+        
+        timerAtualizacao.setRepeats(true);
     }
 
     public void setPrograma(Programa programa)
@@ -278,6 +287,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             model.getElementAt(i).limpa();
         }
         ultimoItemModificado = null;
+        timerAtualizacao.stop();
         setStatusDoDestaqueNosSimbolosInspecionados(true);
         repaint();
     }
@@ -425,10 +435,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     public void execucaoIniciada(Programa programa) {
         programaExecutando = true;
         setStatusDoDestaqueNosSimbolosInspecionados(false);
+        timerAtualizacao.start();
     }
 
-    @Override
-    public void highlightLinha(int linha) 
+    private void atualizaValoresVariaveisInspecionadas()
     {
         SwingUtilities.invokeLater(() -> {
             
@@ -455,6 +465,12 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
             repaint();
         });
+    }
+    
+    @Override
+    public void highlightLinha(int linha) 
+    {
+        atualizaValoresVariaveisInspecionadas();
     }
 
     @Override
