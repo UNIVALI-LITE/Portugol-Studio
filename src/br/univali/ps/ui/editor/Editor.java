@@ -1471,6 +1471,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         try
         {
+            if (linha <= 0)
+            {
+                return;
+            }
+            
             int nova = textArea.getLineStartOffset(linha - 1) + coluna;
 
             if (nova >= 0 && nova < textArea.getText().length())

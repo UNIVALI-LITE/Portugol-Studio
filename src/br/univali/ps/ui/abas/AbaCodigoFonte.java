@@ -1409,20 +1409,29 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void compilaProgramaParaExecucao()
     {
         
-            String codigoFonte = editor.getTextArea().getText();
-            final ListenerCompilacao listener = new ListenerCompilacao() {
-                @Override
-                public void compilacaoParaExecucaoFinalizada(Programa programaCompilado) {
-                    setPrograma(programaCompilado);
-                }
+        String codigoFonte = editor.getTextArea().getText();
+        final ListenerCompilacao listener = new ListenerCompilacao() {
 
-                @Override
-                public void errosDeCompilacaoDetectados(ErroCompilacao erro) {
-                    programa = erro.getResultadoAnalise().getPrograma();
-                }
-            };
-            
-            Portugol.compilarParaExecucao(codigoFonte, listener);
+            @Override
+            public void compilacaoParaExecucaoFinalizada(Programa programaCompilado) {
+                setPrograma(programaCompilado);
+                setaAtivacaoBotoesExecucao(true); // pode executar
+            }
+
+            @Override
+            public void errosDeCompilacaoDetectados(ErroCompilacao erro) {
+                programa = erro.getResultadoAnalise().getPrograma();
+                setaAtivacaoBotoesExecucao(true); // pode executar
+            }
+
+            @Override
+            public void compilacaoParaExecucaoIniciada() {
+                setaAtivacaoBotoesExecucao(false); // desabilita execução até que a compilação tenha sido finalizada
+            }
+
+        };
+
+        Portugol.compilarParaExecucao(codigoFonte, listener);
     }
     
     @Override
