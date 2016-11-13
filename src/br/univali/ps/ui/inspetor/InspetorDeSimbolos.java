@@ -329,42 +329,15 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    private void alteraVetor(Vetor vetor, ItemDaListaParaVetor item) {
-        //quando está inicializando todas as posições do vetor são setadas, quando não 
-        //está apenas a última posição modificada no vetor é atualizada (o loop tem apenas uma iteração)
-        if (!item.numeroDeColunasFoiInicializado()) {
-            item.setNumeroDeColunas(vetor.getTamanho());
-        }
-        int indiceInicial = (estaInicializando) ? 0 : vetor.getUltimoIndiceModificado();
-        int indiceFinal = (estaInicializando) ? vetor.getTamanho() : indiceInicial + 1;
-        for (int i = indiceInicial; i < indiceFinal; i++) {
-            Object valor = vetor.getValor(i);
-            item.set(valor, i);
-        }
-    }
+    private void alteraVetor(Object valor, int coluna, ItemDaListaParaVetor item) {
 
-    private void alteraItemDoInspetor(ItemDaLista itemDaLista, Object valorVariavel) 
-    {
-        if (valorVariavel == Programa.OBJETO_NULO) // não atualiza o inspetor se a variável ainda não recebeu um valor válido durante a execução do programa
-        {
-            return;
+        if (!item.numeroDeColunasFoiInicializado()) {
+            //item.setNumeroDeColunas(vetor.getTamanho());
         }
         
-        if (itemDaLista.ehVariavel()) 
-        {
-            alteraVariavel(valorVariavel, (ItemDaListaParaVariavel) itemDaLista);
-        } 
-        else if (itemDaLista.ehMatriz()) 
-        {
-            //Matriz matriz = !(simbolo instanceof Ponteiro) ? (Matriz) simbolo : (Matriz) ((Ponteiro) simbolo).getSimboloApontado();
-            //alteraMatriz(matriz, ((ItemDaListaParaMatriz) itemDaLista));
-        } 
-        else 
-        {
-            //Vetor vetor = !(simbolo instanceof Ponteiro) ? (Vetor) simbolo : (Vetor) ((Ponteiro) simbolo).getSimboloApontado();
-            //alteraVetor(vetor, (ItemDaListaParaVetor) itemDaLista);
-        }
+        item.set(valor, coluna);
     }
+
 
     /**
      * *
@@ -439,13 +412,22 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             
                 ItemDaLista item = model.getElementAt(i);
                 
-                int ID = ((NoDeclaracaoVariavel)item.getNoDeclaracao()).getID();
-                Object valor = programa.getValorVariavelInspecionada(ID);
-                if (valor != null)
+                NoDeclaracao noDeclaracao = item.getNoDeclaracao();
+                int ID = ((NoDeclaracaoInicializavel)noDeclaracao).getID();
+                
+                if (noDeclaracao instanceof NoDeclaracaoVariavel)
                 {
-                    alteraItemDoInspetor(item, valor);
+                    Object valor = programa.getValorVariavelInspecionada(ID);
+                    alteraVariavel(valor, (ItemDaListaParaVariavel)item);
                 }
-            
+                else if (noDeclaracao instanceof NoDeclaracaoVetor)
+                {
+                    Object valor = programa.getValorVetorInspecionado(ID);
+                    int coluna = programa.getUltimaColunaAlterada(ID);
+                    alteraVetor(valor, coluna, (ItemDaListaParaVetor)item);
+                }
+                
+
                 item.resetaTempoDaUltimaAtualizacao();
                 item.setDesenhaDestaques(true);
             }
