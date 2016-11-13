@@ -558,7 +558,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         model.addElement(item);
         if (programa != null)
         {
-            programa.inspecionaVariavel(noTransferido.getID());
+            programa.inspecionaVariavel(noTransferido.getIdParaInspecao());
         }
         return true;
     }
@@ -575,7 +575,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             model.addElement(item);
             if (programa != null)
             {
-                programa.inspecionaVetor(declaracaoVetor.getID(), colunas);
+                programa.inspecionaVetor(declaracaoVetor.getIdParaInspecao(), colunas);
             }
             return true;
         }
