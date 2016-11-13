@@ -582,6 +582,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private boolean adicionaNoVariavel(NoDeclaracaoVariavel noTransferido) {
         ItemDaListaParaVariavel item = new ItemDaListaParaVariavel((NoDeclaracaoVariavel) noTransferido);
         model.addElement(item);
+        if (programa != null)
+        {
+            programa.inspecionaVariavel(noTransferido.getID());
+        }
         return true;
     }
 
@@ -595,6 +599,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         if (colunas > 0) {
             ItemDaListaParaVetor item = new ItemDaListaParaVetor(colunas, declaracaoVetor);
             model.addElement(item);
+            if (programa != null)
+            {
+                programa.inspecionaVetor(declaracaoVetor.getID(), colunas);
+            }
             return true;
         }
         return false;
@@ -679,51 +687,30 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return false;
     }
 
-    private void atualizaVariaveisInspecionadasNoPrograma()
+    public void adicionaNo(NoDeclaracao noTransferido) throws ExcecaoVisitaASA 
     {
-        if (programa != null)
-        {
-            for (int i = 0; i < model.getSize(); i++) {
-                NoDeclaracao declaracao = model.get(i).getNoDeclaracao();
-                if (declaracao instanceof NoDeclaracaoVariavel)
-                {
-                    int ID = ((NoDeclaracaoVariavel)declaracao).getID();
-                    programa.inspecionaVariavel(ID);
-                }
-            }
-        }
-    }
-    
-    public void adicionaNo(NoDeclaracao noTransferido) throws ExcecaoVisitaASA {
         boolean simboloInserido = false;
-        if (noTransferido instanceof NoDeclaracaoVariavel) {
+        if (noTransferido instanceof NoDeclaracaoVariavel) 
+        {
             simboloInserido = adicionaNoVariavel((NoDeclaracaoVariavel) noTransferido);
-        } else if (noTransferido instanceof NoDeclaracaoParametro) {
+        } 
+        else if (noTransferido instanceof NoDeclaracaoParametro) 
+        {
             simboloInserido = adicionaNoParametro((NoDeclaracaoParametro) noTransferido);
-        } else if (noTransferido instanceof NoDeclaracaoVetor) {
+        } 
+        else if (noTransferido instanceof NoDeclaracaoVetor) 
+        {
             simboloInserido = adicionaNoVetor((NoDeclaracaoVetor) noTransferido);
-        } else if (noTransferido instanceof NoDeclaracaoMatriz) {
+        } 
+        else if (noTransferido instanceof NoDeclaracaoMatriz) 
+        {
             simboloInserido = adicionaNoMatriz((NoDeclaracaoMatriz) noTransferido);
         }
-        if (simboloInserido) {
+        if (simboloInserido) 
+        {
             //altera o destaque do símbolo recém inserido
             model.get(model.getSize() - 1).setDesenhaDestaques(!programaExecutando);
-            
-            atualizaVariaveisInspecionadasNoPrograma();
-            
-            if (noTransferido instanceof NoDeclaracaoVariavel)
-            {
-                
-                int ID = ((NoDeclaracaoVariavel)noTransferido).getID();
-
-                //atualiza o item do inspetor
-                ItemDaLista item = getItemDoNo(noTransferido);
-                if (item != null && programa != null) {
-                    Object valorVariavel = programa.getValorVariavelInspecionada(ID);
-                    alteraItemDoInspetor(item, valorVariavel);
-                    redesenhaItemsDaLista();
-                }
-            }
+            redesenhaItemsDaLista();
         }
     }
 
@@ -795,8 +782,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 for (NoDeclaracao no : nosQueSeraoMantidos) {
                     adicionaNo(no);
                 }
-                
-                atualizaVariaveisInspecionadasNoPrograma();
                 
             } catch (ExcecaoVisitaASA e) {
                 e.printStackTrace(System.err);
