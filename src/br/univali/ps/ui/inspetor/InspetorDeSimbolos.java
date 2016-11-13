@@ -453,8 +453,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             
                 ItemDaLista item = model.getElementAt(i);
                 
-                int linhaDeclaracao = item.getNoDeclaracao().getTrechoCodigoFonte().getLinha();
-                Object valor = programa.getValorVariavelInspecionada(linhaDeclaracao);
+                int ID = ((NoDeclaracaoVariavel)item.getNoDeclaracao()).getID();
+                Object valor = programa.getValorVariavelInspecionada(ID);
                 if (valor != null)
                 {
                     alteraItemDoInspetor(item, valor);
@@ -464,7 +464,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 item.setDesenhaDestaques(true);
             }
         
-            repaint();
+            redesenhaItemsDaLista();
         });
     }
     
@@ -477,21 +477,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     @Override
     public void execucaoPausada() 
     {
-        if (programa == null)
-        {
-            return;
-        }
-        
-        System.out.println("Execução pausada para leitura");
-        for (int i = 0; i < model.getSize(); i++) 
-        {
-            ItemDaLista item = model.get(i);
-            int linhaDeclaracao = item.getNoDeclaracao().getTrechoCodigoFonte().getLinha();
-            Object valor = programa.getValorVariavelInspecionada(linhaDeclaracao);
-            alteraItemDoInspetor(item, valor);
-        }
-        
-        redesenhaItemsDaLista();
+        atualizaValoresVariaveisInspecionadas();
     }
 
     @Override
@@ -712,9 +698,12 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         if (programa != null)
         {
             for (int i = 0; i < model.getSize(); i++) {
-                ItemDaLista item = model.get(i);
-                int linhaDeclaracao = item.getNoDeclaracao().getTrechoCodigoFonte().getLinha();
-                programa.inspecionaVariavel(linhaDeclaracao);
+                NoDeclaracao declaracao = model.get(i).getNoDeclaracao();
+                if (declaracao instanceof NoDeclaracaoVariavel)
+                {
+                    int ID = ((NoDeclaracaoVariavel)declaracao).getID();
+                    programa.inspecionaVariavel(ID);
+                }
             }
         }
     }
@@ -736,14 +725,18 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             
             atualizaVariaveisInspecionadasNoPrograma();
             
-            int linhaDeclaracao = noTransferido.getTrechoCodigoFonte().getLinha();
+            if (noTransferido instanceof NoDeclaracaoVariavel)
+            {
+                
+                int ID = ((NoDeclaracaoVariavel)noTransferido).getID();
 
-            //atualiza o item do inspetor
-            ItemDaLista item = getItemDoNo(noTransferido);
-            if (item != null && programa != null) {
-                Object valorVariavel = programa.getValorVariavelInspecionada(linhaDeclaracao);
-                alteraItemDoInspetor(item, valorVariavel);
-                redesenhaItemsDaLista();
+                //atualiza o item do inspetor
+                ItemDaLista item = getItemDoNo(noTransferido);
+                if (item != null && programa != null) {
+                    Object valorVariavel = programa.getValorVariavelInspecionada(ID);
+                    alteraItemDoInspetor(item, valorVariavel);
+                    redesenhaItemsDaLista();
+                }
             }
         }
     }
