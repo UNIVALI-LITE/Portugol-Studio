@@ -366,20 +366,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    private boolean atualizaNoDeclaracaoDeSimbolo(Simbolo simbolo)
-    {
-        NoDeclaracao noDeclaracao = (NoDeclaracao) simbolo.getOrigemDoSimbolo();
-        ItemDaLista itemDaLista = getItemDoNo(noDeclaracao);
-        
-        if (itemDaLista != null) 
-        {
-            alteraItemDoInspetor(itemDaLista, simbolo);
-            return true; //retorna verdadeiro quando atualiza o símbolo no inspetor
-        }
-
-        return false;
-    }
-
     /**
      * *
      * desenha apenas as regiões dos items que podem ser repintados. Os itens
