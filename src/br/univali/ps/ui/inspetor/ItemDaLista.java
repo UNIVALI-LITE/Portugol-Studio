@@ -6,11 +6,11 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
-import br.univali.portugol.nucleo.asa.NoInspecionavel;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.ui.utils.IconFactory;
 import javax.swing.Icon;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInspecionavel;
 
 /**
  *
@@ -28,7 +28,7 @@ public abstract class ItemDaLista {
 
     public ItemDaLista(NoDeclaracao no) {
         this.noDeclaracao = no;
-        ID = ((NoInspecionavel) no).getIdParaInspecao();
+        ID = ((NoDeclaracaoInspecionavel) no).getIdParaInspecao();
     }
 
     public int getID() {

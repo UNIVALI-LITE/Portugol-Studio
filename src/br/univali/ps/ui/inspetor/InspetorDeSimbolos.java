@@ -306,39 +306,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private boolean estaInicializando = false;
 
-    private void alteraVariavel(Object valor, ItemDaListaParaVariavel item) {
-        item.setValor(valor);
-    }
-
-    private void alteraMatriz(Matriz matriz, ItemDaListaParaMatriz item) {
-        if (!item.dimensoesForamInicializadas()) {//só aconte quando é um parâmetro
-            item.inicializaDimensoes(matriz.getNumeroLinhas(), matriz.getNumeroColunas());
-            recriaCacheDaAlturaDosItems();
-        }
-        //quando está inicializando todas as posições da matriz são setadas, quando não 
-        //está apenas a última posição modificada na matriz é atualizada (cada loop tem apenas uma iteração)
-        int indiceInicialLinha = (estaInicializando) ? 0 : matriz.getUltimaLinhaModificada();
-        int indiceFinalLinha = (estaInicializando) ? matriz.getNumeroLinhas() : indiceInicialLinha + 1;
-        int indiceInicialColuna = (estaInicializando) ? 0 : matriz.getUltimaColunaModificada();
-        int indiceFinalColuna = (estaInicializando) ? matriz.getNumeroColunas() : indiceInicialColuna + 1;
-        for (int linha = indiceInicialLinha; linha < indiceFinalLinha; linha++) {
-            for (int coluna = indiceInicialColuna; coluna < indiceFinalColuna; coluna++) {
-                Object valor = matriz.getValor(linha, coluna);
-                item.set(valor, linha, coluna);
-            }
-        }
-    }
-
-    private void alteraVetor(Object valor, int coluna, ItemDaListaParaVetor item) {
-
-        if (!item.numeroDeColunasFoiInicializado()) {
-            //item.setNumeroDeColunas(vetor.getTamanho());
-        }
-        
-        item.set(valor, coluna);
-    }
-
-
     /**
      * *
      * desenha apenas as regiões dos items que podem ser repintados. Os itens
@@ -412,13 +379,20 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 if (item.ehVariavel())
                 {
                     Object valor = programa.getValorVariavelInspecionada(ID);
-                    alteraVariavel(valor, (ItemDaListaParaVariavel)item);
+                    ((ItemDaListaParaVariavel)item).setValor(valor);
                 }
                 else if (item.ehVetor())
                 {
-                    Object valor = programa.getValorVetorInspecionado(ID);
-                    int coluna = programa.getUltimaColunaAlterada(ID);
-                    alteraVetor(valor, coluna, (ItemDaListaParaVetor)item);
+                    Object valor = programa.getValorNoVetorInspecionado(ID); // último valor modificado
+                    int coluna = programa.getUltimaColunaAlteradaNoVetor(ID);
+                    ((ItemDaListaParaVetor)item).set(valor, coluna);
+                }
+                else if (item.ehMatriz())
+                {
+                    Object valor = programa.getValorNaMatrizInspecionada(ID); // último valor modificado
+                    int coluna = programa.getUltimaColunaAlteradaNaMatriz(ID);
+                    int linha = programa.getUltimaLinhaAlteradaNaMatriz(ID);
+                    ((ItemDaListaParaMatriz)item).set(valor, linha, coluna);
                 }
                 
                 item.setDesenhaDestaques(true);
@@ -630,6 +604,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
         if (colunas > 0 && linhas > 0) {
             model.addElement(new ItemDaListaParaMatriz(linhas, colunas, noTransferido));
+            if (programa != null)
+            {
+                programa.inspecionaMatriz(noTransferido.getIdParaInspecao(), linhas, colunas);
+            }
             return true;
         }
         return false;
