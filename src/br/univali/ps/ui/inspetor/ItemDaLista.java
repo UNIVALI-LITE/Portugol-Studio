@@ -17,8 +17,7 @@ import javax.swing.Icon;
 public abstract class ItemDaLista {
 
     protected final NoDeclaracao noDeclaracao;
-    private long ultimaPintura = 0; //timestamp da ultima atualização
-    protected static final long TEMPO_ENTRE_PINTURAS = 200; //no máximo 4 pinturas por segundo
+
     protected boolean desenhaDestaques = true; //quando o programa está em execução o desenho dos destaques é desativado.
     //Não adiatanda destacar a última variável atualizada com o programa em execução já que o destaque fica "pulando" freneticamente
     //de uma variável para outra
@@ -27,21 +26,8 @@ public abstract class ItemDaLista {
         this.noDeclaracao = no;
     }
 
-    public boolean podeRepintar() {
-        return System.currentTimeMillis() - ultimaPintura >= TEMPO_ENTRE_PINTURAS;
-    }
-
     public void setDesenhaDestaques(boolean statusDosDestaques) {
         desenhaDestaques = statusDosDestaques;
-    }
-
-    void resetaTempoDaUltimaAtualizacao() {
-        //resta o momento da atualização de maneira que a próxima chamada para o método podeRepintar retorna true
-        ultimaPintura = System.currentTimeMillis() - TEMPO_ENTRE_PINTURAS;
-    }
-
-    void atualizaMomentoDaUltimaPintura() {
-        ultimaPintura = System.currentTimeMillis();
     }
 
     abstract RenderizadorBase getRendererComponent();

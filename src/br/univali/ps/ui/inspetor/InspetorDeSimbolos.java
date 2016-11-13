@@ -361,12 +361,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
                     Insets insets = EMPTY_BORDER.getBorderInsets(renderizador);
                     offset += insets.top;
-                    if (item.podeRepintar()) {
-                        bounds.translate(0, offset);//desloca o retângulo para a posição vertical onde o item está na lista
-                        repaint(bounds);
-                        item.atualizaMomentoDaUltimaPintura();
-                    }
-
+                    bounds.translate(0, offset);//desloca o retângulo para a posição vertical onde o item está na lista
+                    repaint(bounds);
                     offset += bounds.height + insets.bottom;
                 }
             }
@@ -427,8 +423,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                     alteraVetor(valor, coluna, (ItemDaListaParaVetor)item);
                 }
                 
-
-                item.resetaTempoDaUltimaAtualizacao();
                 item.setDesenhaDestaques(true);
             }
         
