@@ -1,6 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
@@ -17,6 +18,8 @@ import javax.swing.Icon;
 public abstract class ItemDaLista {
 
     protected final NoDeclaracao noDeclaracao;
+    
+    protected final int ID;
 
     protected boolean desenhaDestaques = true; //quando o programa está em execução o desenho dos destaques é desativado.
     //Não adiatanda destacar a última variável atualizada com o programa em execução já que o destaque fica "pulando" freneticamente
@@ -24,6 +27,18 @@ public abstract class ItemDaLista {
 
     public ItemDaLista(NoDeclaracao no) {
         this.noDeclaracao = no;
+        if (no instanceof NoDeclaracaoInicializavel)
+        {
+            ID = ((NoDeclaracaoInicializavel) no).getID();
+        }
+        else
+        {
+            ID = -1;//((NoDeclaracaoParametro)no).;
+        }
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public void setDesenhaDestaques(boolean statusDosDestaques) {

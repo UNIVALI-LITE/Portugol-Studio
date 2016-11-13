@@ -408,15 +408,13 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             
                 ItemDaLista item = model.getElementAt(i);
                 
-                NoDeclaracao noDeclaracao = item.getNoDeclaracao();
-                int ID = ((NoDeclaracaoInicializavel)noDeclaracao).getID();
-                
-                if (noDeclaracao instanceof NoDeclaracaoVariavel)
+                int ID = item.getID();
+                if (item.ehVariavel())
                 {
                     Object valor = programa.getValorVariavelInspecionada(ID);
                     alteraVariavel(valor, (ItemDaListaParaVariavel)item);
                 }
-                else if (noDeclaracao instanceof NoDeclaracaoVetor)
+                else if (item.ehVetor())
                 {
                     Object valor = programa.getValorVetorInspecionado(ID);
                     int coluna = programa.getUltimaColunaAlterada(ID);
