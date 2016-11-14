@@ -269,17 +269,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    private boolean simboloEhPermitido(Simbolo simbolo) {
-        if (simbolo instanceof Ponteiro) {
-            return simboloEhPermitido(((Ponteiro) simbolo).getSimboloApontado());
-        }
-        NoDeclaracao declaracao = simbolo.getOrigemDoSimbolo();
-        return ((simbolo instanceof Variavel && (declaracao instanceof NoDeclaracaoVariavel || declaracao instanceof NoDeclaracaoParametro))
-                || (simbolo instanceof Variavel && (declaracao instanceof NoDeclaracaoParametro || declaracao instanceof NoDeclaracaoParametro))
-                || (simbolo instanceof Vetor && (declaracao instanceof NoDeclaracaoVetor || declaracao instanceof NoDeclaracaoParametro))
-                || (simbolo instanceof Matriz && (declaracao instanceof NoDeclaracaoMatriz || declaracao instanceof NoDeclaracaoParametro)));
-    }
-
     @Override
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
         programaExecutando = false;
