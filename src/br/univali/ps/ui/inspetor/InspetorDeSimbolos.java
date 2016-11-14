@@ -601,6 +601,26 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
         if (item != null) {
             model.addElement(item);
+            if (programa != null)
+            {
+                int idInspecao = item.getIdParaInspecao();
+                if (item.ehVariavel())
+                {
+                    programa.inspecionaVariavel(idInspecao);
+                }
+                else if (item.ehVetor())
+                {
+                    ItemDaListaParaVetor itemVetor = (ItemDaListaParaVetor)item;
+                    programa.inspecionaVetor(idInspecao, itemVetor.getColunas());
+                }
+                else // matriz
+                {
+                    ItemDaListaParaMatriz itemMatriz = (ItemDaListaParaMatriz)item;
+                    int linhas = itemMatriz.getLinhas();
+                    int colunas = itemMatriz.getColunas();
+                    programa.inspecionaMatriz(idInspecao, linhas, colunas);
+                }
+            }
             return true;
         }
         return false;
