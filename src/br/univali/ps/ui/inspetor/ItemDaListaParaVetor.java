@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.inspetor;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 
@@ -95,6 +96,14 @@ class ItemDaListaParaVetor extends ItemDaLista {
     //setNumeroDeColunas seja invocado durante a atualização dos símbolos
     boolean numeroDeColunasFoiInicializado() {
         return valores.length > 0;
+    }
+
+    @Override
+    public void atualiza(Programa programa) {
+        int ID = getIdParaInspecao();
+        Object valor = programa.getValorNoVetorInspecionado(ID); // último valor modificado
+        int coluna = programa.getUltimaColunaAlteradaNoVetor(ID);
+        set(valor, coluna);
     }
 
 }

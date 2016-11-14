@@ -1,5 +1,6 @@
 package br.univali.ps.ui.inspetor;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -31,7 +32,7 @@ public abstract class ItemDaLista {
         ID = ((NoDeclaracaoInspecionavel) no).getIdParaInspecao();
     }
 
-    public int getID() {
+    public int getIdParaInspecao() {
         return ID;
     }
 
@@ -87,5 +88,7 @@ public abstract class ItemDaLista {
     }
 
     public abstract void limpa();
+    
+    public abstract void atualiza(Programa programa);
 
 }

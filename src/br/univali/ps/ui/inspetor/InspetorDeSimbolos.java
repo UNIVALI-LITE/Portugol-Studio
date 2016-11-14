@@ -304,8 +304,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         repaint();
     }
 
-    private boolean estaInicializando = false;
-
     /**
      * *
      * desenha apenas as regiões dos items que podem ser repintados. Os itens
@@ -363,6 +361,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private void atualizaValoresVariaveisInspecionadas()
     {
+        atualizaValoresVariaveisInspecionadas(false);
+    }
+    
+    private void atualizaValoresVariaveisInspecionadas(final boolean inicializando)
+    {
         SwingUtilities.invokeLater(() -> {
             
             if (programa == null)
@@ -372,30 +375,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             
             for (int i = 0; i < model.getSize(); i++) 
             {
-            
                 ItemDaLista item = model.getElementAt(i);
+                item.atualiza(programa);
                 
-                int ID = item.getID();
-                if (item.ehVariavel())
-                {
-                    Object valor = programa.getValorVariavelInspecionada(ID);
-                    ((ItemDaListaParaVariavel)item).setValor(valor);
-                }
-                else if (item.ehVetor())
-                {
-                    Object valor = programa.getValorNoVetorInspecionado(ID); // último valor modificado
-                    int coluna = programa.getUltimaColunaAlteradaNoVetor(ID);
-                    ((ItemDaListaParaVetor)item).set(valor, coluna);
-                }
-                else if (item.ehMatriz())
-                {
-                    Object valor = programa.getValorNaMatrizInspecionada(ID); // último valor modificado
-                    int coluna = programa.getUltimaColunaAlteradaNaMatriz(ID);
-                    int linha = programa.getUltimaLinhaAlteradaNaMatriz(ID);
-                    ((ItemDaListaParaMatriz)item).set(valor, linha, coluna);
-                }
-                
-                item.setDesenhaDestaques(true);
+                boolean desenhaDestaque = !inicializando && !item.ehVariavel();  // na inicialização de vetores e matrizes o último elemento alterado não é destacado
+                item.setDesenhaDestaques(desenhaDestaque);
             }
         
             redesenhaItemsDaLista();

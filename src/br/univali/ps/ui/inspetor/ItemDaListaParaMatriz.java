@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.inspetor;
 
+import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 
@@ -23,6 +24,15 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     public ItemDaListaParaMatriz(int linhas, int colunas, NoDeclaracaoMatriz no) {
         super(no);
         inicializaDimensoes(linhas, colunas);
+    }
+
+    @Override
+    public void atualiza(Programa programa) {
+        int ID = getIdParaInspecao();
+        Object valor = programa.getValorNaMatrizInspecionada(ID); // último valor modificado
+        int coluna = programa.getUltimaColunaAlteradaNaMatriz(ID);
+        int linha = programa.getUltimaLinhaAlteradaNaMatriz(ID);
+        set(valor, linha, coluna);
     }
 
     public ItemDaListaParaMatriz(NoDeclaracaoParametro declaracaoParametro) {
@@ -64,14 +74,14 @@ class ItemDaListaParaMatriz extends ItemDaLista {
         return 0;
     }
 
-    Object get(int linha, int coluna) {
+    protected Object get(int linha, int coluna) {
         if (linha >= 0 && linha < valores.length && coluna >= 0 && coluna < valores[0].length) {
             return valores[linha][coluna];
         }
         return null;
     }
 
-    void set(Object valor, int linha, int coluna) {
+    protected void set(Object valor, int linha, int coluna) {
         if (linha >= 0 && linha < valores.length && coluna >= 0 && coluna < valores[0].length) {
             valores[linha][coluna] = valor;
             ultimaColunaAtualizada = coluna;
