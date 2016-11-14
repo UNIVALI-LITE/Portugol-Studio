@@ -19,7 +19,7 @@ class ItemDaListaParaVetor extends ItemDaLista {
 
     private Object[] valores;
     private int ultimaColunaAtualizada = -1;
-    //private int larguraDasColunas[];
+    private boolean valoresForamInicializados = false;
 
     public ItemDaListaParaVetor(int colunas, NoDeclaracaoVetor no) {
         super(no);
@@ -52,17 +52,21 @@ class ItemDaListaParaVetor extends ItemDaLista {
         return valores.length;
     }
 
-    Object get(int coluna) {
+    protected Object get(int coluna) {
         if (coluna >= 0 && coluna < valores.length) {
             return valores[coluna];
         }
         return null;
     }
 
-    void set(Object valor, int coluna) {
-        if (coluna >= 0 && coluna < valores.length) {
+    protected void set(Object valor, int coluna) {
+        boolean colunaValida = coluna >= 0 && coluna < valores.length;
+        if (colunaValida && valores[coluna] != valor) {
             valores[coluna] = valor;
-            ultimaColunaAtualizada = coluna;
+            if (valoresForamInicializados)
+            {
+                ultimaColunaAtualizada = coluna;
+            }
             InspetorDeSimbolos.ultimoItemModificado = this;
         }
     }
@@ -101,9 +105,37 @@ class ItemDaListaParaVetor extends ItemDaLista {
     @Override
     public void atualiza(Programa programa) {
         int ID = getIdParaInspecao();
-        Object valor = programa.getValorNoVetorInspecionado(ID); // último valor modificado
-        int coluna = programa.getUltimaColunaAlteradaNoVetor(ID);
-        set(valor, coluna);
+        if (valoresForamInicializados) // atualiza apenas o último elemento alterado no vetor
+        {
+            Object valor = programa.getValorNoVetorInspecionado(ID); // último valor modificado
+            int coluna = programa.getUltimaColunaAlteradaNoVetor(ID);
+            set(valor, coluna);
+        }
+        else // elementos da view ainda não foram inicializados, é necessário coletar todos os dados do vetor para exibí-los na view
+        {
+            int tamanhoVetor = programa.getTamanhoVetor(ID);
+            boolean valoresSaoValidos = false;
+            for (int coluna = 0; coluna < tamanhoVetor; coluna++) {
+                Object valor = programa.getValorNoVetorInspecionado(ID, coluna); 
+                set(valor, coluna);
+                
+                /** Desconsidera as atualizações se só houverem objetos nulos no vetor. 
+                    Isso é necessário porque em uma execução passo a
+                    passo o Inspetor pode solicitar esses valores antes que a
+                    execução do programa tenha passado pela linha que inicialia o
+                    vetor. Nesse caso todos os valores são nulos, e
+                    não faria sentido considerar que o vetor já está
+                    inicializado. É necessário esperar até que o vetor tenha sido preenchido
+                    com valores válidos para só então considerá-lo como inicializado.
+                 */
+                valoresSaoValidos |= valor != Programa.OBJETO_NULO; 
+            }
+            
+            if (valoresSaoValidos)
+            {
+                valoresForamInicializados = true;
+            }
+        }
     }
 
 }
