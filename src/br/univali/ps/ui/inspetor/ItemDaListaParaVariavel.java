@@ -35,8 +35,11 @@ class ItemDaListaParaVariavel extends ItemDaLista {
     }
 
     void setValor(Object valor) {
-        this.valor = valor;
-        InspetorDeSimbolos.ultimoItemModificado = this;
+        if (this.valor != valor && valor != Programa.OBJETO_NULO)
+        {
+            this.valor = valor;
+            InspetorDeSimbolos.ultimoItemModificado = this;
+        }
     }
 
     public Object getValor() {

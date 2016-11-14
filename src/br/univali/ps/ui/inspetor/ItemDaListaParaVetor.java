@@ -61,7 +61,7 @@ class ItemDaListaParaVetor extends ItemDaLista {
 
     protected void set(Object valor, int coluna) {
         boolean colunaValida = coluna >= 0 && coluna < valores.length;
-        if (colunaValida && valores[coluna] != valor) {
+        if (colunaValida && valores[coluna] != valor && valor != Programa.OBJETO_NULO) {
             valores[coluna] = valor;
             if (valoresForamInicializados)
             {
