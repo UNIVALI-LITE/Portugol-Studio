@@ -682,15 +682,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 programa.getArvoreSintaticaAbstrata().aceitar(new VisitanteNulo() {
 
                     @Override
-                    public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
-                        List<NoDeclaracaoParametro> parametros = declaracaoFuncao.getParametros();
-                        for (NoDeclaracaoParametro parametro : parametros) {
-                            visitar(parametro);
-                        }
-                        return super.visitar(declaracaoFuncao);
-                    }
-
-                    @Override
                     public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA {
                         if (contemNo(noDeclaracaoVariavel)) {
                             nosQueSeraoMantidos.add(noDeclaracaoVariavel);
