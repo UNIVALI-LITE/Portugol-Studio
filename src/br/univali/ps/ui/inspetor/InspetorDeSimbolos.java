@@ -119,10 +119,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         */ 
     
         this.programa = programa;
-        if (model.isEmpty()) {
-            return;//não existem símbolos sendo inspecionados, não é necessário reconstruir a lista de símbolos inspecionados
+        
+        if (!model.isEmpty()) //só resconstrói a lista de símbolos se existem símbolos sendo inspecionados
+        {
+            SwingUtilities.invokeLater(new TarefaReconstrucaoNosInspecionados());
         }
-        SwingUtilities.invokeLater(new TarefaReconstrucaoNosInspecionados());
     }
     
     private void instalaObservadores() {
