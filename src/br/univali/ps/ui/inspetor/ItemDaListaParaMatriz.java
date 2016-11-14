@@ -20,6 +20,7 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     private Object[][] valores;
     private int ultimaLinhaAtualizada = -1;
     private int ultimaColunaAtualizada = -1;
+    private boolean valoresForamInicializados = false;
 
     public ItemDaListaParaMatriz(int linhas, int colunas, NoDeclaracaoMatriz no) {
         super(no);
@@ -29,10 +30,38 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     @Override
     public void atualiza(Programa programa) {
         int ID = getIdParaInspecao();
-        Object valor = programa.getValorNaMatrizInspecionada(ID); // último valor modificado
-        int coluna = programa.getUltimaColunaAlteradaNaMatriz(ID);
-        int linha = programa.getUltimaLinhaAlteradaNaMatriz(ID);
-        set(valor, linha, coluna);
+        if (valoresForamInicializados) // atualiza apenas o último valor alterado na matriz
+        {
+            Object valor = programa.getValorNaMatrizInspecionada(ID); // último valor modificado
+            int coluna = programa.getUltimaColunaAlteradaNaMatriz(ID);
+            int linha = programa.getUltimaLinhaAlteradaNaMatriz(ID);
+            set(valor, linha, coluna);
+        }
+        else // atualiza todos os valores da matriz, isso acontece uma vez só quando a execução passa pela declaração da matriz
+        {
+            int linhas = programa.getLinhasDaMatriz(ID);
+            int colunas = programa.getColunasDaMatriz(ID);
+            boolean valoresSaoValidos = false;
+            for (int i = 0; i < linhas; i++) {
+                for (int j = 0; j < colunas; j++) {
+                    Object valor = programa.getValorNaMatrizInspecionada(ID, i, j);
+                    set(valor, i, j);
+                    
+                    /** Desconsidera as atualizações se só houverem objetos nulos na matriz. 
+                        Isso é necessário porque em uma execução passo a passo o Inspetor pode solicitar 
+                        esses valores antes que a execução do programa tenha passado pela linha que inicialia
+                        a matriz. Nesse caso todos os valores da matriz são nulos, e não faria sentido considerar que a matriz
+                        já está inicializada nesse caso. É necessário esperar até que a matriz tenha sido preenchida com valores
+                        válidos para só então considerá-la como inicializada.
+                    */
+                    valoresSaoValidos |= valor != Programa.OBJETO_NULO; 
+                }
+            }
+            if (valoresSaoValidos)
+            {
+                valoresForamInicializados = true;
+            }
+        }
     }
 
     public ItemDaListaParaMatriz(NoDeclaracaoParametro declaracaoParametro) {
@@ -82,11 +111,24 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     }
 
     protected void set(Object valor, int linha, int coluna) {
-        if (linha >= 0 && linha < valores.length && coluna >= 0 && coluna < valores[0].length) {
-            valores[linha][coluna] = valor;
-            ultimaColunaAtualizada = coluna;
-            ultimaLinhaAtualizada = linha;
-            InspetorDeSimbolos.ultimoItemModificado = this;
+        if (valor == Programa.OBJETO_NULO)
+        {
+            return;
+        }
+        
+        boolean linhaValida = linha >= 0 && linha < valores.length;
+        boolean colunaValida = coluna >= 0 && coluna < valores[0].length;
+        if (linhaValida && colunaValida) {
+            if(valores[linha][coluna] != valor)
+            {
+                valores[linha][coluna] = valor;
+                if (valoresForamInicializados)
+                {
+                    ultimaColunaAtualizada = coluna;
+                    ultimaLinhaAtualizada = linha;
+                }
+                InspetorDeSimbolos.ultimoItemModificado = this;
+            }
         }
     }
 

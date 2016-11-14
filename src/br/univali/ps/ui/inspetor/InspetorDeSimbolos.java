@@ -361,11 +361,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private void atualizaValoresVariaveisInspecionadas()
     {
-        atualizaValoresVariaveisInspecionadas(false);
-    }
-    
-    private void atualizaValoresVariaveisInspecionadas(final boolean inicializando)
-    {
         SwingUtilities.invokeLater(() -> {
             
             if (programa == null)
@@ -378,8 +373,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 ItemDaLista item = model.getElementAt(i);
                 item.atualiza(programa);
                 
-                boolean desenhaDestaque = !inicializando && !item.ehVariavel();  // na inicialização de vetores e matrizes o último elemento alterado não é destacado
-                item.setDesenhaDestaques(desenhaDestaque);
+                item.setDesenhaDestaques(true);
             }
         
             redesenhaItemsDaLista();
