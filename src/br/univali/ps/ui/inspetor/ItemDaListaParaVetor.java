@@ -26,26 +26,20 @@ class ItemDaListaParaVetor extends ItemDaLista {
         setNumeroDeColunas(colunas);
     }
 
-    public ItemDaListaParaVetor(NoDeclaracaoParametro declaracaoParametro) {
+    public ItemDaListaParaVetor(NoDeclaracaoParametro declaracaoParametro) 
+    {
         super(declaracaoParametro);
-        valores = new Object[0]; //cria um array vazio para que os métodos não gerem uma NUllPointerException ao acessaverem um atributo que seria nulo caso não fosse inicializado
-    } //cria um array vazio para que os métodos não gerem uma NUllPointerException ao acessaverem um atributo que seria nulo caso não fosse inicializado
+        valores = new Object[0]; 
+    }  //cria um array vazio para que os métodos não gerem uma NUllPointerException ao acessaverem um atributo que seria nulo caso não fosse inicializado
 
-    /**
-     * *
-     * @param colunas Este método é invocado no evento de simbolosAlterados
-     * somente quando este ItemDaListaParaVetor armazena uma instancia de
-     * NoDeclaracaoParametro. Quando este item está ligado com um
-     * NoDeclaracaoVetor é possível obter o tamanho do vetor já na inicialização
-     * do objeto, mas quando este item está ligado com um NoDeclaracaoParametro
-     * é necessário aguardar até que a primeira atualização do parâmetro
-     * aconteça para so então obter a quantidade de colunas do vetor.
-     */
     void setNumeroDeColunas(int colunas) {
-        if (colunas <= 0) {
+        if (colunas < 0) {
             throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
         }
-        valores = new Object[colunas];
+        if (valores == null || colunas != valores.length)
+        {
+            valores = new Object[colunas];
+        }
     }
 
     int getColunas() {
@@ -114,6 +108,8 @@ class ItemDaListaParaVetor extends ItemDaLista {
         else // elementos da view ainda não foram inicializados, é necessário coletar todos os dados do vetor para exibí-los na view
         {
             int tamanhoVetor = programa.getTamanhoVetor(ID);
+            setNumeroDeColunas(tamanhoVetor); //inicializa a view se necessário
+            
             boolean valoresSaoValidos = false;
             for (int coluna = 0; coluna < tamanhoVetor; coluna++) {
                 Object valor = programa.getValorNoVetorInspecionado(ID, coluna); 
