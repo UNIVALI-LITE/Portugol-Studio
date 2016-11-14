@@ -8,6 +8,8 @@ package br.univali.ps.ui.inspetor;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,10 +23,20 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     private int ultimaLinhaAtualizada = -1;
     private int ultimaColunaAtualizada = -1;
     private boolean valoresForamInicializados = false;
+    private final List<ItemDaListaParaMatrizListener> listeners;
 
     public ItemDaListaParaMatriz(int linhas, int colunas, NoDeclaracaoMatriz no) {
         super(no);
         inicializaDimensoes(linhas, colunas);
+        this.listeners = new ArrayList<>();
+    }
+    
+    public void addListener(ItemDaListaParaMatrizListener listener)
+    {
+        if (!listeners.contains(listener))
+        {
+            listeners.add(listener);
+        }
     }
 
     @Override
@@ -41,6 +53,9 @@ class ItemDaListaParaMatriz extends ItemDaLista {
         {
             int linhas = programa.getLinhasDaMatriz(ID);
             int colunas = programa.getColunasDaMatriz(ID);
+            
+            inicializaDimensoes(linhas, linhas); //se necessário
+            
             boolean valoresSaoValidos = false;
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
@@ -67,21 +82,29 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     public ItemDaListaParaMatriz(NoDeclaracaoParametro declaracaoParametro) {
         super(declaracaoParametro);
         valores = new Object[0][0];
+        listeners = new ArrayList<>();
     }
 
     public boolean dimensoesForamInicializadas() {
-        return valores.length > 0 && valores[0].length > 0;
+        return valores != null && valores.length > 0 && valores[0].length > 0;
     }
 
     public final void inicializaDimensoes(int linhas, int colunas) {
-        if (linhas <= 0) {
+        if (linhas < 0) {
             throw new IllegalArgumentException("quantidade inválida de linhas: " + linhas);
         }
-        if (colunas <= 0) {
+        if (colunas < 0) {
             throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
         }
-        valores = new Object[linhas][colunas];
-        limpa();
+        if (valores != null && valores.length != linhas)
+        {
+            valores = new Object[linhas][colunas];
+            limpa();
+            
+            for (ItemDaListaParaMatrizListener listener : listeners) {
+                listener.matrizRedimensionada();
+            }
+        }
     }
 
     public int getUltimaColunaAtualizada() {
@@ -93,11 +116,16 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     }
 
     int getLinhas() {
-        return valores.length;
+        if (valores != null)
+        {
+            return valores.length;
+        }
+        
+        return 0;
     }
 
     int getColunas() {
-        if (valores.length > 0) {
+        if (valores != null && valores.length > 0) {
             return valores[0].length;
         }
         return 0;
@@ -111,13 +139,13 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     }
 
     protected void set(Object valor, int linha, int coluna) {
-        if (valor == Programa.OBJETO_NULO)
+        if (valor == Programa.OBJETO_NULO || valores == null)
         {
             return;
         }
         
         boolean linhaValida = linha >= 0 && linha < valores.length;
-        boolean colunaValida = coluna >= 0 && coluna < valores[0].length;
+        boolean colunaValida = coluna >= 0 && valores.length > 0 && coluna < valores[0].length;
         if (linhaValida && colunaValida) {
             if(valores[linha][coluna] != valor)
             {

@@ -213,7 +213,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         repaint();
     }
 
-    private void recriaCacheDaAlturaDosItems() {
+    void recriaCacheDaAlturaDosItems() {
         //hack para forçar a JList a refazer a cache. Sem essas linhas o componente não reflete a mudança no tamanho da fonte adequadamente.
         //Idéia retirada desse post: http://stackoverflow.com/questions/7306295/swing-jlist-with-multiline-text-and-dynamic-height?lq=1
         SwingUtilities.invokeLater(new Runnable() {
@@ -570,7 +570,13 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             colunas = valores.get(0).size();
         }
         if (colunas > 0 && linhas > 0) {
-            model.addElement(new ItemDaListaParaMatriz(linhas, colunas, noTransferido));
+            ItemDaListaParaMatriz item = new ItemDaListaParaMatriz(linhas, colunas, noTransferido);
+            model.addElement(item);
+            
+            item.addListener(() -> { //recria a cache das alturas dos itens sempre que uma matriz é redimensionada
+                recriaCacheDaAlturaDosItems();
+            });
+            
             if (programa != null)
             {
                 programa.inspecionaMatriz(noTransferido.getIdParaInspecao(), linhas, colunas);
@@ -594,7 +600,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 item = new ItemDaListaParaVetor(declaracaoParametro);
                 break;
             case MATRIZ:
-                item = new ItemDaListaParaMatriz(declaracaoParametro);
+                ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(declaracaoParametro);
+                itemMatriz.addListener(() -> { recriaCacheDaAlturaDosItems(); });
+                item = itemMatriz;
                 break;
             default:
                 break;
@@ -753,28 +761,28 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         frame.setVisible(true);
         frame.setLayout(new BorderLayout());
 
-        final InspetorDeSimbolos lista = new InspetorDeSimbolos();
+        final InspetorDeSimbolos inspetor = new InspetorDeSimbolos();
 
         ItemDaListaParaVariavel itemVariavel = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
         itemVariavel.setValor(53);
-        lista.model.addElement(itemVariavel);
-        lista.model.addElement(new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("outra variável", TipoDado.LOGICO, false)));
+        inspetor.model.addElement(itemVariavel);
+        inspetor.model.addElement(new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("outra variável", TipoDado.LOGICO, false)));
         ItemDaListaParaVetor itemVetor = new ItemDaListaParaVetor(15, new NoDeclaracaoVetor("teste", TipoDado.INTEIRO, new NoInteiro(15), false));
         itemVetor.set(34, 12);
-        lista.model.addElement(itemVetor);
-        lista.model.addElement(new ItemDaListaParaVetor(5, new NoDeclaracaoVetor("outro vetor", TipoDado.REAL, new NoInteiro(3), false)));
+        inspetor.model.addElement(itemVetor);
+        inspetor.model.addElement(new ItemDaListaParaVetor(5, new NoDeclaracaoVetor("outro vetor", TipoDado.REAL, new NoInteiro(3), false)));
         ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(30, 30, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(30), new NoInteiro(30), false));
-        lista.model.addElement(itemMatriz);
-        lista.model.addElement(new ItemDaListaParaMatriz(4, 4, new NoDeclaracaoMatriz("umNomeDeVariável bem grande", TipoDado.INTEIRO, new NoInteiro(4), new NoInteiro(4), false)));
+        inspetor.model.addElement(itemMatriz);
+        inspetor.model.addElement(new ItemDaListaParaMatriz(4, 4, new NoDeclaracaoMatriz("umNomeDeVariável bem grande", TipoDado.INTEIRO, new NoInteiro(4), new NoInteiro(4), false)));
         itemMatriz.set(345, 14, 14);
-        lista.setPreferredSize(new Dimension(300, 600));
+        inspetor.setPreferredSize(new Dimension(300, 600));
 
         //itemVetor.set(78, 11);
         //itemVetor.set(34, 10);
         //itemVariavel.setValor(54);
-        lista.redesenhaItemsDaLista();
+        inspetor.redesenhaItemsDaLista();
 
-        frame.add(lista, BorderLayout.CENTER);
+        frame.add(inspetor, BorderLayout.CENTER);
 
         JPanel panelBotoes = new JPanel();
         panelBotoes.setLayout(new BoxLayout(panelBotoes, BoxLayout.X_AXIS));
@@ -782,14 +790,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                lista.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() + 2);
+                inspetor.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() + 2);
             }
         });
         JButton botaoDiminuirFonte = new JButton(new AbstractAction("-") {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                lista.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() - 2);
+                inspetor.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() - 2);
             }
         });
         panelBotoes.add(botaoAumentarFonte);
