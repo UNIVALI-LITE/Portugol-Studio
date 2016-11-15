@@ -42,13 +42,18 @@ class RenderizadorDeVetor extends RenderizadorBase {
             Icon icone = itemDaLista.getIcone();
             FontMetrics metrics = g.getFontMetrics(FONTE_NORMAL);
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
-            icone.paintIcon(this, g, 0, yDoIcone);
+            int x = MARGEM_HORIZONTAL;
+            icone.paintIcon(this, g, x, yDoIcone);
             g.setColor(corTexto);
-            desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
+
+            x += icone.getIconWidth() + MARGEM_HORIZONTAL;
+            desenhaNome(g, x, 0);
+            
             int totalDeColunas = ((ItemDaListaParaVetor) itemDaLista).getColunas();
-            int margemEsquerda = MARGEM_HORIZONTAL;// icone.getIconWidth() + larguraDoNome + MARGEM;
+            int margemEsquerda = MARGEM_HORIZONTAL * 2;
             int margemSuperior = metrics.getAscent();
             int colunaInicial = calculaRolagem(margemEsquerda);
+            
             desenhaGrade(g, totalDeColunas, colunaInicial, margemEsquerda, margemSuperior);
         }
     }

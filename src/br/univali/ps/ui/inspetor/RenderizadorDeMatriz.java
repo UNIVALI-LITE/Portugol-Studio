@@ -50,15 +50,17 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
             Icon icone = itemDaLista.getIcone();
             FontMetrics metrics = g.getFontMetrics(FONTE_NORMAL);
-            //int alturaDaLinha = metrics.getHeight() ;
+
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
-            icone.paintIcon(this, g, 0, yDoIcone);
-            //g.drawRect(0, yDoIcone, icone.getIconWidth(), icone.getIconHeight());
+            int x = MARGEM_HORIZONTAL;
+            icone.paintIcon(this, g, x, yDoIcone);
+
             g.setColor(corTexto);
-            desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
+            x += icone.getIconWidth() + MARGEM_HORIZONTAL;
+            desenhaNome(g, x, 0);
             int totalDeColunas = ((ItemDaListaParaMatriz) itemDaLista).getColunas();
             int totalDeLinhas = ((ItemDaListaParaMatriz) itemDaLista).getLinhas();
-            int margemEsquerda = MARGEM_HORIZONTAL;
+            int margemEsquerda = MARGEM_HORIZONTAL * 2;
             int margemSuperior = getFontMetrics(FONTE_CABECALHO).getAscent();
             int colunaInicial = calculaRolagemDasColunas(margemEsquerda);
             int linhaInicial = calculaRolagemDasLinhas();

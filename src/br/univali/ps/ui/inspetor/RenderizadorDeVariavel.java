@@ -38,31 +38,37 @@ class RenderizadorDeVariavel extends RenderizadorBase {
             return;
         }
         Icon icone = itemDaLista.getIcone();
-        icone.paintIcon(this, g, 0, getHeight() / 2 - icone.getIconHeight() / 2);
+        
+        int x = MARGEM_HORIZONTAL; // x inicial
+        
+        icone.paintIcon(this, g, x, getHeight() / 2 - icone.getIconHeight() / 2);
+        
+        x += icone.getIconWidth() + MARGEM_HORIZONTAL;
         g.setColor(corTexto);
-        int larguraDoNome = desenhaNome(g, icone.getIconWidth() + MARGEM_HORIZONTAL, 0);
+        int larguraNome = desenhaNome(g, x, 0);
 
-        //desenha valor
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
 
         g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
         FontMetrics metrics = g.getFontMetrics();
-        int larguraDoValor = metrics.stringWidth(stringDoValor);
-        int larguraDaCaixa = MARGEM_HORIZONTAL + larguraDoValor + MARGEM_HORIZONTAL;
+        int larguraValor = metrics.stringWidth(stringDoValor);
+        int larguraCaixa = MARGEM_HORIZONTAL + larguraValor + MARGEM_HORIZONTAL;
 
+        int xCaixaValor = x + larguraCaixa;// + MARGEM_HORIZONTAL * 2;
+        
         //pinta fundo de vermelho para destacar
         if (itemDaLista.podeDesenharDestaque()) {
             g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
-            g.fillRect(icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL + 1, 0, larguraDaCaixa - 1, getHeight() - 1);
+            g.fillRect(xCaixaValor + 1, 0, larguraCaixa - 1, getHeight() - 1);
 
             //desenha caixa do valor
             g.setColor(corGrade);
-            g.drawRect(icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL, 0, larguraDaCaixa, getHeight() - 1);
+            g.drawRect(xCaixaValor, 0, larguraCaixa, getHeight() - 1);
         }
 
         //desenha valor
         g.setColor(corTexto);
-        g.drawString(stringDoValor, icone.getIconWidth() + larguraDoNome + MARGEM_HORIZONTAL + MARGEM_HORIZONTAL, metrics.getAscent());
+        g.drawString(stringDoValor, xCaixaValor + MARGEM_HORIZONTAL, metrics.getAscent());
 
     }
 
