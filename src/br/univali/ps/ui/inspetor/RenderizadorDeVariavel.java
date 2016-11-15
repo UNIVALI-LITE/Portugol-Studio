@@ -38,12 +38,14 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         }
         Icon icone = itemDaLista.getIcone();
         
-        int x = MARGEM_HORIZONTAL; // x inicial
+        int x = MARGEM; // x inicial
         
         icone.paintIcon(this, g, x, getHeight() / 2 - icone.getIconHeight() / 2);
         
-        x += icone.getIconWidth() + MARGEM_HORIZONTAL;
-        g.setColor(COR_TEXTO);
+        boolean podeDestacar = itemDaLista.podeDesenharDestaque();
+        
+        x += icone.getIconWidth() + MARGEM;
+        g.setColor(podeDestacar ? COR_TEXTO_DESTACADO : COR_NOME);
         int larguraNome = desenhaNome(g, x, 0);
 
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
@@ -51,12 +53,12 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
         FontMetrics metrics = g.getFontMetrics();
         int larguraValor = metrics.stringWidth(stringDoValor);
-        int larguraCaixa = MARGEM_HORIZONTAL + larguraValor + MARGEM_HORIZONTAL;
+        int larguraCaixa = MARGEM + larguraValor + MARGEM;
 
-        int xCaixaValor = x + larguraNome + MARGEM_HORIZONTAL;
+        int xCaixaValor = x + larguraNome + MARGEM;
         
-        //pinta fundo de vermelho para destacar
-        if (itemDaLista.podeDesenharDestaque()) {
+        if (podeDestacar) 
+        {
             g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
             g.fillRect(xCaixaValor + 1, 0, larguraCaixa - 1, getHeight() - 1);
 
@@ -66,8 +68,8 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         }
 
         //desenha valor
-        g.setColor(COR_TEXTO);
-        g.drawString(stringDoValor, xCaixaValor + MARGEM_HORIZONTAL, metrics.getAscent());
+        g.setColor(podeDestacar ? COR_TEXTO_DESTACADO : COR_TEXTO);
+        g.drawString(stringDoValor, xCaixaValor + MARGEM, metrics.getAscent());
 
     }
 

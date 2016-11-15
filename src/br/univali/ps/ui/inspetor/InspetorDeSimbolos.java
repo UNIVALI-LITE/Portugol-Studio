@@ -26,6 +26,7 @@ import br.univali.portugol.nucleo.simbolos.Ponteiro;
 import br.univali.portugol.nucleo.simbolos.Simbolo;
 import br.univali.portugol.nucleo.simbolos.Variavel;
 import br.univali.portugol.nucleo.simbolos.Vetor;
+import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import com.alee.laf.WebLookAndFeel;
@@ -747,8 +748,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         frame.setSize(800, 300);
         frame.setVisible(true);
         frame.setLayout(new BorderLayout());
+        
 
         final InspetorDeSimbolos inspetor = new InspetorDeSimbolos();
+        inspetor.setBackground(ColorController.FUNDO_ESCURO);
 
         ItemDaListaParaVariavel itemVariavel = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
         itemVariavel.setValor(53);
@@ -756,15 +759,19 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         inspetor.model.addElement(new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("outra variável", TipoDado.LOGICO, false)));
         ItemDaListaParaVetor itemVetor = new ItemDaListaParaVetor(15, new NoDeclaracaoVetor("teste", TipoDado.INTEIRO, new NoInteiro(15), false));
         itemVetor.set(34, 12);
+        itemVetor.set(34, 0);
         inspetor.model.addElement(itemVetor);
+
         inspetor.model.addElement(new ItemDaListaParaVetor(5, new NoDeclaracaoVetor("outro vetor", TipoDado.REAL, new NoInteiro(3), false)));
+
         ItemDaListaParaMatriz itemMatriz = new ItemDaListaParaMatriz(30, 30, new NoDeclaracaoMatriz("teste 2", TipoDado.INTEIRO, new NoInteiro(30), new NoInteiro(30), false));
         inspetor.model.addElement(itemMatriz);
+
         inspetor.model.addElement(new ItemDaListaParaMatriz(4, 4, new NoDeclaracaoMatriz("umNomeDeVariável bem grande", TipoDado.INTEIRO, new NoInteiro(4), new NoInteiro(4), false)));
-        itemMatriz.set(345, 14, 14);
+        itemMatriz.set(345, 0, 1);
+        
         inspetor.setPreferredSize(new Dimension(300, 600));
 
-        //itemVetor.set(78, 11);
         //itemVetor.set(34, 10);
         //itemVariavel.setValor(54);
         inspetor.redesenhaItemsDaLista();

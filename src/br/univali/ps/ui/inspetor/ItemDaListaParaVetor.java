@@ -20,6 +20,8 @@ class ItemDaListaParaVetor extends ItemDaLista {
     private Object[] valores;
     private int ultimaColunaAtualizada = -1;
     private boolean valoresForamInicializados = false;
+    
+    private String stringDimensao = "[ ? ]";
 
     public ItemDaListaParaVetor(int colunas, NoDeclaracaoVetor no) {
         super(no);
@@ -40,6 +42,7 @@ class ItemDaListaParaVetor extends ItemDaLista {
         {
             valores = new Object[colunas];
         }
+        atualizaStringDimensao();
     }
 
     int getColunas() {
@@ -65,13 +68,19 @@ class ItemDaListaParaVetor extends ItemDaLista {
         }
     }
 
-    @Override
-    public String getNome() {
-        String nome = super.getNome();
-        String colunas = numeroDeColunasFoiInicializado() ? String.valueOf(getColunas()) : " ? ";
-        return nome + " [ " + colunas + " ]";
+    public String getStringDimensao() 
+    {
+        return stringDimensao;
     }
 
+    private void atualizaStringDimensao()
+    {
+        if (numeroDeColunasFoiInicializado())
+        {
+            stringDimensao = " [ " + String.valueOf(getColunas()) + " ]";
+        }
+    }
+    
     @Override
     public void limpa() {
         for (int c = 0; c < valores.length; c++) {

@@ -24,6 +24,7 @@ class ItemDaListaParaMatriz extends ItemDaLista {
     private int ultimaColunaAtualizada = -1;
     private boolean valoresForamInicializados = false;
     private final List<ItemDaListaParaMatrizListener> listeners;
+    private String stringDimensoes = "[ ? ][ ? ]";
 
     public ItemDaListaParaMatriz(int linhas, int colunas, NoDeclaracaoMatriz no) {
         super(no);
@@ -105,6 +106,7 @@ class ItemDaListaParaMatriz extends ItemDaLista {
                 listener.matrizRedimensionada();
             }
         }
+        atualizaStringDimensoes();
     }
 
     public int getUltimaColunaAtualizada() {
@@ -171,16 +173,24 @@ class ItemDaListaParaMatriz extends ItemDaLista {
         ultimaLinhaAtualizada = -1;
     }
 
-    @Override
-    public String getNome() {
-        String nome = super.getNome();
-        String linhas = dimensoesForamInicializadas() ? String.valueOf(getLinhas()) : " ? ";
-        String colunas = dimensoesForamInicializadas() ? String.valueOf(getColunas()) : " ? ";
-        return nome + " [ " + linhas + " ][ " + colunas + " ]";
+    public String getStringDimensoes() 
+    {
+        return stringDimensoes;
+    }
+
+    private void atualizaStringDimensoes() 
+    {
+        if (dimensoesForamInicializadas())
+        {
+            String linhas = String.valueOf(getLinhas());
+            String colunas = String.valueOf(getColunas());
+            stringDimensoes = " [ " + linhas + " ][ " + colunas + " ]";
+        }
     }
 
     @Override
-    RenderizadorBase getRendererComponent() {
+    RenderizadorBase getRendererComponent() 
+    {
         RENDERER.setItemDaLista(this);
         return RENDERER;
     }

@@ -19,7 +19,8 @@ import javax.swing.JComponent;
 abstract class RenderizadorBase extends JComponent {
 
     protected static final Color COR_GRADE = new Color(1, 1, 1, 0.35f);
-    protected static final Color COR_TEXTO = Color.LIGHT_GRAY;
+    protected static final Color COR_TEXTO = Color.GRAY;
+    protected static final Color COR_NOME = Color.LIGHT_GRAY;
     protected static final Color COR_TEXTO_DESTACADO = Color.WHITE;
     protected static final Color COR_DO_CABECALHO_DESTACADO = COR_TEXTO_DESTACADO;
     protected static final Color COR_DO_FUNDO_EM_DESTAQUE = ColorController.FUNDO_ESCURO;// new Color(1, 0, 0, 0.3f);//vermelho claro
@@ -27,7 +28,7 @@ abstract class RenderizadorBase extends JComponent {
 
     static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 
-    protected static final int MARGEM_HORIZONTAL = 5;
+    protected static final int MARGEM = 5;
 
     protected ItemDaLista itemDaLista;
 
