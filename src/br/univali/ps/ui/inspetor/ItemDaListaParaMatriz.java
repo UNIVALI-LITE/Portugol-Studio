@@ -27,8 +27,8 @@ class ItemDaListaParaMatriz extends ItemDaLista {
 
     public ItemDaListaParaMatriz(int linhas, int colunas, NoDeclaracaoMatriz no) {
         super(no);
-        inicializaDimensoes(linhas, colunas);
         this.listeners = new ArrayList<>();
+        inicializaDimensoes(linhas, colunas);
     }
     
     public void addListener(ItemDaListaParaMatrizListener listener)
@@ -41,25 +41,25 @@ class ItemDaListaParaMatriz extends ItemDaLista {
 
     @Override
     public void atualiza(Programa programa) {
-        int ID = getIdParaInspecao();
+        int idInspecao = getIdParaInspecao();
         if (valoresForamInicializados) // atualiza apenas o último valor alterado na matriz
         {
-            Object valor = programa.getValorNaMatrizInspecionada(ID); // último valor modificado
-            int coluna = programa.getUltimaColunaAlteradaNaMatriz(ID);
-            int linha = programa.getUltimaLinhaAlteradaNaMatriz(ID);
+            Object valor = programa.getValorNaMatrizInspecionada(idInspecao); // último valor modificado
+            int coluna = programa.getUltimaColunaAlteradaNaMatriz(idInspecao);
+            int linha = programa.getUltimaLinhaAlteradaNaMatriz(idInspecao);
             set(valor, linha, coluna);
         }
         else // atualiza todos os valores da matriz, isso acontece uma vez só quando a execução passa pela declaração da matriz
         {
-            int linhas = programa.getLinhasDaMatriz(ID);
-            int colunas = programa.getColunasDaMatriz(ID);
+            int linhas = programa.getLinhasDaMatriz(idInspecao);
+            int colunas = programa.getColunasDaMatriz(idInspecao);
             
             inicializaDimensoes(linhas, linhas); //se necessário
             
             boolean valoresSaoValidos = false;
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
-                    Object valor = programa.getValorNaMatrizInspecionada(ID, i, j);
+                    Object valor = programa.getValorNaMatrizInspecionada(idInspecao, i, j);
                     set(valor, i, j);
                     
                     /** Desconsidera as atualizações se só houverem objetos nulos na matriz. 
@@ -96,7 +96,7 @@ class ItemDaListaParaMatriz extends ItemDaLista {
         if (colunas < 0) {
             throw new IllegalArgumentException("quantidade inválida de colunas: " + colunas);
         }
-        if (valores != null && valores.length != linhas)
+        if (valores == null || (valores != null && valores.length != linhas))
         {
             valores = new Object[linhas][colunas];
             limpa();
