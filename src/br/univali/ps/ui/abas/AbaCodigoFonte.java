@@ -866,12 +866,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             salvaArquivo();
         });
 
-        inspetorDeSimbolos.addListener(() -> {
-            
-            salvaArquivo();
-            
-        });
-
         Configuracoes configuracoes = Configuracoes.getInstancia();
 
         configuracoes.adicionarObservadorConfiguracao(AbaCodigoFonte.this, Configuracoes.EXIBIR_OPCOES_EXECUCAO);
@@ -1414,6 +1408,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             @Override
             public void compilacaoParaExecucaoFinalizada(Programa programaCompilado) {
+                System.out.println("compilação para execução finalizada");
                 setPrograma(programaCompilado);
                 setaAtivacaoBotoesExecucao(true); // pode executar
             }

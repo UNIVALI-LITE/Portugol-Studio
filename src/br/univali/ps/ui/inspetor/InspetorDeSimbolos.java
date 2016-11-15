@@ -4,7 +4,6 @@ import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInspecionavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -21,11 +20,6 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
-import br.univali.portugol.nucleo.simbolos.Matriz;
-import br.univali.portugol.nucleo.simbolos.Ponteiro;
-import br.univali.portugol.nucleo.simbolos.Simbolo;
-import br.univali.portugol.nucleo.simbolos.Variavel;
-import br.univali.portugol.nucleo.simbolos.Vetor;
 import br.univali.ps.ui.ColorController;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
@@ -93,8 +87,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private final Timer timerAtualizacao;
     private static final int TEMPO_ATUALIZACAO = 250;
     
-    private final List<InspetorDeSimbolosListener> listeners = new ArrayList<>();
-
     public InspetorDeSimbolos() {
         model.clear();
         setModel(model);
@@ -140,24 +132,22 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         addKeyListener(new KeyAdapter() {
 
             @Override
-            public void keyReleased(KeyEvent ke) {
-                if (ke.getKeyCode() == KeyEvent.VK_DELETE) {
+            public void keyReleased(KeyEvent ke) 
+            {
+                if (ke.getKeyCode() == KeyEvent.VK_DELETE) 
+                {
                     int indices[] = getSelectedIndices();
                     int modelSize = model.getSize();
-                    boolean listaModificada = false;
-                    for (int i = indices.length - 1; i >= 0; i--) {
+                    for (int i = indices.length - 1; i >= 0; i--) 
+                    {
                         int indice = indices[i];
-                        if (indice >= 0 && indice < modelSize) {
+                        if (indice >= 0 && indice < modelSize) 
+                        {
                             model.remove(indice);
-                            listaModificada = true;
                         }
-                    }
-                    if (listaModificada) {
-                        notificaMudancaNaLista();
                     }
                 }
             }
-
         });
     }
 
@@ -167,10 +157,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             nosInpecionados.add(model.get(i).getNoDeclaracao());
         }
         return nosInpecionados;
-    }
-
-    public void addListener(InspetorDeSimbolosListener listener) {
-        listeners.add(listener);
     }
 
     public void setTextArea(JTextArea textArea) {
@@ -474,20 +460,22 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
 
         @Override
-        public boolean importData(TransferHandler.TransferSupport support) {
-            if (!canImport(support)) {
+        public boolean importData(TransferHandler.TransferSupport support) 
+        {
+            if (!canImport(support)) 
+            {
                 return false;
             }
 
             boolean arrastandoNosDaJTree = support.getTransferable().isDataFlavorSupported(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
-            boolean importou = false;
-            if (arrastandoNosDaJTree) {
+            boolean importou;
+            if (arrastandoNosDaJTree) 
+            {
                 importou = importaNosArrastadosDaJTree(support);
-            } else {
-                importou = importaStringArrastada(support);
             }
-            if (importou) {
-                notificaMudancaNaLista();
+            else 
+            {
+                importou = importaStringArrastada(support);
             }
             return importou;
         }
@@ -660,12 +648,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    private void notificaMudancaNaLista() {
-        for (InspetorDeSimbolosListener listener : listeners) {
-            listener.listaDeSimbolosInpecionadosFoiModificada();
-        }
-    }
-
     private class TarefaReconstrucaoNosInspecionados implements Runnable {
 
         @Override
@@ -675,6 +657,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             }
             try {
 
+                LOGGER.log(Level.INFO, "Reconstruindo lista de nós inspecionados");
+                
                 //verifica quais nós devem ser mantidos no inspetor, os demais são apagados
                 final List<NoDeclaracao> nosQueSeraoMantidos = new ArrayList<>();
 
