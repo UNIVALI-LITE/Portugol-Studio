@@ -44,7 +44,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
             int x = MARGEM_HORIZONTAL;
             icone.paintIcon(this, g, x, yDoIcone);
-            g.setColor(corTexto);
+            g.setColor(COR_TEXTO);
 
             x += icone.getIconWidth() + MARGEM_HORIZONTAL;
             desenhaNome(g, x, 0);
@@ -135,7 +135,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
             FontMetrics metrics = g.getFontMetrics();
             int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
             int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
-            g.setColor(podeDestacarEstaColuna ? corTextoDestacado : corTexto);
+            g.setColor(podeDestacarEstaColuna ? COR_TEXTO_DESTACADO : COR_TEXTO);
             g.drawString(stringDoValor, xDoValor, yDoValor);
 
             //desenha a string do índice
@@ -145,7 +145,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
                 g.setColor(COR_DO_CABECALHO_DESTACADO);
             } else {
                 g.setFont(FONTE_CABECALHO);
-                g.setColor(corGrade);
+                g.setColor(COR_GRADE);
             }
             int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
             g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
@@ -153,13 +153,13 @@ class RenderizadorDeVetor extends RenderizadorBase {
 
                 //linha vertical - não desenha a primeira linha vertical quando a primeira
             //coluna que será desenhada não é a primeira coluna do vetor
-            g.setColor(corGrade);
+            g.setColor(COR_GRADE);
             if (!ehPrimeiraColunaComRolagem) {
                 g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
             }
 
             //desenha a linha horizontal
-            g.setColor(corGrade);
+            g.setColor(COR_GRADE);
             Stroke tracejadoPadrao = ((Graphics2D) g).getStroke();
             if (ehPrimeiraColunaComRolagem || ehUltimaColunaComRolagem) {
                 ((Graphics2D) g).setStroke(TRACEJADO);

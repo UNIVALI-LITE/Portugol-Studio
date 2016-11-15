@@ -1,7 +1,6 @@
 package br.univali.ps.ui.inspetor;
 
 import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
-import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -44,7 +43,7 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         icone.paintIcon(this, g, x, getHeight() / 2 - icone.getIconHeight() / 2);
         
         x += icone.getIconWidth() + MARGEM_HORIZONTAL;
-        g.setColor(corTexto);
+        g.setColor(COR_TEXTO);
         int larguraNome = desenhaNome(g, x, 0);
 
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
@@ -62,12 +61,12 @@ class RenderizadorDeVariavel extends RenderizadorBase {
             g.fillRect(xCaixaValor + 1, 0, larguraCaixa - 1, getHeight() - 1);
 
             //desenha caixa do valor
-            g.setColor(corGrade);
+            g.setColor(COR_GRADE);
             g.drawRect(xCaixaValor, 0, larguraCaixa, getHeight() - 1);
         }
 
         //desenha valor
-        g.setColor(corTexto);
+        g.setColor(COR_TEXTO);
         g.drawString(stringDoValor, xCaixaValor + MARGEM_HORIZONTAL, metrics.getAscent());
 
     }

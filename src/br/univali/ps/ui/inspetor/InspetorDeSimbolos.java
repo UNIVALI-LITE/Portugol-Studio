@@ -242,11 +242,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         @Override
         public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
             RenderizadorBase renderizador = item.getRendererComponent();
-            Color corTexto = getForeground();
-            Color corTextoDestacado = corTexto.brighter();
-            Color corGrade = corTexto.darker(); //cor das linhas das matrizes e vetores
-            renderizador.setCores(corTexto, corTextoDestacado, corGrade);
-            
+
             renderizador.setOpaque(false);
 
             panel.removeAll();
