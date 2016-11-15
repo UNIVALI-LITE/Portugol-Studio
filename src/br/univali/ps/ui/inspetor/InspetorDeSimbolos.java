@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInspecionavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
@@ -730,12 +731,10 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     }
     
     private boolean nosTemMesmoEscopo(NoDeclaracao no1, NoDeclaracao no2) {
-        TrechoCodigoFonte trecho1 = no1.getTrechoCodigoFonte();
-        TrechoCodigoFonte trecho2 = no2.getTrechoCodigoFonte();
-        if (trecho1 != null && trecho2 != null) {
-            return trecho1.getLinha() == trecho2.getLinha(); // se as 2 declarações estão na mesma linha então estão no mesmo escopo
-        }
-        return false;
+        int id1 = ((NoDeclaracaoInspecionavel)no1).getIdParaInspecao();
+        int id2 = ((NoDeclaracaoInspecionavel)no2).getIdParaInspecao();
+        
+        return id1 == id2;
     }
     
     private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {
