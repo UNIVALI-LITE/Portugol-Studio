@@ -54,7 +54,7 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         int larguraValor = metrics.stringWidth(stringDoValor);
         int larguraCaixa = MARGEM_HORIZONTAL + larguraValor + MARGEM_HORIZONTAL;
 
-        int xCaixaValor = x + larguraCaixa;// + MARGEM_HORIZONTAL * 2;
+        int xCaixaValor = x + larguraNome + MARGEM_HORIZONTAL;
         
         //pinta fundo de vermelho para destacar
         if (itemDaLista.podeDesenharDestaque()) {
