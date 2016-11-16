@@ -1433,7 +1433,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     @Override
     public void documentoModificado(boolean modificado)
     {
-        compilaProgramaParaExecucao();
+        if (modificado)
+        {
+            compilaProgramaParaExecucao();
+        }
         
         SwingUtilities.invokeLater(() -> {
         
