@@ -1402,13 +1402,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     private void compilaProgramaParaExecucao()
     {
+
+        System.out.println("compilando para execução");
         
         String codigoFonte = editor.getTextArea().getText();
         final ListenerCompilacao listener = new ListenerCompilacao() {
 
             @Override
             public void compilacaoParaExecucaoFinalizada(Programa programaCompilado) {
-                System.out.println("compilação para execução finalizada");
                 setPrograma(programaCompilado);
                 setaAtivacaoBotoesExecucao(true); // pode executar
             }
@@ -2135,21 +2136,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         setaAtivacaoBotoesExecucao(true);
                         painelSaida.getConsole().setExecutandoPrograma(false);
             });
-            
-            /***
-             * Quando termina a exceução acontece a recompilação do programa. 
-             * A ideia original era reutilizar o programa compilado para evitar novas 
-             * compilações, entretanto essa tarefa se mostrou mais complicada do que parecia. 
-             * O problema é que quando um programa é compilado para execução as inicializações 
-             * dos atributos acontecem, e quando esta mesmo programa é re-executado essas inicializações não acontecem novamente.
-             * Com isso, a segunda execução do programa vai utilizar atributos cujos valores
-             * não são reinicializados a cada nova execução. Uma solução seria gerar todo o código
-             * de inicialização de atributos em um método específico e reinvocar este método no início
-             * da execução dos programas.
-             */
-            
-            // solicita uma nova compilação em background
-            compilaProgramaParaExecucao();
 
         }
 
