@@ -18,6 +18,7 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -31,6 +32,7 @@ import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -112,7 +114,19 @@ public class TelaRenomearSimbolo extends JDialog
     }
     
     private void configurarCores(){
+        WeblafUtils.configuraWebLaf(info);
+        WeblafUtils.configurarBotao(botaoAceitar);
+        WeblafUtils.configurarBotao(botaoCancelar);
+        WeblafUtils.configuraWebLaf(campoNomeAtual, 2, 2);
+        WeblafUtils.configuraWebLaf(campoNovoNome, 2, 2);
         main.setBackground(ColorController.FUNDO_CLARO);
+        main.setForeground(ColorController.COR_LETRA);
+        setBackground(ColorController.FUNDO_CLARO);
+        setForeground(ColorController.COR_LETRA);
+        jLabel1.setForeground(ColorController.COR_LETRA);
+        jLabel2.setForeground(ColorController.COR_LETRA);
+        info.setBackground(ColorController.FUNDO_CLARO.darker());
+        info.setBorder(new EmptyBorder(5, 5, 5, 5));
     }
 
     private void criarAcoes()
@@ -155,8 +169,8 @@ public class TelaRenomearSimbolo extends JDialog
 
     private void atualizarInformacoes()
     {
-        labelInfo.setForeground(Color.BLACK);
-        labelInfo.setVisible(true);
+        info.setForeground(Color.BLACK);
+        info.setVisible(true);
 
         if (campoNovoNome.getText().trim().length() > 0)
         {
@@ -171,23 +185,23 @@ public class TelaRenomearSimbolo extends JDialog
                 }
                 catch (ErroCompilacao erro)
                 {
-                    labelInfo.setForeground(Color.RED);
-                    labelInfo.setText("O nome que você escolheu irá gerar erros no programa");
+                    info.setForeground(ColorController.VERMELHO);
+                    info.setText("O nome que você escolheu irá gerar erros no programa");
 
                     gerouErros = true;
                 }
 
                 if (!gerouErros)
                 {
-                    labelInfo.setVisible(false);
+                    info.setVisible(false);
                 }
 
                 acaoAceitar.setEnabled(true);
             }
             catch (ErroAoRenomearSimbolo ex)
             {
-                labelInfo.setForeground(Color.RED);
-                labelInfo.setText(String.format("Erro ao renomear: %s", ex.getMessage()));
+                info.setForeground(ColorController.VERMELHO);
+                info.setText(String.format("Erro ao renomear: %s", ex.getMessage()));
                 acaoAceitar.setEnabled(false);
             }
         }
@@ -195,26 +209,26 @@ public class TelaRenomearSimbolo extends JDialog
         {
             if (declaracaoDoSimbolo instanceof NoDeclaracaoVariavel)
             {
-                labelInfo.setText(String.format("Você não informou o novo nome da variável \"%s\"", declaracaoDoSimbolo.getNome()));
+                info.setText(String.format("Você não informou o novo nome da variável \"%s\"", declaracaoDoSimbolo.getNome()));
             }
             else if (declaracaoDoSimbolo instanceof NoDeclaracaoVetor)
             {
-                labelInfo.setText(String.format("Você não informou o novo nome do vetor \"%s\"", declaracaoDoSimbolo.getNome()));
+                info.setText(String.format("Você não informou o novo nome do vetor \"%s\"", declaracaoDoSimbolo.getNome()));
             }
             else if (declaracaoDoSimbolo instanceof NoDeclaracaoMatriz)
             {
-                labelInfo.setText(String.format("Você não informou o novo nome da matriz \"%s\"", declaracaoDoSimbolo.getNome()));
+                info.setText(String.format("Você não informou o novo nome da matriz \"%s\"", declaracaoDoSimbolo.getNome()));
             }
             else if (declaracaoDoSimbolo instanceof NoDeclaracaoFuncao)
             {
-                labelInfo.setText(String.format("Você não informou o novo nome da função \"%s\"", declaracaoDoSimbolo.getNome()));
+                info.setText(String.format("Você não informou o novo nome da função \"%s\"", declaracaoDoSimbolo.getNome()));
             }
             else if (declaracaoDoSimbolo instanceof NoDeclaracaoParametro)
             {
-                labelInfo.setText(String.format("Você não informou o novo nome do parâmetro \"%s\"", declaracaoDoSimbolo.getNome()));
+                info.setText(String.format("Você não informou o novo nome do parâmetro \"%s\"", declaracaoDoSimbolo.getNome()));
             }
 
-            labelInfo.setForeground(Color.RED);
+            info.setForeground(ColorController.VERMELHO);
             acaoAceitar.setEnabled(false);
         }
     }
@@ -341,12 +355,13 @@ public class TelaRenomearSimbolo extends JDialog
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         main = new javax.swing.JPanel();
         variaveis = new javax.swing.JPanel();
         aviso = new javax.swing.JPanel();
-        labelInfo = new javax.swing.JLabel();
+        info = new javax.swing.JTextArea();
         nomes = new javax.swing.JPanel();
         novoNome = new javax.swing.JPanel();
         campoNovoNome = new javax.swing.JTextField();
@@ -361,7 +376,7 @@ public class TelaRenomearSimbolo extends JDialog
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
-        setPreferredSize(null);
+        setPreferredSize(new java.awt.Dimension(400, 225));
         setResizable(false);
 
         main.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -371,17 +386,23 @@ public class TelaRenomearSimbolo extends JDialog
         variaveis.setOpaque(false);
         variaveis.setLayout(new java.awt.BorderLayout());
 
+        aviso.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         aviso.setOpaque(false);
         aviso.setLayout(new java.awt.BorderLayout());
 
-        labelInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        labelInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelInfo.setText("Você deve informar um novo nome");
-        labelInfo.setPreferredSize(new java.awt.Dimension(194, 30));
-        aviso.add(labelInfo, java.awt.BorderLayout.CENTER);
+        info.setEditable(false);
+        info.setColumns(20);
+        info.setLineWrap(true);
+        info.setRows(2);
+        info.setText("Você deve informar um novo nome");
+        info.setWrapStyleWord(true);
+        info.setBorder(null);
+        info.setPreferredSize(new java.awt.Dimension(140, 50));
+        aviso.add(info, java.awt.BorderLayout.CENTER);
 
         variaveis.add(aviso, java.awt.BorderLayout.CENTER);
 
+        nomes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         nomes.setOpaque(false);
         nomes.setLayout(new java.awt.BorderLayout());
 
@@ -409,6 +430,7 @@ public class TelaRenomearSimbolo extends JDialog
 
         main.add(variaveis, java.awt.BorderLayout.CENTER);
 
+        botoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botoes.setOpaque(false);
         botoes.setLayout(new java.awt.BorderLayout());
 
@@ -419,8 +441,10 @@ public class TelaRenomearSimbolo extends JDialog
         jPanel1.add(botaoCancelar);
 
         botaoAceitar.setText("Aceitar");
-        botaoAceitar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        botaoAceitar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 botaoAceitarActionPerformed(evt);
             }
         });
@@ -446,10 +470,10 @@ public class TelaRenomearSimbolo extends JDialog
     private javax.swing.JPanel botoes;
     private javax.swing.JTextField campoNomeAtual;
     private javax.swing.JTextField campoNovoNome;
+    private javax.swing.JTextArea info;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel labelInfo;
     private javax.swing.JPanel main;
     private javax.swing.JPanel nomeAtual;
     private javax.swing.JPanel nomes;
