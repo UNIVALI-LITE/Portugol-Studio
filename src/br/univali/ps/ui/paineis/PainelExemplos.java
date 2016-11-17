@@ -13,8 +13,6 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaPrincipal;
-import com.alee.extended.image.DisplayType;
-import com.alee.extended.image.WebImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -33,11 +31,9 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -54,9 +50,16 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private final Icon imagemPastaPadrao;
 
     private final Editor editor;
+    
+    private final ImagePanel imagePanel; // usando para desenhar uma imagem que 'estica' e centraliza conforme o tamanho do componente
 
     public PainelExemplos() {
+        
         initComponents();
+        
+        imagePanel = new ImagePanel();
+        imagePane.add(imagePanel);
+        
         configurarCores();
         editor = new Editor(true);
         examplePane.add(editor);
@@ -186,12 +189,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         });
     }
 
-    private WebImage criaWebImage(Icon icone) {
-        WebImage imagem = new WebImage(icone);
-        imagem.setDisplayType(DisplayType.fitComponent);
-        return imagem;
-    }
-
+    
     private void atualizarPainelDireita() {
 
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
@@ -230,7 +228,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             } catch (Exception ex) {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
-        } else {
+        } 
+        else {
             examplePane.setVisible(false);
             //dataPane.setPreferredSize(new Dimension(painelDireita.getSize().width, 0));
             description.setVisible(false);
@@ -238,8 +237,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             botaoAbrirExemplo.setVisible(false);
         }
         
-        imagePane.removeAll();
-        imagePane.add(criaWebImage(icone));
+        imagePanel.setImagem(((ImageIcon)icone).getImage());
         
         painelDireita.revalidate();
 
