@@ -768,14 +768,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                inspetor.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() + 2);
+                inspetor.setTamanhoDaFonte(RenderizadorBase.fonteNormal.getSize() + 2);
             }
         });
         JButton botaoDiminuirFonte = new JButton(new AbstractAction("-") {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                inspetor.setTamanhoDaFonte(RenderizadorBase.FONTE_NORMAL.getSize() - 2);
+                inspetor.setTamanhoDaFonte(RenderizadorBase.fonteNormal.getSize() - 2);
             }
         });
         panelBotoes.add(botaoAumentarFonte);

@@ -32,36 +32,15 @@ abstract class RenderizadorBase extends JComponent {
 
     protected ItemDaLista itemDaLista;
 
-    protected static Font FONTE_NORMAL = Font.decode(Font.SANS_SERIF + "-12");
-    protected static Font FONTE_DESTAQUE;
-    protected static Font FONTE_CABECALHO;
-    protected static Font FONTE_CABECALHO_DESTAQUE;
+    protected static Font fonteNormal = criaFontePadrao();
+    protected static Font fonteDestaque;
+    protected static Font fonteCabecalho;
+    protected static Font fonteCabecalhoDestaque;
+    protected static float tamanhoFonte = 12f;
 
     public RenderizadorBase() {
         super();
-        setTamanhoDaFonte(12f);
-    }
-
-    static void setTamanhoDaFonte(float tamanho) {
-        assert (FONTE_NORMAL != null);
-        FONTE_NORMAL = FONTE_NORMAL.deriveFont(tamanho);
-        FONTE_DESTAQUE = FONTE_NORMAL.deriveFont(Font.BOLD);
-
-        if (FONTE_DESTAQUE == null) {
-            FONTE_DESTAQUE = FONTE_NORMAL;
-        }
-
-        FONTE_CABECALHO = FONTE_NORMAL.deriveFont(12f);
-
-        if (FONTE_CABECALHO == null) {
-            FONTE_CABECALHO = FONTE_NORMAL;
-        }
-
-        FONTE_CABECALHO_DESTAQUE = FONTE_CABECALHO.deriveFont(Font.BOLD);
-
-        if (FONTE_CABECALHO_DESTAQUE == null) {
-            FONTE_CABECALHO_DESTAQUE = FONTE_NORMAL;
-        }
+        setTamanhoDaFonte(tamanhoFonte);
     }
 
     /**
@@ -71,7 +50,7 @@ abstract class RenderizadorBase extends JComponent {
      * margem para o resto do desenho
      */
     protected int desenhaNome(Graphics g, int x, int topo) {
-        g.setFont(itemDaLista.podeDesenharDestaque() ? FONTE_DESTAQUE : FONTE_NORMAL);
+        g.setFont(itemDaLista.podeDesenharDestaque() ? fonteDestaque : fonteNormal);
         String stringDoNome = itemDaLista.getNome();
         FontMetrics metrics = g.getFontMetrics();
         int larguraDoNome = metrics.stringWidth(stringDoNome);
@@ -117,5 +96,35 @@ abstract class RenderizadorBase extends JComponent {
             gr.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
         }
 
+    }
+
+    private static Font criaFontePadrao() {
+        return Font.decode(Font.SANS_SERIF + "-12");
+    }
+
+    static void setTamanhoDaFonte(float tamanho) {
+        if (tamanho != tamanhoFonte) {
+            tamanhoFonte = tamanho;
+
+            assert (fonteNormal != null);
+            fonteNormal = fonteNormal.deriveFont(tamanho);
+            fonteDestaque = fonteNormal.deriveFont(Font.BOLD);
+
+            if (fonteDestaque == null) {
+                fonteDestaque = fonteNormal;
+            }
+
+            fonteCabecalho = fonteNormal.deriveFont(12f);
+
+            if (fonteCabecalho == null) {
+                fonteCabecalho = fonteNormal;
+            }
+
+            fonteCabecalhoDestaque = fonteCabecalho.deriveFont(Font.BOLD);
+
+            if (fonteCabecalhoDestaque == null) {
+                fonteCabecalhoDestaque = fonteNormal;
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
 package br.univali.ps.ui.inspetor;
 
-import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import javax.swing.Icon;
+import static br.univali.ps.ui.inspetor.RenderizadorBase.fonteNormal;
 
 /**
  *
@@ -28,9 +28,9 @@ class RenderizadorDeVetor extends RenderizadorBase {
 
     @Override
     protected int getAlturaPreferida() {
-        FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
+        FontMetrics metrics = getFontMetrics(fonteNormal);
         int alturaDoNome = metrics.getAscent();
-        int alturaCabecalho = getFontMetrics(FONTE_CABECALHO).getHeight();
+        int alturaCabecalho = getFontMetrics(fonteCabecalho).getHeight();
         return alturaDoNome + MARGEM + alturaCabecalho + metrics.getHeight() + 1;//2 linhas, uma com os valores e outra com os índices
     }
 
@@ -40,7 +40,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
         if (itemDaLista != null) {
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
             Icon icone = itemDaLista.getIcone();
-            FontMetrics metrics = g.getFontMetrics(FONTE_NORMAL);
+            FontMetrics metrics = g.getFontMetrics(fonteNormal);
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
             int x = MARGEM;
             icone.paintIcon(this, g, x, yDoIcone);
@@ -51,7 +51,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
             
             //desenha dimensão
             x += larguraNome + MARGEM;
-            g.setFont(FONTE_CABECALHO);
+            g.setFont(fonteCabecalho);
             g.setColor(COR_NOME);
             String stringDimensao = ((ItemDaListaParaVetor)itemDaLista).getStringDimensao();
             g.drawString(stringDimensao, x, metrics.getAscent());
@@ -92,11 +92,11 @@ class RenderizadorDeVetor extends RenderizadorBase {
         ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
         String stringDoValor = getStringDoValor(indiceDaColuna);
         String stringDoIndice = String.valueOf(indiceDaColuna);
-        FontMetrics metricsDoValor = getFontMetrics(FONTE_NORMAL);
-        FontMetrics metricsDoIndice = getFontMetrics(FONTE_CABECALHO);
+        FontMetrics metricsDoValor = getFontMetrics(fonteNormal);
+        FontMetrics metricsDoIndice = getFontMetrics(fonteCabecalho);
         if (item.podeDesenharDestaque() && item.getUltimaColunaAtualizada() == indiceDaColuna) {
-            metricsDoIndice = getFontMetrics(FONTE_CABECALHO_DESTAQUE);
-            metricsDoValor = getFontMetrics(FONTE_DESTAQUE);
+            metricsDoIndice = getFontMetrics(fonteCabecalhoDestaque);
+            metricsDoValor = getFontMetrics(fonteDestaque);
         }
         int larguraDoValor = MARGEM + metricsDoValor.stringWidth(stringDoValor) + MARGEM;
         int larguraDoIndice = MARGEM + metricsDoIndice.stringWidth(stringDoIndice) + MARGEM;
@@ -110,10 +110,10 @@ class RenderizadorDeVetor extends RenderizadorBase {
     }
 
     private void desenhaGrade(Graphics g, int totalDeColunas, int colunaInicial, int margemEsquerda, int margemSuperior) {
-        int alturaDaLinha = g.getFontMetrics(FONTE_NORMAL).getHeight();
+        int alturaDaLinha = g.getFontMetrics(fonteNormal).getHeight();
         int inicioLinhaHorizontal = margemEsquerda;
         int xDaLinha = inicioLinhaHorizontal;
-        int yDaLinha = g.getFontMetrics(FONTE_CABECALHO).getHeight() + margemSuperior;
+        int yDaLinha = g.getFontMetrics(fonteCabecalho).getHeight() + margemSuperior;
         xDaLinha = margemEsquerda;
         int indiceDaUltimaColunaDesenhada = 0;
         for (int c = colunaInicial; c < totalDeColunas; c++) {
@@ -138,7 +138,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
                 //if (!ehPrimeiraColunaComRolagem && !ehUltimaColunaComRolagem) {
             //desenha o valor da coluna
             String stringDoValor = getStringDoValor(c);
-            g.setFont(podeDestacarEstaColuna ? FONTE_DESTAQUE : FONTE_NORMAL);
+            g.setFont(podeDestacarEstaColuna ? fonteDestaque : fonteNormal);
             FontMetrics metrics = g.getFontMetrics();
             int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
             int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
@@ -148,10 +148,10 @@ class RenderizadorDeVetor extends RenderizadorBase {
             //desenha a string do índice
             String stringDoIndice = String.valueOf(c);
             if (podeDestacarEstaColuna) {
-                g.setFont(FONTE_CABECALHO_DESTAQUE);
+                g.setFont(fonteCabecalhoDestaque);
                 g.setColor(COR_DO_CABECALHO_DESTACADO);
             } else {
-                g.setFont(FONTE_CABECALHO);
+                g.setFont(fonteCabecalho);
                 g.setColor(COR_GRADE);
             }
             int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);

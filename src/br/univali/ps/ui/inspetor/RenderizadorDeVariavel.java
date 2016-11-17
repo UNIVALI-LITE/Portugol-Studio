@@ -1,11 +1,11 @@
 package br.univali.ps.ui.inspetor;
 
-import static br.univali.ps.ui.inspetor.RenderizadorBase.FONTE_NORMAL;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.Icon;
+import static br.univali.ps.ui.inspetor.RenderizadorBase.fonteNormal;
 
 /**
  *
@@ -16,7 +16,7 @@ class RenderizadorDeVariavel extends RenderizadorBase {
 
     @Override
     protected int getAlturaPreferida() {
-        FontMetrics metrics = getFontMetrics(FONTE_NORMAL);
+        FontMetrics metrics = getFontMetrics(fonteNormal);
         return metrics.getHeight();
     }
 
@@ -50,7 +50,7 @@ class RenderizadorDeVariavel extends RenderizadorBase {
 
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
 
-        g.setFont((itemDaLista.podeDesenharDestaque()) ? FONTE_DESTAQUE : FONTE_NORMAL);
+        g.setFont((itemDaLista.podeDesenharDestaque()) ? fonteDestaque : fonteNormal);
         FontMetrics metrics = g.getFontMetrics();
         int larguraValor = metrics.stringWidth(stringDoValor);
         int larguraCaixa = MARGEM + larguraValor + MARGEM;
