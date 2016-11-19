@@ -92,7 +92,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static final Icon lampadaAcesa = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
     private static final Icon lampadaApagada = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
 
-    private final TelaOpcoesExecucao telaOpcoesExecucao = new TelaOpcoesExecucao();
+    private TelaOpcoesExecucao telaOpcoesExecucao; // inicializada tardiamente
 
     private final Map<Plugin, JToggleButton> botoesPlugins = new HashMap<>();
     private final Map<Action, JButton> mapaBotoesAcoesPlugins = new HashMap<>();
@@ -1425,12 +1425,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void compilacaoParaExecucaoFinalizada(Programa programaCompilado) {
                 setPrograma(programaCompilado);
                 setaAtivacaoBotoesExecucao(true); // pode executar
+                liberaMemoriaAlocada();
             }
 
             @Override
             public void errosDeCompilacaoDetectados(ErroCompilacao erro) {
                 programa = erro.getResultadoAnalise().getPrograma();
                 setaAtivacaoBotoesExecucao(true); // pode executar
+                liberaMemoriaAlocada();
             }
 
             @Override
@@ -1441,6 +1443,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         };
 
         Portugol.compilarParaExecucao(codigoFonte, listener);
+    }
+    
+    private static void liberaMemoriaAlocada()
+    {
+        Runtime runtime = Runtime.getRuntime();
+        long memoriaUsada = runtime.totalMemory() - runtime.freeMemory();
+        LOGGER.log(Level.INFO, "Liberando memoria alocada - Total alocado ({0} MB)", memoriaUsada >> 20);
+        System.gc();
     }
     
     @Override
@@ -1566,11 +1576,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if (Configuracoes.getInstancia().isExibirOpcoesExecucao())
                 {
+                    if (telaOpcoesExecucao == null)
+                    {
+                        telaOpcoesExecucao = new TelaOpcoesExecucao();
+                    }
                     telaOpcoesExecucao.inicializar(programa);
                     telaOpcoesExecucao.setVisible(true);
                 }
 
-                if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucao.isCancelado()))
+                boolean telaOpcoesExecucaoFoiCancelada = telaOpcoesExecucao != null && telaOpcoesExecucao.isCancelado();
+                if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucaoFoiCancelada))
                 {
                     ResultadoAnalise resultadoAnalise = programa.getResultadoAnalise();
                     if (!resultadoAnalise.contemErros())
@@ -1584,7 +1599,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         
                         editor.iniciarExecucao(depurando);
                         programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
-                        programa.executar(telaOpcoesExecucao.getParametros(), estado);
+                        String parametros[] = telaOpcoesExecucao != null ? telaOpcoesExecucao.getParametros() : null;
+                        programa.executar(parametros, estado);
                     }
                     else
                     {
@@ -2160,6 +2176,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         acaoInterromper.setEnabled(false);
                         setaAtivacaoBotoesExecucao(true);
                         painelSaida.getConsole().setExecutandoPrograma(false);
+                        
+                        liberaMemoriaAlocada();
             });
 
         }
@@ -2218,6 +2236,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         }
 
                         devolver(abaCodigoFonte);
+                        
+                        liberaMemoriaAlocada();
 
                         return true;
                     }
