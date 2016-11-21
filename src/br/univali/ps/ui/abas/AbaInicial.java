@@ -4,7 +4,6 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.telas.TelaEditarUriAtualizacao;
 import br.univali.ps.ui.telas.TelaPrincipal;
@@ -351,7 +350,7 @@ public final class AbaInicial extends Aba implements Themeable
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                WebConnectionUtils.abrirSite("https://docs.google.com/forms/d/1PfTW-mDrkv1PVYYB8UedH9x9hNJgMz8TnxqYgsjIwLE/viewform");
+                WebConnectionUtils.abrirSite("https://docs.google.com/forms/d/e/1FAIpQLSdIblxNIM1k2dTljGd-D-4cab1dYkN3ZISEGd6ms63Wn2WR6Q/viewform");
             }
         };
 

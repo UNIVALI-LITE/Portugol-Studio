@@ -153,7 +153,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.setForeground(ColorController.COR_LETRA);
         inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
-        treePanel.setBackground(new Color(35,47,53));
+        treePanel.setBackground(ColorController.FUNDO_ESCURO.brighter());
         
         if (WeblafUtils.weblafEstaInstalado())
         {
@@ -163,6 +163,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
+            WeblafUtils.configuraWebLaf(campoBusca, 5, 7);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
             WeblafUtils.configurarBotao(btnExecutar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -171,7 +172,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(btnSalvar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraBotoesEditor, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.FUNDO_ESCURO.brighter(), ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         }
     }
 
@@ -1171,8 +1172,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         grupoBotoesPlugins = new javax.swing.ButtonGroup();
@@ -1304,7 +1304,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorArvoreEditor.setLeftComponent(divisorEditorConsole);
 
-        painelInspetorArvore.setMinimumSize(new java.awt.Dimension(150, 510));
+        painelInspetorArvore.setMinimumSize(new java.awt.Dimension(250, 510));
         painelInspetorArvore.setOpaque(false);
         painelInspetorArvore.setPreferredSize(new java.awt.Dimension(270, 233));
         painelInspetorArvore.setLayout(new java.awt.GridBagLayout());
@@ -2315,7 +2315,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        }
 //    }
 
-    private SearchTextField campoBusca;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentas;
     private com.alee.laf.button.WebButton btnDepurar;
@@ -2323,6 +2322,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private com.alee.laf.button.WebButton btnInterromper;
     private com.alee.laf.button.WebButton btnSalvar;
     private com.alee.laf.button.WebButton btnSalvarComo;
+    private br.univali.ps.ui.rstautil.tree.SearchTextField campoBusca;
     private javax.swing.JSplitPane divisorArvoreEditor;
     private javax.swing.JSplitPane divisorArvoreInspetor;
     private javax.swing.JSplitPane divisorEditorConsole;
