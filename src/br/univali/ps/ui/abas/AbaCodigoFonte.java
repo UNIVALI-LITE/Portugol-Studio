@@ -25,6 +25,7 @@ import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
+import br.univali.ps.nucleo.Caminhos;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
@@ -1441,8 +1442,23 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
 
         };
+ 
+        File classPath = getClassPathParaCompilacao();
+        String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
+        LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
+        LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
+        Portugol.compilarParaExecucao(codigoFonte, listener, classPath, caminhoJavac);
+    }
+    
+    private File getClassPathParaCompilacao()
+    {
+        Configuracoes configuracoes = Configuracoes.getInstancia();
+        if (Configuracoes.rodandoNoNetbeans()) {
 
-        Portugol.compilarParaExecucao(codigoFonte, listener);
+            return new File(System.getProperty("java.class.path"));
+        }
+        
+        return new File(configuracoes.getDiretorioAplicacao(), "libs");
     }
     
     private static void liberaMemoriaAlocada()
