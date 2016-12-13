@@ -1,11 +1,12 @@
 package br.univali.ps.ui.utils;
 
-import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Lancador;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.WebNotification;
+import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import java.awt.Point;
@@ -103,11 +104,11 @@ public final class FabricaDicasInterface
         SwingUtilities.invokeLater(() -> {
             if(Lancador.getJFrame().isActive())
             {
-//                
-//                notificacao.setContent(texto);
-//                notificacao.setDisplayTime(displayTime);
-//                notificacao.setIcon(icon);
-                NotificationManager.showNotification(texto, icon);
+                WebNotification notificacao = new WebNotification();
+                notificacao.setDisplayTime(displayTime);
+                notificacao.setIcon(icon);
+                notificacao.setContent(texto);
+                NotificationManager.showNotification(notificacao);
             }else{
                 Timer timer = new Timer(5000, new AbstractAction() {
                     @Override
