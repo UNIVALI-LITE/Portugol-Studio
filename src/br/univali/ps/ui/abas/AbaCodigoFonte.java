@@ -881,6 +881,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     BuscadorDeLinhasParaveis buscadorDeLinhasParaveis = new BuscadorDeLinhasParaveis();
                     Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
                     editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
+                    
+                    /** compila para execução sempre que a ASA é recompilada */
+                    
+                    compilaProgramaParaExecucao();
                 }
                 
                 //Gambiarra pro botão não sumir :3
@@ -1417,7 +1421,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void compilaProgramaParaExecucao()
     {
 
-        LOGGER.log(Level.INFO, "Compilando para execução");
+        LOGGER.log(Level.INFO, "COMPILANDO para execução");
         
         String codigoFonte = editor.getTextArea().getText();
         final ListenerCompilacao listener = new ListenerCompilacao() {
@@ -1472,11 +1476,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     @Override
     public void documentoModificado(boolean modificado)
     {
-        if (modificado)
-        {
-            compilaProgramaParaExecucao();
-        }
-        
         SwingUtilities.invokeLater(() -> {
         
             atualizaStatusAcaoSalvar(modificado);
