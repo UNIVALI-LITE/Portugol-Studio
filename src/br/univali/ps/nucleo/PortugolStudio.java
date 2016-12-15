@@ -84,10 +84,10 @@ public final class PortugolStudio
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
-    private TelaLicencas telaLicencas = null;
+    private JDialog telaLicencas = null;
     private TelaRenomearSimbolo telaRenomearSimbolo = null;        
     
-    private TelaDicas telaDicas = null;
+    private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
         
     private GerenciadorTemas gerenciadorTemas = null;
@@ -764,11 +764,11 @@ public final class PortugolStudio
         return telaAtalhosTeclado;
     }
     
-    public TelaDicas getTelaDicas()
+    public JDialog getTelaDicas()
     {
         if (telaDicas == null)
         {
-            telaDicas = new TelaDicas();
+            telaDicas = new TelaCustomBorder(new TelaDicas(), "Dicas");
         }
 
         telaDicas.setLocationRelativeTo(null);
@@ -800,7 +800,7 @@ public final class PortugolStudio
         return telaErrosPluginsBibliotecas;
     }
 
-    public TelaLicencas getTelaLicencas()
+    public JDialog getTelaLicencas()
     {
         if (telaLicencas == null)
         {

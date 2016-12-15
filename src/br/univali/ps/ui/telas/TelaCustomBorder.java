@@ -33,7 +33,7 @@ public class TelaCustomBorder extends javax.swing.JDialog
         dispose();
         setUndecorated(true);
         setLayout(new BorderLayout());
-        add(new OuterStaticPanel(jPanel, new DialogBorderPanel(acaoSair, this,"Sobre")), BorderLayout.CENTER);
+        add(new OuterStaticPanel(jPanel, new DialogBorderPanel(acaoSair, this,titulo)), BorderLayout.CENTER);
         pack();
     }
     
@@ -65,6 +65,9 @@ public class TelaCustomBorder extends javax.swing.JDialog
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMaximumSize(new java.awt.Dimension(400, 300));
+        setResizable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -9,16 +9,11 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
-import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.utils.WebConnectionUtils;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.KeyStroke;
 
 /**
  *
@@ -184,7 +179,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
 
     private void labellicensaMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_labellicensaMouseClicked
     {//GEN-HEADEREND:event_labellicensaMouseClicked
-        TelaLicencas telaLicencas = PortugolStudio.getInstancia().getTelaLicencas();
+        JDialog telaLicencas = PortugolStudio.getInstancia().getTelaLicencas();
         telaLicencas.setVisible(true);
     }//GEN-LAST:event_labellicensaMouseClicked
 
