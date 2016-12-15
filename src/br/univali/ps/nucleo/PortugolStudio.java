@@ -84,7 +84,7 @@ public final class PortugolStudio
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
-    private JDialog telaLicencas = null;
+    private TelaCustomBorder telaLicencas = null;
     private TelaRenomearSimbolo telaRenomearSimbolo = null;        
     
     private JDialog telaDicas = null;
@@ -804,7 +804,10 @@ public final class PortugolStudio
     {
         if (telaLicencas == null)
         {
-            telaLicencas = new TelaLicencas();
+            telaLicencas = new TelaCustomBorder("Licenças") ;
+            telaLicencas.setPanel(new TelaLicencas(telaLicencas));
+            
+            telaLicencas.setSize(640, 550);
         }
 
         telaLicencas.setLocationRelativeTo(null);

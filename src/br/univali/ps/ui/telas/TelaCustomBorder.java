@@ -24,6 +24,8 @@ import javax.swing.KeyStroke;
 public class TelaCustomBorder extends javax.swing.JDialog
 {
     private Action acaoSair;
+    private String titulo;
+
     public TelaCustomBorder(JPanel jPanel, String titulo)
     {
         super();
@@ -33,8 +35,28 @@ public class TelaCustomBorder extends javax.swing.JDialog
         dispose();
         setUndecorated(true);
         setLayout(new BorderLayout());
+        this.titulo = titulo;
+        
+        if (jPanel != null)
+        {
+            configurePanel(jPanel, titulo);
+        }
+    }
+    
+    private void configurePanel(JPanel jPanel, String titulo)
+    {
         add(new OuterStaticPanel(jPanel, new DialogBorderPanel(acaoSair, this,titulo)), BorderLayout.CENTER);
         pack();
+    }
+    
+    public TelaCustomBorder(String titulo)
+    {
+        this(null, titulo);
+    }
+    
+    public void setPanel(JPanel jPanel)
+    {
+        configurePanel(jPanel, this.titulo);
     }
     
     private void configurarAcaoSair()
