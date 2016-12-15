@@ -9,20 +9,22 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.window.DialogBorderPanel;
 import br.univali.ps.ui.window.OuterStaticPanel;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
  *
  * @author lite
  */
-public class TelaSobre extends javax.swing.JDialog
+public class TelaCustomBorder extends javax.swing.JDialog
 {
     private Action acaoSair;
-    public TelaSobre()
+    public TelaCustomBorder(JPanel jPanel, String titulo)
     {
         super();
         initComponents();
@@ -31,7 +33,7 @@ public class TelaSobre extends javax.swing.JDialog
         dispose();
         setUndecorated(true);
         setLayout(new BorderLayout());
-        add(new OuterStaticPanel(new Sobre(), new DialogBorderPanel(acaoSair, this,"Sobre")), BorderLayout.CENTER);
+        add(new OuterStaticPanel(jPanel, new DialogBorderPanel(acaoSair, this,"Sobre")), BorderLayout.CENTER);
         pack();
     }
     

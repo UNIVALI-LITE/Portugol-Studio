@@ -9,25 +9,22 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
-import br.univali.ps.ui.telas.TelaAtalhosTeclado;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
-import br.univali.ps.ui.telas.TelaSobre;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.Sobre;
-import br.univali.ps.ui.window.DialogBorderPanel;
-import br.univali.ps.ui.window.OuterStaticPanel;
+import br.univali.ps.ui.telas.TelaAtalhos;
 import br.univali.ps.ui.window.OutsidePanel;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
-import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -42,7 +39,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -54,10 +50,8 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
  *
@@ -94,7 +88,7 @@ public final class PortugolStudio
     private TelaRenomearSimbolo telaRenomearSimbolo = null;        
     
     private TelaDicas telaDicas = null;
-    private TelaAtalhosTeclado telaAtalhosTeclado = null;
+    private JDialog telaAtalhosTeclado = null;
         
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
@@ -749,7 +743,7 @@ public final class PortugolStudio
     {
         if (telaSobre == null)
         {
-            telaSobre = new TelaSobre();
+            telaSobre = new TelaCustomBorder(new Sobre(), "Sobre");
             
         }
 
@@ -758,11 +752,11 @@ public final class PortugolStudio
         return telaSobre;
     }
 
-    public TelaAtalhosTeclado getTelaAtalhosTeclado()
+    public JDialog getTelaAtalhosTeclado()
     {
         if (telaAtalhosTeclado == null)
         {
-            telaAtalhosTeclado = new TelaAtalhosTeclado();
+            telaAtalhosTeclado = new TelaCustomBorder(new TelaAtalhos(), "Atalhos de Teclado");
         }
 
         telaAtalhosTeclado.setLocationRelativeTo(null);
