@@ -85,7 +85,7 @@ public final class PortugolStudio
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
     private TelaCustomBorder telaLicencas = null;
-    private TelaRenomearSimbolo telaRenomearSimbolo = null;        
+    private TelaCustomBorder telaRenomearSimbolo = null;        
     
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
@@ -815,16 +815,30 @@ public final class PortugolStudio
         return telaLicencas;
     }
 
-    public TelaRenomearSimbolo getTelaRenomearSimbolo()
+    public JDialog getTelaRenomearSimbolo()
     {
         if (telaRenomearSimbolo == null)
         {
-            telaRenomearSimbolo = new TelaRenomearSimbolo();                    
+            telaRenomearSimbolo = new TelaCustomBorder("renomear");
+            telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
         }
         
         telaRenomearSimbolo.setLocationRelativeTo(null);
         
         return telaRenomearSimbolo;
+    }
+    
+    public TelaRenomearSimbolo getTelaRenomearSimboloPanel()
+    {
+        if (telaRenomearSimbolo == null)
+        {
+            telaRenomearSimbolo = new TelaCustomBorder("renomear");
+            telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
+        }
+        
+        telaRenomearSimbolo.setLocationRelativeTo(null);
+        
+        return (TelaRenomearSimbolo) telaRenomearSimbolo.getPanel();
     }
 
     public synchronized boolean isAtualizandoInicializador()

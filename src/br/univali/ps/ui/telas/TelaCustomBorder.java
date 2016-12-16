@@ -25,6 +25,8 @@ public class TelaCustomBorder extends javax.swing.JDialog
 {
     private Action acaoSair;
     private String titulo;
+    private JPanel panel;
+    private DialogBorderPanel borderPanel;
 
     public TelaCustomBorder(JPanel jPanel, String titulo)
     {
@@ -45,7 +47,8 @@ public class TelaCustomBorder extends javax.swing.JDialog
     
     private void configurePanel(JPanel jPanel, String titulo)
     {
-        add(new OuterStaticPanel(jPanel, new DialogBorderPanel(acaoSair, this,titulo)), BorderLayout.CENTER);
+        this.borderPanel=new DialogBorderPanel(acaoSair, this,titulo);
+        add(new OuterStaticPanel(jPanel, borderPanel), BorderLayout.CENTER);
         pack();
     }
     
@@ -56,7 +59,18 @@ public class TelaCustomBorder extends javax.swing.JDialog
     
     public void setPanel(JPanel jPanel)
     {
+        this.panel = jPanel;
         configurePanel(jPanel, this.titulo);
+    }
+
+    public JPanel getPanel() {
+        return panel;
+    }
+    
+    @Override
+    public void setTitle(String title)
+    {
+        this.borderPanel.setTitle(title);
     }
     
     private void configurarAcaoSair()

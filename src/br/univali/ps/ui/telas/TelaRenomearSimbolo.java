@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.univali.ps.ui.telas;
 
 import br.univali.portugol.nucleo.CausaErroAoTentarObterDeclaracaoDoSimbolo;
@@ -13,12 +18,13 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
+import static br.univali.ps.ui.editor.Editor.main;
 import br.univali.ps.ui.swing.ColorController;
-import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Insets;
+import static java.awt.SystemColor.info;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -28,7 +34,6 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -38,11 +43,13 @@ import javax.swing.event.DocumentListener;
 
 /**
  *
- * @author Luiz Fernando Noschang
- * @since 03/20/2016
+ * @author Adson Estevesa
  */
-public class TelaRenomearSimbolo extends JDialog
-{
+public class TelaRenomearSimbolo extends javax.swing.JPanel {
+
+    /**
+     * Creates new form TelaRenomearSimbolo
+     */
     private static final int ATRASO_ATUALIZACAO_STATUS = 350;
 
     private String codigoFonte;
@@ -55,19 +62,14 @@ public class TelaRenomearSimbolo extends JDialog
 
     private Action acaoAceitar;
     private Action acaoCancelar;
+    
+    private TelaCustomBorder dialog;
 
-    public TelaRenomearSimbolo()
+    public TelaRenomearSimbolo(TelaCustomBorder dialog)
     {
         initComponents();
         configurarCores();
-        try
-        {
-            this.setIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_GRANDES + "/light-bulb.png")));
-        }
-        catch (IOException ioe)
-        {
-        }
-        
+        this.dialog = dialog;
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(botaoAceitar);
             WeblafUtils.configurarBotao(botaoCancelar);
@@ -119,8 +121,8 @@ public class TelaRenomearSimbolo extends JDialog
         WeblafUtils.configurarBotao(botaoCancelar);
         WeblafUtils.configuraWebLaf(campoNomeAtual, 2, 2);
         WeblafUtils.configuraWebLaf(campoNovoNome, 2, 2);
-        main.setBackground(ColorController.FUNDO_CLARO);
-        main.setForeground(ColorController.COR_LETRA);
+        setBackground(ColorController.FUNDO_CLARO);
+        setForeground(ColorController.COR_LETRA);
         setBackground(ColorController.FUNDO_CLARO);
         setForeground(ColorController.COR_LETRA);
         jLabel1.setForeground(ColorController.COR_LETRA);
@@ -137,14 +139,14 @@ public class TelaRenomearSimbolo extends JDialog
             public void actionPerformed(ActionEvent e)
             {
                 aceitou = true;
-                dispose();
+                dialog.dispose();
             }
         };
 
         botaoAceitar.setAction(acaoAceitar);
 
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Aceitar");
-        getRootPane().getActionMap().put("Aceitar", acaoAceitar);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Aceitar");
+        getActionMap().put("Aceitar", acaoAceitar);
 
         acaoCancelar = new AbstractAction("Cancelar", botaoCancelar.getIcon())
         {
@@ -157,14 +159,14 @@ public class TelaRenomearSimbolo extends JDialog
                 }
 
                 aceitou = false;
-                dispose();
+                dialog.dispose();
             }
         };
 
         botaoCancelar.setAction(acaoCancelar);
 
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancelar");
-        getRootPane().getActionMap().put("Cancelar", acaoCancelar);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancelar");
+        getActionMap().put("Cancelar", acaoCancelar);
     }
 
     private void atualizarInformacoes()
@@ -273,7 +275,7 @@ public class TelaRenomearSimbolo extends JDialog
 
             atualizarInformacoes();
 
-            setVisible(true);
+            dialog.setVisible(true);
         }
         catch (ErroAoTentarObterDeclaracaoDoSimbolo ex)
         {
@@ -298,24 +300,24 @@ public class TelaRenomearSimbolo extends JDialog
         {
             if (declaracaoDoSimbolo.constante())
             {
-                setTitle("Renomear constante");
+                dialog.setTitle("Renomear constante");
             }
             else
             {
-                setTitle("Renomear variável");
+                dialog.setTitle("Renomear variável");
             }
         }
         else if (declaracaoDoSimbolo instanceof NoDeclaracaoVetor)
         {
-            setTitle("Renomear vetor");
+            dialog.setTitle("Renomear vetor");
         }
         else if (declaracaoDoSimbolo instanceof NoDeclaracaoMatriz)
         {
-            setTitle("Renomear matriz");
+            dialog.setTitle("Renomear matriz");
         }
         else if (declaracaoDoSimbolo instanceof NoDeclaracaoFuncao)
         {
-            setTitle("Renomear função");
+            dialog.setTitle("Renomear função");
         }
         else if (declaracaoDoSimbolo instanceof NoDeclaracaoParametro)
         {
@@ -325,20 +327,20 @@ public class TelaRenomearSimbolo extends JDialog
             {
                 if (parametro.constante())
                 {
-                    setTitle("Renomear constante");
+                    dialog.setTitle("Renomear constante");
                 }
                 else
                 {
-                    setTitle("Renomear variável");
+                    dialog.setTitle("Renomear variável");
                 }
             }
             else if (parametro.getQuantificador() == Quantificador.VETOR)
             {
-                setTitle("Renomear vetor");
+                dialog.setTitle("Renomear vetor");
             }
             else if (parametro.getQuantificador() == Quantificador.MATRIZ)
             {
-                setTitle("Renomear matriz");
+                dialog.setTitle("Renomear matriz");
             }
         }
     }
@@ -353,12 +355,15 @@ public class TelaRenomearSimbolo extends JDialog
         return campoNovoNome.getText().trim();
     }
 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
-        main = new javax.swing.JPanel();
         variaveis = new javax.swing.JPanel();
         aviso = new javax.swing.JPanel();
         info = new javax.swing.JTextArea();
@@ -374,14 +379,9 @@ public class TelaRenomearSimbolo extends JDialog
         botaoCancelar = new com.alee.laf.button.WebButton();
         botaoAceitar = new com.alee.laf.button.WebButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setModal(true);
-        setPreferredSize(new java.awt.Dimension(400, 225));
-        setResizable(false);
-
-        main.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        main.setPreferredSize(new java.awt.Dimension(350, 175));
-        main.setLayout(new java.awt.BorderLayout());
+        setMinimumSize(new java.awt.Dimension(160, 160));
+        setPreferredSize(new java.awt.Dimension(350, 175));
+        setLayout(new java.awt.BorderLayout());
 
         variaveis.setOpaque(false);
         variaveis.setLayout(new java.awt.BorderLayout());
@@ -428,7 +428,7 @@ public class TelaRenomearSimbolo extends JDialog
 
         variaveis.add(nomes, java.awt.BorderLayout.NORTH);
 
-        main.add(variaveis, java.awt.BorderLayout.CENTER);
+        add(variaveis, java.awt.BorderLayout.CENTER);
 
         botoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botoes.setOpaque(false);
@@ -441,10 +441,8 @@ public class TelaRenomearSimbolo extends JDialog
         jPanel1.add(botaoCancelar);
 
         botaoAceitar.setText("Aceitar");
-        botaoAceitar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        botaoAceitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoAceitarActionPerformed(evt);
             }
         });
@@ -452,16 +450,13 @@ public class TelaRenomearSimbolo extends JDialog
 
         botoes.add(jPanel1, java.awt.BorderLayout.EAST);
 
-        main.add(botoes, java.awt.BorderLayout.SOUTH);
-
-        getContentPane().add(main, java.awt.BorderLayout.CENTER);
-
-        pack();
+        add(botoes, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoAceitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAceitarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botaoAceitarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel aviso;
@@ -474,7 +469,6 @@ public class TelaRenomearSimbolo extends JDialog
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel main;
     private javax.swing.JPanel nomeAtual;
     private javax.swing.JPanel nomes;
     private javax.swing.JPanel novoNome;
