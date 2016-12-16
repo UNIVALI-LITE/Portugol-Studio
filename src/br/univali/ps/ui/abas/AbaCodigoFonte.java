@@ -989,7 +989,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                     int linha = trechoCodigoFonte.getLinha();
                                     int coluna = trechoCodigoFonte.getColuna() + 1;
 
-                                    TelaRenomearSimbolo telaRenomearSimbolo = PortugolStudio.getInstancia().getTelaRenomearSimbolo();
+                                    TelaRenomearSimbolo telaRenomearSimbolo = PortugolStudio.getInstancia().getTelaRenomearSimboloPanel();
                                     telaRenomearSimbolo.exibir(programa, linha, coluna);
 
                                     if (telaRenomearSimbolo.usuarioAceitouRenomear())

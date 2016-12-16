@@ -7,6 +7,7 @@ package br.univali.ps.ui.window;
 
 import br.univali.ps.ui.swing.ColorController;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 

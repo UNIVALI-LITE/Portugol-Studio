@@ -293,6 +293,7 @@ public class WeblafUtils {
         WebTableStyle.headerTopBgColor =  ColorController.COR_PRINCIPAL;
         WebTableStyle.headerBottomLineColor = null;
         WebTableStyle.headerTopLineColor = ColorController.COR_PRINCIPAL;
+        WebTableStyle.background=ColorController.FUNDO_ESCURO;
         WebTableStyle.foreground = ColorController.COR_LETRA;
         WebTableStyle.headerMargin = new Insets(0,0,0,0);
         WebTableStyle.gridColor = null;

@@ -1,50 +1,54 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.univali.ps.ui.telas;
 
-import br.univali.ps.ui.paineis.PainelLicenca;
-import br.univali.ps.ui.telas.utils.Licencas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.paineis.PainelLicenca;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.PSOutTabbedPaneUI;
-import br.univali.ps.ui.utils.WebConnectionUtils;
-import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.telas.utils.Licencas;
+import br.univali.ps.ui.utils.IconFactory;
+import br.univali.ps.ui.utils.WebConnectionUtils;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public final class TelaLicencas extends javax.swing.JDialog implements Themeable{
+/**
+ *
+ * @author Adson Estevesa
+ */
+public class TelaLicencas extends javax.swing.JPanel implements Themeable{
+
+    /**
+     * Creates new form TelaLicencas
+     */
     private final List<PainelLicenca> paineis = new ArrayList<>();
     private Action acaoSair;
     private boolean carregado = false;
-
-    public TelaLicencas()
+    
+    public TelaLicencas(TelaCustomBorder dialog)
     {
-        super((JFrame) null, true);
+        super(null, true);
 
         initComponents();
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
-        setTitle("Licenças");
-        setSize(640, 550);
-        setLocationRelativeTo(null);
-        
-        this.setIconImage(IconFactory.getDefaultWindowIcon());
 
-        addComponentListener(new ComponentAdapter()
+        dialog.addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentShown(ComponentEvent e)
@@ -69,7 +73,7 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
     {
         rotuloCarregando.setBackground(ColorController.COR_PRINCIPAL);
         painelCarregamento.setBackground(ColorController.COR_PRINCIPAL);
-        painelConteudo.setBackground(ColorController.FUNDO_CLARO);
+        setBackground(ColorController.FUNDO_CLARO);
         painelAlinhamento.setBackground(ColorController.FUNDO_CLARO);
         painelTabulado.setUI(new PSOutTabbedPaneUI());
         painelAlinhamento.setForeground(ColorController.COR_LETRA);
@@ -91,8 +95,8 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
             }
         };
 
-        getRootPane().getActionMap().put(nome, acaoSair);
-        getRootPane().getInputMap().put(atalho, nome);
+        getActionMap().put(nome, acaoSair);
+        getInputMap().put(atalho, nome);
     }
 
     private void redefinirPaineis()
@@ -107,6 +111,7 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
 
     private void criarPaineis()
     {
+        System.out.println("entrou");
         Thread thread = new Thread(new Runnable()
         {
             @Override
@@ -130,12 +135,14 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
                         painelTabulado.add(recurso.getNome(), painelLicenca);
                         painelTabulado.setIconAt(painelTabulado.getTabCount() - 1, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
                     });
+                    System.out.println("pegando licenças");
                 }
+                System.out.println("pulou");
                 SwingUtilities.invokeLater(() ->
                 {
-                    painelConteudo.remove(painelCarregamento);
-                    painelConteudo.add(painelAlinhamento, BorderLayout.CENTER);
-
+                    System.out.println("Falhou miseravelmente");
+                    remove(painelCarregamento);
+                    add(painelAlinhamento, BorderLayout.CENTER);
                     validate();
                     redefinirPaineis();
                     carregado = true;
@@ -145,17 +152,19 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
         thread.start();
         
     }
-
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         painelAlinhamento = new javax.swing.JPanel();
         painelTabulado = new javax.swing.JTabbedPane();
         painelBotoes = new javax.swing.JPanel();
         webButton1 = new com.alee.laf.button.WebButton();
-        painelConteudo = new javax.swing.JPanel();
         painelCarregamento = new javax.swing.JPanel();
         rotuloCarregando = new javax.swing.JLabel();
 
@@ -173,10 +182,8 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
         painelBotoes.setLayout(new java.awt.BorderLayout());
 
         webButton1.setText("Visitar Página");
-        webButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        webButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 webButton1ActionPerformed(evt);
             }
         });
@@ -184,13 +191,7 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
 
         painelAlinhamento.add(painelBotoes, java.awt.BorderLayout.SOUTH);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(659, 526));
-        setResizable(false);
-
-        painelConteudo.setBackground(new java.awt.Color(228, 241, 254));
-        painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        painelConteudo.setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.BorderLayout());
 
         painelCarregamento.setBackground(new java.awt.Color(255, 255, 255));
         painelCarregamento.setOpaque(false);
@@ -204,11 +205,7 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
         rotuloCarregando.setOpaque(true);
         painelCarregamento.add(rotuloCarregando, java.awt.BorderLayout.CENTER);
 
-        painelConteudo.add(painelCarregamento, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(painelConteudo, java.awt.BorderLayout.CENTER);
-
-        pack();
+        add(painelCarregamento, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
@@ -217,15 +214,13 @@ public final class TelaLicencas extends javax.swing.JDialog implements Themeable
         WebConnectionUtils.abrirSite(recurso.getUrl());
     }//GEN-LAST:event_webButton1ActionPerformed
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel painelAlinhamento;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelCarregamento;
-    private javax.swing.JPanel painelConteudo;
     private javax.swing.JTabbedPane painelTabulado;
     private javax.swing.JLabel rotuloCarregando;
     private com.alee.laf.button.WebButton webButton1;
     // End of variables declaration//GEN-END:variables
-
-    
 }

@@ -5,20 +5,18 @@
  */
 package br.univali.ps.ui.telas;
 
-import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.utils.DicaInterface;
 import br.univali.ps.ui.utils.IconFactory;
-import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -29,16 +27,18 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
 /**
  *
- * @author LITE
+ * @author Adson Estevesa
  */
-public class TelaDicas extends JDialog implements Themeable{
+public class TelaDicas extends javax.swing.JPanel implements Themeable{
 
-    private final List<DicaInterface> dicas;
+    /**
+     * Creates new form TelaDicas
+     */
+   private final List<DicaInterface> dicas;
     private Integer item=0;
     
     /**
@@ -47,15 +47,12 @@ public class TelaDicas extends JDialog implements Themeable{
     public TelaDicas() {
         initComponents();
         configurarCores();
-        this.setIconImage(IconFactory.getDefaultWindowIcon());
-        this.setTitle("Dicas de Inteface");
         String dir = IconFactory.CAMINHO_IMAGENS+"/dicas";
         dicas = loadHints(dir);
         atualiza(item);
         exibirSempre.setSelected(true);
         
         configurarNavegacaoPeloTeclado();
-        setModal(true);
     }
     
     @Override
@@ -65,19 +62,18 @@ public class TelaDicas extends JDialog implements Themeable{
             WeblafUtils.configurarBotao(webButton2, ColorController.FUNDO_CLARO, Color.white, ColorController.FUNDO_ESCURO, Color.orange, 15);
         }
         titleLabel.setBackground(ColorController.FUNDO_ESCURO);
-        mainPanel.setBackground(ColorController.FUNDO_CLARO);
+        this.setBackground(ColorController.FUNDO_CLARO);
         descriptionLabel.setForeground(ColorController.COR_LETRA);
         exibirSempre.setForeground(ColorController.COR_LETRA);
     }
     
     private void configurarNavegacaoPeloTeclado()
     {
-        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = getRootPane().getActionMap();
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
         
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "Proxima");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "Anterior");
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Fechar");
         
         actionMap.put("Proxima", new AbstractAction() 
         {
@@ -95,15 +91,6 @@ public class TelaDicas extends JDialog implements Themeable{
             public void actionPerformed(ActionEvent e) 
             {
                 webButton1.doClick();
-            }
-        });
-        
-         actionMap.put("Fechar", new AbstractAction() 
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                dispose();
             }
         });
     }
@@ -146,7 +133,7 @@ public class TelaDicas extends JDialog implements Themeable{
         TelaDicas dicas = new TelaDicas();
         dicas.setVisible(true);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,7 +143,6 @@ public class TelaDicas extends JDialog implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new javax.swing.JPanel();
         carrouselPane = new javax.swing.JPanel();
         hintPane = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
@@ -172,13 +158,10 @@ public class TelaDicas extends JDialog implements Themeable{
         optionPane = new javax.swing.JPanel();
         exibirSempre = new javax.swing.JCheckBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        mainPanel.setBackground(new java.awt.Color(228, 241, 254));
-        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        mainPanel.setMinimumSize(new java.awt.Dimension(640, 480));
-        mainPanel.setPreferredSize(new java.awt.Dimension(640, 550));
-        mainPanel.setLayout(new java.awt.BorderLayout());
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        setMinimumSize(new java.awt.Dimension(640, 480));
+        setPreferredSize(new java.awt.Dimension(640, 550));
+        setLayout(new java.awt.BorderLayout());
 
         carrouselPane.setOpaque(false);
         carrouselPane.setLayout(new java.awt.BorderLayout());
@@ -248,7 +231,7 @@ public class TelaDicas extends JDialog implements Themeable{
         scrollPane.setLayout(new java.awt.BorderLayout());
         carrouselPane.add(scrollPane, java.awt.BorderLayout.SOUTH);
 
-        mainPanel.add(carrouselPane, java.awt.BorderLayout.CENTER);
+        add(carrouselPane, java.awt.BorderLayout.CENTER);
 
         optionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
         optionPane.setOpaque(false);
@@ -265,11 +248,7 @@ public class TelaDicas extends JDialog implements Themeable{
         });
         optionPane.add(exibirSempre, java.awt.BorderLayout.CENTER);
 
-        mainPanel.add(optionPane, java.awt.BorderLayout.SOUTH);
-
-        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
-
-        pack();
+        add(optionPane, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
@@ -281,8 +260,8 @@ public class TelaDicas extends JDialog implements Themeable{
     }//GEN-LAST:event_webButton1ActionPerformed
 
     private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
-       item=(item+1)%dicas.size();
-       atualiza(item);
+        item=(item+1)%dicas.size();
+        atualiza(item);
     }//GEN-LAST:event_webButton2ActionPerformed
 
     private void exibirSempreStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_exibirSempreStateChanged
@@ -301,7 +280,6 @@ public class TelaDicas extends JDialog implements Themeable{
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel optionPane;
     private javax.swing.JPanel scrollPane;
     private javax.swing.JLabel titleLabel;

@@ -434,7 +434,7 @@ public final class AbaInicial extends Aba implements Themeable
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                PortugolStudio.getInstancia().getTelaAtalhosTeclado().setVisible(true);
+            PortugolStudio.getInstancia().getTelaAtalhosTeclado().setVisible(true);
             }
         };
 

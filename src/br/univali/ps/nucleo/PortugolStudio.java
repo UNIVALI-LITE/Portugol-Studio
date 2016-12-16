@@ -9,20 +9,19 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
-import br.univali.ps.ui.telas.TelaAtalhosTeclado;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.telas.TelaLicencas;
-import br.univali.ps.ui.telas.TelaSobre;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.Sobre;
-import br.univali.ps.ui.window.DialogBorderPanel;
-import br.univali.ps.ui.window.OuterStaticPanel;
+import br.univali.ps.ui.telas.TelaAtalhos;
 import br.univali.ps.ui.window.OutsidePanel;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -42,7 +41,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -54,10 +52,8 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
  *
@@ -90,11 +86,11 @@ public final class PortugolStudio
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
-    private TelaLicencas telaLicencas = null;
-    private TelaRenomearSimbolo telaRenomearSimbolo = null;        
+    private TelaCustomBorder telaLicencas = null;
+    private TelaCustomBorder telaRenomearSimbolo = null;        
     
-    private TelaDicas telaDicas = null;
-    private TelaAtalhosTeclado telaAtalhosTeclado = null;
+    private JDialog telaDicas = null;
+    private JDialog telaAtalhosTeclado = null;
         
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
@@ -655,9 +651,12 @@ public final class PortugolStudio
                     Lancador.getJFrame().setVisible(true);
                     Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                     
-//                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-//                    Lancador.getJFrame().setBounds(bounds);
-//                    Lancador.getJFrame().setVisible(true);
+                    Lancador.setOlder_size(new Dimension(800, 600));
+                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+                    Lancador.getJFrame().setBounds(bounds);
+                    Lancador.setMaximazed(true);
+                    
+                    Lancador.getJFrame().revalidate();
                     
                 }
             });
@@ -749,7 +748,7 @@ public final class PortugolStudio
     {
         if (telaSobre == null)
         {
-            telaSobre = new TelaSobre();
+            telaSobre = new TelaCustomBorder(new Sobre(), "Sobre");
             
         }
 
@@ -758,11 +757,11 @@ public final class PortugolStudio
         return telaSobre;
     }
 
-    public TelaAtalhosTeclado getTelaAtalhosTeclado()
+    public JDialog getTelaAtalhosTeclado()
     {
         if (telaAtalhosTeclado == null)
         {
-            telaAtalhosTeclado = new TelaAtalhosTeclado();
+            telaAtalhosTeclado = new TelaCustomBorder(new TelaAtalhos(), "Atalhos de Teclado");
         }
 
         telaAtalhosTeclado.setLocationRelativeTo(null);
@@ -770,11 +769,11 @@ public final class PortugolStudio
         return telaAtalhosTeclado;
     }
     
-    public TelaDicas getTelaDicas()
+    public JDialog getTelaDicas()
     {
         if (telaDicas == null)
         {
-            telaDicas = new TelaDicas();
+            telaDicas = new TelaCustomBorder(new TelaDicas(), "Dicas");
         }
 
         telaDicas.setLocationRelativeTo(null);
@@ -806,11 +805,14 @@ public final class PortugolStudio
         return telaErrosPluginsBibliotecas;
     }
 
-    public TelaLicencas getTelaLicencas()
+    public JDialog getTelaLicencas()
     {
         if (telaLicencas == null)
         {
-            telaLicencas = new TelaLicencas();
+            telaLicencas = new TelaCustomBorder("Licenças") ;
+            telaLicencas.setPanel(new TelaLicencas(telaLicencas));
+            
+            telaLicencas.setSize(640, 550);
         }
 
         telaLicencas.setLocationRelativeTo(null);
@@ -818,16 +820,30 @@ public final class PortugolStudio
         return telaLicencas;
     }
 
-    public TelaRenomearSimbolo getTelaRenomearSimbolo()
+    public JDialog getTelaRenomearSimbolo()
     {
         if (telaRenomearSimbolo == null)
         {
-            telaRenomearSimbolo = new TelaRenomearSimbolo();                    
+            telaRenomearSimbolo = new TelaCustomBorder("renomear");
+            telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
         }
         
         telaRenomearSimbolo.setLocationRelativeTo(null);
         
         return telaRenomearSimbolo;
+    }
+    
+    public TelaRenomearSimbolo getTelaRenomearSimboloPanel()
+    {
+        if (telaRenomearSimbolo == null)
+        {
+            telaRenomearSimbolo = new TelaCustomBorder("renomear");
+            telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
+        }
+        
+        telaRenomearSimbolo.setLocationRelativeTo(null);
+        
+        return (TelaRenomearSimbolo) telaRenomearSimbolo.getPanel();
     }
 
     public synchronized boolean isAtualizandoInicializador()

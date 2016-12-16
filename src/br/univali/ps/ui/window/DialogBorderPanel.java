@@ -109,4 +109,9 @@ public class DialogBorderPanel extends JPanel {
                 }
             });
         }
+        
+        public void setTitle(String title)
+        {
+            jl.setText(title);
+        }
     }

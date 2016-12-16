@@ -9,20 +9,26 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.window.DialogBorderPanel;
 import br.univali.ps.ui.window.OuterStaticPanel;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
  *
  * @author lite
  */
-public class TelaSobre extends javax.swing.JDialog
+public class TelaCustomBorder extends javax.swing.JDialog
 {
     private Action acaoSair;
-    public TelaSobre()
+    private String titulo;
+    private JPanel panel;
+    private DialogBorderPanel borderPanel;
+
+    public TelaCustomBorder(JPanel jPanel, String titulo)
     {
         super();
         initComponents();
@@ -31,8 +37,40 @@ public class TelaSobre extends javax.swing.JDialog
         dispose();
         setUndecorated(true);
         setLayout(new BorderLayout());
-        add(new OuterStaticPanel(new Sobre(), new DialogBorderPanel(acaoSair, this,"Sobre")), BorderLayout.CENTER);
+        this.titulo = titulo;
+        
+        if (jPanel != null)
+        {
+            configurePanel(jPanel, titulo);
+        }
+    }
+    
+    private void configurePanel(JPanel jPanel, String titulo)
+    {
+        this.borderPanel=new DialogBorderPanel(acaoSair, this,titulo);
+        add(new OuterStaticPanel(jPanel, borderPanel), BorderLayout.CENTER);
         pack();
+    }
+    
+    public TelaCustomBorder(String titulo)
+    {
+        this(null, titulo);
+    }
+    
+    public void setPanel(JPanel jPanel)
+    {
+        this.panel = jPanel;
+        configurePanel(jPanel, this.titulo);
+    }
+
+    public JPanel getPanel() {
+        return panel;
+    }
+    
+    @Override
+    public void setTitle(String title)
+    {
+        this.borderPanel.setTitle(title);
     }
     
     private void configurarAcaoSair()
@@ -63,6 +101,9 @@ public class TelaSobre extends javax.swing.JDialog
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMaximumSize(new java.awt.Dimension(400, 300));
+        setResizable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

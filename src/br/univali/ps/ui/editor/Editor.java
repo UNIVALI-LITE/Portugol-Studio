@@ -415,7 +415,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                         MetadadosDoSimboloSobOCursorDoTeclado metadados = obterMetadadosDoSimboloSobOCursorDoTeclado();
 
                         String programa = getPortugolDocumento().getCodigoFonte();
-                        TelaRenomearSimbolo telaRenomearSimbolo = PortugolStudio.getInstancia().getTelaRenomearSimbolo();
+                        TelaRenomearSimbolo telaRenomearSimbolo = PortugolStudio.getInstancia().getTelaRenomearSimboloPanel();
                         telaRenomearSimbolo.exibir(programa, metadados.getLinha(), metadados.getColuna());
 
                         if (telaRenomearSimbolo.usuarioAceitouRenomear())
