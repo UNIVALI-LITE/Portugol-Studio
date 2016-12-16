@@ -22,6 +22,9 @@ import javax.swing.border.LineBorder;
 public class OutsidePanel extends javax.swing.JPanel
 {
 
+    public BorderPanel getBorderPanel(){
+        return borderPanel1;
+    }
     /**
      * Creates new form OutsidePanelFinal
      */

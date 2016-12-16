@@ -50,7 +50,12 @@ public class BorderPanel extends JPanel {
         private Image min;
         private JLabel label;
         private Image icon;
-
+        
+        
+        public WebButton getMaxButton(){
+            return maxButton;
+        }
+        
         public BorderPanel() {
             
             try {

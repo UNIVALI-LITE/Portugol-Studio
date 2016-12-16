@@ -21,10 +21,12 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.Sobre;
 import br.univali.ps.ui.telas.TelaAtalhos;
 import br.univali.ps.ui.window.OutsidePanel;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -649,9 +651,12 @@ public final class PortugolStudio
                     Lancador.getJFrame().setVisible(true);
                     Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                     
-//                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-//                    Lancador.getJFrame().setBounds(bounds);
-//                    Lancador.getJFrame().setVisible(true);
+                    Lancador.setOlder_size(new Dimension(800, 600));
+                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+                    Lancador.getJFrame().setBounds(bounds);
+                    Lancador.setMaximazed(true);
+                    
+                    Lancador.getJFrame().revalidate();
                     
                 }
             });
