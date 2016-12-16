@@ -111,7 +111,6 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
 
     private void criarPaineis()
     {
-        System.out.println("entrou");
         Thread thread = new Thread(new Runnable()
         {
             @Override
@@ -135,12 +134,9 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
                         painelTabulado.add(recurso.getNome(), painelLicenca);
                         painelTabulado.setIconAt(painelTabulado.getTabCount() - 1, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
                     });
-                    System.out.println("pegando licenças");
                 }
-                System.out.println("pulou");
                 SwingUtilities.invokeLater(() ->
                 {
-                    System.out.println("Falhou miseravelmente");
                     remove(painelCarregamento);
                     add(painelAlinhamento, BorderLayout.CENTER);
                     validate();
