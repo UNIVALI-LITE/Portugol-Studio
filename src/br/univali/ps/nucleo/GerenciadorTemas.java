@@ -47,7 +47,7 @@ public final class GerenciadorTemas {
     }
     
     public String getNomeTemaPadrao(){
-        return "Portugol Studio";
+        return "Dark";
     }
     
     public Theme carregarTema(String nome) throws ExcecaoAplicacao {
@@ -69,7 +69,7 @@ public final class GerenciadorTemas {
                 throw new ExcecaoAplicacao(e.getMessage(), ExcecaoAplicacao.Tipo.ERRO);
             }
         } else if (carregarPadrao) {
-            return carregarTema("Portugol Studio", false);
+            return carregarTema("Dark", false);
         }
 
         return null;
