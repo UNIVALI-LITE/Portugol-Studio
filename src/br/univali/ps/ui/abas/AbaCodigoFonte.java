@@ -1239,6 +1239,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnExecutar.setHideActionText(true);
         btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnExecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExecutarActionPerformed(evt);
+            }
+        });
         barraFerramentas.add(btnExecutar);
 
         btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/step.png"))); // NOI18N
@@ -1375,6 +1380,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         add(divisorArvoreEditor, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecutarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExecutarActionPerformed
 
     private void interromper()
     {

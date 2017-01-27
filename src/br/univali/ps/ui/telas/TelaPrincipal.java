@@ -103,7 +103,7 @@ public class TelaPrincipal extends javax.swing.JPanel
 
     private void instalarObservadorJanela()
     {
-        addWindowListener(new WindowAdapter()
+        Lancador.getJFrame().addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
@@ -125,7 +125,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             
         });
 
-        addComponentListener(new ComponentAdapter()
+        Lancador.getJFrame().addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentShown(ComponentEvent e)
@@ -332,10 +332,9 @@ public class TelaPrincipal extends javax.swing.JPanel
         return null;
     }
 
-    private void fecharAplicativo()
+    public void fecharAplicativo()
     {
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
-
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
             PortugolStudio.getInstancia().finalizar(0);

@@ -101,7 +101,7 @@ public final class Configuracoes
     }
 
     public void salvar()
-    {
+    {        
         try
         {
             configuracoes.store(new FileWriter(caminhoArquivoConfiguracoes), "");

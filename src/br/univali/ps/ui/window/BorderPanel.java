@@ -56,6 +56,9 @@ public class BorderPanel extends JPanel {
             return maxButton;
         }
         
+        public WebButton getCloseButton(){
+            return closeButton;
+        }
         public BorderPanel() {
             
             try {
@@ -81,7 +84,7 @@ public class BorderPanel extends JPanel {
             closeButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
-                    System.exit(0);
+                    Lancador.getInstance().fecharAplicacao();
                 }
             });
             minButton=new WebButton();

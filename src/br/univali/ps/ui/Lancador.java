@@ -58,6 +58,10 @@ public class Lancador {
         return frame;
     }
     
+    public void fecharAplicacao(){
+        PortugolStudio.getInstancia().getTelaPrincipal().fecharAplicativo();
+    }
+    
     public void focarJanela()
     {
         SwingUtilities.invokeLater(new Runnable()
