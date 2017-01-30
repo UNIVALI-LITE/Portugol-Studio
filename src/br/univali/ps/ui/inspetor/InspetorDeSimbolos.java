@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -764,20 +765,25 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
         JPanel panelBotoes = new JPanel();
         panelBotoes.setLayout(new BoxLayout(panelBotoes, BoxLayout.X_AXIS));
+        
         JButton botaoAumentarFonte = new JButton(new AbstractAction("+") {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                inspetor.setTamanhoDaFonte(RenderizadorBase.fonteNormal.getSize() + 2);
+                Font fonteNormal = RenderizadorBase.getFonte(RenderizadorBase.TipoFonte.NORMAL);
+                inspetor.setTamanhoDaFonte(fonteNormal.getSize() + 2);
             }
         });
+        
         JButton botaoDiminuirFonte = new JButton(new AbstractAction("-") {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                inspetor.setTamanhoDaFonte(RenderizadorBase.fonteNormal.getSize() - 2);
+                Font fonteNormal = RenderizadorBase.getFonte(RenderizadorBase.TipoFonte.NORMAL);
+                inspetor.setTamanhoDaFonte(fonteNormal.getSize() - 2);
             }
         });
+        
         panelBotoes.add(botaoAumentarFonte);
         panelBotoes.add(botaoDiminuirFonte);
         botaoAumentarFonte.doClick();

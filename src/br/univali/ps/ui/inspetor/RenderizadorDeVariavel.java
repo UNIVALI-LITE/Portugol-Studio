@@ -1,11 +1,11 @@
 package br.univali.ps.ui.inspetor;
 
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.Icon;
-import static br.univali.ps.ui.inspetor.RenderizadorBase.fonteNormal;
 
 /**
  *
@@ -16,6 +16,8 @@ class RenderizadorDeVariavel extends RenderizadorBase {
 
     @Override
     protected int getAlturaPreferida() {
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+
         FontMetrics metrics = getFontMetrics(fonteNormal);
         return metrics.getHeight();
     }
@@ -36,6 +38,10 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         if (itemDaLista == null) {
             return;
         }
+        
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteDestaque = getFonte(TipoFonte.DESTAQUE);
+        
         Icon icone = itemDaLista.getIcone();
         
         int x = MARGEM; // x inicial

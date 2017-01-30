@@ -1,12 +1,12 @@
 package br.univali.ps.ui.inspetor;
 
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import javax.swing.Icon;
-import static br.univali.ps.ui.inspetor.RenderizadorBase.fonteNormal;
 
 /**
  *
@@ -28,6 +28,8 @@ class RenderizadorDeVetor extends RenderizadorBase {
 
     @Override
     protected int getAlturaPreferida() {
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
         FontMetrics metrics = getFontMetrics(fonteNormal);
         int alturaDoNome = metrics.getAscent();
         int alturaCabecalho = getFontMetrics(fonteCabecalho).getHeight();
@@ -38,6 +40,9 @@ class RenderizadorDeVetor extends RenderizadorBase {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (itemDaLista != null) {
+            Font fonteNormal = getFonte(TipoFonte.NORMAL);
+            Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+            
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
             Icon icone = itemDaLista.getIcone();
             FontMetrics metrics = g.getFontMetrics(fonteNormal);
@@ -89,6 +94,12 @@ class RenderizadorDeVetor extends RenderizadorBase {
      * largura do índice da coluna. Retorna a maior largura encontrada.
      */
     private int getLarguraDaColuna(int indiceDaColuna) {
+        
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+        Font fonteCabecalhoDestaque = getFonte(TipoFonte.CABECALHO_DESTAQUE);
+        Font fonteDestaque = getFonte(TipoFonte.DESTAQUE);
+        
         ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
         String stringDoValor = getStringDoValor(indiceDaColuna);
         String stringDoIndice = String.valueOf(indiceDaColuna);
@@ -110,6 +121,11 @@ class RenderizadorDeVetor extends RenderizadorBase {
     }
 
     private void desenhaGrade(Graphics g, int totalDeColunas, int colunaInicial, int margemEsquerda, int margemSuperior) {
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+        Font fonteCabecalhoDestaque = getFonte(TipoFonte.CABECALHO_DESTAQUE);
+        Font fonteDestaque = getFonte(TipoFonte.DESTAQUE);
+        
         int alturaDaLinha = g.getFontMetrics(fonteNormal).getHeight();
         int inicioLinhaHorizontal = margemEsquerda;
         int xDaLinha = inicioLinhaHorizontal;
