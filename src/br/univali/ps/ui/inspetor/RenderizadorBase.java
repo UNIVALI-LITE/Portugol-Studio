@@ -10,6 +10,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Stroke;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 
 /**
@@ -17,6 +19,8 @@ import javax.swing.JComponent;
  * @author elieser
  */
 abstract class RenderizadorBase extends JComponent {
+
+    private static final Logger LOGGER = Logger.getLogger(RenderizadorBase.class.getName());
 
     protected static final Color COR_GRADE = new Color(1, 1, 1, 0.35f);
     protected static final Color COR_TEXTO = Color.GRAY;
@@ -32,11 +36,45 @@ abstract class RenderizadorBase extends JComponent {
 
     protected ItemDaLista itemDaLista;
 
-    protected static Font fonteNormal = criaFontePadrao();
-    protected static Font fonteDestaque;
-    protected static Font fonteCabecalho;
-    protected static Font fonteCabecalhoDestaque;
+    private static Font fonteNormal = criaFontePadrao();
+    private static Font fonteDestaque;
+    private static Font fonteCabecalho;
+    private static Font fonteCabecalhoDestaque;
     protected static float tamanhoFonte = 12f;
+
+    protected enum TipoFonte {
+        NORMAL, DESTAQUE, CABECALHO, CABECALHO_DESTAQUE
+    }
+
+    protected static Font getFonte(TipoFonte tipoFonte) {
+        Font fonte = fonteNormal;
+        switch (tipoFonte) {
+            case NORMAL:                // desnecessário (ver a 1ª linha), mantendo aqui somente pela legibilidade
+                fonte = fonteNormal;
+                break;
+            case DESTAQUE:
+                fonte = fonteDestaque;
+                break;
+            case CABECALHO:
+                fonte = fonteCabecalho;
+                break;
+            case CABECALHO_DESTAQUE:
+                fonte = fonteCabecalhoDestaque;
+                break;
+        }
+
+        if (fonte == null) {
+            if (fonteNormal != null) {
+                fonte = fonteNormal; // tenta usar a fonteNormal caso tenha dado algum problema nos outros tipos de fonte
+            }
+            else {
+                LOGGER.log(Level.SEVERE, "A fonte base (fonteNormal) não é válida! tipoFonte: {0}", tipoFonte);
+                fonte = new Font("Dialog", Font.PLAIN, 12); // cria a fonte padrão que parece que sempre existirá
+            }
+        }
+
+        return fonte;
+    }
 
     public RenderizadorBase() {
         super();

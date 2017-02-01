@@ -1,6 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,7 +9,6 @@ import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import javax.swing.Icon;
-import static br.univali.ps.ui.inspetor.RenderizadorBase.fonteNormal;
 
 /**
  *
@@ -35,6 +35,10 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         if (itemDaLista == null) {
             return 20;//retorna um valor default só para ter o que desenhar, em geral isso não deveria acontecer
         }
+        
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+                
         FontMetrics metrics = getFontMetrics(fonteNormal);
         ItemDaListaParaMatriz item = (ItemDaListaParaMatriz) itemDaLista;
         int alturaDoNome = metrics.getAscent();
@@ -47,6 +51,10 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (itemDaLista != null) {
+            
+            Font fonteNormal = getFonte(TipoFonte.NORMAL);
+            Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+            
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
             Icon icone = itemDaLista.getIcone();
             FontMetrics metrics = g.getFontMetrics(fonteNormal);
@@ -78,6 +86,9 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     }
 
     private int calculaRolagemDasLinhas() {
+        
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        
         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
         int totalDeLinhas = item.getLinhas();
         int alturaDaLinha = getFontMetrics(fonteNormal).getHeight();
@@ -126,6 +137,12 @@ class RenderizadorDeMatriz extends RenderizadorBase {
      * largura do índice da coluna. Retorna a maior largura encontrada.
      */
     private int getLarguraDaColuna(int indiceDaColuna) {
+        
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+        Font fonteCabecalhoDestaque = getFonte(TipoFonte.CABECALHO_DESTAQUE);
+        Font fonteDestaque = getFonte(TipoFonte.DESTAQUE);
+        
         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
         int totalDeLinhas = item.getLinhas();
         int maiorLargura = 0;
@@ -181,7 +198,10 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     }
 
     private void desenhaValorDaCelula(Graphics g, String stringDoValor, int linha, int xDaLinha, int larguraDaColuna, int alturaDoCabecalho, int alturaDaLinha, int linhaInicial, boolean podeDestacarEstaCelula) {
-        //String stringDoValor = getStringDoValor(l, c);
+        
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteDestaque = getFonte(TipoFonte.DESTAQUE);
+        
         g.setFont(podeDestacarEstaCelula ? fonteDestaque : fonteNormal);
         FontMetrics metrics = g.getFontMetrics();
         int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
@@ -224,6 +244,9 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     }
 
     private void desenhaIndiceDaColuna(Graphics g, int colunaAtual, int xDaLinha, int yDaLinha, int larguraDaColuna) {
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+        Font fonteCabecalhoDestaque = getFonte(TipoFonte.CABECALHO_DESTAQUE);
+        
         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
         String stringIndiceDaColuna = String.valueOf(colunaAtual);
         if (itemDaLista.podeDesenharDestaque() && colunaAtual == item.getUltimaColunaAtualizada()) {
@@ -241,6 +264,10 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     private void desenhaIndiceDaLinha(Graphics g, int linhaAtual, int linhaInicial, int inicioLinhaHorizontal, int margemSuperior, int alturaDaLinha) {
         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
         String stringIndiceDaLinha = String.valueOf(linhaAtual);
+        
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
+        Font fonteCabecalhoDestaque = getFonte(TipoFonte.CABECALHO_DESTAQUE);
+        
         if (itemDaLista.podeDesenharDestaque() && linhaAtual == item.getUltimaLinhaAtualizada()) {
             g.setFont(fonteCabecalhoDestaque);
             g.setColor(COR_DO_CABECALHO_DESTACADO);
@@ -271,10 +298,14 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     }
     
     private int getAlturaDoCabecalho() {
+        Font fonteCabecalho = getFonte(TipoFonte.CABECALHO);
         return getFontMetrics(fonteCabecalho).getHeight();
     }
     
     private void desenhaGrade(Graphics g, int totalDeLinhas, int totalDeColunas, int colunaInicial, int linhaInicial, int margemEsquerda, int margemSuperior) {
+        Font fonteNormal = getFonte(TipoFonte.NORMAL);
+        Font fonteDestaque = getFonte(TipoFonte.DESTAQUE);
+        
         int alturaDaLinha = getFontMetrics(fonteNormal).getHeight();
         int alturaDoCabecalho = getAlturaDoCabecalho();
         int larguraMaximaDoIndiceDeLinha = MARGEM + getFontMetrics(fonteDestaque).stringWidth(String.valueOf(totalDeLinhas - 1));//obtém a largura da string do maior índice de linha
