@@ -21,7 +21,7 @@ import javax.swing.JComponent;
 abstract class RenderizadorBase extends JComponent {
 
     private static final Logger LOGGER = Logger.getLogger(RenderizadorBase.class.getName());
-    
+
     protected static final Color COR_GRADE = new Color(1, 1, 1, 0.35f);
     protected static final Color COR_TEXTO = Color.GRAY;
     protected static final Color COR_NOME = Color.LIGHT_GRAY;
@@ -45,9 +45,8 @@ abstract class RenderizadorBase extends JComponent {
     protected enum TipoFonte {
         NORMAL, DESTAQUE, CABECALHO, CABECALHO_DESTAQUE
     }
-    
-    protected static Font getFonte(TipoFonte tipoFonte)
-    {
+
+    protected static Font getFonte(TipoFonte tipoFonte) {
         Font fonte = fonteNormal;
         switch (tipoFonte) {
             case NORMAL:                // desnecessário (ver a 1ª linha), mantendo aqui somente pela legibilidade
@@ -63,21 +62,20 @@ abstract class RenderizadorBase extends JComponent {
                 fonte = fonteCabecalhoDestaque;
                 break;
         }
-        
-        if (fonte == null) { 
+
+        if (fonte == null) {
             if (fonteNormal != null) {
                 fonte = fonteNormal; // tenta usar a fonteNormal caso tenha dado algum problema nos outros tipos de fonte
-                LOGGER.log(Level.WARNING, "Usando uma fonte genérica, não foi possível obter o tipo de fonte: {0}", tipoFonte);
             }
             else {
                 LOGGER.log(Level.SEVERE, "A fonte base (fonteNormal) não é válida! tipoFonte: {0}", tipoFonte);
                 fonte = new Font("Dialog", Font.PLAIN, 12); // cria a fonte padrão que parece que sempre existirá
             }
         }
-        
+
         return fonte;
     }
-    
+
     public RenderizadorBase() {
         super();
         setTamanhoDaFonte(tamanhoFonte);
