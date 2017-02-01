@@ -41,8 +41,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -74,6 +76,7 @@ public final class PortugolStudio
     private final Random random = new Random(System.nanoTime());
     private final List<String> dicas = new ArrayList<>();
     private final List<Integer> dicasExibidas = new ArrayList<>();
+    private Queue ArquivosRecentes = new LinkedList();
 
     private String versao = null;
     private boolean depurando = false;
@@ -348,6 +351,29 @@ public final class PortugolStudio
             {
                 LOGGER.log(Level.SEVERE, "Erro ao salvar as dicas já exibidas", excecao);
             }
+        }
+    }
+    
+    public void salvarComoRecente(String caminhoArquivoRecente)
+    {
+        ArquivosRecentes.add(caminhoArquivoRecente);
+        if(ArquivosRecentes.size()>6)
+        {
+            ArquivosRecentes.poll();
+        }
+        File arquivosRecentes = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosRecentes)))
+        {
+            for (Object indice : ArquivosRecentes)
+            {
+                escritor.write(indice.toString());
+                escritor.newLine();
+            }
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, "Erro ao salvar arquivo como recente", excecao);
         }
     }
 
