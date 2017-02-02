@@ -87,7 +87,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         scrollArvoreExemplos.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         labelTitulo.setForeground(ColorController.COR_LETRA);
         labelTitulo.setBackground(ColorController.COR_PRINCIPAL);
-        painelREcentes.setBackground(ColorController.FUNDO_MEDIO);
+        painelREcentes.setBackground(ColorController.COR_DESTAQUE);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
             WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
@@ -305,7 +305,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
-        add(painelREcentes, java.awt.BorderLayout.NORTH);
 
         jSplitPane1.setDividerLocation(300);
 
