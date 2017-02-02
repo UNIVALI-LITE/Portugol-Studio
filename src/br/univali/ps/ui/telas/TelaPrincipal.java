@@ -272,7 +272,7 @@ public class TelaPrincipal extends javax.swing.JPanel
                         try
                         {
                             PortugolStudio.getInstancia().salvarComoRecente(arquivo.getPath());
-                            System.out.println("Caminho: "+arquivo.getPath());
+//                            System.out.println("Caminho: "+arquivo.getPath());
                             final String conteudo = FileHandle.open(arquivo);
                             final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                             

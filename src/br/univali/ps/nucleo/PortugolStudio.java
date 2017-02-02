@@ -20,6 +20,7 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.Sobre;
 import br.univali.ps.ui.telas.TelaAtalhos;
+import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.window.OutsidePanel;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -31,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -104,8 +106,26 @@ public final class PortugolStudio
     private PortugolStudio()
     {   
         mutex = criaMutex();
+        readRecents();
     }
-
+    
+    private void readRecents(){
+        File f = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
+        
+        try {
+            String arquivo = FileHandle.read(new FileInputStream(f));
+            String [] caminhos = arquivo.split("\n");
+            for (String caminho : caminhos) {
+                File recente = new File(caminho);
+                if(recente.exists()){
+                    ArquivosRecentes.add(recente);
+                }
+                
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PortugolStudio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private Mutex criaMutex()
     {
         if (!Configuracoes.rodandoNoNetbeans())
@@ -231,7 +251,11 @@ public final class PortugolStudio
             Splash.ocultar();
         }
     }
-
+    
+    public Queue getRecentFilesQueue(){
+        return ArquivosRecentes;
+    }
+    
     public void finalizar(int codigo)
     {
         if (PortugolStudio.getInstancia().isAtualizandoInicializador())
@@ -356,7 +380,7 @@ public final class PortugolStudio
     
     public void salvarComoRecente(String caminhoArquivoRecente)
     {
-        ArquivosRecentes.add(caminhoArquivoRecente);
+        ArquivosRecentes.add(new File(caminhoArquivoRecente));
         if(ArquivosRecentes.size()>6)
         {
             ArquivosRecentes.poll();
