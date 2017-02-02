@@ -14,7 +14,6 @@ import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import com.alee.laf.button.WebButton;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -90,6 +89,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setForeground(ColorController.COR_LETRA);
         labelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         painelREcentes.setBackground(ColorController.COR_DESTAQUE);
+        jLabel1.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
             WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
@@ -98,7 +98,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     
     private void atualizarRecentes(){
         Queue files = PortugolStudio.getInstancia().getRecentFilesQueue();
-        painelREcentes.removeAll();
+        areaREcentes.removeAll();
         for (Object file : files) {
             File recente = (File) file;
             String codigoFonte;
@@ -120,8 +120,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setVerticalAlignment(SwingConstants.CENTER);
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
-                WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2);
-                painelREcentes.add(button);
+                WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 25);
+                areaREcentes.add(button);
             } catch (Exception ex) {
                 Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -297,6 +297,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         java.awt.GridBagConstraints gridBagConstraints;
 
         painelREcentes = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        areaREcentes = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         painelDireita = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
@@ -307,6 +309,16 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo = new javax.swing.JLabel();
         scrollArvoreExemplos = new javax.swing.JScrollPane();
         arvoreExemplos = new javax.swing.JTree();
+
+        painelREcentes.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("Arquivos Recentes");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelREcentes.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        areaREcentes.setOpaque(false);
+        painelREcentes.add(areaREcentes, java.awt.BorderLayout.CENTER);
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -399,11 +411,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel areaREcentes;
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
     private javax.swing.JLabel description;
     private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel painelDireita;
