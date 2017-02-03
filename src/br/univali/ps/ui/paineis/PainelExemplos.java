@@ -14,6 +14,8 @@ import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import com.alee.laf.button.WebButton;
+import com.alee.utils.CollectionUtils;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -77,6 +79,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 atualizarPainelDireita();
             }
         });
+        areaREcentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 25));
         atualizarRecentes();
     }    
     @Override
@@ -99,8 +102,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private void atualizarRecentes(){
         Queue files = PortugolStudio.getInstancia().getRecentFilesQueue();
         areaREcentes.removeAll();
-        for (Object file : files) {
-            File recente = (File) file;
+        Object [] fs =  files.toArray();
+        for (int i = files.size()-1; i>=0; i--) {
+            File recente =(File) fs[i];
             String codigoFonte;
             try {
                 codigoFonte = FileHandle.open(recente);
@@ -120,7 +124,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setVerticalAlignment(SwingConstants.CENTER);
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
-                WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 25);
+                WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2);
                 areaREcentes.add(button);
             } catch (Exception ex) {
                 Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
