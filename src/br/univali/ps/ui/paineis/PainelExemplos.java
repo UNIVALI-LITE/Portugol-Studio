@@ -124,7 +124,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setVerticalAlignment(SwingConstants.CENTER);
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
-                WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2);
+                WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5);
                 areaREcentes.add(button);
             } catch (Exception ex) {
                 Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
