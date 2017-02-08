@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -58,6 +59,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private final Editor editor;
     
     private final ImagePanel imagePanel; // usando para desenhar uma imagem que 'estica' e centraliza conforme o tamanho do componente
+    private final ImagePanel imagePortugol; // usando para desenhar uma imagem que 'estica' e centraliza conforme o tamanho do componente
 
     public PainelExemplos() {
         
@@ -65,7 +67,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         
         imagePanel = new ImagePanel();
         imagePane.add(imagePanel);
-        
+        imagePortugol = new ImagePanel();
+        areaLogo.add(imagePortugol);
         configurarCores();
         editor = new Editor(true);
         examplePane.add(editor);
@@ -101,7 +104,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     
     private void atualizarRecentes(){
         Queue files = PortugolStudio.getInstancia().getRecentFilesQueue();
+        Icon icone = imagemPastaPadrao;
         areaREcentes.removeAll();
+        areaLogo.add(imagePortugol);
+        imagePortugol.setImagem(((ImageIcon)icone).getImage());
+        imagePortugol.setOpaque(true);
         Object [] fs =  files.toArray();
         for (int i = files.size()-1; i>=0; i--) {
             File recente =(File) fs[i];
@@ -302,6 +309,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelREcentes = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        areaLogo = new javax.swing.JPanel();
         areaREcentes = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         painelDireita = new javax.swing.JPanel();
@@ -321,8 +329,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelREcentes.add(jLabel1, java.awt.BorderLayout.NORTH);
 
+        areaLogo.setLayout(new java.awt.BorderLayout());
+        painelREcentes.add(areaLogo, java.awt.BorderLayout.CENTER);
+
         areaREcentes.setOpaque(false);
-        painelREcentes.add(areaREcentes, java.awt.BorderLayout.CENTER);
+        painelREcentes.add(areaREcentes, java.awt.BorderLayout.SOUTH);
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -415,6 +426,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel areaLogo;
     private javax.swing.JPanel areaREcentes;
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
