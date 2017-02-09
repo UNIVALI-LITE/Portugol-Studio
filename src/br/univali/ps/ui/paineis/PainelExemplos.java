@@ -4,6 +4,7 @@ import br.univali.ps.ui.paineis.utils.ExampleTreeRender;
 import br.univali.ps.ui.paineis.utils.ExampleMutableTreeNode;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -13,6 +14,8 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaPrincipal;
+import com.alee.extended.image.DisplayType;
+import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.CollectionUtils;
 import java.awt.FlowLayout;
@@ -36,8 +39,11 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
@@ -54,9 +60,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private static final Logger LOGGER = Logger.getLogger(PainelExemplos.class.getName());
 
     private final Icon imagemPadrao;
+    private final Icon imagemPadraolowres;
     private final Icon imagemPastaPadrao;
 
     private final Editor editor;
+    
+    private boolean redimensionouParaBaixaResolucao = false;
+
     
     private final ImagePanel imagePanel; // usando para desenhar uma imagem que 'estica' e centraliza conforme o tamanho do componente
     private final ImagePanel imagePortugol; // usando para desenhar uma imagem que 'estica' e centraliza conforme o tamanho do componente
@@ -70,9 +80,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         imagePortugol = new ImagePanel();
         areaLogo.add(imagePortugol);
         configurarCores();
+        configurarResolucao();
         editor = new Editor(true);
         examplePane.add(editor);
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file.png");
+        imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
         imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
         inicializarJTree();
 
@@ -96,7 +108,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setBackground(ColorController.COR_PRINCIPAL);
         painelREcentes.setBackground(ColorController.COR_DESTAQUE);
         jLabel1.setForeground(ColorController.COR_LETRA);
+        areaLogo.setBackground(ColorController.COR_DESTAQUE);
+        scrollRecentes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         if (WeblafUtils.weblafEstaInstalado()) {
+            WeblafUtils.configuraWebLaf(scrollRecentes);
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
             WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
@@ -106,9 +121,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         Queue files = PortugolStudio.getInstancia().getRecentFilesQueue();
         Icon icone = imagemPastaPadrao;
         areaREcentes.removeAll();
-        areaLogo.add(imagePortugol);
-        imagePortugol.setImagem(((ImageIcon)icone).getImage());
-        imagePortugol.setOpaque(true);
+        areaLogo.removeAll();
+        WebImage imagePTG = new WebImage(icone);
+        imagePTG.setDisplayType(DisplayType.fitComponent);
+        areaLogo.add(imagePTG);
         Object [] fs =  files.toArray();
         for (int i = files.size()-1; i>=0; i--) {
             File recente =(File) fs[i];
@@ -119,14 +135,19 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setAction(new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
+                        AbaCodigoFonte abaCodigoFonte  = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, recente, true);
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
                         t.getPainelTabulado().add(abaCodigoFonte);
                     }
                 });
                 button.setText(recente.getName());
-                button.setIcon(imagemPadrao);
+                if(redimensionouParaBaixaResolucao)
+                {
+                    button.setIcon(imagemPadraolowres);
+                }else{
+                    button.setIcon(imagemPadrao);
+                }
                 button.setHorizontalAlignment(SwingConstants.CENTER);
                 button.setVerticalAlignment(SwingConstants.CENTER);
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -136,8 +157,35 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             } catch (Exception ex) {
                 Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+            areaREcentes.revalidate();
+            areaLogo.revalidate();
         }
+    }
+    
+    private void configurarResolucao()
+    {
+        addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+                SwingUtilities.invokeLater(() -> 
+                        {
+                            if (Lancador.getActual_size().width <= 1024 || Lancador.getActual_size().height <= 768)
+                            {
+                                if (!redimensionouParaBaixaResolucao)
+                                {
+                                    redimensionouParaBaixaResolucao = true;
+                                }
+                            }
+                            else
+                            {
+                                redimensionouParaBaixaResolucao = false;
+                            }
+                            atualizarRecentes();
+                });
+            }
+        });
     }
     
     private void inicializarJTree() {
@@ -308,8 +356,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         java.awt.GridBagConstraints gridBagConstraints;
 
         painelREcentes = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         areaLogo = new javax.swing.JPanel();
+        painelRecentes = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        scrollRecentes = new javax.swing.JScrollPane();
         areaREcentes = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         painelDireita = new javax.swing.JPanel();
@@ -324,16 +374,24 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelREcentes.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Arquivos Recentes");
-        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        painelREcentes.add(jLabel1, java.awt.BorderLayout.NORTH);
-
         areaLogo.setLayout(new java.awt.BorderLayout());
         painelREcentes.add(areaLogo, java.awt.BorderLayout.CENTER);
 
+        painelRecentes.setOpaque(false);
+        painelRecentes.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Arquivos Recentes");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelRecentes.add(jLabel1, java.awt.BorderLayout.NORTH);
+
         areaREcentes.setOpaque(false);
-        painelREcentes.add(areaREcentes, java.awt.BorderLayout.SOUTH);
+        scrollRecentes.setViewportView(areaREcentes);
+
+        painelRecentes.add(scrollRecentes, java.awt.BorderLayout.PAGE_END);
+
+        painelREcentes.add(painelRecentes, java.awt.BorderLayout.SOUTH);
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -439,6 +497,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel painelDireita;
     private javax.swing.JPanel painelEsquerda;
     private javax.swing.JPanel painelREcentes;
+    private javax.swing.JPanel painelRecentes;
     private javax.swing.JScrollPane scrollArvoreExemplos;
+    private javax.swing.JScrollPane scrollRecentes;
     // End of variables declaration//GEN-END:variables
 }

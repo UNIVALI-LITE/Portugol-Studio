@@ -691,6 +691,7 @@ public final class PortugolStudio
                 @Override
                 public void run()
                 {
+                    
                     Lancador.getJFrame().setUndecorated(true);
                     outSidePanel = new OutsidePanel();
                     Lancador.getJFrame().add(outSidePanel);
@@ -704,6 +705,7 @@ public final class PortugolStudio
                     Lancador.setOlder_size(new Dimension(800, 600));
                     Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
                     Lancador.getJFrame().setBounds(bounds);
+                    Lancador.setActual_size(bounds.getSize());
                     Lancador.setMaximazed(true);
                     
                     Lancador.getJFrame().revalidate();
