@@ -79,6 +79,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             }
         });
     }
+    
     private void criaAbas()
     {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));

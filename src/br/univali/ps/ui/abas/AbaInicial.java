@@ -1,6 +1,7 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.paineis.PainelExemplos;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
@@ -468,12 +469,16 @@ public final class AbaInicial extends Aba implements Themeable
         getPainelTabulado().getInputMap(WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
+    public PainelExemplos getPainelExemplos() {
+        return painelExemplos;
+    }
+    
     private void criarDicasInterface()
     {
 //        FabricaDicasInterface.criarDicaInterface(logoUnivali, "Conhecer o curso de Ciência da Computação da UNIVALI");
 //        FabricaDicasInterface.criarDicaInterface(logoLite, "Conhecer o Laboratório de Inovação Tecnológica na Educação");
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()

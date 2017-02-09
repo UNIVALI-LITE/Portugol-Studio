@@ -17,7 +17,6 @@ import br.univali.ps.ui.telas.TelaPrincipal;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
-import com.alee.utils.CollectionUtils;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -39,9 +38,6 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -117,7 +113,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         }
     }
     
-    private void atualizarRecentes(){
+    public void atualizarRecentes(){
         Queue files = PortugolStudio.getInstancia().getRecentFilesQueue();
         Icon icone = imagemPastaPadrao;
         areaREcentes.removeAll();
@@ -126,6 +122,14 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         imagePTG.setDisplayType(DisplayType.fitComponent);
         areaLogo.add(imagePTG);
         Object [] fs =  files.toArray();
+        if(fs.length==0)
+        {
+            jLabel1.setVisible(false);
+        }
+        else
+        {
+            jLabel1.setVisible(true);
+        }
         for (int i = files.size()-1; i>=0; i--) {
             File recente =(File) fs[i];
             String codigoFonte;
