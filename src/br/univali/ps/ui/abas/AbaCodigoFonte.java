@@ -699,7 +699,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 {
                     String texto = documento.getText(0, documento.getLength());
                     texto = inserirInformacoesPortugolStudio(texto);
-
+                    PortugolStudio.getInstancia().salvarComoRecente(getArquivoComExtensao(documento.getFile()));
                     FileHandle.save(texto, getArquivoComExtensao(documento.getFile()));
                     documento.setChanged(false);
                 }

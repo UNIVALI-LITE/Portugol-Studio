@@ -378,9 +378,14 @@ public final class PortugolStudio
         }
     }
     
-    public void salvarComoRecente(String caminhoArquivoRecente)
+    public void salvarComoRecente(File arquivoRecente)
     {
-        ArquivosRecentes.add(new File(caminhoArquivoRecente));
+        
+        if(ArquivosRecentes.contains(arquivoRecente))
+        {
+            ArquivosRecentes.remove(arquivoRecente);
+        }
+        ArquivosRecentes.add(arquivoRecente);
         if(ArquivosRecentes.size()>6)
         {
             ArquivosRecentes.poll();
