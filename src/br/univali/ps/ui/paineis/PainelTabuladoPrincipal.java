@@ -84,7 +84,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
             public void stateChanged(ChangeEvent e) {
                 if(getSelectedIndex()==indexOfComponent(abaInicial))
                 {
-                    System.out.println("entrou");
                     PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaInicial().getPainelExemplos().atualizarRecentes();
                 }
             }

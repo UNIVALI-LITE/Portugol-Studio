@@ -14,6 +14,7 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaPrincipal;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
@@ -162,6 +163,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
                 WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5);
+                FabricaDicasInterface.criarTooltip(button, recente.getPath());
                 areaREcentes.add(button);
             } catch (Exception ex) {
                 Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
@@ -383,6 +385,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelREcentes.setLayout(new java.awt.BorderLayout());
 
+        areaLogo.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 0, 0, 0));
         areaLogo.setLayout(new java.awt.BorderLayout());
         painelREcentes.add(areaLogo, java.awt.BorderLayout.CENTER);
 
