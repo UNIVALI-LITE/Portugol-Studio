@@ -132,6 +132,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         }
         for (int i = files.size()-1; i>=0; i--) {
             File recente =(File) fs[i];
+            if(!recente.exists())
+            {
+                PortugolStudio.getInstancia().readRecents();
+                continue;
+            }
             String codigoFonte;
             try {
                 codigoFonte = FileHandle.open(recente);

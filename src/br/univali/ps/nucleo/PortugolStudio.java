@@ -109,7 +109,7 @@ public final class PortugolStudio
         readRecents();
     }
     
-    private void readRecents(){
+    public void readRecents(){
         File f = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
         
         try {
