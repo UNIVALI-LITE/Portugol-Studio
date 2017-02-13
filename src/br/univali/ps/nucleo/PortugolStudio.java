@@ -111,7 +111,7 @@ public final class PortugolStudio
     
     public void readRecents(){
         File f = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
-        
+        ArquivosRecentes.clear();
         try {
             String arquivo = FileHandle.read(new FileInputStream(f));
             String [] caminhos = arquivo.split("\n");

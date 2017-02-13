@@ -115,6 +115,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     }
     
     public void atualizarRecentes(){
+        boolean arquivoRemovido = false;
         Queue files = PortugolStudio.getInstancia().getRecentFilesQueue();
         Icon icone = imagemPastaPadrao;
         areaREcentes.removeAll();
@@ -135,7 +136,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             File recente =(File) fs[i];
             if(!recente.exists())
             {
-                PortugolStudio.getInstancia().readRecents();
+                arquivoRemovido = true;
                 continue;
             }
             String codigoFonte;
@@ -171,9 +172,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             } catch (Exception ex) {
                 Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
             }
-            areaREcentes.revalidate();
-            areaLogo.revalidate();
+        }        
+        if(arquivoRemovido)
+        {                
+            PortugolStudio.getInstancia().readRecents();
         }
+        areaREcentes.revalidate();
+        areaLogo.revalidate();
     }
     
     private void configurarResolucao()
