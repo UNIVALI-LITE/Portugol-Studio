@@ -149,13 +149,16 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         abaCodigoFonte.setCodigoFonte(codigoFonte, recente, true);
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
                         t.getPainelTabulado().add(abaCodigoFonte);
+                        PortugolStudio.getInstancia().salvarComoRecente(recente);
                     }
                 });
                 button.setText(recente.getName());
                 if(redimensionouParaBaixaResolucao)
                 {
+                    jLabel1.setFont(jLabel1.getFont().deriveFont(16f));
                     button.setIcon(imagemPadraolowres);
                 }else{
+                    jLabel1.setFont(jLabel1.getFont().deriveFont(24f));
                     button.setIcon(imagemPadrao);
                 }
                 button.setHorizontalAlignment(SwingConstants.CENTER);
