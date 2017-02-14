@@ -120,11 +120,12 @@ public final class PortugolStudio
                 if(recente.exists()){
                     ArquivosRecentes.add(recente);
                 }
-                
+
             }
         } catch (Exception ex) {
-            Logger.getLogger(PortugolStudio.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos Recentes do Portugol Studio.");
         }
+
     }
     private Mutex criaMutex()
     {

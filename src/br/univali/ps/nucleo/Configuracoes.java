@@ -97,7 +97,7 @@ public final class Configuracoes
         }
         catch (IOException excecao)
         {
-            LOGGER.log(Level.INFO, "Não foi possível carregar as configurações do Portugol Studio. As configurações padrão serão utilizadas", excecao);
+            LOGGER.log(Level.INFO, "Não foi possível carregar as configurações do Portugol Studio. As configurações padrão serão utilizadas");
         }
     }
 
