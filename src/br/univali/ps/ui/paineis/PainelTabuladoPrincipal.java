@@ -20,6 +20,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public final class PainelTabuladoPrincipal extends PainelTabulado {
 
@@ -60,6 +62,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
 
         //abaInicial.adicionar(PainelTabuladoPrincipal.this);
         //abaInicial.inicializar();
+        configuraTrocaAba();
         configurarAcoes();
     }
 
@@ -72,6 +75,19 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
 
     public AbaAjuda getAbaAjuda() {
         return abaAjuda;
+    }
+    
+    private void configuraTrocaAba()
+    {
+        addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(getSelectedIndex()==indexOfComponent(abaInicial))
+                {
+                    PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaInicial().getPainelExemplos().atualizarRecentes();
+                }
+            }
+        });
     }
 
     private void configurarAcoes() {

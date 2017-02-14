@@ -20,6 +20,7 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.Sobre;
 import br.univali.ps.ui.telas.TelaAtalhos;
+import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.window.OutsidePanel;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -31,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,8 +43,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -74,6 +78,7 @@ public final class PortugolStudio
     private final Random random = new Random(System.nanoTime());
     private final List<String> dicas = new ArrayList<>();
     private final List<Integer> dicasExibidas = new ArrayList<>();
+    private Queue ArquivosRecentes = new LinkedList();
 
     private String versao = null;
     private boolean depurando = false;
@@ -101,8 +106,27 @@ public final class PortugolStudio
     private PortugolStudio()
     {   
         mutex = criaMutex();
+        readRecents();
     }
+    
+    public void readRecents(){
+        File f = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
+        ArquivosRecentes.clear();
+        try {
+            String arquivo = FileHandle.read(new FileInputStream(f));
+            String [] caminhos = arquivo.split("\n");
+            for (String caminho : caminhos) {
+                File recente = new File(caminho);
+                if(recente.exists()){
+                    ArquivosRecentes.add(recente);
+                }
 
+            }
+        } catch (Exception ex) {
+            LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos Recentes do Portugol Studio.");
+        }
+
+    }
     private Mutex criaMutex()
     {
         if (!Configuracoes.rodandoNoNetbeans())
@@ -228,7 +252,11 @@ public final class PortugolStudio
             Splash.ocultar();
         }
     }
-
+    
+    public Queue getRecentFilesQueue(){
+        return ArquivosRecentes;
+    }
+    
     public void finalizar(int codigo)
     {
         if (PortugolStudio.getInstancia().isAtualizandoInicializador())
@@ -348,6 +376,34 @@ public final class PortugolStudio
             {
                 LOGGER.log(Level.SEVERE, "Erro ao salvar as dicas já exibidas", excecao);
             }
+        }
+    }
+    
+    public void salvarComoRecente(File arquivoRecente)
+    {
+        
+        if(ArquivosRecentes.contains(arquivoRecente))
+        {
+            ArquivosRecentes.remove(arquivoRecente);
+        }
+        ArquivosRecentes.add(arquivoRecente);
+        if(ArquivosRecentes.size()>6)
+        {
+            ArquivosRecentes.poll();
+        }
+        File arquivosRecentes = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosRecentes)))
+        {
+            for (Object indice : ArquivosRecentes)
+            {
+                escritor.write(indice.toString());
+                escritor.newLine();
+            }
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, "Erro ao salvar arquivo como recente", excecao);
         }
     }
 
@@ -641,6 +697,7 @@ public final class PortugolStudio
                 @Override
                 public void run()
                 {
+                    
                     Lancador.getJFrame().setUndecorated(true);
                     outSidePanel = new OutsidePanel();
                     Lancador.getJFrame().add(outSidePanel);
@@ -654,6 +711,7 @@ public final class PortugolStudio
                     Lancador.setOlder_size(new Dimension(800, 600));
                     Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
                     Lancador.getJFrame().setBounds(bounds);
+                    Lancador.setActual_size(bounds.getSize());
                     Lancador.setMaximazed(true);
                     
                     Lancador.getJFrame().revalidate();

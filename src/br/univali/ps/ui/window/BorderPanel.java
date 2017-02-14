@@ -104,6 +104,7 @@ public class BorderPanel extends JPanel {
                         Dimension d = Lancador.getOlder_size();
                         Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                         Lancador.getJFrame().setSize(d);
+                        Lancador.setActual_size(d);
                         Lancador.getJFrame().setLocationRelativeTo(null);
                         Lancador.setMaximazed(false);
                     }else{
@@ -111,6 +112,7 @@ public class BorderPanel extends JPanel {
                         Lancador.setOlder_size(d);
                         Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
                         Lancador.getJFrame().setBounds(bounds);
+                        Lancador.setActual_size(bounds.getSize());
                         Lancador.setMaximazed(true);
                     }
                 }
