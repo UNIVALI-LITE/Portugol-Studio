@@ -1471,7 +1471,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             return new File(System.getProperty("java.class.path"));
         }
         
-        return new File(configuracoes.getDiretorioAplicacao(), "libs");
+        return new File(configuracoes.getDiretorioAplicacao(), "lib");
     }
     
     private static void liberaMemoriaAlocada()

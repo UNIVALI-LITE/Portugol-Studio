@@ -32,10 +32,7 @@ public final class Caminhos
     {
         if (!rodandoNoNetbeans())
         {
-            CodeSource localCodigo = Caminhos.class.getProtectionDomain().getCodeSource();
-            URL local = localCodigo.getLocation();
-
-            return new File(URI.create(local.toExternalForm())).getParentFile();
+            return new File(".");
         }
         else
         {

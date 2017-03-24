@@ -18,7 +18,7 @@
         </classpath>
     </taskdef>
     
-    <property name="java.jre.name" value="jre1.8.0_101"/>
+    <property name="java.jre.name" value="jdk1.8.0_121"/>
     
     <property name="instalador.java.dir" value="../Portugol-Instalador/arquivos/java"/>
 
