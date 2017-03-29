@@ -2137,7 +2137,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private boolean podeFechar()
     {
-        return programa != null && !programa.isExecutando() && (!arquivoModificado() || (arquivoModificado() && !usuarioCancelouSalvamento));
+        boolean podeFechar =  !arquivoModificado() || (arquivoModificado() && !usuarioCancelouSalvamento);
+        if (programa != null)
+            podeFechar &= !programa.isExecutando();
+                    
+        return podeFechar;
     }
 
     private final class ObservadorExecucao extends ObservadorExecucaoBasico
