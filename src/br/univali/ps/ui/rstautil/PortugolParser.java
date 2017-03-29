@@ -35,6 +35,8 @@ public class PortugolParser extends AbstractParser
     };
 
     private final PropertyChangeSupport support;
+    
+    private String ultimoCodigoAnalisado;
 
     public PortugolParser()
     {
@@ -166,14 +168,18 @@ public class PortugolParser extends AbstractParser
     public ParseResult parse(RSyntaxDocument documento, String estilo)
     {
         DefaultParseResult resultado = new DefaultParseResult(PortugolParser.this);
-
-        resultado.setParsedLines(0, documento.getDefaultRootElement().getElementCount() - 1);
+        
+        int firstLine = 0;
+        int lastLine = documento.getDefaultRootElement().getElementCount() - 1;
+        resultado.setParsedLines(firstLine, lastLine);
 
         try 
         {
             String codigo = documento.getText(0, documento.getLength());
-            if (!codigo.isEmpty()) 
+            if (!codigo.isEmpty() && !codigo.equals(ultimoCodigoAnalisado)) // não compila para análise se o codigo é igual ao último código 'parseado'
             {
+                ultimoCodigoAnalisado = codigo;
+                
                 Programa programa = Portugol.compilarParaAnalise(codigo);
 
                 if (programa.getResultadoAnalise().contemAvisos()) 
