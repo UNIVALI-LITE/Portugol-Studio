@@ -10,7 +10,6 @@ import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaOpcoesExecucao;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
-import br.univali.portugol.nucleo.ListenerCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
@@ -37,7 +36,6 @@ import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.rstautil.PortugolParser;
-import br.univali.ps.ui.rstautil.tree.SearchTextField;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.view.DataTypeFilterView;
@@ -103,6 +101,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean podeSalvar = true;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
+    private boolean precisaRecompilar = true; // sempre que uma nova árvore é gerada essa flag é setada para true forçando uma nova recompilação quand o usuário executar o programa
 
     private JPanel painelTemporario;
 
@@ -766,16 +765,20 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             {
                 inspetorDeSimbolos.resetaDestaqueDosSimbolos();
                 try
-                {
+                {   
+                    compilaProgramaParaExecucao();
                     executar(Programa.Estado.BREAK_POINT);
+                    precisaRecompilar = false;
                 }
                 catch(ErroCompilacao erroCompilacao)
                 {
                     exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
+                    precisaRecompilar = true;
                 }
                 catch(InterruptedException ex)
                 {
                     LOGGER.log(Level.SEVERE, null, ex);
+                    precisaRecompilar = true;
                 }
             }
         };
@@ -881,11 +884,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     BuscadorDeLinhasParaveis buscadorDeLinhasParaveis = new BuscadorDeLinhasParaveis();
                     Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
                     editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
-                    
-                    /** compila para execução sempre que a ASA é recompilada */
-                    
-                    compilaProgramaParaExecucao();
                 }
+                
+                precisaRecompilar = true;
                 
                 //Gambiarra pro botão não sumir :3
                 SwingUtilities.invokeLater(() -> {
@@ -1430,37 +1431,35 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void compilaProgramaParaExecucao()
     {
 
+        if (!precisaRecompilar) 
+        {
+            LOGGER.log(Level.INFO, "\t Usando o programa que já está compilado!!!");
+            return;
+        }
+        
         LOGGER.log(Level.INFO, "COMPILANDO para execução");
         
         String codigoFonte = editor.getTextArea().getText();
-        final ListenerCompilacao listener = new ListenerCompilacao() {
-
-            @Override
-            public void compilacaoParaExecucaoFinalizada(Programa programaCompilado) {
-                setPrograma(programaCompilado);
-                setaAtivacaoBotoesExecucao(true); // pode executar
-                liberaMemoriaAlocada();
-            }
-
-            @Override
-            public void errosDeCompilacaoDetectados(ErroCompilacao erro) {
-                programa = erro.getResultadoAnalise().getPrograma();
-                setaAtivacaoBotoesExecucao(true); // pode executar
-                liberaMemoriaAlocada();
-            }
-
-            @Override
-            public void compilacaoParaExecucaoIniciada() {
-                setaAtivacaoBotoesExecucao(false); // desabilita execução até que a compilação tenha sido finalizada
-            }
-
-        };
- 
+        
         File classPath = getClassPathParaCompilacao();
         String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
         LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
         LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
-        Portugol.compilarParaExecucao(codigoFonte, listener, classPath, caminhoJavac);
+        
+        try 
+        {
+            setaAtivacaoBotoesExecucao(false); // desabilita execução até que a compilação tenha sido finalizada
+            Programa programaCompilado = Portugol.compilarParaExecucao(codigoFonte, classPath, caminhoJavac);
+            setPrograma(programaCompilado);
+            setaAtivacaoBotoesExecucao(true); // pode executar
+            liberaMemoriaAlocada();
+        }
+        catch(ErroCompilacao erro) 
+        {
+            programa = erro.getResultadoAnalise().getPrograma();
+            setaAtivacaoBotoesExecucao(true); // pode executar
+            liberaMemoriaAlocada();
+        }
     }
     
     private File getClassPathParaCompilacao()
