@@ -43,6 +43,11 @@ public class PortugolParser extends AbstractParser
         support = new PropertyChangeSupport(this);
     }
 
+    public void resetUltimoCodigoAnalisado()
+    {
+        ultimoCodigoAnalisado = null;
+    }
+    
     public void addPropertyChangeListener(String prop, PropertyChangeListener l)
     {
         support.addPropertyChangeListener(prop, l);
