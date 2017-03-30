@@ -877,14 +877,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     carregaSimbolosInspecionados(codigoFonteAtual, programa);
                     simbolosInspecionadosJaForamCarregados = true;
                 }
-                else //se não é a primeira compilação
-                {
-                    //sempre que a árvore for gerada é necessário verificar 
-                    //quais são as linhas paráveis e adicionar pontos de parada nestas linhas
-                    BuscadorDeLinhasParaveis buscadorDeLinhasParaveis = new BuscadorDeLinhasParaveis();
-                    Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
-                    editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
-                }
+
+                //sempre que a árvore for gerada é necessário verificar 
+                //quais são as linhas paráveis e adicionar pontos de parada nestas linhas
+                BuscadorDeLinhasParaveis buscadorDeLinhasParaveis = new BuscadorDeLinhasParaveis();
+                Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
+                editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
                 
                 precisaRecompilar = true;
                 
