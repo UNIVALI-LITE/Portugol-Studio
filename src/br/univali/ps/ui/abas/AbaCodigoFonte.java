@@ -74,6 +74,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.LineNumberReader;
+import java.io.StringReader;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -862,6 +864,21 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         editor.setAbaCodigoFonte(AbaCodigoFonte.this);
     }
 
+    private int getNumeroDeLinhas(String codigo) 
+    {
+        try
+        {
+            LineNumberReader lineNumberReader = new LineNumberReader(new StringReader(codigo));
+            lineNumberReader.skip(Long.MAX_VALUE);
+            return lineNumberReader.getLineNumber() + 1;
+        }
+        catch(IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, null, excecao);
+        }
+        return 0;
+    }
+    
     private void instalarObservadores()
     {
         PortugolParser.getParser(getEditor().getTextArea()).addPropertyChangeListener(PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO, new PropertyChangeListener()
@@ -871,6 +888,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void propertyChange(PropertyChangeEvent pce)
             {
                 Programa programa = (Programa) pce.getNewValue();
+                int linhas = getNumeroDeLinhas(editor.getTextArea().getText());
+                programa.setNumeroLinhas(linhas);
+                        
 
                 if (!simbolosInspecionadosJaForamCarregados) //é a primeira compilação?
                 {
