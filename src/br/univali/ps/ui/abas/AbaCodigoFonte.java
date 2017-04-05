@@ -887,7 +887,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void propertyChange(PropertyChangeEvent pce)
             {
-                Programa programa = (Programa) pce.getNewValue();
+                programa = (Programa) pce.getNewValue();
+                
                 int linhas = getNumeroDeLinhas(editor.getTextArea().getText());
                 programa.setNumeroLinhas(linhas);
                         
@@ -1072,6 +1073,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         this.codigoFonteAtual = codigoFonte;//o código fonte completo (incluindo as informações do PortugolStudio) 
         //será utilizado mais adiante para carregar os símbolos inspecionados que foram salvos no arquivo
+        PortugolParser parser = editor.getSuporteLinguagemPortugol().getPortugolParser();
+        parser.resetUltimoCodigoAnalisado();
         
         SwingUtilities.invokeLater(() -> {
             simbolosInspecionadosJaForamCarregados = false;
