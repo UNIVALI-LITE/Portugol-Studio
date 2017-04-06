@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -20,6 +21,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
@@ -53,6 +56,32 @@ public class PSTextArea extends RSyntaxTextArea {
 
     public PSTextArea(RSyntaxDocument doc) {
         super(doc);
+        doc.addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                Iterator<IconePontoDeParada> iterator = pontosDeParada.iterator();
+                //remove pontosdeParada que estavam em linhas deletadas
+                while (iterator.hasNext()) {
+                    IconePontoDeParada iconePontoDeParada = iterator.next();
+                    if(iconePontoDeParada.markerOffsetMudou() && iconePontoDeParada.estaAtivado())
+                    {
+                        Gutter gutter = RSyntaxUtilities.getGutter(PSTextArea.this);
+                        gutter.removeTrackingIcon(iconePontoDeParada.getGutterInfo());
+                        iterator.remove();
+                    }
+                 }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
     }
 
     public void addListenter(PSTextAreaListener l) {
@@ -82,8 +111,10 @@ public class PSTextArea extends RSyntaxTextArea {
      *
      * @param linhasParaveis
      */
-    public void criarPontosDeParadaDesativados(Set<Integer> linhasParaveis) {
+    public void criarPontosDeParadaDesativados(Set<Integer> linhasParaveis){
         //remove todos os pontos de parada existentes
+        
+         
         Set<Integer> pontosAtivados = getLinhasComPontoDeParadaAtivados();
         RSyntaxUtilities.getGutter(this).removeAllTrackingIcons();
         pontosDeParada.clear();
@@ -99,12 +130,18 @@ public class PSTextArea extends RSyntaxTextArea {
 
         private GutterIconInfo gutterInfo;
         private boolean ativado;
+        private int offsetOriginal;
 
         public IconePontoDeParada(GutterIconInfo gutterInfo, boolean estaAtivado) {
             this.gutterInfo = gutterInfo;
             this.ativado = estaAtivado;
+            this.offsetOriginal = gutterInfo.getMarkedOffset();
         }
 
+        boolean markerOffsetMudou() {
+            return gutterInfo.getMarkedOffset() != offsetOriginal;
+        }
+        
         public GutterIconInfo getGutterInfo() {
             return gutterInfo;
         }
