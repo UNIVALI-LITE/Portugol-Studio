@@ -1,20 +1,25 @@
 package br.univali.ps.ui.utils;
 
+import java.awt.KeyboardFocusManager;
+import java.awt.Window;
 import java.io.File;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
 public class FabricaDeFileChooser {
 
-    private static JFileChooser chooserAbertura;
+    //private static JFileChooser chooserAbertura;
     private static JFileChooser chooserSalvamento;
 
     public static void inicializar() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            chooserAbertura = new JFileChooser();
+            //chooserAbertura = new JFileChooser();
+
             chooserSalvamento = new JFileChooser() {
                 @Override
                 public File getSelectedFile() {
@@ -64,15 +69,23 @@ public class FabricaDeFileChooser {
     }
 
     public static JFileChooser getFileChooserAbertura() {
-        if (chooserAbertura == null) {
-            throw new IllegalStateException("A fabrica de FileChoosers ainda não foi inicializada!");
+        LookAndFeel previousLF = UIManager.getLookAndFeel();
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            JFileChooser dialogo = new JFileChooser();
+            limpaChooser(dialogo);
+            UIManager.setLookAndFeel(previousLF);
+            return dialogo;
         }
-        limpaChooser(chooserAbertura);
-        return chooserAbertura;
+        catch(Exception e) {
+            
+        }
+        return null;
     }
+    
 
     public static JFileChooser getFileChooserSalvamento() {
-        if (chooserAbertura == null) {
+        if (chooserSalvamento == null) {
             throw new IllegalStateException("A fabrica de FileChoosers ainda não foi inicializada!");
         }
         limpaChooser(chooserSalvamento);
