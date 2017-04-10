@@ -1,11 +1,9 @@
 package br.univali.ps.nucleo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.security.CodeSource;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,6 +12,8 @@ import java.security.CodeSource;
 public final class Caminhos
 {
 
+    private static final Logger LOGGER = Logger.getLogger(Caminhos.class.getName());
+    
     public static final File diretorioInstalacao = obterDiretorioInstalacao();
     public static final File diretorioTemporario = new File(diretorioInstalacao, "temp");
     public static final File diretorioBackup = new File(diretorioInstalacao, "backup");
@@ -46,12 +46,25 @@ public final class Caminhos
     {
         if (Caminhos.rodandoNoNetbeans())
         {
-            if (rodandoNoWindows())
+            if (Caminhos.rodandoNoWindows())
             {
                 return "javac.exe";
             }
-            else
+            else if (Caminhos.rodandoNoMac())
             {
+                return "javac";
+            }
+            else { // Linux
+                assert (Caminhos.rodandoNoLinux()); // just in case :)
+                String javaHome = System.getProperty("java.home");
+                if (javaHome != null) {
+                    File jrePath = new File(javaHome);
+                    String jdkBinPath = new File(jrePath.getParent(), "bin").getAbsolutePath();
+                    return jdkBinPath + "/javac";
+                }
+                else {
+                    LOGGER.log(Level.SEVERE, "A propriedade 'java.home' está nula! O usuário não adicionou o caminho do JAVA no PATH do sistema!");
+                }
                 return "javac";
             }
         }
@@ -79,7 +92,7 @@ public final class Caminhos
             return extrairCaminho(executavel);
         }
     }
-
+    
     public static boolean rodandoNoNetbeans()
     {
         return System.getProperty("netbeans") != null;
