@@ -1,19 +1,29 @@
 package br.univali.ps.ui.utils;
 
+import br.univali.ps.nucleo.Caminhos;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
 public class FabricaDeFileChooser {
+
+    private static final Logger LOGGER = Logger.getLogger(FabricaDeFileChooser.class.getName());
 
     private static JFileChooser chooserAbertura;
     private static JFileChooser chooserSalvamento;
 
     public static void inicializar() {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            if(!Caminhos.rodandoNoMac()) // utiliza o JFileChosser do WebLaf no Mac para evitar mistura de LAFs e corrigir o bug #96
+            {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
+            
             chooserAbertura = new JFileChooser();
             chooserSalvamento = new JFileChooser() {
                 @Override
@@ -46,8 +56,9 @@ public class FabricaDeFileChooser {
                     super.approveSelection();
                 }
             };
-        } catch (Exception e) {
-            e.printStackTrace();
+        } 
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            LOGGER.log(Level.SEVERE, null, e);
         }
     }
 
