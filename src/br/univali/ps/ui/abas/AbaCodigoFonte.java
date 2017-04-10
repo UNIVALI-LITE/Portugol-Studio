@@ -1262,7 +1262,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         loadingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         loadingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/load.gif"))); // NOI18N
-        loadingLabel.setText("Carregando");
+        loadingLabel.setText("Processando");
         loadingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         loadingLabel.setOpaque(true);
         loadingLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1993,7 +1993,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     private void alternarLoader()
     {
-        loader.setLocation((this.getSize().width - loader.getSize().width) / 2, (this.getSize().height - loader.getSize().height) / 2);
+        loader.setLocation((this.getSize().width - loader.getSize().width + Lancador.getFrame().getLocationOnScreen().x) / 2, (this.getSize().height - loader.getSize().height + Lancador.getFrame().getLocationOnScreen().y) / 2);
         if(loader.isVisible())
         {
             loader.setVisible(false);
