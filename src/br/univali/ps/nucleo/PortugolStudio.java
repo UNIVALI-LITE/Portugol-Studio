@@ -553,10 +553,8 @@ public final class PortugolStudio
         {
             try
             {
-                FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
-                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                
                 WeblafUtils.instalaWeblaf();
+                FabricaDeFileChooser.inicializar();//cria as instâncias de JFileChooser com o look and feel do sistema antes que o WebLaf seja instalado
             }
             catch (Exception e)
             {

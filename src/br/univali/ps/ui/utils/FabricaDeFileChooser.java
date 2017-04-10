@@ -1,19 +1,31 @@
 package br.univali.ps.ui.utils;
 
+import br.univali.ps.nucleo.Caminhos;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
 public class FabricaDeFileChooser {
+
+    private static final Logger LOGGER = Logger.getLogger(FabricaDeFileChooser.class.getName());
 
     private static JFileChooser chooserAbertura;
     private static JFileChooser chooserSalvamento;
 
     public static void inicializar() {
+        LookAndFeel lafAtual = UIManager.getLookAndFeel();
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            
+            if (!Caminhos.rodandoNoMac()) {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
+            
             chooserAbertura = new JFileChooser();
             chooserSalvamento = new JFileChooser() {
                 @Override
@@ -46,8 +58,17 @@ public class FabricaDeFileChooser {
                     super.approveSelection();
                 }
             };
-        } catch (Exception e) {
-            e.printStackTrace();
+        } 
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+        }
+        finally 
+        {
+            try {
+                UIManager.setLookAndFeel(lafAtual); // restaura o LAF atual
+            } catch (UnsupportedLookAndFeelException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
