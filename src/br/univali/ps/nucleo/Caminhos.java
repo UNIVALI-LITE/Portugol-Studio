@@ -1,11 +1,7 @@
 package br.univali.ps.nucleo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.security.CodeSource;
 
 /**
  *
@@ -46,13 +42,20 @@ public final class Caminhos
     {
         if (Caminhos.rodandoNoNetbeans())
         {
-            if (rodandoNoWindows())
+            if (Caminhos.rodandoNoWindows())
             {
                 return "javac.exe";
             }
-            else
+            else if (Caminhos.rodandoNoMac())
             {
                 return "javac";
+            }
+            else { // Linux
+                assert (Caminhos.rodandoNoLinux()); // just in case :)
+                
+                File jrePath = new File(System.getProperty("java.home"));
+                String jdkBinPath = new File(jrePath.getParent(), "bin").getAbsolutePath();
+                return jdkBinPath + "/javac";
             }
         }
         else
@@ -79,7 +82,7 @@ public final class Caminhos
             return extrairCaminho(executavel);
         }
     }
-
+    
     public static boolean rodandoNoNetbeans()
     {
         return System.getProperty("netbeans") != null;
