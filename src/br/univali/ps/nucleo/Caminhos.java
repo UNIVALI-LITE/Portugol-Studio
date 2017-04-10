@@ -2,6 +2,8 @@ package br.univali.ps.nucleo;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -10,6 +12,8 @@ import java.io.IOException;
 public final class Caminhos
 {
 
+    private static final Logger LOGGER = Logger.getLogger(Caminhos.class.getName());
+    
     public static final File diretorioInstalacao = obterDiretorioInstalacao();
     public static final File diretorioTemporario = new File(diretorioInstalacao, "temp");
     public static final File diretorioBackup = new File(diretorioInstalacao, "backup");
@@ -52,10 +56,16 @@ public final class Caminhos
             }
             else { // Linux
                 assert (Caminhos.rodandoNoLinux()); // just in case :)
-                
-                File jrePath = new File(System.getProperty("java.home"));
-                String jdkBinPath = new File(jrePath.getParent(), "bin").getAbsolutePath();
-                return jdkBinPath + "/javac";
+                String javaHome = System.getProperty("java.home");
+                if (javaHome != null) {
+                    File jrePath = new File(javaHome);
+                    String jdkBinPath = new File(jrePath.getParent(), "bin").getAbsolutePath();
+                    return jdkBinPath + "/javac";
+                }
+                else {
+                    LOGGER.log(Level.SEVERE, "A propriedade 'java.home' está nula! O usuário não adicionou o caminho do JAVA no PATH do sistema!");
+                }
+                return "javac";
             }
         }
         else
