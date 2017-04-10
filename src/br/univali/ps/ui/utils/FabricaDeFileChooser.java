@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
@@ -18,9 +19,10 @@ public class FabricaDeFileChooser {
     private static JFileChooser chooserSalvamento;
 
     public static void inicializar() {
+        LookAndFeel lafAtual = UIManager.getLookAndFeel();
         try {
-            if(!Caminhos.rodandoNoMac()) // utiliza o JFileChosser do WebLaf no Mac para evitar mistura de LAFs e corrigir o bug #96
-            {
+            
+            if (!Caminhos.rodandoNoMac()) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }
             
@@ -59,6 +61,14 @@ public class FabricaDeFileChooser {
         } 
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             LOGGER.log(Level.SEVERE, null, e);
+        }
+        finally 
+        {
+            try {
+                UIManager.setLookAndFeel(lafAtual); // restaura o LAF atual
+            } catch (UnsupportedLookAndFeelException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
