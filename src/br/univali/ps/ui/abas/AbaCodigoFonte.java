@@ -1993,7 +1993,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     private void alternarLoader()
     {
-        loader.setLocation((this.getSize().width - loader.getSize().width + Lancador.getFrame().getLocationOnScreen().x) / 2, (this.getSize().height - loader.getSize().height + Lancador.getFrame().getLocationOnScreen().y) / 2);
+        int x = ((this.getSize().width - loader.getSize().width) / 2) + Lancador.getFrame().getLocationOnScreen().x;
+        int y = ((this.getSize().height - loader.getSize().height) / 2) + Lancador.getFrame().getLocationOnScreen().y;
+        loader.setLocation(x, y);
         if(loader.isVisible())
         {
             loader.setVisible(false);
