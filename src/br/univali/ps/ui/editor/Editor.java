@@ -906,11 +906,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 setTamanhoFonteEditor((Float) evt.getNewValue());
                 break;
 
-            case Configuracoes.TEMA_EDITOR:
-                if(!isExamplable){
-                    aplicarTema((String) evt.getNewValue());
-                }
-                break;
+//            case Configuracoes.TEMA_EDITOR:
+//                if(!isExamplable){
+////                    aplicarTema((String) evt.getNewValue());
+//                }
+//                break;
 
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:
                 setCentralizarCodigoFonte((Boolean) evt.getNewValue());

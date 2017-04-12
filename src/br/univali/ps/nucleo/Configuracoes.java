@@ -23,6 +23,7 @@ public final class Configuracoes
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
     public static final String TEMA_EDITOR = "temaEditor";
+    public static final String TEMA_PORTUGOL = "temaPortugol";
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
@@ -55,6 +56,7 @@ public final class Configuracoes
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Dark";
+    private String temaPortugol = "Dark";
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
     private boolean exibirAvisoRenomear = true;
@@ -86,7 +88,8 @@ public final class Configuracoes
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
-            //temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Dark");
+            temaEditor = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
+            temaPortugol = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
             exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
@@ -144,6 +147,21 @@ public final class Configuracoes
     public String getTemaEditor()
     {
         return this.temaEditor;
+    }
+    
+    public void setTemaPortugol(String theme)
+    {
+        String oldTheme = this.temaPortugol;
+        setTemaEditor(theme);
+        this.configuracoes.setProperty(TEMA_PORTUGOL, theme);
+        this.temaPortugol = theme;
+
+        suporteMudancaPropriedade.firePropertyChange(TEMA_PORTUGOL, oldTheme, theme);
+    }
+
+    public String getTemaPortugol()
+    {
+        return this.temaPortugol;
     }
 
     public void setTamanhoFonteConsole(float tamanhoFonteConsole)
@@ -265,6 +283,23 @@ public final class Configuracoes
     public boolean isCentralizarCodigoFonte()
     {
         return centralizarCodigoFonte;
+    }
+
+    public void TrocarTema() 
+    {
+        if(temaPortugol.equals("Dark"))
+        {
+            setTemaPortugol("Portugol");
+        }
+        else
+        {
+            setTemaPortugol("Dark");
+        }        
+    }
+    
+    public boolean isTemaDark()
+    {
+        return temaPortugol.equals("Dark");
     }
     
     public String getUriAtualizacao()

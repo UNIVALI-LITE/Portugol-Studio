@@ -391,6 +391,35 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acao;
     }
 
+    private Action criaAcaoTrocaTema() {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.SHIFT_DOWN_MASK);
+        String nome = "Trocar tema (reiniciar)";
+        AbstractAction acaoTrocarTema = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                JMenuItem item = (JMenuItem) getValue("MenuItem");
+                Configuracoes configuracoes = Configuracoes.getInstancia();
+                configuracoes.TrocarTema();
+                if (configuracoes.isTemaDark())
+                {
+                    item.setText("Trocar para tema Claro");
+                }
+                else
+                {
+                    item.setText("Trocar para tema Escuro");
+                }
+            }
+        };
+
+        acaoTrocarTema.putValue(Action.ACCELERATOR_KEY, atalho);
+
+        getActionMap().put(nome, acaoTrocarTema);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        return acaoTrocarTema;
+    }
+
     public Action criaAcaoCentralizarCodigoFonte()
     {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE, InputEvent.SHIFT_DOWN_MASK);
@@ -486,8 +515,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraBotoesEditor.adicionaAcao(criaAcaoExpandirEditor());
         //Action acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
         barraBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
-        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
+//        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
+        barraBotoesEditor.adicionaAcao(criaAcaoTrocaTema());
 //        barraDeBotoesEditor.adicionaSeparador();
 //        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 

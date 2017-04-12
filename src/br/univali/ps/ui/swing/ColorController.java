@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.swing;
 
+import br.univali.ps.nucleo.Configuracoes;
 import java.awt.Color;
 
 /**
@@ -21,7 +22,11 @@ public final class ColorController {
                 new Color(49,104,146),
                 new Color(210,231,252),
                 new Color(228,241,254),
-                new Color(255,194,0)
+                new Color(255,194,0),
+                new Color(255,194,0),
+                new Color(69,189,255),
+                new Color(240,67,59),
+                new Color(0,239,192)
             };
     }
     private static Color[] getDarkTheme(){
@@ -52,7 +57,20 @@ public final class ColorController {
             };
     }
     
-    private static final Color[] THEME= getASHTheme();
+    private static Color[] getTheme()
+    {
+        String temaSelecionado = Configuracoes.getInstancia().getTemaPortugol();
+        if(temaSelecionado.equals("Portugol"))
+        {
+            return getDefaultTheme();
+        }
+        else
+        {
+            return getASHTheme();
+        }
+    }
+    
+    private static final Color[] THEME= getTheme();
     public static final Color COR_LETRA = THEME[0];
     public static final Color COR_DESTAQUE = THEME[1];
     public static final Color COR_PRINCIPAL = THEME[2];
