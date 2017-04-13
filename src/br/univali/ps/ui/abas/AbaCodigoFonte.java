@@ -46,7 +46,6 @@ import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.telas.TelaCustomBorder;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -2216,6 +2215,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         getCabecalho().setTitulo("Sem título*");
         getCabecalho().setIcone(lampadaApagada);
         
+        tree.desinstalaListenersDosFiltros(); // desinstala listener dos filtros antes de resetar os filtros para evitar que a árvore estrutural seja recriada a cada alteração dos filtros
         tree.getFilter().getDataTypeFilter().acceptAll();
         tree.getFilter().getSymbolTypeFilter().acceptAll();
         

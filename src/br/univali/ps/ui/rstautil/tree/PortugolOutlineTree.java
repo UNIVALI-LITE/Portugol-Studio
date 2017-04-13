@@ -48,6 +48,8 @@ public class PortugolOutlineTree extends JTree
 
     private DefaultTreeModel model;
     private Programa programa = null;
+    
+    private final FilterListener listenerFiltro = new FilterListener();
 
     private final Timer timerCriacaoDaArvore;
 
@@ -58,7 +60,6 @@ public class PortugolOutlineTree extends JTree
         configurarAparencia();
         configurarDragAndDrop();
         configurarModel();
-        configurarFiltro();
 
         timerCriacaoDaArvore = new Timer(50, (ActionEvent e) ->
         {
@@ -93,11 +94,6 @@ public class PortugolOutlineTree extends JTree
     {
         model = new DefaultTreeModel(new DefaultMutableTreeNode("Nothing"));
         setModel(model);
-    }
-
-    private void configurarFiltro()
-    {
-        filter.addListener(new FilterListener());
     }
 
     public void observar(RSyntaxTextArea textArea)
@@ -179,11 +175,17 @@ public class PortugolOutlineTree extends JTree
 
             if (RSyntaxTextArea.SYNTAX_STYLE_PROPERTY.equals(name) || PortugolParser.PROPRIEDADE_PROGRAMA_COMPILADO.equals(name))
             {
+                filter.addListener(listenerFiltro);
                 buildTree();
             }
         }
     }
 
+    public void desinstalaListenersDosFiltros() 
+    {
+        filter.removeListener(listenerFiltro);
+    }
+    
     private void doBuildTree()
     {
         if (programa != null)
