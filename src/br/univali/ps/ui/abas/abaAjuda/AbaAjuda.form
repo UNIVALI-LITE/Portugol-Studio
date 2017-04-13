@@ -93,7 +93,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/load.gif"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/load.gif"/>
             </Property>
             <Property name="horizontalTextPosition" type="int" value="0"/>
           </Properties>
@@ -206,7 +206,7 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/help.png"/>
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/help.png"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Ajuda"/>
                       </Properties>

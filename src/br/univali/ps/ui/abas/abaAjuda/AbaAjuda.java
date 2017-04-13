@@ -95,6 +95,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             }
         });
         arvore.setUI(new PSTreeUI());
+        jLabel2.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"));
         configurarCores();
         if (WeblafUtils.weblafEstaInstalado())
         {
@@ -605,7 +606,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             if (diretorioIcone == null)
             {
                 diretorioIcone = Configuracoes.getInstancia().getDiretorioAjuda().getPath();
-                diretorioIcone += "/recursos/imagens/padrao";
+                diretorioIcone += "/recursos/imagens/padrao/Dark";
                 if (folha)
                 {
                     diretorioIcone += "/arvore_folha.png";
@@ -644,8 +645,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jEditorPane1 = new javax.swing.JEditorPane();
@@ -685,7 +685,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelCarregamento.add(rotuloErroCarregamento, java.awt.BorderLayout.SOUTH);
 
         iconeCarregamento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        iconeCarregamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/load.gif"))); // NOI18N
+        iconeCarregamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/load.gif"))); // NOI18N
         iconeCarregamento.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         painelCarregamento.add(iconeCarregamento, java.awt.BorderLayout.CENTER);
 
@@ -715,7 +715,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelTitulo.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/help.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/help.png"))); // NOI18N
         jLabel2.setText("Ajuda");
         painelTitulo.add(jLabel2, java.awt.BorderLayout.CENTER);
 

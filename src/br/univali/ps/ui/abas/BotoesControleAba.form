@@ -43,7 +43,7 @@
           <Color blue="3e" green="3e" red="3e" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/light_pix_off.png"/>
+          <Image iconType="3" name="/br/univali/ps/ui/icones/Portugol/pequeno/light_pix_off.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Portugol Studio"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -66,7 +66,7 @@
     <Component class="com.alee.laf.button.WebButton" name="botaoAbrir">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/folder_closed.png"/>
+          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
       </Properties>
@@ -79,7 +79,7 @@
     <Component class="com.alee.laf.button.WebButton" name="botaoNovoArquivo">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/page_white_add.png"/>
+          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
       </Properties>

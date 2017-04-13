@@ -135,7 +135,7 @@ public class Lancador {
             public void run() {
                 Image icon;
                 try {
-                    icon = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/grande/light-bulb.png"));
+                    icon = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/light-bulb.png"));
                     frame.setIconImage(icon);
         //            getFrame().setIconImage(icon);
                 } catch (IOException ex) {

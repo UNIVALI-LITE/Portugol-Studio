@@ -164,7 +164,7 @@
                         <Component class="com.alee.laf.button.WebButton" name="webButton1">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/previous.png"/>
+                              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/previous.png"/>
                             </Property>
                           </Properties>
                           <Events>
@@ -193,7 +193,7 @@
                         <Component class="com.alee.laf.button.WebButton" name="webButton2">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/br/univali/ps/ui/icones/grande/next.png"/>
+                              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/next.png"/>
                             </Property>
                           </Properties>
                           <Events>

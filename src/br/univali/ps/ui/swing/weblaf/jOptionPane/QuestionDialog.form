@@ -57,7 +57,7 @@
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icones/grande/lite/ajuda.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/lite/ajuda.png"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -151,7 +151,7 @@
             <Component class="javax.swing.JLabel" name="titleLabel">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/light_pix.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Portugol Studio"/>
               </Properties>
@@ -164,7 +164,7 @@
             <Component class="com.alee.laf.button.WebButton" name="webButton1">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/white_close.png"/>
+                  <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>

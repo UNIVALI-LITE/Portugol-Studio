@@ -6,6 +6,7 @@ import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -24,6 +25,8 @@ public final class PainelPlugins extends JPanel
     {
         initComponents();
         criarDicasInterface();
+        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
+        botaoInformacoes.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"));
     }
 
     private void criarDicasInterface()
@@ -128,7 +131,7 @@ public final class PainelPlugins extends JPanel
         barraFerramentas.setPreferredSize(new java.awt.Dimension(50, 25));
         barraFerramentas.add(alinhador);
 
-        botaoInformacoes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/information.png"))); // NOI18N
+        botaoInformacoes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/information.png"))); // NOI18N
         botaoInformacoes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoInformacoes.setFocusable(false);
         botaoInformacoes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -144,7 +147,7 @@ public final class PainelPlugins extends JPanel
         });
         barraFerramentas.add(botaoInformacoes);
 
-        botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
+        botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"))); // NOI18N
         botaoFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoFechar.setFocusable(false);
         botaoFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

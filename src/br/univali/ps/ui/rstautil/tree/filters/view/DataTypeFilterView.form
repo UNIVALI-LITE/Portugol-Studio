@@ -60,7 +60,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonShowAll">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/all_types.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/all_types.png"/>
             </Property>
           </Properties>
           <Events>
@@ -99,7 +99,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonInteiro">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/inteiro.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/inteiro.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Inteiro"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -111,7 +111,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonReal">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/real.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/real.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Real"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -123,7 +123,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonCaracter">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/caracter.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/caracter.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Caracter"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -135,7 +135,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonLogico">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/logico.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/logico.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="L&#xf3;gico"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -147,7 +147,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonCadeia">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/cadeia.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/cadeia.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Cadeia"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -159,7 +159,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonVazio">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/vazio.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/vazio.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vazio"/>
             <Property name="horizontalAlignment" type="int" value="2"/>

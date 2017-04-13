@@ -3,6 +3,7 @@ package br.univali.ps.ui.window;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.swing.MouseEventRunnable;
 import java.awt.BorderLayout;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,13 +45,12 @@ public class BorderPanel extends JPanel {
         private JPanel buttonsPanel;
         
         private WebButton closeButton;
-        private Image close;
+        private Icon close;
         private WebButton maxButton;
-        private Image max;
+        private Icon max;
         private WebButton minButton;
-        private Image min;
-        private JLabel label;
-        private Image icon;
+        private Icon min;
+//        private Icon icon;
         
         
         public WebButton getMaxButton(){
@@ -60,17 +61,11 @@ public class BorderPanel extends JPanel {
             return closeButton;
         }
         public BorderPanel() {
-            
-            try {
-                close = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"));
-                max = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_max.png"));
-                min = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_min.png"));
-                icon = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/grande/light-bulb.png"));
-            } catch (IOException ex) {
-                Logger.getLogger(BorderPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-            
-            JFrame frame = Lancador.getJFrame();
+            close = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png");
+            max = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_max.png");
+            min = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_min.png");
+//            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES,"light-bulb.png");          
+
             setLayout(new BorderLayout());
             
             buttonsPanel = new JPanel();
@@ -80,7 +75,7 @@ public class BorderPanel extends JPanel {
             buttonsPanel.setOpaque(false);
             
             closeButton=new WebButton();
-            closeButton.setIcon(new ImageIcon(close));
+            closeButton.setIcon(close);
             closeButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
@@ -88,7 +83,7 @@ public class BorderPanel extends JPanel {
                 }
             });
             minButton=new WebButton();
-            minButton.setIcon(new ImageIcon(min));
+            minButton.setIcon(min);
             minButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
@@ -96,7 +91,7 @@ public class BorderPanel extends JPanel {
                 }
             });
             maxButton=new WebButton();
-            maxButton.setIcon(new ImageIcon(max));
+            maxButton.setIcon(max);
             maxButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {

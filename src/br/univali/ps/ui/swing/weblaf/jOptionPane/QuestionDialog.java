@@ -105,7 +105,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         mainpane.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/ajuda.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/ajuda.png"))); // NOI18N
         mainpane.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
         jPanel1.setOpaque(false);
@@ -142,11 +142,11 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         titlePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         titlePane.setLayout(new java.awt.BorderLayout());
 
-        titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
         titleLabel.setText("Portugol Studio");
         titlePane.add(titleLabel, java.awt.BorderLayout.CENTER);
 
-        webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/white_close.png"))); // NOI18N
+        webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"))); // NOI18N
         webButton1.setFocusable(false);
         webButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

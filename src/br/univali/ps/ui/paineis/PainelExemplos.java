@@ -80,6 +80,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         configurarResolucao();
         editor = new Editor(true);
         examplePane.add(editor);
+        labelTitulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"));
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file.png");
         imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
         imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
@@ -480,7 +481,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelEsquerda.setLayout(new java.awt.BorderLayout());
 
         labelTitulo.setForeground(new java.awt.Color(255, 255, 255));
-        labelTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        labelTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
         labelTitulo.setText("Exemplos");
         labelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         labelTitulo.setOpaque(true);

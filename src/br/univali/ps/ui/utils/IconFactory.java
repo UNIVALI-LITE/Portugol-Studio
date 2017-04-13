@@ -28,8 +28,8 @@ public class IconFactory {
     
     private static final Map<String, Icon> icones = new TreeMap<>();
     
-    public static final String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/pequeno";
-    public static final String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/grande";
+    public static final String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/Dark/pequeno";
+    public static final String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/Dark/grande";
     public static final String CAMINHO_IMAGENS = "br/univali/ps/ui/imagens";
     
     private static Icon iconePadrao = null;

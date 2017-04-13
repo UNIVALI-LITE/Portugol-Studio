@@ -52,6 +52,8 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
         atualiza(item);
         exibirSempre.setSelected(true);
         
+        webButton1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "previous.png"));
+        webButton2.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "next.png"));
         configurarNavegacaoPeloTeclado();
     }
     
@@ -198,7 +200,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/previous.png"))); // NOI18N
+        webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/previous.png"))); // NOI18N
         webButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 webButton1ActionPerformed(evt);
@@ -211,7 +213,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        webButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/next.png"))); // NOI18N
+        webButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/next.png"))); // NOI18N
         webButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 webButton2ActionPerformed(evt);

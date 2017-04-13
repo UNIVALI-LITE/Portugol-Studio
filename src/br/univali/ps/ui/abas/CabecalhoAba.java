@@ -3,6 +3,7 @@ package br.univali.ps.ui.abas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;
 import javax.swing.Icon;
@@ -26,6 +27,12 @@ public class CabecalhoAba extends JPanel implements Themeable{
     public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
     }
+    
+    private void configuraIcones()
+    {
+        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
+    }
+    
     protected Aba getAba()
     {
         return aba;
@@ -77,7 +84,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
         setLayout(new java.awt.GridBagLayout());
 
         jLIcone.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"))); // NOI18N
+        jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
         jLIcone.setAlignmentX(0.5F);
         jLIcone.setMaximumSize(new java.awt.Dimension(18, 18));
         jLIcone.setPreferredSize(new java.awt.Dimension(17, 17));
@@ -91,7 +98,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
         gridBagConstraints.weightx = 1.0;
         add(jLTitulo, gridBagConstraints);
 
-        botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"))); // NOI18N
+        botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/white_close.png"))); // NOI18N
         botaoFechar.setBorder(null);
         botaoFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoFechar.setFocusable(false);

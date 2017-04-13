@@ -61,6 +61,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         configurarAparenciaArvore();
         instalarObservadores();
         arvoreBibliotecas.setUI(new PSTreeUI());
+        jLabel2.setIcon(icone);
         configurarCores();
         if (WeblafUtils.weblafEstaInstalado())
         {
@@ -237,8 +238,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         divisor = new javax.swing.JSplitPane();
         painelRolagemConteudo = new javax.swing.JScrollPane();
@@ -285,7 +285,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         painelTitulo.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/biblioteca.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/biblioteca.png"))); // NOI18N
         jLabel2.setText("Bibliotecas");
         painelTitulo.add(jLabel2, java.awt.BorderLayout.CENTER);
 

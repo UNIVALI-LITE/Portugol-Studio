@@ -138,7 +138,7 @@ public final class TelaOpcoesExecucao extends JDialog{
         campoParametros.setRows(5);
         painelRolagemParametros.setViewportView(campoParametros);
 
-        botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/edit_clear.png"))); // NOI18N
+        botaoLimpar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "edit_clear.png")); // NOI18N
         botaoLimpar.setText("Limpar");
         botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoLimpar.addActionListener(new java.awt.event.ActionListener() {
