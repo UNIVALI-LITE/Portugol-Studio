@@ -16,44 +16,32 @@ public final class ColorController {
     
     private static Color[] getDefaultTheme(){
         return new Color[]{
-                new Color(51,51,51),
-                new Color(243,243,243),
-                new Color(255,255,255),
-                new Color(49,104,146),
-                new Color(210,231,252),
-                new Color(228,241,254),
-                new Color(255,194,0),
-                new Color(255,194,0),
-                new Color(69,189,255),
-                new Color(240,67,59),
-                new Color(0,239,192)
-            };
-    }
-    private static Color[] getDarkTheme(){
-        return new Color[]{
-                new Color(251,251,251),
-                new Color(100,100,100),
-                new Color(51,51,51),
-                new Color(30,30,30),
-                new Color(80,80,80),
-                new Color(90,90,90),
-                new Color(255,194,0)
+                new Color(51,51,51),    //cinza escuro
+                new Color(210,231,252), //branco azulado
+                new Color(243,243,243), //branco
+                new Color(49,104,146),  //azul
+                new Color(243,243,243), //branco
+                new Color(228,241,254), //branco azulado
+                new Color(255,194,0),   //amarelo
+                new Color(255,194,0),   //amarelo
+                new Color(69,189,255),  //azul claro
+                new Color(240,67,59),   //vermelho
+                new Color(0,239,192)    //ciano
             };
     }
     private static Color[] getASHTheme(){
         return new Color[]{
-                //new Color(251,251,251),
-                new Color(205,205,205),
-                new Color(58,70,76),
-                new Color(38,50,56),
-                new Color(18,30,36),
-                new Color(38,50,56),
-                new Color(68,80,86),
-                new Color(241,67,60),
-                new Color(255,194,0),
-                new Color(69,189,255),
-                new Color(240,67,59),
-                new Color(0,239,192)
+                new Color(205,205,205), //cinza claro
+                new Color(58,70,76),    //cinza azulado
+                new Color(38,50,56),    //cinza azulado mais escuro
+                new Color(18,30,36),    //cinza azulado muito mais escuro
+                new Color(38,50,56),    //cinza azulado mais escuro
+                new Color(68,80,86),    //cinza azulado mais claro
+                new Color(241,67,60),   //vermelho
+                new Color(255,194,0),   //amarelo
+                new Color(69,189,255),  //azul claro
+                new Color(240,67,59),   //vermelho
+                new Color(0,239,192)    //ciano
             };
     }
     

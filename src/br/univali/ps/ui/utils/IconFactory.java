@@ -96,6 +96,8 @@ public class IconFactory {
     
     public static Icon createIcon(String path, String fileName)
     {
+        
+        
         try
         {
             InputStream iconInputStream = null;
