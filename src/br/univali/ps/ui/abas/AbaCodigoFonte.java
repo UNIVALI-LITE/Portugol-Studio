@@ -159,7 +159,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.setForeground(ColorController.COR_LETRA);
         inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
-        treePanel.setBackground(ColorController.FUNDO_ESCURO.brighter());
+        treePanel.setBackground(ColorController.COR_PRINCIPAL);
         
         if (WeblafUtils.weblafEstaInstalado())
         {
@@ -178,7 +178,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(btnSalvar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraBotoesEditor, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.FUNDO_ESCURO.brighter(), ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         }
     }
 
