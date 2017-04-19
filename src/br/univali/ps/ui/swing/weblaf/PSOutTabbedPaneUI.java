@@ -48,7 +48,7 @@ public class PSOutTabbedPaneUI extends BasicTabbedPaneUI {
         
         if ( tabPane.getTabCount() > 0) {
             // Fill region behind content area
-            g.setColor(ColorController.COR_DESTAQUE);
+            g.setColor(ColorController.COR_CONSOLE);
             g.fillRect(x,y,w,h);
         }
         
@@ -56,7 +56,7 @@ public class PSOutTabbedPaneUI extends BasicTabbedPaneUI {
 
     @Override
     protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-        g.setColor(ColorController.COR_DESTAQUE);
+        g.setColor(ColorController.COR_CONSOLE);
         g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
     }
     
@@ -64,7 +64,7 @@ public class PSOutTabbedPaneUI extends BasicTabbedPaneUI {
     @Override
     protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
         if(isSelected){
-            g.setColor(ColorController.COR_DESTAQUE);
+            g.setColor(ColorController.COR_CONSOLE);
             g.fillRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
             g.drawRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
         }else{

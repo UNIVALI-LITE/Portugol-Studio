@@ -20,6 +20,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
             ((WebButtonUI)botaoFechar.getUI()).setUndecorated(true);
         }
         configurarCores();
+        configuraIcones();
         //setUndecorated(true)
     }
     
@@ -30,7 +31,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
     
     private void configuraIcones()
     {
-        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
+        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "white_close.png"));
     }
     
     protected Aba getAba()

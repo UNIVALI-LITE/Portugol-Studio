@@ -18,7 +18,7 @@ public final class RenderizadorTabelaMensagensCompilador extends DefaultTableCel
 {
     
     private final Color corImpar = ColorController.COR_PRINCIPAL;
-    private final Color corPar = ColorController.COR_DESTAQUE;
+    private final Color corPar = ColorController.COR_CONSOLE;
     private final Color corLetra = ColorController.COR_LETRA;
 
     public RenderizadorTabelaMensagensCompilador()

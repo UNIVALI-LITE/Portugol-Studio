@@ -83,7 +83,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         initComponents();
         configurarArvore();
         configurarAcoes();
-        iconeCarregamento.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "load.gif"));
+//        iconeCarregamento.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "load.gif"));
         rotuloErroCarregamento.setVisible(false);
 
         addComponentListener(new ComponentAdapter()

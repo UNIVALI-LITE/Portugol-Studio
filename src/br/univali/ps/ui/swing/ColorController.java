@@ -6,6 +6,7 @@
 package br.univali.ps.ui.swing;
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 
 /**
@@ -18,15 +19,19 @@ public final class ColorController {
         return new Color[]{
                 new Color(51,51,51),    //cinza escuro
                 new Color(210,231,252), //branco azulado
-                new Color(255,255,255), //branco
-                new Color(49,104,146),  //azul
-                new Color(228,241,254), //branco azulado
                 new Color(243,243,243), //branco
+                new Color(49,104,146),  //azul
+                new Color(243,243,243), //branco
+                new Color(228,241,254), //branco azulado
                 new Color(255,194,0),   //amarelo
                 new Color(255,194,0),   //amarelo
                 new Color(69,189,255),  //azul claro
                 new Color(240,67,59),   //vermelho
-                new Color(0,239,192)    //ciano
+                new Color(0,239,192),   //ciano
+                new Color(255,255,255), //branco
+                new Color(255,255,255), //branco
+                new Color(219,219,219), //branco
+                new Color(0,0,0,0)      //transparente
             };
     }
     private static Color[] getASHTheme(){
@@ -41,13 +46,18 @@ public final class ColorController {
                 new Color(255,194,0),   //amarelo
                 new Color(69,189,255),  //azul claro
                 new Color(240,67,59),   //vermelho
-                new Color(0,239,192)    //ciano
+                new Color(0,239,192),   //ciano
+                new Color(18,30,36),    //cinza azulado muito mais escuro
+                new Color(205,205,205), //cinza claro
+                new Color(58,70,76),    //cinza azulado
+                new Color(0,0,0,0)      //Transparente
             };
     }
     
     private static Color[] getTheme()
     {
         String temaSelecionado = Configuracoes.getInstancia().getTemaPortugol();
+        IconFactory.verificarTema();
         if(temaSelecionado.equals("Portugol"))
         {
             return getDefaultTheme();
@@ -55,7 +65,7 @@ public final class ColorController {
         else
         {
             return getASHTheme();
-        }
+        }        
     }
     
     private static final Color[] THEME= getTheme();
@@ -70,4 +80,8 @@ public final class ColorController {
     public static final Color AZUL = THEME[8];
     public static final Color VERMELHO = THEME[9];
     public static final Color VERDE = THEME[10];
+    public static final Color FUNDO_BOTOES_EXPANSIVEIS = THEME[11];
+    public static final Color COR_LETRA_TITULO = THEME[12];
+    public static final Color COR_CONSOLE = THEME[13];
+    public static final Color TRANSPARENTE = THEME[14];
 }

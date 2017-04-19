@@ -47,7 +47,7 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
-        rotuloCarregando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "load.gif"));
+//        rotuloCarregando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "load.gif"));
         dialog.addComponentListener(new ComponentAdapter()
         {
             @Override

@@ -157,7 +157,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         scrollOutlineTree.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         painelSaida.setForeground(ColorController.COR_LETRA);
-        inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
+        inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
         treePanel.setBackground(ColorController.COR_PRINCIPAL);
         
@@ -177,8 +177,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(btnInterromper, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(barraBotoesEditor, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barraBotoesEditor, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         }
     }
 
@@ -370,7 +370,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
 
         String nome = "Pesquisar e substituir";
-
         AbstractAction acao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"))
         {
             @Override
@@ -458,7 +457,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
     
     private void configuraLoader(){
-        loadingLabel.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "load.gif"));
+        loadingLabel.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/load.gif")));
         loadingLabel.setBackground(ColorController.COR_DESTAQUE);
         loadingLabel.setForeground(ColorController.COR_LETRA);
         loader = new JDialog();

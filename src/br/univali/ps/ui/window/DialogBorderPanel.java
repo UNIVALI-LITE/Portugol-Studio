@@ -72,7 +72,7 @@ public class DialogBorderPanel extends JPanel {
             });
             
             
-            WeblafUtils.configurarBotao(closeButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA,ColorController.PROGRESS_BAR, Color.orange, 5);
+            WeblafUtils.configurarBotao(closeButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA,ColorController.VERMELHO, Color.orange, 5);
             buttonsPanel.add(closeButton);
             
             
@@ -82,7 +82,7 @@ public class DialogBorderPanel extends JPanel {
             jl = new JLabel();
             jl.setText(title);
             jl.setOpaque(false);
-            jl.setForeground(ColorController.COR_LETRA);
+            jl.setForeground(ColorController.COR_LETRA_TITULO);
             jl.setIcon(icon);
             
             add(jl, BorderLayout.CENTER);

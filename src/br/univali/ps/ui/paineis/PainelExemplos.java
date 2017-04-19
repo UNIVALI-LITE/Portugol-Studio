@@ -18,6 +18,7 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -98,15 +99,15 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     @Override
     public void configurarCores() {
         arvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
-        imagePane.setBackground(ColorController.COR_DESTAQUE);
+        imagePane.setBackground(ColorController.FUNDO_ESCURO);
         description.setForeground(ColorController.COR_LETRA);
         scrollArvoreExemplos.setBackground(ColorController.FUNDO_CLARO);
         scrollArvoreExemplos.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
-        labelTitulo.setForeground(ColorController.COR_LETRA);
-        labelTitulo.setBackground(ColorController.COR_PRINCIPAL);
-        painelREcentes.setBackground(ColorController.COR_DESTAQUE);
-        jLabel1.setForeground(ColorController.COR_LETRA);
-        areaLogo.setBackground(ColorController.COR_DESTAQUE);
+        labelTitulo.setForeground(ColorController.COR_LETRA_TITULO);
+        labelTitulo.setBackground(ColorController.FUNDO_ESCURO);
+        painelREcentes.setBackground(ColorController.FUNDO_ESCURO);
+        jLabel1.setForeground(ColorController.COR_LETRA_TITULO);
+        areaLogo.setBackground(ColorController.FUNDO_ESCURO);
         scrollRecentes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollRecentes);
@@ -167,7 +168,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setVerticalAlignment(SwingConstants.CENTER);
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
-                WeblafUtils.configurarBotao(button,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5);
+                WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5);
                 FabricaDicasInterface.criarTooltip(button, recente.getPath());
                 areaREcentes.add(button);
             } catch (Exception ex) {

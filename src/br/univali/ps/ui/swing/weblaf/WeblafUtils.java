@@ -138,7 +138,7 @@ public class WeblafUtils {
        ((WebTextFieldUI) field.getUI()).setDrawBackground(true);
        field.setBorder(new EmptyBorder(margin, leftMargin, margin, margin));
        field.setOpaque(true);
-       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setBackground(ColorController.COR_CONSOLE);
        field.setForeground(ColorController.COR_LETRA);
     }
     
