@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTree;
@@ -83,7 +84,10 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         initComponents();
         configurarArvore();
         configurarAcoes();
-//        iconeCarregamento.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "load.gif"));
+        if(!Configuracoes.getInstancia().isTemaDark())
+        {
+            iconeCarregamento.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/grande/load.gif")));
+        }        
         rotuloErroCarregamento.setVisible(false);
 
         addComponentListener(new ComponentAdapter()

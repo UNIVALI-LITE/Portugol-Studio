@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.paineis.PainelLicenca;
 import br.univali.ps.ui.swing.ColorController;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -47,7 +49,10 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
-//        rotuloCarregando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "load.gif"));
+        if (!Configuracoes.getInstancia().isTemaDark())
+        {
+            rotuloCarregando.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/grande/load.gif")));
+        } 
         dialog.addComponentListener(new ComponentAdapter()
         {
             @Override

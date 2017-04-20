@@ -457,7 +457,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
     
     private void configuraLoader(){
-        loadingLabel.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/load.gif")));
+        if(!Configuracoes.getInstancia().isTemaDark())
+        {
+            loadingLabel.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/grande/load.gif")));
+        }        
         loadingLabel.setBackground(ColorController.COR_DESTAQUE);
         loadingLabel.setForeground(ColorController.COR_LETRA);
         loader = new JDialog();
@@ -1292,6 +1295,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos = new br.univali.ps.ui.inspetor.InspetorDeSimbolos();
 
         loadingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loadingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/load.gif"))); // NOI18N
         loadingLabel.setText("Processando");
         loadingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         loadingLabel.setOpaque(true);
