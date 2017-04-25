@@ -58,6 +58,7 @@ public final class AbaInicial extends Aba implements Themeable
     @Override
     public void configurarCores()
     {
+        botoesGrandes.setBackground(ColorController.COR_DESTAQUE);
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
         conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
         rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);

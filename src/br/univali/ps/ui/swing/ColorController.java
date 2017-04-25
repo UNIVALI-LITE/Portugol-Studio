@@ -30,7 +30,7 @@ public final class ColorController {
                 new Color(0,239,192),   //ciano
                 new Color(255,255,255), //branco
                 new Color(255,255,255), //branco
-                new Color(219,219,219), //branco
+                new Color(230,230,230), //cinza
                 new Color(0,0,0,0)      //transparente
             };
     }

@@ -58,8 +58,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         instalarObservadores(telaPrincipal);
         titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configurarBotao(botaoAbrir,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
-            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }
 
     }
@@ -190,8 +190,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setIcon(iconeInativo);
         titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configurarBotao(botaoAbrir,ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
-            WeblafUtils.configurarBotao(botaoNovoArquivo, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoNovoArquivo, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
         }
         
     }
@@ -200,8 +200,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setIcon(iconeAtivo);
         titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configurarBotao(botaoAbrir,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
-            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }
     }
 

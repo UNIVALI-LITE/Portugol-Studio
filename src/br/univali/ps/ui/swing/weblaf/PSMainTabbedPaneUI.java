@@ -75,7 +75,7 @@ public class PSMainTabbedPaneUI extends BasicTabbedPaneUI {
                 g.setColor(ColorController.COR_PRINCIPAL);
                 g.fillRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
             }else{
-                g.setColor(ColorController.FUNDO_MEDIO);
+                g.setColor(ColorController.FUNDO_CLARO);
                 g.fillRect(rects[tabIndex].x, rects[tabIndex].y, rects[tabIndex].width, rects[tabIndex].height);
             }
         }else{

@@ -18,7 +18,6 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -93,7 +92,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 atualizarPainelDireita();
             }
         });
-        areaREcentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 25));
+        areaREcentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
         atualizarRecentes();
     }    
     @Override
@@ -106,13 +105,14 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setForeground(ColorController.COR_LETRA_TITULO);
         labelTitulo.setBackground(ColorController.FUNDO_ESCURO);
         painelREcentes.setBackground(ColorController.FUNDO_ESCURO);
-        jLabel1.setForeground(ColorController.COR_LETRA_TITULO);
+        textRecentes.setForeground(ColorController.COR_LETRA_TITULO);
         areaLogo.setBackground(ColorController.FUNDO_ESCURO);
+        painelDireita.setBackground(ColorController.COR_DESTAQUE);
         scrollRecentes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollRecentes);
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
-            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
     }
     
@@ -128,11 +128,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         Object [] fs =  files.toArray();
         if(fs.length==0)
         {
-            jLabel1.setVisible(false);
+            textRecentes.setVisible(false);
         }
         else
         {
-            jLabel1.setVisible(true);
+            textRecentes.setVisible(true);
         }
         for (int i = files.size()-1; i>=0; i--) {
             File recente =(File) fs[i];
@@ -158,10 +158,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setText(recente.getName());
                 if(redimensionouParaBaixaResolucao)
                 {
-                    jLabel1.setFont(jLabel1.getFont().deriveFont(16f));
+                    textRecentes.setFont(textRecentes.getFont().deriveFont(16f));
                     button.setIcon(imagemPadraolowres);
                 }else{
-                    jLabel1.setFont(jLabel1.getFont().deriveFont(24f));
+                    textRecentes.setFont(textRecentes.getFont().deriveFont(24f));
                     button.setIcon(imagemPadrao);
                 }
                 button.setHorizontalAlignment(SwingConstants.CENTER);
@@ -347,6 +347,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 imagePane.removeAll();
                 imagePane.add(imagePanel);
                 imagePanel.setImagem(((ImageIcon)icone).getImage());
+//                imagePane.setBackground(ColorController.FUNDO_ESCURO);
             } catch (Exception ex) {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
@@ -357,6 +358,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             description.setVisible(false);
             botaoAbrirExemplo.setVisible(false);
             imagePane.removeAll();
+//            imagePane.setBackground(ColorController.FUNDO_CLARO);
             imagePane.add(painelREcentes);
         }
         
@@ -379,7 +381,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelREcentes = new javax.swing.JPanel();
         areaLogo = new javax.swing.JPanel();
         painelRecentes = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        textRecentes = new javax.swing.JLabel();
         scrollRecentes = new javax.swing.JScrollPane();
         areaREcentes = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -402,16 +404,20 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelRecentes.setOpaque(false);
         painelRecentes.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Arquivos Recentes");
-        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        painelRecentes.add(jLabel1, java.awt.BorderLayout.NORTH);
+        textRecentes.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        textRecentes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        textRecentes.setText("Arquivos Recentes");
+        textRecentes.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 0, 0, 0));
+        textRecentes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        painelRecentes.add(textRecentes, java.awt.BorderLayout.CENTER);
 
+        scrollRecentes.setBorder(null);
+
+        areaREcentes.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         areaREcentes.setOpaque(false);
         scrollRecentes.setViewportView(areaREcentes);
 
-        painelRecentes.add(scrollRecentes, java.awt.BorderLayout.PAGE_END);
+        painelRecentes.add(scrollRecentes, java.awt.BorderLayout.SOUTH);
 
         painelREcentes.add(painelRecentes, java.awt.BorderLayout.SOUTH);
 
@@ -423,10 +429,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         jSplitPane1.setDividerLocation(300);
 
         painelDireita.setBackground(new java.awt.Color(255, 255, 255));
-        painelDireita.setOpaque(false);
         painelDireita.setLayout(new java.awt.GridBagLayout());
 
-        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         imagePane.setLayout(new java.awt.BorderLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -513,7 +518,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JLabel description;
     private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel painelDireita;
@@ -522,5 +526,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel painelRecentes;
     private javax.swing.JScrollPane scrollArvoreExemplos;
     private javax.swing.JScrollPane scrollRecentes;
+    private javax.swing.JLabel textRecentes;
     // End of variables declaration//GEN-END:variables
 }
