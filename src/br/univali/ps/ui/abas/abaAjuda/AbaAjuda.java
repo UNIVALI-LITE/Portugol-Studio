@@ -118,8 +118,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         painelCarregamento.setBackground(ColorController.COR_DESTAQUE);
         rotuloCarregamento.setForeground(ColorController.COR_LETRA);
         rotuloErroCarregamento.setForeground(ColorController.COR_LETRA);
-        jLabel2.setForeground(ColorController.COR_LETRA);
-        painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
+        jLabel2.setForeground(ColorController.COR_LETRA_TITULO);
+        painelTitulo.setBackground(ColorController.FUNDO_ESCURO);
         iconeCarregamento.setForeground(ColorController.COR_LETRA);
     }
 
@@ -367,6 +367,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         @Override
         public String processar(String conteudo, Topico topico)
         {
+            conteudo = decidirEstilos(conteudo);
             conteudo = resolverReferenciasArquivos(conteudo, topico);
             conteudo = inserirComponentesEditor(conteudo);
             conteudo = colocarDivsForaDeTables(conteudo);
@@ -379,6 +380,18 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             String search = original.substring(index);
             Matcher matcher = pattern.matcher(search);
             return matcher.find() ? matcher.start() + original.length() - search.length() : -1;
+        }
+        
+        private String decidirEstilos(String conteudo)
+        {
+            String caminhoCSS = "Dark";
+            if(!Configuracoes.getInstancia().isTemaDark())
+            {
+                caminhoCSS = "Portugol";
+            }
+            conteudo = conteudo.replace("${ajuda}", caminhoCSS+"/ajuda.css");
+            conteudo = conteudo.replace("${syntax}", caminhoCSS+"/SyntaxHighlighter.css");
+            return conteudo;
         }
 
         private String colocarDivsForaDeTables(String conteudo)
@@ -610,7 +623,13 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             if (diretorioIcone == null)
             {
                 diretorioIcone = Configuracoes.getInstancia().getDiretorioAjuda().getPath();
-                diretorioIcone += "/recursos/imagens/padrao/Dark";
+                if(Configuracoes.getInstancia().isTemaDark())
+                {
+                    diretorioIcone += "/recursos/imagens/padrao/Dark";
+                }
+                else{
+                    diretorioIcone += "/recursos/imagens/padrao/Portugol";
+                }                
                 if (folha)
                 {
                     diretorioIcone += "/arvore_folha.png";
