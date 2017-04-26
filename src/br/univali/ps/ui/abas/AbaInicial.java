@@ -46,6 +46,7 @@ public final class AbaInicial extends Aba implements Themeable
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents();
         configurarCores();
+        configurarIcones();
         configurarResolucao();
         configurarCursorLogos();
         criarDicasInterface();
@@ -80,6 +81,13 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
         rotuloSairProgramando.setForeground(ColorController.COR_LETRA);
 //        rotuloSlogan.setForeground(new Color(250, 250, 250));
+    }
+    public void configurarIcones()
+    {
+        rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
+        rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
+        rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
+        rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
     }
 
     private void instalarObservadorCombinacoesSecretas()

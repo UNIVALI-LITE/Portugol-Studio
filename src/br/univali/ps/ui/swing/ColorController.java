@@ -21,7 +21,8 @@ public final class ColorController {
                 new Color(210,231,252), //branco azulado
                 new Color(243,243,243), //branco
                 new Color(49,104,146),  //azul
-                new Color(243,243,243), //branco
+//                new Color(243,243,243), //branco
+                new Color(193,217,245), //branco
                 new Color(228,241,254), //branco azulado
                 new Color(255,194,0),   //amarelo
                 new Color(255,194,0),   //amarelo

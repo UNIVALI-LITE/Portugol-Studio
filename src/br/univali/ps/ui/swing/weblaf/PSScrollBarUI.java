@@ -134,10 +134,10 @@ public class PSScrollBarUI extends BasicScrollBarUI {
         Insets insets = scrollbar.getInsets();
         Rectangle thumbR = getThumbBounds();
         if(mouseOver || mousePressed){
-            g.setColor(ColorController.FUNDO_ESCURO);
+            g.setColor(ColorController.FUNDO_ESCURO.darker());
         }
         else{
-            g.setColor(ColorController.COR_DESTAQUE);
+            g.setColor(ColorController.FUNDO_MEDIO);
         }
         if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
             g.fillRect(thumbR.x+barRem, thumbR.y, thumbR.width-barRem*2, thumbR.height);
