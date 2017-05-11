@@ -54,6 +54,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
         
         webButton1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "previous.png"));
         webButton2.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "next.png"));
+        webButton3.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
         configurarNavegacaoPeloTeclado();
     }
     
@@ -62,6 +63,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_CLARO, Color.white, ColorController.COR_DESTAQUE, Color.orange, 15);
             WeblafUtils.configurarBotao(webButton2, ColorController.FUNDO_CLARO, Color.white, ColorController.COR_DESTAQUE, Color.orange, 15);
+            WeblafUtils.configurarBotao(webButton3, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 15);
         }
         titleLabel.setBackground(ColorController.FUNDO_ESCURO);
         this.setBackground(ColorController.FUNDO_CLARO);
@@ -159,6 +161,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
         scrollPane = new javax.swing.JPanel();
         optionPane = new javax.swing.JPanel();
         exibirSempre = new javax.swing.JCheckBox();
+        webButton3 = new com.alee.laf.button.WebButton();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         setMinimumSize(new java.awt.Dimension(640, 480));
@@ -189,6 +192,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
         jPanel1.setOpaque(false);
+        jPanel1.setPreferredSize(new java.awt.Dimension(148, 140));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         descriptionLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -235,9 +239,9 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
 
         add(carrouselPane, java.awt.BorderLayout.CENTER);
 
-        optionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(7, 7, 7, 7));
+        optionPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 7, 0, 7));
         optionPane.setOpaque(false);
-        optionPane.setPreferredSize(new java.awt.Dimension(0, 30));
+        optionPane.setPreferredSize(new java.awt.Dimension(0, 40));
         optionPane.setLayout(new java.awt.BorderLayout());
 
         exibirSempre.setBackground(new java.awt.Color(250, 250, 250));
@@ -248,7 +252,16 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
                 exibirSempreStateChanged(evt);
             }
         });
-        optionPane.add(exibirSempre, java.awt.BorderLayout.CENTER);
+        optionPane.add(exibirSempre, java.awt.BorderLayout.WEST);
+
+        webButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/theme.png"))); // NOI18N
+        webButton3.setText("Trocar Tema");
+        webButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webButton3ActionPerformed(evt);
+            }
+        });
+        optionPane.add(webButton3, java.awt.BorderLayout.EAST);
 
         add(optionPane, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -271,6 +284,11 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
         configuracoes.setExibirDicasInterface(exibirSempre.isSelected());
     }//GEN-LAST:event_exibirSempreStateChanged
 
+    private void webButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton3ActionPerformed
+        Configuracoes configuracoes = Configuracoes.getInstancia();
+        configuracoes.TrocarTema();
+    }//GEN-LAST:event_webButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel carrouselPane;
@@ -287,5 +305,6 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
     private javax.swing.JLabel titleLabel;
     private com.alee.laf.button.WebButton webButton1;
     private com.alee.laf.button.WebButton webButton2;
+    private com.alee.laf.button.WebButton webButton3;
     // End of variables declaration//GEN-END:variables
 }
