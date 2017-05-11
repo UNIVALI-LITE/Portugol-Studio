@@ -60,8 +60,8 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable{
     @Override
     public void configurarCores(){
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_CLARO, Color.white, ColorController.FUNDO_ESCURO, Color.orange, 15);
-            WeblafUtils.configurarBotao(webButton2, ColorController.FUNDO_CLARO, Color.white, ColorController.FUNDO_ESCURO, Color.orange, 15);
+            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_CLARO, Color.white, ColorController.COR_DESTAQUE, Color.orange, 15);
+            WeblafUtils.configurarBotao(webButton2, ColorController.FUNDO_CLARO, Color.white, ColorController.COR_DESTAQUE, Color.orange, 15);
         }
         titleLabel.setBackground(ColorController.FUNDO_ESCURO);
         this.setBackground(ColorController.FUNDO_CLARO);

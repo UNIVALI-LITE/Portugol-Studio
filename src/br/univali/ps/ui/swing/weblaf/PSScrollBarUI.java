@@ -137,7 +137,7 @@ public class PSScrollBarUI extends BasicScrollBarUI {
             g.setColor(ColorController.FUNDO_ESCURO.darker());
         }
         else{
-            g.setColor(ColorController.FUNDO_MEDIO);
+            g.setColor(ColorController.COR_DESTAQUE);
         }
         if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
             g.fillRect(thumbR.x+barRem, thumbR.y, thumbR.width-barRem*2, thumbR.height);

@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
@@ -13,6 +14,9 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -41,9 +45,11 @@ public class Sobre extends javax.swing.JPanel implements Themeable
     
     @Override
     public void configurarCores(){
-        painelConteudo.setBackground(ColorController.COR_PRINCIPAL);
+        painelConteudo.setBackground(ColorController.FUNDO_CLARO);
         paineInferior.setBackground(ColorController.FUNDO_ESCURO);
+        jPanel1.setBackground(ColorController.FUNDO_ESCURO);
         jLabel1.setBackground(ColorController.COR_PRINCIPAL);
+        jLabel1.setText(carregarHTML("/br/univali/ps/ui/telas/"+Configuracoes.getInstancia().getTemaPortugol()+"/membros.html"));
     }
     
     private void configurarLinks()
@@ -65,6 +71,24 @@ public class Sobre extends javax.swing.JPanel implements Themeable
                 WebConnectionUtils.abrirSite(rotulo.getName());
             }
         });
+    }
+    
+    private String carregarHTML(String caminho)
+    {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho)));
+            String str;
+            while ((str = in.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        String base = contentBuilder.toString();
+        
+        return base;
     }
 
     
@@ -103,7 +127,6 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         painelConteudo.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
         logo1.setMaximumSize(new java.awt.Dimension(310, 100));

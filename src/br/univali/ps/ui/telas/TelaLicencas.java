@@ -47,7 +47,7 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
 
         initComponents();
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
         if (!Configuracoes.getInstancia().isTemaDark())
         {
@@ -79,7 +79,7 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
         rotuloCarregando.setBackground(ColorController.COR_PRINCIPAL);
         painelCarregamento.setBackground(ColorController.COR_PRINCIPAL);
         setBackground(ColorController.FUNDO_CLARO);
-        painelAlinhamento.setBackground(ColorController.FUNDO_CLARO);
+        painelAlinhamento.setBackground(ColorController.COR_PRINCIPAL);
         painelTabulado.setUI(new PSOutTabbedPaneUI());
         painelAlinhamento.setForeground(ColorController.COR_LETRA);
         painelTabulado.setForeground(ColorController.COR_LETRA);

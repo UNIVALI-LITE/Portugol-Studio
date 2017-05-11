@@ -168,7 +168,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setVerticalAlignment(SwingConstants.CENTER);
                 button.setHorizontalTextPosition(SwingConstants.CENTER);
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
-                WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5);
+                WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                 FabricaDicasInterface.criarTooltip(button, recente.getPath());
                 areaREcentes.add(button);
             } catch (Exception ex) {
