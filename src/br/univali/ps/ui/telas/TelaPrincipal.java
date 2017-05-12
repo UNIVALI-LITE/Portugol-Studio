@@ -331,13 +331,27 @@ public class TelaPrincipal extends javax.swing.JPanel
         return null;
     }
 
-    public void fecharAplicativo()
+    public boolean fecharAplicativo()
     {
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
+            
             PortugolStudio.getInstancia().finalizar(0);
+            return true;
         }
+        
+        return false;
+    }
+    public boolean fecharAplicativoParaReiniciar()
+    {
+        painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
+        if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
     public PainelTabuladoPrincipal getPainelTabulado()

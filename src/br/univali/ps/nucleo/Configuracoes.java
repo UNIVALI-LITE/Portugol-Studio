@@ -1,14 +1,19 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.telas.TelaPrincipal;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -294,12 +299,83 @@ public final class Configuracoes
         else
         {
             setTemaPortugol("Dark");
-        }        
+        }
+        restartApplication();
     }
     
     public boolean isTemaDark()
     {
         return temaPortugol.equals("Dark");
+    }
+    
+    public void restartApplication()
+    {
+        TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+        if(confirmouReinicializacao())
+        {
+            if(telaPrincipal.fecharAplicativoParaReiniciar())
+            {
+                if(Caminhos.rodandoNoNetbeans())
+                {
+                    PortugolStudio.getInstancia().finalizar(0);
+                }
+                try{
+                    final String javaBin = Caminhos.obterCaminhoExecutavelJava();
+                    final File currentJar = new File(this.getDiretorioAplicacao() + File.separator + "portugol-studio.jar");
+
+                    /* is it a jar file? */
+                    if(!currentJar.getName().endsWith(".jar"))
+                    {
+                        System.out.println("nao deu");
+                        return;
+                    }
+
+
+                    /* Build command: java -jar application.jar */
+                    final ArrayList<String> command = new ArrayList<>();
+                    command.add(javaBin);
+                    command.add("-jar");
+                    command.add(currentJar.getCanonicalPath());
+                    final ProcessBuilder builder = new ProcessBuilder(command);
+                    builder.directory(this.getDiretorioInstalacao());            
+
+                    builder.start();
+                    PortugolStudio.getInstancia().finalizar(0);
+                }catch(Exception e)
+                {
+                    System.out.println("Alguma coisa deu errada");
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(telaPrincipal, "Você deve fechar todas as abas de código antes de reiniciar", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);                   
+                if(temaPortugol.equals("Dark"))
+                {
+                    setTemaPortugol("Portugol");
+                }
+                else
+                {
+                    setTemaPortugol("Dark");
+                }
+            }
+        }
+    }
+    
+    private boolean confirmouReinicializacao()
+    {
+        int resp = JOptionPane.showConfirmDialog(null, "Para trocar de tema o Portugol Studio precisa reinicializar! Confirma?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (resp == JOptionPane.YES_OPTION)
+        {
+            return true;
+        }
+        else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION)
+        {
+            return false;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     public String getUriAtualizacao()

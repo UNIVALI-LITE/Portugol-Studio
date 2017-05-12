@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.nio.charset.Charset;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -116,7 +117,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     {
         StringBuilder contentBuilder = new StringBuilder();
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho)));
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho), Charset.forName("UTF-8")));
             String str;
             while ((str = in.readLine()) != null) {
                 contentBuilder.append(str);

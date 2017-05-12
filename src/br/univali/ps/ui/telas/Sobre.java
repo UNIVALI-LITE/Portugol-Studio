@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -77,7 +78,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
     {
         StringBuilder contentBuilder = new StringBuilder();
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho)));
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho), Charset.forName("UTF-8")));
             String str;
             while ((str = in.readLine()) != null) {
                 contentBuilder.append(str);
