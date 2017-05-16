@@ -343,7 +343,7 @@ public final class Configuracoes
                     PortugolStudio.getInstancia().finalizar(0);
                 }catch(Exception e)
                 {
-                    System.out.println("Alguma coisa deu errada");
+                    System.out.println("Alguma coisa deu errada no reiniciar");
                 }
             }
             else
