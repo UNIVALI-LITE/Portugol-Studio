@@ -20,6 +20,7 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.ps.ui.swing.ColorController;
@@ -33,6 +34,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.datatransfer.DataFlavor;
@@ -42,6 +44,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +91,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     private final Timer timerAtualizacao;
     private static final int TEMPO_ATUALIZACAO = 250;
+    private int indexHovered = -1;
     
     public InspetorDeSimbolos() {
         model.clear();
@@ -96,7 +101,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         setCellRenderer(new RenderizadorDaLista());
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         instalaObservadores();
-        
         timerAtualizacao = new Timer(TEMPO_ATUALIZACAO, (ev) -> { // atualiza inspetor a cada TEMPO_ATUALIZACAO ms quando o programa está executando
             atualizaValoresVariaveisInspecionadas();
         });
@@ -148,6 +152,22 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                         }
                     }
                 }
+            }
+        });
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point p = new Point(e.getX(),e.getY());
+                int index = locationToIndex(p);
+                if(indexHovered != index)
+                {
+                    indexHovered = locationToIndex(p);
+                }
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
     }
@@ -220,8 +240,6 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     private class RenderizadorDaLista implements ListCellRenderer<ItemDaLista> {
 
         private final JPanel panel = new JPanel(new BorderLayout());
-        private final Color COR_DA_ZEBRA = new Color(0, 0, 0, 0.028f);
-        private final Color COR_DA_SELECAO = new Color(0, 0, 0, 0.05f);
 
         public RenderizadorDaLista() {
             panel.setBorder(EMPTY_BORDER);
@@ -231,24 +249,28 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         public Component getListCellRendererComponent(JList<? extends ItemDaLista> list, ItemDaLista item, int index, boolean selected, boolean hasFocus) {
             RenderizadorBase renderizador = item.getRendererComponent();
 
-            renderizador.setOpaque(false);
+            renderizador.setOpaque(true);
 
             panel.removeAll();
             panel.add(renderizador, BorderLayout.CENTER); //o componente que renderiza o item da lista foi inserido em um painel e este painel 
             //usa uma EmptyBorder para separar verticalmente os items da lista, assim os items não ficam muito "grudados" uns nos outros.
 
-            //pinta o fundo quando está com o foco no item da lista ou o index é par (zebra)
-            boolean indiceImpar = index % 2 != 0;
 
             boolean pintaSelecao = hasFocus || list.getSelectionModel().isSelectedIndex(index);
             if (pintaSelecao) {
-                panel.setBackground(COR_DA_SELECAO);
-            } else if (indiceImpar) {
-                panel.setBackground(COR_DA_ZEBRA);
+                if(Configuracoes.getInstancia().isTemaDark())
+                {
+                    panel.setBackground(ColorController.FUNDO_ESCURO);
+                }
+                else{
+                    panel.setBackground(ColorController.COR_DESTAQUE);
+                }
+                
+            } else if(index == indexHovered) {
+                panel.setBackground(ColorController.COR_CONSOLE);
+            }else{
+                panel.setBackground(ColorController.TRANSPARENTE);
             }
-            //desenha o fundo do componente quando está com foco ou quando o índice do 
-            //componente é impar (faz o zebramento)
-            panel.setOpaque(pintaSelecao || indiceImpar);
             return panel;
             //existem 3 tipos de ItemDaLista (para variáveis, para vetores e para matrizes)
             //cada subclasse de ItemDaLista retorna um renderer component diferente.
@@ -736,7 +758,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
 
         final InspetorDeSimbolos inspetor = new InspetorDeSimbolos();
-        inspetor.setBackground(ColorController.FUNDO_ESCURO);
+        inspetor.setBackground(ColorController.COR_CONSOLE);
 
         ItemDaListaParaVariavel itemVariavel = new ItemDaListaParaVariavel(new NoDeclaracaoVariavel("variavel", TipoDado.INTEIRO, false));
         itemVariavel.setValor(53);
