@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.swing.ColorController;
 import java.awt.Color;
 import java.awt.Font;
@@ -44,7 +45,7 @@ public final class Splash
         {
             try
             {
-                splash.setImageURL(ClassLoader.getSystemResource("splash_real.png"));
+                splash.setImageURL(ClassLoader.getSystemResource("splash_"+Configuracoes.getInstancia().getTemaPortugol()+".png"));
             }
             catch (IOException | IllegalStateException | NullPointerException ex)
             {
@@ -74,7 +75,7 @@ public final class Splash
     
     private static void desenharDireitos(){
         if(!flagDireitos){
-            graphics.setColor(ColorController.COR_LETRA);
+            graphics.setColor(ColorController.COR_LETRA_TITULO);
             graphics.drawString(direitos, 375, 330);
             flagDireitos=true;
         }
@@ -94,7 +95,7 @@ public final class Splash
 //            desenharDica(partes, 19, 151, fm.getHeight(), new Color(0, 0, 0, 0.4f));
 //            desenharDica(partes, 18, 152, fm.getHeight(), new Color(0, 0, 0, 0.3f));
 
-            desenharDica(partes, 20, 150, fm.getHeight(), Color.WHITE);
+            desenharDica(partes, 20, 150, fm.getHeight(), ColorController.COR_LETRA_TITULO);
         }
     }
 
@@ -133,7 +134,7 @@ public final class Splash
 
     private static void desenharCodigoFonte(final String step)
     {
-        String caminho = String.format("br/univali/ps/ui/imagens/splash/%s", step);
+        String caminho = String.format("br/univali/ps/ui/imagens/splash/"+Configuracoes.getInstancia().getTemaPortugol()+"/%s", step);
         Image imagem = carregarImagem(caminho);
 
         graphics.drawImage(imagem, 354, 91, null);
