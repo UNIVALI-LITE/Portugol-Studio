@@ -19,7 +19,7 @@ public final class ColorController {
         return new Color[]{
                 new Color(51,51,51),    //cinza escuro
                 new Color(210,231,252), //branco azulado
-                new Color(243,243,243), //branco
+                new Color(250,250,250), //branco
                 new Color(49,104,146),  //azul
 //                new Color(243,243,243), //branco
                 new Color(193,217,245), //azul_medio

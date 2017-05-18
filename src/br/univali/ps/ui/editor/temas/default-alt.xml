@@ -11,7 +11,7 @@
    <!--<baseFont family="..." size="13"/>-->
    
    <!--  General editor colors. -->
-   <background color="F3F3F3"/>
+   <background color="fafafa"/>
    <caret color="ff0000"/>
    <selection fg="default" bg="default"/>
    <currentLineHighlight color="d2e7fc" fade="false"/>
