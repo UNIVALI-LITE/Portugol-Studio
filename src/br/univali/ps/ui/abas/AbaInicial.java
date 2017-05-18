@@ -46,6 +46,7 @@ public final class AbaInicial extends Aba implements Themeable
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents();
         configurarCores();
+        configurarIcones();
         configurarResolucao();
         configurarCursorLogos();
         criarDicasInterface();
@@ -58,6 +59,7 @@ public final class AbaInicial extends Aba implements Themeable
     @Override
     public void configurarCores()
     {
+        botoesGrandes.setBackground(ColorController.COR_DESTAQUE);
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
         conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
         rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);
@@ -79,6 +81,13 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
         rotuloSairProgramando.setForeground(ColorController.COR_LETRA);
 //        rotuloSlogan.setForeground(new Color(250, 250, 250));
+    }
+    public void configurarIcones()
+    {
+        rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
+        rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
+        rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
+        rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
     }
 
     private void instalarObservadorCombinacoesSecretas()
@@ -481,8 +490,7 @@ public final class AbaInicial extends Aba implements Themeable
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         painelCentral = new javax.swing.JPanel();
@@ -512,7 +520,7 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloSairProgramando.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloSairProgramando.setForeground(new java.awt.Color(51, 51, 51));
         rotuloSairProgramando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/programar.png"))); // NOI18N
+        rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/programar.png"))); // NOI18N
         rotuloSairProgramando.setText("<html><body><div>Programar</div></body></html>");
         rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloSairProgramando.setFocusable(false);
@@ -526,7 +534,7 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloConhecerLinguagem.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloConhecerLinguagem.setForeground(new java.awt.Color(51, 51, 51));
         rotuloConhecerLinguagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloConhecerLinguagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/ajuda.png"))); // NOI18N
+        rotuloConhecerLinguagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/ajuda.png"))); // NOI18N
         rotuloConhecerLinguagem.setText("<html><body><div>Ajuda</div></body></html>");
         rotuloConhecerLinguagem.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloConhecerLinguagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -539,7 +547,7 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloAssistirVideoAulas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloAssistirVideoAulas.setForeground(new java.awt.Color(51, 51, 51));
         rotuloAssistirVideoAulas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloAssistirVideoAulas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/videoaulas.png"))); // NOI18N
+        rotuloAssistirVideoAulas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/videoaulas.png"))); // NOI18N
         rotuloAssistirVideoAulas.setText("<html><body><div>Videoaulas</div></body></html>");
         rotuloAssistirVideoAulas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloAssistirVideoAulas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -552,7 +560,7 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloConhecerBibliotecas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         rotuloConhecerBibliotecas.setForeground(new java.awt.Color(51, 51, 51));
         rotuloConhecerBibliotecas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloConhecerBibliotecas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/lite/bibliotecas.png"))); // NOI18N
+        rotuloConhecerBibliotecas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/bibliotecas.png"))); // NOI18N
         rotuloConhecerBibliotecas.setText("<html><body><div>Bibliotecas</div></body></html>");
         rotuloConhecerBibliotecas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         rotuloConhecerBibliotecas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

@@ -39,7 +39,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonShowAll">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/puzzleicon.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/puzzleicon.png"/>
             </Property>
           </Properties>
           <Events>
@@ -97,7 +97,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonVariables">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/cadeia.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/cadeia.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vari&#xe1;veis"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -109,7 +109,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonArrays">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/vetor_caracter.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/vetor_caracter.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vetores"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -121,7 +121,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonMatrixes">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/matriz_real.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/matriz_real.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Matrizes"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
@@ -133,7 +133,7 @@
         <Component class="com.alee.laf.button.WebToggleButton" name="buttonFunctions">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/funcaoDoUsuario.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/funcaoDoUsuario.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Fun&#xe7;&#xf5;es"/>
             <Property name="horizontalAlignment" type="int" value="2"/>

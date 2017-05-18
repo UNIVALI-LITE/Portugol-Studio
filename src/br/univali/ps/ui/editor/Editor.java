@@ -906,11 +906,11 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 setTamanhoFonteEditor((Float) evt.getNewValue());
                 break;
 
-            case Configuracoes.TEMA_EDITOR:
-                if(!isExamplable){
-                    aplicarTema((String) evt.getNewValue());
-                }
-                break;
+//            case Configuracoes.TEMA_EDITOR:
+//                if(!isExamplable){
+////                    aplicarTema((String) evt.getNewValue());
+//                }
+//                break;
 
             case Configuracoes.CENTRALIZAR_CODIGO_FONTE:
                 setCentralizarCodigoFonte((Boolean) evt.getNewValue());
@@ -1463,7 +1463,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
             textArea.getFoldManager().ensureOffsetNotInClosedFold(offset);
             //TODO Configurar cor tdo tema
-            tag = textArea.addLineHighlight(line, new Color(251,251,251,50));
+            tag = textArea.addLineHighlight(line, ColorController.COR_DESTAQUE);
             ultimaLinhaHighlight = line;
             ultimaColunaHighlight = 0;
 

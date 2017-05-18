@@ -14,6 +14,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.abas.Aba;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.nio.charset.Charset;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -47,11 +49,33 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 {
     private static final Icon icone = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
     private static final int tamanhoFonte = 12;
+    
     private final String css;
     private final String constanteHTML;
     private final String bibliotecaHTML;
     private final String erroHTML;
     private final String funcaoHTML;
+    private String painelHtmlDefaultText = "<html>\n" +
+                                                "  <head>\n" +
+                                                "<style type=\"text/css\">\n" +
+                                                "	body\n" +
+                                                "	{\n" +
+                                                "	     font-family: \"Arial\";\n" +
+                                                "	     font-size: 14pt;\n" +
+                                                "	     line-height: 150%;\n" +
+                                                "	     color : #${color}\n" +
+                                                "	}\n" +
+                                                "\n" +
+                                                "	h1\n" +
+                                                "	{\n" +
+                                                "	       font-size: 14pt;\n" +
+                                                "	}\n" +
+                                                "</style>\n" +
+                                                "  </head>\n" +
+                                                "  <body>\n" +
+                                                "    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n" +
+                                                "  </body>\n" +
+                                                "</html>";
     
     public AbaDocumentacaoBiblioteca()
     {
@@ -59,15 +83,18 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         
         initComponents();
         configurarAparenciaArvore();
+        painelHtmlDefaultText = painelHtmlDefaultText.replace("${color}",String.format("%02x%02x%02x", ColorController.COR_LETRA.getRed(), ColorController.COR_LETRA.getGreen(), ColorController.COR_LETRA.getBlue()));
+        painelHtml.setText(painelHtmlDefaultText);
         instalarObservadores();
         arvoreBibliotecas.setUI(new PSTreeUI());
+        jLabel2.setIcon(icone);
         configurarCores();
         if (WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configuraWebLaf(painelRolagemArvore);
             WeblafUtils.configuraWebLaf(painelRolagemConteudo);
         }
-        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/estilo.css");
+        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/"+Configuracoes.getInstancia().getTemaPortugol()+"/estilo.css");
         constanteHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html"));
         erroHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
         bibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));
@@ -79,8 +106,8 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         painelHtml.setBackground(ColorController.COR_DESTAQUE);
         setBackground(ColorController.COR_DESTAQUE);
         divisor.setBackground(ColorController.COR_DESTAQUE);
-        jLabel2.setForeground(ColorController.COR_LETRA);
-        painelTitulo.setBackground(ColorController.COR_PRINCIPAL);
+        jLabel2.setForeground(ColorController.COR_LETRA_TITULO);
+        painelTitulo.setBackground(ColorController.FUNDO_ESCURO);
         painelArvore.setBackground(ColorController.FUNDO_CLARO);
         //painelArvore.setBackground(ColorController.FUNDO_CLARO);
         
@@ -90,7 +117,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
     {
         StringBuilder contentBuilder = new StringBuilder();
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho)));
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho), Charset.forName("UTF-8")));
             String str;
             while ((str = in.readLine()) != null) {
                 contentBuilder.append(str);
@@ -237,8 +264,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         divisor = new javax.swing.JSplitPane();
         painelRolagemConteudo = new javax.swing.JScrollPane();
@@ -265,7 +291,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         painelHtml.setBackground(new java.awt.Color(250, 250, 250));
         painelHtml.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         painelHtml.setContentType("text/html"); // NOI18N
-        painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t     color : #f2f2f2\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
+        painelHtml.setText("<html>\r\n  <head>\r\n\r<style type=\"text/css\">\n\tbody\n\t{\n\t     font-family: \"Arial\";\n\t     font-size: 14pt;\n\t     line-height: 150%;\n\t     color : #${color}\n\t}\n\n\th1\n\t{\n\t       font-size: 14pt;\n\t}\n</style>\n  </head>\r\n  <body>\r\n    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n  </body>\r\n</html>\r\n");
         painelRolagemConteudo.setViewportView(painelHtml);
 
         divisor.setRightComponent(painelRolagemConteudo);
@@ -285,7 +311,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
         painelTitulo.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/biblioteca.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/biblioteca.png"))); // NOI18N
         jLabel2.setText("Bibliotecas");
         painelTitulo.add(jLabel2, java.awt.BorderLayout.CENTER);
 

@@ -1,14 +1,19 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.telas.TelaPrincipal;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +28,7 @@ public final class Configuracoes
     public static final String TAMANHO_FONTE_EDITOR = "tamanhoFonteEditor";
     public static final String EXIBIR_OPCOES_EXECUCAO = "exibirOpcoesExecucao";
     public static final String TEMA_EDITOR = "temaEditor";
+    public static final String TEMA_PORTUGOL = "temaPortugol";
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
@@ -55,6 +61,7 @@ public final class Configuracoes
     private float tamanhoFonteEditor = 12.0f;
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Dark";
+    private String temaPortugol = "Dark";
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
     private boolean exibirAvisoRenomear = true;
@@ -86,7 +93,8 @@ public final class Configuracoes
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
-            //temaEditor = configuracoes.getProperty(TEMA_EDITOR, "Dark");
+            temaEditor = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
+            temaPortugol = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
             exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
@@ -144,6 +152,21 @@ public final class Configuracoes
     public String getTemaEditor()
     {
         return this.temaEditor;
+    }
+    
+    public void setTemaPortugol(String theme)
+    {
+        String oldTheme = this.temaPortugol;
+        setTemaEditor(theme);
+        this.configuracoes.setProperty(TEMA_PORTUGOL, theme);
+        this.temaPortugol = theme;
+
+        suporteMudancaPropriedade.firePropertyChange(TEMA_PORTUGOL, oldTheme, theme);
+    }
+
+    public String getTemaPortugol()
+    {
+        return this.temaPortugol;
     }
 
     public void setTamanhoFonteConsole(float tamanhoFonteConsole)
@@ -265,6 +288,94 @@ public final class Configuracoes
     public boolean isCentralizarCodigoFonte()
     {
         return centralizarCodigoFonte;
+    }
+
+    public void TrocarTema() 
+    {
+        if(temaPortugol.equals("Dark"))
+        {
+            setTemaPortugol("Portugol");
+        }
+        else
+        {
+            setTemaPortugol("Dark");
+        }
+        restartApplication();
+    }
+    
+    public boolean isTemaDark()
+    {
+        return temaPortugol.equals("Dark");
+    }
+    
+    public void restartApplication()
+    {
+        TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
+        if(confirmouReinicializacao())
+        {
+            if(telaPrincipal.fecharAplicativoParaReiniciar())
+            {
+                if(Caminhos.rodandoNoNetbeans())
+                {
+                    PortugolStudio.getInstancia().finalizar(0);
+                }
+                try{
+                    final String javaBin = Caminhos.obterCaminhoExecutavelJava();
+                    final File currentJar = new File(this.getDiretorioAplicacao() + File.separator + "portugol-studio.jar");
+
+                    /* is it a jar file? */
+                    if(!currentJar.getName().endsWith(".jar"))
+                    {
+                        System.out.println("nao deu");
+                        return;
+                    }
+
+
+                    /* Build command: java -jar application.jar */
+                    final ArrayList<String> command = new ArrayList<>();
+                    command.add(javaBin);
+                    command.add("-jar");
+                    command.add(currentJar.getCanonicalPath());
+                    final ProcessBuilder builder = new ProcessBuilder(command);
+                    builder.directory(this.getDiretorioInstalacao());            
+
+                    builder.start();
+                    PortugolStudio.getInstancia().finalizar(0);
+                }catch(Exception e)
+                {
+                    System.out.println("Alguma coisa deu errada no reiniciar");
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(telaPrincipal, "Você deve fechar todas as abas de código antes de reiniciar", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);                   
+                if(temaPortugol.equals("Dark"))
+                {
+                    setTemaPortugol("Portugol");
+                }
+                else
+                {
+                    setTemaPortugol("Dark");
+                }
+            }
+        }
+    }
+    
+    private boolean confirmouReinicializacao()
+    {
+        int resp = JOptionPane.showConfirmDialog(null, "Para trocar de tema o Portugol Studio precisa reinicializar! Confirma?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (resp == JOptionPane.YES_OPTION)
+        {
+            return true;
+        }
+        else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION)
+        {
+            return false;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     public String getUriAtualizacao()

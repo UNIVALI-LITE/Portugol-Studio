@@ -218,7 +218,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         
         if (WeblafUtils.weblafEstaInstalado())
         {
-            WeblafUtils.configurarBotao(barra,ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barra,ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
         }
         return barra.getPopupMenu();
         

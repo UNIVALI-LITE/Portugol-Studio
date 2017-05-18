@@ -93,6 +93,57 @@ public final class Caminhos
         }
     }
     
+    public static String obterCaminhoExecutavelJava()
+    {
+        if (Caminhos.rodandoNoNetbeans())
+        {
+            if (Caminhos.rodandoNoWindows())
+            {
+                return "java.exe";
+            }
+            else if (Caminhos.rodandoNoMac())
+            {
+                return "java";
+            }
+            else { // Linux
+                assert (Caminhos.rodandoNoLinux()); // just in case :)
+                String javaHome = System.getProperty("java.home");
+                if (javaHome != null) {
+                    File jrePath = new File(javaHome);
+                    String jdkBinPath = new File(jrePath.getParent(), "bin").getAbsolutePath();
+                    return jdkBinPath + "/java";
+                }
+                else {
+                    LOGGER.log(Level.SEVERE, "A propriedade 'java.home' está nula! O usuário não adicionou o caminho do JAVA no PATH do sistema!");
+                }
+                return "java";
+            }
+        }
+        else
+        {
+            File executavel;
+
+            if (rodandoNoWindows())
+            {
+                executavel = new File(new File(new File(new File(diretorioInstalacao, "java"), "java-windows"), "bin"), "java.exe");
+            }
+            else if (rodandoNoLinux())
+            {
+                executavel = new File(new File(new File(new File(diretorioInstalacao, "java"), "java-linux"), "bin"), "java");
+            }
+            else if (rodandoNoMac())
+            {
+                executavel = new File(new File(new File(new File(diretorioInstalacao, "java"), "java-mac"), "bin"), "java");
+            }
+            else
+            {
+                return "java";
+            }
+            
+            return extrairCaminho(executavel);
+        }
+    }
+    
     public static boolean rodandoNoNetbeans()
     {
         return System.getProperty("netbeans") != null;

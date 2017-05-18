@@ -11,10 +11,10 @@
    <!--<baseFont family="..." size="13"/>-->
    
    <!--  General editor colors. -->
-   <background color="ffffff"/>
+   <background color="fafafa"/>
    <caret color="ff0000"/>
    <selection fg="default" bg="default"/>
-   <currentLineHighlight color="ffffaa" fade="false"/>
+   <currentLineHighlight color="d2e7fc" fade="false"/>
    <marginLine fg="b0b4b9"/>
    <markAllHighlight color="6b8189"/> <!-- TODO: Fix me -->
    <markOccurrencesHighlight color="d4d4d4" border="false"/>
@@ -39,8 +39,8 @@
       <style token="RESERVED_WORD_2" fg="0000ff" bold="true"/>
       <style token="ANNOTATION" fg="808080"/>
       <style token="COMMENT_DOCUMENTATION" fg="a40000" italic="true"/>
-      <style token="COMMENT_EOL" fg="008000" italic="true"/>
-      <style token="COMMENT_MULTILINE" fg="008000" italic="true"/>
+      <style token="COMMENT_EOL" fg="808080" italic="true"/>
+      <style token="COMMENT_MULTILINE" fg="808080" italic="true"/>
       <style token="COMMENT_KEYWORD" fg="ff9900" bold="true"/>
       <style token="COMMENT_MARKUP" fg="808080"/>
       <style token="DATA_TYPE" fg="008080" bold="true"/>

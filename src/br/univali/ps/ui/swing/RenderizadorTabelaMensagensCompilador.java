@@ -1,5 +1,6 @@
 package br.univali.ps.ui.swing;
 
+import br.univali.ps.nucleo.Configuracoes;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.Icon;
@@ -18,7 +19,7 @@ public final class RenderizadorTabelaMensagensCompilador extends DefaultTableCel
 {
     
     private final Color corImpar = ColorController.COR_PRINCIPAL;
-    private final Color corPar = ColorController.COR_DESTAQUE;
+    private final Color corPar = ColorController.COR_CONSOLE;
     private final Color corLetra = ColorController.COR_LETRA;
 
     public RenderizadorTabelaMensagensCompilador()
@@ -55,7 +56,10 @@ public final class RenderizadorTabelaMensagensCompilador extends DefaultTableCel
         }
         else{
             setBackground(ColorController.AZUL);
-            setForeground(ColorController.COR_PRINCIPAL);
+            if(Configuracoes.getInstancia().isTemaDark())
+            {
+                setForeground(ColorController.COR_PRINCIPAL);
+            }
         }
         return renderizador;
     }

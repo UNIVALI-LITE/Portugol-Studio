@@ -156,9 +156,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         scrollOutlineTree.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         painelSaida.setForeground(ColorController.COR_LETRA);
-        inspetorDeSimbolos.setBackground(ColorController.COR_DESTAQUE);
+        inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
-        treePanel.setBackground(ColorController.FUNDO_ESCURO.brighter());
+        treePanel.setBackground(ColorController.COR_PRINCIPAL);
         
         if (WeblafUtils.weblafEstaInstalado())
         {
@@ -177,7 +177,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(btnSalvar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraBotoesEditor, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.FUNDO_ESCURO.brighter(), ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         }
     }
 
@@ -369,7 +369,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
 
         String nome = "Pesquisar e substituir";
-
         AbstractAction acao = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"))
         {
             @Override
@@ -388,6 +387,35 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         getActionMap().put(nome, acao);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
         return acao;
+    }
+
+    private Action criaAcaoTrocaTema() {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.SHIFT_DOWN_MASK);
+        String nome = "Trocar tema (reiniciar)";
+        AbstractAction acaoTrocarTema = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"))
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                JMenuItem item = (JMenuItem) getValue("MenuItem");
+                Configuracoes configuracoes = Configuracoes.getInstancia();
+                configuracoes.TrocarTema();
+                if (configuracoes.isTemaDark())
+                {
+                    item.setText("Trocar para tema Claro");
+                }
+                else
+                {
+                    item.setText("Trocar para tema Escuro");
+                }
+            }
+        };
+
+        acaoTrocarTema.putValue(Action.ACCELERATOR_KEY, atalho);
+
+        getActionMap().put(nome, acaoTrocarTema);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        return acaoTrocarTema;
     }
 
     public Action criaAcaoCentralizarCodigoFonte()
@@ -428,6 +456,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
     
     private void configuraLoader(){
+        if(!Configuracoes.getInstancia().isTemaDark())
+        {
+            loadingLabel.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/grande/load.gif")));
+        }        
         loadingLabel.setBackground(ColorController.COR_DESTAQUE);
         loadingLabel.setForeground(ColorController.COR_LETRA);
         loader = new JDialog();
@@ -485,8 +517,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraBotoesEditor.adicionaAcao(criaAcaoExpandirEditor());
         //Action acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
         barraBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
-        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
+//        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
+        barraBotoesEditor.adicionaAcao(criaAcaoTrocaTema());
 //        barraDeBotoesEditor.adicionaSeparador();
 //        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
@@ -699,7 +732,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         getActionMap().put(nome, acaoSalvarComo);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-
+        btnSalvarComo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save_as.png"));
         btnSalvarComo.setAction(acaoSalvarComo);
     }
 
@@ -766,6 +799,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         };
 
         acaoSalvarArquivo.setEnabled(editor.getPortugolDocumento().isChanged());
+        btnSalvar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save.png"));
         btnSalvar.setAction(acaoSalvarArquivo);
 
         getActionMap().put(nome, acaoSalvarArquivo);
@@ -829,7 +863,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         getActionMap().put(nome, acaoExecutarPontoParada);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-
+        btnExecutar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "resultset_next.png"));
         btnExecutar.setAction(acaoExecutarPontoParada);
     }
 
@@ -861,7 +895,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         getActionMap().put(nome, acaoExecutarPasso);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-
+        btnDepurar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "step.png"));
         btnDepurar.setAction(acaoExecutarPasso);
     }
 
@@ -889,7 +923,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         getActionMap().put(nome, acaoInterromper);
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-
+        btnInterromper.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "stop.png"));
         btnInterromper.setAction(acaoInterromper);
     }
 
@@ -1260,7 +1294,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos = new br.univali.ps.ui.inspetor.InspetorDeSimbolos();
 
         loadingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        loadingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/load.gif"))); // NOI18N
+        loadingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/load.gif"))); // NOI18N
         loadingLabel.setText("Processando");
         loadingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         loadingLabel.setOpaque(true);
@@ -1298,7 +1332,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
         barraFerramentas.setOpaque(false);
 
-        btnExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/resultset_next.png"))); // NOI18N
+        btnExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/resultset_next.png"))); // NOI18N
         btnExecutar.setFocusable(false);
         btnExecutar.setHideActionText(true);
         btnExecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1310,14 +1344,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
         barraFerramentas.add(btnExecutar);
 
-        btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/step.png"))); // NOI18N
+        btnDepurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/step.png"))); // NOI18N
         btnDepurar.setFocusable(false);
         btnDepurar.setHideActionText(true);
         btnDepurar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDepurar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnDepurar);
 
-        btnInterromper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/stop.png"))); // NOI18N
+        btnInterromper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/stop.png"))); // NOI18N
         btnInterromper.setEnabled(false);
         btnInterromper.setFocusable(false);
         btnInterromper.setHideActionText(true);
@@ -1325,14 +1359,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/save.png"))); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save.png"))); // NOI18N
         btnSalvar.setFocusable(false);
         btnSalvar.setHideActionText(true);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnSalvar);
 
-        btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/save_as.png"))); // NOI18N
+        btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save_as.png"))); // NOI18N
         btnSalvarComo.setFocusable(false);
         btnSalvarComo.setHideActionText(true);
         btnSalvarComo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

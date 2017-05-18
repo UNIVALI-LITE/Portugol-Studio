@@ -6,6 +6,7 @@ import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilterListener;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -37,6 +38,11 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         WeblafUtils.configurarToogleBotao(buttonMatrixes, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonVariables, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA);
         WeblafUtils.configurarToogleBotao(buttonShowAll, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2);
+        buttonArrays.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "vetor_caracter.png"));
+        buttonFunctions.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png"));
+        buttonMatrixes.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "matriz_real.png"));
+        buttonVariables.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "cadeia.png"));
+        buttonShowAll.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "puzzleicon.png"));
         
         String texto = "Exibir/Ocultar (Ctrl+Shift+";
         
@@ -281,7 +287,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/puzzleicon.png"))); // NOI18N
+        buttonShowAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/puzzleicon.png"))); // NOI18N
         buttonShowAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonShowAllActionPerformed(evt);
@@ -301,7 +307,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         alignmentPanel.setOpaque(false);
         alignmentPanel.setLayout(new java.awt.GridLayout(2, 2, 10, 10));
 
-        buttonVariables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/cadeia.png"))); // NOI18N
+        buttonVariables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/cadeia.png"))); // NOI18N
         buttonVariables.setText("Variáveis");
         buttonVariables.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonVariables.addActionListener(new java.awt.event.ActionListener() {
@@ -311,7 +317,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         });
         alignmentPanel.add(buttonVariables);
 
-        buttonArrays.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/vetor_caracter.png"))); // NOI18N
+        buttonArrays.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/vetor_caracter.png"))); // NOI18N
         buttonArrays.setText("Vetores");
         buttonArrays.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonArrays.addActionListener(new java.awt.event.ActionListener() {
@@ -321,7 +327,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         });
         alignmentPanel.add(buttonArrays);
 
-        buttonMatrixes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/matriz_real.png"))); // NOI18N
+        buttonMatrixes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/matriz_real.png"))); // NOI18N
         buttonMatrixes.setText("Matrizes");
         buttonMatrixes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonMatrixes.addActionListener(new java.awt.event.ActionListener() {
@@ -331,7 +337,7 @@ public class SymbolTypeFilterView extends javax.swing.JPanel
         });
         alignmentPanel.add(buttonMatrixes);
 
-        buttonFunctions.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/funcaoDoUsuario.png"))); // NOI18N
+        buttonFunctions.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/funcaoDoUsuario.png"))); // NOI18N
         buttonFunctions.setText("Funções");
         buttonFunctions.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buttonFunctions.addActionListener(new java.awt.event.ActionListener() {

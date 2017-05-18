@@ -63,7 +63,8 @@ public final class TelaInformacoesPlugin extends JDialog
         jLVersao.setText(String.format(htmlRotulos, "Versão", metaDadosPlugin.getVersao()));
         jLJar.setText(String.format(htmlRotulos, "JAR", metaDadosPlugin.getArquivoJar().getAbsolutePath()));
         jLIcone.setIcon(new ImageIcon(metaDadosPlugin.getIcone32x32()));
-
+        painelTabulado.setIconAt(0, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"));
+        painelTabulado.setIconAt(1, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "rosette.png"));
         jTADescricao.setText(metaDadosPlugin.getDescricao());
         jTALicenca.setText(metaDadosPlugin.getLicenca());
 
@@ -277,7 +278,7 @@ public final class TelaInformacoesPlugin extends JDialog
 
         jLIcone.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLIcone.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/bug.png"))); // NOI18N
+        jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/bug.png"))); // NOI18N
         jLIcone.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLIcone.setPreferredSize(new java.awt.Dimension(100, 32));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -300,7 +301,7 @@ public final class TelaInformacoesPlugin extends JDialog
         gridBagConstraints.weightx = 1.0;
         jPInformacoes.add(jLJar, gridBagConstraints);
 
-        painelTabulado.addTab("Informações do Plugin", new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/information.png")), jPInformacoes); // NOI18N
+        painelTabulado.addTab("Informações do Plugin", new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/information.png")), jPInformacoes); // NOI18N
 
         jSPLicenca.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210))));
         jSPLicenca.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -316,7 +317,7 @@ public final class TelaInformacoesPlugin extends JDialog
         jTALicenca.setVerifyInputWhenFocusTarget(false);
         jSPLicenca.setViewportView(jTALicenca);
 
-        painelTabulado.addTab("Licença do Plugin", new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/rosette.png")), jSPLicenca); // NOI18N
+        painelTabulado.addTab("Licença do Plugin", new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/rosette.png")), jSPLicenca); // NOI18N
 
         painelConteudo.add(painelTabulado, java.awt.BorderLayout.CENTER);
 

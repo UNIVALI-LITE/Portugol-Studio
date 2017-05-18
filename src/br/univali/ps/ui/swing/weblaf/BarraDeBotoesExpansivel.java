@@ -42,7 +42,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
         menu.setMargin(5);
         menu.setRound(0);
         menu.setShadeWidth(0);
-        menu.setBackground(ColorController.FUNDO_ESCURO);
+        menu.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
         menu.setForeground(ColorController.COR_LETRA);
         //menu.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png"));
         //add(menu);
@@ -157,7 +157,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
             for (int i = 0; i < acoes.length; i++)
             {
                 botoes[i] = new WebButton(acoes[i]);
-                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_PRINCIPAL, Color.orange, ColorController.FUNDO_CLARO, Color.GRAY, 5);
+                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_DESTAQUE, Color.orange, ColorController.FUNDO_CLARO, Color.GRAY, 5);
             }
 
             WebButtonGroup textGroup = new WebButtonGroup(true, botoes);
@@ -180,11 +180,11 @@ public final class BarraDeBotoesExpansivel extends WebButton
         item.setIcon((Icon) acao.getValue(Action.SMALL_ICON));
         item.setFont(getFont());
         item.setForeground(ColorController.COR_LETRA);
-        item.setAcceleratorFg(ColorController.FUNDO_CLARO);
-        item.setAcceleratorDisabledFg(ColorController.FUNDO_CLARO);
+        item.setAcceleratorFg(ColorController.COR_DESTAQUE);
+        item.setAcceleratorDisabledFg(ColorController.COR_DESTAQUE);
         item.setAcceleratorBg(ColorController.FUNDO_ESCURO);
-        item.setSelectedTopBg(ColorController.COR_PRINCIPAL);
-        item.setSelectedBottomBg(ColorController.COR_PRINCIPAL);
+        item.setSelectedTopBg(ColorController.COR_DESTAQUE);
+        item.setSelectedBottomBg(ColorController.COR_DESTAQUE);
         menu.add(item);
     }
 

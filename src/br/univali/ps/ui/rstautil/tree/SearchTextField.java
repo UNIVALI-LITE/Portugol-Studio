@@ -11,6 +11,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -76,7 +77,6 @@ public class SearchTextField extends JTextField
         originalInsets = getInsets();
         int textX = originalInsets.left + SEARCH_ICON.getIconWidth() + 2;
         setMargin(new Insets(2, textX, 2, 2));
-        
         getDocument().addDocumentListener(new DocumentListener()
         {
             @Override
@@ -175,19 +175,7 @@ public class SearchTextField extends JTextField
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+    private void initComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
 

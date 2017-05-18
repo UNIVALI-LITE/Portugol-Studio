@@ -3,6 +3,7 @@ package br.univali.ps.ui.window;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.swing.MouseEventRunnable;
 import java.awt.BorderLayout;
@@ -17,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -42,19 +44,15 @@ public class DialogBorderPanel extends JPanel {
         private JPanel buttonsPanel;
         
         private WebButton closeButton;
-        private Image close;
-        private Image icon = null;
+        private Icon close;
+        private Icon icon = null;
         private JLabel jl;
         int pX, pY;
 
         public DialogBorderPanel(Action closeAction, JDialog dialog, String title) {
             
-            try {
-                close = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/pequeno/window_close.png"));
-                icon = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix.png"));
-            } catch (IOException ex) {
-                Logger.getLogger(DialogBorderPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }            
+            close = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png");
+            icon = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"); 
             
             setLayout(new BorderLayout());
             
@@ -65,7 +63,7 @@ public class DialogBorderPanel extends JPanel {
             buttonsPanel.setOpaque(false);
             
             closeButton=new WebButton();
-            closeButton.setIcon(new ImageIcon(close));
+            closeButton.setIcon(close);
             closeButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
@@ -74,7 +72,7 @@ public class DialogBorderPanel extends JPanel {
             });
             
             
-            WeblafUtils.configurarBotao(closeButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA,ColorController.PROGRESS_BAR, Color.orange, 5);
+            WeblafUtils.configurarBotao(closeButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA,ColorController.VERMELHO, Color.orange, 5);
             buttonsPanel.add(closeButton);
             
             
@@ -84,8 +82,8 @@ public class DialogBorderPanel extends JPanel {
             jl = new JLabel();
             jl.setText(title);
             jl.setOpaque(false);
-            jl.setForeground(ColorController.COR_LETRA);
-            jl.setIcon(new ImageIcon(icon));
+            jl.setForeground(ColorController.COR_LETRA_TITULO);
+            jl.setIcon(icon);
             
             add(jl, BorderLayout.CENTER);
             addMouseListener(new MouseAdapter() {

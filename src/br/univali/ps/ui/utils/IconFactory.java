@@ -6,6 +6,7 @@
 package br.univali.ps.ui.utils;
 
 
+import br.univali.ps.nucleo.Configuracoes;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +29,8 @@ public class IconFactory {
     
     private static final Map<String, Icon> icones = new TreeMap<>();
     
-    public static final String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/pequeno";
-    public static final String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/grande";
+    public static String CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/Dark/pequeno";
+    public static String CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/Dark/grande";
     public static final String CAMINHO_IMAGENS = "br/univali/ps/ui/imagens";
     
     private static Icon iconePadrao = null;
@@ -57,6 +58,15 @@ public class IconFactory {
         }
         
         return iconePadraoJanela;
+    }
+    
+    public static void verificarTema()
+    {
+        if(!Configuracoes.getInstancia().isTemaDark())
+        {
+            CAMINHO_ICONES_PEQUENOS = "br/univali/ps/ui/icones/Portugol/pequeno";
+            CAMINHO_ICONES_GRANDES = "br/univali/ps/ui/icones/Portugol/grande";
+        }
     }
     
     private static Icon criarIconePadrao()
@@ -96,6 +106,8 @@ public class IconFactory {
     
     public static Icon createIcon(String path, String fileName)
     {
+        
+        
         try
         {
             InputStream iconInputStream = null;

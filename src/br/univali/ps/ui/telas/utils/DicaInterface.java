@@ -6,6 +6,7 @@
 package br.univali.ps.ui.telas.utils;
 
 import java.awt.Image;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -14,9 +15,9 @@ import java.awt.Image;
 public class DicaInterface {
     private final String titulo;
     private final String descricao;
-    private final Image imagem;
+    private final ImageIcon imagem;
 
-    public DicaInterface(String titulo, String descricao, Image imagem) {
+    public DicaInterface(String titulo, String descricao, ImageIcon imagem) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.imagem = imagem;
@@ -30,7 +31,7 @@ public class DicaInterface {
         return descricao;
     }
 
-    public Image getImagem() {
+    public ImageIcon getImagem() {
         return imagem;
     }
     

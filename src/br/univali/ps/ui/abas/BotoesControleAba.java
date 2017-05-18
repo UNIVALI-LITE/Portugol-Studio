@@ -58,8 +58,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         instalarObservadores(telaPrincipal);
         titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configurarBotao(botaoAbrir,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
-            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }
 
     }
@@ -70,6 +70,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoNovoArquivo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoNovoArquivo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"));
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        titulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png"));
     }
 
     private JFileChooser criarSeletorArquivo() {
@@ -189,8 +190,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setIcon(iconeInativo);
         titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configurarBotao(botaoAbrir,ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
-            WeblafUtils.configurarBotao(botaoNovoArquivo, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoNovoArquivo, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, 1);
         }
         
     }
@@ -199,8 +200,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setIcon(iconeAtivo);
         titulo.setForeground(ColorController.COR_LETRA);
         if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configurarBotao(botaoAbrir,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
-            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.COR_PRINCIPAL,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }
     }
 
@@ -250,7 +251,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         titulo.setForeground(new java.awt.Color(62, 62, 62));
-        titulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/light_pix_off.png"))); // NOI18N
+        titulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/pequeno/light_pix_off.png"))); // NOI18N
         titulo.setText("Portugol Studio");
         titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
         titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -262,11 +263,11 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         gridBagConstraints.weighty = 1.0;
         add(titulo, gridBagConstraints);
 
-        botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/folder_closed.png"))); // NOI18N
+        botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setHideActionText(true);
         add(botaoAbrir, new java.awt.GridBagConstraints());
 
-        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/pequeno/page_white_add.png"))); // NOI18N
+        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
         botaoNovoArquivo.setHideActionText(true);
         add(botaoNovoArquivo, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents

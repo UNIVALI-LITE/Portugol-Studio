@@ -5,13 +5,19 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -34,14 +40,17 @@ public class Sobre extends javax.swing.JPanel implements Themeable
 
         configurarLinks();
         FabricaDicasInterface.criarTooltip(labellicensa, "Veja as Licensas do Software");
+        labellicensa.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "license.png"));
         configurarCores();
     }
     
     @Override
     public void configurarCores(){
-        painelConteudo.setBackground(ColorController.COR_PRINCIPAL);
+        painelConteudo.setBackground(ColorController.FUNDO_CLARO);
         paineInferior.setBackground(ColorController.FUNDO_ESCURO);
+        jPanel1.setBackground(ColorController.FUNDO_ESCURO);
         jLabel1.setBackground(ColorController.COR_PRINCIPAL);
+        jLabel1.setText(carregarHTML("/br/univali/ps/ui/telas/"+Configuracoes.getInstancia().getTemaPortugol()+"/membros.html"));
     }
     
     private void configurarLinks()
@@ -64,6 +73,24 @@ public class Sobre extends javax.swing.JPanel implements Themeable
             }
         });
     }
+    
+    private String carregarHTML(String caminho)
+    {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho), Charset.forName("UTF-8")));
+            String str;
+            while ((str = in.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        String base = contentBuilder.toString();
+        
+        return base;
+    }
 
     
     /**
@@ -73,8 +100,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         mainpanel = new javax.swing.JPanel();
         painelConteudo = new javax.swing.JPanel();
@@ -102,7 +128,6 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         painelConteudo.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
         logo1.setMaximumSize(new java.awt.Dimension(310, 100));
@@ -159,16 +184,14 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         paineInferior.add(rotuloBitRock);
 
         labellicensa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labellicensa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/license.png"))); // NOI18N
+        labellicensa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/license.png"))); // NOI18N
         labellicensa.setToolTipText("");
         labellicensa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         labellicensa.setMaximumSize(new java.awt.Dimension(48, 40));
         labellicensa.setMinimumSize(new java.awt.Dimension(48, 40));
         labellicensa.setPreferredSize(null);
-        labellicensa.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        labellicensa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labellicensaMouseClicked(evt);
             }
         });

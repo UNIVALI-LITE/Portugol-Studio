@@ -8,7 +8,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/grande/load.gif"/>
+          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/load.gif"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Processando"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -128,7 +128,7 @@
                     <Component class="com.alee.laf.button.WebButton" name="btnExecutar">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/br/univali/ps/ui/icones/grande/resultset_next.png"/>
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/resultset_next.png"/>
                         </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
@@ -142,7 +142,7 @@
                     <Component class="com.alee.laf.button.WebButton" name="btnDepurar">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/br/univali/ps/ui/icones/grande/step.png"/>
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/step.png"/>
                         </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
@@ -153,7 +153,7 @@
                     <Component class="com.alee.laf.button.WebButton" name="btnInterromper">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/br/univali/ps/ui/icones/grande/stop.png"/>
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/stop.png"/>
                         </Property>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="focusable" type="boolean" value="false"/>
@@ -165,7 +165,7 @@
                     <Component class="com.alee.laf.button.WebButton" name="btnSalvar">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/br/univali/ps/ui/icones/grande/save.png"/>
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/save.png"/>
                         </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
@@ -176,7 +176,7 @@
                     <Component class="com.alee.laf.button.WebButton" name="btnSalvarComo">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/br/univali/ps/ui/icones/grande/save_as.png"/>
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/save_as.png"/>
                         </Property>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>

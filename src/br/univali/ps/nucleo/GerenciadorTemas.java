@@ -35,7 +35,7 @@ public final class GerenciadorTemas {
             arquivosTema.put("Dark", "dark");
             arquivosTema.put("Eclipse", "eclipse");
             arquivosTema.put("IntelliJ IDEA", "idea");
-            arquivosTema.put("Portugol Studio", "default-alt");
+            arquivosTema.put("Portugol", "default-alt");
             arquivosTema.put("Visual Studio", "vs");
             arquivosTema.put("Dark II", "darkII");
         }

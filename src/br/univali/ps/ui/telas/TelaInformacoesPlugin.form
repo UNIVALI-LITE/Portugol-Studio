@@ -95,7 +95,7 @@
                   <JTabbedPaneConstraints tabName="Informa&#xe7;&#xf5;es do Plugin">
                     <Property name="tabTitle" type="java.lang.String" value="Informa&#xe7;&#xf5;es do Plugin"/>
                     <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/information.png"/>
+                      <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/information.png"/>
                     </Property>
                   </JTabbedPaneConstraints>
                 </Constraint>
@@ -258,7 +258,7 @@
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="4"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/br/univali/ps/ui/icones/grande/bug.png"/>
+                      <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/bug.png"/>
                     </Property>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1133,7 +1133,7 @@
                   <JTabbedPaneConstraints tabName="Licen&#xe7;a do Plugin">
                     <Property name="tabTitle" type="java.lang.String" value="Licen&#xe7;a do Plugin"/>
                     <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/br/univali/ps/ui/icones/pequeno/rosette.png"/>
+                      <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/rosette.png"/>
                     </Property>
                   </JTabbedPaneConstraints>
                 </Constraint>

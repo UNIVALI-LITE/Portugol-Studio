@@ -138,7 +138,7 @@ public class WeblafUtils {
        ((WebTextFieldUI) field.getUI()).setDrawBackground(true);
        field.setBorder(new EmptyBorder(margin, leftMargin, margin, margin));
        field.setOpaque(true);
-       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setBackground(ColorController.COR_CONSOLE);
        field.setForeground(ColorController.COR_LETRA);
     }
     
@@ -303,12 +303,12 @@ public class WeblafUtils {
 
     public static void instalaWeblaf() {
         if (!weblafEstaInstalado()) {
-            Icon info = new ImageIcon();
-            try {
-                info = new ImageIcon(ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream("br/univali/ps/ui/icones/grande/lite/ajuda.png")));
-            } catch (IOException ex) {
-                Logger.getLogger(WeblafUtils.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            Icon info = new ImageIcon();
+//            try {
+//                info = new ImageIcon(ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream("br/univali/ps/ui/icones/grande/lite/ajuda.png")));
+//            } catch (IOException ex) {
+//                Logger.getLogger(WeblafUtils.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             configuraWebTables();
             StyleConstants.darkBorderColor = null;//define a cor de borda do weblaf globalmente
             WebLookAndFeel.install();

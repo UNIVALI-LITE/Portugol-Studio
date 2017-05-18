@@ -11,16 +11,19 @@ import javax.swing.SwingUtilities;
  */
 public final class PainelLicenca extends javax.swing.JPanel
 {
-    private final String htmlRotulos = "<html><head><style>b{ color: rgb(0,239,192); }</style></head><body><div><b>%s:</b> %s</div></body></html>";
+    private String htmlRotulos = "<html><head><style>b{ color: ${color}; }</style></head><body><div><b>%s:</b> %s</div></body></html>";
     private final Licencas.Recurso recurso;
     
     public PainelLicenca(Licencas.Recurso recurso)
     {
         initComponents();
         configurarCores();
+        htmlRotulos = htmlRotulos.replace("${color}",String.format("%02x%02x%02x", ColorController.COR_LETRA.getRed(), ColorController.COR_LETRA.getGreen(), ColorController.COR_LETRA.getBlue()));
         jLNome.setText(String.format(htmlRotulos, "Nome", recurso.getNome()));
         jLVersao.setText(String.format(htmlRotulos, "Versão", recurso.getVersao()));
         jLUrl.setText(String.format(htmlRotulos, "Página Web", recurso.getUrl()));
+        jLDescricao.setText(String.format(htmlRotulos, "Descrição", recurso.getUrl()));
+        jLLicenca.setText(String.format(htmlRotulos, "Licença", recurso.getUrl()));
         
         jTADescricao.setText(recurso.getDescricao());
         jTALicenca.setText(recurso.getLicenca());        
@@ -29,8 +32,8 @@ public final class PainelLicenca extends javax.swing.JPanel
         this.recurso = recurso;
     }
     private void configurarCores(){
-        jTALicenca.setBackground(ColorController.FUNDO_CLARO);
-        jTADescricao.setBackground(ColorController.FUNDO_CLARO);
+        jTALicenca.setBackground(ColorController.COR_CONSOLE);
+        jTADescricao.setBackground(ColorController.COR_CONSOLE);
         jPInformacoes.setBackground(ColorController.COR_PRINCIPAL);
         jTALicenca.setForeground(ColorController.COR_LETRA);
         jTADescricao.setForeground(ColorController.COR_LETRA);

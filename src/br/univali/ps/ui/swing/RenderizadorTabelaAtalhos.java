@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.swing;
 
+import br.univali.ps.nucleo.Configuracoes;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.Icon;
@@ -45,8 +46,8 @@ public class RenderizadorTabelaAtalhos extends DefaultTableCellRenderer
         {
             setBackground((linha % 2 == 0) ? corPar : corImpar);
         }else{
-            setBackground(ColorController.AZUL);
-            setForeground(ColorController.COR_PRINCIPAL);
+//            setBackground(ColorController.COR_DESTAQUE);
+              setForeground(ColorController.COR_LETRA_TITULO);
         }
         if (coluna == 0)
         {

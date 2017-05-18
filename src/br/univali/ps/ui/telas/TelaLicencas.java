@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.paineis.PainelLicenca;
 import br.univali.ps.ui.swing.ColorController;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -45,9 +47,12 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
 
         initComponents();
         if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, ColorController.AMARELO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
-
+        if (!Configuracoes.getInstancia().isTemaDark())
+        {
+            rotuloCarregando.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/grande/load.gif")));
+        } 
         dialog.addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -74,7 +79,7 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
         rotuloCarregando.setBackground(ColorController.COR_PRINCIPAL);
         painelCarregamento.setBackground(ColorController.COR_PRINCIPAL);
         setBackground(ColorController.FUNDO_CLARO);
-        painelAlinhamento.setBackground(ColorController.FUNDO_CLARO);
+        painelAlinhamento.setBackground(ColorController.COR_PRINCIPAL);
         painelTabulado.setUI(new PSOutTabbedPaneUI());
         painelAlinhamento.setForeground(ColorController.COR_LETRA);
         painelTabulado.setForeground(ColorController.COR_LETRA);
@@ -196,7 +201,7 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
         rotuloCarregando.setBackground(new java.awt.Color(0, 0, 0));
         rotuloCarregando.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
         rotuloCarregando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloCarregando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/grande/load.gif"))); // NOI18N
+        rotuloCarregando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/load.gif"))); // NOI18N
         rotuloCarregando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         rotuloCarregando.setOpaque(true);
         painelCarregamento.add(rotuloCarregando, java.awt.BorderLayout.CENTER);
