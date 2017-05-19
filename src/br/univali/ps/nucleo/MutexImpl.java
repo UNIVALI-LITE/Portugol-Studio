@@ -26,7 +26,7 @@ class MutexImpl implements Mutex
     private static final Logger LOGGER = Logger.getLogger(MutexImpl.class.getName());
 
     private static final String LOCALHOST = "127.0.0.1";
-    private final File arquivoMutex = new File(Configuracoes.getInstancia().getDiretorioInstalacao(), "mutex");
+    private final File arquivoMutex = new File(System.getProperty("java.io.tmpdir"), "mutex");
 
     private FileChannel canal;
     private ServerSocket servidorMutex;
