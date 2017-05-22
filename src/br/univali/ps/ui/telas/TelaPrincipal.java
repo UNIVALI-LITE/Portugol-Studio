@@ -308,8 +308,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         {
             AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
             PortugolDocumento documento = abaCodigoFonte.getPortugolDocumento();
-
-            if (documento.getFile() != null || arquivo.toPath() != null)
+            if (documento.getFile() != null && arquivo.exists())
             {
                 try
                 {
