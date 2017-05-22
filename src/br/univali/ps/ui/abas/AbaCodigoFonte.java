@@ -390,7 +390,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private Action criaAcaoTrocaTema() {
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.SHIFT_DOWN_MASK);
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK);
         String nome = "Trocar tema (reiniciar)";
         AbstractAction acaoTrocarTema = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"))
         {
