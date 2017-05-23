@@ -58,6 +58,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -79,6 +80,7 @@ public final class PortugolStudio
     private final List<String> dicas = new ArrayList<>();
     private final List<Integer> dicasExibidas = new ArrayList<>();
     private Queue ArquivosRecentes = new LinkedList();
+    private Queue ArquivosRecuperados = new LinkedList();
 
     private String versao = null;
     private boolean depurando = false;
@@ -107,6 +109,7 @@ public final class PortugolStudio
     {   
         mutex = criaMutex();
         readRecents();
+        readRecuperaveis();
     }
     
     public void readRecents(){
@@ -126,6 +129,21 @@ public final class PortugolStudio
             LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos Recentes do Portugol Studio.");
         }
 
+    }
+    public void readRecuperaveis(){
+        File f = Configuracoes.getInstancia().getDiretorioTemporario();
+        f.mkdirs();
+        ArquivosRecuperados.clear();
+        for (File arquivo : f.listFiles()) {
+            if (arquivo.isDirectory()) {
+                
+            } else {
+                if(arquivo.getName().contains(".por"))
+                {
+                    ArquivosRecuperados.add(arquivo);
+                }                
+            }
+        }
     }
     private Mutex criaMutex()
     {
@@ -257,11 +275,20 @@ public final class PortugolStudio
         return ArquivosRecentes;
     }
     
+    public Queue getArquivosRecuperados()
+    {
+        return ArquivosRecuperados;
+    }
+    
     public void finalizar(int codigo)
     {
         if (PortugolStudio.getInstancia().isAtualizandoInicializador())
         {
             FabricaDicasInterface.mostrarNotificacao("O Portugol Studio está finalizando uma ação e encerrará em instantes", 2000);
+        }
+        if (Configuracoes.getInstancia().getDiretorioTemporario().exists())
+        {
+            FileUtils.deleteQuietly(Configuracoes.getInstancia().getDiretorioTemporario());
         }
         
         while (PortugolStudio.getInstancia().isAtualizandoInicializador())

@@ -8,6 +8,7 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -39,6 +41,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -78,6 +81,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         areaLogo.add(imagePortugol);
         configurarCores();
         configurarResolucao();
+        
         editor = new Editor(true);
         examplePane.add(editor);
         labelTitulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"));
@@ -93,7 +97,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             }
         });
         areaREcentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
-        atualizarRecentes();
+        configuraPainelRecuperados();
+        atualizarRecentes();        
     }    
     @Override
     public void configurarCores() {
@@ -107,6 +112,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelREcentes.setBackground(ColorController.FUNDO_ESCURO);
         textRecentes.setForeground(ColorController.COR_LETRA_TITULO);
         areaLogo.setBackground(ColorController.FUNDO_ESCURO);
+        painelArquivosRecuperados.setBackground(ColorController.FUNDO_ESCURO);
         painelDireita.setBackground(ColorController.COR_DESTAQUE);
         scrollRecentes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         if (WeblafUtils.weblafEstaInstalado()) {
@@ -181,6 +187,75 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         }
         areaREcentes.revalidate();
         areaLogo.revalidate();
+    }
+    
+    public void carregarRecuperados(){
+        Queue files = PortugolStudio.getInstancia().getArquivosRecuperados();
+        Icon icone = imagemPastaPadrao;
+        painelCentral.removeAll();
+        WebImage imagePTG = new WebImage(icone);
+        imagePTG.setDisplayType(DisplayType.fitComponent);
+        Object [] fs =  files.toArray();
+        
+        for (int i = files.size()-1; i>=0; i--) {
+            File recente =(File) fs[i];
+            if(!recente.exists())
+            {
+                continue;
+            }
+            String codigoFonte;
+            try {
+                codigoFonte = FileHandle.open(recente);
+                WebButton button = new WebButton();
+                button.setAction(new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        AbaCodigoFonte abaCodigoFonte  = AbaCodigoFonte.novaAba();
+                        abaCodigoFonte.setCodigoFonte(codigoFonte, recente, true);
+                        TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
+                        t.getPainelTabulado().add(abaCodigoFonte);
+                        PortugolStudio.getInstancia().salvarComoRecente(recente);
+                    }
+                });
+                button.setText(recente.getName());
+                if(redimensionouParaBaixaResolucao)
+                {
+                    recuperadosText.setFont(textRecentes.getFont().deriveFont(16f));
+                    button.setIcon(imagemPadraolowres);
+                }else{
+                    recuperadosText.setFont(textRecentes.getFont().deriveFont(24f));
+                    button.setIcon(imagemPadrao);
+                }
+                button.setHorizontalAlignment(SwingConstants.CENTER);
+                button.setVerticalAlignment(SwingConstants.CENTER);
+                button.setHorizontalTextPosition(SwingConstants.CENTER);
+                button.setVerticalTextPosition(SwingConstants.BOTTOM);
+                WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                FabricaDicasInterface.criarTooltip(button, recente.getPath());
+                painelCentral.add(button);
+            } catch (Exception ex) {
+                Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        painelCentral.revalidate();
+    }
+    
+    private void configuraPainelRecuperados()
+    {
+        recuperadosText.setText("OH NO!!!!! SOME THING HAPPENED!!!!!!!!!!!! \n  Por sorte temos salvos arquivos de recuperação \n Seja agradecido");
+        try
+        {
+            ImageIcon gif = new ImageIcon(new URL("http://vignette3.wikia.nocookie.net/jjba/images/a/ab/Joseph-oh-my-god.jpg/revision/latest?cb=20140807173126"));
+            if (gif.getIconWidth() > 1)
+            {
+                labelCentral.setIcon(gif);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        carregarRecuperados();
     }
     
     private void configurarResolucao()
@@ -307,7 +382,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             }
         });
     }
-
     
     private void atualizarPainelDireita() {
 
@@ -317,7 +391,15 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         }
         
         Icon icone = imagemPastaPadrao;
-        if (node.isLeaf()) {
+        Queue<File> arquivosRecuperados = PortugolStudio.getInstancia().getArquivosRecuperados();
+        if(arquivosRecuperados.size()>=1)
+        {
+            examplePane.setVisible(false);
+            description.setVisible(false);
+            botaoAbrirExemplo.setVisible(false);
+            imagePane.removeAll();
+            imagePane.add(painelArquivosRecuperados);
+        }else if (node.isLeaf()) {
             try {
 
                 ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
@@ -360,8 +442,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             imagePane.removeAll();
 //            imagePane.setBackground(ColorController.FUNDO_CLARO);
             imagePane.add(painelREcentes);
-        }
-        
+        }        
 //        imagePanel.setImagem(((ImageIcon)icone).getImage());
         
         painelDireita.revalidate();
@@ -384,6 +465,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         textRecentes = new javax.swing.JLabel();
         scrollRecentes = new javax.swing.JScrollPane();
         areaREcentes = new javax.swing.JPanel();
+        painelArquivosRecuperados = new javax.swing.JPanel();
+        painelSuperior = new javax.swing.JPanel();
+        recuperadosText = new javax.swing.JTextPane();
+        painelCentral = new javax.swing.JPanel();
+        labelCentral = new javax.swing.JLabel();
+        painelInferior = new javax.swing.JPanel();
+        botaoFecharRecuperados = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         painelDireita = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
@@ -420,6 +508,33 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelRecentes.add(scrollRecentes, java.awt.BorderLayout.SOUTH);
 
         painelREcentes.add(painelRecentes, java.awt.BorderLayout.SOUTH);
+
+        painelArquivosRecuperados.setLayout(new java.awt.BorderLayout());
+
+        painelSuperior.setOpaque(false);
+        painelSuperior.setLayout(new java.awt.BorderLayout());
+        painelSuperior.add(recuperadosText, java.awt.BorderLayout.PAGE_START);
+
+        painelArquivosRecuperados.add(painelSuperior, java.awt.BorderLayout.NORTH);
+
+        painelCentral.setOpaque(false);
+        painelCentral.add(labelCentral);
+
+        painelArquivosRecuperados.add(painelCentral, java.awt.BorderLayout.CENTER);
+
+        painelInferior.setOpaque(false);
+        painelInferior.setLayout(new java.awt.BorderLayout());
+
+        botaoFecharRecuperados.setText("Fechar");
+        botaoFecharRecuperados.setPreferredSize(new java.awt.Dimension(80, 23));
+        botaoFecharRecuperados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoFecharRecuperadosActionPerformed(evt);
+            }
+        });
+        painelInferior.add(botaoFecharRecuperados, java.awt.BorderLayout.EAST);
+
+        painelArquivosRecuperados.add(painelInferior, java.awt.BorderLayout.SOUTH);
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -509,21 +624,32 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         // TODO add your handling code here:
     }//GEN-LAST:event_botaoAbrirExemploActionPerformed
 
+    private void botaoFecharRecuperadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoFecharRecuperadosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoFecharRecuperadosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaLogo;
     private javax.swing.JPanel areaREcentes;
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
+    private javax.swing.JButton botaoFecharRecuperados;
     private javax.swing.JLabel description;
     private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JLabel labelCentral;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JPanel painelArquivosRecuperados;
+    private javax.swing.JPanel painelCentral;
     private javax.swing.JPanel painelDireita;
     private javax.swing.JPanel painelEsquerda;
+    private javax.swing.JPanel painelInferior;
     private javax.swing.JPanel painelREcentes;
     private javax.swing.JPanel painelRecentes;
+    private javax.swing.JPanel painelSuperior;
+    private javax.swing.JTextPane recuperadosText;
     private javax.swing.JScrollPane scrollArvoreExemplos;
     private javax.swing.JScrollPane scrollRecentes;
     private javax.swing.JLabel textRecentes;

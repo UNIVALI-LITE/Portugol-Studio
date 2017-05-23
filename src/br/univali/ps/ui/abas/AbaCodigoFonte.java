@@ -101,7 +101,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private Programa programa = null;
 
-    private boolean podeSalvar = true;
+    private boolean recuperavel1 = false;
+    private boolean podeSalvar = false;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
     private boolean precisaRecompilar = true; // sempre que uma nova árvore é gerada essa flag é setada para true forçando uma nova recompilação quand o usuário executar o programa
@@ -402,11 +403,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 configuracoes.TrocarTema();
                 if (configuracoes.isTemaDark())
                 {
-                    item.setText("Trocar para tema Claro");
+                    item.setText("Trocar tema (reiniciar)");
                 }
                 else
                 {
-                    item.setText("Trocar para tema Escuro");
+                    item.setText("Trocar tema (reiniciar)");
                 }
             }
         };
@@ -743,8 +744,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
             try
             {
-                final PortugolDocumento documento = editor.getPortugolDocumento();
-
+                final PortugolDocumento documento = editor.getPortugolDocumento();                
                 if (documento.getFile() != null)
                 {
                     String texto = documento.getText(0, documento.getLength());
@@ -753,6 +753,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     FileHandle.save(texto, getArquivoComExtensao(documento.getFile()));
                     documento.setChanged(false);
                 }
+            }
+            catch (BadLocationException ex)
+            {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+            }
+            catch (Exception ex)
+            {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+            }
+        }
+    }
+    
+    private void salvaArquivoRecuperavel()
+    {
+
+        if (podeSalvar)
+        {
+            try
+            {
+                final PortugolDocumento documento = editor.getPortugolDocumento();                
+                String filename = "Sem_título_recuperado";
+                if (documento.getFile() != null)
+                {
+                    filename = documento.getFile().getName();
+                    filename = filename.substring(0, filename.length()-4);
+                    filename = filename+"_recuperado"; 
+                }
+                if(recuperavel1)
+                {
+                    filename = filename+"2";
+                    recuperavel1 = false;
+                }
+                else{
+                    recuperavel1 = true;
+                }
+                File arquivoRecuperavel = new File(Configuracoes.getInstancia().getDiretorioTemporario().getAbsolutePath()+"/"+filename);
+                String texto = documento.getText(0, documento.getLength());
+                texto = inserirInformacoesPortugolStudio(texto);
+                FileHandle.save(texto, getArquivoComExtensao(arquivoRecuperavel));
             }
             catch (BadLocationException ex)
             {
@@ -974,7 +1013,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
                 
                 precisaRecompilar = true;
-                
+                salvaArquivoRecuperavel();
                 //Gambiarra pro botão não sumir :3
                 SwingUtilities.invokeLater(() -> {
                     painelEditor.repaint();
@@ -1145,14 +1184,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         parser.resetUltimoCodigoAnalisado();
         
         SwingUtilities.invokeLater(() -> {
-            simbolosInspecionadosJaForamCarregados = false;
-            AbaCodigoFonte.this.podeSalvar = podeSalvar;
+            simbolosInspecionadosJaForamCarregados = false;            
             editor.setCodigoFonte(codigoFonte);
             carregarInformacoesFiltroArvore(codigoFonte);
 
             PortugolDocumento document = editor.getPortugolDocumento();
             document.setFile(arquivo);
             document.setChanged(false);
+            AbaCodigoFonte.this.podeSalvar = podeSalvar;
 
             acaoSalvarArquivo.setEnabled(false);
         });
@@ -2008,6 +2047,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     public void carregarAlgoritmoPadrao()
     {
+        AbaCodigoFonte.this.podeSalvar = true;
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
         carregarInformacoesFiltroArvore(TEMPLATE_ALGORITMO);
     }
