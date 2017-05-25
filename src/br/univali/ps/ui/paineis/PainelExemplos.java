@@ -27,11 +27,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -113,12 +115,19 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         textRecentes.setForeground(ColorController.COR_LETRA_TITULO);
         areaLogo.setBackground(ColorController.FUNDO_ESCURO);
         painelArquivosRecuperados.setBackground(ColorController.FUNDO_ESCURO);
+        painelCentral.setBackground(ColorController.FUNDO_ESCURO);
+        painelSuperior.setBackground(ColorController.FUNDO_ESCURO);
+        painelInferior.setBackground(ColorController.FUNDO_ESCURO);
+        painelRecuperados.setBackground(ColorController.FUNDO_ESCURO);
+        recuperadosText.setBackground(ColorController.FUNDO_ESCURO);
+        recuperadosText.setForeground(ColorController.COR_LETRA_TITULO);
         painelDireita.setBackground(ColorController.COR_DESTAQUE);
         scrollRecentes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollRecentes);
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
             WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(botaoFecharRecuperados, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
         }
     }
     
@@ -192,7 +201,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     public void carregarRecuperados(){
         Queue files = PortugolStudio.getInstancia().getArquivosRecuperados();
         Icon icone = imagemPastaPadrao;
-        painelCentral.removeAll();
+        painelRecuperados.removeAll();
         WebImage imagePTG = new WebImage(icone);
         imagePTG.setDisplayType(DisplayType.fitComponent);
         Object [] fs =  files.toArray();
@@ -232,7 +241,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 button.setVerticalTextPosition(SwingConstants.BOTTOM);
                 WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                 FabricaDicasInterface.criarTooltip(button, recente.getPath());
-                painelCentral.add(button);
+                painelRecuperados.add(button);
             } catch (Exception ex) {
                 Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -240,21 +249,40 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelCentral.revalidate();
     }
     
+    private String carregarHTML(String caminho)
+    {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho), Charset.forName("UTF-8")));
+            String str;
+            while ((str = in.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        String base = contentBuilder.toString();
+        
+        return base;
+    }
+    
     private void configuraPainelRecuperados()
     {
-        recuperadosText.setText("OH NO!!!!! SOME THING HAPPENED!!!!!!!!!!!! \n  Por sorte temos salvos arquivos de recuperação \n Seja agradecido");
-        try
-        {
-            ImageIcon gif = new ImageIcon(new URL("http://vignette3.wikia.nocookie.net/jjba/images/a/ab/Joseph-oh-my-god.jpg/revision/latest?cb=20140807173126"));
-            if (gif.getIconWidth() > 1)
-            {
-                labelCentral.setIcon(gif);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+          recuperadosText.setText(carregarHTML("/br/univali/ps/ui/paineis/tela_recuperacao.html"));
+//        try
+//        {
+//            ImageIcon gif = new ImageIcon(new URL("http://vignette3.wikia.nocookie.net/jjba/images/a/ab/Joseph-oh-my-god.jpg/revision/latest?cb=20140807173126"));
+//            if (gif.getIconWidth() > 1)
+//            {
+//                labelCentral.setIcon(gif);
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         carregarRecuperados();
     }
     
@@ -279,6 +307,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                                 redimensionouParaBaixaResolucao = false;
                             }
                             atualizarRecentes();
+                            carregarRecuperados();
                 });
             }
         });
@@ -467,11 +496,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         areaREcentes = new javax.swing.JPanel();
         painelArquivosRecuperados = new javax.swing.JPanel();
         painelSuperior = new javax.swing.JPanel();
-        recuperadosText = new javax.swing.JTextPane();
-        painelCentral = new javax.swing.JPanel();
-        labelCentral = new javax.swing.JLabel();
+        recuperadosText = new javax.swing.JLabel();
         painelInferior = new javax.swing.JPanel();
-        botaoFecharRecuperados = new javax.swing.JButton();
+        botaoFecharRecuperados = new com.alee.laf.button.WebButton();
+        painelCentral = new javax.swing.JPanel();
+        painelRecuperados = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         painelDireita = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
@@ -513,28 +542,25 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelSuperior.setOpaque(false);
         painelSuperior.setLayout(new java.awt.BorderLayout());
+
+        recuperadosText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        recuperadosText.setText("jLabel1");
         painelSuperior.add(recuperadosText, java.awt.BorderLayout.PAGE_START);
 
         painelArquivosRecuperados.add(painelSuperior, java.awt.BorderLayout.NORTH);
 
-        painelCentral.setOpaque(false);
-        painelCentral.add(labelCentral);
-
-        painelArquivosRecuperados.add(painelCentral, java.awt.BorderLayout.CENTER);
-
         painelInferior.setOpaque(false);
         painelInferior.setLayout(new java.awt.BorderLayout());
 
-        botaoFecharRecuperados.setText("Fechar");
-        botaoFecharRecuperados.setPreferredSize(new java.awt.Dimension(80, 23));
-        botaoFecharRecuperados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoFecharRecuperadosActionPerformed(evt);
-            }
-        });
+        botaoFecharRecuperados.setText("fechar");
         painelInferior.add(botaoFecharRecuperados, java.awt.BorderLayout.EAST);
 
         painelArquivosRecuperados.add(painelInferior, java.awt.BorderLayout.SOUTH);
+
+        painelCentral.setLayout(new java.awt.BorderLayout());
+        painelCentral.add(painelRecuperados, java.awt.BorderLayout.SOUTH);
+
+        painelArquivosRecuperados.add(painelCentral, java.awt.BorderLayout.CENTER);
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -624,22 +650,17 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         // TODO add your handling code here:
     }//GEN-LAST:event_botaoAbrirExemploActionPerformed
 
-    private void botaoFecharRecuperadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoFecharRecuperadosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoFecharRecuperadosActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaLogo;
     private javax.swing.JPanel areaREcentes;
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
-    private javax.swing.JButton botaoFecharRecuperados;
+    private com.alee.laf.button.WebButton botaoFecharRecuperados;
     private javax.swing.JLabel description;
     private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JLabel labelCentral;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel painelArquivosRecuperados;
     private javax.swing.JPanel painelCentral;
@@ -648,8 +669,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel painelInferior;
     private javax.swing.JPanel painelREcentes;
     private javax.swing.JPanel painelRecentes;
+    private javax.swing.JPanel painelRecuperados;
     private javax.swing.JPanel painelSuperior;
-    private javax.swing.JTextPane recuperadosText;
+    private javax.swing.JLabel recuperadosText;
     private javax.swing.JScrollPane scrollArvoreExemplos;
     private javax.swing.JScrollPane scrollRecentes;
     private javax.swing.JLabel textRecentes;

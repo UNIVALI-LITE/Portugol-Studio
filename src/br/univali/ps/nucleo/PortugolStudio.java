@@ -288,7 +288,7 @@ public final class PortugolStudio
         }
         if (Configuracoes.getInstancia().getDiretorioTemporario().exists())
         {
-            FileUtils.deleteQuietly(Configuracoes.getInstancia().getDiretorioTemporario());
+//            FileUtils.deleteQuietly(Configuracoes.getInstancia().getDiretorioTemporario());
         }
         
         while (PortugolStudio.getInstancia().isAtualizandoInicializador())

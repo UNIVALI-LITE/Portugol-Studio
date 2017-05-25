@@ -509,7 +509,7 @@ public final class Configuracoes
         return caminhoInicializadorPortugolStudio;
     }
 
-    private File resolverDiretorioInstalacao()
+     private File resolverDiretorioInstalacao()
     {
         if (rodandoNoNetbeans())
         {
