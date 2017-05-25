@@ -837,11 +837,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                             });                            
                             precisaRecompilar = true;
                         }
-                        catch(InterruptedException ex)
+                        catch(Exception ex)
                         {
                             LOGGER.log(Level.SEVERE, null, ex);
                             precisaRecompilar = true;
                         }
+                       
                         SwingUtilities.invokeLater(()->{
                             alternarLoader();
                         });
@@ -1525,7 +1526,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos.setPrograma(programa);
     }
     
-    private void compilaProgramaParaExecucao()
+    private void compilaProgramaParaExecucao() throws IOException
     {
 
         if (!precisaRecompilar) 
@@ -1538,7 +1539,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         
         String codigoFonte = editor.getTextArea().getText();
         
-        File classPath = getClassPathParaCompilacao();
+        String classPath = getClassPathParaCompilacao();
         String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
         LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
         LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
@@ -1557,18 +1558,41 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             setaAtivacaoBotoesExecucao(true); // pode executar
             liberaMemoriaAlocada();
         }
+       
     }
     
-    private File getClassPathParaCompilacao()
+    private String getClassPathParaCompilacao() throws IOException
     {
+        String classPathSeparator = !rodandoEmmWindows() ? ":" : ";"; 
+        
         Configuracoes configuracoes = Configuracoes.getInstancia();
         if (Configuracoes.rodandoNoNetbeans()) {
 
-            return new File(System.getProperty("java.class.path"));
+            return System.getProperty("java.class.path") + classPathSeparator;
         }
         
-        return new File(configuracoes.getDiretorioAplicacao(), "lib");
+        File classpathDir = new File(configuracoes.getDiretorioAplicacao().getCanonicalPath(), "lib");
+      
+        String expandedClassPath = "";
+        if (classpathDir.isDirectory()) {
+            File jars[] = classpathDir.listFiles();
+            
+            for (File jar : jars) {
+                expandedClassPath += jar.getCanonicalPath() + classPathSeparator;
+            }
+        }
+       
+        return expandedClassPath;
     }
+    
+    
+    private static boolean rodandoEmmWindows()
+    {
+        String so = System.getProperty("os.name");
+
+        return (so != null && so.toLowerCase().contains("win"));
+    }
+    
     
     private static void liberaMemoriaAlocada()
     {
