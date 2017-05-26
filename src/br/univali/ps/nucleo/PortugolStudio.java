@@ -133,14 +133,14 @@ public final class PortugolStudio
     public void readRecuperaveis(){
         File f = Configuracoes.getInstancia().getDiretorioTemporario();
         f.mkdirs();
-        ArquivosRecuperados.clear();
+
         for (File arquivo : f.listFiles()) {
             if (arquivo.isDirectory()) {
                 
             } else {
                 if(arquivo.getName().contains(".por"))
                 {
-                    ArquivosRecuperados.add(arquivo);
+                    arquivosIniciais.add(arquivo);
                 }                
             }
         }
@@ -275,9 +275,9 @@ public final class PortugolStudio
         return ArquivosRecentes;
     }
     
-    public Queue getArquivosRecuperados()
+    public List getArquivosRecuperados()
     {
-        return ArquivosRecuperados;
+        return arquivosIniciais;
     }
     
     public void finalizar(int codigo)
@@ -656,6 +656,11 @@ public final class PortugolStudio
 //        {
 //            LOGGER.log(Level.INFO, "Não foi possível definir uma fonte padrão na interface do usuário", excecao);
 //        }
+    }
+    
+    public void carregarRecuperados(){
+        List files = PortugolStudio.getInstancia().getArquivosRecuperados();
+        PortugolStudio.getInstancia().getTelaPrincipal().abrirArquivosCodigoFonte(files);
     }
 
     private void carregarPlugins()

@@ -68,6 +68,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private final Editor editor;
     
     private boolean redimensionouParaBaixaResolucao = false;
+    private boolean primeiraExibicao = true;
 
     
     private final ImagePanel imagePanel; // usando para desenhar uma imagem que 'estica' e centraliza conforme o tamanho do componente
@@ -94,12 +95,21 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelDireita.addComponentListener(new ComponentAdapter() {
             @Override
+            public void componentShown(ComponentEvent e) {
+//                if(primeiraExibicao)
+//                {
+//                    PortugolStudio.getInstancia().carregarRecuperados();
+//                    primeiraExibicao = false;
+//                }
+            }
+            
+            @Override
             public void componentResized(ComponentEvent e) {
                 atualizarPainelDireita();
             }
         });
         areaREcentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
-        configuraPainelRecuperados();
+        
         atualizarRecentes();        
     }    
     @Override
@@ -198,56 +208,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         areaLogo.revalidate();
     }
     
-    public void carregarRecuperados(){
-        Queue files = PortugolStudio.getInstancia().getArquivosRecuperados();
-        Icon icone = imagemPastaPadrao;
-        painelRecuperados.removeAll();
-        WebImage imagePTG = new WebImage(icone);
-        imagePTG.setDisplayType(DisplayType.fitComponent);
-        Object [] fs =  files.toArray();
-        
-        for (int i = files.size()-1; i>=0; i--) {
-            File recente =(File) fs[i];
-            if(!recente.exists())
-            {
-                continue;
-            }
-            String codigoFonte;
-            try {
-                codigoFonte = FileHandle.open(recente);
-                WebButton button = new WebButton();
-                button.setAction(new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        AbaCodigoFonte abaCodigoFonte  = AbaCodigoFonte.novaAba();
-                        abaCodigoFonte.setCodigoFonte(codigoFonte, recente, true);
-                        TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
-                        t.getPainelTabulado().add(abaCodigoFonte);
-                        PortugolStudio.getInstancia().salvarComoRecente(recente);
-                    }
-                });
-                button.setText(recente.getName());
-                if(redimensionouParaBaixaResolucao)
-                {
-                    recuperadosText.setFont(textRecentes.getFont().deriveFont(16f));
-                    button.setIcon(imagemPadraolowres);
-                }else{
-                    recuperadosText.setFont(textRecentes.getFont().deriveFont(24f));
-                    button.setIcon(imagemPadrao);
-                }
-                button.setHorizontalAlignment(SwingConstants.CENTER);
-                button.setVerticalAlignment(SwingConstants.CENTER);
-                button.setHorizontalTextPosition(SwingConstants.CENTER);
-                button.setVerticalTextPosition(SwingConstants.BOTTOM);
-                WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-                FabricaDicasInterface.criarTooltip(button, recente.getPath());
-                painelRecuperados.add(button);
-            } catch (Exception ex) {
-                Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        painelCentral.revalidate();
-    }
+    
     
     private String carregarHTML(String caminho)
     {
@@ -270,7 +231,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private void configuraPainelRecuperados()
     {
         
-          recuperadosText.setText(carregarHTML("/br/univali/ps/ui/paineis/tela_recuperacao.html"));
+        recuperadosText.setText(carregarHTML("/br/univali/ps/ui/paineis/tela_recuperacao.html"));
 //        try
 //        {
 //            ImageIcon gif = new ImageIcon(new URL("http://vignette3.wikia.nocookie.net/jjba/images/a/ab/Joseph-oh-my-god.jpg/revision/latest?cb=20140807173126"));
@@ -283,7 +244,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 //        {
 //            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        carregarRecuperados();
     }
     
     private void configurarResolucao()
@@ -307,7 +267,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                                 redimensionouParaBaixaResolucao = false;
                             }
                             atualizarRecentes();
-                            carregarRecuperados();
+//                            carregarRecuperados();
                 });
             }
         });
@@ -420,15 +380,16 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         }
         
         Icon icone = imagemPastaPadrao;
-        Queue<File> arquivosRecuperados = PortugolStudio.getInstancia().getArquivosRecuperados();
-        if(arquivosRecuperados.size()>=1)
-        {
-            examplePane.setVisible(false);
-            description.setVisible(false);
-            botaoAbrirExemplo.setVisible(false);
-            imagePane.removeAll();
-            imagePane.add(painelArquivosRecuperados);
-        }else if (node.isLeaf()) {
+//        Queue<File> arquivosRecuperados = PortugolStudio.getInstancia().getArquivosRecuperados();
+//        if(arquivosRecuperados.size()>=1)
+//        {
+//            examplePane.setVisible(false);
+//            description.setVisible(false);
+//            botaoAbrirExemplo.setVisible(false);
+//            imagePane.removeAll();
+//            imagePane.add(painelArquivosRecuperados);
+//        }else
+        if (node.isLeaf()) {
             try {
 
                 ExampleMutableTreeNode item = (ExampleMutableTreeNode) node;
@@ -540,6 +501,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelArquivosRecuperados.setLayout(new java.awt.BorderLayout());
 
+        painelSuperior.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelSuperior.setOpaque(false);
         painelSuperior.setLayout(new java.awt.BorderLayout());
 
