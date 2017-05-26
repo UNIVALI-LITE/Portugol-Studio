@@ -806,53 +806,62 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
+    /***
+     * Classe privada para encapsular o início da execução "normal" e da execução "passo a passo"
+     */
+    private class AcaoExecucao extends AbstractAction 
+    {
+        private final Programa.Estado estadoInicial;
+
+        public AcaoExecucao(String nome, Programa.Estado estadoInicial) 
+        {
+            super(nome);
+            this.estadoInicial = estadoInicial;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            inspetorDeSimbolos.resetaDestaqueDosSimbolos();
+
+            Thread thread = new Thread() 
+            {
+                public void run() 
+                {
+                    try 
+                    {
+                        SwingUtilities.invokeLater(() -> {
+                            alternarLoader();
+                        });
+                        compilaProgramaParaExecucao();
+                        executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
+                        precisaRecompilar = false;
+                    } catch (ErroCompilacao erroCompilacao) {
+                        SwingUtilities.invokeLater(()
+                                -> {
+                            exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
+                        });
+                        precisaRecompilar = true;
+                    } catch (Exception ex) {
+                        LOGGER.log(Level.SEVERE, null, ex);
+                        precisaRecompilar = true;
+                    }
+
+                    SwingUtilities.invokeLater(() -> {
+                        alternarLoader();
+                    });
+
+                }
+            };
+            thread.start();
+        }
+        
+    }
+    
     private void configurarAcaoExecutarPontoParada()
     {
 
-        acaoExecutarPontoParada = new AbstractAction("Executar")
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-                inspetorDeSimbolos.resetaDestaqueDosSimbolos();
-//                glass.setVisible(true);
-                
-                Thread thread = new Thread(){
-                    public void run(){
-                        try
-                        {   
-                            SwingUtilities.invokeLater(()->{
-                                alternarLoader();
-                            });
-                            compilaProgramaParaExecucao();
-                            executar(Programa.Estado.BREAK_POINT);
-                            precisaRecompilar = false;
-                        }
-                        catch(ErroCompilacao erroCompilacao)
-                        {
-                            SwingUtilities.invokeLater(()->
-                            {
-                                exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
-                            });                            
-                            precisaRecompilar = true;
-                        }
-                        catch(Exception ex)
-                        {
-                            LOGGER.log(Level.SEVERE, null, ex);
-                            precisaRecompilar = true;
-                        }
-                       
-                        SwingUtilities.invokeLater(()->{
-                            alternarLoader();
-                        });
-                        
-                    }
-                };
-                thread.start();
-                
-            }
-        };
+        acaoExecutarPontoParada = new AcaoExecucao("Executar", Programa.Estado.BREAK_POINT);
 
         String nome = "AcaoPontoParada";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F6");
@@ -871,20 +880,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configurarAcaoExecutarPasso()
     {
 
-        acaoExecutarPasso = new AbstractAction("Depurar")
-        {
-            @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-                try{
-                    executar(Programa.Estado.STEP_OVER);
-                }
-                catch(Exception e)
-                {
-                    LOGGER.log(Level.SEVERE, null, e);
-                }
-            }
-        };
+        acaoExecutarPasso = new AcaoExecucao("Depurar", Programa.Estado.STEP_OVER);
 
         String nome = "AcaoPassoPasso";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F5");
