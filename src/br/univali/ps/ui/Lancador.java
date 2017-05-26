@@ -11,6 +11,7 @@ import br.univali.ps.nucleo.PortugolStudio;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -42,11 +43,6 @@ public class Lancador {
     public static JFrame getFrame() 
     {
         return frame;
-    }
-
-    public static void setFrame(JFrame frame) 
-    {
-        Lancador.frame = frame;
     }
 
     public static Dimension getActualSize() 
@@ -86,19 +82,14 @@ public class Lancador {
     
     public void focarJanela()
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
+        SwingUtilities.invokeLater(() -> {
+            if (janelaMinimizada())
             {
-                if (janelaMinimizada())
-                {
-                    restaurarJanela();
-                }
-
-                //TelaPrincipal.this.toFront();
-                frame.requestFocusInWindow();
+                restaurarJanela();
             }
+            
+            //TelaPrincipal.this.toFront();
+            frame.requestFocusInWindow();
         });
     }
     
@@ -138,24 +129,20 @@ public class Lancador {
                     
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Image icon;
-                try {
-                    icon = ImageIO.read(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/light-bulb.png"));
-                    frame.setIconImage(icon);
-        //            getFrame().setIconImage(icon);
-                } catch (IOException ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                ComponentResizer cr = new ComponentResizer();
-                cr.setMinimumSize(new Dimension(800, 600));
-                cr.setMaximumSize(new Dimension(1920,1080));
-                cr.registerComponent(frame);
-                cr.setSnapSize(new Dimension(10, 10));
-                
+        SwingUtilities.invokeLater(() -> {
+            
+            try {
+                URL resource = getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/light-bulb.png");
+                frame.setIconImage(ImageIO.read(resource));
+            } catch (IOException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            ComponentResizer cr = new ComponentResizer();
+            cr.setMinimumSize(new Dimension(800, 600));
+            cr.setMaximumSize(new Dimension(1920,1080));
+            cr.registerComponent(frame);
+            cr.setSnapSize(new Dimension(10, 10));
         });
     }
     
