@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class Lancador {
     
-    private static JFrame frame;// = new JFrame();
+    private static JFrame frame;
     private static Dimension olderSize;
     private static Dimension actualSize;
     private static boolean maximazed = false;
