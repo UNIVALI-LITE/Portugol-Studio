@@ -21,15 +21,23 @@ import java.util.logging.Logger;
  */
 public class Lancador {
     
-    private static JFrame frame = new JFrame();
+    private static JFrame frame;// = new JFrame();
     private static Dimension olderSize;
     private static Dimension actualSize;
     private static boolean maximazed = false;
     private final static Lancador application = new Lancador();
     
+    private final ComponentResizer resizer = new ComponentResizer();
+    
     private static final Logger LOGGER = Logger.getLogger(Lancador.class.getName());
 
-    
+    public Lancador() 
+    {
+        resizer.setMinimumSize(new Dimension(800, 600));
+        resizer.setMaximumSize(new Dimension(1920, 1080));
+        resizer.setSnapSize(new Dimension(10, 10));
+    }
+
     public static void main(String argumentos[]) 
     {
         Lancador.getInstance().start(argumentos);
@@ -116,6 +124,8 @@ public class Lancador {
             SwingUtilities.invokeAndWait(() ->
             {
                 Thread.currentThread().setName("Portugol-Studio (Swing)");
+                frame = new JFrame(); // a instância do JFrame deve ser criada na thread do Swing
+                resizer.registerComponent(frame);
             });
 
         }
@@ -138,11 +148,6 @@ public class Lancador {
                 Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            ComponentResizer cr = new ComponentResizer();
-            cr.setMinimumSize(new Dimension(800, 600));
-            cr.setMaximumSize(new Dimension(1920,1080));
-            cr.registerComponent(frame);
-            cr.setSnapSize(new Dimension(10, 10));
         });
     }
     
