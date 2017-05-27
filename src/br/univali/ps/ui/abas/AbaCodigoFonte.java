@@ -970,8 +970,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
                 editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
                 
-                precisaRecompilar = true;
-                
                 //Gambiarra pro botão não sumir :3
                 SwingUtilities.invokeLater(() -> {
                     painelEditor.repaint();
@@ -1601,6 +1599,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     @Override
     public void documentoModificado(boolean modificado)
     {
+        precisaRecompilar = true; // sempre que o documento é modificado precisamos descartar o programa já compilado e compilar novamente
+        
         SwingUtilities.invokeLater(() -> {
         
             atualizaStatusAcaoSalvar(modificado);
