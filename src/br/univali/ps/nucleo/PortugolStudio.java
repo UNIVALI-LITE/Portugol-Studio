@@ -140,7 +140,7 @@ public final class PortugolStudio
             } else {
                 if(arquivo.getName().contains(".por"))
                 {
-                    arquivosIniciais.add(arquivo);
+                    arquivosIniciais.add(arquivo);;
                 }                
             }
         }

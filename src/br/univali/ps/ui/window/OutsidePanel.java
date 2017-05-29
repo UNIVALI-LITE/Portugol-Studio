@@ -32,7 +32,6 @@ public class OutsidePanel extends javax.swing.JPanel
     public OutsidePanel()
     {
         initComponents();
-        telaPrincipal1 = PortugolStudio.getInstancia().getTelaPrincipal();
         setBorder(new LineBorder(ColorController.FUNDO_ESCURO, 5));
         
         telaPrincipal1.getPainelTabulado().addPropertyChangeListener(new PropertyChangeListener()
