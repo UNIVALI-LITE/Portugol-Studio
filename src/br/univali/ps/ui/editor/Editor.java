@@ -1158,13 +1158,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             textArea.getHighlighter().removeHighlight(tagDetalhado);
             tagDetalhado = null;
         }
-        textArea.setHighlightCurrentLine(true);
+
         textArea.setFocusable(true);
 
         dobrarLinhasCodigo(linhasCodigoDobradas);
 
         textArea.setRequestFocusEnabled(true);
         textArea.setCaretPosition(ultimaPosicaoCursor);
+        textArea.setHighlightCurrentLine(true);
         textArea.requestFocusInWindow();
 
         if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)

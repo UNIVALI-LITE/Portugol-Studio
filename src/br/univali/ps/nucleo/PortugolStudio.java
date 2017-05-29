@@ -732,16 +732,17 @@ public final class PortugolStudio
                     outSidePanel = new OutsidePanel();
                     Lancador.getJFrame().add(outSidePanel);
                     telaPrincipal = outSidePanel.getTelaPrincipal();
+                    telaPrincipal.setArquivosIniciais(arquivosIniciais);
                     Lancador.getJFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     Lancador.getJFrame().pack();
                     Lancador.getJFrame().setLocationRelativeTo(null);
                     Lancador.getJFrame().setVisible(true);
                     Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                     
-                    Lancador.setOlder_size(new Dimension(800, 600));
+                    Lancador.setOlderSize(new Dimension(800, 600));
                     Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
                     Lancador.getJFrame().setBounds(bounds);
-                    Lancador.setActual_size(bounds.getSize());
+                    Lancador.setActualSize(bounds.getSize());
                     Lancador.setMaximazed(true);
                     
                     Lancador.getJFrame().revalidate();

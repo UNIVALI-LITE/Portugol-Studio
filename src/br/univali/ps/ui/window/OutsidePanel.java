@@ -48,6 +48,12 @@ public class OutsidePanel extends javax.swing.JPanel
             
         });
     }
+
+    // necessário para corrigir a issue #212 - ver a 2ª reposta em https://stackoverflow.com/questions/852631/java-swing-how-to-show-a-panel-on-top-of-another-panel
+    @Override
+    public boolean isOptimizedDrawingEnabled() {
+        return false;
+    }
     
     public TelaPrincipal getTelaPrincipal(){
         return this.telaPrincipal1;
