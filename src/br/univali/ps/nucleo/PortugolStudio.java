@@ -81,6 +81,7 @@ public final class PortugolStudio
     private final List<Integer> dicasExibidas = new ArrayList<>();
     private Queue ArquivosRecentes = new LinkedList();
     private Queue ArquivosRecuperados = new LinkedList();
+    private Queue ArquivosRecuperadosOriginais = new LinkedList();
 
     private String versao = null;
     private boolean depurando = false;
@@ -110,6 +111,7 @@ public final class PortugolStudio
         mutex = criaMutex();
         readRecents();
         readRecuperaveis();
+        readOriginais();
     }
     
     public void readRecents(){
@@ -140,10 +142,32 @@ public final class PortugolStudio
             } else {
                 if(arquivo.getName().contains(".por"))
                 {
-                    arquivosIniciais.add(arquivo);;
+                    ArquivosRecuperados.add(arquivo);;
                 }                
             }
         }
+    }
+    public void readOriginais(){
+        File f = Configuracoes.getInstancia().getCaminhoArquivosRecuperadosOriginais();
+        if(!f.exists())
+        {
+            return;
+        }
+        arquivosIniciais.clear();
+        try {
+            String arquivo = FileHandle.read(new FileInputStream(f));
+            String [] caminhos = arquivo.split("\n");
+            for (String caminho : caminhos) {
+                File original = new File(caminho);
+                if(original.exists()){
+                    arquivosIniciais.add(original);
+                }
+
+            }
+        } catch (Exception ex) {
+            LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos Recentes do Portugol Studio.");
+        }
+
     }
     private Mutex criaMutex()
     {
@@ -423,6 +447,34 @@ public final class PortugolStudio
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosRecentes)))
         {
             for (Object indice : ArquivosRecentes)
+            {
+                escritor.write(indice.toString());
+                escritor.newLine();
+            }
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, "Erro ao salvar arquivo como recente", excecao);
+        }
+    }
+    
+    public void salvarCaminhoOriginalRecuperado(File arquivoOriginal)
+    {
+        if(ArquivosRecuperadosOriginais.contains(arquivoOriginal))
+        {
+            ArquivosRecuperadosOriginais.remove(arquivoOriginal);
+        }
+        ArquivosRecuperadosOriginais.add(arquivoOriginal);
+        
+        if(!Configuracoes.getInstancia().getDiretorioTemporario().exists())
+        {
+            return;
+        }        
+        File arquivosOriginais = Configuracoes.getInstancia().getCaminhoArquivosRecuperadosOriginais();
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosOriginais)))
+        {
+            for (Object indice : ArquivosRecuperadosOriginais)
             {
                 escritor.write(indice.toString());
                 escritor.newLine();

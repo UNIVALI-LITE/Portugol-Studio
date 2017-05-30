@@ -126,9 +126,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean simbolosInspecionadosJaForamCarregados = false;//controla se os símbolos inspecionados já foram carregados do arquivo
     private String codigoFonteAtual;
     
+    private static int numeroDocumento =1;
+    
     protected AbaCodigoFonte()
     {
-        super("Sem título", lampadaApagada, true);
+        super("Sem título"+numeroDocumento, lampadaApagada, true);
         initComponents();
         configurarArvoreEstrutural();
         criarPainelTemporario();
@@ -145,6 +147,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
         configuraLoader();
+//        ajustarNumeroDocumento();
     }
 
     public void reseta()
@@ -619,12 +622,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     public static AbaCodigoFonte novaAba()
     {
+        ajustarNumeroDocumento();
         if (poolAbasCodigoFonte == null)
         {
             LOGGER.log(Level.WARNING, "ATENÇÃO, não foi iniciado um Pool de Abas no inicio do programa. A aba será criada sem cache.");
             return new AbaCodigoFonte();
         }
         AbaCodigoFonte aba = (AbaCodigoFonte) poolAbasCodigoFonte.obter();
+        aba.getCabecalho().setTitulo("Sem título"+numeroDocumento);
         aba.reseta();
         return aba;
     }
@@ -773,12 +778,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             try
             {
                 final PortugolDocumento documento = editor.getPortugolDocumento();                
-                String filename = "Sem_título_recuperado";
+                String filename = getCabecalho().getTitulo()+"_recuperado";
+                if(getCabecalho().getTitulo().contains("*"))
+                {
+                    filename = filename.replace("*", "");
+                }
                 if (documento.getFile() != null)
                 {
                     filename = documento.getFile().getName();
                     filename = filename.substring(0, filename.length()-4);
                     filename = filename+"_recuperado"; 
+                    PortugolStudio.getInstancia().salvarCaminhoOriginalRecuperado(documento.getFile());
                 }
                 if(recuperavel1)
                 {
@@ -787,7 +797,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 else{
                     recuperavel1 = true;
-                }
+                }                
                 File arquivoRecuperavel = new File(Configuracoes.getInstancia().getDiretorioTemporario().getAbsolutePath()+"/"+filename);
                 String texto = documento.getText(0, documento.getLength());
                 texto = inserirInformacoesPortugolStudio(texto);
@@ -1710,21 +1720,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 return false;
             }
         }
-
         return true;
     }
 
     @Override
     public void nomeArquivoAlterado(String nome)
     {
+//        ajustarNumeroDocumento();
         if (nome != null)
-        {
+        {      
             getCabecalho().setTitulo(nome);
         }
         else
         {
-            getCabecalho().setTitulo("Sem título");
+            getCabecalho().setTitulo("Sem título"+numeroDocumento);
         }
+    }
+    
+    private static void ajustarNumeroDocumento()
+    {
+        
+        boolean TemAbaI = true;
+        numeroDocumento = 1;
+        for (int i = 1; TemAbaI; i++) {
+            numeroDocumento = i;
+            TemAbaI = verificaAbasSemTitulo(i);            
+        }
+        System.out.println("numero Documento:" + numeroDocumento);
+    }
+    
+    private static boolean verificaAbasSemTitulo(int i)
+    {
+        List<Aba> abas = PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbas(AbaCodigoFonte.class);
+        for (Aba aba : abas) {
+            if(aba.getCabecalho().getTitulo().contains("Sem título"+i))
+            {
+                return true;
+            }                           
+        }
+        return false;
     }
 
     public PortugolDocumento getPortugolDocumento()
@@ -2309,7 +2343,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getAbaMensagensCompilador().selecionar();
 
         editor.getPortugolDocumento().setChanged(true);
-        getCabecalho().setTitulo("Sem título*");
+        getCabecalho().setTitulo("Sem título"+numeroDocumento+"*");
+        numeroDocumento++;
         getCabecalho().setIcone(lampadaApagada);
         
         tree.desinstalaListenersDosFiltros(); // desinstala listener dos filtros antes de resetar os filtros para evitar que a árvore estrutural seja recriada a cada alteração dos filtros
