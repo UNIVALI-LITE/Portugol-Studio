@@ -171,7 +171,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarParser();
         configurarTextArea();
         configurarAcoes();
-        criarMenuTemas();
+//        criarMenuTemas();
         instalarObservadores();
         carregarConfiguracoes();
         configurarAparencia();

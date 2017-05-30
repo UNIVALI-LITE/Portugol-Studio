@@ -147,6 +147,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
         configuraLoader();
+        configuraPainelRecuperados();
 //        ajustarNumeroDocumento();
     }
 
@@ -187,6 +188,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private BarraDeBotoesExpansivel barraBotoesInspetorArvore;
     private BarraDeBotoesExpansivel barraBotoesEditor;
+    
+    
+    private void configuraPainelRecuperados() {
+        painelRecuperados.setVisible(false);
+    }
+
     
     private void configuraBarraDeBotoesDoPainelArvoreInspetor()
     {
@@ -1328,7 +1335,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper = new com.alee.laf.button.WebButton();
         btnSalvar = new com.alee.laf.button.WebButton();
         btnSalvarComo = new com.alee.laf.button.WebButton();
-        editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
         painelInspetorArvore = new javax.swing.JPanel();
@@ -1339,6 +1345,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
         scrollInspetor = new javax.swing.JScrollPane();
         inspetorDeSimbolos = new br.univali.ps.ui.inspetor.InspetorDeSimbolos();
+        painelRecuperados = new javax.swing.JPanel();
+        recuperadosLabel = new javax.swing.JLabel();
+        fecharRecuperados = new javax.swing.JButton();
+        arquivosRecuperados = new javax.swing.JPanel();
 
         loadingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         loadingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/load.gif"))); // NOI18N
@@ -1426,15 +1436,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         painelEditor.add(barraFerramentas, gridBagConstraints);
-
-        editor.setMinimumSize(new java.awt.Dimension(350, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        painelEditor.add(editor, gridBagConstraints);
 
         divisorEditorConsole.setTopComponent(painelEditor);
 
@@ -1524,6 +1525,20 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreEditor.setRightComponent(painelInspetorArvore);
 
         add(divisorArvoreEditor, java.awt.BorderLayout.CENTER);
+
+        painelRecuperados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        painelRecuperados.setEnabled(false);
+        painelRecuperados.setFocusCycleRoot(true);
+        painelRecuperados.setLayout(new java.awt.BorderLayout());
+
+        recuperadosLabel.setText("Ouve algum problema no encerramento do Portugol, mas temos arquivos recuperados.");
+        painelRecuperados.add(recuperadosLabel, java.awt.BorderLayout.WEST);
+
+        fecharRecuperados.setText("fechar");
+        painelRecuperados.add(fecharRecuperados, java.awt.BorderLayout.EAST);
+        painelRecuperados.add(arquivosRecuperados, java.awt.BorderLayout.CENTER);
+
+        add(painelRecuperados, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecutarActionPerformed
@@ -2563,6 +2578,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel arquivosRecuperados;
     private javax.swing.JToolBar barraFerramentas;
     private com.alee.laf.button.WebButton btnDepurar;
     private com.alee.laf.button.WebButton btnExecutar;
@@ -2573,14 +2589,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JSplitPane divisorArvoreEditor;
     private javax.swing.JSplitPane divisorArvoreInspetor;
     private javax.swing.JSplitPane divisorEditorConsole;
-    private br.univali.ps.ui.editor.Editor editor;
+    private javax.swing.JButton fecharRecuperados;
     private javax.swing.ButtonGroup grupoBotoesPlugins;
     private br.univali.ps.ui.inspetor.InspetorDeSimbolos inspetorDeSimbolos;
     private javax.swing.JLabel loadingLabel;
     private javax.swing.JPanel painelConsole;
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelInspetorArvore;
+    private javax.swing.JPanel painelRecuperados;
     private br.univali.ps.ui.paineis.PainelSaida painelSaida;
+    private javax.swing.JLabel recuperadosLabel;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
