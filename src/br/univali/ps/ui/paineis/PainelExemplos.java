@@ -228,24 +228,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         return base;
     }
     
-    private void configuraPainelRecuperados()
-    {
-        
-        recuperadosText.setText(carregarHTML("/br/univali/ps/ui/paineis/tela_recuperacao.html"));
-//        try
-//        {
-//            ImageIcon gif = new ImageIcon(new URL("http://vignette3.wikia.nocookie.net/jjba/images/a/ab/Joseph-oh-my-god.jpg/revision/latest?cb=20140807173126"));
-//            if (gif.getIconWidth() > 1)
-//            {
-//                labelCentral.setIcon(gif);
-//            }
-//        }
-//        catch (Exception ex)
-//        {
-//            Logger.getLogger(AbaInicial.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-    
     private void configurarResolucao()
     {
         addComponentListener(new ComponentAdapter()

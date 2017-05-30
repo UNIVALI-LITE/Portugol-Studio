@@ -142,7 +142,14 @@ public final class PortugolStudio
             } else {
                 if(arquivo.getName().contains(".por"))
                 {
-                    ArquivosRecuperados.add(arquivo);;
+                    if(arquivo.getName().contains("Sem título"))
+                    {
+                        arquivosIniciais.add(arquivo);
+                    }
+                    else
+                    {
+                        ArquivosRecuperados.add(arquivo);;
+                    }                    
                 }                
             }
         }
@@ -152,8 +159,7 @@ public final class PortugolStudio
         if(!f.exists())
         {
             return;
-        }
-        arquivosIniciais.clear();
+        }        
         try {
             String arquivo = FileHandle.read(new FileInputStream(f));
             String [] caminhos = arquivo.split("\n");
@@ -299,10 +305,14 @@ public final class PortugolStudio
         return ArquivosRecentes;
     }
     
-    public List getArquivosRecuperados()
+    public List getArquivosOriginais()
     {
         return arquivosIniciais;
     }
+
+    public Queue getArquivosRecuperados() {
+        return ArquivosRecuperados;
+    }    
     
     public void finalizar(int codigo)
     {
@@ -711,7 +721,7 @@ public final class PortugolStudio
     }
     
     public void carregarRecuperados(){
-        List files = PortugolStudio.getInstancia().getArquivosRecuperados();
+        List files = PortugolStudio.getInstancia().getArquivosOriginais();
         PortugolStudio.getInstancia().getTelaPrincipal().abrirArquivosCodigoFonte(files);
     }
 

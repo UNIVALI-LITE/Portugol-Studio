@@ -55,7 +55,7 @@ public final class Configuracoes
     private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
     private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "inicializador-ps.jar");
-    private final File caminhoArquivosRecuperadosOriginais = new File(diretorioTemporario, "arquivos_recentes.txt");
+    private final File caminhoArquivosRecuperadosOriginais = new File(diretorioTemporario, "arquivos_originais.txt");
 
     private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
