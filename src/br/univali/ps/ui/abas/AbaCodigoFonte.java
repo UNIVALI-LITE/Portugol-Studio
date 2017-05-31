@@ -826,19 +826,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             Thread thread = new Thread() 
             {
+                @Override
                 public void run() 
                 {
                     try 
                     {
-                        SwingUtilities.invokeLater(() -> {
-                            alternarLoader();
-                        });
+                        if (estadoInicial == Programa.Estado.BREAK_POINT) {
+                            setVisibilidadeLoader(true);
+                        }
                         compilaProgramaParaExecucao();
                         executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
                         precisaRecompilar = false;
                     } catch (ErroCompilacao erroCompilacao) {
-                        SwingUtilities.invokeLater(()
-                                -> {
+                        SwingUtilities.invokeLater(() -> {
                             exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
                         });
                         precisaRecompilar = true;
@@ -846,11 +846,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         LOGGER.log(Level.SEVERE, null, ex);
                         precisaRecompilar = true;
                     }
-
-                    SwingUtilities.invokeLater(() -> {
-                        alternarLoader();
-                    });
-
+                    finally {
+                        if (estadoInicial == Programa.Estado.BREAK_POINT) {
+                            setVisibilidadeLoader(false);
+                        }
+                    }
                 }
             };
             thread.start();
@@ -2044,19 +2044,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
     
-    private void alternarLoader()
+    private void setVisibilidadeLoader(boolean visivel)
     {
-        int x = ((this.getSize().width - loader.getSize().width) / 2) + Lancador.getFrame().getLocationOnScreen().x;
-        int y = ((this.getSize().height - loader.getSize().height) / 2) + Lancador.getFrame().getLocationOnScreen().y;
-        loader.setLocation(x, y);
-        if(loader.isVisible())
-        {
-            loader.setVisible(false);
-        }
-        else
-        {
-            loader.setVisible(true);
-        }
+        SwingUtilities.invokeLater(() -> {
+            int x = ((this.getSize().width - loader.getSize().width) / 2) + Lancador.getFrame().getLocationOnScreen().x;
+            int y = ((this.getSize().height - loader.getSize().height) / 2) + Lancador.getFrame().getLocationOnScreen().y;
+            loader.setLocation(x, y);
+            loader.setVisible(visivel);
+        });
     }
 
     @Override
