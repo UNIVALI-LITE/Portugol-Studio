@@ -128,7 +128,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     //private Action acaoDiminuirFonteArvore;
     private boolean simbolosInspecionadosJaForamCarregados = false;//controla se os símbolos inspecionados já foram carregados do arquivo
     private String codigoFonteAtual;
-    private boolean desativouRecuperados = false;
+    private static boolean desativouRecuperados = false;
     
     private static int numeroDocumento =1;
     
@@ -201,12 +201,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         boolean temRecuperado = false;
         String titulo_aba = getCabecalho().getTitulo();
         titulo_aba = titulo_aba.substring(0, titulo_aba.length()-4);
-        if(recuperados.size()<=0 || titulo_aba.contains("Sem título"))
-        {
+        if(recuperados.size()<=0 || getPortugolDocumento().getFile() == null)
+        {            
             painelRecuperados.setVisible(false);
             return;
         }
-        for (Object recuperado : recuperados) {
+        for (Object recuperado : recuperados) {            
             File arquivoRecuperado = (File)recuperado;
             if(arquivoRecuperado.getName().contains(titulo_aba)){
                 temRecuperado=true;
@@ -829,7 +829,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             try
             {
                 final PortugolDocumento documento = editor.getPortugolDocumento();                
-                String filename = getCabecalho().getTitulo()+"_recuperado";
+                String filename = getCabecalho().getTitulo();
                 if(getCabecalho().getTitulo().contains("*"))
                 {
                     filename = filename.replace("*", "");
@@ -838,12 +838,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 {
                     filename = documento.getFile().getName();
                     filename = filename.substring(0, filename.length()-4);
-                    filename = filename+"_recuperado"; 
+//                    filename = filename+"_recuperado"; 
                     PortugolStudio.getInstancia().salvarCaminhoOriginalRecuperado(documento.getFile());
                 }
                 if(recuperavel1)
                 {
-                    filename = filename+"2";
+                    filename = filename+"_2";
                     recuperavel1 = false;
                 }
                 else{
@@ -852,7 +852,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 File arquivoRecuperavel = new File(Configuracoes.getInstancia().getDiretorioTemporario().getAbsolutePath()+"/"+filename);
                 String texto = documento.getText(0, documento.getLength());
                 texto = inserirInformacoesPortugolStudio(texto);
-                FileHandle.save(texto, getArquivoComExtensao(arquivoRecuperavel));
+                FileHandle.save(texto, getArquivoComExtensaoRecuperacao(arquivoRecuperavel));
             }
             catch (BadLocationException ex)
             {
@@ -864,13 +864,23 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         }
     }
-
+    
     private File getArquivoComExtensao(File arquivo)
     {
         int indiceExtensao = arquivo.getAbsolutePath().indexOf(".por");
         if (indiceExtensao < 0)
         {//não tem extensão
             return new File(arquivo.getAbsolutePath() + ".por");
+        }
+        return arquivo;
+    }
+    
+    private File getArquivoComExtensaoRecuperacao(File arquivo)
+    {
+        int indiceExtensao = arquivo.getAbsolutePath().indexOf(".recuperado");
+        if (indiceExtensao < 0)
+        {//não tem extensão
+            return new File(arquivo.getAbsolutePath() + ".recuperado");
         }
         return arquivo;
     }
@@ -2188,6 +2198,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         AbaCodigoFonte.this.podeSalvar = true;
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
         carregarInformacoesFiltroArvore(TEMPLATE_ALGORITMO);
+        configuraPainelRecuperados();
     }
 
     private static String carregarTemplate()

@@ -140,7 +140,7 @@ public final class PortugolStudio
             if (arquivo.isDirectory()) {
                 
             } else {
-                if(arquivo.getName().contains(".por"))
+                if(arquivo.getName().contains(".recuperado"))
                 {
                     if(arquivo.getName().contains("Sem título"))
                     {
