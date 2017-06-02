@@ -396,6 +396,11 @@
         <Component class="javax.swing.JLabel" name="recuperadosLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ouve algum problema no encerramento do Portugol, mas temos arquivos recuperados."/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                <EmptyBorder bottom="1" left="75" right="1" top="1"/>
+              </Border>
+            </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -417,7 +422,9 @@
         </Container>
         <Component class="com.alee.laf.button.WebButton" name="fecharRecuperados">
           <Properties>
-            <Property name="text" type="java.lang.String" value="fechar"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fecharRecuperadosActionPerformed"/>

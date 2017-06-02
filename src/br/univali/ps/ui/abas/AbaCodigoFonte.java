@@ -80,6 +80,7 @@ import java.awt.event.MouseEvent;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.Queue;
+import javax.swing.border.LineBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -129,7 +130,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean simbolosInspecionadosJaForamCarregados = false;//controla se os símbolos inspecionados já foram carregados do arquivo
     private String codigoFonteAtual;
     private static boolean desativouRecuperados = false;
-    
+    private boolean redimensionouParaBaixaResolucao = false;
     private static int numeroDocumento =1;
     
     protected AbaCodigoFonte()
@@ -139,6 +140,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarArvoreEstrutural();
         criarPainelTemporario();
         carregarConfiguracoes();
+        configurarResolucao();
         configurarAcoes();
         configurarEditor();
         configurarBarraDeBotoesDoEditor();
@@ -167,8 +169,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
         treePanel.setBackground(ColorController.COR_PRINCIPAL);
-        painelRecuperados.setOpaque(false);
-        recuperadosLabel.setForeground(ColorController.COR_LETRA);
+        painelRecuperados.setBackground(ColorController.VERMELHO.brighter().brighter());
+        painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO,2));
+        recuperadosLabel.setForeground(Color.BLACK);
         
         if (WeblafUtils.weblafEstaInstalado())
         {
@@ -188,7 +191,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(btnSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraBotoesEditor, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(fecharRecuperados, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(fecharRecuperados, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, 5);
         }
     }
 
@@ -196,19 +199,20 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private BarraDeBotoesExpansivel barraBotoesEditor;
     
     
-    private void configuraPainelRecuperados() {
+    private void atualizaPainelRecuperados() {
         Queue recuperados = PortugolStudio.getInstancia().getArquivosRecuperados();
-        boolean temRecuperado = false;
-        String titulo_aba = getCabecalho().getTitulo();
-        titulo_aba = titulo_aba.substring(0, titulo_aba.length()-4);
-        if(recuperados.size()<=0 || getPortugolDocumento().getFile() == null)
+        if(recuperados.size()<=0 || getPortugolDocumento().getFile() == null || desativouRecuperados)
         {            
             painelRecuperados.setVisible(false);
             return;
         }
+        boolean temRecuperado = false;
+        String titulo_aba = getCabecalho().getTitulo();
+        titulo_aba = titulo_aba.substring(0, titulo_aba.length()-4);
+        arquivosRecuperados.removeAll();
         for (Object recuperado : recuperados) {            
             File arquivoRecuperado = (File)recuperado;
-            if(arquivoRecuperado.getName().contains(titulo_aba)){
+            if(arquivoRecuperado.getName().equals(titulo_aba+".recuperado") || arquivoRecuperado.getName().equals(titulo_aba+"_2.recuperado")){
                 temRecuperado=true;
                 String codigoFonterecuperado;
                 try {
@@ -223,21 +227,54 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                             t.getPainelTabulado().add(abaCodigoFonte);
                         }
                     });
-                    button.setText(arquivoRecuperado.getName());
-                    WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                    if(redimensionouParaBaixaResolucao)
+                    {
+                        FabricaDicasInterface.criarTooltip(button,arquivoRecuperado.getName());
+                    }else{
+                        button.setText(arquivoRecuperado.getName().substring(0, arquivoRecuperado.getName().length()-11));
+                    }                    
+                    button.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png"));
+                    WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, Color.BLACK, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                     arquivosRecuperados.add(button);
                 } catch (Exception ex) {
                     Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        if(!temRecuperado || desativouRecuperados)
+        if(!temRecuperado)
         {
             painelRecuperados.setVisible(false);
         }
+        painelRecuperados.repaint();
+        arquivosRecuperados.repaint();
         
     }
-
+    
+    private void configurarResolucao()
+    {
+        addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+                SwingUtilities.invokeLater(() -> 
+                        {
+                            if (Lancador.getActualSize().width <= 1024)
+                            {
+                                if (!redimensionouParaBaixaResolucao)
+                                {
+                                    redimensionouParaBaixaResolucao = true;
+                                }
+                            }
+                            else
+                            {
+                                redimensionouParaBaixaResolucao = false;
+                            }
+                            atualizaPainelRecuperados();
+                });
+            }
+        });
+    }
     
     private void configuraBarraDeBotoesDoPainelArvoreInspetor()
     {
@@ -1263,7 +1300,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             AbaCodigoFonte.this.podeSalvar = podeSalvar;
 
             acaoSalvarArquivo.setEnabled(false);
-            configuraPainelRecuperados();            
+            atualizaPainelRecuperados();            
         });
     }
 
@@ -1597,12 +1634,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setLayout(new java.awt.BorderLayout());
 
         recuperadosLabel.setText("Ouve algum problema no encerramento do Portugol, mas temos arquivos recuperados.");
+        recuperadosLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 75, 1, 1));
         painelRecuperados.add(recuperadosLabel, java.awt.BorderLayout.WEST);
 
         arquivosRecuperados.setOpaque(false);
         painelRecuperados.add(arquivosRecuperados, java.awt.BorderLayout.CENTER);
 
-        fecharRecuperados.setText("fechar");
+        fecharRecuperados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"))); // NOI18N
         fecharRecuperados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fecharRecuperadosActionPerformed(evt);
@@ -2198,7 +2236,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         AbaCodigoFonte.this.podeSalvar = true;
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
         carregarInformacoesFiltroArvore(TEMPLATE_ALGORITMO);
-        configuraPainelRecuperados();
+        atualizaPainelRecuperados();
     }
 
     private static String carregarTemplate()
@@ -2427,7 +2465,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void redefinirAba()
     {
         editor.getPortugolDocumento().setFile(null);
-        //carregarAlgoritmoPadrao();
+//        carregarAlgoritmoPadrao();
         editor.getTextArea().discardAllEdits();
         painelSaida.getConsole().limparConsole();
         editor.desabilitarCentralizacaoCodigoFonte();
@@ -2443,7 +2481,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.getFilter().getDataTypeFilter().acceptAll();
         tree.getFilter().getSymbolTypeFilter().acceptAll();
         
-        podeSalvar = true;
+        podeSalvar = false;
 
     }
 
