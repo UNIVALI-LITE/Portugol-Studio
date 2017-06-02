@@ -87,12 +87,12 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
                 {
                     getAbaInicial().getPainelExemplos().atualizarRecentes();
                 }
-                if(getAbaSelecionada() instanceof AbaCodigoFonte)
-                {
-                    AbaCodigoFonte acf = (AbaCodigoFonte) getAbaSelecionada();
-                    acf.getEditor().getSuporteLinguagemPortugol().atualizar(acf.getEditor().getTextArea());
-                    System.out.println("FIRE");
-                }                
+//                if(getAbaSelecionada() instanceof AbaCodigoFonte)
+//                {
+//                    AbaCodigoFonte acf = (AbaCodigoFonte) getAbaSelecionada();
+//                    acf.getEditor().getSuporteLinguagemPortugol().atualizar(acf.getEditor().getTextArea());
+//                    System.out.println("FIRE");
+//                }                
             }
         });
     }
