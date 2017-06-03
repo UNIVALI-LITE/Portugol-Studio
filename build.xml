@@ -98,11 +98,11 @@
         
         <antcall target="-empacotar-recursos"/>
         <antcall target="-empacotar-aplicacao"/>
-        <antcall target="-compilar-portugol-inicializador"/>
+        <!--antcall target="-compilar-portugol-inicializador"/-->
         
-        <copy todir="${instalador.dir}">
+        <!--copy todir="${instalador.dir}">
             <fileset file="../Portugol-Studio-Inicializador/dist/inicializador-ps.jar"/>
-        </copy>
+        </copy-->
         
         <for param="recurso.dir">
             <path>
@@ -145,11 +145,11 @@
 
         <antcall target="-empacotar-recursos"/>
         <antcall target="-empacotar-aplicacao"/>        
-        <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/>
+        <!--fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/-->
         
         <copy todir="${dist.dir}">
             <fileset file="../Portugol-Studio-Recursos/plugins/plugins.auto"/>
-            <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/>
+            <!--fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/-->
         </copy>
         
         <antcall target="-atualizar-arquivos-servidor">
@@ -161,11 +161,11 @@
 
         <antcall target="-empacotar-recursos"/>
         <antcall target="-empacotar-aplicacao"/>        
-        <antcall target="-compilar-portugol-inicializador"/>
+        <!--antcall target="-compilar-portugol-inicializador"/-->
         
         <copy todir="${dist.dir}">
             <fileset file="../Portugol-Studio-Recursos/plugins/plugins.auto"/>
-            <fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/>
+            <!--fileset dir="../Portugol-Studio-Inicializador/dist" includes="*"/-->
         </copy>
         
         <antcall target="-atualizar-arquivos-servidor">
@@ -357,6 +357,10 @@
         <mkdir dir="${temp.app.dist.dir}/icones/linux"/>
         
         <copy file="../Portugol-Console/dist/portugol-console.jar" todir="${temp.app.dist.dir}"/>
+        <!-- copiando as libs do Portugol-Console -->
+        <copy todir="${temp.app.dist.dir}/lib" failonerror="true">
+            <fileset dir="../Portugol-Console/dist/lib"/>            
+        </copy>
         
         <copy todir="${temp.app.dist.dir}/icones/linux">
             <fileset dir="../Portugol-Instalador/arquivos/linux/icones" includes="**"/>
@@ -396,7 +400,7 @@
         </antcall>
     </target>
     
-    <target name="-compilar-portugol-inicializador">
+    <!--target name="-compilar-portugol-inicializador">
         <antcall target="-maybe-call-dep">
             <param name="call.built.properties" value="${built-jar.properties}"/>
             <param location="../Portugol-Studio-Inicializador" name="call.subproject"/>
@@ -404,7 +408,7 @@
             <param name="call.target" value="jar"/>
             <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
         </antcall>
-    </target>
+    </target-->
     
     <target name="-empacotar-recursos">
         <antcall target="-empacotar-ajuda"/>
