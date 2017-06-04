@@ -1139,18 +1139,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         PortugolParser parser = editor.getSuporteLinguagemPortugol().getPortugolParser();
         parser.resetUltimoCodigoAnalisado();
         
-        SwingUtilities.invokeLater(() -> {
-            simbolosInspecionadosJaForamCarregados = false;
-            AbaCodigoFonte.this.podeSalvar = podeSalvar;
-            editor.setCodigoFonte(codigoFonte);
-            carregarInformacoesFiltroArvore(codigoFonte);
+        simbolosInspecionadosJaForamCarregados = false;
+        AbaCodigoFonte.this.podeSalvar = podeSalvar;
+        tree.reseta();
+        inspetorDeSimbolos.reseta();
+        editor.setCodigoFonte(codigoFonte);
+        carregarInformacoesFiltroArvore(codigoFonte);
 
-            PortugolDocumento document = editor.getPortugolDocumento();
-            document.setFile(arquivo);
-            document.setChanged(false);
+        PortugolDocumento document = editor.getPortugolDocumento();
+        document.setFile(arquivo);
+        document.setChanged(false);
 
-            acaoSalvarArquivo.setEnabled(false);
-        });
+        acaoSalvarArquivo.setEnabled(false);
+        
     }
 
     private void carregarInformacoesFiltroArvore(String codigoFonte)

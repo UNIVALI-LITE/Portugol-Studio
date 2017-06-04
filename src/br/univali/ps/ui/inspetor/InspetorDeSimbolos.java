@@ -108,6 +108,12 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         timerAtualizacao.setRepeats(true);
     }
 
+    public void reseta() 
+    {
+        model.clear();
+        resetaDestaqueDosSimbolos();
+    }
+    
     public void setPrograma(Programa programa)
     {
         /***
