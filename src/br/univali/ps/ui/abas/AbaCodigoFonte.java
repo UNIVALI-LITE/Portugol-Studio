@@ -149,6 +149,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarCursorBotoes();
         //carregarAlgoritmoPadrao();
         criarDicasInterface();
+        painelRecuperados.setVisible(false);
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
@@ -245,6 +246,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if(!temRecuperado)
         {
             painelRecuperados.setVisible(false);
+        }
+        else
+        {
+            painelRecuperados.setVisible(true);
         }
         painelRecuperados.repaint();
         arquivosRecuperados.repaint();
