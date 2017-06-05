@@ -7,6 +7,7 @@ import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.swing.weblaf.PSMainTabbedPaneUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
@@ -84,8 +85,14 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
             public void stateChanged(ChangeEvent e) {
                 if(getSelectedIndex()==indexOfComponent(abaInicial))
                 {
-                    PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaInicial().getPainelExemplos().atualizarRecentes();
+                    getAbaInicial().getPainelExemplos().atualizarRecentes();
                 }
+//                if(getAbaSelecionada() instanceof AbaCodigoFonte)
+//                {
+//                    AbaCodigoFonte acf = (AbaCodigoFonte) getAbaSelecionada();
+//                    acf.getEditor().getSuporteLinguagemPortugol().atualizar(acf.getEditor().getTextArea());
+//                    System.out.println("FIRE");
+//                }                
             }
         });
     }

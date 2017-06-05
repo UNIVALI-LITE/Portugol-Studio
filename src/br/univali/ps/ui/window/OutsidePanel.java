@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.window;
 
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import java.awt.BorderLayout;
