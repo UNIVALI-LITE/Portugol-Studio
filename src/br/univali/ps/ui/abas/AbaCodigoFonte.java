@@ -1296,7 +1296,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         PortugolDocumento document = editor.getPortugolDocumento();
         document.setFile(arquivo);
         document.setChanged(false);
-        podeSalvar = podeSalvar;
+        this.podeSalvar = podeSalvar;
 
         acaoSalvarArquivo.setEnabled(false);
         atualizaPainelRecuperados();
