@@ -68,6 +68,11 @@ public class PortugolOutlineTree extends JTree
         timerCriacaoDaArvore.setRepeats(false);
     }
 
+    public void reseta()
+    {
+        model.setRoot(new GenericTreeNode(""));
+    }
+    
     private void configurarAparencia()
     {
         setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
