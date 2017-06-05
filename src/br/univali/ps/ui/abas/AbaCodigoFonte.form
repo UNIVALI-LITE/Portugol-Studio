@@ -393,7 +393,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="recuperadosLabel">
+        <Component class="javax.swing.JLabel" name="labelRecuperados">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ouve algum problema no encerramento do Portugol, mas temos arquivos recuperados."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

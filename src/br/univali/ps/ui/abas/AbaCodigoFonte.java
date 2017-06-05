@@ -105,7 +105,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private Programa programa = null;
 
-    private boolean recuperavel1 = false;
+    private boolean isPrimeiroRecuperavel = false;
     private boolean podeSalvar = false;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
@@ -135,7 +135,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     protected AbaCodigoFonte()
     {
-        super("Sem título"+numeroDocumento, lampadaApagada, true);
+        super("Sem título" + numeroDocumento, lampadaApagada, true);
         initComponents();
         configurarArvoreEstrutural();
         criarPainelTemporario();
@@ -171,7 +171,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         treePanel.setBackground(ColorController.COR_PRINCIPAL);
         painelRecuperados.setBackground(ColorController.VERMELHO.brighter().brighter());
         painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO,2));
-        recuperadosLabel.setForeground(Color.BLACK);
+        labelRecuperados.setForeground(Color.BLACK);
         
         if (WeblafUtils.weblafEstaInstalado())
         {
@@ -201,7 +201,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     private void atualizaPainelRecuperados() {
         Queue recuperados = PortugolStudio.getInstancia().getArquivosRecuperados();
-        if(recuperados.size()<=0 || getPortugolDocumento().getFile() == null || desativouRecuperados)
+        if(recuperados.isEmpty() || getPortugolDocumento().getFile() == null || desativouRecuperados)
         {            
             painelRecuperados.setVisible(false);
             return;
@@ -212,7 +212,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         arquivosRecuperados.removeAll();
         for (Object recuperado : recuperados) {            
             File arquivoRecuperado = (File)recuperado;
-            if(arquivoRecuperado.getName().equals(titulo_aba+".recuperado") || arquivoRecuperado.getName().equals(titulo_aba+"_2.recuperado")){
+            String filename = arquivoRecuperado.getName();
+            if(filename.equals(titulo_aba + ".recuperado") || filename.equals(titulo_aba + "_2.recuperado")){
                 temRecuperado=true;
                 String codigoFonterecuperado;
                 try {
@@ -489,17 +490,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                JMenuItem item = (JMenuItem) getValue("MenuItem");
                 Configuracoes configuracoes = Configuracoes.getInstancia();
                 configuracoes.TrocarTema();
-                if (configuracoes.isTemaDark())
-                {
-                    item.setText("Trocar tema (reiniciar)");
-                }
-                else
-                {
-                    item.setText("Trocar tema (reiniciar)");
-                }
             }
         };
 
@@ -717,7 +709,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             return new AbaCodigoFonte();
         }
         AbaCodigoFonte aba = (AbaCodigoFonte) poolAbasCodigoFonte.obter();
-        aba.getCabecalho().setTitulo("Sem título"+numeroDocumento);
+        aba.getCabecalho().setTitulo("Sem título" + numeroDocumento);
         aba.reseta();
         return aba;
     }
@@ -867,7 +859,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             {
                 final PortugolDocumento documento = editor.getPortugolDocumento();                
                 String filename = getCabecalho().getTitulo();
-                if(getCabecalho().getTitulo().contains("*"))
+                if(filename.contains("*"))
                 {
                     filename = filename.replace("*", "");
                 }
@@ -878,13 +870,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //                    filename = filename+"_recuperado"; 
                     PortugolStudio.getInstancia().salvarCaminhoOriginalRecuperado(documento.getFile());
                 }
-                if(recuperavel1)
+                if(isPrimeiroRecuperavel)
                 {
                     filename = filename+"_2";
-                    recuperavel1 = false;
+                    isPrimeiroRecuperavel = false;
                 }
                 else{
-                    recuperavel1 = true;
+                    isPrimeiroRecuperavel = true;
                 }                
                 File arquivoRecuperavel = new File(Configuracoes.getInstancia().getDiretorioTemporario().getAbsolutePath()+"/"+filename);
                 String texto = documento.getText(0, documento.getLength());
@@ -1439,7 +1431,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         scrollInspetor = new javax.swing.JScrollPane();
         inspetorDeSimbolos = new br.univali.ps.ui.inspetor.InspetorDeSimbolos();
         painelRecuperados = new javax.swing.JPanel();
-        recuperadosLabel = new javax.swing.JLabel();
+        labelRecuperados = new javax.swing.JLabel();
         arquivosRecuperados = new javax.swing.JPanel();
         fecharRecuperados = new com.alee.laf.button.WebButton();
 
@@ -1633,9 +1625,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setFocusCycleRoot(true);
         painelRecuperados.setLayout(new java.awt.BorderLayout());
 
-        recuperadosLabel.setText("Ouve algum problema no encerramento do Portugol, mas temos arquivos recuperados.");
-        recuperadosLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 75, 1, 1));
-        painelRecuperados.add(recuperadosLabel, java.awt.BorderLayout.WEST);
+        labelRecuperados.setText("Ouve algum problema no encerramento do Portugol, mas temos arquivos recuperados.");
+        labelRecuperados.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 75, 1, 1));
+        painelRecuperados.add(labelRecuperados, java.awt.BorderLayout.WEST);
 
         arquivosRecuperados.setOpaque(false);
         painelRecuperados.add(arquivosRecuperados, java.awt.BorderLayout.CENTER);
@@ -1863,18 +1855,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
         else
         {
-            getCabecalho().setTitulo("Sem título"+numeroDocumento);
+            getCabecalho().setTitulo("Sem título" + numeroDocumento);
         }
     }
     
     private static void ajustarNumeroDocumento()
     {
         
-        boolean TemAbaI = true;
+        boolean temAbaI = true;
         numeroDocumento = 1;
-        for (int i = 1; TemAbaI; i++) {
+        for (int i = 1; temAbaI; i++) {
             numeroDocumento = i;
-            TemAbaI = verificaAbasSemTitulo(i);            
+            temAbaI = verificaAbasSemTitulo(i);            
         }
     }
     
@@ -1882,7 +1874,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         List<Aba> abas = PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbas(AbaCodigoFonte.class);
         for (Aba aba : abas) {
-            if(aba.getCabecalho().getTitulo().contains("Sem título"+i))
+            if(aba.getCabecalho().getTitulo().contains("Sem título" + i))
             {
                 return true;
             }                           
@@ -2233,7 +2225,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     public void carregarAlgoritmoPadrao()
     {
-        AbaCodigoFonte.this.podeSalvar = true;
+        podeSalvar = true;
         editor.setCodigoFonte(TEMPLATE_ALGORITMO);
         carregarInformacoesFiltroArvore(TEMPLATE_ALGORITMO);
         atualizaPainelRecuperados();
@@ -2473,7 +2465,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getAbaMensagensCompilador().selecionar();
 
         editor.getPortugolDocumento().setChanged(true);
-        getCabecalho().setTitulo("Sem título"+numeroDocumento+"*");
+        getCabecalho().setTitulo("Sem título" + numeroDocumento + "*");
         numeroDocumento++;
         getCabecalho().setIcone(lampadaApagada);
         
@@ -2708,13 +2700,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private com.alee.laf.button.WebButton fecharRecuperados;
     private javax.swing.ButtonGroup grupoBotoesPlugins;
     private br.univali.ps.ui.inspetor.InspetorDeSimbolos inspetorDeSimbolos;
+    private javax.swing.JLabel labelRecuperados;
     private javax.swing.JLabel loadingLabel;
     private javax.swing.JPanel painelConsole;
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelInspetorArvore;
     private javax.swing.JPanel painelRecuperados;
     private br.univali.ps.ui.paineis.PainelSaida painelSaida;
-    private javax.swing.JLabel recuperadosLabel;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;

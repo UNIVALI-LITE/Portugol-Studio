@@ -271,7 +271,8 @@ public class TelaPrincipal extends javax.swing.JPanel
                             final String conteudo = FileHandle.open(arquivo);
                             final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                             
-                            if(arquivo.getName().endsWith(".recuperado"))
+                            
+                            if(PortugolStudio.getInstancia().isArquivoRecuperado(arquivo))
                             {
                                 abaCodigoFonte.setCodigoFonte(conteudo, null, true);
                             }

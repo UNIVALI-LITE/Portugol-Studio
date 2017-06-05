@@ -79,9 +79,9 @@ public final class PortugolStudio
     private final Random random = new Random(System.nanoTime());
     private final List<String> dicas = new ArrayList<>();
     private final List<Integer> dicasExibidas = new ArrayList<>();
-    private Queue ArquivosRecentes = new LinkedList();
-    private Queue ArquivosRecuperados = new LinkedList();
-    private Queue ArquivosRecuperadosOriginais = new LinkedList();
+    private Queue<File> arquivosRecentes = new LinkedList();
+    private Queue<File> arquivosRecuperados = new LinkedList();
+    private Queue<File> arquivosRecuperadosOriginais = new LinkedList();
 
     private String versao = null;
     private boolean depurando = false;
@@ -116,19 +116,19 @@ public final class PortugolStudio
     
     public void readRecents(){
         File f = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
-        ArquivosRecentes.clear();
+        arquivosRecentes.clear();
         try {
             String arquivo = FileHandle.read(new FileInputStream(f));
             String [] caminhos = arquivo.split("\n");
             for (String caminho : caminhos) {
                 File recente = new File(caminho);
                 if(recente.exists()){
-                    ArquivosRecentes.add(recente);
+                    arquivosRecentes.add(recente);
                 }
 
             }
         } catch (Exception ex) {
-            LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos Recentes do Portugol Studio.");
+            LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos recentemente utilizados pelo Portugol Studio.");
         }
 
     }
@@ -136,11 +136,10 @@ public final class PortugolStudio
         File f = Configuracoes.getInstancia().getDiretorioTemporario();
         f.mkdirs();
 
-        for (File arquivo : f.listFiles()) {
-            if (arquivo.isDirectory()) {
-                
-            } else {
-                if(arquivo.getName().contains(".recuperado"))
+        for (File arquivo : f.listFiles()) {            
+            if (!arquivo.isDirectory())
+            {
+                if(isArquivoRecuperado(arquivo))
                 {
                     if(arquivo.getName().contains("Sem título"))
                     {
@@ -148,7 +147,7 @@ public final class PortugolStudio
                     }
                     else
                     {
-                        ArquivosRecuperados.add(arquivo);;
+                        arquivosRecuperados.add(arquivo);
                     }                    
                 }                
             }
@@ -171,10 +170,21 @@ public final class PortugolStudio
 
             }
         } catch (Exception ex) {
-            LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos Recentes do Portugol Studio.");
+            LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos Originais utilizados pelo Portugol Studio");
         }
 
     }
+    
+    public boolean isArquivoRecuperado(File arquivo)
+    {
+        String fileName = arquivo.getName();
+        if(fileName.endsWith(".recuperado"))
+        {
+            return true;
+        } 
+        return false;
+    }
+    
     private Mutex criaMutex()
     {
         if (!Configuracoes.rodandoNoNetbeans())
@@ -301,17 +311,17 @@ public final class PortugolStudio
         }
     }
     
-    public Queue getRecentFilesQueue(){
-        return ArquivosRecentes;
+    public Queue<File> getRecentFilesQueue(){
+        return arquivosRecentes;
     }
     
-    public List getArquivosOriginais()
+    public List<File> getArquivosOriginais()
     {
         return arquivosIniciais;
     }
 
-    public Queue getArquivosRecuperados() {
-        return ArquivosRecuperados;
+    public Queue<File> getArquivosRecuperados() {
+        return arquivosRecuperados;
     }    
     
     public void finalizar(int codigo)
@@ -443,20 +453,20 @@ public final class PortugolStudio
     public void salvarComoRecente(File arquivoRecente)
     {
         
-        if(ArquivosRecentes.contains(arquivoRecente))
+        if(arquivosRecentes.contains(arquivoRecente))
         {
-            ArquivosRecentes.remove(arquivoRecente);
+            arquivosRecentes.remove(arquivoRecente);
         }
-        ArquivosRecentes.add(arquivoRecente);
-        if(ArquivosRecentes.size()>6)
+        arquivosRecentes.add(arquivoRecente);
+        if(arquivosRecentes.size()>6)
         {
-            ArquivosRecentes.poll();
+            arquivosRecentes.poll();
         }
-        File arquivosRecentes = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
+        File arquivosRecentesFile = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosRecentes)))
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosRecentesFile)))
         {
-            for (Object indice : ArquivosRecentes)
+            for (Object indice : arquivosRecentes)
             {
                 escritor.write(indice.toString());
                 escritor.newLine();
@@ -464,17 +474,17 @@ public final class PortugolStudio
         }
         catch (IOException excecao)
         {
-            LOGGER.log(Level.SEVERE, "Erro ao salvar arquivo como recente", excecao);
+            LOGGER.log(Level.SEVERE, "Erro ao inserir arquivo à fila de arquivos recentes", excecao);
         }
     }
     
     public void salvarCaminhoOriginalRecuperado(File arquivoOriginal)
     {
-        if(ArquivosRecuperadosOriginais.contains(arquivoOriginal))
+        if(arquivosRecuperadosOriginais.contains(arquivoOriginal))
         {
-            ArquivosRecuperadosOriginais.remove(arquivoOriginal);
+            arquivosRecuperadosOriginais.remove(arquivoOriginal);
         }
-        ArquivosRecuperadosOriginais.add(arquivoOriginal);
+        arquivosRecuperadosOriginais.add(arquivoOriginal);
         
         if(!Configuracoes.getInstancia().getDiretorioTemporario().exists())
         {
@@ -484,7 +494,7 @@ public final class PortugolStudio
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosOriginais)))
         {
-            for (Object indice : ArquivosRecuperadosOriginais)
+            for (Object indice : arquivosRecuperadosOriginais)
             {
                 escritor.write(indice.toString());
                 escritor.newLine();
@@ -492,7 +502,7 @@ public final class PortugolStudio
         }
         catch (IOException excecao)
         {
-            LOGGER.log(Level.SEVERE, "Erro ao salvar arquivo como recente", excecao);
+            LOGGER.log(Level.SEVERE, "Erro ao inserir arquivo à fila de arquivos recentes", excecao);
         }
     }
 
@@ -721,7 +731,7 @@ public final class PortugolStudio
     }
     
     public void carregarRecuperados(){
-        List files = PortugolStudio.getInstancia().getArquivosOriginais();
+        List<File> files = PortugolStudio.getInstancia().getArquivosOriginais();
         PortugolStudio.getInstancia().getTelaPrincipal().abrirArquivosCodigoFonte(files);
     }
 
