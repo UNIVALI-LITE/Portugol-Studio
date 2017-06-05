@@ -1104,6 +1104,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 if (!simbolosInspecionadosJaForamCarregados) //é a primeira compilação?
                 {
+                    inspetorDeSimbolos.resetaInspetor();
                     carregaSimbolosInspecionados(codigoFonteAtual, programa);
                     simbolosInspecionadosJaForamCarregados = true;
                 }

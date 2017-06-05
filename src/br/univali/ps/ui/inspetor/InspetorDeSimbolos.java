@@ -189,6 +189,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     public void setTextArea(JTextArea textArea) {
         this.textArea = textArea;
     }
+    
+    public void resetaInspetor()
+    {
+        model.clear();
+    }
 
     private void desenhaInstrucaoParaArrastarSimbolos(Graphics g) {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
