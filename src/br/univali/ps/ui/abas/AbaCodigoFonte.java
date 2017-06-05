@@ -970,19 +970,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             Thread thread = new Thread() 
             {
+                @Override
                 public void run() 
                 {
                     try 
                     {
-                        SwingUtilities.invokeLater(() -> {
-                            alternarLoader();
-                        });
+                        if (estadoInicial == Programa.Estado.BREAK_POINT) {
+                            setVisibilidadeLoader(true);
+                        }
                         compilaProgramaParaExecucao();
                         executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
                         precisaRecompilar = false;
                     } catch (ErroCompilacao erroCompilacao) {
-                        SwingUtilities.invokeLater(()
-                                -> {
+                        SwingUtilities.invokeLater(() -> {
                             exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
                         });
                         precisaRecompilar = true;
@@ -990,11 +990,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         LOGGER.log(Level.SEVERE, null, ex);
                         precisaRecompilar = true;
                     }
-
-                    SwingUtilities.invokeLater(() -> {
-                        alternarLoader();
-                    });
-
+                    finally {
+                        if (estadoInicial == Programa.Estado.BREAK_POINT) {
+                            setVisibilidadeLoader(false);
+                        }
+                    }
                 }
             };
             thread.start();
@@ -1286,19 +1286,20 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         PortugolParser parser = editor.getSuporteLinguagemPortugol().getPortugolParser();
         parser.resetUltimoCodigoAnalisado();
         
-        SwingUtilities.invokeLater(() -> {
-            simbolosInspecionadosJaForamCarregados = false;            
-            editor.setCodigoFonte(codigoFonte);
-            carregarInformacoesFiltroArvore(codigoFonte);
 
-            PortugolDocumento document = editor.getPortugolDocumento();
-            document.setFile(arquivo);
-            document.setChanged(false);
-            AbaCodigoFonte.this.podeSalvar = podeSalvar;
+        simbolosInspecionadosJaForamCarregados = false;        
+        tree.reseta();
+        inspetorDeSimbolos.reseta();
+        editor.setCodigoFonte(codigoFonte);
+        carregarInformacoesFiltroArvore(codigoFonte);
 
-            acaoSalvarArquivo.setEnabled(false);
-            atualizaPainelRecuperados();            
-        });
+        PortugolDocumento document = editor.getPortugolDocumento();
+        document.setFile(arquivo);
+        document.setChanged(false);
+        podeSalvar = podeSalvar;
+
+        acaoSalvarArquivo.setEnabled(false);
+        atualizaPainelRecuperados();
     }
 
     private void carregarInformacoesFiltroArvore(String codigoFonte)
@@ -2248,19 +2249,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
     
-    private void alternarLoader()
+    private void setVisibilidadeLoader(boolean visivel)
     {
-        int x = ((this.getSize().width - loader.getSize().width) / 2) + Lancador.getFrame().getLocationOnScreen().x;
-        int y = ((this.getSize().height - loader.getSize().height) / 2) + Lancador.getFrame().getLocationOnScreen().y;
-        loader.setLocation(x, y);
-        if(loader.isVisible())
-        {
-            loader.setVisible(false);
-        }
-        else
-        {
-            loader.setVisible(true);
-        }
+        SwingUtilities.invokeLater(() -> {
+            int x = ((this.getSize().width - loader.getSize().width) / 2) + Lancador.getFrame().getLocationOnScreen().x;
+            int y = ((this.getSize().height - loader.getSize().height) / 2) + Lancador.getFrame().getLocationOnScreen().y;
+            loader.setLocation(x, y);
+            loader.setVisible(visivel);
+        });
     }
 
     @Override

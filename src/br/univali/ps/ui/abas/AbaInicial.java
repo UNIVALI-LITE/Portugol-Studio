@@ -360,7 +360,7 @@ public final class AbaInicial extends Aba implements Themeable
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                WebConnectionUtils.abrirSite("https://docs.google.com/forms/d/e/1FAIpQLSdIblxNIM1k2dTljGd-D-4cab1dYkN3ZISEGd6ms63Wn2WR6Q/viewform");
+                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/issues/new");
             }
         };
 

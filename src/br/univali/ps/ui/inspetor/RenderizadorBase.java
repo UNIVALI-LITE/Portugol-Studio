@@ -27,7 +27,7 @@ abstract class RenderizadorBase extends JComponent {
     protected static final Color COR_NOME = ColorController.COR_LETRA;
     protected static final Color COR_TEXTO_DESTACADO = ColorController.COR_LETRA;
     protected static final Color COR_DO_CABECALHO_DESTACADO = COR_TEXTO_DESTACADO;
-    protected static final Color COR_DO_FUNDO_EM_DESTAQUE = ColorController.FUNDO_ESCURO;// new Color(1, 0, 0, 0.3f);//vermelho claro
+    protected static final Color COR_DO_FUNDO_EM_DESTAQUE = ColorController.FUNDO_MEDIO;// new Color(1, 0, 0, 0.3f);//vermelho claro
     protected static final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{4, 2, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1}, 0);
 
     static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
