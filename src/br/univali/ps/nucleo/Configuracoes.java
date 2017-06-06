@@ -48,7 +48,7 @@ public final class Configuracoes
     private final File diretorioInstalacao = resolverDiretorioInstalacao();
     private final File diretorioAjuda = resolverDiretorioAjuda();
     private final File diretorioExemplos = resolverDiretorioExemplos();
-    private final File diretorioTemporario = new File(diretorioInstalacao, "temp");
+    private final File diretorioTemporario = new File(System.getProperty("java.io.tmpdir"));
     private final File diretorioCompilacao = new File(diretorioTemporario, "compilacao");
     private final File diretorioPlugins = new File(diretorioInstalacao, "plugins");
     private final File diretorioBibliotecas = new File(diretorioInstalacao, "bibliotecas");
