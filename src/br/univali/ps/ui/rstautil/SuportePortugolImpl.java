@@ -41,7 +41,7 @@ public class SuportePortugolImpl implements SuportePortugol
     @Override
     public void atualizar(RSyntaxTextArea textArea)
     {
-        textArea.forceReparsing(portugolParser);
+        
     }
 
     @Override

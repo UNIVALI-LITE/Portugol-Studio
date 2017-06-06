@@ -8,7 +8,6 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
@@ -32,7 +31,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,6 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -115,20 +112,12 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelRecentesPrincipal.setBackground(ColorController.FUNDO_ESCURO);
         textRecentes.setForeground(ColorController.COR_LETRA_TITULO);
         areaLogo.setBackground(ColorController.FUNDO_ESCURO);
-        painelArquivosRecuperados.setBackground(ColorController.FUNDO_ESCURO);
-        painelCentral.setBackground(ColorController.FUNDO_ESCURO);
-        painelSuperior.setBackground(ColorController.FUNDO_ESCURO);
-        painelInferior.setBackground(ColorController.FUNDO_ESCURO);
-        painelRecuperados.setBackground(ColorController.FUNDO_ESCURO);
-        recuperadosText.setBackground(ColorController.FUNDO_ESCURO);
-        recuperadosText.setForeground(ColorController.COR_LETRA_TITULO);
         painelDireita.setBackground(ColorController.COR_DESTAQUE);
         scrollRecentes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollRecentes);
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
-            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
-            WeblafUtils.configurarBotao(botaoFecharRecuperados, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 10);
+            WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 10);
         }
     }
     
@@ -420,13 +409,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         textRecentes = new javax.swing.JLabel();
         scrollRecentes = new javax.swing.JScrollPane();
         areaRecentes = new javax.swing.JPanel();
-        painelArquivosRecuperados = new javax.swing.JPanel();
-        painelSuperior = new javax.swing.JPanel();
-        recuperadosText = new javax.swing.JLabel();
-        painelInferior = new javax.swing.JPanel();
-        botaoFecharRecuperados = new com.alee.laf.button.WebButton();
-        painelCentral = new javax.swing.JPanel();
-        painelRecuperados = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         painelDireita = new javax.swing.JPanel();
         imagePane = new javax.swing.JPanel();
@@ -463,31 +445,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelRecentes.add(scrollRecentes, java.awt.BorderLayout.SOUTH);
 
         painelRecentesPrincipal.add(painelRecentes, java.awt.BorderLayout.SOUTH);
-
-        painelArquivosRecuperados.setLayout(new java.awt.BorderLayout());
-
-        painelSuperior.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        painelSuperior.setOpaque(false);
-        painelSuperior.setLayout(new java.awt.BorderLayout());
-
-        recuperadosText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        recuperadosText.setText("jLabel1");
-        painelSuperior.add(recuperadosText, java.awt.BorderLayout.PAGE_START);
-
-        painelArquivosRecuperados.add(painelSuperior, java.awt.BorderLayout.NORTH);
-
-        painelInferior.setOpaque(false);
-        painelInferior.setLayout(new java.awt.BorderLayout());
-
-        botaoFecharRecuperados.setText("fechar");
-        painelInferior.add(botaoFecharRecuperados, java.awt.BorderLayout.EAST);
-
-        painelArquivosRecuperados.add(painelInferior, java.awt.BorderLayout.SOUTH);
-
-        painelCentral.setLayout(new java.awt.BorderLayout());
-        painelCentral.add(painelRecuperados, java.awt.BorderLayout.SOUTH);
-
-        painelArquivosRecuperados.add(painelCentral, java.awt.BorderLayout.CENTER);
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -583,22 +540,15 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel areaRecentes;
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
-    private com.alee.laf.button.WebButton botaoFecharRecuperados;
     private javax.swing.JLabel description;
     private javax.swing.JPanel examplePane;
     private javax.swing.JPanel imagePane;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel labelTitulo;
-    private javax.swing.JPanel painelArquivosRecuperados;
-    private javax.swing.JPanel painelCentral;
     private javax.swing.JPanel painelDireita;
     private javax.swing.JPanel painelEsquerda;
-    private javax.swing.JPanel painelInferior;
     private javax.swing.JPanel painelRecentes;
     private javax.swing.JPanel painelRecentesPrincipal;
-    private javax.swing.JPanel painelRecuperados;
-    private javax.swing.JPanel painelSuperior;
-    private javax.swing.JLabel recuperadosText;
     private javax.swing.JScrollPane scrollArvoreExemplos;
     private javax.swing.JScrollPane scrollRecentes;
     private javax.swing.JLabel textRecentes;

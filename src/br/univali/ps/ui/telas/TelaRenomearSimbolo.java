@@ -70,10 +70,6 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         initComponents();
         configurarCores();
         this.dialog = dialog;
-        if(WeblafUtils.weblafEstaInstalado()){
-            WeblafUtils.configurarBotao(botaoAceitar);
-            WeblafUtils.configurarBotao(botaoCancelar);
-        }
 
         botaoAceitar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -116,18 +112,21 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
     }
     
     private void configurarCores(){
-        WeblafUtils.configuraWebLaf(info);
-        WeblafUtils.configurarBotao(botaoAceitar);
-        WeblafUtils.configurarBotao(botaoCancelar);
-        WeblafUtils.configuraWebLaf(campoNomeAtual, 2, 2);
-        WeblafUtils.configuraWebLaf(campoNovoNome, 2, 2);
+        
+        if(WeblafUtils.weblafEstaInstalado()){
+            WeblafUtils.configuraWebLaf(info);
+            WeblafUtils.configurarBotao(botaoAceitar,ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 4);
+            WeblafUtils.configurarBotao(botaoCancelar,ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 4);
+            WeblafUtils.configuraWebLaf(campoNomeAtual, 2, 2);
+            WeblafUtils.configuraWebLaf(campoNovoNome, 2, 2);
+        }        
         setBackground(ColorController.FUNDO_CLARO);
         setForeground(ColorController.COR_LETRA);
         setBackground(ColorController.FUNDO_CLARO);
         setForeground(ColorController.COR_LETRA);
         jLabel1.setForeground(ColorController.COR_LETRA);
         jLabel2.setForeground(ColorController.COR_LETRA);
-        info.setBackground(ColorController.FUNDO_CLARO.darker());
+        info.setBackground(ColorController.FUNDO_MEDIO);
         info.setBorder(new EmptyBorder(5, 5, 5, 5));
     }
 
