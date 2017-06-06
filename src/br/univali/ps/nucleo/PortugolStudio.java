@@ -133,10 +133,12 @@ public final class PortugolStudio
 
     }
     public void readRecuperaveis(){
-        File f = Configuracoes.getInstancia().getDiretorioTemporario();
-        f.mkdirs();
+        File diretorioTemporario = Configuracoes.getInstancia().getDiretorioTemporario();
+        if (!diretorioTemporario.exists()) {
+            diretorioTemporario.mkdirs();
+        }
 
-        for (File arquivo : f.listFiles()) {            
+        for (File arquivo : diretorioTemporario.listFiles()) {            
             if (!arquivo.isDirectory())
             {
                 if(isArquivoRecuperado(arquivo))
@@ -153,6 +155,7 @@ public final class PortugolStudio
             }
         }
     }
+    
     public void readOriginais(){
         File f = Configuracoes.getInstancia().getCaminhoArquivosRecuperadosOriginais();
         if(!f.exists())
