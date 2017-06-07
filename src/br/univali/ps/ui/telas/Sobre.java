@@ -55,6 +55,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
     
     private void configurarLinks()
     {
+        configurarLink(jLabel2);
         configurarLink(rotuloBitRock);
         configurarLink(rotuloGithub);
         configurarLink(rotuloOsi);
@@ -137,6 +138,8 @@ public class Sobre extends javax.swing.JPanel implements Themeable
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/logo_lite.png"))); // NOI18N
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.setName("http://lite.acad.univali.br/pt/"); // NOI18N
         jPanel1.add(jLabel2);
 
         painelConteudo.add(jPanel1, java.awt.BorderLayout.WEST);
