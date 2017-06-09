@@ -1821,12 +1821,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         this.selecionar();
         usuarioCancelouSalvamento = false;
 
-        if (programa != null)
-        {
-            if (programa.isExecutando()) {
-                JOptionPane.showMessageDialog(this, String.format("O programa desta aba (%s) ainda está em execução.\nEncerre o programa antes de fechar a aba.", getCabecalho().getTitulo()), "Aviso", JOptionPane.WARNING_MESSAGE);
-                return false;
-            }
+        if (programa != null && programa.isExecutando()) {
+            programa.interromper();
         }
 
         if (arquivoModificado())
