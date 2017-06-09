@@ -2,7 +2,7 @@
 
 **Mensagem de Erro (se houver)**:
 
-**Captura de Tela / Arquivo.por **:
+**Captura de Tela / Arquivo.por**:
 
 **Especificações do sistema**:
 	
