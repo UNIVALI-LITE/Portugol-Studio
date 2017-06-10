@@ -2,6 +2,9 @@ package br.univali.ps.nucleo;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,11 +31,14 @@ public final class Caminhos
     public static final File logAtualizacao = new File(diretorioInstalacao, "atualizacao.log");
     public static final File arquivoMutex = new File(diretorioInstalacao, "mutex");
 
-    private static File obterDiretorioInstalacao()
+    public static File obterDiretorioInstalacao()
     {
         if (!rodandoNoNetbeans())
         {
-            return new File(".");
+            CodeSource localCodigo = Caminhos.class.getProtectionDomain().getCodeSource();
+            URL local = localCodigo.getLocation();
+
+            return new File(URI.create(local.toExternalForm())).getParentFile().getParentFile();
         }
         else
         {

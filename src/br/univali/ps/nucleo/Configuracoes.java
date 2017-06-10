@@ -45,7 +45,7 @@ public final class Configuracoes
     private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");
     private final File caminhoArquivosRecentes = new File(diretorioConfiguracoes, "arquivos_recentes.txt");    
 
-    private final File diretorioInstalacao = resolverDiretorioInstalacao();
+    private final File diretorioInstalacao = Caminhos.obterDiretorioInstalacao();
     private final File diretorioAjuda = resolverDiretorioAjuda();
     private final File diretorioExemplos = resolverDiretorioExemplos();
     private final File diretorioTemporario = new File(diretorioConfiguracoes, "temp");
@@ -514,19 +514,6 @@ public final class Configuracoes
     public File getCaminhoInicializadorPortugolStudio()
     {
         return caminhoInicializadorPortugolStudio;
-    }
-
-     private File resolverDiretorioInstalacao()
-    {
-        if (rodandoNoNetbeans())
-        {
-            File diretorio = new File("./teste");
-            diretorio.mkdirs();
-
-            return diretorio;
-        }
-
-        return extrairCaminho(new File("."));
     }
 
     private File resolverDiretorioAjuda()
