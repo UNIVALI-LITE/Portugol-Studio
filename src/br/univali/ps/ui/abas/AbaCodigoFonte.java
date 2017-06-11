@@ -112,7 +112,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean precisaRecompilar = true; // sempre que uma nova árvore é gerada essa flag é setada para true forçando uma nova recompilação quand o usuário executar o programa
 
     private JPanel painelTemporario;
-    private JDialog loader;
 
     private Action acaoSalvarArquivo;
     private Action acaoSalvarComo;
@@ -132,6 +131,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static boolean desativouRecuperados = false;
     private boolean redimensionouParaBaixaResolucao = false;
     private static int numeroDocumento =1;
+    
+    private boolean processando = false;
     
     protected AbaCodigoFonte()
     {
@@ -551,14 +552,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }        
         loadingLabel.setBackground(ColorController.COR_DESTAQUE);
         loadingLabel.setForeground(ColorController.COR_LETRA);
-        loader = new JDialog();
-        loader.setModal(true);
-        
-        loader.setUndecorated(true);
-        loader.setLayout(new BorderLayout());
-        loader.add(loadingLabel);
-        loader.pack();
-        loader.setVisible(false);
     }
     
     private Action criaAcaoExpandirEditor()
@@ -975,9 +968,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 {
                     try 
                     {
-                        if (estadoInicial == Programa.Estado.BREAK_POINT) {
-                            setVisibilidadeLoader(true);
-                        }
+                        setVisibilidadeLoader(true);
                         compilaProgramaParaExecucao();
                         executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
                         precisaRecompilar = false;
@@ -991,9 +982,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         precisaRecompilar = true;
                     }
                     finally {
-                        if (estadoInicial == Programa.Estado.BREAK_POINT) {
-                            setVisibilidadeLoader(false);
-                        }
+                        setVisibilidadeLoader(false);
                     }
                 }
             };
@@ -2244,14 +2233,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             return "";
         }
     }
-    
-    private void setVisibilidadeLoader(boolean visivel)
+
+    @Override
+    public void paint(Graphics g) 
     {
+        super.paint(g);
+        
+        if (processando) {
+            
+            // desenha ícone do 'loading'
+            Rectangle editorBounds = editor.getBounds();
+            Point editorCentro = new Point((int)editorBounds.getCenterX(), (int)editorBounds.getCenterY());
+            
+            ImageIcon icon = (ImageIcon)loadingLabel.getIcon();
+            int iconeX = editorCentro.x - icon.getIconWidth()/2;
+            int iconeY = editorCentro.y - icon.getIconHeight()/2;            
+            icon.paintIcon(this, g, iconeX, iconeY);
+            
+            // desenha texto do loading
+            g.setFont(loadingLabel.getFont());
+            g.setColor(loadingLabel.getForeground());
+            
+            String texto = loadingLabel.getText();
+            FontMetrics fontMetrics = g.getFontMetrics();
+            int larguraTexto = fontMetrics.stringWidth(texto);
+            int textoX = editorCentro.x - larguraTexto/2;
+            int textoY = editorCentro.y + icon.getIconHeight()/2;
+            g.drawString(loadingLabel.getText(), textoX, textoY);
+        }
+    }
+    
+    private void setVisibilidadeLoader(final boolean visivel)
+    {   
         SwingUtilities.invokeLater(() -> {
-            int x = ((this.getSize().width - loader.getSize().width) / 2) + Lancador.getFrame().getLocationOnScreen().x;
-            int y = ((this.getSize().height - loader.getSize().height) / 2) + Lancador.getFrame().getLocationOnScreen().y;
-            loader.setLocation(x, y);
-            loader.setVisible(visivel);
+            boolean podeMostrarLoader = programa!= null && !programa.isExecutando(); // mostra o loader somente na primeira execução
+            boolean novoEstado = visivel && podeMostrarLoader;
+            processando = novoEstado;
+            if (novoEstado) { // evita repintar quando o loader não é usado para evitar bugs na pintura do destaque da linha atual
+                repaint();
+            }
         });
     }
 
