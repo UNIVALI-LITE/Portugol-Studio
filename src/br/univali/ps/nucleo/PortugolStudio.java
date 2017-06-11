@@ -645,7 +645,10 @@ public final class PortugolStudio
 
     private void instalarDetectorVialacoesNaThreadSwing()
     {
-        RepaintManager.setCurrentManager(new DetectorViolacoesThreadSwing());
+        if (Configuracoes.rodandoNoNetbeans()) 
+        {
+            RepaintManager.setCurrentManager(new DetectorViolacoesThreadSwing());
+        }
     }
 
     private void definirLookAndFeel()
