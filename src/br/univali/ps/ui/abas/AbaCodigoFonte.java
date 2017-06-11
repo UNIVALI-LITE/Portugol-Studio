@@ -2232,6 +2232,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         
         if (processando) {
             
+            ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            
             // desenha ícone do 'loading'
             Rectangle editorBounds = editor.getBounds();
             Point editorCentro = new Point((int)editorBounds.getCenterX(), (int)editorBounds.getCenterY());
