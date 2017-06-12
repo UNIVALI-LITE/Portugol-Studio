@@ -2234,12 +2234,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             
-            // desenha ícone do 'loading'
             Rectangle editorBounds = editor.getBounds();
             Point editorCentro = new Point((int)editorBounds.getCenterX(), (int)editorBounds.getCenterY());
             
             int iconeX = editorCentro.x - iconeLoading.getIconWidth()/2;
             int iconeY = editorCentro.y - iconeLoading.getIconHeight()/2;            
+            
+            //desenha background do loader
+            g.setColor(ColorController.COR_DESTAQUE);
+            g.fillRect(iconeX, iconeY, iconeLoading.getIconWidth(), iconeLoading.getIconHeight());
+            
+            // desenha ícone do 'loading'
             iconeLoading.paintIcon(this, g, iconeX, iconeY);
             
             // desenha texto do loading
@@ -2248,7 +2253,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             FontMetrics fontMetrics = g.getFontMetrics();
             int larguraTexto = fontMetrics.stringWidth(textoLoading);
             int textoX = editorCentro.x - larguraTexto/2;
-            int textoY = editorCentro.y + iconeLoading.getIconHeight()/2;
+            int textoY = editorCentro.y + iconeLoading.getIconHeight()/2 - fontMetrics.getDescent();
             g.drawString(textoLoading, textoX, textoY);
         }
     }
