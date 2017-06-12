@@ -131,11 +131,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static boolean desativouRecuperados = false;
     private boolean redimensionouParaBaixaResolucao = false;
     private static int numeroDocumento =1;
-    
-    private boolean processando = false;
-    private Icon iconeLoading;
-    private final String textoLoading = "Processando";
-    
+
+    private IndicadorDeProgresso indicadorProgresso;
+   
     protected AbaCodigoFonte()
     {
         super("Sem título" + numeroDocumento, lampadaApagada, true);
@@ -550,7 +548,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configuraLoader(){
         boolean usandoTemaDark = Configuracoes.getInstancia().isTemaDark();
         String caminhoIcone = String.format("/br/univali/ps/ui/icones/%s/grande/load.gif", usandoTemaDark ? "Dark" : "Portugol");
-        iconeLoading = new ImageIcon(getClass().getResource(caminhoIcone));
+        Icon icone = new ImageIcon(getClass().getResource(caminhoIcone));
+        indicadorProgresso = new IndicadorDeProgresso(this, icone, "Processando ...");
     }
     
     private Action criaAcaoExpandirEditor()
@@ -2230,41 +2229,22 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         super.paint(g);
         
-        if (processando) {
-            
-            ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            
+        if (indicadorProgresso != null) 
+        {
             Rectangle editorBounds = editor.getBounds();
-            Point editorCentro = new Point((int)editorBounds.getCenterX(), (int)editorBounds.getCenterY());
+            Point cetroEditor = new Point((int) editorBounds.getCenterX(), (int) editorBounds.getCenterY());
             
-            int iconeX = editorCentro.x - iconeLoading.getIconWidth()/2;
-            int iconeY = editorCentro.y - iconeLoading.getIconHeight()/2;            
-            
-            //desenha background do loader
-            g.setColor(ColorController.COR_DESTAQUE);
-            g.fillRect(iconeX, iconeY, iconeLoading.getIconWidth(), iconeLoading.getIconHeight());
-            
-            // desenha ícone do 'loading'
-            iconeLoading.paintIcon(this, g, iconeX, iconeY);
-            
-            // desenha texto do loading
-            g.setColor(ColorController.COR_LETRA);
-            
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int larguraTexto = fontMetrics.stringWidth(textoLoading);
-            int textoX = editorCentro.x - larguraTexto/2;
-            int textoY = editorCentro.y + iconeLoading.getIconHeight()/2 - fontMetrics.getDescent();
-            g.drawString(textoLoading, textoX, textoY);
+            indicadorProgresso.desenha(g, cetroEditor);
         }
     }
     
     private void setVisibilidadeLoader(final boolean visivel)
     {   
-        SwingUtilities.invokeLater(() -> {
-            boolean podeMostrarLoader = programa!= null && !programa.isExecutando(); // mostra o loader somente na primeira execução
-            boolean novoEstado = visivel && podeMostrarLoader;
-            processando = novoEstado;
-            if (novoEstado) { // evita repintar quando o loader não é usado para evitar bugs na pintura do destaque da linha atual
+        SwingUtilities.invokeLater(() -> 
+        {
+            boolean podeMostrarIndicador = visivel && programa!= null && !programa.isExecutando(); // mostra o loader somente na primeira execução
+            indicadorProgresso.setVisibilidade(podeMostrarIndicador);
+            if (podeMostrarIndicador) { 
                 repaint();
             }
         });
