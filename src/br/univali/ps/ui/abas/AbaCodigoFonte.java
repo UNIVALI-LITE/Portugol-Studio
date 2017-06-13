@@ -77,6 +77,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.ImageObserver;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.Queue;
@@ -2231,23 +2232,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         
         if (indicadorProgresso != null) 
         {
-            Rectangle editorBounds = editor.getBounds();
-            Point cetroEditor = new Point((int) editorBounds.getCenterX(), (int) editorBounds.getCenterY());
-            
-            indicadorProgresso.desenha(g, cetroEditor);
+            indicadorProgresso.desenha(g, getCentroEditor());
         }
+    }
+
+    private Point getCentroEditor()
+    {
+        Rectangle editorBounds = editor.getBounds();
+        return new Point((int) editorBounds.getCenterX(), (int) editorBounds.getCenterY());
+    }
+    
+    /***
+     * Sobrescrevendo o método da classe Component para desenhar apenas a área do loader. Este método é chamado sempre que um outro
+     * quadro do GIF está disponível para ser desenhado. A animação do GIF depende desse mecanismo definido em {@see ImageObserver}.
+     * Isso resolve o problema do loader demorando demais para desaparecer.
+     */
+    @Override
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) 
+    {
+        if (!indicadorProgresso.estaVisivel()) 
+        {
+            return false;
+        }
+        
+        if (infoflags == ImageObserver.FRAMEBITS)
+        {
+            Point centroEditor = getCentroEditor();
+            paintImmediately(centroEditor.x - w / 2, centroEditor.y - h / 2, w, h);
+        }
+        
+        return true;
     }
     
     private void setVisibilidadeLoader(final boolean visivel)
     {   
-        SwingUtilities.invokeLater(() -> 
-        {
-            boolean podeMostrarIndicador = visivel && programa!= null && !programa.isExecutando(); // mostra o loader somente na primeira execução
-            indicadorProgresso.setVisibilidade(podeMostrarIndicador);
-            if (podeMostrarIndicador) { 
-                repaint();
-            }
-        });
+        boolean podeMostrarIndicador = visivel && programa != null && !programa.isExecutando(); // mostra o loader somente na primeira execução
+        indicadorProgresso.setVisibilidade(podeMostrarIndicador);
+        if (podeMostrarIndicador) {
+            repaint();
+        }
     }
 
     @Override

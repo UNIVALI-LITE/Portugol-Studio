@@ -29,6 +29,11 @@ public class IndicadorDeProgresso
         this.visivel = visivel;
     }
     
+    public boolean estaVisivel()
+    {
+        return visivel;
+    }
+    
     public void desenha(Graphics g, Point centro) 
     {
         if (visivel) {
