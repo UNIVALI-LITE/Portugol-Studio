@@ -2258,7 +2258,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if (infoflags == ImageObserver.FRAMEBITS)
         {
             Point centroEditor = getCentroEditor();
-            paintImmediately(centroEditor.x - w / 2, centroEditor.y - h / 2, w, h);
+            paintImmediately(indicadorProgresso.getBounds(centroEditor));
         }
         
         return true;

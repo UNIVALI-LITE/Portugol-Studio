@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import javax.swing.Icon;
 
@@ -34,30 +35,40 @@ public class IndicadorDeProgresso
         return visivel;
     }
     
+    public Rectangle getBounds(Point centro)
+    {
+        int x = centro.x - icone.getIconWidth() / 2;
+        int y = centro.y - icone.getIconHeight() / 2;
+        int largura = icone.getIconWidth();
+        int altura = icone.getIconHeight();
+        
+        return new Rectangle(x, y, largura, altura);
+    }
+    
     public void desenha(Graphics g, Point centro) 
     {
         if (visivel) {
+            
+            Graphics2D g2d = ((Graphics2D) g);
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-            int iconeX = centro.x - icone.getIconWidth() / 2;
-            int iconeY = centro.y - icone.getIconHeight() / 2;
-
+            Rectangle bounds = getBounds(centro);
+            
             //desenha background do loader
-            g.setColor(ColorController.COR_DESTAQUE);
-            g.fillRect(iconeX, iconeY, icone.getIconWidth(), icone.getIconHeight());
+            g2d.setColor(ColorController.COR_DESTAQUE);
+            g2d.fill(bounds);
 
             // desenha ícone do 'loading'
-            icone.paintIcon(componente, g, iconeX, iconeY);
+            icone.paintIcon(componente, g, bounds.x, bounds.y);
 
             // desenha texto do loading
-            g.setColor(ColorController.COR_LETRA);
+            g2d.setColor(ColorController.COR_LETRA);
 
             FontMetrics fontMetrics = g.getFontMetrics();
             int larguraTexto = fontMetrics.stringWidth(texto);
             int textoX = centro.x - larguraTexto / 2;
-            int textoY = centro.y + icone.getIconHeight() / 2 - fontMetrics.getDescent();
-            g.drawString(texto, textoX, textoY);
+            int textoY = centro.y + bounds.width / 2 - fontMetrics.getDescent();
+            g2d.drawString(texto, textoX, textoY);
         }
     }
 
