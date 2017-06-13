@@ -2258,7 +2258,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if (infoflags == ImageObserver.FRAMEBITS)
         {
             Point centroEditor = getCentroEditor();
-            paintImmediately(indicadorProgresso.getBounds(centroEditor));
+            repaint(indicadorProgresso.getBounds(centroEditor));
         }
         
         return true;
@@ -2268,7 +2268,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {   
         boolean podeMostrarIndicador = visivel && programa != null && !programa.isExecutando(); // mostra o loader somente na primeira execução
         indicadorProgresso.setVisibilidade(podeMostrarIndicador);
-        if (podeMostrarIndicador) {
+        if (podeMostrarIndicador) 
+        {
             repaint();
         }
     }
