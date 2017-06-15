@@ -2518,6 +2518,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         public void execucaoResumida() {
             setaAtivacaoBotoesExecucao(true);
         }
+
+        @Override
+        public void highlightLinha(int linha) {
+            // executado quando um break point ou um passo (execução passo-a-passo) é alcançado 
+            setaAtivacaoBotoesExecucao(true);
+        }
     }
 
     private static class PoolAbasCodigoFonte extends PoolAbstrato
