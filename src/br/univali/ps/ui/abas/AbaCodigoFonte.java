@@ -81,6 +81,8 @@ import java.awt.image.ImageObserver;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -134,6 +136,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static int numeroDocumento =1;
 
     private IndicadorDeProgresso indicadorProgresso;
+    
+    private final ExecutorService service = Executors.newSingleThreadExecutor(); // usando apenas uma thread, todas as compilações serão enfileiradas
    
     protected AbaCodigoFonte()
     {
@@ -960,32 +964,26 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
             inspetorDeSimbolos.resetaDestaqueDosSimbolos();
 
-            Thread thread = new Thread() 
-            {
-                @Override
-                public void run() 
+            service.execute(() -> {
+                try 
                 {
-                    try 
-                    {
-                        setVisibilidadeLoader(true);
-                        compilaProgramaParaExecucao();
-                        executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
-                        precisaRecompilar = false;
-                    } catch (ErroCompilacao erroCompilacao) {
-                        SwingUtilities.invokeLater(() -> {
-                            exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
-                        });
-                        precisaRecompilar = true;
-                    } catch (Exception ex) {
-                        LOGGER.log(Level.SEVERE, null, ex);
-                        precisaRecompilar = true;
-                    }
-                    finally {
-                        setVisibilidadeLoader(false);
-                    }
+                    setVisibilidadeLoader(true);
+                    compilaProgramaParaExecucao();
+                    executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
+                    precisaRecompilar = false;
+                } catch (ErroCompilacao erroCompilacao) {
+                    SwingUtilities.invokeLater(() -> {
+                        exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
+                    });
+                    precisaRecompilar = true;
+                } catch (Exception ex) {
+                    LOGGER.log(Level.SEVERE, null, ex);
+                    precisaRecompilar = true;
                 }
-            };
-            thread.start();
+                finally {
+                    setVisibilidadeLoader(false);
+                }
+            });
         }
         
     }
