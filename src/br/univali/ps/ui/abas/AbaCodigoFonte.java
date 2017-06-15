@@ -137,8 +137,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean redimensionouParaBaixaResolucao = false;
     private static int numeroDocumento =1;
 
-    private IndicadorDeProgresso indicadorProgresso;
-    
     private final ExecutorService service = Executors.newSingleThreadExecutor(); // usando apenas uma thread, todas as compilações serão enfileiradas
    
     protected AbaCodigoFonte()
@@ -161,8 +159,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
-        configuraLoader();
-        
     }
 
     public void reseta()
@@ -550,13 +546,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         boolean divisorArvoreEditorExpandido = divisorArvoreEditor.getDividerLocation() > divisorArvoreEditor.getMaximumDividerLocation();
         boolean divisorEditorConsoleExpandido = divisorEditorConsole.getDividerLocation() > divisorEditorConsole.getMaximumDividerLocation();
         return divisorArvoreEditorExpandido && divisorEditorConsoleExpandido;
-    }
-    
-    private void configuraLoader(){
-        boolean usandoTemaDark = Configuracoes.getInstancia().isTemaDark();
-        String caminhoIcone = String.format("/br/univali/ps/ui/icones/%s/grande/load.gif", usandoTemaDark ? "Dark" : "Portugol");
-        Icon icone = new ImageIcon(getClass().getResource(caminhoIcone));
-        indicadorProgresso = new IndicadorDeProgresso(this, icone, "Processando ...");
     }
     
     private Action criaAcaoExpandirEditor()
@@ -968,7 +957,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             try 
             {
-                setVisibilidadeLoader(true);
                 setaAtivacaoBotoesExecucao(false); // desabilita execução até que a execução tenha sido finalizada ou um break point tenha sido alcançado
                 if (tarefaCompilacao == null)
                 {
@@ -977,8 +965,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 
                 programaAnalisado = programaCompilado = tarefaCompilacao.get();
                 inspetorDeSimbolos.setPrograma(programaCompilado);
-
-                setVisibilidadeLoader(false);                
 
                 executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
             } 
@@ -991,12 +977,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
-            finally {
-                setVisibilidadeLoader(false);
-            }
-                
         }
-        
     }
     
     private void configurarAcaoExecutarPontoParada()
@@ -2228,55 +2209,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         catch (Exception e)
         {
             return "";
-        }
-    }
-
-    @Override
-    public void paint(Graphics g) 
-    {
-        super.paint(g);
-        
-        if (indicadorProgresso != null) 
-        {
-            indicadorProgresso.desenha(g, getCentroEditor());
-        }
-    }
-
-    private Point getCentroEditor()
-    {
-        Rectangle editorBounds = editor.getBounds();
-        return new Point((int) editorBounds.getCenterX(), (int) editorBounds.getCenterY());
-    }
-    
-    /***
-     * Sobrescrevendo o método da classe Component para desenhar apenas a área do loader. Este método é chamado sempre que um outro
-     * quadro do GIF está disponível para ser desenhado. A animação do GIF depende desse mecanismo definido em {@see ImageObserver}.
-     * Isso resolve o problema do loader demorando demais para desaparecer.
-     */
-    @Override
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) 
-    {
-        if (!indicadorProgresso.estaVisivel()) 
-        {
-            return false;
-        }
-        
-        if (infoflags == ImageObserver.FRAMEBITS)
-        {
-            Point centroEditor = getCentroEditor();
-            repaint(indicadorProgresso.getBounds(centroEditor));
-        }
-        
-        return true;
-    }
-    
-    private void setVisibilidadeLoader(final boolean visivel)
-    {   
-        boolean podeMostrarIndicador = visivel && programaCompilado != null && !programaCompilado.isExecutando(); // mostra o loader somente na primeira execução
-        indicadorProgresso.setVisibilidade(podeMostrarIndicador);
-        if (podeMostrarIndicador) 
-        {
-            repaint();
         }
     }
 
