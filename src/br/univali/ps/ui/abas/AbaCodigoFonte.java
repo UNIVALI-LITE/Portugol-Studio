@@ -1939,13 +1939,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
         else
         {
-            if (estado == Programa.Estado.BREAK_POINT)
-            {
-                SwingUtilities.invokeLater(() -> {
-                    editor.removerHighlightsDepuracao();
-                });
-            }
-
             programa.continuar(estado);
         }
     }
