@@ -138,6 +138,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private static int numeroDocumento =1;
 
     private final ExecutorService service = Executors.newSingleThreadExecutor(); // usando apenas uma thread, todas as compilações serão enfileiradas
+    
+    private IndicadorDeProgresso indicadorProgresso;    
    
     protected AbaCodigoFonte()
     {
@@ -159,6 +161,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
+        configuraLoader();        
     }
 
     public void reseta()
@@ -546,6 +549,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         boolean divisorArvoreEditorExpandido = divisorArvoreEditor.getDividerLocation() > divisorArvoreEditor.getMaximumDividerLocation();
         boolean divisorEditorConsoleExpandido = divisorEditorConsole.getDividerLocation() > divisorEditorConsole.getMaximumDividerLocation();
         return divisorArvoreEditorExpandido && divisorEditorConsoleExpandido;
+    }
+    
+    private void configuraLoader(){
+        boolean usandoTemaDark = Configuracoes.getInstancia().isTemaDark();
+        String caminhoIcone = String.format("/br/univali/ps/ui/icones/%s/grande/load.gif", usandoTemaDark ? "Dark" : "Portugol");
+        Icon icone = new ImageIcon(getClass().getResource(caminhoIcone));
+        indicadorProgresso = new IndicadorDeProgresso(this, icone, "Processando ...");
     }
     
     private Action criaAcaoExpandirEditor()
@@ -962,6 +972,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 {
                     tarefaCompilacao = service.submit(() -> { return compilaProgramaParaExecucao(); });
                 }
+    
+                if (!tarefaCompilacao.isDone())
+                {
+                    setVisibilidadeLoader(true);
+                }
                 
                 programaAnalisado = programaCompilado = tarefaCompilacao.get();
                 inspetorDeSimbolos.setPrograma(programaCompilado);
@@ -976,6 +991,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             } 
             catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
+            }
+            finally
+            {
+                setVisibilidadeLoader(false);
             }
         }
     }
@@ -2176,6 +2195,51 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
+     @Override
+    public void paint(Graphics g) 
+    {
+        super.paint(g);
+        
+        if (indicadorProgresso != null) 
+        {
+            indicadorProgresso.desenha(g, getCentroEditor());
+        }
+    }
+
+    private Point getCentroEditor()
+    {
+        Rectangle editorBounds = editor.getBounds();
+        return new Point((int) editorBounds.getCenterX(), (int) editorBounds.getCenterY());
+    }
+    
+    /***
+     * Sobrescrevendo o mÃ©todo da classe Component para desenhar apenas a Ã¡rea do loader. Este mÃ©todo Ã© chamado sempre que um outro
+     * quadro do GIF estÃ¡ disponÃ­vel para ser desenhado. A animaÃ§Ã£o do GIF depende desse mecanismo definido em {@see ImageObserver}.
+     * Isso resolve o problema do loader demorando demais para desaparecer.
+     */
+    @Override
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) 
+    {
+        if (!indicadorProgresso.estaVisivel()) 
+        {
+            return false;
+        }
+        
+        if (infoflags == ImageObserver.FRAMEBITS)
+        {
+            Point centroEditor = getCentroEditor();
+            repaint(indicadorProgresso.getBounds(centroEditor));
+        }
+        
+        return true;
+    }
+    
+    private void setVisibilidadeLoader(final boolean visivel)
+    {   
+        indicadorProgresso.setVisibilidade(visivel);
+        paintImmediately(getBounds());
+    }
+    
     public void exibirPainelSaida()
     {
         if (editorEstaExpandido())
