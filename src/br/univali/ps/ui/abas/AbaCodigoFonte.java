@@ -973,11 +973,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     compilaProgramaParaExecucao();
                 }
     
+                JButton botao = (JButton)e.getSource();
                 while (!tarefaCompilacao.isDone()) // aguarda (sem travar a EDT) até que a compilação para execução termine. Não é exatamente uma "solução bonita" :)
                 {
                     setVisibilidadeLoader(true);
+                    botao.paintImmediately(0, 0, botao.getWidth(), botao.getHeight());
                     Thread.sleep(50);
-                    
                 }
                 
                 programaAnalisado = programaCompilado = tarefaCompilacao.get();
@@ -2670,7 +2671,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             
             acaoExecutarPasso.setEnabled(ativados);
             acaoExecutarPontoParada.setEnabled(ativados);
-
+        
         });
     }
     
