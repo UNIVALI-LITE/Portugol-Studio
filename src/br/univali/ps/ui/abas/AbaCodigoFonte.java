@@ -1098,6 +1098,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 SwingUtilities.invokeLater(() -> {
                     painelEditor.repaint();
                 });
+                
+                setaAtivacaoBotoesExecucao(true);
             }
         });
 
