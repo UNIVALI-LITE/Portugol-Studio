@@ -970,12 +970,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 setaAtivacaoBotoesExecucao(false); // desabilita execução até que a execução tenha sido finalizada ou um break point tenha sido alcançado
                 if (tarefaCompilacao == null)
                 {
-                    tarefaCompilacao = service.submit(() -> { return compilaProgramaParaExecucao(); });
+                    compilaProgramaParaExecucao();
                 }
     
-                if (!tarefaCompilacao.isDone())
+                while (!tarefaCompilacao.isDone()) // aguarda (sem travar a EDT) até que a compilação para execução termine. Não é exatamente uma "solução bonita" :)
                 {
                     setVisibilidadeLoader(true);
+                    Thread.sleep(50);
+                    
                 }
                 
                 programaAnalisado = programaCompilado = tarefaCompilacao.get();
@@ -1684,33 +1686,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
     
-    private Programa compilaProgramaParaExecucao() throws IOException
+    private void compilaProgramaParaExecucao() throws IOException
     {
-        String codigoFonte = editor.getTextArea().getText();
-        
-        LOGGER.log(Level.INFO, "COMPILANDO para execução");
-        
-        String classPath = getClassPathParaCompilacao();
-        String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
-        LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
-        LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
-        
-        Programa programa = null;
-        try 
+        if (tarefaCompilacao != null)
         {
-            programa = Portugol.compilarParaExecucao(codigoFonte, classPath, caminhoJavac);
-            LOGGER.log(Level.INFO, "Compilação finalizada");            
-        }
-        catch(ErroCompilacao erro) 
-        {
-            programa = erro.getResultadoAnalise().getPrograma();
-        }
-        finally
-        {
-            liberaMemoriaAlocada();            
+            tarefaCompilacao.cancel(true);
         }
         
-        return programa;
+        tarefaCompilacao = service.submit(() -> {
+        
+            String codigoFonte = editor.getTextArea().getText();
+        
+            LOGGER.log(Level.INFO, "COMPILANDO para execução");
+        
+            String classPath = getClassPathParaCompilacao();
+            String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
+            LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
+            LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
+            
+            Programa programa = null;
+            try 
+            {
+                if (Thread.currentThread().isInterrupted())
+                {
+                    return programa;
+                }
+                programa = Portugol.compilarParaExecucao(codigoFonte, classPath, caminhoJavac);
+                LOGGER.log(Level.INFO, "Compilação finalizada");            
+            }
+            catch(ErroCompilacao erro) 
+            {
+                programa = erro.getResultadoAnalise().getPrograma();
+            }
+            finally
+            {
+                liberaMemoriaAlocada();            
+            }
+            
+            return programa;
+        });
     }
     
     private String getClassPathParaCompilacao() throws IOException
@@ -1760,13 +1774,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         // sempre que o documento é modificado precisamos descartar o programa já compilado e compilar novamente
         if (modificado)
         {
-            LOGGER.log(Level.INFO, "Documeto modificado: {0}", modificado);
-            if (tarefaCompilacao != null) 
+            try
             {
-                LOGGER.log(Level.INFO, "Cancelando a compilação");
-                tarefaCompilacao.cancel(true);
+                compilaProgramaParaExecucao();
             }
-            tarefaCompilacao = service.submit(() -> { return compilaProgramaParaExecucao(); });
+            catch(IOException ex)
+            {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
         }
         
         SwingUtilities.invokeLater(() -> {
