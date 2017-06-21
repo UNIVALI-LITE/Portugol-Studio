@@ -123,6 +123,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             tenham sido renomeados, ou que o tipo deles tenha mudado.
         */ 
     
+        if (this.programa == programa)
+        {
+            return;
+        }
+        
         this.programa = programa;
         
         if (!model.isEmpty()) //só resconstrói a lista de símbolos se existem símbolos sendo inspecionados
