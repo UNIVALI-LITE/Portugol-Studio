@@ -169,8 +169,11 @@ class ItemDaListaParaMatriz extends ItemDaLista {
                 linha[c] = null;
             }
         }
+        
         ultimaColunaAtualizada = -1;
         ultimaLinhaAtualizada = -1;
+        
+        valoresForamInicializados = false;
     }
 
     public String getStringDimensoes() 

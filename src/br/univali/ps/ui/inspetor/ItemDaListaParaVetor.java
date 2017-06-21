@@ -86,6 +86,8 @@ class ItemDaListaParaVetor extends ItemDaLista {
         for (int c = 0; c < valores.length; c++) {
             valores[c] = null;
         }
+        
+        valoresForamInicializados = false;
     }
 
     int getUltimaColunaAtualizada() {
