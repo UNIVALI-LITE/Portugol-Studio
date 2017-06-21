@@ -83,6 +83,7 @@ import java.io.StringReader;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -106,13 +107,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private final Map<Plugin, JToggleButton> botoesPlugins = new HashMap<>();
     private final Map<Action, JButton> mapaBotoesAcoesPlugins = new HashMap<>();
 
-    private Programa programa = null;
+    private Programa programaAnalisado; // compilado somente para análise
+    private Programa programaCompilado; // compilado para execução
+    private Future<Programa> tarefaCompilacao;
 
     private boolean isPrimeiroRecuperavel = false;
     private boolean podeSalvar = false;
     private boolean usuarioCancelouSalvamento = false;
     private boolean depurando = false;
-    private boolean precisaRecompilar = true; // sempre que uma nova árvore é gerada essa flag é setada para true forçando uma nova recompilação quand o usuário executar o programa
 
     private JPanel painelTemporario;
 
@@ -135,9 +137,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private boolean redimensionouParaBaixaResolucao = false;
     private static int numeroDocumento =1;
 
-    private IndicadorDeProgresso indicadorProgresso;
-    
     private final ExecutorService service = Executors.newSingleThreadExecutor(); // usando apenas uma thread, todas as compilações serão enfileiradas
+    
+    private IndicadorDeProgresso indicadorProgresso;    
    
     protected AbaCodigoFonte()
     {
@@ -159,8 +161,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
-        configuraLoader();
-        
+        configuraLoader();        
     }
 
     public void reseta()
@@ -964,28 +965,41 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
             inspetorDeSimbolos.resetaDestaqueDosSimbolos();
 
-            service.execute(() -> {
-                try 
+            try 
+            {
+                setaAtivacaoBotoesExecucao(false); // desabilita execução até que a execução tenha sido finalizada ou um break point tenha sido alcançado
+                if (tarefaCompilacao == null)
+                {
+                    compilaProgramaParaExecucao();
+                }
+    
+                JButton botao = (JButton)e.getSource();
+                while (!tarefaCompilacao.isDone()) // aguarda (sem travar a EDT) até que a compilação para execução termine. Não é exatamente uma "solução bonita" :)
                 {
                     setVisibilidadeLoader(true);
-                    compilaProgramaParaExecucao();
-                    executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
-                    precisaRecompilar = false;
-                } catch (ErroCompilacao erroCompilacao) {
-                    SwingUtilities.invokeLater(() -> {
-                        exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
-                    });
-                    precisaRecompilar = true;
-                } catch (Exception ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                    precisaRecompilar = true;
+                    botao.paintImmediately(0, 0, botao.getWidth(), botao.getHeight());
+                    Thread.sleep(50);
                 }
-                finally {
-                    setVisibilidadeLoader(false);
-                }
-            });
+                
+                programaAnalisado = programaCompilado = tarefaCompilacao.get();
+                inspetorDeSimbolos.setPrograma(programaCompilado);
+
+                executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
+            } 
+            catch (ErroCompilacao erroCompilacao) 
+            {
+                exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
+               
+                setaAtivacaoBotoesExecucao(true); // pode executar                
+            } 
+            catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+            finally
+            {
+                setVisibilidadeLoader(false);
+            }
         }
-        
     }
     
     private void configurarAcaoExecutarPontoParada()
@@ -1082,38 +1096,39 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void propertyChange(PropertyChangeEvent pce)
             {
-                programa = (Programa) pce.getNewValue();
+                programaAnalisado = (Programa) pce.getNewValue();
                 
                 int linhas = getNumeroDeLinhas(editor.getTextArea().getText());
-                programa.setNumeroLinhas(linhas);
+                programaAnalisado.setNumeroLinhas(linhas);
                         
 
                 if (!simbolosInspecionadosJaForamCarregados) //é a primeira compilação?
                 {
-                    carregaSimbolosInspecionados(codigoFonteAtual, programa);
+                    carregaSimbolosInspecionados(codigoFonteAtual, programaAnalisado);
                     simbolosInspecionadosJaForamCarregados = true;
                 }
 
                 //sempre que a árvore for gerada é necessário verificar 
                 //quais são as linhas paráveis e adicionar pontos de parada nestas linhas
                 BuscadorDeLinhasParaveis buscadorDeLinhasParaveis = new BuscadorDeLinhasParaveis();
-                Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programa);
+                Set<Integer> linhasParaveis = buscadorDeLinhasParaveis.getLinhasParaveis(programaAnalisado);
                 editor.getTextArea().criarPontosDeParadaDesativados(linhasParaveis);
                 
-                precisaRecompilar = true;
                 salvaArquivoRecuperavel();
               
                 //Gambiarra pro botão não sumir :3
                 SwingUtilities.invokeLater(() -> {
                     painelEditor.repaint();
                 });
+                
+                setaAtivacaoBotoesExecucao(true);
             }
         });
 
         getEditor().getTextArea().addListenter((pontosDeParada) -> {
             
-            if (programa != null) {
-                programa.ativaPontosDeParada(pontosDeParada);
+            if (programaAnalisado != null) {
+                programaAnalisado.ativaPontosDeParada(pontosDeParada);
             }
 
             salvaArquivo();
@@ -1190,7 +1205,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                         if (obj instanceof NoDeclaracao)
                         {
-                            if ((programa != null && programa.isExecutando()))
+                            if ((programaCompilado != null && programaCompilado.isExecutando()))
                             {
                                 JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
                                 editor.getTextArea().requestFocusInWindow();
@@ -1638,9 +1653,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void interromper()
     {
-        if (programa != null)
+        if (programaCompilado != null)
         {
-            programa.interromper();
+            programaCompilado.interromper();
         }
     }
 
@@ -1672,45 +1687,45 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
     
-    private void setPrograma(Programa programaCompilado)
-    {
-        programa = programaCompilado;
-        inspetorDeSimbolos.setPrograma(programa);
-    }
-    
     private void compilaProgramaParaExecucao() throws IOException
     {
-
-        if (!precisaRecompilar) 
+        if (tarefaCompilacao != null)
         {
-            LOGGER.log(Level.INFO, "\t Usando o programa que já está compilado!!!");
-            return;
+            tarefaCompilacao.cancel(true);
         }
         
-        LOGGER.log(Level.INFO, "COMPILANDO para execução");
+        tarefaCompilacao = service.submit(() -> {
         
-        String codigoFonte = editor.getTextArea().getText();
+            String codigoFonte = editor.getTextArea().getText();
         
-        String classPath = getClassPathParaCompilacao();
-        String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
-        LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
-        LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
-        try 
-        {
-            setaAtivacaoBotoesExecucao(false); // desabilita execução até que a compilação tenha sido finalizada
-            Programa programaCompilado = Portugol.compilarParaExecucao(codigoFonte, classPath, caminhoJavac);
-            setPrograma(programaCompilado);
-            setaAtivacaoBotoesExecucao(true); // pode executar
-//                    acaoExecutarPontoParada.putValue(Action.LARGE_ICON_KEY, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "resultset_next.png"));
-            liberaMemoriaAlocada();
-        }
-        catch(ErroCompilacao erro) 
-        {
-            programa = erro.getResultadoAnalise().getPrograma();
-            setaAtivacaoBotoesExecucao(true); // pode executar
-            liberaMemoriaAlocada();
-        }
-       
+            LOGGER.log(Level.INFO, "COMPILANDO para execução");
+        
+            String classPath = getClassPathParaCompilacao();
+            String caminhoJavac = Caminhos.obterCaminhoExecutavelJavac();
+            LOGGER.log(Level.INFO, "Compilando no classpath: {0}", classPath);
+            LOGGER.log(Level.INFO, "Usando javac em : {0}", caminhoJavac);
+            
+            Programa programa = null;
+            try 
+            {
+                if (Thread.currentThread().isInterrupted())
+                {
+                    return programa;
+                }
+                programa = Portugol.compilarParaExecucao(codigoFonte, classPath, caminhoJavac);
+                LOGGER.log(Level.INFO, "Compilação finalizada");            
+            }
+            catch(ErroCompilacao erro) 
+            {
+                programa = erro.getResultadoAnalise().getPrograma();
+            }
+            finally
+            {
+                liberaMemoriaAlocada();            
+            }
+            
+            return programa;
+        });
     }
     
     private String getClassPathParaCompilacao() throws IOException
@@ -1757,7 +1772,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     @Override
     public void documentoModificado(boolean modificado)
     {
-        precisaRecompilar = true; // sempre que o documento é modificado precisamos descartar o programa já compilado e compilar novamente
+        // sempre que o documento é modificado precisamos descartar o programa já compilado e compilar novamente
+        if (modificado)
+        {
+            try
+            {
+                compilaProgramaParaExecucao();
+            }
+            catch(IOException ex)
+            {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+        }
         
         SwingUtilities.invokeLater(() -> {
         
@@ -1799,8 +1825,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         this.selecionar();
         usuarioCancelouSalvamento = false;
 
-        if (programa != null && programa.isExecutando()) {
-            programa.interromper();
+        if (programaCompilado != null && programaCompilado.isExecutando()) {
+            programaCompilado.interromper();
         }
 
         if (arquivoModificado())
@@ -1869,13 +1895,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void executar(Programa.Estado estado) throws InterruptedException, ErroCompilacao
     {
-        if (programa == null)
+        if (programaCompilado == null)
         {
             LOGGER.log(Level.SEVERE, "O programa está nulo, não é possível executar!");
             return;
         }
 
-        if (!programa.isExecutando())
+        if (!programaCompilado.isExecutando())
         {
             SwingUtilities.invokeLater(() -> {
                 AbaMensagemCompilador abaMensagens = painelSaida.getAbaMensagensCompilador();
@@ -1883,13 +1909,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             });
             try
             {   
-                programa.setArquivoOrigem(editor.getPortugolDocumento().getFile());
-                definirDiretorioTrabalho(programa);
+                programaCompilado.setArquivoOrigem(editor.getPortugolDocumento().getFile());
+                definirDiretorioTrabalho(programaCompilado);
 
-                if (programa.getResultadoAnalise().contemAvisos())
+                if (programaCompilado.getResultadoAnalise().contemAvisos())
                 {
                     SwingUtilities.invokeLater(() -> {
-                        exibirResultadoAnalise(programa.getResultadoAnalise());
+                        exibirResultadoAnalise(programaCompilado.getResultadoAnalise());
                     });
                 }
 
@@ -1900,7 +1926,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         {
                             telaOpcoesExecucao = new TelaOpcoesExecucao();
                         }
-                        telaOpcoesExecucao.inicializar(programa);
+                        telaOpcoesExecucao.inicializar(programaCompilado);
                         telaOpcoesExecucao.setVisible(true);
                     });
                 }
@@ -1908,21 +1934,21 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 boolean telaOpcoesExecucaoFoiCancelada = telaOpcoesExecucao != null && telaOpcoesExecucao.isCancelado();
                 if ((!Configuracoes.getInstancia().isExibirOpcoesExecucao()) || (Configuracoes.getInstancia().isExibirOpcoesExecucao() && !telaOpcoesExecucaoFoiCancelada))
                 {
-                    ResultadoAnalise resultadoAnalise = programa.getResultadoAnalise();
+                    ResultadoAnalise resultadoAnalise = programaCompilado.getResultadoAnalise();
                     if (!resultadoAnalise.contemErros())
                     {
-                        programa.adicionarObservadorExecucao(new ObservadorExecucao());
-                        programa.adicionarObservadorExecucao(editor);
-                        programa.adicionarObservadorExecucao(inspetorDeSimbolos);
+                        programaCompilado.adicionarObservadorExecucao(new ObservadorExecucao());
+                        programaCompilado.adicionarObservadorExecucao(editor);
+                        programaCompilado.adicionarObservadorExecucao(inspetorDeSimbolos);
                         
-                        painelSaida.getConsole().registrarComoEntrada(programa);
-                        painelSaida.getConsole().registrarComoSaida(programa);
+                        painelSaida.getConsole().registrarComoEntrada(programaCompilado);
+                        painelSaida.getConsole().registrarComoSaida(programaCompilado);
                         SwingUtilities.invokeLater(() -> {
                             editor.iniciarExecucao(depurando);
                         });
-                        programa.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
+                        programaCompilado.ativaPontosDeParada(editor.getLinhasComPontoDeParadaAtivados());
                         String parametros[] = telaOpcoesExecucao != null ? telaOpcoesExecucao.getParametros() : null;
-                        programa.executar(parametros, estado);
+                        programaCompilado.executar(parametros, estado);
                     }
                     else
                     {
@@ -1939,7 +1965,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
         else
         {
-            programa.continuar(estado);
+            if (estado == Programa.Estado.BREAK_POINT)
+            {
+                SwingUtilities.invokeLater(() -> {
+                    editor.removerHighlightsDepuracao();
+                });
+            }
+
+            programaCompilado.continuar(estado);
         }
     }
 
@@ -2178,6 +2211,51 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
+     @Override
+    public void paint(Graphics g) 
+    {
+        super.paint(g);
+        
+        if (indicadorProgresso != null) 
+        {
+            indicadorProgresso.desenha(g, getCentroEditor());
+        }
+    }
+
+    private Point getCentroEditor()
+    {
+        Rectangle editorBounds = editor.getBounds();
+        return new Point((int) editorBounds.getCenterX(), (int) editorBounds.getCenterY());
+    }
+    
+    /***
+     * Sobrescrevendo o mÃ©todo da classe Component para desenhar apenas a Ã¡rea do loader. Este mÃ©todo Ã© chamado sempre que um outro
+     * quadro do GIF estÃ¡ disponÃ­vel para ser desenhado. A animaÃ§Ã£o do GIF depende desse mecanismo definido em {@see ImageObserver}.
+     * Isso resolve o problema do loader demorando demais para desaparecer.
+     */
+    @Override
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) 
+    {
+        if (!indicadorProgresso.estaVisivel()) 
+        {
+            return false;
+        }
+        
+        if (infoflags == ImageObserver.FRAMEBITS)
+        {
+            Point centroEditor = getCentroEditor();
+            repaint(indicadorProgresso.getBounds(centroEditor));
+        }
+        
+        return true;
+    }
+    
+    private void setVisibilidadeLoader(final boolean visivel)
+    {   
+        indicadorProgresso.setVisibilidade(visivel);
+        paintImmediately(getBounds());
+    }
+    
     public void exibirPainelSaida()
     {
         if (editorEstaExpandido())
@@ -2213,55 +2291,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         catch (Exception e)
         {
             return "";
-        }
-    }
-
-    @Override
-    public void paint(Graphics g) 
-    {
-        super.paint(g);
-        
-        if (indicadorProgresso != null) 
-        {
-            indicadorProgresso.desenha(g, getCentroEditor());
-        }
-    }
-
-    private Point getCentroEditor()
-    {
-        Rectangle editorBounds = editor.getBounds();
-        return new Point((int) editorBounds.getCenterX(), (int) editorBounds.getCenterY());
-    }
-    
-    /***
-     * Sobrescrevendo o método da classe Component para desenhar apenas a área do loader. Este método é chamado sempre que um outro
-     * quadro do GIF está disponível para ser desenhado. A animação do GIF depende desse mecanismo definido em {@see ImageObserver}.
-     * Isso resolve o problema do loader demorando demais para desaparecer.
-     */
-    @Override
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) 
-    {
-        if (!indicadorProgresso.estaVisivel()) 
-        {
-            return false;
-        }
-        
-        if (infoflags == ImageObserver.FRAMEBITS)
-        {
-            Point centroEditor = getCentroEditor();
-            repaint(indicadorProgresso.getBounds(centroEditor));
-        }
-        
-        return true;
-    }
-    
-    private void setVisibilidadeLoader(final boolean visivel)
-    {   
-        boolean podeMostrarIndicador = visivel && programa != null && !programa.isExecutando(); // mostra o loader somente na primeira execução
-        indicadorProgresso.setVisibilidade(podeMostrarIndicador);
-        if (podeMostrarIndicador) 
-        {
-            repaint();
         }
     }
 
@@ -2481,14 +2510,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.getFilter().getSymbolTypeFilter().acceptAll();
         
         podeSalvar = false;
+        
+        tarefaCompilacao.cancel(true);
+        tarefaCompilacao = null;
+        programaAnalisado = programaCompilado = null;
 
     }
 
     private boolean podeFechar()
     {
         boolean podeFechar = !arquivoModificado() || (arquivoModificado() && !usuarioCancelouSalvamento);
-        if (programa != null)
-            podeFechar &= !programa.isExecutando();
+        if (programaCompilado != null)
+            podeFechar &= !programaCompilado.isExecutando();
                     
         return podeFechar;
     }
@@ -2565,6 +2598,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         @Override
         public void execucaoResumida() {
+            setaAtivacaoBotoesExecucao(true);
+        }
+
+        @Override
+        public void highlightLinha(int linha) {
+            // executado quando um break point ou um passo (execução passo-a-passo) é alcançado 
             setaAtivacaoBotoesExecucao(true);
         }
     }
