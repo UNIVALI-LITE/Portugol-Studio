@@ -139,7 +139,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             textRecentes.setVisible(true);
         }
         Object [] ar = files.toArray();
-        for (int i=(files.size()-1); i>0; i--) {
+        for (int i=(files.size() - 1); i >= 0; i--) {
         File recente = (File) ar[i];
             if(!recente.exists())
             {
