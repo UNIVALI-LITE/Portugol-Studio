@@ -138,7 +138,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         {
             textRecentes.setVisible(true);
         }
-        for (File recente : files) {
+        
+        Object[] recentes = files.toArray();
+        for (int i=files.size()-1; i>=0; i--) {
+            File recente = (File) recentes[i];
             if(!recente.exists())
             {
                 arquivoRemovido = true;
