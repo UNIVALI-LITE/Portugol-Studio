@@ -1107,6 +1107,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     carregaSimbolosInspecionados(codigoFonteAtual, programaAnalisado);
                     simbolosInspecionadosJaForamCarregados = true;
                 }
+                
+                inspetorDeSimbolos.setPrograma(programaAnalisado);
 
                 //sempre que a árvore for gerada é necessário verificar 
                 //quais são as linhas paráveis e adicionar pontos de parada nestas linhas
