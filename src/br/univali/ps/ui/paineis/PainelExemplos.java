@@ -456,7 +456,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelDireita.setBackground(new java.awt.Color(255, 255, 255));
         painelDireita.setLayout(new java.awt.GridBagLayout());
 
-        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         imagePane.setLayout(new java.awt.BorderLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
