@@ -44,7 +44,7 @@ public final class Configuracoes
     private final File caminhoArquivoConfiguracoes = new File(diretorioConfiguracoes, "configuracoes.properties");
     private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");
     private final File caminhoArquivosRecentes = new File(diretorioConfiguracoes, "arquivos_recentes.txt");    
-
+    
     private final File diretorioInstalacao = Caminhos.obterDiretorioInstalacao();
     private final File diretorioAjuda = resolverDiretorioAjuda();
     private final File diretorioExemplos = resolverDiretorioExemplos();
@@ -56,7 +56,17 @@ public final class Configuracoes
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
     private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "inicializador-ps.jar");
     private final File caminhoArquivosRecuperadosOriginais = new File(diretorioTemporario, "arquivos_originais.txt");
+    
+    private File caminhoUltimoDiretorio = getDiretorioUsuario();
 
+    public void setCaminhoUltimoDiretorio(File UltimoDiretorio) {
+        caminhoUltimoDiretorio = UltimoDiretorio;
+    }
+
+    public File getCaminhoUltimoDiretorio() {
+        return caminhoUltimoDiretorio;
+    }
+    
     private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
     private float tamanhoFonteEditor = 12.0f;
@@ -466,13 +476,11 @@ public final class Configuracoes
     public File getCaminhoArquivosRecentes() {
         return caminhoArquivosRecentes;
     }
-
+    
     public File getCaminhoArquivosRecuperadosOriginais() {
         return caminhoArquivosRecuperadosOriginais;
     }
-    
-    
-    
+        
     private File resolverDiretorioConfiguracoes()
     {
         File diretorioUsuario = getDiretorioUsuario();
@@ -505,7 +513,7 @@ public final class Configuracoes
 
         return diretorioUsuario;
     }
-
+   
     public File getCaminhoLogAtualizacoes()
     {
         return caminhoLogAtualizacoes;

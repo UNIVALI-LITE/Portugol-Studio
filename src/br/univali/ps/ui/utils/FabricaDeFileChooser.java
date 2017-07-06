@@ -1,6 +1,7 @@
 package br.univali.ps.ui.utils;
 
 import br.univali.ps.nucleo.Caminhos;
+import br.univali.ps.nucleo.Configuracoes;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +46,7 @@ public class FabricaDeFileChooser {
                 public void approveSelection() {
                     if (getDialogType() == JFileChooser.SAVE_DIALOG) {
                         File selectedFile = getSelectedFile();
-
+                        
                         if ((selectedFile != null) && selectedFile.exists()) {
                             int response = JOptionPane.showConfirmDialog(this, "O arquivo informado já existe.\n Deseja substituí-lo?", "Portugol Studio", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
