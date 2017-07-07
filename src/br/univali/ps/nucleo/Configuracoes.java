@@ -293,15 +293,18 @@ public final class Configuracoes
 
     public void TrocarTema() 
     {
-        if(temaPortugol.equals("Dark"))
+        if(confirmouReinicializacao())
         {
-            setTemaPortugol("Portugol");
+            if(temaPortugol.equals("Dark"))
+            {
+                setTemaPortugol("Portugol");
+            }
+            else
+            {
+                setTemaPortugol("Dark");
+            }
+            restartApplication();
         }
-        else
-        {
-            setTemaPortugol("Dark");
-        }
-        restartApplication();
     }
     
     public boolean isTemaDark()
@@ -312,8 +315,7 @@ public final class Configuracoes
     public void restartApplication()
     {
         TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
-        if(confirmouReinicializacao())
-        {
+        
             if(telaPrincipal.fecharAplicativoParaReiniciar())
             {
                 if(Caminhos.rodandoNoNetbeans())
@@ -359,7 +361,7 @@ public final class Configuracoes
                     setTemaPortugol("Dark");
                 }
             }
-        }
+        
     }
     
     private boolean confirmouReinicializacao()
