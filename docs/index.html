@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <!--
+      +-/-/-+           +-/-+        +-/-+
+      |     |           +-/-+        |   |
+      |     |                  +-/-/-/-/-/-/-/-+
+      |     |           +-/-+  +-/-/-/-/-/-/-/-+  +-/-/-/-/-+
+      |     |           |   |        |   |        +-/-/-/-/-+
+      |     |           |   |        |   |        |  |   |  |
+      |     |           |   |        |   |        +-/-/-/-/-+
+      |     |           |   |        |   |        +-/-/-/-/-+
+      |     |           |   |        |   |        |  |
+      +-/-/-+-/-/-/-+   |   |        |   |        |  |
+      |     |       |   |   |        |   |        +-/-/-/-/-+
+      +-/-/-+-/-/-/-+   +-/-+        +-/-+        +-/-/-/-/-+
+  -->
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/css/lightbox.min.css" integrity="sha256-iU/Wh1HMAs/NgpurDAu14e7S3FkllcJ5aPnpPDdnO6c=" crossorigin="anonymous" />
+    <link href='lib/onepage-scroll.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles.css"></link>
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-toggleable-md">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <img src="img/logo.svg" height="32" id="nav-logo" class="d-inline-block align-top" alt="">
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-item nav-link active" href="http://lite.acad.univali.br" target="_blank">Lite</a>
+          </li>
+        </ul>
+        
+        <form class="form-inline my-2 my-lg-0">
+          <a href="https://github.com/UNIVALI-LITE/Portugol-Studio/releases/tag/v2.6" target="_blank"><button class="btn btn-primary my-2 my-sm-0 m-2 p-3" id="nav-download">Download</button></a>
+        </form>
+      </div>
+      
+    </nav>
+    <div class="wrapper">
+      <div class="main">
+
+        <section class="header section active" data-index="1" style="position: absolute; left: 0px; top: 100%;">
+          <div class="container">
+            <img src="img/logo_nome.png" class="mt-3" height="150">
+            <h2 class="display-4 my-5"> Uma ferramenta para aprender programação </h2>
+            <div class="col-12 my-5">
+              <a href="https://github.com/UNIVALI-LITE/Portugol-Studio/releases/tag/v2.6" target="_blank"><button class="btn btn-primary my-2 my-sm-0 m-2 p-4 px-5" id="main-download" type="submit">Download</button></a>
+            </div>
+            <div class="row" class="text-center">
+              
+              <div class="col-md-4">
+                <a onclick="$('.main').moveTo(3);" href="#3">
+                  <img src="img/aprenda.svg" height="150px" class="mx-auto"></img>
+                  <h5 class="text-center">Aprenda</h5>
+                  <p class="lead text-center">Conheça nossos tutoriais e saia programando</p>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a onclick="$('.main').moveTo(4);" href="#4">
+                  <img src="img/ensine.svg" height="150px" class="mx-auto"></img>
+                  <h5 class="text-center">Ensine</h5>
+                  <p class="lead text-center">Descubra como utilizar o Portugol com seus alunos</p>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="https://github.com/UNIVALI-LITE/Portugol-Studio">
+                  <img src="img/git.svg" height="150px" class="mx-auto"></img>
+                  <h5 class="text-center">Colabore</h5>
+                  <p class="lead text-center">O Portugol é <i>opensource</i>, ajude a torná-lo melhor</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section class="recursos">
+          <div class="container">
+            <h2 class="display-4">Recursos</h2>
+            <p class="lead">O Portugol Studio é uma ferramenta para aprender a programar, voltado para os iniciantes em programação que falam o idioma português. Possui uma sintaxe fácil, diversos exemplos e materiais de apoio à aprendizagem. Também possibilita a criação de jogos e outras aplicações.</p>
+            <div class="row" class="text-center">
+              <div class="col-md-4">
+                <img src="img/interface_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Interface Didática</h5>
+                <p class="lead text-center">A tela inicial foi projetada para permitir rápido acesso às principais funcionalidades do ambiente</p>
+              </div>
+              <div class="col-md-4">
+                <img src="img/help_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Sistema de ajuda</h5>
+                <p class="lead text-center">O sistema de ajuda navegável e os demais materiais de apoio facilitam o aprendizado da ferramenta</p>
+              </div>
+              <div class="col-md-4">
+                <img src="img/tree_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Arvore Estrutural</h5>
+                <p class="lead text-center">A árvore estrutural permite identificar e compreender os elementos que compõem o programa escrito</p>
+              </div>
+              <div class="col-md-4">
+                <img src="img/code_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Editor de Código</h5>
+                <p class="lead text-center">O editor possui destaque de sintaxe, conclusão de código (para bibliotecas), suporte a temas e dobramento de código</p>
+              </div>
+              <div class="col-md-4">
+                <img src="img/debug_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Depurador</h5>
+                <p class="lead text-center">O depurador permite executar o programa passo a passo</p>
+              </div>
+              <div class="col-md-4">
+                <img src="img/game_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Suporte à Jogos</h5>
+                <p class="lead text-center">As bibliotecas do Portugol Studio permitem escrever programas mais complexos incluindo jogos com interface gráfica</p>
+              </div>
+            </div>
+            
+          </div>
+        </section>
+        <section class="aprenda">
+          <div class="container">
+            <h2 class="display-4">Aprenda</h2>
+            <hr class="my-4">
+            <div class="row">
+              <p class="lead">Separamos alguns vídeos e canais onde você pode aprender um pouco mais sobre o <b>Portugol Studio</b>.</p>
+              <div class="col-md-6">
+                <ul class="light">
+                  <li class=""><a href="https://www.youtube.com/user/portugolstudio" target="_blank">Portugol Studio</a></li>
+                  <li class=""><a href="https://www.youtube.com/user/jeanvargas2011" target="_blank">Jean Vargas</a></li>
+                  <li class=""><a href="https://www.youtube.com/channel/UCsXyoSkpyZB741fkBKeEovQ" target="_blank">HM Programming</a></li>
+                  <li class=""><a href="https://www.youtube.com/channel/UCN905ee9YVMXQXCzVHXoT9Q" target="_blank">Aprenda Rápido</a></li>
+                  <li class=""><a href="https://www.youtube.com/channel/UC5BdaEY8LLzgOz_LeCvC9Ng" target="_blank">Téc Info</a></li>
+                  <li class=""><a href="https://www.youtube.com/channel/UC5xuGX6JurlFWhnxCilKhDQ" target="_blank">Prof RMuniz</a></li>
+                  <li class=""><a href="https://www.youtube.com/user/njr1466" target="_blank">Nilson Júnior</a></li>
+                  <li class=""><a href="https://www.youtube.com/channel/UCcA-g7HREUShb8TGm3bqKlg" target="_blank">Ro-Brasil</a></li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLkjJWUhMG8iNAh8rrtExb2cdd3DJZ3r8J" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="ensine">
+          <div class="container">
+            <h2 class="display-4">Ensine</h2>
+            <hr class="my-4">
+            <div class="row" class="text-center">
+              <p class="lead mb-5">Com o <b>Portugol Studio</b>, os seus estudantes podem criar desde algorítmos simples até jogos completos, totalmente em português. A linguagem é baseada em C e PHP, e simplifica muitas funcionalidades gráficas e matemáticas</p>
+              <div class="col-md-4">
+                <img src="img/setings_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Exemplos</h5>
+                <p class="lead text-center">O Portugol Studio conta com vários exemplos que vão de entrada e saída até jogos completos</p>
+              </div>
+              <div class="col-md-4">
+                <img src="img/inspetor_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Inspetor de Variáveis</h5>
+                <p class="lead text-center">O inspetor de variáveis auxilia a entender o que está acontecendo em cada etapa da execução</p>
+              </div>
+              <div class="col-md-4">
+                <img src="img/projetor_icon.svg" height="100px" class="mx-auto"></img>
+                <h5 class="text-center">Configurações para Projetor</h5>
+                <p class="lead text-center">O editor conta com ferramentas que ajudam o professor a utilizar o Portugol em suas aulas</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+		</div>
+    
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/js/lightbox.min.js" integrity="sha256-9r7DHolfe5aoH+bUj4FEqRBq2tmaIXBxOYUZFalCjSE=" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="lib/jquery.onepage-scroll.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
