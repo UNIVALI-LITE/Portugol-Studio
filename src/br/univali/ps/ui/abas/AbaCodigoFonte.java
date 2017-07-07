@@ -790,7 +790,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 else
                 {
-                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
                     dialogoSelecaoArquivo.setSelectedFile(new File(""));
                 }
 
@@ -810,6 +809,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", "Portugol Studio", JOptionPane.WARNING_MESSAGE);
                         usuarioCancelouSalvamento = true;
                     }
+                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getCaminhoUltimoDiretorio());
                 }
                 else
                 {
