@@ -56,16 +56,7 @@ public final class Configuracoes
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
     private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "inicializador-ps.jar");
     private final File caminhoArquivosRecuperadosOriginais = new File(diretorioTemporario, "arquivos_originais.txt");
-    
     private File caminhoUltimoDiretorio = getDiretorioUsuario();
-
-    public void setCaminhoUltimoDiretorio(File UltimoDiretorio) {
-        caminhoUltimoDiretorio = UltimoDiretorio;
-    }
-
-    public File getCaminhoUltimoDiretorio() {
-        return caminhoUltimoDiretorio;
-    }
     
     private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
@@ -513,7 +504,15 @@ public final class Configuracoes
 
         return diretorioUsuario;
     }
-   
+    
+    public void setCaminhoUltimoDiretorio(File ultimoDiretorio) {
+        caminhoUltimoDiretorio = ultimoDiretorio;
+    }
+    
+    public File getCaminhoUltimoDiretorio() {
+       return caminhoUltimoDiretorio;
+    }
+
     public File getCaminhoLogAtualizacoes()
     {
         return caminhoLogAtualizacoes;
