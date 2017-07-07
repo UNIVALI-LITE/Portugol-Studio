@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
@@ -123,7 +124,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     
     public void atualizarRecentes(){
         boolean arquivoRemovido = false;
-        Queue<File> files = PortugolStudio.getInstancia().getRecentFilesQueue();
+        List<File> files = new ArrayList<>(PortugolStudio.getInstancia().getRecentFilesQueue());
+        Collections.reverse(files);
         Icon icone = imagemPastaPadrao;
         areaRecentes.removeAll();
         areaLogo.removeAll();
@@ -456,7 +458,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelDireita.setBackground(new java.awt.Color(255, 255, 255));
         painelDireita.setLayout(new java.awt.GridBagLayout());
 
-        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         imagePane.setLayout(new java.awt.BorderLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

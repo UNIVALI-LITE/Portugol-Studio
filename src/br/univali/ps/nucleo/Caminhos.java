@@ -35,10 +35,18 @@ public final class Caminhos
     {
         if (!rodandoNoNetbeans())
         {
-            CodeSource localCodigo = Caminhos.class.getProtectionDomain().getCodeSource();
-            URL local = localCodigo.getLocation();
+            try
+            {
+                CodeSource localCodigo = Caminhos.class.getProtectionDomain().getCodeSource();
+                URL local = localCodigo.getLocation();
 
-            return new File(URI.create(local.toExternalForm())).getParentFile().getParentFile();
+                return new File(URI.create(local.toExternalForm())).getParentFile().getParentFile();
+            }
+            catch(Exception ex)
+            {
+                LOGGER.log(Level.SEVERE, null, ex);
+                return new File(".");
+            }
         }
         else
         {

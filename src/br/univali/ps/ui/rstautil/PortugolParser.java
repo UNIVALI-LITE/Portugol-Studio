@@ -181,9 +181,8 @@ public class PortugolParser extends AbstractParser
         try 
         {
             String codigo = documento.getText(0, documento.getLength());
-            if (!codigo.isEmpty() && !codigo.equals(ultimoCodigoAnalisado)) // não compila para análise se o codigo é igual ao último código 'parseado'
+            if (!codigo.isEmpty()) 
             {
-                ultimoCodigoAnalisado = codigo;
                 
                 Programa programa = Portugol.compilarParaAnalise(codigo);
 
@@ -191,8 +190,11 @@ public class PortugolParser extends AbstractParser
                 {
                     notificarErrosAvisos(programa.getResultadoAnalise(), documento, resultado);
                 }
-
-                support.firePropertyChange(PROPRIEDADE_PROGRAMA_COMPILADO, null, programa);
+                if(!codigo.equals(ultimoCodigoAnalisado)) // não precisa atualizar outros componentes se o código continua o mesmo
+                {
+                    ultimoCodigoAnalisado = codigo;
+                    support.firePropertyChange(PROPRIEDADE_PROGRAMA_COMPILADO, null, programa);
+                }
             }
         }
         catch (ErroCompilacao erroCompilacao) 

@@ -77,7 +77,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             int totalDeColunas = ((ItemDaListaParaMatriz) itemDaLista).getColunas();
             int totalDeLinhas = ((ItemDaListaParaMatriz) itemDaLista).getLinhas();
             int margemEsquerda = MARGEM * 2;
-            int margemSuperior = getFontMetrics(fonteCabecalho).getAscent() + MARGEM;
+            int margemSuperior = getMargemSuperior();
             int colunaInicial = calculaRolagemDasColunas(margemEsquerda);
             int linhaInicial = calculaRolagemDasLinhas();
 
@@ -85,6 +85,13 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         }
     }
 
+    private int getMargemSuperior()
+    {
+        Font fonte = getFonte(TipoFonte.CABECALHO);
+        FontMetrics fontMetrics = getFontMetrics(fonte);
+        return fontMetrics.getAscent() + MARGEM;
+    }
+    
     private int calculaRolagemDasLinhas() {
         
         Font fonteNormal = getFonte(TipoFonte.NORMAL);
@@ -96,7 +103,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         int ultimaLinhaAtualizada = item.getUltimaLinhaAtualizada();
         int rolavemVertical = 0;//conta quantas células é preciso deslocar para que a última célula atualizada fique visível no componente
         Insets insets = getInsets();
-        int alturaDoComponente = getHeight() - (insets.top + insets.bottom);
+        int alturaDoComponente = getHeight() - (insets.top + insets.bottom) - getMargemSuperior();
         int indiceDaLinha = 1;//pula o cabeçalho
         do {
             yDaLinha += alturaDaLinha;
