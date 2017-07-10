@@ -53,7 +53,7 @@
 
         <section id="header">
           <div class="container">
-            <img src="img/logo_nome.png" class="mt-3" height="150">
+            <img src="img/logo_nome.png" class="mt-3 img-fluid" height="150">
             <h2 class="display-4 my-5"> Uma ferramenta para aprender programação </h2>
             <div class="col-12 my-5">
               <a href="https://github.com/UNIVALI-LITE/Portugol-Studio/releases/tag/v2.6" target="_blank"><button class="btn btn-primary my-2 my-sm-0 m-2 p-4 px-5" id="main-download" type="submit">Download</button></a>
@@ -61,14 +61,14 @@
             <div class="row" class="text-center">
               
               <div class="col-md-4">
-                <a onclick="$('.main').moveTo(3);" href="#3">
+                <a class="goto" data-to="#aprenda" href="#">
                   <img src="img/aprenda.svg" height="150px" class="mx-auto"></img>
                   <h5 class="text-center">Aprenda</h5>
                   <p class="lead text-center">Conheça nossos tutoriais e saia programando</p>
                 </a>
               </div>
               <div class="col-md-4">
-                <a onclick="$('.main').moveTo(4);" href="#4">
+                <a  class="goto" data-to="#ensine" href="#">
                   <img src="img/ensine.svg" height="150px" class="mx-auto"></img>
                   <h5 class="text-center">Ensine</h5>
                   <p class="lead text-center">Descubra como utilizar o Portugol com seus alunos</p>
@@ -85,7 +85,7 @@
           </div>
           
         </section>
-        <div class="arrow" data-to="#recursos"><img src="img/arrow.svg" width="50" /></div>
+        <div class="arrow goto" data-to="#recursos"><img src="img/arrow.svg" width="50" /></div>
         <section id="recursos">
           <div class="container">
             <h2 class="display-4">Recursos</h2>
@@ -126,7 +126,7 @@
           </div>
           
         </section>
-        <div class="arrow" data-to="#aprenda"><img src="img/arrow.svg" width="50" /></div>
+        <div class="arrow goto" data-to="#aprenda"><img src="img/arrow.svg" width="50" /></div>
         <section id="aprenda">
           <div class="container">
             <h2 class="display-4">Aprenda</h2>
@@ -145,14 +145,11 @@
                   <li class=""><a href="https://www.youtube.com/channel/UCcA-g7HREUShb8TGm3bqKlg" target="_blank">Ro-Brasil</a></li>
                 </ul>
               </div>
-              <div class="col-md-6">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLkjJWUhMG8iNAh8rrtExb2cdd3DJZ3r8J" frameborder="0" allowfullscreen></iframe>
-              </div>
             </div>
           </div>
           
         </section>
-        <div class="arrow" data-to="#ensine"><img src="img/arrow.svg" width="50" /></div>
+        <div class="arrow goto" data-to="#ensine"><img src="img/arrow.svg" width="50" /></div>
         <section id="ensine">
           <div class="container">
             <h2 class="display-4">Ensine</h2>
