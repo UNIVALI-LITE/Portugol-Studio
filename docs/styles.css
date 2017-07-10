@@ -80,6 +80,11 @@ h1,  h2, h3, h4, h5{
 	margin-right: auto;
 	display: block;
 }
+#aprenda img{
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 10px solid var(--dark);
+}
 #hero{
   background: var(--main-color); /* For browsers that do not support gradients */
   background-attachment: fixed;
