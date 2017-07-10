@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/css/lightbox.min.css" integrity="sha256-iU/Wh1HMAs/NgpurDAu14e7S3FkllcJ5aPnpPDdnO6c=" crossorigin="anonymous" />
-    <link href='lib/onepage-scroll.css' rel='stylesheet' type='text/css'>
+    
     <link rel="stylesheet" href="styles.css"></link>
   </head>
   <body>
@@ -51,7 +51,7 @@
     <div class="wrapper">
       <div class="main">
 
-        <section class="header section active" data-index="1" style="position: absolute; left: 0px; top: 100%;">
+        <section id="header">
           <div class="container">
             <img src="img/logo_nome.png" class="mt-3" height="150">
             <h2 class="display-4 my-5"> Uma ferramenta para aprender programação </h2>
@@ -83,48 +83,51 @@
               </div>
             </div>
           </div>
+          
         </section>
-        
-        <section class="recursos">
+        <div class="arrow" data-to="#recursos"><img src="img/arrow.svg" width="50" /></div>
+        <section id="recursos">
           <div class="container">
             <h2 class="display-4">Recursos</h2>
             <p class="lead">O Portugol Studio é uma ferramenta para aprender a programar, voltado para os iniciantes em programação que falam o idioma português. Possui uma sintaxe fácil, diversos exemplos e materiais de apoio à aprendizagem. Também possibilita a criação de jogos e outras aplicações.</p>
             <div class="row" class="text-center">
               <div class="col-md-4">
-                <img src="img/interface_icon.svg" height="100px" class="mx-auto"></img>
+                <img src="img/interface_icon.svg" height="80px" class="mx-auto"></img>
                 <h5 class="text-center">Interface Didática</h5>
                 <p class="lead text-center">A tela inicial foi projetada para permitir rápido acesso às principais funcionalidades do ambiente</p>
               </div>
               <div class="col-md-4">
-                <img src="img/help_icon.svg" height="100px" class="mx-auto"></img>
+                <img src="img/help_icon.svg" height="80px" class="mx-auto"></img>
                 <h5 class="text-center">Sistema de ajuda</h5>
                 <p class="lead text-center">O sistema de ajuda navegável e os demais materiais de apoio facilitam o aprendizado da ferramenta</p>
               </div>
               <div class="col-md-4">
-                <img src="img/tree_icon.svg" height="100px" class="mx-auto"></img>
+                <img src="img/tree_icon.svg" height="80px" class="mx-auto"></img>
                 <h5 class="text-center">Arvore Estrutural</h5>
                 <p class="lead text-center">A árvore estrutural permite identificar e compreender os elementos que compõem o programa escrito</p>
               </div>
               <div class="col-md-4">
-                <img src="img/code_icon.svg" height="100px" class="mx-auto"></img>
+                <img src="img/code_icon.svg" height="80px" class="mx-auto"></img>
                 <h5 class="text-center">Editor de Código</h5>
                 <p class="lead text-center">O editor possui destaque de sintaxe, conclusão de código (para bibliotecas), suporte a temas e dobramento de código</p>
               </div>
               <div class="col-md-4">
-                <img src="img/debug_icon.svg" height="100px" class="mx-auto"></img>
+                <img src="img/debug_icon.svg" height="80px" class="mx-auto"></img>
                 <h5 class="text-center">Depurador</h5>
                 <p class="lead text-center">O depurador permite executar o programa passo a passo</p>
               </div>
               <div class="col-md-4">
-                <img src="img/game_icon.svg" height="100px" class="mx-auto"></img>
+                <img src="img/game_icon.svg" height="80px" class="mx-auto"></img>
                 <h5 class="text-center">Suporte à Jogos</h5>
                 <p class="lead text-center">As bibliotecas do Portugol Studio permitem escrever programas mais complexos incluindo jogos com interface gráfica</p>
               </div>
             </div>
             
           </div>
+          
         </section>
-        <section class="aprenda">
+        <div class="arrow" data-to="#aprenda"><img src="img/arrow.svg" width="50" /></div>
+        <section id="aprenda">
           <div class="container">
             <h2 class="display-4">Aprenda</h2>
             <hr class="my-4">
@@ -147,8 +150,10 @@
               </div>
             </div>
           </div>
+          
         </section>
-        <section class="ensine">
+        <div class="arrow" data-to="#ensine"><img src="img/arrow.svg" width="50" /></div>
+        <section id="ensine">
           <div class="container">
             <h2 class="display-4">Ensine</h2>
             <hr class="my-4">
@@ -180,7 +185,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/js/lightbox.min.js" integrity="sha256-9r7DHolfe5aoH+bUj4FEqRBq2tmaIXBxOYUZFalCjSE=" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="lib/jquery.onepage-scroll.js"></script>
+		
     <script src="script.js"></script>
   </body>
 </html>
