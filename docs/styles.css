@@ -199,7 +199,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-
+#os{
+  display: block;
+  font-size: 1rem;
+}
 .arrow {
   left: 50%;
   margin-left: -25px;
