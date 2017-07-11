@@ -20,7 +20,11 @@ body{
   --dark: #273238;
   --white: #EFF0F2;
 }
+.btn{
+  cursor: pointer;
+}
 a.nav-item {
+  cursor: pointer;
   font-family: 'Comfortaa';
   font-size: 14px;
 }
@@ -35,6 +39,7 @@ a.nav-item {
   padding: 0.5rem 1rem;
 }
 #main-download{
+  cursor: pointer;
   font-size: 30px;
 }
 .container {
@@ -121,6 +126,7 @@ section{
 }
 
 a, a:focus{
+  cursor: pointer;
   color:var(--white);
   text-decoration: none;
 }
@@ -164,16 +170,17 @@ b{
   border: 1px solid var(--main-color);
 }
 #hero-button {
-    transition: 1s ease;
-    text-decoration: none;
-    font-size: 30px;
-    display: inline-block;
-    text-decoration: none;
-    background-color: var(--darkest);
-    color: var(--secondary-color);
-    border: solid 2px var(--secondary-color);
-    margin-top: 2.5rem;
-    padding: 1.2rem;
+  cursor: pointer;
+  transition: 1s ease;
+  text-decoration: none;
+  font-size: 30px;
+  display: inline-block;
+  text-decoration: none;
+  background-color: var(--darkest);
+  color: var(--secondary-color);
+  border: solid 2px var(--secondary-color);
+  margin-top: 2.5rem;
+  padding: 1.2rem;
 }
 #hero-button:hover {
     transition: 1s ease;
@@ -204,6 +211,7 @@ body {
   font-size: 1rem;
 }
 .arrow {
+  cursor: pointer;
   left: 50%;
   margin-left: -25px;
   margin-top: -50px;
