@@ -130,6 +130,10 @@ a, a:focus{
   color:var(--white);
   text-decoration: none;
 }
+#lnk a:focus, #aprenda a:focus{
+  color:var(--main-color);
+  outline: none;
+}
 a:hover, a:active{
   color:var(--main-color);
   text-decoration: none;
