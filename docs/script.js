@@ -80,6 +80,7 @@ function testOS(){
     link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6/portugol-studio.2.6.osx.zip'
   }else{
     path += 'lin'
+    $('.outras').append('(x32)')
   }
   $('.download-link').attr('href',link)
   path += '.svg'
