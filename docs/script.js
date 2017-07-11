@@ -108,7 +108,7 @@ function swapC() {
   if(is){
     op = 1
   }else{
-    op = 0.5
+    op = 0.2
   }
   is = !is
   window.setTimeout(function() { swapC() }, 1000)
