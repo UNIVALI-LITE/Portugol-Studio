@@ -972,12 +972,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 {
                     compilaProgramaParaExecucao();
                 }
-    
-                JButton botao = (JButton)e.getSource();
+                JButton botao = null;
+                if(e.getSource() instanceof JButton)
+                {
+                    botao = (JButton)e.getSource();                    
+                }
                 while (!tarefaCompilacao.isDone()) // aguarda (sem travar a EDT) até que a compilação para execução termine. Não é exatamente uma "solução bonita" :)
                 {
                     setVisibilidadeLoader(true);
-                    botao.paintImmediately(0, 0, botao.getWidth(), botao.getHeight());
+                    if(botao!=null){
+                        botao.paintImmediately(0, 0, botao.getWidth(), botao.getHeight());
+                    }
                     Thread.sleep(50);
                 }
                 
