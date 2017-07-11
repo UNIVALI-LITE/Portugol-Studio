@@ -75,7 +75,7 @@ function testOS(){
   if(os === 'Windows'){
     path += 'win'
     link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6/portugol-studio.2.6.windows.exe'
-  }else if(os === 'Mac OS'){
+  }else if(os === 'Mac OS X'){
     path += 'mac'
     link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6/portugol-studio.2.6.osx.zip'
   }else{

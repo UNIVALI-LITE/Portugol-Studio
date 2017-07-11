@@ -209,3 +209,39 @@ body {
   margin-top: -50px;
   top: -20px;
 }
+
+.social:hover {
+     -webkit-transform: scale(1.1);
+     -moz-transform: scale(1.1);
+     -o-transform: scale(1.1);
+ }
+ .social {
+     -webkit-transform: scale(0.8);
+     /* Browser Variations: */
+
+     -moz-transform: scale(0.8);
+     -o-transform: scale(0.8);
+     -webkit-transition-duration: 0.5s;
+     -moz-transition-duration: 0.5s;
+     -o-transition-duration: 0.5s;
+ }
+
+/*
+    Multicoloured Hover Variations
+*/
+
+ #social-fb:hover {
+     fill: #3B5998;
+ }
+ #social-tw:hover {
+     fill: #4099FF;
+ }
+ #social-yt:hover {
+     fill: #d34836;
+ }
+ #social-em:hover {
+     fill: #f39c12;
+ }
+ #social-dc:hover {
+     fill: #f39c12;
+ }
