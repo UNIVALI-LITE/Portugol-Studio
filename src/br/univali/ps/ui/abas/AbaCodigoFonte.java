@@ -752,12 +752,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     {
         filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
 
-        JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserSalvamento();
+        JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserSalvamento();   
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
         dialogoSelecaoArquivo.addChoosableFileFilter(filtroPrograma);
-
+        
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
         return dialogoSelecaoArquivo;
     }
@@ -790,7 +790,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 else
                 {
-                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
                     dialogoSelecaoArquivo.setSelectedFile(new File(""));
                 }
 
@@ -810,11 +809,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", "Portugol Studio", JOptionPane.WARNING_MESSAGE);
                         usuarioCancelouSalvamento = true;
                     }
+                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getCaminhoUltimoDiretorio());
                 }
                 else
                 {
                     usuarioCancelouSalvamento = true;
                 }
+                
             }
         };
 
@@ -1512,6 +1513,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnSalvar.setHideActionText(true);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
         barraFerramentas.add(btnSalvar);
 
         btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save_as.png"))); // NOI18N
@@ -1657,6 +1663,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setVisible(false);
         desativouRecuperados = true;
     }//GEN-LAST:event_fecharRecuperadosActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void interromper()
     {
