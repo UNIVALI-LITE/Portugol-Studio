@@ -787,11 +787,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     File arquivoAtual = editor.getPortugolDocumento().getFile();
                     dialogoSelecaoArquivo.setCurrentDirectory(arquivoAtual.getParentFile());
                     dialogoSelecaoArquivo.setSelectedFile(arquivoAtual);
+                    Configuracoes.getInstancia().setCaminhoUltimoDiretorio(new File(dialogoSelecaoArquivo.getCurrentDirectory().getAbsolutePath()));
                 }
                 else
                 {
-                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
+                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getCaminhoUltimoDiretorio());
                     dialogoSelecaoArquivo.setSelectedFile(new File(""));
+                    Configuracoes.getInstancia().setCaminhoUltimoDiretorio(new File(dialogoSelecaoArquivo.getCurrentDirectory().getAbsolutePath()));
                 }
 
                 if (dialogoSelecaoArquivo.showSaveDialog(getPainelTabulado()) == JFileChooser.APPROVE_OPTION)
@@ -810,10 +812,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", "Portugol Studio", JOptionPane.WARNING_MESSAGE);
                         usuarioCancelouSalvamento = true;
                     }
+                    Configuracoes.getInstancia().setCaminhoUltimoDiretorio(new File(dialogoSelecaoArquivo.getCurrentDirectory().getAbsolutePath()));
                 }
                 else
                 {
                     usuarioCancelouSalvamento = true;
+                    Configuracoes.getInstancia().setCaminhoUltimoDiretorio(new File(dialogoSelecaoArquivo.getCurrentDirectory().getAbsolutePath()));
                 }
             }
         };
