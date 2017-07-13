@@ -129,7 +129,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);
                 }
-                Configuracoes.getInstancia().setCaminhoUltimoDiretorio(new File(dialogoSelecaoArquivo.getCurrentDirectory().getAbsolutePath()));
+                Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
             }
         };
 
