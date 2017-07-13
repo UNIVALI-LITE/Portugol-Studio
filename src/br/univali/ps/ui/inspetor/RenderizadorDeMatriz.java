@@ -98,6 +98,11 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         
         ItemDaListaParaMatriz item = ((ItemDaListaParaMatriz) itemDaLista);
         int totalDeLinhas = item.getLinhas();
+        
+        if (totalDeLinhas <= 1) {
+            return 0; // não tem rolagem vertical se a matriz tem apenas uma linha - fix #274
+        }
+        
         int alturaDaLinha = getFontMetrics(fonteNormal).getHeight();
         int yDaLinha = alturaDaLinha + getAlturaDoCabecalho();// já inicia do cabeçalho em diante
         int ultimaLinhaAtualizada = item.getUltimaLinhaAtualizada();
