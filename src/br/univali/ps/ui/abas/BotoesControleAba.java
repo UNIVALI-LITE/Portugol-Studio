@@ -75,7 +75,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     private JFileChooser criarSeletorArquivo() {
         JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserAbertura();
-        dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getDiretorioUsuario());
+        dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getCaminhoUltimoDiretorio());
         dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
         dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
 
@@ -129,6 +129,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);
                 }
+                Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
             }
         };
 
