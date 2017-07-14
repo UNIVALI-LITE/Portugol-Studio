@@ -2,7 +2,7 @@
 
 ## Nosso Compromisso
 
-No interesse de promover um ambiente aberto e acolhedor, nos como colaboradores e mantenedores comprometidos a fazer participação em nosso projeto e nossa comunidade uma experiência livre de assédio para todos, independentemente da idade, estatura, deficiência, etnia, identidade de gênero e expressão, nivel de experiência, nacionalidade, aparência pessoal, raça, religião ou identidade sexual e orientação.
+No interesse de promover um ambiente aberto e acolhedor, nós como colaboradores e mantenedores comprometidos a fazer participação em nosso projeto e nossa comunidade uma experiência livre de assédio para todos, independentemente da idade, estatura, deficiência, etnia, identidade de gênero e expressão, nivel de experiência, nacionalidade, aparência pessoal, raça, religião ou identidade sexual e orientação.
 
 ## Nossos Padrões
 
