@@ -25,10 +25,10 @@ Você pode criar uma issue [aqui](https://github.com/UNIVALI-LITE/Portugol-Studi
 
 ### Código Geral
 
-* Terminar arquivos com uma nova linha.
+* Terminar arquivos com uma linha em branco.
 * Evite importar classes que não serão utilizadas.
 * Use um simples `return` para retornar explícitamente o fim de uma função.
-  * Não usar `return null`, `return undefined`, `null`, ou `undefined`
+  * Não usar `return null` ou `null`
 
 ### Mensagens de Commit do Git
 
