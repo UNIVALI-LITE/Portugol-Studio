@@ -42,6 +42,13 @@ a.nav-item {
   cursor: pointer;
   font-size: 30px;
 }
+
+iframe{
+  width: 100%;
+  height: 500px;
+  overflow: auto;
+}
+
 .container {
     position: relative;
     margin: 0 auto 0;
