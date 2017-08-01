@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GrayFilter;
 import javax.swing.Icon;
@@ -68,7 +69,7 @@ public class PSTextArea extends RSyntaxTextArea {
                 //remove pontosdeParada que estavam em linhas deletadas
                 while (iterator.hasNext()) {
                     IconePontoDeParada iconePontoDeParada = iterator.next();
-                    if(iconePontoDeParada.markerOffsetMudou() && iconePontoDeParada.estaAtivado())
+                    if(iconePontoDeParada.linhaMudou() && iconePontoDeParada.estaAtivado())
                     {
                         Gutter gutter = RSyntaxUtilities.getGutter(PSTextArea.this);
                         gutter.removeTrackingIcon(iconePontoDeParada.getGutterInfo());
@@ -140,6 +141,15 @@ public class PSTextArea extends RSyntaxTextArea {
 
         boolean markerOffsetMudou() {
             return gutterInfo.getMarkedOffset() != offsetOriginal;
+        }
+        
+        boolean linhaMudou()
+        {            
+            try {
+                return getLineOfOffset(gutterInfo.getMarkedOffset()) != getLineOfOffset(offsetOriginal);
+            } catch (BadLocationException ex) {
+                return true;
+            }
         }
         
         public GutterIconInfo getGutterInfo() {
