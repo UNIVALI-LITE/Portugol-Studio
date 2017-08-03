@@ -7,12 +7,10 @@ $(document).ready(function () {
   $('#nav-download').hide()
   swapC()
 })
-
+var unknown = ' - '
+var os = unknown
 function testOS () {
-  // system
-  var unknown = ' - '
   var nAgt = navigator.userAgent
-  var os = unknown
   var clientStrings = [
     {s: 'Windows 10', r: /(Windows 10.0|Windows NT 10.0)/},
     {s: 'Windows 8.1', r: /(Windows 8.1|Windows NT 6.3)/},
@@ -91,6 +89,15 @@ function swapC () {
   is = !is
   window.setTimeout(function () { swapC() }, 1000)
 }
+
+$('.download-link').click(function () {
+  ga('send', {
+    hitType: 'event',
+    eventCategory: 'download',
+    eventAction: 'click',
+    eventLabel: os
+  })
+})
 
 $('.goto').click(function () {
   var height = $(this.dataset.to).offset().top
