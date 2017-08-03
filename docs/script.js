@@ -95,7 +95,8 @@ $('.download-link').click(function () {
     hitType: 'event',
     eventCategory: 'download',
     eventAction: 'click',
-    eventLabel: os
+    eventLabel: os,
+    eventValue: 1
   })
 })
 
