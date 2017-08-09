@@ -1,6 +1,5 @@
 package br.univali.ps.nucleo;
 
-import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -8,8 +7,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -333,12 +334,14 @@ public final class Configuracoes
                         System.out.println("nao deu");
                         return;
                     }
-
+                    RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+                    List<String> arguments = runtimeMxBean.getInputArguments();
 
                     /* Build command: java -jar application.jar */
                     final ArrayList<String> command = new ArrayList<>();
                     command.add(javaBin);
                     command.add("-jar");
+                    command.addAll(arguments);
                     command.add(currentJar.getCanonicalPath());
                     final ProcessBuilder builder = new ProcessBuilder(command);
                     builder.directory(this.getDiretorioInstalacao());            
