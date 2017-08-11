@@ -16,6 +16,7 @@ import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterListener;
+import com.alee.laf.button.WebButtonStyle;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
@@ -300,7 +301,7 @@ public class WeblafUtils {
         WebTableStyle.showHorizontalLines = false;
         WebTableStyle.showVerticalLines = false;
     }
-
+    
     public static void instalaWeblaf() {
         if (!weblafEstaInstalado()) {
 //            Icon info = new ImageIcon();
@@ -346,15 +347,16 @@ public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrin
         botao.setPreferredWidth(size);
         configurarToogleBotao(botao, corBgPrincipal, corTexto, corBgHover, corTextoHover, margin);
     }
-    
-    public  static void configurarBotao(WebButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin){
-        
+    public  static void configurarBotao(WebButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin, boolean round){
         botao.setMargin (margin);
 //        botao.setFontSize ( 20 );
-        botao.setRound ( 0 );
         botao.setShadeWidth ( 0 );
+        if(!round){
+            botao.setRound ( 0 );
+            botao.setDrawSides ( false, false, false, false );
+        }
         botao.setInnerShadeWidth ( 0 );
-        botao.setDrawSides ( false, false, false, false );
+        botao.setRound(WebButtonStyle.round);
         botao.setForeground ( corTexto );
         botao.setSelectedForeground (corTextoHover);
         botao.setTopBgColor (corBgPrincipal);
@@ -376,8 +378,10 @@ public  static void configurarToogleBotao(WebToggleButton botao, Color corBgPrin
                 botao.setBottomBgColor(corBgPrincipal);
                 botao.setForeground(corTexto);
             }
-            
         });
+    }
+    public  static void configurarBotao(WebButton botao, Color corBgPrincipal, Color corTexto, Color corBgHover, Color corTextoHover,  Integer margin){
+        configurarBotao(botao, corBgPrincipal, corTexto, corBgHover, corTextoHover, margin, true);
     }
     public  static void configurarBotao(WebButton botao, Color corBgPrincipal, Color corTexto, Integer margin){
         configurarBotao(botao, corBgPrincipal, corTexto, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, margin);
