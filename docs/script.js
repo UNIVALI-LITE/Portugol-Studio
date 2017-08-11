@@ -48,13 +48,13 @@ function testOS () {
   }
 
   var path = 'img/'
-  var link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6/portugol-studio.2.6.linux.x64.zip'
-  if (os.indexOf('Windows')!==-1) {
+  var link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6.1/portugol-studio.2.6.1.linux.x64.zip'
+  if (os.indexOf('Windows') !== -1) {
     path += 'win'
-    link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6/portugol-studio.2.6.windows.exe'
+    link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6.1/portugol-studio.2.6.1.windows.exe'
   } else if (os === 'Mac OS X') {
     path += 'mac'
-    link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6/portugol-studio.2.6.osx.zip'
+    link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6.1/portugol-studio.2.6.1.osx.zip'
   } else {
     path += 'lin'
     $('.outras').append('(x32)')
@@ -94,12 +94,20 @@ $('.download-link').click(function () {
   ga('send', {
     hitType: 'event',
     eventCategory: 'download',
-    eventAction: 'click',
+    eventAction: '2.6.1',
     eventLabel: os,
     eventValue: 1
   })
 })
-
+$('.outra-plataforma').click(function () {
+  ga('send', {
+    hitType: 'event',
+    eventCategory: 'download',
+    eventAction: '2.6.1',
+    eventLabel: 'Para Outra Plataforma',
+    eventValue: 1
+  })
+})
 $('.goto').click(function () {
   var height = $(this.dataset.to).offset().top
   $('html, body').animate({scrollTop: height}, 'ease')
