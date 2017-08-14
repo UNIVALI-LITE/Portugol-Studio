@@ -116,6 +116,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         rotuloBitRock = new javax.swing.JLabel();
         labellicensa = new javax.swing.JLabel();
 
+        setRequestFocusEnabled(false);
         setLayout(new java.awt.BorderLayout());
 
         mainpanel.setLayout(new java.awt.BorderLayout());

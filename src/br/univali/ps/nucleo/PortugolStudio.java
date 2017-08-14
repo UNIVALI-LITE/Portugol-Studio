@@ -20,6 +20,7 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.Sobre;
 import br.univali.ps.ui.telas.TelaAtalhos;
+import br.univali.ps.ui.telas.TelaRelatarBug;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.window.OutsidePanel;
 import java.awt.Dimension;
@@ -90,6 +91,7 @@ public final class PortugolStudio
     private boolean atualizandoInicializador = false;
 
     private JDialog telaSobre = null;
+    private JDialog telaRelatarBug = null;
     private OutsidePanel outSidePanel;
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
@@ -604,7 +606,7 @@ public final class PortugolStudio
 
     private void processarParametroModoDepuracao(final String[] parametros)
     {
-        setDepurando(parametroExiste("-debug", parametros));
+        setDepurando(true);
     }
 
     private boolean parametroExiste(String nome, String[] parametros)
@@ -922,6 +924,18 @@ public final class PortugolStudio
         telaSobre.setLocationRelativeTo(null);
 
         return telaSobre;
+    }
+    public JDialog getTelaRelatarBug()
+    {
+        if (telaRelatarBug == null)
+        {
+            telaRelatarBug = new TelaCustomBorder(new TelaRelatarBug(), "Relatar Bug");
+            
+        }
+
+        telaRelatarBug.setLocationRelativeTo(null);
+
+        return telaRelatarBug;
     }
 
     public JDialog getTelaAtalhosTeclado()
