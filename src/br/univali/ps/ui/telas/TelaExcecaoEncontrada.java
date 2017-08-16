@@ -5,17 +5,67 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JDialog;
+
 /**
  *
  * @author Adson Esteves
  */
-public class TelaExcecaoEncontrada extends javax.swing.JPanel {
+public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeable{
 
     /**
      * Creates new form TelaExcecaoEncontrada
      */
-    public TelaExcecaoEncontrada() {
+    
+    private JDialog telaCustomBorder;
+    
+    public TelaExcecaoEncontrada(JDialog telaPrincipal) {
         initComponents();
+        configurarCores();
+        telaCustomBorder = telaPrincipal;
+        areaTextoStackTrace.setEditable(false);
+        scrollStackTrace.setVisible(false);
+    }
+
+    @Override
+    public void configurarCores() {
+        paineInferior.setBackground(ColorController.FUNDO_ESCURO);
+        jLabel1.setForeground(ColorController.COR_LETRA_TITULO);
+        painelPrincipal.setBackground(ColorController.FUNDO_CLARO);
+        painelExplicacao.setBackground(ColorController.FUNDO_CLARO);
+        erroTitulo.setBackground(ColorController.FUNDO_MEDIO);
+        labelTitulo.setForeground(ColorController.COR_LETRA);
+        erroDesc.setBackground(ColorController.FUNDO_CLARO);
+        labelDescricaoReport.setForeground(ColorController.COR_LETRA);
+        painelStackTrace.setBackground(ColorController.FUNDO_MEDIO);
+        painelBotao.setBackground(ColorController.FUNDO_CLARO);
+        areaTextoStackTrace.setBackground(ColorController.FUNDO_MEDIO);
+        areaTextoStackTrace.setForeground(ColorController.COR_LETRA);
+        if(WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configurarBotao(botaoAbrirStack, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(botaoCopiarErro, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(botaoReportarBug, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configuraWebLaf(scrollStackTrace);
+        }
+    }
+    
+    public static void main(String[] args) {
+        WeblafUtils.instalaWeblaf();
+        TelaCustomBorder main = new TelaCustomBorder("Erro Encontrado");
+        TelaExcecaoEncontrada tee = new TelaExcecaoEncontrada(main);
+        main.setPanel(tee);
+        tee.areaTextoStackTrace.setText("Exception in thread \"main\" java.lang.NullPointerException\n" +
+"	at br.univali.ps.ui.inspetor.InspetorDeSimbolos.main(InspetorDeSimbolos.java:765)\n" +
+"C:\\Users\\Adson Esteves\\Documents\\Github\\Portugol-Studio\\nbproject\\build-impl.xml:1116: The following error occurred while executing this line:\n" +
+"C:\\Users\\Adson Esteves\\Documents\\Github\\Portugol-Studio\\nbproject\\build-impl.xml:830: Java returned: 1");
+        main.setVisible(true);
+        
     }
 
     /**
@@ -30,8 +80,9 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel {
         painelPrincipal = new javax.swing.JPanel();
         painelExplicacao = new javax.swing.JPanel();
         erroTitulo = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        labelTitulo = new javax.swing.JLabel();
         erroDesc = new javax.swing.JPanel();
+        labelDescricaoReport = new javax.swing.JLabel();
         painelStackTrace = new javax.swing.JPanel();
         painelBotao = new javax.swing.JPanel();
         botaoAbrirStack = new com.alee.laf.button.WebButton();
@@ -51,36 +102,45 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel {
 
         painelExplicacao.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText("Um erro desconhecido foi encontrado");
+        labelTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        labelTitulo.setText("Um erro desconhecido foi encontrado");
 
         javax.swing.GroupLayout erroTituloLayout = new javax.swing.GroupLayout(erroTitulo);
         erroTitulo.setLayout(erroTituloLayout);
         erroTituloLayout.setHorizontalGroup(
             erroTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, erroTituloLayout.createSequentialGroup()
-                .addContainerGap(118, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(106, 106, 106))
+            .addGroup(erroTituloLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(labelTitulo)
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         erroTituloLayout.setVerticalGroup(
             erroTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, erroTituloLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addComponent(labelTitulo)
                 .addContainerGap())
         );
 
         painelExplicacao.add(erroTitulo, java.awt.BorderLayout.NORTH);
 
+        labelDescricaoReport.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        labelDescricaoReport.setText("<html><body><div style=\"text-align: center\">Recomendamos que nos avise do erro copiando-o e nos enviando através de uma Issue no Github apertando no botão \"Reportar Erro\"</div></body></html>");
+
         javax.swing.GroupLayout erroDescLayout = new javax.swing.GroupLayout(erroDesc);
         erroDesc.setLayout(erroDescLayout);
         erroDescLayout.setHorizontalGroup(
             erroDescLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 403, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, erroDescLayout.createSequentialGroup()
+                .addContainerGap(60, Short.MAX_VALUE)
+                .addComponent(labelDescricaoReport, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
         );
         erroDescLayout.setVerticalGroup(
             erroDescLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(erroDescLayout.createSequentialGroup()
+                .addComponent(labelDescricaoReport, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         painelExplicacao.add(erroDesc, java.awt.BorderLayout.SOUTH);
@@ -92,6 +152,11 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel {
         painelBotao.setPreferredSize(new java.awt.Dimension(403, 30));
 
         botaoAbrirStack.setText("Mostrar Erros");
+        botaoAbrirStack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoAbrirStackActionPerformed(evt);
+            }
+        });
 
         botaoCopiarErro.setText("Copiar Erro");
 
@@ -102,13 +167,13 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel {
         painelBotaoLayout.setHorizontalGroup(
             painelBotaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelBotaoLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(botaoAbrirStack, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(botaoCopiarErro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
-                .addComponent(botaoReportarBug, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addContainerGap()
+                .addComponent(botaoAbrirStack, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(botaoCopiarErro, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(botaoReportarBug, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         painelBotaoLayout.setVerticalGroup(
             painelBotaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,6 +222,11 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel {
         add(paineInferior, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botaoAbrirStackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAbrirStackActionPerformed
+        scrollStackTrace.setVisible(!scrollStackTrace.isVisible());
+        telaCustomBorder.pack();
+    }//GEN-LAST:event_botaoAbrirStackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaTextoStackTrace;
@@ -166,10 +236,11 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel {
     private javax.swing.JPanel erroDesc;
     private javax.swing.JPanel erroTitulo;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel labelDescricaoReport;
     private javax.swing.JLabel labelDiscord;
     private javax.swing.JLabel labelFacebook;
     private javax.swing.JLabel labelGmail;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel paineInferior;
     private javax.swing.JPanel painelBotao;
     private javax.swing.JPanel painelExplicacao;
