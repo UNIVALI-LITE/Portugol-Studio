@@ -8,9 +8,20 @@ package br.univali.ps.ui.telas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.utils.WebConnectionUtils;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.AbstractAction;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -28,8 +39,34 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         initComponents();
         configurarCores();
         telaCustomBorder = telaPrincipal;
+        botaoCopiarErro.setAction(new AbstractAction("Copiar Erro")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Clipboard areaTransferencia = Toolkit.getDefaultToolkit().getSystemClipboard();
+                areaTransferencia.setContents(new StringSelection(areaTextoStackTrace.getText()), null);
+                FabricaDicasInterface.criarTooltipEstatica(botaoCopiarErro, "Copiado");
+            }
+        });
+        botaoReportarBug.setAction(new AbstractAction("Reportar Erro")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/issues/new?title=Erro%20numero%20xxx&body=%3E%20Esta%20issue%20foi%20gerada%20automaticamente%0A%0A[pressione%20o%20botao%20%22copiar%20erro%22%20no%20Portugol%20Studio%20e%20cole%20o%20erro%20aqui%20antes%20de%20enviar]");
+            }
+        });
         areaTextoStackTrace.setEditable(false);
         scrollStackTrace.setVisible(false);
+        
+        configurarLink(labelDiscord);
+        configurarLink(labelFacebook);
+        configurarLink(labelGmail);
+        FabricaDicasInterface.criarTooltip(labelDiscord, "Nosso servidor no Discord");
+        FabricaDicasInterface.criarTooltip(labelFacebook, "A página do laboratório no Facebook");
+        FabricaDicasInterface.criarTooltip(labelGmail, "Nosso e-mail");
+        
     }
 
     @Override
@@ -53,6 +90,27 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
             WeblafUtils.configurarBotao(botaoReportarBug, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
             WeblafUtils.configuraWebLaf(scrollStackTrace);
         }
+    }
+
+    public JDialog getTelaCustomBorder() {
+        return telaCustomBorder;
+    }
+
+    public JTextArea getAreaTextoStackTrace() {
+        return areaTextoStackTrace;
+    }
+    
+    private void configurarLink(final JLabel rotulo)
+    {
+        rotulo.addMouseListener(new MouseAdapter()
+        {
+
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                WebConnectionUtils.abrirSite(rotulo.getName());
+            }
+        });
     }
     
     public static void main(String[] args) {
@@ -103,23 +161,20 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         painelExplicacao.setLayout(new java.awt.BorderLayout());
 
         labelTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        labelTitulo.setText("Um erro desconhecido foi encontrado");
+        labelTitulo.setText("<html><body><div style=\"text-align: center\">Um erro desconhecido foi encontrado! Ajude-nos a Resolvê-lo!</div></body></html>");
 
         javax.swing.GroupLayout erroTituloLayout = new javax.swing.GroupLayout(erroTitulo);
         erroTitulo.setLayout(erroTituloLayout);
         erroTituloLayout.setHorizontalGroup(
             erroTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(erroTituloLayout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(labelTitulo)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         erroTituloLayout.setVerticalGroup(
             erroTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, erroTituloLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTitulo)
-                .addContainerGap())
+            .addComponent(labelTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         painelExplicacao.add(erroTitulo, java.awt.BorderLayout.NORTH);
@@ -132,15 +187,16 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         erroDescLayout.setHorizontalGroup(
             erroDescLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, erroDescLayout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
+                .addContainerGap(57, Short.MAX_VALUE)
                 .addComponent(labelDescricaoReport, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addGap(50, 50, 50))
         );
         erroDescLayout.setVerticalGroup(
             erroDescLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(erroDescLayout.createSequentialGroup()
-                .addComponent(labelDescricaoReport, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(labelDescricaoReport, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         painelExplicacao.add(erroDesc, java.awt.BorderLayout.SOUTH);
@@ -171,7 +227,7 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
                 .addComponent(botaoAbrirStack, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(botaoCopiarErro, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(botaoReportarBug, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -203,19 +259,25 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
 
         labelDiscord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelDiscord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/discord.png"))); // NOI18N
+        labelDiscord.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         labelDiscord.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        labelDiscord.setName("https://discord.gg/TPXmZtb"); // NOI18N
         labelDiscord.setPreferredSize(new java.awt.Dimension(50, 50));
         paineInferior.add(labelDiscord);
 
         labelFacebook.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFacebook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/fb.png"))); // NOI18N
+        labelFacebook.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         labelFacebook.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        labelFacebook.setName("https://www.facebook.com/univalilite/"); // NOI18N
         labelFacebook.setPreferredSize(new java.awt.Dimension(50, 50));
         paineInferior.add(labelFacebook);
 
         labelGmail.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelGmail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/gmail.png"))); // NOI18N
+        labelGmail.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         labelGmail.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        labelGmail.setName("mailto:portugol.studio@gmail.com"); // NOI18N
         labelGmail.setPreferredSize(new java.awt.Dimension(50, 50));
         paineInferior.add(labelGmail);
 

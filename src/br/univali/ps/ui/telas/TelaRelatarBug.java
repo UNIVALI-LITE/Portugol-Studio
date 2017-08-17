@@ -42,14 +42,6 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         painelDescIssue = new javax.swing.JPanel();
         labelDescIssue = new javax.swing.JLabel();
         painelBotaoIssue = new javax.swing.JPanel();
-        webButton1 = new com.alee.laf.button.WebButton();
-        painelDebug = new javax.swing.JPanel();
-        painelTxtDebug = new javax.swing.JPanel();
-        painelTitleDebug = new javax.swing.JPanel();
-        labelTitleDebug = new javax.swing.JLabel();
-        panielDescDebug = new javax.swing.JPanel();
-        labelDescDebug = new javax.swing.JLabel();
-        painelDebugBotao = new javax.swing.JPanel();
         webButton2 = new com.alee.laf.button.WebButton();
         paineInferior = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -67,48 +59,69 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         painelTxtIssue.setLayout(new java.awt.BorderLayout());
 
         labelTitleIssue.setText("Issue");
-        painelTitleIssue.add(labelTitleIssue);
+
+        javax.swing.GroupLayout painelTitleIssueLayout = new javax.swing.GroupLayout(painelTitleIssue);
+        painelTitleIssue.setLayout(painelTitleIssueLayout);
+        painelTitleIssueLayout.setHorizontalGroup(
+            painelTitleIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelTitleIssueLayout.createSequentialGroup()
+                .addGap(108, 108, 108)
+                .addComponent(labelTitleIssue)
+                .addContainerGap(110, Short.MAX_VALUE))
+        );
+        painelTitleIssueLayout.setVerticalGroup(
+            painelTitleIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelTitleIssueLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(labelTitleIssue)
+                .addContainerGap(54, Short.MAX_VALUE))
+        );
 
         painelTxtIssue.add(painelTitleIssue, java.awt.BorderLayout.NORTH);
 
         labelDescIssue.setText("Para issoblablablablablablablablablablablablablabla");
-        painelDescIssue.add(labelDescIssue);
+
+        javax.swing.GroupLayout painelDescIssueLayout = new javax.swing.GroupLayout(painelDescIssue);
+        painelDescIssue.setLayout(painelDescIssueLayout);
+        painelDescIssueLayout.setHorizontalGroup(
+            painelDescIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelDescIssueLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(labelDescIssue))
+        );
+        painelDescIssueLayout.setVerticalGroup(
+            painelDescIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelDescIssueLayout.createSequentialGroup()
+                .addComponent(labelDescIssue, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         painelTxtIssue.add(painelDescIssue, java.awt.BorderLayout.CENTER);
 
         painelIssue.add(painelTxtIssue, java.awt.BorderLayout.WEST);
 
-        painelBotaoIssue.setLayout(new java.awt.BorderLayout());
+        webButton2.setText("webButton2");
 
-        webButton1.setText("webButton1");
-        painelBotaoIssue.add(webButton1, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout painelBotaoIssueLayout = new javax.swing.GroupLayout(painelBotaoIssue);
+        painelBotaoIssue.setLayout(painelBotaoIssueLayout);
+        painelBotaoIssueLayout.setHorizontalGroup(
+            painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelBotaoIssueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(webButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        painelBotaoIssueLayout.setVerticalGroup(
+            painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelBotaoIssueLayout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(75, Short.MAX_VALUE))
+        );
 
         painelIssue.add(painelBotaoIssue, java.awt.BorderLayout.EAST);
 
-        mainpanel.add(painelIssue, java.awt.BorderLayout.NORTH);
-
-        painelDebug.setLayout(new java.awt.BorderLayout());
-
-        painelTxtDebug.setLayout(new java.awt.BorderLayout());
-
-        labelTitleDebug.setText("Modo Debug");
-        painelTitleDebug.add(labelTitleDebug);
-
-        painelTxtDebug.add(painelTitleDebug, java.awt.BorderLayout.NORTH);
-
-        labelDescDebug.setText("4 Dis lerolerolerolerolerolerolerolerolerolerolerolero");
-        panielDescDebug.add(labelDescDebug);
-
-        painelTxtDebug.add(panielDescDebug, java.awt.BorderLayout.SOUTH);
-
-        painelDebug.add(painelTxtDebug, java.awt.BorderLayout.WEST);
-
-        webButton2.setText("webButton2");
-        painelDebugBotao.add(webButton2);
-
-        painelDebug.add(painelDebugBotao, java.awt.BorderLayout.EAST);
-
-        mainpanel.add(painelDebug, java.awt.BorderLayout.SOUTH);
+        mainpanel.add(painelIssue, java.awt.BorderLayout.CENTER);
 
         add(mainpanel, java.awt.BorderLayout.CENTER);
 
@@ -142,26 +155,18 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel labelDescDebug;
     private javax.swing.JLabel labelDescIssue;
     private javax.swing.JLabel labelDiscord;
     private javax.swing.JLabel labelFacebook;
     private javax.swing.JLabel labelGmail;
-    private javax.swing.JLabel labelTitleDebug;
     private javax.swing.JLabel labelTitleIssue;
     private javax.swing.JPanel mainpanel;
     private javax.swing.JPanel paineInferior;
     private javax.swing.JPanel painelBotaoIssue;
-    private javax.swing.JPanel painelDebug;
-    private javax.swing.JPanel painelDebugBotao;
     private javax.swing.JPanel painelDescIssue;
     private javax.swing.JPanel painelIssue;
-    private javax.swing.JPanel painelTitleDebug;
     private javax.swing.JPanel painelTitleIssue;
-    private javax.swing.JPanel painelTxtDebug;
     private javax.swing.JPanel painelTxtIssue;
-    private javax.swing.JPanel panielDescDebug;
-    private com.alee.laf.button.WebButton webButton1;
     private com.alee.laf.button.WebButton webButton2;
     // End of variables declaration//GEN-END:variables
     

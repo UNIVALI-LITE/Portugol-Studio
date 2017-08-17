@@ -781,7 +781,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                JFileChooser dialogoSelecaoArquivo = criarSeletorArquivo();;
+                JFileChooser dialogoSelecaoArquivo = null;
+//                JFileChooser dialogoSelecaoArquivo = criarSeletorArquivo();
                 if (editor.getPortugolDocumento().getFile() != null)
                 {
                     File arquivoAtual = editor.getPortugolDocumento().getFile();

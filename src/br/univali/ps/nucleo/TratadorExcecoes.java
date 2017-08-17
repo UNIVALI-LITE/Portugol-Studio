@@ -3,6 +3,8 @@ package br.univali.ps.nucleo;
 import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO;
 
 import br.univali.ps.plugins.base.GerenciadorPlugins;
+import br.univali.ps.ui.telas.TelaCustomBorder;
+import br.univali.ps.ui.telas.TelaExcecaoEncontrada;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -36,14 +38,10 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 {
     private static final Logger LOGGER = Logger.getLogger(TratadorExcecoes.class.getName());
 
-    private JPanel painel;
-    private JLabel rotulo;
-    private JTextArea caixaTexto;
     private PrintWriter escritorExcecao;
     private OutputStream fluxoSaida;
-    private JScrollPane painelRolagem;
-    private JPanel painelsul;
-    private JButton botaoCopiarTexto;
+    private TelaExcecaoEncontrada telaExcecaoEncontrada;
+    private TelaCustomBorder excecaoDialog;
 
     private boolean encerrarAplicacao = false;
 
@@ -114,12 +112,11 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     {
         inicializarComponentesExcecaoDetalhada();
 
-        caixaTexto.setText(null);
-        rotulo.setText(String.format("<html><p>%s<br><br>Detalhes:</p></html>", excecaoAplicacao.getMessage()));
+        telaExcecaoEncontrada.getAreaTextoStackTrace().setText(null);
 
         excecaoAplicacao.printStackTrace(escritorExcecao);
-
-        JOptionPane.showMessageDialog(null, painel, "Portugol Studio", JOptionPane.ERROR_MESSAGE);
+        
+        excecaoDialog.setVisible(true);
 
         if (encerrarAplicacao)
         {
@@ -129,42 +126,13 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
     private void inicializarComponentesExcecaoDetalhada()
     {
-        if (caixaTexto == null)
+        
+        if (excecaoDialog == null)
         {
-            rotulo = new JLabel();
-            rotulo.setBorder(new EmptyBorder(8, 0, 8, 8));
-
-            caixaTexto = new JTextArea();
-            caixaTexto.setEditable(false);
-
-            painelRolagem = new JScrollPane();
-            painelRolagem.setViewportView(caixaTexto);
-            painelRolagem.setPreferredSize(new Dimension(400, 250));
-
-            botaoCopiarTexto = new JButton();
-
-            botaoCopiarTexto.setAction(new AbstractAction("Copiar Texto")
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    Clipboard areaTransferencia = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    areaTransferencia.setContents(new StringSelection(caixaTexto.getText()), null);
-                }
-            });
-
-            painelsul = new JPanel();
-            painelsul.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-            painelsul.setPreferredSize(new Dimension(20, 50));
-            painelsul.add(botaoCopiarTexto);
-
-            painel = new JPanel();
-            painel.setLayout(new BorderLayout());
-            painel.add(BorderLayout.NORTH, rotulo);
-            painel.add(BorderLayout.CENTER, painelRolagem);
-            painel.add(BorderLayout.SOUTH, painelsul);
-            painel.setPreferredSize(new Dimension(550, 400));
-
+            excecaoDialog = new TelaCustomBorder("Erro Encontrado");
+            telaExcecaoEncontrada = new TelaExcecaoEncontrada(excecaoDialog);
+            excecaoDialog.setPanel(telaExcecaoEncontrada);
+            excecaoDialog.setLocationRelativeTo(null);
             fluxoSaida = new FluxoSaidaExcecao();
             escritorExcecao = new PrintWriter(fluxoSaida, true);
         }
@@ -233,7 +201,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         @Override
         public void flush() throws IOException
         {
-            caixaTexto.append(construtorTexto.toString());
+            telaExcecaoEncontrada.getAreaTextoStackTrace().append(construtorTexto.toString());
             construtorTexto.setLength(0);
         }
     }
