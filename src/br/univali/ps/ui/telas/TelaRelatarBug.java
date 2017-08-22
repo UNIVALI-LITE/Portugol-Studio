@@ -105,7 +105,7 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         painelTxtIssue.setLayout(new java.awt.BorderLayout());
 
         labelDescIssue.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelDescIssue.setText("<html><body><div style=\"text-align:center\">Recomendamos a nos avisar do problema criando uma Issue no repositório do Portugol no GitHub, você pode acessa-lo apertando o botão \"Relatar Problema\"</div></body></html>");
+        labelDescIssue.setText("<html><body><div style=\"text-align:center\">Recomendamos a nos avisar do problema criando uma Issue no repositório do Portugol no GitHub, você pode acessa-lo apertando o botão \"Reportar Erro\"</div></body></html>");
 
         javax.swing.GroupLayout painelDescIssueLayout = new javax.swing.GroupLayout(painelDescIssue);
         painelDescIssue.setLayout(painelDescIssueLayout);
@@ -125,7 +125,7 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
 
         painelTxtIssue.add(painelDescIssue, java.awt.BorderLayout.CENTER);
 
-        webButton2.setText("Relatar Problema");
+        webButton2.setText("Reportar Erro");
         webButton2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout painelBotaoIssueLayout = new javax.swing.GroupLayout(painelBotaoIssue);
@@ -133,16 +133,16 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
         painelBotaoIssueLayout.setHorizontalGroup(
             painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelBotaoIssueLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(26, 26, 26)
                 .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         painelBotaoIssueLayout.setVerticalGroup(
             painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelBotaoIssueLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(44, 44, 44)
                 .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         painelTxtIssue.add(painelBotaoIssue, java.awt.BorderLayout.EAST);

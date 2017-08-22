@@ -71,7 +71,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="12" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div style=&quot;text-align:center&quot;&gt;Recomendamos a nos avisar do problema criando uma Issue no reposit&#xf3;rio do Portugol no GitHub, voc&#xea; pode acessa-lo apertando o bot&#xe3;o &quot;Relatar Problema&quot;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div style=&quot;text-align:center&quot;&gt;Recomendamos a nos avisar do problema criando uma Issue no reposit&#xf3;rio do Portugol no GitHub, voc&#xea; pode acessa-lo apertando o bot&#xe3;o &quot;Reportar Erro&quot;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -87,18 +87,18 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="webButton2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="60" max="32767" attributes="0"/>
+                          <EmptySpace pref="44" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                           <Component id="webButton2" min="-2" pref="41" max="-2" attributes="0"/>
-                          <EmptySpace pref="58" max="32767" attributes="0"/>
+                          <EmptySpace pref="54" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -106,7 +106,7 @@
               <SubComponents>
                 <Component class="com.alee.laf.button.WebButton" name="webButton2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Relatar Problema"/>
+                    <Property name="text" type="java.lang.String" value="Reportar Erro"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="12" style="0"/>
                     </Property>
