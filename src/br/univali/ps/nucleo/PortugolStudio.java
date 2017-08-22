@@ -929,8 +929,7 @@ public final class PortugolStudio
     {
         if (telaRelatarBug == null)
         {
-            telaRelatarBug = new TelaCustomBorder(new TelaRelatarBug(), "Relatar Bug");
-            
+            telaRelatarBug = new TelaCustomBorder(new TelaRelatarBug(), "Relatar Bug");            
         }
 
         telaRelatarBug.setLocationRelativeTo(null);

@@ -5,7 +5,16 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.utils.WebConnectionUtils;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.AbstractAction;
+import javax.swing.JLabel;
 
 /**
  *
@@ -19,12 +28,52 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
     public TelaRelatarBug() {
         initComponents();
         configurarCores();
+        webButton2.setAction(new AbstractAction("Reportar Erro")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/issues/new");
+            }
+        });
+        configurarLink(labelDiscord);
+        configurarLink(labelFacebook);
+        configurarLink(labelGmail);
+        FabricaDicasInterface.criarTooltip(labelDiscord, "Nosso servidor no Discord");
+        FabricaDicasInterface.criarTooltip(labelFacebook, "A página do laboratório no Facebook");
+        FabricaDicasInterface.criarTooltip(labelGmail, "Nosso e-mail");
     }
     
     @Override
     public void configurarCores() {
-        
+        mainpanel.setBackground(ColorController.FUNDO_MEDIO);
+        paineInferior.setBackground(ColorController.FUNDO_ESCURO);
+        painelTitleIssue.setBackground(ColorController.FUNDO_MEDIO);
+        labelTitleIssue.setForeground(ColorController.COR_LETRA);
+        painelTxtIssue.setBackground(ColorController.FUNDO_CLARO);
+        painelDescIssue.setBackground(ColorController.FUNDO_CLARO);
+        labelDescIssue.setForeground(ColorController.COR_LETRA);
+        painelBotaoIssue.setBackground(ColorController.FUNDO_CLARO);
+        jLabel1.setForeground(ColorController.COR_LETRA_TITULO);
+        if(WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configurarBotao(webButton2, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
+        }
     }
+    
+    private void configurarLink(final JLabel rotulo)
+    {
+        rotulo.addMouseListener(new MouseAdapter()
+        {
+
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                WebConnectionUtils.abrirSite(rotulo.getName());
+            }
+        });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,72 +84,49 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
     private void initComponents() {
 
         mainpanel = new javax.swing.JPanel();
-        painelIssue = new javax.swing.JPanel();
         painelTxtIssue = new javax.swing.JPanel();
-        painelTitleIssue = new javax.swing.JPanel();
-        labelTitleIssue = new javax.swing.JLabel();
         painelDescIssue = new javax.swing.JPanel();
         labelDescIssue = new javax.swing.JLabel();
         painelBotaoIssue = new javax.swing.JPanel();
         webButton2 = new com.alee.laf.button.WebButton();
+        painelTitleIssue = new javax.swing.JPanel();
+        labelTitleIssue = new javax.swing.JLabel();
         paineInferior = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         labelDiscord = new javax.swing.JLabel();
         labelFacebook = new javax.swing.JLabel();
         labelGmail = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(773, 382));
+        setPreferredSize(new java.awt.Dimension(358, 257));
         setLayout(new java.awt.BorderLayout());
 
         mainpanel.setLayout(new java.awt.BorderLayout());
 
-        painelIssue.setLayout(new java.awt.BorderLayout());
-
         painelTxtIssue.setLayout(new java.awt.BorderLayout());
 
-        labelTitleIssue.setText("Issue");
-
-        javax.swing.GroupLayout painelTitleIssueLayout = new javax.swing.GroupLayout(painelTitleIssue);
-        painelTitleIssue.setLayout(painelTitleIssueLayout);
-        painelTitleIssueLayout.setHorizontalGroup(
-            painelTitleIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelTitleIssueLayout.createSequentialGroup()
-                .addGap(108, 108, 108)
-                .addComponent(labelTitleIssue)
-                .addContainerGap(110, Short.MAX_VALUE))
-        );
-        painelTitleIssueLayout.setVerticalGroup(
-            painelTitleIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelTitleIssueLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(labelTitleIssue)
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
-
-        painelTxtIssue.add(painelTitleIssue, java.awt.BorderLayout.NORTH);
-
-        labelDescIssue.setText("Para issoblablablablablablablablablablablablablabla");
+        labelDescIssue.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        labelDescIssue.setText("<html><body><div style=\"text-align:center\">Recomendamos a nos avisar do problema criando uma Issue no repositório do Portugol no GitHub, você pode acessa-lo apertando o botão \"Relatar Problema\"</div></body></html>");
 
         javax.swing.GroupLayout painelDescIssueLayout = new javax.swing.GroupLayout(painelDescIssue);
         painelDescIssue.setLayout(painelDescIssueLayout);
         painelDescIssueLayout.setHorizontalGroup(
             painelDescIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelDescIssueLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(labelDescIssue))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelDescIssueLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelDescIssue, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         painelDescIssueLayout.setVerticalGroup(
             painelDescIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelDescIssueLayout.createSequentialGroup()
-                .addComponent(labelDescIssue, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(labelDescIssue, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         painelTxtIssue.add(painelDescIssue, java.awt.BorderLayout.CENTER);
 
-        painelIssue.add(painelTxtIssue, java.awt.BorderLayout.WEST);
-
-        webButton2.setText("webButton2");
+        webButton2.setText("Relatar Problema");
+        webButton2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout painelBotaoIssueLayout = new javax.swing.GroupLayout(painelBotaoIssue);
         painelBotaoIssue.setLayout(painelBotaoIssueLayout);
@@ -108,20 +134,42 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
             painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelBotaoIssueLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(webButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         painelBotaoIssueLayout.setVerticalGroup(
             painelBotaoIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelBotaoIssueLayout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addComponent(webButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
-        painelIssue.add(painelBotaoIssue, java.awt.BorderLayout.EAST);
+        painelTxtIssue.add(painelBotaoIssue, java.awt.BorderLayout.EAST);
 
-        mainpanel.add(painelIssue, java.awt.BorderLayout.CENTER);
+        mainpanel.add(painelTxtIssue, java.awt.BorderLayout.WEST);
+
+        labelTitleIssue.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        labelTitleIssue.setText("<html><body><div style=\"text-align:center\">Houve algum problema?</div></body></html>");
+
+        javax.swing.GroupLayout painelTitleIssueLayout = new javax.swing.GroupLayout(painelTitleIssue);
+        painelTitleIssue.setLayout(painelTitleIssueLayout);
+        painelTitleIssueLayout.setHorizontalGroup(
+            painelTitleIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelTitleIssueLayout.createSequentialGroup()
+                .addContainerGap(87, Short.MAX_VALUE)
+                .addComponent(labelTitleIssue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
+        );
+        painelTitleIssueLayout.setVerticalGroup(
+            painelTitleIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelTitleIssueLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(labelTitleIssue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        mainpanel.add(painelTitleIssue, java.awt.BorderLayout.NORTH);
 
         add(mainpanel, java.awt.BorderLayout.CENTER);
 
@@ -133,19 +181,25 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
 
         labelDiscord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelDiscord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/discord.png"))); // NOI18N
+        labelDiscord.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         labelDiscord.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        labelDiscord.setName("https://discord.gg/TPXmZtb"); // NOI18N
         labelDiscord.setPreferredSize(new java.awt.Dimension(50, 50));
         paineInferior.add(labelDiscord);
 
         labelFacebook.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFacebook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/fb.png"))); // NOI18N
+        labelFacebook.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         labelFacebook.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        labelFacebook.setName("https://www.facebook.com/univalilite/"); // NOI18N
         labelFacebook.setPreferredSize(new java.awt.Dimension(50, 50));
         paineInferior.add(labelFacebook);
 
         labelGmail.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelGmail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/gmail.png"))); // NOI18N
+        labelGmail.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         labelGmail.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        labelGmail.setName("mailto:portugol.studio@gmail.com"); // NOI18N
         labelGmail.setPreferredSize(new java.awt.Dimension(50, 50));
         paineInferior.add(labelGmail);
 
@@ -164,7 +218,6 @@ public class TelaRelatarBug extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel paineInferior;
     private javax.swing.JPanel painelBotaoIssue;
     private javax.swing.JPanel painelDescIssue;
-    private javax.swing.JPanel painelIssue;
     private javax.swing.JPanel painelTitleIssue;
     private javax.swing.JPanel painelTxtIssue;
     private com.alee.laf.button.WebButton webButton2;
