@@ -9,6 +9,7 @@ import br.univali.ps.ui.swing.ColorController;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 
 /**
@@ -22,7 +23,7 @@ public class OuterStaticPanel extends JPanel
         setLayout(new BorderLayout());
         add(jPanel, BorderLayout.CENTER);
         add(border, BorderLayout.PAGE_START);
-        setBorder(new LineBorder(ColorController.FUNDO_ESCURO, 5));
+        setBorder(new CompoundBorder(new LineBorder(ColorController.COR_PRINCIPAL, 1),new LineBorder(ColorController.FUNDO_ESCURO, 5)));
     }
     
 }
