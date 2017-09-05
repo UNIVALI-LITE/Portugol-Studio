@@ -247,7 +247,7 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         
-        NoBloco inicializacao = noPara.getInicializacao();
+        NoBloco inicializacao = noPara.getInicializacoes();
         if (inicializacao != null)
         {
             inicializacao.aceitar(this);

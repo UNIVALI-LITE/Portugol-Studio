@@ -286,10 +286,14 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
-        NoBloco inicializacao = noPara.getInicializacao();
-        if (inicializacao != null)
+        List<NoBloco> inicializacoes = noPara.getInicializacoes();
+        
+        if (inicializacoes != null)
         {
-            inicializacao.aceitar(this);
+            for (NoBloco inicializacao : inicializacoes)
+            {
+                inicializacao.aceitar(this);
+            }
         }
         
         NoExpressao condicao = noPara.getCondicao();

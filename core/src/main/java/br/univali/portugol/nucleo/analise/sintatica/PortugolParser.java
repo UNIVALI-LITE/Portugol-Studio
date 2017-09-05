@@ -2221,7 +2221,7 @@ public class PortugolParser extends Parser
                     if (gerarArvore)
                     {
                         para = new NoPara();
-                        para.setInicializacao(inicializacao);
+                        para.setInicializacoes(inicializacao);
                         para.setCondicao(condicao);
                         //A condição não pode ser nula, mas o erro será capturado no semantico.
                         if (condicao != null)

@@ -417,9 +417,9 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
 
             nivelASA = nivelASA + 1;
 
-            if (noPara.getInicializacao() != null)
+            if (noPara.getInicializacoes() != null)
             {
-                noPara.getInicializacao().aceitar(this);
+                noPara.getInicializacoes().aceitar(this);
             }
 
             visitar(noPara.getBlocos());

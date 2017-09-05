@@ -379,9 +379,9 @@ class AstOutlineTreeFactory implements VisitanteASA
         PortugolTreeNode node = new PortugolTreeNode(noPara);
         boolean folha = true;
         
-        if (noPara.getInicializacao() != null)
+        if (noPara.getInicializacoes() != null)
         {
-            Object no = noPara.getInicializacao().aceitar(this);
+            Object no = noPara.getInicializacoes().aceitar(this);
             
             if (no != null)
             {
