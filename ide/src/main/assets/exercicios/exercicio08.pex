@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5467</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">8</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9086</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3257</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">4</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5432</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">7</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">2221</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0001</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1000</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9999</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">8428</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">4</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9192</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">6</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa para calcular e exibir o digito verificador de uma conta bancária. O usuário deve digitar o número da conta que deve ser um número inteiro com 4 dígitos. O digito verificador será calculado como segue:
+
+a. Passo 1: Somar todos os quatro dígitos
+
+b. Passo 2: Multiplicar todos os quatro dígitos
+
+c. Passo 3: Subtrair o resultado da multiplicação (passo 2) pelo resultado da soma (passo 1)
+
+d. Passo 4: O digito verificador será o resto da divisão do resultado da subtração (passo3) por 9.</enunciado>
+
+</questao>

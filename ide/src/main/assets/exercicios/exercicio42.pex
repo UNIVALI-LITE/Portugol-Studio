@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">60</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">39</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">39</entrada>
+				<entrada tipodado="real">50</entrada>
+				<entrada tipodado="real">49</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">82</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">26</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">24</entrada>
+				<entrada tipodado="real">43</entrada>
+				<entrada tipodado="real">52</entrada>
+				<entrada tipodado="real">2</entrada>
+				<entrada tipodado="real">33</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">42</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">87</entrada>
+				<entrada tipodado="real">50</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">62</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">54</entrada>
+				<entrada tipodado="real">16</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">97</entrada>
+				<entrada tipodado="real">44</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">23</entrada>
+				<entrada tipodado="real">96</entrada>
+				<entrada tipodado="real">85</entrada>  
+			</entradas>
+			<saidas>
+				<saida tipodado="real" >45.54</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">86</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">27</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">14</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">67</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">13</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">91</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">11</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">37</entrada>
+				<entrada tipodado="real">92</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">2</entrada>
+				<entrada tipodado="real">26</entrada>
+				<entrada tipodado="real">38</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">14</entrada>
+				<entrada tipodado="real">100</entrada>
+				<entrada tipodado="real">32</entrada>
+				<entrada tipodado="real">27</entrada>
+				<entrada tipodado="real">18</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">27</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">95</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">81</entrada>
+				<entrada tipodado="real">70</entrada>
+				<entrada tipodado="real">100</entrada>
+				<entrada tipodado="real">41</entrada>  
+			</entradas>
+			<saidas>
+				<saida  tipodado="real" >48.82</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">45</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">71</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">54</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">37</entrada>
+				<entrada tipodado="real">60</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">17</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">77</entrada>
+				<entrada tipodado="real">51</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">66</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">100</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">23</entrada>
+				<entrada tipodado="real">64</entrada>
+				<entrada tipodado="real">44</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">66</entrada>
+				<entrada tipodado="real">54</entrada>
+				<entrada tipodado="real">29</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">59</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">100</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">91</entrada>
+				<entrada tipodado="real">45</entrada>
+				<entrada tipodado="real">34</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">18</entrada>
+				<entrada tipodado="real">87</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real" >54.44</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">78.38</entrada>
+				<entrada tipodado="real">140.91</entrada>
+				<entrada tipodado="real">155.13</entrada>
+				<entrada tipodado="real">49.56</entrada>
+				<entrada tipodado="real">201.42</entrada>
+				<entrada tipodado="real">74.18</entrada>
+				<entrada tipodado="real">175.32</entrada>
+				<entrada tipodado="real">185.83</entrada>
+				<entrada tipodado="real">100.88</entrada>
+				<entrada tipodado="real">102.41</entrada>
+				<entrada tipodado="real">49.04</entrada>
+				<entrada tipodado="real">172.0</entrada>
+				<entrada tipodado="real">41.68</entrada>
+				<entrada tipodado="real">109.61</entrada>
+				<entrada tipodado="real">20.94</entrada>
+				<entrada tipodado="real">190.72</entrada>
+				<entrada tipodado="real">12.32</entrada>
+				<entrada tipodado="real">83.44</entrada>
+				<entrada tipodado="real">171.51</entrada>
+				<entrada tipodado="real">25.1</entrada>
+				<entrada tipodado="real">98.19</entrada>
+				<entrada tipodado="real">106.31</entrada>
+				<entrada tipodado="real">99.99</entrada>
+				<entrada tipodado="real">20.63</entrada>
+				<entrada tipodado="real">148.77</entrada>
+				<entrada tipodado="real">93.65</entrada>
+				<entrada tipodado="real">90.57</entrada>
+				<entrada tipodado="real">16.43</entrada>
+				<entrada tipodado="real">136.19</entrada>
+				<entrada tipodado="real">59.31</entrada>
+				<entrada tipodado="real">20.06</entrada>
+				<entrada tipodado="real">178.82</entrada>
+				<entrada tipodado="real">87.39</entrada>
+				<entrada tipodado="real">10.46</entrada>
+				<entrada tipodado="real">140.6</entrada>
+				<entrada tipodado="real">100.56</entrada>
+				<entrada tipodado="real">71.58</entrada>
+				<entrada tipodado="real">136.72</entrada>
+				<entrada tipodado="real">150.39</entrada>
+				<entrada tipodado="real">76.62</entrada>
+				<entrada tipodado="real">120.17</entrada>
+				<entrada tipodado="real">160.22</entrada>
+				<entrada tipodado="real">65.87</entrada>
+				<entrada tipodado="real">53.73</entrada>
+				<entrada tipodado="real">57.01</entrada>
+				<entrada tipodado="real">118.73</entrada>
+				<entrada tipodado="real">101.4</entrada>
+				<entrada tipodado="real">184.52</entrada>
+				<entrada tipodado="real">22.95</entrada>
+				<entrada tipodado="real">195.78</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">101.27999999999996</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">149.69</entrada>
+				<entrada tipodado="real">33.31</entrada>
+				<entrada tipodado="real">94.51</entrada>
+				<entrada tipodado="real">99.69</entrada>
+				<entrada tipodado="real">24.97</entrada>
+				<entrada tipodado="real">77.18</entrada>
+				<entrada tipodado="real">83.2</entrada>
+				<entrada tipodado="real">161.29</entrada>
+				<entrada tipodado="real">131.12</entrada>
+				<entrada tipodado="real">122.81</entrada>
+				<entrada tipodado="real">22.48</entrada>
+				<entrada tipodado="real">161.19</entrada>
+				<entrada tipodado="real">96.63</entrada>
+				<entrada tipodado="real">152.77</entrada>
+				<entrada tipodado="real">67.12</entrada>
+				<entrada tipodado="real">17.09</entrada>
+				<entrada tipodado="real">89.27</entrada>
+				<entrada tipodado="real">180.11</entrada>
+				<entrada tipodado="real">194.82</entrada>
+				<entrada tipodado="real">189.51</entrada>
+				<entrada tipodado="real">103.79</entrada>
+				<entrada tipodado="real">162.1</entrada>
+				<entrada tipodado="real">209.63</entrada>
+				<entrada tipodado="real">28.15</entrada>
+				<entrada tipodado="real">190.88</entrada>
+				<entrada tipodado="real">139.9</entrada>
+				<entrada tipodado="real">134.62</entrada>
+				<entrada tipodado="real">69.16</entrada>
+				<entrada tipodado="real">49.5</entrada>
+				<entrada tipodado="real">43.58</entrada>
+				<entrada tipodado="real">32.78</entrada>
+				<entrada tipodado="real">119.09</entrada>
+				<entrada tipodado="real">54.4</entrada>
+				<entrada tipodado="real">57.58</entrada>
+				<entrada tipodado="real">97.84</entrada>
+				<entrada tipodado="real">139.05</entrada>
+				<entrada tipodado="real">73.79</entrada>
+				<entrada tipodado="real">165.65</entrada>
+				<entrada tipodado="real">134.02</entrada>
+				<entrada tipodado="real">42.48</entrada>
+				<entrada tipodado="real">196.84</entrada>
+				<entrada tipodado="real">54.95</entrada>
+				<entrada tipodado="real">98.81</entrada>
+				<entrada tipodado="real">17.19</entrada>
+				<entrada tipodado="real">143.0</entrada>
+				<entrada tipodado="real">192.96</entrada>
+				<entrada tipodado="real">36.31</entrada>
+				<entrada tipodado="real">106.77</entrada>
+				<entrada tipodado="real">183.42</entrada>
+				<entrada tipodado="real">207.78</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">108.69560000000001</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">108.93</entrada>
+				<entrada tipodado="real">89.98</entrada>
+				<entrada tipodado="real">30.78</entrada>
+				<entrada tipodado="real">71.06</entrada>
+				<entrada tipodado="real">59.2</entrada>
+				<entrada tipodado="real">192.68</entrada>
+				<entrada tipodado="real">136.84</entrada>
+				<entrada tipodado="real">191.74</entrada>
+				<entrada tipodado="real">131.31</entrada>
+				<entrada tipodado="real">187.67</entrada>
+				<entrada tipodado="real">121.39</entrada>
+				<entrada tipodado="real">23.11</entrada>
+				<entrada tipodado="real">98.75</entrada>
+				<entrada tipodado="real">189.54</entrada>
+				<entrada tipodado="real">203.39</entrada>
+				<entrada tipodado="real">68.61</entrada>
+				<entrada tipodado="real">166.01</entrada>
+				<entrada tipodado="real">99.01</entrada>
+				<entrada tipodado="real">136.04</entrada>
+				<entrada tipodado="real">170.96</entrada>
+				<entrada tipodado="real">141.44</entrada>
+				<entrada tipodado="real">19.01</entrada>
+				<entrada tipodado="real">71.53</entrada>
+				<entrada tipodado="real">32.72</entrada>
+				<entrada tipodado="real">27.69</entrada>
+				<entrada tipodado="real">188.03</entrada>
+				<entrada tipodado="real">80.73</entrada>
+				<entrada tipodado="real">15.61</entrada>
+				<entrada tipodado="real">19.7</entrada>
+				<entrada tipodado="real">103.97</entrada>
+				<entrada tipodado="real">192.02</entrada>
+				<entrada tipodado="real">120.64</entrada>
+				<entrada tipodado="real">13.43</entrada>
+				<entrada tipodado="real">182.03</entrada>
+				<entrada tipodado="real">45.39</entrada>
+				<entrada tipodado="real">146.78</entrada>
+				<entrada tipodado="real">123.67</entrada>
+				<entrada tipodado="real">188.59</entrada>
+				<entrada tipodado="real">111.9</entrada>
+				<entrada tipodado="real">81.46</entrada>
+				<entrada tipodado="real">18.59</entrada>
+				<entrada tipodado="real">193.14</entrada>
+				<entrada tipodado="real">83.76</entrada>
+				<entrada tipodado="real">148.79</entrada>
+				<entrada tipodado="real">151.32</entrada>
+				<entrada tipodado="real">191.22</entrada>
+				<entrada tipodado="real">205.04</entrada>
+				<entrada tipodado="real">156.61</entrada>
+				<entrada tipodado="real">70.32</entrada>
+				<entrada tipodado="real">197.77</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">115.998</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">42.97</entrada>
+				<entrada tipodado="real">197.63</entrada>
+				<entrada tipodado="real">125.18</entrada>
+				<entrada tipodado="real">24.93</entrada>
+				<entrada tipodado="real">130.92</entrada>
+				<entrada tipodado="real">10.56</entrada>
+				<entrada tipodado="real">188.11</entrada>
+				<entrada tipodado="real">184.72</entrada>
+				<entrada tipodado="real">82.1</entrada>
+				<entrada tipodado="real">202.77</entrada>
+				<entrada tipodado="real">66.72</entrada>
+				<entrada tipodado="real">52.69</entrada>
+				<entrada tipodado="real">91.55</entrada>
+				<entrada tipodado="real">107.62</entrada>
+				<entrada tipodado="real">110.62</entrada>
+				<entrada tipodado="real">162.33</entrada>
+				<entrada tipodado="real">92.53</entrada>
+				<entrada tipodado="real">131.07</entrada>
+				<entrada tipodado="real">86.67</entrada>
+				<entrada tipodado="real">62.62</entrada>
+				<entrada tipodado="real">195.84</entrada>
+				<entrada tipodado="real">70.43</entrada>
+				<entrada tipodado="real">88.75</entrada>
+				<entrada tipodado="real">43.57</entrada>
+				<entrada tipodado="real">142.18</entrada>
+				<entrada tipodado="real">70.53</entrada>
+				<entrada tipodado="real">68.02</entrada>
+				<entrada tipodado="real">193.76</entrada>
+				<entrada tipodado="real">129.11</entrada>
+				<entrada tipodado="real">57.49</entrada>
+				<entrada tipodado="real">132.42</entrada>
+				<entrada tipodado="real">90.88</entrada>
+				<entrada tipodado="real">201.15</entrada>
+				<entrada tipodado="real">12.77</entrada>
+				<entrada tipodado="real">111.01</entrada>
+				<entrada tipodado="real">139.3</entrada>
+				<entrada tipodado="real">13.67</entrada>
+				<entrada tipodado="real">103.66</entrada>
+				<entrada tipodado="real">115.56</entrada>
+				<entrada tipodado="real">34.43</entrada>
+				<entrada tipodado="real">165.6</entrada>
+				<entrada tipodado="real">99.37</entrada>
+				<entrada tipodado="real">65.14</entrada>
+				<entrada tipodado="real">184.85</entrada>
+				<entrada tipodado="real">21.47</entrada>
+				<entrada tipodado="real">85.08</entrada>
+				<entrada tipodado="real">85.72</entrada>
+				<entrada tipodado="real">112.81</entrada>
+				<entrada tipodado="real">100.85</entrada>
+				<entrada tipodado="real">58.47</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">102.96400000000007</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">118.17</entrada>
+				<entrada tipodado="real">158.94</entrada>
+				<entrada tipodado="real">130.49</entrada>
+				<entrada tipodado="real">66.15</entrada>
+				<entrada tipodado="real">69.65</entrada>
+				<entrada tipodado="real">139.99</entrada>
+				<entrada tipodado="real">45.4</entrada>
+				<entrada tipodado="real">186.87</entrada>
+				<entrada tipodado="real">30.12</entrada>
+				<entrada tipodado="real">12.5</entrada>
+				<entrada tipodado="real">153.39</entrada>
+				<entrada tipodado="real">132.22</entrada>
+				<entrada tipodado="real">209.12</entrada>
+				<entrada tipodado="real">40.95</entrada>
+				<entrada tipodado="real">192.85</entrada>
+				<entrada tipodado="real">61.13</entrada>
+				<entrada tipodado="real">147.93</entrada>
+				<entrada tipodado="real">168.38</entrada>
+				<entrada tipodado="real">131.06</entrada>
+				<entrada tipodado="real">184.77</entrada>
+				<entrada tipodado="real">155.4</entrada>
+				<entrada tipodado="real">184.54</entrada>
+				<entrada tipodado="real">126.64</entrada>
+				<entrada tipodado="real">108.82</entrada>
+				<entrada tipodado="real">136.1</entrada>
+				<entrada tipodado="real">117.52</entrada>
+				<entrada tipodado="real">126.55</entrada>
+				<entrada tipodado="real">62.35</entrada>
+				<entrada tipodado="real">133.55</entrada>
+				<entrada tipodado="real">130.8</entrada>
+				<entrada tipodado="real">37.12</entrada>
+				<entrada tipodado="real">88.25</entrada>
+				<entrada tipodado="real">86.63</entrada>
+				<entrada tipodado="real">94.01</entrada>
+				<entrada tipodado="real">179.7</entrada>
+				<entrada tipodado="real">187.78</entrada>
+				<entrada tipodado="real">80.62</entrada>
+				<entrada tipodado="real">26.42</entrada>
+				<entrada tipodado="real">197.14</entrada>
+				<entrada tipodado="real">88.94</entrada>
+				<entrada tipodado="real">94.0</entrada>
+				<entrada tipodado="real">163.91</entrada>
+				<entrada tipodado="real">202.47</entrada>
+				<entrada tipodado="real">132.39</entrada>
+				<entrada tipodado="real">116.28</entrada>
+				<entrada tipodado="real">137.38</entrada>
+				<entrada tipodado="real">131.93</entrada>
+				<entrada tipodado="real">152.95</entrada>
+				<entrada tipodado="real">142.71</entrada>
+				<entrada tipodado="real">45.83</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">120.97620000000002</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">170.11</entrada>
+				<entrada tipodado="real">182.75</entrada>
+				<entrada tipodado="real">20.66</entrada>
+				<entrada tipodado="real">27.12</entrada>
+				<entrada tipodado="real">68.07</entrada>
+				<entrada tipodado="real">189.13</entrada>
+				<entrada tipodado="real">164.26</entrada>
+				<entrada tipodado="real">160.75</entrada>
+				<entrada tipodado="real">175.18</entrada>
+				<entrada tipodado="real">165.08</entrada>
+				<entrada tipodado="real">165.85</entrada>
+				<entrada tipodado="real">67.73</entrada>
+				<entrada tipodado="real">155.56</entrada>
+				<entrada tipodado="real">198.67</entrada>
+				<entrada tipodado="real">21.04</entrada>
+				<entrada tipodado="real">143.8</entrada>
+				<entrada tipodado="real">129.13</entrada>
+				<entrada tipodado="real">163.26</entrada>
+				<entrada tipodado="real">178.59</entrada>
+				<entrada tipodado="real">194.71</entrada>
+				<entrada tipodado="real">30.43</entrada>
+				<entrada tipodado="real">149.95</entrada>
+				<entrada tipodado="real">47.12</entrada>
+				<entrada tipodado="real">26.25</entrada>
+				<entrada tipodado="real">174.71</entrada>
+				<entrada tipodado="real">179.17</entrada>
+				<entrada tipodado="real">153.64</entrada>
+				<entrada tipodado="real">203.37</entrada>
+				<entrada tipodado="real">166.35</entrada>
+				<entrada tipodado="real">47.59</entrada>
+				<entrada tipodado="real">152.25</entrada>
+				<entrada tipodado="real">131.3</entrada>
+				<entrada tipodado="real">84.09</entrada>
+				<entrada tipodado="real">142.95</entrada>
+				<entrada tipodado="real">131.28</entrada>
+				<entrada tipodado="real">137.97</entrada>
+				<entrada tipodado="real">116.59</entrada>
+				<entrada tipodado="real">102.41</entrada>
+				<entrada tipodado="real">152.63</entrada>
+				<entrada tipodado="real">144.01</entrada>
+				<entrada tipodado="real">207.92</entrada>
+				<entrada tipodado="real">31.22</entrada>
+				<entrada tipodado="real">198.28</entrada>
+				<entrada tipodado="real">138.27</entrada>
+				<entrada tipodado="real">192.75</entrada>
+				<entrada tipodado="real">208.36</entrada>
+				<entrada tipodado="real">94.76</entrada>
+				<entrada tipodado="real">178.72</entrada>
+				<entrada tipodado="real">117.22</entrada>
+				<entrada tipodado="real">187.45</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">135.4092</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">182.33</entrada>
+				<entrada tipodado="real">175.89</entrada>
+				<entrada tipodado="real">46.81</entrada>
+				<entrada tipodado="real">155.06</entrada>
+				<entrada tipodado="real">102.82</entrada>
+				<entrada tipodado="real">170.33</entrada>
+				<entrada tipodado="real">177.23</entrada>
+				<entrada tipodado="real">189.68</entrada>
+				<entrada tipodado="real">45.44</entrada>
+				<entrada tipodado="real">114.58</entrada>
+				<entrada tipodado="real">175.15</entrada>
+				<entrada tipodado="real">169.51</entrada>
+				<entrada tipodado="real">175.99</entrada>
+				<entrada tipodado="real">149.39</entrada>
+				<entrada tipodado="real">56.58</entrada>
+				<entrada tipodado="real">181.02</entrada>
+				<entrada tipodado="real">190.4</entrada>
+				<entrada tipodado="real">105.05</entrada>
+				<entrada tipodado="real">28.37</entrada>
+				<entrada tipodado="real">65.46</entrada>
+				<entrada tipodado="real">36.76</entrada>
+				<entrada tipodado="real">147.53</entrada>
+				<entrada tipodado="real">11.91</entrada>
+				<entrada tipodado="real">205.31</entrada>
+				<entrada tipodado="real">148.3</entrada>
+				<entrada tipodado="real">50.15</entrada>
+				<entrada tipodado="real">28.29</entrada>
+				<entrada tipodado="real">177.99</entrada>
+				<entrada tipodado="real">30.81</entrada>
+				<entrada tipodado="real">139.93</entrada>
+				<entrada tipodado="real">68.64</entrada>
+				<entrada tipodado="real">135.74</entrada>
+				<entrada tipodado="real">16.37</entrada>
+				<entrada tipodado="real">58.51</entrada>
+				<entrada tipodado="real">155.87</entrada>
+				<entrada tipodado="real">199.34</entrada>
+				<entrada tipodado="real">199.51</entrada>
+				<entrada tipodado="real">102.64</entrada>
+				<entrada tipodado="real">197.49</entrada>
+				<entrada tipodado="real">71.7</entrada>
+				<entrada tipodado="real">114.25</entrada>
+				<entrada tipodado="real">182.32</entrada>
+				<entrada tipodado="real">191.05</entrada>
+				<entrada tipodado="real">178.02</entrada>
+				<entrada tipodado="real">22.85</entrada>
+				<entrada tipodado="real">170.41</entrada>
+				<entrada tipodado="real">204.12</entrada>
+				<entrada tipodado="real">77.91</entrada>
+				<entrada tipodado="real">85.8</entrada>
+				<entrada tipodado="real">59.21</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">122.51640000000003</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que solicita ao usuário 50 valores reais e armazene em um vetor. Percorra este vetor e calcule e exiba a média aritmética dos valores.</enunciado>
+</questao>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	<testes>
+		<caso>
+			<saidas>
+				<saida tipodado="inteiro">42</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>
+		<![CDATA[
+Faça um programa que exiba na tela o número inteiro 42".
+Lembre-se, escreva("42") é diferente de escreva(42).
+Um mostra um texto o outro um inteiro.
+
+Exemplo:
+Escreva(inteiro)->42
+		]]>
+	</enunciado>
+</questao>

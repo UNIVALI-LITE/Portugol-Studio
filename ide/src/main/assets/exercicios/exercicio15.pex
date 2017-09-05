@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	
+ 
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">23</entrada>
+				<entrada tipodado="inteiro">59</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">01</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">23</entrada>
+				<entrada tipodado="inteiro">60</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0</entrada>
+				<entrada tipodado="inteiro">0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">12</entrada>
+				<entrada tipodado="inteiro">60</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">59</entrada>
+				<entrada tipodado="inteiro">23</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="inteiro">05</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">13</entrada>
+				<entrada tipodado="inteiro">13</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">42</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+	</testes>
+  
+	<enunciado>Faça um programa que solicita ao usuário dois números inteiros. O primeiro é o valor das horas e o segundo dos minutos. Verifique se a hora é válida e exiba uma mensagem correspondente (considere a hora 24:00 como inválida). Exiba o valor logico verdadeiro caso a hora seja válida, e o valor logico falso caso a hora seja inválida.
+</enunciado>
+</questao>

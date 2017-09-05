@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+ 
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">100</entrada>
+				<entrada tipodado="inteiro">200</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">15150</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">150</entrada>
+				<entrada tipodado="inteiro">200</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">8925</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">40</entrada>
+				<entrada tipodado="inteiro">200</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">19320</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-40</entrada>
+				<entrada tipodado="inteiro">200</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">19280</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">250</entrada>
+				<entrada tipodado="inteiro">300</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">14025</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-50</entrada>
+				<entrada tipodado="inteiro">-49</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-99</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0</entrada>
+				<entrada tipodado="inteiro">300</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">45150</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">8</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">529</entrada>
+				<entrada tipodado="inteiro">800</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">180744</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-5</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que exiba na tela a soma dos números inteiros de um intervalo digitado pelo usuario. 
+		• Exemplo[100,200]: 100 + 101 +102 + ... + 200 = 15150.
+	</enunciado>
+</questao>

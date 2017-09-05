@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-7</entrada>
+				<entrada tipodado="real">-3</entrada>
+				<entrada tipodado="real">-8</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-8</entrada>
+				<entrada tipodado="real">-7</entrada>
+				<entrada tipodado="real">9</entrada>
+
+			</entradas>
+			<saidas>
+				<saida tipodado="real">9</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-8</entrada>
+				<entrada tipodado="real">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">6</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">6</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-45</entrada>
+				<entrada tipodado="real">-24</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-8</entrada>
+				<entrada tipodado="real">-4</entrada>
+				<entrada tipodado="real">2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-3</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-27</entrada>
+				<entrada tipodado="real">-300</entrada>
+				<entrada tipodado="real">-1337</entrada>
+				<entrada tipodado="real">58008</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">58008</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-27</entrada>
+				<entrada tipodado="real">-0.7734</entrada>
+				<entrada tipodado="real">833</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">833</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-0.7734</entrada>
+				<entrada tipodado="real">53.50</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">53.50</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">3.50</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">3.50</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-666</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-0.7734</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-666</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-0.7734</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-666</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-0.7734</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-666</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-0.7734</entrada>
+				<entrada tipodado="real">-12</entrada>
+				<entrada tipodado="real">-9</entrada>
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">-0.7734</entrada>
+				<entrada tipodado="real">53.50</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">53.50</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa que solicita ao usuário um número real positivo e escreva-o na tela. Verifique se o número é realmente positivo, e em caso contrário solicite ao usuário digitar novamente (este processo pode se repetir inúmeras vezes e é chamado de consistência, pois garante que o número será válido após a entrada de dados).
+	</enunciado>
+</questao>

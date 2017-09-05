@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	
+	<testes>
+		<caso>
+		<entradas>
+			<entrada tipodado="real">6</entrada>
+			<entrada tipodado="real">7</entrada>
+			<entrada tipodado="real">5</entrada>
+		</entradas>
+		<saidas>
+			<saida tipodado="logico">verdadeiro</saida>
+		</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">3.5</entrada>
+				<entrada tipodado="real">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">7.5</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">9.5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">2</entrada>
+				<entrada tipodado="real">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">0</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">0</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">7</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">0.8</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">7.5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">5.8</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">7.5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">5.8</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">7.5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+	</testes>
+	
+	<enunciado>Faça um programa que solicita ao as notas de três provas. Calcule a média aritmética e informe se o aluno foi Aprovado (exiba o tipo logico verdadeiro) ou Reprovado (exiba o tipo logico falso), o aluno é considerado aprovado com a média igual ou superior a 6.
+</enunciado>
+</questao>

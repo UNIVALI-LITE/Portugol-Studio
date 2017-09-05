@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="caso" type="caso"/>
+
+  <xs:element name="entrada" type="entrada"/>
+
+  <xs:element name="questao" type="questao"/>
+
+  <xs:element name="saida" type="saida"/>
+
+  <xs:complexType name="questao">
+    <xs:sequence>
+      <xs:element name="testes" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="caso" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="enunciado" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="caso">
+    <xs:sequence>
+      <xs:element name="entradas" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="entrada" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saidas" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="saida" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="entrada">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="quantificador" type="xs:string"/>
+        <xs:attribute name="tipodado" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="saida">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="tipodado" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>
+

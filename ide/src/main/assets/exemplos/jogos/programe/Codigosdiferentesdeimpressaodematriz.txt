@@ -1,0 +1,55 @@
+//Em caso de emergencia, pegue um dos codigos abaixo
+		
+//		i = 0
+//		j = 0
+//    		para(inteiro k = 0; k < 8*2; k++)
+//    		{
+//	        	para(inteiro z = 0; z <= i-j; z++)
+//	        	{
+//		          posicao_objeto(j+z, i-z)
+//		          desenha_cerca(mapa_cerca[i-z][j+z])
+//				desenha_tile(mapa[i-z][j+z])
+//				//debug(mapa_char[i-z][j+z])
+//				se(posicao_maty==i-z e posicao_matx==j+z)
+//				{
+//					desenha_char()		
+//				}
+//	        	}
+//	 
+//	        	se(i < 8-1)
+//	        	{
+//	            i++
+//	        	}
+//	        	senao
+//	        	{
+//	            j++
+//	        	}
+//    		}
+
+
+//		para(inteiro k=0; k<8; k++)
+//		{
+//			para(i=0; k+i<8; i++)
+//			{
+//				posicao_objeto(k, k+i)
+//		          desenha_cerca(mapa_cerca[k+i][k])
+//				desenha_tile(mapa[k+i][k])
+//				debug(mapa_char[k+i][k])
+//
+//				posicao_objeto(k+i, k)
+//		          desenha_cerca(mapa_cerca[k][k+i])
+//				desenha_tile(mapa[k][k+i])
+//				debug(mapa_char[k][k+i])
+//				g.renderizar()
+//				u.aguarde(1000)
+//				se(posicao_maty==k e posicao_matx==k+i)
+//				{
+//					desenha_char()		
+//				}
+//				senao se(posicao_maty==k+i e posicao_matx==k)
+//				{
+//					desenha_char()
+//				}
+//			}
+//		}
+    		

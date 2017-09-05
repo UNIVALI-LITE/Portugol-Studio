@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	
+	<testes>
+		<caso>
+		<entradas>
+			<entrada tipodado="real">6</entrada>
+			<entrada tipodado="real">7</entrada>
+			<entrada tipodado="real">8</entrada>
+		</entradas>
+		<saidas>
+			<saida tipodado="real">6.0</saida>
+		</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">8</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">3.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">5.03</entrada>
+				<entrada tipodado="real">5.02</entrada>
+				<entrada tipodado="real">5.04</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">5.02</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">18.03</entrada>
+				<entrada tipodado="real">0.00</entrada>
+				<entrada tipodado="real">-0.01</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">-0.01</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">8.83</entrada>
+				<entrada tipodado="real">1.00</entrada>
+				<entrada tipodado="real">2.01</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">1.00</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">0.83</entrada>
+				<entrada tipodado="real">1.00</entrada>
+				<entrada tipodado="real">2.01</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">0.83</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">3.01</entrada>
+				<entrada tipodado="real">2.00</entrada>
+				<entrada tipodado="real">1.83</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">1.83</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">7.01</entrada>
+				<entrada tipodado="real">2.00</entrada>
+				<entrada tipodado="real">5.43</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">2.00</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">9.01</entrada>
+				<entrada tipodado="real">9.00</entrada>
+				<entrada tipodado="real">14.43</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">9.00</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">8.43</entrada>
+				<entrada tipodado="real">9.00</entrada>
+				<entrada tipodado="real">8.43</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">8.43</saida>
+			</saidas>
+		</caso>
+	</testes>
+	
+	<enunciado>Faça um programa que solicita ao usuário três números reais e exibe na tela apenas o menor deles.</enunciado>
+</questao>

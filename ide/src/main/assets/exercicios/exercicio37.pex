@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+  
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">11</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">997</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">21</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">40</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">974</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">493</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1044</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">686</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">843</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">913</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que verifica se um número digitado pelo usuário é um número primo, ou seja, um número que só é divisível por 1 e por ele mesmo. Se for primo escreva o valor logico verdadeiro, se não for escreva o valor logico falso
+
+	</enunciado>
+</questao>

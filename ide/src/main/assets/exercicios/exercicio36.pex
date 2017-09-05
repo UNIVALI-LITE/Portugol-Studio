@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+  
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">120</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">12</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">479001600</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">7</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">5040</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">11</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">39916800</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">6</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">362880</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">4</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">24</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">720</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Solicite ao usuário a digitação de um número inteiro, calcule e exiba o fatorial deste número</enunciado>
+</questao>

@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.codehaus.groovy:groovy-all:2.4.12'
+    }
+}
+
+plugins {
+    id 'de.undercouch.download' version '3.2.0'
+}
+
+import org.gradle.api.artifacts.*
+
+ext {
+    
+    versionInfo = new Properties()
+    versionInfo.load(new FileInputStream(rootProject.projectDir.getPath() + '/ide/src/main/resources/version.properties'))
+}
+
+String versionString = versionInfo.majorVersion + '.' + versionInfo.minorVersion + '.' + versionInfo.buildVersion
+
+group = versionInfo.mavenGroupId
+
+version = versionString
+
+apply plugin: 'base'
+
+subprojects {
+    
+    apply from: rootProject.file('projects.gradle')
+}
+
+task mergedJavadoc(type: Javadoc, description: 'Creates Javadoc from all the projects.') {
+    title = 'All modules'
+    destinationDir = new File(project.buildDir, 'merged-javadoc')
+
+    // Note: The closures below are executed lazily.
+    source {
+       subprojects*.sourceSets*.main*.allSource
+    }
+    classpath.from {
+        subprojects*.configurations*.compile*.copyRecursive({ !(it instanceof ProjectDependency); })*.resolve()
+    }
+}
+
+
+
+task cleanAll(){
+    subprojects.each {
+        it.afterEvaluate {
+            def cleanTask = it.tasks.findByName('clean')
+            if (cleanTask) {
+                dependsOn(cleanTask)
+            }
+        }
+    }
+}
+
+task buildAll(){
+    subprojects.each {
+        it.afterEvaluate {
+            def buildTask = it.tasks.findByName('build')
+            if (buildTask) {
+                dependsOn(buildTask)
+            }
+        }
+    }
+}
+
+apply from: rootProject.file('dist.gradle')
+
+clean.dependsOn cleanAll
+build.dependsOn buildAll

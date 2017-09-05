@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleName</key>
+	<string>Portugol Studio</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Ambiente de desenvolvimento para aprender a programar na linguagem Portugol 2.0</string>
+	<key>CFBundleVersion</key>
+	<string>2.6</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<string>true</string>
+	<key>CFBundleExecutable</key>
+	<string>Portugol Studio</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.6</string>
+	<key>CFBundleIconFile</key>
+	<string>portugol-studio.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>br.univali.portugol.studio</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>por</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Programa na linguagem Portugol 2.0</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+        	<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>br.univali.programa-portugol</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.source-code</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Programa na linguagem Portugol 2.0</string>
+			<key>UTTypeIdentifier</key>
+			<string>br.univali.programa-portugol</string>
+			<key>UTTypeIconFile</key>
+			<string>arquivo-por</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>por</string>				
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

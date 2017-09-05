@@ -1,0 +1,937 @@
+
+ext {
+    
+    jdkVersion = '1.8.0_144'
+        
+    platforms = [
+
+        [            
+            'title': 'Windows',
+            'name': 'windows',
+            'architecture': 'x86',
+            'suffix': '',
+            'installerExtension': '.exe',
+            'isMultiplatform': false,
+            'createZipPackage': false
+        ], 
+
+        [
+            'title': 'Mac',
+            'name': 'osx',
+            'architecture': 'x64',
+            'suffix': '',
+            'installerExtension': '.app',
+            'isMultiplatform': false,
+            'createZipPackage': true
+        ],
+
+        [
+            'title': 'Linux (32 bits)',
+            'name': 'linux',
+            'architecture': 'x86',
+            'suffix': '',
+            'installerExtension': '.run',
+            'isMultiplatform': false,
+            'createZipPackage': true
+        ],
+
+        [
+            'title': 'Linux (64 bits)',
+            'name': 'linux',
+            'architecture': 'x64',            
+            'suffix': '-x64',
+            'installerExtension': '.run',
+            'isMultiplatform': false,
+            'createZipPackage': true
+        ],
+        
+//        [
+//            'title': 'All Platforms (Bundle)',
+//            'name': 'linux',
+//            'isMultiplatform': true
+//        ]
+    ]
+    
+    usingGui = false
+    
+    dirs = [:]
+}
+
+dirs.rootProject = [:]
+dirs.installer = [:]
+
+dirs.rootProject.baseDir = buildscript.sourceFile.parentFile
+dirs.installer.baseDir = new File(dirs.rootProject.baseDir, 'installer')
+dirs.installer.buildDir = new File(dirs.installer.baseDir, 'build')
+dirs.installer.javaDir = new File(dirs.installer.buildDir, 'java')
+dirs.installer.configurationsFile = new File(dirs.installer.baseDir, 'configurations.json')
+dirs.versionFile = new File(rootProject.projectDir.getPath() + '/ide/src/main/resources/version.properties')
+
+import groovy.json.JsonException
+import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
+import org.gradle.internal.os.OperatingSystem
+import javax.swing.AbstractAction
+import java.awt.Dimension
+import java.awt.GridLayout
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import java.awt.event.ItemEvent
+import java.awt.event.ItemListener
+import java.io.StringWriter
+import javax.swing.Action
+import javax.swing.DefaultComboBoxModel
+import javax.swing.JFrame
+import javax.swing.JLabel
+import javax.swing.JList
+import javax.swing.ListModel
+import javax.swing.SpinnerNumberModel
+import javax.swing.SwingUtilities
+import javax.swing.UIManager
+import javax.swing.JOptionPane
+import javax.swing.JPanel
+import javax.swing.JSpinner
+import javax.swing.JTextField
+import javax.swing.JButton
+import javax.swing.JCheckBox
+import javax.swing.JComboBox
+import javax.swing.JFileChooser
+
+
+class DistFrame extends JFrame
+{ 
+    private final static int WINDOW_WIDTH = 600
+    private final static int WINDOW_HEIGHT = 580
+    private final Map buildConfigurations;
+    
+    private boolean success = false
+    
+    private List platformBoxes = new ArrayList()
+    
+    private final File configurationsFile
+    
+    private final File versionFile;
+    
+    DistFrame(platforms, buildConfigurations, configurationsFile, versionFile) {
+        
+        this.buildConfigurations = buildConfigurations
+        this.configurationsFile = configurationsFile
+        this.versionFile = versionFile
+        
+        createFrame()        
+        
+        JPanel contentPanel = new JPanel()
+        contentPanel.setLayout(null)
+        
+        JFileChooser chooser = new JFileChooser()
+        chooser.setAcceptAllFileFilterUsed(false)
+        chooser.setDialogTitle('Choose a directory')
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY)
+        
+        int defaultHeight = 30
+        int maxWidth = WINDOW_WIDTH - 20
+        
+        int y = 10
+        
+        JLabel labelBuilderHome = new JLabel('Bitrock InstallBuilder installation home:')
+        
+        labelBuilderHome.setSize(maxWidth, defaultHeight)
+        labelBuilderHome.setLocation(10, y)
+        
+        contentPanel.add(labelBuilderHome)
+        
+        y += 30
+        
+        JButton builderHomeButton = new JButton()
+        JTextField installBuilderHomeField = new JTextField()
+        
+        builderHomeButton.setText('Search...')
+        builderHomeButton.setSize(95, defaultHeight)
+        builderHomeButton.setLocation((int)(WINDOW_WIDTH - builderHomeButton.getSize().getWidth() - 10), y)
+        builderHomeButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+                File dir = new File(buildConfigurations.installBuilderHome)
+                
+                if (dir.exists()){
+                    chooser.setSelectedFile(dir)
+                }
+                
+                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                    installBuilderHomeField.setText(chooser.getSelectedFile().getCanonicalPath())
+                    buildConfigurations.installBuilderHome = chooser.getSelectedFile().getCanonicalPath()
+                    saveConfigurations(buildConfigurations)
+                }
+            }
+        })
+    
+        contentPanel.add(builderHomeButton)
+        
+        
+        
+        installBuilderHomeField.setText(buildConfigurations.installBuilderHome)
+        installBuilderHomeField.setSize((int)(maxWidth - builderHomeButton.getSize().getWidth() - 10), defaultHeight)
+        installBuilderHomeField.setEditable(false)
+        installBuilderHomeField.setLocation(10, y)
+        
+        contentPanel.add(installBuilderHomeField)
+        
+        
+        y += 40
+        
+        JLabel labelOutputDir = new JLabel('Output directory:')
+        
+        labelOutputDir.setSize(maxWidth, defaultHeight)
+        labelOutputDir.setLocation(10, y)
+        
+        contentPanel.add(labelOutputDir)
+        
+        y += 30
+        
+        JButton outputDirButton = new JButton()
+        JTextField outputDirField = new JTextField()
+        
+        
+        outputDirButton.setText('Search...')
+        outputDirButton.setSize(95, defaultHeight)
+        outputDirButton.setLocation((int)(WINDOW_WIDTH - outputDirButton.getSize().getWidth() - 10), y)
+        outputDirButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+                File dir = new File(buildConfigurations.outputDir)
+                
+                if (dir.exists()){
+                    chooser.setSelectedFile(dir)
+                }
+                else {                    
+                    chooser.setSelectedFile(null)
+                }
+                
+                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                    outputDirField.setText(chooser.getSelectedFile().getCanonicalPath())
+                    buildConfigurations.outputDir = chooser.getSelectedFile().getCanonicalPath()
+                    saveConfigurations(buildConfigurations)
+                }
+            }
+        })
+    
+        contentPanel.add(outputDirButton)        
+        
+        outputDirField.setText(buildConfigurations.outputDir)
+        outputDirField.setSize((int)(maxWidth - outputDirButton.getSize().getWidth() - 10), defaultHeight)
+        outputDirField.setEditable(false)
+        outputDirField.setLocation(10, y)
+        
+        contentPanel.add(outputDirField)
+        
+        y+=40
+        
+        JLabel label = new JLabel('Select below the distribution packages to build')
+        label.setSize(maxWidth, defaultHeight)
+        label.setLocation(10, y)
+        contentPanel.add(label)
+        
+        y += 50
+        JButton allButton = new JButton()
+            
+        allButton.setSize(200, defaultHeight)
+        allButton.setText('Select all platforms')
+        allButton.setLocation(10, y)
+        allButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+                buildConfigurations.selectedPlatforms.removeAll()
+                
+                for (checkbox in platformBoxes){
+                    checkbox.setSelected(true)
+                }
+            }
+        })
+    
+        y += 40
+        
+        contentPanel.add(allButton)
+        
+        for (platform in platforms){      
+            
+            def currentPlatform = platform
+            
+            JCheckBox checkbox = new JCheckBox()
+            
+            checkbox.setSize(250, defaultHeight)
+            checkbox.setText(platform.title)
+            checkbox.setLocation(10, y)
+            
+            for (selectedPlatform in buildConfigurations.selectedPlatforms){
+                
+                if (platform.title.equals(selectedPlatform.title)){
+                    
+                    checkbox.setSelected(true)
+                }
+            }
+            
+            checkbox.addItemListener(new ItemListener(){
+                    
+                public void itemStateChanged(ItemEvent e){
+                    
+                    if (e.stateChange == ItemEvent.SELECTED){
+                        
+                        if (!buildConfigurations.selectedPlatforms.contains(currentPlatform)){
+                            
+                            buildConfigurations.selectedPlatforms.add(currentPlatform)
+                            saveConfigurations(buildConfigurations)
+                        }
+                    }
+                    else if (e.stateChange == ItemEvent.DESELECTED){
+                        
+                        buildConfigurations.selectedPlatforms.remove(currentPlatform)
+                        saveConfigurations(buildConfigurations)
+                    }
+                }                    
+            })
+            
+            contentPanel.add(checkbox)
+            platformBoxes.add(checkbox)
+            
+            y += 40
+        }
+        
+        y += 10
+        
+        int x = 10
+        
+        JLabel labelVersion = new JLabel('Update software version to:')
+        
+        labelVersion.setSize(maxWidth, defaultHeight)
+        labelVersion.setLocation(x, y)
+        
+        contentPanel.add(labelVersion)    
+        
+        y += 30
+        
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionFile))
+        
+        int spinnerWidth = 75
+        
+        JSpinner majorSpinner = new JSpinner()
+        int currentMajorNumber = Integer.parseInt(versionProps.getProperty('majorVersion'))
+        SpinnerNumberModel majorModel = new SpinnerNumberModel(currentMajorNumber, 0, 99, 1)
+        majorSpinner.setModel(majorModel)
+        majorSpinner.setSize(spinnerWidth, defaultHeight)
+        majorSpinner.setLocation(x, y)
+        contentPanel.add(majorSpinner)
+        
+        x += 85
+        
+         JSpinner minorSpinner = new JSpinner()
+        int currentMinorNumber = Integer.parseInt(versionProps.getProperty('minorVersion'))
+        SpinnerNumberModel minorModel = new SpinnerNumberModel(currentMinorNumber, 0, 99, 1)
+        minorSpinner.setModel(minorModel)
+        minorSpinner.setSize(spinnerWidth, defaultHeight)
+        minorSpinner.setLocation(x, y)
+        contentPanel.add(minorSpinner)
+        
+        x += 85
+        
+        JSpinner buildSpinner = new JSpinner()
+        int currentBuildNumber = Integer.parseInt(versionProps.getProperty('buildVersion'))
+        SpinnerNumberModel buildModel = new SpinnerNumberModel(currentBuildNumber, 0, 99, 1)
+        buildSpinner.setModel(buildModel)
+        buildSpinner.setSize(spinnerWidth, defaultHeight)
+        buildSpinner.setLocation(x, y)
+        contentPanel.add(buildSpinner)
+        
+        y -= 30 
+        
+        x += 140
+        
+        JLabel labelReleaseName = new JLabel("Release name (leave blank to ignore)")
+        labelReleaseName.setSize(270, defaultHeight)
+        labelReleaseName.setLocation(x, y)
+
+        
+        contentPanel.add(labelReleaseName)
+        
+        y += 30
+        
+        JComboBox fieldReleaseName = new JComboBox()
+        fieldReleaseName.setSize(270, defaultHeight)
+        fieldReleaseName.setLocation(x, y)
+        
+        DefaultComboBoxModel releaseModel = new DefaultComboBoxModel()
+        releaseModel.addElement('')
+        releaseModel.addElement('ALPHA')
+        releaseModel.addElement('BETA')
+        releaseModel.addElement('RELEASE')
+        releaseModel.addElement('SNAPSHOT')
+        
+        fieldReleaseName.setModel(releaseModel)
+        fieldReleaseName.setSelectedItem(versionProps.getProperty('releaseName', ''))
+        
+        contentPanel.add(fieldReleaseName)
+        
+        y += 40
+        
+        JCheckBox createGiTag = new JCheckBox('Create git tag if build is successfull (not implemented yet)')
+        
+        createGiTag.setSize(450, defaultHeight)
+        createGiTag.setLocation(10, y)
+        createGiTag.setSelected(buildConfigurations.createGitTag)
+        createGiTag.addItemListener(new ItemListener(){
+                    
+                public void itemStateChanged(ItemEvent e){
+                    
+                    buildConfigurations.createGitTag = createGiTag.isSelected()
+                    saveConfigurations(buildConfigurations)
+                }
+            })
+        
+        contentPanel.add(createGiTag)
+        
+        JButton buildButton = new JButton('Build')
+        
+        buildButton.setSize(new Dimension(100, defaultHeight))
+        buildButton.setLocation((int) (WINDOW_WIDTH - buildButton.getSize().getWidth() - 10), (int) (WINDOW_HEIGHT - buildButton.getSize().getHeight() - 10))
+        buildButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                saveVersion(majorSpinner, minorSpinner, buildSpinner, fieldReleaseName)                
+                success = true
+                dispose()
+            }
+        })
+    
+        contentPanel.add(buildButton)
+        
+        JButton cancelButton = new JButton('Cancel')
+        
+        cancelButton.setSize(new Dimension(100, 30))
+        cancelButton.setLocation((int) (buildButton.getLocation().x - cancelButton.getSize().getWidth() - 10), (int) buildButton.getLocation().y)
+        cancelButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                dispose()
+            }
+        })
+        
+        contentPanel.add(cancelButton)
+        
+        y = 50
+        
+        getContentPane().setLayout(new GridLayout(1, 1))
+        getContentPane().add(contentPanel)
+    }
+    
+    private void saveVersion(JSpinner majorSpinner, JSpinner minorSpinner, JSpinner buildSpinner, JComboBox releaseNameCombo){
+        
+        buildConfigurations.versionChanged = false
+        
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionFile))
+        
+        int currentMajorNumber = Integer.parseInt(versionProps.getProperty('majorVersion')) 
+        int currentMinorNumber = Integer.parseInt(versionProps.getProperty('minorVersion'))
+        int currentBuildNumber = Integer.parseInt(versionProps.getProperty('buildVersion'))
+        
+        Integer newMajorNumber = (Integer) majorSpinner.getValue()
+        Integer newMinorNumber = (Integer) minorSpinner.getValue()
+        Integer newBuildNumber = (Integer) buildSpinner.getValue()
+        
+        if ((newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber)) {
+            
+            versionProps.setProperty('majorVersion', newMajorNumber.toString())
+            versionProps.setProperty('minorVersion', newMinorNumber.toString())
+            versionProps.setProperty('buildVersion', newBuildNumber.toString())
+            versionProps.setProperty('buildDate', Long.toString(new Date().getTime()))
+            versionProps.setProperty('releaseName', releaseNameCombo.getSelectedItem())
+            
+            FileOutputStream fileOut = new FileOutputStream(versionFile)
+            Writer stringOut = new StringWriter()
+            versionProps.store(stringOut, null)
+            String string = stringOut.toString()
+            String sep = System.getProperty("line.separator")
+            String content = string.substring(string.indexOf(sep) + sep.length())
+            fileOut.write(content.getBytes())
+            
+            buildConfigurations.versionChanged = true
+        }
+        
+    }
+    
+    private void saveConfigurations(buildConfigurations){
+        configurationsFile.write(new JsonBuilder(buildConfigurations).toPrettyString())
+    }
+    
+    private void createFrame(){
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
+        setLocationRelativeTo(null)
+        setResizable(false)
+        setTitle('Build configuration')
+        setType(java.awt.Window.Type.UTILITY)
+    }
+    
+    public boolean isSuccess(){
+        return success
+    }    
+}
+
+def fail(def message = 'Build failed', def cause = null){
+    
+    if (message == null){
+        
+        message = 'Build failed'
+    }
+    
+    if (!message.equals('Build failed')){
+        
+        message = 'Build failed: ' + message
+    }
+    
+    def error;
+    
+    if (cause == null){
+        
+        error = new RuntimeException(message)
+    }
+    else {
+        
+        error = new RuntimeException(message, cause)
+    }
+    
+    if (usingGui){
+        
+        JOptionPane.showMessageDialog(null, error.message, 'Error', JOptionPane.ERROR_MESSAGE)
+    }
+    
+    throw error
+}
+
+
+def downloadJava(def platform) {
+        
+    def platformId = platform.name + platform.suffix
+
+    def jdkName = 'jdk' + jdkVersion + '-' + platformId
+
+    def jdkDownloadFlagFile = new File(dirs.installer.javaDir, jdkName + '.flag')
+
+    if (!jdkDownloadFlagFile.exists())
+    {
+        def zipFileName = jdkName + '.zip'
+
+        def remoteZip = 'http://installbuilder.bitrock.com/java/' + zipFileName
+
+        def localZip = new File(dirs.installer.javaDir, zipFileName)
+
+        def zipExtractDir = new File(dirs.installer.javaDir, jdkName)
+
+        dirs.installer.javaDir.mkdirs()
+
+        println('JDK for ' + platform.title + ' not found. The download will begin now...')
+        println('Cleaning up old files')
+
+        localZip.delete()
+        delete zipExtractDir
+
+        println('Downloading JDK for ' + platform.title)
+
+        download {
+            src remoteZip
+            dest dirs.installer.javaDir
+        }
+
+        println('Extracting JDK...')
+
+        copy {
+            from zipTree(localZip)
+            into dirs.installer.javaDir
+        }
+
+        def platformJdkDir = new File(dirs.installer.javaDir, 'java-' + platform.name)
+        def architectureJdkDir = new File(platformJdkDir, platform.architecture)
+
+        platformJdkDir.mkdirs()
+
+        copy {
+            from new File(zipExtractDir, 'java-' + platformId)
+            into architectureJdkDir
+        }
+
+        jdkDownloadFlagFile.createNewFile()
+    }
+}
+
+def loadConfigurations(def required){
+    
+    def buildConfigurations = new Properties()
+    def configFile = dirs.installer.configurationsFile
+    
+    if (configFile.exists()){
+        
+        def configJson = configFile.text
+        
+        if (configJson.empty){
+            fail('the build configuration file is empty.\nFile: ' + configFile)
+        }
+        
+        try {
+            buildConfigurations = new JsonSlurper().parseText(configJson)
+        }
+        catch (JsonException ex){
+            fail('the build configuration file does not contain a valid Json content.\nFile:' + configFile, ex)
+        }
+        
+        def iterator = buildConfigurations.selectedPlatforms.iterator()
+
+        while (iterator.hasNext()) {
+            
+            def currentPlatform = iterator.next()
+            def platformExists = false
+            
+            for (platform in platforms){
+                
+                if (currentPlatform.equals(platform)){
+                    platformExists = true
+                    break
+                }
+            }
+            
+            if (!platformExists){
+
+                iterator.remove()
+            }
+        }
+    }
+    else {
+        println('The build configuration file was not found. The file will be created for you using the default configurations. File: ' + configFile)
+    }
+    
+    if (!buildConfigurations.containsKey('installBuilderHome')){
+        
+        buildConfigurations.installBuilderHome = 'Inform the Bitrock InstallBuilder home directory'
+    } 
+    
+    if (!buildConfigurations.containsKey('outputDir')){
+        
+        buildConfigurations.outputDir = new File(dirs.installer.baseDir, 'dist').getCanonicalPath()
+    }
+    
+    if (!buildConfigurations.containsKey('selectedPlatforms')){
+        
+        buildConfigurations.selectedPlatforms = platforms
+    }
+    
+    if (!buildConfigurations.containsKey('createGitTag')){
+        
+        buildConfigurations.createGitTag = true
+    }
+    
+    configFile.write(new JsonBuilder(buildConfigurations).toPrettyString())
+    
+    return buildConfigurations
+}
+
+def getConfigurationsFromGui(){
+    
+    def buildConfigurations = loadConfigurations(false)
+    
+    def frame
+
+    try {
+        
+        SwingUtilities.invokeAndWait(){
+
+            UIManager.setLookAndFeel(UIManager.systemLookAndFeelClassName)
+
+            frame = new DistFrame(platforms, buildConfigurations, dirs.installer.configurationsFile, dirs.versionFile)
+            frame.visible = true
+        }
+    }
+    catch (Throwable cause){
+
+        fail(cause.message, cause)
+    }
+
+    while (frame == null || frame.visible){
+        sleep(100)
+    }
+
+    if (frame.success){
+
+        return buildConfigurations
+    }
+        
+    fail('the build was cancelled by the user')
+}
+
+def checkInstallBuilder(buildConfigurations){
+    
+    if (buildConfigurations.installBuilderHome == null){
+        def message = 'the Bitrock InstallBuilder home directory is not set.'
+        
+        message = message + '\nPlease inform the directory on the build configuration file:\n' + dirs.installer.configurationsFile
+        message = message + '\n\nIf you don\'t have Bitrock InstallBuilder on your machine, please download and install it before building Portugol Studio distribution packages.'
+        message = message + '\nInstallBuilder download: https://installbuilder.bitrock.com/'
+        
+        fail(message)
+    }
+    
+    def installBuilderHome = new File(buildConfigurations.installBuilderHome)
+    
+    def invalidInstallationMessage = 'the directory informed doesn\'t reference a valid Bitrock InstallBuilder installation.'
+    
+    invalidInstallationMessage = invalidInstallationMessage + '\nDirectory: ' + installBuilderHome
+    invalidInstallationMessage = invalidInstallationMessage + '\n\nPlease inform a valid directory on the build configurations file: ' + dirs.installer.configurationsFile
+    invalidInstallationMessage = invalidInstallationMessage + '\n\nIf you don\'t have Bitrock InstallBuilder on your machine, please download and install it before building Portugol Studio distribution packages.'
+    invalidInstallationMessage = invalidInstallationMessage + '\nInstallBuilder download: https://installbuilder.bitrock.com/'
+    
+
+    if (!installBuilderHome.exists() || !installBuilderHome.isDirectory()){
+        
+        fail(invalidInstallationMessage)
+    }
+    
+    def installBuilderBinDir = new File(installBuilderHome, 'bin')
+    
+    if (!installBuilderBinDir.exists() || !installBuilderBinDir.isDirectory()){
+        
+        fail(invalidInstallationMessage)
+    }
+    
+    def builderExecutable = getInstallBuilderExecutable(buildConfigurations)
+    
+    if (!builderExecutable.exists() || !builderExecutable.isFile()){
+        
+        fail(invalidInstallationMessage)
+    }
+    
+    def output = new ByteArrayOutputStream()
+    
+    exec {
+        commandLine builderExecutable, "--version"
+        standardOutput output
+    }
+    
+    def versionInfo = output.toString().toLowerCase()
+    
+    if (!versionInfo.contains('bitrock installbuilder')){
+        
+        fail(invalidInstallationMessage)
+    }
+}
+
+def runBuild(def buildConfigurations){
+    
+    if (buildConfigurations.selectedPlatforms.empty){
+        
+        fail('you must select at least one platform to build')
+    }
+    
+    downloadJavaBundles(buildConfigurations)
+    
+    checkInstallBuilder(buildConfigurations)
+    
+    buildAppFiles(buildConfigurations)
+    
+    deleteOldInstallersAndPackages(buildConfigurations)
+    
+    buildInstallers(buildConfigurations)
+}
+
+def packageInstaller(platform, buildConfigurations){
+    
+    if (!platform.isMultiplatform && platform.createZipPackage){
+
+        def tmpDir = new File(dirs.installer.buildDir.getPath() + '/tmp')
+
+        delete tmpDir
+
+        def installerName = 'portugol-studio-' + project.version + '-' + platform.name + platform.suffix + platform.installerExtension
+
+        def installerFile = new File(buildConfigurations.outputDir + '/' + installerName)            
+
+        def zipFile = new File(buildConfigurations.outputDir + '/' + installerName + '.zip')
+
+        def additionalFiles = new File(dirs.installer.baseDir.getPath() + '/arquivos/' + platform.name + '/package')
+
+        if (installerFile.isDirectory()){
+
+            copy {
+                from (installerFile) {
+                    into installerName
+                }
+                into tmpDir
+            }
+        }
+        else {
+            copy {
+                from installerFile
+                into tmpDir
+            }
+        }
+
+        if (additionalFiles.exists()){
+            copy {
+                from additionalFiles
+                into tmpDir
+            }
+        }
+
+        ant.zip(destfile: zipFile.getPath(), baseDir: tmpDir.getPath())
+
+        delete tmpDir
+
+        delete installerFile
+    }
+}
+
+def deleteOldInstallersAndPackages(buildConfigurations){
+    
+    for (platform in buildConfigurations.selectedPlatforms){
+        
+        if (!platform.isMultiplatform){
+            
+            def installerName = 'portugol-studio-' + project.version + '-' + platform.name + platform.suffix + platform.installerExtension
+            def installerFile = new File(buildConfigurations.outputDir, installerName)
+            
+            delete installerFile
+            
+            if (platform.createZipPackage){
+                
+                def zipFile = new File(installerFile.getPath() + '.zip')
+                
+                delete zipFile
+            }
+        }
+    }
+}
+
+def buildInstallers(buildConfigurations){
+    
+    for (platform in buildConfigurations.selectedPlatforms){
+        
+        buildBinaryDistribution(platform, buildConfigurations)
+        packageInstaller(platform, buildConfigurations)
+    }
+}
+
+def downloadJavaBundles(buildConfigurations){
+    
+    for (platform in buildConfigurations.selectedPlatforms){
+        
+        if (!platform.isMultiplatform){
+            
+            downloadJava(platform)
+        }
+    }
+}
+
+def buildAppFiles(buildConfigurations){
+
+    def appFilesDir = new File(dirs.installer.buildDir, 'files')
+    
+    delete appFilesDir
+    
+    def appDir = new File(appFilesDir, 'aplicacao')
+    
+    def studioJar = project(':portugol-ide').jar.archivePath
+    
+    copy {
+        from new File(project(':portugol-ide').buildDir, 'libs/lib')
+        into new File(appDir, 'lib')
+    }
+    
+    copy {
+        from studioJar
+        into appDir
+    }
+    
+    studioJar = new File(appDir, studioJar.name)
+    
+    studioJar.renameTo(new File(appDir, 'portugol-studio.jar'))
+    
+    studioJar = new File(appDir, 'portugol-studio.jar')
+    
+    copy {
+        from new File(project(':portugol-ide').projectDir, 'src/main/assets')
+        into appFilesDir
+        exclude 'exercicios'
+    }
+    
+    copy {
+        from new File(dirs.installer.baseDir, 'arquivos/linux/icones/')
+        into new File(dirs.installer.buildDir, 'files/aplicacao/icones/linux')
+    }
+    
+    copy {
+        from new File(dirs.installer.baseDir, 'arquivos/mac/icones/')
+        into new File(dirs.installer.buildDir, 'files/aplicacao/icones/mac')
+    }
+    
+    copy {
+        from new File(dirs.installer.baseDir, 'arquivos/windows/icones/')
+        into new File(dirs.installer.buildDir, 'files/aplicacao/icones/windows')
+    }
+}
+
+def buildBinaryDistribution(platform, buildConfigurations){
+    
+    def builderExecutable = getInstallBuilderExecutable(buildConfigurations)
+    def projectXml = new File(dirs.installer.baseDir, 'instalador.xml')
+    def licenseXml = new File(dirs.installer.baseDir, 'license.xml')
+    
+    def platformString = platform.name + platform.suffix
+    
+    exec {
+        commandLine builderExecutable, 'build', projectXml, platformString, '--license', licenseXml, '--setvars', 'project.version=' + project.version, 'project.outputDirectory=' + buildConfigurations.outputDir
+    }
+}
+
+def getInstallBuilderExecutable(buildConfigurations){
+    
+    def installBuilderHome = new File(buildConfigurations.installBuilderHome)
+    def installBuilderBinDir = new File(installBuilderHome, 'bin')
+    def executableName = 'builder'
+    
+    if (OperatingSystem.current().isWindows()){
+
+        executableName = executableName + '-cli.exe'
+    }
+
+    return new File(installBuilderBinDir, executableName)
+}
+
+task dist (dependsOn: [rootProject.tasks.cleanAll, rootProject.tasks.buildAll]){
+    
+    doLast {
+        
+        def config = loadConfigurations(true)
+        
+        runBuild(config)
+    }
+}
+
+task 'dist-gui' (dependsOn: [rootProject.tasks.cleanAll, rootProject.tasks.buildAll]){
+    
+    doLast {
+
+        usingGui = true
+    
+        def config = getConfigurationsFromGui()
+        
+        runBuild(config)
+    }
+}
+
+buildAll.mustRunAfter cleanAll
+dist.mustRunAfter buildAll

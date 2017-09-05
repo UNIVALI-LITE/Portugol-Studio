@@ -1,0 +1,510 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!-- was: no XML declaration present -->
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">25</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+		
+				<entrada tipodado="cadeia">Carlos</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">1.9</entrada>
+				<entrada tipodado="real">2.2</entrada>
+
+				<entrada tipodado="cadeia">Joaquim</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">10</entrada>
+
+				<entrada tipodado="cadeia">Joana</entrada>
+				<entrada tipodado="real">6.5</entrada>
+				<entrada tipodado="real">8.5</entrada>
+				<entrada tipodado="real">6</entrada>
+
+				<entrada tipodado="cadeia">Hugo</entrada>
+				<entrada tipodado="real">0</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">2</entrada>
+
+				<entrada tipodado="cadeia">Andre</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">5</entrada>
+
+				<entrada tipodado="cadeia">João</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">9</entrada>
+
+				<entrada tipodado="cadeia">Lucas</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">2.5</entrada>
+
+				<entrada tipodado="cadeia">Rogerio</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">5.7</entrada>
+
+				<entrada tipodado="cadeia">Esmeralda</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">2</entrada>
+
+				<entrada tipodado="cadeia">Ana</entrada>
+				<entrada tipodado="real">0.5</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">3.5</entrada>
+
+				<entrada tipodado="cadeia">Julia</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">9.5</entrada>
+
+				<entrada tipodado="cadeia">Rodrigo</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">2</entrada>
+
+				<entrada tipodado="cadeia">Jorge</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">8.5</entrada>
+				<entrada tipodado="real">9</entrada>
+
+				<entrada tipodado="cadeia">Eduardo</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">3.5</entrada>
+				<entrada tipodado="real">5</entrada>
+
+				<entrada tipodado="cadeia">Nilson</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">2.5</entrada>
+				<entrada tipodado="real">8</entrada>
+
+				<entrada tipodado="cadeia">Juliana</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">8</entrada>
+
+				<entrada tipodado="cadeia">Jessica</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">1.5</entrada>
+
+				<entrada tipodado="cadeia">Carol</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">9</entrada>
+
+				<entrada tipodado="cadeia">Tiago</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">6</entrada>
+
+				<entrada tipodado="cadeia">Anne</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">6.5</entrada>
+				<entrada tipodado="real">3</entrada>
+
+				<entrada tipodado="cadeia">Ronaldo</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">10</entrada>
+
+				<entrada tipodado="cadeia">Alexandre</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">4.5</entrada>
+
+				<entrada tipodado="cadeia">Michel</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">2</entrada>
+
+				<entrada tipodado="cadeia">Valerio</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">3.5</entrada>
+
+				<entrada tipodado="cadeia">Lilian</entrada>
+				<entrada tipodado="real">6.5</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">4</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Carlos</saida>
+				<saida tipodado="real">4.7</saida>
+				<saida tipodado="cadeia">Joaquim</saida>
+				<saida tipodado="real">7.333333333333333</saida>
+				<saida tipodado="cadeia">Joana</saida>
+				<saida tipodado="real">7.0</saida>
+				<saida tipodado="cadeia">Hugo</saida>
+				<saida tipodado="real">3.0</saida>
+				<saida tipodado="cadeia">Andre</saida>
+				<saida tipodado="real">4.333333333333333</saida>
+				<saida tipodado="cadeia">João</saida>
+				<saida tipodado="real">7.666666666666667</saida>
+				<saida tipodado="cadeia">Lucas</saida>
+				<saida tipodado="real">5.5</saida>
+				<saida tipodado="cadeia">Rogerio</saida>
+				<saida tipodado="real">6.566666666666666</saida>
+				<saida tipodado="cadeia">Esmeralda</saida>
+				<saida tipodado="real">6.0</saida>
+				<saida tipodado="cadeia">Ana</saida>
+				<saida tipodado="real">4.666666666666667</saida>
+				<saida tipodado="cadeia">Julia</saida>
+				<saida tipodado="real">5.833333333333333</saida>
+				<saida tipodado="cadeia">Rodrigo</saida>
+				<saida tipodado="real">3.0</saida>
+				<saida tipodado="cadeia">Jorge</saida>
+				<saida tipodado="real">9.166666666666666</saida>
+				<saida tipodado="cadeia">Eduardo</saida>
+				<saida tipodado="real">4.833333333333333</saida>
+				<saida tipodado="cadeia">Nilson</saida>
+				<saida tipodado="real">3.8333333333333335</saida>
+				<saida tipodado="cadeia">Juliana</saida>
+				<saida tipodado="real">7.666666666666667</saida>
+				<saida tipodado="cadeia">Jessica</saida>
+				<saida tipodado="real">4.833333333333333</saida>
+				<saida tipodado="cadeia">Carol</saida>
+				<saida tipodado="real">7.666666666666667</saida>
+				<saida tipodado="cadeia">Tiago</saida>
+				<saida tipodado="real">5.666666666666667</saida>
+				<saida tipodado="cadeia">Anne</saida>
+				<saida tipodado="real">5.166666666666667</saida>
+				<saida tipodado="cadeia">Ronaldo</saida>
+				<saida tipodado="real">6.666666666666667</saida>
+				<saida tipodado="cadeia">Alexandre</saida>
+				<saida tipodado="real">6.5</saida>
+				<saida tipodado="cadeia">Michel</saida>
+				<saida tipodado="real">4.666666666666667</saida>
+				<saida tipodado="cadeia">Valerio</saida>
+				<saida tipodado="real">3.1666666666666665</saida>
+				<saida tipodado="cadeia">Lilian</saida>
+				<saida tipodado="real">3.8333333333333335</saida>
+				<saida tipodado="cadeia">Jorge</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="cadeia">Joao</entrada>
+				<entrada tipodado="real">7.0</entrada>
+				<entrada tipodado="real">4.0</entrada>
+				<entrada tipodado="cadeia">Marcia</entrada>
+				<entrada tipodado="real">7.0</entrada>
+				<entrada tipodado="real">7.0</entrada>
+				<entrada tipodado="cadeia">Carlos</entrada>
+				<entrada tipodado="real">8.0</entrada>
+				<entrada tipodado="real">9.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Joao</saida>
+				<saida tipodado="real">5.5</saida>
+				<saida tipodado="cadeia">Marcia</saida>
+				<saida tipodado="real">7.0</saida>
+				<saida tipodado="cadeia">Carlos</saida>
+				<saida tipodado="real">8.5</saida>
+				<saida tipodado="cadeia">Carlos</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">2.6</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">5.7</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">6.2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">2.6</saida>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">5.7</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">6.2</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">1.3</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">4.9</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">2.0</entrada>
+				<entrada tipodado="cadeia">Laurencio</entrada>
+				<entrada tipodado="real">7.3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">1.3</saida>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">4.9</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">2.0</saida>
+				<saida tipodado="cadeia">Laurencio</saida>
+				<saida tipodado="real">7.3</saida>
+				<saida tipodado="cadeia">Laurencio</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="cadeia">Laurencio</entrada>
+				<entrada tipodado="real">1.2</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">4.0</entrada>
+				<entrada tipodado="cadeia">AvatarAang</entrada>
+				<entrada tipodado="real">3.1</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">7.9</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">5.9</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Laurencio</saida>
+				<saida tipodado="real">1.2</saida>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">4.0</saida>
+				<saida tipodado="cadeia">AvatarAang</saida>
+				<saida tipodado="real">3.1</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">7.9</saida>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">5.9</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">6.4</entrada>
+				<entrada tipodado="real">2.3</entrada>
+				<entrada tipodado="real">1.7</entrada>
+				<entrada tipodado="real">4.6</entrada>
+				<entrada tipodado="cadeia">AvatarAang</entrada>
+				<entrada tipodado="real">0.4</entrada>
+				<entrada tipodado="real">8.8</entrada>
+				<entrada tipodado="real">3.0</entrada>
+				<entrada tipodado="real">5.3</entrada>
+				<entrada tipodado="cadeia">Mosque</entrada>
+				<entrada tipodado="real">6.5</entrada>
+				<entrada tipodado="real">9.5</entrada>
+				<entrada tipodado="real">8.3</entrada>
+				<entrada tipodado="real">4.5</entrada>
+				<entrada tipodado="cadeia">Katara</entrada>
+				<entrada tipodado="real">4.7</entrada>
+				<entrada tipodado="real">2.1</entrada>
+				<entrada tipodado="real">6.0</entrada>
+				<entrada tipodado="real">0.5</entrada>
+				<entrada tipodado="cadeia">Laurencio</entrada>
+				<entrada tipodado="real">7.3</entrada>
+				<entrada tipodado="real">6.4</entrada>
+				<entrada tipodado="real">1.0</entrada>
+				<entrada tipodado="real">5.3</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">3.5</entrada>
+				<entrada tipodado="real">1.4</entrada>
+				<entrada tipodado="real">3.8</entrada>
+				<entrada tipodado="real">9.3</entrada>
+				<entrada tipodado="cadeia">Sora</entrada>
+				<entrada tipodado="real">3.2</entrada>
+				<entrada tipodado="real">5.5</entrada>
+				<entrada tipodado="real">8.2</entrada>
+				<entrada tipodado="real">6.4</entrada>
+				<entrada tipodado="cadeia">Amarcelado</entrada>
+				<entrada tipodado="real">4.1</entrada>
+				<entrada tipodado="real">5.6</entrada>
+				<entrada tipodado="real">3.1</entrada>
+				<entrada tipodado="real">5.8</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">5.4</entrada>
+				<entrada tipodado="real">7.0</entrada>
+				<entrada tipodado="real">7.2</entrada>
+				<entrada tipodado="real">6.6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">3.7499999999999996</saida>
+				<saida tipodado="cadeia">AvatarAang</saida>
+				<saida tipodado="real">4.375</saida>
+				<saida tipodado="cadeia">Mosque</saida>
+				<saida tipodado="real">7.2</saida>
+				<saida tipodado="cadeia">Katara</saida>
+				<saida tipodado="real">3.325</saida>
+				<saida tipodado="cadeia">Laurencio</saida>
+				<saida tipodado="real">5.0</saida>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">4.5</saida>
+				<saida tipodado="cadeia">Sora</saida>
+				<saida tipodado="real">5.824999999999999</saida>
+				<saida tipodado="cadeia">Amarcelado</saida>
+				<saida tipodado="real">4.6499999999999995</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">6.550000000000001</saida>
+				<saida tipodado="cadeia">Mosque</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">3.5</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">2.6</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">6.8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">3.5</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">2.6</saida>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">6.8</saida>
+				<saida tipodado="cadeia">Victor</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="cadeia">Amarcelado</entrada>
+				<entrada tipodado="real">6.0</entrada>
+				<entrada tipodado="real">0.2</entrada>
+				<entrada tipodado="cadeia">Sora</entrada>
+				<entrada tipodado="real">4.9</entrada>
+				<entrada tipodado="real">4.1</entrada>
+				<entrada tipodado="cadeia">Laurencio</entrada>
+				<entrada tipodado="real">5.5</entrada>
+				<entrada tipodado="real">1.2</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">9.5</entrada>
+				<entrada tipodado="real">6.1</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">6.8</entrada>
+				<entrada tipodado="real">0.8</entrada>
+				<entrada tipodado="cadeia">AvatarAang</entrada>
+				<entrada tipodado="real">8.3</entrada>
+				<entrada tipodado="real">0.1</entrada>
+				<entrada tipodado="cadeia">Katara</entrada>
+				<entrada tipodado="real">5.3</entrada>
+				<entrada tipodado="real">4.7</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">6.8</entrada>
+				<entrada tipodado="real">4.1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Amarcelado</saida>
+				<saida tipodado="real">3.1</saida>
+				<saida tipodado="cadeia">Sora</saida>
+				<saida tipodado="real">4.5</saida>
+				<saida tipodado="cadeia">Laurencio</saida>
+				<saida tipodado="real">3.35</saida>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">7.8</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">3.8</saida>
+				<saida tipodado="cadeia">AvatarAang</saida>
+				<saida tipodado="real">4.2</saida>
+				<saida tipodado="cadeia">Katara</saida>
+				<saida tipodado="real">5.0</saida>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">5.449999999999999</saida>
+				<saida tipodado="cadeia">Luana</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">3.8</entrada>
+				<entrada tipodado="real">9.8</entrada>
+				<entrada tipodado="real">5.1</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">0.1</entrada>
+				<entrada tipodado="real">4.1</entrada>
+				<entrada tipodado="real">8.9</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">1.2</entrada>
+				<entrada tipodado="real">5.7</entrada>
+				<entrada tipodado="real">4.0</entrada>
+				<entrada tipodado="cadeia">AvatarAang</entrada>
+				<entrada tipodado="real">1.8</entrada>
+				<entrada tipodado="real">2.6</entrada>
+				<entrada tipodado="real">2.8</entrada>
+				<entrada tipodado="cadeia">Laurencio</entrada>
+				<entrada tipodado="real">7.2</entrada>
+				<entrada tipodado="real">3.9</entrada>
+				<entrada tipodado="real">4.1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">6.233333333333334</saida>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">4.366666666666666</saida>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">3.6333333333333333</saida>
+				<saida tipodado="cadeia">AvatarAang</saida>
+				<saida tipodado="real">2.4</saida>
+				<saida tipodado="cadeia">Laurencio</saida>
+				<saida tipodado="real">5.066666666666666</saida>
+				<saida tipodado="cadeia">Luana</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="cadeia">Marcio</entrada>
+				<entrada tipodado="real">5.7</entrada>
+				<entrada tipodado="real">9.3</entrada>
+				<entrada tipodado="real">5.6</entrada>
+				<entrada tipodado="real">5.1</entrada>
+				<entrada tipodado="cadeia">Victor</entrada>
+				<entrada tipodado="real">7.8</entrada>
+				<entrada tipodado="real">7.0</entrada>
+				<entrada tipodado="real">8.8</entrada>
+				<entrada tipodado="real">9.9</entrada>
+				<entrada tipodado="cadeia">Luana</entrada>
+				<entrada tipodado="real">6.3</entrada>
+				<entrada tipodado="real">6.8</entrada>
+				<entrada tipodado="real">5.7</entrada>
+				<entrada tipodado="real">5.1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Marcio</saida>
+				<saida tipodado="real">6.425000000000001</saida>
+				<saida tipodado="cadeia">Victor</saida>
+				<saida tipodado="real">8.375</saida>
+				<saida tipodado="cadeia">Luana</saida>
+				<saida tipodado="real">5.975</saida>
+				<saida tipodado="cadeia">Victor</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que solicita ao usuário o número de alunos de uma turma e o número de provas realizadas. A seguir o programa deve para cada aluno: 
+a. Solicitar o nome do aluno 
+b. Para cada prova realizada solicita a nota deste aluno (numero real)
+c. Exibir o nome e a média aritmética das notas deste aluno
+d. Após o término da digitação o programa deverá exibir o nome do aluno com maior média.
+	</enunciado>
+</questao>

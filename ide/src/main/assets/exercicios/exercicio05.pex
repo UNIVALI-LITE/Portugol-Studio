@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">9</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">7</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-3</entrada>
+				<entrada tipodado="inteiro">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">-3</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">10</entrada>
+				<entrada tipodado="inteiro">-5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-5</saida>
+				<saida tipodado="inteiro">10</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0</entrada>
+				<entrada tipodado="inteiro">100</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">100</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">42</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">42</saida>
+				<saida tipodado="inteiro">24</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-54</entrada>
+				<entrada tipodado="inteiro">62</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">62</saida>
+				<saida tipodado="inteiro">-54</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">-1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">999</entrada>
+				<entrada tipodado="inteiro">666</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">666</saida>
+				<saida tipodado="inteiro">999</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">69</entrada>
+				<entrada tipodado="inteiro">96</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">96</saida>
+				<saida tipodado="inteiro">69</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1337</entrada>
+				<entrada tipodado="inteiro">80085</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">80085</saida>
+				<saida tipodado="inteiro">1337</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa que solicita ao usuário dois números inteiros e armazena nas variáveis A e B. A seguir (utilizando apenas atribuições entre variáveis) troque os seus conteúdos fazendo com que o valor que está em A passe para B e vice-versa. Ao final exiba na tela os valores que ficaram armazenados nas variáveis A e B respectivamente.</enunciado>
+</questao>

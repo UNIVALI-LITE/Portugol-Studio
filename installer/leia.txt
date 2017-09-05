@@ -1,0 +1,164 @@
+========================================================================================
+Introdução
+========================================================================================
+
+Caro usuário, obrigado por utilizar o Portugol Studio. Esperamos que ele possa lhe 
+ser útil e ajude-o a aprender e dominar os conceitos de programação.
+
+Preparamos este pequeno documento, que vai ajudá-lo a executar o Portugol Studio em seu 
+computador. Sua leitura não é obrigatória, mas é altamente recomendada caso você venha a
+ter dificuldades.
+
+O documento está dividido nas seguints seções:
+
+1. Executando o Portugol Studio versão Multi-Plataforma no Windows
+
+2. Executando o Portugol Studio versão Multi-Plataforma no Linux
+   
+3. Executando o Portugol Studio versão Multi-Plataforma no Mac OSX
+   3.1 Resolução de problemas no Mac OSX
+
+Boa sorte e bons estudos!
+========================================================================================
+1. Executando o Portugol Studio versão Multi-Plataforma no Windows
+========================================================================================
+
+1. Baixe o arquivo multi-plataforma do Portugol Studio em seu computador
+
+2. Extraia o conteúdo do arquivo para uma pasta de sua preferência. Para o correto 
+   funcionamento do Portugol Studio, certifique-se que a pasta escolhida possui 
+   permissões de escrita e leitura de arquivos e diretórios
+
+3. Dentro da pasta extraída, dê um duplo clique no arquivo "executar-studio-windows.bat"
+
+Na primeira vez em que o Portugol Studio for executado, é possível que seja exibida uma 
+mensagem pedindo a liberação do programa no Firewall do sistema operacional. Caso esta
+mensagem seja exibida, selecione a opção "Permitir" ou "Desbloquear". Se esta opção não
+for ativada, o Portugol Studio não será capaz de realizar as atualizações automáticas.
+
+É possível abrir diretamente um arquivo no Portugol Studio utilizando o lançador descrito
+anteriormente. Para isso, arraste o ícone do arquivo que deseja abrir, e solte-o sobre o
+ícone do arquivo "executar-studio-windows.bat". Ao fazer isso, o sistema operacional irá 
+exibir a mensagem "Abrir com executar-studio-windows.bat" e irá abrir o arquivo.
+
+O Portugol Studio também permite executar os programas de forma independente, sem a 
+necessidade de abrí-los no ambiente. Para isso, arraste o ícone do arquivo que deseja 
+abrir, e solte-o sobre o ícone do arquivo "executar-console-windows.bat". O programa será
+executado em uma janela de linha de comando do sistema operacional
+
+========================================================================================
+2. Executando o Portugol Studio versão Multi-Plataforma no Linux
+========================================================================================
+
+1. Baixe o arquivo multi-plataforma do Portugol Studio em seu computador
+
+2. Extraia o conteúdo do arquivo para uma pasta de sua preferência. Para o correto 
+   funcionamento do Portugol Studio, certifique-se que a pasta escolhida possui 
+   permissões de escrita e leitura de arquivos e diretórios   
+   
+3. Abra um terminal Linux. Geralmente ele pode ser aberto pelo atalho (Ctrl + Alt + T)
+
+4. Pelo terminal, navegue até a pasta na qual o arquivo foi extraído, utilizando o 
+   comando "cd":
+
+	cd /caminho/escolhido/
+	
+5. Durante o processo de extração, foi criada uma pasta chamada "portugol-studio". Altere 
+   as permissões de leitura, escrita e execução da pasta utilizando o comando "chmod":
+
+   chmod 755 -R portugol-studio
+	
+6. Ainda no terminal, entre na pasta do Portugol Studio utilizando o comando "cd":
+
+   cd portugol-studio
+	
+7. Execute o Portugol Studio através do arquivo "executar-studio-linux.sh". Para isso 
+   utilize "./" antes do nome do arquivo:
+    
+   ./executar-studio-linux.sh
+
+Na primeira vez em que o Portugol Studio for executado, é possível que seja exibida uma 
+mensagem pedindo a liberação do programa no Firewall do sistema operacional. Caso esta
+mensagem seja exibida, selecione a opção "Permitir" ou "Desbloquear". Se esta opção não
+for ativada, o Portugol Studio não será capaz de realizar as atualizações automáticas.
+
+É possível abrir diretamente um arquivo no Portugol Studio utilizando o lançador descrito
+anteriormente. Para isto, basta informar os caminhos para os arquivos que deseja abrir
+após o comando "executar-studio-linux.sh", separados por um espaço em branco:
+
+	./executar-studio-linux.sh /home/usuario/programa1.por /usr/local/programa2.por
+	
+Se o caminho do arquivo contiver espaços, coloque o caminho entre aspas duplas e o 
+sistema irá reconhecê-lo normalmente.
+
+	./executar-studio-linux.sh "/home/usuario/caminho com espaços/programa.por"
+
+Também é possível executar os programas de forma independente no terminal Linux 
+sem precisar abrir o Portugol Studio. Para isso, execute o comando "executar-console-linux.sh"
+seguido do caminho para o arquivo que deseja executar:
+
+	./executar-console-linux.sh /home/usuario/meu_programa.por
+	
+========================================================================================
+3. Executando o Portugol Studio versão Multi-Plataforma no Mac OSX
+========================================================================================
+
+1. Baixe o arquivo multi-plataforma do Portugol Studio em seu computador
+
+2. Extraia o conteúdo do arquivo para uma pasta de sua preferência. Para o correto 
+   funcionamento do Portugol Studio, certifique-se que a pasta escolhida possui 
+   permissões de escrita e leitura de arquivos e diretórios   
+   
+3. Abra o terminal do Mac OSX
+
+4. Pelo terminal, navegue até a pasta na qual o arquivo foi extraído, utilizando o 
+   comando "cd":
+
+	cd /caminho/escolhido/
+	
+5. Durante o processo de extração, foi criada uma pasta chamada "portugol-studio". Altere 
+   as permissões de leitura, escrita e execução da pasta utilizando o comando "chmod":
+
+   chmod 755 -R portugol-studio
+	
+6. Ainda no terminal, entre na pasta do Portugol Studio utilizando o comando "cd":
+
+   cd portugol-studio
+	
+7. Execute o Portugol Studio através do arquivo "executar-studio-mac.command". Para isso 
+   utilize "./" antes do nome do arquivo:
+    
+   ./executar-studio-linux.command
+
+Na primeira vez em que o Portugol Studio for executado, é possível que seja exibida uma 
+mensagem pedindo a liberação do programa no Firewall do sistema operacional. Caso esta
+mensagem seja exibida, selecione a opção "Permitir" ou "Desbloquear". Se esta opção não
+for ativada, o Portugol Studio não será capaz de realizar as atualizações automáticas.
+
+É possível abrir diretamente um arquivo no Portugol Studio utilizando o lançador descrito
+anteriormente. Para isto, basta informar os caminhos para os arquivos que deseja abrir
+após o comando "executar-studio-linux.command", separados por um espaço em branco:
+
+	./executar-studio-mac.command /Documents/programa1.por /Documents/programa2.por
+	
+Se o caminho do arquivo contiver espaços, coloque o caminho entre aspas duplas e o 
+sistema irá reconhecê-lo normalmente.
+
+	./executar-studio-mac.command "/Documents/caminho com espaços/programa.por"
+
+Também é possível executar os programas de forma independente no terminal do Mac OSX
+sem precisar abrir o Portugol Studio. Para isso, execute o comando 
+"executar-console-mac.command" seguido do caminho para o arquivo que deseja executar:
+
+	./executar-console-mac.command /Documents/meu_programa.por
+
+========================================================================================
+3.1 Resolução de problemas no Mac OSX
+========================================================================================
+
+Nesta versão do Portugol Studio, existe um bug já identificado, mas ainda não solucionado
+que causa o travamento do Portugol Studio no Mac OSX ao acessar o conteúdo da ajuda. Assim
+que o problema for resolvido, uma atualização de correção será lançada e deverá ser 
+apliacada automaticamente pelo atualizador automático da ferramenta.
+
+========================================================================================

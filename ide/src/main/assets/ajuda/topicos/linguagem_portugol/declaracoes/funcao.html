@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Declaração de Função</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="../../../estilos/${ajuda}"/>
+        <link rel="stylesheet" type="text/css" href="../../../estilos/${syntax}"/>
+        <script src="../../../scripts/SyntaxHighlighter/shCore.js"></script>
+        <script src="../../../scripts/SyntaxHighlighter/shBrushPortugol.js"></script>
+        <script src="../../../scripts/jquery-1.11.1.min.js"></script>
+        <script src="../../../scripts/exemplos.js"></script>
+    </head>
+    <body>
+        <div>
+            <h1>Declaração de Função</h1>
+            <p>Se lhe fosse solicitado um algoritmo para preencher uma matriz, você o resolveria correto? Porém, se ao invés de uma matriz fossem solicitadas dez matrizes? Concordamos que o algoritmo ficaria muito cansativo e repetitivo. Mas, e se pudéssemos repetir o mesmo procedimento, quantas vezes necessário, o escrevendo apenas uma vez? Nós podemos. Para isso, usamos uma função. Função consiste em uma porção de código que resolve um problema muito específico, parte de um problema maior.</p>
+            <p>Algumas das vantagens na utilização de funções durante a programação são:</p>
+            <ul>
+                <li>A redução de código duplicado num programa;</li>
+                <li>A possibilidade de reutilizar o mesmo código sem grandes alterações em outros programas;</li>
+                <li>A decomposição de problemas grandes em pequenas partes;</li>
+                <li>Melhorar a interpretação visual de um programa;</li>
+                <li>Esconder ou regular uma parte de um programa, mantendo o restante código alheio às questões internas resolvidas dentro dessa função;</li>
+            </ul>
+            <p>As componentes de uma funções são:</p>
+            <ul>
+                <li>O seu protótipo, que inclui os parâmetros que são passados à função na altura da invocação;</li>
+                <li>O corpo, que contém o bloco de código que resolve o problema proposto;</li>
+                <li>Um possível valor de retorno, que poderá ser utilizado imediatamente a seguir à invocação da função.</li>
+            </ul>
+            <p>A declaração de função no Portugol é realizada da seguinte forma: Deve-se utilizar a palavra reservada <span class="palavra-reservada">funcao</span>, seguido do tipo de retorno. Quando o tipo de retorno é ocultado, o Portugol assume que o retorno é do tipo vazio. Então, deve-se definir o nome da função seguido de abre parênteses, uma lista de parâmetros pode ser incluída antes do fecha parênteses. Para concluir a declaração deve-se criar o corpo da função. O corpo da função consiste em estruturas dentro do abre e fecha chaves. Quando uma função possui um tipo de retorno diferente de vazio, é obrigatória a presença do comando retorne no corpo da função.</p> 
+			<div class="codigo-portugol" data-type='sintaxe' data-title="Exemplo de Sintaxe" data-file="../../../recursos/exemplos/declaracoes/funcao/exemplo1.por"></div>
+            <p>A declaração dos parâmetros é similar a declaração de variável, vetor e matriz sem inicialização e devem ser separados por vírgula. Note que uma função do tipo vazio não tem retorno.</p>
+            <p>Para funções existem dois tipos de passagens de valores possíveis. São eles: por valor e por referência. A passagem de parâmetros por valor transfere para a função apenas o valor contido na variável, ou seja, a variável em si não terá seu conteúdo alterado. Já a passagem de parâmetro por referência transfere a variável como um todo, modificando a mesma de acordo com os comandos presentes no corpo da função.</p>
+            <p>Por padrão os parâmetros se comportam como passagem por valor, para o parâmetro se comportar como referência deve-se adicionar o simbolo & antes do nome do parâmetro.</p>
+            <p>Para melhor compreensão deste conceito, confira o exemplo abaixo.</p>
+			<div class="codigo-portugol" data-type='exemplo' data-title="Exemplo" data-file="../../../recursos/exemplos/declaracoes/funcao/exemplo2.por"></div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Operações Bit a Bit</title>
+        <meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="../../../../estilos/${ajuda}"/>
+        <link rel="stylesheet" type="text/css" href="../../../../estilos/${syntax}"/>
+        <script src="../../../../scripts/SyntaxHighlighter/shCore.js"></script>
+        <script src="../../../../scripts/SyntaxHighlighter/shBrushPortugol.js"></script>
+        <script src="../../../../scripts/jquery-1.11.1.min.js"></script>
+        <script src="../../../../scripts/exemplos.js"></script>
+    </head>
+    <body>
+        <div>
+            <h1>Operações Bitwise</h1>
+            <p>Operadores bitwise são utilizados quando precisamos realizar operações em termos de bits, porém utilizando valores inteiros, ou seja, trabalhar com sua representação binária. São semelhantes aos operadores lógicos, porém trabalham com representação de dados binária.</p>
+            <p>Este tipo de operador analisa cada bit dos valores individualmente, realizando a instrução de acordo com o operando utilizado. Cada comparação que for feita, ou seja, cada bit analisado poderá ser considerado como uma variável lógica, assumindo valores de verdadeiro (1) ou falso (0).</p>
+			<h1>Complemento de Dois</h1>
+			<p>O Portugol utiliza complemento de dois para representar os inteiros negativos em base binária. Em computação, complemento para dois ou complemento de dois é um tipo de representação binária de números com sinal amplamente usada nas arquiteturas dos dispositivos computacionais modernos.</p>
+			<p>O dígito mais significativo (MSB) é o que informa o sinal do número. É o dígito localizado mais a esquerda do número. Se este dígito for 0 o número é positivo, e se for 1 é negativo.</p>
+			<p>Os números são escritos da seguinte forma:</p>
+			<ul>
+				<li>Positivos: Sua magnitude é representada na sua forma binária direta, e um bit de sinal 0 é colocado na frente do MSB.
+					<ul>
+						<li>(bit 0) + o número em binário.</li>
+						<li>Exemplos: 0001 (+1), 0100 (+4) e 0111 (+7)</li>
+					</ul>
+				</li>
+				<li>Negativos: Sua magnitude é representada na forma de complemento de 2, e um bit de sinal é colocado na frente do MSB.
+					<ul>
+						<li>Pegamos o número em binário e "invertemos" (0100 invertendo têm-se 1011) e somamos um ao valor "invertido" (1011 + 0001 = 1100).</li>
+					</ul>
+				</li>
+			</ul>
+			<p>As vantagens do uso do complemento de 2 são: existe somente um zero e as regras para soma e subtração são as mesmas. A desvantagem é o fato de ser um código assimétrico.</p>
+			<h2>Tabela exemplo do complemento de dois para um binário inteiro de 4 bits</h2>
+			
+			
+				<table>
+					<thead>
+						<tr>
+							<th>Complemento de dois</th>
+							<th>Decimal</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>0111</td>
+							<td>7</td>
+						</tr>
+						<tr>
+							<td>0110</td>
+							<td>6</td>
+						</tr>
+						<tr>
+							<td>0101</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>0100</td>
+							<td>4</td>
+						</tr>
+						<tr>
+							<td>0011</td>
+							<td>3</td>
+						</tr>
+						<tr>
+							<td>0010</td>
+							<td>2</td>
+						</tr>
+						<tr>
+							<td>0001</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>0000</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>1111</td>
+							<td>-1</td>
+						</tr>
+						<tr>
+							<td>1110</td>
+							<td>-2</td>
+						</tr>
+						<tr>
+							<td>1101</td>
+							<td>-3</td>
+						</tr>
+						<tr>
+							<td>1100</td>
+							<td>-4</td>
+						</tr>
+						<tr>
+							<td>1011</td>
+							<td>-5</td>
+						</tr>
+						<tr>
+							<td>1010</td>
+							<td>-6</td>
+						</tr>
+						<tr>
+							<td>1001</td>
+							<td>-7</td>
+						</tr>
+						<tr>
+							<td>1000</td>
+							<td>-8</td>
+						</tr>
+					</tbody>
+				</table>	
+			
+            <p>Nesta seção, serão abordados os seguintes tópicos:</p>
+			<ul>
+				<li><a href="topicos/linguagem_portugol/expressao/operacoes_bitwise/bitwise_and.html">Operação de Bitwise AND (&)</a></li>
+				<li><a href="topicos/linguagem_portugol/expressao/operacoes_bitwise/bitwise_not.html">Operação de Bitwise NOT (~)</a></li>
+				<li><a href="topicos/linguagem_portugol/expressao/operacoes_bitwise/bitwise_or.html">Operação de Bitwise OR (|)</a></li>
+				<li><a href="topicos/linguagem_portugol/expressao/operacoes_bitwise/bitwise_shift.html">Operação de Bitwise Shift (<<) ou (>>)</a></li>
+				<li><a href="topicos/linguagem_portugol/expressao/operacoes_bitwise/bitwise_xor.html">Operação de Bitwise XOR (^)</a></li>
+			</ul>
+        </div>
+    </body>
+</html>

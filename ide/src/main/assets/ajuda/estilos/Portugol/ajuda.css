@@ -1,0 +1,231 @@
+/*
+CssBox equivalencias:
+O primeiro não funciona no cssBox, o segundo é sua equivalencia que funciona.
+"border-collapse: collapse" = "border-spacing: 0px";
+*/
+body
+{
+    font-family: "Open Sans";
+    font-size: 13px;
+    line-height: 100%;
+    margin: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #333333;
+    background-color: #D2E7FC;
+    margin: 0;
+
+}
+
+h1, h2
+{
+    font-family: "Tahoma";
+    font-size: 20pt;
+    color: #FBFBFB;
+    background-color: #316892;
+    border-left: 3px solid #45BDFF;
+    padding: 15px;
+    padding-left: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+h2
+{
+    font-size: 11pt;
+}
+
+p
+{
+    margin: 25px;
+}
+
+div.codigo-portugol
+{
+    margin: 25px;
+    background-color: #D2E7FC;
+}
+
+div.cabecalho-codigo-portugol
+{
+    color: rgb(40, 103, 130);
+    border-bottom: 1px solid rgb(202, 198, 179);
+    padding: 10px;
+}
+
+div.cabecalho-codigo-portugol a
+{
+    color: rgb(40, 103, 130);
+    font-weight: normal;
+    text-decoration: none;
+}
+
+div.cabecalho-codigo-portugol a:hover
+{
+    color: rgb(40, 103, 130);
+    font-weight: normal;
+    text-decoration: none;
+}
+
+div.cabecalho-codigo-portugol a:visited
+{
+    color: rgb(40, 103, 130);
+    font-weight: normal;
+    text-decoration: none;
+}
+
+a
+{
+    color: #0000FF;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+img
+{
+    border: 2px solid black;
+    margin: 10px;
+    text-align: center;
+}
+
+.cadeia, .caracter
+{
+    color: #DC009C;
+}
+
+.inteiro, .real
+{
+    color:#6400C8;
+}
+
+.logico, .tipo
+{
+    color: #45BDFF;
+    font-weight: bold;
+}
+
+.palavra-reservada
+{
+    color: #0000FF;
+    font-weight: bold;
+}
+
+.operador
+{
+    color: #333333;
+}
+
+hr
+{
+    height: 1px;
+    background: #3A464C;
+    color: #3A464C;
+}
+.imagem
+{
+    text-align: center;
+}
+
+.codigo-fonte-container{
+
+    border: 1px solid black;
+    margin: 10px;
+}
+
+.codigo-fonte{
+    background-color: #E4F1FE;
+    margin: 25px;
+    padding: 15px;
+    white-space: pre-wrap;
+}
+.botao-codigo-fonte{
+    margin:25px;
+    padding: 10px;
+    font-size: 15px;
+    background-color: #316892;
+    color: #fbfbfb;
+}
+
+
+
+//INICIO CSS gerado pelo PortugolHTMLHighlighter.java
+
+.porPalavraReservada //Exemplo: const caso se senao...
+{
+    color: #0000FF;
+    font-weight: bold;
+}
+
+.porTipoDeclaracao //Exemplo: inteiro real cadeia...
+{
+    color: #008080;
+    font-weight: bold;
+}
+
+.porAgrupamentos //Exemplo: () {} []
+{
+    color: #ff0000;
+}
+
+.porNumeros //Exemplo: 5 4.52...
+{
+    color: #6400C8;
+}
+
+.porLogico //Exemplo: VERDADEIRO FALSO
+{
+    color: #008080;
+}
+
+.porTexto //Exemplo: "Olá mundo"...
+{
+    color: #DC009C;
+}
+
+.porID //Exemplo: nomeVariavel nomeFuncao...
+{
+    color: #333333;
+}
+
+.porComentario //Exemplo: //Isso é um comentário...
+{
+    color: #66747B;
+    font-style: italic;
+}
+
+.porDesconhecido //Tudo que não for espaço, pulo de linha, tab e não tenha sido reconhecido anteriormente.
+{
+
+}
+
+.tableContainer{
+    display: box;
+    left: auto;
+    right: auto;
+}
+
+table
+{
+    width: 80%;
+    margin-right: 10%;
+    margin-left: 9%;
+    color: #333333;
+    text-align: center;
+    font-size: 15px;
+
+}
+.hu3
+{
+    color: #fff;
+    height: 25px;
+    text-align: right;
+}
+th, table b
+{
+    color: #333333;
+}
+
+th, td {
+   border: 1px solid #333333;
+}
+//FIM CSS gerado pelo PortugolHTMLHighlighter.java

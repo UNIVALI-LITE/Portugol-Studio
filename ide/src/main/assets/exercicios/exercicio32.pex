@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+ 
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">18</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">19</entrada>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">67</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">3</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">18</entrada>
+				<entrada tipodado="inteiro">78</entrada>
+				<entrada tipodado="inteiro">19</entrada>
+				<entrada tipodado="inteiro">41</entrada>
+				<entrada tipodado="inteiro">72</entrada>
+				<entrada tipodado="inteiro">35</entrada>
+				<entrada tipodado="inteiro">21</entrada>
+				<entrada tipodado="inteiro">20</entrada>
+				<entrada tipodado="inteiro">19</entrada>
+				<entrada tipodado="inteiro">18</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="inteiro">10</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">31</entrada>
+				<entrada tipodado="inteiro">34</entrada>
+				<entrada tipodado="inteiro">20</entrada>
+				<entrada tipodado="inteiro">36</entrada>
+				<entrada tipodado="inteiro">27</entrada>
+				<entrada tipodado="inteiro">32</entrada>
+				<entrada tipodado="inteiro">33</entrada>
+				<entrada tipodado="inteiro">34</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">31</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">9</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">29</entrada>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">33</entrada>
+				<entrada tipodado="inteiro">35</entrada>
+				<entrada tipodado="inteiro">29</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">29</entrada>
+				<entrada tipodado="inteiro">20</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">9</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">35</entrada>
+				<entrada tipodado="inteiro">31</entrada>
+				<entrada tipodado="inteiro">16</entrada>
+				<entrada tipodado="inteiro">36</entrada>
+				<entrada tipodado="inteiro">16</entrada>
+				<entrada tipodado="inteiro">39</entrada>
+				<entrada tipodado="inteiro">33</entrada>
+				<entrada tipodado="inteiro">25</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">7</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">22</entrada>
+				<entrada tipodado="inteiro">32</entrada>
+				<entrada tipodado="inteiro">36</entrada>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">22</entrada>
+				<entrada tipodado="inteiro">22</entrada>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">39</entrada>
+				<entrada tipodado="inteiro">30</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">8</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">28</entrada>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">35</entrada>
+				<entrada tipodado="inteiro">33</entrada>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">36</entrada>
+				<entrada tipodado="inteiro">35</entrada>
+				<entrada tipodado="inteiro">38</entrada>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">30</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">10</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">16</entrada>
+				<entrada tipodado="inteiro">38</entrada>
+				<entrada tipodado="inteiro">30</entrada>
+				<entrada tipodado="inteiro">27</entrada>
+				<entrada tipodado="inteiro">39</entrada>
+				<entrada tipodado="inteiro">27</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">33</entrada>
+				<entrada tipodado="inteiro">35</entrada>
+				<entrada tipodado="inteiro">30</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">8</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">23</entrada>
+				<entrada tipodado="inteiro">16</entrada>
+				<entrada tipodado="inteiro">29</entrada>
+				<entrada tipodado="inteiro">23</entrada>
+				<entrada tipodado="inteiro">16</entrada>
+				<entrada tipodado="inteiro">37</entrada>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">29</entrada>
+				<entrada tipodado="inteiro">16</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">7</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que solicita a idade de 10 pessoas e exiba a quantidade de pessoas que possui idade maior ou igual a 18 anos.</enunciado>
+</questao>

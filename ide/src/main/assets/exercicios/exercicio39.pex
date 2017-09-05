@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+  
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">20</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+				<saida tipodado="inteiro">109</saida>
+				<saida tipodado="inteiro">113</saida>
+				<saida tipodado="inteiro">127</saida>
+				<saida tipodado="inteiro">131</saida>
+				<saida tipodado="inteiro">137</saida>
+				<saida tipodado="inteiro">139</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">151</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">167</saida>
+				<saida tipodado="inteiro">173</saida>
+				<saida tipodado="inteiro">179</saida>
+				<saida tipodado="inteiro">181</saida>
+				<saida tipodado="inteiro">191</saida>
+				<saida tipodado="inteiro">193</saida>
+				<saida tipodado="inteiro">197</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+				<saida tipodado="inteiro">109</saida>
+				<saida tipodado="inteiro">113</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">40</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+				<saida tipodado="inteiro">109</saida>
+				<saida tipodado="inteiro">113</saida>
+				<saida tipodado="inteiro">127</saida>
+				<saida tipodado="inteiro">131</saida>
+				<saida tipodado="inteiro">137</saida>
+				<saida tipodado="inteiro">139</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">151</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">167</saida>
+				<saida tipodado="inteiro">173</saida>
+				<saida tipodado="inteiro">179</saida>
+				<saida tipodado="inteiro">181</saida>
+				<saida tipodado="inteiro">191</saida>
+				<saida tipodado="inteiro">193</saida>
+				<saida tipodado="inteiro">197</saida>
+				<saida tipodado="inteiro">199</saida>
+				<saida tipodado="inteiro">211</saida>
+				<saida tipodado="inteiro">223</saida>
+				<saida tipodado="inteiro">227</saida>
+				<saida tipodado="inteiro">229</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">239</saida>
+				<saida tipodado="inteiro">241</saida>
+				<saida tipodado="inteiro">251</saida>
+				<saida tipodado="inteiro">257</saida>
+				<saida tipodado="inteiro">263</saida>
+				<saida tipodado="inteiro">269</saida>
+				<saida tipodado="inteiro">271</saida>
+				<saida tipodado="inteiro">277</saida>
+				<saida tipodado="inteiro">281</saida>
+				<saida tipodado="inteiro">283</saida>
+				<saida tipodado="inteiro">293</saida>
+				<saida tipodado="inteiro">307</saida>
+				<saida tipodado="inteiro">311</saida>
+				<saida tipodado="inteiro">313</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">28</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+				<saida tipodado="inteiro">109</saida>
+				<saida tipodado="inteiro">113</saida>
+				<saida tipodado="inteiro">127</saida>
+				<saida tipodado="inteiro">131</saida>
+				<saida tipodado="inteiro">137</saida>
+				<saida tipodado="inteiro">139</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">151</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">167</saida>
+				<saida tipodado="inteiro">173</saida>
+				<saida tipodado="inteiro">179</saida>
+				<saida tipodado="inteiro">181</saida>
+				<saida tipodado="inteiro">191</saida>
+				<saida tipodado="inteiro">193</saida>
+				<saida tipodado="inteiro">197</saida>
+				<saida tipodado="inteiro">199</saida>
+				<saida tipodado="inteiro">211</saida>
+				<saida tipodado="inteiro">223</saida>
+				<saida tipodado="inteiro">227</saida>
+				<saida tipodado="inteiro">229</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">239</saida>
+				<saida tipodado="inteiro">241</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+				<saida tipodado="inteiro">109</saida>
+				<saida tipodado="inteiro">113</saida>
+				<saida tipodado="inteiro">127</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">17</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+				<saida tipodado="inteiro">109</saida>
+				<saida tipodado="inteiro">113</saida>
+				<saida tipodado="inteiro">127</saida>
+				<saida tipodado="inteiro">131</saida>
+				<saida tipodado="inteiro">137</saida>
+				<saida tipodado="inteiro">139</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">151</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">167</saida>
+				<saida tipodado="inteiro">173</saida>
+				<saida tipodado="inteiro">179</saida>
+				<saida tipodado="inteiro">181</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">18</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+				<saida tipodado="inteiro">109</saida>
+				<saida tipodado="inteiro">113</saida>
+				<saida tipodado="inteiro">127</saida>
+				<saida tipodado="inteiro">131</saida>
+				<saida tipodado="inteiro">137</saida>
+				<saida tipodado="inteiro">139</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">151</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">167</saida>
+				<saida tipodado="inteiro">173</saida>
+				<saida tipodado="inteiro">179</saida>
+				<saida tipodado="inteiro">181</saida>
+				<saida tipodado="inteiro">191</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">101</saida>
+				<saida tipodado="inteiro">103</saida>
+				<saida tipodado="inteiro">107</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que exiba na tela os x (entrada do usuário) primeiros números primos após o 100.</enunciado>
+</questao>

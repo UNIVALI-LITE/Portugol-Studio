@@ -1,0 +1,7 @@
+Pressionando F11 a qualquer momento, você pode visualizar os atalhos de teclado. Com eles, programar no Portugol Studio será muito mais rápido e fácil
+Reserve algum tempo para assitir às vídeoaulas que preparamos para você. Elas irão ajudá-lo a compreender melhor a linguagem Portugol
+Você já conhece as bibliotecas do Portugol Studio? Pressione Shift + F1 para acessar a ajuda das bibliotecas e descobrir todos os recursos que elas oferecem
+Não sabe por onde começar? Que tal estudar alguns exemplos? Para isso, acesse o menu "Explorar Exemplos", na tela principal do Portugol Studio
+Se você não souber para que serve algum botão ou item na tela, posicione o cursor do mouse sobre ele por alguns segundos e o Portugol Studio exibirá um texto explicativo para ajudá-lo
+Seu programa não apresenta os resultados corretos? Utilize o depurador do Portugol Studio para visualizar o valor das variáveis e identificar o problema
+#"Nossa maior fraqueza está em desistir. O caminho mais certo de vencer é tentar mais uma vez". Thomas Edison

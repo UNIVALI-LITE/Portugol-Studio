@@ -1,0 +1,24 @@
+package programas;
+
+import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.bibliotecas.Graficos;
+import br.univali.portugol.nucleo.bibliotecas.Mouse;
+
+public class testInclusaoBibliotecas extends Programa
+{
+    private final Graficos Graficos = new Graficos();
+    private final Mouse Mouse = new Mouse();
+
+    public testInclusaoBibliotecas() throws ErroExecucao, InterruptedException
+    {
+    }
+
+    @Override
+    protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
+    {
+        Graficos.iniciar_modo_grafico(false);
+        Graficos.definir_cor(0);
+        Mouse.exibir_cursor();
+    }
+}

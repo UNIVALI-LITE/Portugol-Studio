@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+  
+  
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">6.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">2.4499999999999997</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">-9.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">0.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">67.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">4.789352407376227</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">42.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">4.326742806648339</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">1337.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">7.775773166963387</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">6174.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">9.305398852552297</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">50.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">4.499205338329423</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">222.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">5.9821436081494275</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">7.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">2.5928571428571425</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">12.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">3.103210678210678</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que solicita ao usuário o valor de N e calcule o valor de S na série S = 1/1 + 1/2 + 1/3 + ... + 1/N. Ao fim exiba o número real resultante da série.</enunciado>
+</questao>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">195</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">195</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">157</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">157</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">156</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">156</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">33</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">33</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">29</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">29</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">149</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">149</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">163</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">163</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">13</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que preencha uma matriz de 5X5 com o elemento zero em todas as posições em que o índice de linha tem valor igual ao da coluna e com um valor inteiro digitado pelo usuário nas demais posições</enunciado>
+</questao>

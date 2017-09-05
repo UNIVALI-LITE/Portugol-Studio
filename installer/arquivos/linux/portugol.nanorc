@@ -1,0 +1,12 @@
+## Here is an example for Portugol 2.0.
+##
+syntax "portugol20" "\.por$"
+color brightgreen "\<(logico|inteiro|caracter|real|vazio|cadeia)\>"
+color brightred "\<(const|pare|caso|continue|contrario|faca|senao|programa|para|se|retorne|escolha|funcao|enquanto|inclua|biblioteca|nao|e|ou)\>"
+color cyan "\<([0-9._]+|0[xX][A-Fa-f0-9_]+|0[bB][0-1_]+)[FL]?\>"
+color yellow ""[^"]*""
+color yellow "'[\]?[^']'"
+color cyan "\<(verdadeiro|falso)\>"
+color brightmagenta "//.*"
+color brightmagenta start="/\*" end="\*/"
+color brightmagenta start="/\*\*" end="\*/"

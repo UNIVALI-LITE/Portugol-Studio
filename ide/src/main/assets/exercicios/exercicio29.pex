@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+  <testes>
+    <caso>
+      <entradas>
+        <entrada tipodado="real">6</entrada>
+        <entrada tipodado="real">7</entrada>
+        <entrada tipodado="inteiro">1</entrada>
+		<entrada tipodado="real">0</entrada>
+		<entrada tipodado="real">0</entrada>
+      </entradas>
+      <saidas>
+        <saida tipodado="real">13</saida>
+      </saidas>
+    </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">5</entrada>
+              <entrada tipodado="real">0.5</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="real">2.50</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">78</entrada>
+              <entrada tipodado="real">17</entrada>
+              <entrada tipodado="inteiro">3</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="real">4.588235294117647</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="real">2</entrada>
+              <entrada tipodado="real">8</entrada>
+              <entrada tipodado="inteiro">4</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="real">256</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">98</entrada>
+              <entrada tipodado="real">0</entrada>
+              <entrada tipodado="inteiro">4</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="real">1</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">0</entrada>
+              <entrada tipodado="real">2</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="real">0</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">42</entrada>
+              <entrada tipodado="real">2</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="real">84</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">1</entrada>
+              <entrada tipodado="real">1</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="real">1</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">99</entrada>
+              <entrada tipodado="real">1</entrada>
+              <entrada tipodado="inteiro">1</entrada>
+			  <entrada tipodado="real">0</entrada>
+			  <entrada tipodado="real">0</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="real">100</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="real">-2</entrada>
+              <entrada tipodado="real">2</entrada>
+              <entrada tipodado="inteiro">1</entrada>
+              <entrada tipodado="real">3</entrada>
+              <entrada tipodado="real">2</entrada>
+              <entrada tipodado="inteiro">4</entrada>
+              <entrada tipodado="real">10</entrada>
+              <entrada tipodado="real">5</entrada>
+              <entrada tipodado="inteiro">3</entrada>
+              <entrada tipodado="real">10</entrada>
+              <entrada tipodado="real">5</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+              <entrada tipodado="real">0</entrada>
+              <entrada tipodado="real">0</entrada>
+
+          </entradas>
+          <saidas>
+              <saida tipodado="real">0</saida>
+              <saida tipodado="real">9</saida>
+              <saida tipodado="real">2</saida>
+              <saida tipodado="real">50</saida>
+          </saidas>
+      </caso>
+  </testes>
+  <enunciado>Faça um programa para uma calculadora simples que solicita ao usuário dois operandos reais como entrada, seleciona uma das opções da lista como um inteiro (1- soma, 2- produto, 3- divisão, 4- potência) e exibe o resultado. O algoritmo deve executar repetidamente até que os dois operandos informados sejam iguais a zero. Utilize uma variável do tipo real para exibir o resultado.</enunciado>
+</questao>

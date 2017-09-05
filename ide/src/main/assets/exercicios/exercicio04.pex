@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">168</entrada>
+				<entrada tipodado="real">11</entrada>
+				<entrada tipodado="real">2.795</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">42.68727272727273</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">193</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">2.259</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">54.498374999999996</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">730</entrada>
+				<entrada tipodado="real">9.9</entrada>
+				<entrada tipodado="real">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">221.2121212121212</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">540</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">162.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">12.5</entrada>
+				<entrada tipodado="real">5.5</entrada>
+				<entrada tipodado="real">2.3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">5.2272727272727275</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">2000</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">3.84</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">512.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">220</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">7</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">220</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">5.2323</entrada>
+				<entrada tipodado="real">2.14</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">4.9079754601226995</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">210</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">42.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">420</entrada>
+				<entrada tipodado="real">22.5</entrada>
+				<entrada tipodado="real">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">56</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa que calcula os gastos com combustível em uma viagem. O programa deve solicitar ao usuário a distância a ser percorrida em Km, o consumo do carro em Km/litro e o preço do litro do combustível. Como resposta o programa deverá informar qual o valor em R$ a ser gasto com combustível na viagem.</enunciado>
+</questao>

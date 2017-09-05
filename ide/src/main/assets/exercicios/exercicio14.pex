@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+		
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">29</entrada>
+				<entrada tipodado="inteiro">08</entrada>
+				<entrada tipodado="inteiro">1976</entrada>
+				<entrada tipodado="inteiro">14</entrada>
+				<entrada tipodado="inteiro">07</entrada>
+				<entrada tipodado="inteiro">2012</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">35</saida>
+			</saidas>
+			</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">21</entrada>
+				<entrada tipodado="inteiro">03</entrada>
+				<entrada tipodado="inteiro">1992</entrada>
+				<entrada tipodado="inteiro">20</entrada>
+				<entrada tipodado="inteiro">03</entrada>
+				<entrada tipodado="inteiro">2012</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">19</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">12</entrada>
+				<entrada tipodado="inteiro">04</entrada>
+				<entrada tipodado="inteiro">1986</entrada>
+				<entrada tipodado="inteiro">14</entrada>
+				<entrada tipodado="inteiro">09</entrada>
+				<entrada tipodado="inteiro">2012</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">26</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">03</entrada>
+				<entrada tipodado="inteiro">1994</entrada>
+				<entrada tipodado="inteiro">04</entrada>
+				<entrada tipodado="inteiro">08</entrada>
+				<entrada tipodado="inteiro">2014</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">20</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">03</entrada>
+				<entrada tipodado="inteiro">1994</entrada>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">03</entrada>
+				<entrada tipodado="inteiro">2014</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">20</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">24</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">1990</entrada>
+				<entrada tipodado="inteiro">23</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">2015</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">24</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">23</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">1990</entrada>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">2015</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">25</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">26</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">2014</entrada>
+				<entrada tipodado="inteiro">23</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">2015</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">05</entrada>
+				<entrada tipodado="inteiro">01</entrada>
+				<entrada tipodado="inteiro">2004</entrada>
+				<entrada tipodado="inteiro">05</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">2015</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">11</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">05</entrada>
+				<entrada tipodado="inteiro">03</entrada>
+				<entrada tipodado="inteiro">2004</entrada>
+				<entrada tipodado="inteiro">05</entrada>
+				<entrada tipodado="inteiro">02</entrada>
+				<entrada tipodado="inteiro">2015</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">10</saida>
+			</saidas>
+		</caso>
+	</testes>
+  
+	<enunciado>Faça um programa que solicita a data de nascimento de uma pessoa e a data atual (pedindo respectivamente o dia,mês e ano) e exiba a idade desta pessoa em anos (A data deve ser armazenada em 3 variáveis inteiras para dia, mês e ano).</enunciado>
+</questao>

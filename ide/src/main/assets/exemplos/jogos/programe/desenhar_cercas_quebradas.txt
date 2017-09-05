@@ -1,0 +1,11 @@
+			caso  1 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],    0, 128,  31,  65, img_objects) pare
+			caso 11 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],    31, 128,  33,  65, img_objects) pare
+			caso  2 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],   75, 128,  44,  62, img_objects) pare 
+			caso  3 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  123, 128,  31,  65, img_objects) pare
+			caso 13 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  154, 128,  31,  65, img_objects) pare
+			caso 23 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  185, 128,  24,  65, img_objects) pare
+			caso 33 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  245, 128,  -38,  65, img_objects) pare 
+			caso 43 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  277, 128,  -32,  65, img_objects) pare 
+			caso  4 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  269, 223, -62,  78, img_objects) pare 
+			caso  5 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  203, 223, -44,  62, img_objects) pare 
+			caso  6 : g.desenhar_porcao_imagem(posicao_isometrica_objeto_x+posicao_mapa_cerca[0], posicao_isometrica_objeto_y+posicao_mapa_cerca[1],  153, 223, -147, 95, img_objects) pare 

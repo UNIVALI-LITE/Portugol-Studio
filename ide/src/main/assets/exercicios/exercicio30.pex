@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+ 
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">7</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">14</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+				<saida tipodado="inteiro">55</saida>
+				<saida tipodado="inteiro">89</saida>
+				<saida tipodado="inteiro">144</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">377</saida>
+			</saidas>
+		</caso>	
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">15</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+				<saida tipodado="inteiro">55</saida>
+				<saida tipodado="inteiro">89</saida>
+				<saida tipodado="inteiro">144</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">377</saida>
+				<saida tipodado="inteiro">610</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">16</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+				<saida tipodado="inteiro">55</saida>
+				<saida tipodado="inteiro">89</saida>
+				<saida tipodado="inteiro">144</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">377</saida>
+				<saida tipodado="inteiro">610</saida>
+				<saida tipodado="inteiro">987</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">17</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+				<saida tipodado="inteiro">55</saida>
+				<saida tipodado="inteiro">89</saida>
+				<saida tipodado="inteiro">144</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">377</saida>
+				<saida tipodado="inteiro">610</saida>
+				<saida tipodado="inteiro">987</saida>
+				<saida tipodado="inteiro">1597</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">18</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+				<saida tipodado="inteiro">55</saida>
+				<saida tipodado="inteiro">89</saida>
+				<saida tipodado="inteiro">144</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">377</saida>
+				<saida tipodado="inteiro">610</saida>
+				<saida tipodado="inteiro">987</saida>
+				<saida tipodado="inteiro">1597</saida>
+				<saida tipodado="inteiro">2584</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">19</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+				<saida tipodado="inteiro">55</saida>
+				<saida tipodado="inteiro">89</saida>
+				<saida tipodado="inteiro">144</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">377</saida>
+				<saida tipodado="inteiro">610</saida>
+				<saida tipodado="inteiro">987</saida>
+				<saida tipodado="inteiro">1597</saida>
+				<saida tipodado="inteiro">2584</saida>
+				<saida tipodado="inteiro">4181</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">30</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">34</saida>
+				<saida tipodado="inteiro">55</saida>
+				<saida tipodado="inteiro">89</saida>
+				<saida tipodado="inteiro">144</saida>
+				<saida tipodado="inteiro">233</saida>
+				<saida tipodado="inteiro">377</saida>
+				<saida tipodado="inteiro">610</saida>
+				<saida tipodado="inteiro">987</saida>
+				<saida tipodado="inteiro">1597</saida>
+				<saida tipodado="inteiro">2584</saida>
+				<saida tipodado="inteiro">4181</saida>
+				<saida tipodado="inteiro">6765</saida>
+				<saida tipodado="inteiro">10946</saida>
+				<saida tipodado="inteiro">17711</saida>
+				<saida tipodado="inteiro">28657</saida>
+				<saida tipodado="inteiro">46368</saida>
+				<saida tipodado="inteiro">75025</saida>
+				<saida tipodado="inteiro">121393</saida>
+				<saida tipodado="inteiro">196418</saida>
+				<saida tipodado="inteiro">317811</saida>
+				<saida tipodado="inteiro">514229</saida>
+				<saida tipodado="inteiro">832040</saida>
+			</saidas>
+		</caso>
+
+
+	</testes>
+	<enunciado>Faça um programa que gere e exiba os n primeiros termos (entrada do usuario) da série de Fibonacci (Os dois primeiros termos da série são 1 e 1, os termos subseqüentes são a soma dos dois últimos. Observe o exemplo: 1,1,2,3,5,8,13,21,..)</enunciado>
+</questao>

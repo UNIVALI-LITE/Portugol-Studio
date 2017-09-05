@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">1.5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">5.75</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">4</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">5.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">10</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">7.5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">10</entrada>
+				<entrada tipodado="real">10</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">10.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">1.0</entrada>
+				<entrada tipodado="real">5.0</entrada>
+				<entrada tipodado="real">2.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">2.8333333333333335</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">10.0</entrada>
+				<entrada tipodado="real">6.0</entrada>
+				<entrada tipodado="real">1.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">4.166666666666667</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">8.0</entrada>
+				<entrada tipodado="real">8.0</entrada>
+				<entrada tipodado="real">1.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">4.5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">2.0</entrada>
+				<entrada tipodado="real">5.0</entrada>
+				<entrada tipodado="real">10.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">7.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">6.0</entrada>
+				<entrada tipodado="real">6.0</entrada>
+				<entrada tipodado="real">6.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">6.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">3.0</entrada>
+				<entrada tipodado="real">3.0</entrada>
+				<entrada tipodado="real">9.0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="real">6.0</saida>
+			</saidas>
+		</caso>
+	</testes>
+
+	<enunciado>O sistema de avaliação de determinada disciplina, é composto por três provas. A primeira prova tem peso 2, a segunda tem peso 4 e a terceira prova tem peso 6. Faça um programa que solicita as notas para o aluno, calcula e exibe a média final deste aluno.</enunciado>
+</questao>

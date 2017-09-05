@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">6</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">10</entrada>
+				<entrada tipodado="inteiro">10</entrada>
+				<entrada tipodado="inteiro">10</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">3</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">3</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">6</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">42</entrada>
+				<entrada tipodado="inteiro">6</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">11</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">3</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">55</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+	</testes>
+	
+	<enunciado>Faça um programa que solicita ao usuário três valores correspondentes aos lados de um triângulo. Informe se o triângulo é eqüilátero (possui 3 lados iguais) exibindo o numero inteiro 3, isósceles (possui dois lados iguais) exibindo o numero inteiro 2 ou escaleno (não possui lados iguais) exibindo o numero inteiro 0.  Saídas:
+• Caso equilátero = 3;
+• Caso isósceles = 2;
+• Caso escaleno = 0.
+</enunciado>
+</questao>

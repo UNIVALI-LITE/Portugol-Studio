@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	
+	<testes>
+		<caso>
+		<entradas>
+			<entrada tipodado="inteiro">6</entrada>
+		</entradas>
+		<saidas>
+			<saida tipodado="logico">verdadeiro</saida>
+		</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9</entrada>
+		      </entradas>
+			<saidas>
+			<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-7</entrada>
+			</entradas>
+			<saidas>
+			<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-120</entrada>
+			</entradas>
+			<saidas>
+			<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">120</entrada>
+			</entradas>
+			<saidas>
+			<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">42</entrada>
+			</entradas>
+			<saidas>
+			<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-842</entrada>
+			</entradas>
+			<saidas>
+			<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-777</entrada>
+			</entradas>
+			<saidas>
+			<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">777</entrada>
+			</entradas>
+			<saidas>
+			<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+	</testes>
+	
+	<enunciado>Faça um programa que solicita ao usuário um valor inteiro e exibe o valor logico verdadeiro caso seja par e falso caso seja impar.
+</enunciado>
+</questao>

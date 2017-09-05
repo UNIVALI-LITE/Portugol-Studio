@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">4</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">4.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">15</entrada>          
+				<entrada tipodado="real">8</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">15.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">7</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">7.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">-33</entrada>
+				<entrada tipodado="real">7</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">7.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">-3</entrada>
+				<entrada tipodado="real">-7</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">-3.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">42</entrada>
+				<entrada tipodado="real">42</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">42.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">0</entrada>
+				<entrada tipodado="real">-1</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">-5</entrada>
+				<entrada tipodado="real">5</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">5.0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">1100.1</entrada>
+				<entrada tipodado="real">1011</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">1100.1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>              
+				<entrada tipodado="real">255.1</entrada>
+				<entrada tipodado="real">255</entrada>
+			</entradas>
+			<saidas>
+				<saida  tipodado="real">255.1</saida>
+			</saidas>
+		</caso>
+	</testes>
+  
+	<enunciado>Faça um programa que exiba o maior dentre dois números reais digitados pelo usuário. Caso eles sejam iguais exiba o numero na tela.
+</enunciado>
+</questao>

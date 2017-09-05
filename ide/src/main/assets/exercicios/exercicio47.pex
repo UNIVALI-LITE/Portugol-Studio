@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">61</entrada>
+				<entrada tipodado="real">62</entrada>
+				<entrada tipodado="real">20</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">11</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">51</entrada>
+				<entrada tipodado="real">29</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">53</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">43</entrada>
+				<entrada tipodado="real">37</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">87</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">29</entrada>
+				<entrada tipodado="real">24</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">80</entrada>
+				<entrada tipodado="real">59</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">57</entrada>
+				<entrada tipodado="real">95</entrada>
+				<entrada tipodado="real">93</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">11</entrada>
+				<entrada tipodado="real">0</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">52</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">32</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">27</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">33</entrada>
+				<entrada tipodado="real">52</entrada>
+				<entrada tipodado="real">32</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">64</entrada>
+				<entrada tipodado="real">52</entrada>
+				<entrada tipodado="real">2</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">74</entrada>
+				<entrada tipodado="real">61</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">38</entrada>
+				<entrada tipodado="real">93</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">55</entrada>
+				<entrada tipodado="real">80</entrada>
+				<entrada tipodado="real">60</entrada>
+				<entrada tipodado="real">66</entrada>
+				<entrada tipodado="real">62</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">52</entrada>
+				<entrada tipodado="real">37</entrada>
+				<entrada tipodado="real">66</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">69</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">80</entrada>
+				<entrada tipodado="real">55</entrada>
+				<entrada tipodado="real">74</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">54</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">38</entrada>
+				<entrada tipodado="real">31</entrada>
+				<entrada tipodado="real">33</entrada>
+				<entrada tipodado="real">43</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">27</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">82</entrada>
+				<entrada tipodado="real">91</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">51</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">97</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">44</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">18</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">54</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">48</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">62</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">92</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">52</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">77</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">86</entrada>
+				<entrada tipodado="real">17</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">90</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">50</entrada>
+				<entrada tipodado="real">13</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">79</entrada>
+				<entrada tipodado="real">59</entrada>
+				<entrada tipodado="real">87</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">24</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">23</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">19</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">32</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">13</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">87</entrada>
+				<entrada tipodado="real">97</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">21</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">95</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">79</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">80</entrada>
+				<entrada tipodado="real">74</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">91</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">31</entrada>
+				<entrada tipodado="real">99</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">51</entrada>
+				<entrada tipodado="real">61</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">38</entrada>
+				<entrada tipodado="real">26</entrada>
+				<entrada tipodado="real">37</entrada>
+				<entrada tipodado="real">64</entrada>
+				<entrada tipodado="real">23</entrada>
+				<entrada tipodado="real">55</entrada>
+				<entrada tipodado="real">86</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">20</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">70</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">17</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">90</entrada>
+				<entrada tipodado="real">92</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">54</entrada>
+				<entrada tipodado="real">35</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">50</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">70</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">87</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">69</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">43</entrada>
+				<entrada tipodado="real">79</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">97</entrada>
+				<entrada tipodado="real">51</entrada>
+				<entrada tipodado="real">23</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">49</entrada>
+				<entrada tipodado="real">0</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">75</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">60</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">96</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">21</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">99</entrada>
+				<entrada tipodado="real">91</entrada>
+				<entrada tipodado="real">81</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">74</entrada>
+				<entrada tipodado="real">66</entrada>
+				<entrada tipodado="real">62</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">11</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">80</entrada>
+				<entrada tipodado="real">61</entrada>
+				<entrada tipodado="real">44</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">50</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">99</entrada>
+				<entrada tipodado="real">39</entrada>
+				<entrada tipodado="real">21</entrada>
+				<entrada tipodado="real">96</entrada>
+				<entrada tipodado="real">27</entrada>
+				<entrada tipodado="real">16</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">52</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">11</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">29</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">2</entrada>
+				<entrada tipodado="real">87</entrada>
+				<entrada tipodado="real">13</entrada>
+				<entrada tipodado="real">27</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">49</entrada>
+				<entrada tipodado="real">23</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">71</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">86</entrada>
+				<entrada tipodado="real">0</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">99</entrada>
+				<entrada tipodado="real">50</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">77</entrada>
+				<entrada tipodado="real">4</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">15</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">42</entrada>
+				<entrada tipodado="real">79</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">94</entrada>
+				<entrada tipodado="real">48</entrada>
+				<entrada tipodado="real">20</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">99</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">32</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">90</entrada>
+				<entrada tipodado="real">21</entrada>
+				<entrada tipodado="real">55</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">34</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">23</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">77</entrada>
+				<entrada tipodado="real">98</entrada>
+				<entrada tipodado="real">39</entrada>
+				<entrada tipodado="real">81</entrada>
+				<entrada tipodado="real">93</entrada>
+				<entrada tipodado="real">82</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">86</entrada>
+				<entrada tipodado="real">81</entrada>
+				<entrada tipodado="real">29</entrada>
+				<entrada tipodado="real">29</entrada>
+				<entrada tipodado="real">86</entrada>
+				<entrada tipodado="real">43</entrada>
+				<entrada tipodado="real">57</entrada>
+				<entrada tipodado="real">70</entrada>
+				<entrada tipodado="real">2</entrada>
+				<entrada tipodado="real">42</entrada>
+				<entrada tipodado="real">82</entrada>
+				<entrada tipodado="real">71</entrada>
+				<entrada tipodado="real">61</entrada>
+				<entrada tipodado="real">33</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">81</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">31</entrada>
+				<entrada tipodado="real">20</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">34</entrada>
+				<entrada tipodado="real">75</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">27</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">88</entrada>
+				<entrada tipodado="real">99</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">33</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">70</entrada>
+				<entrada tipodado="real">75</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">24</entrada>
+				<entrada tipodado="real">71</entrada>
+				<entrada tipodado="real">31</entrada>
+				<entrada tipodado="real">60</entrada>
+				<entrada tipodado="real">53</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">50</entrada>
+				<entrada tipodado="real">49</entrada>
+				<entrada tipodado="real">95</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">74</entrada>
+				<entrada tipodado="real">49</entrada>
+				<entrada tipodado="real">33</entrada>
+				<entrada tipodado="real">26</entrada>
+				<entrada tipodado="real">80</entrada>
+				<entrada tipodado="real">17</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">34</entrada>
+				<entrada tipodado="real">38</entrada>
+				<entrada tipodado="real">16</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">79</entrada>
+				<entrada tipodado="real">31</entrada>
+				<entrada tipodado="real">60</entrada>
+				<entrada tipodado="real">48</entrada>
+				<entrada tipodado="real">20</entrada>
+				<entrada tipodado="real">43</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">99</entrada>
+				<entrada tipodado="real">32</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">39</entrada>
+				<entrada tipodado="real">59</entrada>
+				<entrada tipodado="real">5</entrada>
+				<entrada tipodado="real">97</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">85</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">26</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">96</entrada>
+				<entrada tipodado="real">68</entrada>
+				<entrada tipodado="real">79</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">34</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">40</entrada>
+				<entrada tipodado="real">72</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">26</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">86</entrada>
+				<entrada tipodado="real">53</entrada>
+				<entrada tipodado="real">75</entrada>
+				<entrada tipodado="real">63</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">67</entrada>
+				<entrada tipodado="real">16</entrada>
+				<entrada tipodado="real">82</entrada>
+				<entrada tipodado="real">92</entrada>
+				<entrada tipodado="real">43</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">28</entrada>
+				<entrada tipodado="real">51</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">24</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">73</entrada>
+				<entrada tipodado="real">9</entrada>
+				<entrada tipodado="real">77</entrada>
+				<entrada tipodado="real">87</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">55</entrada>
+				<entrada tipodado="real">48</entrada>
+				<entrada tipodado="real">26</entrada>
+				<entrada tipodado="real">90</entrada>
+				<entrada tipodado="real">90</entrada>
+				<entrada tipodado="real">59</entrada>
+				<entrada tipodado="real">62</entrada>
+				<entrada tipodado="real">39</entrada>
+				<entrada tipodado="real">19</entrada>
+				<entrada tipodado="real">56</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">79</entrada>
+				<entrada tipodado="real">54</entrada>
+				<entrada tipodado="real">36</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">79</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">37</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="real">64</entrada>
+				<entrada tipodado="real">45</entrada>
+				<entrada tipodado="real">37</entrada>
+				<entrada tipodado="real">76</entrada>
+				<entrada tipodado="real">79</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">12</entrada>
+				<entrada tipodado="real">83</entrada>
+				<entrada tipodado="real">71</entrada>
+				<entrada tipodado="real">44</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">43</entrada>
+				<entrada tipodado="real">30</entrada>
+				<entrada tipodado="real">49</entrada>
+				<entrada tipodado="real">6</entrada>
+				<entrada tipodado="real">84</entrada>
+				<entrada tipodado="real">44</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">65</entrada>
+				<entrada tipodado="real">47</entrada>
+				<entrada tipodado="real">32</entrada>
+				<entrada tipodado="real">35</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">1</entrada>
+				<entrada tipodado="real">14</entrada>
+				<entrada tipodado="real">97</entrada>
+				<entrada tipodado="real">27</entrada>
+				<entrada tipodado="real">55</entrada>
+				<entrada tipodado="real">70</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">22</entrada>
+				<entrada tipodado="real">16</entrada>
+				<entrada tipodado="real">24</entrada>
+				<entrada tipodado="real">67</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">41</entrada>
+				<entrada tipodado="real">78</entrada>
+				<entrada tipodado="real">58</entrada>
+				<entrada tipodado="real">32</entrada>
+				<entrada tipodado="real">34</entrada>
+				<entrada tipodado="real">25</entrada>
+				<entrada tipodado="real">3</entrada>
+				<entrada tipodado="real">99</entrada>
+				<entrada tipodado="real">80</entrada>
+				<entrada tipodado="real">89</entrada>
+				<entrada tipodado="real">46</entrada>
+				<entrada tipodado="real">8</entrada>
+				<entrada tipodado="real">7</entrada>
+				<entrada tipodado="real">28</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">34</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa que solicita ao usuário 50 valores reais e armazene em um vetor. O programa deve verificar e exibir quantos elementos não repetidos (diferentes) existem neste vetor. </enunciado>
+</questao>

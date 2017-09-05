@@ -1,0 +1,9 @@
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'br.univali.portugol.Console'
+}
+
+dependencies {
+
+    compile project(':portugol-core')
+}

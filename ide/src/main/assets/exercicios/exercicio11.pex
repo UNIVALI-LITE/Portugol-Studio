@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+  
+  <testes>
+    <caso>
+      <entradas>
+        <entrada tipodado="inteiro">-6</entrada>
+      </entradas>
+      <saidas>
+        <saida tipodado="inteiro">6</saida>
+      </saidas>
+    </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-9</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">9</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">7</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">7</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-3</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">3</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-1</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">1</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="inteiro">1</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">1</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="inteiro">0</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">0</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-42</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">42</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="inteiro">9</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">9</saida>
+          </saidas>
+      </caso>
+       <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-999</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">999</saida>
+          </saidas>
+      </caso>
+	</testes>
+
+	<enunciado>Faça um programa que solicita ao usuário um número inteiro e exibe este na tela. Se o número for negativo, antes de ser exibido, ele deve ser transformado no equivalente positivo. </enunciado>
+
+</questao>

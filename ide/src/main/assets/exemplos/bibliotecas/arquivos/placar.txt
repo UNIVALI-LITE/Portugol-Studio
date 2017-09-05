@@ -1,0 +1,10 @@
+  1| João    | 1250 pontos
+  2| Julia   | 1157 pontos
+  3| Rafael  |  981 pontos
+  4| Alisson |  965 pontos
+  5| Marcos  |  810 pontos
+  6| Maria   |  805 pontos
+  7| Jéssica |  756 pontos
+  8| Paulo   |  732 pontos
+  9| Gustavo |  640 pontos
+ 10| Luiz    |  500 pontos

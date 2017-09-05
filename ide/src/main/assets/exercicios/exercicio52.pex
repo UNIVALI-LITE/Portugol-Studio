@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">16</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">19</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">15</saida>
+				<saida tipodado="inteiro">16</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">11</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">19</saida>
+				<saida tipodado="inteiro">17</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">14</entrada>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">7</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">14</saida>
+				<saida tipodado="inteiro">15</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">17</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">4</entrada>
+				<entrada tipodado="inteiro">12</entrada>
+				<entrada tipodado="inteiro">8</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">10</entrada>
+				<entrada tipodado="inteiro">6</entrada>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">6</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">15</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">10</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">11</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">15</saida>
+				<saida tipodado="inteiro">3</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">2</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">10</entrada>
+				<entrada tipodado="inteiro">20</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">7</saida>
+				<saida tipodado="inteiro">10</saida>
+				<saida tipodado="inteiro">20</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">7</entrada>
+				<entrada tipodado="inteiro">3</entrada>
+				<entrada tipodado="inteiro">12</entrada>
+				<entrada tipodado="inteiro">13</entrada>
+				<entrada tipodado="inteiro">6</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">11</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">11</saida>
+				<saida tipodado="inteiro">7</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">11</entrada>
+				<entrada tipodado="inteiro">1</entrada>
+				<entrada tipodado="inteiro">19</entrada>
+				<entrada tipodado="inteiro">12</entrada>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">6</entrada>
+				<entrada tipodado="inteiro">13</entrada>
+				<entrada tipodado="inteiro">17</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">11</saida>
+				<saida tipodado="inteiro">11</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">19</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">15</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">17</saida>
+				<saida tipodado="inteiro">5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">12</entrada>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">5</entrada>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">15</entrada>
+				<entrada tipodado="inteiro">13</entrada>
+				<entrada tipodado="inteiro">9</entrada>
+				<entrada tipodado="inteiro">11</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">15</saida>
+				<saida tipodado="inteiro">13</saida>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">11</saida>
+				<saida tipodado="inteiro">9</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa que preenche dois vetores de 5 posições inteiras. A seguir crie um novo vetor contendo a intersecção dos elementos dos dois vetores (O vetor intersecção deve possuir apenas os elementos que constam em ambos os vetores e apenas uma vez(sem repetição)). Exiba os vetores originais e o vetor intersecção. Sendo que o vetor intersecção deverá estar em ordem crescente.</enunciado>
+</questao>

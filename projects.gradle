@@ -1,0 +1,78 @@
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    
+    compile fileTree(include: ['*.jar'], dir: 'libs/compile')
+    
+    runtime fileTree(include: ['*.jar'], dir: 'libs/runtime')
+    
+    testCompile fileTree(include: ['*.jar'], dir: 'libs/testCompile')
+    
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+}
+
+
+
+
+String mavenArtifactId = name
+String versionString = rootProject.versionInfo.majorVersion + '.' + rootProject.versionInfo.minorVersion + '.' + rootProject.versionInfo.buildVersion
+
+group = rootProject.versionInfo.mavenGroupId
+version = versionString
+
+task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates a jar from the source files.') {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+}
+
+configure(install.repositories.mavenInstaller) {
+    pom.project {
+        groupId = rootProject.versionInfo.appGroupId
+        artifactId = mavenArtifactId
+        version = versionString
+    }
+}
+
+task createFolders(description: 'Creates the source folders if they do not exist.') doLast {
+    sourceSets*.allSource*.srcDirs*.each { File srcDir ->
+        if (!srcDir.isDirectory()) {
+            println "Creating source folder: ${srcDir}"
+            srcDir.mkdirs()
+        }
+    }
+}
+
+task copyRuntimeLibs() {
+    doLast {
+        copy {
+            into "build/libs/lib"
+            from configurations.runtime
+        }
+    }
+}
+
+jar.dependsOn copyRuntimeLibs
+
+jar.doFirst {
+      
+    manifest {
+        attributes(
+            'Main-Class': project.hasProperty('mainClass')? project.ext.mainClass:'',
+            'SplashScreen-Image': project.hasProperty('splashScreen')? project.ext.splashScreen:'',
+            'Class-Path': configurations.runtime.collect { 'lib/' + it.getName() }.join(' '))
+    }
+}

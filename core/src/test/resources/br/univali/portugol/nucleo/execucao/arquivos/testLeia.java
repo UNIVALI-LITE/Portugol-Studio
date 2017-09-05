@@ -1,0 +1,34 @@
+package programas;
+
+import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import br.univali.portugol.nucleo.Programa;
+
+public class testLeia extends Programa
+{
+
+    public testLeia() throws ErroExecucao, InterruptedException
+    {
+    }
+
+    @Override
+    protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
+    {
+        int opcao;
+        opcao = leiaInteiro();
+        boolean teste;
+        teste = leiaLogico();
+        String testeCadeia = "inicializada";
+        testeCadeia = leiaCadeia();
+        int a;
+        int b;
+        int c;
+        a = leiaInteiro();
+        b = leiaInteiro();
+        c = leiaInteiro();
+        int vetor[] = new int[3];
+        vetor[0] = leiaInteiro();
+        int matriz[][] = new int[3][2];
+        matriz[0][1] = leiaInteiro();
+        matriz[(0 + 1) % 3][1 / 5 + 6 * 2] = leiaInteiro();
+    }
+}

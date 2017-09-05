@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Não vou colar na prova</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+				<saida tipodado="cadeia">Não vou colar na prova</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">81043a733867ed314e1b746a19fa278a</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+				<saida tipodado="cadeia">81043a733867ed314e1b746a19fa278a</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+				<saida tipodado="cadeia">827ccb0eea8a706c4c34a16891f84e7b</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">d52387880e1ea22817a72d3759213819</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+				<saida tipodado="cadeia">d52387880e1ea22817a72d3759213819</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+				<saida tipodado="cadeia">d35651cdbe370767cefd2e5d398a1dd5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+				<saida tipodado="cadeia">84f79d64feaf8c1cb381f943ee2165ef</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">304058d3498cebbff5f8590220cf3188</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+				<saida tipodado="cadeia">304058d3498cebbff5f8590220cf3188</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">The cake is a Lie</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+				<saida tipodado="cadeia">The cake is a Lie</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+				<saida tipodado="cadeia">b10a8db164e0754105b7a99be72e3fe5</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+				<saida tipodado="cadeia">1119dee4ae12a0b97bb50a99e05f9917</saida>
+			</saidas>
+		</caso>
+
+	</testes>
+	<enunciado>Faça um programa que exiba 30 vezes na tela uma mensagem que o usuário digitar.</enunciado>
+</questao>

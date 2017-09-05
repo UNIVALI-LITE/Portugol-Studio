@@ -1,0 +1,22 @@
+rootProject.name = 'portugol-studio'
+
+def subDirs = rootDir.listFiles(new FileFilter() {
+    public boolean accept(File file) {
+        if (!file.isDirectory()) {
+            return false
+        }
+        if (file.name == 'buildSrc') {
+            return false
+        }
+        return new File(file, 'build.gradle').isFile()
+    }
+});
+
+subDirs.each { File dir ->
+    if (dir.name != 'checker'){
+        include dir.name
+    }
+}
+
+rootProject.children.each { it.name = "portugol-" + it.name }
+ 

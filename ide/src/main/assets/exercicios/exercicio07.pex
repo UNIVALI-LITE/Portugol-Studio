@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">55</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">47</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">10</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">3</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">42</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">0</saida>
+				<saida tipodado="inteiro">2</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">16</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1025558</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">102555</saida>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">3</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa para um terminal de auto-atendimento bancário que realiza saques em dinheiro. O programa deve solicitar ao usuário qual o valor a ser retirado e deve exibir na tela qual a quantidade de cada cédula será entregue ao usuário. O programa sempre deve tentar utilizar o menor número possível de cédulas. A máquina possui apenas cédulas de R$ 10, 5 e 1. Saídas:
+• Apresente o número de cédulas na seguinte ondem: 10,5,1.
+	</enunciado>	
+</questao>

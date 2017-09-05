@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.univali.br/portugol/studio/plugins" xmlns:pl="http://www.univali.br/portugol/studio/plugins" elementFormDefault="qualified">
+    <xs:element name="plugin">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element name="descricao" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="autores" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                            <xs:element name="autor" type="pl:autor" minOccurs="1" maxOccurs="1"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="nome" type="pl:string" use="required"/>
+            <xs:attribute name="versao" type="pl:versao" use="required"/>
+            <xs:attribute name="classe" type="pl:classe" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="classe">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([a-zA-Z_$][a-zA-Z\d_$]*\.)*[a-zA-Z_$][a-zA-Z\d_$]*"/>
+        </xs:restriction>
+    </xs:simpleType>        
+    <xs:simpleType name="string">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="64"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="versao">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,2}.\d{1,2}.\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="descricao">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="10"/>
+            <xs:maxLength value="1024"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="autor">
+        <xs:attribute name="nome" type="pl:string" use="required"/>
+        <xs:attribute name="email" type="pl:string" use="required"/>
+    </xs:complexType>
+</xs:schema>

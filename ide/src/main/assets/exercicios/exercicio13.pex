@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+	 
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">w</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">a</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">i</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">p</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">e</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">o</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">t</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">u</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">verdadeiro</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">y</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="caracter">h</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="logico">falso</saida>
+			</saidas>
+		</caso>
+	</testes>
+	
+	<enunciado>Faça um programa que solicita ao usuário uma letra e escreva na tela o valor logico verdadeiro se for vogal e falso caso não seja uma vogal.
+	</enunciado>
+</questao>

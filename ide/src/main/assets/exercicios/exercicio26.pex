@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+  <testes>
+    <caso>
+      <entradas>
+        <entrada tipodado="inteiro">2</entrada>
+        <entrada tipodado="inteiro">8</entrada>
+      </entradas>
+      <saidas>
+        <saida tipodado="inteiro">256</saida>
+      </saidas>
+    </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-2</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+          </entradas>
+          <saidas>
+              <saida tipodado="inteiro">4</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">9</entrada>
+              <entrada tipodado="inteiro">0</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">1</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">42</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">1764</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">5</entrada>
+              <entrada tipodado="inteiro">5</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">3125</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">2</entrada>
+              <entrada tipodado="inteiro">1</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">2</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-7</entrada>
+              <entrada tipodado="inteiro">3</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">-343</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">-7</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">49</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">99</entrada>
+              <entrada tipodado="inteiro">2</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">9801</saida>
+          </saidas>
+      </caso>
+      <caso>
+          <entradas>
+              <entrada tipodado="inteiro">1</entrada>
+              <entrada tipodado="inteiro">0</entrada>
+          </entradas>
+          <saidas>
+              <saida  tipodado="inteiro">1</saida>
+          </saidas>
+      </caso>
+  </testes>
+   <enunciado>Faça um programa que solicita ao usuário dois valores inteiros e positivos que serão a base e o expoente. O programa deve usar laço de repetição para calcular e escrever o resultado da base elevado ao expoente (potencia).</enunciado>
+</questao>

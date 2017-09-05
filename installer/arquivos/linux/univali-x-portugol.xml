@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+	<mime-type type="application/x-portugol">
+		<comment>Algoritmo na linguagem Portugol</comment>
+		<glob pattern="*.por" weight="100"/>
+		<glob-deleteall></glob-deleteall>
+		<icon name="arquivo-por"/>
+	</mime-type>
+</mime-info>

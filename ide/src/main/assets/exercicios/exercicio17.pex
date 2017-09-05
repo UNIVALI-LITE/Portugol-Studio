@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-9</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">0</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">0</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-50</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">42</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">11000</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-5000</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">55</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">72</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">-8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">-1</saida>
+			</saidas>
+		</caso>
+	</testes>
+	
+	<enunciado>Faça um programa que solicita um número inteiro e exibe um numero inteiro indicando se ele é positivo, negativo ou zero. Saídas:
+• Caso ele seja positivo = 1;
+• Caso ele seja negativo = -1;
+• Caso ele seja igual a zero = 0;
+</enunciado>
+</questao>

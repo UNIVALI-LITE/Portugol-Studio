@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="schema.xsd">
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Fillipi Pelz</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Fillipi Pelz</saida>
+
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Claudia</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Claudia</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Fernanda</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Fernanda</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">André Raabe</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">André Raabe</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Carlos</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Carlos</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Paulo</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Paulo</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">José Almeira</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">José Almeira</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Alice</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Alice</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Otavio Costa</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Otavio Costa</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="cadeia">Rose Amarela</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="cadeia">Rose Amarela</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa que solicita que o usuário digite o seu nome e exiba na tela o nome digitado pelo usuário.
+</enunciado>
+</questao>

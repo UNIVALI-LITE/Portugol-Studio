@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="schema.xsd">
+
+	<testes>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">1</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">1</saida>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">7</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">10</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">2</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">2</saida>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">10</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">14</saida>
+				<saida tipodado="inteiro">16</saida>
+				<saida tipodado="inteiro">18</saida>
+				<saida tipodado="inteiro">20</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">3</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">3</saida>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">15</saida>
+				<saida tipodado="inteiro">18</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">24</saida>
+				<saida tipodado="inteiro">27</saida>
+				<saida tipodado="inteiro">30</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">4</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">4</saida>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">16</saida>
+				<saida tipodado="inteiro">20</saida>
+				<saida tipodado="inteiro">24</saida>
+				<saida tipodado="inteiro">28</saida>
+				<saida tipodado="inteiro">32</saida>
+				<saida tipodado="inteiro">36</saida>
+				<saida tipodado="inteiro">40</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">5</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">5</saida>
+				<saida tipodado="inteiro">10</saida>
+				<saida tipodado="inteiro">15</saida>
+				<saida tipodado="inteiro">20</saida>
+				<saida tipodado="inteiro">25</saida>
+				<saida tipodado="inteiro">30</saida>
+				<saida tipodado="inteiro">35</saida>
+				<saida tipodado="inteiro">40</saida>
+				<saida tipodado="inteiro">45</saida>
+				<saida tipodado="inteiro">50</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">6</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">6</saida>
+				<saida tipodado="inteiro">12</saida>
+				<saida tipodado="inteiro">18</saida>
+				<saida tipodado="inteiro">24</saida>
+				<saida tipodado="inteiro">30</saida>
+				<saida tipodado="inteiro">36</saida>
+				<saida tipodado="inteiro">42</saida>
+				<saida tipodado="inteiro">48</saida>
+				<saida tipodado="inteiro">54</saida>
+				<saida tipodado="inteiro">60</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">7</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">7</saida>
+				<saida tipodado="inteiro">14</saida>
+				<saida tipodado="inteiro">21</saida>
+				<saida tipodado="inteiro">28</saida>
+				<saida tipodado="inteiro">35</saida>
+				<saida tipodado="inteiro">42</saida>
+				<saida tipodado="inteiro">49</saida>
+				<saida tipodado="inteiro">56</saida>
+				<saida tipodado="inteiro">63</saida>
+				<saida tipodado="inteiro">70</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">8</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">8</saida>
+				<saida tipodado="inteiro">16</saida>
+				<saida tipodado="inteiro">24</saida>
+				<saida tipodado="inteiro">32</saida>
+				<saida tipodado="inteiro">40</saida>
+				<saida tipodado="inteiro">48</saida>
+				<saida tipodado="inteiro">56</saida>
+				<saida tipodado="inteiro">64</saida>
+				<saida tipodado="inteiro">72</saida>
+				<saida tipodado="inteiro">80</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">9</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">9</saida>
+				<saida tipodado="inteiro">18</saida>
+				<saida tipodado="inteiro">27</saida>
+				<saida tipodado="inteiro">36</saida>
+				<saida tipodado="inteiro">45</saida>
+				<saida tipodado="inteiro">54</saida>
+				<saida tipodado="inteiro">63</saida>
+				<saida tipodado="inteiro">72</saida>
+				<saida tipodado="inteiro">81</saida>
+				<saida tipodado="inteiro">90</saida>
+			</saidas>
+		</caso>
+		<caso>
+			<entradas>
+				<entrada tipodado="inteiro">42</entrada>
+			</entradas>
+			<saidas>
+				<saida tipodado="inteiro">42</saida>
+				<saida tipodado="inteiro">84</saida>
+				<saida tipodado="inteiro">126</saida>
+				<saida tipodado="inteiro">168</saida>
+				<saida tipodado="inteiro">210</saida>
+				<saida tipodado="inteiro">252</saida>
+				<saida tipodado="inteiro">294</saida>
+				<saida tipodado="inteiro">336</saida>
+				<saida tipodado="inteiro">378</saida>
+				<saida tipodado="inteiro">420</saida>
+			</saidas>
+		</caso>
+	</testes>
+	<enunciado>Faça um programa que pergunte ao usuário um numero exiba na tela os números da tabuada deste número. (A tabuada consiste em multiplicar o numero do usuário pelos números de 1 ao 10)</enunciado>
+</questao>
