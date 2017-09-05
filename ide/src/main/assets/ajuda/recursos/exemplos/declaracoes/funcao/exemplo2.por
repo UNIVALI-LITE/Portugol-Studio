@@ -6,8 +6,8 @@ programa
         escreva("\n-----------------------------\n")	
     }
 
-    //Função com retorno do tipo vazio e com um vetor como parâmetro
-    funcao inicio(cadeia argumentos[])
+    //Função com retorno do tipo vazio
+    funcao inicio()
     {
         //Imprime o retorno da função media
         escreva(media(4,9,8))
@@ -57,5 +57,9 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1236; 
+ * @POSICAO-CURSOR = 202; 
+ * @PONTOS-DE-PARADA = ;
+ * @SIMBOLOS-INSPECIONADOS = ;
+ * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
+ * @FILTRO-ARVORE-TIPOS-DE-SIMBOLO = variavel, vetor, matriz, funcao;
  */
