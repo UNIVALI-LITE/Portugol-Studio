@@ -42,7 +42,7 @@ public class IntegracaoGeradorCodigoJavacTest
     private final File tmpDir = new File("./src/test/tmp");
         
     @Test 
-    public void testaErrosSintaticosNoCodigoGerado() throws FileNotFoundException, ErroCompilacao, ExcecaoVisitaASA, IOException
+    public void testaErrosSintaticosNoCodigoGerado() throws FileNotFoundException, ErroCompilacao, ExcecaoVisitaASA, IOException, Exception
     {
         tmpDir.mkdirs();
         File dirExemplos = new File("../ide/src/main/assets/exemplos");
@@ -76,7 +76,7 @@ public class IntegracaoGeradorCodigoJavacTest
         return messages;
     }
     
-    private void geraCodigo(File exemplo) throws FileNotFoundException, ErroCompilacao, ExcecaoVisitaASA, IOException
+    private void geraCodigo(File exemplo) throws FileNotFoundException, ErroCompilacao, ExcecaoVisitaASA, IOException, Exception
     {
         if (exemplo.isDirectory()) {
             File files[] = exemplo.listFiles();
@@ -105,7 +105,7 @@ public class IntegracaoGeradorCodigoJavacTest
                 ResultadoAnalise resultado = aa.analisar(codigoPortugol);
                 if (!resultado.getErros().isEmpty())
                 {
-                    throw new ErroCompilacao(resultado);
+                    throw new Exception("Falha ao testar o arquivo: " + exemplo.getCanonicalPath(), new ErroCompilacao(resultado));
                 }
                 
                 GeradorCodigoJava gerador = new GeradorCodigoJava();

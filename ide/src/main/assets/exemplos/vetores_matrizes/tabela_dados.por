@@ -34,7 +34,7 @@
 
 programa
 {
-	funcao inicio(cadeia parametros[])
+	funcao inicio()
 	{
 		// Criação dos vetores, já com os dados inicializados
 		cadeia nome[] = { "Andre", "Thiago" , "Bruno", "Carlos", "Cassio" }
@@ -65,7 +65,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1362; 
+ * @POSICAO-CURSOR = 1213; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;

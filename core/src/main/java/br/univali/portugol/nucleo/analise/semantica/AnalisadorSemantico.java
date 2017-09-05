@@ -844,6 +844,11 @@ public final class AnalisadorSemantico implements VisitanteASA
             {
                 memoria.adicionarSimbolo(funcao);
             }
+            
+            if (funcao.getNome().equals("inicio") && !funcao.getParametros().isEmpty())
+            {
+                notificarErroSemantico(new ErroFuncaoInicioNaoAceitaParametros(declaracaoFuncao));
+            }
         }
         else
         {
