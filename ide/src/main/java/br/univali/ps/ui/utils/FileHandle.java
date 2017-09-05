@@ -14,6 +14,7 @@ public final class FileHandle
     }
     public static void save(String text, File file, String charset) throws Exception
     {
+        if(file.getParentFile().exists())
         {
             BufferedWriter writer = null;
             try
