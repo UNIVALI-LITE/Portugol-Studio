@@ -47,17 +47,24 @@ function testOS () {
     }
   }
 
+  $('.download-link').attr('href', versionInfo.links.others)
+  $('.outra-plataforma').attr('href', versionInfo.links.others)
+
   var path = 'img/'
-  var link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6.2/portugol-studio-2.6.2-linux-x64.zip'
+  var link = versionInfo.links.linux_64
   if (os.indexOf('Windows') !== -1) {
     path += 'win'
-    link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6.2/portugol-studio-2.6.2-windows.exe'
+    link = versionInfo.links.windows
   } else if (os === 'Mac OS X') {
     path += 'mac'
-    link = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/v2.6.2/portugol-studio-2.6.2-osx.app.zip'
+    link = versionInfo.links.osx
   } else {
     path += 'lin'
-    $('.outras').append('(x32)')
+    link = versionInfo.links.linux_x64
+    //$('#outras').html('Download (x86)')
+    $('#downloadMain').append(' (x64)')
+    $('#nav-download').append(' (x64)')
+    //$('.outra-plataforma').attr('href', versionInfo.links.linux)
   }
   $('.download-link').attr('href', link)
   path += '.svg'
@@ -94,7 +101,7 @@ $('.download-link').click(function () {
   ga('send', {
     hitType: 'event',
     eventCategory: 'download',
-    eventAction: '2.6.2',
+    eventAction: versionInfo.versionString,
     eventLabel: os,
     eventValue: 1
   })
@@ -103,7 +110,7 @@ $('.outra-plataforma').click(function () {
   ga('send', {
     hitType: 'event',
     eventCategory: 'download',
-    eventAction: '2.6.2',
+    eventAction: versionInfo.versionString,
     eventLabel: 'Para Outra Plataforma',
     eventValue: 1
   })

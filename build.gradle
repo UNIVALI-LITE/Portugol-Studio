@@ -19,7 +19,13 @@ ext {
     versionInfo.load(new FileInputStream(rootProject.projectDir.getPath() + '/ide/src/main/resources/version.properties'))
 }
 
+//String versionString = versionInfo.majorVersion + '.' + versionInfo.minorVersion + '.' + versionInfo.buildVersion + '.' + versionInfo.revisionVersion
 String versionString = versionInfo.majorVersion + '.' + versionInfo.minorVersion + '.' + versionInfo.buildVersion
+
+if (versionInfo.releaseName != null && !versionInfo.releaseName.trim().isEmpty()) {
+    versionString = versionString + '-' + versionInfo.releaseName.trim()
+}
+
 
 group = versionInfo.mavenGroupId
 

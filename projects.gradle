@@ -24,7 +24,7 @@ dependencies {
 
 
 String mavenArtifactId = name
-String versionString = rootProject.versionInfo.majorVersion + '.' + rootProject.versionInfo.minorVersion + '.' + rootProject.versionInfo.buildVersion
+String versionString = rootProject.version
 
 group = rootProject.versionInfo.mavenGroupId
 version = versionString

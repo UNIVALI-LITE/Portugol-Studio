@@ -315,7 +315,7 @@ class DistFrame extends JFrame
         Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionFile))
         
-        int spinnerWidth = 75
+        int spinnerWidth = 60
         
         JSpinner majorSpinner = new JSpinner()
         int currentMajorNumber = Integer.parseInt(versionProps.getProperty('majorVersion'))
@@ -325,7 +325,7 @@ class DistFrame extends JFrame
         majorSpinner.setLocation(x, y)
         contentPanel.add(majorSpinner)
         
-        x += 85
+        x += 65
         
          JSpinner minorSpinner = new JSpinner()
         int currentMinorNumber = Integer.parseInt(versionProps.getProperty('minorVersion'))
@@ -335,7 +335,7 @@ class DistFrame extends JFrame
         minorSpinner.setLocation(x, y)
         contentPanel.add(minorSpinner)
         
-        x += 85
+        x += 65
         
         JSpinner buildSpinner = new JSpinner()
         int currentBuildNumber = Integer.parseInt(versionProps.getProperty('buildVersion'))
@@ -345,9 +345,19 @@ class DistFrame extends JFrame
         buildSpinner.setLocation(x, y)
         contentPanel.add(buildSpinner)
         
+        x += 65
+        
+//        JSpinner revisionSpinner = new JSpinner()
+//        int currentRevisionNumber = Integer.parseInt(versionProps.getProperty('revisionVersion'))
+//        SpinnerNumberModel revisionModel = new SpinnerNumberModel(currentRevisionNumber, 0, 99, 1)
+//        revisionSpinner.setModel(revisionModel)
+//        revisionSpinner.setSize(spinnerWidth, defaultHeight)
+//        revisionSpinner.setLocation(x, y)
+//        contentPanel.add(revisionSpinner)
+        
         y -= 30 
         
-        x += 140
+        x += 115
         
         JLabel labelReleaseName = new JLabel("Release name (leave blank to ignore)")
         labelReleaseName.setSize(270, defaultHeight)
@@ -366,6 +376,8 @@ class DistFrame extends JFrame
         releaseModel.addElement('')
         releaseModel.addElement('ALPHA')
         releaseModel.addElement('BETA')
+        releaseModel.addElement('PRE-RELEASE')
+        releaseModel.addElement('QUICK-FIX')
         releaseModel.addElement('RELEASE')
         releaseModel.addElement('SNAPSHOT')
         
@@ -401,7 +413,8 @@ class DistFrame extends JFrame
             @Override
             public void actionPerformed(ActionEvent e){
                 
-                saveVersion(majorSpinner, minorSpinner, buildSpinner, fieldReleaseName)                
+                saveVersion(majorSpinner, minorSpinner, buildSpinner, fieldReleaseName)
+//                saveVersion(majorSpinner, minorSpinner, buildSpinner, revisionSpinner, fieldReleaseName)                
                 success = true
                 dispose()
             }
@@ -430,6 +443,7 @@ class DistFrame extends JFrame
         getContentPane().add(contentPanel)
     }
     
+//    private void saveVersion(JSpinner majorSpinner, JSpinner minorSpinner, JSpinner buildSpinner, JSpinner revisionSpinner, JComboBox releaseNameCombo){
     private void saveVersion(JSpinner majorSpinner, JSpinner minorSpinner, JSpinner buildSpinner, JComboBox releaseNameCombo){
         
         buildConfigurations.versionChanged = false
@@ -440,16 +454,20 @@ class DistFrame extends JFrame
         int currentMajorNumber = Integer.parseInt(versionProps.getProperty('majorVersion')) 
         int currentMinorNumber = Integer.parseInt(versionProps.getProperty('minorVersion'))
         int currentBuildNumber = Integer.parseInt(versionProps.getProperty('buildVersion'))
+//        int currentRevisionNumber = Integer.parseInt(versionProps.getProperty('revisionVersion'))
         
         Integer newMajorNumber = (Integer) majorSpinner.getValue()
         Integer newMinorNumber = (Integer) minorSpinner.getValue()
         Integer newBuildNumber = (Integer) buildSpinner.getValue()
+//        Integer newRevisionNumber = (Integer) revisionSpinner.getValue()
         
+//        if ((newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber) || (newRevisionNumber != currentRevisionNumber)) {
         if ((newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber)) {
             
             versionProps.setProperty('majorVersion', newMajorNumber.toString())
             versionProps.setProperty('minorVersion', newMinorNumber.toString())
             versionProps.setProperty('buildVersion', newBuildNumber.toString())
+//            versionProps.setProperty('revisionVersion', newRevisionNumber.toString())
             versionProps.setProperty('buildDate', Long.toString(new Date().getTime()))
             versionProps.setProperty('releaseName', releaseNameCombo.getSelectedItem())
             
@@ -746,9 +764,48 @@ def runBuild(def buildConfigurations){
     deleteOldInstallersAndPackages(buildConfigurations)
     
     buildInstallers(buildConfigurations)
+    
+    updateSiteVersionFile(buildConfigurations)
+}
+
+def updateSiteVersionFile(def buildConfigurations){
+    
+    def versionString = getVersionString()    
+    
+    def versionJson = [links:[:], versionString: versionString]
+
+    for (platform in platforms){
+
+        if (!platform.isMultiplatform){
+
+            def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+            
+            def linkName = (platform.name + platform.suffix).replace('-', '_')
+            
+            def linkBase = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/download/'
+            
+            def link = linkBase + 'v' + versionString + '/' + installerName
+
+            if (platform.createZipPackage) {
+                
+                link = link + '.zip'
+            }
+            
+            versionJson.links[linkName] = link
+        }
+    }
+    
+    versionJson.versionString = versionString
+    versionJson.releaseDate = getBuildDate()
+    
+    versionJson.links.others = 'https://github.com/UNIVALI-LITE/Portugol-Studio/releases/tag/v' + versionString
+    
+    new File(rootProject.projectDir, 'docs/version.js') .write('var versionInfo = ' + new JsonBuilder(versionJson).toPrettyString())
 }
 
 def packageInstaller(platform, buildConfigurations){
+    
+    def versionString = getVersionString()
     
     if (!platform.isMultiplatform && platform.createZipPackage){
 
@@ -756,7 +813,7 @@ def packageInstaller(platform, buildConfigurations){
 
         delete tmpDir
 
-        def installerName = 'portugol-studio-' + project.version + '-' + platform.name + platform.suffix + platform.installerExtension
+        def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
 
         def installerFile = new File(buildConfigurations.outputDir + '/' + installerName)            
 
@@ -795,13 +852,45 @@ def packageInstaller(platform, buildConfigurations){
     }
 }
 
+def getVersionString(){
+    
+    Properties versionProps = new Properties()
+    versionProps.load(new FileInputStream(dirs.versionFile))
+        
+    int majorNumber = Integer.parseInt(versionProps.getProperty('majorVersion'))
+    int minorNumber = Integer.parseInt(versionProps.getProperty('minorVersion'))
+    int buildNumber = Integer.parseInt(versionProps.getProperty('buildVersion'))
+//    int revisionNumber = Integer.parseInt(versionProps.getProperty('revisionVersion'))
+    String releaseName = versionProps.getProperty('releaseName', '')
+    
+//    def projectVersion = majorNumber + '.' + minorNumber + '.' + buildNumber + '.' + revisionNumber
+    def projectVersion = majorNumber + '.' + minorNumber + '.' + buildNumber
+    
+    if (!releaseName.isEmpty()) {
+        
+        projectVersion = projectVersion + '-' + releaseName
+    }
+    
+    return projectVersion
+}
+
+def getBuildDate(){
+    
+    Properties versionProps = new Properties()
+    versionProps.load(new FileInputStream(dirs.versionFile))
+        
+    return Long.parseLong(versionProps.getProperty('buildDate'))
+}
+
 def deleteOldInstallersAndPackages(buildConfigurations){
+        
+    def versionString = getVersionString()
     
     for (platform in buildConfigurations.selectedPlatforms){
         
         if (!platform.isMultiplatform){
             
-            def installerName = 'portugol-studio-' + project.version + '-' + platform.name + platform.suffix + platform.installerExtension
+            def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
             def installerFile = new File(buildConfigurations.outputDir, installerName)
             
             delete installerFile
@@ -891,9 +980,10 @@ def buildBinaryDistribution(platform, buildConfigurations){
     def licenseXml = new File(dirs.installer.baseDir, 'license.xml')
     
     def platformString = platform.name + platform.suffix
+    def versionString = getVersionString()
     
     exec {
-        commandLine builderExecutable, 'build', projectXml, platformString, '--license', licenseXml, '--setvars', 'project.version=' + project.version, 'project.outputDirectory=' + buildConfigurations.outputDir
+        commandLine builderExecutable, 'build', projectXml, platformString, '--license', licenseXml, '--setvars', 'project.version=' + versionString, 'project.outputDirectory=' + buildConfigurations.outputDir
     }
 }
 
@@ -911,6 +1001,23 @@ def getInstallBuilderExecutable(buildConfigurations){
     return new File(installBuilderBinDir, executableName)
 }
 
+def runDistGui(testing){
+    
+    usingGui = true
+    
+    getConfigurationsFromGui()
+    
+    def theTask = 'dist'
+    
+    if (testing){
+        theTask = theTask + '-test'
+    }
+        
+    exec {
+        commandLine new File(rootProject.projectDir, '/gradlew').getPath(), theTask
+    }
+}
+
 task dist (dependsOn: [rootProject.tasks.cleanAll, rootProject.tasks.buildAll]){
     
     doLast {
@@ -921,17 +1028,33 @@ task dist (dependsOn: [rootProject.tasks.cleanAll, rootProject.tasks.buildAll]){
     }
 }
 
-task 'dist-gui' (dependsOn: [rootProject.tasks.cleanAll, rootProject.tasks.buildAll]){
+task 'dist-test' (){
     
     doLast {
-
-        usingGui = true
-    
-        def config = getConfigurationsFromGui()
+        
+        def config = loadConfigurations(true)
         
         runBuild(config)
     }
 }
+
+task 'dist-gui-test'(){
+    
+    doLast {
+        
+        runDistGui(true)
+    }
+}
+
+task 'dist-gui' (){
+    
+    doLast {
+
+        runDistGui(false)
+    }
+}
+
+
 
 buildAll.mustRunAfter cleanAll
 dist.mustRunAfter buildAll

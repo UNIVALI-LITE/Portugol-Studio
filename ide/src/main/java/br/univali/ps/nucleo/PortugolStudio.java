@@ -859,6 +859,12 @@ public final class PortugolStudio
             version.append(".");
             version.append(propriedades.getProperty("buildVersion"));
             
+            if (propriedades.containsKey("revisionVersion"))
+            {
+                version.append(".");
+                version.append(propriedades.getProperty("revisionVersion"));
+            }
+            
             if (propriedades.containsKey("releaseName") && !propriedades.getProperty("releaseName").trim().isEmpty())
             {
                 version.append(" ");
