@@ -1,1 +1,1 @@
-Here comes the changelog
+https://github.com/UNIVALI-LITE/Portugol-Studio/releases
