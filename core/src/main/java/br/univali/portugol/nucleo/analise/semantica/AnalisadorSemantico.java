@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +44,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     private boolean declarandoSimbolosGlobais;
     private ASA asa;
     private Funcao funcaoAtual;
-    private TipoDado tipoDadoEscolha;
+    private Stack<TipoDado> tipoDadoEscolha = new Stack<>();
 
     private boolean declarandoVetor;
     private boolean declarandoMatriz;
@@ -190,11 +191,11 @@ public final class AnalisadorSemantico implements VisitanteASA
         {
             TipoDado tipoDado = (TipoDado) noCaso.getExpressao().aceitar(this);
 
-            if ((tipoDadoEscolha == TipoDado.INTEIRO) || (tipoDadoEscolha == TipoDado.CARACTER))
+            if ((tipoDadoEscolha.peek() == TipoDado.INTEIRO) || (tipoDadoEscolha.peek() == TipoDado.CARACTER))
             {
-                if (tipoDado != tipoDadoEscolha)
+                if (tipoDado != tipoDadoEscolha.peek())
                 {
-                    notificarErroSemantico(new ErroTiposIncompativeis(noCaso, tipoDado, tipoDadoEscolha));
+                    notificarErroSemantico(new ErroTiposIncompativeis(noCaso, tipoDado, tipoDadoEscolha.peek()));
                 }
             }
             else if ((tipoDado != TipoDado.INTEIRO) && (tipoDado != TipoDado.CARACTER))
@@ -1326,17 +1327,20 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA
     {
-        tipoDadoEscolha = (TipoDado) noEscolha.getExpressao().aceitar(this);
+        tipoDadoEscolha.push((TipoDado) noEscolha.getExpressao().aceitar(this));
 
-        if ((tipoDadoEscolha != TipoDado.INTEIRO) && (tipoDadoEscolha != TipoDado.CARACTER))
+        if ((tipoDadoEscolha.peek() != TipoDado.INTEIRO) && (tipoDadoEscolha.peek() != TipoDado.CARACTER))
         {
-            notificarErroSemantico(new ErroTiposIncompativeis(noEscolha, tipoDadoEscolha, TipoDado.INTEIRO, TipoDado.CARACTER));
+            notificarErroSemantico(new ErroTiposIncompativeis(noEscolha, tipoDadoEscolha.peek(), TipoDado.INTEIRO, TipoDado.CARACTER));
         }
         List<NoCaso> casos = noEscolha.getCasos();
         for (NoCaso noCaso : casos)
         {
             noCaso.aceitar(this);
         }
+        
+        tipoDadoEscolha.pop();
+        
         return null;
     }
 

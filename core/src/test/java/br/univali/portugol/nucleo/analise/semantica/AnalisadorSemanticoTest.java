@@ -370,16 +370,9 @@ public final class AnalisadorSemanticoTest
         }
     }
 
+    
     @Test
-    public void testTiposIncompativeisEscolhaCaso()
-    {
-        testExpressaoEscolhaInteiroOuCaracter();
-        testExpressaoPrimeiroCasoIgualExpressaoEscolha();
-        testAmbasExpressoesEscolhaDiferentesInteiroCaracter();
-        testEscolhaCodigoCorreto();
-    }
-
-    private void testEscolhaCodigoCorreto()
+    public void testEscolhaCodigoCorreto()
     {
         try
         {
@@ -405,7 +398,8 @@ public final class AnalisadorSemanticoTest
         }
     }
 
-    private void testAmbasExpressoesEscolhaDiferentesInteiroCaracter()
+    @Test
+    public void testAmbasExpressoesEscolhaDiferentesInteiroCaracter()
     {
         try
         {
@@ -436,7 +430,8 @@ public final class AnalisadorSemanticoTest
         }
     }
 
-    private void testExpressaoPrimeiroCasoIgualExpressaoEscolha()
+    @Test
+    public void testExpressaoPrimeiroCasoIgualExpressaoEscolha()
     {
         try
         {
@@ -466,7 +461,8 @@ public final class AnalisadorSemanticoTest
         }
     }
 
-    private void testExpressaoEscolhaInteiroOuCaracter()
+    @Test
+    public void testExpressaoEscolhaInteiroOuCaracter()
     {
         try
         {
@@ -493,6 +489,71 @@ public final class AnalisadorSemanticoTest
             assertEquals("Era esperado um erro semantico", 1, resultado.getErros().size());
             assertEquals("Tipos incompativeis na expressao do escolha " + ErroTiposIncompativeis.class.getName(), ErroTiposIncompativeis.class, resultado.getErros().get(0).getClass());
             assertEquals("Tipos incompatíveis! O comando \"escolha\" espera uma expressão do tipo \"" + TipoDado.INTEIRO + "\" ou \"" + TipoDado.CARACTER + "\" mas foi passada uma expressão do tipo \"" + TipoDado.CADEIA + "\".", resultado.getErros().get(0).getMensagem());
+        }
+    }
+    
+    @Test
+    public void testTiposDiferentesEscolhaAninhado()
+    {
+        try
+        {
+            Programa programa = Portugol.compilarParaAnalise(
+                    "programa" +
+                    "{" +
+                    "   funcao inicio()" +
+                    "   {" +
+                    "       inteiro a =1" +
+                    "       caracter b = 'a'" +
+                    "" +
+                    "       escolha(a)" +
+                    "       {" +
+                    "           caso 1:" +
+                    "" +
+                    "               escolha(b)" +
+                    "               {" +
+                    "                   caso 'a':" +
+                    "                       escreva(\"\\nletra a\")" +
+                    "                   pare" +
+                    "                   caso 'b':" +
+                    "                       escreva(\"\\nletra B\")" +
+                    "                   pare" +
+                    "               }" +
+                    "               escreva(\"\1\")" +
+                    "           pare" +
+                    "" +
+                    "           caso 2:" +
+                    "" +
+                    "               escolha(b)" +
+                    "               {" +
+                    "                   caso 'a':" +
+                    "" +
+                    "                       escolha (a)" +
+                    "                       {" +
+                    "                           caso 1:" +
+                    "                               escreva(\"teste\")" +
+                    "                           pare							" +
+                    "                       }" +
+                    "                   pare" +
+                    "" +
+                    "                   caso 'b':" +
+                    "                       escreva(\"Erro\")" +
+                    "                   pare" +
+                    "               }" +
+                    "" +
+                    "               escreva(\"\2\")" +
+                    "           pare	" +
+                    "       }		" +
+                    "   }" +
+                    "}"
+            );
+
+            ResultadoAnalise resultado = programa.getResultadoAnalise();
+            
+            assertTrue("O programa deveria ter compilado sem erros e avisos", !resultado.contemAvisos() && !resultado.contemErros());
+        }
+        catch (Exception ex)
+        {
+            fail(ex.getMessage());
         }
     }
 }
