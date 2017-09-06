@@ -2,8 +2,11 @@
 .gradle
 build/
 dist/
+bin/
 **/src/test/tmp
-
+.project
+.classpath
+.settings
 # Ignore Gradle GUI config
 gradle-app.setting
 
