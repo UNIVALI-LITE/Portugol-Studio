@@ -2,8 +2,6 @@ package br.univali.portugol.nucleo.bibliotecas;
 
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.ProgramaVazio;
-import br.univali.portugol.nucleo.bibliotecas.Graficos;
-import br.univali.portugol.nucleo.bibliotecas.Util;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.PoolOperacoesGraficas;
 import java.util.Collections;
@@ -33,8 +31,9 @@ public class BibliotecaGraficosTest
             g.definir_rotacao(0);
         }
     }
-
-    public static void main(String[] args) throws Exception
+    
+    @Test
+    public void janela() throws Exception
     {
         final Graficos g = new Graficos();
         final Util u = new Util();
@@ -57,12 +56,12 @@ public class BibliotecaGraficosTest
 
         Runtime runtime = Runtime.getRuntime();
 
-        String imagem = "../Portugol-Studio-Recursos/exemplos/jogos/corrida/imagens/veiculos.png";
+        String imagem = "../ide/src/main/assets/exemplos/jogos/corrida/imagens/veiculos.png";
         int idImagem = g.carregar_imagem(imagem);
 
         int larguraFrame = 43; // cada imagem dos carros tem 43 pixels de largura
 
-        String caminhoFonte = "../Portugol-Studio-Recursos/exemplos/jogos/fontes/Starjhol.ttf";
+        String caminhoFonte = "../ide/src/main/assets/exemplos/jogos/fontes/Starjhol.ttf";
         g.carregar_fonte(caminhoFonte);
 
         while (tempoExecucao < tempoTeste)
