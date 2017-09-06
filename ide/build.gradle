@@ -94,3 +94,66 @@ task debug(type: JavaExec) {
     group = 'application'
     debug = true
 }
+
+def createRunConfigurationsForEclipse(){
+
+	def baseDir = new File(rootProject.projectDir, '.settings/launch-config')
+	
+	baseDir.mkdirs()
+	
+	def jvmConfigFile = new File(project.projectDir, 'jvm.config')
+    
+    def jvmargs = '-splash:${workspace_loc:portugol-ide}/src/main/resources/' + splashScreen + ' ' + jvmConfigFile.readLines().join(' ')
+	
+	def studioRunConfig = 	
+		'<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
+		'	<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">' + 
+		'	<listAttribute key="org.eclipse.debug.ui.favoriteGroups">' +
+		'		<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>' +
+        '		<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>' +
+		'	</listAttribute>' +
+		'	<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>' +
+		'	<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="' + mainClass + '"/>' +
+		'	<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="portugol-ide"/>' +
+		'	<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="' + jvmargs + '"/>' +
+		'	<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:portugol-ide}"/>'+
+		'	</launchConfiguration>'
+	
+	def runConfigFile = new File(baseDir, 'Portugol Studio.launch')
+	
+	runConfigFile.createNewFile()
+	runConfigFile.write(studioRunConfig)
+
+    rootProject.tasks.findAll { task -> task.name.startsWith('dist') }.each({task -> 
+
+        createGradleTaskConfigurationForEclipse(baseDir, task.name)
+        
+    })
+}
+
+def createGradleTaskConfigurationForEclipse(baseDir, taskName) {
+
+    def configFile = new File(baseDir, 'Portugol Studio - Gradle [' + taskName + '].launch')
+    def configContent = 
+        '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
+        '<launchConfiguration type="org.eclipse.buildship.core.launch.runconfiguration">' +
+        '   <listAttribute key="arguments"/>' +
+        '   <stringAttribute key="gradle_distribution" value="GRADLE_DISTRIBUTION(WRAPPER)"/>' +
+        '   <listAttribute key="jvm_arguments"/>' +
+        '   <listAttribute key="org.eclipse.debug.ui.favoriteGroups">' +
+        '       <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>' +
+        '   </listAttribute>' +
+        '   <booleanAttribute key="show_console_view" value="true"/>' +
+        '   <booleanAttribute key="show_execution_view" value="true"/>' +
+        '   <listAttribute key="tasks">' +
+        '       <listEntry value="' + taskName + '"/>' +
+        '   </listAttribute>' +
+        '   <booleanAttribute key="use_gradle_distribution_from_import" value="false"/>' +
+        '   <stringAttribute key="working_dir" value="${workspace_loc:/portugol-studio}"/>' +
+        '</launchConfiguration>'
+
+        configFile.createNewFile()
+        configFile.write(configContent)
+}
+
+createRunConfigurationsForEclipse()
