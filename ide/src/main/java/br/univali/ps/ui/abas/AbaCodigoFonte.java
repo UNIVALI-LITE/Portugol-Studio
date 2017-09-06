@@ -23,6 +23,8 @@ import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.dominio.PortugolDocumentoListener;
+import br.univali.ps.fuzzy.portugolFuzzyCorretor.control.FileController;
+import br.univali.ps.fuzzy.portugolFuzzyCorretor.core.PortugolFuzzyCorretor;
 import br.univali.ps.nucleo.Caminhos;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
@@ -77,6 +79,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
+import java.io.FileNotFoundException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.Queue;
@@ -1906,6 +1909,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         {
             LOGGER.log(Level.SEVERE, "O programa está nulo, não é possível executar!");
             return;
+        }
+        
+        try {
+            PortugolFuzzyCorretor.getInstance().calcularFuzzy(FileController.carregarFuzzyRules());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (!programaCompilado.isExecutando())
