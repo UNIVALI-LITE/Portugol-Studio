@@ -288,7 +288,7 @@ public class GeradorCodigoTest
         String nome = "/arquivos/" + nomeTeste.getMethodName();
 
         String codigoPortugol = getConteudoArquivo(nome + ".por");
-        String codigoJavaEsperado = getConteudoArquivo(nome + ".java");
+        String codigoJavaEsperado = getConteudoArquivo(nome + ".javatest");
 
         ResultadoAnalise resultado = analisador.analisar(codigoPortugol);
         assertNotNull(resultado);
