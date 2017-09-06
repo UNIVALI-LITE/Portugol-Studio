@@ -14,11 +14,25 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
+import org.antlr.stringtemplate.language.ActionEvaluator.NameValuePair;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 
 /**
  *
@@ -162,7 +176,7 @@ public class PortugolFuzzyCorretor {
         String [] variaveisNecessidade = {"problemas", "complexidade", "necessidade"};
         double [] valoresVariaveisNecessidade = {problemas, complexidade}; 
         double necessidade = calcularFuzzyBlock(fis.getFunctionBlock("necessidade_block"), variaveisNecessidade, valoresVariaveisNecessidade, true);
-        
+        sendPost(""+necessidade);
         numeroErrosSint=0;
         numeroErrosSem=0;
     }
@@ -190,6 +204,37 @@ public class PortugolFuzzyCorretor {
         }
         scanner.close();
         return linhas;
+    }
+    
+    private void sendPost(String score)
+    {
+        HttpClient httpclient = HttpClients.createDefault();
+        HttpPost httppost = new HttpPost("http://localhost/api/scores");
+
+        // Request parameters and other properties.
+        List<BasicNameValuePair> params = new ArrayList<>(3);
+        params.add(new BasicNameValuePair("student", "Paulinho sem braço"));
+        params.add(new BasicNameValuePair("class", "101"));
+        params.add(new BasicNameValuePair("score", score));
+        try {
+            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            //Execute and get the response.
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                InputStream instream = entity.getContent();
+                try {
+                    // do something useful
+                } finally {
+                    instream.close();
+                }
+            }
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(PortugolFuzzyCorretor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PortugolFuzzyCorretor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public int getNumeroFuncoes() {
