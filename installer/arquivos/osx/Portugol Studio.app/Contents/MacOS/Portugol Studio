@@ -27,4 +27,4 @@ caminho_java="$caminho_portugol/java/java-mac/bin/java"
 
 cd "$caminho_portugol"
 
-"$caminho_java" -jar -Dvisualvm.display.name=Portugol-Studio -Xdock:name=Portugol-Studio -Xdock:icon="$caminho_portugol/../portugol-studio.icns" -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "$caminho_portugol/aplicacao/portugol-studio.jar"
+"$caminho_java" -server -jar -Dvisualvm.display.name=Portugol-Studio -Xdock:name=Portugol-Studio -Xdock:icon="$caminho_portugol/../portugol-studio.icns" -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "$caminho_portugol/aplicacao/portugol-studio.jar"
