@@ -151,7 +151,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         abrirArquivosCodigoFonte(arquivosIniciais);
 
 //        exibirErrosPluginsBibliotecas();
-        exibirLogAtualizacoes();
+        exibirTelaAtualizacoes();
 
         //baixarNovasAtualizacoes();
     }
@@ -168,27 +168,12 @@ public class TelaPrincipal extends javax.swing.JPanel
         }
     }
 
-    private void exibirLogAtualizacoes()
+    private void exibirTelaAtualizacoes()
     {
-        File logAtualizacoes = Configuracoes.getInstancia().getCaminhoLogAtualizacoes();
-
-        if (logAtualizacoes.exists())
-        {
-            try
-            {
-                String atualizacoes = FileHandle.open(logAtualizacoes);
-                TelaLogAtualizacoes telaLogAtualizacoes = new TelaLogAtualizacoes();
-
-                telaLogAtualizacoes.setAtualizacoes(atualizacoes);
-                telaLogAtualizacoes.setVisible(true);
-
-                FileUtils.deleteQuietly(logAtualizacoes);
-            }
-            catch (Exception excecao)
-            {
-                LOGGER.log(Level.SEVERE, "Erro ao carregar o log de atualizações", excecao);
-            }
-        }
+        TelaCustomBorder main = new TelaCustomBorder("Erro Encontrado");
+        TelaAtualizacoes ta = new TelaAtualizacoes();
+        main.setPanel(ta);
+        main.setVisible(true);
     }
 
     public void criarNovoCodigoFonte()
