@@ -1063,8 +1063,19 @@ def runDistGui(testing){
         theTask = theTask + '-test'
     }
         
+	File gradleExe
+	
+	if (OperatingSystem.current().isWindows()){
+
+        gradleExe = new File(rootProject.projectDir, '/gradlew.bat')
+    }
+	else {
+	
+		gradleExe = new File(rootProject.projectDir, '/gradlew')
+	}
+		
     exec {
-        commandLine new File(rootProject.projectDir, '/gradlew').getPath(), theTask
+        commandLine gradleExe.getPath(), theTask
     }
 }
 
