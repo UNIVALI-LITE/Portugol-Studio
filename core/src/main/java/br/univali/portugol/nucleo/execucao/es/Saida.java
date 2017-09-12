@@ -1,7 +1,6 @@
 package br.univali.portugol.nucleo.execucao.es;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Interface para permitir a saída de dados nos programas através da

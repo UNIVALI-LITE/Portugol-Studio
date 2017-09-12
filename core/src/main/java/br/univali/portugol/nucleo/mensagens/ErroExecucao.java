@@ -9,7 +9,9 @@ package br.univali.portugol.nucleo.mensagens;
  */
 public abstract class ErroExecucao extends Erro
 {
-    private int linha = 0;
+	private static final long serialVersionUID = 1L;
+	
+	private int linha = 0;
     private int coluna = 0;
 
     public ErroExecucao()

@@ -2,6 +2,8 @@ package br.univali.portugol.nucleo;
 
 import br.univali.portugol.nucleo.analise.AnalisadorAlgoritmo;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroCodigoNaoAlcancavel;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroVariavelPodeNaoTerSidoInicializada;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
@@ -10,8 +12,6 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
-import br.univali.portugol.nucleo.execucao.erros.ErroCodigoNaoAlcancavel;
-import br.univali.portugol.nucleo.execucao.erros.ErroVariavelPodeNaoTerSidoInicializada;
 import br.univali.portugol.nucleo.execucao.gerador.GeradorCodigoJava;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import java.io.BufferedWriter;
