@@ -47,10 +47,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     public BotoesControleAba(AbaInicial abaInicial, TelaPrincipal telaPrincipal) {
         super(abaInicial);
-
         removeAll();
         initComponents();
 
+        //botaoConfigPlguin.setVisible(false);
         //criarSeletorArquivo();
         configurarAcoes(telaPrincipal);
         configurarBotoes();
@@ -60,6 +60,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
             WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
+            WeblafUtils.configurarBotao(botaoConfigPlguin,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }
 
     }
@@ -241,6 +242,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo = new javax.swing.JLabel();
         botaoAbrir = new com.alee.laf.button.WebButton();
         botaoNovoArquivo = new com.alee.laf.button.WebButton();
+        botaoConfigPlguin = new com.alee.laf.button.WebButton();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);
@@ -271,10 +273,15 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
         botaoNovoArquivo.setHideActionText(true);
         add(botaoNovoArquivo, new java.awt.GridBagConstraints());
+
+        botaoConfigPlguin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/plugin.png"))); // NOI18N
+        botaoConfigPlguin.setHideActionText(true);
+        add(botaoConfigPlguin, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton botaoAbrir;
+    private com.alee.laf.button.WebButton botaoConfigPlguin;
     private com.alee.laf.button.WebButton botaoNovoArquivo;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

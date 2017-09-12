@@ -287,7 +287,7 @@ public final class PortugolStudio
              * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
              */
             LOGGER.log(Level.INFO, "Carregando plugins e bibliotecas...");
-            //carregarPlugins();
+            carregarPlugins();
             Splash.definirProgresso(81, "step7.png");
 
             carregarBibliotecas();
