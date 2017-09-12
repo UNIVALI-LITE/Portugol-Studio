@@ -2563,7 +2563,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         }
                         else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO)
                         {
-                            console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                            console.escreverNoConsole("\nOcorreu um erro durante a execução do programa: " + resultadoExecucao.getErro().getMensagem());
                             console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
                         }
                         else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO)
