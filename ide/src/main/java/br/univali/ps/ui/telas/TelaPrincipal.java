@@ -211,7 +211,7 @@ public class TelaPrincipal extends javax.swing.JPanel
     private void exibirTelaAtualizacoes(String body)
     {
         SwingUtilities.invokeLater(() -> {
-            TelaCustomBorder main = new TelaCustomBorder("Erro Encontrado");
+            TelaCustomBorder main = new TelaCustomBorder("Portugol Studio");
             TelaAtualizacoes ta = new TelaAtualizacoes(body);
             main.setMaximumSize(new Dimension(300, 200));
             main.setPanel(ta, false);
