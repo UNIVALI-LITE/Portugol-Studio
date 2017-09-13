@@ -94,7 +94,6 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
     {
         String html = new Markdown4jProcessor().process(atualizacoes);
         jEditorPane1.setText("<html><body><div>"+html.replaceAll("</p>", "</p><br>")+"</div></body></html>");
-        System.out.println(html);
     }
 
     @Override
