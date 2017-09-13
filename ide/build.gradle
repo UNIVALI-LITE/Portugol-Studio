@@ -72,7 +72,8 @@ task run(type: JavaExec) {
     def jvmargs = jvmConfigFile.readLines()
     
     jvmargs.add('-splash:' + new File(project.projectDir, 'src/main/resources/' + splashScreen))
-    
+    jvmargs.add('-Xdock:icon=' + new File(rootProject.projectDir, 'installer/arquivos/osx/icones/portugol-studio.icns').getPath())
+
     main = mainClass
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs = jvmargs
@@ -86,6 +87,7 @@ task debug(type: JavaExec) {
     def jvmargs = jvmConfigFile.readLines()
     
     jvmargs.add('-splash:' + new File(project.projectDir, 'src/main/resources/' + splashScreen))
+    jvmargs.add('-Xdock:icon=' + new File(rootProject.projectDir, 'installer/arquivos/osx/icones/portugol-studio.icns').getPath())
     
     main = mainClass
     classpath = sourceSets.main.runtimeClasspath
