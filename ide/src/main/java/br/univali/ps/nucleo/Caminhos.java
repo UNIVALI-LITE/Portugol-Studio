@@ -50,7 +50,9 @@ public final class Caminhos
         }
         else
         {
-            File diretorio = new File("../Portugol-Instalador/arquivos/compartilhados");
+            //File diretorio = new File("../Portugol-Instalador/arquivos/compartilhados");
+            // Alterado para testar os plugins diretamente
+            File diretorio = new File("../../Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin");
 
             return diretorio;
         }
