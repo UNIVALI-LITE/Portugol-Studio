@@ -1,6 +1,7 @@
 # Portugol Studio
-[![Discord](https://img.shields.io/badge/chat-on_discord-4AB495.svg)](https://discord.gg/fRW7Vq2)
-[![License](https://img.shields.io/badge/License-GPL--3.0-4AB495.svg)](https://github.com/UNIVALI-LITE/Portugol-Studio/blob/master/LICENSE.md)
+[![Build Status](https://travis-ci.org/UNIVALI-LITE/Portugol-Studio.svg?branch=master)](https://travis-ci.org/UNIVALI-LITE/Portugol-Studio)
+[![Discord](https://img.shields.io/badge/chat-on_discord-4bc51d.svg)](https://discord.gg/fRW7Vq2)
+[![License](https://img.shields.io/badge/License-GPL--3.0-4bc51d.svg)](https://github.com/UNIVALI-LITE/Portugol-Studio/blob/master/LICENSE.md)
 
 O [Portugol Studio](http://lite.acad.univali.br/portugol/) é um ambiente para aprender a programar, voltado para os iniciantes em programação que falam o idioma português. Possui uma sintaxe fácil, diversos exemplos e materiais de apoio à aprendizagem. Também possibilita a criação de jogos e outras aplicações.
 
