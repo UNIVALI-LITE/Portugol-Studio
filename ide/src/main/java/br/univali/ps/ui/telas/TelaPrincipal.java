@@ -163,7 +163,7 @@ public class TelaPrincipal extends javax.swing.JPanel
                 {
                     String versao = ultimaVersao.getString("tag_name");
                     String texto = ultimaVersao.getString("body");
-                    if(!versao.equals("v"+PortugolStudio.getInstancia().getVersao()))
+                    if(versao.equals("v"+PortugolStudio.getInstancia().getVersao()))
                     {
                         exibirTelaAtualizacoes(texto);
                     }
@@ -211,12 +211,13 @@ public class TelaPrincipal extends javax.swing.JPanel
     private void exibirTelaAtualizacoes(String body)
     {
         SwingUtilities.invokeLater(() -> {
-            TelaCustomBorder main = new TelaCustomBorder("Portugol Studio");
+            TelaCustomBorder main = new TelaCustomBorder("Atualização Encontrada");
             TelaAtualizacoes ta = new TelaAtualizacoes(body);
-            main.setMaximumSize(new Dimension(300, 200));
+            main.setMinimumSize(new Dimension(250, 400));
             main.setPanel(ta, false);
             main.setLocationRelativeTo(null);
             main.setVisible(true);
+            main.pack();
         });
         
     }

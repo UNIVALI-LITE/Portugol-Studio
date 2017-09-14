@@ -99,12 +99,19 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
     @Override
     public void configurarCores() {
         setBackground(ColorController.FUNDO_MEDIO);
+        painelIcone.setBackground(ColorController.FUNDO_MEDIO);
         painelTitulo.setBackground(ColorController.FUNDO_MEDIO);
+        painelVersoes.setBackground(ColorController.FUNDO_MEDIO);
         rotulo.setBackground(ColorController.FUNDO_MEDIO);
         rotulo.setForeground(ColorController.COR_LETRA);
+        rotuloVAtual.setForeground(ColorController.COR_LETRA);
+        rotuloNovaV.setForeground(ColorController.COR_LETRA);
+        painelAba.setBackground(ColorController.FUNDO_CLARO);
+        finalAba.setBackground(ColorController.FUNDO_MEDIO);
+        labelAba.setForeground(ColorController.COR_LETRA);
         jEditorPane1.setBackground(ColorController.FUNDO_CLARO);
         jEditorPane1.setForeground(ColorController.COR_LETRA);
-        painelBotoes.setBackground(ColorController.FUNDO_ESCURO);
+        painelBotoes.setBackground(ColorController.FUNDO_MEDIO);
         if(WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configurarBotao(botaoBaixar, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5, true);            
@@ -135,49 +142,121 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        painelSuperior = new javax.swing.JPanel();
+        painelIcone = new javax.swing.JPanel();
+        iconeAT = new javax.swing.JLabel();
         painelTitulo = new javax.swing.JPanel();
         rotulo = new javax.swing.JLabel();
-        painelBotoes = new javax.swing.JPanel();
-        botaoBaixar = new com.alee.laf.button.WebButton();
+        painelVersoes = new javax.swing.JPanel();
+        rotuloVAtual = new javax.swing.JLabel();
+        rotuloNovaV = new javax.swing.JLabel();
+        painelAba = new javax.swing.JPanel();
+        labelAba = new javax.swing.JLabel();
+        finalAba = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jEditorPane1 = new javax.swing.JEditorPane();
+        painelBotoes = new javax.swing.JPanel();
+        botaoBaixar = new com.alee.laf.button.WebButton();
 
+        setMinimumSize(new java.awt.Dimension(106, 600));
+        setPreferredSize(new java.awt.Dimension(400, 200));
         setLayout(new java.awt.BorderLayout());
 
-        painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        painelSuperior.setPreferredSize(new java.awt.Dimension(400, 110));
+        painelSuperior.setLayout(new java.awt.BorderLayout());
+
+        painelIcone.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 20, 10, 10));
+        painelIcone.setLayout(new java.awt.BorderLayout());
+
+        iconeAT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/atualizacao.png"))); // NOI18N
+        painelIcone.add(iconeAT, java.awt.BorderLayout.CENTER);
+
+        painelSuperior.add(painelIcone, java.awt.BorderLayout.WEST);
+
+        painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 15, 1, 1));
         painelTitulo.setLayout(new java.awt.BorderLayout());
 
-        rotulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        rotulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotulo.setText("<html><body><div style=\"text-align:center\">\nHá uma nova versão do Portugol Studio disponível para você baixar!\n</div></body></html>");
+        rotulo.setFont(new java.awt.Font("Arial", 0, 26)); // NOI18N
+        rotulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        rotulo.setText("<html><body><div class=\"titulo\" style=\"text-align:center\"><font color=\"#FFC200\"> Atualização Encontrada </font></div></body></html>");
         rotulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rotulo.setMinimumSize(new java.awt.Dimension(10, 14));
         rotulo.setPreferredSize(new java.awt.Dimension(250, 45));
-        painelTitulo.add(rotulo, java.awt.BorderLayout.CENTER);
+        painelTitulo.add(rotulo, java.awt.BorderLayout.NORTH);
 
-        add(painelTitulo, java.awt.BorderLayout.NORTH);
+        painelVersoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        painelVersoes.setLayout(new java.awt.BorderLayout());
 
-        painelBotoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        painelBotoes.setLayout(new java.awt.GridBagLayout());
+        rotuloVAtual.setText("<html><body><div style=\"text-align:left\">Versão atual: 2.6.2</div></body></html>");
+        painelVersoes.add(rotuloVAtual, java.awt.BorderLayout.LINE_START);
+        rotuloVAtual.getAccessibleContext().setAccessibleName("<html><body><div style=\"text-align:left\">Versão atual: 2.6.2</div></body></html>");
 
-        botaoBaixar.setText("Baixar Atualização");
-        botaoBaixar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        painelBotoes.add(botaoBaixar, new java.awt.GridBagConstraints());
+        rotuloNovaV.setText("<html><body><div style=\"text-align:left\">Nova versão: 2.6.3 </div></body></html>");
+        painelVersoes.add(rotuloNovaV, java.awt.BorderLayout.PAGE_END);
+        rotuloNovaV.getAccessibleContext().setAccessibleName("<html><body><div style=\"text-align:left\">Nova versão: 2.6.3 </div></body></html>");
 
-        add(painelBotoes, java.awt.BorderLayout.SOUTH);
+        painelTitulo.add(painelVersoes, java.awt.BorderLayout.SOUTH);
 
+        painelSuperior.add(painelTitulo, java.awt.BorderLayout.CENTER);
+
+        painelAba.setLayout(new java.awt.BorderLayout());
+
+        labelAba.setText("Atualizações");
+        labelAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
+        painelAba.add(labelAba, java.awt.BorderLayout.WEST);
+
+        javax.swing.GroupLayout finalAbaLayout = new javax.swing.GroupLayout(finalAba);
+        finalAba.setLayout(finalAbaLayout);
+        finalAbaLayout.setHorizontalGroup(
+            finalAbaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 330, Short.MAX_VALUE)
+        );
+        finalAbaLayout.setVerticalGroup(
+            finalAbaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+
+        painelAba.add(finalAba, java.awt.BorderLayout.CENTER);
+
+        painelSuperior.add(painelAba, java.awt.BorderLayout.PAGE_END);
+
+        add(painelSuperior, java.awt.BorderLayout.NORTH);
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(23, 230));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(108, 200));
+
+        jEditorPane1.setPreferredSize(new java.awt.Dimension(106, 200));
         jScrollPane1.setViewportView(jEditorPane1);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        painelBotoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 8));
+        painelBotoes.setLayout(new java.awt.BorderLayout());
+
+        botaoBaixar.setText("Baixar Atualização");
+        botaoBaixar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        painelBotoes.add(botaoBaixar, java.awt.BorderLayout.LINE_END);
+
+        add(painelBotoes, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton botaoBaixar;
+    private javax.swing.JPanel finalAba;
+    private javax.swing.JLabel iconeAT;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelAba;
+    private javax.swing.JPanel painelAba;
     private javax.swing.JPanel painelBotoes;
+    private javax.swing.JPanel painelIcone;
+    private javax.swing.JPanel painelSuperior;
     private javax.swing.JPanel painelTitulo;
+    private javax.swing.JPanel painelVersoes;
     private javax.swing.JLabel rotulo;
+    private javax.swing.JLabel rotuloNovaV;
+    private javax.swing.JLabel rotuloVAtual;
     // End of variables declaration//GEN-END:variables
 }
