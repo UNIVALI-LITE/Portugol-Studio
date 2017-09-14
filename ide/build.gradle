@@ -1,3 +1,6 @@
+//import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.internal.os.OperatingSystem
+
 ext {
     
     mainClass = 'br.univali.ps.ui.Lancador'    
@@ -68,33 +71,129 @@ dependencies {
 
 task run(type: JavaExec) {
     
-    def jvmConfigFile = new File(project.projectDir, 'jvm.config')
-    def jvmargs = jvmConfigFile.readLines()
-    
-    jvmargs.add('-splash:' + new File(project.projectDir, 'src/main/resources/' + splashScreen))
-    jvmargs.add('-Xdock:icon=' + new File(rootProject.projectDir, 'installer/arquivos/osx/icones/portugol-studio.icns').getPath())
-
-    main = mainClass
-    classpath = sourceSets.main.runtimeClasspath
-    jvmArgs = jvmargs
     description = 'Runs this program as a JVM application'
-    group = 'application'
+	group = 'application'
+	
+    doFirst {
+    
+		main = mainClass
+	    classpath = sourceSets.main.runtimeClasspath
+	    jvmArgs = loadJvmArgs()
+	    
+	}
 }
 
 task debug(type: JavaExec) {
     
-    def jvmConfigFile = new File(project.projectDir, 'jvm.config')
+    description = 'Runs this program as a JVM application for debugging'
+	group = 'application'
+	    
+    doFirst {
+    
+	    main = mainClass
+	    classpath = sourceSets.main.runtimeClasspath
+	    jvmArgs = loadJvmArgs()
+	    
+	    debug = true
+	}
+}
+
+def loadJvmArgs(def platform = null){
+
+	def jvmConfigFile = new File(project.projectDir, 'jvm.config')
     def jvmargs = jvmConfigFile.readLines()
     
-    jvmargs.add('-splash:' + new File(project.projectDir, 'src/main/resources/' + splashScreen))
-    jvmargs.add('-Xdock:icon=' + new File(rootProject.projectDir, 'installer/arquivos/osx/icones/portugol-studio.icns').getPath())
+    def iterator = jvmargs.iterator()
+    def osSpecificArguments = []
     
-    main = mainClass
-    classpath = sourceSets.main.runtimeClasspath
-    jvmArgs = jvmargs
-    description = 'Runs this program as a JVM application for debugging'
-    group = 'application'
-    debug = true
+    while (iterator.hasNext()){
+	
+		def argument = iterator.next().trim()
+		
+		if (argument.isEmpty() || argument.startsWith('#') || argument.startsWith('//')){
+		
+			iterator.remove()
+		}
+		else if (argument.contains('->')) {
+		
+			def position = argument.lastIndexOf('->') + 2
+			def osString = argument.substring(position, argument.length())			
+			def osArray = osString.split(',')
+			def osList = []
+			
+			
+			for (os in osArray){
+			
+				osList.add(os.trim())
+			}
+			
+			argument = argument.substring(0, argument.lastIndexOf('->')).trim()
+			
+			iterator.remove()
+			
+			if (platform == null){
+				
+				platform = [name: '']
+				
+				if (OperatingSystem.current().isWindows()){
+					
+					platform.name = 'windows'
+				}
+				else if (OperatingSystem.current().isMacOsX()){
+					
+					platform.name = 'osx'
+				}
+				else if (OperatingSystem.current().isLinux()){
+					
+					platform.name = 'linux'
+				}
+			}
+			
+			
+			if (osList.contains(platform.name)){
+				
+				osSpecificArguments.add(argument)
+			}
+		}
+	}
+	
+	jvmargs.addAll(osSpecificArguments)
+    
+    
+    jvmargs.add('-splash:' + new File(project.projectDir, 'src/main/resources/' + splashScreen))
+    
+    if (OperatingSystem.current().isMacOsX()){
+    
+    	jvmargs.add('-Xdock:icon=' + new File(rootProject.projectDir, 'installer/arquivos/osx/icones/portugol-studio.icns').getPath())
+    }
+    
+    return jvmargs
+}
+
+def loadJvmArgsForEclipse(){
+
+	def jvmargs = loadJvmArgs()
+	
+	def iterator = jvmargs.iterator()
+	
+	while (iterator.hasNext()){
+	
+		def argument = iterator.next()
+		
+		if (argument.startsWith('-splash:') || argument.startsWith('-Xdock:icon')){
+		
+			iterator.remove()
+		}
+	}
+	
+	jvmargs.add('-splash:${workspace_loc:portugol-ide}/src/main/resources/' + splashScreen)
+	
+	if (OperatingSystem.current().isMacOsX()){
+	
+		jvmargs.add('-Xdock:icon=${workspace_loc:portugol-studio}/installer/arquivos/osx/icones/portugol-studio.icns')
+	}
+	
+	return jvmargs.join(' ')
 }
 
 def createRunConfigurationsForEclipse(){
@@ -103,9 +202,7 @@ def createRunConfigurationsForEclipse(){
 	
 	baseDir.mkdirs()
 	
-	def jvmConfigFile = new File(project.projectDir, 'jvm.config')
-    
-    def jvmargs = '-splash:${workspace_loc:portugol-ide}/src/main/resources/' + splashScreen + ' ' + jvmConfigFile.readLines().join(' ')
+    def jvmargs = loadJvmArgsForEclipse()
 	
 	def studioRunConfig = 	
 		'<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
