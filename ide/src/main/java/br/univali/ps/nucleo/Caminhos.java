@@ -48,12 +48,8 @@ public final class Caminhos
                 return new File(".");
             }
         }
-        else
-        {
-            File diretorio = new File("../Portugol-Instalador/arquivos/compartilhados");
 
-            return diretorio;
-        }
+        return new File("../Portugol-Instalador/arquivos/compartilhados");
     }
 
     public static String obterCaminhoExecutavelJavac()
@@ -160,7 +156,7 @@ public final class Caminhos
     
     public static boolean rodandoEmDesenvolvimento()
     {
-        return !(new File("aplicacao/portugol-studio.jar").exists());
+        return new File(".").getAbsolutePath().endsWith("aplicacao");
     }
 
     public static boolean rodandoNoWindows()
