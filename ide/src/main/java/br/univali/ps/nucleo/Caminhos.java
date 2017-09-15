@@ -7,6 +7,7 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -48,8 +49,7 @@ public final class Caminhos
                 return new File(".");
             }
         }
-
-        return new File("../Portugol-Instalador/arquivos/compartilhados");
+        return new File("src/main/assets");
     }
 
     public static String obterCaminhoExecutavelJavac()
@@ -156,7 +156,7 @@ public final class Caminhos
     
     public static boolean rodandoEmDesenvolvimento()
     {
-        return new File(".").getAbsolutePath().endsWith("aplicacao");
+        return !(new File(".").getAbsolutePath().endsWith("Portugol Studio\\."));
     }
 
     public static boolean rodandoNoWindows()
