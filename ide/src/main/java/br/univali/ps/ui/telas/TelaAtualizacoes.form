@@ -123,11 +123,8 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="rotuloVAtual">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div style=&quot;text-align:left&quot;&gt;Vers&#xe3;o atual: 2.6.2&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                    <Property name="text" type="java.lang.String" value="Vers&#xe3;o atual:"/>
                   </Properties>
-                  <AccessibilityProperties>
-                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div style=&quot;text-align:left&quot;&gt;Vers&#xe3;o atual: 2.6.2&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
-                  </AccessibilityProperties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="Before"/>
@@ -136,11 +133,8 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="rotuloNovaV">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div style=&quot;text-align:left&quot;&gt;Nova vers&#xe3;o: 2.6.3 &lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
+                    <Property name="text" type="java.lang.String" value="Nova vers&#xe3;o:"/>
                   </Properties>
-                  <AccessibilityProperties>
-                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="&lt;html&gt;&lt;body&gt;&lt;div style=&quot;text-align:left&quot;&gt;Nova vers&#xe3;o: 2.6.3 &lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"/>
-                  </AccessibilityProperties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="Last"/>
@@ -202,9 +196,7 @@
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder/>
-          </Border>
+          <Border info="null"/>
         </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[23, 230]"/>

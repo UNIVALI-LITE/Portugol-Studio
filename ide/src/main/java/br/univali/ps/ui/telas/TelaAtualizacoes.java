@@ -7,6 +7,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.Caminhos;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -31,8 +32,9 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
     /**
      * Creates new form TelaAtualizacoes
      */
-    public TelaAtualizacoes(String body) {
+    public TelaAtualizacoes(String body, String versao) {
         initComponents();
+        mostrarVersoes(versao);
         configurarCores();
         
         jEditorPane1.setEditable(false);
@@ -72,7 +74,6 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
         
         jEditorPane1.setDocument(editorKit.createDefaultDocument());
         
-        
         botaoBaixar.setAction(new AbstractAction("Baixar Atualização")
         {
             @Override
@@ -94,6 +95,12 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
     {
         String html = new Markdown4jProcessor().process(atualizacoes);
         jEditorPane1.setText("<html><body><div>"+html.replaceAll("</p>", "</p><br>")+"</div></body></html>");
+        jEditorPane1.setCaretPosition(0);
+    }
+    
+    public void mostrarVersoes(String versao){
+        rotuloVAtual.setText("Versão atual: "+PortugolStudio.getInstancia().getVersao());
+        rotuloNovaV.setText("Nova Versão: "+ versao.substring(1));
     }
 
     @Override
@@ -114,7 +121,7 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
         painelBotoes.setBackground(ColorController.FUNDO_MEDIO);
         if(WeblafUtils.weblafEstaInstalado())
         {
-            WeblafUtils.configurarBotao(botaoBaixar, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5, true);            
+            WeblafUtils.configurarBotao(botaoBaixar, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);            
             WeblafUtils.configuraWebLaf(jScrollPane1);
         }
     }  
@@ -187,13 +194,11 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
         painelVersoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
         painelVersoes.setLayout(new java.awt.BorderLayout());
 
-        rotuloVAtual.setText("<html><body><div style=\"text-align:left\">Versão atual: 2.6.2</div></body></html>");
+        rotuloVAtual.setText("Versão atual:");
         painelVersoes.add(rotuloVAtual, java.awt.BorderLayout.LINE_START);
-        rotuloVAtual.getAccessibleContext().setAccessibleName("<html><body><div style=\"text-align:left\">Versão atual: 2.6.2</div></body></html>");
 
-        rotuloNovaV.setText("<html><body><div style=\"text-align:left\">Nova versão: 2.6.3 </div></body></html>");
+        rotuloNovaV.setText("Nova versão:");
         painelVersoes.add(rotuloNovaV, java.awt.BorderLayout.PAGE_END);
-        rotuloNovaV.getAccessibleContext().setAccessibleName("<html><body><div style=\"text-align:left\">Nova versão: 2.6.3 </div></body></html>");
 
         painelTitulo.add(painelVersoes, java.awt.BorderLayout.SOUTH);
 
@@ -222,7 +227,7 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
 
         add(painelSuperior, java.awt.BorderLayout.NORTH);
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setBorder(null);
         jScrollPane1.setMinimumSize(new java.awt.Dimension(23, 230));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(108, 200));
 
