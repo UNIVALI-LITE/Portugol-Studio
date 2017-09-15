@@ -552,7 +552,7 @@ public final class Configuracoes
 
     public static boolean rodandoEmDesenvolvimento()
     {
-        return !(new File("aplicacao/portugol-studio.jar").exists());
+        return Caminhos.rodandoEmDesenvolvimento();
     }
 
     public static boolean rodandoNoWindows()
