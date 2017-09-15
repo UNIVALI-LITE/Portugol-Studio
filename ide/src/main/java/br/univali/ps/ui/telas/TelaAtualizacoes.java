@@ -106,19 +106,20 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
     @Override
     public void configurarCores() {
         setBackground(ColorController.FUNDO_MEDIO);
-        painelIcone.setBackground(ColorController.FUNDO_MEDIO);
-        painelTitulo.setBackground(ColorController.FUNDO_MEDIO);
-        painelVersoes.setBackground(ColorController.FUNDO_MEDIO);
-        rotulo.setBackground(ColorController.FUNDO_MEDIO);
-        rotulo.setForeground(ColorController.COR_LETRA);
+        if(Configuracoes.getInstancia().isTemaDark()){
+            rotulo.setForeground(ColorController.AMARELO);
+        }else{
+            rotulo.setForeground(ColorController.FUNDO_ESCURO);
+        }
+        
         rotuloVAtual.setForeground(ColorController.COR_LETRA);
         rotuloNovaV.setForeground(ColorController.COR_LETRA);
-        painelAba.setBackground(ColorController.FUNDO_CLARO);
-        finalAba.setBackground(ColorController.FUNDO_MEDIO);
+        painelAba.setBackground(ColorController.FUNDO_CLARO);        
         labelAba.setForeground(ColorController.COR_LETRA);
+        labelAba.setBackground(ColorController.FUNDO_CLARO);
         jEditorPane1.setBackground(ColorController.FUNDO_CLARO);
         jEditorPane1.setForeground(ColorController.COR_LETRA);
-        painelBotoes.setBackground(ColorController.FUNDO_MEDIO);
+        
         if(WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configurarBotao(botaoBaixar, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);            
@@ -169,10 +170,12 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
         setPreferredSize(new java.awt.Dimension(400, 200));
         setLayout(new java.awt.BorderLayout());
 
+        painelSuperior.setOpaque(false);
         painelSuperior.setPreferredSize(new java.awt.Dimension(400, 110));
         painelSuperior.setLayout(new java.awt.BorderLayout());
 
         painelIcone.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 20, 10, 10));
+        painelIcone.setOpaque(false);
         painelIcone.setLayout(new java.awt.BorderLayout());
 
         iconeAT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/atualizacao.png"))); // NOI18N
@@ -181,17 +184,19 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
         painelSuperior.add(painelIcone, java.awt.BorderLayout.WEST);
 
         painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 15, 1, 1));
+        painelTitulo.setOpaque(false);
         painelTitulo.setLayout(new java.awt.BorderLayout());
 
         rotulo.setFont(new java.awt.Font("Arial", 0, 26)); // NOI18N
         rotulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        rotulo.setText("<html><body><div class=\"titulo\" style=\"text-align:center\"><font color=\"#FFC200\"> Atualização Encontrada </font></div></body></html>");
+        rotulo.setText("<html><body><div class=\"titulo\" style=\"text-align:center\">Atualização Encontrada</div></body></html>");
         rotulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rotulo.setMinimumSize(new java.awt.Dimension(10, 14));
         rotulo.setPreferredSize(new java.awt.Dimension(250, 45));
         painelTitulo.add(rotulo, java.awt.BorderLayout.NORTH);
 
         painelVersoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        painelVersoes.setOpaque(false);
         painelVersoes.setLayout(new java.awt.BorderLayout());
 
         rotuloVAtual.setText("Versão atual:");
@@ -204,11 +209,15 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
 
         painelSuperior.add(painelTitulo, java.awt.BorderLayout.CENTER);
 
+        painelAba.setOpaque(false);
         painelAba.setLayout(new java.awt.BorderLayout());
 
         labelAba.setText("Atualizações");
         labelAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
+        labelAba.setOpaque(true);
         painelAba.add(labelAba, java.awt.BorderLayout.WEST);
+
+        finalAba.setOpaque(false);
 
         javax.swing.GroupLayout finalAbaLayout = new javax.swing.GroupLayout(finalAba);
         finalAba.setLayout(finalAbaLayout);
@@ -237,6 +246,7 @@ public class TelaAtualizacoes extends javax.swing.JPanel implements Themeable{
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         painelBotoes.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 8));
+        painelBotoes.setOpaque(false);
         painelBotoes.setLayout(new java.awt.BorderLayout());
 
         botaoBaixar.setText("Baixar Atualização");
