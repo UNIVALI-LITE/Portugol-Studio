@@ -37,6 +37,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.json.JSONObject;
 
@@ -103,7 +104,11 @@ public class TelaPrincipal extends javax.swing.JPanel
 
     private void instalarObservadorJanela()
     {
-        Lancador.getJFrame().addWindowListener(new WindowAdapter()
+        JFrame frame = Lancador.getJFrame();
+        if (frame == null)
+            return;
+        
+        frame.addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
@@ -360,6 +365,8 @@ public class TelaPrincipal extends javax.swing.JPanel
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         setLayout(new java.awt.BorderLayout());
+
+        painelTabuladoPrincipal.setName("abaInicial"); // NOI18N
         add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
