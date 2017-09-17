@@ -35,6 +35,7 @@ import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.editor.Utils;
+import br.univali.ps.ui.inspetor.InspetorDeSimbolos;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
@@ -1282,6 +1283,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public Editor getEditor()
     {
         return editor;
+    }
+
+    public InspetorDeSimbolos getInspetor() 
+    {
+        return inspetorDeSimbolos;
+    }
+    
+    public JTree getArvore()
+    {
+        return tree;
     }
 
     private void configurarCursorBotoes()

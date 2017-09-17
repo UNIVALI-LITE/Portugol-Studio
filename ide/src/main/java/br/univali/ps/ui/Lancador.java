@@ -41,7 +41,7 @@ public class Lancador {
     
     private static JFrame frame;
     private static Dimension olderSize;
-    private static Dimension actualSize;
+    private static Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
     private final static Lancador application = new Lancador();
     
