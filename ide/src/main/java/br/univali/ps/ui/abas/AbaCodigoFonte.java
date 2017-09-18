@@ -999,6 +999,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             } 
             catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
+                setaAtivacaoBotoesExecucao(true); // pode executar                
             }
             finally
             {
@@ -1946,6 +1947,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         SwingUtilities.invokeLater(() -> {
                             exibirResultadoAnalise(resultadoAnalise);
                         });
+                        
+                        setaAtivacaoBotoesExecucao(true); // libera o botão de execução quando o programa tem erros - issue #358
                     }
             }
             catch (Exception e)
