@@ -118,7 +118,11 @@ public class DetectaNosParada implements VisitanteASA
         nosParada.add(noPara);
         nosParada.add(noPara.getIncremento());  
         if (depuracaoDetalhada) {
-            nosParada.add(noPara.getInicializacao());
+            if (noPara.getInicializacoes() != null && !noPara.getInicializacoes().isEmpty())
+            {
+                nosParada.add(noPara.getInicializacoes().get(0));
+            }
+            
             nosParada.add(condicao);
         }
         interpretarListaBlocos(noPara.getBlocos());

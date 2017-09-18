@@ -42,7 +42,7 @@ import java.util.List;
 public final class NoPara extends NoBloco
 {
     private List<NoBloco> blocos;
-    private NoBloco inicializacao;
+    private List<NoBloco> inicializacoes;
     private NoExpressao condicao;
     private NoExpressao incremento;
 
@@ -96,12 +96,12 @@ public final class NoPara extends NoBloco
     /**
      * Define a expressão que será utilizada para inicializar o contador deste laço de repetição.
      * 
-     * @param inicializacao     a expressão que será utilizada para inicializar o contador deste laço de repetição.
+     * @param inicializacoes     a expressão que será utilizada para inicializar o contador deste laço de repetição.
      * @since 1.0
      */
-    public void setInicializacao(NoBloco inicializacao)
+    public void setInicializacoes(List<NoBloco> inicializacoes)
     {
-        this.inicializacao = inicializacao;
+        this.inicializacoes = inicializacoes;
     }
 
     /**
@@ -121,9 +121,9 @@ public final class NoPara extends NoBloco
      * @return    a expressão que irá incrementar o contador deste laço de repetição.
      * @since 1.0
      */
-    public NoBloco getInicializacao()
+    public List<NoBloco> getInicializacoes()
     {
-        return inicializacao;
+        return inicializacoes;
     }
     
     /**

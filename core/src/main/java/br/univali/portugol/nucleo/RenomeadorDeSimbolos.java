@@ -631,9 +631,12 @@ final class RenomeadorDeSimbolos
                 return null;
             }
 
-            if (noPara.getInicializacao() != null)
+            if (noPara.getInicializacoes() != null)
             {
-                noPara.getInicializacao().aceitar(this);
+                for (NoBloco inicializacao : noPara.getInicializacoes())
+                {
+                    inicializacao.aceitar(this);
+                }
             }
 
             if (simboloEncontrado())

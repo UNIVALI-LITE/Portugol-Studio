@@ -1739,9 +1739,12 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         try
         {
-            if (noPara.getInicializacao() != null)
+            if (noPara.getInicializacoes() != null)
             {
-                noPara.getInicializacao().aceitar(this);
+                for (NoBloco inicializacao : noPara.getInicializacoes())
+                {
+                    inicializacao.aceitar(this);
+                }
             }
         }
         catch (ExcecaoVisitaASA excecao)

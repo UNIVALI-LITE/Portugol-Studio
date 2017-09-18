@@ -194,7 +194,7 @@ public class GeradorDeclaracaoVariavel
     }
 
     public boolean gera(NoDeclaracaoVariavel variavel, PrintWriter saida, 
-                VisitanteASA visitor, int nivelEscopo, boolean podeInicializar) throws ExcecaoVisitaASA
+                VisitanteASA visitor, int nivelEscopo, boolean podeInicializar, boolean inicializandoNoPara, int indiceAtualInicializacaoPara) throws ExcecaoVisitaASA
     {
 
         if (variavel.ehPassadaPorReferencia() && !variavel.temInicializacao())
@@ -210,10 +210,19 @@ public class GeradorDeclaracaoVariavel
         }
         else
         {
-            String nome = variavel.getNome();
-            String nomeTipo = Utils.getNomeTipoJava(variavel.getTipoDado());
+        	if (!inicializandoNoPara || (inicializandoNoPara && indiceAtualInicializacaoPara == 0))
+        	{
+        		String nome = variavel.getNome();
+        		String nomeTipo = Utils.getNomeTipoJava(variavel.getTipoDado());
 
-            saida.format("%s %s", nomeTipo, nome);
+        		saida.format("%s %s", nomeTipo, nome);
+        	}
+        	else
+        	{
+        		String nome = variavel.getNome();
+
+        		saida.format("%s", nome);
+        	}
         }
 
         if ((podeInicializar || variavel.constante()) && variavel.temInicializacao()) //constantes sempre devem ser inicializadas
