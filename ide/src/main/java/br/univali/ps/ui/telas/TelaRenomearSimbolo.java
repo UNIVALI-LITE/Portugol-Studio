@@ -5,6 +5,23 @@
  */
 package br.univali.ps.ui.telas;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import br.univali.portugol.nucleo.CausaErroAoTentarObterDeclaracaoDoSimbolo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.ErroAoTentarObterDeclaracaoDoSimbolo;
@@ -18,28 +35,10 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
-import static br.univali.ps.ui.editor.Editor.main;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
-import java.awt.Cursor;
-import static java.awt.SystemColor.info;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 
 /**
  *
@@ -284,7 +283,11 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             }
             else if (ex.getCausa() == CausaErroAoTentarObterDeclaracaoDoSimbolo.SIMBOLO_NAO_ENCONTRADO)
             {
-                throw new ExcecaoAplicacao("Não é possível renomear pois o cursor do teclado não está posicionado sobre o nome de uma variável, vetor, matriz ou função", ExcecaoAplicacao.Tipo.ERRO);
+            	FabricaDicasInterface.criarTooltipEstatica(
+            			PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada(),
+            			"Posicione o cursor do teclado sobre alguma variável, vetor, matriz ou função");
+            	//FabricaDicasInterface.mostrarNotificacao("Posicione o cursor do teclado sobre alguma variável, vetor, matriz ou função");
+                //throw new ExcecaoAplicacao("Não é possível renomear pois o cursor do teclado não está posicionado sobre o nome de uma variável, vetor, matriz ou função", ExcecaoAplicacao.Tipo.ERRO);
             }
             else
             {
