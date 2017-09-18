@@ -176,7 +176,8 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         return null;
     }
 
-    private void verificaNoReferencia(NoReferencia noReferencia) {
+    @SuppressWarnings("rawtypes")
+	private void verificaNoReferencia(NoReferencia noReferencia) {
         if (!declaracaoEncontrada) {
             if (noDeclaracao != null && noDeclaracao.getNome().equals(noReferencia.getNome())) {
                 //encontrou a referência para o nó declaracão encontrado anteriormente na árvore
@@ -247,10 +248,14 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         
-        NoBloco inicializacao = noPara.getInicializacoes();
-        if (inicializacao != null)
+        List<NoBloco> inicializacoes = noPara.getInicializacoes();
+        
+        if (inicializacoes != null)
         {
-            inicializacao.aceitar(this);
+        	for (NoBloco inicializacao: inicializacoes)
+        	{
+        		inicializacao.aceitar(this);
+        	}
         }
         
         NoExpressao condicao = noPara.getCondicao();

@@ -381,13 +381,16 @@ class AstOutlineTreeFactory implements VisitanteASA
         
         if (noPara.getInicializacoes() != null)
         {
-            Object no = noPara.getInicializacoes().aceitar(this);
-            
-            if (no != null)
-            {
-                node.add((PortugolTreeNode) no);
-                folha = false;
-            }
+        	for (NoBloco inicializacao: noPara.getInicializacoes())
+        	{
+	            Object no = inicializacao.aceitar(this);
+	            
+	            if (no != null)
+	            {
+	                node.add((PortugolTreeNode) no);
+	                folha = false;
+	            }
+        	}
         }
         
         List<NoBloco> blocos = noPara.getBlocos();

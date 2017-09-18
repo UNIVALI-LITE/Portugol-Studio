@@ -15,7 +15,7 @@ grammar Portugol;
 
 	import java.util.Stack;
 	import org.antlr.runtime.Token;
-	import br.univali.asa.*;
+	import br.univali.portugol.nucleo.asa.*;
 }
 
 
@@ -188,7 +188,7 @@ PR_INCLUA				:	'inclua'		;
 PR_BIBLIOTECA			:	'biblioteca'		;
 
 
-GAMBIARRA 	:	'.' |'á'| 'à'| 'ã'|'â'|'é'|'ê'|'í'|'ó'|'ô'|'õ'|'ú'|'ü'|'ç'|'�?'|'À'|'Ã'|'Â'|'É'|'Ê'|'�?'|'Ó'|'Ô'|'Õ'|'Ú'|'Ü'|'Ç'|'#'|'$'|'"'|'§'|'?'|'¹'|'²'|'³'|'£'|'¢'|'¬'|'ª'|'º'|'~'|'\''|'`'|'\\'|'@';
+GAMBIARRA 	:	'.' |'á'| 'à'| 'ã'|'â'|'é'|'ê'|'í'|'ó'|'ô'|'õ'|'ú'|'ü'|'ç'|'Ä'|'À'|'Ã'|'Â'|'É'|'Ê'|'Ë'|'Ó'|'Ô'|'Õ'|'Ú'|'Ü'|'Ç'|'#'|'$'|'"'|'§'|'?'|'¹'|'²'|'³'|'£'|'¢'|'¬'|'ª'|'º'|'~'|'\''|'`'|'\\'|'@';
  
 fragment PR_FALSO			:	'falso'		;
 fragment PR_VERDADEIRO		:	'verdadeiro'		;
@@ -228,7 +228,7 @@ COMENTARIO			:
  ;
 
 
-parse returns[ArvoreSintaticaAbstrata asa]:
+parse returns[ASA asa]:
 
 	prog = programa
 	{
@@ -237,7 +237,7 @@ parse returns[ArvoreSintaticaAbstrata asa]:
 ;
 
 
-programa returns[ArvoreSintaticaAbstrata asa] @init
+programa returns[ASA asa] @init
 {
 	pilhaContexto.push("programa");
 }:
@@ -247,13 +247,13 @@ programa returns[ArvoreSintaticaAbstrata asa] @init
 		{
 			if (gerarArvore)
 			{
-		 		asa = new ArvoreSintaticaAbstrataPrograma();
+		 		asa = new ASAPrograma();
 				asa.setListaDeclaracoesGlobais(new ArrayList<NoDeclaracao>());
-				((ArvoreSintaticaAbstrataPrograma) asa).setListaInclusoesBibliotecas(new ArrayList<NoInclusaoBiblioteca>());
+				((ASAPrograma) asa).setListaInclusoesBibliotecas(new ArrayList<NoInclusaoBiblioteca>());
 			}
 		 }
 		 
-		 inclusaoBiblioteca[(ArvoreSintaticaAbstrataPrograma ) asa]*
+		 inclusaoBiblioteca[(ASAPrograma ) asa]*
 
 		(declaracoesGlobais[asa] | declaracaoFuncao[asa])*
 	'}'
@@ -263,7 +263,7 @@ finally
 	pilhaContexto.pop();
 }
 
-inclusaoBiblioteca[ArvoreSintaticaAbstrataPrograma asa] @init
+inclusaoBiblioteca[ASAPrograma asa] @init
 {
 	pilhaContexto.push("inclusaoBiblioteca");
 }:
@@ -304,7 +304,7 @@ finally
 	pilhaContexto.pop();
 }
 
-declaracoesGlobais [ArvoreSintaticaAbstrata asa] @init
+declaracoesGlobais [ASA asa] @init
 {
 	pilhaContexto.push("declaracoesGlobais");
 }:
@@ -523,7 +523,7 @@ finally
 }
 
 
-declaracaoFuncao [ArvoreSintaticaAbstrata asa] @init
+declaracaoFuncao [ASA asa] @init
 {
 	pilhaContexto.push("declaracaoFuncao");
 }:
@@ -667,12 +667,12 @@ para returns[NoPara para] @init
 	pilhaContexto.push("para");
 }:
 
-	PR_PARA '(' (inicializacao = inicializacaoPara)? ';' (condicao = expressao)? ';' (incremento = expressao)? fp = ')' vBlocos = listaBlocos
+	PR_PARA '(' (inicializacoes = inicializacaoPara)? ';' (condicao = expressao)? ';' (incremento = expressao)? fp = ')' vBlocos = listaBlocos
 	{
 		if (gerarArvore)
 		{
 			para = new NoPara();
-			para.setInicializacao(inicializacao);
+			para.setInicializacoes(inicializacoes);
 			para.setCondicao(condicao);
 			para.setIncremento(incremento);		
 			para.setBlocos(vBlocos);
@@ -691,18 +691,28 @@ finally
 }
 
 
-inicializacaoPara returns[NoBloco bloco] @init
+inicializacaoPara returns[List<NoBloco> blocos] @init
 {
 	pilhaContexto.push("inicializacaoPara");
+	blocos = new ArrayList<>();
 }:
 
 	(vExpressao = expressao | vListaDeclaracoes = listaDeclaracoes)
 	{
 		if (gerarArvore)
 		{
-			if (vExpressao != null) bloco = vExpressao;
+			if (vExpressao != null)
+			{				
+				 blocos.add((NoBloco) vExpressao);
+			 }
 			else
-			if (vExpressao == null) bloco = vListaDeclaracoes.get(0);
+			if (vExpressao == null)
+			{
+				for (NoDeclaracao decl : vListaDeclaracoes)
+				{					
+					blocos.add((NoBloco) decl);
+				}
+			 }
 		}
 	}
 ;
