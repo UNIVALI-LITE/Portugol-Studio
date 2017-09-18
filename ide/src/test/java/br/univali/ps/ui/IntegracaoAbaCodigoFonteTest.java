@@ -5,12 +5,12 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolos;
 import java.awt.Point;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JTree;
 import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import org.assertj.swing.core.ComponentDragAndDrop;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.Containers;
@@ -33,6 +33,12 @@ public class IntegracaoAbaCodigoFonteTest extends AssertJSwingJUnitTestCase {
     }
     
     @Test
+    public void arrastaReferenciaParaVariavelDoEditorParaInspetor() throws Exception {
+        String variaveis[] = {"contador"};
+        arrastaVariavelDoEditorParaInspetor(variaveis, 4, true);
+    }
+    
+    @Test
     public void arrastaVariavelRepetidamenteDaArvoreParaInspetor() throws Exception {
         String variaveis[] = {"contador"};
         arrastaVariavelDaArvoreParaInspetor(variaveis, 4); // arrasta a mesma variável 4 vezes para o inspetor, o inspetor não deve duplicar
@@ -44,6 +50,10 @@ public class IntegracaoAbaCodigoFonteTest extends AssertJSwingJUnitTestCase {
         arrastaVariavelDaArvoreParaInspetor(variaveis, 1); // arrasta a mesma variável para o inspetor, o inspetor não deve duplicar
     }
 
+    /***
+     * @param nomesVariaveis As variáveis que serão arrastadas
+     * @param arrastamentos Quantos arrastamentos serão simulados
+     */
     private void arrastaVariavelDaArvoreParaInspetor(String nomesVariaveis[], int arrastamentos) {
         // cria uma nova aba de código fonte na thread do Swing
         AbaCodigoFonte aba = GuiActionRunner.execute(() -> AbaCodigoFonte.novaAba());
@@ -114,6 +124,15 @@ public class IntegracaoAbaCodigoFonteTest extends AssertJSwingJUnitTestCase {
     }
 
     private void arrastaVariavelDoEditorParaInspetor(String nomesVariaveis[], int arrastamentos) {
+        arrastaVariavelDoEditorParaInspetor(nomesVariaveis, arrastamentos, false);
+    }
+    
+    /***
+     * @param nomesVariaveis As variáveis que serão arrastadas
+     * @param arrastamentos Quantos arrastamentos serão simulados
+     * @param usaReferencias Arrasta as declarações das variáveis (false) ou suas referências (true)?
+     */
+    private void arrastaVariavelDoEditorParaInspetor(String nomesVariaveis[], int arrastamentos, boolean usaReferencias) {
         // cria uma nova aba de código fonte na thread do Swing
         AbaCodigoFonte aba = GuiActionRunner.execute(() -> AbaCodigoFonte.novaAba());
         Containers.showInFrame(robot(), aba);
@@ -136,6 +155,17 @@ public class IntegracaoAbaCodigoFonteTest extends AssertJSwingJUnitTestCase {
 
                 fixtureEditor.select(variavel); // seleciona a variável no editor de código fonte
 
+                if (usaReferencias) { // seleciona a última ocorrência da variável no código (ela será uma referência para a variável, não será a sua declaração)
+
+                    Pattern pattern = Pattern.compile(variavel);
+                    Matcher matcher = pattern.matcher(fixtureEditor.text());
+                    while (matcher.find()) { // seleciona todas as ocorrências (em sequência) da variável. No final a última ocorrência sera arrastada
+                        int start = matcher.start();
+                        int end = matcher.end();
+                        fixtureEditor.selectText(start, end);
+                    }
+                }
+                
                 Caret caret = editor.getCaret();
                 Pause.pause(new Condition("espera a atualização da posição do cursor") {
                     @Override
@@ -156,10 +186,16 @@ public class IntegracaoAbaCodigoFonteTest extends AssertJSwingJUnitTestCase {
     }
 
     private static String getCodigoFonte() {
-        return " programa {                     \n"
+        return " programa {                      \n"
                 + "  funcao inicio() {           \n"
                 + "      inteiro contador = 0    \n"
+                + "      contador++              \n"
+                + "      teste(contador)         \n"                
                 + "  }                           \n"
+                + "                              \n"
+                + "  funcao teste(inteiro c) {   \n"
+                + "                              \n"
+                + "  }                           \n"                
                 + "}                             \n";
     }
 
