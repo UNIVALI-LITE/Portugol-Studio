@@ -13,7 +13,77 @@ import org.junit.Test;
 
 public final class AnalisadorSemanticoTest
 {
-    
+	
+	@Test (expected = ErroCompilacao.class)
+    public void testParaMultideclaradoForaDeEscopo() throws ErroCompilacao{
+        Portugol.compilarParaAnalise(
+        		  "programa"
+				 +"{"
+				 +"	funcao inicio()"
+				 +"	{"
+				 +"		para(inteiro i = 0, j = 0, k = 5,l; i < 5; i++){"
+				 +"			l = 1"
+				 +"			escreva(i + j + k + l)"
+				 +"		}"
+				 +"		escreva(j)"
+				 +"	}"
+				 +"}"
+        );
+    }
+	
+	@Test (expected = ErroCompilacao.class)
+    public void testParaMultideclaradoLoopVariaveis() throws ErroCompilacao{
+        Portugol.compilarParaAnalise(
+        		  "programa"
+				 +"{"
+				 +"	funcao inicio()"
+				 +"	{"
+				 +"		para(inteiro i = k, j = i, k = j; i < 5; i++){"
+				 +"			escreva(i + \" \" + j + \" \" + k + \"\n\")"
+				 +"		}"
+				 +"	}"
+				 +"}"
+        );
+    }
+	
+	@Test
+    public void testParaMultideclaradoFuncional(){
+        try
+        {
+            Programa programa = Portugol.compilarParaAnalise(
+            		  "programa"
+    				 +"{"
+    				 +"	funcao inicio()"
+    				 +"	{"
+    				 +"		para(inteiro i = 0, j = 0, k = 5,l; i < 5; i++){"
+    				 +"			para(j = 1; j < 5; i++){"
+    				 +"				j = 5"
+    				 +"			}"
+    				 +"			para(k = 5; k < 5; k++){"
+    				 +"				"
+    				 +"			}"
+    				 +"			para(l = 0; l < 5; l++){"
+    				 +"				"
+    				 +"			}"
+    				 +"			escreva(\"i=\" + i + \";j=\" + j + \";k=\" + k + \";l=\" + l + \"\n\")"
+    				 +"		}"
+    				 +"		para(inteiro i = 2, j = i, k = j; i < 5; i++){"
+    				 +"			escreva(i + \" \" + j + \" \" + k + \"\n\")"
+    				 +"		}"
+    				 +"	}"
+    				 +"}"
+            );
+            
+            ResultadoAnalise resultado = programa.getResultadoAnalise();
+            
+            assertTrue("O programa deveria ter compilado sem erros e avisos", !resultado.contemAvisos() && !resultado.contemErros());
+        }
+        catch (Exception ex)
+        {
+            fail(ex.getMessage());
+        }
+    }
+	
     @Test (expected = ErroCompilacao.class)
     public void testFuncaoLeiaComFuncao() throws ErroCompilacao {
         
