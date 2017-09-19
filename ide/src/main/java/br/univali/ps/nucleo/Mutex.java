@@ -3,7 +3,7 @@ package br.univali.ps.nucleo;
 /**
  * @author Elieser
  */
-interface Mutex {
+public interface Mutex {
 
     InstanciaPortugolStudio conectarInstanciaPortugolStudio() throws ErroConexaoInstancia;
 
