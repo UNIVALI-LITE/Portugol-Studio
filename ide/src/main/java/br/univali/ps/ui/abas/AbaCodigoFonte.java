@@ -1238,9 +1238,20 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                         editor.setCodigoFonteRenomeado(programaRenomeado);
                                     }
                                 }
-                                catch (ExcecaoAplicacao | ErroAoRenomearSimbolo ex)
+                                catch (ExcecaoAplicacao ex)
                                 {
                                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                                }
+                                catch (ErroAoRenomearSimbolo ex)
+                                {
+                                    if(ex.getTipo() == ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO)
+                                    {
+                                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(ex.getMensagem(), ExcecaoAplicacao.Tipo.ERRO_USUARIO));
+                                    }
+                                    else
+                                    {
+                                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                                    }
                                 }
                             }
                         }

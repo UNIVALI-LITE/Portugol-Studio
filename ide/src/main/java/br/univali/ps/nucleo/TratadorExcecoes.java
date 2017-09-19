@@ -226,11 +226,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
     private ExcecaoAplicacao transformarExcecao(Exception excecao)
     {
-        if(excecao instanceof ErroAoRenomearSimbolo)
-        {
-           excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_USUARIO); 
-        }
-        else if (!(excecao instanceof ExcecaoAplicacao))
+        if (!(excecao instanceof ExcecaoAplicacao))
         {
             excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
         }
