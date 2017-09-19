@@ -13,6 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JFrame;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -20,51 +22,57 @@ import javax.swing.JFrame;
  */
 public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     int pX, pY;
-    
+    private static QuestionDialog dialog;
     /**
      * Creates new form QuestionDialog
      * @param parent
      * @param modal
      * @param text
      */
-    public QuestionDialog(JFrame parent, boolean modal, String text) {
-        super(parent, modal);
+    private QuestionDialog(){
+        super((JFrame)null, true);
         initComponents();
+    }
+    public static QuestionDialog getInstance(){
+        if(dialog==null){
+            dialog = new QuestionDialog();
+        }
+        return dialog;
+    }
+    public void showMessage(String text) {
+        jPanel3.setBorder(new CompoundBorder(new LineBorder(ColorController.COR_PRINCIPAL, 1),new LineBorder(ColorController.FUNDO_ESCURO, 5)));
         textLabel.setText("<html><body>"+text+"</body></html>");
         configurarCores();
         WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, Color.white, ColorController.PROGRESS_BAR, Color.orange,5);
-        WeblafUtils.configurarBotao(webButton2);
-        WeblafUtils.configurarBotao(webButton3);
-        WeblafUtils.configurarBotao(webButton4);
-        
-        
-    
+//        WeblafUtils.configurarBotao(botaoCancelar);
+        WeblafUtils.configurarBotao(botaoSim, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
+//        WeblafUtils.configurarBotao(botaoNao);
+        buttonsPane.add(botaoSim);
         titleLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent me) {
-                    // Get x,y and store them
-                    pX = me.getX();
-                    pY = me.getY();
+            @Override
+            public void mousePressed(MouseEvent me) {
+                // Get x,y and store them
+                pX = me.getX();
+                pY = me.getY();
 
-                }
+            }
 
-                @Override
-                 public void mouseDragged(MouseEvent me) {
+            @Override
+             public void mouseDragged(MouseEvent me) {
 
-                    setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
-                }
-            });
+                setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
+            }
+        });
 
-            titleLabel.addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseDragged(MouseEvent me) {
+        titleLabel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent me) {
 
-                    setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
-                }
-            });
+                setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
+            }
+        });
+        setVisible(true);
     }
-    
-    
     
     @Override
     public void configurarCores() {
@@ -83,18 +91,29 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        botaoCancelar = new com.alee.laf.button.WebButton();
+        botaoNao = new com.alee.laf.button.WebButton();
+        botaoSim = new com.alee.laf.button.WebButton();
         jPanel3 = new javax.swing.JPanel();
         mainpane = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        webButton3 = new com.alee.laf.button.WebButton();
-        webButton4 = new com.alee.laf.button.WebButton();
-        webButton2 = new com.alee.laf.button.WebButton();
+        buttonsPane = new javax.swing.JPanel();
         textLabel = new javax.swing.JLabel();
         titlePane = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         webButton1 = new com.alee.laf.button.WebButton();
+
+        botaoCancelar.setText("Cancelar");
+        botaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCancelarActionPerformed(evt);
+            }
+        });
+
+        botaoNao.setText("Não");
+
+        botaoSim.setText("Sim");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -105,31 +124,16 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         mainpane.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/ajuda.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/big_logo.png"))); // NOI18N
         mainpane.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 2, 2, 2));
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
-
-        webButton3.setText("Sim");
-        jPanel2.add(webButton3);
-
-        webButton4.setText("Não");
-        jPanel2.add(webButton4);
-
-        webButton2.setText("Cancelar");
-        webButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                webButton2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(webButton2);
-
-        jPanel1.add(jPanel2, java.awt.BorderLayout.SOUTH);
+        buttonsPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 2, 2, 2));
+        buttonsPane.setOpaque(false);
+        buttonsPane.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
+        jPanel1.add(buttonsPane, java.awt.BorderLayout.SOUTH);
 
         textLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textLabel.setText("taxtLabel");
@@ -166,65 +170,30 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         this.dispose();
     }//GEN-LAST:event_webButton1ActionPerformed
 
-    private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
+    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_webButton2ActionPerformed
+    }//GEN-LAST:event_botaoCancelarActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                QuestionDialog dialog = new QuestionDialog(new javax.swing.JFrame(), true, "Um texto bem maroto e até um tanto quanto grande só pro noschang ficar ligadinho");
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+       
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.alee.laf.button.WebButton botaoCancelar;
+    private com.alee.laf.button.WebButton botaoNao;
+    private com.alee.laf.button.WebButton botaoSim;
+    private javax.swing.JPanel buttonsPane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel mainpane;
     private javax.swing.JLabel textLabel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel titlePane;
     private com.alee.laf.button.WebButton webButton1;
-    private com.alee.laf.button.WebButton webButton2;
-    private com.alee.laf.button.WebButton webButton3;
-    private com.alee.laf.button.WebButton webButton4;
     // End of variables declaration//GEN-END:variables
 
     
