@@ -1,7 +1,7 @@
 package br.univali.ps.nucleo;
 
-import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO;
 
+import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.telas.TelaExcecaoEncontrada;
@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO_PROGRAMA;
 
 /**
  *
@@ -87,7 +88,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
         int tipoDialogo = getTipoDialogo(excecaoAplicacao);
 
-        if ((portugolStudio.isDepurando()) && (excecaoAplicacao.getTipo() == ExcecaoAplicacao.Tipo.ERRO))
+        if ((portugolStudio.isDepurando()) && (excecaoAplicacao.getTipo() == ExcecaoAplicacao.Tipo.ERRO_PROGRAMA))
         {
             exibirExcecaoDetalhada(excecaoAplicacao);
         }
@@ -156,7 +157,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
                 encerrarAplicacao = true;
             }
 
-            exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO));
+            exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
         }
         else if (excecao instanceof IllegalArgumentException)
         {
@@ -164,7 +165,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         }
         else
         {
-            exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+            exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
         }
     }
 
@@ -172,7 +173,9 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     {
         switch (excecaoAplicacao.getTipo())
         {
-            case ERRO:
+            case ERRO_USUARIO:
+                return Level.SEVERE;
+            case ERRO_PROGRAMA:
                 return Level.SEVERE;
             case AVISO:
                 return Level.WARNING;
@@ -210,7 +213,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     {
         switch (excecaoAplicacao.getTipo())
         {
-            case ERRO:
+            case ERRO_PROGRAMA:
                 return JOptionPane.ERROR_MESSAGE;
             case MENSAGEM:
                 return JOptionPane.INFORMATION_MESSAGE;
@@ -223,9 +226,13 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
     private ExcecaoAplicacao transformarExcecao(Exception excecao)
     {
-        if (!(excecao instanceof ExcecaoAplicacao))
+        if(excecao instanceof ErroAoRenomearSimbolo)
         {
-            excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO);
+           excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_USUARIO); 
+        }
+        else if (!(excecao instanceof ExcecaoAplicacao))
+        {
+            excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
         }
 
         return (ExcecaoAplicacao) excecao;

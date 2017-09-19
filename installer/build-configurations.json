@@ -10,6 +10,33 @@
             "installerExtension": ".exe",
             "isMultiplatform": false,
             "createZipPackage": false
+        },
+        {
+            "title": "Mac",
+            "name": "osx",
+            "architecture": "x64",
+            "suffix": "",
+            "installerExtension": ".app",
+            "isMultiplatform": false,
+            "createZipPackage": true
+        },
+        {
+            "title": "Linux (32 bits)",
+            "name": "linux",
+            "architecture": "x86",
+            "suffix": "",
+            "installerExtension": ".run",
+            "isMultiplatform": false,
+            "createZipPackage": true
+        },
+        {
+            "title": "Linux (64 bits)",
+            "name": "linux",
+            "architecture": "x64",
+            "suffix": "-x64",
+            "installerExtension": ".run",
+            "isMultiplatform": false,
+            "createZipPackage": true
         }
     ],
     "createGitTag": false

@@ -243,7 +243,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, Color.BLACK, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                     arquivosRecuperados.add(button);
                 } catch (Exception ex) {
-                    Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
                 }
             }
         }
@@ -998,6 +998,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 setaAtivacaoBotoesExecucao(true); // pode executar                
             } 
             catch (Exception ex) {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
                 LOGGER.log(Level.SEVERE, null, ex);
                 setaAtivacaoBotoesExecucao(true); // pode executar                
             }
@@ -2530,21 +2531,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         acaoInterromper.setEnabled(true);
                         painelSaida.getConsole().selecionar();
 
-                        try
+                        painelSaida.getConsole().limparConsole();
+
+                        if (programa.getResultadoAnalise().contemAvisos())
                         {
-                            painelSaida.getConsole().limparConsole();
-
-                            if (programa.getResultadoAnalise().contemAvisos())
-                            {
-                                exibirPopupAvisoCompilacao();
-                            }
-
+                            exibirPopupAvisoCompilacao();
                         }
-                        catch (Exception ex)
-                        {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
-                        }
-
+                        
                         painelSaida.getConsole().setExecutandoPrograma(true);
             });
         }
@@ -2640,7 +2633,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         }
                         catch (ErroInstalacaoPlugin erro)
                         {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
                         }
 
                         devolver(abaCodigoFonte);

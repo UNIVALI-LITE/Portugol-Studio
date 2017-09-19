@@ -830,7 +830,7 @@ public final class PortugolStudio
         }
         catch (InterruptedException | InvocationTargetException ex)
         {
-            throw new ExcecaoAplicacao("Não foi possível iniciar o Portugol Studio", ex, ExcecaoAplicacao.Tipo.ERRO);
+            throw new ExcecaoAplicacao("Não foi possível iniciar o Portugol Studio", ex, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
         }
     }
 

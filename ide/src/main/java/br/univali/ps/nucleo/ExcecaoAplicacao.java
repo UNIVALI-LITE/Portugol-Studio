@@ -10,7 +10,7 @@ package br.univali.ps.nucleo;
 
 public class ExcecaoAplicacao extends Exception
 {
-    public enum Tipo { ERRO, AVISO, MENSAGEM };
+    public enum Tipo {ERRO_USUARIO, ERRO_PROGRAMA, AVISO, MENSAGEM };
 
     private final Tipo tipo;
     
