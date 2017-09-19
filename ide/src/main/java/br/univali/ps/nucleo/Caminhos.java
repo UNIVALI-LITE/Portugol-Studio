@@ -156,7 +156,13 @@ public final class Caminhos
     
     public static boolean rodandoEmDesenvolvimento()
     {
-        return !(new File(".").getAbsolutePath().endsWith("Portugol Studio\\."));
+        String path = new File(".").getAbsolutePath();
+        
+        if (rodandoNoWindows()) {
+            return !path.endsWith("Portugol Studio\\.");
+        }
+        
+        return !path.endsWith("portugol-studio/.");
     }
 
     public static boolean rodandoNoWindows()
