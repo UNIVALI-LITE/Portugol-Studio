@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Luiz Fernando Noschang
  */
-class MutexImpl implements Mutex
+public class MutexImpl implements Mutex
 {
     private static final Logger LOGGER = Logger.getLogger(MutexImpl.class.getName());
 
@@ -134,6 +134,8 @@ class MutexImpl implements Mutex
         {
             try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));)
             {
+            	while(!PortugolStudio.isPortugolCarregado()) {}
+            	
                 List<File> arquivos = new ArrayList<>();
                 String linha;
                 
