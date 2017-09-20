@@ -200,9 +200,9 @@ public class TelaPrincipal extends javax.swing.JPanel
             is.close();
             return json;
         } catch (MalformedURLException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (IOException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         
         return null;

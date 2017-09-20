@@ -66,7 +66,7 @@ public final class GerenciadorTemas {
             try {
                 return Theme.load(resourceStream);
             } catch (IOException e) {
-                throw new ExcecaoAplicacao(e.getMessage(), ExcecaoAplicacao.Tipo.ERRO);
+                throw new ExcecaoAplicacao(e.getMessage(), ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
             }
         } else if (carregarPadrao) {
             return carregarTema("Dark", false);

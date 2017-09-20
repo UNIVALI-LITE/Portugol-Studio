@@ -122,12 +122,9 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
                     break;
                 }
 
-            } catch (TipoUrlInvalidoException ex)
+            }catch (Exception ex)
             {
-                Logger.getLogger(SwingBrowserHyperlinkHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex)
-            {
-                Logger.getLogger(SwingBrowserHyperlinkHandler.class.getName()).log(Level.SEVERE, null, ex);
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         } else if (evt.getEventType() == HyperlinkEvent.EventType.ENTERED)
         {

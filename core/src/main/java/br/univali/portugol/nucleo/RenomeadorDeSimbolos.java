@@ -126,12 +126,12 @@ final class RenomeadorDeSimbolos
             }
             else
             {
-                throw new ErroAoRenomearSimbolo(String.format("Não foi encontrado nenhum símbolo para renomear na linha %d, coluna %d", linha, coluna));
+                throw new ErroAoRenomearSimbolo(String.format("Não foi encontrado nenhum símbolo para renomear na linha %d, coluna %d", linha, coluna), ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO);
             }
         }
         catch (ErroCompilacao ex)
         {
-            throw new ErroAoRenomearSimbolo("Não é possível renomear um símbolo em um programa que contém erros");
+            throw new ErroAoRenomearSimbolo("Não é possível renomear um símbolo em um programa que contém erros", ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO);
         }
     }
 
@@ -224,7 +224,7 @@ final class RenomeadorDeSimbolos
                     throw (ErroAoRenomearSimbolo) ex.getCause();
                 }
 
-                throw new ErroAoRenomearSimbolo(ex.getMessage());
+                throw new ErroAoRenomearSimbolo(ex.getMessage(), ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO);
             }
         }
 
@@ -373,7 +373,7 @@ final class RenomeadorDeSimbolos
                 }
                 else
                 {
-                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("A função \"%s\" não pode ser renomeada porque pertence a uma biblioteca", chamadaFuncao.getNome())), asa, chamadaFuncao);
+                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("A função \"%s\" não pode ser renomeada porque pertence a uma biblioteca", chamadaFuncao.getNome()), ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO), asa, chamadaFuncao);
                 }
             }
 
@@ -684,7 +684,7 @@ final class RenomeadorDeSimbolos
                 }
                 else
                 {
-                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("A matriz \"%s\" não pode ser renomeada porque pertence a uma biblioteca", noReferenciaMatriz.getNome())), asa, noReferenciaMatriz);
+                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("A matriz \"%s\" não pode ser renomeada porque pertence a uma biblioteca", noReferenciaMatriz.getNome()), ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO), asa, noReferenciaMatriz);
                 }
             }
 
@@ -726,7 +726,7 @@ final class RenomeadorDeSimbolos
                 }
                 else
                 {
-                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("O vetor \"%s\" não pode ser renomeado porque pertence a uma biblioteca", noReferenciaVetor.getNome())), asa, noReferenciaVetor);
+                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("O vetor \"%s\" não pode ser renomeado porque pertence a uma biblioteca", noReferenciaVetor.getNome()), ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO), asa, noReferenciaVetor);
                 }
             }
 
@@ -939,7 +939,7 @@ final class RenomeadorDeSimbolos
                 }
                 else
                 {
-                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("A constante \"%s\" não pode ser renomeada porque pertence a uma biblioteca", noReferenciaVariavel.getNome())), asa, noReferenciaVariavel);
+                    throw new ExcecaoVisitaASA(new ErroAoRenomearSimbolo(String.format("A constante \"%s\" não pode ser renomeada porque pertence a uma biblioteca", noReferenciaVariavel.getNome()), ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO), asa, noReferenciaVariavel);
                 }
             }
 
