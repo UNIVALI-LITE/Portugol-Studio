@@ -15,6 +15,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -100,6 +102,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
     private void configurarAcoes() {
         configurarAcaoSelecionarAbaEsquerda();
         configurarAcaoSelecionarAbaDireita();
+        configurarAcaoMouseWheel();
 
         configurarAcaoFecharAbaAtual();
         configurarAcaoFecharTodasAbas();
@@ -137,6 +140,24 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
 
         this.getActionMap().put(nome, acaoSelecionarAbaDireita);
         this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
+    private void configurarAcaoMouseWheel(){
+        this.addMouseWheelListener(new MouseWheelListener(){
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent e) {
+                        PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) e.getSource();
+                        int units = e.getWheelRotation();
+                        int indexAnterior = painelTabulado.getSelectedIndex();
+                        int indexNovo = indexAnterior + units;
+                        if (indexNovo < 0)
+                            painelTabulado.setSelectedIndex(0);
+                        else if (indexNovo >= painelTabulado.getTabCount())
+                            painelTabulado.setSelectedIndex(painelTabulado.getTabCount() - 1);
+                        else
+                            painelTabulado.setSelectedIndex(indexNovo);
+                    }
+                });
     }
 
     private void configurarAcaoFecharAbaAtual() {
