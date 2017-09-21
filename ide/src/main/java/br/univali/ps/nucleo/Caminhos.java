@@ -161,9 +161,13 @@ public final class Caminhos
         if (rodandoNoWindows()) {
             return !path.endsWith("Portugol Studio\\.");
         }
-        
-        return !path.endsWith("portugol-studio/.");
-    }
+        else if (rodandoNoLinux()) {
+            return !path.endsWith("portugol-studio/.");
+        }
+       
+        //Mac - quando está instalado o executável do PS fica em /Applications/Portugol Studio.app/Contents/MacOSx
+        return !path.contains("Portugol Studio.app");
+     }
 
     public static boolean rodandoNoWindows()
     {
