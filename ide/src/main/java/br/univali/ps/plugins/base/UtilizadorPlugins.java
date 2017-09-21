@@ -1,6 +1,7 @@
 package br.univali.ps.plugins.base;
 
 import br.univali.portugol.nucleo.asa.ASAPrograma;
+import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -30,4 +31,6 @@ public interface UtilizadorPlugins
     public void desinstalarAcaoPlugin(Plugin plugin, Action acao);
     
     public void desinstalarPlugin(Plugin plugin);
+    
+    public void registrarBiblioteca(Class<? extends Biblioteca> biblioteca);
 }

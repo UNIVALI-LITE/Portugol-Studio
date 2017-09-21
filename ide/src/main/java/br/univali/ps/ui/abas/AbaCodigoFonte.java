@@ -18,6 +18,8 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucaoBasico;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -2392,6 +2394,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return scrollInspetor;
     }
     
+    
+    @Override
+    public void registrarBiblioteca(Class<? extends Biblioteca> biblioteca) {
+         try {
+            Portugol.getGerenciadorBibliotecas().registrarBibliotecaExterna(biblioteca);
+        } catch (ErroCarregamentoBiblioteca ex) {
+            Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 //    private static class PoolAbasCodigoFonte extends PoolAbstrato
 //    {
 //
@@ -2447,6 +2460,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        }
 //    }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel arquivosRecuperados;
     private javax.swing.JToolBar barraFerramentas;
