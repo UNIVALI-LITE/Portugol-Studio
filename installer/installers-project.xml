@@ -766,6 +766,47 @@ include /usr/share/nano/portugol.nanorc</text>
                     <explanation>Mac</explanation>
                     <actionList>
                         <actionGroup>
+                            <explanation>Corrigindo caracteres invãlidos nos scripts</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>tr</program>
+                                    <programArguments>-d '\r' &lt; "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio" &gt; -d '\r' "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio_fixed"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>"${install_app_bundle_dir}/Contents/MacOS/Portugol Studio"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>mv</program>
+                                    <programArguments>"${install_app_bundle_dir}/Contents/MacOS/Portugol Studio_fixed" "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>tr</program>
+                                    <programArguments>-d '\r' &lt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac.command" &gt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac_fixed.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>mv</program>
+                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac_fixed.command" "${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>tr</program>
+                                    <programArguments>-d '\r' &lt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac.command" &gt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac_fixed.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>mv</program>
+                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac_fixed.command" "${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac.command"</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
                             <explanation>Definindo permissões de arquivos</explanation>
                             <actionList>
                                 <runProgram>
