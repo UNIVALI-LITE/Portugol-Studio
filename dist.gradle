@@ -992,6 +992,8 @@ def buildAppFiles(buildConfigurations){
     def appDir = new File(appFilesDir, 'aplicacao')
     
     def studioJar = project(':portugol-ide').jar.archivePath
+
+    def consoleJar = project(':portugol-console').jar.archivePath
     
     copy {
         from new File(project(':portugol-ide').buildDir, 'libs/lib')
@@ -1002,12 +1004,22 @@ def buildAppFiles(buildConfigurations){
         from studioJar
         into appDir
     }
+
+    copy {
+        from consoleJar
+        into appDir
+    }
     
     studioJar = new File(appDir, studioJar.name)
     
     studioJar.renameTo(new File(appDir, 'portugol-studio.jar'))
     
     studioJar = new File(appDir, 'portugol-studio.jar')
+
+
+    consoleJar = new File(appDir, consoleJar.name)
+    
+    consoleJar.renameTo(new File(appDir, 'portugol-console.jar'))
     
     copy {
         from new File(project(':portugol-ide').projectDir, 'src/main/assets')

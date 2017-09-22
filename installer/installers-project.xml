@@ -37,6 +37,51 @@
             </desktopShortcutList>
             <folderList>
                 <folder>
+                    <description>Utilitarios para Windows</description>
+                    <destination>${system_temp_directory}\portugol-studio</destination>
+                    <name>folder_utils_windows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/windows/update_shell.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Arquivos de associações</description>
+                    <destination>${system_temp_directory}/portugol-studio</destination>
+                    <name>folder_association_files</name>
+                    <platforms>linux</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.lang</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.nanorc</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/application-x-portugol.xml</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Arquivos de associações (Linux x64)</description>
+                    <destination>${system_temp_directory}/portugol-studio</destination>
+                    <name>folder_association_files_linux_x64</name>
+                    <platforms>linux-x64</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.lang</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.nanorc</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/application-x-portugol.xml</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
                     <description>MAC OS X .app</description>
                     <destination>${install_root_dir}</destination>
                     <name>folder_osx_app_files</name>
@@ -173,52 +218,6 @@
                 </startMenuShortcut>
             </startMenuShortcutList>
         </component>
-        <component>
-            <name>component_utils</name>
-            <description>Utilitários</description>
-            <canBeEdited>0</canBeEdited>
-            <selected>0</selected>
-            <show>0</show>
-            <folderList>
-                <folder>
-                    <description>Utilitarios para Windows</description>
-                    <destination>${system_temp_directory}\portugol-studio</destination>
-                    <name>folder_utils_windows</name>
-                    <platforms>windows</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>arquivos/windows/update_shell.dll</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-        </component>
-        <component>
-            <name>component_extra_files</name>
-            <description>Arquivos adicionais</description>
-            <canBeEdited>0</canBeEdited>
-            <selected>0</selected>
-            <show>0</show>
-            <folderList>
-                <folder>
-                    <description>Arquivos de associações</description>
-                    <destination>${system_temp_directory}/portugol-studio</destination>
-                    <name>folder_association_files</name>
-                    <platforms>linux</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>arquivos/linux/portugol.lang</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>arquivos/linux/portugol.nanorc</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>arquivos/linux/application-x-portugol.xml</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-        </component>
     </componentList>
     <initializationActionList>
         <actionGroup>
@@ -354,9 +353,9 @@
         </actionGroup>
     </initializationActionList>
     <readyToInstallActionList>
-        <showProgressDialog>
+        <actionGroup>
+            <explanation>Removendo versões anteriores do Portugol Studio</explanation>
             <progressText>Removendo versões anteriores do Portugol Studio</progressText>
-            <title>Removendo versões anteriores do Portugol Studio</title>
             <actionList>
                 <actionGroup>
                     <explanation>Windows</explanation>
@@ -455,6 +454,10 @@
                             <explanation>Removendo versão anterior</explanation>
                             <actionList>
                                 <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 ${install_app_dir}/desinstalar</programArguments>
+                                </runProgram>
+                                <runProgram>
                                     <program>${install_app_dir}/desinstalar</program>
                                     <programArguments>--mode unattended</programArguments>
                                     <ruleList>
@@ -462,10 +465,6 @@
                                             <path>${install_app_dir}/desinstalar</path>
                                         </fileExists>
                                     </ruleList>
-                                </runProgram>
-                                <runProgram>
-                                    <program>chmod</program>
-                                    <programArguments>755 ${install_app_dir}/desinstalar</programArguments>
                                 </runProgram>
                             </actionList>
                             <ruleList>
@@ -508,7 +507,7 @@
                     </ruleList>
                 </actionGroup>
             </actionList>
-        </showProgressDialog>
+        </actionGroup>
     </readyToInstallActionList>
     <postInstallationActionList>
         <actionGroup>
@@ -550,27 +549,11 @@
                                         </command>
                                     </commandList>
                                 </associateWindowsFileExtension>
-                                <createDirectory>
-                                    <abortOnError>0</abortOnError>
-                                    <path>${system_temp_directory}\portugol-studio</path>
-                                    <show>0</show>
-                                    <showMessageOnError>0</showMessageOnError>
-                                </createDirectory>
-                                <unpackFile>
-                                    <abortOnError>0</abortOnError>
-                                    <component>component_utils</component>
-                                    <destination>${system_temp_directory}\portugol-studio\update_shell.dll</destination>
-                                    <folder>folder_utils_windows</folder>
-                                    <origin>update_shell.dll</origin>
-                                    <show>0</show>
-                                    <showMessageOnError>0</showMessageOnError>
-                                </unpackFile>
                                 <runProgram>
                                     <abortOnError>0</abortOnError>
                                     <program>rundll32</program>
                                     <programArguments>${system_temp_directory}\portugol-studio\update_shell.dll,UpdateShell</programArguments>
                                     <show>0</show>
-                                    <showMessageOnError>0</showMessageOnError>
                                 </runProgram>
                             </actionList>
                         </actionGroup>
@@ -622,10 +605,6 @@
                                 </runProgram>
                                 <runProgram>
                                     <program>chmod</program>
-                                    <programArguments>755 "${install_app_dir}/desinstalar"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>chmod</program>
                                     <programArguments>755 "${install_app_dir}/executar-studio-linux.sh"</programArguments>
                                 </runProgram>
                                 <runProgram>
@@ -643,9 +622,7 @@
                             </actionList>
                         </actionGroup>
                         <actionGroup>
-                            <abortOnError>0</abortOnError>
                             <progressText>Criando associações de arquivos</progressText>
-                            <showMessageOnError>0</showMessageOnError>
                             <actionList>
                                 <writeFile>
                                     <encoding>utf-8</encoding>
@@ -663,39 +640,42 @@ Type=Application
 Terminal=0
 MimeType=application/x-portugol</text>
                                 </writeFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
+                                <createDirectory>
+                                    <path>${system_temp_directory}/portugol-studio</path>
+                                    <ruleList>
+                                        <fileExists>
+                                            <negate>1</negate>
+                                            <path>${system_temp_directory}/portugol-studio</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </createDirectory>
+                                <copyFile>
                                     <destination>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>portugol.lang</origin>
+                                    <origin>${system_temp_directory}/portugol-studio/portugol.lang</origin>
                                     <ruleList>
                                         <fileExists>
-                                            <path>/usr/share/gtksourceview-2.0/language-specs</path>
+                                            <path>${system_temp_directory}/portugol-studio/portugol.lang</path>
                                         </fileExists>
                                     </ruleList>
-                                </unpackFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
-                                    <destination>/usr/share/nano/portugol.nanorc</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>portugol.nanorc</origin>
-                                    <ruleList>
-                                        <fileExists>
-                                            <path>/usr/share/nano</path>
-                                        </fileExists>
-                                    </ruleList>
-                                </unpackFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
+                                </copyFile>
+                                <copyFile>
                                     <destination>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>portugol.lang</origin>
+                                    <origin>${system_temp_directory}/portugol-studio/portugol.lang</origin>
                                     <ruleList>
                                         <fileExists>
-                                            <path>/usr/share/gtksourceview-3.0/language-specs</path>
+                                            <path>${system_temp_directory}/portugol-studio/portugol.lang</path>
                                         </fileExists>
                                     </ruleList>
-                                </unpackFile>
+                                </copyFile>
+                                <copyFile>
+                                    <destination>/usr/share/nano/portugol.nanorcx</destination>
+                                    <origin>${system_temp_directory}/portugol-studio/portugol.nanorc</origin>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${system_temp_directory}/portugol-studio/portugol.nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </copyFile>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
@@ -733,21 +713,17 @@ include /usr/share/nano/portugol.nanorc</text>
                                         </fileExists>
                                     </ruleList>
                                 </addTextToFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
-                                    <destination>/usr/share/mime/packages/application-x-portugol.xml</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>application-x-portugol.xml</origin>
-                                </unpackFile>
+                                <copyFile>
+                                    <destination>/usr/share/mime/packages</destination>
+                                    <origin>${system_temp_directory}/portugol-studio/application-x-portugol.xml</origin>
+                                </copyFile>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/mime/packages/application-x-portugol.xml</programArguments>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>ln</program>
                                     <programArguments>-s ${install_app_dir}/aplicacao/icones/linux/arquivo-por.png /usr/share/icons/hicolor/256x256/mimetypes/arquivo-por.png</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
                                 </runProgram>
                                 <runProgram>
                                     <program>update-mime-database</program>
@@ -765,47 +741,6 @@ include /usr/share/nano/portugol.nanorc</text>
                 <actionGroup>
                     <explanation>Mac</explanation>
                     <actionList>
-                        <actionGroup>
-                            <explanation>Corrigindo caracteres invãlidos nos scripts</explanation>
-                            <actionList>
-                                <runProgram>
-                                    <program>tr</program>
-                                    <programArguments>-d '\r' &lt; "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio" &gt; -d '\r' "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio_fixed"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>rm</program>
-                                    <programArguments>"${install_app_bundle_dir}/Contents/MacOS/Portugol Studio"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>mv</program>
-                                    <programArguments>"${install_app_bundle_dir}/Contents/MacOS/Portugol Studio_fixed" "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>tr</program>
-                                    <programArguments>-d '\r' &lt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac.command" &gt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac_fixed.command"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>rm</program>
-                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac.command"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>mv</program>
-                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac_fixed.command" "${install_app_bundle_dir}/Contents/Resources/IDE/executar-studio-mac.command"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>tr</program>
-                                    <programArguments>-d '\r' &lt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac.command" &gt; "${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac_fixed.command"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>rm</program>
-                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac.command"</programArguments>
-                                </runProgram>
-                                <runProgram>
-                                    <program>mv</program>
-                                    <programArguments>"${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac_fixed.command" "${install_app_bundle_dir}/Contents/Resources/IDE/executar-console-mac.command"</programArguments>
-                                </runProgram>
-                            </actionList>
-                        </actionGroup>
                         <actionGroup>
                             <explanation>Definindo permissões de arquivos</explanation>
                             <actionList>
@@ -844,37 +779,34 @@ include /usr/share/nano/portugol.nanorc</text>
                             </actionList>
                         </actionGroup>
                     </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>osx</type>
+                        </platformTest>
+                    </ruleList>
                 </actionGroup>
             </actionList>
         </actionGroup>
     </postInstallationActionList>
     <postUninstallerCreationActionList>
         <actionGroup>
-            <abortOnError>0</abortOnError>
             <progressText>Configurando o desinstalador</progressText>
             <show>0</show>
-            <showMessageOnError>0</showMessageOnError>
             <actionList>
                 <actionGroup>
-                    <abortOnError>0</abortOnError>
                     <explanation>Windows</explanation>
-                    <showMessageOnError>0</showMessageOnError>
                     <actionList>
                         <registrySet>
-                            <abortOnError>0</abortOnError>
                             <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
                             <name>Comments</name>
                             <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
                             <type>REG_SZ</type>
                             <value>Ambiente de programação para a linguagem Portugol 2.0</value>
                         </registrySet>
                         <registrySet>
-                            <abortOnError>0</abortOnError>
                             <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
                             <name>DisplayIcon</name>
                             <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
                             <type>REG_SZ</type>
                             <value>${install_app_dir}\aplicacao\icones\windows\portugol-studio.ico</value>
                         </registrySet>
@@ -891,6 +823,15 @@ include /usr/share/nano/portugol.nanorc</text>
                         </platformTest>
                     </ruleList>
                 </actionGroup>
+                <actionGroup>
+                    <explanation>Linux</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>chmod</program>
+                            <programArguments>755 "${install_app_dir}/desinstalar"</programArguments>
+                        </runProgram>
+                    </actionList>
+                </actionGroup>
             </actionList>
         </actionGroup>
     </postUninstallerCreationActionList>
@@ -904,17 +845,13 @@ include /usr/share/nano/portugol.nanorc</text>
                     <show>0</show>
                     <actionList>
                         <actionGroup>
-                            <abortOnError>0</abortOnError>
                             <explanation>Removendo associações de arquivos</explanation>
-                            <showMessageOnError>0</showMessageOnError>
                             <actionList>
                                 <removeWindowsFileAssociation>
-                                    <abortOnError>0</abortOnError>
                                     <extensions>.por</extensions>
                                     <mimeType>application/x-portugol</mimeType>
                                     <progID>Portugol.Algoritmo</progID>
                                     <show>0</show>
-                                    <showMessageOnError>0</showMessageOnError>
                                 </removeWindowsFileAssociation>
                                 <runProgram>
                                     <abortOnError>0</abortOnError>
@@ -932,10 +869,8 @@ include /usr/share/nano/portugol.nanorc</text>
                             </actionList>
                         </actionGroup>
                         <deleteFile>
-                            <abortOnError>0</abortOnError>
                             <path>${install_app_dir}</path>
                             <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
                             <ruleList>
                                 <fileExists>
                                     <path>${install_app_dir}</path>
@@ -966,63 +901,83 @@ include /usr/share/nano/portugol.nanorc</text>
                             </actionList>
                         </actionGroup>
                         <actionGroup>
-                            <abortOnError>0</abortOnError>
                             <explanation>Removendo associações de arquivos</explanation>
-                            <showMessageOnError>0</showMessageOnError>
                             <actionList>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>rm</program>
                                     <programArguments>/usr/share/mime/packages/application-x-portugol.xml</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/mime/packages/application-x-portugol.xml</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>rm</program>
                                     <programArguments>/usr/share/applications/portugol-studio.desktop</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/applications/portugol-studio.desktop</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>rm</program>
                                     <programArguments>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>rm</program>
                                     <programArguments>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>rm</program>
                                     <programArguments>/usr/share/nano/portugol.nanorc</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/nano/portugol.nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>sed</program>
                                     <programArguments>-i 's/^include \/usr\/share\/nano\/portugol.nanorc$//' /etc/nanorc</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/etc/nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>sed</program>
                                     <programArguments>-i 's/^## Portugol 2.0$//' /etc/nanorc</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/etc/nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>rm</program>
                                     <programArguments>/usr/share/icons/hicolor/256x256/mimetypes/arquivo-por.png</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/icons/hicolor/256x256/mimetypes/arquivo-por.png</path>
+                                        </fileExists>
+                                    </ruleList>
                                 </runProgram>
                                 <runProgram>
-                                    <abortOnError>0</abortOnError>
                                     <program>update-mime-database</program>
                                     <programArguments>/usr/share/mime</programArguments>
-                                    <showMessageOnError>0</showMessageOnError>
                                 </runProgram>
                             </actionList>
                         </actionGroup>
@@ -1031,6 +986,11 @@ include /usr/share/nano/portugol.nanorc</text>
                             <program>rm</program>
                             <programArguments>-R ${install_app_dir}</programArguments>
                             <showMessageOnError>0</showMessageOnError>
+                            <ruleList>
+                                <fileExists>
+                                    <path>${install_app_dir}</path>
+                                </fileExists>
+                            </ruleList>
                         </runProgram>
                     </actionList>
                     <ruleList>
@@ -1093,6 +1053,28 @@ Se você deseja saber mais sobre o projeto e/ou contribuir com o desenvolvimento
                         </launchBrowser>
                     </clickedActionList>
                 </linkParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>install_terms</name>
+            <title>Termos de uso</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <insertAfter>apresentacao</insertAfter>
+            <parameterList>
+                <labelParameter>
+                    <name>terms</name>
+                    <description>Para garantir o correto funcionamento e a evolução do software o Portugol Studio precisa executar periodicamente algumas ações em seu computador. 
+
+Ao instalar o Portugol Studio, você está automaticamente concordando com os seguintes termos:
+
+1) Autorizo o Portugol Studio e seus componentes a coletarem informações referentes ao meu Sistema Operacional e ao hardware instalado em meu computador
+
+2) Autorizo o Portugol Studio, seus componentes a coletarem informações referentes à minha utilização e minhas ações dentro do programa</description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
                 <labelParameter>
                     <name>continuar</name>
                     <description>
@@ -1104,7 +1086,6 @@ Clique em "Avançar" para iniciar a instalação</description>
             <validationActionList>
                 <setInstallerVariable>
                     <name>next_page</name>
-                    <show>0</show>
                     <value>installation</value>
                 </setInstallerVariable>
             </validationActionList>
