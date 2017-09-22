@@ -6,6 +6,7 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.dominio.PortugolDocumento;
+import br.univali.ps.fuzzy.portugolFuzzyCorretor.core.PortugolFuzzyCorretor;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
@@ -156,24 +157,24 @@ public class TelaPrincipal extends javax.swing.JPanel
         abrirArquivosCodigoFonte(arquivosIniciais);
 
 //        exibirErrosPluginsBibliotecas();
-        Thread thread = new Thread(){
-            public void run(){
-                JSONObject ultimaVersao = procurarAtualizacoes();
-                if(ultimaVersao!=null)
-                {
-                    String versao = ultimaVersao.getString("tag_name");
-                    String texto = ultimaVersao.getString("body");
-                    if(!versao.equals("v"+PortugolStudio.getInstancia().getVersao()))
-                    {
-                        exibirTelaAtualizacoes(texto, versao);
-                    }
-                }
-            }
-        };
-
-        thread.start();
+//        Thread thread = new Thread(){
+//            public void run(){
+//                JSONObject ultimaVersao = procurarAtualizacoes();
+//                if(ultimaVersao!=null)
+//                {
+//                    String versao = ultimaVersao.getString("tag_name");
+//                    String texto = ultimaVersao.getString("body");
+//                    if(!versao.equals("v"+PortugolStudio.getInstancia().getVersao()))
+//                    {
+//                        exibirTelaAtualizacoes(texto, versao);
+//                    }
+//                }
+//            }
+//        };
+//
+//        thread.start();
         
-
+        PortugolFuzzyCorretor.getInstance().setDados();
         //baixarNovasAtualizacoes();
     }
 

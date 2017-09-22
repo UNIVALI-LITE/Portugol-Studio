@@ -5,13 +5,18 @@ import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
+import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
+import br.univali.ps.fuzzy.portugolFuzzyCorretor.core.PortugolFuzzyCorretor;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -183,7 +188,11 @@ public class PortugolParser extends AbstractParser
             String codigo = documento.getText(0, documento.getLength());
             if (!codigo.isEmpty()) 
             {
-                
+                try {
+                    PortugolFuzzyCorretor.getInstance().interpretarCodigo(codigo);
+                } catch (ExcecaoVisitaASA | ErroCompilacao ex) {
+                    Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 Programa programa = Portugol.compilarParaAnalise(codigo);
 
                 if (programa.getResultadoAnalise().contemAvisos()) 

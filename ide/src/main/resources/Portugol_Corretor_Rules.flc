@@ -1,0 +1,342 @@
+
+FUNCTION_BLOCK erro_block	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	erro_sintatico: REAL;
+        erro_semantico: REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	erros : REAL;
+END_VAR
+
+FUZZIFY erro_sintatico		
+	TERM nenhum_erro_sintatico := (0, 1)(1, 0);
+	TERM baixo_erro_sintatico := gauss 3.5 1;
+	TERM alto_erro_sintatico := sigm 5 5.5;
+END_FUZZIFY
+
+FUZZIFY erro_semantico			
+	TERM nenhum_erro_semantico := (0, 1)(1, 0);
+	TERM baixo_erro_semantico := gauss 3.5 1;
+	TERM alto_erro_semantico := sigm 5 5.5;
+END_FUZZIFY
+
+DEFUZZIFY erros			
+	TERM nenhum_erro := (0,1) (1,0);
+	TERM poucos_erros := gauss 1 0.3;
+        TERM medios_erros := gauss 2 0.3;
+        TERM muitos_erros := sigm 7 2.75;
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF erro_sintatico IS nenhum_erro_sintatico AND erro_semantico IS nenhum_erro_semantico THEN erros IS nenhum_erro;
+	RULE 2 : IF erro_sintatico IS nenhum_erro_sintatico AND erro_semantico IS baixo_erro_semantico THEN erros IS poucos_erros;
+	RULE 3 : IF erro_sintatico IS nenhum_erro_sintatico AND erro_semantico IS alto_erro_semantico THEN erros IS medios_erros;
+
+        RULE 4 : IF erro_sintatico IS baixo_erro_sintatico AND erro_semantico IS nenhum_erro_semantico THEN erros IS poucos_erros;
+	RULE 5 : IF erro_sintatico IS baixo_erro_sintatico AND erro_semantico IS baixo_erro_semantico THEN erros IS poucos_erros;
+	RULE 6 : IF erro_sintatico IS baixo_erro_sintatico AND erro_semantico IS alto_erro_semantico THEN erros IS muitos_erros;
+        
+        RULE 7 : IF erro_sintatico IS alto_erro_sintatico AND erro_semantico IS nenhum_erro_semantico THEN erros IS medios_erros;
+	RULE 8 : IF erro_sintatico IS alto_erro_sintatico AND erro_semantico IS baixo_erro_semantico THEN erros IS medios_erros;
+	RULE 9 : IF erro_sintatico IS alto_erro_sintatico AND erro_semantico IS alto_erro_semantico THEN erros IS muitos_erros;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK aviso_block	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	aviso_conversao: REAL;
+        aviso_truncacao: REAL;
+        aviso_ocultacao: REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	avisos : REAL;
+END_VAR
+
+FUZZIFY aviso_conversao		
+	TERM nenhum_aviso_conversao := (0, 1)(1, 0);
+	TERM baixo_aviso_conversao := gauss 5 1.5;
+	TERM alto_aviso_conversao := sigm 2 8.5;
+END_FUZZIFY
+
+FUZZIFY aviso_truncacao		
+	TERM nenhum_aviso_truncacao := (0, 1)(1, 0);
+	TERM baixo_aviso_truncacao := gauss 5 1.5;
+	TERM alto_aviso_truncacao := sigm 2 8.5;
+END_FUZZIFY
+
+FUZZIFY aviso_ocultacao		
+	TERM nenhum_aviso_ocultacao := (0, 1)(1, 0);
+	TERM baixo_aviso_ocultacao := gauss 5 1.5;
+	TERM alto_aviso_ocultacao :=  sigm 2 8.5;
+END_FUZZIFY
+
+DEFUZZIFY avisos			
+	TERM nenhum_aviso := (0,1) (1,0);
+	TERM poucos_avisos := gauss 1 0.3;
+        TERM medios_avisos := gauss 2 0.3;
+        TERM muitos_avisos := sigm 7 2.75;
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS nenhum_aviso;
+	RULE 2 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 3 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS poucos_avisos;
+
+        RULE 4 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 5 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS medios_avisos;
+	RULE 6 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS medios_avisos;
+        
+        RULE 7 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 8 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS muitos_avisos;
+	RULE 9 : IF aviso_conversao IS nenhum_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS muitos_avisos;
+
+	RULE 10 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 11 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 12 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS medios_avisos;
+
+        RULE 13 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 14 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS medios_avisos;
+	RULE 15 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS muitos_avisos;
+        
+        RULE 16 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS medios_avisos;
+	RULE 17 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS muitos_avisos;
+	RULE 18 : IF aviso_conversao IS baixo_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS muitos_avisos;
+
+        RULE 19 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 20 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 21 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS nenhum_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS medios_avisos;
+
+        RULE 22 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS poucos_avisos;
+	RULE 23 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS medios_avisos;
+	RULE 24 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS baixo_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS muitos_avisos;
+        
+        RULE 25 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS nenhum_aviso_ocultacao THEN avisos IS medios_avisos;
+	RULE 26 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS baixo_aviso_ocultacao THEN avisos IS muitos_avisos;
+	RULE 27 : IF aviso_conversao IS alto_aviso_conversao AND aviso_truncacao IS alto_aviso_truncacao AND aviso_ocultacao IS alto_aviso_ocultacao THEN avisos IS muitos_avisos;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK problema_block	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	erros: REAL;
+        avisos: REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	problemas : REAL;
+END_VAR
+
+FUZZIFY erros			
+	TERM nenhum_erro := (0,1) (1,0);
+	TERM poucos_erros := gauss 1 0.3;
+        TERM medios_erros := gauss 2 0.3;
+        TERM muitos_erros := sigm 7 2.75;
+END_FUZZIFY
+
+FUZZIFY avisos			
+	TERM nenhum_aviso := (0,1) (1,0);
+	TERM poucos_avisos := gauss 1 0.3;
+        TERM medios_avisos := gauss 2 0.3;
+        TERM muitos_avisos := sigm 7 2.75;
+END_FUZZIFY
+
+DEFUZZIFY problemas			
+	TERM nenhum_problema := (0,1) (1,0);
+	TERM poucos_problemas := gauss 1 0.3;
+        TERM medios_problemas := gauss 2 0.3;
+        TERM muitos_problemas := sigm 7 2.75;
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF erros IS nenhum_erro AND avisos IS nenhum_aviso THEN problemas IS nenhum_problema;
+	RULE 2 : IF erros IS nenhum_erro AND avisos IS poucos_avisos THEN problemas IS poucos_problemas;
+	RULE 3 : IF erros IS nenhum_erro AND avisos IS medios_avisos THEN problemas IS poucos_problemas;
+        RULE 4 : IF erros IS nenhum_erro AND avisos IS muitos_avisos THEN problemas IS medios_problemas;
+	
+        RULE 5 : IF erros IS poucos_erros AND avisos IS nenhum_aviso THEN problemas IS poucos_problemas;
+	RULE 6 : IF erros IS poucos_erros AND avisos IS poucos_avisos THEN problemas IS poucos_problemas;
+        RULE 7 : IF erros IS poucos_erros AND avisos IS medios_avisos THEN problemas IS medios_problemas;
+	RULE 8 : IF erros IS poucos_erros AND avisos IS muitos_avisos THEN problemas IS medios_problemas;
+	
+        RULE 9 : IF erros IS medios_erros AND avisos IS nenhum_aviso THEN problemas IS medios_problemas;
+	RULE 10 : IF erros IS medios_erros AND avisos IS poucos_avisos THEN problemas IS medios_problemas;
+        RULE 11 : IF erros IS medios_erros AND avisos IS medios_avisos THEN problemas IS medios_problemas;
+	RULE 12 : IF erros IS medios_erros AND avisos IS muitos_avisos THEN problemas IS muitos_problemas;
+
+        RULE 13 : IF erros IS muitos_erros AND avisos IS nenhum_aviso THEN problemas IS muitos_problemas;
+	RULE 14 : IF erros IS muitos_erros AND avisos IS poucos_avisos THEN problemas IS muitos_problemas;
+        RULE 15 : IF erros IS muitos_erros AND avisos IS medios_avisos THEN problemas IS muitos_problemas;
+	RULE 16 : IF erros IS muitos_erros AND avisos IS muitos_avisos THEN problemas IS muitos_problemas;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK complexidade_block	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	variaveis: REAL;
+        funcoes: REAL;
+        linhas: REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	complexidade : REAL;
+END_VAR
+
+FUZZIFY variaveis		
+	TERM poucas_variaveis :=  sigm -2 4.25;
+	TERM medias_variaveis := gauss 8 1.5;
+	TERM altas_variaveis := sigm 4 10.5;
+END_FUZZIFY
+
+FUZZIFY funcoes		
+	TERM poucas_funcoes := sigm -2.5 3.25;
+	TERM medias_funcoes := gauss 6 1.5;
+	TERM altas_funcoes := sigm 4 9.25;
+END_FUZZIFY
+
+FUZZIFY linhas		
+	TERM poucas_linhas := sigm -0.2 45;
+	TERM medias_linhas := gauss 75 10;
+	TERM altas_linhas := sigm 0.8 101;
+END_FUZZIFY
+
+DEFUZZIFY complexidade			
+	TERM pouca_complexidade := sigm -8 1 
+        TERM media_complexidade := gauss 2 0.3;
+        TERM alta_complexidade := sigm 7 2.75;
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF linhas IS poucas_linhas AND variaveis IS poucas_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 2 : IF linhas IS poucas_linhas AND variaveis IS poucas_variaveis AND funcoes IS medias_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 3 : IF linhas IS poucas_linhas AND variaveis IS poucas_variaveis AND funcoes IS altas_funcoes THEN complexidade IS alta_complexidade;
+
+        RULE 4 : IF linhas IS poucas_linhas AND variaveis IS medias_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 5 : IF linhas IS poucas_linhas AND variaveis IS medias_variaveis AND funcoes IS medias_funcoes THEN complexidade IS media_complexidade;
+	RULE 6 : IF linhas IS poucas_linhas AND variaveis IS medias_variaveis AND funcoes IS altas_funcoes THEN complexidade IS media_complexidade;
+        
+        RULE 7 : IF linhas IS poucas_linhas AND variaveis IS altas_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS media_complexidade;
+	RULE 8 : IF linhas IS poucas_linhas AND variaveis IS altas_variaveis AND funcoes IS medias_funcoes THEN complexidade IS alta_complexidade;
+	RULE 9 : IF linhas IS poucas_linhas AND variaveis IS altas_variaveis AND funcoes IS altas_funcoes THEN complexidade IS alta_complexidade;
+
+        RULE 10 : IF linhas IS medias_linhas AND variaveis IS poucas_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 11 : IF linhas IS medias_linhas AND variaveis IS poucas_variaveis AND funcoes IS medias_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 12 : IF linhas IS medias_linhas AND variaveis IS poucas_variaveis AND funcoes IS altas_funcoes THEN complexidade IS media_complexidade;
+
+        RULE 13 : IF linhas IS medias_linhas AND variaveis IS medias_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 14 : IF linhas IS medias_linhas AND variaveis IS medias_variaveis AND funcoes IS medias_funcoes THEN complexidade IS media_complexidade;
+	RULE 15 : IF linhas IS medias_linhas AND variaveis IS medias_variaveis AND funcoes IS altas_funcoes THEN complexidade IS alta_complexidade;
+        
+        RULE 16 : IF linhas IS medias_linhas AND variaveis IS altas_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 17 : IF linhas IS medias_linhas AND variaveis IS altas_variaveis AND funcoes IS medias_funcoes THEN complexidade IS media_complexidade;
+	RULE 18 : IF linhas IS medias_linhas AND variaveis IS altas_variaveis AND funcoes IS altas_funcoes THEN complexidade IS alta_complexidade;
+        
+        RULE 19 : IF linhas IS altas_linhas AND variaveis IS poucas_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 20 : IF linhas IS altas_linhas AND variaveis IS poucas_variaveis AND funcoes IS medias_funcoes THEN complexidade IS media_complexidade;
+	RULE 21 : IF linhas IS altas_linhas AND variaveis IS poucas_variaveis AND funcoes IS altas_funcoes THEN complexidade IS alta_complexidade;
+
+        RULE 22 : IF linhas IS altas_linhas AND variaveis IS medias_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS pouca_complexidade;
+	RULE 23 : IF linhas IS altas_linhas AND variaveis IS medias_variaveis AND funcoes IS medias_funcoes THEN complexidade IS media_complexidade;
+	RULE 24 : IF linhas IS altas_linhas AND variaveis IS medias_variaveis AND funcoes IS altas_funcoes THEN complexidade IS alta_complexidade;
+        
+        RULE 25 : IF linhas IS altas_linhas AND variaveis IS altas_variaveis AND funcoes IS poucas_funcoes THEN complexidade IS media_complexidade;
+	RULE 26 : IF linhas IS altas_linhas AND variaveis IS altas_variaveis AND funcoes IS medias_funcoes THEN complexidade IS alta_complexidade;
+	RULE 27 : IF linhas IS altas_linhas AND variaveis IS altas_variaveis AND funcoes IS altas_funcoes THEN complexidade IS alta_complexidade;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK necessidade_block	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	problemas: REAL;
+        complexidade: REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	necessidade: REAL;
+END_VAR
+
+FUZZIFY problemas			
+	TERM nenhum_problema := (0,1) (1,0);
+	TERM poucos_problemas := gauss 1 0.3;
+        TERM medios_problemas := gauss 2 0.3;
+        TERM muitos_problemas := sigm 7 2.75;
+END_FUZZIFY
+
+FUZZIFY complexidade			
+	TERM pouca_complexidade := sigm -8 1 
+        TERM media_complexidade := gauss 2 0.3;
+        TERM alta_complexidade := sigm 7 2.75;
+END_FUZZIFY
+
+DEFUZZIFY necessidade			
+	TERM necessidade_nula := (0,1) (1,0);
+	TERM necessidade_baixa := gauss 1 0.3;
+        TERM necessidade_media := gauss 2 0.3;
+        TERM necessidade_alta := sigm 7 2.75;
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF complexidade IS pouca_complexidade AND problemas IS nenhum_problema THEN necessidade IS necessidade_nula;
+	RULE 2 : IF complexidade IS pouca_complexidade AND problemas IS poucos_problemas THEN necessidade IS necessidade_baixa;
+	RULE 3 : IF complexidade IS pouca_complexidade AND problemas IS medios_problemas THEN necessidade IS necessidade_media;
+        RULE 4 : IF complexidade IS pouca_complexidade AND problemas IS muitos_problemas THEN necessidade IS necessidade_alta;
+	
+        RULE 5 : IF complexidade IS media_complexidade AND problemas IS nenhum_problema THEN necessidade IS necessidade_nula;
+	RULE 6 : IF complexidade IS media_complexidade AND problemas IS poucos_problemas THEN necessidade IS necessidade_baixa;
+        RULE 7 : IF complexidade IS media_complexidade AND problemas IS medios_problemas THEN necessidade IS necessidade_media;
+	RULE 8 : IF complexidade IS media_complexidade AND problemas IS muitos_problemas THEN necessidade IS necessidade_alta;
+	
+        RULE 9 : IF complexidade IS alta_complexidade AND problemas IS nenhum_problema THEN necessidade IS necessidade_nula;
+	RULE 10 : IF complexidade IS alta_complexidade AND problemas IS poucos_problemas THEN necessidade IS necessidade_baixa;
+        RULE 11 : IF complexidade IS alta_complexidade AND problemas IS medios_problemas THEN necessidade IS necessidade_media;
+	RULE 12 : IF complexidade IS alta_complexidade AND problemas IS muitos_problemas THEN necessidade IS necessidade_media;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
