@@ -144,22 +144,24 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
     
     private void configurarAcaoMouseWheel(){
         this.addMouseWheelListener(new MouseWheelListener(){
-                    @Override
-                    public void mouseWheelMoved(MouseWheelEvent e) {
-                        PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) e.getSource();
-                        int units = e.getWheelRotation();
-                        int indexAnterior = painelTabulado.getSelectedIndex();
-                        int indexNovo = indexAnterior + units;
-                        if (indexNovo < 0)
-                            painelTabulado.setSelectedIndex(0);
-                        else if (indexNovo >= painelTabulado.getTabCount())
-                            painelTabulado.setSelectedIndex(painelTabulado.getTabCount() - 1);
-                        else
-                            painelTabulado.setSelectedIndex(indexNovo);
-                    }
-                });
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) e.getSource();
+                int units = e.getWheelRotation();
+                int indexAnterior = painelTabulado.getSelectedIndex();
+                int indexNovo = indexAnterior + units;
+                if(painelTabulado.getSelectedIndex() >= 1){
+                    if (indexNovo < 1)
+                        painelTabulado.setSelectedIndex(1);
+                    else if (indexNovo >= painelTabulado.getTabCount())
+                        painelTabulado.setSelectedIndex(painelTabulado.getTabCount() - 1);
+                    else
+                        painelTabulado.setSelectedIndex(indexNovo);
+                }
+            }
+        });
     }
-
+    
     private void configurarAcaoFecharAbaAtual() {
         KeyStroke atalho = KeyStroke.getKeyStroke("control Q");
         String nome = "Fechar aba atual";
@@ -274,13 +276,13 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(800, 600);
                 frame.setLayout(new BorderLayout());
-
+                
                 PainelTabuladoPrincipal painelTabuladoPrincipal = new PainelTabuladoPrincipal();
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
                 painelTabuladoPrincipal.setSelectedIndex(1);
-
+                
                 frame.add(painelTabuladoPrincipal, BorderLayout.CENTER);
                 frame.setVisible(true);
 
