@@ -19,7 +19,7 @@ Você pode criar uma issue [aqui](https://github.com/UNIVALI-LITE/Portugol-Studi
 * Inclua capturas de tela e GIFs animados em seu pull request sempre que possível.
 * Siga os padrões de código.
 * Escreva a documentação em [Markdown](https://daringfireball.net/projects/markdown).
-* Use mensagens curtas e com a conjugação verbal no tempo presente. Veja em [Guia de estilo de mensagens de commit](#git-commit-messages).
+* Use mensagens curtas e com a conjugação verbal no tempo presente. Veja em [Guia de estilo de mensagens de commit](#mensagens-de-commit-do-git).
 
 ## Guias de estilo
 
@@ -52,3 +52,4 @@ Você pode criar uma issue [aqui](https://github.com/UNIVALI-LITE/Portugol-Studi
   * :arrow_up: `:arrow_up:` quando atualizar dependências
   * :arrow_down: `:arrow_down:` quando abaixar as dependências
   * :shirt: `:shirt:` quando remover avisos
+  * :gem: `:gem:` quando adicionar uma feature

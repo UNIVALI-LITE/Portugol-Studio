@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author Elieser
  */
-class InstanciaPortugolStudio
+public class InstanciaPortugolStudio
 {
 
     private static final Logger LOGGER = Logger.getLogger(InstanciaPortugolStudio.class.getName());

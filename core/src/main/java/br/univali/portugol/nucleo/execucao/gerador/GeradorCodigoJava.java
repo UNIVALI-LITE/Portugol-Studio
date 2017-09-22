@@ -28,6 +28,10 @@ public class GeradorCodigoJava
     private final GeradorAtribuicao geradorAtribuicao = new GeradorAtribuicao();
     private final long seed;
     private boolean processandoVariaveisGlobais = false; // não inicializa as variáveis quando está processando as variáveis globais
+    
+    private boolean inicializandoNoPara = false;
+    private int quantidadeInicializacoesPara = 0;
+    private int indiceAtualInicializacaoPara = -1;
 
     public static class Opcoes
     {
@@ -484,7 +488,7 @@ public class GeradorCodigoJava
         public Boolean visitar(NoDeclaracaoVariavel noDeclaracao) throws ExcecaoVisitaASA
         {
             boolean podeInicializar = !processandoVariaveisGlobais;
-            return geradorDeclaracaoVariavel.gera(noDeclaracao, saida, this, nivelEscopo, podeInicializar);
+            return geradorDeclaracaoVariavel.gera(noDeclaracao, saida, this, nivelEscopo, podeInicializar, inicializandoNoPara, indiceAtualInicializacaoPara);
         }
 
         @Override
@@ -636,16 +640,34 @@ public class GeradorCodigoJava
         public Void visitar(NoPara no) throws ExcecaoVisitaASA
         {
             saida.append("for(");
-            NoBloco inicializacao = no.getInicializacao();
             
-            // não gera código de inicialização se a seção de inicialização tiver apenas uma referência para variável (sem inicialização) - corrige o bug #110 do núcleo
-            if (inicializacao != null && !(inicializacao instanceof NoReferenciaVariavel))
+            if (no.getInicializacoes() != null && !no.getInicializacoes().isEmpty())
             {
-                inicializacao.aceitar(this);
-            }
-
+            	inicializandoNoPara = true;
+            	quantidadeInicializacoesPara = no.getInicializacoes().size();
+            	
+                for (int i = 0; i < no.getInicializacoes().size(); i++)
+                {
+                	indiceAtualInicializacaoPara = i;
+                	
+                    NoBloco inicializacao = no.getInicializacoes().get(i);
+                    // não gera código de inicialização se a seção de inicialização tiver apenas uma referência para variável (sem inicialização) - corrige o bug #110 do núcleo
+                    if (inicializacao != null && !(inicializacao instanceof NoReferenciaVariavel))
+                    {
+                        inicializacao.aceitar(this);
+                        
+                        if (quantidadeInicializacoesPara > 1 && i < no.getInicializacoes().size() - 1)
+                        {
+                            saida.append(", ");
+                        }
+                    }
+                }
+                
+                inicializandoNoPara = false;
+            }            
+            
             saida.append("; "); // separador depois da inicialização do for 
-
+            
             no.getCondicao().aceitar(this);
 
             saida.append("; "); // separador depois da c

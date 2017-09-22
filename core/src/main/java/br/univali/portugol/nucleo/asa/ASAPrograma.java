@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.asa;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public final class ASAPrograma extends ASA
 {
-    private List<NoInclusaoBiblioteca> listaInclusoesBibliotecas;
+    private List<NoInclusaoBiblioteca> listaInclusoesBibliotecas = Collections.EMPTY_LIST;
     
     private int totalVariaveisDeclaradas = 0; 
     private int totalVetoresDeclarados = 0;

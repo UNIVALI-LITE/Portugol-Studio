@@ -297,7 +297,6 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
             TrechoCodigoFonte trecho = noDeclaracaoVetor.getTrechoCodigoFonteNome();
 
             String nome = noDeclaracaoVetor.getNome();
-            String tipo = noDeclaracaoVetor.getTipoDado().getNome().concat("[]");
 
             ConclusaoModeloASA conclusao;
 
@@ -417,9 +416,12 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
 
             nivelASA = nivelASA + 1;
 
-            if (noPara.getInicializacao() != null)
+            if (noPara.getInicializacoes() != null)
             {
-                noPara.getInicializacao().aceitar(this);
+            	for (NoBloco inicializacao : noPara.getInicializacoes())
+            	{
+            		inicializacao.aceitar(this);
+            	}
             }
 
             visitar(noPara.getBlocos());
@@ -444,11 +446,12 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
             return null;
         }
 
-        private void substituirParametro(TemplateCompletion conclusao, int indice, ParameterizedCompletion.Parameter parametro)
+        @SuppressWarnings("unchecked")
+		private void substituirParametro(TemplateCompletion conclusao, int indice, ParameterizedCompletion.Parameter parametro)
         {
             try
             {
-                Class classe = TemplateCompletion.class;
+                Class<TemplateCompletion> classe = TemplateCompletion.class;
                 Field campoParams = classe.getDeclaredField("params");
 
                 campoParams.setAccessible(true);
