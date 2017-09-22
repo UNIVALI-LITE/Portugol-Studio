@@ -13,6 +13,8 @@ import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import br.univali.ps.fuzzy.portugolFuzzyCorretor.view.TelaAdicionarDados;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,9 +55,15 @@ public class PortugolFuzzyCorretor {
     private List<AvisoAnalise> avisos;
     private List<ErroAnalise> erros;
     private static PortugolFuzzyCorretor instance = null;
+    private String classe = "Anon";
+    private String aluno = "101";
+    TelaCustomBorder main = new TelaCustomBorder("Dados de usuário");
+    TelaAdicionarDados adicionarDados = new TelaAdicionarDados();    
     
     private PortugolFuzzyCorretor() {
         this.codigoPortugol = "";
+        main.setPanel(adicionarDados);
+        main.setLocationRelativeTo(null);
     }
     
     public static PortugolFuzzyCorretor getInstance(){
@@ -65,6 +73,32 @@ public class PortugolFuzzyCorretor {
         return instance;
     }
     
+    public void setDados()
+    {
+        main.setVisible(true);
+    }
+    
+    public void fecharTelaDados()
+    {
+        main.setVisible(false);
+    }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public String getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(String aluno) {
+        this.aluno = aluno;
+    }   
+        
     public void setCode(String codigoPortugol) {
         this.codigoPortugol = codigoPortugol;
     }
@@ -175,7 +209,7 @@ public class PortugolFuzzyCorretor {
 
         String [] variaveisNecessidade = {"problemas", "complexidade", "necessidade"};
         double [] valoresVariaveisNecessidade = {problemas, complexidade}; 
-        double necessidade = calcularFuzzyBlock(fis.getFunctionBlock("necessidade_block"), variaveisNecessidade, valoresVariaveisNecessidade, true);
+        double necessidade = calcularFuzzyBlock(fis.getFunctionBlock("necessidade_block"), variaveisNecessidade, valoresVariaveisNecessidade, false);
         sendPost(""+necessidade);
         numeroErrosSint=0;
         numeroErrosSem=0;
@@ -209,12 +243,12 @@ public class PortugolFuzzyCorretor {
     private void sendPost(String score)
     {
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost("http://localhost/api/scores");
+        HttpPost httppost = new HttpPost("http://portugol-fuzzy.herokuapp.com/api/scores");
 
         // Request parameters and other properties.
         List<BasicNameValuePair> params = new ArrayList<>(3);
-        params.add(new BasicNameValuePair("student", "Paulinho sem braço"));
-        params.add(new BasicNameValuePair("class", "101"));
+        params.add(new BasicNameValuePair("student", aluno));
+        params.add(new BasicNameValuePair("class", classe));
         params.add(new BasicNameValuePair("score", score));
         try {
             httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
