@@ -723,16 +723,16 @@ include /usr/share/nano/portugol.nanorc</text>
                     <explanation>Configurando quebras de linha no Mac</explanation>
                     <actionList>
                         <runProgram>
-                            <program>tr</program>
-                            <programArguments>-d '\r'  &lt; ${install_app_dir}/Portugol\ Studio/Contents/MacOS/Portugol\ Studio</programArguments>
+                            <program>sed</program>
+                            <programArguments>-i '' $'s/\r//' '${install_root_dir}/Portugol Studio.app/Contents/MacOS/Portugol Studio'</programArguments>
                         </runProgram>
                         <runProgram>
-                            <program>tr</program>
-                            <programArguments>-d '\r'  &lt; ${install_app_dir}/executar-console-mac.command</programArguments>
+                            <program>sed</program>
+                            <programArguments>-i '' $'s/\r//' '${install_root_dir}/Portugol Studio.app/Contents/Resources/IDE/executar-console-mac.command'</programArguments>
                         </runProgram>
                         <runProgram>
-                            <program>tr</program>
-                            <programArguments>-d '\r'  &lt; ${install_app_dir}/executar-studio-mac.command</programArguments>
+                            <program>sed</program>
+                            <programArguments>-i '' $'s/\r//' '${install_root_dir}/Portugol Studio.app/Contents/Resources/IDE/executar-studio-mac.command'</programArguments>
                         </runProgram>
                     </actionList>
                 </actionGroup>
