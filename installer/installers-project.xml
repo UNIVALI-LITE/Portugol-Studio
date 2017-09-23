@@ -698,22 +698,44 @@ include /usr/share/nano/portugol.nanorc</text>
             </ruleList>
         </actionGroup>
         <actionGroup>
-            <explanation>Associando extensão .por no Mac</explanation>
+            <explanation>[MAC] Ações pós instalação</explanation>
             <actionList>
-                <runProgram>
-                    <program>defaults</program>
-                    <programArguments>write com.apple.LaunchServices LSHandlers -array-add "&lt;dict&gt;&lt;key&gt;LSHandlerContentTag&lt;/key&gt;
+                <actionGroup>
+                    <explanation>Associando extensão .por no Mac</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>defaults</program>
+                            <programArguments>write com.apple.LaunchServices LSHandlers -array-add "&lt;dict&gt;&lt;key&gt;LSHandlerContentTag&lt;/key&gt;
 &lt;string&gt;por&lt;/string&gt;&lt;key&gt;LSHandlerContentTagClass&lt;/key&gt;
 &lt;string&gt;public.filename-extension&lt;/string&gt;&lt;key&gt;LSHandlerRoleAll&lt;/key&gt;
 &lt;string&gt;br.univali.portugol.studio&lt;/string&gt;&lt;/dict&gt;"
            </programArguments>
-                </runProgram>
+                        </runProgram>
 
-                <!-- Restart the launch services to reload the configuration -->
-                <runProgram>
-                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
-                    <programArguments>-kill -domain local -domain system -domain user</programArguments>
-                </runProgram>
+                        <!-- Restart the launch services to reload the configuration -->
+                        <runProgram>
+                            <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                            <programArguments>-kill -domain local -domain system -domain user</programArguments>
+                        </runProgram>
+                    </actionList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Configurando quebras de linha no Mac</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>tr</program>
+                            <programArguments>-d '\r'  &lt; ${install_app_dir}/Portugol\ Studio/Contents/MacOS/Portugol\ Studio</programArguments>
+                        </runProgram>
+                        <runProgram>
+                            <program>tr</program>
+                            <programArguments>-d '\r'  &lt; ${install_app_dir}/executar-console-mac.command</programArguments>
+                        </runProgram>
+                        <runProgram>
+                            <program>tr</program>
+                            <programArguments>-d '\r'  &lt; ${install_app_dir}/executar-studio-mac.command</programArguments>
+                        </runProgram>
+                    </actionList>
+                </actionGroup>
             </actionList>
             <ruleList>
                 <platformTest>
