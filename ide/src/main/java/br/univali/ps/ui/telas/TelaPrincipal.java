@@ -61,6 +61,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         initComponents();
         criaAbas();
         configurarCores();
+        configurarTitulo();
         instalarObservadores();
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -93,6 +94,13 @@ public class TelaPrincipal extends javax.swing.JPanel
 //        mainPanel.setBackground(ColorController.COR_DESTAQUE);
         setBackground(ColorController.FUNDO_ESCURO);
         painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
+        painelTitulo.setBackground(ColorController.FUNDO_ESCURO);
+        labelTitulo.setForeground(ColorController.COR_LETRA_TITULO);
+    }
+    
+    private void configurarTitulo(){
+        String v = PortugolStudio.getInstancia().getVersao();
+        labelTitulo.setText("Portugol Studio "+ v.substring(0, v.length() - 2 ));
     }
     
     
@@ -361,17 +369,29 @@ public class TelaPrincipal extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        painelTitulo = new javax.swing.JPanel();
+        labelTitulo = new javax.swing.JLabel();
         painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         setLayout(new java.awt.BorderLayout());
 
-        painelTabuladoPrincipal.setName("abaInicial"); // NOI18N
+        painelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 3, 0));
+        painelTitulo.setLayout(new java.awt.GridBagLayout());
+
+        labelTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelTitulo.setText("<html><body><div class=\"titulo\" style=\"text-align:center;\">Portugol Studio</div></body></html>");
+        labelTitulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        painelTitulo.add(labelTitulo, new java.awt.GridBagConstraints());
+
+        add(painelTitulo, java.awt.BorderLayout.NORTH);
         add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel labelTitulo;
     private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
+    private javax.swing.JPanel painelTitulo;
     // End of variables declaration//GEN-END:variables
 }
