@@ -376,6 +376,7 @@ class DistFrame extends JFrame
         releaseModel.addElement('')
         releaseModel.addElement('ALPHA')
         releaseModel.addElement('BETA')
+        releaseModel.addElement('BUILD-TEST')
         releaseModel.addElement('PRE-RELEASE')
         releaseModel.addElement('QUICK-FIX')
         releaseModel.addElement('RELEASE')

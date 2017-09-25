@@ -149,6 +149,66 @@
                         </distributionFile>
                     </distributionFileList>
                 </folder>
+                <folder>
+                    <description>Utilitarios para Windows</description>
+                    <destination>"${install_app_dir}\utils"</destination>
+                    <name>folder_utils_windows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/windows/update_shell.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Utilitários para Linux x86</description>
+                    <destination>${install_app_dir}/utils</destination>
+                    <name>folder_utils_linux_x86</name>
+                    <platforms>linux</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.lang</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.nanorc</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/application-x-portugol.xml</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/filetypes.Portugol20.conf</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/install_geany_files.sh</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Utilitários para Linux x64</description>
+                    <destination>${install_app_dir}/utils</destination>
+                    <name>folder_utils_linux_x64</name>
+                    <platforms>linux-x64</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.lang</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.nanorc</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/application-x-portugol.xml</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/filetypes.Portugol20.conf</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/install_geany_files.sh</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/uninstall_geany_files.sh</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
             </folderList>
             <startMenuShortcutList>
                 <startMenuShortcut>
@@ -172,52 +232,6 @@
                     <windowsPath>${install_app_dir}</windowsPath>
                 </startMenuShortcut>
             </startMenuShortcutList>
-        </component>
-        <component>
-            <name>component_utils</name>
-            <description>Utilitários</description>
-            <canBeEdited>0</canBeEdited>
-            <selected>0</selected>
-            <show>0</show>
-            <folderList>
-                <folder>
-                    <description>Utilitarios para Windows</description>
-                    <destination>${install_app_dir}\utils</destination>
-                    <name>folder_utils_windows</name>
-                    <platforms>all</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>arquivos/windows/update_shell.dll</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-        </component>
-        <component>
-            <name>component_extra_files</name>
-            <description>Arquivos adicionais</description>
-            <canBeEdited>0</canBeEdited>
-            <selected>0</selected>
-            <show>0</show>
-            <folderList>
-                <folder>
-                    <description>Arquivos de associações</description>
-                    <destination>${system_temp_directory}/portugol-studio</destination>
-                    <name>folder_association_files</name>
-                    <platforms>all</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>arquivos/linux/portugol.lang</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>arquivos/linux/portugol.nanorc</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>arquivos/linux/application-x-portugol.xml</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
         </component>
     </componentList>
     <initializationActionList>
@@ -550,22 +564,9 @@
                                         </command>
                                     </commandList>
                                 </associateWindowsFileExtension>
-                                <unpackFile>
-                                    <component>component_utils</component>
-                                    <destination>${install_app_dir.dos}/utils/update_shell.dll</destination>
-                                    <folder>folder_utils_windows</folder>
-                                    <origin>update_shell.dll</origin>
-                                    <show>0</show>
-                                    <ruleList>
-                                        <fileExists>
-                                            <negate>1</negate>
-                                            <path>${system_temp_directory}/portugol-studio/update_shell.dll</path>
-                                        </fileExists>
-                                    </ruleList>
-                                </unpackFile>
                                 <runProgram>
                                     <program>rundll32</program>
-                                    <programArguments>${install_app_dir.dos}/utils/update_shell.dll,UpdateShell</programArguments>
+                                    <programArguments>"${install_app_dir}\utils\update_shell.dll",UpdateShell</programArguments>
                                     <show>0</show>
                                 </runProgram>
                             </actionList>
@@ -632,6 +633,14 @@
                                     <program>chmod</program>
                                     <programArguments>755 "${install_app_dir}/java/java-linux/bin/javac"</programArguments>
                                 </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 ${install_app_dir}/utils/install_geany_files.sh</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 ${install_app_dir}/utils/uninstall_geany_files.sh</programArguments>
+                                </runProgram>
                             </actionList>
                         </actionGroup>
                         <actionGroup>
@@ -653,39 +662,42 @@ Type=Application
 Terminal=0
 MimeType=application/x-portugol</text>
                                 </writeFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
+                                <copyFile>
                                     <destination>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>portugol.lang</origin>
+                                    <origin>${install_app_dir}/utils/portugol.lang</origin>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/gtksourceview-2.0/language-specs</path>
                                         </fileExists>
                                     </ruleList>
-                                </unpackFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
+                                </copyFile>
+                                <copyFile>
                                     <destination>/usr/share/nano/portugol.nanorc</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>portugol.nanorc</origin>
+                                    <origin>${install_app_dir}/utils/portugol.nanorc</origin>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/nano</path>
                                         </fileExists>
                                     </ruleList>
-                                </unpackFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
+                                </copyFile>
+                                <copyFile>
                                     <destination>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>portugol.lang</origin>
+                                    <origin>${install_app_dir}/utils/portugol.lang</origin>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/gtksourceview-3.0/language-specs</path>
                                         </fileExists>
                                     </ruleList>
-                                </unpackFile>
+                                </copyFile>
+                                <copyFile>
+                                    <destination>/usr/share/geany/filetypes.Portugol20.conf</destination>
+                                    <origin>${install_app_dir}/utils/filetypes.Portugol20.conf</origin>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </copyFile>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
@@ -713,6 +725,24 @@ MimeType=application/x-portugol</text>
                                         </fileExists>
                                     </ruleList>
                                 </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>644 /usr/share/geany/filetypes.Portugol20.conf</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany/filetypes.Portugol20.conf</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>${install_app_dir}/utils/install_geany_files.sh</program>
+                                    <programArguments></programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
                                 <addTextToFile>
                                     <file>/etc/nanorc</file>
                                     <text>## Portugol 2.0
@@ -723,12 +753,10 @@ include /usr/share/nano/portugol.nanorc</text>
                                         </fileExists>
                                     </ruleList>
                                 </addTextToFile>
-                                <unpackFile>
-                                    <component>component_extra_files</component>
+                                <copyFile>
                                     <destination>/usr/share/mime/packages/application-x-portugol.xml</destination>
-                                    <folder>folder_association_files</folder>
-                                    <origin>application-x-portugol.xml</origin>
-                                </unpackFile>
+                                    <origin>${install_app_dir}/utils/application-x-portugol.xml</origin>
+                                </copyFile>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/mime/packages/application-x-portugol.xml</programArguments>
@@ -913,10 +941,34 @@ include /usr/share/nano/portugol.nanorc</text>
             </actionList>
         </actionGroup>
     </postUninstallerCreationActionList>
+    <preUninstallationActionList>
+        <actionGroup>
+            <explanation>Linux</explanation>
+            <actionList>
+                <createDirectory>
+                    <path>${system_temp_directory}/portugol-studio</path>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${system_temp_directory}/portugol-studio</path>
+                        </fileExists>
+                    </ruleList>
+                </createDirectory>
+                <copyFile>
+                    <destination>${system_temp_directory}/portugol-studio/uninstall_geany_files.sh</destination>
+                    <origin>${install_app_dir}/utils/uninstall_geany_files.sh</origin>
+                </copyFile>
+            </actionList>
+            <ruleList>
+                <platformTest>
+                    <type>linux</type>
+                </platformTest>
+            </ruleList>
+        </actionGroup>
+    </preUninstallationActionList>
     <postUninstallationActionList>
         <actionGroup>
             <explanation>Removendo associações de arquivos</explanation>
-            <progressText>Removendo associações de arquivos</progressText>
             <actionList>
                 <actionGroup>
                     <explanation>Windows</explanation>
@@ -934,26 +986,15 @@ include /usr/share/nano/portugol.nanorc</text>
                                 <runProgram>
                                     <abortOnError>0</abortOnError>
                                     <program>rundll32</program>
-                                    <programArguments>${install_app_dir}/utils/update_shell.dll,UpdateShell</programArguments>
+                                    <programArguments>"${install_app_dir}\utils\update_shell.dll",UpdateShell</programArguments>
                                     <show>0</show>
                                     <showMessageOnError>0</showMessageOnError>
                                     <ruleList>
                                         <fileExists>
-                                            <path>${install_app_dir}/utils/update_shell.dll,UpdateShell</path>
+                                            <path>"${install_app_dir}\utils\update_shell.dll"</path>
                                         </fileExists>
                                     </ruleList>
                                 </runProgram>
-                                <deleteFile>
-                                    <abortOnError>0</abortOnError>
-                                    <path>${system_temp_directory}\portugol-studio</path>
-                                    <show>0</show>
-                                    <showMessageOnError>0</showMessageOnError>
-                                    <ruleList>
-                                        <fileExists>
-                                            <path>${system_temp_directory}\portugol-studio</path>
-                                        </fileExists>
-                                    </ruleList>
-                                </deleteFile>
                             </actionList>
                         </actionGroup>
                         <deleteFile>
@@ -991,6 +1032,23 @@ include /usr/share/nano/portugol.nanorc</text>
                         <actionGroup>
                             <explanation>Removendo associações de arquivos</explanation>
                             <actionList>
+                                <runProgram>
+                                    <program>${system_temp_directory}/portugol-studio/uninstall_geany_files.sh</program>
+                                    <programArguments></programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <deleteFile>
+                                    <path>${system_temp_directory}/portugol-studio</path>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${system_temp_directory}/portugol-studio</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </deleteFile>
                                 <runProgram>
                                     <program>rm</program>
                                     <programArguments>/usr/share/mime/packages/application-x-portugol.xml</programArguments>
