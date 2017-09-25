@@ -151,7 +151,7 @@
                 </folder>
                 <folder>
                     <description>Utilitarios para Windows</description>
-                    <destination>"${install_app_dir}\utils"</destination>
+                    <destination>${install_app_dir}\utils</destination>
                     <name>folder_utils_windows</name>
                     <platforms>windows</platforms>
                     <distributionFileList>
@@ -566,7 +566,7 @@
                                 </associateWindowsFileExtension>
                                 <runProgram>
                                     <program>rundll32</program>
-                                    <programArguments>"${install_app_dir}\utils\update_shell.dll",UpdateShell</programArguments>
+                                    <programArguments>${install_app_dir}\utils\update_shell.dll,UpdateShell</programArguments>
                                     <show>0</show>
                                 </runProgram>
                             </actionList>
@@ -986,7 +986,7 @@ include /usr/share/nano/portugol.nanorc</text>
                                 <runProgram>
                                     <abortOnError>0</abortOnError>
                                     <program>rundll32</program>
-                                    <programArguments>"${install_app_dir}\utils\update_shell.dll",UpdateShell</programArguments>
+                                    <programArguments>${install_app_dir}\utils\update_shell.dll,UpdateShell</programArguments>
                                     <show>0</show>
                                     <showMessageOnError>0</showMessageOnError>
                                     <ruleList>
