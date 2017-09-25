@@ -4,6 +4,6 @@
 		<comment>Algoritmo na linguagem Portugol</comment>
 		<glob pattern="*.por" weight="100"/>
 		<glob-deleteall></glob-deleteall>
-		<icon name="arquivo-por"/>
+		<icon name="application-x-portugol"/>
 	</mime-type>
 </mime-info>
