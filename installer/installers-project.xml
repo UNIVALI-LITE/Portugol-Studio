@@ -902,6 +902,11 @@ include /usr/share/nano/portugol.nanorc</text>
                         <runProgram>
                             <program>chmod</program>
                             <programArguments>755 "${install_app_dir}/desinstalar"</programArguments>
+                            <ruleList>
+                                <platformTest>
+                                    <type>linux</type>
+                                </platformTest>
+                            </ruleList>
                         </runProgram>
                     </actionList>
                 </actionGroup>
