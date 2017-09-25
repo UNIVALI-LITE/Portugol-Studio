@@ -552,7 +552,7 @@
                                 </associateWindowsFileExtension>
                                 <unpackFile>
                                     <component>component_utils</component>
-                                    <destination>${install_app_dir}/utils/update_shell.dll</destination>
+                                    <destination>${install_app_dir.dos}/utils/update_shell.dll</destination>
                                     <folder>folder_utils_windows</folder>
                                     <origin>update_shell.dll</origin>
                                     <show>0</show>
@@ -565,7 +565,7 @@
                                 </unpackFile>
                                 <runProgram>
                                     <program>rundll32</program>
-                                    <programArguments>${install_app_dir}/utils/update_shell.dll,UpdateShell</programArguments>
+                                    <programArguments>${install_app_dir.dos}/utils/update_shell.dll,UpdateShell</programArguments>
                                     <show>0</show>
                                 </runProgram>
                             </actionList>
