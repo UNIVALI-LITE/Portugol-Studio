@@ -2098,6 +2098,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento().getCodigoFonte();
     }
 
+    public void exibirErros(ResultadoAnalise resultado){
+        getPainelSaida().getAbaMensagensCompilador().atualizar(resultado);
+        getEditor().exibirErros(resultado);
+    }
+
     @Override
     public ASAPrograma obterASAProgramaCompilado() {
         if (programaCompilado != null) {
