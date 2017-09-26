@@ -10,7 +10,7 @@ SET caminho_aplicacao=%caminho_portugol%\aplicacao
 SET caminho_java=%caminho_portugol%\java\java-windows\bin\java.exe
 
 SET arquivo=
-SET comando="%caminho_java%" -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -Dvisualvm.display.name=Portugol-Studio -jar portugol-console.jar
+SET comando="%caminho_java%" -server -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -Dvisualvm.display.name=Portugol-Studio -jar portugol-console.jar
 
 IF NOT "%~1"=="" (
 	

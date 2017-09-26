@@ -2,9 +2,9 @@
     <shortName>portugolstudio</shortName>
     <fullName>Portugol Studio</fullName>
     <version>2.6</version>
-    <installerFilename>ps-${product_version}-${platform_name}.${platform_exec_suffix}</installerFilename>
+    <installerFilename>portugol-studio-${product_version}-${platform_name}.${platform_exec_suffix}</installerFilename>
     <debugLevel>0</debugLevel>
-    <licenseFile>../LICENSE</licenseFile>
+    <licenseFile>../LICENSE.md</licenseFile>
     <wrapLicenseFileText>0</wrapLicenseFileText>
     <leftImage>imagens/banner_lateral.png</leftImage>
     <logoImage>imagens/icone.png</logoImage>
@@ -21,7 +21,7 @@
             <desktopShortcutList>
                 <shortcut>
                     <comment>Executa o Portugol Studio</comment>
-                    <exec>${install_javaw_exe.unix} -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled ${install_app_dir.unix}/aplicacao/portugol-studio.jar</exec>
+                    <exec>${install_javaw_exe.unix} -server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled ${install_app_dir.unix}/aplicacao/portugol-studio.jar</exec>
                     <icon>${install_app_dir.unix}/aplicacao/icones/linux/portugol-studio.png</icon>
                     <name>Portugol Studio</name>
                     <noPinToStart>0</noPinToStart>
@@ -30,7 +30,7 @@
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${install_javaw_exe}</windowsExec>
-                    <windowsExecArgs>-jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}\aplicacao\portugol-studio.jar"</windowsExecArgs>
+                    <windowsExecArgs>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}\aplicacao\portugol-studio.jar"</windowsExecArgs>
                     <windowsIcon>${install_app_dir}\aplicacao\icones\windows\portugol-studio.ico</windowsIcon>
                     <windowsPath>${install_app_dir}</windowsPath>
                 </shortcut>
@@ -167,7 +167,7 @@
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${install_javaw_exe}</windowsExec>
-                    <windowsExecArgs>-jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-studio.jar"</windowsExecArgs>
+                    <windowsExecArgs>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-studio.jar"</windowsExecArgs>
                     <windowsIcon>${install_app_dir}\aplicacao\icones\windows\portugol-studio.ico</windowsIcon>
                     <windowsPath>${install_app_dir}</windowsPath>
                 </startMenuShortcut>
@@ -451,19 +451,19 @@
                                 <command>
                                     <makeDefault>1</makeDefault>
                                     <runProgram>${install_javaw_exe}</runProgram>
-                                    <runProgramArguments>-jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-studio.jar" "%1"</runProgramArguments>
+                                    <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-studio.jar" "%1"</runProgramArguments>
                                     <verb>Abrir</verb>
                                 </command>
                                 <command>
                                     <makeDefault>0</makeDefault>
                                     <runProgram>${install_java_exe}</runProgram>
-                                    <runProgramArguments>-jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
+                                    <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
                                     <verb>Executar em modo console</verb>
                                 </command>
                                 <command>
                                     <makeDefault>0</makeDefault>
                                     <runProgram>${install_javaw_exe}</runProgram>
-                                    <runProgramArguments>-jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
+                                    <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
                                     <verb>Executar em modo Gráfico</verb>
                                 </command>
                             </commandList>
@@ -698,22 +698,44 @@ include /usr/share/nano/portugol.nanorc</text>
             </ruleList>
         </actionGroup>
         <actionGroup>
-            <explanation>Associando extensão .por no Mac</explanation>
+            <explanation>[MAC] Ações pós instalação</explanation>
             <actionList>
-                <runProgram>
-                    <program>defaults</program>
-                    <programArguments>write com.apple.LaunchServices LSHandlers -array-add "&lt;dict&gt;&lt;key&gt;LSHandlerContentTag&lt;/key&gt;
+                <actionGroup>
+                    <explanation>Associando extensão .por no Mac</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>defaults</program>
+                            <programArguments>write com.apple.LaunchServices LSHandlers -array-add "&lt;dict&gt;&lt;key&gt;LSHandlerContentTag&lt;/key&gt;
 &lt;string&gt;por&lt;/string&gt;&lt;key&gt;LSHandlerContentTagClass&lt;/key&gt;
 &lt;string&gt;public.filename-extension&lt;/string&gt;&lt;key&gt;LSHandlerRoleAll&lt;/key&gt;
 &lt;string&gt;br.univali.portugol.studio&lt;/string&gt;&lt;/dict&gt;"
            </programArguments>
-                </runProgram>
+                        </runProgram>
 
-                <!-- Restart the launch services to reload the configuration -->
-                <runProgram>
-                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
-                    <programArguments>-kill -domain local -domain system -domain user</programArguments>
-                </runProgram>
+                        <!-- Restart the launch services to reload the configuration -->
+                        <runProgram>
+                            <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                            <programArguments>-kill -domain local -domain system -domain user</programArguments>
+                        </runProgram>
+                    </actionList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Configurando quebras de linha no Mac</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>sed</program>
+                            <programArguments>-i '' $'s/\r//' '${install_root_dir}/Portugol Studio.app/Contents/MacOS/Portugol Studio'</programArguments>
+                        </runProgram>
+                        <runProgram>
+                            <program>sed</program>
+                            <programArguments>-i '' $'s/\r//' '${install_root_dir}/Portugol Studio.app/Contents/Resources/IDE/executar-console-mac.command'</programArguments>
+                        </runProgram>
+                        <runProgram>
+                            <program>sed</program>
+                            <programArguments>-i '' $'s/\r//' '${install_root_dir}/Portugol Studio.app/Contents/Resources/IDE/executar-studio-mac.command'</programArguments>
+                        </runProgram>
+                    </actionList>
+                </actionGroup>
             </actionList>
             <ruleList>
                 <platformTest>

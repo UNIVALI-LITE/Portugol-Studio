@@ -7,13 +7,14 @@ import java.util.logging.Logger;
 public class Comparador {
     
     boolean afirmarIgualdade(Object a, Object b)
-    {
-        try {            
+    {          
+        try {
             Class ca = a.getClass();
             Class cb = b.getClass();
             
-            Method metodo = this.getClass().getDeclaredMethod("afirmarIgualdade", ca, cb);
-            return (Boolean) metodo.invoke(this, a, b);            
+            Method metodo;
+            metodo = this.getClass().getDeclaredMethod("afirmarIgualdade", ca, cb);
+            return (Boolean) metodo.invoke(this, a, b);
         } catch (Exception ex) {
             Logger.getLogger(Comparador.class.getName()).log(Level.SEVERE, null, ex);
         }

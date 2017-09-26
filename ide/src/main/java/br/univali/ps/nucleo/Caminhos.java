@@ -7,6 +7,7 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -48,12 +49,7 @@ public final class Caminhos
                 return new File(".");
             }
         }
-        else
-        {
-            File diretorio = new File("../Portugol-Instalador/arquivos/compartilhados");
-
-            return diretorio;
-        }
+        return new File("src/main/assets");
     }
 
     public static String obterCaminhoExecutavelJavac()
@@ -160,8 +156,18 @@ public final class Caminhos
     
     public static boolean rodandoEmDesenvolvimento()
     {
-        return !(new File("aplicacao/portugol-studio.jar").exists());
-    }
+        String path = new File(".").getAbsolutePath();
+        
+        if (rodandoNoWindows()) {
+            return !path.endsWith("Portugol Studio\\.");
+        }
+        else if (rodandoNoLinux()) {
+            return !path.endsWith("portugol-studio/.");
+        }
+       
+        //Mac - quando está instalado o executável do PS fica em /Applications/Portugol Studio.app/Contents/MacOSx
+        return !path.contains("Portugol Studio.app");
+     }
 
     public static boolean rodandoNoWindows()
     {

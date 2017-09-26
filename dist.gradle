@@ -64,7 +64,7 @@ dirs.rootProject.baseDir = buildscript.sourceFile.parentFile
 dirs.installer.baseDir = new File(dirs.rootProject.baseDir, 'installer')
 dirs.installer.buildDir = new File(dirs.installer.baseDir, 'build')
 dirs.installer.javaDir = new File(dirs.installer.buildDir, 'java')
-dirs.installer.configurationsFile = new File(dirs.installer.baseDir, 'configurations.json')
+dirs.installer.configurationsFile = new File(dirs.installer.baseDir, 'build-configurations.json')
 dirs.versionFile = new File(rootProject.projectDir.getPath() + '/ide/src/main/resources/version.properties')
 
 import groovy.json.JsonException
@@ -534,61 +534,6 @@ def fail(def message = 'Build failed', def cause = null){
     throw error
 }
 
-
-def downloadJava(def platform) {
-        
-    def platformId = platform.name + platform.suffix
-
-    def jdkName = 'jdk' + jdkVersion + '-' + platformId
-
-    def jdkDownloadFlagFile = new File(dirs.installer.javaDir, jdkName + '.flag')
-
-    if (!jdkDownloadFlagFile.exists())
-    {
-        def zipFileName = jdkName + '.zip'
-
-        def remoteZip = 'http://installbuilder.bitrock.com/java/' + zipFileName
-
-        def localZip = new File(dirs.installer.javaDir, zipFileName)
-
-        def zipExtractDir = new File(dirs.installer.javaDir, jdkName)
-
-        dirs.installer.javaDir.mkdirs()
-
-        println('JDK for ' + platform.title + ' not found. The download will begin now...')
-        println('Cleaning up old files')
-
-        localZip.delete()
-        delete zipExtractDir
-
-        println('Downloading JDK for ' + platform.title)
-
-        download {
-            src remoteZip
-            dest dirs.installer.javaDir
-        }
-
-        println('Extracting JDK...')
-
-        copy {
-            from zipTree(localZip)
-            into dirs.installer.javaDir
-        }
-
-        def platformJdkDir = new File(dirs.installer.javaDir, 'java-' + platform.name)
-        def architectureJdkDir = new File(platformJdkDir, platform.architecture)
-
-        platformJdkDir.mkdirs()
-
-        copy {
-            from new File(zipExtractDir, 'java-' + platformId)
-            into architectureJdkDir
-        }
-
-        jdkDownloadFlagFile.createNewFile()
-    }
-}
-
 def loadConfigurations(def required){
     
     def buildConfigurations = new Properties()
@@ -754,22 +699,27 @@ def runBuild(def buildConfigurations){
         
         fail('you must select at least one platform to build')
     }
-    
-    downloadJavaBundles(buildConfigurations)
-    
+
     checkInstallBuilder(buildConfigurations)
-    
+
     buildAppFiles(buildConfigurations)
-    
+
+    createJdkBundles(buildConfigurations)
+
     deleteOldInstallersAndPackages(buildConfigurations)
-    
+
     buildInstallers(buildConfigurations)
-    
+
     updateSiteVersionFile(buildConfigurations)
 }
 
 def updateSiteVersionFile(def buildConfigurations){
     
+    if (!buildConfigurations.versionChanged) {
+        
+        return
+    }
+
     def versionString = getVersionString()    
     
     def versionJson = [links:[:], versionString: versionString]
@@ -914,15 +864,123 @@ def buildInstallers(buildConfigurations){
     }
 }
 
-def downloadJavaBundles(buildConfigurations){
+def createJdkBundles(buildConfigurations){
     
     for (platform in buildConfigurations.selectedPlatforms){
         
-        if (!platform.isMultiplatform){
+        def platformId = platform.name + platform.suffix
+
+        def jdkName = 'jdk' + jdkVersion + '-' + platformId
+        
+        def jdkDownloadFlagFile = new File(dirs.installer.javaDir, jdkName + '.flag')
+
+        if (!jdkDownloadFlagFile.exists() && !platform.isMultiplatform){
             
-            downloadJava(platform)
+            downloadJDK(platform)
+            minifyJDK(platform)
+            renameJvmCfv(platform)
+            jdkDownloadFlagFile.createNewFile()
         }
     }
+}
+
+def renameJvmCfv(def platform) {
+    
+    if( platform.name.equals('windows') && platform.architecture.equals('x86')){
+        def jvmcfvfile = new File(rootProject.projectDir, '/installer/build/java/java-windows/x86/jre/lib/i386/jvm.cfg')
+        jvmcfvfile.write('# Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.\n# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n# List of JVMs that can be used as an option to java, javac, etc.\n# Order is important -- first in this list is the default JVM.\n# NOTE that this both this file and its format are UNSUPPORTED and\n# WILL GO AWAY in a future release.\n#\n# You may also select a JVM in an arbitrary location with the\n# "-XXaltjvm=<jvm_dir>" option, but that too is unsupported\n# and may not be available in a future release.\n#\n-server KNOWN\n-client IGNORE\n')
+    }
+}
+
+def downloadJDK(def platform) {
+        
+    def platformId = platform.name + platform.suffix
+
+    def jdkName = 'jdk' + jdkVersion + '-' + platformId
+
+    def zipFileName = jdkName + '.zip'
+
+    def remoteZip = 'http://installbuilder.bitrock.com/java/' + zipFileName
+
+    def localZip = new File(dirs.installer.javaDir, zipFileName)
+
+    def zipExtractDir = new File(dirs.installer.javaDir, jdkName)
+
+    dirs.installer.javaDir.mkdirs()
+
+    println('JDK for ' + platform.title + ' not found. The download will begin now...')
+    println('Cleaning up old files')
+
+    localZip.delete()
+    delete zipExtractDir
+
+    println('Downloading JDK for ' + platform.title)
+
+    download {
+        src remoteZip
+        dest dirs.installer.javaDir
+    }
+
+    println('Extracting JDK...')
+
+    copy {
+        from zipTree(localZip)
+        into dirs.installer.javaDir
+    }
+}
+
+def minifyJDK(platform) {
+    
+    println('Minifying JDK for ' + platform.title)
+    
+    def platformJdkDir = new File(dirs.installer.javaDir, 'java-' + platform.name).getPath()
+	
+    def architectureJdkDir = new File(platformJdkDir, platform.architecture).getPath()
+    
+    def platformId = platform.name + platform.suffix
+
+    def jdkName = 'jdk' + jdkVersion + '-' + platformId
+    
+    def srcJdkDir = new File(dirs.installer.javaDir, jdkName + '/java-' + platformId).getPath()
+    
+    def jdkompJar = new File(rootProject.projectDir, 'gradle/libs/jdkomp/jdkomp-1.0.0.jar').getPath()
+    
+    def jdkPlatform = platform.name + platform.suffix
+    
+    def outDir = new File(dirs.installer.javaDir, 'out')
+    
+    def profileFile = new File(dirs.installer.baseDir, 'jdk-minify-profile.json').getPath()
+    
+    def theArgs = [ 
+            
+            jdkompJar, 
+            '--platform', jdkPlatform, 
+            '--jdk', srcJdkDir,
+            '--profile', profileFile, 
+            '--output', outDir.getPath(),
+            '--verbose'
+        ]
+        
+    javaexec { 
+        
+        main = '-jar'
+        args = theArgs 
+    }
+
+    delete architectureJdkDir
+
+    copy {
+        from new File(outDir, 'jdk')
+        into architectureJdkDir
+    }
+    
+    delete outDir
+    
+    delete new File(dirs.installer.javaDir, jdkName + '.zip')
+
+    delete new File(dirs.installer.javaDir, jdkName)
+    
+    println('JDK was minified successfully')
 }
 
 def buildAppFiles(buildConfigurations){
@@ -976,8 +1034,8 @@ def buildAppFiles(buildConfigurations){
 def buildBinaryDistribution(platform, buildConfigurations){
     
     def builderExecutable = getInstallBuilderExecutable(buildConfigurations)
-    def projectXml = new File(dirs.installer.baseDir, 'instalador.xml')
-    def licenseXml = new File(dirs.installer.baseDir, 'license.xml')
+    def projectXml = new File(dirs.installer.baseDir, 'installers-project.xml')
+    def licenseXml = new File(dirs.installer.baseDir, 'installbuilder-license.xml')
     
     def platformString = platform.name + platform.suffix
     def versionString = getVersionString()
@@ -1013,8 +1071,19 @@ def runDistGui(testing){
         theTask = theTask + '-test'
     }
         
+	File gradleExe
+	
+	if (OperatingSystem.current().isWindows()){
+
+        gradleExe = new File(rootProject.projectDir, '/gradlew.bat')
+    }
+	else {
+	
+		gradleExe = new File(rootProject.projectDir, '/gradlew')
+	}
+		
     exec {
-        commandLine new File(rootProject.projectDir, '/gradlew').getPath(), theTask
+        commandLine gradleExe.getPath(), theTask
     }
 }
 

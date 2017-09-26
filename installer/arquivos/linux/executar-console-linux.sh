@@ -11,7 +11,7 @@ clear
 
 numero_parametros=$#
 
-comando="'$caminho_java' -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -Dvisualvm.display.name=Portugol-Studio portugol-console.jar"
+comando="'$caminho_java' -jar -server -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -Dvisualvm.display.name=Portugol-Studio portugol-console.jar"
 
 if [ $numero_parametros -gt 0 ]; then
 
