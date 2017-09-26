@@ -118,6 +118,10 @@ class DistFrame extends JFrame
         this.configurationsFile = configurationsFile
         this.versionFile = versionFile
         
+
+        buildConfigurations.versionChanged = false
+        saveConfigurations(buildConfigurations)
+
         createFrame()        
         
         JPanel contentPanel = new JPanel()
@@ -452,18 +456,20 @@ class DistFrame extends JFrame
         Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionFile))
         
+        String currentReleaseName = versionProps.getProperty('releaseName')
         int currentMajorNumber = Integer.parseInt(versionProps.getProperty('majorVersion')) 
         int currentMinorNumber = Integer.parseInt(versionProps.getProperty('minorVersion'))
         int currentBuildNumber = Integer.parseInt(versionProps.getProperty('buildVersion'))
 //        int currentRevisionNumber = Integer.parseInt(versionProps.getProperty('revisionVersion'))
         
+        String newReleaseName = releaseNameCombo.getSelectedItem()
         Integer newMajorNumber = (Integer) majorSpinner.getValue()
         Integer newMinorNumber = (Integer) minorSpinner.getValue()
         Integer newBuildNumber = (Integer) buildSpinner.getValue()
 //        Integer newRevisionNumber = (Integer) revisionSpinner.getValue()
         
 //        if ((newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber) || (newRevisionNumber != currentRevisionNumber)) {
-        if ((newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber)) {
+        if ((!newReleaseName.equals(currentReleaseName)) || (newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber)) {
             
             versionProps.setProperty('majorVersion', newMajorNumber.toString())
             versionProps.setProperty('minorVersion', newMinorNumber.toString())
@@ -481,8 +487,9 @@ class DistFrame extends JFrame
             fileOut.write(content.getBytes())
             
             buildConfigurations.versionChanged = true
+
+            saveConfigurations(buildConfigurations)
         }
-        
     }
     
     private void saveConfigurations(buildConfigurations){
@@ -729,7 +736,12 @@ def updateSiteVersionFile(def buildConfigurations){
 
         if (!platform.isMultiplatform){
 
-            def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+            def installerName = getInstallerName(platform)
+
+            if (platform.name.equals('osx')){
+
+                installerName = installerName.replace('.app', '')
+            }
             
             def linkName = (platform.name + platform.suffix).replace('-', '_')
             
@@ -756,19 +768,28 @@ def updateSiteVersionFile(def buildConfigurations){
 
 def packageInstaller(platform, buildConfigurations){
     
-    def versionString = getVersionString()
-    
     if (!platform.isMultiplatform && platform.createZipPackage){
 
         def tmpDir = new File(dirs.installer.buildDir.getPath() + '/tmp')
 
         delete tmpDir
 
-        def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+        def installerName = getInstallerName(platform)
 
-        def installerFile = new File(buildConfigurations.outputDir + '/' + installerName)            
+        JOptionPane.showMessageDialog(null, 'InstallerName: ' + installerName)
+
+        def installerFile = new File(buildConfigurations.outputDir + '/' + installerName);
+        
+        JOptionPane.showMessageDialog(null, 'InstallerFile: ' + installerFile.getPath())
 
         def zipFile = new File(buildConfigurations.outputDir + '/' + installerName + '.zip')
+
+        if (platform.name.equals('osx')){
+        
+            zipFile = new File(buildConfigurations.outputDir + '/' + installerName.replace('.app', '.zip'))
+        }
+
+        JOptionPane.showMessageDialog(null, 'ZipFile: ' + zipFile.getPath())
 
         def additionalFiles = new File(dirs.installer.baseDir.getPath() + '/arquivos/' + platform.name + '/package')
 
@@ -835,13 +856,11 @@ def getBuildDate(){
 
 def deleteOldInstallersAndPackages(buildConfigurations){
         
-    def versionString = getVersionString()
-    
     for (platform in buildConfigurations.selectedPlatforms){
         
         if (!platform.isMultiplatform){
             
-            def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+            def installerName = getInstallerName(platform)
             def installerFile = new File(buildConfigurations.outputDir, installerName)
             
             delete installerFile
@@ -854,6 +873,15 @@ def deleteOldInstallersAndPackages(buildConfigurations){
             }
         }
     }
+}
+
+def getInstallerName(def platform){
+
+    def versionString = getVersionString()
+
+    def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+    
+    return installerName
 }
 
 def buildInstallers(buildConfigurations){
