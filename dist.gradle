@@ -781,11 +781,7 @@ def packageInstaller(platform, buildConfigurations){
 
         def installerName = getInstallerName(platform)
 
-        JOptionPane.showMessageDialog(null, 'InstallerName: ' + installerName)
-
         def installerFile = new File(buildConfigurations.outputDir + '/' + installerName);
-        
-        JOptionPane.showMessageDialog(null, 'InstallerFile: ' + installerFile.getPath())
 
         def zipFile = new File(buildConfigurations.outputDir + '/' + installerName + '.zip')
 
@@ -793,8 +789,6 @@ def packageInstaller(platform, buildConfigurations){
         
             zipFile = new File(buildConfigurations.outputDir + '/' + installerName.replace('.app', '.zip'))
         }
-
-        JOptionPane.showMessageDialog(null, 'ZipFile: ' + zipFile.getPath())
 
         def additionalFiles = new File(dirs.installer.baseDir.getPath() + '/arquivos/' + platform.name + '/package')
 
