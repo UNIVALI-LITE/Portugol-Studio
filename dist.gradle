@@ -102,7 +102,7 @@ class DistFrame extends JFrame
 { 
     private final static int WINDOW_WIDTH = 600
     private final static int WINDOW_HEIGHT = 580
-    private final Map buildConfigurations;
+    private final Map buildConfigurations
     
     private boolean success = false
     
@@ -110,7 +110,9 @@ class DistFrame extends JFrame
     
     private final File configurationsFile
     
-    private final File versionFile;
+    private final File versionFile
+
+    private JPanel contentPanel
     
     DistFrame(platforms, buildConfigurations, configurationsFile, versionFile) {
         
@@ -122,10 +124,7 @@ class DistFrame extends JFrame
         buildConfigurations.versionChanged = false
         saveConfigurations(buildConfigurations)
 
-        createFrame()        
-        
-        JPanel contentPanel = new JPanel()
-        contentPanel.setLayout(null)
+        createFrame()
         
         JFileChooser chooser = new JFileChooser()
         chooser.setAcceptAllFileFilterUsed(false)
@@ -443,9 +442,6 @@ class DistFrame extends JFrame
         contentPanel.add(cancelButton)
         
         y = 50
-        
-        getContentPane().setLayout(new GridLayout(1, 1))
-        getContentPane().add(contentPanel)
     }
     
 //    private void saveVersion(JSpinner majorSpinner, JSpinner minorSpinner, JSpinner buildSpinner, JSpinner revisionSpinner, JComboBox releaseNameCombo){
@@ -499,11 +495,20 @@ class DistFrame extends JFrame
     private void createFrame(){
         
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
-        setLocationRelativeTo(null)
+        //setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         setResizable(false)
         setTitle('Build configuration')
         setType(java.awt.Window.Type.UTILITY)
+
+        contentPanel = new JPanel()
+        contentPanel.setLayout(null)
+        contentPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT))
+        
+        getContentPane().setLayout(new GridLayout(1, 1))
+        getContentPane().add(contentPanel)
+
+        pack()
+        setLocationRelativeTo(null)
     }
     
     public boolean isSuccess(){
