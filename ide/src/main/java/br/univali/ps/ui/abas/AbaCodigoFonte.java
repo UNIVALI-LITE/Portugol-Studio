@@ -1561,7 +1561,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         Configuracoes configuracoes = Configuracoes.getInstancia();
         if (Configuracoes.rodandoEmDesenvolvimento()) {
 
-            return System.getProperty("java.class.path") + classPathSeparator;
+            return  "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar"
+                    + classPathSeparator
+                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/lib/TableLayoutSwing.jar"
+                    + classPathSeparator
+                    +
+                    System.getProperty("java.class.path") + classPathSeparator 
+//                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar" 
+//                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/build"
+//                    + classPathSeparator 
+                    //+ "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos//SimuladorExperimentos/build/classes/br/simulador/plugin/biblioteca"
+                    //+ classPathSeparator
+                    ;
+            
         }
 
         File classpathDir = new File(configuracoes.getDiretorioAplicacao().getCanonicalPath(), "lib");
