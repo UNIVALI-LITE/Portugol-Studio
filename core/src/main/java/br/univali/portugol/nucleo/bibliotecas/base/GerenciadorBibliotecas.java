@@ -186,6 +186,7 @@ public final class GerenciadorBibliotecas
             metaDadosBiblioteca.setNome(nomeBiblioteca);
             metaDadosBiblioteca.setTipo(propriedadesBiblioteca.tipo());
             metaDadosBiblioteca.setDocumentacao(documentacaoBiblioteca);
+            metaDadosBiblioteca.setPacoteBiblioteca(classeBiblioteca.getPackage().getName());
 
             MetaDadosConstantes metaDadosConstantes = obterMetaDadosConstantes(nomeBiblioteca, classeBiblioteca);
             MetaDadosFuncoes metaDadosFuncoes = obterMetaDadosFuncoes(nomeBiblioteca, classeBiblioteca);

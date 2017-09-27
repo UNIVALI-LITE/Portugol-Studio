@@ -52,7 +52,9 @@ public final class Caminhos
         {
             //File diretorio = new File("../Portugol-Instalador/arquivos/compartilhados");
             // Alterado para testar os plugins diretamente
-            File diretorio = new File("../../Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin");
+//            File diretorio = new File("../../Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin");
+//            File diretorio = new File("../../SimuladorExperimentos");
+            File diretorio = new File("D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos");
 
             return diretorio;
         }
