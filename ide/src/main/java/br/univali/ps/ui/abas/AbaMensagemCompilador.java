@@ -98,6 +98,7 @@ public final class AbaMensagemCompilador extends Aba
 
         SwingUtils.invokeLater(() -> {
             tabelaModel.setResultadoAnalise(resultadoAnalise);
+            selecionar();
         });
         
     }

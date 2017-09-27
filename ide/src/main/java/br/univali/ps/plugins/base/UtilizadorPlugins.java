@@ -1,5 +1,6 @@
 package br.univali.ps.plugins.base;
 
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import javax.swing.Action;
@@ -21,6 +22,8 @@ public interface UtilizadorPlugins
     public ASAPrograma obterASAProgramaCompilado();
     
     public ASAPrograma obterASAProgramaAnalisado();
+    
+    public void exibirErros(ResultadoAnalise resultado);
     
     public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho);
     
