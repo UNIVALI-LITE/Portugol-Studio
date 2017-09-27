@@ -12,7 +12,6 @@
         "jdk/jre/lib/desktop",
         "jdk/jre/lib/ext",
         "jdk/jre/lib/jfr",
-        "jdk/jre/lib/management",
         "jdk/jre/lib/oblique-fonts",
 
         "jdk/jre/plugin",
@@ -24,7 +23,6 @@
         "jdk/jre/lib/javaws.jar",
         "jdk/jre/lib/jfr.jar",
         "jdk/jre/lib/jfxswt.jar",
-        "jdk/jre/lib/management-agent.jar",
         "jdk/jre/lib/plugin.jar",
 
         "jdk/jre/THIRDPARTYLICENSEREADME-JAVAFX.txt",
@@ -147,7 +145,6 @@
         "jdk/jre/bin/jfxmedia.dll",
         "jdk/jre/bin/jfxwebkit.dll",
         "jdk/jre/bin/jfr.dll",
-        "jdk/jre/bin/management.dll",
         "jdk/jre/bin/prism_common.dll",
         "jdk/jre/bin/prism_d3d.dll",
         "jdk/jre/bin/prism_es2.dll",
@@ -306,7 +303,6 @@
         "jdk/jre/lib/i386/libjfxmedia.so",
         "jdk/jre/lib/i386/libjfxwebkit.so",
         "jdk/jre/lib/i386/libjsig.so",
-        "jdk/jre/lib/i386/libmanagement.so",
         "jdk/jre/lib/i386/libprism_common.so",
         "jdk/jre/lib/i386/libprism_es2.so",
         "jdk/jre/lib/i386/libprism_sw.so"
@@ -382,7 +378,6 @@
         "jdk/jre/lib/amd64/libjfxmedia.so",
         "jdk/jre/lib/amd64/libjfxwebkit.so",
         "jdk/jre/lib/amd64/libjsig.so",
-        "jdk/jre/lib/amd64/libmanagement.so",
         "jdk/jre/lib/amd64/libprism_common.so",
         "jdk/jre/lib/amd64/libprism_es2.so",
         "jdk/jre/lib/amd64/libprism_sw.so"
