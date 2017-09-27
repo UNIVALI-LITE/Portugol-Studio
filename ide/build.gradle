@@ -59,7 +59,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.json/json
     compile group: 'org.json', name: 'json', version: '20170516'
 
-
+    testCompile group: 'org.assertj', name: 'assertj-swing-junit', version: '3.8.0'
 
 
     

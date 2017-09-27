@@ -483,8 +483,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                     int tamanhoDoTexto = textArea.getSelectionEnd() - textArea.getSelectionStart();
                     ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(stringArrastada, linha, coluna, tamanhoDoTexto);
                     programa.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
-                    if (procuradorDeDeclaracao.encontrou()) {
-                        adicionaNo(procuradorDeDeclaracao.getNoDeclaracao());
+                    NoDeclaracao no = procuradorDeDeclaracao.getNoDeclaracao();
+                    if (procuradorDeDeclaracao.encontrou() && !contemNo(no)) {
+                        adicionaNo(no);
                     }
                 }
             } catch (Exception e) {
