@@ -1158,12 +1158,14 @@ include /usr/share/nano/portugol.nanorc</text>
     </postUninstallationActionList>
     <cdromDirectory></cdromDirectory>
     <compressionAlgorithm>lzma</compressionAlgorithm>
+    <createOsxBundleDmg>1</createOsxBundleDmg>
     <defaultUnixDirectoryPermissions>777</defaultUnixDirectoryPermissions>
     <defaultUnixFilePermissions>777</defaultUnixFilePermissions>
     <enableRollback>1</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <height>450</height>
     <installationScope>allusers</installationScope>
+    <osxDmgTitle>Instalação do Portugol Studio</osxDmgTitle>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
     <singleInstanceCheck>1</singleInstanceCheck>

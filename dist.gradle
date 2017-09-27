@@ -20,9 +20,9 @@ ext {
             'name': 'osx',
             'architecture': 'x64',
             'suffix': '',
-            'installerExtension': '.app',
+            'installerExtension': '.dmg',
             'isMultiplatform': false,
-            'createZipPackage': true
+            'createZipPackage': false
         ],
 
         [
