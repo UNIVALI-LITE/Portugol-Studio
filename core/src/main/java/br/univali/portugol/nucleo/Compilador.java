@@ -27,12 +27,15 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DaemonExecutor;
 import org.apache.commons.exec.DefaultExecutor;
@@ -289,7 +292,7 @@ final class Compilador
             throw new ErroCompilacao(resultadoAnalise);
         }
         
-        return carregaProgramaCompilado(diretorioCompilacao, nomeClasse, resultadoAnalise);
+        return carregaProgramaCompilado(diretorioCompilacao, nomeClasse, classPath, resultadoAnalise);
         
     }
     
@@ -308,14 +311,42 @@ final class Compilador
         }
     }
 
-    private Programa carregaProgramaCompilado(File diretorioCompilacao, String nomeClasseCompilada, ResultadoAnalise resultadoAnalise) throws ErroCompilacao
+    private Programa carregaProgramaCompilado(File diretorioCompilacao, String nomeClasseCompilada, String classpath, ResultadoAnalise resultadoAnalise) throws ErroCompilacao
     {
         try
         {
-            URLClassLoader classLoader = new URLClassLoader(new URL[]
+            String classpathSeparator = ";";
+            
+            if (!classpath.contains(classpathSeparator))
             {
-                diretorioCompilacao.toURI().toURL()
-            });
+                classpathSeparator = ":";
+            }
+            
+            String[] paths = classpath.split(classpathSeparator);
+            List<URL> classpathUrls = new ArrayList<>();
+
+            for (String path: paths)
+            {
+                //JOptionPane.showMessageDialog(null, path);
+                classpathUrls.add(new File(path).toURI().toURL());
+            }
+            
+            URLClassLoader systemLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+            URL[] systemUrls = systemLoader.getURLs();
+            
+            for (URL systemUrl : systemUrls)
+            {
+                if (classpathUrls.contains(systemUrl))
+                {
+                    classpathUrls.remove(systemUrl);
+                }
+            }
+            
+            classpathUrls.add(diretorioCompilacao.toURI().toURL());
+                        
+            ClassLoader prevCl = Thread.currentThread().getContextClassLoader();
+            ClassLoader classLoader = URLClassLoader.newInstance(classpathUrls.toArray(new URL[]{}), prevCl);
+
             Class<?> loadedClass = classLoader.loadClass(NOME_PACOTE.concat(".").concat(nomeClasseCompilada));
 
             return (Programa) loadedClass.newInstance();
