@@ -1,5 +1,6 @@
 package br.univali.ps.ui.utils;
 
+import br.univali.ps.nucleo.ExcecaoAplicacao;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ public final class FileHandle
     }
     public static void save(String text, File file, String charset) throws Exception
     {
+        if(file.getParentFile().exists())
         {
             BufferedWriter writer = null;
             try
@@ -45,17 +47,17 @@ public final class FileHandle
     {
         if (file == null)
         {
-            throw new IllegalArgumentException("Arquivo nulo não pode ser aberto.");
+            throw new ExcecaoAplicacao("Arquivo nulo não pode ser aberto.", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
         }
 
         if (file.isDirectory())
         {
-            throw new IllegalArgumentException("O arquivo solicitado é um diretório.");
+            throw new ExcecaoAplicacao("O arquivo solicitado é um diretório.", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
         }
 
         if (!file.canRead())
         {
-            throw new IllegalArgumentException("Acesso negado ao arquivo. Você não possuí permissão de leitura para esse arquivo");
+            throw new ExcecaoAplicacao("Acesso negado ao arquivo. Você não possuí permissão de leitura para esse arquivo", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
         }
 
         return read(file);

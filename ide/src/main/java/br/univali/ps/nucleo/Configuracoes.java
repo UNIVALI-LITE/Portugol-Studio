@@ -72,7 +72,7 @@ public final class Configuracoes
     private boolean exibirAvisoRenomear = true;
     private boolean exibirTutorialUso = true;
     private boolean exibirDicasInterface = true;
-    private String uriAtualizacao = "http://lite.acad.univali.br/~alice/portugol/studio/";
+    private String uriAtualizacao = "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest";
 
     private Configuracoes()
     {
@@ -106,7 +106,7 @@ public final class Configuracoes
             exibirAvisoRenomear = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_RENOMEAR, "true"));
             exibirTutorialUso = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_TUTORIAL_USO, "true"));
             exibirDicasInterface = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_DICAS_INTERFACE, "true"));
-            uriAtualizacao = configuracoes.getProperty(URI_ATUALIZACAO, "http://lite.acad.univali.br/~alice/portugol/studio/");
+            uriAtualizacao = configuracoes.getProperty(URI_ATUALIZACAO, "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest");
         }
         catch (IOException excecao)
         {
@@ -554,7 +554,7 @@ public final class Configuracoes
 
     public static boolean rodandoEmDesenvolvimento()
     {
-        return !(new File("aplicacao/portugol-studio.jar").exists());
+        return Caminhos.rodandoEmDesenvolvimento();
     }
 
     public static boolean rodandoNoWindows()

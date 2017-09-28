@@ -267,7 +267,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     WeblafUtils.configurarBotao(button, ColorController.TRANSPARENTE, Color.BLACK, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                     arquivosRecuperados.add(button);
                 } catch (Exception ex) {
-                    Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
                 }
             }
         }
@@ -897,7 +897,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 setaAtivacaoBotoesExecucao(true); // pode executar                
             } catch (Exception ex) {
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
                 LOGGER.log(Level.SEVERE, null, ex);
+                setaAtivacaoBotoesExecucao(true); // pode executar                
             } finally {
                 setVisibilidadeLoader(false);
             }
@@ -1106,8 +1108,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                         String programaRenomeado = Portugol.renomearSimbolo(programa, linha, coluna, telaRenomearSimbolo.getNovoNome());
                                         editor.setCodigoFonteRenomeado(programaRenomeado);
                                     }
-                                } catch (ExcecaoAplicacao | ErroAoRenomearSimbolo ex) {
+                                } catch (ExcecaoAplicacao ex) {
                                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                                } catch (ErroAoRenomearSimbolo ex) {
+                                    if (ex.getTipo() == ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO) {
+                                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(ex.getMensagem(), ExcecaoAplicacao.Tipo.ERRO_USUARIO));
+                                    } else {
+                                        PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                                    }
                                 }
                             }
                         }
@@ -1561,19 +1569,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         Configuracoes configuracoes = Configuracoes.getInstancia();
         if (Configuracoes.rodandoEmDesenvolvimento()) {
 
-            return  "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar"
+            return "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar"
                     + classPathSeparator
                     + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/lib/TableLayoutSwing.jar"
                     + classPathSeparator
-                    +
-                    System.getProperty("java.class.path") + classPathSeparator 
-//                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar" 
-//                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/build"
-//                    + classPathSeparator 
+                    + System.getProperty("java.class.path") + classPathSeparator //                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar" 
+                    //                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/build"
+                    //                    + classPathSeparator 
                     //+ "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos//SimuladorExperimentos/build/classes/br/simulador/plugin/biblioteca"
                     //+ classPathSeparator
                     ;
-            
+
         }
 
         File classpathDir = new File(configuracoes.getDiretorioAplicacao().getCanonicalPath(), "lib");
@@ -1739,6 +1745,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     SwingUtilities.invokeLater(() -> {
                         exibirResultadoAnalise(resultadoAnalise);
                     });
+
+                    setaAtivacaoBotoesExecucao(true); // libera o botão de execução quando o programa tem erros - issue #358
                 }
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, null, e);
@@ -2110,7 +2118,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento().getCodigoFonte();
     }
 
-    public void exibirErros(ResultadoAnalise resultado){
+    public void exibirErros(ResultadoAnalise resultado) {
         getPainelSaida().getAbaMensagensCompilador().atualizar(resultado);
         getEditor().exibirErros(resultado);
     }
@@ -2278,15 +2286,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 acaoInterromper.setEnabled(true);
                 painelSaida.getConsole().selecionar();
 
-                try {
-                    painelSaida.getConsole().limparConsole();
+                painelSaida.getConsole().limparConsole();
 
-                    if (programa.getResultadoAnalise().contemAvisos()) {
-                        exibirPopupAvisoCompilacao();
-                    }
-
-                } catch (Exception ex) {
-                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
+                if (programa.getResultadoAnalise().contemAvisos()) {
+                    exibirPopupAvisoCompilacao();
                 }
 
                 painelSaida.getConsole().setExecutandoPrograma(true);
@@ -2305,16 +2308,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) {
                     console.escreverNoConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
                 } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
-                    console.escreverNoConsole("\nErro em tempo de execução: " + resultadoExecucao.getErro().getMensagem());
+                    console.escreverNoConsole("\nOcorreu um erro durante a execução do programa: " + resultadoExecucao.getErro().getMensagem());
                     console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
                 } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
                     console.escreverNoConsole("\nO programa foi interrompido!");
                 }
-
-                ocultarPainelSaida();
-                acaoInterromper.setEnabled(false);
-                setaAtivacaoBotoesExecucao(true);
-                painelSaida.getConsole().setExecutandoPrograma(false);
 
                 liberaMemoriaAlocada();
             });
@@ -2370,7 +2368,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         try {
                             GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
                         } catch (ErroInstalacaoPlugin erro) {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
                         }
                         criarInstanciaPlugin(abaCodigoFonte);
                         devolver(abaCodigoFonte);
@@ -2394,7 +2392,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
             GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
         } catch (ErroInstalacaoPlugin erro) {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
         }
     }
 
@@ -2410,18 +2408,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public JScrollPane getScrollInspetor() {
         return scrollInspetor;
     }
-    
-    
+
     @Override
     public void registrarBiblioteca(Class<? extends Biblioteca> biblioteca) {
-         try {
+        try {
             Portugol.getGerenciadorBibliotecas().registrarBibliotecaExterna(biblioteca);
         } catch (ErroCarregamentoBiblioteca ex) {
             Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
 //    private static class PoolAbasCodigoFonte extends PoolAbstrato
 //    {
 //
@@ -2477,7 +2473,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        }
 //    }
 
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel arquivosRecuperados;
     private javax.swing.JToolBar barraFerramentas;
