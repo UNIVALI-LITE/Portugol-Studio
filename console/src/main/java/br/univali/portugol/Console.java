@@ -43,6 +43,18 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     private static boolean aguardarParaSair = true;
     
     private Programa programa = null;
+    
+    private static boolean isLinux = false;
+    
+    static 
+    {
+    	String osName = System.getProperty("os.name");
+    
+    	if (osName != null && osName.indexOf("nux") >= 0)
+    	{
+    		isLinux = true;
+    	}
+    }
 
     private static void inicializarMecanismoLog()
     {
@@ -432,7 +444,10 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     @Override
     public void limpar()
     {
-
+    	if (isLinux)
+    	{
+    		System.out.print("\033c");
+    	}
     }
 
     @Override
