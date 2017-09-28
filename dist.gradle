@@ -20,9 +20,9 @@ ext {
             'name': 'osx',
             'architecture': 'x64',
             'suffix': '',
-            'installerExtension': '.app',
+            'installerExtension': '.dmg',
             'isMultiplatform': false,
-            'createZipPackage': true
+            'createZipPackage': false
         ],
 
         [
@@ -102,7 +102,7 @@ class DistFrame extends JFrame
 { 
     private final static int WINDOW_WIDTH = 600
     private final static int WINDOW_HEIGHT = 580
-    private final Map buildConfigurations;
+    private final Map buildConfigurations
     
     private boolean success = false
     
@@ -110,7 +110,9 @@ class DistFrame extends JFrame
     
     private final File configurationsFile
     
-    private final File versionFile;
+    private final File versionFile
+
+    private JPanel contentPanel
     
     DistFrame(platforms, buildConfigurations, configurationsFile, versionFile) {
         
@@ -118,10 +120,11 @@ class DistFrame extends JFrame
         this.configurationsFile = configurationsFile
         this.versionFile = versionFile
         
-        createFrame()        
-        
-        JPanel contentPanel = new JPanel()
-        contentPanel.setLayout(null)
+
+        buildConfigurations.versionChanged = false
+        saveConfigurations(buildConfigurations)
+
+        createFrame()
         
         JFileChooser chooser = new JFileChooser()
         chooser.setAcceptAllFileFilterUsed(false)
@@ -376,6 +379,7 @@ class DistFrame extends JFrame
         releaseModel.addElement('')
         releaseModel.addElement('ALPHA')
         releaseModel.addElement('BETA')
+        releaseModel.addElement('BUILD-TEST')
         releaseModel.addElement('PRE-RELEASE')
         releaseModel.addElement('QUICK-FIX')
         releaseModel.addElement('RELEASE')
@@ -438,9 +442,6 @@ class DistFrame extends JFrame
         contentPanel.add(cancelButton)
         
         y = 50
-        
-        getContentPane().setLayout(new GridLayout(1, 1))
-        getContentPane().add(contentPanel)
     }
     
 //    private void saveVersion(JSpinner majorSpinner, JSpinner minorSpinner, JSpinner buildSpinner, JSpinner revisionSpinner, JComboBox releaseNameCombo){
@@ -451,18 +452,20 @@ class DistFrame extends JFrame
         Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionFile))
         
+        String currentReleaseName = versionProps.getProperty('releaseName')
         int currentMajorNumber = Integer.parseInt(versionProps.getProperty('majorVersion')) 
         int currentMinorNumber = Integer.parseInt(versionProps.getProperty('minorVersion'))
         int currentBuildNumber = Integer.parseInt(versionProps.getProperty('buildVersion'))
 //        int currentRevisionNumber = Integer.parseInt(versionProps.getProperty('revisionVersion'))
         
+        String newReleaseName = releaseNameCombo.getSelectedItem()
         Integer newMajorNumber = (Integer) majorSpinner.getValue()
         Integer newMinorNumber = (Integer) minorSpinner.getValue()
         Integer newBuildNumber = (Integer) buildSpinner.getValue()
 //        Integer newRevisionNumber = (Integer) revisionSpinner.getValue()
         
 //        if ((newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber) || (newRevisionNumber != currentRevisionNumber)) {
-        if ((newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber)) {
+        if ((!newReleaseName.equals(currentReleaseName)) || (newMajorNumber != currentMajorNumber) || (newMinorNumber != currentMinorNumber) || (newBuildNumber != currentBuildNumber)) {
             
             versionProps.setProperty('majorVersion', newMajorNumber.toString())
             versionProps.setProperty('minorVersion', newMinorNumber.toString())
@@ -480,8 +483,9 @@ class DistFrame extends JFrame
             fileOut.write(content.getBytes())
             
             buildConfigurations.versionChanged = true
+
+            saveConfigurations(buildConfigurations)
         }
-        
     }
     
     private void saveConfigurations(buildConfigurations){
@@ -491,11 +495,20 @@ class DistFrame extends JFrame
     private void createFrame(){
         
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
-        setLocationRelativeTo(null)
+        //setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         setResizable(false)
         setTitle('Build configuration')
         setType(java.awt.Window.Type.UTILITY)
+
+        contentPanel = new JPanel()
+        contentPanel.setLayout(null)
+        contentPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT))
+        
+        getContentPane().setLayout(new GridLayout(1, 1))
+        getContentPane().add(contentPanel)
+
+        pack()
+        setLocationRelativeTo(null)
     }
     
     public boolean isSuccess(){
@@ -728,7 +741,12 @@ def updateSiteVersionFile(def buildConfigurations){
 
         if (!platform.isMultiplatform){
 
-            def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+            def installerName = getInstallerName(platform)
+
+            if (platform.name.equals('osx')){
+
+                installerName = installerName.replace('.app', '')
+            }
             
             def linkName = (platform.name + platform.suffix).replace('-', '_')
             
@@ -755,19 +773,22 @@ def updateSiteVersionFile(def buildConfigurations){
 
 def packageInstaller(platform, buildConfigurations){
     
-    def versionString = getVersionString()
-    
     if (!platform.isMultiplatform && platform.createZipPackage){
 
         def tmpDir = new File(dirs.installer.buildDir.getPath() + '/tmp')
 
         delete tmpDir
 
-        def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+        def installerName = getInstallerName(platform)
 
-        def installerFile = new File(buildConfigurations.outputDir + '/' + installerName)            
+        def installerFile = new File(buildConfigurations.outputDir + '/' + installerName);
 
         def zipFile = new File(buildConfigurations.outputDir + '/' + installerName + '.zip')
+
+        if (platform.name.equals('osx')){
+        
+            zipFile = new File(buildConfigurations.outputDir + '/' + installerName.replace('.app', '.zip'))
+        }
 
         def additionalFiles = new File(dirs.installer.baseDir.getPath() + '/arquivos/' + platform.name + '/package')
 
@@ -834,13 +855,11 @@ def getBuildDate(){
 
 def deleteOldInstallersAndPackages(buildConfigurations){
         
-    def versionString = getVersionString()
-    
     for (platform in buildConfigurations.selectedPlatforms){
         
         if (!platform.isMultiplatform){
             
-            def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+            def installerName = getInstallerName(platform)
             def installerFile = new File(buildConfigurations.outputDir, installerName)
             
             delete installerFile
@@ -853,6 +872,15 @@ def deleteOldInstallersAndPackages(buildConfigurations){
             }
         }
     }
+}
+
+def getInstallerName(def platform){
+
+    def versionString = getVersionString()
+
+    def installerName = 'portugol-studio-' + versionString + '-' + platform.name + platform.suffix + platform.installerExtension
+    
+    return installerName
 }
 
 def buildInstallers(buildConfigurations){
@@ -992,6 +1020,8 @@ def buildAppFiles(buildConfigurations){
     def appDir = new File(appFilesDir, 'aplicacao')
     
     def studioJar = project(':portugol-ide').jar.archivePath
+
+    def consoleJar = project(':portugol-console').jar.archivePath
     
     copy {
         from new File(project(':portugol-ide').buildDir, 'libs/lib')
@@ -1002,12 +1032,22 @@ def buildAppFiles(buildConfigurations){
         from studioJar
         into appDir
     }
+
+    copy {
+        from consoleJar
+        into appDir
+    }
     
     studioJar = new File(appDir, studioJar.name)
     
     studioJar.renameTo(new File(appDir, 'portugol-studio.jar'))
     
     studioJar = new File(appDir, 'portugol-studio.jar')
+
+
+    consoleJar = new File(appDir, consoleJar.name)
+    
+    consoleJar.renameTo(new File(appDir, 'portugol-console.jar'))
     
     copy {
         from new File(project(':portugol-ide').projectDir, 'src/main/assets')
