@@ -1,0 +1,38 @@
+﻿Para instalar o Portugol Studio no Mac, primeiramente abra um terminal do sistema.
+Após abrir o terminal, certifique-se de que a pasta de trabalho do terminal
+seja a mesma no qual o arquivo de instalação do Portugol Studio foi baixado. 
+
+Para isso, digite o comando abaixo no terminal (sem o $), substituindo o valor
+<pasta-do-arquivo> pelo caminho completo para a pasta no qual o arquivo foi
+baixado. Provavelmente é a mesma pasta onde se encontra este arquivo "leia.txt":
+
+
+$ cd <pasta-do-arquivo>
+
+
+Por exemplo, se o nome de usuário do sistema for "pedro", o caminho a ser
+digitado provavelmente será:
+
+
+$ cd /Users/pedro/Downloads.
+
+	
+Logo após, digite os comandos abaixo em sequência (sem o $), substituindo o
+nome do arquivo pelo correspondente à versão do Portugol Studio que você
+baixou:
+
+$ chmod -R 755 portugol-studio-2.6-osx.app
+ 
+
+Por exemplo, se você baixou a versão 2.7o comando ficaria:
+
+
+$ chmod 755 portugol-studio-2.7-osx.app
+
+
+Feito isso, execute o progama de instalação dando dois cliques no ícone do
+programa de instalação.
+
+Após executar este comando, será pedida a senha de root (administrador) do
+sistema e logo após o programa de instalação iniciará. Note que é necessário
+ter permissões administrativas no sistema para poder instalar o Portugol Studio

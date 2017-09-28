@@ -29,42 +29,24 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>por</string>
-			</array>
 			<key>CFBundleTypeName</key>
-			<string>Programa na linguagem Portugol 2.0</string>
+			<string>br.univali.programa-portugol</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
-        	<string>Owner</string>
+			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>br.univali.programa-portugol</string>
 			</array>
-		</dict>
-	</array>
-	<key>UTExportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
+			<key>CFBundleTypeIconFiles</key>
 			<array>
-				<string>public.source-code</string>
+				<string>arquivo-por.icns</string>
 			</array>
-			<key>UTTypeDescription</key>
-			<string>Programa na linguagem Portugol 2.0</string>
-			<key>UTTypeIdentifier</key>
-			<string>br.univali.programa-portugol</string>
-			<key>UTTypeIconFile</key>
-			<string>arquivo-por</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>por</string>				
-				</array>
-			</dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>por</string>
+			</array>
 		</dict>
 	</array>
 </dict>
