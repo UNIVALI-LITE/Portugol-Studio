@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.bibliotecas.sons;
 
 import br.univali.portugol.nucleo.bibliotecas.Sons;
+import java.lang.reflect.Method;
 import org.junit.Test;
 
 /**
@@ -11,8 +12,7 @@ import org.junit.Test;
      */
 public class TesteSons
 {
-    @Test
-    public void testeMultiplosSons() throws Exception
+    private void testeMultiplosSons() throws Exception
     {
         Sons sons = new Sons();
 
@@ -30,8 +30,7 @@ public class TesteSons
         Thread.sleep(10000);
     }
     
-    @Test
-    public void testeSons() throws Exception
+    private void testeSons() throws Exception
     {
         final Sons sons = new Sons();
         final Integer somDeFundo = sons.carregar_som("../ide/src/main/assets/exemplos/jogos/corrida/sons/musica_jogo.mp3");
@@ -62,8 +61,7 @@ public class TesteSons
         }        
     }
     
-    @Test
-    public void testeSons2() throws Exception
+    private void testeSons2() throws Exception
     {
         Sons sons = new Sons();
         Integer bumbo = sons.carregar_som("../ide/src/main/assets/exemplos/musica/bateria/sons/bumbo.mp3");
@@ -94,8 +92,7 @@ public class TesteSons
         
     }
     
-    @Test
-    public void testeSons3() throws Exception
+    private void testeSons3() throws Exception
     {
         Sons sons = new Sons();
 
@@ -106,5 +103,13 @@ public class TesteSons
             Thread.sleep(2500);
         }
         
+    }
+    
+    public static void main(String[] args) throws Exception {
+        TesteSons app = new TesteSons();
+        app.testeSons();
+        app.testeSons2();
+        app.testeSons3();
+        app.testeMultiplosSons();
     }
 }
