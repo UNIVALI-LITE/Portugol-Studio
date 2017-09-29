@@ -2,50 +2,73 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>Portugol Studio</string>
-	<key>CFBundleGetInfoString</key>
-	<string>Ambiente de desenvolvimento para aprender a programar na linguagem Portugol 2.0</string>
-	<key>CFBundleVersion</key>
-	<string>2.6</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
-	<key>CFBundleAllowMixedLocalizations</key>
-	<string>true</string>
-	<key>CFBundleExecutable</key>
-	<string>Portugol Studio</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	
+	<key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+	
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	
+	<key>CFBundleName</key>
+	<string>Portugol Studio</string>
+	
+	<key>CFBundleExecutable</key>
+	<string>Portugol Studio</string>
+	
+	<key>CFBundleVersion</key>
+	<string>##VERSION##</string>
+	
 	<key>CFBundleShortVersionString</key>
-	<string>2.6</string>
-	<key>CFBundleIconFile</key>
-	<string>portugol-studio.icns</string>
+	<string>##VERSION##</string>
+	
 	<key>CFBundleIdentifier</key>
 	<string>br.univali.portugol.studio</string>
+	
+	<key>CFBundleGetInfoString</key>
+	<string>Ambiente de desenvolvimento para aprender a programar na linguagem Portugol 2.0</string>
+	
+	<key>CFBundleIconFile</key>
+	<string>portugol-studio.icns</string>
+	
+	<key>CFBundleAllowMixedLocalizations</key>
+	<string>true</string>
+	
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © LITE - UNIVALI, 2009 - ##YEAR##. Todos os direitos reservados</string>
+	
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeName</key>
-			<string>br.univali.programa-portugol</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>br.univali.programa-portugol</string>
-			</array>
-			<key>CFBundleTypeIconFiles</key>
-			<array>
-				<string>arquivo-por.icns</string>
-			</array>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>por</string>
+			</array>
+			
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/x-portugol</string>
+			</array>
+			
+			<key>CFBundleTypeName</key>
+			<string>Algoritmo em Portugol</string>
+			
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			
+			<key>NSDocumentClass</key>
+			<string>NSDocument</string>
+			
+			<key>CFBundleTypeIconFile</key>
+			<string>arquivo-por.icns</string>
+			
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>br.univali.portugol.algoritmo</string>
 			</array>
 		</dict>
 	</array>
