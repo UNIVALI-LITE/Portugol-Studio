@@ -181,6 +181,9 @@
                         <distributionFile>
                             <origin>arquivos/linux/install_geany_files.sh</origin>
                         </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/uninstall_geany_files.sh</origin>
+                        </distributionFile>
                     </distributionFileList>
                 </folder>
                 <folder>
