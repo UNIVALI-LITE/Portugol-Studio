@@ -66,6 +66,7 @@ dirs.installer.buildDir = new File(dirs.installer.baseDir, 'build')
 dirs.installer.javaDir = new File(dirs.installer.buildDir, 'java')
 dirs.installer.configurationsFile = new File(dirs.installer.baseDir, 'build-configurations.json')
 dirs.versionFile = new File(rootProject.projectDir.getPath() + '/ide/src/main/resources/version.properties')
+dirs.macInfo_plistFile = new File(rootProject.projectDir.getPath() + '/installer/arquivos/osx/Portugol Studio.app/Contents/Info.plist')
 
 import groovy.json.JsonException
 import groovy.json.JsonSlurper
@@ -96,6 +97,7 @@ import javax.swing.JButton
 import javax.swing.JCheckBox
 import javax.swing.JComboBox
 import javax.swing.JFileChooser
+import java.util.Calendar
 
 
 class DistFrame extends JFrame
@@ -113,13 +115,15 @@ class DistFrame extends JFrame
     private final File versionFile
 
     private JPanel contentPanel
-    
-    DistFrame(platforms, buildConfigurations, configurationsFile, versionFile) {
+
+    private final File plistFile
+
+    DistFrame(platforms, buildConfigurations, configurationsFile, versionFile, plistFile) {
         
         this.buildConfigurations = buildConfigurations
         this.configurationsFile = configurationsFile
         this.versionFile = versionFile
-        
+        this.plistFile = plistFile
 
         buildConfigurations.versionChanged = false
         saveConfigurations(buildConfigurations)
@@ -481,7 +485,23 @@ class DistFrame extends JFrame
             String sep = System.getProperty("line.separator")
             String content = string.substring(string.indexOf(sep) + sep.length())
             fileOut.write(content.getBytes())
+
+
+            def projectVersion = newMajorNumber + '.' + newMinorNumber + '.' + newBuildNumber
+    
+            if (!newReleaseName.isEmpty()) {
+                
+                projectVersion = projectVersion + '-' + newReleaseName
+            }
+
+
+            def plistText = plistFile.text
             
+            plistText = plistText.replaceAll('##VERSION##', projectVersion)
+            plistText = plistText.replaceAll('##YEAR##',  Integer.toString(Calendar.getInstance().get(Calendar.YEAR)))
+
+            plistFile.write(plistText)
+
             buildConfigurations.versionChanged = true
 
             saveConfigurations(buildConfigurations)
@@ -629,7 +649,7 @@ def getConfigurationsFromGui(){
 
             UIManager.setLookAndFeel(UIManager.systemLookAndFeelClassName)
 
-            frame = new DistFrame(platforms, buildConfigurations, dirs.installer.configurationsFile, dirs.versionFile)
+            frame = new DistFrame(platforms, buildConfigurations, dirs.installer.configurationsFile, dirs.versionFile, dirs.macInfo_plistFile)
             frame.visible = true
         }
     }
