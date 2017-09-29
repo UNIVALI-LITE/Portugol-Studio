@@ -55,6 +55,11 @@ public class TelaCustomBorder extends javax.swing.JDialog
             pack();
         }
     }
+
+    public Action getAcaoSair()
+    {
+        return acaoSair;
+    }    
     
     public TelaCustomBorder(String titulo)
     {

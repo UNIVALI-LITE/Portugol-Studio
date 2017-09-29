@@ -218,6 +218,8 @@ public class TelaPrincipal extends javax.swing.JPanel
         SwingUtilities.invokeLater(() -> {
             TelaCustomBorder main = new TelaCustomBorder("Atualização Encontrada");
             TelaAtualizacoes ta = new TelaAtualizacoes(body, versao);
+            
+            ta.setAcaoFechar(main.getAcaoSair());
             main.setMinimumSize(new Dimension(280, 450));
             main.setPanel(ta, false);
             main.setLocationRelativeTo(null);
