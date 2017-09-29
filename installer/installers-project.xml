@@ -1168,6 +1168,7 @@ include /usr/share/nano/portugol.nanorc</text>
     <enableTimestamp>1</enableTimestamp>
     <height>450</height>
     <installationScope>allusers</installationScope>
+    <osxDmgBackgroundImage>imagens/dmg-background.jpeg</osxDmgBackgroundImage>
     <osxDmgTitle>Instalação do Portugol Studio</osxDmgTitle>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
