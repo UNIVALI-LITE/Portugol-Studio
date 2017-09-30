@@ -28,6 +28,7 @@
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="null"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="scrollPanelConsole" noResource="true"/>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <Constraints>
@@ -50,6 +51,7 @@
                 <EmptyBorder bottom="5" left="5" right="5" top="5"/>
               </Border>
             </Property>
+            <Property name="name" type="java.lang.String" value="textAreaConsole" noResource="true"/>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
         </Component>

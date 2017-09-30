@@ -200,6 +200,7 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
         acaoCopiar.setEnabled(false);
         //++++++++++++++++++++++++++++++++++++++++++++++++
         BarraDeBotoesExpansivel barra = new BarraDeBotoesExpansivel();
+        barra.setName("Barra botões expansíveis AbaConsole");
         Icon iconeFonte = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "font.png");
         //+++++++++++++++++++++++++
         barra.adicionaGrupoDeItems("Tamanho da fonte", iconeFonte, new Action[]
@@ -348,7 +349,8 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         painelRolagem = new javax.swing.JScrollPane();
@@ -360,12 +362,14 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
         painelRolagem.setBackground(new java.awt.Color(255, 255, 0));
         painelRolagem.setBorder(null);
+        painelRolagem.setName("scrollPanelConsole"); // NOI18N
         painelRolagem.setOpaque(false);
 
         console.setEditable(false);
         console.setBackground(new java.awt.Color(230, 230, 230));
         console.setColumns(20);
         console.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        console.setName("textAreaConsole"); // NOI18N
         console.setOpaque(false);
         painelRolagem.setViewportView(console);
 

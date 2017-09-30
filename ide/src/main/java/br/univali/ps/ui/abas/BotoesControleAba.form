@@ -55,6 +55,7 @@
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 16]"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="labelTitulo" noResource="true"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
       </Properties>
       <Constraints>
@@ -69,6 +70,7 @@
           <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="botaoAbrir" noResource="true"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -82,6 +84,7 @@
           <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="botaoNovoArquivo" noResource="true"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
