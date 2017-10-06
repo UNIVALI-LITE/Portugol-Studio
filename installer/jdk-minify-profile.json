@@ -7,24 +7,10 @@
         "jdk/db",
         "jdk/include",
 
-        "jdk/jre/lib/applet",
-        "jdk/jre/lib/deploy",
-        "jdk/jre/lib/desktop",
-        "jdk/jre/lib/ext",
-        "jdk/jre/lib/jfr",
-        "jdk/jre/lib/oblique-fonts",
-
-        "jdk/jre/plugin",
-
         "jdk/jre/lib/ant-javafx.jar",
-        "jdk/jre/lib/charsets.jar",
-        "jdk/jre/lib/deploy.jar",
         "jdk/jre/lib/javafx.properties",
-        "jdk/jre/lib/javaws.jar",
-        "jdk/jre/lib/jfr.jar",
         "jdk/jre/lib/jfxswt.jar",
-        "jdk/jre/lib/plugin.jar",
-
+        
         "jdk/jre/THIRDPARTYLICENSEREADME-JAVAFX.txt",
         
         "jdk/lib/missioncontrol",
@@ -100,8 +86,6 @@
         "jdk/bin/wsimport.exe",
         "jdk/bin/xjc.exe",
 
-        "jdk/jre/bin/dtplugin",
-        "jdk/jre/bin/plugin2",
         "jdk/jre/bin/client",
 
         "jdk/jre/bin/jabswitch.exe",
@@ -127,31 +111,11 @@
         "jdk/jre/bin/tnameserv.exe",
         "jdk/jre/bin/unpack200.exe",
 
-        "jdk/jre/bin/attach.dll",
-        "jdk/jre/bin/decora_sse.dll",
-        "jdk/jre/bin/deploy.dll",
-        "jdk/jre/bin/fxplugins.dll",
-        "jdk/jre/bin/glass.dll",
-        "jdk/jre/bin/glib-lite.dll",
-        "jdk/jre/bin/gstreamer-lite.dll",
-        "jdk/jre/bin/java_crw_demo.dll",
-        "jdk/jre/bin/JavaAccessBridge-32.dll",
-        "jdk/jre/bin/JavaAccessBridge.dll",
         "jdk/jre/bin/javafx_font.dll",
         "jdk/jre/bin/javafx_font_t2k.dll",
         "jdk/jre/bin/javafx_iio.dll",        
-        "jdk/jre/bin/JAWTAccessBridge-32.dll",
-        "jdk/jre/bin/JAWTAccessBridge.dll",
         "jdk/jre/bin/jfxmedia.dll",
-        "jdk/jre/bin/jfxwebkit.dll",
-        "jdk/jre/bin/jfr.dll",
-        "jdk/jre/bin/prism_common.dll",
-        "jdk/jre/bin/prism_d3d.dll",
-        "jdk/jre/bin/prism_es2.dll",
-        "jdk/jre/bin/prism_sw.dll",
-        "jdk/jre/bin/WindowsAccessBridge-32.dll",
-        "jdk/jre/bin/WindowsAccessBridge.dll",
-        "jdk/jre/bin/wsdetect.dll"
+        "jdk/jre/bin/jfxwebkit.dll"
       ]
     },
     {
@@ -207,28 +171,13 @@
 
         "jdk/jre/bin",
 
-        "jdk/jre/lib/libattach.dylib",
-        "jdk/jre/lib/libdecora_sse.so",
-        "jdk/jre/lib/libdecora_sse.dylib",
-        "jdk/jre/lib/libdeploy.dylib",
-        "jdk/jre/lib/libfxplugins.dylib",
-        "jdk/jre/lib/libfxplugins.so",
-        "jdk/jre/lib/libglass.dylib",
-        "jdk/jre/lib/libglib-lite.dylib",
-        "jdk/jre/lib/libgstreamer-lite.dylib",
-        "jdk/jre/lib/libjava_crw_demo.dylib",
         "jdk/jre/lib/libjavafx_font_t2k.dylib",
         "jdk/jre/lib/libjavafx_font.dylib",
         "jdk/jre/lib/libjavafx_iio.dylib",
-        "jdk/jre/lib/libjfr.dylib",
         "jdk/jre/lib/libjfxmedia.dylib",
         "jdk/jre/lib/libjfxmedia_avf.dylib",
         "jdk/jre/lib/libjfxmedia_qtkit.dylib",
-        "jdk/jre/lib/libjfxwebkit.dylib",
-        "jdk/jre/lib/libjsig.dylib",        
-        "jdk/jre/lib/libprism_common.dylib",
-        "jdk/jre/lib/libprism_es2.dylib",
-        "jdk/jre/lib/libprism_sw.dylib"
+        "jdk/jre/lib/libjfxwebkit.dylib"
       ]
     },
     {
@@ -287,25 +236,13 @@
         
         "jdk/jre/lib/i386/client",
 
-        "jdk/jre/lib/i386/libattach.so",
-        "jdk/jre/lib/i386/libdeploy.so",
-        "jdk/jre/lib/i386/libdecora_sse.so",
-        "jdk/jre/lib/i386/libfxplugins.so",
-        "jdk/jre/lib/i386/libglass.so",
-        "jdk/jre/lib/i386/libgstreamer-lite.so",
-        "jdk/jre/lib/i386/libjava_crw_demo.so",
         "jdk/jre/lib/i386/libjavafx_font_freetype.so",
         "jdk/jre/lib/i386/libjavafx_font_pango.so",
         "jdk/jre/lib/i386/libjavafx_font_t2k.so",
         "jdk/jre/lib/i386/libjavafx_font.so",
         "jdk/jre/lib/i386/libjavafx_iio.so",
-        "jdk/jre/lib/i386/libjfr.so",        
         "jdk/jre/lib/i386/libjfxmedia.so",
-        "jdk/jre/lib/i386/libjfxwebkit.so",
-        "jdk/jre/lib/i386/libjsig.so",
-        "jdk/jre/lib/i386/libprism_common.so",
-        "jdk/jre/lib/i386/libprism_es2.so",
-        "jdk/jre/lib/i386/libprism_sw.so"
+        "jdk/jre/lib/i386/libjfxwebkit.so"
       ]
     },
     {
@@ -362,25 +299,13 @@
         "jdk/jre/bin",
         "jdk/jre/lib/jexec",
 
-        "jdk/jre/lib/amd64/libattach.so",
-        "jdk/jre/lib/amd64/libdeploy.so",
-        "jdk/jre/lib/amd64/libdecora_sse.so",
-        "jdk/jre/lib/amd64/libfxplugins.so",
-        "jdk/jre/lib/amd64/libglass.so",
-        "jdk/jre/lib/amd64/libgstreamer-lite.so",
-        "jdk/jre/lib/amd64/libjava_crw_demo.so",
         "jdk/jre/lib/amd64/libjavafx_font_freetype.so",
         "jdk/jre/lib/amd64/libjavafx_font_pango.so",
         "jdk/jre/lib/amd64/libjavafx_font_t2k.so",
         "jdk/jre/lib/amd64/libjavafx_font.so",
         "jdk/jre/lib/amd64/libjavafx_iio.so",
-        "jdk/jre/lib/amd64/libjfr.so",
         "jdk/jre/lib/amd64/libjfxmedia.so",
-        "jdk/jre/lib/amd64/libjfxwebkit.so",
-        "jdk/jre/lib/amd64/libjsig.so",
-        "jdk/jre/lib/amd64/libprism_common.so",
-        "jdk/jre/lib/amd64/libprism_es2.so",
-        "jdk/jre/lib/amd64/libprism_sw.so"
+        "jdk/jre/lib/amd64/libjfxwebkit.so"
       ]
     }
   ],
