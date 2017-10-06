@@ -53,3 +53,4 @@ Você pode criar uma issue [aqui](https://github.com/UNIVALI-LITE/Portugol-Studi
   * :arrow_down: `:arrow_down:` quando abaixar as dependências
   * :shirt: `:shirt:` quando remover avisos
   * :gem: `:gem:` quando adicionar uma feature
+  * :date: `:date:` quando atualizar algum c�digo/link
