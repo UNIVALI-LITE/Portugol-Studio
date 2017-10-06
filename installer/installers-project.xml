@@ -501,22 +501,70 @@
                 <actionGroup>
                     <explanation>Mac</explanation>
                     <actionList>
-                        <deleteFile>
-                            <path>/Applications/UNIVALI</path>
-                            <ruleList>
-                                <fileExists>
+                        <actionGroup>
+                            <explanation>Removendo associações de arquivos</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                                    <programArguments>-u "/Applications/UNIVALI/Portugol Studio.app"</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/Applications/UNIVALI/Portugol Studio.app</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                                    <programArguments>-u "${install_app_bundle_dir}"</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${install_app_bundle_dir}</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo versão mais antiga criada com o Bitrock</explanation>
+                            <actionList>
+                                <deleteFile>
                                     <path>/Applications/UNIVALI</path>
-                                </fileExists>
-                            </ruleList>
-                        </deleteFile>
-                        <deleteFile>
-                            <path>/Applications/Portugol Studio.app</path>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/Applications/UNIVALI</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </deleteFile>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo versões anteriores do Portugol Studio</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/desinstalar"</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${install_app_dir}/desinstalar</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>${install_app_dir}/desinstalar</program>
+                                    <programArguments>--mode unattended</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${install_app_dir}/desinstalar</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                            </actionList>
                             <ruleList>
                                 <fileExists>
                                     <path>/Applications/Portugol Studio.app</path>
                                 </fileExists>
                             </ruleList>
-                        </deleteFile>
+                        </actionGroup>
                     </actionList>
                     <ruleList>
                         <platformTest>
@@ -867,12 +915,8 @@ include /usr/share/nano/portugol.nanorc</text>
                             <explanation>Criando associações de arquivos</explanation>
                             <actionList>
                                 <runProgram>
-                                    <program>defaults</program>
-                                    <programArguments>write com.apple.LaunchServices LSHandlers -array-add "&lt;dict&gt;&lt;key&gt;LSHandlerContentTag&lt;/key&gt;
- &lt;string&gt;por&lt;/string&gt;&lt;key&gt;LSHandlerContentTagClass&lt;/key&gt;
- &lt;string&gt;public.filename-extension&lt;/string&gt;&lt;key&gt;LSHandlerRoleAll&lt;/key&gt;
- &lt;string&gt;br.univali.portugol.studio&lt;/string&gt;&lt;/dict&gt;"
-            </programArguments>
+                                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                                    <programArguments>"${install_app_bundle_dir}"</programArguments>
                                 </runProgram>
 
                                 <!-- Restart the launch services to reload the configuration -->
@@ -965,6 +1009,25 @@ include /usr/share/nano/portugol.nanorc</text>
             <ruleList>
                 <platformTest>
                     <type>linux</type>
+                </platformTest>
+            </ruleList>
+        </actionGroup>
+        <actionGroup>
+            <explanation>Mac</explanation>
+            <actionList>
+                <actionGroup>
+                    <explanation>Removendo associações de arquivos</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                            <programArguments>-u "${install_app_bundle_dir}"</programArguments>
+                        </runProgram>
+                    </actionList>
+                </actionGroup>
+            </actionList>
+            <ruleList>
+                <platformTest>
+                    <type>osx</type>
                 </platformTest>
             </ruleList>
         </actionGroup>
@@ -1168,6 +1231,7 @@ include /usr/share/nano/portugol.nanorc</text>
     <enableTimestamp>1</enableTimestamp>
     <height>450</height>
     <installationScope>allusers</installationScope>
+    <osxDmgBackgroundImage>imagens/dmg-background.jpeg</osxDmgBackgroundImage>
     <osxDmgTitle>Instalação do Portugol Studio</osxDmgTitle>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
