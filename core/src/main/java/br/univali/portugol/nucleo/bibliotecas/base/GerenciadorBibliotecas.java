@@ -89,7 +89,7 @@ public final class GerenciadorBibliotecas
             bibliotecasDisponiveis.add("Mouse");
             bibliotecasDisponiveis.add("Arquivos");
             bibliotecasDisponiveis.add("Sons");
-            bibliotecasDisponiveis.add("DataHora");
+            bibliotecasDisponiveis.add("Calendario");
 
             Collections.sort(bibliotecasDisponiveis);
         }

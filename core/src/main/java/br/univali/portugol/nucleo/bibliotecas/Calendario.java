@@ -11,7 +11,7 @@ import java.util.Calendar;
 
 @PropriedadesBiblioteca(tipo = TipoBiblioteca.COMPARTILHADA)
 @DocumentacaoBiblioteca(descricao = "Esta biblioteca é utilizada para retornar a data e(ou) hora do computador", versao = "1.0")
-public final class DataHora extends Biblioteca{
+public final class Calendario extends Biblioteca{
     
     @DocumentacaoFuncao
     (
