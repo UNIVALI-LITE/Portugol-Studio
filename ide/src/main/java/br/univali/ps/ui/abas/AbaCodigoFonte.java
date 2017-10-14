@@ -1569,17 +1569,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         Configuracoes configuracoes = Configuracoes.getInstancia();
         if (Configuracoes.rodandoEmDesenvolvimento()) {
 
-            return "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar"
+            return "C:/Users/Ailton Cardoso Jr/Documents/NetBeansProjects/Portugol - Novo/Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin/build/libs/Portugol-GoGoBoard-Plugin.jar"
                     + classPathSeparator
-                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/lib/TableLayoutSwing.jar"
+                    + "C:/Users/Ailton Cardoso Jr/Documents/NetBeansProjects/Portugol - Novo/Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin/build/libs/lib/jna-4.2.2.jar"
                     + classPathSeparator
-                    + System.getProperty("java.class.path") + classPathSeparator //                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/dist/SimuladorExperimentos.jar" 
-                    //                    + "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos/SimuladorExperimentos/build"
-                    //                    + classPathSeparator 
-                    //+ "D:/Desenvolvimento/TTC II/Plugin Experimentos/SimuladorExperimentos//SimuladorExperimentos/build/classes/br/simulador/plugin/biblioteca"
-                    //+ classPathSeparator
-                    ;
-
+                    + "C:/Users/Ailton Cardoso Jr/Documents/NetBeansProjects/Portugol - Novo/Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin/build/libs/lib/hid4java-0.5.0.jar"
+                    + classPathSeparator
+                    + System.getProperty("java.class.path") + classPathSeparator;
         }
 
         File classpathDir = new File(configuracoes.getDiretorioAplicacao().getCanonicalPath(), "lib");
@@ -2176,6 +2172,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 barraFerramentas.remove(botaoAcao);
                 barraFerramentas.repaint();
+                mapaBotoesAcoesPlugins.remove(acao, botaoAcao);
             }
         });
     }
