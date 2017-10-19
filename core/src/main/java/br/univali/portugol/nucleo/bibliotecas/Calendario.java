@@ -38,12 +38,12 @@ public final class Calendario extends Biblioteca{
     
     @DocumentacaoFuncao
     (
-        descricao = "Recupera o dia atual do computador.",
+        descricao = "Recupera o dia no mês atual do computador.",
         autores = 
         {
             @Autor(nome = "Rafael Ferreira Costa", email = "rafaelcosta@edu.univali.br")
         },
-        retorno = "um <tipo>inteiro</tipo> com o dia com dois digitos, se forem menores que 10 apenas com um digito. Ex: 26."
+        retorno = "um <tipo>inteiro</tipo> com o dia no mês com dois digitos, se forem menores que 10 apenas com um digito. Ex: 26."
     )
     public int dia_mes_atual() throws ErroExecucaoBiblioteca, InterruptedException
     {
@@ -66,12 +66,12 @@ public final class Calendario extends Biblioteca{
     
     @DocumentacaoFuncao
     (
-        descricao = "Recupera o mes atual do computador.",
+        descricao = "Recupera o mês atual do computador de 1 a 12.",
         autores = 
         {
             @Autor(nome = "Rafael Ferreira Costa", email = "rafaelcosta@edu.univali.br")
         },
-        retorno = "um <tipo>inteiro</tipo> com o mes com dois digitos, se forem menores que 10 apenas com um digito. Ex: 12."
+        retorno = "um <tipo>inteiro</tipo> com o mês com dois digitos, se forem menores que 10 apenas com um digito. Ex: 12."
     )
     public int mes_atual() throws ErroExecucaoBiblioteca, InterruptedException
     {
