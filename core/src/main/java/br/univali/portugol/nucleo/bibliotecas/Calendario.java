@@ -15,27 +15,67 @@ import java.util.Calendar;
 @DocumentacaoBiblioteca(descricao = "Esta biblioteca é utilizada para retornar a data e(ou) hora do computador", versao = "1.0")
 public final class Calendario extends Biblioteca{
     
+    //dias
     @DocumentacaoConstante(descricao = "constante que representa o 'Domingo'")
-    public static final int DOMINGO = 1;
+    public static final int DIA_DOMINGO = 1;
     
     @DocumentacaoConstante(descricao = "constante que representa a 'Segunda-Feira'")
-    public static final int SEGUNDA_FEIRA = 2;
+    public static final int DIA_SEGUNDA_FEIRA = 2;
     
     @DocumentacaoConstante(descricao = "constante que representa a 'Terça-Feira'")
-    public static final int TERCA_FEIRA = 3;
+    public static final int DIA_TERCA_FEIRA = 3;
     
     @DocumentacaoConstante(descricao = "constante que representa a 'Quarta-Feira'")
-    public static final int QUARTA_FEIRA = 4;
+    public static final int DIA_QUARTA_FEIRA = 4;
     
     @DocumentacaoConstante(descricao = "constante que representa a 'Quinta-Feira'")
-    public static final int QUINTA_FEIRA = 5;
+    public static final int DIA_QUINTA_FEIRA = 5;
     
     @DocumentacaoConstante(descricao = "constante que representa a 'Sexta-Feira'")
-    public static final int SEXTA_FEIRA = 6;
+    public static final int DIA_SEXTA_FEIRA = 6;
     
     @DocumentacaoConstante(descricao = "constante que representa o   'Sábado'")
-    public static final int SABADO = 7;
+    public static final int DIA_SABADO = 7;
     
+    
+    //meses
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Janeiro'")
+    public static final int MES_JANEIRO = 1;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Fevereiro'")
+    public static final int MES_FEVEREIRO = 2;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Março'")
+    public static final int MES_MARCO = 3;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Abril'")
+    public static final int MES_ABRIL = 4;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Maio'")
+    public static final int MES_MAIO = 5;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Junho'")
+    public static final int MES_JUNHO = 6;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Julho'")
+    public static final int MES_JULHO = 7;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Agosto'")
+    public static final int MES_AGOSTO = 8;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Setembro'")
+    public static final int MES_SETEMBRO = 9;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Outubro'")
+    public static final int MES_OUTUBRO = 10;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Novembro'")
+    public static final int MES_NOVEMBRO = 11;
+    
+    @DocumentacaoConstante(descricao = "constante que representa o mês de 'Dezembro'")
+    public static final int MES_DEZEMBRO = 12;
+    
+    //funcoes
     @DocumentacaoFuncao
     (
         descricao = "Recupera o dia no mês atual do computador.",
