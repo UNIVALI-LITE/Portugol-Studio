@@ -184,7 +184,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             if (WeblafUtils.weblafEstaInstalado()) {
                 WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             }
-            FabricaDicasInterface.criarTooltip(btnConfigPlugin, "Exibir tela de configurações dos Plugins oficial");
+            FabricaDicasInterface.criarTooltip(btnConfigPlugin, "Exibir Plugins instalados");
             barraFerramentas.add(btnConfigPlugin);
         }
     }
@@ -2102,8 +2102,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 //                    ocultarPainelBotoesPlugins();
                 //                    ocultarPainelPlugins();
                 //                }
-                painelConfigPlugins
-                        .removeModeloLista(plugin);
+                painelConfigPlugins.removeModeloLista(plugin);
                 painelInspetorArvore.validate();
             }
         });
