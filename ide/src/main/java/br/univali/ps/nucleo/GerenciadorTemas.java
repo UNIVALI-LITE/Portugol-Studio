@@ -1,18 +1,13 @@
 package br.univali.ps.nucleo;
 
-import br.univali.ps.ui.utils.PackageClassesGetter;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
 /**

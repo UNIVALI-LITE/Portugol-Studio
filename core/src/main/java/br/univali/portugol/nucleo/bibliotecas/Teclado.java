@@ -16,7 +16,6 @@ import java.awt.event.KeyListener;
 import java.util.Arrays;
 import java.util.List;
 
-
 @PropriedadesBiblioteca(tipo = TipoBiblioteca.RESERVADA)
 @DocumentacaoBiblioteca
 (

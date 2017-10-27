@@ -1,4 +1,3 @@
-
 package br.univali.portugol.nucleo.analise;
 
 import br.univali.portugol.nucleo.Programa;

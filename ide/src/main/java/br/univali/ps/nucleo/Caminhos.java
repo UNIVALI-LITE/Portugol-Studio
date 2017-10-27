@@ -7,7 +7,6 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,7 +14,6 @@ import javax.swing.JOptionPane;
  */
 public final class Caminhos
 {
-
     private static final Logger LOGGER = Logger.getLogger(Caminhos.class.getName());
     
     public static final File diretorioInstalacao = obterDiretorioInstalacao();

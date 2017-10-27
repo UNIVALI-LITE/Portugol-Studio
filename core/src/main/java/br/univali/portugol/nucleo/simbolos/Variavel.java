@@ -2,9 +2,6 @@ package br.univali.portugol.nucleo.simbolos;
 
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.TipoDado;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Representa uma variável alocada em memória durante a execução de um programa.

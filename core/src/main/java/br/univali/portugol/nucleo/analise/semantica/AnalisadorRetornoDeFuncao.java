@@ -53,7 +53,6 @@ import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoTitulo;
 import br.univali.portugol.nucleo.asa.NoVaPara;
 import br.univali.portugol.nucleo.asa.NoVetor;
-import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
 import java.util.ArrayList;
 import java.util.List;

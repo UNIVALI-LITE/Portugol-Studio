@@ -2,7 +2,6 @@ package br.univali.portugol.nucleo.execucao.erros;
 
 import br.univali.portugol.nucleo.GeradorDeExemplosDeInicializacao;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseLeftShift;
 import br.univali.portugol.nucleo.asa.NoReferencia;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;

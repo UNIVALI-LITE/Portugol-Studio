@@ -1,6 +1,5 @@
 package br.univali.portugol.nucleo.asa;
 
-
 /**
  * Representa uma operação de igualdade no código fonte.
  * <p>

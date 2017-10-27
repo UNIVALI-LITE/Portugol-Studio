@@ -1,8 +1,6 @@
 package br.univali.portugol.nucleo.execucao;
 
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.simbolos.Simbolo;
-import java.util.List;
 
 /**
  * Observa a execução de um programa, sendo notificado a respeito do estado da

@@ -1,4 +1,3 @@
-
 package br.univali.ps.plugins.base;
 
 import java.io.File;

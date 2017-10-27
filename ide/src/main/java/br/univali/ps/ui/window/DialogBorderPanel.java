@@ -1,6 +1,5 @@
 package br.univali.ps.ui.window;
 
-import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
@@ -9,31 +8,14 @@ import com.alee.utils.swing.MouseEventRunnable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-
-
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 
 /**
  *

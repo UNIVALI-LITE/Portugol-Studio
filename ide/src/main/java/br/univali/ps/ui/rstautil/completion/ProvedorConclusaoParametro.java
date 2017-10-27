@@ -1,4 +1,3 @@
-
 package br.univali.ps.ui.rstautil.completion;
 
 import java.util.List;

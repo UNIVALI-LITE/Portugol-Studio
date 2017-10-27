@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.abas.abaBibliotecas;
 
 import br.univali.portugol.nucleo.asa.ModoAcesso;

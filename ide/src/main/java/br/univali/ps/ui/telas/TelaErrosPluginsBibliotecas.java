@@ -11,10 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
@@ -311,7 +309,6 @@ public final class TelaErrosPluginsBibliotecas extends JDialog
         jLblMensagem.setPreferredSize(new java.awt.Dimension(574, 30));
         painelConteudo.add(jLblMensagem, java.awt.BorderLayout.NORTH);
 
-        jSPTabelaErros.setBackground(new java.awt.Color(255, 255, 255));
         jSPTabelaErros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
 
         jTblErros.setModel(new ModeloTabela());
@@ -332,7 +329,7 @@ public final class TelaErrosPluginsBibliotecas extends JDialog
         jPBotoes.setPreferredSize(new java.awt.Dimension(100, 36));
 
         jBSair.setText("OK");
-        jBSair.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jBSair.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jBSair.setFocusPainted(false);
         jBSair.setPreferredSize(new java.awt.Dimension(100, 28));
 

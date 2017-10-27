@@ -7,7 +7,6 @@ import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.swing.weblaf.PSMainTabbedPaneUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;

@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 
-
-
 /**
  * An icon that can have an optional "decorations" icon beside of it.
  *
@@ -25,7 +23,6 @@ import javax.swing.Icon;
  * @version 1.0
  */
 public class RstaDecoratableIcon implements Icon {
-
 	/**
 	 * The width of this icon.
 	 */
@@ -51,7 +48,6 @@ public class RstaDecoratableIcon implements Icon {
 	 */
 	private static final int DEFAULT_WIDTH		= 24;
 
-
 	/**
 	 * Constructor.
 	 *
@@ -60,7 +56,6 @@ public class RstaDecoratableIcon implements Icon {
 	public RstaDecoratableIcon(Icon mainIcon) {
 		this(DEFAULT_WIDTH, mainIcon);
 	}
-
 
 	/**
 	 * Constructor.
@@ -72,7 +67,6 @@ public class RstaDecoratableIcon implements Icon {
 		setMainIcon(mainIcon);
 		this.width = width;
 	}
-
 
 	/**
 	 * Adds a decoration icon.
@@ -91,7 +85,6 @@ public class RstaDecoratableIcon implements Icon {
 		decorations.add(decoration);
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -99,14 +92,12 @@ public class RstaDecoratableIcon implements Icon {
 		return mainIcon.getIconHeight();
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	public int getIconWidth() {
 		return width;
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -127,7 +118,6 @@ public class RstaDecoratableIcon implements Icon {
 		}
 	}
 
-
 	/**
 	 * Sets whether this icon is for a deprecated item.
 	 *
@@ -136,7 +126,6 @@ public class RstaDecoratableIcon implements Icon {
 	public void setDeprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 	}
-
 
 	/**
 	 * Sets the main icon.
@@ -150,6 +139,4 @@ public class RstaDecoratableIcon implements Icon {
 		}
 		this.mainIcon = icon;
 	}
-
-
 }
