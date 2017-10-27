@@ -2155,6 +2155,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 if (WeblafUtils.weblafEstaInstalado()) {
                     WeblafUtils.configurarBotao(botaoAcao, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                 }
+                FabricaDicasInterface.criarTooltip(botaoAcao, acao.getValue(Action.NAME).toString());
                 barraFerramentas.add(botaoAcao);
                 barraFerramentas.repaint();
                 mapaBotoesAcoesPlugins.put(acao, botaoAcao);
