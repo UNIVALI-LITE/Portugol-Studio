@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Representa uma coleção de classes que pode ser filtradas. Os filtros são
+ * Representa uma coleção de classes que podem ser filtradas. Os filtros são
  * cumulativos e podem ser chamados em qualquer ordem.
  *
  * @author Luiz Fernando Noschang

@@ -27,7 +27,5 @@ public interface Mutex {
         {
             super("Erro ao conectar com a instância do Portugol Studio. Provavelmente o aplicativo fechou inesperadamente", causa);
         }
-    }
-
-    
+    }    
 }

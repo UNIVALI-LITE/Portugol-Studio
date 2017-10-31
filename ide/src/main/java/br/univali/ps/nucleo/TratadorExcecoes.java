@@ -1,32 +1,16 @@
 package br.univali.ps.nucleo;
 
-
-import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.telas.TelaExcecaoEncontrada;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO_PROGRAMA;
 
 /**

@@ -2,7 +2,6 @@ package br.univali.portugol.nucleo.asa;
 
 import br.univali.portugol.nucleo.Programa;
 
-
 /**
  * Esta enumeração representa a operação <code>menor</code> no código fonte.
  * <p>

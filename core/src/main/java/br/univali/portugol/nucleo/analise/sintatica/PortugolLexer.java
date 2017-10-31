@@ -1,12 +1,8 @@
-// $ANTLR null /home/noschang/Projetos/Portugol-Studio/core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/Portugol.g 2017-09-18 10:08:22
- 
-	package br.univali.portugol.nucleo.analise.sintatica;
+package br.univali.portugol.nucleo.analise.sintatica;
 
+// $ANTLR null /home/noschang/Projetos/Portugol-Studio/core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/Portugol.g 2017-09-18 10:08:22
 
 import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class PortugolLexer extends Lexer {

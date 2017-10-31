@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.swing.weblaf.jOptionPane;
 
 import br.univali.ps.ui.swing.ColorController;
@@ -36,8 +31,6 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         WeblafUtils.configurarBotao(webButton2);
         WeblafUtils.configurarBotao(webButton3);
         WeblafUtils.configurarBotao(webButton4);
-        
-        
     
         titleLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -63,8 +56,6 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
                 }
             });
     }
-    
-    
     
     @Override
     public void configurarCores() {
@@ -226,6 +217,5 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     private com.alee.laf.button.WebButton webButton3;
     private com.alee.laf.button.WebButton webButton4;
     // End of variables declaration//GEN-END:variables
-
     
 }

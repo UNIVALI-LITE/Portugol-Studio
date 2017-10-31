@@ -29,7 +29,6 @@ import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Cursor;
 import java.io.File;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;

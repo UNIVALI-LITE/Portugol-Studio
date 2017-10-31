@@ -47,9 +47,10 @@ import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import java.util.List;
 
-//classe usada para procurar por um determinado símbolo dentro da ASA
+/**
+ * Procura por um determinado símbolo dentro da ASA.
+ */ 
 public class ProcuradorDeDeclaracao extends VisitanteNulo {
-
     private NoDeclaracao noDeclaracao;
     private final String nomeDoSimbolo;
     private final int colunaDoSimbolo;
@@ -413,5 +414,4 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         noNao.getExpressao().aceitar(this);
         return null;
     }
-
 }

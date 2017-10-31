@@ -106,7 +106,6 @@ import org.fife.ui.rtextarea.SearchResult;
  */
 public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, ObservadorExecucao, AbaMensagemCompiladorListener
 {
-
     //private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;

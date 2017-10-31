@@ -2,7 +2,6 @@ package br.univali.portugol.nucleo.execucao.gerador.helpers;
 
 import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.execucao.gerador.GeradorCodigoJava;
-import br.univali.portugol.nucleo.execucao.gerador.PreCompilador;
 import java.io.PrintWriter;
 import java.util.List;
 
