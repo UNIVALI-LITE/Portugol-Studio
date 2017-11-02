@@ -53,7 +53,7 @@ public final class Configuracoes
     private final File diretorioCompilacao = new File(diretorioTemporario, "compilacao");
     //private final File diretorioPlugins = new File(diretorioInstalacao, "plugins");
     // Alterado para testar os plugins diretamente
-    private final File diretorioPlugins = new File(diretorioInstalacao, "SimuladorExperimentos");
+    private final File diretorioPlugins = new File(diretorioInstalacao, "build");
     private final File diretorioBibliotecas = new File(diretorioInstalacao, "bibliotecas");
     private final File diretorioAplicacao = new File(diretorioInstalacao, "aplicacao");
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
