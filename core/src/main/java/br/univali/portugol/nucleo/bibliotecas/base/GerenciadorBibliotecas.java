@@ -108,10 +108,10 @@ public final class GerenciadorBibliotecas
             MetaDadosBiblioteca metaDadosBiblioteca = obterMetaDadosBiblioteca(nome, biblioteca);
             metaDadosBibliotecas.incluir(metaDadosBiblioteca);
         }
-        else
-        {
-            throw new ErroCarregamentoBiblioteca(nome, "Uma biblioteca já foi registrada com este nome");
-        }
+//        else
+//        {
+//            throw new ErroCarregamentoBiblioteca(nome, "Uma biblioteca já foi registrada com este nome");
+//        }
     }
 
     /**
@@ -641,5 +641,9 @@ public final class GerenciadorBibliotecas
         }
 
         return null;
+    }
+
+    public List<String> getBibliotecasDisponiveis() {
+        return bibliotecasDisponiveis;
     }
 }
