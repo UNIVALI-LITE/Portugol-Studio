@@ -147,6 +147,10 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         {
             LOGGER.log(Level.WARNING, "Exceção não identificada", excecao);
         }
+        else if (excecao.getMessage().contains("component must be showing on the screen to determine its location") && excecao.getMessage().contains("javax.swing.text.JTextComponent$InputMethodRequestsHandler.getTextLocation"))
+        {
+            //ignorar até JDK ser atualizada para versão 9
+        }
         else
         {
             exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
