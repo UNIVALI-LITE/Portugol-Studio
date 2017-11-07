@@ -71,8 +71,9 @@ programa
 		g.definir_tamanho_texto(125.0)
 		//fundo dos digitos
 		g.definir_cor(cor_fundo_letra)
-		g.desenhar_texto((largura_janela/2)-(g.largura_texto(relogio)/2), 160, "88:88:88")
-
+		g.definir_opacidade(70)
+		g.desenhar_texto((largura_janela/2)-(g.largura_texto(relogio)/2), 160, "88:88:88") //fundo das horas 
+		g.definir_opacidade(255)
 		//hora
 		g.definir_cor(cor_letra)
 		g.desenhar_texto((largura_janela/2)-(g.largura_texto(relogio)/2), 160, relogio)
@@ -92,9 +93,12 @@ programa
 		
 		//fundo dos digitos
 		g.definir_cor(cor_fundo_letra)
-		g.desenhar_texto(x_textos-40, y_textos+20, "88")
-		g.desenhar_texto(x_textos+85, y_textos+20, "88")
-		
+		g.definir_opacidade(70)
+		g.desenhar_texto(x_textos-40, y_textos+20, "88") //fundo da data
+		g.desenhar_texto(x_textos+85, y_textos+20, "88") //fundo do mes
+		g.desenhar_texto(x_textos+265, y_textos+20, "888")
+		g.definir_opacidade(255)
+	
 		//dia, mes e dia da semana
 		g.definir_cor(cor_letra)		
 		g.desenhar_texto(x_textos-40, y_textos+20, dm)
@@ -104,7 +108,7 @@ programa
 	}
 	
 	funcao atualizar_hora(){
-		hora = c.hora_atual()
+		hora = c.hora_atual(falso)
 		minuto = c.minuto_atual()
 		segundo = c.segundo_atual()
 		milisegundo = c.milisegundo_atual()
@@ -141,7 +145,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 8; 
+ * @POSICAO-CURSOR = 0; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
