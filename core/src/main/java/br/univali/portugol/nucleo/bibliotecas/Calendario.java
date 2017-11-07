@@ -111,7 +111,7 @@ public final class Calendario extends Biblioteca{
         {
             @Autor(nome = "Rafael Ferreira Costa", email = "rafaelcosta@edu.univali.br")
         },
-        retorno = "um <tipo>inteiro</tipo> com o mês com dois digitos, se forem menores que 10 apenas com um digito. Ex: 12."
+        retorno = "um <tipo>inteiro</tipo> com o mês com dois digitos, se forem menores que 10 apenas com um digito. Ex: 10."
     )
     public int mes_atual() throws ErroExecucaoBiblioteca, InterruptedException
     {
@@ -135,17 +135,24 @@ public final class Calendario extends Biblioteca{
     @DocumentacaoFuncao
     (
         descricao = "Recupera os digitos da hora atual do computador.",
+        parametros = 
+        {
+            @DocumentacaoParametro(nome = "formato_12h", descricao = "um <tipo>logico</tipo> que se verdadeiro o retorno será no formato 12h se falso será em 24h")
+        },
         autores = 
         {
             @Autor(nome = "Rafael Ferreira Costa", email = "rafaelcosta@edu.univali.br")
         },
-        retorno = "um <tipo>inteiro</tipo> com a hora atual no formato 24h com dois digitos, se forem menores que 10 apenas com um digito. Ex: 22."
+        retorno = "um <tipo>inteiro</tipo> com a hora atual no formato 12h ou 24h com dois digitos, se forem menores que 10 apenas com um digito. Ex: 22 para 24h, se o parâmetro for falso ou 10 para 12h, se o parâmetro for verdadeiro."
     )
-    public int hora_atual() throws ErroExecucaoBiblioteca, InterruptedException
+    public int hora_atual(boolean formato_12h) throws ErroExecucaoBiblioteca, InterruptedException
     {
-        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        if(!formato_12h)
+            return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        else
+            return Calendar.getInstance().get(Calendar.HOUR);
     }
-    
+        
     @DocumentacaoFuncao
     (
         descricao = "Recupera os digitos do minuto atual do computador.",
