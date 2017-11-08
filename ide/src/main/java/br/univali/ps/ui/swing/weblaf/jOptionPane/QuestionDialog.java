@@ -3,11 +3,17 @@ package br.univali.ps.ui.swing.weblaf.jOptionPane;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 
@@ -17,6 +23,7 @@ import javax.swing.border.LineBorder;
  */
 public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     int pX, pY;
+    private int resposta = -1;
     private static QuestionDialog dialog;
     /**
      * Creates new form QuestionDialog
@@ -27,34 +34,33 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     private QuestionDialog(){
         super((JFrame)null, true);
         initComponents();
+        setup();
     }
     public static QuestionDialog getInstance(){
         if(dialog==null){
-            dialog = new QuestionDialog();
+            dialog = new QuestionDialog();  
         }
+        dialog.reset();
         return dialog;
     }
-    public void showMessage(String text) {
+    private void setup()
+    {
         jPanel3.setBorder(new CompoundBorder(new LineBorder(ColorController.COR_PRINCIPAL, 1),new LineBorder(ColorController.FUNDO_ESCURO, 5)));
-        textLabel.setText("<html><body>"+text+"</body></html>");
+        setLocationRelativeTo(null);
         configurarCores();
         WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, Color.white, ColorController.PROGRESS_BAR, Color.orange,5);
-//        WeblafUtils.configurarBotao(botaoCancelar);
+        WeblafUtils.configurarBotao(botaoCancelar, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
         WeblafUtils.configurarBotao(botaoSim, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
-//        WeblafUtils.configurarBotao(botaoNao);
-        buttonsPane.add(botaoSim);
+        WeblafUtils.configurarBotao(botaoNao, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.VERMELHO, ColorController.COR_LETRA, 5, true);
         titleLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 // Get x,y and store them
                 pX = me.getX();
                 pY = me.getY();
-
             }
-
             @Override
              public void mouseDragged(MouseEvent me) {
-
                 setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
             }
         });
@@ -62,13 +68,101 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         titleLabel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent me) {
-
                 setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
             }
         });
-        setVisible(true);
+        
+        botaoSim.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.YES_OPTION;
+                dispose();
+            }
+        });
+        
+        botaoNao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.NO_OPTION;
+                dispose();
+            }
+        });
+        
+        botaoCancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.CANCEL_OPTION;               
+                dispose();
+            }
+        });
+        
+        webButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.CLOSED_OPTION;
+                dispose();
+            }
+        });
     }
     
+    private void reset()
+    {
+        textLabel.setText("");
+        buttonsPane.removeAll();
+        resposta = -1;
+        jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_logo.png"));
+//        setPreferredSize(new Dimension(400, 150));
+    }
+    
+    public void showMessage(String text, int type)
+    {
+        switch (type) {
+            case JOptionPane.WARNING_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_warning.png"));
+                break;
+            case JOptionPane.ERROR_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_error.png"));
+                break;
+            default:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_logo.png"));
+                break;
+        }
+        showMessage(text);
+    }
+    
+    public void showMessage(String text) {
+        textLabel.setText("<html><body>"+text+"</body></html>");
+        buttonsPane.add(botaoSim);        
+        setVisible(true);
+        pack();
+    }
+    
+    public int showConfirmMessage(String text, int type)
+    {
+        switch (type) {
+            case JOptionPane.WARNING_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_warning.png"));
+                break;
+            case JOptionPane.ERROR_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_error.png"));
+                break;
+            default:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_logo.png"));
+                break;
+        }
+        return showConfirmMessage(text);
+    }
+    
+    public int showConfirmMessage(String text) {
+        textLabel.setText("<html><body>"+text+"</body></html>");
+        buttonsPane.add(botaoSim);
+        buttonsPane.add(botaoNao);
+        buttonsPane.add(botaoCancelar);
+        setVisible(true);
+        pack();
+        return resposta;
+    }
+        
     @Override
     public void configurarCores() {
         titleLabel.setForeground(ColorController.COR_LETRA);
@@ -112,11 +206,11 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(400, 160));
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(450, 200));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         mainpane.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/big_logo.png"))); // NOI18N
@@ -125,7 +219,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        buttonsPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 2, 2, 2));
+        buttonsPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonsPane.setOpaque(false);
         buttonsPane.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
         jPanel1.add(buttonsPane, java.awt.BorderLayout.SOUTH);
@@ -162,11 +256,11 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     }// </editor-fold>//GEN-END:initComponents
 
     private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
-        this.dispose();
+        
     }//GEN-LAST:event_webButton1ActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        this.dispose();
+        
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     /**

@@ -24,6 +24,7 @@ import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.rstautil.SuportePortugolImpl;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -432,7 +433,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(Editor.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
+                    QuestionDialog.getInstance().showMessage("Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
                     textArea.requestFocusInWindow();
                 }
             }
@@ -1656,7 +1657,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     break;
                 case REPLACE_ALL:
                     result = SearchEngine.replaceAll(textArea, context);
-                    JOptionPane.showMessageDialog(null, result.getCount()
+                    QuestionDialog.getInstance().showMessage(result.getCount()
                             + " ocorrências substituídas.");
                     break;
             }
@@ -1708,7 +1709,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 s = "A pesquisa chegou no final do arquivo, deseja recomeçar do início?";
             }
 
-            if (JOptionPane.showConfirmDialog(getParent(), s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
+            if (QuestionDialog.getInstance().showConfirmMessage(s, JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
             {
                 if (context.getSearchForward())
                 {

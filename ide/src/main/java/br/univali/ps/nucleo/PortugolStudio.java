@@ -17,6 +17,7 @@ import br.univali.ps.ui.telas.TelaLicencas;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.Sobre;
 import br.univali.ps.ui.telas.TelaAtalhos;
 import br.univali.ps.ui.telas.TelaRelatarBug;
@@ -466,7 +467,7 @@ public final class PortugolStudio
 
             if (Double.valueOf(property) < 1.7)
             {
-                JOptionPane.showMessageDialog(null, "Para executar o Portugol Studio é preciso utilizar o Java 1.7 ou superior.", "Portugol Studio", JOptionPane.ERROR_MESSAGE);
+                QuestionDialog.getInstance().showMessage("Para executar o Portugol Studio é preciso utilizar o Java 1.7 ou superior.", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
 
@@ -474,7 +475,7 @@ public final class PortugolStudio
         }
         catch (HeadlessException | NumberFormatException excecao)
         {
-            JOptionPane.showMessageDialog(null, "Não foi possível determinar a versão do Java. O Portugol Studio será encerrado!", "Portugol Studio", JOptionPane.ERROR_MESSAGE);
+            QuestionDialog.getInstance().showMessage("Não foi possível determinar a versão do Java. O Portugol Studio será encerrado!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }

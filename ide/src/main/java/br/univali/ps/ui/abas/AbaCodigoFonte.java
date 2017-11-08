@@ -46,6 +46,7 @@ import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import com.alee.laf.button.WebButton;
 import java.awt.*;
@@ -806,7 +807,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     }
                     else
                     {
-                        JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", "Portugol Studio", JOptionPane.WARNING_MESSAGE);
+                        QuestionDialog.getInstance().showMessage("Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", JOptionPane.WARNING_MESSAGE);
                         usuarioCancelouSalvamento = true;
                     }
                     Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
@@ -1162,7 +1163,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     editor.getTextArea().requestFocusInWindow();
 
                     if (Configuracoes.getInstancia().isExibirAvisoRenomear()) {
-                        JOptionPane.showMessageDialog(AbaCodigoFonte.this, ""
+                        QuestionDialog.getInstance().showMessage(""
                                 + "O Portugol Studio tem uma novidade! Agora você pode renomear elementos do seu programa\n"
                                 + "como, por exemplo, variáveis e funções."
                                 + "\n\n"
@@ -1172,7 +1173,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                 + "Você também pode renomear através do editor de código fonte, posicionando o cursor do teclado\n"
                                 + "sobre o nome do elemento e pressionando a combinação de teclas: Ctrl + R."
                                 + "\n\n"
-                                + "Que a força esteja com você!!!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                                + "Que a força esteja com você!!!", JOptionPane.INFORMATION_MESSAGE);
                         Configuracoes.getInstancia().setExibirAvisoRenomear(false);
                     }
                 });
@@ -1217,7 +1218,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         {
                             if ((programaCompilado != null && programaCompilado.isExecutando()))
                             {
-                                JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
+                                QuestionDialog.getInstance().showMessage("Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
                                 editor.getTextArea().requestFocusInWindow();
                             }
                             else
@@ -1861,9 +1862,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
 
         if (arquivoModificado())
-        {
-            int resp = JOptionPane.showConfirmDialog(this, String.format("O documento '%s' possui modificações, deseja Salvá-las?", getCabecalho().getTitulo()), "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
-
+        {           
+            int resp = QuestionDialog.getInstance().showConfirmMessage(String.format("O documento '%s' possui modificações, deseja Salvá-las?", getCabecalho().getTitulo()));
             if (resp == JOptionPane.YES_OPTION)
             {
                 acaoSalvarArquivo.actionPerformed(null);
