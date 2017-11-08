@@ -17,8 +17,8 @@ programa
 	inteiro milisegundo = 0
 
 	//caminhos
-	cadeia caminho_img = "/relogio_digital/imgs/relogio_vazio.png"
-	cadeia caminho_fonte = "/relogio_digital/fonte/digital-7/digital-7-mono.ttf"
+	cadeia caminho_img = "./relogio_digital/imgs/relogio_vazio.png"
+	cadeia caminho_fonte = "./relogio_digital/fonte/digital-7/digital-7-mono.ttf"
 	
 	//imagens
 	inteiro imagem = 0
