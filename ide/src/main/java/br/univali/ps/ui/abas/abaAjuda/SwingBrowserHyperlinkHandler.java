@@ -29,7 +29,6 @@ import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Cursor;
 import java.io.File;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,12 +121,9 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
                     break;
                 }
 
-            } catch (TipoUrlInvalidoException ex)
+            }catch (Exception ex)
             {
-                Logger.getLogger(SwingBrowserHyperlinkHandler.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex)
-            {
-                Logger.getLogger(SwingBrowserHyperlinkHandler.class.getName()).log(Level.SEVERE, null, ex);
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         } else if (evt.getEventType() == HyperlinkEvent.EventType.ENTERED)
         {

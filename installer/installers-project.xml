@@ -149,6 +149,69 @@
                         </distributionFile>
                     </distributionFileList>
                 </folder>
+                <folder>
+                    <description>Utilitarios para Windows</description>
+                    <destination>${install_app_dir}\utils</destination>
+                    <name>folder_utils_windows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/windows/update_shell.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Utilitários para Linux x86</description>
+                    <destination>${install_app_dir}/utils</destination>
+                    <name>folder_utils_linux_x86</name>
+                    <platforms>linux</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.lang</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.nanorc</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/application-x-portugol.xml</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/filetypes.Portugol20.conf</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/install_geany_files.sh</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/uninstall_geany_files.sh</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Utilitários para Linux x64</description>
+                    <destination>${install_app_dir}/utils</destination>
+                    <name>folder_utils_linux_x64</name>
+                    <platforms>linux-x64</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.lang</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/portugol.nanorc</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/application-x-portugol.xml</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/filetypes.Portugol20.conf</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/install_geany_files.sh</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>arquivos/linux/uninstall_geany_files.sh</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
             </folderList>
             <startMenuShortcutList>
                 <startMenuShortcut>
@@ -173,523 +236,775 @@
                 </startMenuShortcut>
             </startMenuShortcutList>
         </component>
-        <component>
-            <name>component_utils</name>
-            <description>Utilitários</description>
-            <canBeEdited>0</canBeEdited>
-            <selected>0</selected>
-            <show>0</show>
-            <folderList>
-                <folder>
-                    <description>Utilitarios para Windows</description>
-                    <destination>${system_temp_directory}\portugol-studio</destination>
-                    <name>folder_utils_windows</name>
-                    <platforms>windows</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>arquivos/windows/update_shell.dll</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-        </component>
-        <component>
-            <name>component_extra_files</name>
-            <description>Arquivos adicionais</description>
-            <canBeEdited>0</canBeEdited>
-            <selected>0</selected>
-            <show>0</show>
-            <folderList>
-                <folder>
-                    <description>Arquivos de associações</description>
-                    <destination>${system_temp_directory}/portugol-studio</destination>
-                    <name>folder_association_files</name>
-                    <platforms>linux</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>arquivos/linux/portugol.lang</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>arquivos/linux/portugol.nanorc</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>arquivos/linux/univali-x-portugol.xml</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-        </component>
     </componentList>
     <initializationActionList>
         <actionGroup>
+            <explanation>Inicializando a instalação</explanation>
+            <progressText>Inicializando a instalação</progressText>
             <actionList>
-                <setInstallerVariable>
-                    <name>install_root_dir</name>
-                    <persist>1</persist>
-                    <value>${windows_folder_common_appdata}</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_app_dir</name>
-                    <persist>1</persist>
-                    <value>${install_root_dir}\UNIVALI\Portugol Studio</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_java_dir</name>
-                    <persist>1</persist>
-                    <value>${install_app_dir}\java\java-windows</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_java_exe</name>
-                    <persist>1</persist>
-                    <value>${install_java_dir}\bin\java.exe</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_javaw_exe</name>
-                    <persist>1</persist>
-                    <value>${install_java_dir}\bin\javaw.exe</value>
-                </setInstallerVariable>
+                <actionGroup>
+                    <explanation>Windows</explanation>
+                    <actionList>
+                        <actionGroup>
+                            <explanation>Definindo variáveis do instalador</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>install_root_dir</name>
+                                    <persist>1</persist>
+                                    <value>${windows_folder_common_appdata}</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_app_dir</name>
+                                    <persist>1</persist>
+                                    <value>${install_root_dir}\UNIVALI\Portugol Studio</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_java_dir</name>
+                                    <persist>1</persist>
+                                    <value>${install_app_dir}\java\java-windows</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_java_exe</name>
+                                    <persist>1</persist>
+                                    <value>${install_java_dir}\bin\java.exe</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_javaw_exe</name>
+                                    <persist>1</persist>
+                                    <value>${install_java_dir}\bin\javaw.exe</value>
+                                </setInstallerVariable>
+                            </actionList>
+                        </actionGroup>
+                    </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>windows</type>
+                        </platformTest>
+                    </ruleList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Linux</explanation>
+                    <actionList>
+                        <actionGroup>
+                            <explanation>Definindo variáveis do instalador</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>install_root_dir</name>
+                                    <persist>1</persist>
+                                    <value>/usr/local</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_app_dir</name>
+                                    <persist>1</persist>
+                                    <value>${install_root_dir}/portugol-studio</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_java_dir</name>
+                                    <persist>1</persist>
+                                    <value>${install_app_dir}/java/java-linux</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_java_exe</name>
+                                    <persist>1</persist>
+                                    <value>${install_java_dir}/bin/java</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_javaw_exe</name>
+                                    <persist>1</persist>
+                                    <value>${install_java_dir}/bin/java</value>
+                                </setInstallerVariable>
+                            </actionList>
+                        </actionGroup>
+                    </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>linux</type>
+                        </platformTest>
+                    </ruleList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Mac</explanation>
+                    <actionList>
+                        <actionGroup>
+                            <explanation>Definindo variáveis do instalador</explanation>
+                            <actionList>
+                                <setInstallerVariable>
+                                    <name>install_root_dir</name>
+                                    <persist>1</persist>
+                                    <value>/Applications</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_app_bundle_dir</name>
+                                    <persist>1</persist>
+                                    <value>${install_root_dir}/Portugol Studio.app</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_app_dir</name>
+                                    <persist>1</persist>
+                                    <value>${install_app_bundle_dir}/Contents/Resources/IDE</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_java_dir</name>
+                                    <persist>1</persist>
+                                    <value>${install_app_dir}/java/java-mac</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_java_exe</name>
+                                    <persist>1</persist>
+                                    <value>${install_java_dir}/bin/java</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_javaw_exe</name>
+                                    <persist>1</persist>
+                                    <value>${install_java_dir}/bin/java</value>
+                                </setInstallerVariable>
+                            </actionList>
+                        </actionGroup>
+                    </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>osx</type>
+                        </platformTest>
+                    </ruleList>
+                </actionGroup>
             </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>windows</type>
-                </platformTest>
-            </ruleList>
-        </actionGroup>
-        <actionGroup>
-            <actionList>
-                <setInstallerVariable>
-                    <name>install_root_dir</name>
-                    <persist>1</persist>
-                    <value>/usr/local</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_app_dir</name>
-                    <persist>1</persist>
-                    <value>${install_root_dir}/portugol-studio</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_java_dir</name>
-                    <persist>1</persist>
-                    <value>${install_app_dir}/java/java-linux</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_java_exe</name>
-                    <persist>1</persist>
-                    <value>${install_java_dir}/bin/java</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_javaw_exe</name>
-                    <persist>1</persist>
-                    <value>${install_java_dir}/bin/java</value>
-                </setInstallerVariable>
-            </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>linux</type>
-                </platformTest>
-            </ruleList>
-        </actionGroup>
-        <actionGroup>
-            <actionList>
-                <setInstallerVariable>
-                    <name>install_root_dir</name>
-                    <persist>1</persist>
-                    <value>/Applications</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_app_dir</name>
-                    <persist>1</persist>
-                    <value>${install_root_dir}/Portugol Studio.app/Contents/Resources/IDE</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_java_dir</name>
-                    <persist>1</persist>
-                    <value>${install_app_dir}/java/java-mac</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_java_exe</name>
-                    <persist>1</persist>
-                    <value>${install_java_dir}/bin/java</value>
-                </setInstallerVariable>
-                <setInstallerVariable>
-                    <name>install_javaw_exe</name>
-                    <persist>1</persist>
-                    <value>${install_java_dir}/bin/java</value>
-                </setInstallerVariable>
-            </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>osx</type>
-                </platformTest>
-            </ruleList>
         </actionGroup>
     </initializationActionList>
     <readyToInstallActionList>
         <actionGroup>
+            <explanation>Removendo versões anteriores do Portugol Studio</explanation>
+            <progressText>Removendo versões anteriores do Portugol Studio</progressText>
             <actionList>
-                <showProgressDialog>
-                    <progressText>Removendo versão anterior do Portugol Studio</progressText>
-                    <title>Por favor aguarde...</title>
+                <actionGroup>
+                    <explanation>Windows</explanation>
                     <actionList>
-                        <registryGet>
-                            <key>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\{EEF28793-B766-42EE-9534-B875AE2660C5}_is1</key>
-                            <name>UninstallString</name>
-                            <progressText>Procurando por versões anteriores do Portugol Studio</progressText>
-                            <show>0</show>
-                            <variable>previous_release_unninstaller</variable>
-                        </registryGet>
-                        <setInstallerVariableFromRegEx>
-                            <name>previous_release_unninstaller</name>
-                            <pattern>"</pattern>
-                            <progressText>Procurando por versões anteriores do Portugol Studio</progressText>
-                            <substitution></substitution>
-                            <text>${previous_release_unninstaller}</text>
-                        </setInstallerVariableFromRegEx>
-                        <runProgram>
-                            <program>${previous_release_unninstaller}</program>
-                            <programArguments>/VERYSILENT</programArguments>
-                            <progressText>Removendo versão anterior do Portugol Studio</progressText>
-                            <show>0</show>
-                        </runProgram>
+                        <actionGroup>
+                            <explanation>Removendo versão antiga instalada com o InnoSetup</explanation>
+                            <actionList>
+                                <registryGet>
+                                    <key>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\{EEF28793-B766-42EE-9534-B875AE2660C5}_is1</key>
+                                    <name>UninstallString</name>
+                                    <show>0</show>
+                                    <variable>previous_release_unninstaller</variable>
+                                </registryGet>
+                                <setInstallerVariableFromRegEx>
+                                    <name>previous_release_unninstaller</name>
+                                    <pattern>"</pattern>
+                                    <substitution></substitution>
+                                    <text>${previous_release_unninstaller}</text>
+                                </setInstallerVariableFromRegEx>
+                                <runProgram>
+                                    <program>${previous_release_unninstaller}</program>
+                                    <programArguments>/VERYSILENT</programArguments>
+                                    <show>0</show>
+                                </runProgram>
+                            </actionList>
+                            <ruleList>
+                                <registryTest>
+                                    <key>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\{EEF28793-B766-42EE-9534-B875AE2660C5}_is1</key>
+                                    <logic>exists</logic>
+                                    <name></name>
+                                </registryTest>
+                            </ruleList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo versão antiga instalada com o Bitrock</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>${install_app_dir}\uninstall.exe</program>
+                                    <programArguments>--mode unattended</programArguments>
+                                </runProgram>
+                            </actionList>
+                            <ruleList>
+                                <fileExists>
+                                    <path>${install_app_dir}\uninstall.exe</path>
+                                </fileExists>
+                            </ruleList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo versão anterior</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>${install_app_dir}\desinstalar.exe</program>
+                                    <programArguments>--mode unattended</programArguments>
+                                </runProgram>
+                            </actionList>
+                            <ruleList>
+                                <fileExists>
+                                    <path>${install_app_dir}\desinstalar.exe</path>
+                                </fileExists>
+                            </ruleList>
+                        </actionGroup>
                     </actionList>
                     <ruleList>
-                        <registryTest>
-                            <key>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\{EEF28793-B766-42EE-9534-B875AE2660C5}_is1</key>
-                            <logic>exists</logic>
-                            <name></name>
-                        </registryTest>
+                        <platformTest>
+                            <type>windows</type>
+                        </platformTest>
                     </ruleList>
-                </showProgressDialog>
-                <showProgressDialog>
-                    <progressText>Removendo versão antiga do Portugol Studio</progressText>
-                    <title>Por favor aguarde...</title>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Linux</explanation>
                     <actionList>
-                        <runProgram>
-                            <program>${install_app_dir}\uninstall.exe</program>
-                            <programArguments>--mode unattended</programArguments>
-                            <progressText>Removendo versão anterior do Portugol Studio</progressText>
-                        </runProgram>
+                        <actionGroup>
+                            <explanation>Removendo versão antiga instalada com o Bitrock</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 /usr/local/univali/portugol-studio/desinstalar</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>/usr/local/univali/portugol-studio/desinstalar</program>
+                                    <programArguments>--mode unattended</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/local/univali/portugol-studio/desinstalar</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                            </actionList>
+                            <ruleList>
+                                <fileExists>
+                                    <path>/usr/local/univali/portugol-studio/desinstalar</path>
+                                </fileExists>
+                            </ruleList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo versão anterior</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 ${install_app_dir}/desinstalar</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>${install_app_dir}/desinstalar</program>
+                                    <programArguments>--mode unattended</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${install_app_dir}/desinstalar</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                            </actionList>
+                            <ruleList>
+                                <fileExists>
+                                    <path>${install_app_dir}/desinstalar</path>
+                                </fileExists>
+                            </ruleList>
+                        </actionGroup>
                     </actionList>
                     <ruleList>
-                        <fileExists>
-                            <path>${install_app_dir}\uninstall.exe</path>
-                        </fileExists>
+                        <platformTest>
+                            <type>linux</type>
+                        </platformTest>
                     </ruleList>
-                </showProgressDialog>
-            </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>windows</type>
-                </platformTest>
-            </ruleList>
-        </actionGroup>
-        <actionGroup>
-            <progressText>Removendo a versão anterior do Portugol Studio no Linux</progressText>
-            <actionList>
-                <runProgram>
-                    <program>/usr/local/univali/portugol-studio/desinstalar</program>
-                    <programArguments>--mode unattended</programArguments>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Mac</explanation>
+                    <actionList>
+                        <actionGroup>
+                            <explanation>Removendo associações de arquivos</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                                    <programArguments>-u "/Applications/UNIVALI/Portugol Studio.app"</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/Applications/UNIVALI/Portugol Studio.app</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                                    <programArguments>-u "${install_app_bundle_dir}"</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${install_app_bundle_dir}</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo versão mais antiga criada com o Bitrock</explanation>
+                            <actionList>
+                                <deleteFile>
+                                    <path>/Applications/UNIVALI</path>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/Applications/UNIVALI</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </deleteFile>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo versões anteriores do Portugol Studio</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/desinstalar"</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${install_app_dir}/desinstalar</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>${install_app_dir}/desinstalar</program>
+                                    <programArguments>--mode unattended</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${install_app_dir}/desinstalar</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                            </actionList>
+                            <ruleList>
+                                <fileExists>
+                                    <path>/Applications/Portugol Studio.app</path>
+                                </fileExists>
+                            </ruleList>
+                        </actionGroup>
+                    </actionList>
                     <ruleList>
-                        <fileExists>
-                            <path>/usr/local/univali/portugol-studio/desinstalar</path>
-                        </fileExists>
+                        <platformTest>
+                            <type>osx</type>
+                        </platformTest>
                     </ruleList>
-                </runProgram>
-                <runProgram>
-                    <program>${install_app_dir}/desinstalar</program>
-                    <programArguments>--mode unattended</programArguments>
-                    <ruleList>
-                        <fileExists>
-                            <path>${install_app_dir}/desinstalar</path>
-                        </fileExists>
-                    </ruleList>
-                </runProgram>
+                </actionGroup>
             </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>linux</type>
-                </platformTest>
-            </ruleList>
-        </actionGroup>
-        <actionGroup>
-            <abortOnError>0</abortOnError>
-            <explanation>Removendo versão antiga do PS</explanation>
-            <showMessageOnError>0</showMessageOnError>
-            <actionList>
-                <deleteFile>
-                    <path>/Applications/UNIVALI</path>
-                    <ruleList>
-                        <fileExists>
-                            <path>/Applications/UNIVALI</path>
-                        </fileExists>
-                    </ruleList>
-                </deleteFile>
-            </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>osx</type>
-                </platformTest>
-            </ruleList>
         </actionGroup>
     </readyToInstallActionList>
     <postInstallationActionList>
         <actionGroup>
-            <show>0</show>
+            <explanation>Finalizando instalação</explanation>
+            <progressText>Finalizando instalação</progressText>
             <actionList>
                 <actionGroup>
-                    <progressText>Criando associações de arquivos</progressText>
-                    <show>0</show>
+                    <explanation>Windows</explanation>
                     <actionList>
-                        <associateWindowsFileExtension>
-                            <extensions>.por</extensions>
-                            <friendlyName></friendlyName>
-                            <icon>${install_app_dir}\aplicacao\icones\windows\arquivo-por.ico</icon>
-                            <mimeType>text\portugol</mimeType>
-                            <progID>Portugol.Algoritmo</progID>
+                        <actionGroup>
+                            <explanation>Criando associações de arquivos</explanation>
                             <show>0</show>
-                            <commandList>
-                                <command>
-                                    <makeDefault>1</makeDefault>
-                                    <runProgram>${install_javaw_exe}</runProgram>
-                                    <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-studio.jar" "%1"</runProgramArguments>
-                                    <verb>Abrir</verb>
-                                </command>
-                                <command>
-                                    <makeDefault>0</makeDefault>
-                                    <runProgram>${install_java_exe}</runProgram>
-                                    <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
-                                    <verb>Executar em modo console</verb>
-                                </command>
-                                <command>
-                                    <makeDefault>0</makeDefault>
-                                    <runProgram>${install_javaw_exe}</runProgram>
-                                    <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
-                                    <verb>Executar em modo Gráfico</verb>
-                                </command>
-                            </commandList>
-                        </associateWindowsFileExtension>
-                        <createDirectory>
-                            <abortOnError>0</abortOnError>
-                            <path>${system_temp_directory}\portugol-studio</path>
-                            <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
-                        </createDirectory>
-                        <unpackFile>
-                            <abortOnError>0</abortOnError>
-                            <component>component_utils</component>
-                            <destination>${system_temp_directory}\portugol-studio\update_shell.dll</destination>
-                            <folder>folder_utils_windows</folder>
-                            <origin>update_shell.dll</origin>
-                            <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
-                        </unpackFile>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>rundll32</program>
-                            <programArguments>${system_temp_directory.dos}\portugol-studio\update_shell.dll,UpdateShell</programArguments>
-                            <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
+                            <actionList>
+                                <associateWindowsFileExtension>
+                                    <extensions>.por</extensions>
+                                    <friendlyName></friendlyName>
+                                    <icon>${install_app_dir}\aplicacao\icones\windows\arquivo-por.ico</icon>
+                                    <mimeType>application/x-portugol</mimeType>
+                                    <progID>Portugol.Algoritmo</progID>
+                                    <show>0</show>
+                                    <commandList>
+                                        <command>
+                                            <makeDefault>1</makeDefault>
+                                            <runProgram>${install_javaw_exe}</runProgram>
+                                            <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-studio.jar" "%1"</runProgramArguments>
+                                            <verb>Abrir</verb>
+                                        </command>
+                                        <command>
+                                            <makeDefault>0</makeDefault>
+                                            <runProgram>${install_java_exe}</runProgram>
+                                            <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
+                                            <verb>Executar em modo console</verb>
+                                        </command>
+                                        <command>
+                                            <makeDefault>0</makeDefault>
+                                            <runProgram>${install_javaw_exe}</runProgram>
+                                            <runProgramArguments>-server -jar -Xms32m -Xmx256m -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled "${install_app_dir}/aplicacao/portugol-console.jar" "%1"</runProgramArguments>
+                                            <verb>Executar em modo Gráfico</verb>
+                                        </command>
+                                    </commandList>
+                                </associateWindowsFileExtension>
+                                <runProgram>
+                                    <program>rundll32</program>
+                                    <programArguments>${install_app_dir}\utils\update_shell.dll,UpdateShell</programArguments>
+                                    <show>0</show>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
                     </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>windows</type>
+                        </platformTest>
+                    </ruleList>
                 </actionGroup>
                 <actionGroup>
-                    <progressText>Definindo permissões de arquivos</progressText>
+                    <explanation>Linux</explanation>
                     <actionList>
-                        <clearWindowsACL>
-                            <files>${install_app_dir}</files>
-                            <matchHiddenFiles>1</matchHiddenFiles>
-                            <run>0</run>
-                            <show>0</show>
-                        </clearWindowsACL>
-                        <setWindowsACL>
-                            <action>allow</action>
-                            <files>${install_app_dir};${install_app_dir}/*</files>
-                            <recurseContainers>1</recurseContainers>
-                            <recurseObjects>1</recurseObjects>
-                            <show>0</show>
-                        </setWindowsACL>
-                    </actionList>
-                </actionGroup>
-            </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>windows</type>
-                </platformTest>
-            </ruleList>
-        </actionGroup>
-        <actionGroup>
-            <abortOnError>0</abortOnError>
-            <showMessageOnError>0</showMessageOnError>
-            <actionList>
-                <actionGroup>
-                    <progressText>Configurando arquivos executáveis</progressText>
-                    <actionList>
-                        <runProgram>
-                            <program>ln</program>
-                            <programArguments>-s ${install_app_dir}/executar-studio-linux.sh /usr/bin/portugol-studio</programArguments>
-                        </runProgram>
-                        <runProgram>
-                            <program>ln</program>
-                            <programArguments>-s ${install_app_dir}/executar-console-linux.sh /usr/bin/portugol-console</programArguments>
-                        </runProgram>
-                        <runProgram>
-                            <program>chmod</program>
-                            <programArguments>755 /usr/bin/portugol-studio</programArguments>
-                        </runProgram>
-                        <runProgram>
-                            <program>chmod</program>
-                            <programArguments>755 /usr/bin/portugol-console</programArguments>
-                        </runProgram>
-                    </actionList>
-                </actionGroup>
-                <actionGroup>
-                    <progressText>Definido permissões de arquivos</progressText>
-                    <actionList>
-                        <runProgram>
-                            <program>chmod</program>
-                            <programArguments>777 -R "${install_app_dir}"</programArguments>
-                        </runProgram>
-                    </actionList>
-                </actionGroup>
-                <actionGroup>
-                    <abortOnError>0</abortOnError>
-                    <progressText>Criando associações de arquivos</progressText>
-                    <showMessageOnError>0</showMessageOnError>
-                    <actionList>
-                        <writeFile>
-                            <encoding>utf-8</encoding>
-                            <endOfLineConversion>lf</endOfLineConversion>
-                            <path>/usr/share/applications/portugol-studio.desktop</path>
-                            <text>[Desktop Entry]
+                        <actionGroup>
+                            <explanation>Configurando executáveis no path do sistema</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>ln</program>
+                                    <programArguments>-s ${install_app_dir}/executar-studio-linux.sh /usr/bin/portugol-studio</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>ln</program>
+                                    <programArguments>-s ${install_app_dir}/executar-console-linux.sh /usr/bin/portugol-console</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 /usr/bin/portugol-studio</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 /usr/bin/portugol-console</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Definindo permissões de arquivos</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>find</program>
+                                    <programArguments>"${install_app_dir}" -type d -exec chmod 755 {} \;</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>find</program>
+                                    <programArguments>"${install_app_dir}" -type f -exec chmod 644 {} \;</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/executar-studio-linux.sh"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/executar-console-linux.sh"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/java/java-linux/bin/java"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/java/java-linux/bin/javac"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 ${install_app_dir}/utils/install_geany_files.sh</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 ${install_app_dir}/utils/uninstall_geany_files.sh</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <progressText>Criando associações de arquivos</progressText>
+                            <actionList>
+                                <writeFile>
+                                    <encoding>utf-8</encoding>
+                                    <endOfLineConversion>lf</endOfLineConversion>
+                                    <path>/usr/share/applications/portugol-studio.desktop</path>
+                                    <text>[Desktop Entry]
 Encoding=UTF-8
 Name=Portugol Studio
 Comment=Ambiente de Desenvolvimento para a linguagem Portugol 2.0
 Exec=portugol-studio %F
 Icon=${install_app_dir}/aplicacao/icones/linux/portugol-studio.png
 Categories=Application;Development;Java;IDE;Portugol
-Version=2.6
+Version=${project.version}
 Type=Application
 Terminal=0
 MimeType=application/x-portugol</text>
-                        </writeFile>
-                        <unpackFile>
-                            <abortOnError>0</abortOnError>
-                            <component>component_extra_files</component>
-                            <destination>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</destination>
-                            <folder>folder_association_files</folder>
-                            <origin>portugol.lang</origin>
-                            <showMessageOnError>0</showMessageOnError>
-                            <ruleList>
-                                <fileExists>
-                                    <path>/usr/share/gtksourceview-2.0/language-specs</path>
-                                </fileExists>
-                            </ruleList>
-                        </unpackFile>
-                        <unpackFile>
-                            <abortOnError>0</abortOnError>
-                            <component>component_extra_files</component>
-                            <destination>/usr/share/nano/portugol.nanorc</destination>
-                            <folder>folder_association_files</folder>
-                            <origin>portugol.nanorc</origin>
-                            <showMessageOnError>0</showMessageOnError>
-                            <ruleList>
-                                <fileExists>
-                                    <path>/usr/share/nano</path>
-                                </fileExists>
-                            </ruleList>
-                        </unpackFile>
-                        <unpackFile>
-                            <abortOnError>0</abortOnError>
-                            <component>component_extra_files</component>
-                            <destination>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</destination>
-                            <folder>folder_association_files</folder>
-                            <origin>portugol.lang</origin>
-                            <showMessageOnError>0</showMessageOnError>
-                            <ruleList>
-                                <fileExists>
-                                    <path>/usr/share/gtksourceview-3.0/language-specs</path>
-                                </fileExists>
-                            </ruleList>
-                        </unpackFile>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>chmod</program>
-                            <programArguments>644 /usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                            <ruleList>
-                                <fileExists>
-                                    <path>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</path>
-                                </fileExists>
-                            </ruleList>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>chmod</program>
-                            <programArguments>644 /usr/share/gtksourceview-3.0/language-specs/portugol.lang</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                            <ruleList>
-                                <fileExists>
-                                    <path>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</path>
-                                </fileExists>
-                            </ruleList>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>chmod</program>
-                            <programArguments>644 /usr/share/nano/portugol.nanorc</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                            <ruleList>
-                                <fileExists>
-                                    <path>/usr/share/nano/portugol.nanorc</path>
-                                </fileExists>
-                            </ruleList>
-                        </runProgram>
-                        <addTextToFile>
-                            <abortOnError>0</abortOnError>
-                            <file>/etc/nanorc</file>
-                            <showMessageOnError>0</showMessageOnError>
-                            <text>## Portugol 2.0
+                                </writeFile>
+                                <copyFile>
+                                    <destination>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</destination>
+                                    <origin>${install_app_dir}/utils/portugol.lang</origin>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-2.0/language-specs</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </copyFile>
+                                <copyFile>
+                                    <destination>/usr/share/nano/portugol.nanorc</destination>
+                                    <origin>${install_app_dir}/utils/portugol.nanorc</origin>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/nano</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </copyFile>
+                                <copyFile>
+                                    <destination>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</destination>
+                                    <origin>${install_app_dir}/utils/portugol.lang</origin>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-3.0/language-specs</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </copyFile>
+                                <copyFile>
+                                    <destination>/usr/share/geany/filetypes.Portugol20.conf</destination>
+                                    <origin>${install_app_dir}/utils/filetypes.Portugol20.conf</origin>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </copyFile>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>644 /usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>644 /usr/share/gtksourceview-3.0/language-specs/portugol.lang</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>644 /usr/share/nano/portugol.nanorc</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/nano/portugol.nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>644 /usr/share/geany/filetypes.Portugol20.conf</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany/filetypes.Portugol20.conf</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>${install_app_dir}/utils/install_geany_files.sh</program>
+                                    <programArguments></programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <addTextToFile>
+                                    <file>/etc/nanorc</file>
+                                    <text>## Portugol 2.0
 include /usr/share/nano/portugol.nanorc</text>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/nano/portugol.nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </addTextToFile>
+                                <copyFile>
+                                    <destination>/usr/share/mime/packages/application-x-portugol.xml</destination>
+                                    <origin>${install_app_dir}/utils/application-x-portugol.xml</origin>
+                                </copyFile>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>644 /usr/share/mime/packages/application-x-portugol.xml</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>xdg-icon-resource</program>
+                                    <programArguments>install ${install_app_dir}/aplicacao/icones/linux/arquivo-por.png --size 256 application-x-portugol</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>update-desktop-database</program>
+                                    <programArguments></programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>update-mime-database</program>
+                                    <programArguments>/usr/share/mime</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>gtk-update-icon-cache</program>
+                                    <programArguments></programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                    </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>linux</type>
+                        </platformTest>
+                    </ruleList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Mac</explanation>
+                    <actionList>
+                        <actionGroup>
+                            <explanation>Ajustando quebras de linha nos arquivos</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>tr</program>
+                                    <programArguments>-d '\r'  &lt; "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio" &gt; "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio_fixed"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>mv</program>
+                                    <programArguments>"${install_app_bundle_dir}/Contents/MacOS/Portugol Studio_fixed" "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>tr</program>
+                                    <programArguments>-d '\r'  &lt; "${install_app_dir}/executar-console-mac.command" &gt; "${install_app_dir}/executar-console-mac.command_fixed"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>mv</program>
+                                    <programArguments>"${install_app_dir}/executar-console-mac.command_fixed" "${install_app_dir}/executar-console-mac.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>tr</program>
+                                    <programArguments>-d '\r'  &lt; "${install_app_dir}/executar-studio-mac.command" &gt; "${install_app_dir}/executar-studio-mac.command_fixed"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>mv</program>
+                                    <programArguments>"${install_app_dir}/executar-studio-mac.command_fixed" "${install_app_dir}/executar-studio-mac.command"</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Definindo permissões de arquivos</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>-R 755 "${install_app_bundle_dir}"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>find</program>
+                                    <programArguments>"${install_app_bundle_dir}" -type f -exec chmod 644 {} \;</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/desinstalar"</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>"${install_app_bundle_dir}/desinstalar"</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/executar-studio-mac.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/executar-console-mac.command"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/java/java-mac/bin/java"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_dir}/java/java-mac/bin/javac"</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>chmod</program>
+                                    <programArguments>755 "${install_app_bundle_dir}/Contents/MacOS/Portugol Studio"</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Criando associações de arquivos</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                                    <programArguments>"${install_app_bundle_dir}"</programArguments>
+                                </runProgram>
+
+                                <!-- Restart the launch services to reload the configuration -->
+                                <runProgram>
+                                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                                    <programArguments>-kill -domain local -domain system -domain user</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                    </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>osx</type>
+                        </platformTest>
+                    </ruleList>
+                </actionGroup>
+            </actionList>
+        </actionGroup>
+    </postInstallationActionList>
+    <postUninstallerCreationActionList>
+        <actionGroup>
+            <progressText>Configurando o desinstalador</progressText>
+            <show>0</show>
+            <actionList>
+                <actionGroup>
+                    <explanation>Windows</explanation>
+                    <actionList>
+                        <registrySet>
+                            <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
+                            <name>Comments</name>
+                            <show>0</show>
+                            <type>REG_SZ</type>
+                            <value>Ambiente de programação para a linguagem Portugol 2.0</value>
+                        </registrySet>
+                        <registrySet>
+                            <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
+                            <name>DisplayIcon</name>
+                            <show>0</show>
+                            <type>REG_SZ</type>
+                            <value>${install_app_dir}\aplicacao\icones\windows\portugol-studio.ico</value>
+                        </registrySet>
+                        <registrySet>
+                            <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
+                            <name>DisplayVersion</name>
+                            <type>REG_SZ</type>
+                            <value>${project.version}</value>
+                        </registrySet>
+                    </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>windows</type>
+                        </platformTest>
+                    </ruleList>
+                </actionGroup>
+                <actionGroup>
+                    <explanation>Linux</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>chmod</program>
+                            <programArguments>755 "${install_app_dir}/desinstalar"</programArguments>
                             <ruleList>
-                                <fileExists>
-                                    <path>/usr/share/nano/portugol.nanorc</path>
-                                </fileExists>
+                                <platformTest>
+                                    <type>linux</type>
+                                </platformTest>
                             </ruleList>
-                        </addTextToFile>
-                        <unpackFile>
-                            <abortOnError>0</abortOnError>
-                            <component>component_extra_files</component>
-                            <destination>/usr/share/univali-x-portugol.xml</destination>
-                            <folder>folder_association_files</folder>
-                            <origin>univali-x-portugol.xml</origin>
-                            <showMessageOnError>0</showMessageOnError>
-                        </unpackFile>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>xdg-mime</program>
-                            <programArguments>install /usr/share/univali-x-portugol.xml</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>xdg-mime</program>
-                            <programArguments>default portugol-studio.desktop application/x-portugol</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>ln</program>
-                            <programArguments>-s ${install_app_dir}/aplicacao/icones/linux/arquivo-por.png /usr/share/icons/hicolor/256x256/mimetypes/arquivo-por.png</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>xdg-icon-resource</program>
-                            <programArguments>forceupdate</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
                         </runProgram>
                     </actionList>
                 </actionGroup>
+            </actionList>
+        </actionGroup>
+    </postUninstallerCreationActionList>
+    <preUninstallationActionList>
+        <actionGroup>
+            <explanation>Linux</explanation>
+            <actionList>
+                <createDirectory>
+                    <path>${system_temp_directory}/portugol-studio</path>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${system_temp_directory}/portugol-studio</path>
+                        </fileExists>
+                    </ruleList>
+                </createDirectory>
+                <copyFile>
+                    <destination>${system_temp_directory}/portugol-studio/uninstall_geany_files.sh</destination>
+                    <origin>${install_app_dir}/utils/uninstall_geany_files.sh</origin>
+                </copyFile>
             </actionList>
             <ruleList>
                 <platformTest>
@@ -698,22 +1013,17 @@ include /usr/share/nano/portugol.nanorc</text>
             </ruleList>
         </actionGroup>
         <actionGroup>
-            <explanation>Associando extensão .por no Mac</explanation>
+            <explanation>Mac</explanation>
             <actionList>
-                <runProgram>
-                    <program>defaults</program>
-                    <programArguments>write com.apple.LaunchServices LSHandlers -array-add "&lt;dict&gt;&lt;key&gt;LSHandlerContentTag&lt;/key&gt;
-&lt;string&gt;por&lt;/string&gt;&lt;key&gt;LSHandlerContentTagClass&lt;/key&gt;
-&lt;string&gt;public.filename-extension&lt;/string&gt;&lt;key&gt;LSHandlerRoleAll&lt;/key&gt;
-&lt;string&gt;br.univali.portugol.studio&lt;/string&gt;&lt;/dict&gt;"
-           </programArguments>
-                </runProgram>
-
-                <!-- Restart the launch services to reload the configuration -->
-                <runProgram>
-                    <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
-                    <programArguments>-kill -domain local -domain system -domain user</programArguments>
-                </runProgram>
+                <actionGroup>
+                    <explanation>Removendo associações de arquivos</explanation>
+                    <actionList>
+                        <runProgram>
+                            <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
+                            <programArguments>-u "${install_app_bundle_dir}"</programArguments>
+                        </runProgram>
+                    </actionList>
+                </actionGroup>
             </actionList>
             <ruleList>
                 <platformTest>
@@ -721,202 +1031,208 @@ include /usr/share/nano/portugol.nanorc</text>
                 </platformTest>
             </ruleList>
         </actionGroup>
-    </postInstallationActionList>
-    <postUninstallerCreationActionList>
-        <actionGroup>
-            <abortOnError>0</abortOnError>
-            <progressText>Configurando o desinstalador</progressText>
-            <show>0</show>
-            <showMessageOnError>0</showMessageOnError>
-            <actionList>
-                <registrySet>
-                    <abortOnError>0</abortOnError>
-                    <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
-                    <name>Comments</name>
-                    <show>0</show>
-                    <showMessageOnError>0</showMessageOnError>
-                    <type>REG_SZ</type>
-                    <value>Ambiente de programação para a linguagem Portugol 2.0</value>
-                </registrySet>
-                <registrySet>
-                    <abortOnError>0</abortOnError>
-                    <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
-                    <name>DisplayIcon</name>
-                    <show>0</show>
-                    <showMessageOnError>0</showMessageOnError>
-                    <type>REG_SZ</type>
-                    <value>${install_app_dir}\aplicacao\icones\windows\portugol-studio.ico</value>
-                </registrySet>
-                <registryDelete>
-                    <abortOnError>0</abortOnError>
-                    <key>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Portugol Studio ${product_version}</key>
-                    <name>DisplayVersion</name>
-                    <show>0</show>
-                    <showMessageOnError>0</showMessageOnError>
-                </registryDelete>
-            </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>windows</type>
-                </platformTest>
-            </ruleList>
-        </actionGroup>
-    </postUninstallerCreationActionList>
+    </preUninstallationActionList>
     <postUninstallationActionList>
         <actionGroup>
-            <progressText>Removendo associações de arquivo</progressText>
-            <show>0</show>
+            <explanation>Removendo associações de arquivos</explanation>
             <actionList>
                 <actionGroup>
-                    <abortOnError>0</abortOnError>
-                    <progressText>Removendo associações de arquivos</progressText>
-                    <showMessageOnError>0</showMessageOnError>
+                    <explanation>Windows</explanation>
+                    <show>0</show>
                     <actionList>
-                        <removeWindowsFileAssociation>
-                            <abortOnError>0</abortOnError>
-                            <extensions>.por</extensions>
-                            <mimeType>text\portugol</mimeType>
-                            <progID>Portugol.Algoritmo</progID>
-                            <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
-                        </removeWindowsFileAssociation>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>rundll32</program>
-                            <programArguments>${system_temp_directory.dos}\portugol-studio\update_shell.dll,UpdateShell</programArguments>
-                            <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
+                        <actionGroup>
+                            <explanation>Removendo associações de arquivos</explanation>
+                            <actionList>
+                                <removeWindowsFileAssociation>
+                                    <extensions>.por</extensions>
+                                    <mimeType>application/x-portugol</mimeType>
+                                    <progID>Portugol.Algoritmo</progID>
+                                    <show>0</show>
+                                </removeWindowsFileAssociation>
+                                <runProgram>
+                                    <abortOnError>0</abortOnError>
+                                    <program>rundll32</program>
+                                    <programArguments>${install_app_dir}\utils\update_shell.dll,UpdateShell</programArguments>
+                                    <show>0</show>
+                                    <showMessageOnError>0</showMessageOnError>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>"${install_app_dir}\utils\update_shell.dll"</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
                         <deleteFile>
-                            <abortOnError>0</abortOnError>
-                            <path>${system_temp_directory}\portugol-studio</path>
+                            <path>${install_app_dir}</path>
                             <show>0</show>
-                            <showMessageOnError>0</showMessageOnError>
+                            <ruleList>
+                                <fileExists>
+                                    <path>${install_app_dir}</path>
+                                </fileExists>
+                            </ruleList>
                         </deleteFile>
                     </actionList>
-                </actionGroup>
-                <deleteFile>
-                    <abortOnError>0</abortOnError>
-                    <path>${install_app_dir}</path>
-                    <show>0</show>
-                    <showMessageOnError>0</showMessageOnError>
                     <ruleList>
-                        <fileExists>
-                            <path>${install_app_dir}</path>
-                        </fileExists>
+                        <platformTest>
+                            <type>windows</type>
+                        </platformTest>
                     </ruleList>
-                </deleteFile>
-            </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>windows</type>
-                </platformTest>
-            </ruleList>
-        </actionGroup>
-        <actionGroup>
-            <actionList>
-                <actionGroup>
-                    <progressText>Configurando arquivos executáveis</progressText>
-                    <actionList>
-                        <runProgram>
-                            <program>rm</program>
-                            <programArguments>/usr/bin/portugol-studio</programArguments>
-                        </runProgram>
-                        <runProgram>
-                            <program>rm</program>
-                            <programArguments>/usr/bin/portugol-console</programArguments>
-                        </runProgram>
-                    </actionList>
                 </actionGroup>
                 <actionGroup>
-                    <abortOnError>0</abortOnError>
-                    <progressText>Removendo associações de arquivos</progressText>
-                    <showMessageOnError>0</showMessageOnError>
+                    <explanation>Linux</explanation>
                     <actionList>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>xdg-mime</program>
-                            <programArguments>uninstall /usr/share/univali-x-portugol.xml</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
+                        <actionGroup>
+                            <explanation>Configurando arquivos executáveis</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/bin/portugol-studio</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/bin/portugol-console</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
+                        <actionGroup>
+                            <explanation>Removendo associações de arquivos</explanation>
+                            <actionList>
+                                <runProgram>
+                                    <program>${system_temp_directory}/portugol-studio/uninstall_geany_files.sh</program>
+                                    <programArguments></programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/geany</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <deleteFile>
+                                    <path>${system_temp_directory}/portugol-studio</path>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>${system_temp_directory}/portugol-studio</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </deleteFile>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/share/mime/packages/application-x-portugol.xml</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/mime/packages/application-x-portugol.xml</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/share/applications/portugol-studio.desktop</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/applications/portugol-studio.desktop</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/share/nano/portugol.nanorc</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/nano/portugol.nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>sed</program>
+                                    <programArguments>-i 's/^include \/usr\/share\/nano\/portugol.nanorc$//' /etc/nanorc</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/etc/nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>sed</program>
+                                    <programArguments>-i 's/^## Portugol 2.0$//' /etc/nanorc</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/etc/nanorc</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>rm</program>
+                                    <programArguments>/usr/share/icons/hicolor/256x256/mimetypes/arquivo-por.png</programArguments>
+                                    <ruleList>
+                                        <fileExists>
+                                            <path>/usr/share/icons/hicolor/256x256/mimetypes/arquivo-por.png</path>
+                                        </fileExists>
+                                    </ruleList>
+                                </runProgram>
+                                <runProgram>
+                                    <program>xdg-icon-resource</program>
+                                    <programArguments>uninstall --size 256 application-x-portugol</programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>update-desktop-database</program>
+                                    <programArguments></programArguments>
+                                </runProgram>
+                                <runProgram>
+                                    <program>update-mime-database</program>
+                                    <programArguments>/usr/share/mime</programArguments>
+                                </runProgram>
+                            </actionList>
+                        </actionGroup>
                         <runProgram>
                             <abortOnError>0</abortOnError>
                             <program>rm</program>
-                            <programArguments>/usr/share/univali-x-portugol.xml</programArguments>
+                            <programArguments>-R ${install_app_dir}</programArguments>
                             <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>rm</program>
-                            <programArguments>/usr/share/applications/portugol-studio.desktop</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>rm</program>
-                            <programArguments>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>rm</program>
-                            <programArguments>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>rm</program>
-                            <programArguments>/usr/share/nano/portugol.nanorc</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>sed</program>
-                            <programArguments>-i 's/^include \/usr\/share\/nano\/portugol.nanorc$//' /etc/nanorc</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>sed</program>
-                            <programArguments>-i 's/^## Portugol 2.0$//' /etc/nanorc</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>rm</program>
-                            <programArguments>/usr/share/icons/hicolor/256x256/mimetypes/arquivo-por.png</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
-                        </runProgram>
-                        <runProgram>
-                            <abortOnError>0</abortOnError>
-                            <program>xdg-icon-resource</program>
-                            <programArguments>forceupdate</programArguments>
-                            <showMessageOnError>0</showMessageOnError>
+                            <ruleList>
+                                <fileExists>
+                                    <path>${install_app_dir}</path>
+                                </fileExists>
+                            </ruleList>
                         </runProgram>
                     </actionList>
+                    <ruleList>
+                        <platformTest>
+                            <type>linux</type>
+                        </platformTest>
+                    </ruleList>
                 </actionGroup>
-                <runProgram>
-                    <abortOnError>0</abortOnError>
-                    <program>rm</program>
-                    <programArguments>-R ${install_app_dir}</programArguments>
-                    <showMessageOnError>0</showMessageOnError>
-                </runProgram>
             </actionList>
-            <ruleList>
-                <platformTest>
-                    <type>linux</type>
-                </platformTest>
-            </ruleList>
         </actionGroup>
     </postUninstallationActionList>
     <cdromDirectory></cdromDirectory>
     <compressionAlgorithm>lzma</compressionAlgorithm>
+    <createOsxBundleDmg>1</createOsxBundleDmg>
     <defaultUnixDirectoryPermissions>777</defaultUnixDirectoryPermissions>
     <defaultUnixFilePermissions>777</defaultUnixFilePermissions>
     <enableRollback>1</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <height>450</height>
     <installationScope>allusers</installationScope>
+    <osxDmgBackgroundImage>imagens/dmg-background.jpeg</osxDmgBackgroundImage>
+    <osxDmgTitle>Instalação do Portugol Studio</osxDmgTitle>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
     <singleInstanceCheck>1</singleInstanceCheck>
@@ -960,6 +1276,28 @@ Se você deseja saber mais sobre o projeto e/ou contribuir com o desenvolvimento
                         </launchBrowser>
                     </clickedActionList>
                 </linkParameter>
+            </parameterList>
+        </parameterGroup>
+        <parameterGroup>
+            <name>install_terms</name>
+            <title>Termos de uso</title>
+            <explanation></explanation>
+            <value></value>
+            <default></default>
+            <insertAfter>apresentacao</insertAfter>
+            <parameterList>
+                <labelParameter>
+                    <name>terms</name>
+                    <description>Para garantir o correto funcionamento e a evolução do software o Portugol Studio precisa executar periodicamente algumas ações em seu computador. 
+
+Ao instalar o Portugol Studio, você está automaticamente concordando com os seguintes termos:
+
+1) Autorizo o Portugol Studio e seus componentes a coletarem informações referentes ao meu Sistema Operacional e ao hardware instalado em meu computador
+
+2) Autorizo o Portugol Studio, seus componentes a coletarem informações referentes à minha utilização e minhas ações dentro do programa</description>
+                    <explanation></explanation>
+                    <image></image>
+                </labelParameter>
                 <labelParameter>
                     <name>continuar</name>
                     <description>
@@ -971,7 +1309,6 @@ Clique em "Avançar" para iniciar a instalação</description>
             <validationActionList>
                 <setInstallerVariable>
                     <name>next_page</name>
-                    <show>0</show>
                     <value>installation</value>
                 </setInstallerVariable>
             </validationActionList>

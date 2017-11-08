@@ -26,7 +26,6 @@ import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.ps.ui.swing.ColorController;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -483,8 +482,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                     int tamanhoDoTexto = textArea.getSelectionEnd() - textArea.getSelectionStart();
                     ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(stringArrastada, linha, coluna, tamanhoDoTexto);
                     programa.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
-                    if (procuradorDeDeclaracao.encontrou()) {
-                        adicionaNo(procuradorDeDeclaracao.getNoDeclaracao());
+                    NoDeclaracao no = procuradorDeDeclaracao.getNoDeclaracao();
+                    if (procuradorDeDeclaracao.encontrou() && !contemNo(no)) {
+                        adicionaNo(no);
                     }
                 }
             } catch (Exception e) {

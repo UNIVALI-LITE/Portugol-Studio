@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.text.StyleConstants;
 
 public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
 

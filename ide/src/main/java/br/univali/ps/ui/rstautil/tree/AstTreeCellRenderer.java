@@ -71,7 +71,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
  * Renderer for the AST tree in the UI.
- *
  */
 class AstTreeCellRenderer extends DefaultTreeCellRenderer implements VisitanteASA, OutlineTreeVisitor {
 

@@ -1,11 +1,7 @@
-
 package br.univali.portugol.nucleo;
 
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
-import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

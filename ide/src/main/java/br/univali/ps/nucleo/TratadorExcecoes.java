@@ -1,32 +1,17 @@
 package br.univali.ps.nucleo;
 
-import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO;
-
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.telas.TelaExcecaoEncontrada;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
+import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO_PROGRAMA;
 
 /**
  *
@@ -87,7 +72,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
         int tipoDialogo = getTipoDialogo(excecaoAplicacao);
 
-        if ((portugolStudio.isDepurando()) && (excecaoAplicacao.getTipo() == ExcecaoAplicacao.Tipo.ERRO))
+        if ((portugolStudio.isDepurando()) && (excecaoAplicacao.getTipo() == ExcecaoAplicacao.Tipo.ERRO_PROGRAMA))
         {
             exibirExcecaoDetalhada(excecaoAplicacao);
         }
@@ -156,15 +141,19 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
                 encerrarAplicacao = true;
             }
 
-            exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO));
+            exibirExcecao(new ExcecaoAplicacao(mensagem, excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
         }
         else if (excecao instanceof IllegalArgumentException)
         {
             LOGGER.log(Level.WARNING, "Exceção não identificada", excecao);
         }
+        else if (excecao.getMessage().contains("component must be showing on the screen to determine its location") && excecao.getMessage().contains("javax.swing.text.JTextComponent$InputMethodRequestsHandler.getTextLocation"))
+        {
+            //ignorar até JDK ser atualizada para versão 9
+        }
         else
         {
-            exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO));
+            exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
         }
     }
 
@@ -172,7 +161,9 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     {
         switch (excecaoAplicacao.getTipo())
         {
-            case ERRO:
+            case ERRO_USUARIO:
+                return Level.SEVERE;
+            case ERRO_PROGRAMA:
                 return Level.SEVERE;
             case AVISO:
                 return Level.WARNING;
@@ -210,7 +201,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     {
         switch (excecaoAplicacao.getTipo())
         {
-            case ERRO:
+            case ERRO_PROGRAMA:
                 return JOptionPane.ERROR_MESSAGE;
             case MENSAGEM:
                 return JOptionPane.INFORMATION_MESSAGE;
@@ -225,7 +216,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     {
         if (!(excecao instanceof ExcecaoAplicacao))
         {
-            excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO);
+            excecao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
         }
 
         return (ExcecaoAplicacao) excecao;

@@ -3,7 +3,7 @@ package br.univali.ps.nucleo;
 /**
  * @author Elieser
  */
-interface Mutex {
+public interface Mutex {
 
     InstanciaPortugolStudio conectarInstanciaPortugolStudio() throws ErroConexaoInstancia;
 
@@ -27,7 +27,5 @@ interface Mutex {
         {
             super("Erro ao conectar com a instância do Portugol Studio. Provavelmente o aplicativo fechou inesperadamente", causa);
         }
-    }
-
-    
+    }    
 }

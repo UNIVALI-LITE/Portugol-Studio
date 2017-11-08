@@ -1,6 +1,5 @@
 package br.univali.portugol.nucleo.asa;
 
-
 /**
  * Representa uma operação de Bitwise E no código fonte.
  * Esta enumeração representa a operação de <code>Bitwise E</code> no código fonte e é representada pelo operador "&amp;".

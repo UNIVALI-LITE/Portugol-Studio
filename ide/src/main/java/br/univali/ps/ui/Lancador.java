@@ -3,18 +3,29 @@ package br.univali.ps.ui;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.window.ComponentResizer;
 import java.awt.Dimension;
-import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import br.univali.ps.nucleo.InstanciaPortugolStudio;
+import br.univali.ps.nucleo.MutexImpl;
+import br.univali.ps.nucleo.NamedThreadFactory;
 import br.univali.ps.nucleo.PortugolStudio;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.ServerSocket;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import br.univali.ps.nucleo.Mutex;
 
 /**
  * @author lite
@@ -23,16 +34,21 @@ public class Lancador {
     
     private static JFrame frame;
     private static Dimension olderSize;
-    private static Dimension actualSize;
+    private static Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
     private final static Lancador application = new Lancador();
     
     private final ComponentResizer resizer = new ComponentResizer();
+    private static Mutex mutex;
+    private final ExecutorService servico = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Thread principal)"));
+
     
+    private static ServerSocket socket;
     private static final Logger LOGGER = Logger.getLogger(Lancador.class.getName());
 
     public Lancador() 
     {
+    	mutex = new MutexImpl(servico);
         resizer.setMinimumSize(new Dimension(800, 600));
         resizer.setMaximumSize(new Dimension(1920, 1080));
         resizer.setSnapSize(new Dimension(10, 10));
@@ -40,7 +56,70 @@ public class Lancador {
 
     public static void main(String argumentos[]) 
     {
-        Lancador.getInstance().start(argumentos);
+    	try{
+    		verificadorDeInstancias(argumentos);
+            Lancador.getInstance().start(argumentos);
+    	}catch(Exception e){
+    	    System.out.println(e.toString());
+    	}
+    	
+    }
+    
+    private static void verificadorDeInstancias(String parametros[]) {
+    	try
+        {
+            exibirParametros(parametros);
+
+            if (mutex.existeUmaInstanciaExecutando())
+            {
+                try
+                {
+                    InstanciaPortugolStudio studio = mutex.conectarInstanciaPortugolStudio();
+                    List<File> arquivosIniciais = new ArrayList();
+                    
+                    if (parametros != null && parametros.length > 0)
+                    {
+                        for (String argumento : parametros)
+                        {
+                            File arquivo = new File(argumento);
+
+                            if (arquivo.exists() && arquivo.isFile() && arquivo.canRead())
+                            {
+                                arquivosIniciais.add(arquivo);
+                            }
+                        }
+                    }
+
+                    studio.abrirArquivos(arquivosIniciais);
+                    studio.desconectar();
+                    
+                    System.exit(0);
+                }
+                catch (Mutex.ErroConexaoInstancia erro)
+                {
+                    // Se o arquivo de Mutex existe, mas não foi possível abrir a conexão para a instância,
+                    // então provavelmente o aplicativo foi fechado de forma inesperada deixando o arquivo pra trás.
+                    // Neste caso, apagamos o arquivo e iniciamos uma nova instãncia
+                    mutex.inicializar();
+                }
+            }
+            else
+            {
+                mutex.inicializar();
+            }
+        }
+        catch (Mutex.ErroCriacaoMutex erro)
+        {
+        	LOGGER.log(Level.SEVERE, "Erro na criação de um mutex que não deveria nem ser criado");
+        }
+    }
+    
+    private static void exibirParametros(String[] parametros)
+    {
+        for (String parametro : parametros)
+        {
+            LOGGER.log(Level.INFO, "Parametro: {0}", parametro);
+        }
     }
 
     public static Dimension getOlderSize() 
@@ -135,7 +214,7 @@ public class Lancador {
         }
 
         LOGGER.log(Level.INFO, "Iniciando PS com {0} argumentos", argumentos.length);
-        PortugolStudio.getInstancia().iniciar(argumentos);
+        PortugolStudio.getInstancia().iniciarNovaInstancia(argumentos);
                     
 
         /* Create and display the form */
@@ -169,5 +248,12 @@ public class Lancador {
     public static Lancador getInstance()
     {
         return application;
+    }
+    
+    public void finalizarMutex() {
+    	mutex.finalizar();
+    }
+    public void finalizarServico() {
+    	servico.shutdownNow();
     }
 }

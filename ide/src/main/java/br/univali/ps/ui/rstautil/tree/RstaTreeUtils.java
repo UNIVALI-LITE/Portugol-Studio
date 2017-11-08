@@ -1,6 +1,5 @@
 package br.univali.ps.ui.rstautil.tree;
 
-
 import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;

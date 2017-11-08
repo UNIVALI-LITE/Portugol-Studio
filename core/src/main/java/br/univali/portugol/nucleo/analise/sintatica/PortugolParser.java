@@ -1,19 +1,14 @@
+package br.univali.portugol.nucleo.analise.sintatica;
+
 // $ANTLR null /home/noschang/Projetos/Portugol-Studio/core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/Portugol.g 2017-09-18 10:08:21
 
-
-	package br.univali.portugol.nucleo.analise.sintatica;
-
-	import java.util.Stack;
-	import org.antlr.runtime.Token;
-	import br.univali.portugol.nucleo.asa.*;
-
+import org.antlr.runtime.Token;
+import br.univali.portugol.nucleo.asa.*;
 
 import org.antlr.runtime.*;
 import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 @SuppressWarnings("all")
 public class PortugolParser extends Parser {

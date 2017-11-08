@@ -1,22 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.portugol.corretor.dinamico;
 
-import br.univali.portugol.corretor.dinamico.model.Caso;
 import br.univali.portugol.corretor.dinamico.model.Questao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

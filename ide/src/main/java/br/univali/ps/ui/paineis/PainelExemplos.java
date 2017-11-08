@@ -36,8 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.Queue;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -181,7 +179,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 FabricaDicasInterface.criarTooltip(button, recente.getPath());
                 areaRecentes.add(button);
             } catch (Exception ex) {
-                Logger.getLogger(PainelExemplos.class.getName()).log(Level.SEVERE, null, ex);
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
             }
         }        
         if(arquivoRemovido)
@@ -242,26 +240,21 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private void inicializarJTree() {
         arvoreExemplos.setCellRenderer(new ExampleTreeRender());
         arvoreExemplos.setUI(new PSTreeUI());
-        try {
-            File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
+        File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
-            if (diretorioExemplos.exists()) {
-                DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
-                List<DefaultMutableTreeNode> nodes = readIndex(diretorioExemplos);
-                for (DefaultMutableTreeNode node : nodes) {
-                    root.add(node);
-                }
-                DefaultTreeModel model = new DefaultTreeModel(root);
-                arvoreExemplos.setModel(model);
-                arvoreExemplos.setRootVisible(false);
-                arvoreExemplos.setShowsRootHandles(true);
-                initTreeListner();
-//                expandJTree();
-                jTreedoClick();
+        if (diretorioExemplos.exists()) {
+            DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
+            List<DefaultMutableTreeNode> nodes = readIndex(diretorioExemplos);
+            for (DefaultMutableTreeNode node : nodes) {
+                root.add(node);
             }
-
-        } catch (Exception exception) {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(exception);
+            DefaultTreeModel model = new DefaultTreeModel(root);
+            arvoreExemplos.setModel(model);
+            arvoreExemplos.setRootVisible(false);
+            arvoreExemplos.setShowsRootHandles(true);
+            initTreeListner();
+//          expandJTree();
+            jTreedoClick();
         }
     }
 

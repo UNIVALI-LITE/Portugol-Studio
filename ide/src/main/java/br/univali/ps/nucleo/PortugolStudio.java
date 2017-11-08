@@ -48,8 +48,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -69,7 +67,6 @@ public final class PortugolStudio
 {
 
     private static final Logger LOGGER = Logger.getLogger(PortugolStudio.class.getName());
-    private final ExecutorService servico = Executors.newCachedThreadPool(new NamedThreadFactory("Portugol-Studio (Thread principal)"));
     
     private static PortugolStudio instancia = null;
 
@@ -104,11 +101,10 @@ public final class PortugolStudio
     private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
     
-    private final Mutex mutex;
+    private static boolean portugolCarregado = false;
     
     private PortugolStudio()
     {   
-        mutex = criaMutex();
         readRecents();
         readRecuperaveis();
         readOriginais();
@@ -188,15 +184,6 @@ public final class PortugolStudio
         return false;
     }
     
-    private Mutex criaMutex()
-    {
-        if (!Configuracoes.rodandoEmDesenvolvimento())
-        {
-            return new MutexImpl(servico); // cria um mutex que permite apenas uma instância
-        }
-        
-        return new MutexNulo(); // retorna um mutex nulo que não faz nada
-    }
     
     public static PortugolStudio getInstancia()
     {
@@ -207,53 +194,16 @@ public final class PortugolStudio
 
         return instancia;
     }
-
-    public void iniciar(final String[] parametros)
-    {
-        try
-        {
-            exibirParametros(parametros);
-
-            if (mutex.existeUmaInstanciaExecutando())
-            {
-                try
-                {
-                    InstanciaPortugolStudio studio = mutex.conectarInstanciaPortugolStudio();
-                    processarParametroArquivosIniciais(parametros);
-
-                    studio.abrirArquivos(arquivosIniciais);
-                    studio.desconectar();
-
-                    finalizar(0);
-                }
-                catch (Mutex.ErroConexaoInstancia erro)
-                {
-                    // Se o arquivo de Mutex existe, mas não foi possível abrir a conexão para a instância,
-                    // então provavelmente o aplicativo foi fechado de forma inesperada deixando o arquivo pra trás.
-                    // Neste caso, apagamos o arquivo e iniciamos uma nova instãncia
-                    iniciarNovaInstancia(parametros);
-                }
-            }
-            else
-            {
-                iniciarNovaInstancia(parametros);
-            }
-        }
-        catch (Mutex.ErroCriacaoMutex erro)
-        {
-            getTratadorExcecoes().exibirExcecao(erro);
-        }
+    
+    public static boolean isPortugolCarregado() {
+    	return portugolCarregado;
     }
 
-    private void iniciarNovaInstancia(String[] parametros) throws Mutex.ErroCriacaoMutex
+    public void iniciarNovaInstancia(String[] parametros)
     {
         LOGGER.log(Level.INFO, "Iniciando nova instancia do PS");
         if (versaoJavaCorreta())
         {
-            
-            mutex.inicializar();
-            LOGGER.log(Level.INFO, "Mutex ({0}) inicializado!", mutex.getClass().getSimpleName());
-
             String dica = obterProximaDica();
             Splash.exibir(dica, 9);
 
@@ -349,12 +299,11 @@ public final class PortugolStudio
                 Logger.getLogger(PortugolStudio.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        mutex.finalizar();
+        Lancador.getInstance().finalizarMutex();
         Configuracoes.getInstancia().salvar();
         System.exit(codigo);
         
-        servico.shutdownNow();
+        Lancador.getInstance().finalizarServico();
     }
 
     public String obterProximaDica()
@@ -824,13 +773,13 @@ public final class PortugolStudio
                     Lancador.setMaximazed(true);
                     
                     Lancador.getJFrame().revalidate();
-                    
+                    portugolCarregado = true;
                 }
             });
         }
         catch (InterruptedException | InvocationTargetException ex)
         {
-            throw new ExcecaoAplicacao("Não foi possível iniciar o Portugol Studio", ex, ExcecaoAplicacao.Tipo.ERRO);
+            throw new ExcecaoAplicacao("Não foi possível iniciar o Portugol Studio", ex, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
         }
     }
 

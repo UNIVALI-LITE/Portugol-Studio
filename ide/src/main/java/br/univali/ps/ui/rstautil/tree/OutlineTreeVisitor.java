@@ -1,6 +1,5 @@
 package br.univali.ps.ui.rstautil.tree;
 
-
 interface OutlineTreeVisitor
 {
     public Object visitar(PortugolTreeNode no);

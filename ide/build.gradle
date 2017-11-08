@@ -39,13 +39,13 @@ dependencies {
     compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
 
     // https://mvnrepository.com/artifact/com.fifesoft/autocomplete
-    compile group: 'com.fifesoft', name: 'autocomplete', version: '2.5.4'
+    compile group: 'com.fifesoft', name: 'autocomplete', version: '2.6.1'
     
     // https://mvnrepository.com/artifact/com.fifesoft/rstaui
-    compile group: 'com.fifesoft', name: 'rstaui', version: '2.5.4'
+    compile group: 'com.fifesoft', name: 'rstaui', version: '2.6.1'
     
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
-    compile group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.5.4'
+    compile group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.6.1'
     
     // https://mvnrepository.com/artifact/net.sf.cssbox/swingbox
     compile group: 'net.sf.cssbox', name: 'swingbox', version: '1.1'
@@ -59,7 +59,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.json/json
     compile group: 'org.json', name: 'json', version: '20170516'
 
-
+    testCompile group: 'org.assertj', name: 'assertj-swing-junit', version: '3.8.0'
 
 
     
@@ -78,7 +78,7 @@ dependencies {
     //    compile group: 'com.weblookandfeel', name: 'weblaf-ui', version: '1.2.8'    
 }
 
-task run(type: JavaExec) {
+task run(dependsOn: compileJava, type: JavaExec) {
     
     description = 'Runs this program as a JVM application'
 	group = 'application'
@@ -92,7 +92,7 @@ task run(type: JavaExec) {
 	}
 }
 
-task debug(type: JavaExec) {
+task debug(dependsOn: compileJava, type: JavaExec) {
     
     description = 'Runs this program as a JVM application for debugging'
 	group = 'application'

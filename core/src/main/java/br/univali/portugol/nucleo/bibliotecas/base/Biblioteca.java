@@ -7,10 +7,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoConstan
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Classe base para a construção de bibliotecas do Portugol. Todas as

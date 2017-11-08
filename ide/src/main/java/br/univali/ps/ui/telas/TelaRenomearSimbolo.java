@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.telas;
 
 import java.awt.Color;
@@ -279,7 +274,7 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         {
             if (ex.getCausa() == CausaErroAoTentarObterDeclaracaoDoSimbolo.PROGRAMA_CONTEM_ERROS)
             {
-                throw new ExcecaoAplicacao("Não é possível renomear um programa que contém erros. Arrume os erros e tente novamente", ExcecaoAplicacao.Tipo.ERRO);
+                throw new ExcecaoAplicacao("Não é possível renomear um programa que contém erros. Arrume os erros e tente novamente", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
             }
             else if (ex.getCausa() == CausaErroAoTentarObterDeclaracaoDoSimbolo.SIMBOLO_NAO_ENCONTRADO)
             {
@@ -287,11 +282,11 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             			PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada(),
             			"Posicione o cursor do teclado sobre alguma variável, vetor, matriz ou função");
             	//FabricaDicasInterface.mostrarNotificacao("Posicione o cursor do teclado sobre alguma variável, vetor, matriz ou função");
-                //throw new ExcecaoAplicacao("Não é possível renomear pois o cursor do teclado não está posicionado sobre o nome de uma variável, vetor, matriz ou função", ExcecaoAplicacao.Tipo.ERRO);
+//                throw new ExcecaoAplicacao("Não é possível renomear pois o cursor do teclado não está posicionado sobre o nome de uma variável, vetor, matriz ou função", ExcecaoAplicacao.Tipo.ERRO_USUARIO);
             }
             else
             {
-                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO);
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
             }
         }
     }

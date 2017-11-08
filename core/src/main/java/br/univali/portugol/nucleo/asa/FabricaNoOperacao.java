@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public final class FabricaNoOperacao
 {
     private static final Map<String, Class<? extends NoOperacao>> nos = criarMapaNos();
