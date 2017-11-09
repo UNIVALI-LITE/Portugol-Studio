@@ -48,10 +48,10 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         jPanel3.setBorder(new CompoundBorder(new LineBorder(ColorController.COR_PRINCIPAL, 1),new LineBorder(ColorController.FUNDO_ESCURO, 5)));
         setLocationRelativeTo(null);
         configurarCores();
-        WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, Color.white, ColorController.PROGRESS_BAR, Color.orange,5);
-        WeblafUtils.configurarBotao(botaoCancelar, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
+        WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, Color.white, ColorController.VERMELHO, Color.orange,5);
+        WeblafUtils.configurarBotao(botaoCancelar, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
         WeblafUtils.configurarBotao(botaoSim, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
-        WeblafUtils.configurarBotao(botaoNao, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.VERMELHO, ColorController.COR_LETRA, 5, true);
+        WeblafUtils.configurarBotao(botaoNao, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.VERMELHO, ColorController.COR_LETRA_TITULO, 5, true);
         titleLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -76,7 +76,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 resposta = JOptionPane.YES_OPTION;
-                dispose();
+                setVisible(false);
             }
         });
         
@@ -84,15 +84,15 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 resposta = JOptionPane.NO_OPTION;
-                dispose();
+                setVisible(false);
             }
         });
         
         botaoCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                resposta = JOptionPane.CANCEL_OPTION;               
-                dispose();
+                resposta = JOptionPane.CANCEL_OPTION;
+                setVisible(false);
             }
         });
         
@@ -100,7 +100,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 resposta = JOptionPane.CLOSED_OPTION;
-                dispose();
+                setVisible(false);
             }
         });
     }
@@ -111,7 +111,6 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         buttonsPane.removeAll();
         resposta = -1;
         jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_logo.png"));
-//        setPreferredSize(new Dimension(400, 150));
     }
     
     public void showMessage(String text, int type)
@@ -165,7 +164,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         
     @Override
     public void configurarCores() {
-        titleLabel.setForeground(ColorController.COR_LETRA);
+        titleLabel.setForeground(ColorController.COR_LETRA_TITULO);
         textLabel.setForeground(ColorController.COR_LETRA);
         titlePane.setBackground(ColorController.FUNDO_ESCURO);
         mainpane.setBackground(ColorController.COR_PRINCIPAL);
