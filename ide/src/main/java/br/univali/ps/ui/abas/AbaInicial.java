@@ -6,6 +6,7 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Cursor;
@@ -146,7 +147,7 @@ public final class AbaInicial extends Aba implements Themeable
                         rotuloAssistirVideoAulas.setIcon(gif);
                         rotuloConhecerBibliotecas.setIcon(gif);
                         rotuloConhecerLinguagem.setIcon(gif);
-                        JOptionPane.showMessageDialog(null, gif, "Never gonna", JOptionPane.PLAIN_MESSAGE);
+                        QuestionDialog.getInstance().showMessage("Eita!!!");
                     }
                 }
                 catch (Exception ex)
@@ -155,6 +156,7 @@ public final class AbaInicial extends Aba implements Themeable
                 }
             }
         });
+        
     }
 
     private void configurarResolucao()

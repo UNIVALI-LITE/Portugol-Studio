@@ -17,6 +17,7 @@ import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.io.BufferedReader;
@@ -470,7 +471,7 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
             String urlString = evt.getURL().toExternalForm();
             if (urlString == null)
             {
-                JOptionPane.showMessageDialog(this, "Erro: Link inválido", "Erro", JOptionPane.ERROR_MESSAGE);
+                QuestionDialog.getInstance().showMessage("Erro: Link inválido", JOptionPane.ERROR_MESSAGE);
             }
 
             try
@@ -482,12 +483,12 @@ public final class AbaDocumentacaoBiblioteca extends Aba implements HyperlinkLis
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(this, "Erro: Não foi possível abrir o navegador Web", "Erro", JOptionPane.ERROR_MESSAGE);
+                    QuestionDialog.getInstance().showMessage("Erro: Não foi possível abrir o navegador Web", JOptionPane.ERROR_MESSAGE);
                 }
             }
             catch (Throwable excep)
             {
-                JOptionPane.showMessageDialog(this, "Erro: Não foi possível abrir o navegador Web", "Erro", JOptionPane.ERROR_MESSAGE);
+                QuestionDialog.getInstance().showMessage("Erro: Não foi possível abrir o navegador Web", JOptionPane.ERROR_MESSAGE);
             }
         } 
     }
