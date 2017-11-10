@@ -1,5 +1,6 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -355,7 +356,7 @@ public final class Configuracoes
             }
             else
             {
-                JOptionPane.showMessageDialog(telaPrincipal, "Você deve fechar todas as abas de código antes de reiniciar", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);                   
+                QuestionDialog.getInstance().showMessage("Você deve fechar todas as abas de código antes de reiniciar");                   
                 if(temaPortugol.equals("Dark"))
                 {
                     setTemaPortugol("Portugol");
@@ -370,7 +371,7 @@ public final class Configuracoes
     
     private boolean confirmouReinicializacao()
     {
-        int resp = JOptionPane.showConfirmDialog(null, "Para trocar de tema o Portugol Studio precisa reinicializar! Confirma?", "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
+        int resp = QuestionDialog.getInstance().showConfirmMessage("Para trocar de tema o Portugol Studio precisa reinicializar! Confirma?");
         if (resp == JOptionPane.YES_OPTION)
         {
             return true;

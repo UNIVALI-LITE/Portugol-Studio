@@ -3,11 +3,17 @@ package br.univali.ps.ui.swing.weblaf.jOptionPane;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -15,51 +21,148 @@ import javax.swing.JFrame;
  */
 public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     int pX, pY;
-    
+    private int resposta = -1;
+    private static QuestionDialog dialog;
     /**
      * Creates new form QuestionDialog
      * @param parent
      * @param modal
      * @param text
      */
-    public QuestionDialog(JFrame parent, boolean modal, String text) {
-        super(parent, modal);
+    private QuestionDialog(){
+        super((JFrame)null, true);
         initComponents();
-        textLabel.setText("<html><body>"+text+"</body></html>");
+        setup();
+    }
+    public static QuestionDialog getInstance(){
+        if(dialog==null){
+            dialog = new QuestionDialog();  
+        }
+        dialog.reset();
+        return dialog;
+    }
+    private void setup()
+    {
+        jPanel3.setBorder(new CompoundBorder(new LineBorder(ColorController.COR_PRINCIPAL, 1),new LineBorder(ColorController.FUNDO_ESCURO, 5)));
+        setLocationRelativeTo(null);
         configurarCores();
-        WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, Color.white, ColorController.PROGRESS_BAR, Color.orange,5);
-        WeblafUtils.configurarBotao(webButton2);
-        WeblafUtils.configurarBotao(webButton3);
-        WeblafUtils.configurarBotao(webButton4);
-    
+        WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, Color.white, ColorController.VERMELHO, Color.orange,5);
+        WeblafUtils.configurarBotao(botaoCancelar, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
+        WeblafUtils.configurarBotao(botaoSim, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
+        WeblafUtils.configurarBotao(botaoNao, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.VERMELHO, ColorController.COR_LETRA_TITULO, 5, true);
         titleLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent me) {
-                    // Get x,y and store them
-                    pX = me.getX();
-                    pY = me.getY();
+            @Override
+            public void mousePressed(MouseEvent me) {
+                // Get x,y and store them
+                pX = me.getX();
+                pY = me.getY();
+            }
+            @Override
+             public void mouseDragged(MouseEvent me) {
+                setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
+            }
+        });
 
-                }
-
-                @Override
-                 public void mouseDragged(MouseEvent me) {
-
-                    setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
-                }
-            });
-
-            titleLabel.addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseDragged(MouseEvent me) {
-
-                    setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
-                }
-            });
+        titleLabel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent me) {
+                setLocation(getLocation().x + me.getX() - pX,getLocation().y + me.getY() - pY);
+            }
+        });
+        
+        botaoSim.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.YES_OPTION;
+                setVisible(false);
+            }
+        });
+        
+        botaoNao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.NO_OPTION;
+                setVisible(false);
+            }
+        });
+        
+        botaoCancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.CANCEL_OPTION;
+                setVisible(false);
+            }
+        });
+        
+        webButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resposta = JOptionPane.CLOSED_OPTION;
+                setVisible(false);
+            }
+        });
     }
     
+    private void reset()
+    {
+        textLabel.setText("");
+        buttonsPane.removeAll();
+        resposta = -1;
+        jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_logo.png"));
+    }
+    
+    public void showMessage(String text, int type)
+    {
+        switch (type) {
+            case JOptionPane.WARNING_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_warning.png"));
+                break;
+            case JOptionPane.ERROR_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_error.png"));
+                break;
+            default:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_logo.png"));
+                break;
+        }
+        showMessage(text);
+    }
+    
+    public void showMessage(String text) {
+        textLabel.setText("<html><body>"+text+"</body></html>");
+        buttonsPane.add(botaoSim);        
+        setVisible(true);
+        pack();
+    }
+    
+    public int showConfirmMessage(String text, int type)
+    {
+        switch (type) {
+            case JOptionPane.WARNING_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_warning.png"));
+                break;
+            case JOptionPane.ERROR_MESSAGE:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_error.png"));
+                break;
+            default:
+                jLabel1.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "big_logo.png"));
+                break;
+        }
+        return showConfirmMessage(text);
+    }
+    
+    public int showConfirmMessage(String text) {
+        textLabel.setText("<html><body>"+text+"</body></html>");
+        buttonsPane.add(botaoSim);
+        buttonsPane.add(botaoNao);
+        buttonsPane.add(botaoCancelar);
+        setVisible(true);
+        pack();
+        return resposta;
+    }
+        
     @Override
     public void configurarCores() {
-        titleLabel.setForeground(ColorController.COR_LETRA);
+        titleLabel.setForeground(ColorController.COR_LETRA_TITULO);
         textLabel.setForeground(ColorController.COR_LETRA);
         titlePane.setBackground(ColorController.FUNDO_ESCURO);
         mainpane.setBackground(ColorController.COR_PRINCIPAL);
@@ -71,151 +174,112 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+  private void initComponents() {
 
-        jPanel3 = new javax.swing.JPanel();
-        mainpane = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        webButton3 = new com.alee.laf.button.WebButton();
-        webButton4 = new com.alee.laf.button.WebButton();
-        webButton2 = new com.alee.laf.button.WebButton();
-        textLabel = new javax.swing.JLabel();
-        titlePane = new javax.swing.JPanel();
-        titleLabel = new javax.swing.JLabel();
-        webButton1 = new com.alee.laf.button.WebButton();
+    botaoCancelar = new com.alee.laf.button.WebButton();
+    botaoNao = new com.alee.laf.button.WebButton();
+    botaoSim = new com.alee.laf.button.WebButton();
+    jPanel3 = new javax.swing.JPanel();
+    mainpane = new javax.swing.JPanel();
+    jLabel1 = new javax.swing.JLabel();
+    jPanel1 = new javax.swing.JPanel();
+    buttonsPane = new javax.swing.JPanel();
+    textLabel = new javax.swing.JLabel();
+    titlePane = new javax.swing.JPanel();
+    titleLabel = new javax.swing.JLabel();
+    webButton1 = new com.alee.laf.button.WebButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setUndecorated(true);
+    botaoCancelar.setText("Cancelar");
+    botaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        botaoCancelarActionPerformed(evt);
+      }
+    });
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(450, 200));
-        jPanel3.setLayout(new java.awt.BorderLayout());
+    botaoNao.setText("Não");
 
-        mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        mainpane.setLayout(new java.awt.BorderLayout());
+    botaoSim.setText("Sim");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/ajuda.png"))); // NOI18N
-        mainpane.add(jLabel1, java.awt.BorderLayout.LINE_START);
+    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    setUndecorated(true);
+    setPreferredSize(new java.awt.Dimension(400, 160));
 
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.BorderLayout());
+    jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 2, 2, 2));
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
+    mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    mainpane.setLayout(new java.awt.BorderLayout());
 
-        webButton3.setText("Sim");
-        jPanel2.add(webButton3);
+    jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/big_logo.png"))); // NOI18N
+    mainpane.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
-        webButton4.setText("Não");
-        jPanel2.add(webButton4);
+    jPanel1.setOpaque(false);
+    jPanel1.setLayout(new java.awt.BorderLayout());
 
-        webButton2.setText("Cancelar");
-        webButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                webButton2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(webButton2);
+    buttonsPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    buttonsPane.setOpaque(false);
+    buttonsPane.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
+    jPanel1.add(buttonsPane, java.awt.BorderLayout.SOUTH);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.SOUTH);
+    textLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    textLabel.setText("taxtLabel");
+    jPanel1.add(textLabel, java.awt.BorderLayout.CENTER);
 
-        textLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        textLabel.setText("taxtLabel");
-        jPanel1.add(textLabel, java.awt.BorderLayout.CENTER);
+    mainpane.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        mainpane.add(jPanel1, java.awt.BorderLayout.CENTER);
+    jPanel3.add(mainpane, java.awt.BorderLayout.CENTER);
 
-        jPanel3.add(mainpane, java.awt.BorderLayout.CENTER);
+    titlePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    titlePane.setLayout(new java.awt.BorderLayout());
 
-        titlePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        titlePane.setLayout(new java.awt.BorderLayout());
+    titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
+    titleLabel.setText("Portugol Studio");
+    titlePane.add(titleLabel, java.awt.BorderLayout.CENTER);
 
-        titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
-        titleLabel.setText("Portugol Studio");
-        titlePane.add(titleLabel, java.awt.BorderLayout.CENTER);
+    webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"))); // NOI18N
+    webButton1.setFocusable(false);
+    webButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        webButton1ActionPerformed(evt);
+      }
+    });
+    titlePane.add(webButton1, java.awt.BorderLayout.EAST);
 
-        webButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"))); // NOI18N
-        webButton1.setFocusable(false);
-        webButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                webButton1ActionPerformed(evt);
-            }
-        });
-        titlePane.add(webButton1, java.awt.BorderLayout.EAST);
+    jPanel3.add(titlePane, java.awt.BorderLayout.PAGE_START);
 
-        jPanel3.add(titlePane, java.awt.BorderLayout.PAGE_START);
+    getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+    pack();
+  }// </editor-fold>//GEN-END:initComponents
 
     private void webButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton1ActionPerformed
-        this.dispose();
+        
     }//GEN-LAST:event_webButton1ActionPerformed
 
-    private void webButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton2ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_webButton2ActionPerformed
+    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        
+    }//GEN-LAST:event_botaoCancelarActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuestionDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                QuestionDialog dialog = new QuestionDialog(new javax.swing.JFrame(), true, "Um texto bem maroto e até um tanto quanto grande só pro noschang ficar ligadinho");
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+       
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel mainpane;
-    private javax.swing.JLabel textLabel;
-    private javax.swing.JLabel titleLabel;
-    private javax.swing.JPanel titlePane;
-    private com.alee.laf.button.WebButton webButton1;
-    private com.alee.laf.button.WebButton webButton2;
-    private com.alee.laf.button.WebButton webButton3;
-    private com.alee.laf.button.WebButton webButton4;
-    // End of variables declaration//GEN-END:variables
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  private com.alee.laf.button.WebButton botaoCancelar;
+  private com.alee.laf.button.WebButton botaoNao;
+  private com.alee.laf.button.WebButton botaoSim;
+  private javax.swing.JPanel buttonsPane;
+  private javax.swing.JLabel jLabel1;
+  private javax.swing.JPanel jPanel1;
+  private javax.swing.JPanel jPanel3;
+  private javax.swing.JPanel mainpane;
+  private javax.swing.JLabel textLabel;
+  private javax.swing.JLabel titleLabel;
+  private javax.swing.JPanel titlePane;
+  private com.alee.laf.button.WebButton webButton1;
+  // End of variables declaration//GEN-END:variables
     
 }

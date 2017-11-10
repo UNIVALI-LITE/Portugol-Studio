@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO_PROGRAMA;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 
 /**
  *
@@ -85,7 +86,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
     private void exibirExcecaoSimples(ExcecaoAplicacao excecaoAplicacao, int tipoDialogo)
     {
-        JOptionPane.showMessageDialog(null, excecaoAplicacao.getMessage(), "Portugol Studio", tipoDialogo);
+        QuestionDialog.getInstance().showMessage(excecaoAplicacao.getMessage(), tipoDialogo);
 
         if (encerrarAplicacao)
         {
@@ -146,6 +147,10 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         else if (excecao instanceof IllegalArgumentException)
         {
             LOGGER.log(Level.WARNING, "Exceção não identificada", excecao);
+        }
+        else if (excecao.getMessage().contains("component must be showing on the screen to determine its location") && excecao.getMessage().contains("javax.swing.text.JTextComponent$InputMethodRequestsHandler.getTextLocation"))
+        {
+            //ignorar até JDK ser atualizada para versão 9
         }
         else
         {

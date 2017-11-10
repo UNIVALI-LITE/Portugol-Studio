@@ -18,10 +18,10 @@
 	<string>Portugol Studio</string>
 	
 	<key>CFBundleVersion</key>
-	<string>##VERSION##</string>
+	<string>2.6.4</string>
 	
 	<key>CFBundleShortVersionString</key>
-	<string>##VERSION##</string>
+	<string>2.6.4</string>
 	
 	<key>CFBundleIdentifier</key>
 	<string>br.univali.portugol.studio</string>
@@ -36,7 +36,7 @@
 	<string>true</string>
 	
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright Â© LITE - UNIVALI, 2009 - ##YEAR##. Todos os direitos reservados</string>
+	<string>Copyright © LITE - UNIVALI, 2009 - 2017. Todos os direitos reservados</string>
 	
 	<key>CFBundleDocumentTypes</key>
 	<array>
