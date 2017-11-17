@@ -195,11 +195,6 @@
             <Property name="rows" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Component class="com.alee.laf.button.WebButton" name="botaoCancelar">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cancelar"/>
-              </Properties>
-            </Component>
             <Component class="com.alee.laf.button.WebButton" name="botaoAceitar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Aceitar"/>
@@ -207,6 +202,11 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoAceitarActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="com.alee.laf.button.WebButton" name="botaoCancelar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cancelar"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
