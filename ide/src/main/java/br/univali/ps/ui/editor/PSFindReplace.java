@@ -9,9 +9,12 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import org.fife.rsta.ui.search.SearchEvent;
@@ -32,17 +35,19 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
     
     private SearchContext searchContext;
     private RSyntaxTextArea rSyntaxTextArea;
+    private TelaCustomBorder dialogoPai;
     
     private enum tipo {
         BUSCAR, SUBSTITUIR, SUBSTITUIR_TODAS
     }
     
-    public PSFindReplace(RSyntaxTextArea textArea) {
+    public PSFindReplace(RSyntaxTextArea textArea, TelaCustomBorder pai) {
         initComponents();        
         rSyntaxTextArea = textArea;
         searchContext = new SearchContext();
         avancarRadioButton.setSelected(true);
         marcarCheckBox.setSelected(true);
+        dialogoPai = pai;
         configurarAcoes();
         configurarCores();
     }
@@ -76,11 +81,10 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
                 realizarPesquisa(tipo.SUBSTITUIR_TODAS);
             }
         });
-        
         cancelarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+                dialogoPai.setVisible(false);
             }
         });
         

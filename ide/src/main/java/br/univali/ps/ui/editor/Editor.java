@@ -135,7 +135,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private Action acaoRenomearSimboloNoCursor;
 
-    private JDialog procurarESubstituir;
+    private TelaCustomBorder procurarESubstituir;
     private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
@@ -288,18 +288,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarDialogoPesquisarSubstituir()
     {
-        procurarESubstituir = new TelaCustomBorder(new PSFindReplace(textArea), "Procurar");
+        procurarESubstituir = new TelaCustomBorder("Procurar");
+        PSFindReplace findReplace = new PSFindReplace(textArea, procurarESubstituir);
+        procurarESubstituir.setPanel(findReplace);
         procurarESubstituir.setLocationRelativeTo(null);
-    }
-
-    private void adicionaMargensNoDialogo(JDialog dialogo, int margem)
-    {
-        Dimension tamanho = dialogo.getPreferredSize();
-        ((JComponent) dialogo.getContentPane()).setBorder(BorderFactory.createEmptyBorder(margem, margem, margem, margem));
-        tamanho.setSize(tamanho.width + margem * 2, tamanho.height + margem * 2);
-        dialogo.setPreferredSize(tamanho);
-        dialogo.setMinimumSize(tamanho);
-        dialogo.revalidate();
     }
 
     private void configurarParser()
