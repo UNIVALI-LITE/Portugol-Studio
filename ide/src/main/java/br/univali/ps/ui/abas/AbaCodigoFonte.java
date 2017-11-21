@@ -478,12 +478,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (editor.getFindDialog().isVisible())
-                {
-                    editor.getFindDialog().setVisible(false);
-                }
-
-                editor.getReplaceDialog().setVisible(true);
+                editor.getSearchDialog().setVisible(true);
             }
         };
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);

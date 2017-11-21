@@ -15,6 +15,7 @@ import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.button.WebButtonStyle;
+import com.alee.laf.radiobutton.WebRadioButtonUI;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
@@ -119,7 +120,7 @@ public class WeblafUtils {
        }
        ((WebTextFieldUI) field.getUI()).setDrawBorder(false);
        ((WebTextFieldUI) field.getUI()).setDrawBackground(true);
-       field.setBorder(new EmptyBorder(15,15,15,15));
+//       field.setBorder(new EmptyBorder(15,15,15,15));
        field.setOpaque(true);
        field.setBackground(ColorController.COR_DESTAQUE);
        field.setForeground(ColorController.COR_LETRA);
@@ -151,6 +152,20 @@ public class WeblafUtils {
 //       ((WebCheckBoxUI) field.getUI()).setDrawBackground(true);
        field.setOpaque(false);
 //       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.COR_LETRA);
+    }
+    public static void configuraWebLaf(JRadioButton field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+       ((WebRadioButtonUI) field.getUI()).setBorderColor(ColorController.COR_PRINCIPAL);
+       ((WebRadioButtonUI) field.getUI()).setDarkBorderColor(ColorController.COR_PRINCIPAL);
+       ((WebRadioButtonUI) field.getUI()).setShadeWidth(0);
+       ((WebRadioButtonUI) field.getUI()).setBottomBgColor(ColorController.COR_PRINCIPAL);
+       ((WebRadioButtonUI) field.getUI()).setTopBgColor(ColorController.COR_PRINCIPAL);
+       ((WebRadioButtonUI) field.getUI()).setBottomSelectedBgColor(ColorController.COR_DESTAQUE);
+       ((WebRadioButtonUI) field.getUI()).setTopSelectedBgColor(ColorController.COR_DESTAQUE);
+       field.setOpaque(false);
        field.setForeground(ColorController.COR_LETRA);
     }
 
