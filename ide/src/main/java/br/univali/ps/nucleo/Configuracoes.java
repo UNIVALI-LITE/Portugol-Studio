@@ -38,6 +38,7 @@ public final class Configuracoes
     public static final String EXIBIR_TUTORIAL_USO = "exibirTutorialUso";
     public static final String EXIBIR_DICAS_INTERFACE = "exibirDicasInterface";
     public static final String URI_ATUALIZACAO = "uriAtualizacao";
+    public static final String CAMINHO_ULTIMO_DIRETORIO = "caminhoUltimoDiretorio";
 
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
@@ -58,7 +59,6 @@ public final class Configuracoes
     private final File caminhoLogAtualizacoes = new File(diretorioInstalacao, "atualizacao.log");
     private final File caminhoInicializadorPortugolStudio = new File(diretorioInstalacao, "inicializador-ps.jar");
     private final File caminhoArquivosRecuperadosOriginais = new File(diretorioTemporario, "arquivos_originais.txt");
-    private File caminhoUltimoDiretorio = getDiretorioUsuario();
     
     private boolean exibirOpcoesExecucao = false;
     private float tamanhoFonteConsole = 12.0f;
@@ -72,6 +72,7 @@ public final class Configuracoes
     private boolean exibirTutorialUso = true;
     private boolean exibirDicasInterface = true;
     private String uriAtualizacao = "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest";
+    private String caminhoUltimoDiretorio = getDiretorioUsuario().toString();
 
     private Configuracoes()
     {
@@ -106,6 +107,7 @@ public final class Configuracoes
             exibirTutorialUso = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_TUTORIAL_USO, "true"));
             exibirDicasInterface = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_DICAS_INTERFACE, "true"));
             uriAtualizacao = configuracoes.getProperty(URI_ATUALIZACAO, "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest");
+            caminhoUltimoDiretorio = configuracoes.getProperty(CAMINHO_ULTIMO_DIRETORIO, getCaminhoUltimoDiretorio());
         }
         catch (IOException excecao)
         {
@@ -514,10 +516,11 @@ public final class Configuracoes
     }
     
     public void setCaminhoUltimoDiretorio(File ultimoDiretorio) {
-        caminhoUltimoDiretorio = ultimoDiretorio;
+        this.configuracoes.setProperty(CAMINHO_ULTIMO_DIRETORIO, ultimoDiretorio.toString());
+        this.caminhoUltimoDiretorio = ultimoDiretorio.toString();
      }
      
-    public File getCaminhoUltimoDiretorio() {
+    public String getCaminhoUltimoDiretorio() {
         return caminhoUltimoDiretorio;
     }
 
