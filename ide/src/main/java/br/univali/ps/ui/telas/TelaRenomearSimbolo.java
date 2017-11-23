@@ -34,6 +34,8 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -290,6 +292,24 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             {
                 throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
             }
+        } catch (ErroAoRenomearSimbolo ex) {
+            if(ex.getTipo() == ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO)
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+            }
+            else if(ex.getTipo() == ErroAoRenomearSimbolo.Tipo.MENSAGEM)
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.MENSAGEM);
+            }
+            else if(ex.getTipo() == ErroAoRenomearSimbolo.Tipo.AVISO)
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.AVISO);
+            }
+            else
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
+            }
+            
         }
         alternarCorBotaoAceitar();
     }

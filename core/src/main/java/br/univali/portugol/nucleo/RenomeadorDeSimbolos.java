@@ -135,7 +135,7 @@ final class RenomeadorDeSimbolos
         }
     }
 
-    public NoDeclaracao obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo
+    public NoDeclaracao obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo, ErroAoRenomearSimbolo
     {
         programa = removerInformacoesPortugolStudio(programa);
 
@@ -157,7 +157,7 @@ final class RenomeadorDeSimbolos
         }
         catch (ErroAoRenomearSimbolo ex)
         {
-            throw new ErroAoTentarObterDeclaracaoDoSimbolo(ex.getMensagem(), CausaErroAoTentarObterDeclaracaoDoSimbolo.OUTRA);
+            throw new ErroAoRenomearSimbolo(ex.getMensagem(), ex.getTipo());
         }
         catch (ErroCompilacao ex)
         {

@@ -50,7 +50,7 @@ public final class Portugol
         return new RenomeadorDeSimbolos().renomearSimbolo(programa, linha, coluna, novoNome);
     }
     
-    public static NoDeclaracao obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo
+    public static NoDeclaracao obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo, ErroAoRenomearSimbolo
     {
         return new RenomeadorDeSimbolos().obterDeclaracaoDoSimbolo(programa, linha, coluna);
     }
