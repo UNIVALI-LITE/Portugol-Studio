@@ -163,7 +163,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         switch (excecaoAplicacao.getTipo())
         {
             case ERRO_USUARIO:
-                return Level.SEVERE;
+                return Level.WARNING;
             case ERRO_PROGRAMA:
                 return Level.SEVERE;
             case AVISO:
