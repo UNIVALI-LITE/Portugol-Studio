@@ -45,8 +45,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     }
     private void setup()
     {
-        jPanel3.setBorder(new CompoundBorder(new LineBorder(ColorController.COR_PRINCIPAL, 1),new LineBorder(ColorController.FUNDO_ESCURO, 5)));
-        setLocationRelativeTo(null);
+        jPanel3.setBorder(new CompoundBorder(new LineBorder(ColorController.COR_PRINCIPAL, 1),new LineBorder(ColorController.FUNDO_ESCURO, 5)));        
         configurarCores();
         WeblafUtils.configurarBotao(webButton1, ColorController.FUNDO_ESCURO, Color.white, ColorController.VERMELHO, Color.orange,5);
         WeblafUtils.configurarBotao(botaoCancelar, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
@@ -131,9 +130,15 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     
     public void showMessage(String text) {
         textLabel.setText("<html><body>"+text+"</body></html>");
-        buttonsPane.add(botaoSim);        
-        setVisible(true);
+        buttonsPane.add(botaoSim);
         pack();
+        if(this.getSize().height>600 || this.getSize().width>300)
+        {
+            textLabel.setText("<html><body><div style=\"width:300px;\">"+text+"</div></body></html>");
+            pack();
+        }
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
     
     public int showConfirmMessage(String text, int type)
@@ -157,8 +162,14 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         buttonsPane.add(botaoSim);
         buttonsPane.add(botaoNao);
         buttonsPane.add(botaoCancelar);
-        setVisible(true);
         pack();
+        if(this.getSize().height>600 || this.getSize().width>300)
+        {
+            textLabel.setText("<html><body><div style=\"width:300px;\">"+text+"</div></body></html>");
+            pack();
+        }
+        setLocationRelativeTo(null);
+        setVisible(true);
         return resposta;
     }
         
@@ -204,17 +215,18 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         botaoSim.setText("Sim");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(800, 600));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(400, 160));
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        mainpane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         mainpane.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/big_logo.png"))); // NOI18N
         mainpane.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
+        jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -225,6 +237,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
 
         textLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textLabel.setText("taxtLabel");
+        textLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel1.add(textLabel, java.awt.BorderLayout.CENTER);
 
         mainpane.add(jPanel1, java.awt.BorderLayout.CENTER);
