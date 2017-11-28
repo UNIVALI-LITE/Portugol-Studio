@@ -790,7 +790,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 else
                 {
-                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getCaminhoUltimoDiretorio());
+                    dialogoSelecaoArquivo.setCurrentDirectory(new File (Configuracoes.getInstancia().getCaminhoUltimoDiretorio()));
                     dialogoSelecaoArquivo.setSelectedFile(new File(""));
                 }
 
