@@ -330,11 +330,9 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
 
         procurarButton.setText("Procurar");
         procurarButton.setPreferredSize(new java.awt.Dimension(93, 24));
-        buttonsPane.add(procurarButton);
 
         substituirButton.setText("Substituir");
         substituirButton.setPreferredSize(new java.awt.Dimension(93, 24));
-        buttonsPane.add(substituirButton);
 
         substituirTudoButton.setText("Substituir todas");
         substituirTudoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -342,11 +340,34 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
                 substituirTudoButtonActionPerformed(evt);
             }
         });
-        buttonsPane.add(substituirTudoButton);
 
         cancelarButton.setText("Cancelar");
         cancelarButton.setPreferredSize(new java.awt.Dimension(93, 24));
-        buttonsPane.add(cancelarButton);
+
+        javax.swing.GroupLayout buttonsPaneLayout = new javax.swing.GroupLayout(buttonsPane);
+        buttonsPane.setLayout(buttonsPaneLayout);
+        buttonsPaneLayout.setHorizontalGroup(
+            buttonsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonsPaneLayout.createSequentialGroup()
+                .addGroup(buttonsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(procurarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(substituirTudoButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(substituirButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cancelarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        buttonsPaneLayout.setVerticalGroup(
+            buttonsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonsPaneLayout.createSequentialGroup()
+                .addComponent(procurarButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(substituirButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(substituirTudoButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelarButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         add(buttonsPane, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
