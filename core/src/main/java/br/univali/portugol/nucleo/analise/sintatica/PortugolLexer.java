@@ -2537,6 +2537,16 @@ public class PortugolLexer extends Lexer {
 		// /home/noschang/Projetos/Portugol-Studio/core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/Portugol.g:1:8: ( T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | PR_PROGRAMA | PR_REAL | PR_VAZIO | PR_LOGICO | PR_CADEIA | PR_INTEIRO | PR_CARACTER | PR_ESCOLHA | PR_CASO | PR_CONTRARIO | PR_CONST | PR_FUNCAO | PR_RETORNE | PR_PARA | PR_PARE | PR_FACA | PR_ENQUANTO | PR_SE | PR_SENAO | PR_INCLUA | PR_BIBLIOTECA | GAMBIARRA | OPERADOR_NAO | LOGICO | ID | ID_BIBLIOTECA | INTEIRO | REAL | CADEIA | CARACTER | ESPACO | COMENTARIO )
 		int alt19=74;
 		alt19 = dfa19.predict(input);
+		/*
+		 * @TODO @author manoelcampos O método possui um switch que viola o princípio OCP.
+		 * Se um novo código for adicionado, um novo item deve ser incluído no switch.
+		 * Além disso, os métodos como mT__42 são basicamente iguais, alterando
+		 * apenas alguns valores.
+		 *
+		 * O padrão factory poderia ser usado para criar uma classe que recebe
+		 * um int e cria um objeto que executa o código correspondente aquele int.
+		 * Assim, cada método como o mT__42 seria uma classe implementando uma determinada interface.
+		 */
 		switch (alt19) {
 			case 1 :
 				// /home/noschang/Projetos/Portugol-Studio/core/src/main/java/br/univali/portugol/nucleo/analise/sintatica/Portugol.g:1:10: T__42
