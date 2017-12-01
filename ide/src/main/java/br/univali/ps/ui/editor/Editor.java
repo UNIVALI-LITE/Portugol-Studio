@@ -60,8 +60,10 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -143,6 +145,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Action acaoCentralizarCodigoFonte;
 
     private Action acaoRenomearSimboloNoCursor;
+    
+    private Action acaoFormatarCodigo;
 
     private FindDialog dialogoPesquisar;
     private ReplaceDialog dialogoSubstituir;
@@ -393,12 +397,32 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoComentar();
         configurarAcaoDescomentar();
         configurarAcaoRenomearSimboloNoCursor();
-
+        configurarAcaoFormatarCodigo();
+        
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
         //configurarAcaoAlternarModoEditor();
     }
 
+    private void configurarAcaoFormatarCodigo()
+    {
+        String nome = "Formatar código";
+        
+        acaoFormatarCodigo = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                
+            }
+        };
+        
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.ALT_DOWN_MASK);
+        acaoFormatarCodigo.putValue(Action.ACCELERATOR_KEY, atalho);
+        textArea.getActionMap().put(nome, acaoFormatarCodigo);
+        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
     private void configurarAcaoRenomearSimboloNoCursor()
     {
         String nome = "Renomear";
