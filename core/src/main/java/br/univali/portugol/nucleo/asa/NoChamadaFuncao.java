@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.asa;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -112,9 +113,9 @@ public final class NoChamadaFuncao extends NoReferencia<NoDeclaracaoFuncao>
     }
 
     @Override
-    public boolean ehParavel(Programa.Estado estado)
+    public boolean ehParavel(Estado estado)
     {
-        return (estado == Programa.Estado.BREAK_POINT && pontoDeParadaEstaAtivo()) || estado == Programa.Estado.STEP_OVER;
+        return (estado == Estado.BREAK_POINT && pontoDeParadaEstaAtivo()) || estado == Estado.STEP_OVER;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package br.univali.portugol.nucleo.execucao.gerador;
 
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.*;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;

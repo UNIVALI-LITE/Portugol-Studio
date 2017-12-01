@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.base;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;

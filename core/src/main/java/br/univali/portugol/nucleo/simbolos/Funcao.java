@@ -21,12 +21,12 @@ public final class Funcao extends Simbolo
     private List<NoDeclaracaoParametro> parametros;
 
     /**
-     * 
+     * Cria uma função a partir de todas as informações de sua assinatura.
+     *
      * @param nome              o nome desta função.
      * @param tipoDado          o tipo de dado do valor de retorno desta função.
      * @param quantificador     o quantificador do valor de retorno desta função.
      * @param parametros        a lista de parâmetros esperados por esta função.
-     * @param blocos            a lista de blocos a serem executados por esta função.
      * @since 1.0
      */
     public Funcao(String nome, TipoDado tipoDado, Quantificador quantificador, List<NoDeclaracaoParametro> parametros, NoDeclaracaoFuncao declaracaoOrigem)
@@ -40,6 +40,18 @@ public final class Funcao extends Simbolo
         
         this.parametros = parametros;
         this.quantificador = quantificador;
+    }
+
+    /**
+     * Cria uma função a partir que não possui parâmetros nem declaração de origem.
+     *
+     * @param nome              o nome desta função.
+     * @param tipoDado          o tipo de dado do valor de retorno desta função.
+     * @param quantificador     o quantificador do valor de retorno desta função.
+     * @since 1.0
+     */
+    public Funcao(String nome, TipoDado tipoDado, Quantificador quantificador){
+        this(nome, tipoDado, quantificador, null, null);
     }
 
     @Override

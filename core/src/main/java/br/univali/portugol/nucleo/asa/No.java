@@ -1,15 +1,15 @@
 package br.univali.portugol.nucleo.asa;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
 import br.univali.portugol.nucleo.execucao.PontoParada;
 
 /**
- * Esta é a classe base para todos os nós da ASA.
+ * Classe base para todos os nós da ASA.
  *
  * @author Luiz Fernando Noschang
  * @version 1.0
  *
- * @see ArvoreSintaticaAbstrata
+ * @see ASA
  */
 public abstract class No
 {
@@ -64,9 +64,9 @@ public abstract class No
      * depurador. Por exemplo, alguns nós só para quando o depurador está no
      * estado BREAK_POINT.
      */
-    public boolean ehParavel(Programa.Estado estado)
+    public boolean ehParavel(Estado estado)
     {
-        return pontoParada.estaAtivo() && estado == Programa.Estado.BREAK_POINT;
+        return pontoParada.estaAtivo() && estado == Estado.BREAK_POINT;
     }
 
     public boolean temPai()

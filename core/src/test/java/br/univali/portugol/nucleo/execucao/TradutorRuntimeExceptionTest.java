@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.Programa.Estado;
+import br.univali.portugol.nucleo.programa.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
 import br.univali.portugol.nucleo.ResourceHandle;
 import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroDivisaoPorZero;
 import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroEstouroPilha;

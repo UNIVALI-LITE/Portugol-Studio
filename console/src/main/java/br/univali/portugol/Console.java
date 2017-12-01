@@ -2,7 +2,8 @@ package br.univali.portugol;
 
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
@@ -122,7 +123,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
             }
 
             programa.setDiretorioTrabalho(arquivo.getAbsoluteFile().getParentFile());
-            programa.executar(args, Programa.Estado.BREAK_POINT);            
+            programa.executar(args, Estado.BREAK_POINT);
         }
         catch(ErroCompilacao erroCompilacao) 
         {
