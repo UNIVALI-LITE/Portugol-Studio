@@ -10,6 +10,7 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaCustomBorder;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -91,14 +92,14 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         avancarRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                voltarRadioButton.setSelected(false);
+                voltarRadioButton.setSelected(!avancarRadioButton.isSelected());
             }
         });
         
         voltarRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                avancarRadioButton.setSelected(false);
+                avancarRadioButton.setSelected(!voltarRadioButton.isSelected());
             }
         });
     }
