@@ -82,7 +82,7 @@ public class GeradorCodigoJava
         
         gerador.geraPackage("programas")
                .geraImportacaoPara(ErroExecucao.class)
-               .geraImportacaoPara(Programa.class)
+               .geraImportacaoPara(Programa.class.getPackage())
                .geraImportacaoBibliotecasIncluidas()
                .geraNomeClasse(nomeClasseJava)
                .geraChaveAberturaClasse()
@@ -872,11 +872,31 @@ public class GeradorCodigoJava
             return null;
         }
 
+        /**
+         * Gera o comando Java para importação de uma determinada classe.
+         * @param classe classe para gerar o comando import
+         * @return String contendo o comando import para a classe especificada
+         */
         public VisitorGeracaoCodigo geraImportacaoPara(Class classe)
         {
             saida.append("import ")
                     .append(classe.getCanonicalName())
                     .append(";")
+                    .println();
+
+            return this;
+        }
+
+        /**
+         * Gera o comando Java para importação das classes de um determinado pacote.
+         * @param pacote pacote para gerar o comando import de suas classes
+         * @return String contendo o comando import para as classes do pacoate especificado
+         */
+        public VisitorGeracaoCodigo geraImportacaoPara(Package pacote)
+        {
+            saida.append("import ")
+                    .append(pacote.getName())
+                    .append(".*;")
                     .println();
 
             return this;
