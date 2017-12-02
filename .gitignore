@@ -3,6 +3,7 @@
 build/
 dist/
 bin/
+**/out/
 **/src/test/tmp
 .project
 .classpath
