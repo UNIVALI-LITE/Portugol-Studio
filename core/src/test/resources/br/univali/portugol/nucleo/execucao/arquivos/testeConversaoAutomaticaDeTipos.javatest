@@ -1,7 +1,7 @@
 package programas;
 
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.*;
 import br.univali.portugol.nucleo.bibliotecas.Graficos;
 
 public class testeConversaoAutomaticaDeTipos extends Programa

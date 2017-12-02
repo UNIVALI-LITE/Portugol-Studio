@@ -4,7 +4,7 @@ package br.univali.portugol.nucleo.programa;
  * Classe usada apenas internamente para armazenar os dados dos vetores que
  * são inspecionados durante a execução
  */
-class Vetor
+public class Vetor
 {
     private final Object[] dados;
     private int ultimaColunaAlterada = -1;

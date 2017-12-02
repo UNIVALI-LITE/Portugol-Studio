@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.programa;
 
-class Matriz {
+public class Matriz {
     private final Vetor[] dados;
     private int ultimaLinhaAlterada = -1;
     public final int linhas;
