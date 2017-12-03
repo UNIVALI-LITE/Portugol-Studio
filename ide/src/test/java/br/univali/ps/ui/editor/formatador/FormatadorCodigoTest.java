@@ -8,6 +8,76 @@ import static org.junit.Assert.*;
  */
 public class FormatadorCodigoTest
 {
+    
+//    @Test
+//    public void testChamadaFuncao() throws Exception
+//    {
+//        String codigo = "programa{"
+//                + "    funcao inicio() {"
+//                + "         inteiro x = 10 + 3"
+//                + "         x = 10 / 3"
+//                + "         inteiro y = (x % 3 * 2) / 4"                
+//                + "    }"
+//                + "}";
+//
+//        String esperado = "programa\n"
+//                + "{\n"
+//                + "\n"
+//                + "    funcao inicio()\n"
+//                + "    {\n"
+//                + "        inteiro x = 10 + 3\n"
+//                + "        x = 10 / 3\n"
+//                + "        inteiro y = (x % 3 * 2) / 4\n"                
+//                + "    }\n"
+//                + "}";
+//
+//        String formatado = FormatadorCodigo.formata(codigo);
+//        //System.out.println(formatado);
+//        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+//
+//        assertEquals("Strings diferentes!", esperado, formatado);
+//    }
+
+    @Test
+    public void testOperacoes() throws Exception
+    {
+        String codigo = "programa{"
+                + "    funcao inicio() {"
+                + "         inteiro x = 10 + 3"
+                + "         x = 10 / 3"
+                + "         inteiro y = (x % 3 * 2) / 4"                
+                + "         inteiro v[] = {1, 2, 3}"                                
+                + "         inteiro vet[3]"                                                
+                + "         inteiro m[][] = {{1, 2}, {2, 3}}"                                
+                + "         inteiro mat[3][2]"        
+                + "         mat[1][1] = v[10 / 3]"        
+                + "         mat[0][0] = v[m[0][0]]"                        
+                + "    }"
+                + "}";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "        inteiro x = 10 + 3\n"
+                + "        x = 10 / 3\n"
+                + "        inteiro y = (x % 3 * 2) / 4\n"  
+                + "        inteiro v[] = {1, 2, 3}\n"                                                
+                + "        inteiro vet[3]\n"                                                                
+                + "        inteiro m[][] = {{1, 2}, {2, 3}}\n"                                
+                + "        inteiro mat[3][2]\n"       
+                + "        mat[1][1] = v[10 / 3]\n"        
+                + "        mat[0][0] = v[m[0][0]]\n"                                        
+                + "    }\n"
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
 
     @Test
     public void testDeclaracaoFuncao() throws Exception
