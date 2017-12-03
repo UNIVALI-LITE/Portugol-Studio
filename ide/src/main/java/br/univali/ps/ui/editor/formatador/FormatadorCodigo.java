@@ -191,6 +191,23 @@ public class FormatadorCodigo
         }
 
         @Override
+        public Object visitar(NoInclusaoBiblioteca no) throws ExcecaoVisitaASA
+        {
+            saida.append(Utils.geraIdentacao(1)); // primeiro nível de escopo
+            
+            saida.format("inclua biblioteca %s", no.getNome());
+            
+            String alias = no.getAlias();
+            if (alias != null && !alias.isEmpty()) {
+                saida.format(" --> %s", alias);
+            }
+            
+            pulaLinha();
+            
+            return null;
+        }
+        
+        @Override
         public Void visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA
         {
             saida.append(String.valueOf(noInteiro.getValor()));
