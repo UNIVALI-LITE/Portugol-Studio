@@ -416,13 +416,17 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             public void actionPerformed(ActionEvent e)
             {
                 try {
+                    
+                    int caretPosition = textArea.getCaretPosition();
+                    
                     String codigoFormatado = FormatadorCodigo.formata(textArea.getText());
                     textArea.setText(codigoFormatado);
+                    
+                    textArea.setCaretPosition(caretPosition);
+                    
                 } catch (ErroCompilacao ex) {
                     Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                
             }
         };
         
