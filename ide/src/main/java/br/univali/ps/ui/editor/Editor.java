@@ -1,6 +1,8 @@
 package br.univali.ps.ui.editor;
 
+import br.univali.ps.ui.editor.formatador.FormatadorCodigo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
+import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.nucleo.Configuracoes;
@@ -413,6 +415,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                try {
+                    String codigoFormatado = FormatadorCodigo.formata(textArea.getText());
+                    textArea.setText(codigoFormatado);
+                } catch (ErroCompilacao ex) {
+                    Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
                 
             }
         };
