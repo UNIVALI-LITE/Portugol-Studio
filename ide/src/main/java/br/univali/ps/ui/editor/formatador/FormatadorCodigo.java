@@ -3,7 +3,6 @@ package br.univali.ps.ui.editor.formatador;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.ProgramaVazio;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.ModoAcesso;
@@ -60,12 +59,6 @@ import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
-import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorAtribuicao;
-import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorAtributo;
-import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorChamadaMetodo;
-import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorDeclaracaoMetodo;
-import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorDeclaracaoVariavel;
-import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorOperacao;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorSwitchCase;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import java.io.PrintWriter;
@@ -78,16 +71,6 @@ public class FormatadorCodigo
 {
 
     private static final Logger LOGGER = Logger.getLogger(FormatadorCodigo.class.getName());
-
-    private final GeradorChamadaMetodo geradorChamadaMetodo = new GeradorChamadaMetodo();
-    private final GeradorSwitchCase geradorSwitchCase = new GeradorSwitchCase();
-    private final GeradorDeclaracaoMetodo geradorDeclaracaoMetodo = new GeradorDeclaracaoMetodo();
-    private final GeradorOperacao geradorOperacao = new GeradorOperacao();
-    private final GeradorAtributo geradorAtributo = new GeradorAtributo();
-    private final GeradorDeclaracaoVariavel geradorDeclaracaoVariavel = new GeradorDeclaracaoVariavel();
-    private final GeradorAtribuicao geradorAtribuicao = new GeradorAtribuicao();
-
-    private boolean processandoVariaveisGlobais = false; // não inicializa as variáveis quando está processando as variáveis globais
 
     public static String formata(String codigo) throws ErroCompilacao
     {
