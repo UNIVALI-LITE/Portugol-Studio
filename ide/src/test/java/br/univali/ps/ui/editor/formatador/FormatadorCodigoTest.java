@@ -39,12 +39,9 @@ public class FormatadorCodigoTest
     @Test
     public void testProgramaVazio() throws Exception
     {
-        String codigo = "programa\n"
-                + "{\n"
-                + "    funcao inicio()\n"
-                + "    {\n"
-                + "    \n"
-                + "    }\n"
+        String codigo = "programa{"
+                + "    funcao inicio() {"
+                + "    }"
                 + "}";
 
         String esperado = "programa\n"
