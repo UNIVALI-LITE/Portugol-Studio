@@ -57,6 +57,7 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoVetor;
+import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorAtribuicao;
@@ -155,6 +156,19 @@ public class FormatadorCodigo
             
             saida.append("("); // abre parênteses dos parâmetros
             
+            List<NoDeclaracaoParametro> parametros = funcao.getParametros();
+            for (int i = 0; i < parametros.size(); i++) {
+                NoDeclaracaoParametro parametro = parametros.get(i);
+                saida.format("%s %s", parametro.getTipoDado().getNome(), parametro.getNome());
+                
+                // parâmetro é vetor ou matriz?
+                saida.append(geraCodigoQuantificador(parametro.getQuantificador()));
+                
+                if (i < parametros.size() - 1) {
+                    saida.append(", ");
+                }
+            }
+
             saida.append(")").println(); // fecha parênteses dos parâmetros
             
             saida.append(identacao);
@@ -673,6 +687,18 @@ public class FormatadorCodigo
             saida.append("}").println();
 
             return this;
+        }
+        
+        private static String geraCodigoQuantificador(Quantificador quantificador)
+        {
+            if (quantificador == Quantificador.MATRIZ) {
+                return "[][]";
+            }
+            else if (quantificador == Quantificador.VETOR) {
+                return "[]";
+            }
+            
+            return ""; // quantificador == Quantificador.VALOR
         }
 
     }
