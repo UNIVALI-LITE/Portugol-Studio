@@ -10,6 +10,47 @@ public class FormatadorCodigoTest
 {
     
     @Test
+    public void testSe() throws Exception
+    {
+        String codigo = "programa {                             "
+                + "    funcao inicio() {                        "
+                + "         inteiro x = 0                       "                                
+                + "         se (x < 10) {                 "
+                + "             se (x < 10)             "
+                + "                 escreva(\"teste\")          "
+                + "             senao"
+                + "                 escreva(\"toste\")          "                
+                + "             x++                             "
+                + "         }                                   "                
+                + "    }                                        "
+                + "}                                            ";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "        inteiro x = 0\n"
+                + "        se (x < 10) {\n"
+                + "            se (x < 10) {\n"
+                + "                escreva(\"teste\")\n"
+                + "            }\n"                                
+                + "            senao {\n"
+                + "                escreva(\"toste\")\n"                                
+                + "            }\n"                
+                + "            x = x + 1\n"
+                + "        }\n"
+                + "    }\n"
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        //System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
+    
+    @Test
     public void testEnquanto() throws Exception
     {
         String codigo = "programa {                             "

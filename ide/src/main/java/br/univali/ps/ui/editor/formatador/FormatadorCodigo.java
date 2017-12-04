@@ -622,35 +622,35 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoSe no) throws ExcecaoVisitaASA
         {
-//            saida.append("if(");
-//
-//            no.getCondicao().aceitar(this);
-//
-//            saida.append(")").println();
-//
-//            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
-//
-//            saida.append(identacao).append("{").println();
-//
-//            List<NoBloco> blocosVerdadeiros = no.getBlocosVerdadeiros();
-//            if (blocosVerdadeiros != null) {
-//                visitarBlocos(blocosVerdadeiros);
-//                saida.println();
-//            }
-//
-//            saida.append(identacao).append("}").println();
-//
-//            List<NoBloco> blocosFalsos = no.getBlocosFalsos();
-//            if (blocosFalsos != null) {
-//                saida.append(identacao).append("else").println();
-//                saida.append(identacao).append("{").println();
-//
-//                visitarBlocos(blocosFalsos);
-//
-//                saida.println();
-//
-//                saida.append(identacao).append("}").println();
-//            }
+            saida.append("se (");
+
+            no.getCondicao().aceitar(this);
+
+            saida.append(") {");
+
+            pulaLinha();
+
+            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
+            
+            List<NoBloco> blocosVerdadeiros = no.getBlocosVerdadeiros();
+            if (blocosVerdadeiros != null) {
+                visitarBlocos(blocosVerdadeiros);
+            }
+            
+            saida.append(identacao).append("}");
+
+            List<NoBloco> blocosFalsos = no.getBlocosFalsos();
+            if (blocosFalsos != null) {
+                pulaLinha();
+                saida.append(identacao)
+                        .append("senao {");
+                
+                pulaLinha();
+
+                visitarBlocos(blocosFalsos);
+
+                saida.append(identacao).append("}");
+            }
 
             return null;
         }
