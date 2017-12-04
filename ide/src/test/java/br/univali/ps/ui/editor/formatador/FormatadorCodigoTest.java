@@ -10,6 +10,51 @@ public class FormatadorCodigoTest
 {
     
     @Test
+    public void testEscolha() throws Exception
+    {
+        String codigo = "programa {                             "
+                + "    funcao inicio() {                        "
+                + "         inteiro x = 0                       "                                
+                + "         escolha (x) {                       "
+                + "             caso 0:                         "
+                + "                 escreva(\"teste\")          "
+                + "                 pare                        "                
+                + "             caso 1:                         "
+                + "                 escreva(\"tiste\")          "                
+                + "                 pare                        "                                
+                + "             caso contrario:                 "                
+                + "                 escreva(\"toste\")          "                
+                + "         }                                   "                
+                + "    }                                        "
+                + "}                                            ";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "        inteiro x = 0\n"                                
+                + "        escolha (x) {\n"
+                + "            caso 0:\n"
+                + "                escreva(\"teste\")\n"
+                + "                pare\n"
+                + "            caso 1:\n"
+                + "                escreva(\"tiste\")\n"
+                + "                pare\n"
+                + "            caso contrario:\n"
+                + "                escreva(\"toste\")\n"
+                + "        }\n"                
+                + "    }\n"
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        //System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
+    
+    @Test
     public void testSe() throws Exception
     {
         String codigo = "programa {                             "

@@ -10,6 +10,7 @@ import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoCaracter;
+import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoContinue;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
@@ -61,7 +62,6 @@ import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
-import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorSwitchCase;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -154,11 +154,11 @@ public class FormatadorCodigo
             for (int i = 0; i < parametros.size(); i++) {
                 NoDeclaracaoParametro parametro = parametros.get(i);
                 saida.format("%s ", parametro.getTipoDado().getNome());
-                
+
                 if (parametro.getModoAcesso() == ModoAcesso.POR_REFERENCIA) {
                     saida.append("&");
                 }
-                
+
                 saida.append(parametro.getNome());
 
                 // parâmetro é vetor ou matriz?
@@ -631,12 +631,12 @@ public class FormatadorCodigo
             pulaLinha();
 
             String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
-            
+
             List<NoBloco> blocosVerdadeiros = no.getBlocosVerdadeiros();
             if (blocosVerdadeiros != null) {
                 visitarBlocos(blocosVerdadeiros);
             }
-            
+
             saida.append(identacao).append("}");
 
             List<NoBloco> blocosFalsos = no.getBlocosFalsos();
@@ -644,7 +644,7 @@ public class FormatadorCodigo
                 pulaLinha();
                 saida.append(identacao)
                         .append("senao {");
-                
+
                 pulaLinha();
 
                 visitarBlocos(blocosFalsos);
@@ -655,20 +655,46 @@ public class FormatadorCodigo
             return null;
         }
 
-        private boolean simularBreakCaso = false;
-
         @Override
         public Void visitar(NoEscolha no) throws ExcecaoVisitaASA
         {
-//            boolean contemCasosNaoConstantes = GeradorSwitchCase.contemCasosNaoConstantes(no);
-//            simularBreakCaso = contemCasosNaoConstantes;
-//
-//            if (!contemCasosNaoConstantes) {
-//                //geradorSwitchCase.geraSwitchCase(no, saida, this, nivelEscopo, opcoes, seed);
-//            } else {
-//                //geradorSwitchCase.geraSeSenao(no, saida, this, nivelEscopo, opcoes);
-//            }
-//            simularBreakCaso = false;
+            saida.append("escolha (");
+
+            no.getExpressao().aceitar(this);
+
+            saida.append(") {").println();
+            
+            String identacaoExterna = Utils.geraIdentacao(nivelEscopo);
+
+            List<NoCaso> casos = no.getCasos();
+            if (casos != null) {
+                
+                nivelEscopo++; // coloca os "caso" aninhados no escolha
+
+                String identacaoInterna = Utils.geraIdentacao(nivelEscopo);
+                
+                for (NoCaso caso : casos) {
+                    NoExpressao expressaoCaso = caso.getExpressao();
+                    if (expressaoCaso != null) {
+                        saida.append(identacaoInterna).append("caso ");
+
+                        expressaoCaso.aceitar(this);
+
+                        saida.append(":").println();
+                    } else {
+                        saida.append(identacaoInterna)
+                                .append("caso contrario:");
+                        pulaLinha();
+                    }
+
+                    visitarBlocos(caso.getBlocos());
+                }
+                
+                nivelEscopo--;
+            }
+            
+            saida.append(identacaoExterna).append("}");
+            
             return null;
         }
 
@@ -747,12 +773,7 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoPare noPare) throws ExcecaoVisitaASA
         {
-            if (simularBreakCaso) {
-                saida.append(GeradorSwitchCase.geraNomeVariavelBreak(nivelEscopo - 1))
-                        .append(" = true");
-            } else {
-                saida.append("break");
-            }
+            saida.append("pare");
 
             return null;
         }
