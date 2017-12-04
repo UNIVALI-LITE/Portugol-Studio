@@ -63,6 +63,7 @@ import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
+import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorChamadaMetodo;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.GeradorSwitchCase;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import static br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraParadaPassoAPasso;
@@ -156,7 +157,13 @@ public class FormatadorCodigo
             List<NoDeclaracaoParametro> parametros = funcao.getParametros();
             for (int i = 0; i < parametros.size(); i++) {
                 NoDeclaracaoParametro parametro = parametros.get(i);
-                saida.format("%s %s", parametro.getTipoDado().getNome(), parametro.getNome());
+                saida.format("%s ", parametro.getTipoDado().getNome());
+                
+                if (parametro.getModoAcesso() == ModoAcesso.POR_REFERENCIA) {
+                    saida.append("&");
+                }
+                
+                saida.append(parametro.getNome());
 
                 // parâmetro é vetor ou matriz?
                 saida.append(geraCodigoQuantificador(parametro.getQuantificador()));
@@ -502,58 +509,58 @@ public class FormatadorCodigo
             saida.append("{");
 
             List<List<Object>> valores = no.getValores();
-            int totalLinhas =  valores.size();
-           
+            int totalLinhas = valores.size();
+
             for (int i = 0; i < totalLinhas; i++) {
-                
+
                 List<Object> linha = valores.get(i);
-                
+
                 int totalColunas = linha.size();
-                
+
                 saida.append("{");
-                
+
                 for (int j = 0; j < totalColunas; j++) {
-                    
+
                     saida.append(linha.get(j).toString());
-                    
+
                     if (j < totalColunas - 1) {
                         saida.append(", ");
                     }
                 }
                 saida.append("}");
-                
+
                 if (i < totalLinhas - 1) {
                     saida.append(", ");
                 }
             }
 
             saida.append("}");
-            
+
             return null;
         }
 
         @Override
         public Void visitar(NoRetorne no) throws ExcecaoVisitaASA
         {
-            NoExpressao expressao = no.getExpressao();
-            if (expressao != null) {
-                saida.append("return ");
-                if (no.temPai()) {
-
-                    if (no.getPai() instanceof NoDeclaracaoFuncao) {
-                        TipoDado tipoRetornoFuncao = ((NoDeclaracaoFuncao) no.getPai()).getTipoDado();
-                        if (expressao.getTipoResultante() == TipoDado.REAL && tipoRetornoFuncao == TipoDado.INTEIRO) {
-                            saida.append("(int)");
-                        }
-                    }
-                } else {
-                    throw new IllegalStateException("retorne não tem pai!");
-                }
-
-                expressao.aceitar(this);
-            } else {
-                saida.append("return");
-            }
+//            NoExpressao expressao = no.getExpressao();
+//            if (expressao != null) {
+//                saida.append("return ");
+//                if (no.temPai()) {
+//
+//                    if (no.getPai() instanceof NoDeclaracaoFuncao) {
+//                        TipoDado tipoRetornoFuncao = ((NoDeclaracaoFuncao) no.getPai()).getTipoDado();
+//                        if (expressao.getTipoResultante() == TipoDado.REAL && tipoRetornoFuncao == TipoDado.INTEIRO) {
+//                            saida.append("(int)");
+//                        }
+//                    }
+//                } else {
+//                    throw new IllegalStateException("retorne não tem pai!");
+//                }
+//
+//                expressao.aceitar(this);
+//            } else {
+//                saida.append("return");
+//            }
 
             return null;
         }
@@ -597,15 +604,7 @@ public class FormatadorCodigo
                 saida.append(escopo).append(".");
             }
 
-            NoDeclaracao declaracao = no.getOrigemDaReferencia();
-            boolean ehParametroPorReferencia = declaracao instanceof NoDeclaracaoParametro && (((NoDeclaracaoParametro) declaracao).getModoAcesso() == ModoAcesso.POR_REFERENCIA);
-            if (ehParametroPorReferencia || no.ehPassadoPorReferencia()) {
-                String stringIndice = ehParametroPorReferencia ? no.getNome() : br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraStringIndice(no);
-                String nomeTipo = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.getNomeTipoJava(declaracao.getTipoDado()).toUpperCase();
-                saida.format("REFS_%s[%s]", nomeTipo, stringIndice);
-            } else {
-                saida.append(nome);
-            }
+            saida.append(nome);
 
             return null;
         }
@@ -614,63 +613,64 @@ public class FormatadorCodigo
         public Void visitar(NoEnquanto no) throws ExcecaoVisitaASA
         {
 
-            saida.append("while(");
-
-            no.getCondicao().aceitar(this);
-
-            saida.append(")").println();
-
-            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
-
-            saida.append(identacao).append("{").println();
-
-            visitarBlocos(no.getBlocos());
-
-            saida.println();
-
-            saida.append(identacao).append("}").println();
-
+//            saida.append("while(");
+//
+//            no.getCondicao().aceitar(this);
+//
+//            saida.append(")").println();
+//
+//            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
+//
+//            saida.append(identacao).append("{").println();
+//
+//            visitarBlocos(no.getBlocos());
+//
+//            saida.println();
+//
+//            saida.append(identacao).append("}").println();
+//
             return null;
         }
 
         @Override
         public Void visitar(NoPara no) throws ExcecaoVisitaASA
         {
+            // @TODO
             return null;
         }
 
         @Override
         public Void visitar(NoSe no) throws ExcecaoVisitaASA
         {
-            saida.append("if(");
-
-            no.getCondicao().aceitar(this);
-
-            saida.append(")").println();
-
-            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
-
-            saida.append(identacao).append("{").println();
-
-            List<NoBloco> blocosVerdadeiros = no.getBlocosVerdadeiros();
-            if (blocosVerdadeiros != null) {
-                visitarBlocos(blocosVerdadeiros);
-                saida.println();
-            }
-
-            saida.append(identacao).append("}").println();
-
-            List<NoBloco> blocosFalsos = no.getBlocosFalsos();
-            if (blocosFalsos != null) {
-                saida.append(identacao).append("else").println();
-                saida.append(identacao).append("{").println();
-
-                visitarBlocos(blocosFalsos);
-
-                saida.println();
-
-                saida.append(identacao).append("}").println();
-            }
+//            saida.append("if(");
+//
+//            no.getCondicao().aceitar(this);
+//
+//            saida.append(")").println();
+//
+//            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
+//
+//            saida.append(identacao).append("{").println();
+//
+//            List<NoBloco> blocosVerdadeiros = no.getBlocosVerdadeiros();
+//            if (blocosVerdadeiros != null) {
+//                visitarBlocos(blocosVerdadeiros);
+//                saida.println();
+//            }
+//
+//            saida.append(identacao).append("}").println();
+//
+//            List<NoBloco> blocosFalsos = no.getBlocosFalsos();
+//            if (blocosFalsos != null) {
+//                saida.append(identacao).append("else").println();
+//                saida.append(identacao).append("{").println();
+//
+//                visitarBlocos(blocosFalsos);
+//
+//                saida.println();
+//
+//                saida.append(identacao).append("}").println();
+//            }
 
             return null;
         }
@@ -680,39 +680,39 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoEscolha no) throws ExcecaoVisitaASA
         {
-            boolean contemCasosNaoConstantes = GeradorSwitchCase.contemCasosNaoConstantes(no);
-            simularBreakCaso = contemCasosNaoConstantes;
-
-            if (!contemCasosNaoConstantes) {
-                //geradorSwitchCase.geraSwitchCase(no, saida, this, nivelEscopo, opcoes, seed);
-            } else {
-                //geradorSwitchCase.geraSeSenao(no, saida, this, nivelEscopo, opcoes);
-            }
-            simularBreakCaso = false;
+//            boolean contemCasosNaoConstantes = GeradorSwitchCase.contemCasosNaoConstantes(no);
+//            simularBreakCaso = contemCasosNaoConstantes;
+//
+//            if (!contemCasosNaoConstantes) {
+//                //geradorSwitchCase.geraSwitchCase(no, saida, this, nivelEscopo, opcoes, seed);
+//            } else {
+//                //geradorSwitchCase.geraSeSenao(no, saida, this, nivelEscopo, opcoes);
+//            }
+//            simularBreakCaso = false;
             return null;
         }
 
         @Override
         public Void visitar(NoFacaEnquanto no) throws ExcecaoVisitaASA
         {
-            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
-
-            saida.append("do").println();
-            saida.append(identacao).append("{").println();
-
-            List<NoBloco> blocos = no.getBlocos();
-            if (blocos != null) {
-                visitarBlocos(blocos);
-                saida.println();
-            }
-
-            saida.append(identacao).append("}").println();
-
-            saida.append(identacao).append("while(");
-
-            no.getCondicao().aceitar(this);
-
-            saida.append(");").println();
+//            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
+//
+//            saida.append("do").println();
+//            saida.append(identacao).append("{").println();
+//
+//            List<NoBloco> blocos = no.getBlocos();
+//            if (blocos != null) {
+//                visitarBlocos(blocos);
+//                saida.println();
+//            }
+//
+//            saida.append(identacao).append("}").println();
+//
+//            saida.append(identacao).append("while(");
+//
+//            no.getCondicao().aceitar(this);
+//
+//            saida.append(");").println();
 
             return null;
         }
@@ -745,7 +745,22 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoChamadaFuncao no) throws ExcecaoVisitaASA
         {
-            //geradorChamadaMetodo.gera(no, saida, this, asa, opcoes, nivelEscopo);
+            String escopoFuncao = (no.getEscopo() != null) ? (no.getEscopo() + ".") : "";
+            String nomeFuncao = no.getNome();
+
+            List<NoExpressao> parametrosPassados = no.getParametros();
+
+            saida.format("%s%s(", escopoFuncao, nomeFuncao);
+
+            int totalParametros = parametrosPassados.size();
+            for (int i = 0; i < totalParametros; i++) {
+                parametrosPassados.get(i).aceitar(this);
+
+                if (i < totalParametros - 1) {
+                    saida.append(", ");
+                }
+            }
+            saida.append(")");
             return null;
         }
 
