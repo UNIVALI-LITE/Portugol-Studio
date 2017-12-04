@@ -663,16 +663,16 @@ public class FormatadorCodigo
             no.getExpressao().aceitar(this);
 
             saida.append(") {").println();
-            
+
             String identacaoExterna = Utils.geraIdentacao(nivelEscopo);
 
             List<NoCaso> casos = no.getCasos();
             if (casos != null) {
-                
+
                 nivelEscopo++; // coloca os "caso" aninhados no escolha
 
                 String identacaoInterna = Utils.geraIdentacao(nivelEscopo);
-                
+
                 for (NoCaso caso : casos) {
                     NoExpressao expressaoCaso = caso.getExpressao();
                     if (expressaoCaso != null) {
@@ -689,36 +689,34 @@ public class FormatadorCodigo
 
                     visitarBlocos(caso.getBlocos());
                 }
-                
+
                 nivelEscopo--;
             }
-            
+
             saida.append(identacaoExterna).append("}");
-            
+
             return null;
         }
 
         @Override
         public Void visitar(NoFacaEnquanto no) throws ExcecaoVisitaASA
         {
-//            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
-//
-//            saida.append("do").println();
-//            saida.append(identacao).append("{").println();
-//
-//            List<NoBloco> blocos = no.getBlocos();
-//            if (blocos != null) {
-//                visitarBlocos(blocos);
-//                saida.println();
-//            }
-//
-//            saida.append(identacao).append("}").println();
-//
-//            saida.append(identacao).append("while(");
-//
-//            no.getCondicao().aceitar(this);
-//
-//            saida.append(");").println();
+            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
+
+            saida.append("faca {").println();
+
+            List<NoBloco> blocos = no.getBlocos();
+            if (blocos != null) {
+                visitarBlocos(blocos);
+            }
+
+            saida.append(identacao).append("}").println();
+
+            saida.append(identacao).append("enquanto (");
+
+            no.getCondicao().aceitar(this);
+
+            saida.append(")");
 
             return null;
         }

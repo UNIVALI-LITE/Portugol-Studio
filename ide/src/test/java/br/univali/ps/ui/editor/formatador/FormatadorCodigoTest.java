@@ -8,23 +8,18 @@ import static org.junit.Assert.*;
  */
 public class FormatadorCodigoTest
 {
-    
+
     @Test
-    public void testEscolha() throws Exception
+    public void testFacaEnquanto() throws Exception
     {
         String codigo = "programa {                             "
                 + "    funcao inicio() {                        "
-                + "         inteiro x = 0                       "                                
-                + "         escolha (x) {                       "
-                + "             caso 0:                         "
-                + "                 escreva(\"teste\")          "
-                + "                 pare                        "                
-                + "             caso 1:                         "
-                + "                 escreva(\"tiste\")          "                
-                + "                 pare                        "                                
-                + "             caso contrario:                 "                
-                + "                 escreva(\"toste\")          "                
-                + "         }                                   "                
+                + "         inteiro x = 0                       "
+                + "         faca {                              "
+                + "             x++                             "
+                + "             escreva(x)                      "                
+                + "         }                                   "
+                + "         enquanto (x < 10)                   "
                 + "    }                                        "
                 + "}                                            ";
 
@@ -33,7 +28,47 @@ public class FormatadorCodigoTest
                 + "\n"
                 + "    funcao inicio()\n"
                 + "    {\n"
-                + "        inteiro x = 0\n"                                
+                + "        inteiro x = 0\n"
+                + "        faca {\n"
+                + "            x = x + 1\n"
+                + "            escreva(x)\n"                
+                + "        }\n"
+                + "        enquanto (x < 10)\n"
+                + "    }\n"
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
+
+    @Test
+    public void testEscolha() throws Exception
+    {
+        String codigo = "programa {                             "
+                + "    funcao inicio() {                        "
+                + "         inteiro x = 0                       "
+                + "         escolha (x) {                       "
+                + "             caso 0:                         "
+                + "                 escreva(\"teste\")          "
+                + "                 pare                        "
+                + "             caso 1:                         "
+                + "                 escreva(\"tiste\")          "
+                + "                 pare                        "
+                + "             caso contrario:                 "
+                + "                 escreva(\"toste\")          "
+                + "         }                                   "
+                + "    }                                        "
+                + "}                                            ";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "        inteiro x = 0\n"
                 + "        escolha (x) {\n"
                 + "            caso 0:\n"
                 + "                escreva(\"teste\")\n"
@@ -43,7 +78,7 @@ public class FormatadorCodigoTest
                 + "                pare\n"
                 + "            caso contrario:\n"
                 + "                escreva(\"toste\")\n"
-                + "        }\n"                
+                + "        }\n"
                 + "    }\n"
                 + "}";
 
@@ -53,20 +88,20 @@ public class FormatadorCodigoTest
 
         assertEquals("Strings diferentes!", esperado, formatado);
     }
-    
+
     @Test
     public void testSe() throws Exception
     {
         String codigo = "programa {                             "
                 + "    funcao inicio() {                        "
-                + "         inteiro x = 0                       "                                
+                + "         inteiro x = 0                       "
                 + "         se (x < 10) {                 "
                 + "             se (x < 10)             "
                 + "                 escreva(\"teste\")          "
                 + "             senao"
-                + "                 escreva(\"toste\")          "                
+                + "                 escreva(\"toste\")          "
                 + "             x++                             "
-                + "         }                                   "                
+                + "         }                                   "
                 + "    }                                        "
                 + "}                                            ";
 
@@ -79,10 +114,10 @@ public class FormatadorCodigoTest
                 + "        se (x < 10) {\n"
                 + "            se (x < 10) {\n"
                 + "                escreva(\"teste\")\n"
-                + "            }\n"                                
+                + "            }\n"
                 + "            senao {\n"
-                + "                escreva(\"toste\")\n"                                
-                + "            }\n"                
+                + "                escreva(\"toste\")\n"
+                + "            }\n"
                 + "            x = x + 1\n"
                 + "        }\n"
                 + "    }\n"
@@ -94,18 +129,18 @@ public class FormatadorCodigoTest
 
         assertEquals("Strings diferentes!", esperado, formatado);
     }
-    
+
     @Test
     public void testEnquanto() throws Exception
     {
         String codigo = "programa {                             "
                 + "    funcao inicio() {                        "
-                + "         inteiro x = 0                       "                                
+                + "         inteiro x = 0                       "
                 + "         enquanto (x < 10) {                 "
                 + "             enquanto (x < 10)             "
                 + "                 escreva(\"teste\")          "
                 + "             x++                             "
-                + "         }                                   "                
+                + "         }                                   "
                 + "    }                                        "
                 + "}                                            ";
 
@@ -118,7 +153,7 @@ public class FormatadorCodigoTest
                 + "        enquanto (x < 10) {\n"
                 + "            enquanto (x < 10) {\n"
                 + "                escreva(\"teste\")\n"
-                + "            }\n"                
+                + "            }\n"
                 + "            x = x + 1\n"
                 + "        }\n"
                 + "    }\n"
@@ -130,20 +165,19 @@ public class FormatadorCodigoTest
 
         assertEquals("Strings diferentes!", esperado, formatado);
     }
-    
+
     @Test
     public void testRetorne() throws Exception
     {
         String codigo = "programa {                                             "
                 + "    funcao inicio() {                                        "
                 + "    }                                                        "
-                
                 + "    funcao inteiro teste(){"
                 + "         retorne 0"
                 + "    }"
                 + "    funcao teste2(){"
                 + "         retorne"
-                + "    }"                
+                + "    }"
                 + "}";
 
         String esperado = "programa\n"
@@ -158,11 +192,11 @@ public class FormatadorCodigoTest
                 + "    {\n"
                 + "        retorne 0\n"
                 + "    }\n"
-                + "\n"                
+                + "\n"
                 + "    funcao teste2()\n"
                 + "    {\n"
                 + "        retorne\n"
-                + "    }\n"                
+                + "    }\n"
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
@@ -179,15 +213,12 @@ public class FormatadorCodigoTest
                 + "    funcao inicio() {                                        "
                 + "         caracter v[3]                                       "
                 + "         logico m[2][2]                                      "
-                + "         inteiro x = 10                                      "                
-                
-                + "         teste(0, x, v, m)                                      "                
-                + "         teste(10 / 3, x, v, m)                                       "                                
-                + "         teste(x, x, v, m)                                       "                                                
+                + "         inteiro x = 10                                      "
+                + "         teste(0, x, v, m)                                      "
+                + "         teste(10 / 3, x, v, m)                                       "
+                + "         teste(x, x, v, m)                                       "
                 + "    }                                                        "
-                
                 + "    funcao teste(inteiro x, inteiro &x2, caracter vetor[], logico m[][]){} "
-                
                 + "}";
 
         String esperado = "programa\n"
@@ -197,10 +228,10 @@ public class FormatadorCodigoTest
                 + "    {\n"
                 + "        caracter v[3]\n"
                 + "        logico m[2][2]\n"
-                + "        inteiro x = 10\n"                
-                + "        teste(0, x, v, m)\n"                
-                + "        teste(10 / 3, x, v, m)\n"                                
-                + "        teste(x, x, v, m)\n"                                                
+                + "        inteiro x = 10\n"
+                + "        teste(0, x, v, m)\n"
+                + "        teste(10 / 3, x, v, m)\n"
+                + "        teste(x, x, v, m)\n"
                 + "    }\n"
                 + "\n"
                 + "    funcao teste(inteiro x, inteiro &x2, caracter vetor[], logico m[][])\n"
@@ -229,7 +260,7 @@ public class FormatadorCodigoTest
                 + "         inteiro mat[3][2]"
                 + "         mat[1][1] = v[10 / 3]"
                 + "         mat[0][0] = v[m[0][0]]"
-                + "         logico teste = (2 >= 3 e 1 < 17) ou falso"                
+                + "         logico teste = (2 >= 3 e 1 < 17) ou falso"
                 + "    }"
                 + "}";
 
@@ -247,7 +278,7 @@ public class FormatadorCodigoTest
                 + "        inteiro mat[3][2]\n"
                 + "        mat[1][1] = v[10 / 3]\n"
                 + "        mat[0][0] = v[m[0][0]]\n"
-                + "        logico teste = (2 >= 3 e 1 < 17) ou falso\n"                
+                + "        logico teste = (2 >= 3 e 1 < 17) ou falso\n"
                 + "    }\n"
                 + "}";
 
