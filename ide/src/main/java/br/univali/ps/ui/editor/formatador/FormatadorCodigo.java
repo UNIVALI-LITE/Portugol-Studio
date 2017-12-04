@@ -597,22 +597,18 @@ public class FormatadorCodigo
         public Void visitar(NoEnquanto no) throws ExcecaoVisitaASA
         {
 
-//            saida.append("while(");
-//
-//            no.getCondicao().aceitar(this);
-//
-//            saida.append(")").println();
-//
-//            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
-//
-//            saida.append(identacao).append("{").println();
-//
-//            visitarBlocos(no.getBlocos());
-//
-//            saida.println();
-//
-//            saida.append(identacao).append("}").println();
-//
+            saida.append("enquanto (");
+
+            no.getCondicao().aceitar(this);
+
+            saida.append(") {").println();
+
+            String identacao = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.geraIdentacao(nivelEscopo);
+
+            visitarBlocos(no.getBlocos());
+
+            saida.append(identacao).append("}");
+
             return null;
         }
 

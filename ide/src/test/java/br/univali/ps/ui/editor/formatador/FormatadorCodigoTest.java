@@ -10,6 +10,42 @@ public class FormatadorCodigoTest
 {
     
     @Test
+    public void testEnquanto() throws Exception
+    {
+        String codigo = "programa {                             "
+                + "    funcao inicio() {                        "
+                + "         inteiro x = 0                       "                                
+                + "         enquanto (x < 10) {                 "
+                + "             enquanto (x < 10)             "
+                + "                 escreva(\"teste\")          "
+                + "             x++                             "
+                + "         }                                   "                
+                + "    }                                        "
+                + "}                                            ";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "        inteiro x = 0\n"
+                + "        enquanto (x < 10) {\n"
+                + "            enquanto (x < 10) {\n"
+                + "                escreva(\"teste\")\n"
+                + "            }\n"                
+                + "            x = x + 1\n"
+                + "        }\n"
+                + "    }\n"
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        //System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
+    
+    @Test
     public void testRetorne() throws Exception
     {
         String codigo = "programa {                                             "
