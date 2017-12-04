@@ -143,7 +143,7 @@ public class FormatadorCodigo
 
             TipoDado tipoRetorno = funcao.getTipoDado();
             if (tipoRetorno != TipoDado.VAZIO) {
-                saida.append(tipoRetorno.getNome());
+                saida.format("%s ", tipoRetorno.getNome());
             }
 
             saida.append(funcao.getNome());
@@ -538,25 +538,13 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoRetorne no) throws ExcecaoVisitaASA
         {
-//            NoExpressao expressao = no.getExpressao();
-//            if (expressao != null) {
-//                saida.append("return ");
-//                if (no.temPai()) {
-//
-//                    if (no.getPai() instanceof NoDeclaracaoFuncao) {
-//                        TipoDado tipoRetornoFuncao = ((NoDeclaracaoFuncao) no.getPai()).getTipoDado();
-//                        if (expressao.getTipoResultante() == TipoDado.REAL && tipoRetornoFuncao == TipoDado.INTEIRO) {
-//                            saida.append("(int)");
-//                        }
-//                    }
-//                } else {
-//                    throw new IllegalStateException("retorne não tem pai!");
-//                }
-//
-//                expressao.aceitar(this);
-//            } else {
-//                saida.append("return");
-//            }
+            NoExpressao expressao = no.getExpressao();
+            if (expressao != null) {
+                saida.append("retorne ");
+                expressao.aceitar(this);
+            } else {
+                saida.append("retorne");
+            }
 
             return null;
         }

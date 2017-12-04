@@ -8,6 +8,47 @@ import static org.junit.Assert.*;
  */
 public class FormatadorCodigoTest
 {
+    
+    @Test
+    public void testRetorne() throws Exception
+    {
+        String codigo = "programa {                                             "
+                + "    funcao inicio() {                                        "
+                + "    }                                                        "
+                
+                + "    funcao inteiro teste(){"
+                + "         retorne 0"
+                + "    }"
+                + "    funcao teste2(){"
+                + "         retorne"
+                + "    }"                
+                + "}";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "\n"
+                + "    }\n"
+                + "\n"
+                + "    funcao inteiro teste()\n"
+                + "    {\n"
+                + "        retorne 0\n"
+                + "    }\n"
+                + "\n"                
+                + "    funcao teste2()\n"
+                + "    {\n"
+                + "        retorne\n"
+                + "    }\n"                
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        //System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
 
     @Test
     public void testChamadaFuncao() throws Exception
