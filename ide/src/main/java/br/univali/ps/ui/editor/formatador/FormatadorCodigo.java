@@ -414,7 +414,7 @@ public class FormatadorCodigo
         public Boolean visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA
         {
             if (no.constante()) {
-                saida.append("const"); // é isso mesmo?
+                saida.append("const "); // é isso mesmo?
             }
 
             saida.format("%s %s", no.getTipoDado().getNome(), no.getNome());
@@ -740,7 +740,7 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoNao no) throws ExcecaoVisitaASA
         {
-            saida.append("!");
+            saida.append("nao ");
             no.getExpressao().aceitar(this);
 
             return null;
@@ -791,22 +791,6 @@ public class FormatadorCodigo
             saida.append("continue");
 
             return null;
-        }
-
-        public GeradorCodigoPortugol geraChaveAberturaClasse()
-        {
-            saida.append("{").println();
-
-            saida.println();
-
-            return this;
-        }
-
-        public GeradorCodigoPortugol geraChaveFechamentoClasse()
-        {
-            saida.append("}").println();
-
-            return this;
         }
 
         private static String geraCodigoQuantificador(Quantificador quantificador)

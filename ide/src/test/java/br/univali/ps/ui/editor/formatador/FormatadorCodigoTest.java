@@ -38,7 +38,7 @@ public class FormatadorCodigoTest
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        System.out.println(formatado);
+        //System.out.println(formatado);
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);
@@ -260,7 +260,7 @@ public class FormatadorCodigoTest
                 + "         inteiro mat[3][2]"
                 + "         mat[1][1] = v[10 / 3]"
                 + "         mat[0][0] = v[m[0][0]]"
-                + "         logico teste = (2 >= 3 e 1 < 17) ou falso"
+                + "         logico teste = nao (2 >= 3 e 1 < 17) ou falso"
                 + "    }"
                 + "}";
 
@@ -278,12 +278,12 @@ public class FormatadorCodigoTest
                 + "        inteiro mat[3][2]\n"
                 + "        mat[1][1] = v[10 / 3]\n"
                 + "        mat[0][0] = v[m[0][0]]\n"
-                + "        logico teste = (2 >= 3 e 1 < 17) ou falso\n"
+                + "        logico teste = nao (2 >= 3 e 1 < 17) ou falso\n"
                 + "    }\n"
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        //System.out.println(formatado);
+        System.out.println(formatado);
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);
