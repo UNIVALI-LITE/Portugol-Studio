@@ -8,7 +8,46 @@ import static org.junit.Assert.*;
  */
 public class FormatadorCodigoTest
 {
+    /*
+    const inteiro LARGURA_MEDIDOR = 156, ALTURA_MEDIDOR = 8
+
+
+    */
     
+    @Test
+    public void testDeclaracaoMatrizGrande() throws Exception
+    {
+        String codigo = "programa {                             "
+            
+            + "     const inteiro LARGURA_MEDIDOR = 156, ALTURA_MEDIDOR = 8"
+            
+            + "     inteiro MODELOS_VEICULOS[][] = {"
+            + "         {   0,   0,  44,  96 }, {  43,   0,  44,  96 }, {  86,   0,  44,  96 }, { 129,   0,  44,  96 },"
+            + "         { 172,  0 ,  44,  96 }, {   0,  97,  44,  96 }, {  43,  97,  44,  96 }, {  86,  97,  44,  96 }," 
+            + "         { 263,   0,  66, 374 }, { 331,   0,  67, 370 }" 
+            + "}"
+
+            + "    funcao inicio() {}                       "
+            + "}                                            ";
+
+        String esperado = "programa\n"
+            + "{\n"
+            + "    real km_por_pixel = 0.0003125\n"
+            + "    const real VELOCIDADE = 12.0\n"                
+            + "\n"                
+            + "    funcao inicio()\n"
+            + "    {\n"
+            + "\n"
+            + "    }\n"                
+            + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
+        
     @Test
     public void testNumerosReais() throws Exception
     {
@@ -30,7 +69,7 @@ public class FormatadorCodigoTest
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        System.out.println(formatado);
+        //System.out.println(formatado);
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);

@@ -426,13 +426,12 @@ public class FormatadorCodigo
         @Override
         public Boolean visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA
         {
-
             if (declarandoVariaveisGlobais) {
                 saida.append(Utils.geraIdentacao(nivelEscopo));
             }
 
             if (no.constante()) {
-                saida.append("const "); // é isso mesmo?
+                saida.append("const ");
             }
 
             saida.format("%s %s", no.getTipoDado().getNome(), no.getNome());
@@ -452,6 +451,10 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoDeclaracaoVetor no) throws ExcecaoVisitaASA
         {
+            if (declarandoVariaveisGlobais) {
+                saida.append(Utils.geraIdentacao(nivelEscopo));
+            }
+            
             saida.format("%s %s", no.getTipoDado().getNome(), no.getNome());
 
             saida.append("[");
@@ -465,6 +468,10 @@ public class FormatadorCodigo
                 no.getInicializacao().aceitar(this);
             }
 
+            if (declarandoVariaveisGlobais) {
+                pulaLinha(); // separa as declarações globais uma por linha
+            }
+            
             return null;
         }
 
@@ -497,6 +504,10 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoDeclaracaoMatriz no) throws ExcecaoVisitaASA
         {
+            if (declarandoVariaveisGlobais) {
+                saida.append(Utils.geraIdentacao(nivelEscopo));
+            }
+            
             saida.format("%s %s", no.getTipoDado().getNome(), no.getNome());
 
             // linhas
@@ -516,6 +527,10 @@ public class FormatadorCodigo
             if (no.temInicializacao()) {
                 saida.append(" = ");
                 no.getInicializacao().aceitar(this);
+            }
+            
+            if (declarandoVariaveisGlobais) {
+                pulaLinha(); // separa as declarações globais uma por linha
             }
 
             return null;
