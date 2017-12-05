@@ -539,17 +539,21 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoMatriz no) throws ExcecaoVisitaASA
         {
+            
             saida.append("{");
 
             List<List<Object>> valores = no.getValores();
             int totalLinhas = valores.size();
 
+            pulaLinha();
+            
             for (int i = 0; i < totalLinhas; i++) {
 
                 List<Object> linha = valores.get(i);
 
                 int totalColunas = linha.size();
 
+                saida.append(Utils.geraIdentacao(nivelEscopo + 1));
                 saida.append("{");
 
                 for (int j = 0; j < totalColunas; j++) {
@@ -563,10 +567,14 @@ public class FormatadorCodigo
                 saida.append("}");
 
                 if (i < totalLinhas - 1) {
-                    saida.append(", ");
+                    saida.append(",");
+                    pulaLinha();
                 }
             }
 
+            pulaLinha();
+            
+            saida.append(Utils.geraIdentacao(nivelEscopo));
             saida.append("}");
 
             return null;

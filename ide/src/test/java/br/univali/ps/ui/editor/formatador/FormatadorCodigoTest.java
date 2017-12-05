@@ -8,46 +8,46 @@ import static org.junit.Assert.*;
  */
 public class FormatadorCodigoTest
 {
+
     /*
     const inteiro LARGURA_MEDIDOR = 156, ALTURA_MEDIDOR = 8
 
 
-    */
-    
+     */
     @Test
     public void testDeclaracaoMatrizGrande() throws Exception
     {
-        String codigo = "programa {                             "
-            
-            + "     const inteiro LARGURA_MEDIDOR = 156, ALTURA_MEDIDOR = 8"
-            
-            + "     inteiro MODELOS_VEICULOS[][] = {"
-            + "         {   0,   0,  44,  96 }, {  43,   0,  44,  96 }, {  86,   0,  44,  96 }, { 129,   0,  44,  96 },"
-            + "         { 172,  0 ,  44,  96 }, {   0,  97,  44,  96 }, {  43,  97,  44,  96 }, {  86,  97,  44,  96 }," 
-            + "         { 263,   0,  66, 374 }, { 331,   0,  67, 370 }" 
-            + "}"
-
-            + "    funcao inicio() {}                       "
-            + "}                                            ";
+        String codigo = "programa {                                             "
+                + "     const inteiro LARGURA_MEDIDOR = 156, ALTURA_MEDIDOR = 8 "
+                + "     inteiro MODELOS_VEICULOS[][] = {                        "
+                + "         {0,  0, 44, 96},                                    "
+                + "         {43, 0, 44, 96}                                     "
+                + "     }                                                       "
+                + "     funcao inicio() {}                                      "
+                + "}                                                            ";
 
         String esperado = "programa\n"
-            + "{\n"
-            + "    real km_por_pixel = 0.0003125\n"
-            + "    const real VELOCIDADE = 12.0\n"                
-            + "\n"                
-            + "    funcao inicio()\n"
-            + "    {\n"
-            + "\n"
-            + "    }\n"                
-            + "}";
+                + "{\n"
+                + "    const inteiro LARGURA_MEDIDOR = 156\n"
+                + "    const inteiro ALTURA_MEDIDOR = 8\n"
+                + "    inteiro MODELOS_VEICULOS[][] = {\n"
+                + "        {0, 0, 44, 96},\n"
+                + "        {43, 0, 44, 96}\n"
+                + "    }\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "\n"
+                + "    }\n"
+                + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        System.out.println(formatado);
+        //System.out.println(formatado.replaceAll("\r\n", "-\r\n"));
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);
     }
-        
+
     @Test
     public void testNumerosReais() throws Exception
     {
@@ -60,12 +60,12 @@ public class FormatadorCodigoTest
         String esperado = "programa\n"
                 + "{\n"
                 + "    real km_por_pixel = 0.0003125\n"
-                + "    const real VELOCIDADE = 12.0\n"                
-                + "\n"                
+                + "    const real VELOCIDADE = 12.0\n"
+                + "\n"
                 + "    funcao inicio()\n"
                 + "    {\n"
                 + "\n"
-                + "    }\n"                
+                + "    }\n"
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
@@ -74,7 +74,7 @@ public class FormatadorCodigoTest
 
         assertEquals("Strings diferentes!", esperado, formatado);
     }
-    
+
     @Test
     public void testConstantes() throws Exception
     {
@@ -90,12 +90,12 @@ public class FormatadorCodigoTest
                 + "    const inteiro _MODELO = 2\n"
                 + "    const inteiro _VELOCIDADE = 3\n"
                 + "    const inteiro _COMBUSTIVEL = 4\n"
-                + "    const inteiro _DANOS = 5\n"                
-                + "\n"                
+                + "    const inteiro _DANOS = 5\n"
+                + "\n"
                 + "    funcao inicio()\n"
                 + "    {\n"
                 + "\n"
-                + "    }\n"                
+                + "    }\n"
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
@@ -104,7 +104,6 @@ public class FormatadorCodigoTest
 
         assertEquals("Strings diferentes!", esperado, formatado);
     }
-    
 
     @Test
     public void testPara() throws Exception
@@ -112,8 +111,8 @@ public class FormatadorCodigoTest
         String codigo = "programa {                             "
                 + "    funcao inicio() {                        "
                 + "        para (inteiro x = 0; x < 10; x++) {  "
-                + "             escreva(\"teste\")              "                
-                + "        }                                    "                
+                + "             escreva(\"teste\")              "
+                + "        }                                    "
                 + "    }                                        "
                 + "}                                            ";
 
@@ -123,8 +122,8 @@ public class FormatadorCodigoTest
                 + "    funcao inicio()\n"
                 + "    {\n"
                 + "        para (inteiro x = 0; x < 10; x = x + 1) {\n"
-                + "            escreva(\"teste\")\n"                
-                + "        }\n"                
+                + "            escreva(\"teste\")\n"
+                + "        }\n"
                 + "    }\n"
                 + "}";
 
@@ -382,7 +381,10 @@ public class FormatadorCodigoTest
                 + "         inteiro y = (x % 3 * 2) / 4"
                 + "         inteiro v[] = {1, 2, 3}"
                 + "         inteiro vet[3]"
-                + "         inteiro m[][] = {{1, 2}, {2, 3}}"
+                + "         inteiro m[][] = {\n"
+                + "             {1, 2},\n"
+                + "             {2, 3}\n"
+                + "         }\n"
                 + "         inteiro mat[3][2]"
                 + "         mat[1][1] = v[10 / 3]"
                 + "         mat[0][0] = v[m[0][0]]"
@@ -400,7 +402,10 @@ public class FormatadorCodigoTest
                 + "        inteiro y = (x % 3 * 2) / 4\n"
                 + "        inteiro v[] = {1, 2, 3}\n"
                 + "        inteiro vet[3]\n"
-                + "        inteiro m[][] = {{1, 2}, {2, 3}}\n"
+                + "        inteiro m[][] = {\n"
+                + "            {1, 2},\n"
+                + "            {2, 3}\n"
+                + "        }\n"
                 + "        inteiro mat[3][2]\n"
                 + "        mat[1][1] = v[10 / 3]\n"
                 + "        mat[0][0] = v[m[0][0]]\n"
@@ -409,7 +414,7 @@ public class FormatadorCodigoTest
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        //System.out.println(formatado);
+        //System.out.println(formatado);//.replaceAll("\r\n", "-\r\n"));
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);
