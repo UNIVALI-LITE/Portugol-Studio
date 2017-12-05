@@ -8,6 +8,65 @@ import static org.junit.Assert.*;
  */
 public class FormatadorCodigoTest
 {
+    @Test
+    public void testConstantes() throws Exception
+    {
+        String codigo = "programa {                             "
+                + "    const inteiro _X = 0, _Y = 1, _MODELO = 2, _VELOCIDADE = 3, _COMBUSTIVEL = 4, _DANOS = 5"
+                + "    funcao inicio() {}                       "
+                + "}                                            ";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "    const inteiro _X = 0\n"
+                + "    const inteiro _Y = 1\n"
+                + "    const inteiro _MODELO = 2\n"
+                + "    const inteiro _VELOCIDADE = 3\n"
+                + "    const inteiro _COMBUSTIVEL = 4\n"
+                + "    const inteiro _DANOS = 5\n"                
+                + "\n"                
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "\n"
+                + "    }\n"                
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        //System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
+    
+
+    @Test
+    public void testPara() throws Exception
+    {
+        String codigo = "programa {                             "
+                + "    funcao inicio() {                        "
+                + "        para (inteiro x = 0; x < 10; x++) {  "
+                + "             escreva(\"teste\")              "                
+                + "        }                                    "                
+                + "    }                                        "
+                + "}                                            ";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "\n"
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "        para (inteiro x = 0; x < 10; x = x + 1) {\n"
+                + "            escreva(\"teste\")\n"                
+                + "        }\n"                
+                + "    }\n"
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        //System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
 
     @Test
     public void testFacaEnquanto() throws Exception
@@ -17,7 +76,7 @@ public class FormatadorCodigoTest
                 + "         inteiro x = 0                       "
                 + "         faca {                              "
                 + "             x++                             "
-                + "             escreva(x)                      "                
+                + "             escreva(x)                      "
                 + "         }                                   "
                 + "         enquanto (x < 10)                   "
                 + "    }                                        "
@@ -31,7 +90,7 @@ public class FormatadorCodigoTest
                 + "        inteiro x = 0\n"
                 + "        faca {\n"
                 + "            x = x + 1\n"
-                + "            escreva(x)\n"                
+                + "            escreva(x)\n"
                 + "        }\n"
                 + "        enquanto (x < 10)\n"
                 + "    }\n"
@@ -283,7 +342,7 @@ public class FormatadorCodigoTest
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        System.out.println(formatado);
+        //System.out.println(formatado);
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);
@@ -338,6 +397,7 @@ public class FormatadorCodigoTest
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
+        //System.out.println(formatado);
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);

@@ -101,6 +101,8 @@ public class FormatadorCodigo
         private final PrintWriter saida;
         private final ASAPrograma asa;
         private int nivelEscopo = 1;
+        
+        private boolean declarandoVariaveisGlobais = false;
 
         private static final Map<Class, String> OPERADORES = new HashMap<>();
 
@@ -132,6 +134,7 @@ public class FormatadorCodigo
         @Override
         public Object visitar(NoDeclaracaoFuncao funcao) throws ExcecaoVisitaASA
         {
+            declarandoVariaveisGlobais = false;
 
             pulaLinha();
 
@@ -193,10 +196,12 @@ public class FormatadorCodigo
             saida.println("programa");
             saida.println("{");
 
-            for (NoInclusaoBiblioteca listaInclusoesBiblioteca : asap.getListaInclusoesBibliotecas()) {
-                listaInclusoesBiblioteca.aceitar(this);
+            for (NoInclusaoBiblioteca biblioteca : asap.getListaInclusoesBibliotecas()) {
+                biblioteca.aceitar(this);
             }
-
+            
+            declarandoVariaveisGlobais = true; // vira false quando encontra a primeira função (inicio)
+            
             for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
                 declaracao.aceitar(this);
             }
@@ -413,6 +418,11 @@ public class FormatadorCodigo
         @Override
         public Boolean visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA
         {
+            
+            if (declarandoVariaveisGlobais) {
+                saida.append(Utils.geraIdentacao(nivelEscopo));
+            }
+            
             if (no.constante()) {
                 saida.append("const "); // é isso mesmo?
             }
@@ -424,6 +434,10 @@ public class FormatadorCodigo
                 no.getInicializacao().aceitar(this);
             }
 
+            if (declarandoVariaveisGlobais) {
+                pulaLinha(); // separa as declarações globais uma por linha
+            }
+            
             return true;
         }
 
@@ -615,7 +629,43 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoPara no) throws ExcecaoVisitaASA
         {
-            // @TODO
+            saida.append("para (");
+
+            if (no.getInicializacoes() != null && !no.getInicializacoes().isEmpty()) {
+
+                for (int i = 0; i < no.getInicializacoes().size(); i++) {
+
+                    NoBloco inicializacao = no.getInicializacoes().get(i);
+
+                    if (inicializacao != null) {// && !(inicializacao instanceof NoReferenciaVariavel)) {
+                        inicializacao.aceitar(this);
+
+                        if (i < no.getInicializacoes().size() - 1) {
+                            saida.append(", ");
+                        }
+                    }
+                }
+
+            }
+
+            saida.append("; "); // separador depois da inicialização do para 
+
+            no.getCondicao().aceitar(this);
+
+            saida.append("; "); // separador depois da condição
+
+            if (no.getIncremento() != null) {
+                no.getIncremento().aceitar(this);
+            }
+
+            saida.append(") {").println(); // fecha o parênteses do for
+
+            String identacao = Utils.geraIdentacao(nivelEscopo);
+
+            visitarBlocos(no.getBlocos());
+
+            saida.append(identacao).append("}");
+            
             return null;
         }
 
