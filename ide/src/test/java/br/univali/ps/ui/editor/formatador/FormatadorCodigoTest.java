@@ -8,6 +8,34 @@ import static org.junit.Assert.*;
  */
 public class FormatadorCodigoTest
 {
+    
+    @Test
+    public void testNumerosReais() throws Exception
+    {
+        String codigo = "programa {                             "
+                + "    real km_por_pixel = 0.0003125            "
+                + "    const real VELOCIDADE = 12.0"
+                + "    funcao inicio() {}                       "
+                + "}                                            ";
+
+        String esperado = "programa\n"
+                + "{\n"
+                + "    real km_por_pixel = 0.0003125\n"
+                + "    const real VELOCIDADE = 12.0\n"                
+                + "\n"                
+                + "    funcao inicio()\n"
+                + "    {\n"
+                + "\n"
+                + "    }\n"                
+                + "}";
+
+        String formatado = FormatadorCodigo.formata(codigo);
+        System.out.println(formatado);
+        formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
+
+        assertEquals("Strings diferentes!", esperado, formatado);
+    }
+    
     @Test
     public void testConstantes() throws Exception
     {

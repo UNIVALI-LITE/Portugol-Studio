@@ -65,8 +65,11 @@ import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,7 +104,7 @@ public class FormatadorCodigo
         private final PrintWriter saida;
         private final ASAPrograma asa;
         private int nivelEscopo = 1;
-        
+
         private boolean declarandoVariaveisGlobais = false;
 
         private static final Map<Class, String> OPERADORES = new HashMap<>();
@@ -199,9 +202,9 @@ public class FormatadorCodigo
             for (NoInclusaoBiblioteca biblioteca : asap.getListaInclusoesBibliotecas()) {
                 biblioteca.aceitar(this);
             }
-            
+
             declarandoVariaveisGlobais = true; // vira false quando encontra a primeira função (inicio)
-            
+
             for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
                 declaracao.aceitar(this);
             }
@@ -255,8 +258,13 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoReal noReal) throws ExcecaoVisitaASA
         {
-            String valor = String.valueOf(noReal.getValor());
-            saida.append(valor);
+            // usando DecimalFormat para evitar a notação científica nos numeros reais: https://stackoverflow.com/questions/16098046/how-do-i-print-a-double-value-without-scientific-notation-using-java/16098306#16098306
+
+            DecimalFormat formato = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            formato.setMaximumFractionDigits(8);
+            formato.setMinimumFractionDigits(1);
+            saida.append(formato.format(noReal.getValor()));
+            
             return null;
         }
 
@@ -418,11 +426,11 @@ public class FormatadorCodigo
         @Override
         public Boolean visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA
         {
-            
+
             if (declarandoVariaveisGlobais) {
                 saida.append(Utils.geraIdentacao(nivelEscopo));
             }
-            
+
             if (no.constante()) {
                 saida.append("const "); // é isso mesmo?
             }
@@ -437,7 +445,7 @@ public class FormatadorCodigo
             if (declarandoVariaveisGlobais) {
                 pulaLinha(); // separa as declarações globais uma por linha
             }
-            
+
             return true;
         }
 
@@ -665,7 +673,7 @@ public class FormatadorCodigo
             visitarBlocos(no.getBlocos());
 
             saida.append(identacao).append("}");
-            
+
             return null;
         }
 
