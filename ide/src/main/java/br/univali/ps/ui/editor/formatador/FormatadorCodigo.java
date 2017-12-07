@@ -2,9 +2,9 @@ package br.univali.ps.ui.editor.formatador;
 
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
+import br.univali.portugol.nucleo.programa.Programa;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
