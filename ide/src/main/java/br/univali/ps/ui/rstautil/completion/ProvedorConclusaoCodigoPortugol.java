@@ -1,6 +1,6 @@
 package br.univali.ps.ui.rstautil.completion;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;

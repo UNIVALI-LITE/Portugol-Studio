@@ -2,7 +2,7 @@ package br.univali.ps.ui.editor;
 
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.AbaMensagemCompiladorListener;

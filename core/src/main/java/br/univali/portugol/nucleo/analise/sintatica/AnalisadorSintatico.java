@@ -231,7 +231,24 @@ public final class AnalisadorSintatico implements ObservadorParsing
         System.out.println(mensagemPadrao);
         System.out.println("Contexto atual: " + pilhaContexto.peek());
         System.out.println();
-        
+
+        /*
+         * @TODO @author manoelcampos O código viola o Open/Closed Principle (OCP),
+         * uma vez que para nova exceção, um novo if precisará ser inserido.
+         * O código não utiliza polimorfismo para traduzir o erro de uma forma independente de qual classe seja.
+         * Muitas das classes como TradutorEarlyExitException e TradutorFailedPredicateException
+         * possuem exatamente o mesmo código.
+         * Além disso, todos os parâmetros são exatamente o mesmo, o que sugere que
+         * uma instância do tradutor poderia ser obtida automaticamente.
+         *
+         * Uma opção seria usar CDI para Java SE, como mostrado em http://felippepuhle.com.br/cdi-weld-java-se/.
+         * Utilizando Producers a instância correta do tradutor poderia ser obtida,
+         * separando a instanciação do objeto das regras de negócio.
+         *
+         * Mas para não incluir mais uma dependência ao projeto,
+         * uma alternativa é o uso de reflection para carregar a instanciar a classe correta.
+         *
+         */
         if (erro instanceof EarlyExitException)
         {
             return tradutorEarlyExitException.traduzirErroParsing((EarlyExitException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);

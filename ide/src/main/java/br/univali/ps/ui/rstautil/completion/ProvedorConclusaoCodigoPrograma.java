@@ -2,7 +2,7 @@ package br.univali.ps.ui.rstautil.completion;
 
 import static br.univali.ps.ui.rstautil.completion.ParametroConclusaoASA.TipoConclusao.ATRIBUICAO_VALOR;
 import static br.univali.ps.ui.rstautil.completion.ParametroConclusaoASA.TipoConclusao.INDICE_VETOR;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.ModoAcesso;

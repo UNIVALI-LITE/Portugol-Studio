@@ -1,4 +1,4 @@
-package br.univali.portugol.nucleo;
+package br.univali.portugol.nucleo.programa;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -13,52 +13,43 @@ import java.util.concurrent.Future;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import br.univali.portugol.nucleo.NamedThreadFactory;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.execucao.TradutorRuntimeException;
-import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroEstouroPilha;
-import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroExecucaoNaoTratado;
-import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroMemoriaInsuficiente;
 import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroValorEntradaInvalido;
 import br.univali.portugol.nucleo.execucao.erros.tradutores.TradutorArithmeticException;
 import br.univali.portugol.nucleo.execucao.erros.tradutores.TradutorArrayIndexOutOfBoundsException;
-import br.univali.portugol.nucleo.execucao.es.Armazenador;
 import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.EntradaSaidaPadrao;
-import br.univali.portugol.nucleo.execucao.es.InputMediator;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 
 /**
- * Esta classe provê uma fachada (Facade) para abstrair os detalhes da execução
+ * Provê uma fachada (Facade) para abstrair os detalhes da execução
  * dos programas que não interessam aos utilizadores do Portugol.
  * <p>
- * Ela se encarrega de instanciar um interpretador para o código fonte e de
+ * Se encarrega de instanciar um interpretador para o código fonte e de
  * gerenciar o ciclo de vida (inicio, fim, interrupção) da Thread na qual o
  * interpretador irá executar.
- *
  *
  * @author Luiz Fernando Noschang
  * @author Fillipi Domingos Pelz
  * @author Elieser A. de Jesus
  *
  * @version 1.0
- * @see Interpretador
  * @see Thread
  */
 public abstract class Programa
 {
 	/*
-	 * Optei por criar manualmente o pool de threads ao invés de usar um método
+	 * Optou-se por criar manualmente o pool de threads ao invés de usar um método
 	 * da classe Executors.
 	 * 
 	 * O pool criado aqui é idêntico ao criado pelo método
@@ -90,7 +81,7 @@ public abstract class Programa
 	private List<String> funcoes;
 	private ResultadoAnalise resultadoAnalise;
 
-	private final ArrayList<ObservadorExecucao> observadores;
+	private final List<ObservadorExecucao> observadores;
 
 	private boolean[] pontosDeParadaAtivados = new boolean[0];
 
@@ -106,116 +97,37 @@ public abstract class Programa
 	private int ultimaColuna = 0;
 
 	public static final Object OBJETO_NULO = new Object(); // usando como valor
-															// inicial para as
-															// variáveis
-															// inspecionadas
 
-	public static enum Estado
-	{
-		BREAK_POINT, // usuário clicou no botão que executa o programa até
-						// atingir um ponto de parada, caso exista algum
-		STEP_INTO, // não utilizado no momento
-		STEP_OVER, // executa passo a passo, para em todos os nós que são
-					// paráveis (nem todos são)
-		PARADO// esperando o usuário iniciar a execução
+	static Map<Class<? extends RuntimeException>, TradutorRuntimeException<? extends RuntimeException>> getTradutoresRuntimeException() {
+		return tradutoresRuntimeException;
 	}
 
+	public Estado getEstado() {
+		return estado;
+	}
+
+	Object getLOCK() {
+		return LOCK;
+	}
+
+	public int getUltimaLinha() {
+		return ultimaLinha;
+	}
+
+	public int getUltimaColuna() {
+		return ultimaColuna;
+	}
+
+	List<ObservadorExecucao> getObservadores() {
+		return observadores;
+	}
+
+	void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	// inicial para as variáveis inspecionadas
 	private Estado estado = Estado.PARADO;
-
-	/***
-	 * Classe usada apenas internamente para armazenar os dados dos vetores que
-	 * são inspecionados durante a execução
-	 */
-	protected class Vetor
-	{
-		private final Object dados[];
-		private int ultimaColunaAlterada = -1;
-		public final int tamanho;
-
-		protected Vetor(int tamanho)
-		{
-			dados = new Object[tamanho];
-			this.tamanho = tamanho;
-		}
-
-		private void reseta()
-		{
-			ultimaColunaAlterada = -1;
-			for (int i = 0; i < tamanho; i++)
-			{
-				dados[i] = OBJETO_NULO;
-			}
-		}
-
-		public void setValor(Object valor, int coluna)
-		{
-			if (coluna >= 0 && coluna < dados.length)
-			{
-				dados[coluna] = valor;
-				ultimaColunaAlterada = coluna;
-			}
-		}
-
-		public int getUltimaColunaAlterada()
-		{
-			return ultimaColunaAlterada;
-		}
-	}
-
-	protected class Matriz
-	{
-		private final Vetor dados[];
-		private int ultimaLinhaAlterada = -1;
-		public final int linhas;
-		public final int colunas;
-
-		Matriz(int totalLinhas, int totalColunas)
-		{
-			this.dados = new Vetor[totalLinhas];
-			this.linhas = totalLinhas;
-			this.colunas = totalColunas;
-		}
-
-		private void reseta()
-		{
-			ultimaLinhaAlterada = -1;
-
-			for (int i = 0; i < dados.length; i++)
-			{
-				if (dados[i] != null)
-				{
-					dados[i].reseta();
-				}
-			}
-		}
-
-		public void setValor(Object valor, int linha, int coluna)
-		{
-			if (linha >= 0 && linha < linhas)
-			{
-				if (dados[linha] == null)
-				{
-					dados[linha] = new Vetor(colunas);
-				}
-				dados[linha].setValor(valor, coluna);
-				ultimaLinhaAlterada = linha;
-			}
-		}
-
-		public int getUltimaColunaAlterada()
-		{
-			if (ultimaLinhaAlterada >= 0)
-			{
-				return dados[ultimaLinhaAlterada].getUltimaColunaAlterada();
-			}
-			return -1;
-		}
-
-		public int getUltimaLinhaAlterada()
-		{
-			return ultimaLinhaAlterada;
-		}
-	}
 
 	// mapa usado pelas subclasses (geradas no código Java) para guardar os
 	// valores das variáveis que estão sendo inspecionadas
@@ -223,13 +135,8 @@ public abstract class Programa
 	protected Vetor vetoresInspecionados[] = new Vetor[0];
 	protected Matriz matrizesInspecionadas[] = new Matriz[0];
 
-	protected final StringBuilder stringBuilder = new StringBuilder(512); // string
-																			// builder
-																			// usado
-																			// para
-																			// otimizar
-																			// as
-																			// concatenações
+	//String builder usado para otimizar as concatenações
+	protected final StringBuilder stringBuilder = new StringBuilder(512);
 
 	/*
 	 * No momento os tradutores estão sendo instalados na mão.
@@ -389,9 +296,9 @@ public abstract class Programa
 			Vetor vetor = vetoresInspecionados[idVetor];
 			if (vetor != null)
 			{
-				if (coluna >= 0 && coluna < vetor.dados.length)
+				if (coluna >= 0 && coluna < vetor.getDados().length)
 				{
-					Object valor = vetor.dados[coluna];
+					Object valor = vetor.getDados()[coluna];
 					if (valor != null)
 					{
 						return valor;
@@ -460,14 +367,14 @@ public abstract class Programa
 			Matriz matriz = matrizesInspecionadas[idMatriz];
 			if (matriz != null)
 			{
-				if (linha >= 0 && linha < matriz.dados.length)
+				if (linha >= 0 && linha < matriz.getDados().length)
 				{
 					if (coluna >= 0 && coluna < matriz.colunas)
 					{
-						Vetor vetorLinha = matriz.dados[linha];
+						Vetor vetorLinha = matriz.getDados()[linha];
 						if (vetorLinha != null)
 						{
-							return vetorLinha.dados[coluna];
+							return vetorLinha.getDados()[coluna];
 						}
 					}
 					else
@@ -513,8 +420,8 @@ public abstract class Programa
 	{
 		for (int i = 0; i < variaveisInspecionadas.length; i++)
 		{
-			if (variaveisInspecionadas[i] != null) // a variável está sendo
-													// inspecionada?
+			// a variável está sendo inspecionada?
+			if (variaveisInspecionadas[i] != null)
 			{
 				variaveisInspecionadas[i] = OBJETO_NULO;
 			}
@@ -522,6 +429,12 @@ public abstract class Programa
 
 		for (int i = 0; i < vetoresInspecionados.length; i++)
 		{
+			/*
+			 * @todo Criando-se uma interface comum pra Matriz e Vetor,
+			 * poderia ter um método estático reseta que recebe uma instância
+			 * da classe, verifica se ela não é null e então reseta a mesma.
+			 * Assim, não teria este código duplicado no for abaixo.
+			 */
 			if (vetoresInspecionados[i] != null)
 			{
 				vetoresInspecionados[i].reseta();
@@ -587,13 +500,13 @@ public abstract class Programa
 	 *
 	 * @since 2.0
 	 */
-	public void executar(String[] parametros, Programa.Estado estado)
+	public void executar(String[] parametros, Estado estado)
 	{
 		if (!isExecutando())
 		{
 			this.estado = estado;
 			this.interrupcaoSolicitada = false;
-			tarefaExecucao = new TarefaExecucao(parametros);
+			tarefaExecucao = new TarefaExecucao(this, parametros);
 			controleExecucao = POOL_DE_THREADS.submit(tarefaExecucao);
 
 		}
@@ -607,7 +520,7 @@ public abstract class Programa
 		resetaSimbolosInspecionados();
 	}
 
-	public void continuar(Programa.Estado estado)
+	public void continuar(Estado estado)
 	{
 		synchronized (LOCK)
 		{
@@ -641,159 +554,6 @@ public abstract class Programa
 	}
 
 	protected abstract void executar(String[] parametros) throws ErroExecucao, InterruptedException;
-
-	/**
-	 * Implementa uma tarefa para disparar a execução do programa com os
-	 * parâmetros e a estratégia selecionada. Futuramente podemos refatorar para
-	 * executar a partir de um pool de threads.
-	 */
-	private final class TarefaExecucao implements Runnable
-	{
-		private final String[] parametros;
-		private final ResultadoExecucao resultadoExecucao;
-
-		public TarefaExecucao(String[] parametros)
-		{
-			this.parametros = parametros;
-			this.resultadoExecucao = new ResultadoExecucao();
-		}
-
-		@Override
-		public void run()
-		{
-			long horaInicialExecucao = System.currentTimeMillis();
-
-			try
-			{
-				notificarInicioExecucao();
-				inicializaBibliotecasIncluidas();
-				inicializar(); // reinicializa todas as variaveis antes de
-								// executar
-				executar(parametros);
-			}
-			catch (OutOfMemoryError erroMemoria)
-			{
-				ErroMemoriaInsuficiente erroExecucao = new ErroMemoriaInsuficiente();
-				erroExecucao.setLinha(ultimaLinha);
-				erroExecucao.setColuna(ultimaColuna);
-
-				resultadoExecucao.setModoEncerramento(ModoEncerramento.ERRO);
-				resultadoExecucao.setErro(erroExecucao);
-			}
-			catch (StackOverflowError e) 
-			{
-				ErroExecucao erroExecucao = new ErroEstouroPilha();
-
-				erroExecucao.setLinha(ultimaLinha);
-				erroExecucao.setColuna(ultimaColuna);
-
-				resultadoExecucao.setModoEncerramento(ModoEncerramento.ERRO);
-				resultadoExecucao.setErro(erroExecucao);
-			}
-			catch (RuntimeException e)
-			{
-				ErroExecucao erroExecucao = new ErroExecucaoNaoTratado(e);
-
-				TradutorRuntimeException<? extends RuntimeException> tradutor = tradutoresRuntimeException.get(e.getClass());
-
-				if (tradutor != null)
-				{
-					erroExecucao = tradutor.traduzir(e, Programa.this, ultimaLinha, ultimaColuna);
-				}
-				
-				if (erroExecucao.getLinha() == 0)
-				{
-					erroExecucao.setLinha(ultimaLinha);
-				}
-				
-				if (erroExecucao.getColuna() == 0)
-				{
-					erroExecucao.setColuna(ultimaColuna);
-				}
-
-				resultadoExecucao.setModoEncerramento(ModoEncerramento.ERRO);
-				resultadoExecucao.setErro(erroExecucao);
-			}
-			catch (ErroExecucao erroExecucao)
-			{
-				/*
-				 * Este tratamento de erros é legado da versão antiga do núcleo
-				 * que utilizava o Interpretador de código.
-				 * 
-				 * Nesta nova versão com código compilado, este erro nunca será
-				 * jogado. No lugar do ErroExecucao, será sempre jogado um
-				 * RuntimeException, que deverá então ser tratado e traduzido de
-				 * acordo com o tipo de erro.
-				 * 
-				 * Em algum momento, devemos mudar a assinatura do método
-				 * "executar" para que não jogue mais esta exceção. Não farei
-				 * agora porque teria que alterar o gerador de código Java e os
-				 * testes unitários.
-				 * 
-				 */
-
-				erroExecucao.setLinha(ultimaLinha);
-				erroExecucao.setColuna(ultimaColuna);
-
-				resultadoExecucao.setModoEncerramento(ModoEncerramento.ERRO);
-				resultadoExecucao.setErro(erroExecucao);
-			}
-			
-			catch (InterruptedException excecao)
-			{
-				resultadoExecucao.setModoEncerramento(ModoEncerramento.INTERRUPCAO);
-			}
-			catch (Exception excecao)
-			{
-				if (excecao.getCause() instanceof InterruptedException)
-				{
-					resultadoExecucao.setModoEncerramento(ModoEncerramento.INTERRUPCAO);
-				}
-				else
-				{
-					ErroExecucao erroExecucao = new ErroExecucaoNaoTratado(excecao);
-
-					erroExecucao.setLinha(ultimaLinha);
-					erroExecucao.setColuna(ultimaColuna);
-
-					resultadoExecucao.setModoEncerramento(ModoEncerramento.ERRO);
-					resultadoExecucao.setErro(erroExecucao);
-				}
-			}
-			finally
-			{
-				try
-				{
-					finalizaBibliotecasIncluidas();
-				}
-				catch (InterruptedException | ErroExecucaoBiblioteca ex)
-				{
-					Logger.getLogger(Programa.class.getName()).log(Level.SEVERE, "Não era pra acontecer", ex);
-				}
-			}
-
-			resultadoExecucao.setTempoExecucao(System.currentTimeMillis() - horaInicialExecucao);
-
-			notificarEncerramentoExecucao(resultadoExecucao);
-
-			observadores.clear(); // remove todos os listeners quando termina de
-									// executar
-		}
-
-		public void continuar(Programa.Estado estado)
-		{
-			synchronized (LOCK)
-			{
-				if (isLendo())
-				{
-					setLeituraIgnorada(true);
-				}
-
-				Programa.this.estado = estado;
-				LOCK.notifyAll();
-			}
-		}
-	}
 
 	/**
 	 * Interrompe a execução deste programa. Não tem nenhum efeito se o programa
@@ -1021,7 +781,7 @@ public abstract class Programa
 	 * Notifica todos os observadores registrados sobre o início da execução
 	 * deste programa.
 	 */
-	private void notificarInicioExecucao()
+	void notificarInicioExecucao()
 	{
 		for (ObservadorExecucao observador : observadores)
 		{
@@ -1054,7 +814,7 @@ public abstract class Programa
 	 *            programa e eventos ocorridos durante a execução.
 	 * @since 1.0
 	 */
-	private void notificarEncerramentoExecucao(ResultadoExecucao resultadoExecucao)
+	void notificarEncerramentoExecucao(ResultadoExecucao resultadoExecucao)
 	{
 		tarefaExecucao = null;
 		controleExecucao = null;
@@ -1169,7 +929,7 @@ public abstract class Programa
 		}
 	}
 
-	private boolean isLendo()
+	boolean isLendo()
 	{
 		synchronized (LOCK)
 		{
@@ -1177,7 +937,7 @@ public abstract class Programa
 		}
 	}
 
-	private void setLeituraIgnorada(boolean leituraIgnorada)
+	void setLeituraIgnorada(boolean leituraIgnorada)
 	{
 		synchronized (LOCK)
 		{
@@ -1226,7 +986,7 @@ public abstract class Programa
 
 		try
 		{
-			InputHandler mediador = new InputHandler();
+			InputHandler mediador = new InputHandler(this);
 			entrada.solicitaEntrada(tipoDado, mediador);
 
 			// Se for verdadeiro, significa que a entrada é assíncrona,
@@ -1263,49 +1023,6 @@ public abstract class Programa
 			notificarExecucaoResumida();
 		}
 
-	}
-
-	private class InputHandler implements InputMediator, Armazenador
-	{
-		private Object valor;
-		private boolean cancelado = false;
-
-		@Override
-		public Object getValor()
-		{
-			synchronized (LOCK)
-			{
-				return valor;
-			}
-		}
-
-		@Override
-		public void setValor(Object valor)
-		{
-			synchronized (LOCK)
-			{
-				this.valor = valor;
-				LOCK.notifyAll();
-			}
-		}
-
-		@Override
-		public void cancelarLeitura()
-		{
-			synchronized (LOCK)
-			{
-				this.cancelado = true;
-				LOCK.notifyAll();
-			}
-		}
-
-		public boolean isCancelado()
-		{
-			synchronized (LOCK)
-			{
-				return cancelado;
-			}
-		}
 	}
 
 	private List<Biblioteca> obterBibliotecasIncluidas() throws ErroExecucaoBiblioteca, InterruptedException

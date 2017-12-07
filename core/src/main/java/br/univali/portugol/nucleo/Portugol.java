@@ -2,6 +2,9 @@ package br.univali.portugol.nucleo;
 
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
+import br.univali.portugol.nucleo.compilador.Compilador;
+import br.univali.portugol.nucleo.programa.Programa;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

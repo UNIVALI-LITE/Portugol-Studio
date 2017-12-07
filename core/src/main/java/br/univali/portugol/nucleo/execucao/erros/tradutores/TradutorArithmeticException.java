@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.execucao.erros.tradutores;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.execucao.TradutorRuntimeException;
 import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroDivisaoPorZero;
 import br.univali.portugol.nucleo.execucao.erros.mensagens.ErroExecucaoNaoTratado;

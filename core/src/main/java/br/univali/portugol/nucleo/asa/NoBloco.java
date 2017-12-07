@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.asa;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
+
 import java.util.logging.Logger;
 
 /*
@@ -54,8 +55,8 @@ public abstract class NoBloco extends No
     }
     
     @Override
-    public boolean ehParavel(Programa.Estado estado)
+    public boolean ehParavel(Estado estado)
     {
-        return super.ehParavel(estado) || estado == Programa.Estado.STEP_OVER;
+        return super.ehParavel(estado) || estado == Estado.STEP_OVER;
     }
 }
