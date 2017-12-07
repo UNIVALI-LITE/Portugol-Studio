@@ -159,12 +159,12 @@ public abstract class Programa
 		observadores = new ArrayList<>();
 	}
 
-	protected String concatena(String a, String b)
+        protected String concatena(int a, String b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
-
+        
 	protected String concatena(String a, int b)
 	{
 		stringBuilder.setLength(0);
