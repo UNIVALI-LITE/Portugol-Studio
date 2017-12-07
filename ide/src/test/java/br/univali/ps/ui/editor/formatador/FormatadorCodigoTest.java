@@ -465,6 +465,7 @@ public class FormatadorCodigoTest
                 + "    inclua biblioteca Graficos\n"
                 + "    inclua biblioteca Matematica --> m\n"
                 + "\n"
+                + "\n"                
                 + "    funcao inicio()\n"
                 + "    {\n"
                 + "\n"
@@ -472,7 +473,7 @@ public class FormatadorCodigoTest
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        //System.out.println(formatado);
+        System.out.println(formatado);
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);
