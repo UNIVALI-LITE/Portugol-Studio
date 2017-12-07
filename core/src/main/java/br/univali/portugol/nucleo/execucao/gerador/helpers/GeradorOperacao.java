@@ -21,7 +21,7 @@ public class GeradorOperacao
         }
 
         boolean precisaConcatenar = no instanceof NoOperacaoSoma && 
-                (no.getOperandoEsquerdo().getTipoResultante() == TipoDado.CADEIA | no.getOperandoDireito().getTipoResultante() == TipoDado.CADEIA);
+                (no.getOperandoEsquerdo().getTipoResultante() == TipoDado.CADEIA ^ no.getOperandoDireito().getTipoResultante() == TipoDado.CADEIA);
         
         if (!precisaConcatenar)
         {
