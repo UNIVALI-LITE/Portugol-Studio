@@ -433,7 +433,14 @@ public class FormatadorCodigo
             for (int i = 0; i < totalValores; i++) {
                 Object valor = valores.get(i);
                 if (valor instanceof NoExpressaoLiteral) {
-                    saida.append(valor.toString());
+                    String string = valor.toString();
+                    
+                    if (valor instanceof NoLogico) {
+                        string = ((NoLogico)valor).getValor() ? "verdadeiro" : "falso";
+                    }
+                    
+                    saida.append(string);
+                    
                 } else {
                     ((NoExpressao) valor).aceitar(this);
                 }
@@ -511,8 +518,8 @@ public class FormatadorCodigo
                 for (int j = 0; j < totalColunas; j++) {
                     
                     String valor = linha.get(j).toString();
-                    if (linha.get(j) instanceof Boolean) {
-                        valor = ((Boolean)linha.get(j)) ? "verdadeiro" : "falso";
+                    if (linha.get(j) instanceof NoLogico) {
+                        valor = ((NoLogico)linha.get(j)).getValor() ? "verdadeiro" : "falso";
                     }
                     saida.append(valor);
 

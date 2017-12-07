@@ -381,6 +381,8 @@ public class FormatadorCodigoTest
                 + "             {1, 2},\n"
                 + "             {2, 3}\n"
                 + "         }\n"
+                + "         logico l[][] = {{falso}, {falso}}"
+                + "         logico l2[] = {falso}"                                                
                 + "         inteiro mat[3][2]"
                 + "         mat[1][1] = v[10 / 3]"
                 + "         mat[0][0] = v[m[0][0]]"
@@ -402,6 +404,11 @@ public class FormatadorCodigoTest
                 + "            {1, 2},\n"
                 + "            {2, 3}\n"
                 + "        }\n"
+                + "        logico l[][] = {\n"
+                + "            {falso},\n"
+                + "            {falso}\n"
+                + "        }\n"                
+                + "        logico l2[] = {falso}\n"                                
                 + "        inteiro mat[3][2]\n"
                 + "        mat[1][1] = v[10 / 3]\n"
                 + "        mat[0][0] = v[m[0][0]]\n"
@@ -410,7 +417,7 @@ public class FormatadorCodigoTest
                 + "}";
 
         String formatado = FormatadorCodigo.formata(codigo);
-        //System.out.println(formatado);//.replaceAll("\r\n", "-\r\n"));
+        System.out.println(formatado);//.replaceAll("\r\n", "-\r\n"));
         formatado = formatado.replaceAll("\r", ""); // necessário para evitar erro na comparação das strings
 
         assertEquals("Strings diferentes!", esperado, formatado);
