@@ -33,36 +33,6 @@ import java.nio.file.Paths;
  */
 public class IntegracaoFormatadorTest
 {
-
-//    @Test
-//    public void testTeste() throws Exception
-//    {
-//        String original = "programa {"
-//                + "     funcao inicio() {"
-//                + "         cadeia texto_linha =\"\""
-//                + "         cadeia ccerca_h = \" \""
-//                + "         texto_linha += \"000000\" + ccerca_h"
-//                + "     }"
-//                + "}";
-//
-//        String formatado = "programa {"
-//                + "     funcao inicio() {"
-//                + "         cadeia texto_linha = \"\""
-//                + "         cadeia ccerca_h = \" \""
-//                + "         texto_linha = texto_linha + \"000000\" + ccerca_h"
-//                + "     }"
-//                + "}";
-//
-//        String javaOriginal = geraCodigoJava(original, 0);
-//        String javaFormatado = geraCodigoJava(formatado, 0);
-//        
-//        System.out.println(javaOriginal);
-//        System.out.println("-------------------------------------");
-//        System.out.println(javaFormatado);
-//        
-//        Assert.fail("errou!");
-//    }
-
     @Test
     public void testaFormatacaoExemplos() throws FileNotFoundException, ErroCompilacao, ExcecaoVisitaASA, IOException, Exception
     {
