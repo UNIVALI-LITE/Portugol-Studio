@@ -9,11 +9,6 @@ import static org.junit.Assert.*;
 public class FormatadorCodigoTest
 {
 
-    /*
-    const inteiro LARGURA_MEDIDOR = 156, ALTURA_MEDIDOR = 8
-
-
-     */
     @Test
     public void testDeclaracaoMatrizGrande() throws Exception
     {
@@ -30,6 +25,7 @@ public class FormatadorCodigoTest
                 + "{\n"
                 + "    const inteiro LARGURA_MEDIDOR = 156\n"
                 + "    const inteiro ALTURA_MEDIDOR = 8\n"
+                + "\n"
                 + "    inteiro MODELOS_VEICULOS[][] = {\n"
                 + "        {0, 0, 44, 96},\n"
                 + "        {43, 0, 44, 96}\n"

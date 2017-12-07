@@ -3,65 +3,7 @@ package br.univali.ps.ui.editor.formatador;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
-import br.univali.portugol.nucleo.asa.ASAPrograma;
-import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.ModoAcesso;
-import br.univali.portugol.nucleo.asa.NoBitwiseNao;
-import br.univali.portugol.nucleo.asa.NoBloco;
-import br.univali.portugol.nucleo.asa.NoCadeia;
-import br.univali.portugol.nucleo.asa.NoCaracter;
-import br.univali.portugol.nucleo.asa.NoCaso;
-import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
-import br.univali.portugol.nucleo.asa.NoContinue;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
-import br.univali.portugol.nucleo.asa.NoEnquanto;
-import br.univali.portugol.nucleo.asa.NoEscolha;
-import br.univali.portugol.nucleo.asa.NoExpressao;
-import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
-import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
-import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
-import br.univali.portugol.nucleo.asa.NoInteiro;
-import br.univali.portugol.nucleo.asa.NoLogico;
-import br.univali.portugol.nucleo.asa.NoMatriz;
-import br.univali.portugol.nucleo.asa.NoMenosUnario;
-import br.univali.portugol.nucleo.asa.NoNao;
-import br.univali.portugol.nucleo.asa.NoOperacao;
-import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseE;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseLeftShift;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseOu;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseXOR;
-import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaDiferenca;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaE;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaIgualdade;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaior;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaiorIgual;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenorIgual;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaOU;
-import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
-import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
-import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
-import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
-import br.univali.portugol.nucleo.asa.NoPara;
-import br.univali.portugol.nucleo.asa.NoPare;
-import br.univali.portugol.nucleo.asa.NoReal;
-import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
-import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
-import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
-import br.univali.portugol.nucleo.asa.NoRetorne;
-import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.portugol.nucleo.asa.NoVetor;
-import br.univali.portugol.nucleo.asa.Quantificador;
-import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.portugol.nucleo.asa.VisitanteASABasico;
+import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -452,7 +394,12 @@ public class FormatadorCodigo
         public Void visitar(NoDeclaracaoVetor no) throws ExcecaoVisitaASA
         {
             if (declarandoVariaveisGlobais) {
+                pulaLinha();
                 saida.append(Utils.geraIdentacao(nivelEscopo));
+            }
+            
+            if (no.constante()) {
+                saida.append("const ");
             }
             
             saida.format("%s %s", no.getTipoDado().getNome(), no.getNome());
@@ -505,7 +452,12 @@ public class FormatadorCodigo
         public Void visitar(NoDeclaracaoMatriz no) throws ExcecaoVisitaASA
         {
             if (declarandoVariaveisGlobais) {
+                pulaLinha();
                 saida.append(Utils.geraIdentacao(nivelEscopo));
+            }
+            
+            if (no.constante()) {
+                saida.append("const ");
             }
             
             saida.format("%s %s", no.getTipoDado().getNome(), no.getNome());
@@ -557,8 +509,12 @@ public class FormatadorCodigo
                 saida.append("{");
 
                 for (int j = 0; j < totalColunas; j++) {
-
-                    saida.append(linha.get(j).toString());
+                    
+                    String valor = linha.get(j).toString();
+                    if (linha.get(i) instanceof Boolean) {
+                        valor = ((Boolean)linha.get(i)) ? "verdadeiro" : "falso";
+                    }
+                    saida.append(valor);
 
                     if (j < totalColunas - 1) {
                         saida.append(", ");
