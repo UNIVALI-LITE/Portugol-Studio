@@ -511,8 +511,8 @@ public class FormatadorCodigo
                 for (int j = 0; j < totalColunas; j++) {
                     
                     String valor = linha.get(j).toString();
-                    if (linha.get(i) instanceof Boolean) {
-                        valor = ((Boolean)linha.get(i)) ? "verdadeiro" : "falso";
+                    if (linha.get(j) instanceof Boolean) {
+                        valor = ((Boolean)linha.get(j)) ? "verdadeiro" : "falso";
                     }
                     saida.append(valor);
 
