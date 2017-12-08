@@ -95,7 +95,7 @@ class AnalisadorRetornoDeFuncao implements VisitanteASA
     {
         for (NoBloco noBloco : noBlocos)
         {
-            if ((Boolean) noBloco.aceitar(this) == true)
+            if ((Boolean) noBloco.aceitar(this))
             {
                 return true;
             }
