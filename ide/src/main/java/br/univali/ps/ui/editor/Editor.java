@@ -290,6 +290,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         procurarESubstituir = new TelaCustomBorder("Procurar");
         PSFindReplace findReplace = new PSFindReplace(textArea, procurarESubstituir);
+        findReplace.setPreferredSize(new Dimension(550, 190));
+        //findReplace.setSize(new Dimension(800, 600));
         procurarESubstituir.setPanel(findReplace);
         procurarESubstituir.setLocationRelativeTo(null);
     }

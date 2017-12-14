@@ -172,7 +172,7 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
     
     @Override
     public void configurarCores() {
-        setBackground(ColorController.FUNDO_CLARO);
+        setBackground(ColorController.COR_PRINCIPAL);
         substituirLabel.setForeground(ColorController.COR_LETRA);
         procurarLabel.setForeground(ColorController.COR_LETRA);
         avancarRadioButton.setForeground(ColorController.COR_LETRA);
@@ -187,11 +187,23 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
             WeblafUtils.configuraWebLaf(substituirTextField);
             WeblafUtils.configuraWebLaf(avancarRadioButton);
             WeblafUtils.configuraWebLaf(voltarRadioButton);
-            WeblafUtils.configurarBotao(procurarButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
-            WeblafUtils.configurarBotao(substituirButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
-            WeblafUtils.configurarBotao(substituirTudoButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
-            WeblafUtils.configurarBotao(cancelarButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(procurarButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(substituirButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(substituirTudoButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(cancelarButton, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
         }
+        marcarCheckBox.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
+        marcarCheckBox.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+        diferenciarCheckBox.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
+        diferenciarCheckBox.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+        palavraInteiraCheckBox.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
+        palavraInteiraCheckBox.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+        expressaoCheckBox.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
+        expressaoCheckBox.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+        avancarRadioButton.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected_rounded.png"));
+        avancarRadioButton.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected_rounded.png"));
+        voltarRadioButton.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected_rounded.png"));
+        voltarRadioButton.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected_rounded.png"));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,8 +213,10 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         searchPane = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         findReplaceFieldsPane = new javax.swing.JPanel();
         replacePane = new javax.swing.JPanel();
         substituirLabel = new javax.swing.JLabel();
@@ -211,13 +225,11 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         procurarLabel = new javax.swing.JLabel();
         procurarTextField = new javax.swing.JTextField();
         optionsPane = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
         diferenciarCheckBox = new javax.swing.JCheckBox();
         marcarCheckBox = new javax.swing.JCheckBox();
-        palavraInteiraCheckBox = new javax.swing.JCheckBox();
-        jPanel2 = new javax.swing.JPanel();
-        expressaoCheckBox = new javax.swing.JCheckBox();
         avancarRadioButton = new javax.swing.JRadioButton();
+        expressaoCheckBox = new javax.swing.JCheckBox();
+        palavraInteiraCheckBox = new javax.swing.JCheckBox();
         voltarRadioButton = new javax.swing.JRadioButton();
         buttonsPane = new javax.swing.JPanel();
         procurarButton = new com.alee.laf.button.WebButton();
@@ -232,9 +244,13 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         searchPane.setPreferredSize(new java.awt.Dimension(400, 233));
         searchPane.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        findReplaceFieldsPane.setMinimumSize(new java.awt.Dimension(84, 10));
         findReplaceFieldsPane.setOpaque(false);
-        findReplaceFieldsPane.setPreferredSize(new java.awt.Dimension(153, 50));
-        findReplaceFieldsPane.setLayout(new java.awt.BorderLayout());
+        findReplaceFieldsPane.setPreferredSize(new java.awt.Dimension(153, 10));
+        findReplaceFieldsPane.setLayout(new javax.swing.BoxLayout(findReplaceFieldsPane, javax.swing.BoxLayout.Y_AXIS));
 
         replacePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         replacePane.setOpaque(false);
@@ -251,7 +267,7 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         });
         replacePane.add(substituirTextField, java.awt.BorderLayout.CENTER);
 
-        findReplaceFieldsPane.add(replacePane, java.awt.BorderLayout.SOUTH);
+        findReplaceFieldsPane.add(replacePane);
 
         findPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         findPane.setOpaque(false);
@@ -267,21 +283,28 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         });
         findPane.add(procurarTextField, java.awt.BorderLayout.CENTER);
 
-        findReplaceFieldsPane.add(findPane, java.awt.BorderLayout.NORTH);
+        findReplaceFieldsPane.add(findPane);
 
-        searchPane.add(findReplaceFieldsPane, java.awt.BorderLayout.CENTER);
+        jPanel1.add(findReplaceFieldsPane, java.awt.BorderLayout.CENTER);
 
-        optionsPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 65, 1, 1));
+        optionsPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 15, 1, 1));
         optionsPane.setOpaque(false);
         optionsPane.setPreferredSize(new java.awt.Dimension(100, 80));
-        optionsPane.setLayout(new javax.swing.BoxLayout(optionsPane, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+        java.awt.GridBagLayout optionsPaneLayout = new java.awt.GridBagLayout();
+        optionsPaneLayout.columnWeights = new double[] {2.0, 2.0, 2.0};
+        optionsPane.setLayout(optionsPaneLayout);
 
         diferenciarCheckBox.setText("Diferenciar maiúsculas/minúsculas");
         diferenciarCheckBox.setBorder(null);
-        jPanel1.add(diferenciarCheckBox);
+        diferenciarCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                diferenciarCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        optionsPane.add(diferenciarCheckBox, gridBagConstraints);
 
         marcarCheckBox.setText("Marcar Todas");
         marcarCheckBox.setBorder(null);
@@ -290,17 +313,22 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
                 marcarCheckBoxActionPerformed(evt);
             }
         });
-        jPanel1.add(marcarCheckBox);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        optionsPane.add(marcarCheckBox, gridBagConstraints);
 
-        palavraInteiraCheckBox.setText("Palavra Inteira");
-        palavraInteiraCheckBox.setBorder(null);
-        jPanel1.add(palavraInteiraCheckBox);
-
-        optionsPane.add(jPanel1);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+        avancarRadioButton.setText("Avançar");
+        avancarRadioButton.setBorder(null);
+        avancarRadioButton.setPreferredSize(new java.awt.Dimension(20, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        optionsPane.add(avancarRadioButton, gridBagConstraints);
 
         expressaoCheckBox.setText("Expressão Regular");
         expressaoCheckBox.setBorder(null);
@@ -309,21 +337,34 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
                 expressaoCheckBoxActionPerformed(evt);
             }
         });
-        jPanel2.add(expressaoCheckBox);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        optionsPane.add(expressaoCheckBox, gridBagConstraints);
 
-        avancarRadioButton.setText("Avançar");
-        avancarRadioButton.setBorder(null);
-        jPanel2.add(avancarRadioButton);
+        palavraInteiraCheckBox.setText("Palavra Inteira");
+        palavraInteiraCheckBox.setBorder(null);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        optionsPane.add(palavraInteiraCheckBox, gridBagConstraints);
 
         voltarRadioButton.setText("Voltar");
         voltarRadioButton.setBorder(null);
-        jPanel2.add(voltarRadioButton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        optionsPane.add(voltarRadioButton, gridBagConstraints);
 
-        optionsPane.add(jPanel2);
+        jPanel1.add(optionsPane, java.awt.BorderLayout.PAGE_END);
 
-        searchPane.add(optionsPane, java.awt.BorderLayout.PAGE_END);
-
-        add(searchPane, java.awt.BorderLayout.CENTER);
+        searchPane.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         buttonsPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         buttonsPane.setOpaque(false);
@@ -331,9 +372,11 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
 
         procurarButton.setText("Procurar");
         procurarButton.setPreferredSize(new java.awt.Dimension(93, 24));
+        buttonsPane.add(procurarButton);
 
         substituirButton.setText("Substituir");
         substituirButton.setPreferredSize(new java.awt.Dimension(93, 24));
+        buttonsPane.add(substituirButton);
 
         substituirTudoButton.setText("Substituir todas");
         substituirTudoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -341,36 +384,15 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
                 substituirTudoButtonActionPerformed(evt);
             }
         });
+        buttonsPane.add(substituirTudoButton);
 
         cancelarButton.setText("Cancelar");
         cancelarButton.setPreferredSize(new java.awt.Dimension(93, 24));
+        buttonsPane.add(cancelarButton);
 
-        javax.swing.GroupLayout buttonsPaneLayout = new javax.swing.GroupLayout(buttonsPane);
-        buttonsPane.setLayout(buttonsPaneLayout);
-        buttonsPaneLayout.setHorizontalGroup(
-            buttonsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonsPaneLayout.createSequentialGroup()
-                .addGroup(buttonsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(procurarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(substituirTudoButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(substituirButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cancelarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        buttonsPaneLayout.setVerticalGroup(
-            buttonsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonsPaneLayout.createSequentialGroup()
-                .addComponent(procurarButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(substituirButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(substituirTudoButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelarButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        searchPane.add(buttonsPane, java.awt.BorderLayout.LINE_END);
 
-        add(buttonsPane, java.awt.BorderLayout.EAST);
+        add(searchPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void substituirTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_substituirTextFieldActionPerformed
@@ -393,6 +415,10 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         // TODO add your handling code here:
     }//GEN-LAST:event_substituirTudoButtonActionPerformed
 
+    private void diferenciarCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diferenciarCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_diferenciarCheckBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton avancarRadioButton;
@@ -403,7 +429,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel findPane;
     private javax.swing.JPanel findReplaceFieldsPane;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JCheckBox marcarCheckBox;
     private javax.swing.JPanel optionsPane;
     private javax.swing.JCheckBox palavraInteiraCheckBox;
