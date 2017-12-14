@@ -218,12 +218,12 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         searchPane = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         findReplaceFieldsPane = new javax.swing.JPanel();
-        replacePane = new javax.swing.JPanel();
-        substituirLabel = new javax.swing.JLabel();
-        substituirTextField = new javax.swing.JTextField();
         findPane = new javax.swing.JPanel();
         procurarLabel = new javax.swing.JLabel();
         procurarTextField = new javax.swing.JTextField();
+        replacePane = new javax.swing.JPanel();
+        substituirLabel = new javax.swing.JLabel();
+        substituirTextField = new javax.swing.JTextField();
         optionsPane = new javax.swing.JPanel();
         diferenciarCheckBox = new javax.swing.JCheckBox();
         marcarCheckBox = new javax.swing.JCheckBox();
@@ -252,6 +252,22 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         findReplaceFieldsPane.setPreferredSize(new java.awt.Dimension(153, 10));
         findReplaceFieldsPane.setLayout(new javax.swing.BoxLayout(findReplaceFieldsPane, javax.swing.BoxLayout.Y_AXIS));
 
+        findPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        findPane.setOpaque(false);
+        findPane.setLayout(new java.awt.BorderLayout());
+
+        procurarLabel.setText(" Procurar ");
+        findPane.add(procurarLabel, java.awt.BorderLayout.WEST);
+
+        procurarTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                procurarTextFieldActionPerformed(evt);
+            }
+        });
+        findPane.add(procurarTextField, java.awt.BorderLayout.CENTER);
+
+        findReplaceFieldsPane.add(findPane);
+
         replacePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         replacePane.setOpaque(false);
         replacePane.setPreferredSize(new java.awt.Dimension(153, 50));
@@ -268,22 +284,6 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         replacePane.add(substituirTextField, java.awt.BorderLayout.CENTER);
 
         findReplaceFieldsPane.add(replacePane);
-
-        findPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        findPane.setOpaque(false);
-        findPane.setLayout(new java.awt.BorderLayout());
-
-        procurarLabel.setText(" Procurar ");
-        findPane.add(procurarLabel, java.awt.BorderLayout.WEST);
-
-        procurarTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                procurarTextFieldActionPerformed(evt);
-            }
-        });
-        findPane.add(procurarTextField, java.awt.BorderLayout.CENTER);
-
-        findReplaceFieldsPane.add(findPane);
 
         jPanel1.add(findReplaceFieldsPane, java.awt.BorderLayout.CENTER);
 
