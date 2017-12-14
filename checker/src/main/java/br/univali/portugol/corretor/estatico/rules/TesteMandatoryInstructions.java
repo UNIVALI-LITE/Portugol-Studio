@@ -2,7 +2,7 @@ package br.univali.portugol.corretor.estatico.rules;
 
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.*;
 import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import java.util.ArrayList;
