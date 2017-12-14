@@ -58,6 +58,7 @@ public class Lancador {
     {
         try{
             int divide_by_zero = 42/0;
+            System.out.println("Resultado da divisão: "+divide_by_zero);
         }catch(ArithmeticException dividedByZero){
         	try{
         		verificadorDeInstancias(argumentos);
