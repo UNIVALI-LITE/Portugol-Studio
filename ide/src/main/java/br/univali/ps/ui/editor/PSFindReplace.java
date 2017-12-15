@@ -371,14 +371,15 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         buttonsPane.setPreferredSize(new java.awt.Dimension(110, 233));
 
         procurarButton.setText("Procurar");
-        procurarButton.setPreferredSize(new java.awt.Dimension(93, 24));
+        procurarButton.setPreferredSize(new java.awt.Dimension(100, 24));
         buttonsPane.add(procurarButton);
 
         substituirButton.setText("Substituir");
-        substituirButton.setPreferredSize(new java.awt.Dimension(93, 24));
+        substituirButton.setPreferredSize(new java.awt.Dimension(100, 24));
         buttonsPane.add(substituirButton);
 
         substituirTudoButton.setText("Substituir todas");
+        substituirTudoButton.setPreferredSize(new java.awt.Dimension(100, 24));
         substituirTudoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 substituirTudoButtonActionPerformed(evt);
@@ -387,7 +388,7 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         buttonsPane.add(substituirTudoButton);
 
         cancelarButton.setText("Cancelar");
-        cancelarButton.setPreferredSize(new java.awt.Dimension(93, 24));
+        cancelarButton.setPreferredSize(new java.awt.Dimension(100, 24));
         buttonsPane.add(cancelarButton);
 
         searchPane.add(buttonsPane, java.awt.BorderLayout.LINE_END);

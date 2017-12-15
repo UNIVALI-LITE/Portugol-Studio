@@ -789,7 +789,7 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Procurar"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[93, 24]"/>
+                  <Dimension value="[100, 24]"/>
                 </Property>
               </Properties>
             </Component>
@@ -797,13 +797,16 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Substituir"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[93, 24]"/>
+                  <Dimension value="[100, 24]"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="com.alee.laf.button.WebButton" name="substituirTudoButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Substituir todas"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[100, 24]"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="substituirTudoButtonActionPerformed"/>
@@ -813,7 +816,7 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cancelar"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[93, 24]"/>
+                  <Dimension value="[100, 24]"/>
                 </Property>
               </Properties>
             </Component>
