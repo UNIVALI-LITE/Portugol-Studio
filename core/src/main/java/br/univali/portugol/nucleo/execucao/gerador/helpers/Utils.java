@@ -395,7 +395,7 @@ public class Utils
 
     public static String geraIdentacao(int nivelEscopo)
     {
-        return String.format("%" + (nivelEscopo * 4) + "s", " ");
+        return String.format("%" + (nivelEscopo * 5) + "s", " ");
     }
 
     public static String preservaCaracteresEspeciais(String string)
