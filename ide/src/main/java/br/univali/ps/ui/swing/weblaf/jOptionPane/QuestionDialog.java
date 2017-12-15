@@ -130,7 +130,6 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         textLabel.setText("<html><body>"+text+"</body></html>");
         buttonsPane.add(botaoSim); 
         botaoSim.setText("OK");
-        setVisible(true);
         pack();
         if(this.getSize().height>600 || this.getSize().width>300)
         {
@@ -163,9 +162,6 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         buttonsPane.add(botaoSim);
         buttonsPane.add(botaoNao);
         buttonsPane.add(botaoCancelar);
-        botaoSim.setText("Sim");
-        setVisible(true);
-
         pack();
         if(this.getSize().height>600 || this.getSize().width>300)
         {
