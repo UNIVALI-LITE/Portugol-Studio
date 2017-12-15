@@ -87,7 +87,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"));
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file.png");
         imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
-        if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>=12 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH)<=30 && Calendar.getInstance().get(Calendar.MONTH)==Calendar.DECEMBER){
+        if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>=20 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH)<=30 && Calendar.getInstance().get(Calendar.MONTH)==Calendar.DECEMBER){
             imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite_n.png");
         }else{
             imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
