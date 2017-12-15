@@ -45,6 +45,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     private Programa programa = null;
     
     private static boolean isLinux = false;
+    private static boolean isWindows = false;
     
     static 
     {
@@ -52,7 +53,11 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     
     	if (osName != null && osName.indexOf("nux") >= 0)
     	{
-    		isLinux = true;
+            isLinux = true;
+    	}
+        if (osName != null && osName.toLowerCase().contains("windows"))
+    	{
+            isWindows = true;
     	}
     }
 
@@ -444,10 +449,16 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     @Override
     public void limpar()
     {
-    	if (isLinux)
-    	{
-    		System.out.print("\033c");
-    	}
+        
+        if (isLinux) {
+            System.out.print("\033c");
+    	}else if(isWindows){
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (IOException | InterruptedException ex) {
+                Logger.getLogger(Console.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
