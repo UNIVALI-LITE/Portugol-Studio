@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -86,7 +87,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"));
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file.png");
         imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
-        imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
+        if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>=20 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH)<=30 && Calendar.getInstance().get(Calendar.MONTH)==Calendar.DECEMBER){
+            imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite_n.png");
+        }else{
+            imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite.png");
+        }
+            
+        
         inicializarJTree();
 
         painelDireita.addComponentListener(new ComponentAdapter() {

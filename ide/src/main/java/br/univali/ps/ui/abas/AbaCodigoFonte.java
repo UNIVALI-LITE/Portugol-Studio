@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.portugol.nucleo.programa.Estado;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
@@ -10,7 +11,7 @@ import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
@@ -785,7 +786,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 else
                 {
-                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getCaminhoUltimoDiretorio());
+                    dialogoSelecaoArquivo.setCurrentDirectory(new File (Configuracoes.getInstancia().getCaminhoUltimoDiretorio()));
                     dialogoSelecaoArquivo.setSelectedFile(new File(""));
                 }
 
@@ -949,9 +950,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
      */
     private class AcaoExecucao extends AbstractAction 
     {
-        private final Programa.Estado estadoInicial;
+        private final Estado estadoInicial;
 
-        public AcaoExecucao(String nome, Programa.Estado estadoInicial) 
+        public AcaoExecucao(String nome, Estado estadoInicial)
         {
             super(nome);
             this.estadoInicial = estadoInicial;
@@ -1009,7 +1010,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configurarAcaoExecutarPontoParada()
     {
 
-        acaoExecutarPontoParada = new AcaoExecucao("Executar", Programa.Estado.BREAK_POINT);
+        acaoExecutarPontoParada = new AcaoExecucao("Executar", Estado.BREAK_POINT);
 
         String nome = "AcaoPontoParada";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F6");
@@ -1028,7 +1029,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configurarAcaoExecutarPasso()
     {
 
-        acaoExecutarPasso = new AcaoExecucao("Depurar", Programa.Estado.STEP_OVER);
+        acaoExecutarPasso = new AcaoExecucao("Depurar", Estado.STEP_OVER);
 
         String nome = "AcaoPassoPasso";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F5");
@@ -1919,7 +1920,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento();
     }
 
-    private void executar(Programa.Estado estado) throws InterruptedException, ErroCompilacao
+    private void executar(Estado estado) throws InterruptedException, ErroCompilacao
     {
         if (programaCompilado == null)
         {
@@ -1976,7 +1977,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
         else
         {
-            if (estado == Programa.Estado.BREAK_POINT)
+            if (estado == Estado.BREAK_POINT)
             {
                 SwingUtilities.invokeLater(() -> {
                     editor.removerHighlightsDepuracao();

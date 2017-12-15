@@ -1,7 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;

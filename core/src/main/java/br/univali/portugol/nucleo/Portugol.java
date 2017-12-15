@@ -2,6 +2,9 @@ package br.univali.portugol.nucleo;
 
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
+import br.univali.portugol.nucleo.compilador.Compilador;
+import br.univali.portugol.nucleo.programa.Programa;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +53,7 @@ public final class Portugol
         return new RenomeadorDeSimbolos().renomearSimbolo(programa, linha, coluna, novoNome);
     }
     
-    public static NoDeclaracao obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo
+    public static NoDeclaracao obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo, ErroAoRenomearSimbolo
     {
         return new RenomeadorDeSimbolos().obterDeclaracaoDoSimbolo(programa, linha, coluna);
     }

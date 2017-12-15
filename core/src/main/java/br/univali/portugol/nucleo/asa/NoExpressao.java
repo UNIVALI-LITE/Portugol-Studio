@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.asa;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
 
 /**
  * Representa uma expressão no código fonte.
@@ -83,7 +83,7 @@ public abstract class NoExpressao extends NoBloco
     protected abstract TrechoCodigoFonte montarTrechoCodigoFonte();
 
     @Override
-    public boolean ehParavel(Programa.Estado estado)
+    public boolean ehParavel(Estado estado)
     {
         return false;
     }

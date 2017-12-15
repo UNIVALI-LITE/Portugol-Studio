@@ -1,6 +1,6 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 

@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.base;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 
 /**
  * Define como as bibliotecas serão manipuladas em memória pelo {@link GerenciadorBibliotecas}
