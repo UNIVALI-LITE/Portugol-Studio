@@ -1034,7 +1034,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             {
                 textArea.setCaretPosition(Integer.parseInt(valor));
             }
-            catch (NumberFormatException excecao)
+            catch (IllegalArgumentException excecao )
             {
                 excecao.printStackTrace(System.out);
             }
