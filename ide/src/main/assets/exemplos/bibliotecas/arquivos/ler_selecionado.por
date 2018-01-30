@@ -26,7 +26,7 @@
  * 	
  * Data: 10/02/2016
  */
- 
+
  programa
 {
 	inclua biblioteca Arquivos --> a
@@ -61,25 +61,15 @@
 		// Também é possível permitir que o usuário selecione qualquer tipo de arquivo
 		// passando o valor "verdadeiro" para o segundo parâmetro da função.
 		//
-		// Por último, precisamos declarar uma variável do tipo cadeia que irá receber
-		// o caminho do arquivo selecionado pelo usuário. Esta variável será passada
-		// para a função por referência, isto significa que após a função ser chamada
-		// o valor da variável terá mudado de acordo com a seleção do usuário.
-
-		cadeia caminho_do_arquivo = ""
-		
-		//
 		//
 		// Ao chamar a função "selecionar_arquivo" o Portugol Studio irá exibir uma
 		// janela permitindo ao usuário navegar pelos arquivos. Neste janela o usuário
 		// tem a opção de selecionar um arquivou ou de fechar a janela sem selecionar nada.
 		//
-		// Por isso, a função retorna um valor lógico indicando se o usuário fez uma seleção
+		// Por isso, a função retorna um valor cadeia indicando o caminho do arquivo que o usuário selecionou
 		// ou não. 
-		//
-		// verdadeiro: o usuário selecionou um arquivo
-		// falso: o usuário fechou a janela ou clicou em "Cancelar"
-		//
+		// Caso o usuário não tenha selecionado um arquivo ( fechou ou cancelou)
+		// Uma cadeia vazia será retornada
 		// Vamos armazenar o valor retornado em uma variável e testar se o usuário selecionou
 		// um arquivo ou não.
 		
@@ -104,7 +94,7 @@
 			// É necessário guardar esta posição em uma variável para que possamos ler as 
 			// linhas do arquivo e também fechá-lo quando terminarmos de usá-lo.		
 			
-			inteiro arquivo_placar = a.abrir_arquivo(caminho_do_arquivo, a.MODO_LEITURA)
+			inteiro arquivo_placar = a.abrir_arquivo(arquivo_selecionado, a.MODO_LEITURA)
 			
 			// O segundo passo é ler cada linha do arquivo e escrever na saída de dados (console)
 			// do Portugol Studio. Para isso utiliza-ze a função "ler_linha".
@@ -185,7 +175,7 @@
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1010; 
+ * @POSICAO-CURSOR = 963; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
