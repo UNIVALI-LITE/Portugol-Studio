@@ -188,7 +188,7 @@ public final class Arquivos extends Biblioteca
             descricao = "Pesquisa por um determinado texto no arquivo e substitui todas as ocorrências por um texto alternativo",
             parametros =
             {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço de memória do arquivo")
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço do arquivo")
                 ,
                 @DocumentacaoParametro(nome = "texto_pesquisa", descricao = "o texto que será pesquisado no arquivo")
                 ,
@@ -203,10 +203,13 @@ public final class Arquivos extends Biblioteca
     )
     public void substituir_texto(String endereco, String texto_pesquisa, String texto_substituto, boolean onlyFirst) throws ErroExecucaoBiblioteca, InterruptedException
     {
+        File arquivo = programa.resolverCaminho(new File(endereco));
+        Path path = Paths.get(arquivo.toURI());
+        String charset = "ISO-8859-1";
+        String text;
         try {
-            Path path = Paths.get(endereco);
-            String charset = "ISO-8859-1";
-            String text = new String(Files.readAllBytes(path), charset);
+            text = new String(Files.readAllBytes(path), charset);
+        
             if(onlyFirst)
             {
                 text = text.replaceFirst(texto_pesquisa, texto_substituto);
@@ -215,11 +218,10 @@ public final class Arquivos extends Biblioteca
             {
                 text = text.replaceAll(texto_pesquisa, texto_substituto);
             }            
-            Files.write(path, text.getBytes(charset));      
-            
+            Files.write(path, text.getBytes(charset));
         } catch (IOException ex) {
-            throw new ErroExecucaoBiblioteca(String.format("Não foi possível escrever ou ler no arquivo"));
-        }
+            throw new ErroExecucaoBiblioteca(String.format("Não foi possível substituir no arquivo '%s'", arquivo.getAbsolutePath()));
+        } 
     }
 
     @DocumentacaoFuncao(
@@ -903,7 +905,7 @@ public final class Arquivos extends Biblioteca
 
         public void escrever(String linha) throws ErroExecucaoBiblioteca, InterruptedException
         {
-            if (modoAcesso == ModoAcesso.ESCRITA)
+            if (modoAcesso == ModoAcesso.ESCRITA || modoAcesso == ModoAcesso.ACRESCENTAR)
             {
                 try
                 {
