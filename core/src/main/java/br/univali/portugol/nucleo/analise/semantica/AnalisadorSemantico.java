@@ -1792,9 +1792,13 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         try
         {
-            if (noPara.getIncremento() != null)
+            if (noPara.getIncremento() instanceof NoOperacaoAtribuicao)
             {
                 noPara.getIncremento().aceitar(this);
+            }
+            else if(noPara.getIncremento() != null)
+            {
+                notificarErroSemantico(new ErroParaSemExpressaoAtribuicao(noPara.getTrechoCodigoFonte()));
             }
         }
         catch (ExcecaoVisitaASA excecao)
