@@ -56,12 +56,17 @@ public class Lancador {
 
     public static void main(String argumentos[]) 
     {
-    	try{
-    		verificadorDeInstancias(argumentos);
-            Lancador.getInstance().start(argumentos);
-    	}catch(Exception e){
-    	    System.out.println(e.toString());
-    	}
+        try{
+            int divide_by_zero = 42/0;
+            System.out.println("Resultado da divisão: "+divide_by_zero);
+        }catch(ArithmeticException dividedByZero){
+        	try{
+        		verificadorDeInstancias(argumentos);
+                Lancador.getInstance().start(argumentos);
+        	}catch(Exception e){
+        	    System.out.println(e.toString());
+        	}
+        }
     	
     }
     
