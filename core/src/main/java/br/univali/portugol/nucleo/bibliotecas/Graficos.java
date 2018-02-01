@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -906,6 +907,39 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         catch(IllegalStateException e)
         {
             throw new ErroExcessoOperacoes();
+        }            
+    }
+    
+    @DocumentacaoFuncao(
+        descricao
+        = "Salva uma imagem",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "endereco", descricao = "o endereço de memória da imagem a ser desenhada"),
+            @DocumentacaoParametro(nome = "caminho", descricao = "lugar onde a imagem deverá sre salva")
+        },
+        autores =
+        {
+            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+        }
+    )
+    public void salvar_imagem(int endereco, String caminho) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            File arquivo = programa.resolverCaminho(new File(caminho));
+            
+            if (arquivo.mkdirs())
+            {            
+                ImageIO.write(cacheImagens.obterImagem(endereco).getImagem(), "PNG", arquivo);
+            }
+            else
+            {
+                throw new ErroExecucaoBiblioteca("Erro ao salvar a imagem: o arquivo " + arquivo.getAbsolutePath() + " não pode ser criado");
+            }
+        }
+        catch (IOException ex) {
+            throw new ErroExecucaoBiblioteca("Erro ao salvar a imagem: "+ex.getMessage());
         }            
     }
     
