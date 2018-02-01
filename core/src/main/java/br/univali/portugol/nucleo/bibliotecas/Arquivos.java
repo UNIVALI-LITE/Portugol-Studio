@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,7 +49,7 @@ public final class Arquivos extends Biblioteca
 {
     private static enum ModoAcesso
     {
-        LEITURA, ESCRITA
+        LEITURA, ESCRITA, ACRESCENTAR
     }
 
     private static final int NUMERO_MAXIMO_ARQUIVOS = 10;
@@ -62,6 +64,9 @@ public final class Arquivos extends Biblioteca
 
     @DocumentacaoConstante(descricao = "indica à biblioteca que o arquivo deve ser aberto apenas para escrita")
     public static final int MODO_ESCRITA = ModoAcesso.ESCRITA.ordinal();
+    
+    @DocumentacaoConstante(descricao = "indica à biblioteca que o arquivo deve ser aberto apenas para escrita que acrescenta ao final do arquivo")
+    public static final int MODO_ACRESCENTAR = ModoAcesso.ACRESCENTAR.ordinal();
 
     @DocumentacaoFuncao(
             descricao = "Abre um arquivo para leitura ou escrita. No modo leitura, caso o arquivo informado não exista, será gerado "
@@ -75,7 +80,7 @@ public final class Arquivos extends Biblioteca
                 @DocumentacaoParametro(nome = "caminho_arquivo", descricao = "o nome do arquivo que se quer abrir")
                 ,
 
-                @DocumentacaoParametro(nome = "modo_acesso", descricao = "determina se o arquivo será aberto para leitura ou para escrita.<br>Constantes aceitas: MODO_LEITURA | MODO_ESCRITA")
+                @DocumentacaoParametro(nome = "modo_acesso", descricao = "determina se o arquivo será aberto para leitura ou para escrita.<br>Constantes aceitas: MODO_LEITURA | MODO_ESCRITA | MODO_ACRESCENTAR")
             },
             retorno = "o endereço de memória onde o arquivo foi carregado",
             autores =
@@ -177,6 +182,46 @@ public final class Arquivos extends Biblioteca
     public void escrever_linha(String linha, int endereco) throws ErroExecucaoBiblioteca, InterruptedException
     {
         obterArquivo(endereco).escrever(linha);
+    }
+    
+    @DocumentacaoFuncao(
+            descricao = "Pesquisa por um determinado texto no arquivo e substitui todas as ocorrências por um texto alternativo",
+            parametros =
+            {
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço do arquivo")
+                ,
+                @DocumentacaoParametro(nome = "texto_pesquisa", descricao = "o texto que será pesquisado no arquivo")
+                ,
+                @DocumentacaoParametro(nome = "texto_substituto", descricao = "o texto pelo qual as ocorrências serão substituídas")
+                ,
+                @DocumentacaoParametro(nome = "primeira_ocorrencia", descricao = "confirma se substituirá apenas a primeira ocorrência no texto, caso contrário, substituirá todas")
+            },
+            autores =
+            {
+                @Autor(nome = "Adson Marques da Silva Esteves", email = "shiandson@gmail.com")
+            }
+    )
+    public void substituir_texto(String endereco, String texto_pesquisa, String texto_substituto, boolean onlyFirst) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        File arquivo = programa.resolverCaminho(new File(endereco));
+        Path path = Paths.get(arquivo.toURI());
+        String charset = "ISO-8859-1";
+        String text;
+        try {
+            text = new String(Files.readAllBytes(path), charset);
+        
+            if(onlyFirst)
+            {
+                text = text.replaceFirst(texto_pesquisa, texto_substituto);
+            }
+            else
+            {
+                text = text.replaceAll(texto_pesquisa, texto_substituto);
+            }            
+            Files.write(path, text.getBytes(charset));
+        } catch (IOException ex) {
+            throw new ErroExecucaoBiblioteca(String.format("Não foi possível substituir no arquivo '%s'", arquivo.getAbsolutePath()));
+        } 
     }
 
     @DocumentacaoFuncao(
@@ -779,6 +824,10 @@ public final class Arquivos extends Biblioteca
             {
                 abrirParaEscrita();
             }
+            else if (modoAcesso == ModoAcesso.ACRESCENTAR)
+            {
+                abrirParaEscritaAcrescentadora();
+            }
         }
 
         private void abrirParaLeitura() throws ErroExecucaoBiblioteca, InterruptedException
@@ -803,6 +852,23 @@ public final class Arquivos extends Biblioteca
                 }
 
                 escritor = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo), charset));
+            }
+            catch (IOException excecao)
+            {
+                throw new ErroExecucaoBiblioteca(String.format("Não foi possível abrir o arquivo '%s' para escrita", arquivo.getAbsolutePath()));
+            }
+        }
+        
+        private void abrirParaEscritaAcrescentadora() throws ErroExecucaoBiblioteca, InterruptedException
+        {
+            try
+            {
+                if (arquivo.getParentFile() != null)
+                {
+                    arquivo.getParentFile().mkdirs();
+                }
+
+                escritor = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo, true), charset));
             }
             catch (IOException excecao)
             {
@@ -839,7 +905,7 @@ public final class Arquivos extends Biblioteca
 
         public void escrever(String linha) throws ErroExecucaoBiblioteca, InterruptedException
         {
-            if (modoAcesso == ModoAcesso.ESCRITA)
+            if (modoAcesso == ModoAcesso.ESCRITA || modoAcesso == ModoAcesso.ACRESCENTAR)
             {
                 try
                 {
