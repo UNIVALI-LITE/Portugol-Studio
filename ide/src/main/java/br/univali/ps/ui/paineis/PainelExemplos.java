@@ -331,7 +331,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         arvoreExemplos.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) arvoreExemplos.getLastSelectedPathComponent();
+                if (e.getClickCount() == 2 && node.isLeaf()) {
                     botaoAbrirExemplo.doClick();
                 }
             }
