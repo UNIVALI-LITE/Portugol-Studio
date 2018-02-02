@@ -344,7 +344,7 @@ public final class Mouse extends Biblioteca
     }
     
     @Override
-    protected void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
+    public void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
     {
         instalarMouse(biblioteca);
     }

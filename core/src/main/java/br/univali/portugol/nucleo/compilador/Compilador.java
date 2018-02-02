@@ -4,7 +4,6 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.ProgramaVazio;
 import br.univali.portugol.nucleo.analise.AnalisadorAlgoritmo;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
-import br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroCodigoNaoAlcancavel;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroVariavelPodeNaoTerSidoInicializada;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
@@ -38,6 +37,8 @@ import org.apache.commons.exec.PumpStreamHandler;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_ESCREVA;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_LEIA;
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_LIMPA;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Classe utilitária para abstrair as etapas necessárias à compilação do código
@@ -160,6 +161,9 @@ public final class Compilador
             GeradorCodigoJava.Opcoes opcoes = new GeradorCodigoJava.Opcoes(true, true, true);
             gerador.gera(asa, writerArquivoJava, nomeClasse, opcoes);
             writerArquivoJava.flush();
+            
+//            byte[] encoded = Files.readAllBytes(Paths.get(arquivoJava.getAbsolutePath()));
+//            System.out.println(new String(encoded, "UTF-8"));
             
             if (Thread.currentThread().isInterrupted())
             {

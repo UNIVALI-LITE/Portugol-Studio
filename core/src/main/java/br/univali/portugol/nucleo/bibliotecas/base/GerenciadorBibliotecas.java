@@ -217,7 +217,7 @@ public final class GerenciadorBibliotecas
 
         for (Method metodo : classeBiblioteca.getDeclaredMethods())
         {
-            if (Modifier.isPublic(metodo.getModifiers()) && metodo.getAnnotation(NaoExportar.class) == null && !metodo.getName().equals("inicializar") && !metodo.getName().equals("finalizar"))
+            if (Modifier.isPublic(metodo.getModifiers()) && metodo.getAnnotation(NaoExportar.class) == null && !metodo.getName().equals("inicializar") && !metodo.getName().equals("finalizar") && !metodo.getName().equals("bibliotecaRegistrada"))
             {
                 MetaDadosFuncao metaDadosFuncao = obterMetaDadosFuncao(nomeBiblioteca, metodo);
 

@@ -20,6 +20,7 @@ import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
 import br.univali.portugol.nucleo.execucao.TradutorRuntimeException;
@@ -101,6 +102,23 @@ public abstract class Programa
 	static Map<Class<? extends RuntimeException>, TradutorRuntimeException<? extends RuntimeException>> getTradutoresRuntimeException() {
 		return tradutoresRuntimeException;
 	}
+        
+        private final List<Biblioteca> bibliotecas = new ArrayList<>();
+                
+        public void incluirBiblioteca(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
+        {
+            biblioteca.inicializar(this, bibliotecas);
+            
+            if (biblioteca.getTipo() == TipoBiblioteca.RESERVADA)
+            {
+                for (Biblioteca bib: bibliotecas)
+                {
+                    bib.bibliotecaRegistrada(biblioteca);
+                }
+
+                bibliotecas.add(biblioteca);
+            }
+        }
 
 	public Estado getEstado() {
 		return estado;

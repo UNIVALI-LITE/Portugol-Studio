@@ -179,7 +179,7 @@ public abstract class Biblioteca
      * @throws ErroExecucaoBiblioteca
      * @throws java.lang.InterruptedException
      */
-    protected void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
+    public void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
     {
 
     }

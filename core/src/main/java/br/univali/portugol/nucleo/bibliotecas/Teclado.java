@@ -556,7 +556,7 @@ public final class Teclado extends Biblioteca
     }
     
     @Override
-    protected void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
+    public void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
     {
         instalarTeclado(biblioteca);
     }

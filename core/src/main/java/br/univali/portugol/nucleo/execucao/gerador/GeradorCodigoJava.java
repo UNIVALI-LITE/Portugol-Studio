@@ -269,6 +269,12 @@ public class GeradorCodigoJava
             List<NoInclusaoBiblioteca> libsIncluidas = asa.getListaInclusoesBibliotecas();
             for (NoInclusaoBiblioteca biblioteca : libsIncluidas)
             {
+                if(biblioteca.getNome().equals("Graficos"))
+                geradorAtributo.gera(biblioteca, saida, nivelEscopo);
+            }
+            for (NoInclusaoBiblioteca biblioteca : libsIncluidas)
+            {
+                if(!biblioteca.getNome().equals("Graficos"))
                 geradorAtributo.gera(biblioteca, saida, nivelEscopo);
             }
 
@@ -918,6 +924,20 @@ public class GeradorCodigoJava
 
             return this;
         }
+        
+        private void inicializaBibliotecas()
+        {
+            String identacao = Utils.geraIdentacao(nivelEscopo);
+            for (NoInclusaoBiblioteca no : asa.getListaInclusoesBibliotecas())
+            {
+                saida.append(identacao)
+                        .append("incluirBiblioteca(this.")
+                        .append(no.getNome())
+                        .append(");")
+                        .println();
+            }
+            saida.println();
+        }
 
         private void inicializaVariaveisGlobaisQueSaoPassadasPorReferencia() throws ExcecaoVisitaASA
         {
@@ -948,9 +968,9 @@ public class GeradorCodigoJava
                     .append(nomeDaClasseJava)
                     .append("() throws ErroExecucao, InterruptedException {")
                     .println();
-
-            nivelEscopo++;
             
+            nivelEscopo++;
+            //inicializaBibliotecas();
             if (opcoes.gerandoCodigoParaInspecaoDeSimbolos)
             {
                 String identacaoInterna = Utils.geraIdentacao(nivelEscopo);
@@ -966,6 +986,7 @@ public class GeradorCodigoJava
                         .format("matrizesInspecionadas = new Matriz[%d];", matrizesDeclaradas)
                         .println();
             }
+            
             
             nivelEscopo--;
 
