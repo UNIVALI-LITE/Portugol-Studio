@@ -16,6 +16,10 @@ programa
 	inteiro sombrancelha = -1
 	inteiro cabelo = -1
 
+
+	inteiro init = -1
+	inteiro play = -1
+
 	inteiro left = -1
 	inteiro right = -1
 	inteiro top = -1
@@ -51,14 +55,49 @@ programa
 	inteiro arrow_size = 32
 
 	logico printando = falso
+	logico jogando = falso
 
 	inteiro top_icon_margin = 200, left_icon_margin = 50
 	inteiro temp
-	
+
+	funcao desenhar_load(inteiro i){
+		g.definir_cor(0xCB4545)
+		g.desenhar_imagem(0, 0, init)
+		g.desenhar_retangulo(100, 800, i*20, 10, falso, verdadeiro)
+		g.renderizar()
+		u.aguarde(10)
+	}
+
+	funcao menu(){
+		logico fade = falso
+		inteiro initime = 0
+
+		enquanto(nao jogando){
+			g.definir_cor(0xCB4545)
+			g.desenhar_imagem(0, 0, init)
+			se(nao fade){
+				g.desenhar_imagem(230, 800, play)
+			}
+			g.renderizar()
+			se(nao fade){
+				se(u.tempo_decorrido()>initime+600){
+					fade = verdadeiro
+					initime = u.tempo_decorrido()
+				}
+			}senao se(u.tempo_decorrido()>initime+300){
+				fade = falso	
+				initime = u.tempo_decorrido()
+			}
+			se(t.tecla_pressionada(t.TECLA_ENTER)){
+				jogando = verdadeiro
+			}
+		}
+	}
 	funcao inicio()
 	{
 		
 		inicializar()
+		
 		enquanto(verdadeiro){
 			desenhar()
 			controle()
@@ -138,7 +177,7 @@ programa
 			g.desenhar_imagem(left_icon_margin+arrow_size/2+border, top_icon_margin-arrow_size-10, top)
 			para(inteiro i = 0; i < states ; i++){
 				se(i == actual_state){
-					g.definir_cor(0x11A6BE)
+					g.definir_cor(0xCB4545)
 					g.desenhar_elipse(left_icon_margin-border,top_icon_margin+(i*(icon_size+icon_size/3.5))-border, icon_size+2*border, icon_size+2*border, verdadeiro)
 				}
 				g.desenhar_porcao_imagem(left_icon_margin, top_icon_margin+(i*(icon_size+icon_size/3.5)), i*icon_size, 0, icon_size, icon_size, icons)
@@ -153,42 +192,68 @@ programa
 		g.iniciar_modo_grafico(verdadeiro)
 		g.definir_dimensoes_janela(768, 1024)
 		
+		init = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/init.png")
+		
+		desenhar_load(1)
 		
 		base = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/outfit/base.png")
+
+		desenhar_load(2)
+		
 		face = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/face.png")
+		desenhar_load(3)
 		olho = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/eyes.png")
+		desenhar_load(4)
 		boca = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/mouth.png")
+		desenhar_load(5)
 		nariz = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/nose.png")
+		desenhar_load(6)
 		sombrancelha = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/eyebrows.png")
+		desenhar_load(7)
 		cabelo = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/hair.png")
+		desenhar_load(8)
+		
 		temp = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/icons.png")
 		icons = g.redimensionar_imagem(temp, icon_size*7, icon_size, verdadeiro)
 		g.liberar_imagem(temp)
+
+		desenhar_load(9)
 		
 		temp = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/left.png")
 		left = g.redimensionar_imagem(temp, arrow_size, arrow_size, verdadeiro)
 		g.liberar_imagem(temp)
-		
+
+		desenhar_load(10)
 		temp = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/right.png")
 		right = g.redimensionar_imagem(temp, arrow_size, arrow_size, verdadeiro)
 		g.liberar_imagem(temp)
-
+		desenhar_load(11)
 		temp = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/top.png")
 		top = g.redimensionar_imagem(temp, arrow_size, arrow_size, verdadeiro)
 		g.liberar_imagem(temp)
 
+		desenhar_load(12)
+
 		temp = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/down.png")
 		down = g.redimensionar_imagem(temp, arrow_size, arrow_size, verdadeiro)
 		g.liberar_imagem(temp)
+
+		desenhar_load(13)
 		
 		para(inteiro i=0; i<5; i++){
 			outfit[i] = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/outfit/"+i+".png")
+			desenhar_load(14+i)
 		}
 		para(inteiro i=0; i<3; i++){
 			bgi[i] = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/bg/"+i+".png")
+			desenhar_load(19+i)
 		}
-	}
 
+		play = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/play.png")
+		desenhar_load(23)
+		
+		menu()
+	}
 	funcao muda_fundo(){
 		se(t.tecla_pressionada(t.TECLA_SETA_DIREITA)){
 			actual_bg++
@@ -343,7 +408,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 2062; 
+ * @POSICAO-CURSOR = 3959; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
