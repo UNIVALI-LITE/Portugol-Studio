@@ -4,6 +4,8 @@ programa
 	inclua biblioteca Teclado --> t
 	inclua biblioteca Util --> u
 	inclua biblioteca Tipos --> tp
+	inclua biblioteca Sons --> s
+	inclua biblioteca Arquivos --> a
 
 
 	cadeia pessoas[1] = {"zoe"}
@@ -15,6 +17,9 @@ programa
 	inteiro nariz = -1
 	inteiro sombrancelha = -1
 	inteiro cabelo = -1
+
+	inteiro print = -1
+	inteiro flash_mp3 = -1
 
 
 	inteiro init = -1
@@ -149,7 +154,10 @@ programa
 			g.definir_cor(g.COR_BRANCO)
 			g.limpar()
 			g.renderizar()
-			g.salvar_imagem(temp, u.obter_diretorio_usuario()+"/Documents/Porgs/porg"+actual_outfit+".png")
+			s.reproduzir_som(flash_mp3, falso)
+			cadeia formatos_suportados[1] = {"Arquivos de imagem|png"}
+			cadeia tempa = a.selecionar_arquivo(formatos_suportados, falso)
+			g.salvar_imagem(temp, tempa)
 			g.liberar_imagem(temp)
 			g.definir_cor(g.COR_PRETO)
 			g.limpar()
@@ -174,6 +182,7 @@ programa
 
 		//g.desenhar_porcao_imagem(0, 0, actual_state*64, 0, 64, 64, icons)
 		se(nao printando){
+			g.desenhar_imagem(620, 20, print)
 			g.desenhar_imagem(left_icon_margin+arrow_size/2+border, top_icon_margin-arrow_size-10, top)
 			para(inteiro i = 0; i < states ; i++){
 				se(i == actual_state){
@@ -251,6 +260,12 @@ programa
 
 		play = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/play.png")
 		desenhar_load(23)
+
+		print = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/print.png")
+		desenhar_load(24)
+		
+		flash_mp3 = s.carregar_som("salvar_imagem/"+pessoas[pessoa_atual]+"/cam.mp3")
+		desenhar_load(25)
 		
 		menu()
 	}
@@ -408,7 +423,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 3959; 
+ * @POSICAO-CURSOR = 2891; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
