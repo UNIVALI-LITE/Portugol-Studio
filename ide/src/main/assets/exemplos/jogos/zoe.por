@@ -18,6 +18,10 @@ programa
 	inteiro sombrancelha = -1
 	inteiro cabelo = -1
 
+
+	inteiro load_itens = 25
+
+	inteiro logo = -1
 	inteiro print = -1
 	inteiro flash_mp3 = -1
 
@@ -68,7 +72,7 @@ programa
 	funcao desenhar_load(inteiro i){
 		g.definir_cor(0xCB4545)
 		g.desenhar_imagem(0, 0, init)
-		g.desenhar_retangulo(100, 800, i*20, 10, falso, verdadeiro)
+		g.desenhar_retangulo(100, 800, i*(568/load_itens), 10, falso, verdadeiro)
 		g.renderizar()
 		u.aguarde(10)
 	}
@@ -76,7 +80,7 @@ programa
 	funcao menu(){
 		logico fade = falso
 		inteiro initime = 0
-
+		
 		enquanto(nao jogando){
 			g.definir_cor(0xCB4545)
 			g.desenhar_imagem(0, 0, init)
@@ -97,7 +101,24 @@ programa
 				jogando = verdadeiro
 			}
 		}
+		
 	}
+	
+	funcao animacao_inicial(){
+		inteiro i =0
+		enquanto(i<=255){
+			g.definir_cor(0x222222)
+			g.limpar()
+			g.definir_opacidade(i)
+			g.desenhar_imagem(0, 0, logo)
+			g.renderizar()
+			i++
+			se(i==255){
+				u.aguarde(2000)
+			}
+		}
+	}
+	
 	funcao inicio()
 	{
 		
@@ -200,6 +221,10 @@ programa
 	funcao inicializar(){
 		g.iniciar_modo_grafico(verdadeiro)
 		g.definir_dimensoes_janela(768, 1024)
+
+		logo = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/logo.png")
+
+		animacao_inicial()
 		
 		init = g.carregar_imagem("salvar_imagem/"+pessoas[pessoa_atual]+"/init.png")
 		
@@ -266,6 +291,8 @@ programa
 		
 		flash_mp3 = s.carregar_som("salvar_imagem/"+pessoas[pessoa_atual]+"/cam.mp3")
 		desenhar_load(25)
+
+		
 		
 		menu()
 	}
@@ -423,7 +450,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 2891; 
+ * @POSICAO-CURSOR = 431; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
