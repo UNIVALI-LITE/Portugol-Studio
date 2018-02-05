@@ -17,6 +17,7 @@ import java.awt.*;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.WindowListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
@@ -99,9 +100,9 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
 
     @NaoExportar
     @Override
-    public void instalarTeclado(KeyListener observadorTeclado) throws ErroExecucaoBiblioteca, InterruptedException
+    public void instalarTeclado(KeyListener observadorTeclado, WindowListener observadorJanela) throws ErroExecucaoBiblioteca, InterruptedException
     {
-        janela.instalarTeclado(observadorTeclado);
+        janela.instalarTeclado(observadorTeclado, observadorJanela);
     }
 
     @NaoExportar
