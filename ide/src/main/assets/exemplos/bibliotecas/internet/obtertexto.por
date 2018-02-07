@@ -8,7 +8,7 @@ programa
 	{
 		cadeia resp = i.obter_texto("https://portugol-web-counter-test.herokuapp.com/api/users")
 		inteiro val = t.numero_caracteres(resp)
-		cadeia users = t.extrair_subtexto(resp, 23, val-2)
+		cadeia users = t.extrair_subtexto(resp, 23, val-1)
 		escreva("Este exemplo já foi executado " + users + " vezes\n")
 		escreva("\n\n\nConteudo capturado:\n"+resp)
 		

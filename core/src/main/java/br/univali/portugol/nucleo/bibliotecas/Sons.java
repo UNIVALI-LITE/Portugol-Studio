@@ -146,7 +146,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public void pausar_som(int endereco) throws ErroExecucaoBiblioteca, InterruptedException
@@ -188,7 +188,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public int obter_tamanho_musica(int endereco) throws ErroExecucaoBiblioteca, InterruptedException
@@ -211,7 +211,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public int obter_posicao_atual_musica(int endereco) throws ErroExecucaoBiblioteca, InterruptedException
@@ -234,7 +234,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public void definir_posicao_atual_musica(int endereco, int milissegundos) throws ErroExecucaoBiblioteca, InterruptedException

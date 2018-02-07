@@ -555,7 +555,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int redimensionar_imagem(int endereco, int largura, int altura, boolean manter_qualidade) throws ErroExecucaoBiblioteca, InterruptedException
@@ -633,7 +633,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int obter_cor_pixel(int endereco, int x, int y) throws ErroExecucaoBiblioteca, InterruptedException
@@ -652,7 +652,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int obter_RGB(int cor, int canal) throws ErroExecucaoBiblioteca, InterruptedException
@@ -921,7 +921,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         },
         autores =
         {
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public void salvar_imagem(int endereco, String caminho) throws ErroExecucaoBiblioteca, InterruptedException
@@ -1064,7 +1064,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         retorno = "imagem do quadro pedido por parâmetro",
         autores =
         {
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )    
     public int obter_quadro_gif(int endereco, int quadro) throws ErroExecucaoBiblioteca, InterruptedException
@@ -1083,7 +1083,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         },
         autores =
         {
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )    
     public void definir_quadro_gif(int endereco, int quadro) throws ErroExecucaoBiblioteca, InterruptedException

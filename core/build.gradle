@@ -15,6 +15,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.soundlibs/tritonus-share
     runtime group: 'com.googlecode.soundlibs', name: 'tritonus-share', version: '0.3.7.4'
     
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents/fluent-hc
+    compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.5'
+        
     // Talvez possa ser substituído pela dependência abaixo
     // https://mvnrepository.com/artifact/javax.media/jmf
     //compile group: 'javax.media', name: 'jmf', version: 'fs-3.0'
