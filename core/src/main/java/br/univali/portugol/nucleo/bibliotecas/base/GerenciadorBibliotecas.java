@@ -90,6 +90,7 @@ public final class GerenciadorBibliotecas
             bibliotecasDisponiveis.add("Arquivos");
             bibliotecasDisponiveis.add("Sons");
             bibliotecasDisponiveis.add("Calendario");
+            bibliotecasDisponiveis.add("Internet");
 
             Collections.sort(bibliotecasDisponiveis);
         }
