@@ -1539,9 +1539,22 @@ public final class AnalisadorSemantico implements VisitanteASA
                          * o mapa interno, caso contrário vai dar NullPointerException.
                          */
                         final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(referencia.getEscopo());
-                        final MetaDadosConstante metaDadosConstante = metaDadosBiblioteca.getMetaDadosConstantes().obter(referencia.getNome());
-
-                        notificarErroSemantico(new ErroAtribuirConstanteBiblioteca(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), metaDadosConstante, metaDadosBiblioteca));
+                        if(metaDadosBiblioteca == null)
+                        {
+                            notificarErroSemantico(new ErroAliasInexistente(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), referencia.getEscopo()));
+                        }
+                        else
+                        {
+                            final MetaDadosConstante metaDadosConstante = metaDadosBiblioteca.getMetaDadosConstantes().obter(referencia.getNome());
+                            if(metaDadosConstante == null)
+                            {
+                                notificarErroSemantico(new ErroAtribuirFuncaoBiblioteca(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), metaDadosBiblioteca));
+                            }
+                            else
+                            {
+                                notificarErroSemantico(new ErroAtribuirConstanteBiblioteca(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), metaDadosConstante, metaDadosBiblioteca));                                
+                            }
+                        }
                     }
                 }
                 else if (noOperacao.getOperandoEsquerdo() instanceof NoReferenciaMatriz
