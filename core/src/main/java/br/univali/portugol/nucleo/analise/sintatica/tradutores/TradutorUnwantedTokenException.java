@@ -56,6 +56,6 @@ public final class TradutorUnwantedTokenException
             }
         }
         
-       return new ErroExpressaoInesperada(linha, coluna, AnalisadorSintatico.getToken(tokens, erro.getUnexpectedType()));
+       return new ErroExpressaoInesperada(linha, coluna, erro.getUnexpectedToken().getText());
     }
 }
