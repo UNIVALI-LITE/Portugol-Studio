@@ -88,6 +88,7 @@ public final class Internet extends Biblioteca{
     
     @DocumentacaoFuncao(
             descricao = "Obtém recursos de um página web",
+            retorno = "O tipo da Imagem",
             parametros =
             {
                 @DocumentacaoParametro(nome = "endereço", descricao = "o endereço de onde o conteúdo deverá ser obtido"),
@@ -98,17 +99,57 @@ public final class Internet extends Biblioteca{
                 @Autor(nome = "Alisson Steffens", email = "ali.steffens@gmail.com")
             }
     )
-    public void baixar_imagem(String endereco,String caminho) throws ErroExecucaoBiblioteca, InterruptedException
+    public String baixar_imagem(String endereco,String caminho) throws ErroExecucaoBiblioteca, InterruptedException
     {
         try
         {
+            String type = "png";
+            String h = Request.Head(endereco).connectTimeout(timeout).execute().returnResponse().toString();
+            if(h.contains("Content-Type: image/png")){
+                type = "png";
+            }else if(h.contains("Content-Type: image/jpg") || h.contains("Content-Type: image/jpeg")){
+                type = "jpg";
+            }
             BufferedImage a = ImageIO.read(Request.Get(endereco).connectTimeout(timeout).socketTimeout(timeout).execute().returnContent().asStream());
-            File arquivo = programa.resolverCaminho(new File(caminho));
-            ImageIO.write(a, "PNG", arquivo);
+            File arquivo = programa.resolverCaminho(new File(caminho+"."+type));
+            ImageIO.write(a, type.toUpperCase(), arquivo);
+            return type;
         }
         catch (Exception excecao)
         {
             throw new ErroExecucaoBiblioteca("Não foi possível obter o conteúdo de "+endereco);
+        }
+    }
+    
+    @DocumentacaoFuncao(
+            descricao = "Verifica a disponibilidade atual de algum endereço",
+            retorno = "verdadeiro se sim falso se não",
+            parametros =
+            {
+                @DocumentacaoParametro(nome = "endereço", descricao = "o endereço de onde o conteúdo deverá ser obtido")
+            },
+            autores =
+            {
+                @Autor(nome = "Alisson Steffens", email = "ali.steffens@gmail.com")
+            }
+    )
+    public boolean endereco_disponivel(String endereco) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            String a = Request.Head(endereco).connectTimeout(timeout).execute().returnResponse().toString();
+            if(a.contains("404 Not Found")){
+                return false;
+            }
+            if(a.contains("Content-Length: 0,")){
+                return false;
+            }
+            return true;                   
+            
+        }
+        catch (Exception excecao)
+        {
+            return false;
         }
     }
 }
