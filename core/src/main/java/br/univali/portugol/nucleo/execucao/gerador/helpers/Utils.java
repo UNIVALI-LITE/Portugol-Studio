@@ -274,10 +274,7 @@ public class Utils
     {
         for (NoBloco bloco : blocos)
         {
-            if (opcoes.gerandoCodigoParaPontosDeParada)
-            {
-                geraParadaPassoAPasso(bloco, saida, nivelEscopo);
-            }
+            
 
             saida.append(Utils.geraIdentacao(nivelEscopo));
 
@@ -292,11 +289,16 @@ public class Utils
             {
                 saida.append(";");
             }
-            saida.println();
             
+            saida.println();
+                    
             if (opcoes.gerandoCodigoParaInspecaoDeSimbolos)
             {
                 geraCodigoParaInspecaoDeBloco(bloco, saida, visitor, nivelEscopo, seed);
+            }
+            if (opcoes.gerandoCodigoParaPontosDeParada)
+            {
+                geraParadaPassoAPasso(bloco, saida, nivelEscopo);
             }
         }
 
