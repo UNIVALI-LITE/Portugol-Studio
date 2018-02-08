@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.graficos;
 
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.PoolOperacoesGraficas;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.OperacaoGrafica;
 import java.awt.Canvas;
@@ -16,12 +17,14 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Luiz Fernando
  */
-final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
+final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho 
 {
     private final PoolOperacoesGraficas POOL_OPERACOES_GRAFICAS = new PoolOperacoesGraficas();
 
@@ -69,8 +72,12 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void renderizar()
+    public void renderizar() throws ErroExecucaoBiblioteca
     {
+        if(buffer == null)
+        {
+         throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         do
         {
             do
@@ -124,9 +131,13 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void limpar()
+    public void limpar() throws ErroExecucaoBiblioteca
     {
         verificaExcessoOperacoes();
+        if(areaGrafica == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoLimpar(areaGrafica.width, areaGrafica.height);
         indiceOperacao++;
     }
@@ -190,10 +201,13 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void definirFonteTexto(String nome)
+    public void definirFonteTexto(String nome) throws ErroExecucaoBiblioteca
     {
         verificaExcessoOperacoes();
-        
+        if(fonteTexto == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         fonteTexto = getFonte(nome, fonteTexto.getStyle(), usandoSublinhado, fonteTexto.getSize2D());
 
         dimensoesFonte = getFontMetrics(fonteTexto);
@@ -202,10 +216,13 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void definirEstiloTexto(boolean italico, boolean negrito, boolean sublinhado)
+    public void definirEstiloTexto(boolean italico, boolean negrito, boolean sublinhado) throws ErroExecucaoBiblioteca
     {
         verificaExcessoOperacoes();
-        
+        if(fonteTexto == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         this.usandoSublinhado = sublinhado;
         String nomeFonte = fonteTexto.getName();
         int estilo = getEstilo(negrito, italico);
@@ -316,14 +333,22 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public int alturaTexto(String texto)
+    public int alturaTexto(String texto) throws ErroExecucaoBiblioteca
     {
+        if(dimensoesFonte == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         return dimensoesFonte.getAscent() + dimensoesFonte.getLeading();
     }
 
     @Override
-    public int larguraTexto(String texto)
+    public int larguraTexto(String texto) throws ErroExecucaoBiblioteca
     {
+        if(dimensoesFonte == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         return dimensoesFonte.stringWidth(texto);
     }
 
