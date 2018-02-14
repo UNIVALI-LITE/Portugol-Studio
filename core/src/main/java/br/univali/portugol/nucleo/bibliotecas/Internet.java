@@ -123,7 +123,7 @@ public final class Internet extends Biblioteca{
     
     @DocumentacaoFuncao(
             descricao = "Verifica a disponibilidade atual de algum endereço",
-            retorno = "verdadeiro se sim falso se não",
+            retorno = "verdadeiro se o endereço estiver disponível no momento falso se não",
             parametros =
             {
                 @DocumentacaoParametro(nome = "endereço", descricao = "o endereço de onde o conteúdo deverá ser obtido")
