@@ -97,6 +97,11 @@ public final class AnalisadorSintatico implements ObservadorParsing
         "se", "para", "enquanto", "facaEnquanto", "escolha"
     });
     
+    private static final List<String> caracteres_especiais = Arrays.asList(new String[]
+    {
+       "." ,"á", "à", "ã","â","é","ê","í","ó","ô","õ","ú","ü","ç","Ä","À","Ã","Â","É","Ê","Ë","Ó","Ô","Õ","Ú","Ü","Ç","#","$","\"","§","?","¹","²","³","£","¢","¬","ª","º","~","\'","`","\\\\","@" 
+    });
+    
     private String codigoFonte;
     private List<ObservadorAnaliseSintatica> observadores;
     private TradutorEarlyExitException tradutorEarlyExitException;
@@ -411,7 +416,17 @@ public final class AnalisadorSintatico implements ObservadorParsing
         
         return -1;
     }
-    
+    public static boolean eCaracterEspecial(String contexto)
+    {
+        for (String comando : AnalisadorSintatico.caracteres_especiais)
+        {
+            if (contexto.equals(comando))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public static boolean estaNoContexto(String contexto, Stack<String> pilhaContexto)
     {
         return estaNoContexto(contexto, pilhaContexto.size(), pilhaContexto);

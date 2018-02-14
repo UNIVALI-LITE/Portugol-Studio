@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica.tradutores;
 
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
+import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.eCaracterEspecial;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCadeiaIncompleta;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroCaracterInvalidoReferencia;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroComandoEsperado;
@@ -13,6 +14,7 @@ import java.util.Stack;
 import org.antlr.runtime.NoViableAltException;
 import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaNoContexto;
 import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaEmUmComando;
+import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroInteiroForaDoIntervalo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
 
@@ -54,6 +56,7 @@ public final class TradutorNoViableAltException
             case "declaracaoTipoDado": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
             case "listaBlocos": return new ErroComandoEsperado(linha, coluna);
             case "expressao7": return traduzirErrosExpressao(linha, coluna, erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
+            case "expressao5": return traduzirErrosExpressao(linha, coluna, erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
             case "referencia": return new ErroCaracterInvalidoReferencia(linha, coluna, erro.token.getText());
         }
         
@@ -75,6 +78,10 @@ public final class TradutorNoViableAltException
          else if (estaEmUmComando(pilhaContexto) && !alternativa.equals(")"))
          {
             return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+         }
+         else if(eCaracterEspecial(alternativa) && !alternativa.equals("GAMBIARRA"))
+         {
+             return new ErroExpressaoInesperada(linha, coluna, alternativa);
          }
         
         return criarErroExpressaoIncompleta(erro, pilhaContexto, linha, coluna, mensagemPadrao);
