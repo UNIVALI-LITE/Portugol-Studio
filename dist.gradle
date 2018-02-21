@@ -1,7 +1,7 @@
 
 ext {
     
-    jdkVersion = '1.8.0_144'
+    jdkVersion = '1.8.0_161'
         
     platforms = [
 
