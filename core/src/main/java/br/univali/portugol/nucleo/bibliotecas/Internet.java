@@ -16,7 +16,10 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBibliot
 import br.univali.portugol.nucleo.programa.Programa;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.apache.http.client.fluent.Request;
 
@@ -101,24 +104,32 @@ public final class Internet extends Biblioteca{
     )
     public String baixar_imagem(String endereco,String caminho) throws ErroExecucaoBiblioteca, InterruptedException
     {
+        String tipo_da_imagem;
+        String headerDaRequisicao;
+        BufferedImage imagemObtida;
+        File arquivo;
         try
         {
-            String type = "png";
-            String h = Request.Head(endereco).connectTimeout(timeout).execute().returnResponse().toString();
-            if(h.contains("Content-Type: image/png")){
-                type = "png";
-            }else if(h.contains("Content-Type: image/jpg") || h.contains("Content-Type: image/jpeg")){
-                type = "jpg";
+            tipo_da_imagem = "png";
+            headerDaRequisicao = Request.Head(endereco).connectTimeout(timeout).execute().returnResponse().toString();
+            if(headerDaRequisicao.contains("Content-Type: image/png")){
+                tipo_da_imagem = "png";
+            }else if(headerDaRequisicao.contains("Content-Type: image/jpg") || headerDaRequisicao.contains("Content-Type: image/jpeg")){
+                tipo_da_imagem = "jpg";
             }
-            BufferedImage a = ImageIO.read(Request.Get(endereco).connectTimeout(timeout).socketTimeout(timeout).execute().returnContent().asStream());
-            File arquivo = programa.resolverCaminho(new File(caminho+"."+type));
-            ImageIO.write(a, type.toUpperCase(), arquivo);
-            return type;
-        }
-        catch (Exception excecao)
-        {
+            imagemObtida = ImageIO.read(Request.Get(endereco).connectTimeout(timeout).socketTimeout(timeout).execute().returnContent().asStream());
+        } catch (IOException ex) {
             throw new ErroExecucaoBiblioteca("Não foi possível obter o conteúdo de "+endereco);
         }
+        
+        arquivo = programa.resolverCaminho(new File(caminho+"."+tipo_da_imagem));
+        
+        try {
+            ImageIO.write(imagemObtida, tipo_da_imagem.toUpperCase(), arquivo);
+        } catch (Exception ex) {
+            throw new ErroExecucaoBiblioteca("Não foi possivel salvar a imagem em "+arquivo.getAbsolutePath()+"\nGaranta que o caminho é valido e todas as pastas existem");
+        }
+        return tipo_da_imagem;
     }
     
     @DocumentacaoFuncao(
