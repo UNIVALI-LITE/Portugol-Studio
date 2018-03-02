@@ -167,6 +167,13 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         if(silenciador_de_excecoes_and(mensagem, search))
             return true;
         
+        //https://github.com/UNIVALI-LITE/Portugol-Studio/issues/486
+        search = new String[2];
+        search[0] = "java.lang.NullPointerException: peer";
+        search[1] = "Caused by: java.lang.NullPointerException: peer";
+        if(silenciador_de_excecoes_and(mensagem, search))
+            return true;
+        
         //github.com/UNIVALI-LITE/Portugol-Studio/issues/488
         search = new String[2];
         search[0] = "Caused by: java.lang.ArithmeticException: / by zero";
