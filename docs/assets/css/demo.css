@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500');
 .tim-row {
     margin-bottom: 20px;
 }
@@ -499,4 +500,12 @@
 }
 .downloaders-header .btn-lg{
     font-size: 2.5rem;
+}
+.lead{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+.description{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
 }
