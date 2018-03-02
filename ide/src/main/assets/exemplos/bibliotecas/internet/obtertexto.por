@@ -23,6 +23,7 @@ programa
 					escreva("Endereço não encontrado, tentaremos pela "+count+"ª vez em "+i)
 					u.aguarde(1000)
 				}
+				inicio()
 			}
 		}
 	}
