@@ -1,7 +1,7 @@
 package programas;
 
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.*;
 
 public class testeCodigoParaConcatenacaoOtimizada extends Programa
 {
@@ -12,7 +12,7 @@ public class testeCodigoParaConcatenacaoOtimizada extends Programa
     @Override
     protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
     {
-        String string = concatena("teste", "teste");
+        String string = "teste" + "teste";
         string = concatena("teste", 1);
         
         String outra = concatena("teste", 'a');

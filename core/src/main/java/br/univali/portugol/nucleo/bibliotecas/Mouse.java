@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
@@ -26,7 +26,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.SwingUtilities;
-
 
 @PropriedadesBiblioteca(tipo = TipoBiblioteca.RESERVADA)
 @DocumentacaoBiblioteca
@@ -345,7 +344,7 @@ public final class Mouse extends Biblioteca
     }
     
     @Override
-    protected void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
+    public void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
     {
         instalarMouse(biblioteca);
     }

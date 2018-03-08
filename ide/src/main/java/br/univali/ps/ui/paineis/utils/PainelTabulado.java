@@ -1,11 +1,7 @@
 package br.univali.ps.ui.paineis.utils;
 
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.swing.weblaf.PSMainTabbedPaneUI;
-import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;

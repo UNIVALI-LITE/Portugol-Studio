@@ -1,7 +1,6 @@
 package br.univali.portugol.nucleo.asa;
 
-import br.univali.portugol.nucleo.Programa;
-
+import br.univali.portugol.nucleo.programa.Estado;
 
 /**
  * Esta enumeração representa a operação <code>menor</code> no código fonte.
@@ -34,7 +33,7 @@ public final class NoOperacaoLogicaMenor extends NoOperacaoLogica
     }
 
     @Override
-    public boolean ehParavel(Programa.Estado estado)
+    public boolean ehParavel(Estado estado)
     {
          return super.ehParavel(estado) && getPai() instanceof NoPara;
     }

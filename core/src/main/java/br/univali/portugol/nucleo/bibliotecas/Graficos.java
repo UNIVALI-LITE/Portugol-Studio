@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
@@ -17,6 +17,7 @@ import java.awt.*;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.WindowListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -98,9 +100,9 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
 
     @NaoExportar
     @Override
-    public void instalarTeclado(KeyListener observadorTeclado) throws ErroExecucaoBiblioteca, InterruptedException
+    public void instalarTeclado(KeyListener observadorTeclado, WindowListener observadorJanela) throws ErroExecucaoBiblioteca, InterruptedException
     {
-        janela.instalarTeclado(observadorTeclado);
+        janela.instalarTeclado(observadorTeclado, observadorJanela);
     }
 
     @NaoExportar
@@ -553,7 +555,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int redimensionar_imagem(int endereco, int largura, int altura, boolean manter_qualidade) throws ErroExecucaoBiblioteca, InterruptedException
@@ -631,7 +633,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int obter_cor_pixel(int endereco, int x, int y) throws ErroExecucaoBiblioteca, InterruptedException
@@ -650,7 +652,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int obter_RGB(int cor, int canal) throws ErroExecucaoBiblioteca, InterruptedException
@@ -911,6 +913,39 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     
     @DocumentacaoFuncao(
         descricao
+        = "Salva uma imagem",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "endereco", descricao = "o endereço de memória da imagem a ser desenhada"),
+            @DocumentacaoParametro(nome = "caminho", descricao = "lugar onde a imagem deverá sre salva")
+        },
+        autores =
+        {
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
+        }
+    )
+    public void salvar_imagem(int endereco, String caminho) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            File arquivo = programa.resolverCaminho(new File(caminho));
+            
+            if (arquivo.mkdirs())
+            {            
+                ImageIO.write(cacheImagens.obterImagem(endereco).getImagem(), "PNG", arquivo);
+            }
+            else
+            {
+                throw new ErroExecucaoBiblioteca("Erro ao salvar a imagem: o arquivo " + arquivo.getAbsolutePath() + " não pode ser criado");
+            }
+        }
+        catch (IOException ex) {
+            throw new ErroExecucaoBiblioteca("Erro ao salvar a imagem: "+ex.getMessage());
+        }            
+    }
+    
+    @DocumentacaoFuncao(
+        descricao
         = "Desenha um frame de um gif previamente carregado, na posição especificada pelos "
         + "parâmetros <param>x</param> e <param>y</param>",
         parametros =
@@ -1029,7 +1064,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         retorno = "imagem do quadro pedido por parâmetro",
         autores =
         {
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )    
     public int obter_quadro_gif(int endereco, int quadro) throws ErroExecucaoBiblioteca, InterruptedException
@@ -1048,7 +1083,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         },
         autores =
         {
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )    
     public void definir_quadro_gif(int endereco, int quadro) throws ErroExecucaoBiblioteca, InterruptedException

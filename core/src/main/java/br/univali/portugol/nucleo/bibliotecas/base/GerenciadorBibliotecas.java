@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.base;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
@@ -89,6 +89,8 @@ public final class GerenciadorBibliotecas
             bibliotecasDisponiveis.add("Mouse");
             bibliotecasDisponiveis.add("Arquivos");
             bibliotecasDisponiveis.add("Sons");
+            bibliotecasDisponiveis.add("Calendario");
+            bibliotecasDisponiveis.add("Internet");
 
             Collections.sort(bibliotecasDisponiveis);
         }
@@ -217,7 +219,7 @@ public final class GerenciadorBibliotecas
 
         for (Method metodo : classeBiblioteca.getDeclaredMethods())
         {
-            if (Modifier.isPublic(metodo.getModifiers()) && metodo.getAnnotation(NaoExportar.class) == null && !metodo.getName().equals("inicializar") && !metodo.getName().equals("finalizar"))
+            if (Modifier.isPublic(metodo.getModifiers()) && metodo.getAnnotation(NaoExportar.class) == null && !metodo.getName().equals("inicializar") && !metodo.getName().equals("finalizar") && !metodo.getName().equals("bibliotecaRegistrada"))
             {
                 MetaDadosFuncao metaDadosFuncao = obterMetaDadosFuncao(nomeBiblioteca, metodo);
 

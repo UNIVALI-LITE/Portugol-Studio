@@ -1,33 +1,18 @@
 package br.univali.ps.nucleo;
 
-
-import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.telas.TelaExcecaoEncontrada;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import static br.univali.ps.nucleo.ExcecaoAplicacao.Tipo.ERRO_PROGRAMA;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 
 /**
  *
@@ -40,7 +25,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     private static final Logger LOGGER = Logger.getLogger(TratadorExcecoes.class.getName());
 
     private PrintWriter escritorExcecao;
-    private OutputStream fluxoSaida;
+    private FluxoSaidaExcecao fluxoSaida;
     private TelaExcecaoEncontrada telaExcecaoEncontrada;
     private TelaCustomBorder excecaoDialog;
 
@@ -101,7 +86,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
     private void exibirExcecaoSimples(ExcecaoAplicacao excecaoAplicacao, int tipoDialogo)
     {
-        JOptionPane.showMessageDialog(null, excecaoAplicacao.getMessage(), "Portugol Studio", tipoDialogo);
+        QuestionDialog.getInstance().showMessage(excecaoAplicacao.getMessage(), tipoDialogo);
 
         if (encerrarAplicacao)
         {
@@ -111,11 +96,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
     private void exibirExcecaoDetalhada(ExcecaoAplicacao excecaoAplicacao)
     {
-        inicializarComponentesExcecaoDetalhada();
-
-        telaExcecaoEncontrada.getAreaTextoStackTrace().setText(null);
-
-        excecaoAplicacao.printStackTrace(escritorExcecao);
+        inicializarComponentesExcecaoDetalhada();                
         
         excecaoDialog.setVisible(true);
 
@@ -134,14 +115,19 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
             telaExcecaoEncontrada = new TelaExcecaoEncontrada(excecaoDialog);
             excecaoDialog.setPanel(telaExcecaoEncontrada);
             excecaoDialog.setLocationRelativeTo(null);
-            fluxoSaida = new FluxoSaidaExcecao();
-            escritorExcecao = new PrintWriter(fluxoSaida, true);
+            telaExcecaoEncontrada.getAreaTextoStackTrace().setText(null);
+            telaExcecaoEncontrada.getAreaTextoStackTrace().append(fluxoSaida.getFullStack());
         }
     }
 
     @Override
     public void uncaughtException(Thread thread, Throwable excecao)
     {
+        final ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
+        fluxoSaida = new FluxoSaidaExcecao();
+        escritorExcecao = new PrintWriter(fluxoSaida, true);
+        excecaoAplicacao.printStackTrace(escritorExcecao);
+        
         if ((excecao instanceof ClassNotFoundException) || (excecao instanceof NoClassDefFoundError))
         {
             String mensagem;
@@ -163,10 +149,46 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         {
             LOGGER.log(Level.WARNING, "Exceção não identificada", excecao);
         }
+        else if (silenciador_de_excecoes())
+        {
+            //Shhhh, você não viu nada aqui, continue andando...
+        }
         else
         {
-            exibirExcecao(new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
+            exibirExcecao(excecaoAplicacao);
         }
+    }
+    private boolean silenciador_de_excecoes(){
+        String mensagem = fluxoSaida.getFullStack();
+        //ignorar até JDK ser atualizada para versão 9
+        String[] search = new String[2];
+        search[0] = "component must be showing on the screen to determine its location";
+        search[1] = "javax.swing.text.JTextComponent$InputMethodRequestsHandler.getTextLocation";        
+        if(silenciador_de_excecoes_and(mensagem, search))
+            return true;
+        
+        //https://github.com/UNIVALI-LITE/Portugol-Studio/issues/486
+        search = new String[2];
+        search[0] = "java.lang.NullPointerException: peer";
+        search[1] = "Caused by: java.lang.NullPointerException: peer";
+        if(silenciador_de_excecoes_and(mensagem, search))
+            return true;
+        
+        //github.com/UNIVALI-LITE/Portugol-Studio/issues/488
+        search = new String[2];
+        search[0] = "Caused by: java.lang.ArithmeticException: / by zero";
+        search[1] = "org.fife.ui.rsyntaxtextarea.SyntaxView.viewToModel";
+        if(silenciador_de_excecoes_and(mensagem, search))
+            return true;
+        return false;
+    }
+    private boolean silenciador_de_excecoes_and(String mensagem, String[] search){
+        for(int i = 0; i < search.length; i++){
+            if(!mensagem.contains(search[i])){
+                return false;
+            }
+        }
+        return true;
     }
 
     private Level obterNivelLog(ExcecaoAplicacao excecaoAplicacao)
@@ -174,7 +196,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         switch (excecaoAplicacao.getTipo())
         {
             case ERRO_USUARIO:
-                return Level.SEVERE;
+                return Level.WARNING;
             case ERRO_PROGRAMA:
                 return Level.SEVERE;
             case AVISO:
@@ -195,6 +217,10 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
 
         }
 
+        public String getFullStack() {
+            return construtorTexto.toString();
+        }
+        
         @Override
         public void write(int b) throws IOException
         {
@@ -204,9 +230,10 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         @Override
         public void flush() throws IOException
         {
-            telaExcecaoEncontrada.getAreaTextoStackTrace().append(construtorTexto.toString());
-            construtorTexto.setLength(0);
+            
         }
+        
+        
     }
 
     private int getTipoDialogo(ExcecaoAplicacao excecaoAplicacao)

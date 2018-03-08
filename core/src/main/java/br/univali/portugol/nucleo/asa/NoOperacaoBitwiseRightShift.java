@@ -1,6 +1,5 @@
 package br.univali.portugol.nucleo.asa;
 
-
 /**
  * Representa uma operação de Bitwise Right Shift no código fonte.
  * Esta enumeração representa a operação de <code>Bitwise Right Shift</code> no código fonte e é representada pelo operador "&gt;&gt;".

@@ -1,19 +1,13 @@
 package br.univali.ps.ui;
 
 import br.univali.ps.ui.telas.TelaPrincipal;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.window.ComponentResizer;
 import java.awt.Dimension;
-import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.io.FileUtils;
-
-import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.InstanciaPortugolStudio;
-import br.univali.ps.nucleo.Mutex;
 import br.univali.ps.nucleo.MutexImpl;
 import br.univali.ps.nucleo.NamedThreadFactory;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -22,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,7 +34,7 @@ public class Lancador {
     
     private static JFrame frame;
     private static Dimension olderSize;
-    private static Dimension actualSize;
+    private static Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
     private final static Lancador application = new Lancador();
     

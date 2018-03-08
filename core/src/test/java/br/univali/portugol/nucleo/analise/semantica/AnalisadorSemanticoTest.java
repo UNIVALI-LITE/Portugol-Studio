@@ -2,7 +2,7 @@ package br.univali.portugol.nucleo.analise.semantica;
 
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoInicializado;

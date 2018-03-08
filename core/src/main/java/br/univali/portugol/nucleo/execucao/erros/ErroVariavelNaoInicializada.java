@@ -1,4 +1,3 @@
-
 package br.univali.portugol.nucleo.execucao.erros;
 
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;

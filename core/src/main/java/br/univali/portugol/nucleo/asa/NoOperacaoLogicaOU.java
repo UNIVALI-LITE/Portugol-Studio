@@ -1,6 +1,5 @@
 package br.univali.portugol.nucleo.asa;
 
-
 /**
  * Esta enumeração representa a operação lógica <code>ou</code> no código fonte.
      * <p>

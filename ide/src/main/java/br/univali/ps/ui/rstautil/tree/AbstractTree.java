@@ -6,7 +6,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public abstract class AbstractTree extends JTree
 {
-    
     protected RSyntaxTextArea textArea;
     
     public void refresh() {

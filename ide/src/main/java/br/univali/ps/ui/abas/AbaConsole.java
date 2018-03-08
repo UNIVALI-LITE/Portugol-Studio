@@ -1,6 +1,6 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.es.Armazenador;
 import br.univali.portugol.nucleo.execucao.es.Entrada;

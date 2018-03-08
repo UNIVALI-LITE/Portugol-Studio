@@ -1,4 +1,3 @@
-
 package br.univali.portugol.nucleo;
 
 import java.util.concurrent.ThreadFactory;

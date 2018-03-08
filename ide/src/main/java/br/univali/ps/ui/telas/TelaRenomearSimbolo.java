@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.telas;
 
 import java.awt.Color;
@@ -39,6 +34,8 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -114,8 +111,8 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         
         if(WeblafUtils.weblafEstaInstalado()){
             WeblafUtils.configuraWebLaf(info);
-            WeblafUtils.configurarBotao(botaoAceitar,ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 4);
-            WeblafUtils.configurarBotao(botaoCancelar,ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 4);
+            WeblafUtils.configurarBotao(botaoAceitar,ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.AMARELO, ColorController.COR_LETRA, 4);
+            WeblafUtils.configurarBotao(botaoCancelar,ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.VERMELHO, ColorController.COR_LETRA, 4);
             WeblafUtils.configuraWebLaf(campoNomeAtual, 2, 2);
             WeblafUtils.configuraWebLaf(campoNovoNome, 2, 2);
         }        
@@ -196,7 +193,7 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
                     info.setVisible(false);
                 }
 
-                acaoAceitar.setEnabled(true);
+                acaoAceitar.setEnabled(true);   
             }
             catch (ErroAoRenomearSimbolo ex)
             {
@@ -231,6 +228,7 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             info.setForeground(ColorController.VERMELHO);
             acaoAceitar.setEnabled(false);
         }
+        alternarCorBotaoAceitar();
     }
 
     private void dispararTimerAtualizacao()
@@ -253,6 +251,7 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         {
             timer.restart();
         }
+        alternarCorBotaoAceitar();
     }
 
     public void exibir(String codigoFonte, int linha, int coluna) throws ExcecaoAplicacao
@@ -293,7 +292,26 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             {
                 throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
             }
+        } catch (ErroAoRenomearSimbolo ex) {
+            if(ex.getTipo() == ErroAoRenomearSimbolo.Tipo.ERRO_USUARIO)
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_USUARIO);
+            }
+            else if(ex.getTipo() == ErroAoRenomearSimbolo.Tipo.MENSAGEM)
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.MENSAGEM);
+            }
+            else if(ex.getTipo() == ErroAoRenomearSimbolo.Tipo.AVISO)
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.AVISO);
+            }
+            else
+            {
+                throw new ExcecaoAplicacao(ex, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
+            }
+            
         }
+        alternarCorBotaoAceitar();
     }
 
     private void definirTituloJanela()
@@ -346,6 +364,13 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             }
         }
     }
+    
+    private void alternarCorBotaoAceitar(){
+        if(acaoAceitar.isEnabled())
+            WeblafUtils.configurarBotao(botaoAceitar,ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.AMARELO, ColorController.COR_LETRA, 4);
+        else
+            WeblafUtils.configurarBotao(botaoAceitar,ColorController.FUNDO_MEDIO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 4);
+    }
 
     public boolean usuarioAceitouRenomear()
     {
@@ -378,8 +403,8 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         campoNomeAtual = new javax.swing.JTextField();
         botoes = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        botaoCancelar = new com.alee.laf.button.WebButton();
         botaoAceitar = new com.alee.laf.button.WebButton();
+        botaoCancelar = new com.alee.laf.button.WebButton();
 
         setMinimumSize(new java.awt.Dimension(160, 160));
         setPreferredSize(new java.awt.Dimension(350, 175));
@@ -439,9 +464,6 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
 
-        botaoCancelar.setText("Cancelar");
-        jPanel1.add(botaoCancelar);
-
         botaoAceitar.setText("Aceitar");
         botaoAceitar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,6 +471,9 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             }
         });
         jPanel1.add(botaoAceitar);
+
+        botaoCancelar.setText("Cancelar");
+        jPanel1.add(botaoCancelar);
 
         botoes.add(jPanel1, java.awt.BorderLayout.EAST);
 

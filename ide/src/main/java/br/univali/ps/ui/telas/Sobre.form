@@ -190,7 +190,7 @@
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[48, 40]"/>
             </Property>
-            <Property name="name" type="java.lang.String" value="http://www.univali.br/ensino/graduacao/cttmar/cursos/ciencia-da-computacao/ciencia-da-computacao-itajai/Paginas/default.aspx" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="https://www.univali.br/graduacao/ciencia-da-computacao-itajai/Paginas/default.aspx" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="rotuloBitRock">

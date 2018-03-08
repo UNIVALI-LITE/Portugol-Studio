@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.graficos;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -16,9 +16,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -86,7 +85,7 @@ public final class JanelaGraficaImpl extends JFrame implements JanelaGrafica
     }
 
     @Override
-    public void instalarTeclado(final KeyListener observadorTeclado) throws ErroExecucaoBiblioteca
+    public void instalarTeclado(final KeyListener observadorTeclado, WindowListener observadorJanela) throws ErroExecucaoBiblioteca
     {
         Swing.executarTarefa(new Runnable()
         {
@@ -94,6 +93,7 @@ public final class JanelaGraficaImpl extends JFrame implements JanelaGrafica
             public void run()
             {
                 addKeyListener(observadorTeclado);
+                addWindowListener(observadorJanela);
             }
         });
     }
