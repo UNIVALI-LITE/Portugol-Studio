@@ -110,11 +110,11 @@ public final class PoolOperacoesGraficas
         return operacaoDesenhoLinha;
     }
 
-    public DesenhoPoligono obterOperacaoDesenhoPoligono(int[][] pontos, boolean preencher, double rotacao, int opacidade)
+    public DesenhoPoligono obterOperacaoDesenhoPoligono(SuperficieDesenho superficieDesenho, int[][] pontos, boolean preencher, double rotacao, int opacidade)
     {
         DesenhoPoligono operacaoDesenhoPoligono = CACHE_OPERACOES_DESENHO_POLIGONO.obter();
 
-        operacaoDesenhoPoligono.setParametros(pontos, preencher, rotacao, opacidade);
+        operacaoDesenhoPoligono.setParametros(superficieDesenho, pontos, preencher, rotacao, opacidade);
 
         return operacaoDesenhoPoligono;
     }

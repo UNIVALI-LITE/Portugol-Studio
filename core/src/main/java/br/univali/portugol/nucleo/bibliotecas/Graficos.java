@@ -380,7 +380,40 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
             throw new ErroExcessoOperacoes();
         }            
     }
-
+    
+    @DocumentacaoFuncao(
+        descricao
+        = "Desenha poligono",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "pontos", descricao = "a largura do retângulo em pixels"),
+            
+            @DocumentacaoParametro(
+                    nome = "preencher",
+                    descricao
+                    = "define se o retângulo será preenchido com a cor do ambiente gráfico. "
+                    + "Se o valor for <tipo>verdadeiro</tipo>, o retângulo será preenchido. Se o valor for "
+                    + "<tipo>falso</tipo>, somente o contorno do retângulo será desenhado"
+            )
+        },
+        autores =
+        {
+            @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br"),
+            @Autor(nome = "Fillipi Domingos Pelz", email = "fillipi@univali.br")
+        }
+    )
+    public void desenhar_poligono(final int[][] pontos, final boolean preencher) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            superficieDesenho.desenharPoligono(pontos, preencher);
+        }
+        catch(IllegalStateException e)
+        {
+            throw new ErroExcessoOperacoes();
+        }            
+    };
+    
     @DocumentacaoFuncao(
         descricao
         = "Desenha uma elipse na posição definida pelos parâmetros <param>x</param> e <param>y</param> "

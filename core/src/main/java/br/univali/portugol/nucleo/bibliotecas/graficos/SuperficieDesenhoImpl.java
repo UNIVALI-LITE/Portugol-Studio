@@ -419,7 +419,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         
-        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoPoligono(pontos, preencher, rotacao, opacidade);
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoPoligono(this, pontos, preencher, rotacao, opacidade);
         indiceOperacao++;
     }
 
