@@ -65,11 +65,33 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     @DocumentacaoConstante(descricao = "constante que representa a cor 'amarelo'")
     public static final int COR_AMARELO = Color.YELLOW.getRGB();
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
-    public static final int GRADIENTE_INFERIOR_DIREITO = 1;
+    
     
     @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
-    public static final int GRADIENTE_LINEAR = 0;
+    public static final int GRADIENTE_DIREITA = 0;
+        
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ESQUERDA = 1;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ACIMA = 2;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ABAIXO = 3;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_INFERIOR_DIREITO = 4;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_INFERIOR_ESQUERDO = 5;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_SUPERIOR_DIREITO = 6;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_SUPERIOR_ESQUERDO = 7;
+    
+    
     
     @DocumentacaoConstante(descricao = "constante que representa o canal 'VERMELHO'")
     public static final int CANAL_R = 0;

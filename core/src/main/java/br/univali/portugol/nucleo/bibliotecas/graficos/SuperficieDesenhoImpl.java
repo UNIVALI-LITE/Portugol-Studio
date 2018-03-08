@@ -199,7 +199,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         
-        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoElipse(x, y, largura, altura, preencher, rotacao, opacidade);
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoElipse(this, x, y, largura, altura, preencher, rotacao, opacidade);
         indiceOperacao++;
     }
 
@@ -208,7 +208,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         
-        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoLinha(x1, y1, x2, y2, rotacao, opacidade);
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoLinha(this, x1, y1, x2, y2, rotacao, opacidade);
         indiceOperacao++;
     }
 

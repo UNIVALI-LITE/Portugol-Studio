@@ -45,15 +45,7 @@ public final class DesenhoRetangulo extends OperacaoDesenho
     public void desenhar(Graphics2D graficos)
     {
         SuperficieDesenho.InformacaoGradiente gradientInfo = superficieDesenho.getInformacaoGradiente();
-        if(gradientInfo!=null){
-            GradientPaint paint = new GradientPaint(x, y+altura/2, gradientInfo.cor1,x+largura, y+altura/2, gradientInfo.cor2);;
-            if(gradientInfo.tipo == Graficos.GRADIENTE_INFERIOR_DIREITO){
-                paint = new GradientPaint(x, y, gradientInfo.cor1,x+largura, y+altura, gradientInfo.cor2);
-            }else if(gradientInfo.tipo == Graficos.GRADIENTE_LINEAR){
-                paint = new GradientPaint(x, y+altura/2, gradientInfo.cor1,x+largura, y+altura/2, gradientInfo.cor2);
-            }
-            graficos.setPaint(paint);
-        }
+        GradientUtils.doGradient(graficos, gradientInfo, this, altura, largura);
         if (preencher)
         {
             if (arredondarCantos)

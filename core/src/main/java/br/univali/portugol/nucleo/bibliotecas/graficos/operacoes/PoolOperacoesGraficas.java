@@ -92,20 +92,20 @@ public final class PoolOperacoesGraficas
         return desenhoRetangulo;
     }
 
-    public DesenhoElipse obterOperacaoDesenhoElipse(int x, int y, int largura, int altura, boolean preencher, double rotacao, int opacidade)
+    public DesenhoElipse obterOperacaoDesenhoElipse(SuperficieDesenho superficieDesenho, int x, int y, int largura, int altura, boolean preencher, double rotacao, int opacidade)
     {
         DesenhoElipse desenhoElipse = CACHE_OPERACOES_DESENHO_ELIPSE.obter();
 
-        desenhoElipse.setParametros(x, y, largura, altura, preencher, rotacao, opacidade);
+        desenhoElipse.setParametros(superficieDesenho,x, y, largura, altura, preencher, rotacao, opacidade);
 
         return desenhoElipse;
     }
 
-    public DesenhoLinha obterOperacaoDesenhoLinha(int x1, int y1, int x2, int y2, double rotacao, int opacidade)
+    public DesenhoLinha obterOperacaoDesenhoLinha(SuperficieDesenho superficieDesenho,int x1, int y1, int x2, int y2, double rotacao, int opacidade)
     {
         DesenhoLinha operacaoDesenhoLinha = CACHE_OPERACOES_DESENHO_LINHA.obter();
 
-        operacaoDesenhoLinha.setParametros(x1, y1, x2, y2, rotacao, opacidade);
+        operacaoDesenhoLinha.setParametros(superficieDesenho, x1, y1, x2, y2, rotacao, opacidade);
 
         return operacaoDesenhoLinha;
     }
