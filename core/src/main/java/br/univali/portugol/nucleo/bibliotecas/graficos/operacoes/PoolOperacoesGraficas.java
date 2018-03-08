@@ -1,7 +1,9 @@
 package br.univali.portugol.nucleo.bibliotecas.graficos.operacoes;
 
+import br.univali.portugol.nucleo.bibliotecas.graficos.SuperficieDesenho;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesDefinirCor;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesDefinirFonte;
+import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesDefinirGradiente;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesDesenhoElipse;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesDesenhoImagem;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesDesenhoLinha;
@@ -36,6 +38,7 @@ public final class PoolOperacoesGraficas
     private final CacheOperacoesDefinirCor CACHE_OPERACOES_DEFINIR_COR;
     private final CacheOperacoesDefinirFonte CACHE_OPERACOES_DEFINIR_FONTE;
     private final CacheOperacoesLimpar CACHE_OPERACOES_LIMPAR;
+    private final CacheOperacoesDefinirGradiente CACHE_OPERACOES_DEFINIR_GRADIENTE;
 
     public PoolOperacoesGraficas()
     {
@@ -50,6 +53,7 @@ public final class PoolOperacoesGraficas
         CACHE_OPERACOES_DEFINIR_COR = new CacheOperacoesDefinirCor(QUANTIDADE_MAXIMA_OPERACOES, QUANTIDADE_INICIAL_OPERACOES);
         CACHE_OPERACOES_DEFINIR_FONTE = new CacheOperacoesDefinirFonte(QUANTIDADE_MAXIMA_OPERACOES, QUANTIDADE_INICIAL_OPERACOES);
         CACHE_OPERACOES_LIMPAR = new CacheOperacoesLimpar(QUANTIDADE_MAXIMA_OPERACOES, QUANTIDADE_INICIAL_OPERACOES);
+        CACHE_OPERACOES_DEFINIR_GRADIENTE = new CacheOperacoesDefinirGradiente(QUANTIDADE_MAXIMA_OPERACOES, QUANTIDADE_INICIAL_OPERACOES);
     }
 
     public DesenhoImagem obterOperacaoDesenhoImagem(int x, int y, BufferedImage imagem, int opacidade, double rotacao)
@@ -61,20 +65,29 @@ public final class PoolOperacoesGraficas
         return desenhoImagem;
     }
 
-    public OperacaoDefinirCor obterOperacaoDefinirCor(Color cor)
+    public OperacaoDefinirCor obterOperacaoDefinirCor(SuperficieDesenho superficieDesenho, Color cor)
     {
         OperacaoDefinirCor operacaoDefinirCor = CACHE_OPERACOES_DEFINIR_COR.obter();
 
-        operacaoDefinirCor.setParametros(cor);
+        operacaoDefinirCor.setParametros(superficieDesenho, cor);
 
         return operacaoDefinirCor;
     }
 
-    public DesenhoRetangulo obterOperacaoDesenhoRetangulo(int x, int y, int largura, int altura, boolean arredondarCantos, boolean preencher, double rotacao, int opacidade)
+    public OperacaoDefinirGradiente obterOperacaoDefinirGradiente(SuperficieDesenho superficieDesenho, int tipo, int cor1, int cor2)
+    {
+        OperacaoDefinirGradiente operacaoDefinirGradiente = CACHE_OPERACOES_DEFINIR_GRADIENTE.obter();
+
+        operacaoDefinirGradiente.setParametros(superficieDesenho, tipo, cor1, cor2);
+
+        return operacaoDefinirGradiente;
+    }
+    
+    public DesenhoRetangulo obterOperacaoDesenhoRetangulo(SuperficieDesenho superficieDesenho, int x, int y, int largura, int altura, boolean arredondarCantos, boolean preencher, double rotacao, int opacidade)
     {
         DesenhoRetangulo desenhoRetangulo = CACHE_OPERACOES_DESENHO_RETANGULO.obter();
 
-        desenhoRetangulo.setParametros(x, y, largura, altura, preencher, arredondarCantos, rotacao, opacidade);
+        desenhoRetangulo.setParametros(superficieDesenho, x, y, largura, altura, preencher, arredondarCantos, rotacao, opacidade);
 
         return desenhoRetangulo;
     }

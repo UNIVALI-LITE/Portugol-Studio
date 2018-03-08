@@ -65,6 +65,12 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     @DocumentacaoConstante(descricao = "constante que representa a cor 'amarelo'")
     public static final int COR_AMARELO = Color.YELLOW.getRGB();
     
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_INFERIOR_DIREITO = 1;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_LINEAR = 0;
+    
     @DocumentacaoConstante(descricao = "constante que representa o canal 'VERMELHO'")
     public static final int CANAL_R = 0;
     
@@ -1161,6 +1167,35 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
             throw new ErroExcessoOperacoes();
         }
     }
+    
+    @DocumentacaoFuncao(
+        descricao
+        = "Define a cor atual do ambiente gráfico. Esta cor será utilizada para desenhar e preencher "
+        + "as primitivas gráficas (ponto, linha, retângulo, etc.) e, como cor de fundo ao limpar "
+        + "o ambiente gráfico ou desenhar um texto",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "tipo", descricao = "a nova cor do ambiente gráfico"),
+            @DocumentacaoParametro(nome = "cor1", descricao = "a nova cor do ambiente gráfico"),
+            @DocumentacaoParametro(nome = "cor2", descricao = "a nova cor do ambiente gráfico")
+            
+        },
+        autores =
+        {
+            @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
+        }
+    )
+    public void definir_gradiente(final int tipo, final int cor1,final int cor2) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            superficieDesenho.definirGradiente(tipo, cor1, cor2);
+        }
+        catch(IllegalStateException e)
+        {
+            throw new ErroExcessoOperacoes();
+        }
+    }
 
     @DocumentacaoFuncao(
         descricao = "Define a fonte que será utilizada para desenhar um texto no ambiente gráfico",
@@ -1574,3 +1609,4 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         
     }
 }
+

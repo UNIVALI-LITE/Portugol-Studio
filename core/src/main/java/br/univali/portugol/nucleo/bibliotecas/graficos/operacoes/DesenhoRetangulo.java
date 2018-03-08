@@ -1,6 +1,10 @@
 package br.univali.portugol.nucleo.bibliotecas.graficos.operacoes;
 
+import br.univali.portugol.nucleo.bibliotecas.Graficos;
+import br.univali.portugol.nucleo.bibliotecas.graficos.SuperficieDesenho;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesGraficas;
+import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 
 /**
@@ -9,6 +13,7 @@ import java.awt.Graphics2D;
  */
 public final class DesenhoRetangulo extends OperacaoDesenho
 {
+    private SuperficieDesenho superficieDesenho;
     private boolean preencher;
     private boolean arredondarCantos;
     private int canto;
@@ -20,8 +25,9 @@ public final class DesenhoRetangulo extends OperacaoDesenho
         super(cache);
     }
     
-    void setParametros(int x, int y, int largura, int altura, boolean preencher, boolean arredondarCantos, double rotacao, int opacidade)
+    void setParametros(SuperficieDesenho superficieDesenho, int x, int y, int largura, int altura, boolean preencher, boolean arredondarCantos, double rotacao, int opacidade)
     {
+        this.superficieDesenho = superficieDesenho;
         this.x = x;
         this.y = y;
         this.largura = largura;
@@ -38,6 +44,16 @@ public final class DesenhoRetangulo extends OperacaoDesenho
     @Override
     public void desenhar(Graphics2D graficos)
     {
+        SuperficieDesenho.InformacaoGradiente gradientInfo = superficieDesenho.getInformacaoGradiente();
+        if(gradientInfo!=null){
+            GradientPaint paint = new GradientPaint(x, y+altura/2, gradientInfo.cor1,x+largura, y+altura/2, gradientInfo.cor2);;
+            if(gradientInfo.tipo == Graficos.GRADIENTE_INFERIOR_DIREITO){
+                paint = new GradientPaint(x, y, gradientInfo.cor1,x+largura, y+altura, gradientInfo.cor2);
+            }else if(gradientInfo.tipo == Graficos.GRADIENTE_LINEAR){
+                paint = new GradientPaint(x, y+altura/2, gradientInfo.cor1,x+largura, y+altura/2, gradientInfo.cor2);
+            }
+            graficos.setPaint(paint);
+        }
         if (preencher)
         {
             if (arredondarCantos)
