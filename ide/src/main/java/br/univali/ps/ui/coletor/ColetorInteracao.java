@@ -42,33 +42,41 @@ public class ColetorInteracao
         adicionarListeners(frame);
     }
 
+    
     private void adicionarListeners(Component componente)
     {
+    
         // evita adicionar o listener mais de uma vez no mesmo componente
+        //System.out.println(componente.getName() + " - " + componentesRegistrados.contains(componente)+ " -|- " + (componente instanceof Container));
         if (!componentesRegistrados.contains(componente)) {
             componente.addMouseListener(listenerMouse);
             LOGGER.log(Level.INFO, "Adicionou listener em {0}", componente.getName());
+            //System.out.println("Adicionou listner em "+componente.getName());
             componentesRegistrados.add(componente);
-        }
+            
+            if (componente instanceof Container) {
 
-        if (componente instanceof Container) {
-
-            Container container = (Container) componente;
-            int filhos = container.getComponentCount();
-            for (int i = 0; i < filhos; i++) {
-                adicionarListeners(container.getComponent(i));
-            }
-
-            container.addContainerListener(new ContainerAdapter()
-            {
-                @Override
-                public void componentAdded(ContainerEvent e)
-                {
-                    adicionarListeners(e.getComponent());
+                Container container = (Container) componente;
+                int filhos = container.getComponentCount();
+                for (int i = 0; i < filhos; i++) {
+                    //System.out.println("Filho de "+container.getName() + " - " + container.getComponent(i).getName());
+                    adicionarListeners(container.getComponent(i));
                 }
 
-            });
+                container.addContainerListener(new ContainerAdapter()
+                {
+                    @Override
+                    public void componentAdded(ContainerEvent e)
+                    {
+                        //System.out.println("Component " + e.getChild().getName() + " added to " + e.getContainer().getName());
+                        adicionarListeners(e.getChild());
+                    }
+
+                });
+            }
         }
+
+        
     }
 
     private void adicionaInteracao(MouseEvent evento)
