@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.graficos.operacoes;
 
+import br.univali.portugol.nucleo.bibliotecas.graficos.SuperficieDesenho;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.cache.CacheOperacoesGraficas;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -12,14 +13,20 @@ public final class DesenhoPoligono extends OperacaoDesenho
 {
     private boolean preencher;
     private Polygon poligono;
-
+    private SuperficieDesenho superficieDesenho;
+    private int xMaximo = Integer.MIN_VALUE;
+    private int xMinimo = Integer.MAX_VALUE;
+    private int yMaximo = Integer.MIN_VALUE;
+    private int yMinimo = Integer.MAX_VALUE;
+    
     public DesenhoPoligono(CacheOperacoesGraficas<DesenhoPoligono> cache)
     {
         super(cache);
     }
 
-    void setParametros(int[][] pontos, boolean preencher, double rotacao, int opacidade)
+    void setParametros(SuperficieDesenho superficieDesenho, int[][] pontos, boolean preencher, double rotacao, int opacidade)
     {
+        this.superficieDesenho = superficieDesenho;
         this.rotacao = rotacao;
         this.opacidade = opacidade;
         this.preencher = preencher;
@@ -27,6 +34,8 @@ public final class DesenhoPoligono extends OperacaoDesenho
         this.centroX = calculaCentroX(pontos);
         this.centroY = calculaCentroY(pontos);
         this.poligono = criarPoligono(pontos);
+        this.x = xMinimo;
+        this.y = yMinimo;
     }
 
     private Polygon criarPoligono(int[][] pontos)
@@ -44,8 +53,8 @@ public final class DesenhoPoligono extends OperacaoDesenho
     private int calculaCentroX(int[][] pontos)
     {
         int lx;
-        int xMaximo = Integer.MIN_VALUE;
-        int xMinimo = Integer.MAX_VALUE;
+        xMaximo = Integer.MIN_VALUE;
+        xMinimo = Integer.MAX_VALUE;
 
         for (int i = 0; i < pontos.length; i++)
         {
@@ -70,8 +79,8 @@ public final class DesenhoPoligono extends OperacaoDesenho
     private int calculaCentroY(int[][] pontos)
     {
         int ly;
-        int yMaximo = Integer.MIN_VALUE;
-        int yMinimo = Integer.MAX_VALUE;
+        yMaximo = Integer.MIN_VALUE;
+        yMinimo = Integer.MAX_VALUE;
 
         for (int i = 0; i < pontos.length; i++)
         {
@@ -96,6 +105,8 @@ public final class DesenhoPoligono extends OperacaoDesenho
     @Override
     public void desenhar(Graphics2D graficos)
     {
+        SuperficieDesenho.InformacaoGradiente gradientInfo = superficieDesenho.getInformacaoGradiente();
+        GradientUtils.doGradient(graficos, gradientInfo, this, yMaximo-yMinimo, xMaximo-xMinimo);
         if (preencher)
         {
             graficos.fill(poligono);

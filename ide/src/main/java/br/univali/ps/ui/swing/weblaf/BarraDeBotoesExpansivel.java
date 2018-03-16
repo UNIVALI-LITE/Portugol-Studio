@@ -34,7 +34,6 @@ public final class BarraDeBotoesExpansivel extends WebButton
     public BarraDeBotoesExpansivel()
     {
         super();
-        
         menu = new WebPopupMenu();
         menu.setFont(getFont());
         menu.setBorderColor(ColorController.FUNDO_ESCURO);

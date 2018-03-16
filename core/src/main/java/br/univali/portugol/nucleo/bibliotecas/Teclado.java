@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
@@ -13,9 +13,11 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBibliot
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Arrays;
 import java.util.List;
-
 
 @PropriedadesBiblioteca(tipo = TipoBiblioteca.RESERVADA)
 @DocumentacaoBiblioteca
@@ -27,10 +29,11 @@ import java.util.List;
 public final class Teclado extends Biblioteca
 {
     private boolean[] buffer = new boolean[525];
-    private final KeyListener observador;
+    private final KeyListener observadorTeclado;
     private int ultimaTecla = -1;
     private boolean temTeclaPressionada = false;
     private boolean aguardandoTecla = false;
+    private final WindowListener observadorJanela;
 
     @DocumentacaoConstante(descricao = "Código numérico da tecla ENTER no teclado")
     public static final int TECLA_ENTER = KeyEvent.VK_ENTER;
@@ -440,7 +443,7 @@ public final class Teclado extends Biblioteca
     
     public Teclado()
     {
-        observador = new KeyAdapter()
+        observadorTeclado = new KeyAdapter()
         {
             @Override
             public void keyPressed(KeyEvent e)
@@ -460,6 +463,39 @@ public final class Teclado extends Biblioteca
                 {
                     acordarThread();
                 }
+            }
+        };
+        
+        observadorJanela = new WindowAdapter() {
+            @Override
+            public void windowLostFocus(WindowEvent we) {
+                limparEstadoTeclado();
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent we) {
+                limparEstadoTeclado();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent we) {
+                limparEstadoTeclado();
+            }
+            
+            private void limparEstadoTeclado()
+            {
+//                if (aguardandoTecla)
+//                {
+//                    acordarThread();
+//                }
+                for (int i = 0; i < buffer.length; i++)
+                {
+                    buffer[i] = false;
+                }
+                
+                temTeclaPressionada = false;
+                ultimaTecla = -1;
+                
             }
         };
     }
@@ -557,7 +593,7 @@ public final class Teclado extends Biblioteca
     }
     
     @Override
-    protected void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
+    public void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
     {
         instalarTeclado(biblioteca);
     }
@@ -566,12 +602,12 @@ public final class Teclado extends Biblioteca
     {
         if (biblioteca instanceof InstaladorTeclado)
         {
-            ((InstaladorTeclado) biblioteca).instalarTeclado(observador);
+            ((InstaladorTeclado) biblioteca).instalarTeclado(observadorTeclado, observadorJanela);
         }
     }
     
     public interface InstaladorTeclado
     {
-        public void instalarTeclado(KeyListener observadorTeclado) throws ErroExecucaoBiblioteca, InterruptedException;
+        public void instalarTeclado(KeyListener observadorTeclado, WindowListener obervadorJanela) throws ErroExecucaoBiblioteca, InterruptedException;
     }
 }

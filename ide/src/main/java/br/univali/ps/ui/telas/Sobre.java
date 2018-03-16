@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.Configuracoes;
@@ -183,7 +178,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         rotuloUnivali.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rotuloUnivali.setMaximumSize(new java.awt.Dimension(48, 40));
         rotuloUnivali.setMinimumSize(new java.awt.Dimension(48, 40));
-        rotuloUnivali.setName("http://www.univali.br/ensino/graduacao/cttmar/cursos/ciencia-da-computacao/ciencia-da-computacao-itajai/Paginas/default.aspx"); // NOI18N
+        rotuloUnivali.setName("https://www.univali.br/graduacao/ciencia-da-computacao-itajai/Paginas/default.aspx"); // NOI18N
         paineInferior.add(rotuloUnivali);
 
         rotuloBitRock.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N

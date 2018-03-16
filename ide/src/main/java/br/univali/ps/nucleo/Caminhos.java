@@ -7,7 +7,6 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,7 +14,6 @@ import javax.swing.JOptionPane;
  */
 public final class Caminhos
 {
-
     private static final Logger LOGGER = Logger.getLogger(Caminhos.class.getName());
     
     public static final File diretorioInstalacao = obterDiretorioInstalacao();
@@ -157,16 +155,9 @@ public final class Caminhos
     public static boolean rodandoEmDesenvolvimento()
     {
         String path = new File(".").getAbsolutePath();
-        
-        if (rodandoNoWindows()) {
-            return !path.endsWith("Portugol Studio\\.");
-        }
-        else if (rodandoNoLinux()) {
-            return !path.endsWith("portugol-studio/.");
-        }
-       
+                      
         //Mac - quando está instalado o executável do PS fica em /Applications/Portugol Studio.app/Contents/MacOSx
-        return !path.contains("Portugol Studio.app");
+        return (!path.contains("Portugol Studio.app")) && (path.endsWith("ide\\.") || path.endsWith("ide/."));
      }
 
     public static boolean rodandoNoWindows()

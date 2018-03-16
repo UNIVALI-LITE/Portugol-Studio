@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.portugol.nucleo.programa.Estado;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
@@ -10,7 +11,7 @@ import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
@@ -46,6 +47,7 @@ import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.BarraDeBotoesExpansivel;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import com.alee.laf.button.WebButton;
 import java.awt.*;
@@ -187,7 +189,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
-            WeblafUtils.configuraWebLaf(campoBusca, 5, 7);
+            WeblafUtils.configuraWebLaf(campoBusca, 5, 30);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
             WeblafUtils.configurarBotao(btnExecutar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -478,12 +480,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (editor.getFindDialog().isVisible())
-                {
-                    editor.getFindDialog().setVisible(false);
-                }
-
-                editor.getReplaceDialog().setVisible(true);
+                editor.getSearchDialog().setVisible(true);
             }
         };
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
@@ -791,7 +788,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 else
                 {
-                    dialogoSelecaoArquivo.setCurrentDirectory(Configuracoes.getInstancia().getCaminhoUltimoDiretorio());
+                    dialogoSelecaoArquivo.setCurrentDirectory(new File (Configuracoes.getInstancia().getCaminhoUltimoDiretorio()));
                     dialogoSelecaoArquivo.setSelectedFile(new File(""));
                 }
 
@@ -808,7 +805,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     }
                     else
                     {
-                        JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", "Portugol Studio", JOptionPane.WARNING_MESSAGE);
+                        QuestionDialog.getInstance().showMessage("Este arquivo já está aberto em outra aba.\nPor favor feche o arquivo aberto antes de sobrescrevê-lo.", JOptionPane.WARNING_MESSAGE);
                         usuarioCancelouSalvamento = true;
                     }
                     Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
@@ -955,9 +952,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
      */
     private class AcaoExecucao extends AbstractAction 
     {
-        private final Programa.Estado estadoInicial;
+        private final Estado estadoInicial;
 
-        public AcaoExecucao(String nome, Programa.Estado estadoInicial) 
+        public AcaoExecucao(String nome, Estado estadoInicial)
         {
             super(nome);
             this.estadoInicial = estadoInicial;
@@ -1015,7 +1012,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configurarAcaoExecutarPontoParada()
     {
 
-        acaoExecutarPontoParada = new AcaoExecucao("Executar", Programa.Estado.BREAK_POINT);
+        acaoExecutarPontoParada = new AcaoExecucao("Executar", Estado.BREAK_POINT);
 
         String nome = "AcaoPontoParada";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F6");
@@ -1034,7 +1031,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void configurarAcaoExecutarPasso()
     {
 
-        acaoExecutarPasso = new AcaoExecucao("Depurar", Programa.Estado.STEP_OVER);
+        acaoExecutarPasso = new AcaoExecucao("Depurar", Estado.STEP_OVER);
 
         String nome = "AcaoPassoPasso";
         KeyStroke atalho = KeyStroke.getKeyStroke("shift F5");
@@ -1164,7 +1161,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     editor.getTextArea().requestFocusInWindow();
 
                     if (Configuracoes.getInstancia().isExibirAvisoRenomear()) {
-                        JOptionPane.showMessageDialog(AbaCodigoFonte.this, ""
+                        QuestionDialog.getInstance().showMessage(""
                                 + "O Portugol Studio tem uma novidade! Agora você pode renomear elementos do seu programa\n"
                                 + "como, por exemplo, variáveis e funções."
                                 + "\n\n"
@@ -1174,7 +1171,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                                 + "Você também pode renomear através do editor de código fonte, posicionando o cursor do teclado\n"
                                 + "sobre o nome do elemento e pressionando a combinação de teclas: Ctrl + R."
                                 + "\n\n"
-                                + "Que a força esteja com você!!!", "Portugol Studio", JOptionPane.INFORMATION_MESSAGE);
+                                + "Que a força esteja com você!!!", JOptionPane.INFORMATION_MESSAGE);
                         Configuracoes.getInstancia().setExibirAvisoRenomear(false);
                     }
                 });
@@ -1219,7 +1216,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         {
                             if ((programaCompilado != null && programaCompilado.isExecutando()))
                             {
-                                JOptionPane.showMessageDialog(AbaCodigoFonte.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
+                                QuestionDialog.getInstance().showMessage("Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
                                 editor.getTextArea().requestFocusInWindow();
                             }
                             else
@@ -1887,9 +1884,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
 
         if (arquivoModificado())
-        {
-            int resp = JOptionPane.showConfirmDialog(this, String.format("O documento '%s' possui modificações, deseja Salvá-las?", getCabecalho().getTitulo()), "Confirmar", JOptionPane.YES_NO_CANCEL_OPTION);
-
+        {           
+            int resp = QuestionDialog.getInstance().showConfirmMessage(String.format("O documento '%s' possui modificações, deseja Salvá-las?", getCabecalho().getTitulo()));
             if (resp == JOptionPane.YES_OPTION)
             {
                 acaoSalvarArquivo.actionPerformed(null);
@@ -1950,7 +1946,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return editor.getPortugolDocumento();
     }
 
-    private void executar(Programa.Estado estado) throws InterruptedException, ErroCompilacao
+    private void executar(Estado estado) throws InterruptedException, ErroCompilacao
     {
         if (programaCompilado == null)
         {
@@ -2007,7 +2003,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
         else
         {
-            if (estado == Programa.Estado.BREAK_POINT)
+            if (estado == Estado.BREAK_POINT)
             {
                 SwingUtilities.invokeLater(() -> {
                     editor.removerHighlightsDepuracao();

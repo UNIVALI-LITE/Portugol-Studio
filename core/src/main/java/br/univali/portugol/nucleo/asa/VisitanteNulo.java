@@ -138,7 +138,8 @@ public class VisitanteNulo extends VisitanteASABasico {
 
     @Override
     public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA {
-        return null;
+        TipoDado tipo = (TipoDado) noMenosUnario.getExpressao().aceitar(this);
+        return tipo;
     }
 
     @Override

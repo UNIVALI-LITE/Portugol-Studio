@@ -4,7 +4,7 @@ import br.univali.portugol.corretor.dinamico.model.*;
 import br.univali.portugol.corretor.estatico.rules.Dica;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.*;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.mensagens.Mensagem;

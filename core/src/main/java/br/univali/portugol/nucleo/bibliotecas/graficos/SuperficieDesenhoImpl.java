@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.portugol.nucleo.bibliotecas.graficos;
 
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.PoolOperacoesGraficas;
 import br.univali.portugol.nucleo.bibliotecas.graficos.operacoes.OperacaoGrafica;
 import java.awt.Canvas;
@@ -19,14 +15,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  *
  * @author Luiz Fernando
  */
-final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
+final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho 
 {
     private final PoolOperacoesGraficas POOL_OPERACOES_GRAFICAS = new PoolOperacoesGraficas();
 
@@ -46,10 +44,13 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     private double rotacao = 0.0;
     private int opacidade = 255;
     private Color cor = new Color(0, 0, 0, opacidade);
+    private InformacaoGradiente gradientInfo;
 
     private BufferStrategy buffer;
     private Rectangle areaGrafica;
 
+   
+    
     public SuperficieDesenhoImpl()
     {
         setIgnoreRepaint(true);
@@ -74,8 +75,12 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void renderizar()
+    public void renderizar() throws ErroExecucaoBiblioteca
     {
+        if(buffer == null)
+        {
+         throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         do
         {
             do
@@ -129,9 +134,13 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void limpar()
+    public void limpar() throws ErroExecucaoBiblioteca
     {
         verificaExcessoOperacoes();
+        if(areaGrafica == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoLimpar(areaGrafica.width, areaGrafica.height);
         indiceOperacao++;
     }
@@ -141,9 +150,27 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         this.cor = obterCorTransparente(cor, opacidade);
-        this.operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDefinirCor(this.cor);
-
+        this.operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDefinirCor(this, this.cor);
+        
+        
         indiceOperacao++;
+    }
+
+    @Override
+    public void definirGradiente(int tipo, int cor, int cor2) {
+        
+        this.operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDefinirGradiente(this, tipo, cor, cor2);
+        
+        indiceOperacao++;
+    }
+
+    @Override
+    public void registrarGradiente(int tipo, int cor1, int cor2) {
+        
+        gradientInfo = new InformacaoGradiente();
+        gradientInfo.cor1 = obterCorTransparente(cor1, opacidade); 
+        gradientInfo.cor2 = obterCorTransparente(cor2, opacidade);
+        gradientInfo.tipo = tipo;
     }
 
     @Override
@@ -153,7 +180,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
         
         this.opacidade = opacidade;
         this.cor = obterCorTransparente(this.cor.getRGB(), opacidade);
-        this.operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDefinirCor(this.cor);
+        this.operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDefinirCor(this, this.cor);
 
         indiceOperacao++;
     }
@@ -163,7 +190,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         
-        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoRetangulo(x, y, largura, altura, arredondarCantos, preencher, rotacao, opacidade);
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoRetangulo(this, x, y, largura, altura, arredondarCantos, preencher, rotacao, opacidade);
         indiceOperacao++;
     }
 
@@ -172,7 +199,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         
-        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoElipse(x, y, largura, altura, preencher, rotacao, opacidade);
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoElipse(this, x, y, largura, altura, preencher, rotacao, opacidade);
         indiceOperacao++;
     }
 
@@ -181,7 +208,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         
-        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoLinha(x1, y1, x2, y2, rotacao, opacidade);
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoLinha(this, x1, y1, x2, y2, rotacao, opacidade);
         indiceOperacao++;
     }
 
@@ -195,10 +222,13 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void definirFonteTexto(String nome)
+    public void definirFonteTexto(String nome) throws ErroExecucaoBiblioteca
     {
         verificaExcessoOperacoes();
-        
+        if(fonteTexto == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         fonteTexto = getFonte(nome, fonteTexto.getStyle(), usandoSublinhado, fonteTexto.getSize2D());
 
         dimensoesFonte = getFontMetrics(fonteTexto);
@@ -207,10 +237,13 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public void definirEstiloTexto(boolean italico, boolean negrito, boolean sublinhado)
-    {
+    public void definirEstiloTexto(boolean italico, boolean negrito, boolean sublinhado) throws ErroExecucaoBiblioteca{
         verificaExcessoOperacoes();
-        
+    
+        if(fonteTexto == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         this.usandoSublinhado = sublinhado;
         String nomeFonte = fonteTexto.getName();
         int estilo = getEstilo(negrito, italico);
@@ -321,14 +354,22 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     }
 
     @Override
-    public int alturaTexto(String texto)
+    public int alturaTexto(String texto) throws ErroExecucaoBiblioteca
     {
+        if(dimensoesFonte == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         return dimensoesFonte.getAscent() + dimensoesFonte.getLeading();
     }
 
     @Override
-    public int larguraTexto(String texto)
+    public int larguraTexto(String texto) throws ErroExecucaoBiblioteca
     {
+        if(dimensoesFonte == null)
+        {
+            throw new ErroExecucaoBiblioteca("O modo gráfico não foi inicializado");
+        }
         return dimensoesFonte.stringWidth(texto);
     }
 
@@ -378,7 +419,7 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
     {
         verificaExcessoOperacoes();
         
-        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoPoligono(pontos, preencher, rotacao, opacidade);
+        operacoes[indiceOperacao] = POOL_OPERACOES_GRAFICAS.obterOperacaoDesenhoPoligono(this, pontos, preencher, rotacao, opacidade);
         indiceOperacao++;
     }
 
@@ -396,4 +437,16 @@ final class SuperficieDesenhoImpl extends Canvas implements SuperficieDesenho
             throw new IllegalStateException("A quantidade máxima de operações foi excedida!");
         }
     }
+
+    @Override
+    public InformacaoGradiente getInformacaoGradiente() {
+        return gradientInfo;
+    }
+
+    @Override
+    public void removerGradiente() {
+        gradientInfo = null;
+    }
+    
+    
 }

@@ -1,20 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.swing.weblaf;
 
 import br.univali.ps.ui.swing.ColorController;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.tree.TreePath;
 
 /**
  *
@@ -24,7 +15,6 @@ public class PSTreeUI extends BasicTreeUI {
 
     @Override
     public void paint(Graphics g, JComponent c) {
-        
         JTree tree = (JTree) c;
         
         if(tree.isOpaque()){

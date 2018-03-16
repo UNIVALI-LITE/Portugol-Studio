@@ -21,9 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Esta classe percorre a ASA gerada a partir do código fonte para detectar
+ * Percorre a {@link ASA} gerada a partir do código fonte para detectar
  * erros de semântica.
- *
  *
  * @version 2.0
  *
@@ -51,9 +50,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     private boolean passandoReferencia = false;
     private boolean passandoParametro = false;
 
-    public final static String FUNCAO_LEIA = "leia";
-    public final static String FUNCAO_ESCREVA = "escreva";
     public static final String FUNCAO_LIMPA = "limpa";
+    public static final String FUNCAO_LEIA = "leia";
+    public static final String FUNCAO_ESCREVA = "escreva";
 
     private int totalVariaveisDeclaradas = 0; // conta variáveis e parâmetros declarados
     private int totalVetoresDeclarados = 0;
@@ -265,8 +264,6 @@ public final class AnalisadorSemantico implements VisitanteASA
             }
         }
     }
-
-        
 
     private List<ModoAcesso> obterModosAcessoPassados(NoChamadaFuncao chamadaFuncao)
     {
@@ -915,7 +912,9 @@ public final class AnalisadorSemantico implements VisitanteASA
 
                 if (bigProduto.compareTo(bigMax) > 0)
                 {
-                    notificarErroSemantico(new ErroTamanhoMaximoMatriz(linhas, colunas, nome, bigProduto, noDeclaracaoMatriz.getTrechoCodigoFonteNome()));
+                    notificarErroSemantico(
+                            new ErroTamanhoMaximoMatriz(linhas, colunas, nome, bigProduto,
+                            noDeclaracaoMatriz.getTrechoCodigoFonteNome()));
                 }
             }
 
@@ -954,7 +953,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 if (FUNCOES_RESERVADAS.contains(nome))
                 {
                     matriz.setRedeclarado(true);
-                    Funcao funcaoSistam = new Funcao(nome, TipoDado.VAZIO, Quantificador.VETOR, null, null);
+                    Funcao funcaoSistam = new Funcao(nome, TipoDado.VAZIO, Quantificador.VETOR);
                     notificarErroSemantico(new ErroSimboloRedeclarado(matriz, funcaoSistam));
                 }
                 else
@@ -986,7 +985,10 @@ public final class AnalisadorSemantico implements VisitanteASA
 
                         if (linhas != numeroLinhasDeclaradas)
                         {
-                            notificarErroSemantico(new ErroQuantidadeLinhasIncializacaoMatriz(noDeclaracaoMatriz.getInicializacao().getTrechoCodigoFonte(), nome, linhas, numeroLinhasDeclaradas));
+                            notificarErroSemantico(
+                                    new ErroQuantidadeLinhasIncializacaoMatriz(
+                                            noDeclaracaoMatriz.getInicializacao().getTrechoCodigoFonte(),
+                                            nome, linhas, numeroLinhasDeclaradas));
                         }
                     }
 
@@ -998,7 +1000,10 @@ public final class AnalisadorSemantico implements VisitanteASA
 
                             if (colunas != valores.get(linha).size())
                             {
-                                notificarErroSemantico(new ErroQuantidadeElementosColunaInicializacaoMatriz(noDeclaracaoMatriz.getInicializacao().getTrechoCodigoFonte(), nome, linha, colunas, valores.get(linha).size()));
+                                notificarErroSemantico(
+                                        new ErroQuantidadeElementosColunaInicializacaoMatriz(
+                                                noDeclaracaoMatriz.getInicializacao().getTrechoCodigoFonte(),
+                                                nome, linha, colunas, valores.get(linha).size()));
                             }
                         }
                     }
@@ -1013,7 +1018,8 @@ public final class AnalisadorSemantico implements VisitanteASA
                             {
                                 if (!(valores.get(linha).get(coluna) instanceof NoExpressaoLiteral))
                                 {
-                                    notificarErroSemantico(new ErroInicializacaoConstante(noDeclaracaoMatriz, linha, coluna));
+                                    notificarErroSemantico(
+                                            new ErroInicializacaoConstante(noDeclaracaoMatriz, linha, coluna));
                                 }
                             }
                         }
@@ -1045,7 +1051,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                         colunas = 0;
                     }
 
-                    notificarErroSemantico(new ErroAoInicializarMatriz(matriz, noDeclaracaoMatriz.getInicializacao().getTrechoCodigoFonte(), linhas, colunas));
+                    notificarErroSemantico(
+                            new ErroAoInicializarMatriz(
+                                    matriz, noDeclaracaoMatriz.getInicializacao().getTrechoCodigoFonte(),
+                                    linhas, colunas));
                 }
             }
 
@@ -1101,7 +1110,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 if (FUNCOES_RESERVADAS.contains(nome))
                 {
                     variavel.setRedeclarado(true);
-                    Funcao funcaoSistam = new Funcao(nome, TipoDado.VAZIO, Quantificador.VETOR, null, null);
+                    Funcao funcaoSistam = new Funcao(nome, TipoDado.VAZIO, Quantificador.VETOR);
                     notificarErroSemantico(new ErroSimboloRedeclarado(variavel, funcaoSistam));
                 }
                 else
@@ -1122,7 +1131,8 @@ public final class AnalisadorSemantico implements VisitanteASA
             {
                 // Posteriormente restringir na gramática para não permitir atribuir vetor ou matriz a uma variável comum
 
-                if (!(declaracaoVariavel.getInicializacao() instanceof NoVetor) && !(declaracaoVariavel.getInicializacao() instanceof NoMatriz))
+                if (!(declaracaoVariavel.getInicializacao() instanceof NoVetor) &&
+                    !(declaracaoVariavel.getInicializacao() instanceof NoMatriz))
                 {
                     NoExpressao inicializacao = declaracaoVariavel.getInicializacao();
                     NoReferenciaVariavel referencia = new NoReferenciaVariavel(null, nome);
@@ -1191,7 +1201,8 @@ public final class AnalisadorSemantico implements VisitanteASA
             {
                 if (tamanho > Vetor.TAMANHO_MAXIMO)
                 {
-                    notificarErroSemantico(new ErroTamanhoMaximoVetor(tamanho, nome, noDeclaracaoVetor.getTrechoCodigoFonteNome()));
+                    notificarErroSemantico(
+                            new ErroTamanhoMaximoVetor(tamanho, nome, noDeclaracaoVetor.getTrechoCodigoFonteNome()));
                 }
             }
             Vetor vetor = new Vetor(nome, tipoDados, noDeclaracaoVetor, 1);
@@ -1228,7 +1239,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 if (FUNCOES_RESERVADAS.contains(nome))
                 {
                     vetor.setRedeclarado(true);
-                    Funcao funcaoSistam = new Funcao(nome, TipoDado.VAZIO, Quantificador.VETOR, null, null);
+                    Funcao funcaoSistam = new Funcao(nome, TipoDado.VAZIO, Quantificador.VETOR);
                     notificarErroSemantico(new ErroSimboloRedeclarado(vetor, funcaoSistam));
                 }
                 else
@@ -1528,9 +1539,22 @@ public final class AnalisadorSemantico implements VisitanteASA
                          * o mapa interno, caso contrário vai dar NullPointerException.
                          */
                         final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(referencia.getEscopo());
-                        final MetaDadosConstante metaDadosConstante = metaDadosBiblioteca.getMetaDadosConstantes().obter(referencia.getNome());
-
-                        notificarErroSemantico(new ErroAtribuirConstanteBiblioteca(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), metaDadosConstante, metaDadosBiblioteca));
+                        if(metaDadosBiblioteca == null)
+                        {
+                            notificarErroSemantico(new ErroAliasInexistente(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), referencia.getEscopo()));
+                        }
+                        else
+                        {
+                            final MetaDadosConstante metaDadosConstante = metaDadosBiblioteca.getMetaDadosConstantes().obter(referencia.getNome());
+                            if(metaDadosConstante == null)
+                            {
+                                notificarErroSemantico(new ErroAtribuirFuncaoBiblioteca(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), metaDadosBiblioteca));
+                            }
+                            else
+                            {
+                                notificarErroSemantico(new ErroAtribuirConstanteBiblioteca(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), metaDadosConstante, metaDadosBiblioteca));                                
+                            }
+                        }
                     }
                 }
                 else if (noOperacao.getOperandoEsquerdo() instanceof NoReferenciaMatriz
@@ -1781,9 +1805,13 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         try
         {
-            if (noPara.getIncremento() != null)
+            if (noPara.getIncremento() instanceof NoOperacaoAtribuicao)
             {
                 noPara.getIncremento().aceitar(this);
+            }
+            else if(noPara.getIncremento() != null)
+            {
+                notificarErroSemantico(new ErroParaSemExpressaoAtribuicao(noPara.getTrechoCodigoFonte()));
             }
         }
         catch (ExcecaoVisitaASA excecao)

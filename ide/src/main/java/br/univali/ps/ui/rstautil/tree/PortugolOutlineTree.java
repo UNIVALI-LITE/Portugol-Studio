@@ -1,6 +1,6 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 
@@ -19,7 +19,6 @@ import java.awt.RenderingHints;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -41,7 +40,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public class PortugolOutlineTree extends JTree
 {
-
     private static final Logger LOGGER = Logger.getLogger(PortugolOutlineTree.class.getName());
 
     private final PortugolASTFilter filter = new PortugolASTFilter();
@@ -363,7 +361,6 @@ public class PortugolOutlineTree extends JTree
 
     private final class FilterListener implements PortugolASTFilterListener
     {
-
         @Override
         public void filterChanged()
         {

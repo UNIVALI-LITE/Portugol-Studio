@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.asa;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
 
 /**
  * Esta enumeração representa a operação de <code>atribuição</code> no código
@@ -44,10 +44,10 @@ public final class NoOperacaoAtribuicao extends NoOperacao
     }
 
     @Override
-    public boolean ehParavel(Programa.Estado estado)
+    public boolean ehParavel(Estado estado)
     {
         boolean operandos = getOperandoDireito().ehParavel(estado) || getOperandoEsquerdo().ehParavel(estado);
-        return operandos || (pontoDeParadaEstaAtivo() && estado == Programa.Estado.BREAK_POINT) || estado == Programa.Estado.STEP_OVER;
+        return operandos || (pontoDeParadaEstaAtivo() && estado == Estado.BREAK_POINT) || estado == Estado.STEP_OVER;
     }
 
 }

@@ -16,8 +16,6 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-
-
 /**
  * Holds icons used by Java auto-completion.
  *
@@ -64,9 +62,7 @@ public class RstaIconFactory {
 
 	private static final RstaIconFactory INSTANCE = new RstaIconFactory();
 
-
 	private RstaIconFactory() {
-
 		iconMap = new HashMap();
 		iconMap.put(SOURCE_FILE_ICON, loadIcon("jcu_obj.gif"));
 		iconMap.put(PACKAGE_ICON, loadIcon("package_obj.gif"));
@@ -101,9 +97,7 @@ public class RstaIconFactory {
 		iconMap.put(ABSTRACT_ICON, loadIcon("abstract_co.gif"));
 		iconMap.put(FINAL_ICON, loadIcon("final_co.gif"));
 		iconMap.put(STATIC_ICON, loadIcon("static_co.gif"));
-
 	}
-
 
 	public Icon getIcon(String key) {
 		return getIcon(key, false);
@@ -119,7 +113,6 @@ public class RstaIconFactory {
 		}
 		return icon;
 	}
-
 
 	public Icon getIcon(IconData data) {
 		// TODO: Optimize me
@@ -137,11 +130,9 @@ public class RstaIconFactory {
 		return icon;
 	}
 
-
 	public static RstaIconFactory get() {
 		return INSTANCE;
 	}
-
 
 	private Icon loadIcon(String name) {
 		URL res = getClass().getResource("img/" + name);
@@ -154,9 +145,7 @@ public class RstaIconFactory {
 		return new ImageIcon(res);
 	}
 
-
 	public static interface IconData {
-
 		/**
 		 * Returns the main icon to use when rendering this member's completion.
 		 * This icon will be decorated appropriately based on whether it is
@@ -173,8 +162,5 @@ public class RstaIconFactory {
 		public boolean isFinal();
 
 		public boolean isStatic();
-
 	}
-
-
 }

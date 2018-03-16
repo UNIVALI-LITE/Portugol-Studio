@@ -1,7 +1,7 @@
 package br.univali.portugol.nucleo.execucao.gerador;
 
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.*;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
@@ -82,7 +82,7 @@ public class GeradorCodigoJava
         
         gerador.geraPackage("programas")
                .geraImportacaoPara(ErroExecucao.class)
-               .geraImportacaoPara(Programa.class)
+               .geraImportacaoPara(Programa.class.getPackage())
                .geraImportacaoBibliotecasIncluidas()
                .geraNomeClasse(nomeClasseJava)
                .geraChaveAberturaClasse()
@@ -269,6 +269,12 @@ public class GeradorCodigoJava
             List<NoInclusaoBiblioteca> libsIncluidas = asa.getListaInclusoesBibliotecas();
             for (NoInclusaoBiblioteca biblioteca : libsIncluidas)
             {
+                if(biblioteca.getNome().equals("Graficos"))
+                geradorAtributo.gera(biblioteca, saida, nivelEscopo);
+            }
+            for (NoInclusaoBiblioteca biblioteca : libsIncluidas)
+            {
+                if(!biblioteca.getNome().equals("Graficos"))
                 geradorAtributo.gera(biblioteca, saida, nivelEscopo);
             }
 
@@ -872,11 +878,31 @@ public class GeradorCodigoJava
             return null;
         }
 
+        /**
+         * Gera o comando Java para importação de uma determinada classe.
+         * @param classe classe para gerar o comando import
+         * @return String contendo o comando import para a classe especificada
+         */
         public VisitorGeracaoCodigo geraImportacaoPara(Class classe)
         {
             saida.append("import ")
                     .append(classe.getCanonicalName())
                     .append(";")
+                    .println();
+
+            return this;
+        }
+
+        /**
+         * Gera o comando Java para importação das classes de um determinado pacote.
+         * @param pacote pacote para gerar o comando import de suas classes
+         * @return String contendo o comando import para as classes do pacoate especificado
+         */
+        public VisitorGeracaoCodigo geraImportacaoPara(Package pacote)
+        {
+            saida.append("import ")
+                    .append(pacote.getName())
+                    .append(".*;")
                     .println();
 
             return this;
@@ -897,6 +923,20 @@ public class GeradorCodigoJava
             saida.println();
 
             return this;
+        }
+        
+        private void inicializaBibliotecas()
+        {
+            String identacao = Utils.geraIdentacao(nivelEscopo);
+            for (NoInclusaoBiblioteca no : asa.getListaInclusoesBibliotecas())
+            {
+                saida.append(identacao)
+                        .append("incluirBiblioteca(this.")
+                        .append(no.getNome())
+                        .append(");")
+                        .println();
+            }
+            saida.println();
         }
 
         private void inicializaVariaveisGlobaisQueSaoPassadasPorReferencia() throws ExcecaoVisitaASA
@@ -928,9 +968,9 @@ public class GeradorCodigoJava
                     .append(nomeDaClasseJava)
                     .append("() throws ErroExecucao, InterruptedException {")
                     .println();
-
-            nivelEscopo++;
             
+            nivelEscopo++;
+            //inicializaBibliotecas();
             if (opcoes.gerandoCodigoParaInspecaoDeSimbolos)
             {
                 String identacaoInterna = Utils.geraIdentacao(nivelEscopo);
@@ -946,6 +986,7 @@ public class GeradorCodigoJava
                         .format("matrizesInspecionadas = new Matriz[%d];", matrizesDeclaradas)
                         .println();
             }
+            
             
             nivelEscopo--;
 

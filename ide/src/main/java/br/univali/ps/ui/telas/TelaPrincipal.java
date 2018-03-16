@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.dominio.PortugolDocumento;
@@ -218,6 +213,8 @@ public class TelaPrincipal extends javax.swing.JPanel
         SwingUtilities.invokeLater(() -> {
             TelaCustomBorder main = new TelaCustomBorder("Atualização Encontrada");
             TelaAtualizacoes ta = new TelaAtualizacoes(body, versao);
+            
+            ta.setAcaoFechar(main.getAcaoSair());
             main.setMinimumSize(new Dimension(280, 450));
             main.setPanel(ta, false);
             main.setLocationRelativeTo(null);

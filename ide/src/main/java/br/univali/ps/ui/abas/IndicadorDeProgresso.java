@@ -12,7 +12,6 @@ import javax.swing.Icon;
 
 public class IndicadorDeProgresso 
 {
-
     private boolean visivel = false;
     private final Icon icone;
     private final String texto;

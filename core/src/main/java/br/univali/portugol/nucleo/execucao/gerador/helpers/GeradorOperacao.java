@@ -20,9 +20,10 @@ public class GeradorOperacao
             saida.append("(");
         }
 
-        boolean ehConcatenacao = no instanceof NoOperacaoSoma && no.getOperandoEsquerdo() instanceof NoCadeia;
+        boolean precisaConcatenar = no instanceof NoOperacaoSoma && 
+                (no.getOperandoEsquerdo().getTipoResultante() == TipoDado.CADEIA ^ no.getOperandoDireito().getTipoResultante() == TipoDado.CADEIA);
         
-        if (!ehConcatenacao)
+        if (!precisaConcatenar)
         {
             geraOperacaoPadrao(no, saida, visitor);
         }

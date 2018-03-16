@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
@@ -24,7 +24,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
@@ -147,7 +146,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public void pausar_som(int endereco) throws ErroExecucaoBiblioteca, InterruptedException
@@ -189,7 +188,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public int obter_tamanho_musica(int endereco) throws ErroExecucaoBiblioteca, InterruptedException
@@ -212,7 +211,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public int obter_posicao_atual_musica(int endereco) throws ErroExecucaoBiblioteca, InterruptedException
@@ -235,7 +234,7 @@ public final class Sons extends Biblioteca
             autores =
             {
                 @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-                @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+                @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
             }
     )
     public void definir_posicao_atual_musica(int endereco, int milissegundos) throws ErroExecucaoBiblioteca, InterruptedException

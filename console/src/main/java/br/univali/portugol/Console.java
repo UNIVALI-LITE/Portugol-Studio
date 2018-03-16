@@ -2,7 +2,8 @@ package br.univali.portugol;
 
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
@@ -30,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author Luiz Fernando Noschang
@@ -45,6 +45,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     private Programa programa = null;
     
     private static boolean isLinux = false;
+    private static boolean isWindows = false;
     
     static 
     {
@@ -52,7 +53,11 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     
     	if (osName != null && osName.indexOf("nux") >= 0)
     	{
-    		isLinux = true;
+            isLinux = true;
+    	}
+        if (osName != null && osName.toLowerCase().contains("windows"))
+    	{
+            isWindows = true;
     	}
     }
 
@@ -123,7 +128,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
             }
 
             programa.setDiretorioTrabalho(arquivo.getAbsoluteFile().getParentFile());
-            programa.executar(args, Programa.Estado.BREAK_POINT);            
+            programa.executar(args, Estado.BREAK_POINT);
         }
         catch(ErroCompilacao erroCompilacao) 
         {
@@ -444,10 +449,16 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     @Override
     public void limpar()
     {
-    	if (isLinux)
-    	{
-    		System.out.print("\033c");
-    	}
+        
+        if (isLinux) {
+            System.out.print("\033c");
+    	}else if(isWindows){
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (IOException | InterruptedException ex) {
+                Logger.getLogger(Console.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override

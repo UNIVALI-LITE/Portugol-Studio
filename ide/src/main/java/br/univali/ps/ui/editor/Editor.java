@@ -1,8 +1,10 @@
 package br.univali.ps.ui.editor;
 
+import br.univali.ps.ui.editor.formatador.FormatadorCodigo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
+import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.AbaMensagemCompiladorListener;
@@ -24,16 +26,16 @@ import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.rstautil.SuportePortugolImpl;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -47,7 +49,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -55,12 +56,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -68,13 +70,11 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
@@ -83,7 +83,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
-import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.rsta.ui.search.SearchListener;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
@@ -95,9 +94,6 @@ import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.fife.ui.rtextarea.SearchContext;
-import org.fife.ui.rtextarea.SearchEngine;
-import org.fife.ui.rtextarea.SearchResult;
 
 /**
  *
@@ -106,7 +102,6 @@ import org.fife.ui.rtextarea.SearchResult;
  */
 public final class Editor extends javax.swing.JPanel implements CaretListener, KeyListener, PropertyChangeListener, ObservadorExecucao, AbaMensagemCompiladorListener
 {
-
     //private static final float VALOR_INCREMENTO_FONTE = 2.0f;
     private static final float TAMANHO_MAXIMO_FONTE = 50.0f;
     private static final float TAMANHO_MINIMO_FONTE = 10.0f;
@@ -143,10 +138,10 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private Action acaoCentralizarCodigoFonte;
 
     private Action acaoRenomearSimboloNoCursor;
+    
+    private Action acaoFormatarCodigo;
 
-    private FindDialog dialogoPesquisar;
-    private ReplaceDialog dialogoSubstituir;
-    private SearchListener observadorAcaoPesquisaSubstituir;
+    private TelaCustomBorder procurarESubstituir;
     private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
@@ -299,34 +294,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void configurarDialogoPesquisarSubstituir()
     {
-        observadorAcaoPesquisaSubstituir = new FindReplaceSearchListener();
-
-        dialogoPesquisar = new FindDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
-        dialogoSubstituir = new ReplaceDialog((Dialog) null, observadorAcaoPesquisaSubstituir);
-        adicionaMargensNoDialogo(dialogoPesquisar, 20);
-        adicionaMargensNoDialogo(dialogoSubstituir, 20);
-        dialogoSubstituir.setSearchContext(dialogoPesquisar.getSearchContext());
-
-        try
-        {
-            Image icone = ImageIO.read(ClassLoader.getSystemResourceAsStream(IconFactory.CAMINHO_ICONES_PEQUENOS + "/light_pix.png"));
-
-            dialogoPesquisar.setIconImage(icone);
-            dialogoSubstituir.setIconImage(icone);
-        }
-        catch (IOException | IllegalArgumentException ioe)
-        {
-        }
-    }
-
-    private void adicionaMargensNoDialogo(JDialog dialogo, int margem)
-    {
-        Dimension tamanho = dialogo.getPreferredSize();
-        ((JComponent) dialogo.getContentPane()).setBorder(BorderFactory.createEmptyBorder(margem, margem, margem, margem));
-        tamanho.setSize(tamanho.width + margem * 2, tamanho.height + margem * 2);
-        dialogo.setPreferredSize(tamanho);
-        dialogo.setMinimumSize(tamanho);
-        dialogo.revalidate();
+        procurarESubstituir = new TelaCustomBorder("Procurar");
+        PSFindReplace findReplace = new PSFindReplace(textArea, procurarESubstituir);
+        findReplace.setPreferredSize(new Dimension(550, 190));
+        //findReplace.setSize(new Dimension(800, 600));
+        procurarESubstituir.setPanel(findReplace);
+        procurarESubstituir.setLocationRelativeTo(null);
     }
 
     private void configurarParser()
@@ -393,12 +366,43 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarAcaoComentar();
         configurarAcaoDescomentar();
         configurarAcaoRenomearSimboloNoCursor();
-
+        configurarAcaoFormatarCodigo();
+        
         //configurarAcaoExpandir();
         //configurarAcaoRestaurar();
         //configurarAcaoAlternarModoEditor();
     }
 
+    private void configurarAcaoFormatarCodigo()
+    {
+        String nome = "Formatar código";
+        
+        acaoFormatarCodigo = new AbstractAction(nome)
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try {
+                    
+                    int caretPosition = textArea.getCaretPosition();
+                    
+                    String codigoFormatado = FormatadorCodigo.formata(textArea.getText());
+                    textArea.setText(codigoFormatado);
+                    
+                    textArea.setCaretPosition(caretPosition);
+                    
+                } catch (ErroCompilacao ex) {
+                    Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.ALT_DOWN_MASK);
+        acaoFormatarCodigo.putValue(Action.ACCELERATOR_KEY, atalho);
+        textArea.getActionMap().put(nome, acaoFormatarCodigo);
+        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+    }
+    
     private void configurarAcaoRenomearSimboloNoCursor()
     {
         String nome = "Renomear";
@@ -433,7 +437,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(Editor.this, "Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
+                    QuestionDialog.getInstance().showMessage("Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
                     textArea.requestFocusInWindow();
                 }
             }
@@ -577,14 +581,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return executandoPrograma;
     }
 
-    public ReplaceDialog getReplaceDialog()
+    public JDialog getSearchDialog()
     {
-        return this.dialogoSubstituir;
-    }
-
-    public FindDialog getFindDialog()
-    {
-        return this.dialogoPesquisar;
+        return this.procurarESubstituir;
     }
 
     private void configurarAcaoDesfazer()
@@ -1035,7 +1034,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             {
                 textArea.setCaretPosition(Integer.parseInt(valor));
             }
-            catch (NumberFormatException excecao)
+            catch (IllegalArgumentException excecao )
             {
                 excecao.printStackTrace(System.out);
             }
@@ -1618,111 +1617,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 {
                     textArea.getHighlighter().removeHighlight(destaque);
         });
-    }
-
-    private class FindReplaceSearchListener implements SearchListener
-    {
-
-        @Override
-        public String getSelectedText()
-        {
-            return textArea.getSelectedText();
-        }
-
-        @Override
-        public void searchEvent(SearchEvent e)
-        {
-            SearchEvent.Type type = e.getType();
-            SearchContext context = e.getSearchContext();
-            SearchResult result;
-
-            switch (type)
-            {
-                case MARK_ALL:
-                    SearchEngine.markAll(textArea, context);
-                    break;
-                case FIND:
-                    result = SearchEngine.find(textArea, context);
-                    if (!result.wasFound())
-                    {
-                        reiniciar(context, textArea, e);
-                    }
-                    break;
-                case REPLACE:
-                    result = SearchEngine.replace(textArea, context);
-                    if (!result.wasFound())
-                    {
-                        reiniciar(context, textArea, e);
-                    }
-                    break;
-                case REPLACE_ALL:
-                    result = SearchEngine.replaceAll(textArea, context);
-                    JOptionPane.showMessageDialog(null, result.getCount()
-                            + " ocorrências substituídas.");
-                    break;
-            }
-        }
-
-        /*
-         @Override
-         public void actionPerformed(ActionEvent e)
-         {
-         String command = e.getActionCommand();
-         SearchDialogSearchContext context = dialogoPesquisar.getSearchContext();
-
-         switch (command)
-         {
-         case FindDialog.ACTION_FIND:
-
-         if (!SearchEngine.find(textArea, context))
-         {
-         reiniciar(context, textArea, e);
-         }
-
-         break;
-
-         case ReplaceDialog.ACTION_REPLACE:
-
-         if (!SearchEngine.replace(textArea, context))
-         {
-         reiniciar(context, textArea, e);
-         }
-
-         break;
-
-         case ReplaceDialog.ACTION_REPLACE_ALL:
-         //TelaPrincipalDesktop telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
-         int count = SearchEngine.replaceAll(textArea, context);
-         JOptionPane.showMessageDialog(getParent(), count + " ocorrências foram substituídas.");
-
-         break;
-         }
-         }*/
-        private void reiniciar(SearchContext context, RSyntaxTextArea textArea, SearchEvent e)
-        {
-            UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-
-            String s = "A pesquisa chegou no início do arquivo, deseja recomeçar do final?";
-
-            if (context.getSearchForward())
-            {
-                s = "A pesquisa chegou no final do arquivo, deseja recomeçar do início?";
-            }
-
-            if (JOptionPane.showConfirmDialog(getParent(), s, "Pesquisar", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION)
-            {
-                if (context.getSearchForward())
-                {
-                    textArea.setCaretPosition(0);
-                }
-                else
-                {
-                    textArea.setCaretPosition(textArea.getText().length() - 1);
-                }
-
-                searchEvent(e);
-            }
-        }
     }
 
     public static void main(String args[])

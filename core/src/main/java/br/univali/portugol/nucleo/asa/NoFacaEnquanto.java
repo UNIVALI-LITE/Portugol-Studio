@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.asa;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Estado;
+
 import java.util.List;
 
 /**
@@ -103,7 +104,7 @@ public final class NoFacaEnquanto extends NoBloco
     }
     
      @Override
-    public boolean ehParavel(Programa.Estado estado)
+    public boolean ehParavel(Estado estado)
     {
         if(getCondicao() != null){
             return super.ehParavel(estado) || getCondicao().ehParavel(estado);

@@ -1,10 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.univali.ps.ui.utils;
-
 
 import br.univali.ps.nucleo.Configuracoes;
 import java.awt.Image;

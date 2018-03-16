@@ -14,7 +14,6 @@ import org.fife.ui.rsyntaxtextarea.folding.Fold;
  */
 public final class DobramentoCodigoPortugol extends CurlyFoldParser
 {
-
     @Override
     public List getFolds(RSyntaxTextArea textArea)
     {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.swing.weblaf;
 
 import br.univali.ps.ui.swing.ColorController;
@@ -15,8 +10,6 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
  * @author LITE
  */
 public class PSOutTabbedPaneUI extends BasicTabbedPaneUI {
-
-    
 //    @Override
 //    protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
 //        

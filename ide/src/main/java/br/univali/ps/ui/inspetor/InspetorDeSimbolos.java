@@ -1,7 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
@@ -26,7 +26,6 @@ import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
 import br.univali.ps.ui.swing.ColorController;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;

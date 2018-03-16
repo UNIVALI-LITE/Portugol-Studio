@@ -6,7 +6,6 @@ import com.alee.extended.window.WebPopOver;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.WebNotification;
-import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import java.awt.Point;

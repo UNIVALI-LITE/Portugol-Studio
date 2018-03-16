@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
@@ -17,6 +17,7 @@ import java.awt.*;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.WindowListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -63,6 +65,34 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     @DocumentacaoConstante(descricao = "constante que representa a cor 'amarelo'")
     public static final int COR_AMARELO = Color.YELLOW.getRGB();
     
+    
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_DIREITA = 0;
+        
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ESQUERDA = 1;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ACIMA = 2;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ABAIXO = 3;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_INFERIOR_DIREITO = 4;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_INFERIOR_ESQUERDO = 5;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_SUPERIOR_DIREITO = 6;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_SUPERIOR_ESQUERDO = 7;
+    
+    
+    
     @DocumentacaoConstante(descricao = "constante que representa o canal 'VERMELHO'")
     public static final int CANAL_R = 0;
     
@@ -98,9 +128,9 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
 
     @NaoExportar
     @Override
-    public void instalarTeclado(KeyListener observadorTeclado) throws ErroExecucaoBiblioteca, InterruptedException
+    public void instalarTeclado(KeyListener observadorTeclado, WindowListener observadorJanela) throws ErroExecucaoBiblioteca, InterruptedException
     {
-        janela.instalarTeclado(observadorTeclado);
+        janela.instalarTeclado(observadorTeclado, observadorJanela);
     }
 
     @NaoExportar
@@ -350,7 +380,40 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
             throw new ErroExcessoOperacoes();
         }            
     }
-
+    
+    @DocumentacaoFuncao(
+        descricao
+        = "Desenha poligono",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "pontos", descricao = "a largura do retângulo em pixels"),
+            
+            @DocumentacaoParametro(
+                    nome = "preencher",
+                    descricao
+                    = "define se o retângulo será preenchido com a cor do ambiente gráfico. "
+                    + "Se o valor for <tipo>verdadeiro</tipo>, o retângulo será preenchido. Se o valor for "
+                    + "<tipo>falso</tipo>, somente o contorno do retângulo será desenhado"
+            )
+        },
+        autores =
+        {
+            @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br"),
+            @Autor(nome = "Fillipi Domingos Pelz", email = "fillipi@univali.br")
+        }
+    )
+    public void desenhar_poligono(final int[][] pontos, final boolean preencher) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            superficieDesenho.desenharPoligono(pontos, preencher);
+        }
+        catch(IllegalStateException e)
+        {
+            throw new ErroExcessoOperacoes();
+        }            
+    };
+    
     @DocumentacaoFuncao(
         descricao
         = "Desenha uma elipse na posição definida pelos parâmetros <param>x</param> e <param>y</param> "
@@ -553,7 +616,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int redimensionar_imagem(int endereco, int largura, int altura, boolean manter_qualidade) throws ErroExecucaoBiblioteca, InterruptedException
@@ -631,7 +694,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int obter_cor_pixel(int endereco, int x, int y) throws ErroExecucaoBiblioteca, InterruptedException
@@ -650,7 +713,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         autores =
         {
             @Autor(nome = "Adson Marques da Silva Esteves", email = "adson@edu.univali.br"),
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )
     public int obter_RGB(int cor, int canal) throws ErroExecucaoBiblioteca, InterruptedException
@@ -911,6 +974,39 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     
     @DocumentacaoFuncao(
         descricao
+        = "Salva uma imagem",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "endereco", descricao = "o endereço de memória da imagem a ser desenhada"),
+            @DocumentacaoParametro(nome = "caminho", descricao = "lugar onde a imagem deverá sre salva")
+        },
+        autores =
+        {
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
+        }
+    )
+    public void salvar_imagem(int endereco, String caminho) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            File arquivo = programa.resolverCaminho(new File(caminho));
+            
+            if (arquivo.mkdirs())
+            {            
+                ImageIO.write(cacheImagens.obterImagem(endereco).getImagem(), "PNG", arquivo);
+            }
+            else
+            {
+                throw new ErroExecucaoBiblioteca("Erro ao salvar a imagem: o arquivo " + arquivo.getAbsolutePath() + " não pode ser criado");
+            }
+        }
+        catch (IOException ex) {
+            throw new ErroExecucaoBiblioteca("Erro ao salvar a imagem: "+ex.getMessage());
+        }            
+    }
+    
+    @DocumentacaoFuncao(
+        descricao
         = "Desenha um frame de um gif previamente carregado, na posição especificada pelos "
         + "parâmetros <param>x</param> e <param>y</param>",
         parametros =
@@ -1029,7 +1125,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         retorno = "imagem do quadro pedido por parâmetro",
         autores =
         {
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )    
     public int obter_quadro_gif(int endereco, int quadro) throws ErroExecucaoBiblioteca, InterruptedException
@@ -1048,7 +1144,7 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         },
         autores =
         {
-            @Autor(nome = "Alisson Steffens Henrique", email = "ash@edu.univali.br")
+            @Autor(nome = "Alisson Steffens Henrique", email = "ali.steffens@gmail.com")
         }
     )    
     public void definir_quadro_gif(int endereco, int quadro) throws ErroExecucaoBiblioteca, InterruptedException
@@ -1120,6 +1216,35 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         try
         {
             superficieDesenho.definirCor(cor);
+        }
+        catch(IllegalStateException e)
+        {
+            throw new ErroExcessoOperacoes();
+        }
+    }
+    
+    @DocumentacaoFuncao(
+        descricao
+        = "Define a cor atual do ambiente gráfico. Esta cor será utilizada para desenhar e preencher "
+        + "as primitivas gráficas (ponto, linha, retângulo, etc.) e, como cor de fundo ao limpar "
+        + "o ambiente gráfico ou desenhar um texto",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "tipo", descricao = "a nova cor do ambiente gráfico"),
+            @DocumentacaoParametro(nome = "cor1", descricao = "a nova cor do ambiente gráfico"),
+            @DocumentacaoParametro(nome = "cor2", descricao = "a nova cor do ambiente gráfico")
+            
+        },
+        autores =
+        {
+            @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
+        }
+    )
+    public void definir_gradiente(final int tipo, final int cor1,final int cor2) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            superficieDesenho.definirGradiente(tipo, cor1, cor2);
         }
         catch(IllegalStateException e)
         {
@@ -1539,3 +1664,4 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         
     }
 }
+

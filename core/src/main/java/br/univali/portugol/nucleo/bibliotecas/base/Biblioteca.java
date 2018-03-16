@@ -1,16 +1,13 @@
 package br.univali.portugol.nucleo.bibliotecas.base;
 
-import br.univali.portugol.nucleo.Programa;
+import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Classe base para a construção de bibliotecas do Portugol. Todas as
@@ -182,7 +179,7 @@ public abstract class Biblioteca
      * @throws ErroExecucaoBiblioteca
      * @throws java.lang.InterruptedException
      */
-    protected void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
+    public void bibliotecaRegistrada(Biblioteca biblioteca) throws ErroExecucaoBiblioteca, InterruptedException
     {
 
     }

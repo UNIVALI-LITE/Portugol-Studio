@@ -1,23 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.ps.ui.telas;
 
+import br.univali.portugol.nucleo.Portugol;
+import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.WebConnectionUtils;
+import static com.alee.managers.notification.NotificationOption.no;
+import static java.awt.PageAttributes.MediaType.A;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -54,9 +57,18 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/issues/new?title=Erro%20numero%20xxx&body=%3E%20Esta%20issue%20foi%20gerada%20automaticamente%0A%0A[pressione%20o%20botao%20%22copiar%20erro%22%20no%20Portugol%20Studio%20e%20cole%20o%20erro%20aqui%20antes%20de%20enviar]");
+                String url = "https://github.com/UNIVALI-LITE/Portugol-Studio/issues/new?";
+                try {
+                    
+                    url = url + "title=Erro%20numero%20" + hashString(areaTextoStackTrace.getText(),"SHA-1") + "%20v" + PortugolStudio.getInstancia().getVersao();
+                } catch (Exception ex) {
+                    url = url + "title=Erro%20numero%20xxx%20v"+ PortugolStudio.getInstancia().getVersao();
+                }
+                WebConnectionUtils.abrirSite(url + "&body=%3E%20Esta%20issue%20foi%20gerada%20automaticamente%0A%0A[pressione%20o%20botao%20%22copiar%20erro%22%20no%20Portugol%20Studio%20e%20cole%20o%20erro%20aqui%20antes%20de%20enviar]");
             }
         });
+        
+        
         areaTextoStackTrace.setEditable(false);
         scrollStackTrace.setVisible(false);
         
@@ -68,7 +80,25 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         FabricaDicasInterface.criarTooltip(labelGmail, "Nosso e-mail");
         
     }
+    private static String hashString(String message, String algorithm) throws Exception {
+        try {
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
+            byte[] hashedBytes = digest.digest(message.getBytes("UTF-8"));
 
+            return convertByteArrayToHexString(hashedBytes);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            throw new Exception(
+                    "Could not generate hash from String", ex);
+        }
+    }
+    private static String convertByteArrayToHexString(byte[] arrayBytes) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i = 0; i < arrayBytes.length; i++) {
+            stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16)
+                    .substring(1));
+        }
+        return stringBuffer.toString();
+    }
     @Override
     public void configurarCores() {
         paineInferior.setBackground(ColorController.FUNDO_ESCURO);
@@ -217,6 +247,11 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         botaoCopiarErro.setText("Copiar Erro");
 
         botaoReportarBug.setText("Reportar Erro");
+        botaoReportarBug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoReportarBugActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelBotaoLayout = new javax.swing.GroupLayout(painelBotao);
         painelBotao.setLayout(painelBotaoLayout);
@@ -288,6 +323,10 @@ public class TelaExcecaoEncontrada extends javax.swing.JPanel implements Themeab
         scrollStackTrace.setVisible(!scrollStackTrace.isVisible());
         telaCustomBorder.pack();
     }//GEN-LAST:event_botaoAbrirStackActionPerformed
+
+    private void botaoReportarBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoReportarBugActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoReportarBugActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

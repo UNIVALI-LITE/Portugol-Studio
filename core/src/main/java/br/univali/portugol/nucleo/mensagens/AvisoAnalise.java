@@ -17,9 +17,8 @@ public abstract class AvisoAnalise extends Aviso
     private TrechoCodigoFonte trechoCodigoFonte;
     
     /**
-     * 
-     * @param linha      a linha onde o erro ocorreu.
-     * @param coluna     a coluna onde o erro ocorreu.
+     *
+     * @param trechoCodigoFonte  informações da linha e coluna onde o erro ocorreu
      */
     public AvisoAnalise(TrechoCodigoFonte trechoCodigoFonte)
     {
