@@ -41,6 +41,7 @@ public final class AbaInicial extends Aba implements Themeable
     public AbaInicial(TelaPrincipal telaPrincipal)
     {
         super();
+        this.setName("abainicial");
         setPainelTabulado(telaPrincipal.getPainelTabulado());
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents();

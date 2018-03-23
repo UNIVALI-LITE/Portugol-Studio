@@ -160,7 +160,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     }
 
     private void instalarObservadores(final TelaPrincipal telaPrincipal) {
-        telaPrincipal.getPainelTabulado().adicionaPainelTabuladoListener(this);
+        //telaPrincipal.getPainelTabulado().adicionaPainelTabuladoListener(this);
 
         titulo.addMouseListener(new MouseAdapter() {
             @Override

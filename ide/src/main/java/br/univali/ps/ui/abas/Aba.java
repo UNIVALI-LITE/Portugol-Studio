@@ -1,5 +1,6 @@
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.ui.paineis.NewPainelTabulado;
 import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.utils.IconFactory;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public abstract class Aba extends JPanel
     private static List<Class<? extends Aba>> classesFilhas = new ArrayList<>();
     
     private CabecalhoAba cabecalho;
-    private PainelTabulado painelTabulado;
+    private NewPainelTabulado painelTabulado;
     private List<AbaListener> listeners;
 
     public Aba() {
@@ -25,7 +26,7 @@ public abstract class Aba extends JPanel
         this.cabecalho = criarCabecalhoPadrao("Sem título", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"), false);
     }
 
-    public void setPainelTabulado(PainelTabulado painelTabulado)
+    public void setPainelTabulado(NewPainelTabulado painelTabulado)
     {
         this.painelTabulado = painelTabulado;
     }
@@ -77,7 +78,7 @@ public abstract class Aba extends JPanel
         this.cabecalho = cabecalho;
     }
     
-    public PainelTabulado getPainelTabulado()
+    public NewPainelTabulado getPainelTabulado()
     {
         return painelTabulado;
     }
@@ -120,8 +121,8 @@ public abstract class Aba extends JPanel
     {
         if (painelTabulado != null)
         {
-            if(painelTabulado.indexOfComponent(this) >= 0){
-                painelTabulado.setSelectedComponent(this);
+            if(painelTabulado.contemAba(this)){
+                painelTabulado.mudarParaAba(this);
             }
         }
     }
