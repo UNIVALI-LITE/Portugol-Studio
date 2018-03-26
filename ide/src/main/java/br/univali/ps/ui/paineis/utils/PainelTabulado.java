@@ -17,8 +17,7 @@ public class PainelTabulado extends NewPainelTabulado implements ComponentListen
     private List<PainelTabuladoListener> painelTabuladoListeners;
 
     public PainelTabulado() {
-        painelTabuladoListeners = new ArrayList<>();
-        
+        painelTabuladoListeners = new ArrayList<>();        
     }
 
     public void adicionaPainelTabuladoListener(PainelTabuladoListener listener) {

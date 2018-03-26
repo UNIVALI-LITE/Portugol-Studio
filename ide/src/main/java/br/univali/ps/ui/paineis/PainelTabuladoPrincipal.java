@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public final class PainelTabuladoPrincipal extends PainelTabulado {
+public final class PainelTabuladoPrincipal extends PainelTabulado{
 
     public static final String ACAO_EXIBIR_AJUDA = "Exibir ajuda";
     public static final String ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA = "Documentação das bibliotecas";
@@ -269,7 +269,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
-                
+                painelTabuladoPrincipal.setAbaAtual(1);
                 frame.add(painelTabuladoPrincipal, BorderLayout.CENTER);
                 frame.setVisible(true);
 

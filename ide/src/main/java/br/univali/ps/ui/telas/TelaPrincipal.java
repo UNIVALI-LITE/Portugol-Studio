@@ -29,7 +29,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -227,9 +226,7 @@ public class TelaPrincipal extends javax.swing.JPanel
 
     public void criarNovoCodigoFonte()
     {
-        final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-        Date date = new Date();
-        abaCodigoFonte.setName("aba"+date.getTime());
+        final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();        
         painelTabuladoPrincipal.adicionaAba(abaCodigoFonte);
         abaCodigoFonte.carregarAlgoritmoPadrao();
         revalidate();
@@ -365,7 +362,7 @@ public class TelaPrincipal extends javax.swing.JPanel
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         setLayout(new java.awt.BorderLayout());
-        add(painelTabuladoPrincipal, java.awt.BorderLayout.PAGE_START);
+        add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 

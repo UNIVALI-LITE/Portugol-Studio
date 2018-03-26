@@ -26,11 +26,11 @@
     <Container class="br.univali.ps.ui.paineis.PainelTabuladoPrincipal" name="painelTabuladoPrincipal">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-          <BorderConstraints direction="First"/>
+          <BorderConstraints direction="Center"/>
         </Constraint>
       </Constraints>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
     </Container>
   </SubComponents>
 </Form>

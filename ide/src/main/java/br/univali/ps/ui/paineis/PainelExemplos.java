@@ -162,7 +162,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
                         AbaCodigoFonte abaCodigoFonte  = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, recente, true);
-                        t.getPainelTabulado().add(abaCodigoFonte);
+                        t.getPainelTabulado().adicionaAba(abaCodigoFonte);
 //                        List<File> arquivo = new ArrayList<>();
 //                        arquivo.add(recente);
 //                        t.abrirArquivosCodigoFonte(arquivo);
@@ -369,7 +369,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
-                        t.getPainelTabulado().add(abaCodigoFonte);
+                        t.getPainelTabulado().adicionaAba(abaCodigoFonte);
                     }
                 });
                 botaoAbrirExemplo.setText("Explorar Exemplo");

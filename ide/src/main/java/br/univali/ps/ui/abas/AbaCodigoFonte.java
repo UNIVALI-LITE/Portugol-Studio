@@ -82,6 +82,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 import java.io.LineNumberReader;
 import java.io.StringReader;
+import java.util.Date;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -706,6 +707,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             return new AbaCodigoFonte();
         }
         AbaCodigoFonte aba = (AbaCodigoFonte) poolAbasCodigoFonte.obter();
+        Date date = new Date();
+        aba.setName("aba"+date.getTime());
         aba.getCabecalho().setTitulo("Sem título" + numeroDocumento);
         aba.reseta();
         return aba;
