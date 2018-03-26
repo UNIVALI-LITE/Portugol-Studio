@@ -29,6 +29,7 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.NetworkInterface;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +44,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -57,6 +59,8 @@ public class TelaPrincipal extends javax.swing.JPanel
     private List<File> arquivosIniciais;
     int pX, pY;
     
+    
+
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
     /**
     /**
@@ -138,6 +142,35 @@ public class TelaPrincipal extends javax.swing.JPanel
             System.out.println("Erro no envio ao servidor");
         }
     }
+    
+    private void editar_usuario_servidor(String id, boolean set_online) throws Exception{
+        HttpClient httpclient = HttpClients.createDefault();
+        HttpPut httpput = new HttpPut("https://ui-spy.herokuapp.com/api/users/"+id);
+//        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
+
+        // Request parameters and other properties.
+        List<BasicNameValuePair> params = new ArrayList<>(3);
+        
+        params.add(new BasicNameValuePair("is_online", ""+set_online));
+        
+        try {
+            httpput.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            //Execute and get the response.
+            HttpResponse response = httpclient.execute(httpput);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                InputStream instream = entity.getContent();
+                try {
+                    // do something useful
+                } finally {
+                    instream.close();
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro no envio ao servidor");
+        }
+    }
     public static String getHTML(String urlToRead) throws Exception {
       StringBuilder result = new StringBuilder();
       URL url = new URL(urlToRead);
@@ -163,7 +196,17 @@ public class TelaPrincipal extends javax.swing.JPanel
         if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
             criar_usuario_servidor(username);
         }else{
-            System.out.println(getHTML("https://ui-spy.herokuapp.com/api/users/"+username));
+            String id = "undefined";
+            String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
+            String[] dados = data.split(",");
+            for (String dado : dados) {
+                String[] obj = dado.split(":");
+                if(obj[0].contains("_id")){
+                    String aid = obj[1].replaceAll("\"", "");
+                    id = aid.replaceAll(" ", "");
+                }
+            }
+            editar_usuario_servidor(id, true);
         }
     }
     private void instalarObservadorJanela()
@@ -401,6 +444,34 @@ public class TelaPrincipal extends javax.swing.JPanel
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
+            InetAddress ip;
+            try {
+                ip = InetAddress.getLocalHost();
+                NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+                byte[] mac = network.getHardwareAddress();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < mac.length; i++) {
+                        sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+                }
+                String username = sb.toString();
+                if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
+                }else{
+                    String id = "undefined";
+                    String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
+                    String[] dados = data.split(",");
+                    for (String dado : dados) {
+                        String[] obj = dado.split(":");
+                        if(obj[0].contains("_id")){
+                            String aid = obj[1].replaceAll("\"", "");
+                            id = aid.replaceAll(" ", "");
+                        }
+                    }
+                    editar_usuario_servidor(id, false);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             
             PortugolStudio.getInstancia().finalizar(0);
             return true;
