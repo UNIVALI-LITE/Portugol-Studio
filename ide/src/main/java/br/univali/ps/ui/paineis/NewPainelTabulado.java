@@ -10,11 +10,8 @@ import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.abaAjuda.AbaAjuda;
 import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
-import static br.univali.ps.ui.paineis.PainelTabuladoPrincipal.ACAO_EXIBIR_AJUDA;
-import static br.univali.ps.ui.paineis.PainelTabuladoPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -27,10 +24,9 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -66,19 +62,12 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba adicionaAba(Aba aba)
     {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("vai adicionar raba "+aba.getName());
-                abaContainer.add(aba, aba.getName());
-                System.out.println("adicionou raba");
-                adicionaAoCabecalho(aba);
-                mudarParaAba(aba);
-                //aba.setPainelTabulado(this);
-                aba.invalidate();
-                aba.repaint();
-            }
-        });
+        abaContainer.add(aba, aba.getName());
+        adicionaAoCabecalho(aba);
+        mudarParaAba(aba);
+        aba.setPainelTabulado(this);
+        aba.invalidate();
+        aba.repaint();
         return aba;
     }
     
@@ -90,18 +79,11 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba mudarParaAba(Aba aba)
     {
-        System.out.println("mudaraba antes do swing");
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("mudaraba");
-                CardLayout cl = (CardLayout) abaContainer.getLayout();
-                cl.show(abaContainer, aba.getName());
-                System.out.println(aba.getName());
-                aba.invalidate();
-                aba.repaint();
-            }
-        });
+        
+        CardLayout cl = (CardLayout) abaContainer.getLayout();
+        cl.show(abaContainer, aba.getName());
+        aba.invalidate();
+        aba.repaint();
         return aba;
     }
     
@@ -371,10 +353,19 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         }
         return false;
     }
+
+    public JPanel getAbaContainer() {
+        return abaContainer;
+    }
+
+    public JPanel getCabecalhosAba() {
+        return cabecalhosAba;
+    }  
+    
     
     @Override
     public void configurarCores() {
-        abaContainer.setBackground(ColorController.FUNDO_ESCURO);
+        abaContainer.setBackground(ColorController.FUNDO_MEDIO);
         abaContainer.setForeground(ColorController.COR_LETRA);
         cabecalhosAba.setBackground(ColorController.FUNDO_ESCURO);
         cabecalhosAba.setForeground(ColorController.COR_LETRA);

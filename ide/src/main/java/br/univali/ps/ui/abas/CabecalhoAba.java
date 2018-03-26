@@ -27,6 +27,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
     @Override
     public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
+        setBackground(ColorController.FUNDO_MEDIO);
     }
     
     private void configuraIcones()
@@ -80,7 +81,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(300, 30));
         setMinimumSize(new java.awt.Dimension(110, 25));
-        setOpaque(false);
         setPreferredSize(new java.awt.Dimension(110, 30));
         setLayout(new java.awt.GridBagLayout());
 

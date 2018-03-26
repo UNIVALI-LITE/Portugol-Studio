@@ -94,7 +94,7 @@ public abstract class Aba extends JPanel
     }
 
     public boolean fechar()
-    {
+    {        
         boolean podeFechar = true;
 
         for (AbaListener listener : listeners)
@@ -109,10 +109,11 @@ public abstract class Aba extends JPanel
         {
             if (painelTabulado != null)
             {
-                painelTabulado.remove(this);
+                painelTabulado.getAbaContainer().remove(this);
+                painelTabulado.getCabecalhosAba().remove(this.cabecalho);
                 painelTabulado = null;
             }
-        }
+        }        
 
         return podeFechar;
     }

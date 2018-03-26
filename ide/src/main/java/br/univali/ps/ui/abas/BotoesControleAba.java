@@ -5,6 +5,7 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.utils.PainelTabuladoListener;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
+public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener, Themeable{
 
     private static final Icon iconeAtivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
     private static final Icon iconeInativo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
@@ -232,6 +233,12 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         });
     }
 
+    @Override
+    public void configurarCores() {
+        setBackground(ColorController.FUNDO_ESCURO.brighter());
+    }    
+    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -245,7 +252,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(180, 25));
         setMinimumSize(new java.awt.Dimension(180, 25));
-        setOpaque(false);
         setPreferredSize(new java.awt.Dimension(180, 25));
         setLayout(new java.awt.GridBagLayout());
 
