@@ -159,7 +159,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         for (int i = 0; i < mac.length; i++) {
                 sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
         }
-        String username = System.getProperty("user.name")+"-"+sb.toString();
+        String username = sb.toString();
         if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
             criar_usuario_servidor(username);
         }else{
