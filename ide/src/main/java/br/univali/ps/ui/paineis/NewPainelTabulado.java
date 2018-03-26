@@ -258,6 +258,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         if (!this.temAbaAberta(AbaAjuda.class)) {
             //abaAjuda.adicionar(this);
             this.adicionaAba(abaAjuda);
+            abaAjuda.setName("AbaAjuda");
         }
 
         abaAjuda.selecionar();
@@ -270,6 +271,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         } else if (!this.temAbaAberta(AbaDocumentacaoBiblioteca.class)) {
             //abaDocumentacao.adicionar(this);
             this.adicionaAba(abaDocumentacao);
+            abaDocumentacao.setName("AbaDocumentação");
         }
 
         abaDocumentacao.selecionar();
