@@ -6,6 +6,8 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
@@ -22,6 +24,13 @@ public class CabecalhoAba extends JPanel implements Themeable{
         configurarCores();
         configuraIcones();
         //setUndecorated(true)
+        
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                getAba().selecionar();
+            }
+        });
     }
     
     @Override

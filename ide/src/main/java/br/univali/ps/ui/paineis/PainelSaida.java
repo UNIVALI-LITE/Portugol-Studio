@@ -23,25 +23,19 @@ public final class PainelSaida extends PainelTabulado {
         
         abaConsole = new AbaConsole();
         
-        add(abaConsole);
+        this.adicionaAba(abaConsole);
         
         //abaConsole.setBackground(Color.BLUE);
 
         abaMensagensCompilador = new AbaMensagemCompilador();
-        this.add(abaMensagensCompilador);
-
-        if (WeblafUtils.weblafEstaInstalado()) {
-          ((WebTabbedPaneUI)getUI()).setShadeWidth(0);
-        }
+        this.adicionaAba(abaMensagensCompilador);
         
         selecionaConsole(); //deixa a console aparecendo quando abre uma nova aba
-        
-        this.setUI(new PSOutTabbedPaneUI());
     }
     
     public void selecionaConsole()
     {
-        setSelectedIndex(0);        
+        setAbaAtual(0);
     }
 
     @Override

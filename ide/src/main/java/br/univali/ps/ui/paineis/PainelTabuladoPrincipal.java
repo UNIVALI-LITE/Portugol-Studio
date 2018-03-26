@@ -45,10 +45,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
 
     public PainelTabuladoPrincipal() {
         initComponents();
-        if (WeblafUtils.weblafEstaInstalado()) {
-          ((WebTabbedPaneUI)getUI()).setShadeWidth(0);
-        }
-        this.setUI(new PSMainTabbedPaneUI());
         abaAjuda = new AbaAjuda();
     }
 //    @Override
@@ -58,9 +54,8 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
 
     public void setAbaInicial(AbaInicial abaInicial) {
         this.abaInicial = abaInicial;
-        add(abaInicial);
+        adicionaAba(abaInicial);
         //setTabComponentAt(indexOfComponent(abaInicial), abaInicial.getCabecalho());
-        setSelectedComponent(abaInicial);
 
         //abaInicial.adicionar(PainelTabuladoPrincipal.this);
         //abaInicial.inicializar();
@@ -81,21 +76,21 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
     
     private void configuraTrocaAba()
     {
-        addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if(getSelectedIndex()==indexOfComponent(abaInicial))
-                {
-                    getAbaInicial().getPainelExemplos().atualizarRecentes();
-                }
-//                if(getAbaSelecionada() instanceof AbaCodigoFonte)
+//        addChangeListener(new ChangeListener() {
+//            @Override
+//            public void stateChanged(ChangeEvent e) {
+//                if(getSelectedIndex()==indexOfComponent(abaInicial))
 //                {
-//                    AbaCodigoFonte acf = (AbaCodigoFonte) getAbaSelecionada();
-//                    acf.getEditor().getSuporteLinguagemPortugol().atualizar(acf.getEditor().getTextArea());
-//                    System.out.println("FIRE");
-//                }                
-            }
-        });
+//                    getAbaInicial().getPainelExemplos().atualizarRecentes();
+//                }
+////                if(getAbaSelecionada() instanceof AbaCodigoFonte)
+////                {
+////                    AbaCodigoFonte acf = (AbaCodigoFonte) getAbaSelecionada();
+////                    acf.getEditor().getSuporteLinguagemPortugol().atualizar(acf.getEditor().getTextArea());
+////                    System.out.println("FIRE");
+////                }                
+//            }
+//        });
     }
 
     private void configurarAcoes() {
@@ -142,23 +137,23 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
     }
     
     private void configurarAcaoMouseWheel(){
-        this.addMouseWheelListener(new MouseWheelListener(){
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) e.getSource();
-                int units = e.getWheelRotation();
-                int indexAnterior = painelTabulado.getSelectedIndex();
-                int indexNovo = indexAnterior + units;
-                if(painelTabulado.getSelectedIndex() >= 1){
-                    if (indexNovo < 1)
-                        painelTabulado.setSelectedIndex(1);
-                    else if (indexNovo >= painelTabulado.getTabCount())
-                        painelTabulado.setSelectedIndex(painelTabulado.getTabCount() - 1);
-                    else
-                        painelTabulado.setSelectedIndex(indexNovo);
-                }
-            }
-        });
+//        this.addMouseWheelListener(new MouseWheelListener(){
+//            @Override
+//            public void mouseWheelMoved(MouseWheelEvent e) {
+//                PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) e.getSource();
+//                int units = e.getWheelRotation();
+//                int indexAnterior = painelTabulado.getSelectedIndex();
+//                int indexNovo = indexAnterior + units;
+//                if(painelTabulado.getSelectedIndex() >= 1){
+//                    if (indexNovo < 1)
+//                        painelTabulado.setSelectedIndex(1);
+//                    else if (indexNovo >= painelTabulado.getTabCount())
+//                        painelTabulado.setSelectedIndex(painelTabulado.getTabCount() - 1);
+//                    else
+//                        painelTabulado.setSelectedIndex(indexNovo);
+//                }
+//            }
+//        });
     }
     
     private void configurarAcaoFecharAbaAtual() {
@@ -280,7 +275,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado {
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
                 painelTabuladoPrincipal.add(AbaCodigoFonte.novaAba());
-                painelTabuladoPrincipal.setSelectedIndex(1);
                 
                 frame.add(painelTabuladoPrincipal, BorderLayout.CENTER);
                 frame.setVisible(true);

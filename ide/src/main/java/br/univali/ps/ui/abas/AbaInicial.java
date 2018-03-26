@@ -287,7 +287,7 @@ public final class AbaInicial extends Aba implements Themeable
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                getPainelTabulado().getActionMap().get(NewPainelTabulado.ACAO_EXIBIR_AJUDA).actionPerformed(e);
+                getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
             }
         };
 
@@ -301,7 +301,7 @@ public final class AbaInicial extends Aba implements Themeable
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                getPainelTabulado().getActionMap().get(NewPainelTabulado.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
+                getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
             }
         };
 

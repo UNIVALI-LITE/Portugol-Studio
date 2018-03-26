@@ -9,6 +9,7 @@ import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.paineis.NewPainelTabulado;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Dimension;
@@ -83,13 +84,13 @@ public class TelaPrincipal extends javax.swing.JPanel
     
     private void criaAbas()
     {
-        newPainelTabulado.setAbaInicial(new AbaInicial(this));
+        painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
     }
     
     private void configurarCores(){
 //        mainPanel.setBackground(ColorController.COR_DESTAQUE);
         setBackground(ColorController.FUNDO_ESCURO);
-        newPainelTabulado.setBackground(ColorController.COR_PRINCIPAL);
+        painelTabuladoPrincipal.setBackground(ColorController.COR_PRINCIPAL);
     }
     
     
@@ -231,7 +232,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
         Date date = new Date();
         abaCodigoFonte.setName("aba"+date.getTime());
-        newPainelTabulado.adicionaAba(abaCodigoFonte);
+        painelTabuladoPrincipal.adicionaAba(abaCodigoFonte);
         abaCodigoFonte.carregarAlgoritmoPadrao();
         revalidate();
     }
@@ -327,8 +328,8 @@ public class TelaPrincipal extends javax.swing.JPanel
 
     public boolean fecharAplicativo()
     {
-        newPainelTabulado.fecharTodasAbas(AbaCodigoFonte.class);
-        if (!newPainelTabulado.temAbaAberta(AbaCodigoFonte.class))
+        painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
+        if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
             
             PortugolStudio.getInstancia().finalizar(0);
@@ -339,8 +340,8 @@ public class TelaPrincipal extends javax.swing.JPanel
     }
     public boolean fecharAplicativoParaReiniciar()
     {
-        newPainelTabulado.fecharTodasAbas(AbaCodigoFonte.class);
-        if (!newPainelTabulado.temAbaAberta(AbaCodigoFonte.class))
+        painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
+        if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
             return true;
         }
@@ -348,9 +349,9 @@ public class TelaPrincipal extends javax.swing.JPanel
         return false;
     }
 
-    public NewPainelTabulado getPainelTabulado()
+    public PainelTabuladoPrincipal getPainelTabulado()
     {
-        return newPainelTabulado;
+        return painelTabuladoPrincipal;
     }
     
     /**
@@ -362,15 +363,15 @@ public class TelaPrincipal extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        newPainelTabulado = new br.univali.ps.ui.paineis.NewPainelTabulado();
+        painelTabuladoPrincipal = new br.univali.ps.ui.paineis.PainelTabuladoPrincipal();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         setLayout(new java.awt.BorderLayout());
-        add(newPainelTabulado, java.awt.BorderLayout.CENTER);
+        add(painelTabuladoPrincipal, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private br.univali.ps.ui.paineis.NewPainelTabulado newPainelTabulado;
+    private br.univali.ps.ui.paineis.PainelTabuladoPrincipal painelTabuladoPrincipal;
     // End of variables declaration//GEN-END:variables
 }

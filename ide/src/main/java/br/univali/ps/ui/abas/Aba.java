@@ -1,12 +1,14 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.paineis.NewPainelTabulado;
+import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.utils.IconFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public abstract class Aba extends JPanel
 {
@@ -111,7 +113,11 @@ public abstract class Aba extends JPanel
             {
                 painelTabulado.getAbaContainer().remove(this);
                 painelTabulado.getCabecalhosAba().remove(this.cabecalho);
-                painelTabulado = null;
+                SwingUtilities.invokeLater(() -> {
+                    painelTabulado.invalidate();
+                    painelTabulado.repaint();
+                    painelTabulado = null;
+                });               
             }
         }        
 
