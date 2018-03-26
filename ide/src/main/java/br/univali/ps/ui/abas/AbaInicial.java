@@ -1,7 +1,6 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.paineis.NewPainelTabulado;
 import br.univali.ps.ui.paineis.PainelExemplos;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
@@ -28,7 +27,6 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 

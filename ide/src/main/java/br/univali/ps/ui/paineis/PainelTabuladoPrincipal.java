@@ -7,23 +7,17 @@ import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.swing.weblaf.PSMainTabbedPaneUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public final class PainelTabuladoPrincipal extends PainelTabulado {
 
