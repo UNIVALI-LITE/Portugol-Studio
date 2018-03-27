@@ -29,7 +29,11 @@ public abstract class Aba extends JPanel
         Date date = new Date();
         this.setName("aba"+date.getTime());        
     }
-
+    
+    public boolean isSelected(){
+        return painelTabulado.getAbaSelecionada() == this;
+    }
+    
     public void setPainelTabulado(NewPainelTabulado painelTabulado)
     {
         this.painelTabulado = painelTabulado;

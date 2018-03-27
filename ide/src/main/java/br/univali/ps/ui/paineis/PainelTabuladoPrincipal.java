@@ -234,7 +234,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
     private void exibirAbaAjuda() {
         if (!this.temAbaAberta(AbaAjuda.class)) {
             //abaAjuda.adicionar(this);
-            this.add(abaAjuda);
+            this.adicionaAba(abaAjuda);
         }
 
         abaAjuda.selecionar();
@@ -243,10 +243,10 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
     private void exibirAbaDocumentacao() {
         if (abaDocumentacao == null) {
             abaDocumentacao = new AbaDocumentacaoBiblioteca();
-            this.add(abaDocumentacao);
+            this.adicionaAba(abaDocumentacao);
         } else if (!this.temAbaAberta(AbaDocumentacaoBiblioteca.class)) {
             //abaDocumentacao.adicionar(this);
-            this.add(abaDocumentacao);
+            this.adicionaAba(abaDocumentacao);
         }
 
         abaDocumentacao.selecionar();

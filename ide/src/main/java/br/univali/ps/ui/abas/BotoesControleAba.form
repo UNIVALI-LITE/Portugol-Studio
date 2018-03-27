@@ -9,13 +9,13 @@
     </Property>
     <Property name="focusable" type="boolean" value="false"/>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[180, 25]"/>
+      <Dimension value="[180, 26]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[180, 25]"/>
+      <Dimension value="[180, 26]"/>
     </Property>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[180, 25]"/>
+      <Dimension value="[180, 26]"/>
     </Property>
   </Properties>
   <AuxValues>

@@ -6,8 +6,10 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
@@ -32,11 +34,34 @@ public class CabecalhoAba extends JPanel implements Themeable{
             }
         });
     }
+
+    @Override
+    public void paint(Graphics grphcs) {
+        if(this instanceof BotoesControleAba){
+            if(getAba().isSelected()){
+                setBackground(ColorController.COR_PRINCIPAL);
+            }else{
+                setBackground(ColorController.COR_CONSOLE);
+            }
+        }else{
+            if(getAba().isSelected()){
+            setBackground(ColorController.COR_PRINCIPAL);
+            }else{
+                setBackground(ColorController.FUNDO_CLARO);
+            }
+        }
+        
+        super.paint(grphcs); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
     @Override
     public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
         setBackground(ColorController.FUNDO_MEDIO);
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
+        
     }
     
     private void configuraIcones()
@@ -87,10 +112,11 @@ public class CabecalhoAba extends JPanel implements Themeable{
         jLTitulo = new javax.swing.JLabel();
         botaoFechar = new javax.swing.JButton();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 0, 2));
         setFocusable(false);
-        setMaximumSize(new java.awt.Dimension(300, 30));
-        setMinimumSize(new java.awt.Dimension(110, 25));
-        setPreferredSize(new java.awt.Dimension(110, 30));
+        setMaximumSize(new java.awt.Dimension(300, 50));
+        setMinimumSize(new java.awt.Dimension(110, 30));
+        setPreferredSize(new java.awt.Dimension(0, 0));
         setLayout(new java.awt.GridBagLayout());
 
         jLIcone.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -135,7 +161,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
         int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;
         int larguraTitulo = jLTitulo.getPreferredSize().width;
-        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3, 16));
+        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3, 26));
     }
 
     boolean isBotaoFecharVisivel()

@@ -35,8 +35,8 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         mudarParaAba(aba);
         aba.setPainelTabulado(this);
         SwingUtilities.invokeLater(() -> {
-            aba.invalidate();
-            aba.repaint();
+            invalidate();
+            repaint();
         });
         return aba;
     }
@@ -52,8 +52,8 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         CardLayout cl = (CardLayout) abaContainer.getLayout();
         cl.show(abaContainer, aba.getName());
         SwingUtilities.invokeLater(() -> {
-            aba.invalidate();
-            aba.repaint();
+            invalidate();
+            repaint();
         });
         return aba;
     } 
@@ -139,8 +139,11 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
 
         setLayout(new java.awt.BorderLayout());
 
+        cabecalhosAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         cabecalhosAba.setMaximumSize(new java.awt.Dimension(32767, 40));
-        cabecalhosAba.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 0, 0);
+        flowLayout1.setAlignOnBaseline(true);
+        cabecalhosAba.setLayout(flowLayout1);
         add(cabecalhosAba, java.awt.BorderLayout.NORTH);
 
         abaContainer.setLayout(new java.awt.CardLayout());

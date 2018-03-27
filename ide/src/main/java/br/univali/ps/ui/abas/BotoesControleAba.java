@@ -13,6 +13,7 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -72,7 +73,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         titulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png"));
     }
-
+    
+    
     private JFileChooser criarSeletorArquivo() {
         JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserAbertura();
         dialogoSelecaoArquivo.setCurrentDirectory(new File(Configuracoes.getInstancia().getCaminhoUltimoDiretorio()));
@@ -250,9 +252,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);
-        setMaximumSize(new java.awt.Dimension(180, 25));
-        setMinimumSize(new java.awt.Dimension(180, 25));
-        setPreferredSize(new java.awt.Dimension(180, 25));
+        setMaximumSize(new java.awt.Dimension(180, 26));
+        setMinimumSize(new java.awt.Dimension(180, 26));
+        setPreferredSize(new java.awt.Dimension(180, 26));
         setLayout(new java.awt.GridBagLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
