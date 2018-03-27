@@ -42,14 +42,9 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         return aba;
     }
     
-    private Aba adicionaAoCabecalho(Aba aba)
+    public Aba adicionaAoCabecalho(Aba aba)
     {
-        if(cabecalhosAba.getComponentCount()>0){
-            cabecalhosAba.remove(cabecalhosAba.getComponentCount()-1);
-        }
-        cabecalhosAba.add(aba.getCabecalho());
-        cabecalhosAba.add(new CabecalhoAdicionarAba());
-        
+        cabecalhosAba.add(aba.getCabecalho());   
         return aba;
     }
     
@@ -126,9 +121,9 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     @Override
     public void configurarCores() {
-        abaContainer.setBackground(ColorController.FUNDO_MEDIO);
+        abaContainer.setBackground(ColorController.COR_CONSOLE);
         abaContainer.setForeground(ColorController.COR_LETRA);
-        cabecalhosAba.setBackground(ColorController.FUNDO_ESCURO);
+        cabecalhosAba.setBackground(ColorController.COR_PRINCIPAL);
         cabecalhosAba.setForeground(ColorController.COR_LETRA);
     }
     /**

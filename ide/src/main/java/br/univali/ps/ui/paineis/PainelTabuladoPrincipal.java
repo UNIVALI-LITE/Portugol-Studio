@@ -7,6 +7,7 @@ import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -169,6 +170,18 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
         this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
 
+    @Override
+    public Aba adicionaAoCabecalho(Aba aba) {
+        if(getCabecalhosAba().getComponentCount()>0){
+            getCabecalhosAba().remove(getCabecalhosAba().getComponentCount()-1);
+        }
+        getCabecalhosAba().add(aba.getCabecalho());
+        getCabecalhosAba().add(new CabecalhoAdicionarAba());
+        
+        return aba;
+    }
+    
+    
     private void configurarAcaoFecharTodasAbas() {
         KeyStroke atalho = KeyStroke.getKeyStroke("shift control Q");
         String nome = "Fechar todas as abas";

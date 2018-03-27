@@ -54,6 +54,11 @@ public class TelaPrincipal extends javax.swing.JPanel
     public TelaPrincipal()
     {
         initComponents();
+        
+        painelTabuladoPrincipal.getCabecalhosAba().setBackground(ColorController.FUNDO_ESCURO);
+        painelTabuladoPrincipal.getCabecalhosAba().setForeground(ColorController.COR_LETRA);
+        painelTabuladoPrincipal.getAbaContainer().setBackground(ColorController.FUNDO_MEDIO);
+        painelTabuladoPrincipal.getAbaContainer().setForeground(ColorController.COR_LETRA);
         criaAbas();
         configurarCores();
         instalarObservadores();
