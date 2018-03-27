@@ -6,6 +6,7 @@
 package br.univali.ps.ui.paineis;
 
 import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import java.awt.CardLayout;
@@ -43,7 +44,12 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     private Aba adicionaAoCabecalho(Aba aba)
     {
-        cabecalhosAba.add(aba.getCabecalho());        
+        if(cabecalhosAba.getComponentCount()>0){
+            cabecalhosAba.remove(cabecalhosAba.getComponentCount()-1);
+        }
+        cabecalhosAba.add(aba.getCabecalho());
+        cabecalhosAba.add(new CabecalhoAdicionarAba());
+        
         return aba;
     }
     

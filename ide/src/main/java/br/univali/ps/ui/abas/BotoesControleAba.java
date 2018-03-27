@@ -246,15 +246,18 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        botaoNovoArquivo = new com.alee.laf.button.WebButton();
         titulo = new javax.swing.JLabel();
         botaoAbrir = new com.alee.laf.button.WebButton();
-        botaoNovoArquivo = new com.alee.laf.button.WebButton();
+
+        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
+        botaoNovoArquivo.setHideActionText(true);
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);
-        setMaximumSize(new java.awt.Dimension(180, 26));
-        setMinimumSize(new java.awt.Dimension(180, 26));
-        setPreferredSize(new java.awt.Dimension(180, 26));
+        setMaximumSize(null);
+        setMinimumSize(null);
+        setPreferredSize(new java.awt.Dimension(150, 26));
         setLayout(new java.awt.GridBagLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -274,10 +277,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setHideActionText(true);
         add(botaoAbrir, new java.awt.GridBagConstraints());
-
-        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
-        botaoNovoArquivo.setHideActionText(true);
-        add(botaoNovoArquivo, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
