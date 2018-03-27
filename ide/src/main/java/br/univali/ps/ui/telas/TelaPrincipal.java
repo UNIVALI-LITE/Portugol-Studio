@@ -231,12 +231,17 @@ public class TelaPrincipal extends javax.swing.JPanel
                         PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
-                
-                try {
-                    iniciar_sessao_servidor();
-                } catch (Exception ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                Thread thread = new Thread(){
+                public void run(){
+                        try {
+                            iniciar_sessao_servidor();
+                        } catch (Exception ex) {
+                            //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                        }                
+                    }
+                };
+
+                thread.start();
                 
                 LOGGER.log(Level.INFO, "Janela principal aberta!");
             }
