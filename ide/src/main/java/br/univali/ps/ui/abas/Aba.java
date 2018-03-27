@@ -1,10 +1,9 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.paineis.NewPainelTabulado;
-import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
-import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.utils.IconFactory;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JPanel;
@@ -26,6 +25,9 @@ public abstract class Aba extends JPanel
         
         this.listeners = new ArrayList<>();
         this.cabecalho = criarCabecalhoPadrao("Sem título", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"), false);
+                
+        Date date = new Date();
+        this.setName("aba"+date.getTime());        
     }
 
     public void setPainelTabulado(NewPainelTabulado painelTabulado)
