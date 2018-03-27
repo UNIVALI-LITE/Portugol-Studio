@@ -33,6 +33,7 @@ public final class Configuracoes
     public static final String TEMA_PORTUGOL = "temaPortugol";
     public static final String TAMANHO_FONTE_ARVORE = "tamanhoFonteArvore";
     public static final String CENTRALIZAR_CODIGO_FONTE = "centralizarCodigoFonte";
+    public static final String ENVIAR_DADOS = "enviar_dados";
     public static final String EXIBIR_AVISO_VIDEO_AULAS = "exibirAvisoVideoAulas";
     public static final String EXIBIR_AVISO_RENOMEAR = "exibirAvisoRenomear";
     public static final String EXIBIR_TUTORIAL_USO = "exibirTutorialUso";
@@ -66,6 +67,7 @@ public final class Configuracoes
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Dark";
     private String temaPortugol = "Dark";
+    private boolean envio_de_dados = true;
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
     private boolean exibirAvisoRenomear = true;
@@ -100,6 +102,7 @@ public final class Configuracoes
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
             temaEditor = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
             temaPortugol = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
+            envio_de_dados = Boolean.parseBoolean(configuracoes.getProperty(ENVIAR_DADOS, "true"));
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
             exibirAvisoVideoAulas = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_AVISO_VIDEO_AULAS, "true"));
@@ -259,6 +262,14 @@ public final class Configuracoes
     public boolean isExibirOpcoesExecucao()
     {
         return exibirOpcoesExecucao;
+    }
+
+    public boolean isEnvio_de_dados() {
+        return envio_de_dados;
+    }
+
+    public void setEnvio_de_dados(boolean envio_de_dados) {
+        this.envio_de_dados = envio_de_dados;
     }
 
     public void setTamanhoFonteArvore(float tamanhoFonteArvore)

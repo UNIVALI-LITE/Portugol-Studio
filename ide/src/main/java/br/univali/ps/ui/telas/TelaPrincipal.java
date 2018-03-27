@@ -2,6 +2,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PSAnalytics;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
@@ -24,29 +25,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.NetworkInterface;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 /**
@@ -58,7 +46,7 @@ public class TelaPrincipal extends javax.swing.JPanel
     private boolean abrindo = true;
     private List<File> arquivosIniciais;
     int pX, pY;
-    
+    PSAnalytics analytics = new PSAnalytics();
     
 
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
@@ -112,104 +100,6 @@ public class TelaPrincipal extends javax.swing.JPanel
         
     }
     
-    private void criar_usuario_servidor(String username) throws Exception{
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost("https://ui-spy.herokuapp.com/api/users");
-//        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
-
-        // Request parameters and other properties.
-        List<BasicNameValuePair> params = new ArrayList<>(3);
-        
-        params.add(new BasicNameValuePair("user", username));
-        params.add(new BasicNameValuePair("operational_system", System.getProperty("os.name")));
-        params.add(new BasicNameValuePair("is_online", "true"));
-        params.add(new BasicNameValuePair("portugol_version", PortugolStudio.getInstancia().getVersao() ));
-        try {
-            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-            //Execute and get the response.
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-
-            if (entity != null) {
-                InputStream instream = entity.getContent();
-                try {
-                    // do something useful
-                } finally {
-                    instream.close();
-                }
-            }
-        } catch (Exception ex) {
-            System.out.println("Erro no envio ao servidor");
-        }
-    }
-    
-    private void editar_usuario_servidor(String id, boolean set_online) throws Exception{
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpPut httpput = new HttpPut("https://ui-spy.herokuapp.com/api/users/"+id);
-        RequestConfig timeout = RequestConfig.custom().setConnectTimeout(1500).setSocketTimeout(1500).build();
-        httpput.setConfig(timeout);
-//        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
-
-        // Request parameters and other properties.
-        List<BasicNameValuePair> params = new ArrayList<>(3);
-        params.add(new BasicNameValuePair("is_online", ""+set_online));
-        
-        try {
-            httpput.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-            //Execute and get the response.
-            HttpResponse response = httpclient.execute(httpput);
-            HttpEntity entity = response.getEntity();
-
-            if (entity != null) {
-                InputStream instream = entity.getContent();
-                try {
-                    // do something useful
-                } finally {
-                    instream.close();
-                }
-            }
-        } catch (Exception ex) {
-            System.out.println("Erro no envio ao servidor");
-        }
-    }
-    public static String getHTML(String urlToRead) throws Exception {
-      StringBuilder result = new StringBuilder();
-      URL url = new URL(urlToRead);
-      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      conn.setRequestMethod("GET");
-      BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-      String line;
-      while ((line = rd.readLine()) != null) {
-         result.append(line);
-      }
-      rd.close();
-      return result.toString();
-   }
-    private void iniciar_sessao_servidor() throws Exception{
-        InetAddress ip  = InetAddress.getLocalHost();
-	NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-	byte[] mac = network.getHardwareAddress();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-        }
-        String username = sb.toString();
-        if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
-            criar_usuario_servidor(username);
-        }else{
-            String id = "undefined";
-            String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
-            String[] dados = data.split(",");
-            for (String dado : dados) {
-                String[] obj = dado.split(":");
-                if(obj[0].contains("_id")){
-                    String aid = obj[1].replaceAll("\"", "");
-                    id = aid.replaceAll(" ", "");
-                }
-            }
-            editar_usuario_servidor(id, true);
-        }
-    }
     private void instalarObservadorJanela()
     {
         JFrame frame = Lancador.getJFrame();
@@ -232,16 +122,13 @@ public class TelaPrincipal extends javax.swing.JPanel
                         PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
+                
                 Thread thread = new Thread(){
-                public void run(){
-                        try {
-                            iniciar_sessao_servidor();
-                        } catch (Exception ex) {
-                            //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                        }                
+                    public void run(){
+                        analytics.iniciar_sessao_servidor();
                     }
                 };
-
+                              
                 thread.start();
                 
                 LOGGER.log(Level.INFO, "Janela principal aberta!");
@@ -449,36 +336,8 @@ public class TelaPrincipal extends javax.swing.JPanel
     {
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
-        {
-            InetAddress ip;
-            try {
-                ip = InetAddress.getLocalHost();
-                NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                byte[] mac = network.getHardwareAddress();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < mac.length; i++) {
-                        sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-                }
-                String username = sb.toString();
-                if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
-                }else{
-                    String id = "undefined";
-                    String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
-                    String[] dados = data.split(",");
-                    for (String dado : dados) {
-                        String[] obj = dado.split(":");
-                        if(obj[0].contains("_id")){
-                            String aid = obj[1].replaceAll("\"", "");
-                            id = aid.replaceAll(" ", "");
-                        }
-                    }
-                    editar_usuario_servidor(id, false);
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
+        { 
+            analytics.finalizar_sessao();
             PortugolStudio.getInstancia().finalizar(0);
             return true;
         }
