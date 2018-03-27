@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class CabecalhoAba extends JPanel implements Themeable{
     private final Aba aba;
@@ -38,16 +39,30 @@ public class CabecalhoAba extends JPanel implements Themeable{
     @Override
     public void paint(Graphics grphcs) {
         if(this instanceof BotoesControleAba){
+            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
+        }else if(getAba().isRemovivel()){
+            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
+        }else{
+            setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, ColorController.COR_CONSOLE));
+        }
+        if(this instanceof BotoesControleAba){
             if(getAba().isSelected()){
                 setBackground(ColorController.COR_PRINCIPAL);
             }else{
                 setBackground(ColorController.COR_CONSOLE);
             }
-        }else{
+        }else if(getAba().isRemovivel()){
             if(getAba().isSelected()){
-            setBackground(ColorController.COR_PRINCIPAL);
+                setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ColorController.AMARELO));
+                setBackground(ColorController.COR_PRINCIPAL);
             }else{
                 setBackground(ColorController.FUNDO_CLARO);
+            }
+        }else{
+            if(getAba().isSelected()){
+                setBackground(ColorController.COR_CONSOLE);
+            }else{
+                setBackground(ColorController.COR_PRINCIPAL);
             }
         }
         
@@ -60,7 +75,14 @@ public class CabecalhoAba extends JPanel implements Themeable{
     public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
         setBackground(ColorController.FUNDO_MEDIO);
-        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
+        if(this instanceof BotoesControleAba){
+            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
+        }else if(getAba().isRemovivel()){
+            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.AMARELO));
+        }else{
+            setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, ColorController.AZUL));
+        }
+        
         
     }
     
@@ -158,14 +180,18 @@ public class CabecalhoAba extends JPanel implements Themeable{
 
     protected void calculaTamanhoCabecalho()
     {
+        setBorder(new EmptyBorder(2, 2, 2, 2));
         int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;
         int larguraTitulo = jLTitulo.getPreferredSize().width;
-        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3, 26));
+        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3 + 4, 26));
     }
 
     boolean isBotaoFecharVisivel()
     {
-        return botaoFechar.isVisible();
+        if(botaoFechar != null){
+            return botaoFechar.isVisible();
+        }
+        return false;
     }
 }

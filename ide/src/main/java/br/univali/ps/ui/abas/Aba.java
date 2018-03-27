@@ -16,6 +16,7 @@ public abstract class Aba extends JPanel
     private CabecalhoAba cabecalho;
     private NewPainelTabulado painelTabulado;
     private List<AbaListener> listeners;
+    private boolean removivel = false;
 
     public Aba() {
         if (!classesFilhas.contains(this.getClass()))
@@ -60,7 +61,7 @@ public abstract class Aba extends JPanel
     private CabecalhoAba criarCabecalhoPadrao(String titulo, Icon icone, boolean removivel)
     {
         CabecalhoAba cabecalhoPadrao = new CabecalhoAba(this);
-        
+        this.removivel = removivel;
         cabecalhoPadrao.setTitulo(titulo);
         cabecalhoPadrao.setIcone(icone);
         cabecalhoPadrao.setBotaoFecharVisivel(removivel);
@@ -98,7 +99,7 @@ public abstract class Aba extends JPanel
 
     public boolean isRemovivel()
     {
-        return cabecalho.isBotaoFecharVisivel();
+        return removivel;
     }
 
     public boolean fechar()
