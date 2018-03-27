@@ -29,7 +29,6 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.NetworkInterface;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,6 +41,7 @@ import javax.swing.SwingUtilities;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -146,11 +146,12 @@ public class TelaPrincipal extends javax.swing.JPanel
     private void editar_usuario_servidor(String id, boolean set_online) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
         HttpPut httpput = new HttpPut("https://ui-spy.herokuapp.com/api/users/"+id);
+        RequestConfig timeout = RequestConfig.custom().setConnectTimeout(1500).setSocketTimeout(1500).build();
+        httpput.setConfig(timeout);
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
 
         // Request parameters and other properties.
         List<BasicNameValuePair> params = new ArrayList<>(3);
-        
         params.add(new BasicNameValuePair("is_online", ""+set_online));
         
         try {
