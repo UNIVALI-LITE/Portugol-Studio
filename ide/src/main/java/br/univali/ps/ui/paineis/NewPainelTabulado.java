@@ -104,7 +104,19 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     public JPanel getCabecalhosAba() {
         return cabecalhosAba;
     }  
-    
+
+    @Override
+    public void remove(Component comp) {
+        if(comp instanceof Aba)
+        {
+            this.getAbaContainer().remove((Aba)comp);
+            this.getCabecalhosAba().remove(((Aba) comp).getCabecalho());            
+        }
+        else
+        {
+            super.remove(comp);
+        }
+    }
     
     @Override
     public void configurarCores() {

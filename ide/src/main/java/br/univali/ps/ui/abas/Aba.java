@@ -111,8 +111,7 @@ public abstract class Aba extends JPanel
         {
             if (painelTabulado != null)
             {
-                painelTabulado.getAbaContainer().remove(this);
-                painelTabulado.getCabecalhosAba().remove(this.cabecalho);
+                painelTabulado.remove(this);
                 SwingUtilities.invokeLater(() -> {
                     painelTabulado.invalidate();
                     painelTabulado.repaint();

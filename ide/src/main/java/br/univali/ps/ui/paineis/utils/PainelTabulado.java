@@ -52,14 +52,14 @@ public class PainelTabulado extends NewPainelTabulado implements ComponentListen
         }
         return abas;
     }
-
-//    @Override
-//    public void remove(Component component) {
-//        if (component instanceof Aba) {
-//            component.removeComponentListener(this);
-//        }
-//        super.remove(component);
-//    }
+    
+    @Override
+    public void remove(Component component) {
+        if (component instanceof Aba) {
+            component.removeComponentListener(this);
+        }
+        super.remove(component);
+    }
 
     public void removePainelTabuladoListener(PainelTabuladoListener listener) {
         painelTabuladoListeners.remove(listener);
