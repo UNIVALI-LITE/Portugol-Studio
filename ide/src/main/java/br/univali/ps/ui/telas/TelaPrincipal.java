@@ -2,6 +2,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PSAnalytics;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
@@ -45,7 +46,9 @@ public class TelaPrincipal extends javax.swing.JPanel
     private boolean abrindo = true;
     private List<File> arquivosIniciais;
     int pX, pY;
+    PSAnalytics analytics = new PSAnalytics();
     
+
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
     /**
     /**
@@ -96,7 +99,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         instalarObservadorJanela();
         
     }
-
+    
     private void instalarObservadorJanela()
     {
         JFrame frame = Lancador.getJFrame();
@@ -119,6 +122,14 @@ public class TelaPrincipal extends javax.swing.JPanel
                         PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
+                
+                Thread thread = new Thread(){
+                    public void run(){
+                        analytics.iniciar_sessao_servidor();
+                    }
+                };
+                              
+                thread.start();
                 
                 LOGGER.log(Level.INFO, "Janela principal aberta!");
             }
@@ -325,8 +336,8 @@ public class TelaPrincipal extends javax.swing.JPanel
     {
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
-        {
-            
+        { 
+            analytics.finalizar_sessao();
             PortugolStudio.getInstancia().finalizar(0);
             return true;
         }

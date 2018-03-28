@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import br.univali.ps.nucleo.Mutex;
+import br.univali.ps.ui.coletor.ColetorInteracao;
 
 /**
  * @author lite
@@ -205,6 +206,9 @@ public class Lancador {
                 Thread.currentThread().setName("Portugol-Studio (Swing)");
                 frame = new JFrame(); // a instância do JFrame deve ser criada na thread do Swing
                 resizer.registerComponent(frame);
+                
+//                ColetorInteracao coletor = ColetorInteracao.getInstancia();
+//                coletor.inspeciona(frame);
             });
 
         }

@@ -256,6 +256,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
         titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         titulo.setMinimumSize(new java.awt.Dimension(100, 16));
+        titulo.setName("labelTitulo"); // NOI18N
         titulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -265,10 +266,12 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setHideActionText(true);
+        botaoAbrir.setName("botaoAbrir"); // NOI18N
         add(botaoAbrir, new java.awt.GridBagConstraints());
 
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
         botaoNovoArquivo.setHideActionText(true);
+        botaoNovoArquivo.setName("botaoNovoArquivo"); // NOI18N
         add(botaoNovoArquivo, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
