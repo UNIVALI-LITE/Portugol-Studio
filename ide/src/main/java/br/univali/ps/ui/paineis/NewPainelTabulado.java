@@ -5,6 +5,8 @@
  */
 package br.univali.ps.ui.paineis;
 
+import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
@@ -12,6 +14,7 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -41,6 +44,32 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         SwingUtilities.invokeLater(() -> {
             revalidate();
             repaint();
+        });
+        
+        cabecalhosAba.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                // Get x,y and store them
+                PortugolStudio.getInstancia().getTelaPrincipal().pX = me.getX();
+                PortugolStudio.getInstancia().getTelaPrincipal().pY = me.getY();
+
+            }
+
+             public void mouseDragged(MouseEvent me) {
+
+                 SwingUtilities.invokeLater(() -> {
+                     Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                 });
+                
+            }
+        });
+
+        cabecalhosAba.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent me) {
+                SwingUtilities.invokeLater(() -> {
+                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                });
+                
+            }
         });
         return aba;
     }
@@ -220,6 +249,18 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         espacador.setPreferredSize(new java.awt.Dimension(0, 30));
+
+        javax.swing.GroupLayout espacadorLayout = new javax.swing.GroupLayout(espacador);
+        espacador.setLayout(espacadorLayout);
+        espacadorLayout.setHorizontalGroup(
+            espacadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        espacadorLayout.setVerticalGroup(
+            espacadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
         jPanel1.add(espacador, java.awt.BorderLayout.EAST);
 
         cabecalhosAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 0, 0));

@@ -107,8 +107,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             }
         });
         areaRecentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
-        criarBotaoAbrirRecentes();
-        
         atualizarRecentes();        
     }
     public void criarBotaoAbrirRecentes(){
@@ -165,6 +163,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         Icon icone = imagemPastaPadrao;
         areaRecentes.removeAll();
         areaLogo.removeAll();
+        
+//        criarBotaoAbrirRecentes();
+        
         WebImage imagemPortugol = new WebImage(icone);
         imagemPortugol.setDisplayType(DisplayType.fitComponent);
         areaLogo.add(imagemPortugol);
