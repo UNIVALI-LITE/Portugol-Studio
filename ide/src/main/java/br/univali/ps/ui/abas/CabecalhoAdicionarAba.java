@@ -9,6 +9,7 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Dimension;
+import javax.swing.border.MatteBorder;
 
 /**
  *
@@ -23,6 +24,7 @@ public class CabecalhoAdicionarAba extends javax.swing.JPanel {
         initComponents();
         setBackground(ColorController.COR_DESTAQUE);
         setPreferredSize(new Dimension(26, 26));
+        setBorder(new MatteBorder(0, 1, 0, 0, ColorController.FUNDO_ESCURO));
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }

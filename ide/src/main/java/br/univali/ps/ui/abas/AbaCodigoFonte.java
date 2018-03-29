@@ -167,6 +167,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void reseta()
     {
         painelSaida.selecionaConsole();
+        this.getCabecalho().configurarCores();
     }
     
     @Override

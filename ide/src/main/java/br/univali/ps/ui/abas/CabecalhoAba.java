@@ -5,13 +5,16 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class CabecalhoAba extends JPanel implements Themeable{
@@ -29,36 +32,50 @@ public class CabecalhoAba extends JPanel implements Themeable{
     }
 
     @Override
-    public void paint(Graphics grphcs) {
-        if(this instanceof BotoesControleAba){
-            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
-        }else if(getAba().isRemovivel()){
-            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
-        }else{
-            setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, ColorController.COR_CONSOLE));
-        }
+    protected void paintComponent(Graphics grphcs) {
+        Graphics2D g2d = (Graphics2D) grphcs;
         if(this instanceof BotoesControleAba){
             if(getAba().isSelected()){
-                setBackground(ColorController.COR_PRINCIPAL);
+                g2d.setPaint(ColorController.COR_PRINCIPAL);
             }else{
-                setBackground(ColorController.COR_CONSOLE);
+                g2d.setPaint(ColorController.COR_CONSOLE);
             }
+            
         }else if(getAba().isRemovivel()){
             if(getAba().isSelected()){
-                setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ColorController.AMARELO));
-                setBackground(ColorController.COR_PRINCIPAL);
+                g2d.setPaint(ColorController.COR_PRINCIPAL);
             }else{
-                setBackground(ColorController.FUNDO_CLARO);
+                g2d.setPaint(ColorController.FUNDO_CLARO);
             }
         }else{
             if(getAba().isSelected()){
-                setBackground(ColorController.COR_CONSOLE);
+                g2d.setPaint(ColorController.COR_CONSOLE);
             }else{
-                setBackground(ColorController.COR_PRINCIPAL);
+                g2d.setPaint(ColorController.COR_PRINCIPAL);
             }
         }
+        g2d.fillRect(0, 0, getWidth(), getHeight());
         
-        super.paint(grphcs); //To change body of generated methods, choose Tools | Templates.
+        
+        if(this instanceof BotoesControleAba){
+            
+        }else if(getAba().isRemovivel()){
+            if(getAba().isSelected()){
+                g2d.setPaint(ColorController.AMARELO);
+            }else{
+                g2d.setPaint(ColorController.FUNDO_CLARO);
+            }
+        }else{
+            
+        }
+        g2d.fillRect(0, 0, getWidth(), 1);
+        if(this instanceof BotoesControleAba){
+            
+        }else if(getAba().isRemovivel()){
+                g2d.setPaint(ColorController.FUNDO_ESCURO);
+        }else{
+        }
+        g2d.fillRect(0, 0, 1, getHeight());
     }
     
     
@@ -70,12 +87,14 @@ public class CabecalhoAba extends JPanel implements Themeable{
         if(this instanceof BotoesControleAba){
             setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
         }else if(getAba().isRemovivel()){
-            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.AMARELO));
+            setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ColorController.AMARELO));
         }else{
-            setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, ColorController.AZUL));
+            setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, ColorController.COR_CONSOLE));
         }
-        
-        
+        SwingUtilities.invokeLater(() -> {
+            this.revalidate();
+            this.repaint();
+        });
     }
     
     private void configuraIcones()
@@ -181,9 +200,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
 
     boolean isBotaoFecharVisivel()
     {
-        if(botaoFechar != null){
-            return botaoFechar.isVisible();
-        }
-        return false;
+        return botaoFechar.isVisible();
     }
 }

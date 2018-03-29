@@ -1,10 +1,16 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.paineis.NewPainelTabulado;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -17,6 +23,7 @@ public abstract class Aba extends JPanel
     private NewPainelTabulado painelTabulado;
     private List<AbaListener> listeners;
     private boolean removivel = false;
+    
 
     public Aba() {
         if (!classesFilhas.contains(this.getClass()))
@@ -28,8 +35,10 @@ public abstract class Aba extends JPanel
         this.cabecalho = criarCabecalhoPadrao("Sem título", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"), false);
                 
         Date date = new Date();
-        this.setName("aba"+date.getTime());        
+        this.setName("aba"+date.getTime());
     }
+    
+    
     
     public boolean isSelected(){
         return painelTabulado.getAbaSelecionada() == this;
@@ -65,6 +74,7 @@ public abstract class Aba extends JPanel
         cabecalhoPadrao.setTitulo(titulo);
         cabecalhoPadrao.setIcone(icone);
         cabecalhoPadrao.setBotaoFecharVisivel(removivel);
+        cabecalhoPadrao.configurarCores();
         
         return cabecalhoPadrao;
     }
@@ -96,7 +106,6 @@ public abstract class Aba extends JPanel
     {
         cabecalho.setBotaoFecharVisivel(removivel);
     }
-
     public boolean isRemovivel()
     {
         return removivel;
