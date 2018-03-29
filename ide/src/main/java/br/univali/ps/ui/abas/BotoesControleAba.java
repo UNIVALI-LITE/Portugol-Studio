@@ -253,7 +253,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);
-        setPreferredSize(new java.awt.Dimension(135, 26));
+        setPreferredSize(new java.awt.Dimension(135, 30));
         setLayout(new java.awt.GridBagLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N

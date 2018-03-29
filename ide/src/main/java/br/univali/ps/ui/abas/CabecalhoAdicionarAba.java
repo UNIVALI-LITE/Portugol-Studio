@@ -23,7 +23,7 @@ public class CabecalhoAdicionarAba extends javax.swing.JPanel {
     public CabecalhoAdicionarAba() {
         initComponents();
         setBackground(ColorController.COR_DESTAQUE);
-        setPreferredSize(new Dimension(26, 26));
+        setPreferredSize(new Dimension(30,30));
         setBorder(new MatteBorder(0, 1, 0, 0, ColorController.FUNDO_ESCURO));
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);

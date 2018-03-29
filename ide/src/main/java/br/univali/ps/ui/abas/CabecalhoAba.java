@@ -204,7 +204,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
 //        if(newWidth>maxWidth){
 //            newWidth=maxWidth;
 //        }
-        setPreferredSize(new Dimension(newWidth, 26));
+        setPreferredSize(new Dimension(newWidth, 30));
     }
     
     public void setMaxWidth(int max){
