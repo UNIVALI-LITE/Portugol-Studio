@@ -8,11 +8,15 @@ package br.univali.ps.ui.paineis;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.abas.BotoesControleAba;
+import br.univali.ps.ui.abas.CabecalhoAba;
+import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -30,6 +34,8 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
      * Creates new form NewPainelTabulado
      */
     
+    String ultima_aba = "";
+    
     public NewPainelTabulado() {
         initComponents();
         configurarCores();
@@ -46,31 +52,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
             repaint();
         });
         
-        cabecalhosAba.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                // Get x,y and store them
-                PortugolStudio.getInstancia().getTelaPrincipal().pX = me.getX();
-                PortugolStudio.getInstancia().getTelaPrincipal().pY = me.getY();
-
-            }
-
-             public void mouseDragged(MouseEvent me) {
-
-                 SwingUtilities.invokeLater(() -> {
-                     Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
-                 });
-                
-            }
-        });
-
-        cabecalhosAba.addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseDragged(MouseEvent me) {
-                SwingUtilities.invokeLater(() -> {
-                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
-                });
-                
-            }
-        });
+        
         return aba;
     }
     
@@ -92,32 +74,27 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     private void resizeCabecalho()
     {
         int newSize = 200;
-        if(cabecalhosAba.getComponentCount()>1){
-            
-            int canvas = cabecalhosAba.getWidth()-espacador.getWidth();            
-            if(canvas > 0){
-                for (Component component : cabecalhosAba.getComponents()) {
-                    if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
-                        calculaTamanhoCabecalho((CabecalhoAba) component);
-                    }
+        int canvas = cabecalhosAba.getWidth()-espacador.getWidth();  
+        for (Component component : cabecalhosAba.getComponents()) {
+            if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
+                calculaTamanhoCabecalho((CabecalhoAba) component);
+            }
+        }
+        int used = 0;
+        for (Component component : cabecalhosAba.getComponents()) {
+            used+=component.getPreferredSize().getWidth();
+        }
+        if(used>=canvas  && this instanceof PainelTabuladoPrincipal){              
+            newSize = canvas/cabecalhosAba.getComponentCount();
+            newSize -= 2;
+            for (Component component : cabecalhosAba.getComponents()) {
+                if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
+                    CabecalhoAba cabecalho = (CabecalhoAba) component;
+                    cabecalho.setMaxWidth(newSize);
+                    cabecalho.setPreferredSize(new Dimension(newSize, 30));
                 }
-                int used = 0;
-                for (Component component : cabecalhosAba.getComponents()) {
-                    used+=component.getPreferredSize().getWidth();
-                }
-                if(used>=canvas){              
-                    newSize = canvas/cabecalhosAba.getComponentCount();
-                    newSize -= 2;
-                    for (Component component : cabecalhosAba.getComponents()) {
-                        if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
-                            CabecalhoAba cabecalho = (CabecalhoAba) component;
-                            cabecalho.setMaxWidth(newSize);
-                            cabecalho.setPreferredSize(new Dimension(newSize, 26));
-                        }
-                    }
-                    
-                }
-            }            
+            }
+
         }
     }
     
@@ -129,13 +106,14 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
             size+=component.getPreferredSize().getWidth();
         }        
         int newWidth = size + 20;        
-        cabAba.setPreferredSize(new Dimension(newWidth, 26));
+        cabAba.setPreferredSize(new Dimension(newWidth, 30));
     }
     
     public Aba mudarParaAba(Aba aba)
-    {        
+    {
+        ultima_aba = getAbaSelecionada().getName();
         CardLayout cl = (CardLayout) abaContainer.getLayout();
-        cl.show(abaContainer, aba.getName());
+        cl.show(abaContainer, aba.getName());        
         trocouAba(aba);
         SwingUtilities.invokeLater(() -> {
             revalidate();
@@ -196,6 +174,16 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     public void setAbaAtual(Aba aba)
     {
         mudarParaAba(aba);
+    }
+    
+    public void setAbaAtual(String aba)
+    {
+        for (Component component : getCabecalhosAba().getComponents()) {
+            if(component.getName().equals(aba))
+            {
+                mudarParaAba((Aba)component);                
+            }
+        }
     }
 
     public JPanel getAbaContainer() {

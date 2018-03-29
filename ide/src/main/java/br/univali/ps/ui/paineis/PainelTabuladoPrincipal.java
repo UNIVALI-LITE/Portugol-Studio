@@ -6,6 +6,7 @@ import br.univali.ps.ui.abas.abaAjuda.AbaAjuda;
 import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
@@ -16,6 +17,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.AbstractAction;
@@ -47,6 +51,31 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         initComponents();
         abaAjuda = new AbaAjuda();
         configurarCores();
+        getCabecalhosAba().addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                // Get x,y and store them
+                PortugolStudio.getInstancia().getTelaPrincipal().pX = me.getX();
+                PortugolStudio.getInstancia().getTelaPrincipal().pY = me.getY();
+
+            }
+
+             public void mouseDragged(MouseEvent me) {
+
+                 SwingUtilities.invokeLater(() -> {
+                     Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                 });
+                
+            }
+        });
+
+        getCabecalhosAba().addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent me) {
+                SwingUtilities.invokeLater(() -> {
+                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                });
+                
+            }
+        });
     }
 
     @Override

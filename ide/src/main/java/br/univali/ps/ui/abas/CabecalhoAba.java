@@ -3,6 +3,7 @@ package br.univali.ps.ui.abas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;
@@ -82,7 +83,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
     
     private void configuraIcones()
     {
-        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "white_close.png"));
+        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "white_close.png"));        
     }
     
     protected Aba getAba()
@@ -93,6 +94,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
     public void setTitulo(String titulo)
     {
         this.jLTitulo.setText(titulo);
+        FabricaDicasInterface.criarTooltipEstatica(botaoFechar, "Fechar - "+getTitulo());
     }
 
     public void setIcone(Icon icone)
