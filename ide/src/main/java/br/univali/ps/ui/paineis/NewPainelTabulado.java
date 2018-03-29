@@ -38,7 +38,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         mudarParaAba(aba);
         aba.setPainelTabulado(this);
         SwingUtilities.invokeLater(() -> {
-            invalidate();
+            revalidate();
             repaint();
         });
         return aba;
@@ -61,7 +61,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         CardLayout cl = (CardLayout) abaContainer.getLayout();
         cl.show(abaContainer, aba.getName());
         SwingUtilities.invokeLater(() -> {
-            invalidate();
+            revalidate();
             repaint();
         });
         return aba;

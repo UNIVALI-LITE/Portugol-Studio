@@ -253,17 +253,18 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
         botaoNovoArquivo.setHideActionText(true);
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 50));
         setFocusable(false);
         setPreferredSize(new java.awt.Dimension(150, 26));
         setLayout(new java.awt.GridBagLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         titulo.setForeground(new java.awt.Color(62, 62, 62));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/pequeno/light_pix_off.png"))); // NOI18N
         titulo.setText("Portugol Studio");
         titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
-        titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         titulo.setMinimumSize(new java.awt.Dimension(100, 16));
         titulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -274,7 +275,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setHideActionText(true);
-        add(botaoAbrir, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        add(botaoAbrir, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
