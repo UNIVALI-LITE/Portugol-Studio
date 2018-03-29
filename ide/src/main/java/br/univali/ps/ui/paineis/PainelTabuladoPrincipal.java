@@ -106,23 +106,23 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
     }
     
     private void configurarAcaoMouseWheel(){
-//        this.addMouseWheelListener(new MouseWheelListener(){
-//            @Override
-//            public void mouseWheelMoved(MouseWheelEvent e) {
-//                PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) e.getSource();
-//                int units = e.getWheelRotation();
-//                int indexAnterior = painelTabulado.getSelectedIndex();
-//                int indexNovo = indexAnterior + units;
-//                if(painelTabulado.getSelectedIndex() >= 1){
-//                    if (indexNovo < 1)
-//                        painelTabulado.setSelectedIndex(1);
-//                    else if (indexNovo >= painelTabulado.getTabCount())
-//                        painelTabulado.setSelectedIndex(painelTabulado.getTabCount() - 1);
-//                    else
-//                        painelTabulado.setSelectedIndex(indexNovo);
-//                }
-//            }
-//        });
+        this.addMouseWheelListener(new MouseWheelListener(){
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                PainelTabuladoPrincipal painelTabulado = (PainelTabuladoPrincipal) e.getSource();
+                int units = e.getWheelRotation();
+                int indexAnterior = painelTabulado.getAbaSelecionadaNumber();
+                int indexNovo = indexAnterior + units;
+                if(indexAnterior >= 1){
+                    if (indexNovo < 1)
+                        painelTabulado.setAbaAtual(1);
+                    else if (indexNovo >= painelTabulado.getAbaContainer().getComponentCount())
+                        painelTabulado.setAbaAtual(painelTabulado.getAbaContainer().getComponentCount() - 1);
+                    else
+                        painelTabulado.setAbaAtual(indexNovo);
+                }
+            }
+        });
     }
     
     private void configurarAcaoFecharAbaAtual() {

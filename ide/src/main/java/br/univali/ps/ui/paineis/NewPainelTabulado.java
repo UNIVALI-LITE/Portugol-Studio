@@ -95,6 +95,21 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         return null;
     }
     
+    public Integer getAbaSelecionadaNumber() {
+        
+        Component[] components = abaContainer.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            if(components[i] instanceof Aba)
+            {                
+                if(((Aba)components[i]).isVisible())
+                {                    
+                    return i;
+                }
+            }
+        }
+        return null;
+    }
+    
     public void setAbaAtual(int abaNumber)
     {             
         Aba aba = (Aba)abaContainer.getComponents()[abaNumber];
