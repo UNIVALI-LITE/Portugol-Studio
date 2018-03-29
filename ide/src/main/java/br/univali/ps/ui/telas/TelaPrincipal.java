@@ -30,10 +30,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +45,7 @@ public class TelaPrincipal extends javax.swing.JPanel
 {
     private boolean abrindo = true;
     private List<File> arquivosIniciais;
-    int pX, pY;
+    public int pX, pY;
     PSAnalytics analytics = new PSAnalytics();
     
 
@@ -78,15 +74,19 @@ public class TelaPrincipal extends javax.swing.JPanel
             }
 
              public void mouseDragged(MouseEvent me) {
-
-                Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                SwingUtilities.invokeLater(() -> {
+                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                });
+                
             }
         });
 
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent me) {
-
-                Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                SwingUtilities.invokeLater(() -> {
+                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                });
+                
             }
         });
     }
@@ -286,7 +286,7 @@ public class TelaPrincipal extends javax.swing.JPanel
                                 abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
                             }                            
                             
-                            getPainelTabulado().add(abaCodigoFonte);
+                            getPainelTabulado().adicionaAba(abaCodigoFonte);
                         }
                         catch (Exception excecao)
                         {
