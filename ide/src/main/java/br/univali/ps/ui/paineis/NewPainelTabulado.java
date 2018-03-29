@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -53,43 +54,35 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba adicionaAoCabecalho(Aba aba)
     {
-        int newSize = 200;
-//        if(cabecalhosAba.getComponentCount()>2){
-//            int canvas = cabecalhosAba.getWidth()-300;
-//            if(canvas > 0){
-//                int used = 0;
-//                for (Component component : cabecalhosAba.getComponents()) {
-//                    used+=component.getWidth();
-//                }
-//                System.out.println("used: "+used+" canvas: "+ canvas);
-//                if(used>=canvas){
-//                    int actualSize = cabecalhosAba.getComponent(1).getWidth();
-//                    int cont = cabecalhosAba.getComponentCount()+2;
-//                    newSize = actualSize - (actualSize/cont);
-//                    for (Component component : cabecalhosAba.getComponents()) {
-//                        if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
-//                            CabecalhoAba cabecalho = (CabecalhoAba) component;
-//                            cabecalho.setMaxWidth(newSize);
-//                            cabecalho.setPreferredSize(new Dimension(newSize, component.getHeight()));
-//                        }
-//                    }
-//                    
-//                }else{
-//                    for (Component component : cabecalhosAba.getComponents()) {
-//                        if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
-//                            CabecalhoAba cabecalho = (CabecalhoAba) component;
-//                            cabecalho.setMaxWidth(999);
-//                            cabecalho.setPreferredSize(new Dimension(cabecalho.getTamanhoCabecalho(), component.getHeight()));
-//                        }
-//                    }
-//                }
-//            }
-//            //aba.getCabecalho().setPreferredSize(new Dimension(newSize, 26));
-//        }
-//        if(newSize<70){
-//            JOptionPane.showMessageDialog(aba, "Não faz isso fera");
-//        }
         cabecalhosAba.add(aba.getCabecalho());
+        int newSize = 200;
+        if(cabecalhosAba.getComponentCount()>1){
+            
+            int canvas = cabecalhosAba.getWidth()-espacador.getWidth();            
+            if(canvas > 0){
+                for (Component component : cabecalhosAba.getComponents()) {
+                    if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
+                        calculaTamanhoCabecalho((CabecalhoAba) component);
+                    }
+                }
+                int used = 0;
+                for (Component component : cabecalhosAba.getComponents()) {
+                    used+=component.getPreferredSize().getWidth();
+                }
+                if(used>=canvas){              
+                    newSize = canvas/cabecalhosAba.getComponentCount();
+                    newSize -= 2;
+                    for (Component component : cabecalhosAba.getComponents()) {
+                        if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
+                            CabecalhoAba cabecalho = (CabecalhoAba) component;
+                            cabecalho.setMaxWidth(newSize);
+                            cabecalho.setPreferredSize(new Dimension(newSize, 26));
+                        }
+                    }
+                    
+                }
+            }            
+        }
         
         
         aba.getCabecalho().addMouseListener(new MouseAdapter() {
@@ -99,6 +92,17 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
             }
         });
         return aba;
+    }
+    
+    public void calculaTamanhoCabecalho(CabecalhoAba cabAba)
+    {        
+        int size = 0;
+        cabAba.setBorder(new EmptyBorder(2, 2, 2, 2));
+        for (Component component : cabAba.getComponents()) {
+            size+=component.getPreferredSize().getWidth();
+        }        
+        int newWidth = size + 20;        
+        cabAba.setPreferredSize(new Dimension(newWidth, 26));
     }
     
     public Aba mudarParaAba(Aba aba)

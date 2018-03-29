@@ -25,13 +25,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
         configurarCores();
         configuraIcones();
     }
-
-//    @Override
-//    public void paint(Graphics grphcs) {
-//        Graphics2D g2d = (Graphics2D) grphcs;
-//        g2d.setPaint(ColorController.VERMELHO);
-//        g2d.fillRect(0, 0, getWidth(), getHeight());
-//    }
     
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -79,9 +72,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
         }
         g2d.fillRect(0, 0, 1, getHeight());
 
-//        Graphics2D g2d = (Graphics2D) grphcs;
-//        g2d.setPaint(ColorController.VERMELHO);
-//        g2d.fillRect(0, 0, getWidth(), getHeight());
     }
     
     
@@ -105,19 +95,16 @@ public class CabecalhoAba extends JPanel implements Themeable{
     public void setTitulo(String titulo)
     {
         this.jLTitulo.setText(titulo);
-        calculaTamanhoCabecalho();
     }
 
     public void setIcone(Icon icone)
     {
         this.jLIcone.setIcon(icone);
-        calculaTamanhoCabecalho();
     }
 
     public void setBotaoFecharVisivel(boolean removivel)
     {
         botaoFechar.setVisible(removivel);
-        calculaTamanhoCabecalho();
     }
 
     public String getTitulo()
@@ -194,18 +181,8 @@ public class CabecalhoAba extends JPanel implements Themeable{
         int larguraTitulo = jLTitulo.getPreferredSize().width;
         return larguraIcone + larguraTitulo + larguraBotao + 10;
     }
-    public void calculaTamanhoCabecalho()
-    {
-        setBorder(new EmptyBorder(2, 2, 2, 2));
-        int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
-        int larguraIcone = jLIcone.getPreferredSize().width;
-        int larguraTitulo = jLTitulo.getPreferredSize().width;
-        int newWidth = larguraIcone + larguraTitulo + larguraBotao + 10;
-//        if(newWidth>maxWidth){
-//            newWidth=maxWidth;
-//        }
-        setPreferredSize(new Dimension(newWidth, 26));
-    }
+    
+    
     
     public void setMaxWidth(int max){
         this.maxWidth = max;
