@@ -30,6 +30,10 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -342,7 +346,8 @@ public class TelaPrincipal extends javax.swing.JPanel
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         { 
-            analytics.finalizar_sessao();
+            Lancador.getFrame().setVisible(false);            
+            analytics.finalizar_sessao();            
             PortugolStudio.getInstancia().finalizar(0);
             return true;
         }

@@ -13,6 +13,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -46,7 +48,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
     public void setAbaInicial(AbaInicial abaInicial) {
         this.abaInicial = abaInicial;
         adicionaAba(abaInicial);
-        configuraTrocaAba();
         configurarAcoes();
     }
 
@@ -59,25 +60,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
 
     public AbaAjuda getAbaAjuda() {
         return abaAjuda;
-    }
-    
-    private void configuraTrocaAba()
-    {
-//        addChangeListener(new ChangeListener() {
-//            @Override
-//            public void stateChanged(ChangeEvent e) {
-//                if(getSelectedIndex()==indexOfComponent(abaInicial))
-//                {
-//                    getAbaInicial().getPainelExemplos().atualizarRecentes();
-//                }
-////                if(getAbaSelecionada() instanceof AbaCodigoFonte)
-////                {
-////                    AbaCodigoFonte acf = (AbaCodigoFonte) getAbaSelecionada();
-////                    acf.getEditor().getSuporteLinguagemPortugol().atualizar(acf.getEditor().getTextArea());
-////                    System.out.println("FIRE");
-////                }                
-//            }
-//        });
     }
 
     private void configurarAcoes() {

@@ -6,17 +6,12 @@
 package br.univali.ps.ui.paineis;
 
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.abas.BotoesControleAba;
-import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -63,37 +58,8 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     public Aba mudarParaAba(Aba aba)
     {        
         CardLayout cl = (CardLayout) abaContainer.getLayout();
-//        Aba old = null;
-//        for (Component comp : abaContainer.getComponents()) {
-//            if (comp.isVisible() == true) {
-//                old = (Aba) comp;
-//            }
-//        }
         cl.show(abaContainer, aba.getName());
-//        if(aba.getCabecalho() != null){
-//            if(aba.getCabecalho() instanceof BotoesControleAba){
-//                aba.getCabecalho().setBackground(ColorController.COR_PRINCIPAL);
-//            }else if(aba.isRemovivel()){
-//                aba.getCabecalho().setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ColorController.AMARELO));
-//                aba.getCabecalho().setBackground(ColorController.COR_PRINCIPAL);
-//            }else{
-//                aba.getCabecalho().setBackground(ColorController.COR_CONSOLE);
-//            }
-//            if(old!=null){
-//                if(old.getCabecalho()!=null){
-//                    if(old.getCabecalho() instanceof BotoesControleAba){
-//                        old.getCabecalho().setBackground(ColorController.COR_CONSOLE);
-//                    }else if(old.isRemovivel()){
-//                        old.getCabecalho().setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
-//                        old.getCabecalho().setBackground(ColorController.FUNDO_CLARO);
-//                    }else{
-//                        old.getCabecalho().setBackground(ColorController.COR_PRINCIPAL);
-//                    }
-//                }
-//            }
-//        }
-        
-        
+        trocouAba(aba);
         SwingUtilities.invokeLater(() -> {
             revalidate();
             repaint();
@@ -146,7 +112,11 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
 
     public JPanel getCabecalhosAba() {
         return cabecalhosAba;
-    }  
+    }
+    
+    public void trocouAba(Aba aba){
+        
+    }
 
     @Override
     public void remove(Component comp) {

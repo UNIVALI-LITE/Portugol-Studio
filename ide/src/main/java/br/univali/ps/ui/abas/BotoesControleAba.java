@@ -163,7 +163,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     }
 
     private void instalarObservadores(final TelaPrincipal telaPrincipal) {
-        //telaPrincipal.getPainelTabulado().adicionaPainelTabuladoListener(this);
+        telaPrincipal.getPainelTabulado().adicionaPainelTabuladoListener(this);
 
         titulo.addMouseListener(new MouseAdapter() {
             @Override
@@ -181,7 +181,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     @Override
     public void abaSelecionada(Aba aba) {
         abaAtual = aba;
-
         if (abaAtual == this.getAba()) {
             ativar();
         } else {
@@ -253,10 +252,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
         botaoNovoArquivo.setHideActionText(true);
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 50));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);
-        setMaximumSize(null);
-        setMinimumSize(null);
         setPreferredSize(new java.awt.Dimension(150, 26));
         setLayout(new java.awt.GridBagLayout());
 
@@ -266,7 +263,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/pequeno/light_pix_off.png"))); // NOI18N
         titulo.setText("Portugol Studio");
         titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
-        titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        titulo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         titulo.setMinimumSize(new java.awt.Dimension(100, 16));
         titulo.setName("labelTitulo"); // NOI18N
         titulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -278,10 +275,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setHideActionText(true);
+        botaoAbrir.setName("botaoAbrir"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(botaoAbrir, gridBagConstraints);
-        botaoNovoArquivo.setName("botaoNovoArquivo"); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

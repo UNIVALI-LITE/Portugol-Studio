@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Fillipi Domingos Pelz
  */
-public class PainelTabulado extends NewPainelTabulado implements ComponentListener {
+public class PainelTabulado extends NewPainelTabulado{
 
     private List<PainelTabuladoListener> painelTabuladoListeners;
 
@@ -25,10 +25,9 @@ public class PainelTabulado extends NewPainelTabulado implements ComponentListen
             painelTabuladoListeners.add(listener);
         }
     }
-
+    
     @Override
-    public void componentShown(ComponentEvent ce) {
-        Aba aba = (Aba) ce.getComponent();
+    public void trocouAba(Aba aba) {
         disparaAbaSelecionada(aba);
     }
 
@@ -53,13 +52,13 @@ public class PainelTabulado extends NewPainelTabulado implements ComponentListen
         return abas;
     }
     
-    @Override
-    public void remove(Component component) {
-        if (component instanceof Aba) {
-            component.removeComponentListener(this);
-        }
-        super.remove(component);
-    }
+//    @Override
+//    public void remove(Component component) {
+//        if (component instanceof Aba) {
+//            component.removeComponentListener(this);
+//        }
+//        super.remove(component);
+//    }
 
     public void removePainelTabuladoListener(PainelTabuladoListener listener) {
         painelTabuladoListeners.remove(listener);
@@ -71,8 +70,7 @@ public class PainelTabulado extends NewPainelTabulado implements ComponentListen
             if(components[i] instanceof Aba)
             {                
                 if (components[i].isVisible()) {
-                    ((Aba) components[i]).setVisible(false);
-                    ((Aba) components[Math.max(0, i - 1)]).setVisible(true);
+                    mudarParaAba(((Aba) components[Math.max(0, i - 1)]));
                     return;
                 }
             }
@@ -85,8 +83,7 @@ public class PainelTabulado extends NewPainelTabulado implements ComponentListen
             if(components[i] instanceof Aba)
             {                
                 if (components[i].isVisible()) {
-                    ((Aba) components[i]).setVisible(false);
-                    ((Aba) components[Math.min(i + 1, components.length - 1)]).setVisible(true);
+                    mudarParaAba((Aba) components[Math.min(i + 1, components.length - 1)]);
                     return;
                 }
             }
@@ -110,16 +107,5 @@ public class PainelTabulado extends NewPainelTabulado implements ComponentListen
             painelTabuladoListener.abaSelecionada(aba);
         }
     }
-
-    @Override
-    public void componentHidden(ComponentEvent ce) {
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent ce) {
-    }
-
-    @Override
-    public void componentResized(ComponentEvent ce) {
-    }
+    
 }

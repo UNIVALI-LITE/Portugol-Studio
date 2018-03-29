@@ -12,7 +12,11 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -74,7 +78,11 @@ public class PSAnalytics {
         HttpClient httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost("https://ui-spy.herokuapp.com/api/users");
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
-
+        
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String date = df.format(today);
+        
         // Request parameters and other properties.
         List<BasicNameValuePair> params = new ArrayList<>(3);
         
@@ -82,6 +90,7 @@ public class PSAnalytics {
         params.add(new BasicNameValuePair("operational_system", System.getProperty("os.name")));
         params.add(new BasicNameValuePair("is_online", "true"));
         params.add(new BasicNameValuePair("portugol_version", PortugolStudio.getInstancia().getVersao() ));
+        params.add(new BasicNameValuePair("last_use", ""+date));
         try {
             httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             //Execute and get the response.
@@ -104,13 +113,17 @@ public class PSAnalytics {
     private void editar_usuario_servidor(String id, boolean set_online) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
         HttpPut httpput = new HttpPut("https://ui-spy.herokuapp.com/api/users/"+id);
-        RequestConfig timeout = RequestConfig.custom().setConnectTimeout(1500).setSocketTimeout(1500).build();
+        RequestConfig timeout = RequestConfig.custom().setConnectTimeout(2500).setSocketTimeout(2500).build();
         httpput.setConfig(timeout);
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String date = df.format(today);
 
         // Request parameters and other properties.
         List<BasicNameValuePair> params = new ArrayList<>(3);
         params.add(new BasicNameValuePair("is_online", ""+set_online));
+        params.add(new BasicNameValuePair("last_use", ""+date));
         
         try {
             httpput.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
