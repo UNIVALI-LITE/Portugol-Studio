@@ -14,7 +14,6 @@
         <EmptyBorder bottom="2" left="2" right="2" top="2"/>
       </Border>
     </Property>
-    <Property name="opaque" type="boolean" value="false"/>
   </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
