@@ -173,6 +173,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     @Override
     public void configurarCores()
     {
+        setBackground(ColorController.COR_PRINCIPAL);
         scrollOutlineTree.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         painelSaida.setForeground(ColorController.COR_LETRA);
         inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);

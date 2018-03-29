@@ -116,7 +116,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
                         if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
                             CabecalhoAba cabecalho = (CabecalhoAba) component;
                             cabecalho.setMaxWidth(newSize);
-                            cabecalho.setPreferredSize(new Dimension(newSize, 26));
+                            cabecalho.setPreferredSize(new Dimension(newSize, 30));
                         }
                     }
                     
@@ -133,7 +133,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
             size+=component.getPreferredSize().getWidth();
         }        
         int newWidth = size + 20;        
-        cabAba.setPreferredSize(new Dimension(newWidth, 26));
+        cabAba.setPreferredSize(new Dimension(newWidth, 30));
     }
     
     public Aba mudarParaAba(Aba aba)
