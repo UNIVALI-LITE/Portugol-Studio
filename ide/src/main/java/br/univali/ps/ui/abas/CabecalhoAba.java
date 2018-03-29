@@ -74,8 +74,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
 
     }
     
-    
-    
     @Override
     public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
@@ -117,6 +115,20 @@ public class CabecalhoAba extends JPanel implements Themeable{
         return jLIcone.getIcon();
     }
 
+    @Override
+    public void setPreferredSize(Dimension preferredSize) {
+        super.setPreferredSize(preferredSize); //To change body of generated methods, choose Tools | Templates.
+        if(this.getPreferredSize().width<(jLIcone.getPreferredSize().getWidth() + botaoFechar.getPreferredSize().getWidth()))
+        {
+            jLIcone.setVisible(false);
+            jLTitulo.setVisible(false);
+        }
+        else
+        {
+            jLIcone.setVisible(true);
+            jLTitulo.setVisible(true);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -181,8 +193,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
         int larguraTitulo = jLTitulo.getPreferredSize().width;
         return larguraIcone + larguraTitulo + larguraBotao + 10;
     }
-    
-    
     
     public void setMaxWidth(int max){
         this.maxWidth = max;

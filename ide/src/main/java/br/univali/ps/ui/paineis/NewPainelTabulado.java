@@ -5,19 +5,18 @@
  */
 package br.univali.ps.ui.paineis;
 
-import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.BotoesControleAba;
 import br.univali.ps.ui.abas.CabecalhoAba;
 import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -31,8 +30,6 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     /**
      * Creates new form NewPainelTabulado
      */
-    
-    int tamanho_max;
     
     public NewPainelTabulado() {
         initComponents();
@@ -54,7 +51,21 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba adicionaAoCabecalho(Aba aba)
     {
-        cabecalhosAba.add(aba.getCabecalho());
+        cabecalhosAba.add(aba.getCabecalho());             
+        resizeCabecalho();
+        CabecalhoAba cabecalhoAba = aba.getCabecalho();
+        cabecalhoAba.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                aba.selecionar();
+            }
+        });
+        FabricaDicasInterface.criarTooltipEstatica(cabecalhoAba, cabecalhoAba.getTitulo());
+        return aba;
+    }
+    
+    private void resizeCabecalho()
+    {
         int newSize = 200;
         if(cabecalhosAba.getComponentCount()>1){
             
@@ -83,15 +94,6 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
                 }
             }            
         }
-        
-        
-        aba.getCabecalho().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                aba.selecionar();
-            }
-        });
-        return aba;
     }
     
     public void calculaTamanhoCabecalho(CabecalhoAba cabAba)
@@ -188,7 +190,8 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         if(comp instanceof Aba)
         {
             this.getAbaContainer().remove((Aba)comp);
-            this.getCabecalhosAba().remove(((Aba) comp).getCabecalho());            
+            this.getCabecalhosAba().remove(((Aba) comp).getCabecalho());
+            this.resizeCabecalho();
         }
         else
         {
