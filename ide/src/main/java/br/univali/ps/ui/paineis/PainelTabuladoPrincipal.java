@@ -8,8 +8,11 @@ import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -22,7 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public final class PainelTabuladoPrincipal extends PainelTabulado{
+public final class PainelTabuladoPrincipal extends PainelTabulado implements Themeable{
 
     public static final String ACAO_EXIBIR_AJUDA = "Exibir ajuda";
     public static final String ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA = "Documentação das bibliotecas";
@@ -43,7 +46,16 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
     public PainelTabuladoPrincipal() {
         initComponents();
         abaAjuda = new AbaAjuda();
+        configurarCores();
     }
+
+    @Override
+    public void configurarCores() {
+        getEspacador().setBackground(ColorController.FUNDO_ESCURO);
+        getEspacador().setForeground(ColorController.COR_LETRA);
+        getEspacador().setPreferredSize(new Dimension(130, 30));
+    }
+    
     
     public void setAbaInicial(AbaInicial abaInicial) {
         this.abaInicial = abaInicial;

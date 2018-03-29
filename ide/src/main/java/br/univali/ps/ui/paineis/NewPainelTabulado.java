@@ -5,13 +5,19 @@
  */
 package br.univali.ps.ui.paineis;
 
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.Aba;
+import br.univali.ps.ui.abas.BotoesControleAba;
+import br.univali.ps.ui.abas.CabecalhoAba;
+import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -24,6 +30,8 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     /**
      * Creates new form NewPainelTabulado
      */
+    
+    int tamanho_max;
     
     public NewPainelTabulado() {
         initComponents();
@@ -45,7 +53,45 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba adicionaAoCabecalho(Aba aba)
     {
+        int newSize = 200;
+//        if(cabecalhosAba.getComponentCount()>2){
+//            int canvas = cabecalhosAba.getWidth()-300;
+//            if(canvas > 0){
+//                int used = 0;
+//                for (Component component : cabecalhosAba.getComponents()) {
+//                    used+=component.getWidth();
+//                }
+//                System.out.println("used: "+used+" canvas: "+ canvas);
+//                if(used>=canvas){
+//                    int actualSize = cabecalhosAba.getComponent(1).getWidth();
+//                    int cont = cabecalhosAba.getComponentCount()+2;
+//                    newSize = actualSize - (actualSize/cont);
+//                    for (Component component : cabecalhosAba.getComponents()) {
+//                        if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
+//                            CabecalhoAba cabecalho = (CabecalhoAba) component;
+//                            cabecalho.setMaxWidth(newSize);
+//                            cabecalho.setPreferredSize(new Dimension(newSize, component.getHeight()));
+//                        }
+//                    }
+//                    
+//                }else{
+//                    for (Component component : cabecalhosAba.getComponents()) {
+//                        if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
+//                            CabecalhoAba cabecalho = (CabecalhoAba) component;
+//                            cabecalho.setMaxWidth(999);
+//                            cabecalho.setPreferredSize(new Dimension(cabecalho.getTamanhoCabecalho(), component.getHeight()));
+//                        }
+//                    }
+//                }
+//            }
+//            //aba.getCabecalho().setPreferredSize(new Dimension(newSize, 26));
+//        }
+//        if(newSize<70){
+//            JOptionPane.showMessageDialog(aba, "Não faz isso fera");
+//        }
         cabecalhosAba.add(aba.getCabecalho());
+        
+        
         aba.getCabecalho().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -145,6 +191,10 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
             super.remove(comp);
         }
     }
+
+    public JPanel getEspacador() {
+        return espacador;
+    }
     
     @Override
     public void configurarCores() {
@@ -152,6 +202,9 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         abaContainer.setForeground(ColorController.COR_LETRA);
         cabecalhosAba.setBackground(ColorController.COR_PRINCIPAL);
         cabecalhosAba.setForeground(ColorController.COR_LETRA);
+        espacador.setBackground(ColorController.COR_PRINCIPAL);
+        espacador.setForeground(ColorController.COR_LETRA);
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -162,17 +215,27 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        espacador = new javax.swing.JPanel();
         cabecalhosAba = new javax.swing.JPanel();
         abaContainer = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        espacador.setPreferredSize(new java.awt.Dimension(0, 30));
+        jPanel1.add(espacador, java.awt.BorderLayout.EAST);
 
         cabecalhosAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         cabecalhosAba.setMaximumSize(new java.awt.Dimension(32767, 40));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 0, 0);
         flowLayout1.setAlignOnBaseline(true);
         cabecalhosAba.setLayout(flowLayout1);
-        add(cabecalhosAba, java.awt.BorderLayout.NORTH);
+        jPanel1.add(cabecalhosAba, java.awt.BorderLayout.CENTER);
+
+        add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         abaContainer.setLayout(new java.awt.CardLayout());
         add(abaContainer, java.awt.BorderLayout.CENTER);
@@ -182,6 +245,8 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel abaContainer;
     private javax.swing.JPanel cabecalhosAba;
+    private javax.swing.JPanel espacador;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
     

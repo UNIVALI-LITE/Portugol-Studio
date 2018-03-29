@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 public class CabecalhoAba extends JPanel implements Themeable{
     private final Aba aba;
-
+    int maxWidth = 999;
     public CabecalhoAba(Aba aba)
     {
         initComponents();
@@ -187,14 +187,28 @@ public class CabecalhoAba extends JPanel implements Themeable{
     private javax.swing.JLabel jLIcone;
     private javax.swing.JLabel jLTitulo;
     // End of variables declaration//GEN-END:variables
-
-    protected void calculaTamanhoCabecalho()
+    public int getTamanhoCabecalho(){
+        setBorder(new EmptyBorder(2, 2, 2, 2));
+        int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
+        int larguraIcone = jLIcone.getPreferredSize().width;
+        int larguraTitulo = jLTitulo.getPreferredSize().width;
+        return larguraIcone + larguraTitulo + larguraBotao + 10;
+    }
+    public void calculaTamanhoCabecalho()
     {
         setBorder(new EmptyBorder(2, 2, 2, 2));
         int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;
         int larguraTitulo = jLTitulo.getPreferredSize().width;
-        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 10, 26));
+        int newWidth = larguraIcone + larguraTitulo + larguraBotao + 10;
+//        if(newWidth>maxWidth){
+//            newWidth=maxWidth;
+//        }
+        setPreferredSize(new Dimension(newWidth, 26));
+    }
+    
+    public void setMaxWidth(int max){
+        this.maxWidth = max;
     }
 
     boolean isBotaoFecharVisivel()

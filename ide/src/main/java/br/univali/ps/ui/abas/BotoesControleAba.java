@@ -173,10 +173,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         });
     }
 
-    @Override
-    protected void calculaTamanhoCabecalho() {
-
-    }
 
     @Override
     public void abaSelecionada(Aba aba) {
