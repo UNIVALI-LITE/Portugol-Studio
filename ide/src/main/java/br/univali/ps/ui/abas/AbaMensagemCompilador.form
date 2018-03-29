@@ -31,6 +31,7 @@
           <Border info="null"/>
         </Property>
         <Property name="focusable" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="scrollMensagensCompilador" noResource="true"/>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
@@ -51,6 +52,7 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="fillsViewportHeight" type="boolean" value="true"/>
+            <Property name="name" type="java.lang.String" value="tabelaMensagensCompilador" noResource="true"/>
             <Property name="opaque" type="boolean" value="false"/>
             <Property name="requestFocusEnabled" type="boolean" value="false"/>
             <Property name="rowHeight" type="int" value="24"/>

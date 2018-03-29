@@ -156,12 +156,14 @@ public class CabecalhoAba extends JPanel implements Themeable{
         jLIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
         jLIcone.setAlignmentX(0.5F);
         jLIcone.setMaximumSize(new java.awt.Dimension(18, 18));
+        jLIcone.setName("labelIcone"); // NOI18N
         jLIcone.setPreferredSize(new java.awt.Dimension(17, 17));
         add(jLIcone, new java.awt.GridBagConstraints());
 
         jLTitulo.setText("jLabel2");
         jLTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 8, 1, 1));
         jLTitulo.setFocusable(false);
+        jLTitulo.setName("labelTitulo"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
@@ -171,6 +173,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
         botaoFechar.setBorder(null);
         botaoFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoFechar.setFocusable(false);
+        botaoFechar.setName("botaoFechar"); // NOI18N
         botaoFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoFecharActionPerformed(evt);

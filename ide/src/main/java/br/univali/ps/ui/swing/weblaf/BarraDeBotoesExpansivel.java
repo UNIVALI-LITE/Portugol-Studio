@@ -103,6 +103,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
             setOpaque(false);
 
             label = new JLabel(texto, SwingConstants.LEFT);
+            label.setName(texto);
             label.setIcon(icone);
             label.setFont(getFont());
             setBorder(new EmptyBorder(5,0,5,0));
@@ -144,6 +145,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
             }
 
             WebButtonGroup grupo = new WebButtonGroup(WebButtonGroup.HORIZONTAL, true, gruposDasColunas);
+            grupo.setName(label.getName());
             grupo.setButtonsDrawFocus(false);
 
             add(grupo);

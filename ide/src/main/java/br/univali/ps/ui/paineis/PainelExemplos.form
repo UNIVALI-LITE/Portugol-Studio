@@ -13,6 +13,7 @@
                 <EmptyBorder bottom="0" left="0" right="0" top="30"/>
               </Border>
             </Property>
+            <Property name="name" type="java.lang.String" value="areaLogo" noResource="true"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -24,6 +25,7 @@
         </Container>
         <Container class="javax.swing.JPanel" name="painelRecentes">
           <Properties>
+            <Property name="name" type="java.lang.String" value="painelRecentes" noResource="true"/>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Constraints>
@@ -36,6 +38,7 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="painelVersao">
               <Properties>
+                <Property name="name" type="java.lang.String" value="painelVersao" noResource="true"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Constraints>
@@ -47,6 +50,9 @@
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="labelVersao">
+                  <Properties>
+                    <Property name="name" type="java.lang.String" value="labelVersao" noResource="true"/>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="East"/>
@@ -67,6 +73,7 @@
                     <EmptyBorder bottom="0" left="0" right="0" top="25"/>
                   </Border>
                 </Property>
+                <Property name="name" type="java.lang.String" value="labelArquivosRecentes" noResource="true"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
               <Constraints>
@@ -96,6 +103,7 @@
                         <EmptyBorder bottom="0" left="0" right="0" top="0"/>
                       </Border>
                     </Property>
+                    <Property name="name" type="java.lang.String" value="areaRecentes" noResource="true"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
 
@@ -137,6 +145,7 @@
     <Container class="javax.swing.JSplitPane" name="jSplitPane1">
       <Properties>
         <Property name="dividerLocation" type="int" value="300"/>
+        <Property name="name" type="java.lang.String" value="splitPainelExemplos" noResource="true"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -151,6 +160,7 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
@@ -193,6 +203,7 @@
                     <EmptyBorder bottom="10" left="10" right="10" top="10"/>
                   </Border>
                 </Property>
+                <Property name="name" type="java.lang.String" value="labelDescricao" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="description.setVisible(false);"/>
@@ -206,6 +217,7 @@
             <Component class="com.alee.laf.button.WebButton" name="botaoAbrirExemplo">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Explorar Exemplo"/>
+                <Property name="name" type="java.lang.String" value="botaoExplorarExemplo" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoAbrirExemploActionPerformed"/>
@@ -264,6 +276,7 @@
                     <EmptyBorder bottom="10" left="10" right="10" top="10"/>
                   </Border>
                 </Property>
+                <Property name="name" type="java.lang.String" value="labelTitulo" noResource="true"/>
                 <Property name="opaque" type="boolean" value="true"/>
               </Properties>
               <Constraints>

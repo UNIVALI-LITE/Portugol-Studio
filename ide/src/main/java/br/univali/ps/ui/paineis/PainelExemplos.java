@@ -429,14 +429,19 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelRecentesPrincipal.setLayout(new java.awt.BorderLayout());
 
         areaLogo.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 0, 0, 0));
+        areaLogo.setName("areaLogo"); // NOI18N
         areaLogo.setLayout(new java.awt.BorderLayout());
         painelRecentesPrincipal.add(areaLogo, java.awt.BorderLayout.CENTER);
 
+        painelRecentes.setName("painelRecentes"); // NOI18N
         painelRecentes.setOpaque(false);
         painelRecentes.setLayout(new java.awt.BorderLayout());
 
+        painelVersao.setName("painelVersao"); // NOI18N
         painelVersao.setOpaque(false);
         painelVersao.setLayout(new java.awt.BorderLayout());
+
+        labelVersao.setName("labelVersao"); // NOI18N
         painelVersao.add(labelVersao, java.awt.BorderLayout.EAST);
 
         painelRecentes.add(painelVersao, java.awt.BorderLayout.PAGE_END);
@@ -445,12 +450,14 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         textRecentes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textRecentes.setText("Arquivos Recentes");
         textRecentes.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 0, 0, 0));
+        textRecentes.setName("labelArquivosRecentes"); // NOI18N
         textRecentes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         painelRecentes.add(textRecentes, java.awt.BorderLayout.NORTH);
 
         scrollRecentes.setBorder(null);
 
         areaRecentes.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        areaRecentes.setName("areaRecentes"); // NOI18N
         areaRecentes.setOpaque(false);
         scrollRecentes.setViewportView(areaRecentes);
 
@@ -464,8 +471,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         setLayout(new java.awt.BorderLayout());
 
         jSplitPane1.setDividerLocation(300);
+        jSplitPane1.setName("splitPainelExemplos"); // NOI18N
 
         painelDireita.setBackground(new java.awt.Color(255, 255, 255));
+        painelDireita.setName(""); // NOI18N
         painelDireita.setLayout(new java.awt.GridBagLayout());
 
         imagePane.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -484,6 +493,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         description.setForeground(new java.awt.Color(255, 255, 255));
         description.setText("Descrição do Exemplo");
         description.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        description.setName("labelDescricao"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -494,6 +504,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         botaoAbrirExemplo.setVisible(false);
         botaoAbrirExemplo.setText("Explorar Exemplo");
+        botaoAbrirExemplo.setName("botaoExplorarExemplo"); // NOI18N
         botaoAbrirExemplo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoAbrirExemploActionPerformed(evt);
@@ -527,6 +538,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
         labelTitulo.setText("Exemplos");
         labelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        labelTitulo.setName("labelTitulo"); // NOI18N
         labelTitulo.setOpaque(true);
         painelEsquerda.add(labelTitulo, java.awt.BorderLayout.NORTH);
 

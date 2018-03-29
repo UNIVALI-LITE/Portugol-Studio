@@ -268,6 +268,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
         titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         titulo.setMinimumSize(new java.awt.Dimension(100, 16));
+        titulo.setName("labelTitulo"); // NOI18N
         titulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -280,6 +281,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(botaoAbrir, gridBagConstraints);
+        botaoNovoArquivo.setName("botaoNovoArquivo"); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
