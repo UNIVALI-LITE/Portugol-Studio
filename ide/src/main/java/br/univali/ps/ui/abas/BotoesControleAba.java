@@ -128,7 +128,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
                 if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION) {
                     final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
-
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);
                 }
                 Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
@@ -242,15 +241,19 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         java.awt.GridBagConstraints gridBagConstraints;
 
         botaoNovoArquivo = new com.alee.laf.button.WebButton();
-        titulo = new javax.swing.JLabel();
         botaoAbrir = new com.alee.laf.button.WebButton();
+        titulo = new javax.swing.JLabel();
 
         botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
         botaoNovoArquivo.setHideActionText(true);
 
+        botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
+        botaoAbrir.setHideActionText(true);
+        botaoAbrir.setName("botaoAbrir"); // NOI18N
+
         setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);
-        setPreferredSize(new java.awt.Dimension(150, 26));
+        setPreferredSize(new java.awt.Dimension(135, 26));
         setLayout(new java.awt.GridBagLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -268,13 +271,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(titulo, gridBagConstraints);
-
-        botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
-        botaoAbrir.setHideActionText(true);
-        botaoAbrir.setName("botaoAbrir"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        add(botaoAbrir, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,19 +5,13 @@
  */
 package br.univali.ps.ui.paineis;
 
-import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.abas.BotoesControleAba;
-import br.univali.ps.ui.abas.CabecalhoAba;
-import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -228,7 +222,7 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
         espacador.setPreferredSize(new java.awt.Dimension(0, 30));
         jPanel1.add(espacador, java.awt.BorderLayout.EAST);
 
-        cabecalhosAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        cabecalhosAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 0, 0));
         cabecalhosAba.setMaximumSize(new java.awt.Dimension(32767, 40));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 0, 0);
         flowLayout1.setAlignOnBaseline(true);

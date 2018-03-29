@@ -286,7 +286,7 @@ public class TelaPrincipal extends javax.swing.JPanel
                                 abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
                             }                            
                             
-                            getPainelTabulado().add(abaCodigoFonte);
+                            getPainelTabulado().adicionaAba(abaCodigoFonte);
                         }
                         catch (Exception excecao)
                         {
