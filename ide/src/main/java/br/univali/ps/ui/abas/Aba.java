@@ -129,7 +129,7 @@ public abstract class Aba extends JPanel
             {
                 painelTabulado.remove(this);
                 SwingUtilities.invokeLater(() -> {
-                    painelTabulado.invalidate();
+                    painelTabulado.revalidate();
                     painelTabulado.repaint();
                     painelTabulado = null;
                 });               
