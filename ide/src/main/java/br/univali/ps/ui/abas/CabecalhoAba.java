@@ -5,16 +5,11 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class CabecalhoAba extends JPanel implements Themeable{
@@ -31,6 +26,13 @@ public class CabecalhoAba extends JPanel implements Themeable{
         configuraIcones();
     }
 
+//    @Override
+//    public void paint(Graphics grphcs) {
+//        Graphics2D g2d = (Graphics2D) grphcs;
+//        g2d.setPaint(ColorController.VERMELHO);
+//        g2d.fillRect(0, 0, getWidth(), getHeight());
+//    }
+    
     @Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2d = (Graphics2D) grphcs;
@@ -76,6 +78,10 @@ public class CabecalhoAba extends JPanel implements Themeable{
         }else{
         }
         g2d.fillRect(0, 0, 1, getHeight());
+
+//        Graphics2D g2d = (Graphics2D) grphcs;
+//        g2d.setPaint(ColorController.VERMELHO);
+//        g2d.fillRect(0, 0, getWidth(), getHeight());
     }
     
     
@@ -84,17 +90,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
     public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
         setBackground(ColorController.FUNDO_MEDIO);
-        if(this instanceof BotoesControleAba){
-            setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ColorController.COR_PRINCIPAL));
-        }else if(getAba().isRemovivel()){
-            setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ColorController.AMARELO));
-        }else{
-            setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, ColorController.COR_CONSOLE));
-        }
-        SwingUtilities.invokeLater(() -> {
-            this.revalidate();
-            this.repaint();
-        });
     }
     
     private void configuraIcones()
@@ -145,7 +140,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
         jLTitulo = new javax.swing.JLabel();
         botaoFechar = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 0, 2));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 0, 4));
         setFocusable(false);
         setMaximumSize(new java.awt.Dimension(300, 50));
         setMinimumSize(new java.awt.Dimension(110, 30));
