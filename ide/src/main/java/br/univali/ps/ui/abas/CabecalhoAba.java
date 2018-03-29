@@ -153,10 +153,11 @@ public class CabecalhoAba extends JPanel implements Themeable{
         jLIcone.setMaximumSize(new java.awt.Dimension(18, 18));
         jLIcone.setName("labelIcone"); // NOI18N
         jLIcone.setPreferredSize(new java.awt.Dimension(17, 17));
-        add(jLIcone, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 6;
+        add(jLIcone, gridBagConstraints);
 
         jLTitulo.setText("jLabel2");
-        jLTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 8, 1, 1));
         jLTitulo.setFocusable(false);
         jLTitulo.setName("labelTitulo"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -193,7 +194,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
         int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;
         int larguraTitulo = jLTitulo.getPreferredSize().width;
-        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3 + 4, 26));
+        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 10, 26));
     }
 
     boolean isBotaoFecharVisivel()
