@@ -26,14 +26,6 @@ public class CabecalhoAba extends JPanel implements Themeable{
         }
         configurarCores();
         configuraIcones();
-        //setUndecorated(true)
-        
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                getAba().selecionar();
-            }
-        });
     }
 
     @Override

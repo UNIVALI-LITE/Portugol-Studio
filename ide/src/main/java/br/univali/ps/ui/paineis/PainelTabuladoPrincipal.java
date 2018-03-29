@@ -42,18 +42,10 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
         initComponents();
         abaAjuda = new AbaAjuda();
     }
-//    @Override
-//    protected TabbedPaneUI criaUi() {
-//        return new WebTabbedPaneUI();// new UIPainelTabuladoPrincipal();
-//    }
-
+    
     public void setAbaInicial(AbaInicial abaInicial) {
         this.abaInicial = abaInicial;
         adicionaAba(abaInicial);
-        //setTabComponentAt(indexOfComponent(abaInicial), abaInicial.getCabecalho());
-
-        //abaInicial.adicionar(PainelTabuladoPrincipal.this);
-        //abaInicial.inicializar();
         configuraTrocaAba();
         configurarAcoes();
     }
@@ -175,7 +167,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado{
         if(getCabecalhosAba().getComponentCount()>0){
             getCabecalhosAba().remove(getCabecalhosAba().getComponentCount()-1);
         }
-        getCabecalhosAba().add(aba.getCabecalho());
+        super.adicionaAoCabecalho(aba);
         getCabecalhosAba().add(new CabecalhoAdicionarAba());
         
         return aba;

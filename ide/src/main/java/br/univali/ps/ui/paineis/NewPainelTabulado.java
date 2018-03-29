@@ -11,6 +11,8 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -44,7 +46,13 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba adicionaAoCabecalho(Aba aba)
     {
-        cabecalhosAba.add(aba.getCabecalho());   
+        cabecalhosAba.add(aba.getCabecalho());
+        aba.getCabecalho().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                aba.selecionar();
+            }
+        });
         return aba;
     }
     
