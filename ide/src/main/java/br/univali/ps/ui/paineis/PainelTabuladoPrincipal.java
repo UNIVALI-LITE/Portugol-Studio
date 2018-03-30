@@ -12,8 +12,11 @@ import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.window.BorderPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -50,7 +53,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     public PainelTabuladoPrincipal() {
         initComponents();
         abaAjuda = new AbaAjuda();
-        configurarCores();
+        configurarCores();      
         getCabecalhosAba().addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 // Get x,y and store them
@@ -62,22 +65,48 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
              public void mouseDragged(MouseEvent me) {
 
                  SwingUtilities.invokeLater(() -> {
-                     Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                     if(!Lancador.isMaximazed()){
+                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                     }
                  });
-                
+
             }
+            public void mouseClicked(MouseEvent me) {
+                SwingUtilities.invokeLater(() ->{
+                    if(me.getClickCount() == 2){
+                        if(Lancador.isMaximazed()){
+                            Dimension d = Lancador.getOlderSize();
+                            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
+                            Lancador.getJFrame().setSize(d);
+                            Lancador.setActualSize(d);
+                            Lancador.getJFrame().setLocationRelativeTo(null);
+                            Lancador.setMaximazed(false);
+                        }else{
+                            Dimension d = Lancador.getJFrame().getSize();
+                            Lancador.setOlderSize(d);
+                            Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+                            Lancador.getJFrame().setBounds(bounds);
+                            Lancador.setActualSize(bounds.getSize());
+                            Lancador.setMaximazed(true);
+                        }
+
+                    }
+                });
+            } 
         });
 
         getCabecalhosAba().addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent me) {
                 SwingUtilities.invokeLater(() -> {
-                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                    if(!Lancador.isMaximazed()){
+                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                    }
                 });
-                
+
             }
         });
     }
-
+    
     @Override
     public void configurarCores() {
         getEspacador().setBackground(ColorController.FUNDO_ESCURO);
