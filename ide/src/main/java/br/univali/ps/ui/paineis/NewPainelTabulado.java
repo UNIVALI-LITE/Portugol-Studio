@@ -34,8 +34,6 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
      * Creates new form NewPainelTabulado
      */
     
-    String ultima_aba = "";
-    
     public NewPainelTabulado() {
         initComponents();
         configurarCores();
@@ -51,8 +49,6 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
             revalidate();
             repaint();
         });
-        
-        
         return aba;
     }
     
@@ -111,7 +107,6 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba mudarParaAba(Aba aba)
     {
-        ultima_aba = getAbaSelecionada().getName();
         CardLayout cl = (CardLayout) abaContainer.getLayout();
         cl.show(abaContainer, aba.getName());        
         trocouAba(aba);
