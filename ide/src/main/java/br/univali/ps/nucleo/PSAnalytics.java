@@ -56,20 +56,10 @@ public class PSAnalytics {
                 String username = sb.toString();
                 if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
                 }else{
-                    String id = "undefined";
-                    String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
-                    String[] dados = data.split(",");
-                    for (String dado : dados) {
-                        String[] obj = dado.split(":");
-                        if(obj[0].contains("_id")){
-                            String aid = obj[1].replaceAll("\"", "");
-                            id = aid.replaceAll(" ", "");
-                        }
-                    }
-                    editar_usuario_servidor(id, false);
+                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), false);
                 }
             } catch (Exception ex) {
-                //Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Erro no envio ao servidor");
             }
         }        
     }
@@ -108,6 +98,17 @@ public class PSAnalytics {
         } catch (Exception ex) {
             System.out.println("Erro no envio ao servidor");
         }
+        String id = "undefined";
+        String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
+        String[] dados = data.split(",");
+        for (String dado : dados) {
+            String[] obj = dado.split(":");
+            if(obj[0].contains("_id")){
+                String aid = obj[1].replaceAll("\"", "");
+                id = aid.replaceAll(" ", "");
+            }
+        }
+        Configuracoes.getInstancia().setUserAnalyticsID(id);
     }
     
     private void editar_usuario_servidor(String id, boolean set_online) throws Exception{
@@ -158,34 +159,46 @@ public class PSAnalytics {
    }
     public void iniciar_sessao_servidor(){
         if(pode_enviar_dados)
-        {
-            InetAddress ip;
-            try {
-                ip = InetAddress.getLocalHost();
-                NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                byte[] mac = network.getHardwareAddress();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < mac.length; i++) {
-                        sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+        {   
+            String username = "";
+            if(Configuracoes.getInstancia().getUserMac().equals("nao")){
+                InetAddress ip;
+                try {
+                    ip = InetAddress.getLocalHost();
+                    NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+                    byte[] mac = network.getHardwareAddress();
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < mac.length; i++) {
+                            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+                    }
+                    username = sb.toString();
+                    Configuracoes.getInstancia().setUserMac(username);
+                }catch (Exception e){
                 }
-                String username = sb.toString();
+            }else{
+                username = Configuracoes.getInstancia().getUserMac();
+            }
+            try {
                 if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
                     criar_usuario_servidor(username);
                 }else{
-                    String id = "undefined";
-                    String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
-                    String[] dados = data.split(",");
-                    for (String dado : dados) {
-                        String[] obj = dado.split(":");
-                        if(obj[0].contains("_id")){
-                            String aid = obj[1].replaceAll("\"", "");
-                            id = aid.replaceAll(" ", "");
+                    if(Configuracoes.getInstancia().getUserAnalyticsID().equals("nao")){
+                        String id = "undefined";
+                        String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
+                        String[] dados = data.split(",");
+                        for (String dado : dados) {
+                            String[] obj = dado.split(":");
+                            if(obj[0].contains("_id")){
+                                String aid = obj[1].replaceAll("\"", "");
+                                id = aid.replaceAll(" ", "");
+                            }
                         }
+                        Configuracoes.getInstancia().setUserAnalyticsID(id);
                     }
-                    editar_usuario_servidor(id, true);
+                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), true);
                 }
             } catch (Exception ex) {
-                //Logger.getLogger(PSAnalytics.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Erro no envio ao servidor");
             }
         }
     }
