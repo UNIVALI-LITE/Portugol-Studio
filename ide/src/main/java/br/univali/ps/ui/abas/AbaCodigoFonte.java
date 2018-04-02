@@ -183,6 +183,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO,2));
         labelRecuperados.setForeground(Color.BLACK);
         
+        
+        
         if (WeblafUtils.weblafEstaInstalado())
         {
 
@@ -191,6 +193,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
+            WeblafUtils.configuraWebLaf(webSeparator1);
             WeblafUtils.configuraWebLaf(campoBusca, 5, 30);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
@@ -1457,6 +1460,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnExecutar = new com.alee.laf.button.WebButton();
         btnDepurar = new com.alee.laf.button.WebButton();
         btnInterromper = new com.alee.laf.button.WebButton();
+        webSeparator1 = new com.alee.laf.separator.WebSeparator();
         btnSalvar = new com.alee.laf.button.WebButton();
         btnSalvarComo = new com.alee.laf.button.WebButton();
         btnAbrir = new com.alee.laf.button.WebButton();
@@ -1540,6 +1544,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper.setName("botaoInterromper"); // NOI18N
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
+
+        webSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 1));
+        barraFerramentas.add(webSeparator1);
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save.png"))); // NOI18N
         btnSalvar.setFocusable(false);
@@ -2808,5 +2815,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JScrollPane scrollOutlineTree;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
     private javax.swing.JPanel treePanel;
+    private com.alee.laf.separator.WebSeparator webSeparator1;
     // End of variables declaration//GEN-END:variables
 }
