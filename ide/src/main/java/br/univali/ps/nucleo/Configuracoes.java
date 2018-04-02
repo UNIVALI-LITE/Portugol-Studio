@@ -40,6 +40,8 @@ public final class Configuracoes
     public static final String EXIBIR_DICAS_INTERFACE = "exibirDicasInterface";
     public static final String URI_ATUALIZACAO = "uriAtualizacao";
     public static final String CAMINHO_ULTIMO_DIRETORIO = "caminhoUltimoDiretorio";
+    public static final String ID_USUARIO_ANALYTICS = "idAnalytics";
+    public static final String MAC_USUARIO = "macAnalytics";
 
     private final PropertyChangeSupport suporteMudancaPropriedade = new PropertyChangeSupport(this);
     private final Properties configuracoes = new Properties();
@@ -73,6 +75,8 @@ public final class Configuracoes
     private boolean exibirAvisoRenomear = true;
     private boolean exibirTutorialUso = true;
     private boolean exibirDicasInterface = true;
+    private String userMac = "0-0-0-0";
+    private String userAnalyticsID = "bafta";
     private String uriAtualizacao = "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest";
     private String caminhoUltimoDiretorio = getDiretorioUsuario().toString();
 
@@ -96,7 +100,8 @@ public final class Configuracoes
         try
         {
             configuracoes.load(new FileReader(caminhoArquivoConfiguracoes));
-
+            userMac = configuracoes.getProperty(MAC_USUARIO, "nao");
+            userAnalyticsID = configuracoes.getProperty(ID_USUARIO_ANALYTICS, "nao");
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
@@ -148,6 +153,26 @@ public final class Configuracoes
         return tamanhoFonteConsole;
     }
 
+    public String getUserMac() {      
+        return userMac;
+    }
+
+    public void setUserMac(String userMac) {
+        this.configuracoes.setProperty(MAC_USUARIO, userMac);
+        this.userMac = userMac;  
+    }
+
+    public String getUserAnalyticsID() {
+        return userAnalyticsID;
+    }
+
+    public void setUserAnalyticsID(String userAnalyticsID) {
+        this.configuracoes.setProperty(ID_USUARIO_ANALYTICS, userAnalyticsID);
+        this.userAnalyticsID = userAnalyticsID;
+    }
+    
+    
+    
     public void setTemaEditor(String theme)
     {
         String oldTheme = this.temaEditor;

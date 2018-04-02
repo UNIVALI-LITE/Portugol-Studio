@@ -3,15 +3,19 @@ package br.univali.ps.ui.abas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButtonUI;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class CabecalhoAba extends JPanel implements Themeable{
     private final Aba aba;
-
+    int maxWidth = 999;
     public CabecalhoAba(Aba aba)
     {
         initComponents();
@@ -21,17 +25,65 @@ public class CabecalhoAba extends JPanel implements Themeable{
         }
         configurarCores();
         configuraIcones();
-        //setUndecorated(true)
+    }
+    
+    @Override
+    protected void paintComponent(Graphics grphcs) {
+        Graphics2D g2d = (Graphics2D) grphcs;
+        if(this instanceof BotoesControleAba){
+            if(getAba().isSelected()){
+                g2d.setPaint(ColorController.FUNDO_MEDIO);
+            }else{
+                g2d.setPaint(ColorController.COR_CONSOLE);
+            }
+            
+        }else if(getAba().isRemovivel()){
+            if(getAba().isSelected()){
+                g2d.setPaint(ColorController.COR_PRINCIPAL);
+            }else{
+                g2d.setPaint(ColorController.FUNDO_CLARO);
+            }
+        }else{
+            if(getAba().isSelected()){
+                g2d.setPaint(ColorController.COR_CONSOLE);
+            }else{
+                g2d.setPaint(ColorController.COR_PRINCIPAL);
+            }
+        }
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+        
+        
+        if(this instanceof BotoesControleAba){
+            
+        }else if(getAba().isRemovivel()){
+            if(getAba().isSelected()){
+                g2d.setPaint(ColorController.AMARELO);
+            }else{
+                g2d.setPaint(ColorController.FUNDO_CLARO);
+            }
+        }else{
+            
+        }
+        g2d.fillRect(0, 0, getWidth(), 1);
+        if(this instanceof BotoesControleAba){
+            
+        }else if(getAba().isRemovivel()){
+                g2d.setPaint(ColorController.FUNDO_ESCURO);
+        }else{
+        }
+        g2d.fillRect(0, 0, 1, getHeight());
+
     }
     
     @Override
     public void configurarCores(){
         jLTitulo.setForeground(ColorController.COR_LETRA);
+        setBackground(ColorController.FUNDO_MEDIO);
     }
     
     private void configuraIcones()
     {
-        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "white_close.png"));
+        botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "white_close.png"));        
     }
     
     protected Aba getAba()
@@ -42,19 +94,17 @@ public class CabecalhoAba extends JPanel implements Themeable{
     public void setTitulo(String titulo)
     {
         this.jLTitulo.setText(titulo);
-        calculaTamanhoCabecalho();
+        FabricaDicasInterface.criarTooltipEstatica(botaoFechar, "Fechar - "+getTitulo());
     }
 
     public void setIcone(Icon icone)
     {
         this.jLIcone.setIcon(icone);
-        calculaTamanhoCabecalho();
     }
 
     public void setBotaoFecharVisivel(boolean removivel)
     {
         botaoFechar.setVisible(removivel);
-        calculaTamanhoCabecalho();
     }
 
     public String getTitulo()
@@ -67,6 +117,20 @@ public class CabecalhoAba extends JPanel implements Themeable{
         return jLIcone.getIcon();
     }
 
+    @Override
+    public void setPreferredSize(Dimension preferredSize) {
+        super.setPreferredSize(preferredSize); //To change body of generated methods, choose Tools | Templates.
+        if(this.getPreferredSize().width<(jLIcone.getPreferredSize().getWidth() + botaoFechar.getPreferredSize().getWidth()))
+        {
+            jLIcone.setVisible(false);
+            jLTitulo.setVisible(false);
+        }
+        else
+        {
+            jLIcone.setVisible(true);
+            jLTitulo.setVisible(true);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -77,11 +141,11 @@ public class CabecalhoAba extends JPanel implements Themeable{
         jLTitulo = new javax.swing.JLabel();
         botaoFechar = new javax.swing.JButton();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 0, 4));
         setFocusable(false);
-        setMaximumSize(new java.awt.Dimension(300, 30));
-        setMinimumSize(new java.awt.Dimension(110, 25));
-        setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(110, 30));
+        setMaximumSize(new java.awt.Dimension(300, 50));
+        setMinimumSize(new java.awt.Dimension(110, 30));
+        setPreferredSize(new java.awt.Dimension(0, 0));
         setLayout(new java.awt.GridBagLayout());
 
         jLIcone.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -90,10 +154,11 @@ public class CabecalhoAba extends JPanel implements Themeable{
         jLIcone.setMaximumSize(new java.awt.Dimension(18, 18));
         jLIcone.setName("labelIcone"); // NOI18N
         jLIcone.setPreferredSize(new java.awt.Dimension(17, 17));
-        add(jLIcone, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 6;
+        add(jLIcone, gridBagConstraints);
 
         jLTitulo.setText("jLabel2");
-        jLTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 8, 1, 1));
         jLTitulo.setFocusable(false);
         jLTitulo.setName("labelTitulo"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -123,13 +188,16 @@ public class CabecalhoAba extends JPanel implements Themeable{
     private javax.swing.JLabel jLIcone;
     private javax.swing.JLabel jLTitulo;
     // End of variables declaration//GEN-END:variables
-
-    protected void calculaTamanhoCabecalho()
-    {
+    public int getTamanhoCabecalho(){
+        setBorder(new EmptyBorder(2, 2, 2, 2));
         int larguraBotao = (botaoFechar.isVisible()) ? botaoFechar.getPreferredSize().width : 0;
         int larguraIcone = jLIcone.getPreferredSize().width;
         int larguraTitulo = jLTitulo.getPreferredSize().width;
-        setPreferredSize(new Dimension(larguraIcone + larguraTitulo + larguraBotao + 3, 16));
+        return larguraIcone + larguraTitulo + larguraBotao + 10;
+    }
+    
+    public void setMaxWidth(int max){
+        this.maxWidth = max;
     }
 
     boolean isBotaoFecharVisivel()

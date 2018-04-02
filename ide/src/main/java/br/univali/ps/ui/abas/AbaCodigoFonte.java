@@ -167,11 +167,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void reseta()
     {
         painelSaida.selecionaConsole();
+        this.getCabecalho().configurarCores();
     }
     
     @Override
     public void configurarCores()
     {
+        setBackground(ColorController.COR_PRINCIPAL);
         scrollOutlineTree.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         painelSaida.setForeground(ColorController.COR_LETRA);
         inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);
@@ -181,6 +183,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO,2));
         labelRecuperados.setForeground(Color.BLACK);
         
+        
+        
         if (WeblafUtils.weblafEstaInstalado())
         {
 
@@ -189,6 +193,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
             //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
+            WeblafUtils.configuraWebLaf(webSeparator1);
             WeblafUtils.configuraWebLaf(campoBusca, 5, 30);
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
@@ -196,6 +201,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configurarBotao(btnDepurar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnInterromper, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(btnAbrir, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraBotoesEditor, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(barraBotoesInspetorArvore, ColorController.TRANSPARENTE, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -1265,6 +1271,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     protected void criarDicasInterface()
     {
+        FabricaDicasInterface.criarTooltip(btnAbrir, "Abre um arquivo .por");
         FabricaDicasInterface.criarTooltip(btnExecutar, "Executa o programa até o próximo ponto de parada", acaoExecutarPontoParada);
         FabricaDicasInterface.criarTooltip(btnInterromper, "Interrompe a execução/depuração do programa atual", acaoInterromper);
         FabricaDicasInterface.criarTooltip(btnDepurar, "Executa o programa passo a passo", acaoExecutarPasso);
@@ -1453,8 +1460,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnExecutar = new com.alee.laf.button.WebButton();
         btnDepurar = new com.alee.laf.button.WebButton();
         btnInterromper = new com.alee.laf.button.WebButton();
+        webSeparator1 = new com.alee.laf.separator.WebSeparator();
         btnSalvar = new com.alee.laf.button.WebButton();
         btnSalvarComo = new com.alee.laf.button.WebButton();
+        btnAbrir = new com.alee.laf.button.WebButton();
         editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
@@ -1473,7 +1482,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         divisorArvoreEditor.setBackground(new java.awt.Color(255, 255, 255));
@@ -1537,6 +1545,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
+        webSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 1));
+        barraFerramentas.add(webSeparator1);
+
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save.png"))); // NOI18N
         btnSalvar.setFocusable(false);
         btnSalvar.setHideActionText(true);
@@ -1552,6 +1563,19 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnSalvarComo.setName("botaoSalvarComo"); // NOI18N
         btnSalvarComo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnSalvarComo);
+
+        btnAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/open.png"))); // NOI18N
+        btnAbrir.setFocusable(false);
+        btnAbrir.setHideActionText(true);
+        btnAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAbrir.setName("botaoAbrir"); // NOI18N
+        btnAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirActionPerformed(evt);
+            }
+        });
+        barraFerramentas.add(btnAbrir);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1704,6 +1728,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setVisible(false);
         desativouRecuperados = true;
     }//GEN-LAST:event_fecharRecuperadosActionPerformed
+
+    private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
+        getPainelTabulado().getActionMap().get("Abrir arquivo").actionPerformed(evt);
+    }//GEN-LAST:event_btnAbrirActionPerformed
 
     private void interromper()
     {
@@ -2763,6 +2791,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel arquivosRecuperados;
     private javax.swing.JToolBar barraFerramentas;
+    private com.alee.laf.button.WebButton btnAbrir;
     private com.alee.laf.button.WebButton btnDepurar;
     private com.alee.laf.button.WebButton btnExecutar;
     private com.alee.laf.button.WebButton btnInterromper;
@@ -2786,5 +2815,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JScrollPane scrollOutlineTree;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
     private javax.swing.JPanel treePanel;
+    private com.alee.laf.separator.WebSeparator webSeparator1;
     // End of variables declaration//GEN-END:variables
 }
