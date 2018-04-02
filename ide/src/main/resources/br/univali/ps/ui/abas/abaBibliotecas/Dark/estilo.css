@@ -2,7 +2,7 @@ body
 { 
 
 	font-family: "Open Sans"; 
-	font-size:  12 pt;                 
+	font-size:  12pt;                 
 	line-height: 150%; 
 	color: #f2f2f2;
         background-color: #3A464C; 
@@ -30,7 +30,7 @@ h1
  
 h2 
 { 
-    font-size: 14 pt;
+    font-size: 14pt;
     margin-top: 10px;
     margin-bottom: 10px;
 } 
