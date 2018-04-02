@@ -1,19 +1,29 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.paineis.utils.PainelTabulado;
+import br.univali.ps.ui.paineis.NewPainelTabulado;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public abstract class Aba extends JPanel
 {
     private static List<Class<? extends Aba>> classesFilhas = new ArrayList<>();
     
     private CabecalhoAba cabecalho;
-    private PainelTabulado painelTabulado;
+    private NewPainelTabulado painelTabulado;
     private List<AbaListener> listeners;
+    private boolean removivel = false;
+    
 
     public Aba() {
         if (!classesFilhas.contains(this.getClass()))
@@ -23,9 +33,18 @@ public abstract class Aba extends JPanel
         
         this.listeners = new ArrayList<>();
         this.cabecalho = criarCabecalhoPadrao("Sem título", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unknown.png"), false);
+                
+        Date date = new Date();
+        this.setName("aba"+date.getTime());
     }
-
-    public void setPainelTabulado(PainelTabulado painelTabulado)
+    
+    
+    
+    public boolean isSelected(){
+        return painelTabulado.getAbaSelecionada() == this;
+    }
+    
+    public void setPainelTabulado(NewPainelTabulado painelTabulado)
     {
         this.painelTabulado = painelTabulado;
     }
@@ -51,10 +70,11 @@ public abstract class Aba extends JPanel
     private CabecalhoAba criarCabecalhoPadrao(String titulo, Icon icone, boolean removivel)
     {
         CabecalhoAba cabecalhoPadrao = new CabecalhoAba(this);
-        
+        this.removivel = removivel;
         cabecalhoPadrao.setTitulo(titulo);
         cabecalhoPadrao.setIcone(icone);
         cabecalhoPadrao.setBotaoFecharVisivel(removivel);
+        cabecalhoPadrao.configurarCores();
         
         return cabecalhoPadrao;
     }
@@ -77,7 +97,7 @@ public abstract class Aba extends JPanel
         this.cabecalho = cabecalho;
     }
     
-    public PainelTabulado getPainelTabulado()
+    public NewPainelTabulado getPainelTabulado()
     {
         return painelTabulado;
     }
@@ -86,14 +106,13 @@ public abstract class Aba extends JPanel
     {
         cabecalho.setBotaoFecharVisivel(removivel);
     }
-
     public boolean isRemovivel()
     {
-        return cabecalho.isBotaoFecharVisivel();
+        return removivel;
     }
 
     public boolean fechar()
-    {
+    {        
         boolean podeFechar = true;
 
         for (AbaListener listener : listeners)
@@ -109,9 +128,13 @@ public abstract class Aba extends JPanel
             if (painelTabulado != null)
             {
                 painelTabulado.remove(this);
-                painelTabulado = null;
+                SwingUtilities.invokeLater(() -> {
+                    painelTabulado.revalidate();
+                    painelTabulado.repaint();
+                    painelTabulado = null;
+                });               
             }
-        }
+        }        
 
         return podeFechar;
     }
@@ -120,8 +143,8 @@ public abstract class Aba extends JPanel
     {
         if (painelTabulado != null)
         {
-            if(painelTabulado.indexOfComponent(this) >= 0){
-                painelTabulado.setSelectedComponent(this);
+            if(painelTabulado.contemAba(this)){
+                painelTabulado.mudarParaAba(this);
             }
         }
     }

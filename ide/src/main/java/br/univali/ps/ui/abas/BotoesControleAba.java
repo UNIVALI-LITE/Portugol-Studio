@@ -5,6 +5,7 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.paineis.utils.PainelTabuladoListener;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.filtros.FiltroComposto;
@@ -12,6 +13,7 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -23,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
-public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener {
+public final class BotoesControleAba extends CabecalhoAba implements PainelTabuladoListener, Themeable{
 
     private static final Icon iconeAtivo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png");
     private static final Icon iconeInativo = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png");
@@ -71,7 +73,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         titulo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         titulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix_off.png"));
     }
-
+    
+    
     private JFileChooser criarSeletorArquivo() {
         JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserAbertura();
         dialogoSelecaoArquivo.setCurrentDirectory(new File(Configuracoes.getInstancia().getCaminhoUltimoDiretorio()));
@@ -125,7 +128,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
                 if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION) {
                     final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
-
                     telaPrincipal.abrirArquivosCodigoFonte(listaArquivos);
                 }
                 Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
@@ -170,15 +172,10 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         });
     }
 
-    @Override
-    protected void calculaTamanhoCabecalho() {
-
-    }
 
     @Override
     public void abaSelecionada(Aba aba) {
         abaAtual = aba;
-
         if (abaAtual == this.getAba()) {
             ativar();
         } else {
@@ -232,29 +229,40 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         });
     }
 
+    @Override
+    public void configurarCores() {
+        setBackground(ColorController.FUNDO_ESCURO.brighter());
+    }    
+    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        titulo = new javax.swing.JLabel();
-        botaoAbrir = new com.alee.laf.button.WebButton();
         botaoNovoArquivo = new com.alee.laf.button.WebButton();
+        botaoAbrir = new com.alee.laf.button.WebButton();
+        titulo = new javax.swing.JLabel();
+
+        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
+        botaoNovoArquivo.setHideActionText(true);
+
+        botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
+        botaoAbrir.setHideActionText(true);
+        botaoAbrir.setName("botaoAbrir"); // NOI18N
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);
-        setMaximumSize(new java.awt.Dimension(180, 25));
-        setMinimumSize(new java.awt.Dimension(180, 25));
-        setOpaque(false);
-        setPreferredSize(new java.awt.Dimension(180, 25));
+        setPreferredSize(new java.awt.Dimension(135, 30));
         setLayout(new java.awt.GridBagLayout());
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         titulo.setForeground(new java.awt.Color(62, 62, 62));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/pequeno/light_pix_off.png"))); // NOI18N
         titulo.setText("Portugol Studio");
         titulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 4));
-        titulo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        titulo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         titulo.setMinimumSize(new java.awt.Dimension(100, 16));
         titulo.setName("labelTitulo"); // NOI18N
         titulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -263,16 +271,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(titulo, gridBagConstraints);
-
-        botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
-        botaoAbrir.setHideActionText(true);
-        botaoAbrir.setName("botaoAbrir"); // NOI18N
-        add(botaoAbrir, new java.awt.GridBagConstraints());
-
-        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
-        botaoNovoArquivo.setHideActionText(true);
-        botaoNovoArquivo.setName("botaoNovoArquivo"); // NOI18N
-        add(botaoNovoArquivo, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

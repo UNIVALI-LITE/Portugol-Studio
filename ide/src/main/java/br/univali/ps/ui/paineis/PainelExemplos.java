@@ -60,6 +60,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
     private final Icon imagemPadrao;
     private final Icon imagemPadraolowres;
+    private final Icon imagemOpen;
+    private final Icon imagemOpenlowres;
     private final Icon imagemPastaPadrao;
 
     private final Editor editor;
@@ -86,7 +88,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         examplePane.add(editor);
         labelTitulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"));
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file.png");
-        imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
+        imagemOpenlowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
+        imagemOpen = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "openfile.png");
+        imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "openfile64.png");
         if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>=20 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH)<=30 && Calendar.getInstance().get(Calendar.MONTH)==Calendar.DECEMBER){
             imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite_n.png");
         }else{
@@ -103,9 +107,33 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             }
         });
         areaRecentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
-        
         atualizarRecentes();        
-    }    
+    }
+    public void criarBotaoAbrirRecentes(){
+        WebButton button = new WebButton();
+        button.setAction(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getActionMap().get("Abrir arquivo").actionPerformed(e);
+            }
+        });
+        button.setText("Abrir Arquivo");
+        if(redimensionouParaBaixaResolucao)
+        {
+            textRecentes.setFont(textRecentes.getFont().deriveFont(16f));
+            button.setIcon(imagemOpenlowres);
+        }else{
+            textRecentes.setFont(textRecentes.getFont().deriveFont(24f));
+            button.setIcon(imagemOpen);
+        }
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setVerticalTextPosition(SwingConstants.BOTTOM);
+        WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+        FabricaDicasInterface.criarTooltip(button, "Abrir arquivo .por");
+        areaRecentes.add(this);
+    }
     @Override
     public void configurarCores() {
         labelVersao.setForeground(ColorController.COR_LETRA_TITULO);
@@ -135,6 +163,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         Icon icone = imagemPastaPadrao;
         areaRecentes.removeAll();
         areaLogo.removeAll();
+        
+//        criarBotaoAbrirRecentes();
+        
         WebImage imagemPortugol = new WebImage(icone);
         imagemPortugol.setDisplayType(DisplayType.fitComponent);
         areaLogo.add(imagemPortugol);
@@ -162,7 +193,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
                         AbaCodigoFonte abaCodigoFonte  = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, recente, true);
-                        t.getPainelTabulado().add(abaCodigoFonte);
+                        t.getPainelTabulado().adicionaAba(abaCodigoFonte);
 //                        List<File> arquivo = new ArrayList<>();
 //                        arquivo.add(recente);
 //                        t.abrirArquivosCodigoFonte(arquivo);
@@ -369,7 +400,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
-                        t.getPainelTabulado().add(abaCodigoFonte);
+                        t.getPainelTabulado().adicionaAba(abaCodigoFonte);
                     }
                 });
                 botaoAbrirExemplo.setText("Explorar Exemplo");
