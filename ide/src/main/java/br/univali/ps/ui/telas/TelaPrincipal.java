@@ -13,6 +13,8 @@ import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -75,7 +77,33 @@ public class TelaPrincipal extends javax.swing.JPanel
 
              public void mouseDragged(MouseEvent me) {
                 SwingUtilities.invokeLater(() -> {
-                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    if(!Lancador.isMaximazed()){
+                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    }
+                });
+
+            }
+
+            public void mouseClicked(MouseEvent me) {
+                SwingUtilities.invokeLater(() ->{
+                    if(me.getClickCount() == 2){
+                        if(Lancador.isMaximazed()){
+                            Dimension d = Lancador.getOlderSize();
+                            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
+                            Lancador.getJFrame().setSize(d);
+                            Lancador.setActualSize(d);
+                            Lancador.getJFrame().setLocationRelativeTo(null);
+                            Lancador.setMaximazed(false);
+                        }else{
+                            Dimension d = Lancador.getJFrame().getSize();
+                            Lancador.setOlderSize(d);
+                            Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+                            Lancador.getJFrame().setBounds(bounds);
+                            Lancador.setActualSize(bounds.getSize());
+                            Lancador.setMaximazed(true);
+                        }
+
+                    }
                 });
                 
             }
@@ -84,9 +112,11 @@ public class TelaPrincipal extends javax.swing.JPanel
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent me) {
                 SwingUtilities.invokeLater(() -> {
-                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    if(!Lancador.isMaximazed()){
+                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    }
                 });
-                
+
             }
         });
     }
