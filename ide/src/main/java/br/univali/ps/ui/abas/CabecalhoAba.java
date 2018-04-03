@@ -32,7 +32,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
         Graphics2D g2d = (Graphics2D) grphcs;
         if(this instanceof BotoesControleAba){
             if(getAba().isSelected()){
-                g2d.setPaint(ColorController.COR_PRINCIPAL);
+                g2d.setPaint(ColorController.FUNDO_MEDIO);
             }else{
                 g2d.setPaint(ColorController.COR_CONSOLE);
             }

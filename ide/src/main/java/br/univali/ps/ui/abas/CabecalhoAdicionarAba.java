@@ -5,10 +5,12 @@
  */
 package br.univali.ps.ui.abas;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Dimension;
 import javax.swing.border.MatteBorder;
 
@@ -29,6 +31,7 @@ public class CabecalhoAdicionarAba extends javax.swing.JPanel {
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }
+        botaoAbrir.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png"));
         FabricaDicasInterface.criarTooltipEstatica(botaoAbrir, "Adicionar nova aba");
     }
 
