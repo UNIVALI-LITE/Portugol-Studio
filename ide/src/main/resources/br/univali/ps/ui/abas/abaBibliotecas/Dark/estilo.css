@@ -2,7 +2,7 @@ body
 { 
 
 	font-family: "Open Sans"; 
-	font-size:  12pt;                 
+	font-size:  12px;                 
 	line-height: 150%; 
 	color: #f2f2f2;
         background-color: #3A464C; 
@@ -18,21 +18,23 @@ a
 h1
 {
     font-family: "Tahoma";
-    font-size: 20pt;
+    font-size: 20px;
     color: #FBFBFB;
     background-color: #263238;
     border-left: 3px solid #00EFC0;
     padding: 15px;
     padding-left: 8px;
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 } 
  
 h2 
 { 
-    font-size: 14pt;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    font-size: 14px;
+    padding-bottom: 10px;
+    padding-left: 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
 } 
  
 li 
@@ -70,6 +72,10 @@ b{
 
 div.codigo-portugol
 {
-    padding-left: 8px;
     background-color: #121E24;
+}
+
+p
+{
+    padding-top: 0px;
 }

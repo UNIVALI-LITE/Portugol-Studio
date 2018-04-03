@@ -94,18 +94,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
      private String conteudoRaizBibliotecas = "<html>\n" +
                                                 "  <head>\n" +
                                                 "<style type=\"text/css\">\n" +
-                                                "	body\n" +
-                                                "	{\n" +
-                                                "	     font-family: \"Arial\";\n" +
-                                                "	     font-size: 14pt;\n" +
-                                                "	     line-height: 150%;\n" +
-                                                "	     color : #${color}\n" +
-                                                "	}\n" +
-                                                "\n" +
-                                                "	h1\n" +
-                                                "	{\n" +
-                                                "	       font-size: 14pt;\n" +
-                                                "	}\n" +
+                                                "/*${css}*/" +
                                                 "</style>\n" +
                                                 "  </head>\n" +
                                                 "  <body>\n" +
@@ -138,6 +127,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
         erroHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
         raizBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));
         funcaoBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html"));
+        conteudoRaizBibliotecas = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlraizbibliotecas.html"));
         
         initComponents();
         configurarArvore();
