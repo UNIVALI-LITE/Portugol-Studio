@@ -83,7 +83,6 @@ public final class GerenciadorBibliotecas
             bibliotecasDisponiveis.add("Util");
             bibliotecasDisponiveis.add("Graficos");
             bibliotecasDisponiveis.add("Matematica");
-            bibliotecasDisponiveis.add("Objetos");
             bibliotecasDisponiveis.add("Teclado");
             bibliotecasDisponiveis.add("Texto");
             bibliotecasDisponiveis.add("Tipos");
@@ -92,6 +91,8 @@ public final class GerenciadorBibliotecas
             bibliotecasDisponiveis.add("Sons");
             bibliotecasDisponiveis.add("Calendario");
             bibliotecasDisponiveis.add("Internet");
+            bibliotecasDisponiveis.add("Objetos");
+            bibliotecasDisponiveis.add("Rest");
 
             Collections.sort(bibliotecasDisponiveis);
         }

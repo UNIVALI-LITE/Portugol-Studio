@@ -11,8 +11,6 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBibliot
 import br.univali.portugol.nucleo.bibliotecas.objetos.CacheObjetos;
 import br.univali.portugol.nucleo.bibliotecas.objetos.Objeto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -223,6 +221,24 @@ public final class Objetos extends Biblioteca
         } catch (JsonProcessingException ex) {
             throw new ErroExecucaoBiblioteca("Não foi possível obter o JSON deste objeto.");
         }
+    }
+    
+    @DocumentacaoFuncao(
+            descricao
+            = "Identifica se o objeto contém ou não a propriedade informada",
+            parametros =
+            {
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
+                @DocumentacaoParametro(nome = "propriedade", descricao = "propriedade utilizada para verificação")
+            },
+            autores =
+            {
+                @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
+            }
+    )
+    public boolean contem_propriedade(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        return cacheObjetos.obterObjeto(endereco).contemPropriedade(propriedade);
     }
     
     

@@ -68,6 +68,10 @@ public class Objeto {
         return (double) objetoInterno.get(propriedade);
     }
     
+    public boolean contemPropriedade(String propriedade){
+        return objetoInterno.keySet().contains(propriedade);
+    }
+    
     public String obterJson() throws JsonGenerationException, JsonProcessingException{
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objetoInterno);       
     }
