@@ -344,7 +344,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
             {
                 sb.append("<li><span class=\"parametro\">");
                 sb.append(parametro.getNome());
-                sb.append(":</span> ");
+                sb.append(":</span>");
                 sb.append(parametro.getDocumentacaoParametro().descricao());
                 sb.append("</li>");
             }
@@ -564,6 +564,11 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
                 DefaultMutableTreeNode raizAjudaLinguagem = criarNosAjudaLinguagem(ajuda);
                 DefaultMutableTreeNode raizArvore = (DefaultMutableTreeNode) modeloArvore.getRoot();
                         
+                if (raizArvore.getChildCount() == 2)
+                {
+                    raizArvore.remove(0);
+                }
+                
                 raizArvore.insert((DefaultMutableTreeNode) raizAjudaLinguagem.getFirstChild(), 0);
                 
                 modeloArvore.nodeStructureChanged(raizArvore);

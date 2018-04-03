@@ -2,7 +2,7 @@ body
 { 
 
 	font-family: "Open Sans"; 
-	font-size:  12px;                 
+	font-size:  13px;                 
 	line-height: 150%; 
 	color: #f2f2f2;
         background-color: #3A464C; 
@@ -37,6 +37,11 @@ h2
     margin-bottom: 6px;
 } 
  
+ul, ol
+{
+	list-style-type: none;
+}
+ 
 li 
 { 
     margin-bottom: 10px; 
@@ -61,7 +66,6 @@ b{
 .parametro 
 { 
     font-weight: bold; 
-    list-style-type: circle; 
 }
 
 .porTipoDeclaracao
