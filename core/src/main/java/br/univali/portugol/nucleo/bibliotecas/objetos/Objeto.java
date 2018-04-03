@@ -5,7 +5,16 @@
  */
 package br.univali.portugol.nucleo.bibliotecas.objetos;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 /**
  *
@@ -14,9 +23,25 @@ import java.util.HashMap;
 public class Objeto {
     
     private final HashMap objetoInterno;
-    
+    private final ObjectMapper mapper;
     public Objeto(){
         objetoInterno = new HashMap();
+        mapper = new ObjectMapper();
+    }
+    
+    public Objeto(String json){
+        mapper = new ObjectMapper();
+        objetoInterno = criarViaJson(json);
+    }
+    
+    private HashMap criarViaJson(String json) {
+        HashMap objeto;
+        try{
+            objeto = mapper.readValue(json, new TypeReference<Map<String, Object>>(){});
+        }catch(IOException ex){
+            objeto = new HashMap();
+        }
+        return objeto;
     }
     
     public void atribuirPropriedade(String propriedade, Object valor){
@@ -43,12 +68,8 @@ public class Objeto {
         return (double) objetoInterno.get(propriedade);
     }
     
-    public String obterJson(){
-        StringBuilder texto = new StringBuilder();
-        objetoInterno.keySet()
-                     .forEach(key -> texto.append(key).append(": ").append(objetoInterno.get(key)).append("\n"));
-        
-                
-        return texto.toString();
+    public String obterJson() throws JsonGenerationException, JsonProcessingException{
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objetoInterno);       
     }
+    
 }

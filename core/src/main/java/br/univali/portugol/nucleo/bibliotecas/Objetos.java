@@ -5,12 +5,14 @@ import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
-import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.objetos.CacheObjetos;
 import br.univali.portugol.nucleo.bibliotecas.objetos.Objeto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +31,23 @@ public final class Objetos extends Biblioteca
         cacheObjetos = CacheObjetos.criar();
     }
 
+    @DocumentacaoFuncao(
+            descricao = "Realiza a criação de um objeto a partir de um JSON em memória",
+             parametros =
+            {
+                @DocumentacaoParametro(nome = "json", descricao = "texto no formato JSON para criar o objeto")
+            },
+            retorno = "O endereço de memória no qual o objeto foi carregada",
+            autores =
+            {
+                @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
+            }
+    )
+    public int criar_objeto_via_json(String json) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        return cacheObjetos.criarObjeto(new Objeto(json));
+    }
+    
     @DocumentacaoFuncao(
             descricao = "Realiza a criação de um objeto vazio em memória",
             retorno = "O endereço de memória no qual o objeto foi carregada",
@@ -199,7 +218,13 @@ public final class Objetos extends Biblioteca
     )
     public String obter_json(int endereco) throws ErroExecucaoBiblioteca, InterruptedException
     {
-        return cacheObjetos.obterObjeto(endereco).obterJson();
+        try{
+            return cacheObjetos.obterObjeto(endereco).obterJson();    
+        } catch (JsonProcessingException ex) {
+            throw new ErroExecucaoBiblioteca("Não foi possível obter o JSON deste objeto.");
+        }
     }
+    
+    
     
 }
