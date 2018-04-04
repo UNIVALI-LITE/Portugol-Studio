@@ -26,6 +26,7 @@ public class RestClient {
 	HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
         conexao.setRequestMethod(metodoHttp);
         conexao.setRequestProperty("Accept", "application/json");
+        conexao.setRequestProperty("Content-Type", "application/json");
         conexao.setDoOutput(true);
         return conexao;
     }

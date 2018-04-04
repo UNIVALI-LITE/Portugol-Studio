@@ -30,11 +30,12 @@ public final class Objetos extends Biblioteca
     }
 
     @DocumentacaoFuncao(
-            descricao = "Realiza a criação de um objeto a partir de um JSON em memória",
+            descricao = "Realiza a criação de um objeto a partir de uma cadeia no formato JSON (JavaScript Object Notation)",
              parametros =
             {
                 @DocumentacaoParametro(nome = "json", descricao = "texto no formato JSON para criar o objeto")
             },
+            referencia = "https://pt.wikipedia.org/wiki/JSON",
             retorno = "O endereço de memória no qual o objeto foi carregada",
             autores =
             {
@@ -204,11 +205,12 @@ public final class Objetos extends Biblioteca
     
     @DocumentacaoFuncao(
             descricao
-            = "Obtém o objeto inteiro no formato JSON (JavaScript Object Notation)",
+            = "Obtém a cadeia que representa o objeto inteiro no formato JSON (JavaScript Object Notation)",
             parametros =
             {
                 @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
             },
+            referencia = "https://pt.wikipedia.org/wiki/JSON",
             autores =
             {
                 @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
