@@ -165,10 +165,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
     
     private void instalarObservadores()
     {
-        LinkListenerArvore linkListener = new LinkListenerArvore();
         ListenerSelecaoArvore treeListener = new ListenerSelecaoArvore();
         
-        conteudo.addHyperlinkListener(linkListener);
         arvore.addTreeSelectionListener(treeListener);
     }
     
@@ -1038,41 +1036,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
             novoNome = novoNome.concat(extensao);
             arquivoIcone = new File(arquivoIcone.toString().replace(nomeCompleto, novoNome));
             return IconFactory.createIcon(arquivoIcone);
-        }
-    }
-    
-    private final class LinkListenerArvore implements HyperlinkListener
-    {
-         
-        @Override
-        public void hyperlinkUpdate(HyperlinkEvent evt)
-        {
-            javax.swing.event.HyperlinkEvent.EventType type = evt.getEventType();
-            if (type == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED)
-            {
-                String urlString = evt.getURL().toExternalForm();
-                if (urlString == null)
-                {
-                    QuestionDialog.getInstance().showMessage("Erro: Link inválido", JOptionPane.ERROR_MESSAGE);
-                }
-
-                try
-                {
-                    if (Desktop.isDesktopSupported())
-                    {
-                        URI uri = new URI(urlString);
-                        Desktop.getDesktop().browse(uri);
-                    }
-                    else
-                    {
-                        QuestionDialog.getInstance().showMessage("Erro: Não foi possível abrir o navegador Web", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                catch (Throwable excep)
-                {
-                    QuestionDialog.getInstance().showMessage("Erro: Não foi possível abrir o navegador Web", JOptionPane.ERROR_MESSAGE);
-                }
-            } 
         }
     }
 
