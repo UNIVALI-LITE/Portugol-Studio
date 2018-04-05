@@ -58,35 +58,24 @@ public final class AbaInicial extends Aba implements Themeable
     @Override
     public void configurarCores()
     {
-        botoesGrandes.setBackground(ColorController.COR_DESTAQUE);
+        
         painelCentral.setBackground(ColorController.FUNDO_CLARO);
         conteudoColaborar.setBackground(ColorController.FUNDO_CLARO);
         rotuloAjudarDesenvolvimento.setBackground(ColorController.FUNDO_MEDIO);
         rotuloAjudarDesenvolvimento.setForeground(ColorController.COR_LETRA);
-        rotuloAssistirVideoAulas.setBackground(ColorController.FUNDO_MEDIO);
-        rotuloAssistirVideoAulas.setForeground(ColorController.COR_LETRA);
         rotuloAtalhosTeclado.setBackground(ColorController.FUNDO_MEDIO);
         rotuloAtalhosTeclado.setForeground(ColorController.COR_LETRA);
-        rotuloConhecerBibliotecas.setBackground(ColorController.FUNDO_MEDIO);
-        rotuloConhecerBibliotecas.setForeground(ColorController.COR_LETRA);
-        rotuloConhecerLinguagem.setBackground(ColorController.FUNDO_MEDIO);
-        rotuloConhecerLinguagem.setForeground(ColorController.COR_LETRA);
         rotuloDicasInterface.setBackground(ColorController.FUNDO_MEDIO);
         rotuloDicasInterface.setForeground(ColorController.COR_LETRA);
         rotuloInformacoesSoftware.setBackground(ColorController.FUNDO_MEDIO);
         rotuloInformacoesSoftware.setForeground(ColorController.COR_LETRA);
         rotuloRelatarBug.setBackground(ColorController.FUNDO_MEDIO);
         rotuloRelatarBug.setForeground(ColorController.COR_LETRA);
-        rotuloSairProgramando.setBackground(ColorController.FUNDO_MEDIO);
-        rotuloSairProgramando.setForeground(ColorController.COR_LETRA);
-//        rotuloSlogan.setForeground(new Color(250, 250, 250));
+        //        rotuloSlogan.setForeground(new Color(250, 250, 250));
     }
     public void configurarIcones()
     {
-        rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
-        rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
-        rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
-        rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
+        
     }
 
     private void instalarObservadorCombinacoesSecretas()
@@ -143,10 +132,6 @@ public final class AbaInicial extends Aba implements Themeable
                     ImageIcon gif = new ImageIcon(new URL("http://lite.acad.univali.br/~alice/portugol/resources/rick/image.gif"));
                     if (gif.getIconWidth() > 1)
                     {
-                        rotuloSairProgramando.setIcon(gif);
-                        rotuloAssistirVideoAulas.setIcon(gif);
-                        rotuloConhecerBibliotecas.setIcon(gif);
-                        rotuloConhecerLinguagem.setIcon(gif);
                         QuestionDialog.getInstance().showMessage("Eita!!!");
                     }
                 }
@@ -174,10 +159,7 @@ public final class AbaInicial extends Aba implements Themeable
                                 if (!redimensionouParaBaixaResolucao)
                                 {
                                     redimensionouParaBaixaResolucao = true;
-                                    rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar64.png"));
-                                    rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas64.png"));
-                                    rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas64.png"));
-                                    rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda64.png"));
+        
 //                                    rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
 //                                    rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.TRAILING);
 //                                    rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -192,10 +174,7 @@ public final class AbaInicial extends Aba implements Themeable
                             else
                             {
                                 redimensionouParaBaixaResolucao = false;
-                                rotuloSairProgramando.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/programar.png"));
-                                rotuloAssistirVideoAulas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/videoaulas.png"));
-                                rotuloConhecerBibliotecas.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/bibliotecas.png"));
-                                rotuloConhecerLinguagem.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/ajuda.png"));
+        
 //                                rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 //                                rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 //                                rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -224,11 +203,6 @@ public final class AbaInicial extends Aba implements Themeable
 
     private void configurarAcoes()
     {
-        configurarAcaoSairProgramando();
-        configurarAcaoConhecerLinguagem();
-        configurarAcaoAssistirVideoAulas();
-        configurarAcaoAtualizacoes();
-        configurarAcaoConhecerBibliotecas();
         configurarAcaoExibirTelaSobre();
         configurarAcaoAjudarDesenvolvimento();
         configurarAcaoRelatarBug();
@@ -236,75 +210,7 @@ public final class AbaInicial extends Aba implements Themeable
         configurarAcaoDicasInterface();
     }
 
-    private void configurarAcaoAssistirVideoAulas()
-    {
-        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                WebConnectionUtils.abrirSite("https://www.youtube.com/user/portugolstudio");
-            }
-        };
-
-        getActionMap().put(rotuloAssistirVideoAulas.getName(), acao);
-    }
-
-    private void configurarAcaoAtualizacoes()
-    {
-        Action acao = new AbstractAction(rotuloAssistirVideoAulas.getName())
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/commits/master");
-            }
-        };
-
-    }
-
-    private void configurarAcaoSairProgramando()
-    {
-        Action acao = new AbstractAction(rotuloSairProgramando.getName())
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO).actionPerformed(e);
-                Action action = getPainelTabulado().getActionMap().get(BotoesControleAba.ACAO_NOVO_ARQUIVO);
-            }
-        };
-
-        getActionMap().put(rotuloSairProgramando.getName(), acao);
-    }
-
-    private void configurarAcaoConhecerLinguagem()
-    {
-        Action acao = new AbstractAction(rotuloConhecerLinguagem.getName())
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(e);
-            }
-        };
-
-        getActionMap().put(rotuloConhecerLinguagem.getName(), acao);
-    }
-
-    private void configurarAcaoConhecerBibliotecas()
-    {
-        Action acao = new AbstractAction(rotuloConhecerBibliotecas.getName())
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA).actionPerformed(e);
-            }
-        };
-
-        getActionMap().put(rotuloConhecerBibliotecas.getName(), acao);
-    }
+    
 
     private void configurarAcaoExibirTelaSobre()
     {
@@ -386,18 +292,6 @@ public final class AbaInicial extends Aba implements Themeable
             }
         };
 
-        rotuloSairProgramando.addMouseListener(listener);
-        rotuloSairProgramando.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        rotuloAssistirVideoAulas.addMouseListener(listener);
-        rotuloAssistirVideoAulas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        rotuloConhecerBibliotecas.addMouseListener(listener);
-        rotuloConhecerBibliotecas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        rotuloConhecerLinguagem.addMouseListener(listener);
-        rotuloConhecerLinguagem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
         rotuloAjudarDesenvolvimento.addMouseListener(listener);
         rotuloAjudarDesenvolvimento.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -475,11 +369,6 @@ public final class AbaInicial extends Aba implements Themeable
         java.awt.GridBagConstraints gridBagConstraints;
 
         painelCentral = new javax.swing.JPanel();
-        botoesGrandes = new javax.swing.JPanel();
-        rotuloSairProgramando = new javax.swing.JLabel();
-        rotuloConhecerLinguagem = new javax.swing.JLabel();
-        rotuloAssistirVideoAulas = new javax.swing.JLabel();
-        rotuloConhecerBibliotecas = new javax.swing.JLabel();
         painelExemplos = new br.univali.ps.ui.paineis.PainelExemplos();
         conteudoColaborar = new javax.swing.JPanel();
         rotuloDicasInterface = new javax.swing.JLabel();
@@ -491,73 +380,8 @@ public final class AbaInicial extends Aba implements Themeable
         setOpaque(false);
         setLayout(new java.awt.GridBagLayout());
 
+        painelCentral.setOpaque(false);
         painelCentral.setLayout(new java.awt.GridBagLayout());
-
-        botoesGrandes.setMinimumSize(new java.awt.Dimension(630, 127));
-        botoesGrandes.setOpaque(false);
-        botoesGrandes.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
-
-        rotuloSairProgramando.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloSairProgramando.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloSairProgramando.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloSairProgramando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloSairProgramando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/programar.png"))); // NOI18N
-        rotuloSairProgramando.setText("<html><body><div>Programar</div></body></html>");
-        rotuloSairProgramando.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloSairProgramando.setFocusable(false);
-        rotuloSairProgramando.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rotuloSairProgramando.setMinimumSize(new java.awt.Dimension(150, 25));
-        rotuloSairProgramando.setName("sairProgramando"); // NOI18N
-        rotuloSairProgramando.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botoesGrandes.add(rotuloSairProgramando);
-
-        rotuloConhecerLinguagem.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloConhecerLinguagem.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloConhecerLinguagem.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloConhecerLinguagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloConhecerLinguagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/ajuda.png"))); // NOI18N
-        rotuloConhecerLinguagem.setText("<html><body><div>Ajuda</div></body></html>");
-        rotuloConhecerLinguagem.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloConhecerLinguagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rotuloConhecerLinguagem.setMinimumSize(new java.awt.Dimension(110, 25));
-        rotuloConhecerLinguagem.setName("conhecerLinguagem"); // NOI18N
-        rotuloConhecerLinguagem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botoesGrandes.add(rotuloConhecerLinguagem);
-
-        rotuloAssistirVideoAulas.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloAssistirVideoAulas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloAssistirVideoAulas.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloAssistirVideoAulas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloAssistirVideoAulas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/videoaulas.png"))); // NOI18N
-        rotuloAssistirVideoAulas.setText("<html><body><div>Videoaulas</div></body></html>");
-        rotuloAssistirVideoAulas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloAssistirVideoAulas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rotuloAssistirVideoAulas.setMinimumSize(new java.awt.Dimension(150, 25));
-        rotuloAssistirVideoAulas.setName("assistirVideoAulas"); // NOI18N
-        rotuloAssistirVideoAulas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botoesGrandes.add(rotuloAssistirVideoAulas);
-
-        rotuloConhecerBibliotecas.setBackground(new java.awt.Color(210, 231, 252));
-        rotuloConhecerBibliotecas.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        rotuloConhecerBibliotecas.setForeground(new java.awt.Color(51, 51, 51));
-        rotuloConhecerBibliotecas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rotuloConhecerBibliotecas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/lite/bibliotecas.png"))); // NOI18N
-        rotuloConhecerBibliotecas.setText("<html><body><div>Bibliotecas</div></body></html>");
-        rotuloConhecerBibliotecas.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        rotuloConhecerBibliotecas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rotuloConhecerBibliotecas.setMinimumSize(new java.awt.Dimension(88, 25));
-        rotuloConhecerBibliotecas.setName("conhecerBibliotecas"); // NOI18N
-        rotuloConhecerBibliotecas.setVerifyInputWhenFocusTarget(false);
-        rotuloConhecerBibliotecas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botoesGrandes.add(rotuloConhecerBibliotecas);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        painelCentral.add(botoesGrandes, gridBagConstraints);
 
         painelExemplos.setBorder(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -636,18 +460,13 @@ public final class AbaInicial extends Aba implements Themeable
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel botoesGrandes;
     private javax.swing.JPanel conteudoColaborar;
     private javax.swing.JPanel painelCentral;
     private br.univali.ps.ui.paineis.PainelExemplos painelExemplos;
     private javax.swing.JLabel rotuloAjudarDesenvolvimento;
-    private javax.swing.JLabel rotuloAssistirVideoAulas;
     private javax.swing.JLabel rotuloAtalhosTeclado;
-    private javax.swing.JLabel rotuloConhecerBibliotecas;
-    private javax.swing.JLabel rotuloConhecerLinguagem;
     private javax.swing.JLabel rotuloDicasInterface;
     private javax.swing.JLabel rotuloInformacoesSoftware;
     private javax.swing.JLabel rotuloRelatarBug;
-    private javax.swing.JLabel rotuloSairProgramando;
     // End of variables declaration//GEN-END:variables
 }
