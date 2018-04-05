@@ -25,15 +25,19 @@ import br.univali.portugol.ajuda.ErroTopicoNaoEncontrado;
 import br.univali.portugol.ajuda.Topico;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
@@ -57,7 +61,7 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
     private enum Tipo
     {
 
-        PORLOCAL, HTMLLOCAL
+        PORLOCAL, HTMLLOCAL, HTTPBROWSER
     }
 
     public SwingBrowserHyperlinkHandler(Ajuda ajuda, JTree arvore)
@@ -83,10 +87,13 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
                     default:
                         throw new TipoUrlInvalidoException(tipoArquivo);
                 }
+            case "http":
+                return Tipo.HTTPBROWSER;
             default:
                 throw new TipoUrlInvalidoException(protocol);
         }
     }
+    
 
     private void tratarPorLocal(HyperlinkEvent evt) throws Exception
     {
@@ -99,7 +106,7 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
         abaCodigoFonte.setCodigoFonte(codigoFonte, null, true);
         abaCodigoFonte.getEditor().getPortugolDocumento().setChanged(true);
 
-        PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().add(abaCodigoFonte);
+        PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().adicionaAba(abaCodigoFonte);
     }
 
     @Override
@@ -118,6 +125,10 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
                     break;
                     case HTMLLOCAL:
                         loadPage((JEditorPane) evt.getSource(), evt);
+                    break;
+                    case HTTPBROWSER:
+                        url = evt.getURL().toExternalForm();
+                        abrir_navegador(url);
                     break;
                 }
 
@@ -177,6 +188,26 @@ public class SwingBrowserHyperlinkHandler extends DefaultHyperlinkHandler
             }
         }
         return null;
+    }
+    
+    private void abrir_navegador(String urlString)
+    {
+        try
+        {
+            if (Desktop.isDesktopSupported())
+            {
+                URI uri = new URI(urlString);
+                Desktop.getDesktop().browse(uri);
+            }
+            else
+            {
+                QuestionDialog.getInstance().showMessage("Erro: Não foi possível abrir o navegador Web", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        catch (Throwable excep)
+        {
+            QuestionDialog.getInstance().showMessage("Erro: Não foi possível abrir o navegador Web", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }

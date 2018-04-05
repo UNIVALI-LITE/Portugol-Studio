@@ -7,6 +7,16 @@ import br.univali.portugol.ajuda.ObservadorCarregamentoAjuda;
 import br.univali.portugol.ajuda.PreProcessadorConteudo;
 import br.univali.portugol.ajuda.Topico;
 import br.univali.portugol.ajuda.TopicoHtml;
+import br.univali.portugol.nucleo.asa.ModoAcesso;
+import br.univali.portugol.nucleo.asa.Quantificador;
+import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
+import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.Autor;
 import br.univali.ps.dominio.PortugolHTMLHighlighter;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
@@ -17,14 +27,22 @@ import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -35,9 +53,12 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingWorker;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,8 +71,10 @@ import org.fit.cssbox.swingbox.util.GeneralEventListener;
  *
  * @author Luiz Fernando Noschang
  */
-public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeSelectionListener
+public final class AbaAjuda extends Aba implements PropertyChangeListener
 {
+    
+    private static final Icon iconeBiblioteca = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
 
     private static String templateRaiz
             = "   <html>"
@@ -66,6 +89,18 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             + "         </p>"
             + "     </body>"
             + "</html>\"";
+    
+    
+     private String conteudoRaizBibliotecas = "<html>\n" +
+                                                "  <head>\n" +
+                                                "<style type=\"text/css\">\n" +
+                                                "/*${css}*/" +
+                                                "</style>\n" +
+                                                "  </head>\n" +
+                                                "  <body>\n" +
+                                                "    <h1>Selecione um item na árvore à esquerda para visualizar sua documentação</h1>\n" +
+                                                "  </body>\n" +
+                                                "</html>";
 
     private boolean ajudaCarregada = false;
     private boolean carregandoAjuda = false;
@@ -74,18 +109,36 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
     private Action acaoAtualizarTopico;
     private Topico topicoAtual;
     private Ajuda ajuda;
+    
+    private final String css;
+    private final String constanteBibliotecaHTML;
+    private final String raizBibliotecaHTML;
+    private final String erroHTML;
+    private final String funcaoBibliotecaHTML;
+    
+    private DefaultTreeModel modeloArvore;
 
     public AbaAjuda()
     {
         super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
 
+        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/"+Configuracoes.getInstancia().getTemaPortugol()+"/estilo.css");
+        constanteBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html"));
+        erroHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
+        raizBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));
+        funcaoBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html"));
+        conteudoRaizBibliotecas = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlraizbibliotecas.html"));
+        
         initComponents();
         configurarArvore();
+        instalarObservadores();
         configurarAcoes();
+        
         if(!Configuracoes.getInstancia().isTemaDark())
         {
             iconeCarregamento.setIcon(new ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Portugol/grande/load.gif")));
         }        
+        
         rotuloErroCarregamento.setVisible(false);
 
         addComponentListener(new ComponentAdapter()
@@ -96,15 +149,289 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 carregarAjuda();
             }
         });
+        
         arvore.setUI(new PSTreeUI());
         jLabel2.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"));
+        
         configurarCores();
+        
         if (WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configuraWebLaf(painelRolagemArvore);
             WeblafUtils.configuraWebLaf(jScrollPane1);
             WeblafUtils.configuraWebLaf(scrollConteudo);
         }
+    }
+    
+    private void instalarObservadores()
+    {
+        ListenerSelecaoArvore treeListener = new ListenerSelecaoArvore();
+        
+        arvore.addTreeSelectionListener(treeListener);
+    }
+    
+    public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosFuncao metaDadosFuncao)
+    {
+        exibirTexto(montarHtmlFuncao(metaDadosBiblioteca.getNome(), metaDadosFuncao));
+        this.selecionar();        
+    }
+    
+    public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca, MetaDadosConstante metaDadosConstante)
+    {
+        exibirTexto(montarHtmlConstante(metaDadosBiblioteca.getNome(), metaDadosConstante));
+        this.selecionar(); 
+    }
+    
+    public void exibirDocumentacao(MetaDadosBiblioteca metaDadosBiblioteca)
+    {
+        exibirTexto(montarHtmlBiblioteca(metaDadosBiblioteca));
+        this.selecionar();      
+    }    
+    
+    public void exibirErroCarregamento(ErroCarregamentoBiblioteca erro)
+    {
+        exibirTexto(montarHtmlErroCarregamento(erro));
+        this.selecionar();
+    }    
+    
+     private String montarHtmlErroCarregamento(ErroCarregamentoBiblioteca erro)
+    {
+        String base = erroHTML;
+        
+        base = base.replace("${nomeBiblioteca}", erro.getNome());
+        base = base.replace("${erro}", erro.getMessage());
+
+        return base;
+    }
+    
+    private String montarHtmlBiblioteca(MetaDadosBiblioteca metaDadosBiblioteca)
+    {
+        String base = raizBibliotecaHTML;
+        
+        base = base.replace("${nomeBiblioteca}", metaDadosBiblioteca.getNome());
+        base = base.replace("${versao}", metaDadosBiblioteca.getDocumentacao().versao());
+        base = base.replace("${descricao}", destacarPalavrasReservadas(metaDadosBiblioteca.getDocumentacao().descricao()));
+        //base = base.replace("${constantes}", metaDadosBiblioteca.getDocumentacao().descricao());
+        
+        return base;
+    }
+    
+    private String destacarPalavrasReservadas(String texto)
+    {
+        texto = texto.replace("<tipo>", "<span class=\"tipo_reservado\">");
+        texto = texto.replace("</tipo>", "</span>");
+        
+        texto = texto.replace("<param>", "<b>");
+        texto = texto.replace("</param>", "</b>");
+        
+        return texto;
+    }
+    
+    private String montarHtmlConstante(String nomeBiblioteca, MetaDadosConstante metaDadosConstante)
+    {
+        String base = constanteBibliotecaHTML;
+            
+        
+        base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
+        base = base.replace("${assinatura}", montarAssinaturaConstante(metaDadosConstante));
+        base = base.replace("${descricao}", destacarPalavrasReservadas(metaDadosConstante.getDocumentacao().descricao()));
+        base = base.replace("${referencia}", "<br>" + montarReferencia(metaDadosConstante.getDocumentacao().referencia()));
+        
+        return base;
+    }
+    
+    private String montarReferencia(String referencia)
+    {
+        if (referencia != null && referencia.length() > 0)
+        {
+             return "<a href=\"" + referencia +"\" target=\"blank\">Referência</a>";
+        }
+        
+        return "";
+    }
+    
+    private String montarAssinaturaConstante(MetaDadosConstante metaDadosConstante)
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("<h2>");
+        sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", metaDadosConstante.getTipoDado().getNome()));
+        sb.append(metaDadosConstante.getNome());
+        sb.append(" = <span class=\"porTipoDeclaracao\">");
+        sb.append(metaDadosConstante.getValor());
+        sb.append("</span></h2>");
+        
+        return sb.toString();
+    }
+    
+    private String montarHtmlFuncao(String nomeBiblioteca, MetaDadosFuncao metaDadosFuncao)
+    {
+        String base = funcaoBibliotecaHTML;
+        
+        base = base.replace("${nomeBiblioteca}", nomeBiblioteca);
+        base = base.replace("${assinatura}", montarAssinaturaFuncao(metaDadosFuncao));
+        base = base.replace("${descricao}", destacarPalavrasReservadas(metaDadosFuncao.getDocumentacao().descricao()));
+        base = base.replace("${parametros}", destacarPalavrasReservadas(montarParametros(metaDadosFuncao)));
+        base = base.replace("${retorno}", destacarPalavrasReservadas(montarRetorno(metaDadosFuncao)));
+        base = base.replace("${autores}", montarAutores(metaDadosFuncao));
+        
+        return base;
+    }
+    
+    private String montarAssinaturaFuncao(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("<h2>");
+        sb.append("<span class=\"palavra_reservada\">funcao</span> ");
+        sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", metaDadosFuncao.getTipoDado().getNome()));
+        sb.append(metaDadosFuncao.getNome());
+        sb.append("(");
+        
+        for (MetaDadosParametro parametro : metaDadosFuncao.obterMetaDadosParametros())
+        {
+            if (parametro.getTipoDado() == TipoDado.TODOS)
+            {
+                sb.append("<span class=\"tipo_reservado\">*</span> ");
+            }
+            else 
+            {
+                sb.append(String.format("<span class=\"tipo_reservado\">%s</span> ", parametro.getTipoDado().getNome()));
+            }            
+            
+            if (parametro.getModoAcesso() == ModoAcesso.POR_REFERENCIA)
+            {
+                sb.append("&");
+            }
+            
+            sb.append(parametro.getNome());
+            
+            if (parametro.getQuantificador() == Quantificador.VETOR)
+            {
+                sb.append("[]");
+            }
+            else if (parametro.getQuantificador() == Quantificador.MATRIZ)
+            {
+                sb.append("[][]");
+            }            
+            
+            if (parametro.getIndice() < metaDadosFuncao.obterMetaDadosParametros().quantidade() - 1)
+            {
+                sb.append(", ");
+            }
+        }
+        
+        sb.append(")");
+        
+        sb.append("</h2>");
+        
+        return sb.toString();
+    }
+
+    private String montarParametros(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+        
+        if (!metaDadosFuncao.obterMetaDadosParametros().vazio())
+        {
+            sb.append("<br><div id=\"parametros\"><b>Parâmetros:</b>");
+            sb.append("<ul>");
+	
+            for (MetaDadosParametro parametro : metaDadosFuncao.obterMetaDadosParametros())
+            {
+                sb.append("<li><span class=\"parametro\">");
+                sb.append(parametro.getNome());
+                sb.append(":</span>");
+                sb.append(parametro.getDocumentacaoParametro().descricao());
+                sb.append("</li>");
+            }
+
+            sb.append("</ul>");
+            sb.append("</div>");
+        }
+        
+        return sb.toString();
+    }
+
+    private String montarRetorno(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+        
+        if (metaDadosFuncao.getTipoDado() != TipoDado.VAZIO)
+        {
+            sb.append("<div id=\"retorno\"><b>Retorna:</b> ");
+            sb.append(metaDadosFuncao.getDocumentacao().retorno());
+            sb.append("</div>");
+        }
+        
+        return sb.toString();
+    }
+
+    private CharSequence montarAutores(MetaDadosFuncao metaDadosFuncao)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<br><div id=\"autores\">");
+        
+        String referencia = metaDadosFuncao.getDocumentacao().referencia();
+        
+        if (referencia != null && referencia.length() > 0)
+        {
+            sb.append(montarReferencia(referencia));
+            
+            sb.append(" - ");
+        }
+        
+        sb.append("<b>Autores:</b> ");
+        
+        Autor[] autores = metaDadosFuncao.getDocumentacao().autores();
+        
+        for (int i = 0; i < autores.length; i++)
+        {
+            Autor autor = autores[i];
+            
+            sb.append(autor.nome());
+            
+            if (autor.email() != null && autor.email().length() > 0)
+            {
+                sb.append(" (");
+                sb.append(autor.email());
+                sb.append(")");
+            }
+            
+            if (i < autores.length - 1)
+            {
+                sb.append(", ");
+            }
+        }
+         
+        sb.append("</div>");
+        
+        return sb.toString();
+    }
+    
+    private String carregarHTML(String caminho)
+    {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(caminho), Charset.forName("UTF-8")));
+            String str;
+            while ((str = in.readLine()) != null) {
+                contentBuilder.append(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        String base = contentBuilder.toString();
+        
+        return base;
+    }
+    
+    private String colocarCSS(String HTML)
+    {
+       return HTML.replace("/*${css}*/", css);
     }
     
     private void configurarCores(){
@@ -194,10 +521,10 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     private void configurarArvore()
     {
+        arvore.setModel(criarModeloInicialArvore());
         arvore.setCellRenderer(new Renderizador());
         arvore.setRootVisible(false);
         arvore.setShowsRootHandles(true);
-        arvore.addTreeSelectionListener(this);
         arvore.addKeyListener(new ArvoreTopicosKeyListener(arvore));
     }
 
@@ -229,7 +556,21 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
             try
             {
                 ajuda = carregador.get();
-                arvore.setModel(criarModeloAjuda(ajuda));
+                
+                DefaultTreeModel modeloArvore = (DefaultTreeModel) arvore.getModel();
+                
+                DefaultMutableTreeNode raizAjudaLinguagem = criarNosAjudaLinguagem(ajuda);
+                DefaultMutableTreeNode raizArvore = (DefaultMutableTreeNode) modeloArvore.getRoot();
+                        
+                if (raizArvore.getChildCount() == 2)
+                {
+                    raizArvore.remove(0);
+                }
+                
+                raizArvore.insert((DefaultMutableTreeNode) raizAjudaLinguagem.getFirstChild(), 0);
+                
+                modeloArvore.nodeStructureChanged(raizArvore);
+                
                 configurarSwingbox();
 
                 CardLayout layout = (CardLayout) getLayout();
@@ -249,22 +590,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 {
                     PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
                 }
-            }
-        }
-    }
-
-    @Override
-    public void valueChanged(TreeSelectionEvent e)
-    {
-        DefaultMutableTreeNode noSelecionado = (DefaultMutableTreeNode) arvore.getLastSelectedPathComponent();
-
-        if (noSelecionado != null)
-        {
-            Object valor = noSelecionado.getUserObject();
-
-            if (valor instanceof Topico)
-            {
-                exibirTopico((Topico) valor);
             }
         }
     }
@@ -299,6 +624,36 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         }
         conteudo.setCaretPosition(0);
         topicoAtual = topico;
+    }
+    
+    
+    private void exibirTexto(String texto)
+    {
+        try
+        {
+            //conteudo.setText(topico.getConteudo());
+            File tempOld = new File(Configuracoes.getInstancia().getDiretorioTemporario(), "ajudaTemp" + htmlId + ".html");
+
+            if (tempOld.exists())
+            {
+                tempOld.delete();
+            }
+
+            htmlId++;
+
+            File temp =  new File(Configuracoes.getInstancia().getDiretorioTemporario(), "ajudaTemp" + htmlId + ".html");
+            temp.getParentFile().mkdirs();
+            
+            String conteudoHtml = texto;
+            FileHandle.save(conteudoHtml, temp, "UTF-8");
+
+            conteudo.setPage("file:///" + temp.getAbsolutePath().replace(" ", "%20"));
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(AbaAjuda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        conteudo.setCaretPosition(0);
     }
 
     private class Carregador extends SwingWorker<Ajuda, Integer> implements ObservadorCarregamentoAjuda
@@ -567,16 +922,16 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         }
     }
 
-    private DefaultTreeModel criarModeloAjuda(Ajuda ajuda)
+    private DefaultMutableTreeNode criarNosAjudaLinguagem(Ajuda ajuda)
     {
-        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Ajuda");
+        DefaultMutableTreeNode raizAjudaLinguagem = new DefaultMutableTreeNode("Ajuda");
 
         for (Topico topico : ajuda.getTopicos())
         {
-            raiz.add(criarNoTopico(topico));
+            raizAjudaLinguagem.add(criarNoTopico(topico));
         }
 
-        return new DefaultTreeModel(raiz);
+        return raizAjudaLinguagem;
     }
 
     private DefaultMutableTreeNode criarNoTopico(Topico topico)
@@ -593,7 +948,6 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
 
     private static class Renderizador extends DefaultTreeCellRenderer
     {
-
         @Override
         public Component getTreeCellRendererComponent(JTree arvore, Object valor, boolean selecionado, boolean expandido, boolean folha, int linha, boolean focado)
         {
@@ -609,6 +963,27 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
                 setForeground(ColorController.COR_LETRA);
                 renderizador.setText(titulo);
                 renderizador.setIcon(icone);
+            }
+            else if ((conteudoNo instanceof String) && (conteudoNo.equals("Bibliotecas")))
+            {
+                renderizador.setText("Bibliotecas");
+                renderizador.setIcon(iconeBiblioteca);
+                setForeground(ColorController.COR_LETRA);
+            }
+            else
+            {
+                try
+                {
+                    Method metodo = no.getUserObject().getClass().getMethod("getNome");
+                    metodo.setAccessible(true);
+                    setForeground(ColorController.COR_LETRA);
+                    renderizador.setIcon(getIcone(no.getUserObject()));
+                    renderizador.setText((String) metodo.invoke(no.getUserObject()));
+                }
+                catch (Exception ex)
+                {
+                    renderizador.setText("Erro: " + ex.getMessage());
+                }
             }
 
             return renderizador;
@@ -664,6 +1039,112 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener, TreeS
         }
     }
 
+   private final class ListenerSelecaoArvore implements TreeSelectionListener
+   {
+       @Override
+        public void valueChanged(TreeSelectionEvent e)
+        {
+            DefaultMutableTreeNode noSelecionado = (DefaultMutableTreeNode) arvore.getLastSelectedPathComponent();
+            
+            if (noSelecionado != null)
+            {
+                Object valor = noSelecionado.getUserObject();
+                
+                if (valor instanceof Topico)
+                {
+                    exibirTopico((Topico) valor);
+                    return;
+                }
+                else if ((valor instanceof String) && valor.equals("Bibliotecas"))
+                {
+                    exibirTexto(conteudoRaizBibliotecas);                    
+                    return;
+                }
+                
+                DefaultMutableTreeNode noBiblioteca = (DefaultMutableTreeNode) arvore.getSelectionPath().getPath()[2];
+
+                if (noBiblioteca.getUserObject() instanceof ErroCarregamentoBiblioteca)
+                {
+                    exibirErroCarregamento((ErroCarregamentoBiblioteca) noBiblioteca.getUserObject());
+                }
+                else
+                {
+                    MetaDadosBiblioteca metaDadosBiblioteca = (MetaDadosBiblioteca) noBiblioteca.getUserObject();
+
+                    if (valor instanceof MetaDadosFuncao)
+                    {
+                        exibirDocumentacao(metaDadosBiblioteca, (MetaDadosFuncao) valor);
+                    }
+                    else if (valor instanceof MetaDadosConstante)
+                    {
+                        exibirDocumentacao(metaDadosBiblioteca, (MetaDadosConstante) valor);
+                    }
+                    else if (valor instanceof MetaDadosBiblioteca)
+                    {
+                        exibirDocumentacao((MetaDadosBiblioteca) valor);
+                    }
+                }            
+            }
+        }
+   }
+
+    private DefaultTreeModel criarModeloInicialArvore()
+    {
+        DefaultMutableTreeNode noRaiz = new DefaultMutableTreeNode();
+        
+        DefaultMutableTreeNode noBibliotecas = new DefaultMutableTreeNode("Bibliotecas");
+        
+        
+        for (String biblioteca : GerenciadorBibliotecas.getInstance().listarBibliotecasDisponiveis())
+        {
+            try
+            {
+                MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(biblioteca);
+                DefaultMutableTreeNode noBiblioteca = new DefaultMutableTreeNode(metaDadosBiblioteca);
+                
+                for (MetaDadosConstante metaDadosConstante : metaDadosBiblioteca.getMetaDadosConstantes())
+                {
+                    noBiblioteca.add(new DefaultMutableTreeNode(metaDadosConstante, false));
+                }
+                
+                for (MetaDadosFuncao metaDadosFuncao : metaDadosBiblioteca.obterMetaDadosFuncoes())
+                {
+                    noBiblioteca.add(new DefaultMutableTreeNode(metaDadosFuncao, false));
+                }
+                
+                noBibliotecas.add(noBiblioteca);
+            }
+            catch (ErroCarregamentoBiblioteca erro)
+            {
+                noRaiz.add(new DefaultMutableTreeNode(erro));
+            }
+        }
+        
+        noRaiz.add(noBibliotecas);
+        
+        return new DefaultTreeModel(noRaiz);
+    }
+    
+    private static Icon getIcone(Object valor)
+    {
+        if (valor instanceof MetaDadosFuncao)
+        {
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png");
+        }
+        else if (valor instanceof MetaDadosConstante)
+        {
+            TipoDado tipo = ((MetaDadosConstante) valor).getTipoDado();
+            
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, tipo.getNome().concat(".png"));
+        }
+        else if (valor instanceof MetaDadosBiblioteca)
+        {
+            return IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png");
+        }
+        
+        return null;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
