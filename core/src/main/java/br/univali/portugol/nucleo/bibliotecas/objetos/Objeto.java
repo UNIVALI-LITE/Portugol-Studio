@@ -30,6 +30,11 @@ public class Objeto {
         mapper = new ObjectMapper();
     }
     
+    public Objeto(HashMap objeto){
+        mapper = new ObjectMapper();
+        objetoInterno = objeto;
+    }
+    
     public Objeto(String json){
         mapper = new ObjectMapper();
         objetoInterno = criarViaJson(json);
@@ -49,6 +54,10 @@ public class Objeto {
         objetoInterno.put(propriedade, valor);
     }
     
+    public Object obterPropriedade(String propriedade){
+        return objetoInterno.get(propriedade);
+    }
+    
     public int obterPropriedadeInteiro(String propriedade){
         return (int) objetoInterno.get(propriedade);
     }
@@ -62,11 +71,16 @@ public class Objeto {
     }
     
     public char obterPropriedadeCaracter(String propriedade){
-        return (char) objetoInterno.get(propriedade);
+        return ((String) objetoInterno.get(propriedade)).charAt(0);
     }
     
     public double obterPropriedadeReal(String propriedade){
         return (double) objetoInterno.get(propriedade);
+    }
+    
+    public String obterPropriedadeObjeto(String propriedade) throws JsonProcessingException{
+        HashMap objetoAninhado = (HashMap) objetoInterno.get(propriedade);
+        return obterJson(objetoAninhado);
     }
     
     public boolean contemPropriedade(String propriedade){
@@ -74,7 +88,11 @@ public class Objeto {
     }
      
     public String obterJson() throws JsonGenerationException, JsonProcessingException{
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objetoInterno);       
+        return obterJson(objetoInterno);
+    }
+    
+    public String obterJson(HashMap objeto) throws JsonGenerationException, JsonProcessingException{
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objeto);       
     }
     
 }
