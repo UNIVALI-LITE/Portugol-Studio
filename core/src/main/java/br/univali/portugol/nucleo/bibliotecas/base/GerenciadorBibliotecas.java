@@ -83,6 +83,7 @@ public final class GerenciadorBibliotecas
             bibliotecasDisponiveis.add("Util");
             bibliotecasDisponiveis.add("Graficos");
             bibliotecasDisponiveis.add("Matematica");
+            bibliotecasDisponiveis.add("Objetos");
             bibliotecasDisponiveis.add("Teclado");
             bibliotecasDisponiveis.add("Texto");
             bibliotecasDisponiveis.add("Tipos");

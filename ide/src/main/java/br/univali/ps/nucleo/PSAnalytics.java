@@ -125,6 +125,7 @@ public class PSAnalytics {
         List<BasicNameValuePair> params = new ArrayList<>(3);
         params.add(new BasicNameValuePair("is_online", ""+set_online));
         params.add(new BasicNameValuePair("last_use", ""+date));
+        params.add(new BasicNameValuePair("portugol_version", ""+PortugolStudio.getInstancia().getVersao()));
         
         try {
             httpput.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));

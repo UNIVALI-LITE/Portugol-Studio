@@ -88,9 +88,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         examplePane.add(editor);
         labelTitulo.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"));
         imagemPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file.png");
-        imagemOpenlowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
+        imagemOpenlowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "openfile64.png");
         imagemOpen = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "openfile.png");
-        imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "openfile64.png");
+        imagemPadraolowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "file64.png");
         if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>=20 && Calendar.getInstance().get(Calendar.DAY_OF_MONTH)<=30 && Calendar.getInstance().get(Calendar.MONTH)==Calendar.DECEMBER){
             imagemPastaPadrao = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "lite/lite_n.png");
         }else{
@@ -131,8 +131,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
         WeblafUtils.configurarBotao(button,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-        FabricaDicasInterface.criarTooltip(button, "Abrir arquivo .por");
-        areaRecentes.add(this);
+        FabricaDicasInterface.criarTooltip(button, "Abrir arquivo");
+        areaRecentes.add(button);
     }
     @Override
     public void configurarCores() {
@@ -164,7 +164,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         areaRecentes.removeAll();
         areaLogo.removeAll();
         
-//        criarBotaoAbrirRecentes();
         
         WebImage imagemPortugol = new WebImage(icone);
         imagemPortugol.setDisplayType(DisplayType.fitComponent);
@@ -177,6 +176,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         {
             textRecentes.setVisible(true);
         }
+        criarBotaoAbrirRecentes();
         for (File recente : files) {
             if(!recente.exists())
             {
