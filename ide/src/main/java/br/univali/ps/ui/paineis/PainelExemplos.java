@@ -266,7 +266,12 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         PortugolStudio.getInstancia().salvarComoRecente(recente);
                     }
                 });
-                button.setText(recente.getName());
+                if(recente.getName().length()>15){
+                    button.setText(recente.getName().substring(0, 11)+"...");
+                }else{
+                    button.setText(recente.getName());
+                }
+                
                 if(redimensionouParaBaixaResolucao)
                 {
                     textRecentes.setFont(textRecentes.getFont().deriveFont(16f));
