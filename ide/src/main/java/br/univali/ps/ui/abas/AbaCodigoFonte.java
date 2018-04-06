@@ -549,12 +549,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acaoCentralizarCodigoFonte;
     }
 
-    private boolean editorEstaExpandido()
-    {
-        boolean divisorArvoreEditorExpandido = divisorArvoreEditor.getDividerLocation() > divisorArvoreEditor.getMaximumDividerLocation();
-        boolean divisorEditorConsoleExpandido = divisorEditorConsole.getDividerLocation() > divisorEditorConsole.getMaximumDividerLocation();
-        return divisorArvoreEditorExpandido && divisorEditorConsoleExpandido;
+    private boolean editorEstaExpandido() {
+//        boolean divisorArvoreEditorExpandido = divisorArvoreEditor.getDividerLocation() > divisorArvoreEditor.getMaximumDividerLocation();
+//        boolean divisorEditorConsoleExpandido = divisorEditorConsole.getDividerLocation() > divisorEditorConsole.getMaximumDividerLocation();
+//        return divisorArvoreEditorExpandido && divisorEditorConsoleExpandido;
+        return editorExpandido;
     }
+    
+    boolean editorExpandido = false;
     
     private void configuraLoader(){
         boolean usandoTemaDark = Configuracoes.getInstancia().isTemaDark();
@@ -563,27 +565,43 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         indicadorProgresso = new IndicadorDeProgresso(this, icone, "Processando ...");
     }
     
-    private Action criaAcaoExpandirEditor()
-    {
-        AbstractAction acaoExpandir = new AbstractAction("Expandir", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"))
-        {
+    private Action criaAcaoExpandirEditor() {
+        AbstractAction acaoExpandir = new AbstractAction("Expandir", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 JMenuItem item = (JMenuItem) getValue("MenuItem");
-                if (!editorEstaExpandido())
-                {
-                    divisorArvoreEditor.setDividerLocation(1.0);
-                    divisorEditorConsole.setDividerLocation(1.0);
+                if (!editorEstaExpandido()) {
+                    getPainelTabulado().ocultarContainerCabecalhos();
+                    painelEditor.remove(barraFerramentas);
                     item.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png"));
                     item.setText("Restaurar");
-                }
-                else
-                {
-                    divisorArvoreEditor.setDividerLocation(-1);
-                    divisorEditorConsole.setDividerLocation(-1);
+                    
+                    SwingUtilities.invokeLater(() -> {
+                        divisorArvoreEditor.setDividerLocation(1.0);
+                        divisorEditorConsole.setDividerLocation(1.0);
+                        editorExpandido = true;
+                    });
+                } else {
+
+                    getPainelTabulado().exibirContainerCabecalhos();
+                    // Copiado do initComponents()
+                    GridBagConstraints gridBagConstraints = new java.awt.GridBagConstraints();
+                    gridBagConstraints.gridx = 0;
+                    gridBagConstraints.gridy = 0;
+                    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+                    gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+                    
+                    painelEditor.add(barraFerramentas, gridBagConstraints);
+                    
                     item.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"));
                     item.setText("Expandir");
+                    
+                    SwingUtilities.invokeLater(() -> {
+                        divisorArvoreEditor.setDividerLocation(-1);
+                        divisorEditorConsole.setDividerLocation(-1);
+                        
+                        editorExpandido = false;
+                    });
                 }
             }
         };
