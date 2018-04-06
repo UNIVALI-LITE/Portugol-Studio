@@ -82,7 +82,8 @@ programa
 	}
 	
 	funcao inicializar(){
-		diretorio_ps = u.obter_diretorio_usuario() + "/.portugol/dados/"
+		diretorio_ps = u.obter_diretorio_usuario() + "/.portugol/dados/palavras/"
+		a.criar_pasta(diretorio_ps)
 		arrumar_texto()
 		inteiro indice = -1
 		inteiro separador = 1		
@@ -352,7 +353,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 0; 
+ * @POSICAO-CURSOR = 8; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
