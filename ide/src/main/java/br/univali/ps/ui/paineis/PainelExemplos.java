@@ -119,7 +119,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             }
         });
         //areaRecentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
-        atualizarRecentes();        
+        
+        atualizarRecentes();
+        
     }
     public void criarBotaoAbrirRecentes(){
         staticPanel.removeAll();
@@ -274,9 +276,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 
                 if(redimensionouParaBaixaResolucao)
                 {
+                    jSplitPane1.setDividerLocation(jSplitPane1.getWidth()-200);
                     textRecentes.setFont(textRecentes.getFont().deriveFont(16f));
                     button.setIcon(imagemPadraolowres);
                 }else{
+                    jSplitPane1.setDividerLocation(jSplitPane1.getWidth()-300);
                     textRecentes.setFont(textRecentes.getFont().deriveFont(24f));
                     button.setIcon(imagemPadrao);
                 }
@@ -585,7 +589,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        jSplitPane1.setDividerLocation(300);
+        jSplitPane1.setDividerLocation(600);
         jSplitPane1.setName("splitPainelExemplos"); // NOI18N
 
         painelDireita.setBackground(new java.awt.Color(255, 255, 255));
@@ -641,7 +645,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelDireita.add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        jSplitPane1.setRightComponent(painelDireita);
+        jSplitPane1.setLeftComponent(painelDireita);
 
         painelEsquerda.setOpaque(false);
         painelEsquerda.setLayout(new java.awt.BorderLayout());
@@ -671,7 +675,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
 
         painelEsquerda.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jSplitPane1.setLeftComponent(painelEsquerda);
+        jSplitPane1.setRightComponent(painelEsquerda);
 
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
