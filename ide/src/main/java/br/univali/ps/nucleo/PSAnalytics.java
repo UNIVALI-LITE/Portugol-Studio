@@ -56,7 +56,7 @@ public class PSAnalytics {
                 String username = sb.toString();
                 if(getHTML("https://ui-spy.now.sh/api/users/"+username).equals("[]")){
                 }else{
-                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), false);
+                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), false, ip);
                 }
             } catch (Exception ex) {
                 System.out.println("Erro no envio ao servidor");
@@ -64,7 +64,7 @@ public class PSAnalytics {
         }        
     }
     
-    private void criar_usuario_servidor(String username) throws Exception{
+    private void criar_usuario_servidor(String username, InetAddress ip) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost("https://ui-spy.now.sh/api/users");
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
@@ -81,6 +81,7 @@ public class PSAnalytics {
         params.add(new BasicNameValuePair("is_online", "true"));
         params.add(new BasicNameValuePair("portugol_version", PortugolStudio.getInstancia().getVersao() ));
         params.add(new BasicNameValuePair("last_use", ""+date));
+        params.add(new BasicNameValuePair("ip", ip.toString()));
         try {
             httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             //Execute and get the response.
@@ -111,7 +112,7 @@ public class PSAnalytics {
         Configuracoes.getInstancia().setUserAnalyticsID(id);
     }
     
-    private void editar_usuario_servidor(String id, boolean set_online) throws Exception{
+    private void editar_usuario_servidor(String id, boolean set_online, InetAddress ip) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
         HttpPut httpput = new HttpPut("https://ui-spy.now.sh//api/users/"+id);
         RequestConfig timeout = RequestConfig.custom().setConnectTimeout(2500).setSocketTimeout(2500).build();
@@ -125,6 +126,7 @@ public class PSAnalytics {
         List<BasicNameValuePair> params = new ArrayList<>(3);
         params.add(new BasicNameValuePair("is_online", ""+set_online));
         params.add(new BasicNameValuePair("last_use", ""+date));
+        params.add(new BasicNameValuePair("ip", ip.toString()));
         params.add(new BasicNameValuePair("portugol_version", ""+PortugolStudio.getInstancia().getVersao()));
         
         try {
@@ -162,26 +164,23 @@ public class PSAnalytics {
         if(pode_enviar_dados)
         {   
             String username = "";
-            if(Configuracoes.getInstancia().getUserMac().equals("nao")){
-                InetAddress ip;
-                try {
-                    ip = InetAddress.getLocalHost();
-                    NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                    byte[] mac = network.getHardwareAddress();
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < mac.length; i++) {
-                            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-                    }
-                    username = sb.toString();
-                    Configuracoes.getInstancia().setUserMac(username);
-                }catch (Exception e){
-                }
-            }else{
-                username = Configuracoes.getInstancia().getUserMac();
-            }
             try {
+                InetAddress ip;
+                ip = InetAddress.getLocalHost();
+                if(Configuracoes.getInstancia().getUserMac().equals("nao")){
+                        NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+                        byte[] mac = network.getHardwareAddress();
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < mac.length; i++) {
+                                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+                        }
+                        username = sb.toString();
+                        Configuracoes.getInstancia().setUserMac(username);
+                }else{
+                    username = Configuracoes.getInstancia().getUserMac();
+                }
                 if(getHTML("https://ui-spy.now.sh/api/users/"+username).equals("[]")){
-                    criar_usuario_servidor(username);
+                    criar_usuario_servidor(username, ip);
                 }else{
                     if(Configuracoes.getInstancia().getUserAnalyticsID().equals("nao")){
                         String id = "undefined";
@@ -196,7 +195,7 @@ public class PSAnalytics {
                         }
                         Configuracoes.getInstancia().setUserAnalyticsID(id);
                     }
-                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), true);
+                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
                 }
             } catch (Exception ex) {
                 System.out.println("Erro no envio ao servidor");
