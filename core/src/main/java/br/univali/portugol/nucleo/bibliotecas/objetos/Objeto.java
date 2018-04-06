@@ -5,7 +5,17 @@
  */
 package br.univali.portugol.nucleo.bibliotecas.objetos;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.stream.Stream;
+
 
 /**
  *
@@ -14,13 +24,38 @@ import java.util.HashMap;
 public class Objeto {
     
     private final HashMap objetoInterno;
-    
+    private final ObjectMapper mapper;
     public Objeto(){
         objetoInterno = new HashMap();
+        mapper = new ObjectMapper();
+    }
+    
+    public Objeto(HashMap objeto){
+        mapper = new ObjectMapper();
+        objetoInterno = objeto;
+    }
+    
+    public Objeto(String json){
+        mapper = new ObjectMapper();
+        objetoInterno = criarViaJson(json);
+    }
+    
+    private HashMap criarViaJson(String json) {
+        HashMap objeto;
+        try{
+            objeto = mapper.readValue(json, new TypeReference<Map<String, Object>>(){});
+        }catch(IOException ex){
+            objeto = new HashMap();
+        }
+        return objeto;
     }
     
     public void atribuirPropriedade(String propriedade, Object valor){
         objetoInterno.put(propriedade, valor);
+    }
+    
+    public Object obterPropriedade(String propriedade){
+        return objetoInterno.get(propriedade);
     }
     
     public int obterPropriedadeInteiro(String propriedade){
@@ -36,19 +71,28 @@ public class Objeto {
     }
     
     public char obterPropriedadeCaracter(String propriedade){
-        return (char) objetoInterno.get(propriedade);
+        return ((String) objetoInterno.get(propriedade)).charAt(0);
     }
     
     public double obterPropriedadeReal(String propriedade){
         return (double) objetoInterno.get(propriedade);
     }
     
-    public String obterJson(){
-        StringBuilder texto = new StringBuilder();
-        objetoInterno.keySet()
-                     .forEach(key -> texto.append(key).append(": ").append(objetoInterno.get(key)).append("\n"));
-        
-                
-        return texto.toString();
+    public String obterPropriedadeObjeto(String propriedade) throws JsonProcessingException{
+        HashMap objetoAninhado = (HashMap) objetoInterno.get(propriedade);
+        return obterJson(objetoAninhado);
     }
+    
+    public boolean contemPropriedade(String propriedade){
+        return objetoInterno.keySet().contains(propriedade);
+    }
+     
+    public String obterJson() throws JsonGenerationException, JsonProcessingException{
+        return obterJson(objetoInterno);
+    }
+    
+    public String obterJson(HashMap objeto) throws JsonGenerationException, JsonProcessingException{
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objeto);       
+    }
+    
 }

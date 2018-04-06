@@ -17,7 +17,16 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/fluent-hc
     compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.5'
-        
+       
+    //https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
+    
+    //https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
+    
+    //https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.5'
+    
     // Talvez possa ser substituído pela dependência abaixo
     // https://mvnrepository.com/artifact/javax.media/jmf
     //compile group: 'javax.media', name: 'jmf', version: 'fs-3.0'
