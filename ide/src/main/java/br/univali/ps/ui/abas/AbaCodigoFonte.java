@@ -1465,11 +1465,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnDepurar = new com.alee.laf.button.WebButton();
         btnInterromper = new com.alee.laf.button.WebButton();
         webSeparator2 = new com.alee.laf.separator.WebSeparator();
-        btnAjuda = new com.alee.laf.button.WebButton();
-        webSeparator1 = new com.alee.laf.separator.WebSeparator();
         btnSalvar = new com.alee.laf.button.WebButton();
         btnSalvarComo = new com.alee.laf.button.WebButton();
         btnAbrir = new com.alee.laf.button.WebButton();
+        webSeparator1 = new com.alee.laf.separator.WebSeparator();
+        btnAjuda = new com.alee.laf.button.WebButton();
         editor = new br.univali.ps.ui.editor.Editor();
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
@@ -1551,24 +1551,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnInterromper.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraFerramentas.add(btnInterromper);
 
-        webSeparator2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 1));
+        webSeparator2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 3));
         barraFerramentas.add(webSeparator2);
-
-        btnAjuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/ajuda.png"))); // NOI18N
-        btnAjuda.setFocusable(false);
-        btnAjuda.setHideActionText(true);
-        btnAjuda.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAjuda.setName("botaoSalvar"); // NOI18N
-        btnAjuda.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAjuda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAjudaActionPerformed(evt);
-            }
-        });
-        barraFerramentas.add(btnAjuda);
-
-        webSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 1));
-        barraFerramentas.add(webSeparator1);
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save.png"))); // NOI18N
         btnSalvar.setFocusable(false);
@@ -1598,6 +1582,22 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
         barraFerramentas.add(btnAbrir);
+
+        webSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 3));
+        barraFerramentas.add(webSeparator1);
+
+        btnAjuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/helplow.png"))); // NOI18N
+        btnAjuda.setFocusable(false);
+        btnAjuda.setHideActionText(true);
+        btnAjuda.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAjuda.setName("botaoSalvar"); // NOI18N
+        btnAjuda.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAjuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAjudaActionPerformed(evt);
+            }
+        });
+        barraFerramentas.add(btnAjuda);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
