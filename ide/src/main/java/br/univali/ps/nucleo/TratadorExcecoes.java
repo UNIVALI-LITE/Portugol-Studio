@@ -180,6 +180,13 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         search[1] = "org.fife.ui.rsyntaxtextarea.SyntaxView.viewToModel";
         if(silenciador_de_excecoes_and(mensagem, search))
             return true;
+        
+        //issue #495
+        search = new String[2];
+        search[0] = "org.fife.ui.rsyntaxtextarea.ParserManager.noticeContainsPosition(ParserManager.java:531)";
+        search[1] = "javax.swing.ToolTipManager$insideTimerAction.actionPerformed(ToolTipManager.java:663)";
+        if(silenciador_de_excecoes_and(mensagem, search))
+            return true;
         return false;
     }
     private boolean silenciador_de_excecoes_and(String mensagem, String[] search){
