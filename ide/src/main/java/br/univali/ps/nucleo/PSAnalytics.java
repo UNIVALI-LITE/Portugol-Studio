@@ -54,7 +54,7 @@ public class PSAnalytics {
                         sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
                 }
                 String username = sb.toString();
-                if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
+                if(getHTML("https://ui-spy.now.sh/api/users/"+username).equals("[]")){
                 }else{
                     editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), false);
                 }
@@ -66,7 +66,7 @@ public class PSAnalytics {
     
     private void criar_usuario_servidor(String username) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost("https://ui-spy.herokuapp.com/api/users");
+        HttpPost httppost = new HttpPost("https://ui-spy.now.sh/api/users");
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
         
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -99,7 +99,7 @@ public class PSAnalytics {
             System.out.println("Erro no envio ao servidor");
         }
         String id = "undefined";
-        String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
+        String data= getHTML("https://ui-spy.now.sh/api/users/"+username);
         String[] dados = data.split(",");
         for (String dado : dados) {
             String[] obj = dado.split(":");
@@ -113,7 +113,7 @@ public class PSAnalytics {
     
     private void editar_usuario_servidor(String id, boolean set_online) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPut httpput = new HttpPut("https://ui-spy.herokuapp.com/api/users/"+id);
+        HttpPut httpput = new HttpPut("https://ui-spy.now.sh//api/users/"+id);
         RequestConfig timeout = RequestConfig.custom().setConnectTimeout(2500).setSocketTimeout(2500).build();
         httpput.setConfig(timeout);
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
@@ -180,12 +180,12 @@ public class PSAnalytics {
                 username = Configuracoes.getInstancia().getUserMac();
             }
             try {
-                if(getHTML("https://ui-spy.herokuapp.com/api/users/"+username).equals("[]")){
+                if(getHTML("https://ui-spy.now.sh/api/users/"+username).equals("[]")){
                     criar_usuario_servidor(username);
                 }else{
                     if(Configuracoes.getInstancia().getUserAnalyticsID().equals("nao")){
                         String id = "undefined";
-                        String data= getHTML("https://ui-spy.herokuapp.com/api/users/"+username);
+                        String data= getHTML("https://ui-spy.now.sh/api/users/"+username);
                         String[] dados = data.split(",");
                         for (String dado : dados) {
                             String[] obj = dado.split(":");
