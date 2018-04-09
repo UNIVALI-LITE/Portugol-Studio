@@ -1,6 +1,7 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
@@ -196,6 +197,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private void ativar() {
         titulo.setIcon(iconeAtivo);
         titulo.setForeground(ColorController.COR_LETRA);
+        ((AbaInicial) getAba()).getPainelExemplos().atualizarRecentes();
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
             WeblafUtils.configurarBotao(botaoNovoArquivo,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
