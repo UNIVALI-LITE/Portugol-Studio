@@ -90,7 +90,24 @@ public final class Objetos extends Biblioteca {
             }
     )
     public int criar_objeto_via_json(String json) throws ErroExecucaoBiblioteca, InterruptedException {
-        return cacheObjetos.criarObjeto(new Objeto(json));
+        return cacheObjetos.criarObjeto(new Objeto(json, Objeto.JSON));
+    }
+    
+    @DocumentacaoFuncao(
+            descricao = "Realiza a criação de um objeto a partir de uma cadeia no formato XML (eXtensible Markup Language)",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "xml", descricao = "texto no formato XML para criar o objeto")
+            },
+            referencia = "https://pt.wikipedia.org/wiki/XML",
+            retorno = "O endereço de memória no qual o objeto foi carregada",
+            autores
+            = {
+                @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
+            }
+    )
+    public int criar_objeto_via_xml(String xml) throws ErroExecucaoBiblioteca, InterruptedException {
+        return cacheObjetos.criarObjeto(new Objeto(xml, Objeto.XML));
     }
 
     @DocumentacaoFuncao(

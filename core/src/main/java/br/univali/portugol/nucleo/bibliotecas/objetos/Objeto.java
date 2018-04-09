@@ -13,7 +13,11 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 
@@ -24,6 +28,9 @@ import java.util.stream.Stream;
 public class Objeto {
     
     private final HashMap objetoInterno;
+    public static final int JSON = 1;
+    public static final int XML = 2;
+    
     private final ObjectMapper mapper;
     public Objeto(){
         objetoInterno = new HashMap();
@@ -38,6 +45,28 @@ public class Objeto {
     public Objeto(String json){
         mapper = new ObjectMapper();
         objetoInterno = criarViaJson(json);
+    }
+    
+    public Objeto(String conteudo, int formato){
+        mapper = new ObjectMapper();
+        objetoInterno = 
+                formato == XML  ? criarViaXml(conteudo)
+                                : criarViaJson(conteudo);
+    }
+    
+    private HashMap criarViaXml(String xml){
+        String json;
+        XmlMapper xmlMapper = new XmlMapper();
+        JsonNode node;
+        try {
+            node = xmlMapper.readTree(xml.getBytes());
+            ObjectMapper jsonMapper = new ObjectMapper();
+            json = jsonMapper.writeValueAsString(node);
+        } catch (IOException ex) {
+            json = "{}";
+        }
+
+        return criarViaJson(json);
     }
     
     private HashMap criarViaJson(String json) {
