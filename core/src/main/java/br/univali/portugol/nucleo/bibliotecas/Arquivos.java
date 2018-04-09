@@ -618,6 +618,29 @@ public final class Arquivos extends Biblioteca
             throw new ErroExecucaoBiblioteca(caminho_pai + " não é um caminho possível");
         }
     }
+    
+    @DocumentacaoFuncao(descricao = "Cria pastas no caminho informado caso elas não existam",
+            parametros =
+            {
+                @DocumentacaoParametro(nome = "caminho",
+                        descricao = "Caminho onde as pastas serão criadas"
+                )
+            },
+            autores =
+            {
+                @Autor(nome = "Rafael Ferreira Costa", email = "rafaelcosta@edu.univali.br")
+            }
+    )
+    public void criar_pasta(String caminho) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        File diretorio = programa.resolverCaminho(new File(caminho));
+        try{
+            if(!diretorio.exists());
+                diretorio.mkdirs();
+        }catch(Exception ex){
+            throw new ErroExecucaoBiblioteca("Não foi possivel criar um diretorio em " + caminho);
+        }
+    }
 
     private String obterCaminhoArquivo(File arquivo)
     {

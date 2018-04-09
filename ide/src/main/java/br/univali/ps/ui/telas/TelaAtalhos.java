@@ -39,7 +39,6 @@ public class TelaAtalhos extends javax.swing.JPanel {
         ModeloAcoes modelo = (ModeloAcoes) tabela.getModel();
         modelo.registrarDadosAcao(new DadosAcao("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)));
         modelo.registrarDadosAcao(new DadosAcao("Dicas de Interface", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0)));
-        modelo.registrarDadosAcao(new DadosAcao("Bibliotecas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png"), KeyStroke.getKeyStroke(KeyEvent.VK_F1, KeyEvent.SHIFT_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Abrir um arquivo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "folder_closed.png"), KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Exibir tela inicial", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "light_pix.png"), KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK)));
         modelo.registrarDadosAcao(new DadosAcao("Criar novo arquivo", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "page_white_add.png"), KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK)));

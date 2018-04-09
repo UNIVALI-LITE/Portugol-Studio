@@ -5,6 +5,7 @@ programa
 	inclua biblioteca Texto --> tx
 	inclua biblioteca Internet --> i
 	inclua biblioteca Util --> u
+	inclua biblioteca Arquivos --> a
 	
 	inteiro img = -1
 	cadeia hash = "qew3"
@@ -39,7 +40,8 @@ programa
 		g.iniciar_modo_grafico(verdadeiro)
 		g.definir_dimensoes_janela(300, 300)
 		i.definir_tempo_limite(5000)
-		diretorio_ps = u.obter_diretorio_usuario() + "/.portugol/dados/"
+		diretorio_ps = u.obter_diretorio_usuario() + "/.portugol/dados/robos/"
+		a.criar_pasta(diretorio_ps)
 		reload()
 		
 		enquanto(verdadeiro){
@@ -61,7 +63,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 0; 
+ * @POSICAO-CURSOR = 8; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

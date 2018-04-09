@@ -3,7 +3,6 @@ package br.univali.ps.ui.paineis;
 import br.univali.ps.ui.paineis.utils.PainelTabulado;
 import br.univali.ps.ui.abas.AbaInicial;
 import br.univali.ps.ui.abas.abaAjuda.AbaAjuda;
-import br.univali.ps.ui.abas.abaBibliotecas.AbaDocumentacaoBiblioteca;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Lancador;
@@ -45,8 +44,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     private Action acaoExibirTelaSobre;
     private Action acaoExibirDocumentacaoBiblioteca;
 
-    private final AbaAjuda abaAjuda;// = new AbaAjuda();
-    private AbaDocumentacaoBiblioteca abaDocumentacao;
+    private final AbaAjuda abaAjuda;// = new AbaAjuda();    
 
     private AbaInicial abaInicial;
 
@@ -298,15 +296,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     }
 
     private void exibirAbaDocumentacao() {
-        if (abaDocumentacao == null) {
-            abaDocumentacao = new AbaDocumentacaoBiblioteca();
-            this.adicionaAba(abaDocumentacao);
-        } else if (!this.temAbaAberta(AbaDocumentacaoBiblioteca.class)) {
-            //abaDocumentacao.adicionar(this);
-            this.adicionaAba(abaDocumentacao);
-        }
-
-        abaDocumentacao.selecionar();
+        exibirAbaAjuda();
     }
 
     public static void main(final String args[]) {
