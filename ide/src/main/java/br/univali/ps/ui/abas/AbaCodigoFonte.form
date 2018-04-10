@@ -14,7 +14,6 @@
         <EmptyBorder bottom="2" left="2" right="2" top="2"/>
       </Border>
     </Property>
-    <Property name="opaque" type="boolean" value="false"/>
   </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -46,6 +45,7 @@
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[550, 195]"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="splitArvoreEditor" noResource="true"/>
         <Property name="oneTouchExpandable" type="boolean" value="true"/>
       </Properties>
       <Constraints>
@@ -67,6 +67,7 @@
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[501, 460]"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="divisorEditorConsole" noResource="true"/>
             <Property name="oneTouchExpandable" type="boolean" value="true"/>
           </Properties>
           <Constraints>
@@ -83,6 +84,7 @@
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[500, 240]"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="painelEditor" noResource="true"/>
                 <Property name="opaque" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[500, 240]"/>
@@ -103,6 +105,7 @@
                     </Property>
                     <Property name="floatable" type="boolean" value="false"/>
                     <Property name="orientation" type="int" value="1"/>
+                    <Property name="name" type="java.lang.String" value="barraFerramentas" noResource="true"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                   <Constraints>
@@ -121,6 +124,7 @@
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="botaoExecutar" noResource="true"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
                       <Events>
@@ -135,6 +139,7 @@
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="botaoDepurar" noResource="true"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
                     </Component>
@@ -147,7 +152,17 @@
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="botaoInterromper" noResource="true"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="com.alee.laf.separator.WebSeparator" name="webSeparator2">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                            <EmptyBorder bottom="5" left="1" right="3" top="5"/>
+                          </Border>
+                        </Property>
                       </Properties>
                     </Component>
                     <Component class="com.alee.laf.button.WebButton" name="btnSalvar">
@@ -158,6 +173,7 @@
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="botaoSalvar" noResource="true"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
                     </Component>
@@ -169,8 +185,48 @@
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="botaoSalvarComo" noResource="true"/>
                         <Property name="verticalTextPosition" type="int" value="3"/>
                       </Properties>
+                    </Component>
+                    <Component class="com.alee.laf.button.WebButton" name="btnAbrir">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/open.png"/>
+                        </Property>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="hideActionText" type="boolean" value="true"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="botaoAbrir" noResource="true"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAbrirActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="com.alee.laf.separator.WebSeparator" name="webSeparator1">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                            <EmptyBorder bottom="5" left="1" right="3" top="5"/>
+                          </Border>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.alee.laf.button.WebButton" name="btnAjuda">
+                      <Properties>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/grande/helplow.png"/>
+                        </Property>
+                        <Property name="focusable" type="boolean" value="false"/>
+                        <Property name="hideActionText" type="boolean" value="true"/>
+                        <Property name="horizontalTextPosition" type="int" value="0"/>
+                        <Property name="name" type="java.lang.String" value="botaoSalvar" noResource="true"/>
+                        <Property name="verticalTextPosition" type="int" value="3"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAjudaActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -179,6 +235,7 @@
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[350, 22]"/>
                     </Property>
+                    <Property name="name" type="java.lang.String" value="editor" noResource="true"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -191,6 +248,7 @@
             <Container class="javax.swing.JPanel" name="painelConsole">
               <Properties>
                 <Property name="doubleBuffered" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="painelConsole" noResource="true"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Constraints>
@@ -209,6 +267,7 @@
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[150, 200]"/>
                     </Property>
+                    <Property name="name" type="java.lang.String" value="painelSaida" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[200, 200]"/>
                     </Property>
@@ -228,6 +287,7 @@
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[250, 510]"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="painelInspetorArvore" noResource="true"/>
             <Property name="opaque" type="boolean" value="false"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[270, 233]"/>
@@ -249,6 +309,7 @@
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[252, 510]"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="divisorArvoreInspetor" noResource="true"/>
                 <Property name="oneTouchExpandable" type="boolean" value="true"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -261,6 +322,9 @@
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="treePanel">
+                  <Properties>
+                    <Property name="name" type="java.lang.String" value="painelArvore" noResource="true"/>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
                       <JSplitPaneConstraints position="top"/>
@@ -274,6 +338,7 @@
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="null"/>
                         </Property>
+                        <Property name="name" type="java.lang.String" value="campoBusca" noResource="true"/>
                         <Property name="placeholder" type="java.lang.String" value="Localizar (Ctrl+L)"/>
                       </Properties>
                       <Constraints>
@@ -293,6 +358,7 @@
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[250, 23]"/>
                         </Property>
+                        <Property name="name" type="java.lang.String" value="scrollArvore" noResource="true"/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[250, 2]"/>
                         </Property>
@@ -315,6 +381,7 @@
                                 <EmptyBorder bottom="5" left="5" right="5" top="0"/>
                               </Border>
                             </Property>
+                            <Property name="name" type="java.lang.String" value="arvore" noResource="true"/>
                             <Property name="opaque" type="boolean" value="false"/>
                           </Properties>
                         </Component>
@@ -331,6 +398,7 @@
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[31, 150]"/>
                     </Property>
+                    <Property name="name" type="java.lang.String" value="scrollInspetor" noResource="true"/>
                     <Property name="opaque" type="boolean" value="false"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[266, 200]"/>
@@ -352,6 +420,7 @@
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                           <StringArray count="0"/>
                         </Property>
+                        <Property name="name" type="java.lang.String" value="inspetor" noResource="true"/>
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new br.univali.ps.ui.inspetor.InspetorDeSimbolos()"/>
@@ -372,6 +441,7 @@
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
         <Property name="focusCycleRoot" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="painelRecuperados" noResource="true"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -389,6 +459,7 @@
                 <EmptyBorder bottom="1" left="75" right="1" top="1"/>
               </Border>
             </Property>
+            <Property name="name" type="java.lang.String" value="labelRecuperados" noResource="true"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -398,6 +469,7 @@
         </Component>
         <Container class="javax.swing.JPanel" name="arquivosRecuperados">
           <Properties>
+            <Property name="name" type="java.lang.String" value="painelArquivosRecuperados" noResource="true"/>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Constraints>
@@ -413,6 +485,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="botaoFecharRecuperados" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fecharRecuperadosActionPerformed"/>

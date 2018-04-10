@@ -16,6 +16,8 @@ import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.button.WebButtonStyle;
 import com.alee.laf.radiobutton.WebRadioButtonUI;
+import com.alee.laf.separator.WebSeparator;
+import com.alee.laf.separator.WebSeparatorUI;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.laf.toolbar.WebToolBarUI;
@@ -169,7 +171,24 @@ public class WeblafUtils {
        field.setForeground(ColorController.COR_LETRA);
     }
 
-   
+    public static void configuraWebLaf(WebSeparator field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+       
+       field.setBackground(ColorController.AMARELO);
+       field.setForeground(ColorController.AZUL);
+       ((WebSeparatorUI) field.getUI()).setSeparatorColor(ColorController.COR_CONSOLE);
+       ((WebSeparatorUI) field.getUI()).setSeparatorUpperColor(ColorController.COR_CONSOLE);
+       ((WebSeparatorUI) field.getUI()).setSeparatorLightColor(ColorController.COR_CONSOLE);
+       ((WebSeparatorUI) field.getUI()).setSeparatorLightUpperColor(ColorController.COR_CONSOLE);
+       ((WebSeparatorUI) field.getUI()).setReversedColors(false);
+       ((WebSeparatorUI) field.getUI()).setDrawLeadingLine(false);
+       ((WebSeparatorUI) field.getUI()).setDrawTrailingLine(false);
+       
+       
+    }
+    
     public static void configuraWebLaf(JScrollPane scroll) {
         if (!WeblafUtils.weblafEstaInstalado()) {
             return;

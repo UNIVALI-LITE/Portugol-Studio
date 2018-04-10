@@ -37,8 +37,7 @@ public class Logo extends javax.swing.JPanel
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         versao = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
@@ -51,10 +50,8 @@ public class Logo extends javax.swing.JPanel
         setMaximumSize(new java.awt.Dimension(310, 110));
         setMinimumSize(new java.awt.Dimension(310, 50));
         setPreferredSize(new java.awt.Dimension(310, 100));
-        addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
             }
         });
@@ -63,6 +60,7 @@ public class Logo extends javax.swing.JPanel
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/imagens/logo_ps.png"))); // NOI18N
         logo.setMaximumSize(new java.awt.Dimension(293, 150));
         logo.setMinimumSize(new java.awt.Dimension(293, 50));
+        logo.setName("labelLogo"); // NOI18N
         add(logo, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 

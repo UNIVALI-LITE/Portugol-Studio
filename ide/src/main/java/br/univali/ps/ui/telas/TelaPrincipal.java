@@ -2,6 +2,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PSAnalytics;
 import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
@@ -12,6 +13,8 @@ import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -44,8 +47,10 @@ public class TelaPrincipal extends javax.swing.JPanel
 {
     private boolean abrindo = true;
     private List<File> arquivosIniciais;
-    int pX, pY;
+    public int pX, pY;
+    PSAnalytics analytics = new PSAnalytics();
     
+
     private static final Logger LOGGER = Logger.getLogger(TelaPrincipal.class.getName());
     /**
     /**
@@ -54,6 +59,11 @@ public class TelaPrincipal extends javax.swing.JPanel
     public TelaPrincipal()
     {
         initComponents();
+        
+        painelTabuladoPrincipal.getCabecalhosAba().setBackground(ColorController.FUNDO_ESCURO);
+        painelTabuladoPrincipal.getCabecalhosAba().setForeground(ColorController.COR_LETRA);
+        painelTabuladoPrincipal.getAbaContainer().setBackground(ColorController.FUNDO_MEDIO);
+        painelTabuladoPrincipal.getAbaContainer().setForeground(ColorController.COR_LETRA);
         criaAbas();
         configurarCores();
         instalarObservadores();
@@ -66,15 +76,47 @@ public class TelaPrincipal extends javax.swing.JPanel
             }
 
              public void mouseDragged(MouseEvent me) {
+                SwingUtilities.invokeLater(() -> {
+                    if(!Lancador.isMaximazed()){
+                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    }
+                });
 
-                Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+            }
+
+            public void mouseClicked(MouseEvent me) {
+                SwingUtilities.invokeLater(() ->{
+                    if(me.getClickCount() == 2){
+                        if(Lancador.isMaximazed()){
+                            Dimension d = Lancador.getOlderSize();
+                            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
+                            Lancador.getJFrame().setSize(d);
+                            Lancador.setActualSize(d);
+                            Lancador.getJFrame().setLocationRelativeTo(null);
+                            Lancador.setMaximazed(false);
+                        }else{
+                            Dimension d = Lancador.getJFrame().getSize();
+                            Lancador.setOlderSize(d);
+                            Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+                            Lancador.getJFrame().setBounds(bounds);
+                            Lancador.setActualSize(bounds.getSize());
+                            Lancador.setMaximazed(true);
+                        }
+
+                    }
+                });
+                
             }
         });
 
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent me) {
+                SwingUtilities.invokeLater(() -> {
+                    if(!Lancador.isMaximazed()){
+                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    }
+                });
 
-                Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
             }
         });
     }
@@ -96,7 +138,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         instalarObservadorJanela();
         
     }
-
+    
     private void instalarObservadorJanela()
     {
         JFrame frame = Lancador.getJFrame();
@@ -119,6 +161,14 @@ public class TelaPrincipal extends javax.swing.JPanel
                         PortugolStudio.getInstancia().getTelaDicas().setVisible(true);
                     });
                 }
+                
+                Thread thread = new Thread(){
+                    public void run(){
+                        analytics.iniciar_sessao_servidor();
+                    }
+                };
+                              
+                thread.start();
                 
                 LOGGER.log(Level.INFO, "Janela principal aberta!");
             }
@@ -226,8 +276,8 @@ public class TelaPrincipal extends javax.swing.JPanel
 
     public void criarNovoCodigoFonte()
     {
-        final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
-        painelTabuladoPrincipal.add(abaCodigoFonte);
+        final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();        
+        painelTabuladoPrincipal.adicionaAba(abaCodigoFonte);
         abaCodigoFonte.carregarAlgoritmoPadrao();
         revalidate();
     }
@@ -266,7 +316,7 @@ public class TelaPrincipal extends javax.swing.JPanel
                                 abaCodigoFonte.setCodigoFonte(conteudo, arquivo, true);
                             }                            
                             
-                            getPainelTabulado().add(abaCodigoFonte);
+                            getPainelTabulado().adicionaAba(abaCodigoFonte);
                         }
                         catch (Exception excecao)
                         {
@@ -325,8 +375,9 @@ public class TelaPrincipal extends javax.swing.JPanel
     {
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
-        {
-            
+        { 
+            Lancador.getFrame().setVisible(false);            
+            analytics.finalizar_sessao();            
             PortugolStudio.getInstancia().finalizar(0);
             return true;
         }
@@ -362,8 +413,6 @@ public class TelaPrincipal extends javax.swing.JPanel
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         setLayout(new java.awt.BorderLayout());
-
-        painelTabuladoPrincipal.setName("abaInicial"); // NOI18N
         add(painelTabuladoPrincipal, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 

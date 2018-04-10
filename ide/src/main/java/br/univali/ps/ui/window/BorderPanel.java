@@ -50,12 +50,14 @@ public class BorderPanel extends JPanel {
             setLayout(new BorderLayout());
             
             buttonsPanel = new JPanel();
+            buttonsPanel.setName("buttonsPanel");
             
             setBackground(ColorController.FUNDO_ESCURO);
             buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
             buttonsPanel.setOpaque(false);
             
-            closeButton=new WebButton();
+            closeButton = new WebButton();
+            closeButton.setName("botaoFechar");
             closeButton.setIcon(close);
             closeButton.onMouseClick(new MouseEventRunnable() {
                 @Override
@@ -63,7 +65,9 @@ public class BorderPanel extends JPanel {
                     Lancador.getInstance().fecharAplicacao();
                 }
             });
-            minButton=new WebButton();
+            
+            minButton= new WebButton();
+            minButton.setName("botaoMinimizar");
             minButton.setIcon(min);
             minButton.onMouseClick(new MouseEventRunnable() {
                 @Override
@@ -71,7 +75,9 @@ public class BorderPanel extends JPanel {
                     Lancador.getJFrame().setExtendedState(JFrame.ICONIFIED);
                 }
             });
-            maxButton=new WebButton();
+            
+            maxButton = new WebButton();
+            maxButton.setName("botaoMaximizar");
             maxButton.setIcon(max);
             maxButton.onMouseClick(new MouseEventRunnable() {
                 @Override

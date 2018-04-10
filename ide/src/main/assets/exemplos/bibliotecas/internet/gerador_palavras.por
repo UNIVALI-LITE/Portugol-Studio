@@ -9,7 +9,7 @@ programa
 	inclua biblioteca Arquivos --> a
 	
 	cadeia palavra = ""
-	cadeia default_word = "PORTUGOL STUDIO ROCKS"
+	cadeia palavra_padrao = "PORTUGOL STUDIO"
 	cadeia site = "http://metaatem.net/words/"
 	cadeia urlsite
 	cadeia html
@@ -19,11 +19,11 @@ programa
 	
 	inteiro pos1
 	inteiro pos2
-	inteiro wordsize
+	inteiro tampalavra
 	inteiro max_letras = 50
 
-	cadeia error_message = "Parece que o servidor das imagens não quer conversa agora. Tenta mais uma vez, quem sabe ele muda de ideia."
-	cadeia error_conexao_message = "Verifique sua conexão com a internet e tente novamente."
+	cadeia messagem_erro = "Parece que o servidor das imagens não quer conversa agora. Tenta mais uma vez, quem sabe ele muda de ideia."
+	cadeia messagem_erro_conexao = "Verifique sua conexão com a internet e tente novamente."
 	
 	inteiro imagens[50]
 	inteiro itens_carregaveis
@@ -40,6 +40,7 @@ programa
 	inteiro altura_tela = 600
 
 	cadeia caminho_fundo = "fundo.jpg"
+	cadeia diretorio_ps = ""
 	inteiro fundo
 	
 	funcao inicio()
@@ -61,12 +62,12 @@ programa
 			}	
 		}senao{
 		
-			largura_tela = g.largura_texto(error_message)+300
+			largura_tela = g.largura_texto(messagem_erro)+300
 			g.definir_dimensoes_janela(largura_tela, altura_tela)
 			g.limpar()
 			g.definir_cor(g.COR_BRANCO)
 			g.definir_tamanho_texto(20.0)
-			g.desenhar_texto((largura_tela/2)-(g.largura_texto(error_message)/2), (altura_tela/2)-(g.altura_texto(error_message)/2),error_message)
+			g.desenhar_texto((largura_tela/2)-(g.largura_texto(messagem_erro)/2), (altura_tela/2)-(g.altura_texto(messagem_erro)/2),messagem_erro)
 			g.renderizar()
 			enquanto(nao t.alguma_tecla_pressionada()){
 				
@@ -81,6 +82,8 @@ programa
 	}
 	
 	funcao inicializar(){
+		diretorio_ps = u.obter_diretorio_usuario() + "/.portugol/dados/palavras/"
+		a.criar_pasta(diretorio_ps)
 		arrumar_texto()
 		inteiro indice = -1
 		inteiro separador = 1		
@@ -110,29 +113,29 @@ programa
 		}enquanto(indice >= 0)
 
 		se(linhas > 1){
-			wordsize = txt.numero_caracteres(palavra)-(linhas-1)
+			tampalavra = txt.numero_caracteres(palavra)-(linhas-1)
 			largura_tela =  100 * maior_palavra
 			altura_tela = linhas * 100
 			quebra_linha--
 			g.definir_dimensoes_janela(largura_tela, altura_tela)
 		}senao{
-			wordsize = txt.numero_caracteres(palavra)
-			largura_tela =  wordsize * 100
+			tampalavra = txt.numero_caracteres(palavra)
+			largura_tela =  tampalavra * 100
 			altura_tela = linhas * 100
 			g.definir_dimensoes_janela(largura_tela, altura_tela)
 		}
-		itens_carregaveis = (wordsize*5)
+		itens_carregaveis = (tampalavra*5)
 	}
 
 	funcao inicializar_grafico(){
 		g.iniciar_modo_grafico(verdadeiro)
-		g.definir_titulo_janela("Web Word Image Generator")
+		g.definir_titulo_janela("Gerador de Palavras")
 		g.definir_dimensoes_janela(largura_tela, altura_tela)	
 		g.limpar()
 		g.renderizar()
 	}
 
-	funcao desenhar_load(inteiro i, cadeia loading_message){
+	funcao desenhar_carregando(inteiro i, cadeia loading_message){
 		loading_message += "..."
 		g.definir_cor(0xaaaeb5)
 		g.desenhar_retangulo(50, g.altura_janela()-50, largura_tela-130, 10, falso, verdadeiro)		
@@ -144,9 +147,9 @@ programa
 	}
 
 	funcao obter_links(){
-		desenhar_load(1, "Acordando")
+		desenhar_carregando(1, "Acordando")
 		se(nao i.endereco_disponivel(urlsite)){
-			erro_conexao(error_conexao_message)
+			erro_conexao(messagem_erro_conexao)
 		}
 		html = i.obter_texto(urlsite)
 		pos1 = txt.posicao_texto("<fieldset>", html, 0)
@@ -156,8 +159,7 @@ programa
 		inteiro contador = 0
 		inteiro inicio_link = 0
 		inteiro fim_link = 0
-
-		desenhar_load(2, "Cortando as pontas")
+		desenhar_carregando(2, "Cortando as pontas")
 		faca{
 			inicio_link = txt.posicao_texto("'http", urls, inicio_link)
 			fim_link = txt.posicao_texto("' ", urls, inicio_link+1)
@@ -165,45 +167,44 @@ programa
 			inicio_link = fim_link
 			contador++
 			
-		}enquanto(contador < wordsize*2)
+		}enquanto(contador < tampalavra*2)
 
 		carregando = 2
 		inteiro a	= 0
-		para(inteiro i=1; i < wordsize*2; i+=2){
+		para(inteiro i=1; i < tampalavra*2; i+=2){
 			links2[a] = links[i]
 			a++
 			carregando++
-			desenhar_load(carregando, "Separando links que o cachorro pediu")
+			desenhar_carregando(carregando, "Separando links que o cachorro pediu")
 		}
 	}
 
 	funcao obter_imagens(){
-		
-		para(inteiro i=0; i < wordsize; i++){
+		para(inteiro i=0; i < tampalavra; i++){
 			se(i.endereco_disponivel(links2[i])){
-				i.baixar_imagem(links2[i], "/" + i)
+				i.baixar_imagem(links2[i], diretorio_ps+i)
 				carregando++
-				desenhar_load(carregando, "Baixando imagens "+(i+1)+"/"+wordsize)
+				desenhar_carregando(carregando, "Baixando imagens "+(i+1)+"/"+tampalavra)
 			}senao{
 				falhou = verdadeiro
 				carregando--
-				desenhar_load(carregando, "Ih deu ruim")
+				desenhar_carregando(carregando, "Ih deu ruim")
 			}
 			se(falhou){
-				erro_conexao(error_message)
+				erro_conexao(messagem_erro)
 			}
 		}
 		
-		para(inteiro i=0; i < wordsize; i++){
-			imagens[i] = g.carregar_imagem("/"+i+".jpg")
+		para(inteiro i=0; i < tampalavra; i++){
+			imagens[i] = g.carregar_imagem(diretorio_ps+i+".jpg")
 			carregando++
-			desenhar_load(carregando, "Tentando equilibrar imagens na memória")
+			desenhar_carregando(carregando, "Tentando equilibrar imagens na memória")
 			u.aguarde(200)
 		}
-		para(inteiro i=0; i < wordsize; i++){
-			a.apagar_arquivo("/"+i+".jpg")
+		para(inteiro i=0; i < tampalavra; i++){
+			a.apagar_arquivo(diretorio_ps+i+".jpg")
 			carregando++
-			desenhar_load(carregando, "Jogando fora depois de usar")
+			desenhar_carregando(carregando, "Jogando fora depois de usar")
 			u.aguarde(200)
 		}
 	}
@@ -212,7 +213,7 @@ programa
 		inteiro x = 0
 		inteiro y = 0
 		carregando = itens_carregaveis
-		desenhar_load(carregando, "Prendendo imagens umas nas outras")
+		desenhar_carregando(carregando, "Prendendo imagens umas nas outras")
 		u.aguarde(1500)
 		g.definir_cor(g.COR_BRANCO)
 		g.limpar()
@@ -220,9 +221,8 @@ programa
 		fundo = g.carregar_imagem(caminho_fundo)
 		g.desenhar_imagem(0, 0, fundo)
 		inteiro j = 0
-		para(inteiro i=0; i < wordsize; i++){
+		para(inteiro i=0; i < tampalavra; i++){
 			inteiro temp_img = g.redimensionar_imagem(imagens[i], 100, 100, verdadeiro)
-			//g.desenhar_imagem(x, y, imagens[i])
 			g.desenhar_imagem(x, y, temp_img)
 			x+=100
 			se(quebra_linha != -1){
@@ -235,8 +235,8 @@ programa
 		}
 		temp = g.renderizar_imagem(largura_tela, altura_tela)
 		inteiro mili = c.milisegundo_atual()
-		g.salvar_imagem(temp, "/imagens/"+palavra+mili+".png")
-		temp = g.carregar_imagem("/imagens/"+palavra+mili+".png")
+		g.salvar_imagem(temp, diretorio_ps+"/imagens/"+palavra+mili+".png")
+		temp = g.carregar_imagem(diretorio_ps+"/imagens/"+palavra+mili+".png")
 	}
 
 	funcao tela_digitar_palavra()
@@ -270,9 +270,8 @@ programa
 
 	funcao logico verificar_palavra()
 	{
-		//cadeia texto = txt.substituir(palavra, " ", "")
 		se(palavra == ""){
-			palavra = default_word
+			palavra = palavra_padrao
 		}
 		retorne (txt.numero_caracteres(palavra) > 0)
 	}
@@ -354,7 +353,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 267; 
+ * @POSICAO-CURSOR = 8; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

@@ -1690,11 +1690,13 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        scrollPane.setName("scrollPaneEditor"); // NOI18N
         scrollPane.setOpaque(false);
 
         textArea.setBorder(null);
         textArea.setToolTipText("");
         textArea.setCodeFoldingEnabled(true);
+        textArea.setName("textAreaEditor"); // NOI18N
         scrollPane.setViewportView(textArea);
 
         add(scrollPane, java.awt.BorderLayout.CENTER);

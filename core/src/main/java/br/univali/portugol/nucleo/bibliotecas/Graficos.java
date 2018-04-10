@@ -65,6 +65,34 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     @DocumentacaoConstante(descricao = "constante que representa a cor 'amarelo'")
     public static final int COR_AMARELO = Color.YELLOW.getRGB();
     
+    
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_DIREITA = 0;
+        
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ESQUERDA = 1;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ACIMA = 2;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    public static final int GRADIENTE_ABAIXO = 3;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_INFERIOR_DIREITO = 4;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_INFERIOR_ESQUERDO = 5;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_SUPERIOR_DIREITO = 6;
+    
+    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    public static final int GRADIENTE_SUPERIOR_ESQUERDO = 7;
+    
+    
+    
     @DocumentacaoConstante(descricao = "constante que representa o canal 'VERMELHO'")
     public static final int CANAL_R = 0;
     
@@ -352,7 +380,40 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
             throw new ErroExcessoOperacoes();
         }            
     }
-
+    
+    @DocumentacaoFuncao(
+        descricao
+        = "Desenha poligono",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "pontos", descricao = "a largura do retângulo em pixels"),
+            
+            @DocumentacaoParametro(
+                    nome = "preencher",
+                    descricao
+                    = "define se o retângulo será preenchido com a cor do ambiente gráfico. "
+                    + "Se o valor for <tipo>verdadeiro</tipo>, o retângulo será preenchido. Se o valor for "
+                    + "<tipo>falso</tipo>, somente o contorno do retângulo será desenhado"
+            )
+        },
+        autores =
+        {
+            @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br"),
+            @Autor(nome = "Fillipi Domingos Pelz", email = "fillipi@univali.br")
+        }
+    )
+    public void desenhar_poligono(final int[][] pontos, final boolean preencher) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            superficieDesenho.desenharPoligono(pontos, preencher);
+        }
+        catch(IllegalStateException e)
+        {
+            throw new ErroExcessoOperacoes();
+        }            
+    };
+    
     @DocumentacaoFuncao(
         descricao
         = "Desenha uma elipse na posição definida pelos parâmetros <param>x</param> e <param>y</param> "
@@ -1161,6 +1222,35 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
             throw new ErroExcessoOperacoes();
         }
     }
+    
+    @DocumentacaoFuncao(
+        descricao
+        = "Define a cor atual do ambiente gráfico. Esta cor será utilizada para desenhar e preencher "
+        + "as primitivas gráficas (ponto, linha, retângulo, etc.) e, como cor de fundo ao limpar "
+        + "o ambiente gráfico ou desenhar um texto",
+        parametros =
+        {
+            @DocumentacaoParametro(nome = "tipo", descricao = "a nova cor do ambiente gráfico"),
+            @DocumentacaoParametro(nome = "cor1", descricao = "a nova cor do ambiente gráfico"),
+            @DocumentacaoParametro(nome = "cor2", descricao = "a nova cor do ambiente gráfico")
+            
+        },
+        autores =
+        {
+            @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
+        }
+    )
+    public void definir_gradiente(final int tipo, final int cor1,final int cor2) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        try
+        {
+            superficieDesenho.definirGradiente(tipo, cor1, cor2);
+        }
+        catch(IllegalStateException e)
+        {
+            throw new ErroExcessoOperacoes();
+        }
+    }
 
     @DocumentacaoFuncao(
         descricao = "Define a fonte que será utilizada para desenhar um texto no ambiente gráfico",
@@ -1574,3 +1664,4 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         
     }
 }
+

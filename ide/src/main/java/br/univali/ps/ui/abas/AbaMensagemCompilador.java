@@ -158,7 +158,8 @@ public final class AbaMensagemCompilador extends Aba
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jScrollPaneTabelaMensagens = new javax.swing.JScrollPane();
         tabelaMensagens = new javax.swing.JTable();
@@ -170,18 +171,19 @@ public final class AbaMensagemCompilador extends Aba
 
         jScrollPaneTabelaMensagens.setBorder(null);
         jScrollPaneTabelaMensagens.setFocusable(false);
+        jScrollPaneTabelaMensagens.setName("scrollMensagensCompilador"); // NOI18N
         jScrollPaneTabelaMensagens.setOpaque(false);
 
         tabelaMensagens.setBackground(new java.awt.Color(245, 245, 245));
         tabelaMensagens.setToolTipText("");
         tabelaMensagens.setFillsViewportHeight(true);
+        tabelaMensagens.setName("tabelaMensagensCompilador"); // NOI18N
         tabelaMensagens.setOpaque(false);
         tabelaMensagens.setRequestFocusEnabled(false);
         tabelaMensagens.setRowHeight(24);
         tabelaMensagens.setSelectionBackground(new java.awt.Color(0, 84, 148));
         tabelaMensagens.setShowHorizontalLines(false);
         tabelaMensagens.setShowVerticalLines(false);
-        //tabelaMensagens.getTableHeader().setReorderingAllowed(false);
         jScrollPaneTabelaMensagens.setViewportView(tabelaMensagens);
 
         add(jScrollPaneTabelaMensagens, java.awt.BorderLayout.CENTER);
