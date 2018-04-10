@@ -1,13 +1,17 @@
 package br.univali.ps.ui.rstautil.completion;
 
 import br.univali.portugol.nucleo.programa.Programa;
+import br.univali.ps.ui.editor.PSCompletionListCellRenderer;
 import br.univali.ps.ui.rstautil.PortugolParser;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ListCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
@@ -34,14 +38,14 @@ public final class ProvedorConclusaoCodigoPortugol extends CompletionProviderBas
     
     private AutoCompletion conclusaoCodigo;
     private int delayAnterior;
-
+    
     public ProvedorConclusaoCodigoPortugol()
     {
         this.provedorConclusaoCodigoPrograma = new ProvedorConclusaoCodigoPrograma();
-        this.provedorConclusaoCodigoPrograma.setHabilitado(false);
-        this.provedorConclusaoCodigoBibliotecas = new ProvedorConclusaoCodigoBibliotecas();
+        this.provedorConclusaoCodigoPrograma.setHabilitado(true);
+        this.provedorConclusaoCodigoBibliotecas = new ProvedorConclusaoCodigoBibliotecas();        
+        
     }
-
     public void setConclusaoCodigo(AutoCompletion conclusaoCodigo)
     {
         this.conclusaoCodigo = conclusaoCodigo;

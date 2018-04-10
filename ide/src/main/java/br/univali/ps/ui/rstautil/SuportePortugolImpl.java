@@ -1,8 +1,10 @@
 package br.univali.ps.ui.rstautil;
 
+import br.univali.ps.ui.editor.PSAutoComplition;
 import br.univali.ps.ui.rstautil.completion.ProvedorConclusaoCodigoBibliotecas;
 import br.univali.ps.ui.rstautil.completion.ProvedorConclusaoCodigoPortugol;
 import br.univali.ps.ui.rstautil.completion.RenderizadorConclusaoCodigoPortugol;
+import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
@@ -73,43 +75,18 @@ public class SuportePortugolImpl implements SuportePortugol
 
     private AutoCompletion criarConclusaoCodigoPrograma()
     {
-        AutoCompletion conclusao = new AutoCompletion(this.provedorConclusao)
-        {
-            @Override
-            protected String getReplacementText(Completion c, Document doc, int start, int len)
-            {
-                String texto = super.getReplacementText(c, doc, start, len);
-
-                if (c.getProvider() instanceof ProvedorConclusaoCodigoBibliotecas)
-                {
-                    try
-                    {
-                        texto = doc.getText(start, len);
-
-                        texto = texto.substring(0, texto.lastIndexOf("."));
-                        texto = texto.concat(".").concat(super.getReplacementText(c, doc, start, len));
-
-                        return texto;
-                    }
-                    catch (BadLocationException ex)
-                    {
-
-                    }
-                }
-
-                return texto;
-            }
-        };
-
+        PSAutoComplition conclusao = new PSAutoComplition(this.provedorConclusao);
+        
         conclusao.setAutoCompleteEnabled(true);
         conclusao.setAutoActivationDelay(1000);
         conclusao.setAutoActivationEnabled(true);
-        conclusao.setAutoCompleteSingleChoices(false);
+        conclusao.setAutoCompleteSingleChoices(true);
         conclusao.setParameterAssistanceEnabled(true);
         conclusao.setShowDescWindow(true);
         conclusao.setTriggerKey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_DOWN_MASK));
         conclusao.setListCellRenderer(renderizador);
         conclusao.setParamChoicesRenderer(renderizador);
+//        conclusao.getPopupWindow().setBackground(Color.BLUE);
 
         return conclusao;
     }
