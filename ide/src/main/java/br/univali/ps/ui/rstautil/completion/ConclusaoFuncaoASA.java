@@ -48,19 +48,24 @@ public final class ConclusaoFuncaoASA extends FunctionCompletion implements Conc
         int paramCount = getParamCount();
         if (paramCount>0) {
             sb.append("<h4>Parametros:</h4><br>");
-            sb.append("<center><table width='90%'><tr><td>");
+            sb.append("<center><table width='90%'>");
             for (int i=0; i<paramCount; i++) {
+                sb.append("<tr><td>");
                 Parameter param = getParam(i);
-                sb.append("<b>");
-                sb.append(param.getName()!=null ? param.getName() : param.getType());
-                sb.append("</b>&nbsp;");
+//                System.out.println("PATH: " + ClassLoader.getSystemClassLoader().getResource(IconFactory.CAMINHO_ICONES_PEQUENOS + "/" + getType() + ".png" ).toExternalForm());
+//                sb.append("<img src='").append(ClassLoader.getSystemClassLoader().getResource(IconFactory.CAMINHO_ICONES_PEQUENOS + "/" + getType() + ".png" ).toExternalForm()).append("'>").append("</img></td><td style='width:200px'>");
+//                
                 String desc = param.getDescription();
+                sb.append("<b class='type-"+param.getType()+"'>");
+                sb.append(param.getName()!=null ? param.getName() : param.getType());
+                sb.append("</b>: <span class='type-name'>"+param.getType()+"</span><br>");
                 if (desc!=null) {
                     sb.append(desc);
                 }
-                sb.append("<br>");
+                sb.append("</td></tr>");                
             }
-            sb.append("</td></tr></table></center><br><br>");
+            
+            sb.append("</table></center><br><br>");
         }
 
         if (getReturnValueDescription()!=null) {
@@ -70,7 +75,7 @@ public final class ConclusaoFuncaoASA extends FunctionCompletion implements Conc
         }
 
     }
-
+    
     @Override
     protected void possiblyAddDefinedIn(StringBuilder sb) {
         if (getDefinedIn()!=null) {
