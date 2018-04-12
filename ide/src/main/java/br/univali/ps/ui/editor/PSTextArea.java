@@ -87,7 +87,6 @@ public class PSTextArea extends RSyntaxTextArea {
 
     @Override
     protected RTextAreaUI createRTextAreaUI() {
-
         return new PSTextAreaUI(this);
     }
 
