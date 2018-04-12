@@ -28,23 +28,16 @@ import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.ps.ui.editor.PSCompletionListCellRenderer;
 import br.univali.ps.ui.utils.EscopoCursor;
-import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.Icon;
-import javax.swing.ListCellRenderer;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.autocomplete.Completion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.FunctionCompletion;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
 import org.fife.ui.autocomplete.TemplateCompletion;
-import org.fife.ui.autocomplete.VariableCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**

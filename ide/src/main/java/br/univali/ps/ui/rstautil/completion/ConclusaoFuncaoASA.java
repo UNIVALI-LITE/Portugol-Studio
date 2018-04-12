@@ -29,7 +29,56 @@ public final class ConclusaoFuncaoASA extends FunctionCompletion implements Conc
         this.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "funcaoDoUsuario.png"));
         this.returnType = returnType;
     }
+    
+    @Override
+    public String getDefinitionString() {
+        StringBuilder sb = new StringBuilder();
 
+        if (getType()!=null) {
+            sb.append("<span class='type-").append(getType()).append("'>");
+            sb.append(getType()).append("</span> ");
+        }
+        sb.append("<span class='function'>").append(getName()).append("</span>");
+
+        return sb.toString();
+
+    }
+    @Override
+    protected void addParameters(StringBuilder sb) {
+        int paramCount = getParamCount();
+        if (paramCount>0) {
+            sb.append("<h4>Parametros:</h4><br>");
+            sb.append("<center><table width='90%'><tr><td>");
+            for (int i=0; i<paramCount; i++) {
+                Parameter param = getParam(i);
+                sb.append("<b>");
+                sb.append(param.getName()!=null ? param.getName() : param.getType());
+                sb.append("</b>&nbsp;");
+                String desc = param.getDescription();
+                if (desc!=null) {
+                    sb.append(desc);
+                }
+                sb.append("<br>");
+            }
+            sb.append("</td></tr></table></center><br><br>");
+        }
+
+        if (getReturnValueDescription()!=null) {
+            sb.append("<h4>Retorna:</h4><br><center><table width='90%'><tr><td>");
+            sb.append(getReturnValueDescription());
+            sb.append("</td></tr></table></center><br><br>");
+        }
+
+    }
+
+    @Override
+    protected void possiblyAddDefinedIn(StringBuilder sb) {
+        if (getDefinedIn()!=null) {
+            sb.append("<hr>Escopo:"); // TODO: Localize me
+            sb.append(" <em>").append(getDefinedIn()).append("</em>");
+        }
+    }
+    
     public String getReturnType() {
         return returnType;
     }

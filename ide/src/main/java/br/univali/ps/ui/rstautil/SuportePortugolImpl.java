@@ -1,18 +1,13 @@
 package br.univali.ps.ui.rstautil;
 
-import br.univali.ps.ui.editor.PSAutoComplition;
-import br.univali.ps.ui.rstautil.completion.ProvedorConclusaoCodigoBibliotecas;
+import br.univali.ps.ui.editor.PSAutoCompletion;
 import br.univali.ps.ui.rstautil.completion.ProvedorConclusaoCodigoPortugol;
 import br.univali.ps.ui.rstautil.completion.RenderizadorConclusaoCodigoPortugol;
-import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 
@@ -75,7 +70,7 @@ public class SuportePortugolImpl implements SuportePortugol
 
     private AutoCompletion criarConclusaoCodigoPrograma()
     {
-        PSAutoComplition conclusao = new PSAutoComplition(this.provedorConclusao);
+        PSAutoCompletion conclusao = new PSAutoCompletion(this.provedorConclusao);
         
         conclusao.setAutoCompleteEnabled(true);
         conclusao.setAutoActivationDelay(1000);

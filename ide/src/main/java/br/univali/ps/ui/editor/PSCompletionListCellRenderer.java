@@ -5,22 +5,14 @@
  */
 package br.univali.ps.ui.editor;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
-import br.univali.portugol.nucleo.asa.Quantificador;
-import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.ps.ui.rstautil.completion.ConclusaoConstanteBiblioteca;
 import br.univali.ps.ui.rstautil.completion.ConclusaoFuncaoASA;
 import br.univali.ps.ui.rstautil.completion.ConclusaoFuncaoBiblioteca;
 import br.univali.ps.ui.rstautil.completion.ConclusaoVariavelASA;
-import br.univali.ps.ui.rstautil.completion.ProvedorConclusaoCodigoPrograma;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.List;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.border.EmptyBorder;

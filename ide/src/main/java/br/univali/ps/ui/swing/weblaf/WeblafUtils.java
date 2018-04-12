@@ -52,7 +52,7 @@ public class WeblafUtils {
     
 
 
-     public static void configuraWeblaf(JToolBar barraDeFerramentas) {
+    public static void configuraWeblaf(JToolBar barraDeFerramentas) {
         if (!WeblafUtils.weblafEstaInstalado()) {
             return;
         }

@@ -6,7 +6,6 @@
 package br.univali.ps.ui.rstautil.completion;
 
 import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.ps.ui.utils.IconFactory;
 import javax.swing.Icon;
 import org.fife.ui.autocomplete.CompletionProvider;
@@ -29,7 +28,32 @@ public final class ConclusaoConstanteBiblioteca extends VariableCompletion {
             e.printStackTrace(System.err);
         }
     }
+    
+    @Override
+    public String getDefinitionString() {
+        StringBuilder sb = new StringBuilder();
 
+        if (getType()!=null) {
+            sb.append("<span class='type-").append(getType()).append("'>");
+            sb.append(getType()).append("</span> ");
+        }
+        sb.append("<span class='name'>").append(getName()).append("</span>");
+
+        return sb.toString();
+
+    }
+    @Override
+    protected void possiblyAddDefinedIn(StringBuilder sb) {
+        if (getDefinedIn()!=null) {
+            sb.append("<hr>Escopo:"); // TODO: Localize me
+            sb.append(" <em>").append(getDefinedIn()).append("</em>");
+        }
+    }
+    
+    
+    
+
+    
     public String getLocal() {
         return local;
     }
