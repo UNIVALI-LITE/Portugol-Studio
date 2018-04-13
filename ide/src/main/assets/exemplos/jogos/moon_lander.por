@@ -52,7 +52,7 @@ programa
 	const logico DEPURANDO = verdadeiro
 
 	/* Dimensões da tela do jogo */ 
-	const inteiro LARGURA_DA_TELA = 800, ALTURA_DA_TELA = 600
+	const inteiro LARGURA_DA_TELA = 1900, ALTURA_DA_TELA = 900
 
 	
 	/* 
@@ -126,6 +126,8 @@ programa
 	inteiro x_da_plataforma = 0, y_da_plataforma = 0, largura_da_plataforma = 0, altura_da_plataforma = 0
 
 	inteiro x_da_lua = 0, y_da_lua = 0, largura_da_lua = 0, altura_da_lua = 0
+
+	inteiro x_do_logotipo = 0, y_do_logotipo = 25
 
 	inteiro centro_da_tela = LARGURA_DA_TELA / 2
 	
@@ -564,7 +566,7 @@ programa
 
 	funcao desenhar_logotipo_portugol_studio()
 	{
-		g.desenhar_imagem(575, 25, imagem_logotipo_portugol_studio)
+		g.desenhar_imagem(x_do_logotipo, y_do_logotipo, imagem_logotipo_portugol_studio)
 	}
 
 	funcao desenhar_texto_tela_quebrou()
@@ -976,7 +978,7 @@ programa
 	}
 
 	funcao desenhar_fundo_do_cenario()
-	{				
+	{	
 		se (indice_do_fundo_do_cenario > LARGURA_DA_TELA)
 		{
 			inteiro delta = LARGURA_DA_TELA - (indice_do_fundo_do_cenario - LARGURA_DA_TELA)
@@ -989,7 +991,7 @@ programa
 			g.desenhar_porcao_imagem(0, 0, indice_do_fundo_do_cenario, 0, LARGURA_DA_TELA, ALTURA_DA_TELA, imagem_de_fundo_do_cenario)
 		}
 		
-		atualizar_indice_do_fundo_do_cenario()
+		atualizar_indice_do_fundo_do_cenario()		
 	}
 
 	funcao atualizar_indice_do_fundo_do_cenario()
@@ -1324,11 +1326,13 @@ programa
 		largura_da_lua = g.largura_imagem(imagem_da_lua)
 		altura_da_lua = g.altura_imagem(imagem_da_lua)
 
-		x_da_lua = 0
+		x_da_lua = (LARGURA_DA_TELA / 2) - (g.largura_imagem(imagem_da_lua) / 2)
 		y_da_lua = ALTURA_DA_TELA - altura_da_lua
 
 		x_da_plataforma = (LARGURA_DA_TELA - largura_da_plataforma) / 2
 		y_da_plataforma = y_da_lua + (altura_da_lua / 2) - (altura_da_plataforma / 2)
+
+		x_do_logotipo = LARGURA_DA_TELA - g.largura_imagem(imagem_logotipo_portugol_studio) - y_do_logotipo
 	}
 
 	funcao inicializar_janela()
@@ -1383,7 +1387,7 @@ programa
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
  * @POSICAO-CURSOR = 1364; 
- * @DOBRAMENTO-CODIGO = [1, 185, 183, 179, 206, 210, 204, 199, 223, 230, 234, 228, 240, 275, 295, 285, 280, 308, 302, 327, 320, 344, 342, 350, 357, 367, 371, 365, 380, 391, 395, 376, 363, 406, 410, 404, 422, 427, 431, 415, 402, 438, 447, 451, 445, 458, 462, 456, 443, 469, 483, 512, 507, 528, 532, 526, 539, 543, 537, 524, 550, 564, 569, 589, 595, 613, 622, 618, 630, 642, 637, 658, 662, 656, 669, 673, 667, 654, 681, 694, 713, 708, 706, 720, 728, 740, 736, 749, 745, 734, 760, 764, 770, 774, 756, 784, 789, 793, 780, 799, 804, 809, 816, 820, 824, 828, 814, 834, 845, 854, 859, 867, 876, 881, 891, 888, 907, 912, 919, 926, 933, 938, 943, 948, 958, 953, 966, 979, 986, 977, 996, 994, 1005, 1012, 1003, 1023, 1021, 1073, 1069, 1083, 1079, 1094, 1090, 1056, 1041, 1113, 1111, 1120, 1139, 1143, 1133, 1149, 1155, 1166, 1171, 1176, 1181, 1193, 1191, 1203, 1208, 1213, 1223, 1218, 1232, 1251, 1270, 1278, 1302, 1310, 1308, 1333, 1340, 1347, 1354, 1373];
+ * @DOBRAMENTO-CODIGO = [1, 187, 185, 181, 208, 212, 206, 201, 225, 232, 236, 230, 242, 277, 297, 287, 282, 310, 304, 329, 322, 346, 344, 352, 359, 369, 373, 367, 382, 393, 397, 378, 365, 408, 412, 406, 424, 429, 433, 417, 404, 440, 449, 453, 447, 460, 464, 458, 445, 471, 485, 514, 509, 530, 534, 528, 541, 545, 539, 526, 552, 566, 571, 591, 597, 615, 624, 620, 632, 644, 639, 660, 664, 658, 671, 675, 669, 656, 683, 696, 715, 710, 708, 722, 730, 742, 738, 751, 747, 736, 762, 766, 772, 776, 758, 786, 791, 795, 782, 801, 806, 811, 818, 822, 826, 830, 816, 836, 847, 856, 861, 869, 878, 883, 893, 890, 909, 914, 921, 928, 935, 940, 945, 950, 960, 955, 968, 979, 996, 1005, 1023, 1043, 1113, 1122, 1135, 1151, 1157, 1168, 1173, 1178, 1183, 1193, 1205, 1210, 1215, 1225, 1220, 1234, 1253, 1272, 1280, 1304, 1312, 1310, 1337, 1344, 1351, 1358, 1377];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
