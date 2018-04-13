@@ -27,6 +27,7 @@ import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JWindow;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -96,6 +97,7 @@ public class PSAutoCompletion extends AutoCompletion{
                 if(getPopupWindow().getComponent(0)  != null){
                     JRootPane rootPane = (JRootPane) getPopupWindow().getComponent(0);
                     if(rootPane.getContentPane().getComponent(0)!= null){
+                        rootPane.setBorder(new LineBorder(ColorController.FUNDO_ESCURO));
                         JScrollPane scrollPane = (JScrollPane) rootPane.getContentPane().getComponent(0);
                         scrollPane.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
                         WeblafUtils.configuraWebLaf(scrollPane);
@@ -112,8 +114,9 @@ public class PSAutoCompletion extends AutoCompletion{
                                 super.componentShown(ce); //To change body of generated methods, choose Tools | Templates.
                                 if(!webLAFconfiguradoDescWindow){
                                     JRootPane rootPane1 = (JRootPane) getDescWindow(popupWindow).getComponent(0);
+                                    //rootPane1.setBorder(new LineBorder(ColorController.FUNDO_ESCURO));
                                     JScrollPane scrollPane = (JScrollPane) rootPane1.getContentPane().getComponent(0);
-
+                                    
                                     scrollPane.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
                                     rootPane1.getContentPane().getComponent(1).setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
                                     JPanel  panel = (JPanel)rootPane1.getContentPane().getComponent(1);
