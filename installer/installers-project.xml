@@ -356,7 +356,11 @@
                                 <setInstallerVariable>
                                     <name>install_javaw_exe</name>
                                     <persist>1</persist>
-                                    <value>${install_java_dir}/bin/java</value>
+                                    <value>${install_java_dir}/bin/javaw</value>
+                                </setInstallerVariable>
+                                <setInstallerVariable>
+                                    <name>install_javac_exe</name>
+                                    <value>${install_java_dir}/bin/javac</value>
                                 </setInstallerVariable>
                             </actionList>
                         </actionGroup>
@@ -716,6 +720,8 @@ MimeType=application/x-portugol</text>
                                 <copyFile>
                                     <destination>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</destination>
                                     <origin>${install_app_dir}/utils/portugol.lang</origin>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/gtksourceview-2.0/language-specs</path>
@@ -725,6 +731,8 @@ MimeType=application/x-portugol</text>
                                 <copyFile>
                                     <destination>/usr/share/nano/portugol.nanorc</destination>
                                     <origin>${install_app_dir}/utils/portugol.nanorc</origin>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/nano</path>
@@ -734,6 +742,8 @@ MimeType=application/x-portugol</text>
                                 <copyFile>
                                     <destination>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</destination>
                                     <origin>${install_app_dir}/utils/portugol.lang</origin>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/gtksourceview-3.0/language-specs</path>
@@ -743,6 +753,8 @@ MimeType=application/x-portugol</text>
                                 <copyFile>
                                     <destination>/usr/share/geany/filetypes.Portugol20.conf</destination>
                                     <origin>${install_app_dir}/utils/filetypes.Portugol20.conf</origin>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/geany</path>
@@ -752,6 +764,8 @@ MimeType=application/x-portugol</text>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/gtksourceview-2.0/language-specs/portugol.lang</programArguments>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/gtksourceview-2.0/language-specs/portugol.lang</path>
@@ -761,6 +775,8 @@ MimeType=application/x-portugol</text>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/gtksourceview-3.0/language-specs/portugol.lang</programArguments>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/gtksourceview-3.0/language-specs/portugol.lang</path>
@@ -770,6 +786,8 @@ MimeType=application/x-portugol</text>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/nano/portugol.nanorc</programArguments>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/nano/portugol.nanorc</path>
@@ -779,6 +797,8 @@ MimeType=application/x-portugol</text>
                                 <runProgram>
                                     <program>chmod</program>
                                     <programArguments>644 /usr/share/geany/filetypes.Portugol20.conf</programArguments>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <ruleList>
                                         <fileExists>
                                             <path>/usr/share/geany/filetypes.Portugol20.conf</path>
@@ -788,6 +808,8 @@ MimeType=application/x-portugol</text>
                                 <runProgram>
                                     <program>${install_app_dir}/utils/install_geany_files.sh</program>
                                     <programArguments></programArguments>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <showMessageOnError>0</showMessageOnError>
                                     <ruleList>
                                         <fileExists>
@@ -797,6 +819,8 @@ MimeType=application/x-portugol</text>
                                 </runProgram>
                                 <addTextToFile>
                                     <file>/etc/nanorc</file>
+                                    <run>0</run>
+                                    <show>0</show>
                                     <text>## Portugol 2.0
 include /usr/share/nano/portugol.nanorc</text>
                                     <ruleList>
