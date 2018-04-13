@@ -34,14 +34,14 @@ public final class ProvedorConclusaoCodigoPortugol extends CompletionProviderBas
     
     private AutoCompletion conclusaoCodigo;
     private int delayAnterior;
-
+    
     public ProvedorConclusaoCodigoPortugol()
     {
         this.provedorConclusaoCodigoPrograma = new ProvedorConclusaoCodigoPrograma();
-        this.provedorConclusaoCodigoPrograma.setHabilitado(false);
-        this.provedorConclusaoCodigoBibliotecas = new ProvedorConclusaoCodigoBibliotecas();
+        this.provedorConclusaoCodigoPrograma.setHabilitado(true);
+        this.provedorConclusaoCodigoBibliotecas = new ProvedorConclusaoCodigoBibliotecas();        
+        
     }
-
     public void setConclusaoCodigo(AutoCompletion conclusaoCodigo)
     {
         this.conclusaoCodigo = conclusaoCodigo;
