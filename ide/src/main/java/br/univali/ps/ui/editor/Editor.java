@@ -214,7 +214,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             setBackground(getTextArea().getBackground());
             scrollPane.setBackground(getTextArea().getBackground());
             scrollPane.getHorizontalScrollBar().getParent().setBackground(getTextArea().getBackground());
-        });    
+        });
     }
     
     private void deslocaComponenteVerticalmente(JComponent componente, int deslocamento)

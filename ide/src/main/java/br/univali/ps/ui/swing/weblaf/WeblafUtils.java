@@ -36,6 +36,7 @@ import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.JTextComponent;
 
 /**
  *
@@ -51,7 +52,7 @@ public class WeblafUtils {
     
 
 
-     public static void configuraWeblaf(JToolBar barraDeFerramentas) {
+    public static void configuraWeblaf(JToolBar barraDeFerramentas) {
         if (!WeblafUtils.weblafEstaInstalado()) {
             return;
         }
@@ -94,6 +95,17 @@ public class WeblafUtils {
        field.setForeground(ColorController.COR_LETRA);
     }
     
+    public static void configuraWebLaf(JTextComponent field) {
+       if (!WeblafUtils.weblafEstaInstalado()) {
+           return;
+       }
+//       ((WebTextAreaUI) field.getUI()).setDrawBorder(false);
+//       ((WebTextAreaUI) field.getUI()).setDrawBackground(true);
+       field.setBorder(new EmptyBorder(15,15,15,15));
+       field.setOpaque(true);
+       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.COR_LETRA);
+    }
     public static void configuraWebLaf(JProgressBar field) {
        if (!WeblafUtils.weblafEstaInstalado()) {
            return;

@@ -412,7 +412,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
 
         try
         {
-            String dado = scanner.next();
+            String dado = scanner.nextLine();
             
             switch (tipoDado)
             {

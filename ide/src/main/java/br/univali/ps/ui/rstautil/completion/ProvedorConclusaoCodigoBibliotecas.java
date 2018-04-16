@@ -13,6 +13,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
+import br.univali.ps.ui.editor.PSCompletionListCellRenderer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,6 +50,8 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
         this.bibliotecasIncluidas = new ArrayList<>();
         this.setParameterizedCompletionParams('(', ", ", ')');
         this.setAutoActivationRules(false, ".");
+        
+        setListCellRenderer(new PSCompletionListCellRenderer());
     }
 
     public void atualizar(Programa programa)
@@ -191,7 +194,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
                 descricao = descricao.concat(String.format("<br><br><a href='%s'>Mais Informações</a>", constante.getDocumentacao().referencia()));
             }
 
-            VariableCompletion conclusao = new VariableCompletion(provedorConclusoes, nome, tipo);
+            ConclusaoConstanteBiblioteca conclusao = new ConclusaoConstanteBiblioteca(provedorConclusoes, nome, tipo, metaDadosBiblioteca.getNome());
 
             conclusao.setRelevance(1);
             conclusao.setDefinedIn(metaDadosBiblioteca.getNome());
@@ -212,7 +215,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
                 descricao = descricao.concat(String.format("<br><br><a href='%s'>Mais Informações</a>", funcao.getDocumentacao().referencia()));
             }
 
-            FunctionCompletion conclusao = new FunctionCompletion(provedorConclusoes, nomeFuncao, tipoFuncao);
+            ConclusaoFuncaoBiblioteca conclusao = new ConclusaoFuncaoBiblioteca(ProvedorConclusaoCodigoBibliotecas.this, nomeFuncao, tipoFuncao, metaDadosBiblioteca.getNome());
 
             conclusao.setRelevance(0);
             conclusao.setDefinedIn(metaDadosBiblioteca.getNome());
