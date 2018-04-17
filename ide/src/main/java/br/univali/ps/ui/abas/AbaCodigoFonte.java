@@ -1668,14 +1668,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         Configuracoes configuracoes = Configuracoes.getInstancia();
         if (Configuracoes.rodandoEmDesenvolvimento()) {
-
-//            return "C:/Users/Ailton Cardoso Jr/Documents/NetBeansProjects/Portugol - Novo/Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin/build/libs/Portugol-GoGoBoard-Plugin.jar"
-//                    + classPathSeparator
-//                    + "C:/Users/Ailton Cardoso Jr/Documents/NetBeansProjects/Portugol - Novo/Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin/build/libs/lib/jna-4.2.2.jar"
-//                    + classPathSeparator
-//                    + "C:/Users/Ailton Cardoso Jr/Documents/NetBeansProjects/Portugol - Novo/Portugol-GoGoBoard-Plugin/Portugol-GoGoBoard-Plugin/build/libs/lib/hid4java-0.5.0.jar"
-//                    + classPathSeparator
-//                    + System.getProperty("java.class.path") + classPathSeparator;
             return System.getProperty("java.class.path") + classPathSeparator;
         }
 

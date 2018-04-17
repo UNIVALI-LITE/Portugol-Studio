@@ -237,7 +237,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         staticPanel.add(buttonNovo);
         staticPanel.add(button);
         staticPanel.add(buttonHelp);
-        staticPanel.add(buttonPlugins);
+        //Reativar quando um plugin for adicionado
+        //staticPanel.add(buttonPlugins);
     }
     @Override
     public void configurarCores() {
