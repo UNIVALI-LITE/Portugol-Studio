@@ -13,8 +13,12 @@ import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -86,23 +90,23 @@ public class TelaPrincipal extends javax.swing.JPanel
 
             public void mouseClicked(MouseEvent me) {
                 SwingUtilities.invokeLater(() ->{
+                    
                     if(me.getClickCount() == 2){
                         if(Lancador.isMaximazed()){
                             Dimension d = Lancador.getOlderSize();
                             Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                             Lancador.getJFrame().setSize(d);
                             Lancador.setActualSize(d);
-                            Lancador.getJFrame().setLocationRelativeTo(null);
+                            //Lancador.getJFrame().setLocationRelativeTo(null);                        
                             Lancador.setMaximazed(false);
-                        }else{
+                        }else{                         
                             Dimension d = Lancador.getJFrame().getSize();
                             Lancador.setOlderSize(d);
-                            Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-                            Lancador.getJFrame().setBounds(bounds);
-                            Lancador.setActualSize(bounds.getSize());
+                            Rectangle newBounds = configurarMaximizar();
+                            Lancador.getJFrame().setBounds(newBounds);
+                            Lancador.setActualSize(newBounds.getSize());
                             Lancador.setMaximazed(true);
                         }
-
                     }
                 });
                 
@@ -119,6 +123,24 @@ public class TelaPrincipal extends javax.swing.JPanel
 
             }
         });
+    }
+    
+    private Rectangle configurarMaximizar(){
+        GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
+        Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+        Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
+        if(!monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
+            if(monitorAtual.getDefaultConfiguration().getBounds().x < 0){
+                newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x;
+            }else{
+                newBounds.x = Lancador.getInstance().getMonitorPrincipal().getDefaultConfiguration().getBounds().width;
+            }
+        }else{
+            newBounds.x = screenInsets.left;
+        }
+        newBounds.y = screenInsets.top;
+        return newBounds;
     }
     
     private void criaAbas()

@@ -27,6 +27,8 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import br.univali.ps.nucleo.Mutex;
 import br.univali.ps.ui.coletor.ColetorInteracao;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 
 /**
  * @author lite
@@ -38,6 +40,8 @@ public class Lancador {
     private static Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
     private final static Lancador application = new Lancador();
+    
+    final GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     
     private final ComponentResizer resizer = new ComponentResizer();
     private static Mutex mutex;
@@ -259,5 +263,9 @@ public class Lancador {
     }
     public void finalizarServico() {
     	servico.shutdownNow();
+    }
+    
+    public GraphicsDevice getMonitorPrincipal() {
+        return monitorPrincipal;
     }
 }
