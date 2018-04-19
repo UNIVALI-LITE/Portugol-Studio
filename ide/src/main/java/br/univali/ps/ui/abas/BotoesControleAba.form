@@ -2,21 +2,20 @@
 
 <Form version="1.2" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Component class="com.alee.laf.button.WebButton" name="botaoNovoArquivo">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"/>
-        </Property>
-        <Property name="hideActionText" type="boolean" value="true"/>
-      </Properties>
-    </Component>
     <Component class="com.alee.laf.button.WebButton" name="botaoAbrir">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
-        <Property name="name" type="java.lang.String" value="botaoAbrir" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="com.alee.laf.button.WebButton" name="botaoNovoArquivo">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"/>
+        </Property>
+        <Property name="hideActionText" type="boolean" value="true"/>
       </Properties>
     </Component>
   </NonVisualComponents>
