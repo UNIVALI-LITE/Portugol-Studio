@@ -177,19 +177,25 @@ public abstract class Programa
 		observadores = new ArrayList<>();
 	}
 
+        protected String concatena(String a, int b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
+        
         protected String concatena(int a, String b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
         
-	protected String concatena(String a, int b)
+	protected String concatena(String a, double b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
-
-	protected String concatena(String a, double b)
+        
+        protected String concatena(double a, String b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
@@ -200,14 +206,31 @@ public abstract class Programa
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
+        protected String concatena(float a, String b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
 
 	protected String concatena(String a, char b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
+        
+        protected String concatena(char a, String b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
 
 	protected String concatena(String a, boolean b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
+        
+        protected String concatena(boolean a, String b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
