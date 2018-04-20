@@ -19,6 +19,7 @@ public class testVariaveisGlobaisInicializadasComValoresSimples extends Programa
     @Override
     protected void inicializar() throws ErroExecucao, InterruptedException
     {
+        super.inicializar();
         i = 10;
         c = "teste";
         l = true;

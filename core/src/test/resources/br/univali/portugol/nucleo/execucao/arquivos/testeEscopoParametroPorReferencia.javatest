@@ -20,6 +20,7 @@ public class testeEscopoParametroPorReferencia extends Programa
     @Override
     protected void inicializar() throws ErroExecucao, InterruptedException
     {
+        super.inicializar();
         REFS_INT[INDICE_I_0] = -1;
     }
     
