@@ -841,8 +841,26 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
     {
+        
         if (declarandoSimbolosGlobais)
         {
+            if (FUNCOES_RESERVADAS.contains(declaracaoFuncao.getNome())){
+                notificarErroSemantico(new ErroSemantico(declaracaoFuncao.getTrechoCodigoFonteNome()) {
+                    @Override
+                    protected String construirMensagem() {
+                        return "A função "+declaracaoFuncao.getNome()+" é reservada para a linguagem";
+                    }
+                });
+                String nome = declaracaoFuncao.getNome();
+                TipoDado tipoDado = declaracaoFuncao.getTipoDado();
+                Quantificador quantificador = declaracaoFuncao.getQuantificador();
+                Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
+                funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
+                funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
+                funcao.setRedeclarado(true);
+                memoria.adicionarSimbolo(funcao);
+                return null;
+            }
             String nome = declaracaoFuncao.getNome();
             TipoDado tipoDado = declaracaoFuncao.getTipoDado();
             Quantificador quantificador = declaracaoFuncao.getQuantificador();
