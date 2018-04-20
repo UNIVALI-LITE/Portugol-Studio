@@ -929,8 +929,10 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
     {
-        noDeclaracaoMatriz.setIdParaInspecao(totalMatrizesDeclaradas);
-        totalMatrizesDeclaradas++;
+        if (!declarandoSimbolosGlobais) {
+            noDeclaracaoMatriz.setIdParaInspecao(totalMatrizesDeclaradas);
+            totalMatrizesDeclaradas++;
+        }
         
         if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
         {
@@ -1112,9 +1114,10 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoVariavel declaracaoVariavel) throws ExcecaoVisitaASA
     {
-        declaracaoVariavel.setIdParaInspecao(totalVariaveisDeclaradas);
-        //System.out.println(declaracaoVariavel.getNome() + " => " + totalVariaveisDeclaradas);
-        totalVariaveisDeclaradas++;
+        if (!declarandoSimbolosGlobais) {
+            declaracaoVariavel.setIdParaInspecao(totalVariaveisDeclaradas);
+            totalVariaveisDeclaradas++;
+        }
         
         if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
         {
@@ -1231,8 +1234,10 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
     {
-        noDeclaracaoVetor.setIdParaInspecao(totalVetoresDeclarados);
-        totalVetoresDeclarados++;
+        if (!declarandoSimbolosGlobais) {
+            noDeclaracaoVetor.setIdParaInspecao(totalVetoresDeclarados);
+            totalVetoresDeclarados++;
+        }
         
         if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
         {
