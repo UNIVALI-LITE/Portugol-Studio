@@ -225,7 +225,7 @@ public class GeradorCodigoJava
             saida.append(Utils.geraIdentacao(nivelEscopo));
             saida.format("protected void inicializar() throws ErroExecucao, InterruptedException {").println();
             
-            
+            saida.append("super.inicializar();").println();
             inicializaVariaveisGlobaisNaoPassadasPorReferencia(variaveisGlobais);
             
             inicializaVariaveisGlobaisQueSaoPassadasPorReferencia();
