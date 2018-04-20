@@ -1,7 +1,10 @@
 package br.univali.portugol.nucleo.analise.semantica;
 
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoMatrizPodeSerVariavel;
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoMatrizPodeSerVetor;
 import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoSimboloGlobalOcultado;
 import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoValorExpressaoSeraConvertido;
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoVetorPodeSerVariavel;
 import br.univali.portugol.nucleo.analise.semantica.erros.*;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
@@ -916,7 +919,15 @@ public final class AnalisadorSemantico implements VisitanteASA
                             new ErroTamanhoMaximoMatriz(linhas, colunas, nome, bigProduto,
                             noDeclaracaoMatriz.getTrechoCodigoFonteNome()));
                 }
-            }
+                if(linhas == 1 && colunas == 1)
+                {
+                    notificarAviso(new AvisoMatrizPodeSerVariavel(noDeclaracaoMatriz, linhas));
+                }
+                else if(linhas == 1 || colunas == 1)
+                {
+                    notificarAviso(new AvisoMatrizPodeSerVetor(noDeclaracaoMatriz, linhas>colunas ? linhas : colunas, linhas, colunas));
+                }
+            }            
 
             Matriz matriz = new Matriz(nome, tipoDados, noDeclaracaoMatriz, 1, 1);
             matriz.setTrechoCodigoFonteNome(noDeclaracaoMatriz.getTrechoCodigoFonteNome());
@@ -1203,6 +1214,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     notificarErroSemantico(
                             new ErroTamanhoMaximoVetor(tamanho, nome, noDeclaracaoVetor.getTrechoCodigoFonteNome()));
+                }
+                if(tamanho == 1)
+                {
+                    notificarAviso(new AvisoVetorPodeSerVariavel(noDeclaracaoVetor, tamanho));
                 }
             }
             Vetor vetor = new Vetor(nome, tipoDados, noDeclaracaoVetor, 1);
