@@ -96,8 +96,7 @@ public class TelaPrincipal extends javax.swing.JPanel
                             Dimension d = Lancador.getOlderSize();
                             Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
                             Lancador.getJFrame().setSize(d);
-                            Lancador.setActualSize(d);
-                            //Lancador.getJFrame().setLocationRelativeTo(null);                        
+                            Lancador.setActualSize(d);                        
                             Lancador.setMaximazed(false);
                         }else{                         
                             Dimension d = Lancador.getJFrame().getSize();
@@ -289,7 +288,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             ta.setAcaoFechar(main.getAcaoSair());
             main.setMinimumSize(new Dimension(280, 450));
             main.setPanel(ta, false);
-            main.setLocationRelativeTo(null);
+            main.setLocationRelativeTo(Lancador.getJFrame());
             main.setVisible(true);
             main.pack();
         });

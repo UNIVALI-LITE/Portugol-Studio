@@ -1,5 +1,6 @@
 package br.univali.ps.ui.swing.weblaf.jOptionPane;
 
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -136,7 +137,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             textLabel.setText("<html><body><div style=\"width:300px;\">"+text+"</div></body></html>");
             pack();
         }
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(Lancador.getJFrame());
         setVisible(true);
     }
     
@@ -168,7 +169,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             textLabel.setText("<html><body><div style=\"width:300px;\">"+text+"</div></body></html>");
             pack();
         }
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(Lancador.getJFrame());
         setVisible(true);
         return resposta;
     }

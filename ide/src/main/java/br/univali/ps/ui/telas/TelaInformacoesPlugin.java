@@ -3,6 +3,7 @@ package br.univali.ps.ui.telas;
 import br.univali.ps.plugins.base.Autor;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
@@ -37,7 +38,7 @@ public final class TelaInformacoesPlugin extends JDialog
     {
         super();
         setModal(true);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(Lancador.getJFrame());
         this.setIconImage(IconFactory.getDefaultWindowIcon());
         configurarAcaoSair();
         initComponents();

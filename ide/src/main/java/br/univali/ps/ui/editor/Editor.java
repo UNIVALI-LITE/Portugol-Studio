@@ -19,6 +19,7 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.swing.ColorController;
@@ -302,7 +303,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         findReplace.setPreferredSize(new Dimension(550, 190));
         //findReplace.setSize(new Dimension(800, 600));
         procurarESubstituir.setPanel(findReplace);
-        procurarESubstituir.setLocationRelativeTo(null);
+        procurarESubstituir.setLocationRelativeTo(Lancador.getJFrame());
     }
 
     private void configurarParser()

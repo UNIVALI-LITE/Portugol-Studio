@@ -879,7 +879,7 @@ public final class PortugolStudio
             
         }
 
-        telaSobre.setLocationRelativeTo(null);
+        telaSobre.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaSobre;
     }
@@ -890,7 +890,7 @@ public final class PortugolStudio
             telaRelatarBug = new TelaCustomBorder(new TelaRelatarBug(), "Relatar Bug");            
         }
 
-        telaRelatarBug.setLocationRelativeTo(null);
+        telaRelatarBug.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaRelatarBug;
     }
@@ -902,7 +902,7 @@ public final class PortugolStudio
             telaAtalhosTeclado = new TelaCustomBorder(new TelaAtalhos(), "Atalhos de Teclado");
         }
 
-        telaAtalhosTeclado.setLocationRelativeTo(null);
+        telaAtalhosTeclado.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaAtalhosTeclado;
     }
@@ -914,7 +914,7 @@ public final class PortugolStudio
             telaDicas = new TelaCustomBorder(new TelaDicas(), "Dicas");
         }
 
-        telaDicas.setLocationRelativeTo(null);
+        telaDicas.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaDicas;
     }
@@ -926,7 +926,7 @@ public final class PortugolStudio
             telaInformacoesPlugin = new TelaInformacoesPlugin();
         }
 
-        telaInformacoesPlugin.setLocationRelativeTo(null);
+        telaInformacoesPlugin.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaInformacoesPlugin;
     }
@@ -938,7 +938,7 @@ public final class PortugolStudio
             telaErrosPluginsBibliotecas = new TelaErrosPluginsBibliotecas();
         }
 
-        telaErrosPluginsBibliotecas.setLocationRelativeTo(null);
+        telaErrosPluginsBibliotecas.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaErrosPluginsBibliotecas;
     }
@@ -953,7 +953,7 @@ public final class PortugolStudio
             telaLicencas.setSize(640, 550);
         }
 
-        telaLicencas.setLocationRelativeTo(null);
+        telaLicencas.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaLicencas;
     }
@@ -966,7 +966,7 @@ public final class PortugolStudio
             telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
         }
         
-        telaRenomearSimbolo.setLocationRelativeTo(null);
+        telaRenomearSimbolo.setLocationRelativeTo(Lancador.getJFrame());
         
         return telaRenomearSimbolo;
     }
@@ -979,7 +979,7 @@ public final class PortugolStudio
             telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
         }
         
-        telaRenomearSimbolo.setLocationRelativeTo(null);
+        telaRenomearSimbolo.setLocationRelativeTo(Lancador.getJFrame());
         
         return (TelaRenomearSimbolo) telaRenomearSimbolo.getPanel();
     }
