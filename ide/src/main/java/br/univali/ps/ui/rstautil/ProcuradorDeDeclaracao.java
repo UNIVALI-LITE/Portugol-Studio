@@ -98,7 +98,7 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
                 
                 if(inicializacao != null){
                     inicializacao.aceitar(this); //tentar encontrar a referência na inicialização
-                    if(referenciaEncontrada)
+                    if(referenciaEncontrada && (mesmoNome && mesmoTamanho))
                     {
                         declaracaoEncontrada = true;
                     }
