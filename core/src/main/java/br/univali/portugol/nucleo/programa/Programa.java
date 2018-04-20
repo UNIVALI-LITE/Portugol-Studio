@@ -31,6 +31,8 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.EntradaSaidaPadrao;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import static java.lang.Math.random;
+import java.util.Random;
 
 /**
  * Provê uma fachada (Facade) para abstrair os detalhes da execução
@@ -96,6 +98,8 @@ public abstract class Programa
 
 	private int ultimaLinha = 0;
 	private int ultimaColuna = 0;
+        
+        private final Random random = new Random(System.currentTimeMillis());
 
 	public static final Object OBJETO_NULO = new Object(); // usando como valor
 
@@ -923,6 +927,29 @@ public abstract class Programa
 			};
 		}
 	}
+        
+        protected int sorteia(int minimo, int maximo)throws ErroExecucao{
+            if (minimo > maximo)
+            {
+                throw new ErroExecucao() {
+                    @Override
+                    protected String construirMensagem() {
+                        return String.format("O valor mínimo (%d) é maior do que o valor máximo (%d)", minimo, maximo);
+                    }
+                };
+            }
+            else if (minimo == maximo)
+            {
+                throw new ErroExecucao() {
+                    @Override
+                    protected String construirMensagem() {
+                        return String.format("Os valores mínimo e máximo são iguais: %d", minimo);
+                    }
+                };
+                
+            }
+            return minimo + random.nextInt(maximo + 1 - minimo);
+        }
 
 	protected void escreva(Object... listaParametrosPassados) throws InterruptedException
 	{
@@ -938,7 +965,7 @@ public abstract class Programa
 			{
 				if (valor.equals("${show developers}"))
 				{
-					valor = "\n\nDesenvolvedores:\n\nFillipi Domingos Pelz\nLuiz Fernando Noschang\n\n";
+					valor = "\n\nDesenvolvedores:\n\nFillipi Domingos Pelz\nLuiz Fernando Noschang\nAlisson Steffens Henrique\nAdson Marques da Silva Esteves";
 				}
 
 				saida.escrever((String) valor);

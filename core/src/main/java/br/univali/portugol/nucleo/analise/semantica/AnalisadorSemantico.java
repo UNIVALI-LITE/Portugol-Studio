@@ -56,6 +56,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     public static final String FUNCAO_LIMPA = "limpa";
     public static final String FUNCAO_LEIA = "leia";
     public static final String FUNCAO_ESCREVA = "escreva";
+    public static final String FUNCAO_ALEATORIO = "sorteia";
 
     private int totalVariaveisDeclaradas = 0; // conta variáveis e parâmetros declarados
     private int totalVetoresDeclarados = 0;
@@ -357,7 +358,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         if (chamadaFuncao.getEscopo() == null)
         {
-            if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
+            if(chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO)){
+                return TipoDado.INTEIRO;
+            }else if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
                 return TipoDado.VAZIO;
             }
@@ -519,7 +522,18 @@ public final class AnalisadorSemantico implements VisitanteASA
         List<TipoDado> tiposPassado = obterTiposParametrosPassados(chamadaFuncao, modosAcesso);
 
         int cont = Math.min(tiposEsperados.size(), tiposPassado.size());
-
+        if (chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO))
+        {
+            for (int indice = 0; indice < 2; indice++)
+            {
+                TipoDado tipoPassado = tiposPassado.get(indice);
+                
+                if (!tipoPassado.equals(TipoDado.INTEIRO))
+                {
+                    notificarErroSemantico(new ErroTipoParametroIncompativel(chamadaFuncao.getNome(), obterNomeParametro(chamadaFuncao, indice), chamadaFuncao.getParametros().get(indice), TipoDado.INTEIRO, tipoPassado));
+                }
+            }
+        }
         if (chamadaFuncao.getNome().equals(FUNCAO_ESCREVA))
         {
             int tamanhoTiposPassado = tiposPassado.size();
@@ -721,6 +735,8 @@ public final class AnalisadorSemantico implements VisitanteASA
                 if (chamadaFuncao.getNome().equals(FUNCAO_LIMPA))
                 {
                     return 0;
+                }else if(chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO)){
+                    return 2;
                 }
                 else
                 {
@@ -2141,6 +2157,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         funcoes.add(FUNCAO_LEIA);
         funcoes.add(FUNCAO_ESCREVA);
+        funcoes.add(FUNCAO_ALEATORIO);
         funcoes.add(FUNCAO_LIMPA);
 
         return funcoes;
