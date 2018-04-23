@@ -4,6 +4,7 @@ import br.univali.ps.ui.editor.formatador.FormatadorCodigo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -18,6 +19,7 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
@@ -90,6 +92,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
+import org.fife.ui.rsyntaxtextarea.parser.DefaultParseResult;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
@@ -316,6 +319,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
         
         return new SuportePortugolImpl();
+    }
+    
+    public void exibirErros(ResultadoAnalise resultado){
+        final PortugolParser portugolParser = suporteLinguagemPortugol.getPortugolParser();
+        DefaultParseResult defaultParserResult = new DefaultParseResult(portugolParser);
+        int firstLine = 0;
+        int lastLine = getPortugolDocumento().getDefaultRootElement().getElementCount() - 1;
+        defaultParserResult.setParsedLines(firstLine, lastLine);
+        
+        portugolParser.notificarErrosAvisos(resultado, getPortugolDocumento(), defaultParserResult);
     }
     
     private class SuportePortugolExemplos extends SuportePortugolImpl  

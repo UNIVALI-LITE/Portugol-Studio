@@ -18,6 +18,7 @@ public class testGeracaoAtribuicoes extends Programa
     
      @Override
     protected void inicializar () throws ErroExecucao, InterruptedException {
+        super.inicializar();
         notas = new boolean[][]{{true, false},{false, false},{true, false}};
         cores = new int[]{-14364777,-4046236,-4867209,-15193197};
     }

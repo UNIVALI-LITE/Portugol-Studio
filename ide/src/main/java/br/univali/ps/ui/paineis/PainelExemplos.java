@@ -64,6 +64,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private final Icon imagemOpenlowres;
     private final Icon imagemHelp;
     private final Icon imagemHelplowres;
+    private final Icon imagemPlugins;
+    private final Icon imagemPluginslowres;
     private final Icon imagemNew;
     private final Icon imagemNewlowres;
     private final Icon imagemPastaPadrao;
@@ -99,6 +101,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         
         imagemHelp = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "help.png");
         imagemHelplowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "helplow.png");
+        
+        imagemPlugins = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png");
+        imagemPluginslowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png");
         
         staticPanel.setBackground(ColorController.FUNDO_ESCURO);
         
@@ -206,9 +211,34 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         WeblafUtils.configurarBotao(buttonHelp,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
         FabricaDicasInterface.criarTooltip(buttonHelp, "Ajuda");
         
+        WebButton buttonPlugins = new WebButton();
+        buttonPlugins.setAction(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //SOMETHING TO FIND PLUGINS
+            }
+        });
+        buttonPlugins.setText("Plugins");
+        if(redimensionouParaBaixaResolucao)
+        {
+            textRecentes.setFont(textRecentes.getFont().deriveFont(16f));
+            buttonPlugins.setIcon(imagemPluginslowres);
+        }else{
+            textRecentes.setFont(textRecentes.getFont().deriveFont(24f));
+            buttonPlugins.setIcon(imagemPlugins);
+        }
+        buttonPlugins.setHorizontalAlignment(SwingConstants.CENTER);
+        buttonPlugins.setVerticalAlignment(SwingConstants.CENTER);
+        buttonPlugins.setHorizontalTextPosition(SwingConstants.CENTER);
+        buttonPlugins.setVerticalTextPosition(SwingConstants.BOTTOM);
+        WeblafUtils.configurarBotao(buttonPlugins,ColorController.TRANSPARENTE, ColorController.COR_LETRA_TITULO, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+        FabricaDicasInterface.criarTooltip(buttonPlugins, "Plugins");
+        
         staticPanel.add(buttonNovo);
         staticPanel.add(button);
         staticPanel.add(buttonHelp);
+        //Reativar quando um plugin for adicionado
+        //staticPanel.add(buttonPlugins);
     }
     @Override
     public void configurarCores() {

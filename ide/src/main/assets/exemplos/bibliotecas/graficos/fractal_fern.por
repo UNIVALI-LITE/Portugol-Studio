@@ -66,8 +66,8 @@ programa
 		g.desenhar_texto(15, 15, "Status: " + porcentagem + "% concluido")
 		g.renderizar()
 		
-		x = sorteia()
-		y = sorteia()
+		x = sortear()
+		y = sortear()
          	
 		para(inteiro ponto = 1; ponto <= NUMERO_PONTOS; ponto++) 
 		{
@@ -97,7 +97,7 @@ programa
           g.encerrar_modo_grafico()
 	}
 
-	funcao real sorteia()
+	funcao real sortear()
 	{
 		retorne u.sorteia(0, 1000) / 1000.0
 	}
@@ -106,7 +106,7 @@ programa
 	{		
 		para (inteiro  iteracao = 1; iteracao <= NUMERO_ITERACOES; iteracao++)
 		{ 
-			real  numero_sorteado = sorteia()
+			real  numero_sorteado = sortear()
 			
 			se (numero_sorteado < 0.01)
 			{
@@ -147,8 +147,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 40; 
- * @DOBRAMENTO-CODIGO = [28, 36, 45, 60, 88, 99, 104];
+ * @POSICAO-CURSOR = 2704; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

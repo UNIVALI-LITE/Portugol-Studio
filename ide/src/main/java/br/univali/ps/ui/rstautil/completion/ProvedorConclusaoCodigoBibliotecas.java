@@ -36,7 +36,7 @@ import org.fife.ui.autocomplete.VariableCompletion;
 public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
 {
     private final FabricaConclusaoCodigoBibliotecas fabricaConclusoes;
-    private final Map<String, List<Completion>> conclusoesBibliotecas;
+    private Map<String, List<Completion>> conclusoesBibliotecas;
     private final List<String> bibliotecasIncluidas;
     private final Map<String, String> apelidosBibliotecas;
     private final AtualizadorEstadoBibliotecas atualizador;
@@ -79,6 +79,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
 
             if (bibliotecasIncluidas.contains(nomeBiblioteca))
             {
+                conclusoesBibliotecas = fabricaConclusoes.criarConclusoes(ProvedorConclusaoCodigoBibliotecas.this);
                 List<Completion> conclusoes = new ArrayList<>(conclusoesBibliotecas.get(nomeBiblioteca));
 
                 if (partes.length == 2)
@@ -153,7 +154,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
             Map<String, List<Completion>> conclusoes = new HashMap<>();
             GerenciadorBibliotecas gerenciadorBibliotecas = GerenciadorBibliotecas.getInstance();
 
-            for (String biblioteca : gerenciadorBibliotecas.listarBibliotecasDisponiveis())
+            for (String biblioteca : gerenciadorBibliotecas.getBibliotecasDisponiveis())
             {
                 try
                 {

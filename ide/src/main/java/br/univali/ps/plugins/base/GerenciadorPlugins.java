@@ -145,6 +145,10 @@ public final class GerenciadorPlugins
 
         return resultadoCarregamento;
     }
+    
+    public List<Class<? extends Plugin>> getPluginsCarregados() {
+        return pluginsCarregados;
+    }
 
     private List<String> listarArquivosJarInvalidos(CarregadorJar carregadorJar)
     {

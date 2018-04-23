@@ -74,6 +74,7 @@ public class IntegracaoFormatadorTest
             ignore.add("logico.por");
             ignore.add("lagarta.por");
             ignore.add("arkanoid.por");
+            ignore.add("qr_code.por");
 
             if (ignore.contains(exemplo.getName())) {
                 return;

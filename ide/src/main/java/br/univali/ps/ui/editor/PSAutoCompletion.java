@@ -5,11 +5,13 @@
  */
 package br.univali.ps.ui.editor;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.rstautil.completion.ProvedorConclusaoCodigoBibliotecas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.utils.swing.DocumentChangeListener;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ComponentAdapter;
@@ -25,10 +27,10 @@ import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JWindow;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import org.fife.ui.autocomplete.AutoCompletion;
@@ -94,6 +96,7 @@ public class PSAutoCompletion extends AutoCompletion{
                 if(getPopupWindow().getComponent(0)  != null){
                     JRootPane rootPane = (JRootPane) getPopupWindow().getComponent(0);
                     if(rootPane.getContentPane().getComponent(0)!= null){
+                        rootPane.setBorder(new LineBorder(ColorController.FUNDO_ESCURO));
                         JScrollPane scrollPane = (JScrollPane) rootPane.getContentPane().getComponent(0);
                         scrollPane.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
                         WeblafUtils.configuraWebLaf(scrollPane);
@@ -110,10 +113,10 @@ public class PSAutoCompletion extends AutoCompletion{
                                 super.componentShown(ce); //To change body of generated methods, choose Tools | Templates.
                                 if(!webLAFconfiguradoDescWindow){
                                     JRootPane rootPane1 = (JRootPane) getDescWindow(popupWindow).getComponent(0);
+                                    //rootPane1.setBorder(new LineBorder(ColorController.FUNDO_ESCURO));
                                     JScrollPane scrollPane = (JScrollPane) rootPane1.getContentPane().getComponent(0);
-
+                                    
                                     scrollPane.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
-                                    System.out.println(scrollPane.getComponentCount());
                                     rootPane1.getContentPane().getComponent(1).setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
                                     JPanel  panel = (JPanel)rootPane1.getContentPane().getComponent(1);
                                     JToolBar  bar = (JToolBar)panel.getComponent(0);
@@ -135,20 +138,38 @@ public class PSAutoCompletion extends AutoCompletion{
                                     editorPane.setForeground(ColorController.AMARELO);
                                     HTMLEditorKit kit = new HTMLEditorKit();
                                     editorPane.setEditorKit(kit);
-                                    StyleSheet styleSheet = kit.getStyleSheet();
+                                    StyleSheet styleSheet = kit.getStyleSheet();                                                                        
                                     
-                                    styleSheet.addRule("body {color:#cdcdcd;}");
-                                    styleSheet.addRule(".type-inteiro {color:#45BDFF;}");
-                                    styleSheet.addRule(".type-real {color:#00EFC0;}");
-                                    styleSheet.addRule(".type-logico {color:#FFC200;}");
-                                    styleSheet.addRule(".type-cadeia {color:#BA02F6;}");
-                                    styleSheet.addRule(".type-caracter {color:#F0433B;}");
-                                    
-                                    styleSheet.addRule("h4 {color:#FFC200;}");
-                                    styleSheet.addRule(".function {color:#FFC200;}");
-                                    styleSheet.addRule("a {color:#FFC200;}");
-                                    styleSheet.addRule("em {color:#bbbbbb;}");
-                                    styleSheet.addRule(".type-name {color:#888888;}");
+                                    if(Configuracoes.getInstancia().isTemaDark())
+                                    {
+                                        styleSheet.addRule("body {color:#cdcdcd;}");
+                                        styleSheet.addRule(".type-inteiro {color:#45BDFF;}");
+                                        styleSheet.addRule(".type-real {color:#00EFC0;}");
+                                        styleSheet.addRule(".type-logico {color:#FFC200;}");
+                                        styleSheet.addRule(".type-cadeia {color:#BA02F6;}");
+                                        styleSheet.addRule(".type-caracter {color:#F0433B;}");
+
+                                        styleSheet.addRule("h4 {color:#FFC200;}");
+                                        styleSheet.addRule(".function {color:#FFC200;}");
+                                        styleSheet.addRule("a {color:#FFC200;}");
+                                        styleSheet.addRule("em {color:#bbbbbb;}");
+                                        styleSheet.addRule(".type-name {color:#888888;}");
+                                    }
+                                    else
+                                    {
+                                        styleSheet.addRule("body {color:#000000;}");
+                                        styleSheet.addRule(".type-inteiro {color:#6400C8;}");
+                                        styleSheet.addRule(".type-real {color:#6400C8;}");
+                                        styleSheet.addRule(".type-logico {color:#0000ff;}");
+                                        styleSheet.addRule(".type-cadeia {color:#DC009C;}");
+                                        styleSheet.addRule(".type-caracter {color:#DC009C;}");
+
+                                        styleSheet.addRule("h4 {color:#ee8800;}");
+                                        styleSheet.addRule(".function {color:#ad8000;}");
+                                        styleSheet.addRule("a {color:#ee8800;}");
+                                        styleSheet.addRule("em {color:#cc6600;}");
+                                        styleSheet.addRule(".type-name {color:#008080;}");
+                                    }
                                     
                                     editorPane.getDocument().addDocumentListener(new DocumentChangeListener() {
                                         @Override
@@ -187,6 +208,13 @@ public class PSAutoCompletion extends AutoCompletion{
         return x;
     }
     
+    public final static String toHexString(Color colour) throws NullPointerException {
+        String hexColour = Integer.toHexString(colour.getRGB() & 0xffffff);
+        if (hexColour.length() < 6) {
+          hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+        }
+        return "#" + hexColour;
+    }
     
     
     @Override

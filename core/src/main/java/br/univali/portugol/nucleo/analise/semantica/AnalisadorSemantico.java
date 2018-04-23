@@ -1,7 +1,10 @@
 package br.univali.portugol.nucleo.analise.semantica;
 
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoMatrizPodeSerVariavel;
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoMatrizPodeSerVetor;
 import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoSimboloGlobalOcultado;
 import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoValorExpressaoSeraConvertido;
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoVetorPodeSerVariavel;
 import br.univali.portugol.nucleo.analise.semantica.erros.*;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
@@ -53,6 +56,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     public static final String FUNCAO_LIMPA = "limpa";
     public static final String FUNCAO_LEIA = "leia";
     public static final String FUNCAO_ESCREVA = "escreva";
+    public static final String FUNCAO_ALEATORIO = "sorteia";
 
     private int totalVariaveisDeclaradas = 0; // conta variáveis e parâmetros declarados
     private int totalVetoresDeclarados = 0;
@@ -354,7 +358,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         if (chamadaFuncao.getEscopo() == null)
         {
-            if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
+            if(chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO)){
+                return TipoDado.INTEIRO;
+            }else if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
                 return TipoDado.VAZIO;
             }
@@ -516,7 +522,18 @@ public final class AnalisadorSemantico implements VisitanteASA
         List<TipoDado> tiposPassado = obterTiposParametrosPassados(chamadaFuncao, modosAcesso);
 
         int cont = Math.min(tiposEsperados.size(), tiposPassado.size());
-
+        if (chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO))
+        {
+            for (int indice = 0; indice < 2; indice++)
+            {
+                TipoDado tipoPassado = tiposPassado.get(indice);
+                
+                if (!tipoPassado.equals(TipoDado.INTEIRO))
+                {
+                    notificarErroSemantico(new ErroTipoParametroIncompativel(chamadaFuncao.getNome(), obterNomeParametro(chamadaFuncao, indice), chamadaFuncao.getParametros().get(indice), TipoDado.INTEIRO, tipoPassado));
+                }
+            }
+        }
         if (chamadaFuncao.getNome().equals(FUNCAO_ESCREVA))
         {
             int tamanhoTiposPassado = tiposPassado.size();
@@ -718,6 +735,8 @@ public final class AnalisadorSemantico implements VisitanteASA
                 if (chamadaFuncao.getNome().equals(FUNCAO_LIMPA))
                 {
                     return 0;
+                }else if(chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO)){
+                    return 2;
                 }
                 else
                 {
@@ -822,8 +841,26 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
     {
+        
         if (declarandoSimbolosGlobais)
         {
+            if (FUNCOES_RESERVADAS.contains(declaracaoFuncao.getNome())){
+                notificarErroSemantico(new ErroSemantico(declaracaoFuncao.getTrechoCodigoFonteNome()) {
+                    @Override
+                    protected String construirMensagem() {
+                        return "A função "+declaracaoFuncao.getNome()+" é reservada para a linguagem";
+                    }
+                });
+                String nome = declaracaoFuncao.getNome();
+                TipoDado tipoDado = declaracaoFuncao.getTipoDado();
+                Quantificador quantificador = declaracaoFuncao.getQuantificador();
+                Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
+                funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
+                funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
+                funcao.setRedeclarado(true);
+                memoria.adicionarSimbolo(funcao);
+                return null;
+            }
             String nome = declaracaoFuncao.getNome();
             TipoDado tipoDado = declaracaoFuncao.getTipoDado();
             Quantificador quantificador = declaracaoFuncao.getQuantificador();
@@ -916,7 +953,15 @@ public final class AnalisadorSemantico implements VisitanteASA
                             new ErroTamanhoMaximoMatriz(linhas, colunas, nome, bigProduto,
                             noDeclaracaoMatriz.getTrechoCodigoFonteNome()));
                 }
-            }
+                if(linhas == 1 && colunas == 1)
+                {
+                    notificarAviso(new AvisoMatrizPodeSerVariavel(noDeclaracaoMatriz, linhas));
+                }
+                else if(linhas == 1 || colunas == 1)
+                {
+                    notificarAviso(new AvisoMatrizPodeSerVetor(noDeclaracaoMatriz, linhas>colunas ? linhas : colunas, linhas, colunas));
+                }
+            }            
 
             Matriz matriz = new Matriz(nome, tipoDados, noDeclaracaoMatriz, 1, 1);
             matriz.setTrechoCodigoFonteNome(noDeclaracaoMatriz.getTrechoCodigoFonteNome());
@@ -1203,6 +1248,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     notificarErroSemantico(
                             new ErroTamanhoMaximoVetor(tamanho, nome, noDeclaracaoVetor.getTrechoCodigoFonteNome()));
+                }
+                if(tamanho == 1)
+                {
+                    notificarAviso(new AvisoVetorPodeSerVariavel(noDeclaracaoVetor, tamanho));
                 }
             }
             Vetor vetor = new Vetor(nome, tipoDados, noDeclaracaoVetor, 1);
@@ -2126,6 +2175,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         funcoes.add(FUNCAO_LEIA);
         funcoes.add(FUNCAO_ESCREVA);
+        funcoes.add(FUNCAO_ALEATORIO);
         funcoes.add(FUNCAO_LIMPA);
 
         return funcoes;

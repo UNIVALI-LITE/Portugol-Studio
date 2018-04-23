@@ -29,6 +29,7 @@ public class testePalavrasReservadasJavaEmVariaveis extends Programa
     
     @Override
     protected void inicializar () throws ErroExecucao, InterruptedException {
+        super.inicializar();
         do_1010 = new String[3];
         return_1010 = new int[2][2];
     }

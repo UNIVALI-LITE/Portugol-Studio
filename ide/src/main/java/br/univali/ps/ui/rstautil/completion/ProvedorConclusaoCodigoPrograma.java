@@ -272,7 +272,7 @@ public final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProv
             String nome = noDeclaracaoMatriz.getNome();
 
             completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome, nome + "[${indice}][${indice}]", null, null, nivelASA, trecho, local));
-            completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome + "[?][?] = ?", nome + "[?][?] = ?", nome + "[${linha}][${coluna}] = ${expressao}", null, null, nivelASA, trecho, local));
+            completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome + "[linha][coluna] = exprassao", nome + "[linha][coluna] = exprassao", nome + "[${linha}][${coluna}] = ${expressao}", null, null, nivelASA, trecho, local));
 
             return null;
         }
@@ -303,12 +303,12 @@ public final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProv
 
             ConclusaoModeloASA conclusao;
 
-            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[&lt;posicao&gt;]", nome + "[${posicao}]${cursor}", null, String.format("Acessa um elemento do vetor '%s'", nome), nivelASA, trecho, local);
+            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[posicao]", nome + "[${posicao}]${cursor}", null, String.format("Acessa um elemento do vetor '%s'", nome), nivelASA, trecho, local);
             substituirParametro(conclusao, 0, new ParametroConclusaoASA(noDeclaracaoVetor, INDICE_VETOR, conclusao.getParam(0), TipoDado.INTEIRO.toString()));
 
             completions.add(conclusao);
 
-            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[&lt;posicao&gt;] = &lt;expressao&gt;", nome + "[${posicao}] = ${expressao}${cursor}", null, String.format("Armazena um valor em uma posição do vetor '%s'", nome), nivelASA, trecho, local);
+            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[posicao] = expressao", nome + "[${posicao}] = ${expressao}${cursor}", null, String.format("Armazena um valor em uma posição do vetor '%s'", nome), nivelASA, trecho, local);
             substituirParametro(conclusao, 0, new ParametroConclusaoASA(noDeclaracaoVetor, INDICE_VETOR, conclusao.getParam(0), TipoDado.INTEIRO.toString()));
             substituirParametro(conclusao, 1, new ParametroConclusaoASA(noDeclaracaoVetor, ATRIBUICAO_VALOR, conclusao.getParam(1), noDeclaracaoVetor.getTipoDado().getNome()));
 

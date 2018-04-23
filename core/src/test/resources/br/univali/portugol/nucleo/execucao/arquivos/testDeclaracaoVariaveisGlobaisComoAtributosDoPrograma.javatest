@@ -18,6 +18,7 @@ public class testDeclaracaoVariaveisGlobaisComoAtributosDoPrograma extends Progr
 
     @Override
     protected void inicializar () throws ErroExecucao, InterruptedException {
+        super.inicializar();
     }
     
     @Override
