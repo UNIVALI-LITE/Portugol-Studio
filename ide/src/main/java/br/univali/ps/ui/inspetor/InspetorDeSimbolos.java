@@ -745,11 +745,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
     
-    private boolean nosTemMesmoEscopo(NoDeclaracao no1, NoDeclaracao no2) {
-        int id1 = ((NoDeclaracaoInspecionavel)no1).getIdParaInspecao();
-        int id2 = ((NoDeclaracaoInspecionavel)no2).getIdParaInspecao();
+    private boolean nosTemMesmoEscopo(NoDeclaracao no1, NoDeclaracao no2) 
+    {
+        String escopo1 = no1.getEscopo();
+        String escopo2 = no2.getEscopo();
         
-        return id1 == id2;
+        //System.out.println(escopo1 + " -> " + escopo2);
+        
+        return escopo1.equals(escopo2);
     }
     
     private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {

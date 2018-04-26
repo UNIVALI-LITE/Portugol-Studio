@@ -152,4 +152,10 @@ public abstract class NoDeclaracao extends NoBloco
         referencias.add(referencia);
         referencia.setOrigemDaReferencia(this);
     }
+    
+    @Override
+    public String getEscopo()
+    {
+        return super.getEscopo() + String.format("(%s)", getNome());
+    }
 }
