@@ -595,7 +595,7 @@ public class FormatadorCodigo
         public Void visitar(NoReferenciaVariavel no) throws ExcecaoVisitaASA
         {
             String nome = no.getNome();
-            String escopo = no.getEscopo();
+            String escopo = no.getEscopoBiblioteca();
             if (escopo != null) {
                 escopo = br.univali.portugol.nucleo.execucao.gerador.helpers.Utils.getNomeBiblioteca(escopo, asa);
                 saida.append(escopo).append(".");
@@ -798,7 +798,7 @@ public class FormatadorCodigo
         @Override
         public Void visitar(NoChamadaFuncao no) throws ExcecaoVisitaASA
         {
-            String escopoFuncao = (no.getEscopo() != null) ? (no.getEscopo() + ".") : "";
+            String escopoFuncao = (no.getEscopoBiblioteca() != null) ? (no.getEscopoBiblioteca() + ".") : "";
             String nomeFuncao = no.getNome();
 
             List<NoExpressao> parametrosPassados = no.getParametros();

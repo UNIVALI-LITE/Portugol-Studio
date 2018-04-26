@@ -281,7 +281,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) parametro;
 
-                    if (noReferenciaVariavel.getEscopo() == null)
+                    if (noReferenciaVariavel.getEscopoBiblioteca() == null)
                     {
                         try
                         {
@@ -319,7 +319,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         List<ModoAcesso> modosAcesso = new ArrayList<>();
 
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -341,7 +341,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -356,7 +356,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private TipoDado obterTipoRetornoFuncao(NoChamadaFuncao chamadaFuncao)
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if(chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO)){
                 return TipoDado.INTEIRO;
@@ -380,7 +380,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
 
             return metaDadosFuncao.getTipoDado();
@@ -430,7 +430,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         List<Quantificador> quantificadores = new ArrayList<>();
 
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -451,7 +451,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -586,7 +586,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private String obterNomeParametro(NoChamadaFuncao chamadaFuncao, int indice)
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             try
             {
@@ -601,7 +601,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -614,7 +614,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         List<TipoDado> tipos = new ArrayList<>();
 
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -639,7 +639,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -662,7 +662,7 @@ public final class AnalisadorSemantico implements VisitanteASA
             {
                 NoExpressao parametro = chamadaFuncao.getParametros().get(indice);
 
-                if (chamadaFuncao.getEscopo() == null && FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
+                if (chamadaFuncao.getEscopoBiblioteca() == null && FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
                 {
                     passandoReferencia = false;
                 }
@@ -691,7 +691,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                             // Não faz nada
                         }
                     }
-                    passandoParametro = (chamadaFuncao.getEscopo() == null && !FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()));
+                    passandoParametro = (chamadaFuncao.getEscopoBiblioteca() == null && !FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()));
                     tipos.add((TipoDado) parametro.aceitar(this));
                     passandoParametro = false;
                 }
@@ -728,7 +728,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private int obterNumeroParametrosEsperados(NoChamadaFuncao chamadaFuncao)
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -764,7 +764,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
 
             return metaDadosFuncao.obterMetaDadosParametros().quantidade();
@@ -773,7 +773,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private void verificarFuncaoExiste(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -799,7 +799,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
 
             if (metaDadosBiblioteca != null)
             {
@@ -818,7 +818,7 @@ public final class AnalisadorSemantico implements VisitanteASA
             }
             else
             {
-                notificarErroSemantico(new ErroInclusaoBiblioteca(chamadaFuncao.getTrechoCodigoFonteNome(), new Exception(String.format("A biblioteca '%s' não foi incluída no programa", chamadaFuncao.getEscopo()))));
+                notificarErroSemantico(new ErroInclusaoBiblioteca(chamadaFuncao.getTrechoCodigoFonteNome(), new Exception(String.format("A biblioteca '%s' não foi incluída no programa", chamadaFuncao.getEscopoBiblioteca()))));
                 throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, chamadaFuncao);
             }
         }
@@ -1533,7 +1533,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     final NoReferenciaVariavel referencia = (NoReferenciaVariavel) noOperacao.getOperandoEsquerdo();
 
-                    if (referencia.getEscopo() == null)
+                    if (referencia.getEscopoBiblioteca() == null)
                     {
                         simbolo = memoria.getSimbolo(referencia.getNome());
 
@@ -1587,10 +1587,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                          * Por isso, ao trabalhar com as bibliotecas dentro do semântico, deve-se sempre utilizar
                          * o mapa interno, caso contrário vai dar NullPointerException.
                          */
-                        final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(referencia.getEscopo());
+                        final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(referencia.getEscopoBiblioteca());
                         if(metaDadosBiblioteca == null)
                         {
-                            notificarErroSemantico(new ErroAliasInexistente(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), referencia.getEscopo()));
+                            notificarErroSemantico(new ErroAliasInexistente(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), referencia.getEscopoBiblioteca()));
                         }
                         else
                         {
@@ -1937,7 +1937,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA
     {
-        if (noReferenciaVariavel.getEscopo() == null)
+        if (noReferenciaVariavel.getEscopoBiblioteca() == null)
         {
             try
             {
@@ -2386,7 +2386,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private TipoDado analisarReferenciaVariavelBiblioteca(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA
     {
-        final String escopo = noReferenciaVariavel.getEscopo();
+        final String escopo = noReferenciaVariavel.getEscopoBiblioteca();
         final String nome = noReferenciaVariavel.getNome();
         final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(escopo);
 
@@ -2428,7 +2428,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     NoReferenciaVariavel ref = (NoReferenciaVariavel) expTamanho;
 
-                    if (ref.getEscopo() == null)
+                    if (ref.getEscopoBiblioteca() == null)
                     {
                         try
                         {
@@ -2453,7 +2453,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                     }
                     else
                     {
-                        MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(ref.getEscopo());
+                        MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(ref.getEscopoBiblioteca());
                         MetaDadosConstantes metaDadosConstantes = metaDadosBiblioteca.getMetaDadosConstantes();
                         MetaDadosConstante metaDadosConstante = metaDadosConstantes.obter(ref.getNome());
 
