@@ -143,6 +143,13 @@ public final class AnalisadorSemantico implements VisitanteASA
             }
         }
     }
+    
+    private void setarPaiDoNo(No no)
+    {
+        if (funcaoAtual != null) {
+            no.setPai(funcaoAtual.getOrigemDoSimbolo());
+        }
+    }
 
     @Override
     public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA
@@ -178,18 +185,22 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noCadeia);
         return TipoDado.CADEIA;
     }
 
     @Override
     public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noCaracter);
         return TipoDado.CARACTER;
     }
 
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noCaso);
+        
         if (noCaso.getExpressao() != null)
         {
             TipoDado tipoDado = (TipoDado) noCaso.getExpressao().aceitar(this);
@@ -215,6 +226,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(chamadaFuncao);
+        
         verificarFuncaoExiste(chamadaFuncao);
         verificarQuantidadeParametros(chamadaFuncao);
         verificarTiposParametros(chamadaFuncao);
@@ -841,6 +854,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(declaracaoFuncao);
         
         if (declarandoSimbolosGlobais)
         {
@@ -929,6 +943,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noDeclaracaoMatriz);
+        
         noDeclaracaoMatriz.setIdParaInspecao(totalMatrizesDeclaradas);
         totalMatrizesDeclaradas++;
         
@@ -1112,6 +1128,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoVariavel declaracaoVariavel) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(declaracaoVariavel);
+        
         declaracaoVariavel.setIdParaInspecao(totalVariaveisDeclaradas);
         //System.out.println(declaracaoVariavel.getNome() + " => " + totalVariaveisDeclaradas);
         totalVariaveisDeclaradas++;
@@ -1231,6 +1249,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noDeclaracaoVetor);
+        
         noDeclaracaoVetor.setIdParaInspecao(totalVetoresDeclarados);
         totalVetoresDeclarados++;
         
@@ -1372,6 +1392,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noEnquanto);
+        
         TipoDado tipoDadoCondicao = (TipoDado) noEnquanto.getCondicao().aceitar(this);
 
         if (tipoDadoCondicao != TipoDado.LOGICO)
@@ -1387,6 +1409,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noEscolha);
+        
         tipoDadoEscolha.push((TipoDado) noEscolha.getExpressao().aceitar(this));
 
         if ((tipoDadoEscolha.peek() != TipoDado.INTEIRO) && (tipoDadoEscolha.peek() != TipoDado.CARACTER))
@@ -1407,6 +1431,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noFacaEnquanto);
+        
         analisarListaBlocos(noFacaEnquanto.getBlocos());
 
         TipoDado tipoDadoCondicao = (TipoDado) noFacaEnquanto.getCondicao().aceitar(this);
@@ -1422,18 +1448,21 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noInteiro);
         return TipoDado.INTEIRO;
     }
 
     @Override
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noLogico);
         return TipoDado.LOGICO;
     }
 
     @Override
     public Object visitar(NoMatriz noMatriz) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noMatriz);
         List<List<Object>> valores = noMatriz.getValores();
 
         if (valores != null && !valores.isEmpty())
@@ -1477,6 +1506,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noMenosUnario);
+        
         TipoDado tipo = (TipoDado) noMenosUnario.getExpressao().aceitar(this);
         if (!tipo.equals(TipoDado.INTEIRO) && !tipo.equals(TipoDado.REAL))
         {
@@ -1490,6 +1521,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoNao noNao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noNao);
+        
         TipoDado tipo = (TipoDado) noNao.getExpressao().aceitar(this);
         if (tipo != TipoDado.LOGICO)
         {
@@ -1502,18 +1535,22 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaDiferenca noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(final NoOperacaoAtribuicao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
+        
         TipoDado tipoDadoRetorno;
 
         TipoDado operandoEsquerdo = null;
@@ -1700,102 +1737,120 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoOperacaoLogicaE noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaOU noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaior noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaiorIgual noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenor noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenorIgual noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoSoma noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoSubtracao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoDivisao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoMultiplicacao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoModulo noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseLeftShift noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseRightShift noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseE noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseOu noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseXOR noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoBitwiseNao noOperacaoBitwiseNao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacaoBitwiseNao);
+        
         TipoDado tipo = (TipoDado) noOperacaoBitwiseNao.getExpressao().aceitar(this);
         if (tipo != TipoDado.INTEIRO)
         {
@@ -1808,6 +1863,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noPara);
+        
         memoria.empilharEscopo();
 
         try
@@ -1881,18 +1938,22 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoPare noPare) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noPare);
         return null;
     }
 
     @Override
     public Object visitar(NoReal noReal) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noReal);
         return TipoDado.REAL;
     }
 
     @Override
     public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noReferenciaMatriz);
+        
         try
         {
             TipoDado tipoLinha = (TipoDado) noReferenciaMatriz.getLinha().aceitar(this);
@@ -1937,6 +1998,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noReferenciaVariavel);
+        
         if (noReferenciaVariavel.getEscopoBiblioteca() == null)
         {
             try
@@ -1957,6 +2020,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoReferenciaVetor noReferenciaVetor) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noReferenciaVetor);
+        
         try
         {
             TipoDado tipoIndice = (TipoDado) noReferenciaVetor.getIndice().aceitar(this);
@@ -2040,6 +2105,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noSe);
+        
         TipoDado tipoDadoCondicao = (TipoDado) noSe.getCondicao().aceitar(this);
 
         if (tipoDadoCondicao != TipoDado.LOGICO)
@@ -2056,6 +2123,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoVetor noVetor) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noVetor);
+        
         List<NoExpressao> valores = (List) noVetor.getValores();
 
         if (valores != null && !valores.isEmpty())
@@ -2095,6 +2164,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noDeclaracaoParametro);
+        
         switch (noDeclaracaoParametro.getQuantificador())
         {
             case VALOR:
@@ -2484,18 +2555,21 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noContinue);
         throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noContinue.getTrechoCodigoFonte()), asa, noContinue);
     }
 
     @Override
     public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noTitulo);
         throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noTitulo.getTrechoCodigoFonte()), asa, noTitulo);
     }
 
     @Override
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noVaPara);
         throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noVaPara.getTrechoCodigoFonte()), asa, noVaPara);
     }
 }
