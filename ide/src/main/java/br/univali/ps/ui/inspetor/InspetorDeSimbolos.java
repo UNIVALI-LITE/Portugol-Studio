@@ -376,13 +376,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     @Override
     public void execucaoIniciada(Programa programa) {
         programaExecutando = true;
+        limpaValores();
         setStatusDoDestaqueNosSimbolosInspecionados(false);
         timerAtualizacao.start();
     }
 
     private void atualizaValoresVariaveisInspecionadas()
     {
-        SwingUtilities.invokeLater(() -> {
+        Runnable tarefa = () -> {
             
             if (programa == null)
             {
@@ -398,7 +399,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             }
         
             redesenhaItemsDaLista();
-        });
+        };
+        
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(tarefa);
+        }
+        else {
+            tarefa.run();
+        }
     }
     
     @Override
