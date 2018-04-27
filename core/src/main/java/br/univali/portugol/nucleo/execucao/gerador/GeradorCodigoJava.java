@@ -610,7 +610,7 @@ public class GeradorCodigoJava
         public Void visitar(NoReferenciaVariavel no) throws ExcecaoVisitaASA
         {
             String nome = no.getNome();
-            String escopo = no.getEscopo();
+            String escopo = no.getEscopoBiblioteca();
             if (escopo != null)
             {
                 escopo = Utils.getNomeBiblioteca(escopo, asa);

@@ -56,6 +56,16 @@ public abstract class No
     {
         this.pai = pai;
     }
+    
+    public String getEscopo()
+    {
+        String escopo = getClass().getSimpleName();
+        
+        if (temPai())
+            escopo = pai.getEscopo() + "." + escopo;
+            
+        return escopo;
+    }
 
     /**
      *
