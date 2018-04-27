@@ -246,10 +246,6 @@ public abstract class Programa
 		{
 			variaveisInspecionadas[idVariavel] = OBJETO_NULO;
 		}
-		else
-		{
-			System.out.println(String.format("ID de variável inválido: %d", idVariavel));
-		}
 	}
 
 	public void inspecionaVetor(int idVetor, int tamanhoVetor)
@@ -257,10 +253,6 @@ public abstract class Programa
 		if (idVetor >= 0 && idVetor < vetoresInspecionados.length)
 		{
 			vetoresInspecionados[idVetor] = new Vetor(tamanhoVetor);
-		}
-		else
-		{
-			System.out.println(String.format("ID de vetor inválido: %d", idVetor));
 		}
 	}
 
@@ -270,10 +262,6 @@ public abstract class Programa
 		{
 			matrizesInspecionadas[idMatriz] = new Matriz(linhas, colunas);
 		}
-		else
-		{
-			System.out.println(String.format("ID de matriz inválido: %d", idMatriz));
-		}
 	}
 
 	public Object getValorVariavelInspecionada(int idVariavel)
@@ -281,10 +269,6 @@ public abstract class Programa
 		if (idVariavel >= 0 && idVariavel < variaveisInspecionadas.length)
 		{
 			return variaveisInspecionadas[idVariavel];
-		}
-		else
-		{
-			System.out.println(String.format("ID de variável inválido: %d", idVariavel));
 		}
 		return OBJETO_NULO;
 	}
@@ -349,19 +333,7 @@ public abstract class Programa
 						return valor;
 					}
 				}
-				else
-				{
-					System.out.println(String.format("indice inválido acessando o vetor %d (índice: %d)", idVetor, coluna));
-				}
 			}
-			else
-			{
-				System.out.println(String.format("Vetor no índice %d está nulo!", idVetor));
-			}
-		}
-		else
-		{
-			System.out.println(String.format("ID de vetor inválido: %d", idVetor));
 		}
 		return OBJETO_NULO;
 	}
@@ -422,25 +394,10 @@ public abstract class Programa
 							return vetorLinha.getDados()[coluna];
 						}
 					}
-					else
-					{
-						System.out.println(String.format("indice de coluna inválido acessando a matriz %d (índice: %d)", idMatriz, coluna));
-					}
-				}
-				else
-				{
-					System.out.println(String.format("indice de linha inválido acessando a matriz %d (índice: %d)", idMatriz, linha));
 				}
 			}
-			else
-			{
-				System.out.println(String.format("Matriz no índice %d está nula!", idMatriz));
-			}
 		}
-		else
-		{
-			System.out.println(String.format("ID de vetor inválido: %d", idMatriz));
-		}
+
 		return OBJETO_NULO;
 	}
 
