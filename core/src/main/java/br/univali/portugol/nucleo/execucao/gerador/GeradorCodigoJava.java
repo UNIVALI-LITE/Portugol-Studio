@@ -206,6 +206,18 @@ public class GeradorCodigoJava
                     }
                     saida.append(";").println();
                 }
+                
+                if (opcoes.gerandoCodigoParaInspecaoDeSimbolos) {
+                    // atualiza os valores das variáveis globais inpecionadas e inicializadas para que o valor inicial já esteja disponível no inspetor quando o programa inicia
+                    if (variavelInicializada) {
+                        if (ehVetor)
+                            Utils.geraCodigoParaInspecao((NoDeclaracaoVetor)variavel, saida, nivelEscopo, seed);
+                        else if (ehMatriz)
+                            Utils.geraCodigoParaInspecao((NoDeclaracaoMatriz)variavel, saida, nivelEscopo, seed);
+                        else
+                            Utils.geraCodigoParaInspecao((NoDeclaracaoVariavel)variavel, saida, nivelEscopo, false);
+                    }
+                }
             }
         }
         
