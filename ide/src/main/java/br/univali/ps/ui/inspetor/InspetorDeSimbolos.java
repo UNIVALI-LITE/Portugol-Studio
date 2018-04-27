@@ -298,13 +298,16 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
+    private void limpaValores()
+    {
+        for (int i = 0; i < model.getSize(); i++) {
+            model.getElementAt(i).limpa();
+        }        
+    }
+    
     @Override
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
         programaExecutando = false;
-        //limpa os valores no fim da execução
-        for (int i = 0; i < model.getSize(); i++) {
-            model.getElementAt(i).limpa();
-        }
         ultimoItemModificado = null;
         timerAtualizacao.stop();
         setStatusDoDestaqueNosSimbolosInspecionados(true);
