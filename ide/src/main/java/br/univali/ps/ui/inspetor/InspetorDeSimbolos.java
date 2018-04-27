@@ -307,11 +307,20 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     
     @Override
     public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-        programaExecutando = false;
-        ultimoItemModificado = null;
-        timerAtualizacao.stop();
-        setStatusDoDestaqueNosSimbolosInspecionados(true);
-        repaint();
+        Runnable tarefa = () -> {
+            programaExecutando = false;
+            timerAtualizacao.stop();
+            atualizaValoresVariaveisInspecionadas();
+            ultimoItemModificado = null;
+            resetaDestaqueDosSimbolos();
+        };
+        
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(tarefa);
+        }
+        else {
+            tarefa.run();
+        }
     }
 
     private void setStatusDoDestaqueNosSimbolosInspecionados(boolean statusDoDestaque) {
