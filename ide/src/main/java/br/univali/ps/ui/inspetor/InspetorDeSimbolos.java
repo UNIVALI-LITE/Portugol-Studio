@@ -131,7 +131,18 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
         if (!model.isEmpty()) //só resconstrói a lista de símbolos se existem símbolos sendo inspecionados
         {
-            SwingUtilities.invokeLater(new TarefaReconstrucaoNosInspecionados());
+            Runnable tarefa = new TarefaReconstrucaoNosInspecionados();
+            
+            // Só executa a reconstrução dos nós inpecionados com invokeLater se já não estiver na EDT.
+            // Com isso evitamos executar a tarefa na EDT, mesmo já estando nela, fazendo com que a tarefa 
+            // seja executa só depois de algum tempo, o que já é tarde demais para a inicialização dos símbolos.
+            
+            if (SwingUtilities.isEventDispatchThread()) {
+                tarefa.run();
+            }
+            else {
+                SwingUtilities.invokeLater(tarefa);
+            }
         }
     }
     
