@@ -916,26 +916,26 @@ include /usr/share/nano/portugol.nanorc</text>
                                     <program>/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister</program>
                                     <programArguments>-kill -domain local -domain system -domain user</programArguments>
                                 </runProgram>
-								
-								<runProgram>
-									<program>touch</program>
-									<programArguments>"${install_app_bundle_dir}"</programArguments>
-								</runProgram>
-								
-								<runProgram>
-									<program>touch</program>
-									<programArguments>"${install_app_bundle_dir}/Contents/Info.plist"</programArguments>
-								</runProgram>
-								
-								<runProgram>
-									<program>killall</program>
-									<programArguments>Dock</programArguments>
-								</runProgram>
-								
-								<runProgram>
-									<program>killall</program>
-									<programArguments>Finder</programArguments>
-								</runProgram>
+
+                								<runProgram>
+                									<program>touch</program>
+                									<programArguments>"${install_app_bundle_dir}"</programArguments>
+                								</runProgram>
+
+                								<runProgram>
+                									<program>touch</program>
+                									<programArguments>"${install_app_bundle_dir}/Contents/Info.plist"</programArguments>
+                								</runProgram>
+
+                								<runProgram>
+                									<program>killall</program>
+                									<programArguments>Dock</programArguments>
+                								</runProgram>
+
+                								<runProgram>
+                									<program>killall</program>
+                									<programArguments>Finder</programArguments>
+                								</runProgram>
                             </actionList>
                         </actionGroup>
                     </actionList>
