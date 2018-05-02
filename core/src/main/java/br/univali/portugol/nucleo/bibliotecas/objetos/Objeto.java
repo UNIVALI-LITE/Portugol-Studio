@@ -12,13 +12,10 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
+import javax.naming.directory.InvalidAttributeValueException;
 
 
 /**
@@ -31,7 +28,7 @@ public class Objeto {
     public static final int JSON = 1;
     public static final int XML = 2;
     
-    private final ObjectMapper mapper;
+    private static ObjectMapper mapper;
     public Objeto(){
         objetoInterno = new HashMap();
         mapper = new ObjectMapper();
@@ -79,37 +76,93 @@ public class Objeto {
         return objeto;
     }
     
+    private Object criarMensagemPropriedadeInexistente(String propriedade) throws InvalidAttributeValueException{
+        StringBuilder texto = new StringBuilder("O objeto não contém a propriedade ");
+            texto.append(propriedade);
+            if(objetoInterno.keySet().size() > 0){
+                texto.append(". \nVocê pode acessar as seguintes propriedades: ");
+                objetoInterno.keySet().forEach((chave) -> texto.append(chave).append(", "));    
+            }
+            
+            String textoParaRetorno = texto.toString();
+            if(textoParaRetorno.contains(","))
+                textoParaRetorno= textoParaRetorno.substring(0, textoParaRetorno.length()-2);
+            
+            throw new InvalidAttributeValueException(textoParaRetorno);
+    }
+    
+    private static<T> T criarMensagemTipoIncompativel(){
+        throw new ClassCastException("O tipo da propriedade informada não corresponde ao tipo identificado na função.\nAltere a função de chamada para o tipo correto.");
+    }
+    
     public void atribuirPropriedade(String propriedade, Object valor){
         objetoInterno.put(propriedade, valor);
     }
     
-    public Object obterPropriedade(String propriedade){
-        return objetoInterno.get(propriedade);
+    public Object obterPropriedade(String propriedade) throws InvalidAttributeValueException{
+        return objetoInterno.containsKey(propriedade) ?
+                objetoInterno.get(propriedade)
+                : criarMensagemPropriedadeInexistente(propriedade);
     }
     
-    public int obterPropriedadeInteiro(String propriedade){
-        return (int) objetoInterno.get(propriedade);
+    public static int obterPropriedadeInteiro(Object propriedade){
+        return propriedade instanceof Integer ?
+                (int) propriedade
+                : criarMensagemTipoIncompativel();
     }
     
-    public String obterPropriedadeCadeia(String propriedade){
-        return (String) objetoInterno.get(propriedade);
+    public int obterPropriedadeInteiro(String propriedade) throws InvalidAttributeValueException{
+        return obterPropriedadeInteiro(obterPropriedade(propriedade));
     }
     
-    public boolean obterPropriedadeLogico(String propriedade){
-        return (boolean) objetoInterno.get(propriedade);
+    public static String obterPropriedadeCadeia(Object propriedade){
+        return propriedade instanceof String ?
+                (String) propriedade
+                : criarMensagemTipoIncompativel();
     }
     
-    public char obterPropriedadeCaracter(String propriedade){
-        return ((String) objetoInterno.get(propriedade)).charAt(0);
+    public String obterPropriedadeCadeia(String propriedade) throws InvalidAttributeValueException{
+        return obterPropriedadeCadeia(objetoInterno.get(propriedade));
     }
     
-    public double obterPropriedadeReal(String propriedade){
-        return (double) objetoInterno.get(propriedade);
+    public static boolean obterPropriedadeLogico(Object propriedade){
+        return propriedade instanceof Boolean ?
+                (boolean) propriedade
+                : criarMensagemTipoIncompativel();
     }
     
-    public String obterPropriedadeObjeto(String propriedade) throws JsonProcessingException{
-        HashMap objetoAninhado = (HashMap) objetoInterno.get(propriedade);
-        return obterJson(objetoAninhado);
+    public boolean obterPropriedadeLogico(String propriedade) throws InvalidAttributeValueException{
+        return obterPropriedadeLogico(obterPropriedade(propriedade));
+    }
+    
+    public static char obterPropriedadeCaracter(Object propriedade){
+        return propriedade instanceof String ?
+                ((String) propriedade).charAt(0)
+                : criarMensagemTipoIncompativel();
+    }
+    
+    public char obterPropriedadeCaracter(String propriedade) throws InvalidAttributeValueException{
+        return obterPropriedadeCaracter(obterPropriedade(propriedade));
+    }
+    
+     public static double obterPropriedadeReal(Object propriedade){
+        return propriedade instanceof Double ?
+                (double) propriedade
+                : criarMensagemTipoIncompativel();
+    }
+    
+    public double obterPropriedadeReal(String propriedade) throws InvalidAttributeValueException{
+        return obterPropriedadeReal(obterPropriedade(propriedade));
+    }
+    
+    public static HashMap obterPropriedadeObjeto(Object propriedade){
+        return propriedade instanceof HashMap?
+                (HashMap) propriedade
+                : criarMensagemTipoIncompativel();
+    }
+    
+    public HashMap obterPropriedadeObjeto(String propriedade) throws JsonProcessingException, InvalidAttributeValueException{
+        return obterPropriedadeObjeto(obterPropriedade(propriedade));
     }
     
     public boolean contemPropriedade(String propriedade){
@@ -120,7 +173,7 @@ public class Objeto {
         return obterJson(objetoInterno);
     }
     
-    public String obterJson(HashMap objeto) throws JsonGenerationException, JsonProcessingException{
+    public static String obterJson(HashMap objeto) throws JsonGenerationException, JsonProcessingException{
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objeto);       
     }
     
