@@ -51,6 +51,9 @@ public final class FabricaDicasInterface
 
     public static void criarTooltipPara(JComponent componente, String dica, Icon icone)
     {
+        if(componente == null)
+            return;
+        
         final WebCustomTooltip tip = TooltipManager.setTooltip(componente, icone, dica);
 
         componente.addMouseListener(new MouseAdapter()
@@ -67,6 +70,9 @@ public final class FabricaDicasInterface
 
     public static void criarTooltipEstatica(JComponent componente, String dica, Point point)
     {
+        if(componente == null)
+            return;
+        
         if (ultimaDicaExibida != null && ultimaDicaExibida.isVisible())
         {
             ultimaDicaExibida.setVisible(false);
@@ -77,18 +83,27 @@ public final class FabricaDicasInterface
 
     public static void criarTooltipEstatica(JComponent componente, String dica)
     {
+        if(componente == null)
+            return;
+        
         WebCustomTooltip tip = TooltipManager.setTooltip(componente, ICONE_LAMPADA_PEQUENA, dica);
         TooltipManager.showOneTimeTooltip(tip);
     }
     
     public static void criaTooltipEstatica(JComponent componente,Icon icone, String dica)
     {
+        if(componente == null)
+            return;
+        
         WebCustomTooltip tip = TooltipManager.setTooltip(componente, icone, dica);
         TooltipManager.showOneTimeTooltip(tip);
     }
     
     public static void mostrarPopUp(JComponent componente, String texto)
     {
+        if(componente == null)
+            return;
+        
         WebPopOver popOver = new WebPopOver ();
         popOver.setCloseOnFocusLoss ( true );
         popOver.setMargin ( 10 );
