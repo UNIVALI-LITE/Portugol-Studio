@@ -821,7 +821,7 @@ public final class Arquivos extends Biblioteca
 
     private final class Arquivo
     {
-        private static final String charset = "ISO-8859-1";
+        private static final String charset = "UTF-8";
         private final File arquivo;
 
         private ModoAcesso modoAcesso;
