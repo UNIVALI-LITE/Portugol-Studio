@@ -234,8 +234,6 @@
         "jdk/jre/bin",
         "jdk/jre/lib/jexec",
         
-        "jdk/jre/lib/i386/client",
-
         "jdk/jre/lib/i386/libjavafx_font_freetype.so",
         "jdk/jre/lib/i386/libjavafx_font_pango.so",
         "jdk/jre/lib/i386/libjavafx_font_t2k.so",
