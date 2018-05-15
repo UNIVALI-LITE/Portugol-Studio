@@ -276,6 +276,17 @@ public class TelaPrincipal extends javax.swing.JPanel
 
     public void criarNovoCodigoFonte()
     {
+        SwingUtilities.invokeLater(() -> {
+            TelaCustomBorder main = new TelaCustomBorder("Novo Programa");
+            TelaNovoProjeto tnp = new TelaNovoProjeto();
+            
+            //tnp.setAcaoFechar(main.getAcaoSair());
+            main.setMinimumSize(new Dimension(280, 450));
+            main.setPanel(tnp, false);
+            main.setLocationRelativeTo(null);
+            main.setVisible(true);
+            main.pack();            
+        });
         final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();        
         painelTabuladoPrincipal.adicionaAba(abaCodigoFonte);
         abaCodigoFonte.carregarAlgoritmoPadrao();
