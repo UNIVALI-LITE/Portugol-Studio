@@ -270,9 +270,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(jScrollPane1);
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
-            WeblafUtils.configuraWebLaf(buscaExemplo);
+            WeblafUtils.configuraWebLaf(buscaExemplo.getCampoBusca());
             WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 10);
-            WeblafUtils.configurarBotao(limparCampo, ColorController.FUNDO_ESCURO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2);
         }
     }
     
@@ -466,7 +465,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item + "name"));
                         List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir, prop.getProperty(item + "dir")));
                         subNodes.stream().forEach((subNode) -> {
-                            if(buscaExemplo.getText().isEmpty())
+                            if(buscaExemplo.getCampoBusca().getText().isEmpty())
                             {
                                 node.add(subNode);
                             }
@@ -475,10 +474,10 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                                 nodes.add(subNode);
                             }
                         });
-                        if(buscaExemplo.getText().isEmpty())
+                        if(buscaExemplo.getCampoBusca().getText().isEmpty())
                         nodes.add(node);
                     } else {
-                        if(!prop.getProperty(item + "name").toLowerCase().contains(buscaExemplo.getText().toLowerCase()))
+                        if(!prop.getProperty(item + "name").toLowerCase().contains(buscaExemplo.getCampoBusca().getText().toLowerCase()))
                         {                            
                             continue;
                         }
@@ -554,7 +553,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
                         t.getPainelTabulado().adicionaAba(abaCodigoFonte);
-                        buscaExemplo.setText("");
+                        buscaExemplo.getCampoBusca().setText("");
                     }
                 });
                 botaoAbrirExemplo.setText("Explorar Exemplo");
@@ -618,8 +617,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         jPanel3 = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        limparCampo = new com.alee.laf.button.WebButton();
-        buscaExemplo = new br.univali.ps.ui.rstautil.tree.SearchTextField();
+        buscaExemplo = new br.univali.ps.ui.rstautil.tree.SearchTextPanel();
 
         painelRecentesPrincipal.setLayout(new java.awt.BorderLayout());
 
@@ -758,17 +756,9 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         labelTitulo.setOpaque(true);
         jPanel3.add(labelTitulo, java.awt.BorderLayout.NORTH);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 2, 0));
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
-
-        limparCampo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"))); // NOI18N
-        limparCampo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                limparCampoActionPerformed(evt);
-            }
-        });
-        jPanel4.add(limparCampo, java.awt.BorderLayout.EAST);
         jPanel4.add(buscaExemplo, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -788,17 +778,13 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         // TODO add your handling code here:
     }//GEN-LAST:event_botaoAbrirExemploActionPerformed
 
-    private void limparCampoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparCampoActionPerformed
-        buscaExemplo.setText("");
-    }//GEN-LAST:event_limparCampoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaLogo;
     private javax.swing.JPanel areaRecentes;
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
-    private br.univali.ps.ui.rstautil.tree.SearchTextField buscaExemplo;
+    private br.univali.ps.ui.rstautil.tree.SearchTextPanel buscaExemplo;
     private javax.swing.JLabel description;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JPanel imagePane;
@@ -812,7 +798,6 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelVersao;
-    private com.alee.laf.button.WebButton limparCampo;
     private javax.swing.JPanel painelDireita;
     private javax.swing.JPanel painelEsquerda;
     private javax.swing.JPanel painelRecentes;
