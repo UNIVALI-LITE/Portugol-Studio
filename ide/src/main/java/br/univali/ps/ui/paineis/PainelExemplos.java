@@ -405,6 +405,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         arvoreExemplos.setCellRenderer(new ExampleTreeRender());
         arvoreExemplos.setUI(new PSTreeUI());
         mostrarExemplos();
+        initTreeListner();
     }
     
     private void mostrarExemplos()
@@ -421,9 +422,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             arvoreExemplos.setModel(model);
             arvoreExemplos.setRootVisible(false);
             arvoreExemplos.setShowsRootHandles(true);
-            initTreeListner();
 //          expandJTree();
-            jTreedoClick();
+            jTreedoClick();            
         }
     }
 
