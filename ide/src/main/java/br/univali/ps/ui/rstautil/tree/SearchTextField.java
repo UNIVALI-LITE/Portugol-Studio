@@ -25,7 +25,7 @@ import javax.swing.event.DocumentListener;
 public class SearchTextField extends JTextField
 {
     private static final Icon SEARCH_ICON = getIcon();
-    private static final int SEARCH_DELAY = 500;
+    private int searchDelay = 500;
 
     private final Insets originalInsets;
     private String placeholder = "Localizar (Control + L)";
@@ -100,7 +100,7 @@ public class SearchTextField extends JTextField
             {
                 if (searchTimer == null)
                 {
-                    searchTimer = new Timer(SEARCH_DELAY, (ActionEvent e) ->
+                    searchTimer = new Timer(searchDelay, (ActionEvent e) ->
                     {
                         if (getSearchAction() != null)
                         {
@@ -108,7 +108,7 @@ public class SearchTextField extends JTextField
                         }
                     });
                     
-                    searchTimer.setInitialDelay(SEARCH_DELAY);
+                    searchTimer.setInitialDelay(searchDelay);
                     searchTimer.setRepeats(false);
                     searchTimer.start();
                 }
@@ -140,6 +140,14 @@ public class SearchTextField extends JTextField
         this.placeholder = placeholder;
     }
 
+    public int getSearchDelay() {
+        return searchDelay;
+    }
+
+    public void setSearchDelay(int search_delay) {
+        this.searchDelay = search_delay;
+    }  
+    
     private boolean podePintarPlaceholder()
     {
         return !this.hasFocus() && this.getText().equals("");
