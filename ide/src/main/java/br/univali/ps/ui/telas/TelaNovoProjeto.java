@@ -5,9 +5,12 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
-import java.awt.Color;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import java.util.List;
+import javax.swing.JCheckBox;
 
 /**
  *
@@ -20,6 +23,12 @@ public class TelaNovoProjeto extends javax.swing.JPanel implements Themeable{
      */
     public TelaNovoProjeto() {
         initComponents();
+        List<String> libs = GerenciadorBibliotecas.getInstance().getBibliotecasDisponiveis();
+        for (String lib : libs) {
+            JCheckBox check = new JCheckBox(lib);
+            check.setForeground(ColorController.COR_LETRA);
+            painelCheckBox.add(check);
+        }
         configurarCores();
     }
 
@@ -33,12 +42,8 @@ public class TelaNovoProjeto extends javax.swing.JPanel implements Themeable{
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
+        pergunta = new javax.swing.JLabel();
+        painelCheckBox = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -51,64 +56,31 @@ public class TelaNovoProjeto extends javax.swing.JPanel implements Themeable{
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText("jLabel2");
-        jPanel1.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+        pergunta.setText("Quais Bibliotecas serão utilizadas?");
+        pergunta.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 10, 1));
+        jPanel1.add(pergunta, java.awt.BorderLayout.PAGE_START);
 
-        jPanel4.setOpaque(false);
-        jPanel4.setLayout(new java.awt.GridLayout(2, 0));
-
-        jCheckBox1.setText("jCheckBox1");
-        jCheckBox1.setOpaque(false);
-        jPanel4.add(jCheckBox1);
-
-        jCheckBox2.setText("jCheckBox2");
-        jCheckBox2.setOpaque(false);
-        jPanel4.add(jCheckBox2);
-
-        jCheckBox3.setText("jCheckBox3");
-        jCheckBox3.setOpaque(false);
-        jPanel4.add(jCheckBox3);
-
-        jCheckBox4.setText("jCheckBox4");
-        jCheckBox4.setOpaque(false);
-        jPanel4.add(jCheckBox4);
-
-        jPanel1.add(jPanel4, java.awt.BorderLayout.CENTER);
+        painelCheckBox.setLayout(new java.awt.GridLayout(0, 3));
+        jPanel1.add(painelCheckBox, java.awt.BorderLayout.CENTER);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("Este é um programa:");
         jPanel2.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel3.setOpaque(false);
+        jPanel3.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
         jToggleButton1.setText("jToggleButton1");
+        jPanel3.add(jToggleButton1);
 
         jToggleButton2.setText("jToggleButton2");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addComponent(jToggleButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                .addComponent(jToggleButton2)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton1)
-                    .addComponent(jToggleButton2))
-                .addContainerGap(53, Short.MAX_VALUE))
-        );
+        jPanel3.add(jToggleButton2);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -117,23 +89,24 @@ public class TelaNovoProjeto extends javax.swing.JPanel implements Themeable{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JPanel painelCheckBox;
+    private javax.swing.JLabel pergunta;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void configurarCores() {
         this.setBackground(ColorController.COR_PRINCIPAL);
-        jLabel1.setForeground(Color.yellow);
+        jLabel1.setForeground(ColorController.AMARELO);
+        pergunta.setForeground(ColorController.COR_LETRA);
+        painelCheckBox.setBackground(ColorController.COR_CONSOLE);
+        
+//        WeblafUtils.configurarBotao(botaoConsole, ColorController.AMARELO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 10);
+//        WeblafUtils.configurarBotao(botaoGrafico, ColorController.AMARELO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 10);
     }
 }
