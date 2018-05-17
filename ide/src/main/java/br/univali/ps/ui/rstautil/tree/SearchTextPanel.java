@@ -169,7 +169,7 @@ public class SearchTextPanel extends javax.swing.JPanel implements Themeable{
             WeblafUtils.configurarBotao(buscar, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, 1, true);
             WeblafUtils.configurarBotao(limpar, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, 1, true);
         }
-        limpar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
+        limpar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "remove.png"));
         buscar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "find.png"));
     }
     /**
@@ -192,7 +192,7 @@ public class SearchTextPanel extends javax.swing.JPanel implements Themeable{
 
         painelbotoes.setLayout(new javax.swing.BoxLayout(painelbotoes, javax.swing.BoxLayout.LINE_AXIS));
 
-        limpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"))); // NOI18N
+        limpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/remove.png"))); // NOI18N
         painelbotoes.add(limpar);
 
         buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/find.png"))); // NOI18N

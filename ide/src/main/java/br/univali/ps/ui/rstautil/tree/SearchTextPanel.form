@@ -42,7 +42,7 @@
         <Component class="com.alee.laf.button.WebButton" name="limpar">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/window_close.png"/>
+              <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/remove.png"/>
             </Property>
           </Properties>
         </Component>
