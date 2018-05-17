@@ -1,22 +1,11 @@
 package br.univali.ps.ui.rstautil.tree;
 
-import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.image.BufferedImage;
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JTextField;
-import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -33,7 +22,6 @@ public class SearchTextField extends JTextField
     public SearchTextField()
     {
         initComponents();
-                        
         originalInsets = getInsets();
     }
     

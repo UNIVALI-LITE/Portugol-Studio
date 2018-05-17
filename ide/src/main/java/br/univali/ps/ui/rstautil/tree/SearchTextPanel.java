@@ -164,6 +164,7 @@ public class SearchTextPanel extends javax.swing.JPanel implements Themeable{
     @Override
     public void configurarCores() {
         painelbotoes.setBackground(ColorController.COR_DESTAQUE);
+        setBackground(ColorController.COR_DESTAQUE);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(buscar, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, 1, true);
             WeblafUtils.configurarBotao(limpar, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, ColorController.TRANSPARENTE, 1, true);
@@ -185,6 +186,7 @@ public class SearchTextPanel extends javax.swing.JPanel implements Themeable{
         limpar = new com.alee.laf.button.WebButton();
         buscar = new com.alee.laf.button.WebButton();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new java.awt.BorderLayout());
         add(campoBusca, java.awt.BorderLayout.CENTER);
 
