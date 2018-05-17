@@ -298,17 +298,29 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    @Override
-    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-        programaExecutando = false;
-        //limpa os valores no fim da execução
+    private void limpaValores()
+    {
         for (int i = 0; i < model.getSize(); i++) {
             model.getElementAt(i).limpa();
+        }        
+    }
+    
+    @Override
+    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
+        Runnable tarefa = () -> {
+            programaExecutando = false;
+            timerAtualizacao.stop();
+            atualizaValoresVariaveisInspecionadas();
+            ultimoItemModificado = null;
+            resetaDestaqueDosSimbolos();
+        };
+        
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(tarefa);
         }
-        ultimoItemModificado = null;
-        timerAtualizacao.stop();
-        setStatusDoDestaqueNosSimbolosInspecionados(true);
-        repaint();
+        else {
+            tarefa.run();
+        }
     }
 
     private void setStatusDoDestaqueNosSimbolosInspecionados(boolean statusDoDestaque) {
@@ -373,13 +385,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     @Override
     public void execucaoIniciada(Programa programa) {
         programaExecutando = true;
+        limpaValores();
         setStatusDoDestaqueNosSimbolosInspecionados(false);
         timerAtualizacao.start();
     }
 
     private void atualizaValoresVariaveisInspecionadas()
     {
-        SwingUtilities.invokeLater(() -> {
+        Runnable tarefa = () -> {
             
             if (programa == null)
             {
@@ -395,7 +408,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             }
         
             redesenhaItemsDaLista();
-        });
+        };
+        
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(tarefa);
+        }
+        else {
+            tarefa.run();
+        }
     }
     
     @Override
