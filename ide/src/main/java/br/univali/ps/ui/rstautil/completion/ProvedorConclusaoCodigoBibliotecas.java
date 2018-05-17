@@ -153,11 +153,11 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
         {
             Map<String, List<Completion>> conclusoes = new HashMap<>();
             GerenciadorBibliotecas gerenciadorBibliotecas = GerenciadorBibliotecas.getInstance();
-
-            for (String biblioteca : gerenciadorBibliotecas.getBibliotecasDisponiveis())
+            try
             {
-                try
+                for (String biblioteca : gerenciadorBibliotecas.getBibliotecasDisponiveis())
                 {
+                
                     List<Completion> conclusoesBiblioteca = new ArrayList<>();
                     MetaDadosBiblioteca metaDadosBiblioteca = gerenciadorBibliotecas.obterMetaDadosBiblioteca(biblioteca);
 
@@ -173,12 +173,12 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
 
                     conclusoes.put(biblioteca, conclusoesBiblioteca);
                 }
-                catch (ErroCarregamentoBiblioteca ex)
-                {
-                    Logger.getLogger(FabricaConclusaoCodigoBibliotecas.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
             }
-
+            catch (Exception ex)
+            {
+                Logger.getLogger(FabricaConclusaoCodigoBibliotecas.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return conclusoes;
         }
 
