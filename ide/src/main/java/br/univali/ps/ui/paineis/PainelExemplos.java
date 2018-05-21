@@ -18,8 +18,7 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import static com.alee.managers.style.SupportedComponent.textField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -42,9 +41,12 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -131,7 +133,14 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 atualizarPainelDireita();
             }
         });
-        
+        buscaExemplo.setSearchAction(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarExemplos();
+            }
+        });
+        buscaExemplo.setPlaceholder("Buscar Exemplos");
+        buscaExemplo.setSearchDelay(250);
         //areaRecentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
         
         atualizarRecentes();
@@ -261,6 +270,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(jScrollPane1);
             WeblafUtils.configuraWebLaf(scrollArvoreExemplos);
+            WeblafUtils.configuraWebLaf(buscaExemplo.getCampoBusca());
             WeblafUtils.configurarBotao(botaoAbrirExemplo, ColorController.AMARELO, ColorController.FUNDO_ESCURO, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 10);
         }
     }
@@ -394,6 +404,12 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private void inicializarJTree() {
         arvoreExemplos.setCellRenderer(new ExampleTreeRender());
         arvoreExemplos.setUI(new PSTreeUI());
+        mostrarExemplos();
+        initTreeListner();
+    }
+    
+    private void mostrarExemplos()
+    {
         File diretorioExemplos = Configuracoes.getInstancia().getDiretorioExemplos();
 
         if (diretorioExemplos.exists()) {
@@ -406,9 +422,8 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             arvoreExemplos.setModel(model);
             arvoreExemplos.setRootVisible(false);
             arvoreExemplos.setShowsRootHandles(true);
-            initTreeListner();
 //          expandJTree();
-            jTreedoClick();
+            jTreedoClick();            
         }
     }
 
@@ -416,8 +431,16 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         SwingUtilities.invokeLater(()
                 -> {
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) arvoreExemplos.getModel().getRoot();
-            DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) root.getFirstChild();
-            arvoreExemplos.setSelectionPath(new TreePath(leaf.getPath()));
+            DefaultMutableTreeNode leaf;
+            if(arvoreExemplos.getModel().getChildCount(root)>0)
+            {
+                leaf = (DefaultMutableTreeNode) root.getFirstChild();
+                if(leaf!=null)
+                {
+                    arvoreExemplos.setSelectionPath(new TreePath(leaf.getPath()));
+                }
+            }            
+            
         });
 
     }
@@ -436,15 +459,28 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             if (file.exists()) {
                 prop.load(new InputStreamReader(new FileInputStream(file), "UTF-8"));
                 for (int i = 0; i < Integer.parseInt(prop.getProperty("items")); i++) {
-                    String item = "item" + i + ".";
+                    String item = "item" + i + ".";                                        
+                                                                
                     if (prop.getProperty(item + "type").equals("dir")) {
                         DefaultMutableTreeNode node = new DefaultMutableTreeNode(prop.getProperty(item + "name"));
                         List<DefaultMutableTreeNode> subNodes = readIndex(new File(dir, prop.getProperty(item + "dir")));
                         subNodes.stream().forEach((subNode) -> {
-                            node.add(subNode);
+                            if(buscaExemplo.getCampoBusca().getText().isEmpty())
+                            {
+                                node.add(subNode);
+                            }
+                            else
+                            {
+                                nodes.add(subNode);
+                            }
                         });
+                        if(buscaExemplo.getCampoBusca().getText().isEmpty())
                         nodes.add(node);
                     } else {
+                        if(!prop.getProperty(item + "name").toLowerCase().contains(buscaExemplo.getCampoBusca().getText().toLowerCase()))
+                        {                            
+                            continue;
+                        }
                         DefaultMutableTreeNode leaf;
                         if (Boolean.parseBoolean(prop.getProperty(item + "hasImage"))) {
                             leaf = new ExampleMutableTreeNode(new File(dir, prop.getProperty(item + "file")), prop.getProperty(item + "description"), new File(dir, prop.getProperty(item + "image")), prop.getProperty(item + "name"));
@@ -517,6 +553,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                         abaCodigoFonte.setCodigoFonte(codigoFonte, exemplo, false);
                         TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
                         t.getPainelTabulado().adicionaAba(abaCodigoFonte);
+                        buscaExemplo.getCampoBusca().setText("");
                     }
                 });
                 botaoAbrirExemplo.setText("Explorar Exemplo");
@@ -575,9 +612,12 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         painelEsquerda = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        labelTitulo = new javax.swing.JLabel();
         scrollArvoreExemplos = new javax.swing.JScrollPane();
         arvoreExemplos = new javax.swing.JTree();
+        jPanel3 = new javax.swing.JPanel();
+        labelTitulo = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        buscaExemplo = new br.univali.ps.ui.rstautil.tree.SearchTextPanel();
 
         painelRecentesPrincipal.setLayout(new java.awt.BorderLayout());
 
@@ -697,20 +737,33 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        labelTitulo.setForeground(new java.awt.Color(255, 255, 255));
-        labelTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
-        labelTitulo.setText("Exemplos");
-        labelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        labelTitulo.setName("labelTitulo"); // NOI18N
-        labelTitulo.setOpaque(true);
-        jPanel2.add(labelTitulo, java.awt.BorderLayout.NORTH);
-
         scrollArvoreExemplos.setBorder(null);
 
         arvoreExemplos.setBackground(new java.awt.Color(240, 240, 240));
         scrollArvoreExemplos.setViewportView(arvoreExemplos);
 
         jPanel2.add(scrollArvoreExemplos, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setOpaque(false);
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        labelTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        labelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/light_pix.png"))); // NOI18N
+        labelTitulo.setText("Exemplos");
+        labelTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        labelTitulo.setName("labelTitulo"); // NOI18N
+        labelTitulo.setOpaque(true);
+        jPanel3.add(labelTitulo, java.awt.BorderLayout.NORTH);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 2, 0));
+        jPanel4.setOpaque(false);
+        jPanel4.setLayout(new java.awt.BorderLayout());
+        jPanel4.add(buscaExemplo, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel3, java.awt.BorderLayout.NORTH);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -731,11 +784,14 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
     private javax.swing.JPanel areaRecentes;
     private javax.swing.JTree arvoreExemplos;
     private com.alee.laf.button.WebButton botaoAbrirExemplo;
+    private br.univali.ps.ui.rstautil.tree.SearchTextPanel buscaExemplo;
     private javax.swing.JLabel description;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JPanel imagePane;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;

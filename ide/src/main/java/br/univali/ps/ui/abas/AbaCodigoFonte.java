@@ -222,7 +222,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configuraWebLaf(scrollInspetor);
             WeblafUtils.configuraWebLaf(webSeparator1);
             WeblafUtils.configuraWebLaf(webSeparator2);
-            WeblafUtils.configuraWebLaf(campoBusca, 5, 30);
+            WeblafUtils.configuraWebLaf(campoBusca.getCampoBusca());
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
             WeblafUtils.configurarBotao(btnExecutar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -347,7 +347,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         campoBusca.setSearchAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tree.getFilter().getSymbolNameFilter().setSearchString(campoBusca.getText());
+                tree.getFilter().getSymbolNameFilter().setSearchString(campoBusca.getCampoBusca().getText());
             }
         });
 
@@ -355,7 +355,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         Action cancelFilterByNameAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                campoBusca.setText("");
+                campoBusca.getCampoBusca().setText("");
                 tree.getFilter().getSymbolNameFilter().setSearchString("");
 
                 SwingUtilities.invokeLater(()
@@ -372,7 +372,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         Action doFilterByNameAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tree.getFilter().getSymbolNameFilter().setSearchString(campoBusca.getText());
+                tree.getFilter().getSymbolNameFilter().setSearchString(campoBusca.getCampoBusca().getText());
 
                 SwingUtilities.invokeLater(()
                         -> {
@@ -391,7 +391,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 SwingUtilities.invokeLater(()
                         -> {
                     campoBusca.requestFocusInWindow();
-                    campoBusca.selectAll();
+                    campoBusca.getCampoBusca().selectAll();
                 });
             }
         };
@@ -1318,7 +1318,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelInspetorArvore = new javax.swing.JPanel();
         divisorArvoreInspetor = new javax.swing.JSplitPane();
         treePanel = new javax.swing.JPanel();
-        campoBusca = new br.univali.ps.ui.rstautil.tree.SearchTextField();
+        campoBusca = new br.univali.ps.ui.rstautil.tree.SearchTextPanel();
         scrollOutlineTree = new javax.swing.JScrollPane();
         tree = new br.univali.ps.ui.rstautil.tree.PortugolOutlineTree();
         scrollInspetor = new javax.swing.JScrollPane();
@@ -1499,16 +1499,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         treePanel.setName("painelArvore"); // NOI18N
         treePanel.setLayout(new java.awt.GridBagLayout());
-
-        campoBusca.setMaximumSize(null);
-        campoBusca.setName("campoBusca"); // NOI18N
-        campoBusca.setPlaceholder("Localizar (Ctrl+L)");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         treePanel.add(campoBusca, gridBagConstraints);
 
         scrollOutlineTree.setBackground(new java.awt.Color(255, 255, 255));
@@ -2582,7 +2574,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private com.alee.laf.button.WebButton btnInterromper;
     private com.alee.laf.button.WebButton btnSalvar;
     private com.alee.laf.button.WebButton btnSalvarComo;
-    private br.univali.ps.ui.rstautil.tree.SearchTextField campoBusca;
+    private br.univali.ps.ui.rstautil.tree.SearchTextPanel campoBusca;
     private javax.swing.JSplitPane divisorArvoreEditor;
     private javax.swing.JSplitPane divisorArvoreInspetor;
     private javax.swing.JSplitPane divisorEditorConsole;
