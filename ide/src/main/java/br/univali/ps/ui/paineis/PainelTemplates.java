@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.telas;
+package br.univali.ps.ui.paineis;
 
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
-import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import java.util.List;
 import javax.swing.JCheckBox;
@@ -17,12 +16,12 @@ import javax.swing.JCheckBox;
  *
  * @author 5663296
  */
-public class TelaNovoProjeto extends javax.swing.JPanel implements Themeable{
+public class PainelTemplates extends javax.swing.JPanel implements Themeable{
 
     /**
-     * Creates new form TelaNovoProjeto
+     * Creates new form PainelTemplates
      */
-    public TelaNovoProjeto() {
+    public PainelTemplates() {
         initComponents();
         List<String> libs = GerenciadorBibliotecas.getInstance().getBibliotecasDisponiveis();
         for (String lib : libs) {
@@ -53,7 +52,6 @@ public class TelaNovoProjeto extends javax.swing.JPanel implements Themeable{
         jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setOpaque(false);
@@ -109,8 +107,5 @@ public class TelaNovoProjeto extends javax.swing.JPanel implements Themeable{
         jLabel1.setForeground(ColorController.AMARELO);
         pergunta.setForeground(ColorController.COR_LETRA);
         painelCheckBox.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
-        
-//        WeblafUtils.configurarBotao(botaoConsole, ColorController.AMARELO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 10);
-//        WeblafUtils.configurarBotao(botaoGrafico, ColorController.AMARELO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 10);
     }
 }
