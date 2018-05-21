@@ -8,7 +8,9 @@ package br.univali.ps.ui.paineis;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
+import java.awt.Color;
 import java.util.List;
 import javax.swing.JCheckBox;
 
@@ -23,6 +25,8 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
      */
     public PainelTemplates() {
         initComponents();
+        closebutton.setText("");
+        closebutton.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
         List<String> libs = GerenciadorBibliotecas.getInstance().getBibliotecasDisponiveis();
         for (String lib : libs) {
             JCheckBox check = new JCheckBox(lib);
@@ -45,12 +49,16 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
 
         jPanel1 = new javax.swing.JPanel();
         pergunta = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        botaoAdicionar = new com.alee.laf.button.WebButton();
         painelCheckBox = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        closebutton = new com.alee.laf.button.WebButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -61,6 +69,15 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
         pergunta.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 10, 1));
         jPanel1.add(pergunta, java.awt.BorderLayout.PAGE_START);
 
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        jPanel5.setOpaque(false);
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        botaoAdicionar.setText("Adicionar");
+        jPanel5.add(botaoAdicionar, java.awt.BorderLayout.LINE_END);
+
+        jPanel1.add(jPanel5, java.awt.BorderLayout.PAGE_END);
+
         painelCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelCheckBox.setLayout(new java.awt.GridLayout(0, 3));
         jPanel1.add(painelCheckBox, java.awt.BorderLayout.CENTER);
@@ -69,10 +86,6 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
 
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Este é um programa:");
-        jPanel2.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel3.setOpaque(false);
@@ -86,15 +99,31 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
+        jPanel4.setOpaque(false);
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Este é um programa:");
+        jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        closebutton.setText("x");
+        jPanel4.add(closebutton, java.awt.BorderLayout.LINE_END);
+
+        jPanel2.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+
         add(jPanel2, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.alee.laf.button.WebButton botaoAdicionar;
+    private com.alee.laf.button.WebButton closebutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JPanel painelCheckBox;
@@ -107,5 +136,7 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
         jLabel1.setForeground(ColorController.AMARELO);
         pergunta.setForeground(ColorController.COR_LETRA);
         painelCheckBox.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
+        WeblafUtils.configurarBotao(closebutton, ColorController.COR_PRINCIPAL, Color.white, ColorController.FUNDO_CLARO, Color.orange, 1);
+        WeblafUtils.configurarBotao(botaoAdicionar, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA,2);
     }
 }

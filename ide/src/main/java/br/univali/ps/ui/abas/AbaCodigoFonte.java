@@ -42,6 +42,7 @@ import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolos;
 import br.univali.ps.ui.paineis.PainelConfigPlugins;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
+import br.univali.ps.ui.paineis.PainelTemplates;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
@@ -91,6 +92,8 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -172,6 +175,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarCores();
         configuraLoader();
         configurarBotaoPlugin();
+        PainelTemplates painelTemplates = new PainelTemplates();
+        painelTemplate.add(painelTemplates);
+        painelTemplates.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
     }
 
     public void configurarBotaoPlugin() {
@@ -1316,6 +1322,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelConsole = new javax.swing.JPanel();
         painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
         painelInspetorArvore = new javax.swing.JPanel();
+        painelTemplate = new javax.swing.JPanel();
         divisorArvoreInspetor = new javax.swing.JSplitPane();
         treePanel = new javax.swing.JPanel();
         campoBusca = new br.univali.ps.ui.rstautil.tree.SearchTextPanel();
@@ -1487,7 +1494,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelInspetorArvore.setName("painelInspetorArvore"); // NOI18N
         painelInspetorArvore.setOpaque(false);
         painelInspetorArvore.setPreferredSize(new java.awt.Dimension(270, 233));
-        painelInspetorArvore.setLayout(new java.awt.GridBagLayout());
+        painelInspetorArvore.setLayout(new java.awt.BorderLayout());
+
+        painelTemplate.setLayout(new java.awt.BorderLayout());
+        painelInspetorArvore.add(painelTemplate, java.awt.BorderLayout.PAGE_START);
 
         divisorArvoreInspetor.setDividerSize(15);
         divisorArvoreInspetor.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -1537,13 +1547,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         divisorArvoreInspetor.setBottomComponent(scrollInspetor);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        painelInspetorArvore.add(divisorArvoreInspetor, gridBagConstraints);
+        painelInspetorArvore.add(divisorArvoreInspetor, java.awt.BorderLayout.CENTER);
 
         divisorArvoreEditor.setRightComponent(painelInspetorArvore);
 
@@ -2588,6 +2592,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.JPanel painelInspetorArvore;
     private javax.swing.JPanel painelRecuperados;
     private br.univali.ps.ui.paineis.PainelSaida painelSaida;
+    private javax.swing.JPanel painelTemplate;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
