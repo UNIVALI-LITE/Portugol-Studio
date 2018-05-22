@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.ps.ui.paineis;
+package br.univali.ps.ui.abas.utilitarios;
 
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
+import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
@@ -22,7 +23,7 @@ import javax.swing.JCheckBox;
  *
  * @author 5663296
  */
-public class PainelGerenciadorBibliotecas extends javax.swing.JPanel implements Themeable{
+public class AbaGerenciadorBibliotecas extends Aba implements Themeable{
     
     private AbaCodigoFonte abaCodigoFonte;
     /**
@@ -44,11 +45,11 @@ public class PainelGerenciadorBibliotecas extends javax.swing.JPanel implements 
         }
     }
     
-    public PainelGerenciadorBibliotecas(AbaCodigoFonte abaCodigoFonte) {
+    public AbaGerenciadorBibliotecas(AbaCodigoFonte abaCodigoFonte) {
+        super("Bibliotecas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png"), false);
         this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
-        closebutton.setText("");
-        closebutton.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
+        
         List<String> libs = GerenciadorBibliotecas.getInstance().getBibliotecasDisponiveis();
         for (String lib : libs) {
             JCheckBox check = new JCheckBox(lib);
@@ -84,74 +85,32 @@ public class PainelGerenciadorBibliotecas extends javax.swing.JPanel implements 
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         painelCheckBox = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        closebutton = new com.alee.laf.button.WebButton();
 
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(jPanel5, java.awt.BorderLayout.PAGE_END);
-
         painelCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelCheckBox.setLayout(new java.awt.GridLayout(0, 3));
         jPanel1.add(painelCheckBox, java.awt.BorderLayout.CENTER);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
-
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
-        jPanel4.setOpaque(false);
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Gerenciar Bibliotecas");
-        jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
-
-        closebutton.setText("x");
-        closebutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closebuttonActionPerformed(evt);
-            }
-        });
-        jPanel4.add(closebutton, java.awt.BorderLayout.LINE_END);
-
-        jPanel2.add(jPanel4, java.awt.BorderLayout.PAGE_START);
-
-        add(jPanel2, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void closebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closebuttonActionPerformed
-        this.setVisible(false);
-    }//GEN-LAST:event_closebuttonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.alee.laf.button.WebButton closebutton;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel painelCheckBox;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void configurarCores() {
         this.setBackground(ColorController.COR_PRINCIPAL);
-        jLabel1.setForeground(ColorController.AMARELO);
+
         painelCheckBox.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
-        WeblafUtils.configurarBotao(closebutton, ColorController.COR_PRINCIPAL, Color.white, ColorController.FUNDO_CLARO, Color.orange, 1);
+
         //WeblafUtils.configurarBotao(botaoAdicionar, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA,2);
     }
 }

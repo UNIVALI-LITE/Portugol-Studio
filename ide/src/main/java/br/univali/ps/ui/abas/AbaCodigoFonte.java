@@ -40,9 +40,11 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolos;
+import br.univali.ps.ui.paineis.PSPainelTabulado;
 import br.univali.ps.ui.paineis.PainelConfigPlugins;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
-import br.univali.ps.ui.paineis.PainelGerenciadorBibliotecas;
+import br.univali.ps.ui.abas.utilitarios.AbaGerenciadorBibliotecas;
+import br.univali.ps.ui.abas.utilitarios.AbaGerenciadorTemplates;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
@@ -92,8 +94,6 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -103,6 +103,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
+    private static final String TEMPLATE_GRAFICO = carregarTemplateGrafico();
 
     private static final int TAMANHO_POOL_ABAS = 1;
     private static PoolAbasCodigoFonte poolAbasCodigoFonte;
@@ -151,7 +152,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private IndicadorDeProgresso indicadorProgresso;
 
     private PainelConfigPlugins painelConfigPlugins;
-    private PainelGerenciadorBibliotecas painelGerenciadorBibliotecas;
+    private AbaGerenciadorBibliotecas painelGerenciadorBibliotecas;
+    private AbaGerenciadorTemplates painelGerenciadorTemplates;
+    private PSPainelTabulado painelTabuladoUtilitarios;
 
     protected AbaCodigoFonte() {
         super("Sem título" + numeroDocumento, lampadaApagada, true);
@@ -176,9 +179,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarCores();
         configuraLoader();
         configurarBotaoPlugin();
-        painelGerenciadorBibliotecas = new PainelGerenciadorBibliotecas(AbaCodigoFonte.this);
-        painelTemplate.add(painelGerenciadorBibliotecas);
-        painelGerenciadorBibliotecas.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
+        painelTabuladoUtilitarios = new PSPainelTabulado();
+        
+        painelGerenciadorBibliotecas = new AbaGerenciadorBibliotecas(AbaCodigoFonte.this);
+        painelGerenciadorTemplates = new AbaGerenciadorTemplates(AbaCodigoFonte.this);
+        painelTemplate.add(painelTabuladoUtilitarios);
+        painelTabuladoUtilitarios.adicionaAba(painelGerenciadorBibliotecas);
+        painelTabuladoUtilitarios.adicionaAba(painelGerenciadorTemplates);
+        //painelGerenciadorBibliotecas.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
     }
 
     public void configurarBotaoPlugin() {
@@ -490,6 +498,39 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acao;
     }
 
+    private Action criaAcaoExibirUtilitarios() {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK);
+        String nome = "Exibir Painel Utilitários";
+        AbstractAction acaoPainelUtilitarios = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                painelTabuladoUtilitarios.setVisible(! painelTabuladoUtilitarios.isVisible());
+            }
+        };
+
+        acaoPainelUtilitarios.putValue(Action.ACCELERATOR_KEY, atalho);
+
+        getActionMap().put(nome, acaoPainelUtilitarios);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        return acaoPainelUtilitarios;
+    }
+    private Action criaAcaoTemplateGrafico() {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK);
+        String nome = "Template Gráfico";
+        AbstractAction acaoTemplateGrafico = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editor.setCodigoFonte(TEMPLATE_GRAFICO);
+                painelGerenciadorBibliotecas.updateBibliotecas();
+            }
+        };
+
+        acaoTemplateGrafico.putValue(Action.ACCELERATOR_KEY, atalho);
+
+        getActionMap().put(nome, acaoTemplateGrafico);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        return acaoTemplateGrafico;
+    }
     private Action criaAcaoTrocaTema() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK);
         String nome = "Trocar tema (reiniciar)";
@@ -587,7 +628,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
         barraBotoesEditor.adicionaAcao(criaAcaoTrocaTema());
-//        barraDeBotoesEditor.adicionaSeparador();
+        barraBotoesEditor.adicionaSeparador();
+        barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());
+        barraBotoesEditor.adicionaAcao(criaAcaoTemplateGrafico());
+        
+        
 //        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
         adicionaBotaoConfiguracaoEditor(0);
@@ -2149,6 +2194,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         atualizaPainelRecuperados();
     }
 
+    private static String carregarTemplateGrafico() {
+        try {
+            return FileHandle.read(ClassLoader.getSystemResourceAsStream("br/univali/ps/dominio/template_grafico.por"));
+        } catch (Exception e) {
+            return "";
+        }
+    }
     private static String carregarTemplate() {
         try {
             return FileHandle.read(ClassLoader.getSystemResourceAsStream("br/univali/ps/dominio/template.por"));
