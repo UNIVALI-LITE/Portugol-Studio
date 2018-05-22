@@ -38,6 +38,8 @@ import br.univali.ps.plugins.base.ErroInstalacaoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.editor.Editor;
+import br.univali.ps.ui.editor.MetadadosDoSimboloSobOCursorDoTeclado;
+import br.univali.ps.ui.editor.PSFindReplace;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolos;
 import br.univali.ps.ui.paineis.PainelConfigPlugins;
@@ -472,7 +474,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                editor.getSearchDialog().setVisible(true);
+                PortugolStudio.getInstancia().getTelaProcurarSubstituirPanel().exibir(editor.getTextArea());
             }
         };
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
