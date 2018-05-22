@@ -1188,8 +1188,18 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 a[1] = a[1].substring(1);
                 code = a[0] + a[1];
                 this.getEditor().setCodigoFonte(code);
+            }else{
+                String[] b = a[1].split("\n");
+                StringBuilder ultimo = new StringBuilder(a[0]);
+                for (int i = 1; i < b.length; i++) {
+                    if(i>=2){
+                        ultimo.append("\n");
+                    }
+                    ultimo.append(b[i]);
+                }
+                this.getEditor().setCodigoFonte(ultimo.toString());
             }
-            //a[1].split("\n")
+            
         }
     }
     
