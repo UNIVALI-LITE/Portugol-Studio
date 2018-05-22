@@ -151,6 +151,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private IndicadorDeProgresso indicadorProgresso;
 
     private PainelConfigPlugins painelConfigPlugins;
+    private PainelGerenciadorBibliotecas painelGerenciadorBibliotecas;
 
     protected AbaCodigoFonte() {
         super("Sem título" + numeroDocumento, lampadaApagada, true);
@@ -175,9 +176,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarCores();
         configuraLoader();
         configurarBotaoPlugin();
-        PainelGerenciadorBibliotecas painelTemplates = new PainelGerenciadorBibliotecas(AbaCodigoFonte.this);
-        painelTemplate.add(painelTemplates);
-        painelTemplates.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
+        painelGerenciadorBibliotecas = new PainelGerenciadorBibliotecas(AbaCodigoFonte.this);
+        painelTemplate.add(painelGerenciadorBibliotecas);
+        painelGerenciadorBibliotecas.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
     }
 
     public void configurarBotaoPlugin() {
@@ -201,6 +202,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     public void reseta() {
         painelSaida.selecionaConsole();
+        painelGerenciadorBibliotecas.reseta();
         this.getCabecalho().configurarCores();
     }
 
@@ -1175,6 +1177,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if(! code.contains("inclua biblioteca "+biblioteca)){
             code = code.replace("programa\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
             this.getEditor().setCodigoFonte(code);
+            int index = code.indexOf("inclua biblioteca "+biblioteca);
+            this.getEditor().getTextArea().setCaretPosition(index);
+            
         }
     }
     public void removerBiblioteca(String biblioteca){
@@ -1196,6 +1201,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 this.getEditor().setCodigoFonte(ultimo.toString());
             }
+            int index = code.indexOf("programa");
+            this.getEditor().getTextArea().setCaretPosition(index);
             
         }
     }
@@ -1235,6 +1242,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tree.reseta();
         inspetorDeSimbolos.reseta();
         editor.setCodigoFonte(codigoFonte);
+        painelGerenciadorBibliotecas.updateBibliotecas();
         carregarInformacoesFiltroArvore(codigoFonte);
 
         PortugolDocumento document = editor.getPortugolDocumento();

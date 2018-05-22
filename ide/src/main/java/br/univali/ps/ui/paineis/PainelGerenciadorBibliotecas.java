@@ -17,7 +17,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 import javax.swing.JCheckBox;
-import javax.swing.plaf.basic.BasicButtonListener;
 
 /**
  *
@@ -29,6 +28,22 @@ public class PainelGerenciadorBibliotecas extends javax.swing.JPanel implements 
     /**
      * Creates new form PainelTemplates
      */
+    public void updateBibliotecas(){
+        for (Component component : painelCheckBox.getComponents()) {
+            JCheckBox check = (JCheckBox) component;
+            if(abaCodigoFonte.getPortugolDocumento().getCodigoFonte().contains("inclua biblioteca "+check.getText())){
+                check.setSelected(true);
+            }
+        }
+    }
+    public void reseta(){
+        for (Component component : painelCheckBox.getComponents()) {
+            JCheckBox check = (JCheckBox) component;
+            check.setSelected(false);
+            
+        }
+    }
+    
     public PainelGerenciadorBibliotecas(AbaCodigoFonte abaCodigoFonte) {
         this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
@@ -40,6 +55,10 @@ public class PainelGerenciadorBibliotecas extends javax.swing.JPanel implements 
             check.setForeground(ColorController.COR_LETRA);
             check.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
             check.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+            if(abaCodigoFonte.getPortugolDocumento().getCodigoFonte().contains("inclua biblioteca "+lib)){
+                check.setSelected(true);
+            }
+            
             check.addItemListener(new ItemListener() {
                 @Override
                 public void itemStateChanged(ItemEvent ie) {
@@ -100,12 +119,21 @@ public class PainelGerenciadorBibliotecas extends javax.swing.JPanel implements 
         jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         closebutton.setText("x");
+        closebutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closebuttonActionPerformed(evt);
+            }
+        });
         jPanel4.add(closebutton, java.awt.BorderLayout.LINE_END);
 
         jPanel2.add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
         add(jPanel2, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void closebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closebuttonActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_closebuttonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
