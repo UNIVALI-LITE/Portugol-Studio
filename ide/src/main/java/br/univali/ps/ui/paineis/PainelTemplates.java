@@ -6,24 +6,31 @@
 package br.univali.ps.ui.paineis;
 
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 import javax.swing.JCheckBox;
+import javax.swing.plaf.basic.BasicButtonListener;
 
 /**
  *
  * @author 5663296
  */
 public class PainelTemplates extends javax.swing.JPanel implements Themeable{
-
+    
+    private AbaCodigoFonte abaCodigoFonte;
     /**
      * Creates new form PainelTemplates
      */
-    public PainelTemplates() {
+    public PainelTemplates(AbaCodigoFonte abaCodigoFonte) {
+        this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
         closebutton.setText("");
         closebutton.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
@@ -33,6 +40,16 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
             check.setForeground(ColorController.COR_LETRA);
             check.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
             check.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+            check.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent ie) {
+                    if(ie.getStateChange() == ItemEvent.SELECTED){
+                        abaCodigoFonte.adicionarBiblioteca(((JCheckBox)ie.getItem()).getText());
+                    }else{
+                        abaCodigoFonte.removerBiblioteca(((JCheckBox)ie.getItem()).getText());
+                    }
+                }
+            });
             painelCheckBox.add(check);
         }
         configurarCores();
@@ -50,7 +67,6 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
         jPanel1 = new javax.swing.JPanel();
         pergunta = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        botaoAdicionar = new com.alee.laf.button.WebButton();
         painelCheckBox = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -72,10 +88,6 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.BorderLayout());
-
-        botaoAdicionar.setText("Adicionar");
-        jPanel5.add(botaoAdicionar, java.awt.BorderLayout.LINE_END);
-
         jPanel1.add(jPanel5, java.awt.BorderLayout.PAGE_END);
 
         painelCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -116,7 +128,6 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.alee.laf.button.WebButton botaoAdicionar;
     private com.alee.laf.button.WebButton closebutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -137,6 +148,6 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
         pergunta.setForeground(ColorController.COR_LETRA);
         painelCheckBox.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
         WeblafUtils.configurarBotao(closebutton, ColorController.COR_PRINCIPAL, Color.white, ColorController.FUNDO_CLARO, Color.orange, 1);
-        WeblafUtils.configurarBotao(botaoAdicionar, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA,2);
+        //WeblafUtils.configurarBotao(botaoAdicionar, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA,2);
     }
 }

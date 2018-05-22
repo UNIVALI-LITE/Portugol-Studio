@@ -175,7 +175,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarCores();
         configuraLoader();
         configurarBotaoPlugin();
-        PainelTemplates painelTemplates = new PainelTemplates();
+        PainelTemplates painelTemplates = new PainelTemplates(AbaCodigoFonte.this);
         painelTemplate.add(painelTemplates);
         painelTemplates.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
     }
@@ -1169,6 +1169,30 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public Editor getEditor() {
         return editor;
     }
+    
+    public void adicionarBiblioteca(String biblioteca){
+        String code = this.getPortugolDocumento().getCodigoFonte();
+        if(! code.contains("inclua biblioteca "+biblioteca)){
+            if(! code.contains("inclua biblioteca ")){
+                 code = code.replace("programa\n{","programa\n{\n");
+            }
+            code = code.replace("programa\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
+            this.getEditor().setCodigoFonte(code);
+        }
+    }
+    public void removerBiblioteca(String biblioteca){
+        String code = this.getPortugolDocumento().getCodigoFonte();
+        if(code.contains("\tinclua biblioteca "+biblioteca)){
+            String[] a = code.split("\tinclua biblioteca "+biblioteca);
+            if(a[1].startsWith("\n")){
+                a[1] = a[1].substring(1);
+                code = a[0] + a[1];
+                this.getEditor().setCodigoFonte(code);
+            }
+            //a[1].split("\n")
+        }
+    }
+    
 
     public InspetorDeSimbolos getInspetor() 
     {
