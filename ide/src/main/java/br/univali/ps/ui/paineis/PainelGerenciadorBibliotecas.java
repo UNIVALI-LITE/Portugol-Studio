@@ -23,13 +23,13 @@ import javax.swing.plaf.basic.BasicButtonListener;
  *
  * @author 5663296
  */
-public class PainelTemplates extends javax.swing.JPanel implements Themeable{
+public class PainelGerenciadorBibliotecas extends javax.swing.JPanel implements Themeable{
     
     private AbaCodigoFonte abaCodigoFonte;
     /**
      * Creates new form PainelTemplates
      */
-    public PainelTemplates(AbaCodigoFonte abaCodigoFonte) {
+    public PainelGerenciadorBibliotecas(AbaCodigoFonte abaCodigoFonte) {
         this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
         closebutton.setText("");
@@ -65,13 +65,9 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        pergunta = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         painelCheckBox = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         closebutton = new com.alee.laf.button.WebButton();
@@ -80,10 +76,6 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
-
-        pergunta.setText("Quais Bibliotecas serão utilizadas?");
-        pergunta.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 10, 1));
-        jPanel1.add(pergunta, java.awt.BorderLayout.PAGE_START);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
         jPanel5.setOpaque(false);
@@ -99,23 +91,12 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel3.setOpaque(false);
-        jPanel3.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
-
-        jToggleButton1.setText("jToggleButton1");
-        jPanel3.add(jToggleButton1);
-
-        jToggleButton2.setText("jToggleButton2");
-        jPanel3.add(jToggleButton2);
-
-        jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
-
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Este é um programa:");
+        jLabel1.setText("Gerenciar Bibliotecas");
         jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         closebutton.setText("x");
@@ -132,20 +113,15 @@ public class PainelTemplates extends javax.swing.JPanel implements Themeable{
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JPanel painelCheckBox;
-    private javax.swing.JLabel pergunta;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void configurarCores() {
         this.setBackground(ColorController.COR_PRINCIPAL);
         jLabel1.setForeground(ColorController.AMARELO);
-        pergunta.setForeground(ColorController.COR_LETRA);
         painelCheckBox.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
         WeblafUtils.configurarBotao(closebutton, ColorController.COR_PRINCIPAL, Color.white, ColorController.FUNDO_CLARO, Color.orange, 1);
         //WeblafUtils.configurarBotao(botaoAdicionar, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA,2);

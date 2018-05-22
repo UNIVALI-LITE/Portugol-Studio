@@ -42,7 +42,7 @@ import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolos;
 import br.univali.ps.ui.paineis.PainelConfigPlugins;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
-import br.univali.ps.ui.paineis.PainelTemplates;
+import br.univali.ps.ui.paineis.PainelGerenciadorBibliotecas;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
@@ -175,7 +175,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         configurarCores();
         configuraLoader();
         configurarBotaoPlugin();
-        PainelTemplates painelTemplates = new PainelTemplates(AbaCodigoFonte.this);
+        PainelGerenciadorBibliotecas painelTemplates = new PainelGerenciadorBibliotecas(AbaCodigoFonte.this);
         painelTemplate.add(painelTemplates);
         painelTemplates.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
     }
@@ -1173,9 +1173,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void adicionarBiblioteca(String biblioteca){
         String code = this.getPortugolDocumento().getCodigoFonte();
         if(! code.contains("inclua biblioteca "+biblioteca)){
-            if(! code.contains("inclua biblioteca ")){
-                 code = code.replace("programa\n{","programa\n{\n");
-            }
             code = code.replace("programa\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
             this.getEditor().setCodigoFonte(code);
         }
