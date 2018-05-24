@@ -30,7 +30,7 @@ public class AbaGerenciadorTemplates extends Aba implements Themeable{
         super("Templates", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "real.png"), false);
         this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
-        String[] templates = {"console", "grafico"};
+        String[] templates = {"console","console2", "console3","console4", "grafico"};
         for (String template : templates) {
             WebButton temp = new WebButton();
             temp.setText("asd");
