@@ -18,7 +18,6 @@ import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.button.WebButton;
-import static com.alee.managers.style.SupportedComponent.textField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -39,14 +38,13 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -139,6 +137,11 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
                 mostrarExemplos();
             }
         });
+        
+        configurarAcaoAbrirExemploBuscado();
+        configurarAcaoMoverParaBaixoEmExemplosBuscados();
+        configurarAcaoMoverParaCimaEmExemplosBuscados();
+        
         buscaExemplo.setPlaceholder("Buscar Exemplos");
         buscaExemplo.setSearchDelay(250);
         //areaRecentes.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
@@ -146,6 +149,51 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         atualizarRecentes();
         
     }
+    
+    private void configurarAcaoAbrirExemploBuscado()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+        String nome = "Abrir Exemplo";
+        Action acaoAbrirExemploBuscado = new AbstractAction(nome) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                botaoAbrirExemplo.doClick();
+            }
+        };
+        buscaExemplo.getCampoBusca().getInputMap().put(atalho, nome);
+        buscaExemplo.getCampoBusca().getActionMap().put(nome, acaoAbrirExemploBuscado);
+    }
+    
+    private void configurarAcaoMoverParaBaixoEmExemplosBuscados()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+        String nome = "Mover para baixo";
+        Action acaoAbrirExemploBuscado = new AbstractAction(nome) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = arvoreExemplos.getSelectionRows()[0];
+                arvoreExemplos.setSelectionRow(Math.min(row+1, arvoreExemplos.getRowCount()-1));
+            }
+        };
+        buscaExemplo.getCampoBusca().getInputMap().put(atalho, nome);
+        buscaExemplo.getCampoBusca().getActionMap().put(nome, acaoAbrirExemploBuscado);
+    }
+    
+    private void configurarAcaoMoverParaCimaEmExemplosBuscados()
+    {
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
+        String nome = "Mover para cima";
+        Action acaoAbrirExemploBuscado = new AbstractAction(nome) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = arvoreExemplos.getSelectionRows()[0];
+                arvoreExemplos.setSelectionRow(Math.max(0,row-1));
+            }
+        };
+        buscaExemplo.getCampoBusca().getInputMap().put(atalho, nome);
+        buscaExemplo.getCampoBusca().getActionMap().put(nome, acaoAbrirExemploBuscado);
+    }
+    
     public void criarBotaoAbrirRecentes(){
         staticPanel.removeAll();
         WebButton button = new WebButton();
