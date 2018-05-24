@@ -1219,7 +1219,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     public void adicionarBiblioteca(String biblioteca){
         String code = this.getPortugolDocumento().getCodigoFonte();
-        if(! code.contains("inclua biblioteca "+biblioteca)){
+        if(! code.contains("\tinclua biblioteca "+biblioteca)){
             code = code.replace("programa\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
             this.getEditor().setCodigoFonte(code);
             int index = code.indexOf("inclua biblioteca "+biblioteca);
@@ -1233,7 +1233,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             String[] a = code.split("\tinclua biblioteca "+biblioteca);
             if(a[1].startsWith("\n")){
                 a[1] = a[1].substring(1);
-                code = a[0] + a[1];
+                code = "";
+                for (String a1 : a) {
+                    code += a1;
+                }
                 this.getEditor().setCodigoFonte(code);
             }else{
                 String[] b = a[1].split("\n");
@@ -1243,6 +1246,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         ultimo.append("\n");
                     }
                     ultimo.append(b[i]);
+                }
+                for (int i = 2; i < a.length; i++) {
+                    ultimo.append(a[i]);
                 }
                 this.getEditor().setCodigoFonte(ultimo.toString());
             }
