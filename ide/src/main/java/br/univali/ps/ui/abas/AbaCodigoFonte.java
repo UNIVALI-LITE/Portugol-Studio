@@ -103,7 +103,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private static final Logger LOGGER = Logger.getLogger(AbaCodigoFonte.class.getName());
     private static final String TEMPLATE_ALGORITMO = carregarTemplate();
-    private static final String TEMPLATE_GRAFICO = carregarTemplateGrafico();
 
     private static final int TAMANHO_POOL_ABAS = 1;
     private static PoolAbasCodigoFonte poolAbasCodigoFonte;
@@ -514,23 +513,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
         return acaoPainelUtilitarios;
     }
-    private Action criaAcaoTemplateGrafico() {
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK);
-        String nome = "Template Gráfico";
-        AbstractAction acaoTemplateGrafico = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "application_xp_terminal.png")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editor.setCodigoFonte(TEMPLATE_GRAFICO);
-                painelGerenciadorBibliotecas.updateBibliotecas();
-            }
-        };
-
-        acaoTemplateGrafico.putValue(Action.ACCELERATOR_KEY, atalho);
-
-        getActionMap().put(nome, acaoTemplateGrafico);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        return acaoTemplateGrafico;
-    }
+    
     private Action criaAcaoTrocaTema() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK);
         String nome = "Trocar tema (reiniciar)";
@@ -629,9 +612,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
         barraBotoesEditor.adicionaAcao(criaAcaoTrocaTema());
         barraBotoesEditor.adicionaSeparador();
-        barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());
-        barraBotoesEditor.adicionaAcao(criaAcaoTemplateGrafico());
-        
+        barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());        
         
 //        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
@@ -2199,14 +2180,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         carregarInformacoesFiltroArvore(TEMPLATE_ALGORITMO);
         atualizaPainelRecuperados();
     }
-
-    private static String carregarTemplateGrafico() {
+    
+    public void setarTemplate(String nome){
         try {
-            return FileHandle.read(ClassLoader.getSystemResourceAsStream("br/univali/ps/dominio/template_grafico.por"));
-        } catch (Exception e) {
-            return "";
-        }
+            editor.setCodigoFonte(FileHandle.read(ClassLoader.getSystemResourceAsStream("br/univali/ps/dominio/template_" + nome + ".por")));
+            painelGerenciadorBibliotecas.updateBibliotecas();
+        } catch (Exception ex) {
+            Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+        }        
     }
+
     private static String carregarTemplate() {
         try {
             return FileHandle.read(ClassLoader.getSystemResourceAsStream("br/univali/ps/dominio/template.por"));

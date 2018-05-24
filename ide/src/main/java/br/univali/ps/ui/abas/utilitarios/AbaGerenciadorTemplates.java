@@ -7,8 +7,14 @@ package br.univali.ps.ui.abas.utilitarios;
 
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
+import com.alee.laf.button.WebButton;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 /**
  *
@@ -24,6 +30,22 @@ public class AbaGerenciadorTemplates extends Aba implements Themeable{
         super("Templates", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "real.png"), false);
         this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
+        String[] templates = {"console", "grafico"};
+        for (String template : templates) {
+            WebButton temp = new WebButton();
+            temp.setText("asd");
+            temp.setName(template);
+            temp.setForeground(ColorController.COR_LETRA);
+            temp.setAction(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    abaCodigoFonte.setarTemplate(template);
+                }
+            });
+            WeblafUtils.configurarBotao(temp, ColorController.AMARELO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+            add(temp);
+        }
+        
     }
 
     /**
@@ -35,22 +57,11 @@ public class AbaGerenciadorTemplates extends Aba implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        webButton1 = new com.alee.laf.button.WebButton();
-        webButton2 = new com.alee.laf.button.WebButton();
-
-        setLayout(new java.awt.BorderLayout());
-
-        webButton1.setText("webButton1");
-        add(webButton1, java.awt.BorderLayout.CENTER);
-
-        webButton2.setText("webButton2");
-        add(webButton2, java.awt.BorderLayout.PAGE_START);
+        setLayout(new java.awt.GridLayout(0, 2));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.alee.laf.button.WebButton webButton1;
-    private com.alee.laf.button.WebButton webButton2;
     // End of variables declaration//GEN-END:variables
 
     @Override
