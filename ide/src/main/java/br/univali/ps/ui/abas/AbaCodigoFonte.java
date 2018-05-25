@@ -182,7 +182,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         
         painelGerenciadorBibliotecas = new AbaGerenciadorBibliotecas(AbaCodigoFonte.this);
         painelGerenciadorTemplates = new AbaGerenciadorTemplates(AbaCodigoFonte.this);
-        painelTemplate.add(painelTabuladoUtilitarios);
+        
+        painelTemplate.add(painelTabuladoUtilitarios, BorderLayout.CENTER);
+        
+        
         painelTabuladoUtilitarios.adicionaAba(painelGerenciadorBibliotecas);
         painelTabuladoUtilitarios.adicionaAba(painelGerenciadorTemplates);
         painelTabuladoUtilitarios.setAbaAtual(0);
@@ -220,8 +223,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         setBackground(ColorController.COR_PRINCIPAL);
         scrollOutlineTree.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
         painelSaida.setForeground(ColorController.COR_LETRA);
+        painelTemplate.setBackground(ColorController.COR_PRINCIPAL);
         inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
+        labelTituloUtilitarios.setForeground(ColorController.COR_LETRA);
         painelConfigPlugins.setBackground(ColorController.COR_CONSOLE);
         painelConfigPlugins.setForeground(ColorController.COR_LETRA);
         treePanel.setBackground(ColorController.COR_PRINCIPAL);
@@ -241,6 +246,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             WeblafUtils.configuraWebLaf(campoBusca.getCampoBusca());
             WeblafUtils.configuraWebLaf(scrollOutlineTree);
             ((WebScrollPaneUI) scrollOutlineTree.getUI()).setDrawBackground(false);
+            WeblafUtils.configurarBotao(btnFecharPainelTemplates, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
             WeblafUtils.configurarBotao(btnExecutar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnDepurar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(btnInterromper, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -504,7 +510,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         AbstractAction acaoPainelUtilitarios = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "biblioteca.png")) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                painelTabuladoUtilitarios.setVisible(! painelTabuladoUtilitarios.isVisible());
+                painelTemplate.setVisible(! painelTemplate.isVisible());
             }
         };
 
@@ -1395,6 +1401,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida = new br.univali.ps.ui.paineis.PainelSaida();
         painelInspetorArvore = new javax.swing.JPanel();
         painelTemplate = new javax.swing.JPanel();
+        painelfecharTemplates = new javax.swing.JPanel();
+        btnFecharPainelTemplates = new com.alee.laf.button.WebButton();
+        labelTituloUtilitarios = new javax.swing.JLabel();
         divisorArvoreInspetor = new javax.swing.JSplitPane();
         treePanel = new javax.swing.JPanel();
         campoBusca = new br.univali.ps.ui.rstautil.tree.SearchTextPanel();
@@ -1569,6 +1578,24 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelInspetorArvore.setLayout(new java.awt.BorderLayout());
 
         painelTemplate.setLayout(new java.awt.BorderLayout());
+
+        painelfecharTemplates.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        painelfecharTemplates.setOpaque(false);
+        painelfecharTemplates.setLayout(new java.awt.BorderLayout());
+
+        btnFecharPainelTemplates.setText("x");
+        btnFecharPainelTemplates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharPainelTemplatesActionPerformed(evt);
+            }
+        });
+        painelfecharTemplates.add(btnFecharPainelTemplates, java.awt.BorderLayout.EAST);
+
+        labelTituloUtilitarios.setText("# Painel Utilitários");
+        painelfecharTemplates.add(labelTituloUtilitarios, java.awt.BorderLayout.CENTER);
+
+        painelTemplate.add(painelfecharTemplates, java.awt.BorderLayout.PAGE_START);
+
         painelInspetorArvore.add(painelTemplate, java.awt.BorderLayout.PAGE_START);
 
         divisorArvoreInspetor.setDividerSize(15);
@@ -1668,6 +1695,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void btnAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjudaActionPerformed
         getPainelTabulado().getActionMap().get(PainelTabuladoPrincipal.ACAO_EXIBIR_AJUDA).actionPerformed(evt);
     }//GEN-LAST:event_btnAjudaActionPerformed
+
+    private void btnFecharPainelTemplatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharPainelTemplatesActionPerformed
+        this.getActionMap().get("Exibir Painel Utilitários").actionPerformed(evt);
+    }//GEN-LAST:event_btnFecharPainelTemplatesActionPerformed
 
     private void interromper()
     {
@@ -2656,6 +2687,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private com.alee.laf.button.WebButton btnAjuda;
     private com.alee.laf.button.WebButton btnDepurar;
     private com.alee.laf.button.WebButton btnExecutar;
+    private com.alee.laf.button.WebButton btnFecharPainelTemplates;
     private com.alee.laf.button.WebButton btnInterromper;
     private com.alee.laf.button.WebButton btnSalvar;
     private com.alee.laf.button.WebButton btnSalvarComo;
@@ -2668,12 +2700,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private javax.swing.ButtonGroup grupoBotoesPlugins;
     private br.univali.ps.ui.inspetor.InspetorDeSimbolos inspetorDeSimbolos;
     private javax.swing.JLabel labelRecuperados;
+    private javax.swing.JLabel labelTituloUtilitarios;
     private javax.swing.JPanel painelConsole;
     private javax.swing.JPanel painelEditor;
     private javax.swing.JPanel painelInspetorArvore;
     private javax.swing.JPanel painelRecuperados;
     private br.univali.ps.ui.paineis.PainelSaida painelSaida;
     private javax.swing.JPanel painelTemplate;
+    private javax.swing.JPanel painelfecharTemplates;
     private javax.swing.JScrollPane scrollInspetor;
     private javax.swing.JScrollPane scrollOutlineTree;
     private br.univali.ps.ui.rstautil.tree.PortugolOutlineTree tree;
