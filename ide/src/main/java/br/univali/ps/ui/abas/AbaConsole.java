@@ -481,37 +481,35 @@ public final class AbaConsole extends Aba implements PropertyChangeListener
 
     private Object obterValorEntrada(TipoDado tipoDado, String entrada)
     {
+        if ((entrada == null || entrada.isEmpty()) && tipoDado != TipoDado.CADEIA)
+        {
+            return null;
+        }
+        
         try
         {
             if (tipoDado == TipoDado.INTEIRO)
             {
                 return Integer.parseInt(entrada);
             }
-            else
+            else if (tipoDado == TipoDado.REAL)
             {
-                if (tipoDado == TipoDado.REAL)
+                return Double.parseDouble(entrada);
+            }
+            else if (tipoDado == TipoDado.CARACTER)
+            {
+                return entrada.charAt(0);
+            }
+            else if (tipoDado == TipoDado.LOGICO)
+            {
+                switch (entrada)
                 {
-                    return Double.parseDouble(entrada);
-                }
-                else
-                {
-                    if (tipoDado == TipoDado.CARACTER)
-                    {
-                        return entrada.charAt(0);
-                    }
-                    else
-                    {
-                        if (tipoDado == TipoDado.LOGICO)
-                        {
-                            switch (entrada)
-                            {
-                                case "falso":
-                                    return false;
-                                case "verdadeiro":
-                                    return true;
-                            }
-                        }
-                    }
+                    case "falso":
+                        return false;
+                    case "verdadeiro":
+                        return true;
+                    default:
+                        return null;
                 }
             }
 

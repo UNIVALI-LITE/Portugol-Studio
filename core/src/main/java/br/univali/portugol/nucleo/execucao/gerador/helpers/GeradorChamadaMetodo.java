@@ -17,7 +17,7 @@ public class GeradorChamadaMetodo
     public void gera(NoChamadaFuncao no, PrintWriter saida, VisitanteASA visitor, 
                             ASAPrograma asa, GeradorCodigoJava.Opcoes opcoes, int nivelEscopo) throws ExcecaoVisitaASA
     {
-        String escopoFuncao = (no.getEscopo() != null) ? (no.getEscopo() + ".") : "";
+        String escopoFuncao = (no.getEscopoBiblioteca() != null) ? (no.getEscopoBiblioteca() + ".") : "";
         String nomeFuncao = no.getNome();
         
         boolean invocandoFuncaoLeia = "leia".equals(nomeFuncao);
@@ -132,9 +132,9 @@ public class GeradorChamadaMetodo
     {
         List<ParametroEsperado> metaDados = new ArrayList<>();
 
-        if (no.getEscopo() != null) // é uma função de biblioteca?
+        if (no.getEscopoBiblioteca() != null) // é uma função de biblioteca?
         {
-            String nomeBiblioteca = Utils.getNomeBiblioteca(no.getEscopo(), asa);
+            String nomeBiblioteca = Utils.getNomeBiblioteca(no.getEscopoBiblioteca(), asa);
             try
             {
                 GerenciadorBibliotecas gerenciador = GerenciadorBibliotecas.getInstance();

@@ -26,6 +26,7 @@ import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
+import br.univali.ps.ui.editor.PSCompletionListCellRenderer;
 import br.univali.ps.ui.utils.EscopoCursor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -34,19 +35,16 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.autocomplete.Completion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.FunctionCompletion;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
 import org.fife.ui.autocomplete.TemplateCompletion;
-import org.fife.ui.autocomplete.VariableCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  *
  * @author Luiz Fernando Noschang
  */
-final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
+public final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
 {
     private final FabricaConclusaoCodigoPrograma fabricaConclusaoCodigo;
     private boolean habilitado = true;
@@ -55,7 +53,9 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
     {
         this.fabricaConclusaoCodigo = new FabricaConclusaoCodigoPrograma();
         this.setParameterizedCompletionParams('(', ", ", ')');
-    }
+        
+        setListCellRenderer(new PSCompletionListCellRenderer());
+    }    
 
     public void setHabilitado(boolean habilitado)
     {
@@ -152,7 +152,9 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
 
                 for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais())
                 {
-                    declaracao.aceitar(this);
+                    if (declaracao instanceof NoDeclaracaoFuncao){
+                        declaracao.aceitar(this);
+                    }                    
                 }
             }
 
@@ -203,15 +205,16 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
                 nivelASA = nivelASA + 1;
                 local = declaracaoFuncao.getNome();
 
-                for (NoDeclaracaoParametro parametro : declaracaoFuncao.getParametros())
-                {
-                    parametro.aceitar(this);
-                }
+                 for (NoDeclaracaoParametro parametro : declaracaoFuncao.getParametros())
+                    {
+                        parametro.aceitar(this);
+                    }
 
-                visitar(declaracaoFuncao.getBlocos());
+                    visitar(declaracaoFuncao.getBlocos());
 
-                nivelASA = nivelAntigo;
-                local = "programa";
+                    nivelASA = nivelAntigo;
+                    local = "programa";
+                
             }
 
             return null;
@@ -251,7 +254,7 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
             {
                 TrechoCodigoFonte trecho = noDeclaracaoParametro.getTrechoCodigoFonteNome();
 
-                ConclusaoVariavelASA conclusao = new ConclusaoVariavelASA(ProvedorConclusaoCodigoPrograma.this, nome, tipo, nivelASA, trecho, local);
+                ConclusaoVariavelASA conclusao = new ConclusaoVariavelASA(ProvedorConclusaoCodigoPrograma.this, nome, tipo, false, nivelASA, trecho, local);
                 conclusao.setRelevance(nivelASA);
                 conclusao.setDefinedIn(local);
 
@@ -269,20 +272,20 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
             String nome = noDeclaracaoMatriz.getNome();
 
             completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome, nome + "[${indice}][${indice}]", null, null, nivelASA, trecho, local));
-            completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome + "[?][?] = ?", nome + "[?][?] = ?", nome + "[${linha}][${coluna}] = ${expressao}", null, null, nivelASA, trecho, local));
+            completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome + "[linha][coluna] = exprassao", nome + "[linha][coluna] = exprassao", nome + "[${linha}][${coluna}] = ${expressao}", null, null, nivelASA, trecho, local));
 
             return null;
         }
 
         @Override
         public Object visitar(NoDeclaracaoVariavel noDeclaracaoVariavel) throws ExcecaoVisitaASA
-        {
+        {           
             TrechoCodigoFonte trecho = noDeclaracaoVariavel.getTrechoCodigoFonteNome();
 
             String nome = noDeclaracaoVariavel.getNome();
             String tipo = noDeclaracaoVariavel.getTipoDado().getNome();
 
-            ConclusaoVariavelASA variableCompletion = new ConclusaoVariavelASA(ProvedorConclusaoCodigoPrograma.this, nome, tipo, nivelASA, trecho, local);
+            ConclusaoVariavelASA variableCompletion = new ConclusaoVariavelASA(ProvedorConclusaoCodigoPrograma.this, nome, tipo, noDeclaracaoVariavel.constante(), nivelASA, trecho, local);
             variableCompletion.setDefinedIn(local);
             variableCompletion.setRelevance(nivelASA);
 
@@ -300,12 +303,12 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
 
             ConclusaoModeloASA conclusao;
 
-            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[&lt;posicao&gt;]", nome + "[${posicao}]${cursor}", null, String.format("Acessa um elemento do vetor '%s'", nome), nivelASA, trecho, local);
+            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[posicao]", nome + "[${posicao}]${cursor}", null, String.format("Acessa um elemento do vetor '%s'", nome), nivelASA, trecho, local);
             substituirParametro(conclusao, 0, new ParametroConclusaoASA(noDeclaracaoVetor, INDICE_VETOR, conclusao.getParam(0), TipoDado.INTEIRO.toString()));
 
             completions.add(conclusao);
 
-            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[&lt;posicao&gt;] = &lt;expressao&gt;", nome + "[${posicao}] = ${expressao}${cursor}", null, String.format("Armazena um valor em uma posição do vetor '%s'", nome), nivelASA, trecho, local);
+            conclusao = new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome + "[posicao] = expressao", nome + "[${posicao}] = ${expressao}${cursor}", null, String.format("Armazena um valor em uma posição do vetor '%s'", nome), nivelASA, trecho, local);
             substituirParametro(conclusao, 0, new ParametroConclusaoASA(noDeclaracaoVetor, INDICE_VETOR, conclusao.getParam(0), TipoDado.INTEIRO.toString()));
             substituirParametro(conclusao, 1, new ParametroConclusaoASA(noDeclaracaoVetor, ATRIBUICAO_VALOR, conclusao.getParam(1), noDeclaracaoVetor.getTipoDado().getNome()));
 
@@ -327,7 +330,7 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
 
                 if (nome != null)
                 {
-                    ConclusaoVariavelASA conclusao = new ConclusaoVariavelASA(ProvedorConclusaoCodigoPrograma.this, nome, tipo, nivelASA, trecho, "programa");
+                    ConclusaoVariavelASA conclusao = new ConclusaoVariavelASA(ProvedorConclusaoCodigoPrograma.this, nome, tipo, false, nivelASA, trecho, "programa");
                     conclusao.setDefinedIn("programa");
 
                     completions.add(conclusao);
@@ -463,114 +466,6 @@ final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProvider
             {
 
             }
-        }
-    }
-
-    private interface ConclusaoASA
-    {
-        public int getNivelASA();
-
-        public TrechoCodigoFonte getTrechoCodigoFonte();
-
-        public String getLocal();
-    }
-
-    private final class ConclusaoVariavelASA extends VariableCompletion implements ConclusaoASA
-    {
-        private final int nivelASA;
-        private final TrechoCodigoFonte trechoCodigoFonte;
-        private final String local;
-
-        public ConclusaoVariavelASA(CompletionProvider provider, String nome, String tipo, int nivelASA, TrechoCodigoFonte trechoCodigoFonte, String local)
-        {
-            super(provider, nome, tipo);
-            this.nivelASA = nivelASA;
-            this.trechoCodigoFonte = trechoCodigoFonte;
-            this.local = local;
-        }
-
-        @Override
-        public int getNivelASA()
-        {
-            return nivelASA;
-        }
-
-        @Override
-        public TrechoCodigoFonte getTrechoCodigoFonte()
-        {
-            return trechoCodigoFonte;
-        }
-
-        @Override
-        public String getLocal()
-        {
-            return local;
-        }
-    }
-
-    private final class ConclusaoModeloASA extends TemplateCompletion implements ConclusaoASA
-    {
-        private final int nivelASA;
-        private final TrechoCodigoFonte trechoCodigoFonte;
-        private final String local;
-
-        public ConclusaoModeloASA(CompletionProvider provider, String inputText, String definitionString, String template, String shortDescription, String summary, int nivelASA, TrechoCodigoFonte trechoCodigoFonte, String local)
-        {
-            super(provider, inputText, definitionString, template, shortDescription, summary);
-            this.nivelASA = nivelASA;
-            this.trechoCodigoFonte = trechoCodigoFonte;
-            this.local = local;
-        }
-
-        @Override
-        public int getNivelASA()
-        {
-            return nivelASA;
-        }
-
-        @Override
-        public TrechoCodigoFonte getTrechoCodigoFonte()
-        {
-            return trechoCodigoFonte;
-        }
-
-        @Override
-        public String getLocal()
-        {
-            return local;
-        }
-    }
-
-    private final class ConclusaoFuncaoASA extends FunctionCompletion implements ConclusaoASA
-    {
-        private final int nivelASA;
-        private final TrechoCodigoFonte trechoCodigoFonte;
-        private final String local;
-
-        public ConclusaoFuncaoASA(CompletionProvider provider, String name, String returnType, int nivelASA, TrechoCodigoFonte trechoCodigoFonte, String local)
-        {
-            super(provider, name, returnType);
-            this.nivelASA = nivelASA;
-            this.trechoCodigoFonte = trechoCodigoFonte;
-            this.local = local;
-        }
-
-        @Override
-        public int getNivelASA()
-        {
-            return nivelASA;
-        }
-
-        @Override
-        public TrechoCodigoFonte getTrechoCodigoFonte()
-        {
-            return trechoCodigoFonte;
-        }
-
-        @Override
-        public String getLocal()
-        {
-            return local;
         }
     }
 

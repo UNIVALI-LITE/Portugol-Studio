@@ -15,6 +15,7 @@ public class testeNegacao extends Programa
     @Override
     protected void inicializar() throws ErroExecucao, InterruptedException
     {
+        super.inicializar();
         a = "teste";
         b = "teste";
     }

@@ -12,12 +12,21 @@ public final class MetaDadosBiblioteca extends MetaDados
     private DocumentacaoBiblioteca documentacao;
     private MetaDadosFuncoes metaDadosFuncoes;
     private MetaDadosConstantes metaDadosConstantes;
+    private String pacoteBiblioteca;
     
     MetaDadosBiblioteca()
     {
         
     }
-    
+
+    public String getPacoteBiblioteca() {
+        return pacoteBiblioteca;
+    }
+
+    public void setPacoteBiblioteca(String pacoteBiblioteca) {
+        this.pacoteBiblioteca = pacoteBiblioteca + ".";
+    }
+
     public TipoBiblioteca getTipo()
     {
         return tipo;

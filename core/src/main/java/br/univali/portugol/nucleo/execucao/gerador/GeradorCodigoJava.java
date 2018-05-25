@@ -3,6 +3,8 @@ package br.univali.portugol.nucleo.execucao.gerador;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.*;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.*;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 import java.io.IOException;
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Elieser
@@ -202,6 +206,18 @@ public class GeradorCodigoJava
                     }
                     saida.append(";").println();
                 }
+                
+                if (opcoes.gerandoCodigoParaInspecaoDeSimbolos) {
+                    // atualiza os valores das variáveis globais inpecionadas e inicializadas para que o valor inicial já esteja disponível no inspetor quando o programa inicia
+                    if (variavelInicializada) {
+                        if (ehVetor)
+                            Utils.geraCodigoParaInspecao((NoDeclaracaoVetor)variavel, saida, nivelEscopo, seed);
+                        else if (ehMatriz)
+                            Utils.geraCodigoParaInspecao((NoDeclaracaoMatriz)variavel, saida, nivelEscopo, seed);
+                        else
+                            Utils.geraCodigoParaInspecao((NoDeclaracaoVariavel)variavel, saida, nivelEscopo, false);
+                    }
+                }
             }
         }
         
@@ -221,7 +237,7 @@ public class GeradorCodigoJava
             saida.append(Utils.geraIdentacao(nivelEscopo));
             saida.format("protected void inicializar() throws ErroExecucao, InterruptedException {").println();
             
-            
+            saida.append("super.inicializar();").println();
             inicializaVariaveisGlobaisNaoPassadasPorReferencia(variaveisGlobais);
             
             inicializaVariaveisGlobaisQueSaoPassadasPorReferencia();
@@ -594,7 +610,7 @@ public class GeradorCodigoJava
         public Void visitar(NoReferenciaVariavel no) throws ExcecaoVisitaASA
         {
             String nome = no.getNome();
-            String escopo = no.getEscopo();
+            String escopo = no.getEscopoBiblioteca();
             if (escopo != null)
             {
                 escopo = Utils.getNomeBiblioteca(escopo, asa);
@@ -912,8 +928,15 @@ public class GeradorCodigoJava
         {
             for (NoInclusaoBiblioteca no : asa.getListaInclusoesBibliotecas())
             {
+                String sNomePacote = "";
+                try {
+                    sNomePacote = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(no.getNome()).getPacoteBiblioteca();
+                } catch (ErroCarregamentoBiblioteca ex) {
+                    Logger.getLogger(GeradorCodigoJava.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 saida.append("import ")
-                        .append(PACOTE_DAS_LIBS)
+                        .append(sNomePacote)
+//                        .append(PACOTE_DAS_LIBS)
                         .append(no.getNome())
                         .append(";")
                         .println();

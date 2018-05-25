@@ -31,6 +31,8 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.EntradaSaidaPadrao;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
+import static java.lang.Math.random;
+import java.util.Random;
 
 /**
  * Provê uma fachada (Facade) para abstrair os detalhes da execução
@@ -96,6 +98,8 @@ public abstract class Programa
 
 	private int ultimaLinha = 0;
 	private int ultimaColuna = 0;
+        
+        private final Random random = new Random(System.currentTimeMillis());
 
 	public static final Object OBJETO_NULO = new Object(); // usando como valor
 
@@ -177,19 +181,25 @@ public abstract class Programa
 		observadores = new ArrayList<>();
 	}
 
+        protected String concatena(String a, int b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
+        
         protected String concatena(int a, String b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
         
-	protected String concatena(String a, int b)
+	protected String concatena(String a, double b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
-
-	protected String concatena(String a, double b)
+        
+        protected String concatena(double a, String b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
@@ -200,14 +210,31 @@ public abstract class Programa
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
+        protected String concatena(float a, String b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
 
 	protected String concatena(String a, char b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
 	}
+        
+        protected String concatena(char a, String b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
 
 	protected String concatena(String a, boolean b)
+	{
+		stringBuilder.setLength(0);
+		return stringBuilder.append(a).append(b).toString();
+	}
+        
+        protected String concatena(boolean a, String b)
 	{
 		stringBuilder.setLength(0);
 		return stringBuilder.append(a).append(b).toString();
@@ -219,10 +246,6 @@ public abstract class Programa
 		{
 			variaveisInspecionadas[idVariavel] = OBJETO_NULO;
 		}
-		else
-		{
-			System.out.println(String.format("ID de variável inválido: %d", idVariavel));
-		}
 	}
 
 	public void inspecionaVetor(int idVetor, int tamanhoVetor)
@@ -230,10 +253,6 @@ public abstract class Programa
 		if (idVetor >= 0 && idVetor < vetoresInspecionados.length)
 		{
 			vetoresInspecionados[idVetor] = new Vetor(tamanhoVetor);
-		}
-		else
-		{
-			System.out.println(String.format("ID de vetor inválido: %d", idVetor));
 		}
 	}
 
@@ -243,10 +262,6 @@ public abstract class Programa
 		{
 			matrizesInspecionadas[idMatriz] = new Matriz(linhas, colunas);
 		}
-		else
-		{
-			System.out.println(String.format("ID de matriz inválido: %d", idMatriz));
-		}
 	}
 
 	public Object getValorVariavelInspecionada(int idVariavel)
@@ -254,10 +269,6 @@ public abstract class Programa
 		if (idVariavel >= 0 && idVariavel < variaveisInspecionadas.length)
 		{
 			return variaveisInspecionadas[idVariavel];
-		}
-		else
-		{
-			System.out.println(String.format("ID de variável inválido: %d", idVariavel));
 		}
 		return OBJETO_NULO;
 	}
@@ -322,19 +333,7 @@ public abstract class Programa
 						return valor;
 					}
 				}
-				else
-				{
-					System.out.println(String.format("indice inválido acessando o vetor %d (índice: %d)", idVetor, coluna));
-				}
 			}
-			else
-			{
-				System.out.println(String.format("Vetor no índice %d está nulo!", idVetor));
-			}
-		}
-		else
-		{
-			System.out.println(String.format("ID de vetor inválido: %d", idVetor));
 		}
 		return OBJETO_NULO;
 	}
@@ -395,25 +394,10 @@ public abstract class Programa
 							return vetorLinha.getDados()[coluna];
 						}
 					}
-					else
-					{
-						System.out.println(String.format("indice de coluna inválido acessando a matriz %d (índice: %d)", idMatriz, coluna));
-					}
-				}
-				else
-				{
-					System.out.println(String.format("indice de linha inválido acessando a matriz %d (índice: %d)", idMatriz, linha));
 				}
 			}
-			else
-			{
-				System.out.println(String.format("Matriz no índice %d está nula!", idMatriz));
-			}
 		}
-		else
-		{
-			System.out.println(String.format("ID de vetor inválido: %d", idMatriz));
-		}
+
 		return OBJETO_NULO;
 	}
 
@@ -900,6 +884,29 @@ public abstract class Programa
 			};
 		}
 	}
+        
+        protected int sorteia(int minimo, int maximo)throws ErroExecucao{
+            if (minimo > maximo)
+            {
+                throw new ErroExecucao() {
+                    @Override
+                    protected String construirMensagem() {
+                        return String.format("O valor mínimo (%d) é maior do que o valor máximo (%d)", minimo, maximo);
+                    }
+                };
+            }
+            else if (minimo == maximo)
+            {
+                throw new ErroExecucao() {
+                    @Override
+                    protected String construirMensagem() {
+                        return String.format("Os valores mínimo e máximo são iguais: %d", minimo);
+                    }
+                };
+                
+            }
+            return minimo + random.nextInt(maximo + 1 - minimo);
+        }
 
 	protected void escreva(Object... listaParametrosPassados) throws InterruptedException
 	{
@@ -915,7 +922,7 @@ public abstract class Programa
 			{
 				if (valor.equals("${show developers}"))
 				{
-					valor = "\n\nDesenvolvedores:\n\nFillipi Domingos Pelz\nLuiz Fernando Noschang\n\n";
+					valor = "\n\nDesenvolvedores:\n\nFillipi Domingos Pelz\nLuiz Fernando Noschang\nAlisson Steffens Henrique\nAdson Marques da Silva Esteves";
 				}
 
 				saida.escrever((String) valor);

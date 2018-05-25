@@ -14,6 +14,7 @@ public class testeDeclaracaoVetorMatriz extends Programa
 
     @Override
     protected void inicializar () throws ErroExecucao, InterruptedException {
+        super.inicializar();
         frases = new String[TAM];
     }
     

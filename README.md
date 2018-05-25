@@ -29,3 +29,9 @@ O **Portugol Studio** é desenvolvido e mantido pelo [Laboratório de Inovação
 ***
 ## Contribuindo com o Portugol Studio
 Se você é um desenvolvedor e está interessado em contribuir no desenvolvimento do  **Portugol Studio**, acesse a [Wiki](https://github.com/UNIVALI-LITE/Portugol-Studio/wiki/Contribuindo-com-o-projeto) do projeto no GitHub. Lá você encontrará um guia passo a passo de como obter o código fonte do Portugol Studio, modificá-lo e executá-lo.
+
+## Portugol pela web
+
+Caso queira utilizar a código Portugol em sites ou slides uma versão do *highlight.js* para Portugol está disponível em [highlight.js-portugol](https://alissonsteffens.github.io/highlight.js-portugol/)
+
+ 

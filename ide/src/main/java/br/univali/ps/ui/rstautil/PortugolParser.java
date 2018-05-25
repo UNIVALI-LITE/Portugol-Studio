@@ -73,7 +73,7 @@ public class PortugolParser extends AbstractParser
 
     
 
-    private void notificarErrosAvisos(ResultadoAnalise resultadoAnalise, RSyntaxDocument documento, DefaultParseResult resultado)
+    public void notificarErrosAvisos(ResultadoAnalise resultadoAnalise, RSyntaxDocument documento, DefaultParseResult resultado)
     {
         Element raiz = documento.getDefaultRootElement();
 

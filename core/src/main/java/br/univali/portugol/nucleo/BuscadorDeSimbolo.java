@@ -139,7 +139,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
         TrechoCodigoFonte trecho = chamadaFuncao.getTrechoCodigoFonteNome();
 
         if (trecho.getLinha() == linha && trecho.getColuna() == coluna) {
-            if (chamadaFuncao.getEscopo() == null) {
+            if (chamadaFuncao.getEscopoBiblioteca() == null) {
                 declaracaoSimbolo = chamadaFuncao.getOrigemDaReferencia();
 
                 return null;
@@ -396,7 +396,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
         TrechoCodigoFonte trecho = noReferenciaMatriz.getTrechoCodigoFonteNome();
 
         if (trecho.getLinha() == linha && trecho.getColuna() == coluna) {
-            if (noReferenciaMatriz.getEscopo() == null) {
+            if (noReferenciaMatriz.getEscopoBiblioteca() == null) {
                 declaracaoSimbolo = noReferenciaMatriz.getOrigemDaReferencia();
 
                 return null;
@@ -429,7 +429,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
         TrechoCodigoFonte trecho = noReferenciaVetor.getTrechoCodigoFonteNome();
 
         if (trecho.getLinha() == linha && trecho.getColuna() == coluna) {
-            if (noReferenciaVetor.getEscopo() == null) {
+            if (noReferenciaVetor.getEscopoBiblioteca() == null) {
                 declaracaoSimbolo = noReferenciaVetor.getOrigemDaReferencia();
 
                 return null;
@@ -601,7 +601,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
         TrechoCodigoFonte trecho = noReferenciaVariavel.getTrechoCodigoFonteNome();
 
         if (trecho.getLinha() == linha && trecho.getColuna() == coluna) {
-            if (noReferenciaVariavel.getEscopo() == null) {
+            if (noReferenciaVariavel.getEscopoBiblioteca() == null) {
                 declaracaoSimbolo = noReferenciaVariavel.getOrigemDaReferencia();
 
                 return null;

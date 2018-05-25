@@ -242,16 +242,15 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        botaoNovoArquivo = new com.alee.laf.button.WebButton();
         botaoAbrir = new com.alee.laf.button.WebButton();
+        botaoNovoArquivo = new com.alee.laf.button.WebButton();
         titulo = new javax.swing.JLabel();
-
-        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
-        botaoNovoArquivo.setHideActionText(true);
 
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setHideActionText(true);
-        botaoAbrir.setName("botaoAbrir"); // NOI18N
+
+        botaoNovoArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/page_white_add.png"))); // NOI18N
+        botaoNovoArquivo.setHideActionText(true);
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setFocusable(false);

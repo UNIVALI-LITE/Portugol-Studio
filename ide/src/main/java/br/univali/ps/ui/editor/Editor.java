@@ -4,6 +4,7 @@ import br.univali.ps.ui.editor.formatador.FormatadorCodigo;
 import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
@@ -18,6 +19,7 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
@@ -90,6 +92,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
+import org.fife.ui.rsyntaxtextarea.parser.DefaultParseResult;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
@@ -141,7 +144,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     private Action acaoFormatarCodigo;
 
-    private TelaCustomBorder procurarESubstituir;
     private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
@@ -162,7 +164,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         this.isExamplable = editorParaExemplo; 
         initComponents();
-        configurarDialogoPesquisarSubstituir();
         configurarParser();
         configurarTextArea();
         configurarAcoes();
@@ -211,7 +212,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             setBackground(getTextArea().getBackground());
             scrollPane.setBackground(getTextArea().getBackground());
             scrollPane.getHorizontalScrollBar().getParent().setBackground(getTextArea().getBackground());
-        });    
+        });
     }
     
     private void deslocaComponenteVerticalmente(JComponent componente, int deslocamento)
@@ -292,16 +293,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         return menu;
     }
 
-    private void configurarDialogoPesquisarSubstituir()
-    {
-        procurarESubstituir = new TelaCustomBorder("Procurar");
-        PSFindReplace findReplace = new PSFindReplace(textArea, procurarESubstituir);
-        findReplace.setPreferredSize(new Dimension(550, 190));
-        //findReplace.setSize(new Dimension(800, 600));
-        procurarESubstituir.setPanel(findReplace);
-        procurarESubstituir.setLocationRelativeTo(null);
-    }
-
     private void configurarParser()
     {
         suporteLinguagemPortugol = criaSuportePortugol();
@@ -316,6 +307,16 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
         
         return new SuportePortugolImpl();
+    }
+    
+    public void exibirErros(ResultadoAnalise resultado){
+        final PortugolParser portugolParser = suporteLinguagemPortugol.getPortugolParser();
+        DefaultParseResult defaultParserResult = new DefaultParseResult(portugolParser);
+        int firstLine = 0;
+        int lastLine = getPortugolDocumento().getDefaultRootElement().getElementCount() - 1;
+        defaultParserResult.setParsedLines(firstLine, lastLine);
+        
+        portugolParser.notificarErrosAvisos(resultado, getPortugolDocumento(), defaultParserResult);
     }
     
     private class SuportePortugolExemplos extends SuportePortugolImpl  
@@ -445,7 +446,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         textArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK), nome);
         textArea.getActionMap().put(nome, acaoRenomearSimboloNoCursor);
-    }
+    }    
 
     public MetadadosDoSimboloSobOCursorDoTeclado obterMetadadosDoSimboloSobOCursorDoTeclado()
     {
@@ -579,11 +580,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private synchronized boolean isExecutandoPrograma()
     {
         return executandoPrograma;
-    }
-
-    public JDialog getSearchDialog()
-    {
-        return this.procurarESubstituir;
     }
 
     private void configurarAcaoDesfazer()

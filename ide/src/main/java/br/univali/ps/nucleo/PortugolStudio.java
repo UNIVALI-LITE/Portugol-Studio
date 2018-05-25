@@ -10,6 +10,7 @@ import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.editor.PSFindReplace;
 import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
@@ -94,7 +95,8 @@ public final class PortugolStudio
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
     private TelaCustomBorder telaLicencas = null;
-    private TelaCustomBorder telaRenomearSimbolo = null;        
+    private TelaCustomBorder telaRenomearSimbolo = null;
+    private TelaCustomBorder telaPesquisarSubstituir = null;
     
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
@@ -238,7 +240,7 @@ public final class PortugolStudio
              * caso contrário, os plugins não serão corretamente instalado nas abas ao criá-las
              */
             LOGGER.log(Level.INFO, "Carregando plugins e bibliotecas...");
-            //carregarPlugins();
+            carregarPlugins();
             Splash.definirProgresso(81, "step7.png");
 
             carregarBibliotecas();
@@ -956,6 +958,36 @@ public final class PortugolStudio
         telaLicencas.setLocationRelativeTo(null);
 
         return telaLicencas;
+    }
+    
+    public JDialog getTelaPesquisarSubstituir()
+    {
+        if (telaPesquisarSubstituir == null)
+        {
+            telaPesquisarSubstituir = new TelaCustomBorder("Localizar e Substituir") ;
+            PSFindReplace findReplace = new PSFindReplace(telaPesquisarSubstituir);
+            findReplace.setPreferredSize(new Dimension(550, 190));
+            telaPesquisarSubstituir.setPanel(findReplace);
+        }
+
+        telaPesquisarSubstituir.setLocationRelativeTo(null);
+
+        return telaPesquisarSubstituir;
+    }
+    
+    public PSFindReplace getTelaProcurarSubstituirPanel()
+    {
+        if (telaPesquisarSubstituir == null)
+        {
+            telaPesquisarSubstituir = new TelaCustomBorder("Localizar e Substituir") ;
+            PSFindReplace findReplace = new PSFindReplace(telaPesquisarSubstituir);
+            findReplace.setPreferredSize(new Dimension(550, 190));
+            telaPesquisarSubstituir.setPanel(findReplace);
+        }
+        
+        telaPesquisarSubstituir.setLocationRelativeTo(null);
+        
+        return (PSFindReplace) telaPesquisarSubstituir.getPanel();
     }
 
     public JDialog getTelaRenomearSimbolo()

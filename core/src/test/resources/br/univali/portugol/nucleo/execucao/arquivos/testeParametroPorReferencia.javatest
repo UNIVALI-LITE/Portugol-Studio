@@ -36,6 +36,7 @@ public class testeParametroPorReferencia extends Programa
     
     @Override
     protected void inicializar () throws ErroExecucao, InterruptedException {
+        super.inicializar();
         REFS_INT[INDICE_I_2] = -1;
     }
 

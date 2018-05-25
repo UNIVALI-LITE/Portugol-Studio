@@ -12,7 +12,7 @@ public class testeComparacaoStringInvalida extends Programa
     @Override
     protected void inicializar() throws ErroExecucao, InterruptedException
     {
-
+        super.inicializar();
     }
 
     @Override

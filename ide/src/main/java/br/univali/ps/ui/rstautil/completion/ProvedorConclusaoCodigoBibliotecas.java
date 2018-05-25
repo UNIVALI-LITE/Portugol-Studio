@@ -13,6 +13,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosParametro;
+import br.univali.ps.ui.editor.PSCompletionListCellRenderer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ import org.fife.ui.autocomplete.VariableCompletion;
 public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
 {
     private final FabricaConclusaoCodigoBibliotecas fabricaConclusoes;
-    private final Map<String, List<Completion>> conclusoesBibliotecas;
+    private Map<String, List<Completion>> conclusoesBibliotecas;
     private final List<String> bibliotecasIncluidas;
     private final Map<String, String> apelidosBibliotecas;
     private final AtualizadorEstadoBibliotecas atualizador;
@@ -49,6 +50,8 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
         this.bibliotecasIncluidas = new ArrayList<>();
         this.setParameterizedCompletionParams('(', ", ", ')');
         this.setAutoActivationRules(false, ".");
+        
+        setListCellRenderer(new PSCompletionListCellRenderer());
     }
 
     public void atualizar(Programa programa)
@@ -76,6 +79,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
 
             if (bibliotecasIncluidas.contains(nomeBiblioteca))
             {
+                conclusoesBibliotecas = fabricaConclusoes.criarConclusoes(ProvedorConclusaoCodigoBibliotecas.this);
                 List<Completion> conclusoes = new ArrayList<>(conclusoesBibliotecas.get(nomeBiblioteca));
 
                 if (partes.length == 2)
@@ -149,11 +153,11 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
         {
             Map<String, List<Completion>> conclusoes = new HashMap<>();
             GerenciadorBibliotecas gerenciadorBibliotecas = GerenciadorBibliotecas.getInstance();
-
-            for (String biblioteca : gerenciadorBibliotecas.listarBibliotecasDisponiveis())
+            try
             {
-                try
+                for (String biblioteca : gerenciadorBibliotecas.getBibliotecasDisponiveis())
                 {
+                
                     List<Completion> conclusoesBiblioteca = new ArrayList<>();
                     MetaDadosBiblioteca metaDadosBiblioteca = gerenciadorBibliotecas.obterMetaDadosBiblioteca(biblioteca);
 
@@ -169,12 +173,12 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
 
                     conclusoes.put(biblioteca, conclusoesBiblioteca);
                 }
-                catch (ErroCarregamentoBiblioteca ex)
-                {
-                    Logger.getLogger(FabricaConclusaoCodigoBibliotecas.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
             }
-
+            catch (Exception ex)
+            {
+                Logger.getLogger(FabricaConclusaoCodigoBibliotecas.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return conclusoes;
         }
 
@@ -190,7 +194,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
                 descricao = descricao.concat(String.format("<br><br><a href='%s'>Mais Informações</a>", constante.getDocumentacao().referencia()));
             }
 
-            VariableCompletion conclusao = new VariableCompletion(provedorConclusoes, nome, tipo);
+            ConclusaoConstanteBiblioteca conclusao = new ConclusaoConstanteBiblioteca(provedorConclusoes, nome, tipo, metaDadosBiblioteca.getNome());
 
             conclusao.setRelevance(1);
             conclusao.setDefinedIn(metaDadosBiblioteca.getNome());
@@ -211,7 +215,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
                 descricao = descricao.concat(String.format("<br><br><a href='%s'>Mais Informações</a>", funcao.getDocumentacao().referencia()));
             }
 
-            FunctionCompletion conclusao = new FunctionCompletion(provedorConclusoes, nomeFuncao, tipoFuncao);
+            ConclusaoFuncaoBiblioteca conclusao = new ConclusaoFuncaoBiblioteca(ProvedorConclusaoCodigoBibliotecas.this, nomeFuncao, tipoFuncao, metaDadosBiblioteca.getNome());
 
             conclusao.setRelevance(0);
             conclusao.setDefinedIn(metaDadosBiblioteca.getNome());

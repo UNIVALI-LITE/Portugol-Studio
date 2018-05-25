@@ -190,7 +190,8 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
 
                 if (!gerouErros)
                 {
-                    info.setVisible(false);
+                    info.setForeground(ColorController.COR_LETRA);
+                    info.setText("Digite um novo nome para a variável");
                 }
 
                 acaoAceitar.setEnabled(true);   
@@ -263,13 +264,15 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
             this.linha = linha;
             this.coluna = coluna;
             aceitou = false;
-
             campoNomeAtual.setText(declaracaoDoSimbolo.getNome());
-            campoNovoNome.setText("");
+            campoNovoNome.setText(declaracaoDoSimbolo.getNome());
             acaoAceitar.setEnabled(false);
 
             definirTituloJanela();
-
+            SwingUtilities.invokeLater(() -> {
+                campoNovoNome.requestFocus();
+                campoNovoNome.selectAll();
+            });
             atualizarInformacoes();
 
             dialog.setVisible(true);
