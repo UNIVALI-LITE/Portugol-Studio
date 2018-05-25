@@ -27,22 +27,23 @@ public class AbaGerenciadorTemplates extends Aba implements Themeable{
      * Creates new form AbaGerenciadorTemplates
      */
     public AbaGerenciadorTemplates(AbaCodigoFonte abaCodigoFonte) {
-        super("Templates", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "real.png"), false);
+        super("Modelos", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "template.png"), false);
         this.abaCodigoFonte = abaCodigoFonte;
         initComponents();
-        String[] templates = {"console","console2", "console3","console4", "grafico"};
+        configurarCores();
+        String[] templates = {"console","grafico", "jogo","arquivos", "internet"};
         for (String template : templates) {
             WebButton temp = new WebButton();
-            temp.setText("asd");
+            temp.setText(template);
             temp.setName(template);
             temp.setForeground(ColorController.COR_LETRA);
-            temp.setAction(new AbstractAction() {
+            temp.setAction(new AbstractAction(template){        
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     abaCodigoFonte.setarTemplate(template);
                 }
             });
-            WeblafUtils.configurarBotao(temp, ColorController.AMARELO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(temp, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
             add(temp);
         }
         
@@ -57,7 +58,8 @@ public class AbaGerenciadorTemplates extends Aba implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setLayout(new java.awt.GridLayout(0, 2));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new java.awt.GridLayout(0, 2, 10, 10));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -66,6 +68,6 @@ public class AbaGerenciadorTemplates extends Aba implements Themeable{
 
     @Override
     public void configurarCores() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
     }
 }

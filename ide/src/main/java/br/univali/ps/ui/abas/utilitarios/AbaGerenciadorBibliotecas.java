@@ -10,9 +10,7 @@ import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
-import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -34,6 +32,8 @@ public class AbaGerenciadorBibliotecas extends Aba implements Themeable{
             JCheckBox check = (JCheckBox) component;
             if(abaCodigoFonte.getPortugolDocumento().getCodigoFonte().contains("inclua biblioteca "+check.getText())){
                 check.setSelected(true);
+            }else{
+                check.setSelected(false);
             }
         }
     }

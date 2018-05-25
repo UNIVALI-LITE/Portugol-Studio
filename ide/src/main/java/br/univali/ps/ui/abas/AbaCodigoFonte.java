@@ -185,6 +185,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelTemplate.add(painelTabuladoUtilitarios);
         painelTabuladoUtilitarios.adicionaAba(painelGerenciadorBibliotecas);
         painelTabuladoUtilitarios.adicionaAba(painelGerenciadorTemplates);
+        painelTabuladoUtilitarios.setAbaAtual(0);
         //painelGerenciadorBibliotecas.setBorder(new CompoundBorder(new LineBorder(ColorController.FUNDO_BOTOES_EXPANSIVEIS, 2), new EmptyBorder(10, 10, 10, 10)));
     }
 
