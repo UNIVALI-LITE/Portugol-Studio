@@ -1421,7 +1421,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         fecharRecuperados = new com.alee.laf.button.WebButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 2, 2, 2));
         setLayout(new java.awt.BorderLayout());
 
         divisorArvoreEditor.setBackground(new java.awt.Color(255, 255, 255));

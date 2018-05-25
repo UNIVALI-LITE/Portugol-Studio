@@ -22,10 +22,12 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
     public MiniBarraDeFerramentas() {
         initComponents();
         configurarCores();
+        right.setRight();
     }
 
     @Override
     public void configurarCores() {
+        jPanel1.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoPlay, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoAjuda, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -102,6 +104,9 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        right = new br.univali.ps.ui.editor.minibar.DiagonalSidePanel();
+        left = new br.univali.ps.ui.editor.minibar.DiagonalSidePanel();
+        jPanel1 = new javax.swing.JPanel();
         botaoPlay = new com.alee.laf.button.WebButton();
         botaoPasso = new com.alee.laf.button.WebButton();
         botaoParar = new com.alee.laf.button.WebButton();
@@ -111,41 +116,78 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
         botaoAjuda = new com.alee.laf.button.WebButton();
 
         setOpaque(false);
+        setLayout(new java.awt.BorderLayout());
+
+        right.setMaximumSize(null);
+        right.setMinimumSize(null);
+        right.setPreferredSize(new java.awt.Dimension(20, 39));
+
+        javax.swing.GroupLayout rightLayout = new javax.swing.GroupLayout(right);
+        right.setLayout(rightLayout);
+        rightLayout.setHorizontalGroup(
+            rightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        rightLayout.setVerticalGroup(
+            rightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 39, Short.MAX_VALUE)
+        );
+
+        add(right, java.awt.BorderLayout.LINE_END);
+
+        left.setMaximumSize(null);
+        left.setMinimumSize(null);
+        left.setPreferredSize(new java.awt.Dimension(20, 39));
+
+        javax.swing.GroupLayout leftLayout = new javax.swing.GroupLayout(left);
+        left.setLayout(leftLayout);
+        leftLayout.setHorizontalGroup(
+            leftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        leftLayout.setVerticalGroup(
+            leftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        add(left, java.awt.BorderLayout.LINE_START);
 
         botaoPlay.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/resultset_next.png"))); // NOI18N
         botaoPlay.setFocusable(false);
-        add(botaoPlay);
+        jPanel1.add(botaoPlay);
 
         botaoPasso.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoPasso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/step.png"))); // NOI18N
         botaoPasso.setFocusable(false);
-        add(botaoPasso);
+        jPanel1.add(botaoPasso);
 
         botaoParar.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoParar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/stop.png"))); // NOI18N
         botaoParar.setFocusable(false);
-        add(botaoParar);
+        jPanel1.add(botaoParar);
 
         botaoSalvar.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/save.png"))); // NOI18N
         botaoSalvar.setFocusable(false);
-        add(botaoSalvar);
+        jPanel1.add(botaoSalvar);
 
         botaoSalvarComo.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/save_as.png"))); // NOI18N
         botaoSalvarComo.setFocusable(false);
-        add(botaoSalvarComo);
+        jPanel1.add(botaoSalvarComo);
 
         botaoAbrir.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setFocusable(false);
-        add(botaoAbrir);
+        jPanel1.add(botaoAbrir);
 
         botaoAjuda.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoAjuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/helplow.png"))); // NOI18N
         botaoAjuda.setFocusable(false);
-        add(botaoAjuda);
+        jPanel1.add(botaoAjuda);
+
+        add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -157,5 +199,8 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
     private com.alee.laf.button.WebButton botaoPlay;
     private com.alee.laf.button.WebButton botaoSalvar;
     private com.alee.laf.button.WebButton botaoSalvarComo;
+    private javax.swing.JPanel jPanel1;
+    private br.univali.ps.ui.editor.minibar.DiagonalSidePanel left;
+    private br.univali.ps.ui.editor.minibar.DiagonalSidePanel right;
     // End of variables declaration//GEN-END:variables
 }
