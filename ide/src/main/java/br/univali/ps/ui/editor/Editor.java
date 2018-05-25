@@ -144,7 +144,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     private Action acaoFormatarCodigo;
 
-    private TelaCustomBorder procurarESubstituir;
     private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
@@ -165,7 +164,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         this.isExamplable = editorParaExemplo; 
         initComponents();
-        configurarDialogoPesquisarSubstituir();
         configurarParser();
         configurarTextArea();
         configurarAcoes();
@@ -293,16 +291,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
 
         return menu;
-    }
-
-    private void configurarDialogoPesquisarSubstituir()
-    {
-        procurarESubstituir = new TelaCustomBorder("Procurar");
-        PSFindReplace findReplace = new PSFindReplace(textArea, procurarESubstituir);
-        findReplace.setPreferredSize(new Dimension(550, 190));
-        //findReplace.setSize(new Dimension(800, 600));
-        procurarESubstituir.setPanel(findReplace);
-        procurarESubstituir.setLocationRelativeTo(null);
     }
 
     private void configurarParser()
@@ -458,7 +446,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         textArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK), nome);
         textArea.getActionMap().put(nome, acaoRenomearSimboloNoCursor);
-    }
+    }    
 
     public MetadadosDoSimboloSobOCursorDoTeclado obterMetadadosDoSimboloSobOCursorDoTeclado()
     {
@@ -592,11 +580,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private synchronized boolean isExecutandoPrograma()
     {
         return executandoPrograma;
-    }
-
-    public JDialog getSearchDialog()
-    {
-        return this.procurarESubstituir;
     }
 
     private void configurarAcaoDesfazer()
