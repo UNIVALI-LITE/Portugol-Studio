@@ -69,16 +69,20 @@ public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public void ocultarContainerCabecalhos() 
     { 
-        remove(cabecalhosContainer); 
-        revalidate(); 
-        repaint(); 
+        jPanel1.setVisible(false);
+        SwingUtilities.invokeLater(() -> {
+            revalidate();
+            repaint();
+        }); 
     } 
      
     public void exibirContainerCabecalhos() 
     { 
-        add(cabecalhosContainer, java.awt.BorderLayout.PAGE_START); 
-        revalidate(); 
-        repaint(); 
+        jPanel1.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            revalidate();
+            repaint();
+        });
     }
     
     private void resizeCabecalho()

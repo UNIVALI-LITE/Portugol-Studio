@@ -577,8 +577,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     item.setText("Restaurar");
                     
                     SwingUtilities.invokeLater(() -> {
-                        divisorArvoreEditor.setDividerLocation(1.0);
                         divisorEditorConsole.setDividerLocation(1.0);
+                        divisorArvoreEditor.setDividerLocation(1.0);
                         editorExpandido = true;
                     });
                 } else {
@@ -598,8 +598,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     
                     SwingUtilities.invokeLater(() -> {
                         divisorArvoreEditor.setDividerLocation(-1);
-                        divisorEditorConsole.setDividerLocation(-1);
-                        
+                        divisorEditorConsole.setDividerLocation(-1);                        
                         editorExpandido = false;
                     });
                 }
