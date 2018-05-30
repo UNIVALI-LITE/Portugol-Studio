@@ -465,6 +465,12 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     }
 
     @Override
+    public void escopoModificado(String escopo)
+    {
+        System.out.println("Escopo modoficado:"  + escopo);
+    }
+    
+    @Override
     public void execucaoResumida() {
         
     }

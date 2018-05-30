@@ -54,5 +54,7 @@ public interface ObservadorExecucao
     void highlightLinha(int linha);
 
     void highlightDetalhadoAtual(int linha, int coluna, int tamanho);
+    
+    void escopoModificado(String escopo); // disparado quando a execução do programa entrada em um novo escopo
 
 }

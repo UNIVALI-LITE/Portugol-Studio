@@ -614,6 +614,18 @@ public abstract class Programa
 		}
 	}
 
+        protected void notificaMudancaEscopo(String novoEscopo)
+        {
+            // não notifica mudança de escopo quando está executando no modo "normal"
+            if (estado != Estado.STEP_INTO || estado != Estado.STEP_OVER) {
+                return;
+            }
+            
+            for (ObservadorExecucao observador : observadores) {
+                observador.escopoModificado(novoEscopo);
+            }
+        }
+        
 	private void disparaDestacar(int linha)
 	{
 		if (linha >= 0)
