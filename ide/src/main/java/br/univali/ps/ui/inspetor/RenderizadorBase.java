@@ -28,8 +28,14 @@ abstract class RenderizadorBase extends JComponent {
     protected static final Color COR_TEXTO_DESTACADO = ColorController.COR_LETRA;
     protected static final Color COR_DO_CABECALHO_DESTACADO = COR_TEXTO_DESTACADO;
     protected static final Color COR_DO_FUNDO_EM_DESTAQUE = ColorController.FUNDO_MEDIO;// new Color(1, 0, 0, 0.3f);//vermelho claro
+    protected static final Color COR_FORA_ESCOPO = criaCor(COR_GRADE, 50);
     protected static final Stroke TRACEJADO = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{4, 2, 3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1}, 0);
 
+    private static Color criaCor(Color corBase, int alpha) 
+    {
+        return new Color(corBase.getRed(), corBase.getGreen(), corBase.getBlue(), Math.max(0, Math.min(alpha, 255)));
+    }
+    
     static final String STRING_VAZIA = "    ";//usada para representar posições em branco dos vetores e matrizes
 
     protected static final int MARGEM = 5;
@@ -87,7 +93,8 @@ abstract class RenderizadorBase extends JComponent {
      * @return a largura da string do nome para que ela possa ser usada como
      * margem para o resto do desenho
      */
-    protected int desenhaNome(Graphics g, int x, int topo) {
+    protected int desenhaNome(Graphics g, int x, int topo) 
+    {
         g.setFont(itemDaLista.podeDesenharDestaque() ? fonteDestaque : fonteNormal);
         String stringDoNome = itemDaLista.getNome();
         FontMetrics metrics = g.getFontMetrics();

@@ -159,6 +159,9 @@ class ItemDaListaParaMatriz extends ItemDaLista {
 
     @Override
     public void limpa() {
+        
+        super.limpa();
+        
         for (Object[] linha : valores) {
             for (int c = 0; c < linha.length; c++) {
                 linha[c] = null;

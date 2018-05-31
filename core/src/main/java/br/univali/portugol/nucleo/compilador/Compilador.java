@@ -158,7 +158,7 @@ public final class Compilador
             }
             
             GeradorCodigoJava gerador = new GeradorCodigoJava();
-            GeradorCodigoJava.Opcoes opcoes = new GeradorCodigoJava.Opcoes(true, true, true);
+            GeradorCodigoJava.Opcoes opcoes = GeradorCodigoJava.Opcoes.paraCompilacao();
             gerador.gera(asa, writerArquivoJava, nomeClasse, opcoes);
             writerArquivoJava.flush();
             

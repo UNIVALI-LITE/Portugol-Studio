@@ -31,7 +31,6 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.EntradaSaidaPadrao;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
-import static java.lang.Math.random;
 import java.util.Random;
 
 /**
@@ -103,6 +102,8 @@ public abstract class Programa
 
 	public static final Object OBJETO_NULO = new Object(); // usando como valor
 
+        private String ultimoEscopo = "";
+        
 	static Map<Class<? extends RuntimeException>, TradutorRuntimeException<? extends RuntimeException>> getTradutoresRuntimeException() {
 		return tradutoresRuntimeException;
 	}
@@ -590,11 +591,19 @@ public abstract class Programa
 		return false;
 	}
 
-	protected void realizarParada(int linha, int coluna) throws ErroExecucao, InterruptedException
+	protected void realizarParada(int linha, int coluna, String escopoAtual) throws ErroExecucao, InterruptedException
 	{
+            
 		ultimaLinha = linha;
 		ultimaColuna = coluna;
 
+                if (!ultimoEscopo.equals(escopoAtual)) 
+                {
+                    notificaMudancaEscopo(escopoAtual);
+                }
+                
+                ultimoEscopo = escopoAtual;
+                
 		if (podeParar(linha))
 		{
 			disparaDestacar(linha);
@@ -617,7 +626,7 @@ public abstract class Programa
         protected void notificaMudancaEscopo(String novoEscopo)
         {
             // não notifica mudança de escopo quando está executando no modo "normal"
-            if (estado != Estado.STEP_INTO || estado != Estado.STEP_OVER) {
+            if (estado != Estado.STEP_INTO && estado != Estado.STEP_OVER) {
                 return;
             }
             

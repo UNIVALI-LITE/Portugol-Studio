@@ -3,6 +3,7 @@ package br.univali.ps.ui.inspetor;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -19,6 +20,7 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucao;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
+import br.univali.portugol.nucleo.programa.Estado;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.rstautil.ProcuradorDeDeclaracao;
@@ -336,6 +338,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             atualizaValoresVariaveisInspecionadas();
             ultimoItemModificado = null;
             resetaDestaqueDosSimbolos();
+            
+            atualizaEscopoVariaveisInspecionadas();
         };
         
         if (!SwingUtilities.isEventDispatchThread()) {
@@ -421,6 +425,8 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
         setStatusDoDestaqueNosSimbolosInspecionados(false);
         
+        atualizaEscopoVariaveisInspecionadas();
+        
         timerAtualizacao.start();
     }
 
@@ -467,7 +473,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     @Override
     public void escopoModificado(String escopo)
     {
-        System.out.println("Escopo modoficado:"  + escopo);
+        atualizaEscopoVariaveisInspecionadas(escopo);
     }
     
     @Override
@@ -480,6 +486,40 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
     }
 
+    private void atualizaEscopoVariaveisInspecionadas()
+    {
+        atualizaEscopoVariaveisInspecionadas("");
+    }
+    
+    private void atualizaEscopoVariaveisInspecionadas(String escopoAtual)
+    {
+        //System.out.println("Escopo atual: " + escopoAtual);
+        
+        boolean executandoPasso = programaExecutando && (programa.getEstado() == Estado.STEP_OVER || programa.getEstado() == Estado.STEP_INTO);
+        
+        for (int i = 0; i < model.getSize(); i++) {
+            ItemDaLista item = model.get(i);
+            NoDeclaracao no = item.getNoDeclaracao();
+            boolean noEstaNoEscopoAtual = true;
+            if (executandoPasso) {
+                noEstaNoEscopoAtual = noEstaNoEscopoAtual(escopoAtual, no);
+            }
+            item.setEscopoAtual(noEstaNoEscopoAtual);
+           
+            //System.out.println(String.format("\t%s => %s => %s", no.getNome(), noEstaNoEscopoAtual, no.getEscopo()));
+        }   
+    }
+
+    private boolean noEstaNoEscopoAtual(String escopoAtual, No no)
+    {
+        boolean noEhVariavelGlobal = !no.temPai();
+        if (noEhVariavelGlobal)
+            return true;
+
+        String escopoNoPai = no.getPai().getEscopo();
+        
+        return escopoAtual.contains(escopoNoPai);
+    }
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     private class TratadorDeArrastamento extends TransferHandler 

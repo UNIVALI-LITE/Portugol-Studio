@@ -17,13 +17,13 @@ public class GeradorChamadaMetodo
     public void gera(NoChamadaFuncao no, PrintWriter saida, VisitanteASA visitor, 
                             ASAPrograma asa, GeradorCodigoJava.Opcoes opcoes, int nivelEscopo) throws ExcecaoVisitaASA
     {
-        String escopoFuncao = (no.getEscopoBiblioteca() != null) ? (no.getEscopoBiblioteca() + ".") : "";
+        String escopoBiblioteca = (no.getEscopoBiblioteca() != null) ? (no.getEscopoBiblioteca() + ".") : "";
         String nomeFuncao = no.getNome();
         
         boolean invocandoFuncaoLeia = "leia".equals(nomeFuncao);
         boolean invocandoFuncaoInicio = "inicio".equals(nomeFuncao);
         
-        if (escopoFuncao.isEmpty() && (invocandoFuncaoInicio || invocandoFuncaoLeia)) // chamadas para as funções 'leia' e 'inicio' têm um tratamento especial
+        if (escopoBiblioteca.isEmpty() && (invocandoFuncaoInicio || invocandoFuncaoLeia)) // chamadas para as funções 'leia' e 'inicio' têm um tratamento especial
         {
             if (invocandoFuncaoLeia) {
                 geraCodigoParaFuncaoLeia(no, saida, visitor, opcoes);
@@ -39,7 +39,7 @@ public class GeradorChamadaMetodo
         List<ParametroEsperado> parametrosEsperados = getParametrosEsperados(no, asa);
         List<NoExpressao> parametrosPassados = no.getParametros();
 
-        saida.format("%s%s(", escopoFuncao, nomeFuncao);
+        saida.format("%s%s(", escopoBiblioteca, nomeFuncao);
         
         int totalParametros = parametrosPassados.size();
         for (int i = 0; i < totalParametros; i++)
@@ -54,6 +54,8 @@ public class GeradorChamadaMetodo
             }
         }
         saida.append(")");
+        
+        
     }
     
     private void geraParametro(NoExpressao parametroRecebido, ParametroEsperado parametroEsperado, PrintWriter saida, VisitanteASA visitor) throws ExcecaoVisitaASA
