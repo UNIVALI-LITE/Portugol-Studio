@@ -172,6 +172,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         //carregarAlgoritmoPadrao();
         criarDicasInterface();
         painelRecuperados.setVisible(false);
+        painelTemplate.setVisible(false);
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
         painelConfigPlugins.setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
@@ -1366,6 +1367,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
 
+    }
+    
+    public void showPainelUtilitarios(boolean show)
+    {
+        painelTemplate.setVisible(show);
     }
 
     private NoDeclaracao procuraNoDeclaracao(Programa programa, final String nomeDoSimbolo, final int linhaDoSimbolo, final int colunaDoSimbolo, final int tamanhoDoTexto) throws ExcecaoVisitaASA {
@@ -2566,6 +2572,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                          * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
                          * da utilização anterior
                          */
+                        abaCodigoFonte.showPainelUtilitarios(false);
                         GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
 
                         /*
