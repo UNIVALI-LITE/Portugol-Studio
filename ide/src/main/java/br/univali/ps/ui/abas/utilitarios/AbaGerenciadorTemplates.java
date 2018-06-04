@@ -5,11 +5,13 @@
  */
 package br.univali.ps.ui.abas.utilitarios;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButton;
 import java.awt.event.ActionEvent;
@@ -43,7 +45,12 @@ public class AbaGerenciadorTemplates extends Aba implements Themeable{
                     abaCodigoFonte.setarTemplate(template);
                 }
             });
-            WeblafUtils.configurarBotao(temp, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+                   
+            WeblafUtils.configurarBotao(temp, ColorController.FUNDO_ESCURO, ColorController.COR_PRINCIPAL, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 5);            
+            if(Configuracoes.getInstancia().isTemaDark())
+            {
+                WeblafUtils.configurarBotao(temp, ColorController.AMARELO, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);                
+            }
             add(temp);
         }
         

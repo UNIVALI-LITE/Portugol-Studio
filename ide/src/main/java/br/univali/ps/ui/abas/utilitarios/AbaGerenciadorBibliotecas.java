@@ -10,6 +10,7 @@ import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
@@ -56,6 +57,7 @@ public class AbaGerenciadorBibliotecas extends Aba implements Themeable{
             check.setForeground(ColorController.COR_LETRA);
             check.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
             check.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+            FabricaDicasInterface.criarTooltipEstatica(check, lib);     
             if(abaCodigoFonte.getPortugolDocumento().getCodigoFonte().contains("inclua biblioteca "+lib)){
                 check.setSelected(true);
             }
