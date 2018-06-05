@@ -573,6 +573,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     
                     painelEditor.add(barraFerramentas, gridBagConstraints);
                     miniBarra.setVisible(false);
+                    editor.requestFocus();
                     item.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png"));
                     item.setText("Expandir");
                     
@@ -592,7 +593,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         getActionMap().put(nome, acaoExpandir);
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(atalho, nome);
-
+        
+        miniBarra.getBotaoRetrair().setAction(acaoExpandir);
+        miniBarra.getBotaoRetrair().setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png"));
+        miniBarra.getBotaoRetrair().setHideActionText(true);
+        
         return acaoExpandir;
     }
 

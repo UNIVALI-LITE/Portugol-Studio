@@ -36,7 +36,16 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
             WeblafUtils.configurarBotao(botaoSalvar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoAbrir, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configurarBotao(botaoRetrair, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
         }
+    }
+
+    public WebButton getBotaoRetrair() {
+        return botaoRetrair;
+    }
+
+    public void setBotaoRetrair(WebButton botaoRetrair) {
+        this.botaoRetrair = botaoRetrair;
     }
     
     public WebButton getBotaoAbrir() {
@@ -112,8 +121,9 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
         botaoParar = new com.alee.laf.button.WebButton();
         botaoSalvar = new com.alee.laf.button.WebButton();
         botaoSalvarComo = new com.alee.laf.button.WebButton();
-        botaoAbrir = new com.alee.laf.button.WebButton();
         botaoAjuda = new com.alee.laf.button.WebButton();
+        botaoAbrir = new com.alee.laf.button.WebButton();
+        botaoRetrair = new com.alee.laf.button.WebButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -177,15 +187,18 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
         botaoSalvarComo.setFocusable(false);
         jPanel1.add(botaoSalvarComo);
 
+        botaoAjuda.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        botaoAjuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/helplow.png"))); // NOI18N
+        botaoAjuda.setFocusable(false);
+        jPanel1.add(botaoAjuda);
+
         botaoAbrir.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         botaoAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/folder_closed.png"))); // NOI18N
         botaoAbrir.setFocusable(false);
         jPanel1.add(botaoAbrir);
 
-        botaoAjuda.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        botaoAjuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/helplow.png"))); // NOI18N
-        botaoAjuda.setFocusable(false);
-        jPanel1.add(botaoAjuda);
+        botaoRetrair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/restaurar_componente.png"))); // NOI18N
+        jPanel1.add(botaoRetrair);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -197,6 +210,7 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
     private com.alee.laf.button.WebButton botaoParar;
     private com.alee.laf.button.WebButton botaoPasso;
     private com.alee.laf.button.WebButton botaoPlay;
+    private com.alee.laf.button.WebButton botaoRetrair;
     private com.alee.laf.button.WebButton botaoSalvar;
     private com.alee.laf.button.WebButton botaoSalvarComo;
     private javax.swing.JPanel jPanel1;
