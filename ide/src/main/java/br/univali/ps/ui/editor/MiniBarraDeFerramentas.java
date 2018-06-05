@@ -8,6 +8,7 @@ package br.univali.ps.ui.editor;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.laf.button.WebButton;
 
 /**
@@ -22,7 +23,19 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
     public MiniBarraDeFerramentas() {
         initComponents();
         configurarCores();
+        configurarTooltips();
         right.setRight();
+    }
+    
+    public void configurarTooltips(){
+        FabricaDicasInterface.criarTooltip(botaoPlay, "Executa o programa até o próximo ponto de parada");
+        FabricaDicasInterface.criarTooltip(botaoAjuda, "Abre a ajuda com sintaxe e bibliotecas");
+        FabricaDicasInterface.criarTooltip(botaoParar, "Interrompe a execução/depuração do programa atual");
+        FabricaDicasInterface.criarTooltip(botaoPasso, "Executa o programa passo a passo");
+        FabricaDicasInterface.criarTooltip(botaoSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário");
+        FabricaDicasInterface.criarTooltip(botaoSalvarComo, "Salva uma nova cópia do programa atual no computador, em uma pasta escolhida pelo usuário");
+        FabricaDicasInterface.criarTooltip(botaoAbrir, "Abre um arquivo .por");
+        FabricaDicasInterface.criarTooltip(botaoRetrair, "Sai do modo expandido");
     }
 
     @Override
