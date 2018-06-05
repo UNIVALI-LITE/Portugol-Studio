@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -42,15 +43,30 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         BUSCAR, SUBSTITUIR, SUBSTITUIR_TODAS
     }
     
-    public PSFindReplace(RSyntaxTextArea textArea, TelaCustomBorder pai) {
+    public PSFindReplace(TelaCustomBorder pai) {
         initComponents();        
-        rSyntaxTextArea = textArea;
+        
         searchContext = new SearchContext();
         avancarRadioButton.setSelected(true);
         marcarCheckBox.setSelected(true);
         dialogoPai = pai;
         configurarAcoes();
         configurarCores();
+    }
+    
+    public void exibir(RSyntaxTextArea textArea)
+    {
+        rSyntaxTextArea = textArea;
+        procurarTextField.setText(textArea.getSelectedText());
+        substituirTextField.setText(textArea.getSelectedText());        
+        SwingUtilities.invokeLater(() -> {
+            if(!procurarTextField.getText().isEmpty())
+            {
+                substituirTextField.requestFocus();
+                substituirTextField.selectAll();                
+            }
+        });
+        dialogoPai.setVisible(true);
     }
     
     private void configurarAcoes()

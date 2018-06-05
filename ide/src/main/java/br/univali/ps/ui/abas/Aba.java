@@ -1,6 +1,6 @@
 package br.univali.ps.ui.abas;
 
-import br.univali.ps.ui.paineis.NewPainelTabulado;
+import br.univali.ps.ui.paineis.PSPainelTabulado;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.event.ComponentAdapter;
@@ -20,7 +20,7 @@ public abstract class Aba extends JPanel
     private static List<Class<? extends Aba>> classesFilhas = new ArrayList<>();
     
     private CabecalhoAba cabecalho;
-    private NewPainelTabulado painelTabulado;
+    private PSPainelTabulado painelTabulado;
     private List<AbaListener> listeners;
     private boolean removivel = false;
     
@@ -44,7 +44,7 @@ public abstract class Aba extends JPanel
         return painelTabulado.getAbaSelecionada() == this;
     }
     
-    public void setPainelTabulado(NewPainelTabulado painelTabulado)
+    public void setPainelTabulado(PSPainelTabulado painelTabulado)
     {
         this.painelTabulado = painelTabulado;
     }
@@ -97,7 +97,7 @@ public abstract class Aba extends JPanel
         this.cabecalho = cabecalho;
     }
     
-    public NewPainelTabulado getPainelTabulado()
+    public PSPainelTabulado getPainelTabulado()
     {
         return painelTabulado;
     }

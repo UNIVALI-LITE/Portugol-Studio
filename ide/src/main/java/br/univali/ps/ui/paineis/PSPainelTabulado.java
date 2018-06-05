@@ -28,13 +28,13 @@ import javax.swing.border.EmptyBorder;
  *
  * @author Adson Esteves
  */
-public class NewPainelTabulado extends javax.swing.JPanel implements Themeable{
+public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
 
     /**
      * Creates new form NewPainelTabulado
      */
     
-    public NewPainelTabulado() {
+    public PSPainelTabulado() {
         initComponents();
         configurarCores();
     }
