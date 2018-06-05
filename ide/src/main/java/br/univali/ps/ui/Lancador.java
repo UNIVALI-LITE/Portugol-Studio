@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import br.univali.ps.nucleo.Mutex;
-import br.univali.ps.ui.coletor.ColetorInteracao;
 
 /**
  * @author lite
