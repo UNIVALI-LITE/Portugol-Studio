@@ -271,6 +271,16 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_EXIBIR_AJUDA);
     }
 
+    @Override
+    public Aba mudarParaAba(Aba aba) {
+        if (getAbaSelecionada() instanceof AbaCodigoFonte){
+            AbaCodigoFonte abaAtual = (AbaCodigoFonte)getAbaSelecionada();
+            if(abaAtual.editorEstaExpandido()){
+                abaAtual.getMiniBarra().getBotaoRetrair().doClick();
+            }
+        }
+        return super.mudarParaAba(aba); //To change body of generated methods, choose Tools | Templates.
+    }
     private void configurarAcaoExibirTelaSobre() {
         KeyStroke atalho = KeyStroke.getKeyStroke("F12");
         String nome = "Exibir tela sobre";

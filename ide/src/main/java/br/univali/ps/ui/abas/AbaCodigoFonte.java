@@ -45,6 +45,7 @@ import br.univali.ps.ui.paineis.PainelConfigPlugins;
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.utilitarios.AbaGerenciadorBibliotecas;
 import br.univali.ps.ui.abas.utilitarios.AbaGerenciadorTemplates;
+import br.univali.ps.ui.editor.MiniBarraDeFerramentas;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
@@ -568,7 +569,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acaoCentralizarCodigoFonte;
     }
 
-    private boolean editorEstaExpandido() {
+    public boolean editorEstaExpandido() {
 //        boolean divisorArvoreEditorExpandido = divisorArvoreEditor.getDividerLocation() > divisorArvoreEditor.getMaximumDividerLocation();
 //        boolean divisorEditorConsoleExpandido = divisorEditorConsole.getDividerLocation() > divisorEditorConsole.getMaximumDividerLocation();
 //        return divisorArvoreEditorExpandido && divisorEditorConsoleExpandido;
@@ -583,6 +584,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         Icon icone = new ImageIcon(getClass().getResource(caminhoIcone));
         indicadorProgresso = new IndicadorDeProgresso(this, icone, "Processando ...");
     }
+
+    public MiniBarraDeFerramentas getMiniBarra() {
+        return miniBarra;
+    }
+    
+    
     
     private Action criaAcaoExpandirEditor() {
         AbstractAction acaoExpandir = new AbstractAction("Expandir", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "expandir_componente.png")) {
