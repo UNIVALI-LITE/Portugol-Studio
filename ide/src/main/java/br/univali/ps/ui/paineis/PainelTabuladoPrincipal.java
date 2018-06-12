@@ -73,19 +73,9 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
                 SwingUtilities.invokeLater(() ->{
                     if(me.getClickCount() == 2){
                         if(Lancador.isMaximazed()){
-                            Dimension d = Lancador.getOlderSize();
-                            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
-                            Lancador.getJFrame().setSize(d);
-                            Lancador.setActualSize(d);
-                            Lancador.getJFrame().setLocationRelativeTo(null);
-                            Lancador.setMaximazed(false);
+                            Lancador.maximize(false);
                         }else{
-                            Dimension d = Lancador.getJFrame().getSize();
-                            Lancador.setOlderSize(d);
-                            Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-                            Lancador.getJFrame().setBounds(bounds);
-                            Lancador.setActualSize(bounds.getSize());
-                            Lancador.setMaximazed(true);
+                            Lancador.maximize(true);
                         }
 
                     }
@@ -271,6 +261,16 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_EXIBIR_AJUDA);
     }
 
+    @Override
+    public Aba mudarParaAba(Aba aba) {
+        if (getAbaSelecionada() instanceof AbaCodigoFonte){
+            AbaCodigoFonte abaAtual = (AbaCodigoFonte)getAbaSelecionada();
+            if(abaAtual.editorEstaExpandido()){
+                abaAtual.getMiniBarra().getBotaoRetrair().doClick();
+            }
+        }
+        return super.mudarParaAba(aba); //To change body of generated methods, choose Tools | Templates.
+    }
     private void configurarAcaoExibirTelaSobre() {
         KeyStroke atalho = KeyStroke.getKeyStroke("F12");
         String nome = "Exibir tela sobre";

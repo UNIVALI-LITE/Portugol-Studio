@@ -1655,8 +1655,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
         textArea = new PSTextArea(new PortugolDocumento());
@@ -1666,7 +1665,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        scrollPane.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(3, 5, 0, 0));
         scrollPane.setName("scrollPaneEditor"); // NOI18N
         scrollPane.setOpaque(false);
 

@@ -54,7 +54,7 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
     
     public Aba adicionaAoCabecalho(Aba aba)
     {
-        cabecalhosAba.add(aba.getCabecalho());             
+        cabecalhosContainer.add(aba.getCabecalho());             
         resizeCabecalho();
         CabecalhoAba cabecalhoAba = aba.getCabecalho();
         cabecalhoAba.addMouseListener(new MouseAdapter() {
@@ -67,23 +67,41 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
         return aba;
     }
     
+    public void ocultarContainerCabecalhos() 
+    { 
+        jPanel1.setVisible(false);
+        SwingUtilities.invokeLater(() -> {
+            revalidate();
+            repaint();
+        }); 
+    } 
+     
+    public void exibirContainerCabecalhos() 
+    { 
+        jPanel1.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            revalidate();
+            repaint();
+        });
+    }
+    
     private void resizeCabecalho()
     {
         int newSize = 200;
-        int canvas = cabecalhosAba.getWidth()-espacador.getWidth();  
-        for (Component component : cabecalhosAba.getComponents()) {
+        int canvas = cabecalhosContainer.getWidth()-espacador.getWidth();  
+        for (Component component : cabecalhosContainer.getComponents()) {
             if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
                 calculaTamanhoCabecalho((CabecalhoAba) component);
             }
         }
         int used = 0;
-        for (Component component : cabecalhosAba.getComponents()) {
+        for (Component component : cabecalhosContainer.getComponents()) {
             used+=component.getPreferredSize().getWidth();
         }
         if(used>=canvas  && this instanceof PainelTabuladoPrincipal){              
-            newSize = canvas/cabecalhosAba.getComponentCount();
+            newSize = canvas/cabecalhosContainer.getComponentCount();
             newSize -= 2;
-            for (Component component : cabecalhosAba.getComponents()) {
+            for (Component component : cabecalhosContainer.getComponents()) {
                 if(!(component instanceof BotoesControleAba) && !(component instanceof CabecalhoAdicionarAba)){
                     CabecalhoAba cabecalho = (CabecalhoAba) component;
                     cabecalho.setMaxWidth(newSize);
@@ -186,7 +204,7 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
     }
 
     public JPanel getCabecalhosAba() {
-        return cabecalhosAba;
+        return cabecalhosContainer;
     }
     
     public void trocouAba(Aba aba){
@@ -215,8 +233,8 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
     public void configurarCores() {
         abaContainer.setBackground(ColorController.COR_CONSOLE);
         abaContainer.setForeground(ColorController.COR_LETRA);
-        cabecalhosAba.setBackground(ColorController.COR_PRINCIPAL);
-        cabecalhosAba.setForeground(ColorController.COR_LETRA);
+        cabecalhosContainer.setBackground(ColorController.COR_PRINCIPAL);
+        cabecalhosContainer.setForeground(ColorController.COR_LETRA);
         espacador.setBackground(ColorController.COR_PRINCIPAL);
         espacador.setForeground(ColorController.COR_LETRA);
         
@@ -232,7 +250,7 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
 
         jPanel1 = new javax.swing.JPanel();
         espacador = new javax.swing.JPanel();
-        cabecalhosAba = new javax.swing.JPanel();
+        cabecalhosContainer = new javax.swing.JPanel();
         abaContainer = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -255,12 +273,12 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
 
         jPanel1.add(espacador, java.awt.BorderLayout.EAST);
 
-        cabecalhosAba.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 0, 0));
-        cabecalhosAba.setMaximumSize(new java.awt.Dimension(32767, 40));
+        cabecalhosContainer.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 0, 0));
+        cabecalhosContainer.setMaximumSize(new java.awt.Dimension(32767, 40));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 0, 0);
         flowLayout1.setAlignOnBaseline(true);
-        cabecalhosAba.setLayout(flowLayout1);
-        jPanel1.add(cabecalhosAba, java.awt.BorderLayout.CENTER);
+        cabecalhosContainer.setLayout(flowLayout1);
+        jPanel1.add(cabecalhosContainer, java.awt.BorderLayout.CENTER);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -271,7 +289,7 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel abaContainer;
-    private javax.swing.JPanel cabecalhosAba;
+    private javax.swing.JPanel cabecalhosContainer;
     private javax.swing.JPanel espacador;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
