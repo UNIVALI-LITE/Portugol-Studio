@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.editor.minibar;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.swing.ColorController;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -42,7 +43,12 @@ public class DiagonalSidePanel extends javax.swing.JPanel {
         
         gd.setColor(ColorController.COR_PRINCIPAL);
         gd.drawRect(0, 0, getWidth(), getHeight());
-        gd.setColor(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
+        if(Configuracoes.getInstancia().isTemaDark()){
+            gd.setColor(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
+        }else{
+            gd.setColor(ColorController.FUNDO_ESCURO);
+        }
+        
         if(left){
             int[] x = {0,getWidth(),getWidth()};
             int[] y = {0,0,getHeight()};

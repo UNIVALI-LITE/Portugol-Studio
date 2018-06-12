@@ -5,6 +5,7 @@
  */
 package br.univali.ps.ui.editor;
 
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -40,7 +41,19 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
 
     @Override
     public void configurarCores() {
-        jPanel1.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
+        
+        
+        if(Configuracoes.getInstancia().isTemaDark()){
+            jPanel1.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
+            if (WeblafUtils.weblafEstaInstalado()) {
+                WeblafUtils.configurarBotao(botaoRetrair, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+            }
+        }else{
+            jPanel1.setBackground(ColorController.FUNDO_ESCURO);
+            if (WeblafUtils.weblafEstaInstalado()) {
+                WeblafUtils.configurarBotao(botaoRetrair, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+            }
+        }
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configurarBotao(botaoPlay, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoAjuda, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -49,8 +62,10 @@ public class MiniBarraDeFerramentas extends javax.swing.JPanel implements Themea
             WeblafUtils.configurarBotao(botaoSalvar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoSalvarComo, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoAbrir, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            WeblafUtils.configurarBotao(botaoRetrair, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, 5);
+            
         }
+        
+        
     }
 
     public WebButton getBotaoRetrair() {
