@@ -767,13 +767,8 @@ public final class PortugolStudio
                     Lancador.getJFrame().pack();
                     Lancador.getJFrame().setLocationRelativeTo(null);
                     Lancador.getJFrame().setVisible(true);
-                    Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
-                    
                     Lancador.setOlderSize(new Dimension(800, 600));
-                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-                    Lancador.getJFrame().setBounds(bounds);
-                    Lancador.setActualSize(bounds.getSize());
-                    Lancador.setMaximazed(true);
+                    Lancador.maximize(true);
                     
                     Lancador.getJFrame().revalidate();
                     portugolCarregado = true;

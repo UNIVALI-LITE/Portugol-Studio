@@ -602,11 +602,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     miniBarra.setVisible(true);
                     item.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "restaurar_componente.png"));
                     item.setText("Restaurar");
+                    if(!Lancador.isMaximazed()){
+                        Lancador.maximize(true);
+                    }
+
                     
                     SwingUtilities.invokeLater(() -> {
                         divisorEditorConsole.setDividerLocation(1.0);
                         divisorArvoreEditor.setDividerLocation(1.0);
+                        
                         editorExpandido = true;
+                        
                     });
                 } else {
 
