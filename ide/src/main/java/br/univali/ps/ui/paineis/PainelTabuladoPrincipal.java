@@ -212,7 +212,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     
     
     private void configurarAcaoFecharTodasAbas() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("shift control Q");
         String nome = "Fechar todas as abas";
 
         acaoFecharTodasAbas = new AbstractAction(nome) {
@@ -227,11 +226,12 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         };
 
         this.getActionMap().put(nome, acaoFecharTodasAbas);
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK), nome);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK), nome);
     }
 
     private void configurarAcaoExibirDocumentacaoBiblioteca() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("shift F1");
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.SHIFT_DOWN_MASK);
 
         acaoExibirDocumentacaoBiblioteca = new AbstractAction(ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA) {
             @Override
@@ -245,7 +245,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     }
 
     private void configurarAcaoExibirAjuda() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("F1");
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F1,0);
 
         acaoExibirAjuda = new AbstractAction(ACAO_EXIBIR_AJUDA) {
             @Override
@@ -269,7 +269,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         return super.mudarParaAba(aba); //To change body of generated methods, choose Tools | Templates.
     }
     private void configurarAcaoExibirTelaSobre() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("F12");
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F12,0);
         String nome = "Exibir tela sobre";
 
         acaoExibirTelaSobre = new AbstractAction(nome) {
