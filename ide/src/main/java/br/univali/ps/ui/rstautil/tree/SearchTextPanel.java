@@ -9,12 +9,14 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -58,6 +60,17 @@ public class SearchTextPanel extends javax.swing.JPanel implements Themeable{
                 campoBusca.setText("");
             }
         });
+        
+        String fecharName = "fechar";
+        AbstractAction fechar = new AbstractAction(fecharName) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                limpar.doClick();
+            }
+        };
+        
+        campoBusca.getActionMap ().put(fecharName, fechar);
+        campoBusca.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), fecharName);
 
         campoBusca.getDocument().addDocumentListener(new DocumentListener()
         {

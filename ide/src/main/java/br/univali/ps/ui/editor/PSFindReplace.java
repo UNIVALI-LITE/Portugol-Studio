@@ -125,13 +125,12 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
         AbstractAction fechar = new AbstractAction(fecharName) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("aahhhhhhhh fechaa");
                 cancelarButton.doClick();
             }
         };
         
-        getActionMap().put(fecharName, fechar);
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), fecharName);
+        getActionMap ().put(fecharName, fechar);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), fecharName);
     }
 
     private void realizarPesquisa(tipo tipo)

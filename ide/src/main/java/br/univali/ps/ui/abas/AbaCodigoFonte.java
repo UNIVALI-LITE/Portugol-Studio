@@ -423,8 +423,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 });
             }
         };
-
-        
         
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK), filterName);
         getActionMap().put(filterName, filterByNameAction);
