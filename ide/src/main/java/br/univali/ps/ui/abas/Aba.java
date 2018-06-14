@@ -1,16 +1,10 @@
 package br.univali.ps.ui.abas;
 
 import br.univali.ps.ui.paineis.PSPainelTabulado;
-import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;

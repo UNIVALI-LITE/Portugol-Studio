@@ -11,11 +11,8 @@ import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.window.BorderPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -184,7 +181,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     }
     
     private void configurarAcaoFecharAbaAtual() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("control Q");
         String nome = "Fechar aba atual";
 
         acaoFecharAbaAtual = new AbstractAction(nome) {
@@ -199,7 +195,8 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         };
 
         this.getActionMap().put(nome, acaoFecharAbaAtual);
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), nome);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), nome);
     }
 
     @Override
