@@ -40,7 +40,7 @@ Você pode criar uma issue [aqui](https://github.com/UNIVALI-LITE/Portugol-Studi
   * :art: `:art:` quando aperfeiçoar o formato/estrutura do código
   * :racehorse: `:racehorse:` quando aperfeiçoar a performance
   * :non-potable_water: `:non-potable_water:` quando previnir vazamento de memória
-  * :memo: `:memo:` quando escrever documentação
+  * :memo: `:memo:` quando escrever documentação e/ou adicionar exemplos
   * :penguin: `:penguin:` quando corrigir algo no Linux
   * :apple: `:apple:` quando corrigir algo no OSX
   * :checkered_flag: `:checkered_flag:` quando corrigir algo no Windows

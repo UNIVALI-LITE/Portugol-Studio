@@ -1,7 +1,10 @@
 package br.univali.portugol.nucleo.analise.semantica;
 
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoMatrizPodeSerVariavel;
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoMatrizPodeSerVetor;
 import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoSimboloGlobalOcultado;
 import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoValorExpressaoSeraConvertido;
+import br.univali.portugol.nucleo.analise.semantica.avisos.AvisoVetorPodeSerVariavel;
 import br.univali.portugol.nucleo.analise.semantica.erros.*;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
@@ -53,6 +56,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     public static final String FUNCAO_LIMPA = "limpa";
     public static final String FUNCAO_LEIA = "leia";
     public static final String FUNCAO_ESCREVA = "escreva";
+    public static final String FUNCAO_ALEATORIO = "sorteia";
 
     private int totalVariaveisDeclaradas = 0; // conta variáveis e parâmetros declarados
     private int totalVetoresDeclarados = 0;
@@ -139,6 +143,13 @@ public final class AnalisadorSemantico implements VisitanteASA
             }
         }
     }
+    
+    private void setarPaiDoNo(No no)
+    {
+        if (funcaoAtual != null) {
+            no.setPai(funcaoAtual.getOrigemDoSimbolo());
+        }
+    }
 
     @Override
     public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA
@@ -174,18 +185,22 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noCadeia);
         return TipoDado.CADEIA;
     }
 
     @Override
     public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noCaracter);
         return TipoDado.CARACTER;
     }
 
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noCaso);
+        
         if (noCaso.getExpressao() != null)
         {
             TipoDado tipoDado = (TipoDado) noCaso.getExpressao().aceitar(this);
@@ -211,6 +226,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(chamadaFuncao);
+        
         verificarFuncaoExiste(chamadaFuncao);
         verificarQuantidadeParametros(chamadaFuncao);
         verificarTiposParametros(chamadaFuncao);
@@ -277,7 +294,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) parametro;
 
-                    if (noReferenciaVariavel.getEscopo() == null)
+                    if (noReferenciaVariavel.getEscopoBiblioteca() == null)
                     {
                         try
                         {
@@ -315,7 +332,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         List<ModoAcesso> modosAcesso = new ArrayList<>();
 
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -337,7 +354,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -352,9 +369,11 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private TipoDado obterTipoRetornoFuncao(NoChamadaFuncao chamadaFuncao)
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
-            if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
+            if(chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO)){
+                return TipoDado.INTEIRO;
+            }else if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
                 return TipoDado.VAZIO;
             }
@@ -374,7 +393,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
 
             return metaDadosFuncao.getTipoDado();
@@ -424,7 +443,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         List<Quantificador> quantificadores = new ArrayList<>();
 
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -445,7 +464,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -516,7 +535,18 @@ public final class AnalisadorSemantico implements VisitanteASA
         List<TipoDado> tiposPassado = obterTiposParametrosPassados(chamadaFuncao, modosAcesso);
 
         int cont = Math.min(tiposEsperados.size(), tiposPassado.size());
-
+        if (chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO))
+        {
+            for (int indice = 0; indice < 2; indice++)
+            {
+                TipoDado tipoPassado = tiposPassado.get(indice);
+                
+                if (!tipoPassado.equals(TipoDado.INTEIRO))
+                {
+                    notificarErroSemantico(new ErroTipoParametroIncompativel(chamadaFuncao.getNome(), obterNomeParametro(chamadaFuncao, indice), chamadaFuncao.getParametros().get(indice), TipoDado.INTEIRO, tipoPassado));
+                }
+            }
+        }
         if (chamadaFuncao.getNome().equals(FUNCAO_ESCREVA))
         {
             int tamanhoTiposPassado = tiposPassado.size();
@@ -569,7 +599,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private String obterNomeParametro(NoChamadaFuncao chamadaFuncao, int indice)
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             try
             {
@@ -584,7 +614,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -597,7 +627,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         List<TipoDado> tipos = new ArrayList<>();
 
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -622,7 +652,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
             MetaDadosParametros metaDadosParametros = metaDadosFuncao.obterMetaDadosParametros();
 
@@ -645,7 +675,7 @@ public final class AnalisadorSemantico implements VisitanteASA
             {
                 NoExpressao parametro = chamadaFuncao.getParametros().get(indice);
 
-                if (chamadaFuncao.getEscopo() == null && FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
+                if (chamadaFuncao.getEscopoBiblioteca() == null && FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
                 {
                     passandoReferencia = false;
                 }
@@ -674,7 +704,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                             // Não faz nada
                         }
                     }
-                    passandoParametro = (chamadaFuncao.getEscopo() == null && !FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()));
+                    passandoParametro = (chamadaFuncao.getEscopoBiblioteca() == null && !FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()));
                     tipos.add((TipoDado) parametro.aceitar(this));
                     passandoParametro = false;
                 }
@@ -711,13 +741,15 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private int obterNumeroParametrosEsperados(NoChamadaFuncao chamadaFuncao)
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
                 if (chamadaFuncao.getNome().equals(FUNCAO_LIMPA))
                 {
                     return 0;
+                }else if(chamadaFuncao.getNome().equals(FUNCAO_ALEATORIO)){
+                    return 2;
                 }
                 else
                 {
@@ -745,7 +777,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
             MetaDadosFuncao metaDadosFuncao = metaDadosBiblioteca.obterMetaDadosFuncoes().obter(chamadaFuncao.getNome());
 
             return metaDadosFuncao.obterMetaDadosParametros().quantidade();
@@ -754,7 +786,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private void verificarFuncaoExiste(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA
     {
-        if (chamadaFuncao.getEscopo() == null)
+        if (chamadaFuncao.getEscopoBiblioteca() == null)
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
@@ -780,7 +812,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         }
         else
         {
-            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopo());
+            MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(chamadaFuncao.getEscopoBiblioteca());
 
             if (metaDadosBiblioteca != null)
             {
@@ -799,7 +831,7 @@ public final class AnalisadorSemantico implements VisitanteASA
             }
             else
             {
-                notificarErroSemantico(new ErroInclusaoBiblioteca(chamadaFuncao.getTrechoCodigoFonteNome(), new Exception(String.format("A biblioteca '%s' não foi incluída no programa", chamadaFuncao.getEscopo()))));
+                notificarErroSemantico(new ErroInclusaoBiblioteca(chamadaFuncao.getTrechoCodigoFonteNome(), new Exception(String.format("A biblioteca '%s' não foi incluída no programa", chamadaFuncao.getEscopoBiblioteca()))));
                 throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, chamadaFuncao);
             }
         }
@@ -822,8 +854,27 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(declaracaoFuncao);
+        
         if (declarandoSimbolosGlobais)
         {
+            if (FUNCOES_RESERVADAS.contains(declaracaoFuncao.getNome())){
+                notificarErroSemantico(new ErroSemantico(declaracaoFuncao.getTrechoCodigoFonteNome()) {
+                    @Override
+                    protected String construirMensagem() {
+                        return "A função "+declaracaoFuncao.getNome()+" é reservada para a linguagem";
+                    }
+                });
+                String nome = declaracaoFuncao.getNome();
+                TipoDado tipoDado = declaracaoFuncao.getTipoDado();
+                Quantificador quantificador = declaracaoFuncao.getQuantificador();
+                Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
+                funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
+                funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
+                funcao.setRedeclarado(true);
+                memoria.adicionarSimbolo(funcao);
+                return null;
+            }
             String nome = declaracaoFuncao.getNome();
             TipoDado tipoDado = declaracaoFuncao.getTipoDado();
             Quantificador quantificador = declaracaoFuncao.getQuantificador();
@@ -892,6 +943,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoMatriz noDeclaracaoMatriz) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noDeclaracaoMatriz);
+        
         noDeclaracaoMatriz.setIdParaInspecao(totalMatrizesDeclaradas);
         totalMatrizesDeclaradas++;
         
@@ -916,7 +969,15 @@ public final class AnalisadorSemantico implements VisitanteASA
                             new ErroTamanhoMaximoMatriz(linhas, colunas, nome, bigProduto,
                             noDeclaracaoMatriz.getTrechoCodigoFonteNome()));
                 }
-            }
+                if(linhas == 1 && colunas == 1)
+                {
+                    notificarAviso(new AvisoMatrizPodeSerVariavel(noDeclaracaoMatriz, linhas));
+                }
+                else if(linhas == 1 || colunas == 1)
+                {
+                    notificarAviso(new AvisoMatrizPodeSerVetor(noDeclaracaoMatriz, linhas>colunas ? linhas : colunas, linhas, colunas));
+                }
+            }            
 
             Matriz matriz = new Matriz(nome, tipoDados, noDeclaracaoMatriz, 1, 1);
             matriz.setTrechoCodigoFonteNome(noDeclaracaoMatriz.getTrechoCodigoFonteNome());
@@ -1067,6 +1128,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoVariavel declaracaoVariavel) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(declaracaoVariavel);
+        
         declaracaoVariavel.setIdParaInspecao(totalVariaveisDeclaradas);
         //System.out.println(declaracaoVariavel.getNome() + " => " + totalVariaveisDeclaradas);
         totalVariaveisDeclaradas++;
@@ -1186,6 +1249,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoVetor noDeclaracaoVetor) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noDeclaracaoVetor);
+        
         noDeclaracaoVetor.setIdParaInspecao(totalVetoresDeclarados);
         totalVetoresDeclarados++;
         
@@ -1203,6 +1268,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     notificarErroSemantico(
                             new ErroTamanhoMaximoVetor(tamanho, nome, noDeclaracaoVetor.getTrechoCodigoFonteNome()));
+                }
+                if(tamanho == 1)
+                {
+                    notificarAviso(new AvisoVetorPodeSerVariavel(noDeclaracaoVetor, tamanho));
                 }
             }
             Vetor vetor = new Vetor(nome, tipoDados, noDeclaracaoVetor, 1);
@@ -1323,6 +1392,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noEnquanto);
+        
         TipoDado tipoDadoCondicao = (TipoDado) noEnquanto.getCondicao().aceitar(this);
 
         if (tipoDadoCondicao != TipoDado.LOGICO)
@@ -1338,6 +1409,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noEscolha);
+        
         tipoDadoEscolha.push((TipoDado) noEscolha.getExpressao().aceitar(this));
 
         if ((tipoDadoEscolha.peek() != TipoDado.INTEIRO) && (tipoDadoEscolha.peek() != TipoDado.CARACTER))
@@ -1358,6 +1431,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noFacaEnquanto);
+        
         analisarListaBlocos(noFacaEnquanto.getBlocos());
 
         TipoDado tipoDadoCondicao = (TipoDado) noFacaEnquanto.getCondicao().aceitar(this);
@@ -1373,18 +1448,21 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noInteiro);
         return TipoDado.INTEIRO;
     }
 
     @Override
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noLogico);
         return TipoDado.LOGICO;
     }
 
     @Override
     public Object visitar(NoMatriz noMatriz) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noMatriz);
         List<List<Object>> valores = noMatriz.getValores();
 
         if (valores != null && !valores.isEmpty())
@@ -1428,6 +1506,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoMenosUnario noMenosUnario) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noMenosUnario);
+        
         TipoDado tipo = (TipoDado) noMenosUnario.getExpressao().aceitar(this);
         if (!tipo.equals(TipoDado.INTEIRO) && !tipo.equals(TipoDado.REAL))
         {
@@ -1441,6 +1521,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoNao noNao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noNao);
+        
         TipoDado tipo = (TipoDado) noNao.getExpressao().aceitar(this);
         if (tipo != TipoDado.LOGICO)
         {
@@ -1453,18 +1535,22 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaDiferenca noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(final NoOperacaoAtribuicao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
+        
         TipoDado tipoDadoRetorno;
 
         TipoDado operandoEsquerdo = null;
@@ -1484,7 +1570,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     final NoReferenciaVariavel referencia = (NoReferenciaVariavel) noOperacao.getOperandoEsquerdo();
 
-                    if (referencia.getEscopo() == null)
+                    if (referencia.getEscopoBiblioteca() == null)
                     {
                         simbolo = memoria.getSimbolo(referencia.getNome());
 
@@ -1538,10 +1624,10 @@ public final class AnalisadorSemantico implements VisitanteASA
                          * Por isso, ao trabalhar com as bibliotecas dentro do semântico, deve-se sempre utilizar
                          * o mapa interno, caso contrário vai dar NullPointerException.
                          */
-                        final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(referencia.getEscopo());
+                        final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(referencia.getEscopoBiblioteca());
                         if(metaDadosBiblioteca == null)
                         {
-                            notificarErroSemantico(new ErroAliasInexistente(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), referencia.getEscopo()));
+                            notificarErroSemantico(new ErroAliasInexistente(noOperacao.getOperandoEsquerdo().getTrechoCodigoFonte(), referencia.getEscopoBiblioteca()));
                         }
                         else
                         {
@@ -1651,102 +1737,120 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoOperacaoLogicaE noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaOU noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaior noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaiorIgual noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenor noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenorIgual noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoSoma noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoSubtracao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoDivisao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoMultiplicacao noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoModulo noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseLeftShift noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseRightShift noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseE noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseOu noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseXOR noOperacao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacao);
         return recuperaTipoNoOperacao(noOperacao);
     }
 
     @Override
     public Object visitar(NoBitwiseNao noOperacaoBitwiseNao) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noOperacaoBitwiseNao);
+        
         TipoDado tipo = (TipoDado) noOperacaoBitwiseNao.getExpressao().aceitar(this);
         if (tipo != TipoDado.INTEIRO)
         {
@@ -1759,6 +1863,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noPara);
+        
         memoria.empilharEscopo();
 
         try
@@ -1832,18 +1938,22 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoPare noPare) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noPare);
         return null;
     }
 
     @Override
     public Object visitar(NoReal noReal) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noReal);
         return TipoDado.REAL;
     }
 
     @Override
     public Object visitar(NoReferenciaMatriz noReferenciaMatriz) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noReferenciaMatriz);
+        
         try
         {
             TipoDado tipoLinha = (TipoDado) noReferenciaMatriz.getLinha().aceitar(this);
@@ -1888,7 +1998,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA
     {
-        if (noReferenciaVariavel.getEscopo() == null)
+        setarPaiDoNo(noReferenciaVariavel);
+        
+        if (noReferenciaVariavel.getEscopoBiblioteca() == null)
         {
             try
             {
@@ -1908,6 +2020,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoReferenciaVetor noReferenciaVetor) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noReferenciaVetor);
+        
         try
         {
             TipoDado tipoIndice = (TipoDado) noReferenciaVetor.getIndice().aceitar(this);
@@ -1991,6 +2105,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noSe);
+        
         TipoDado tipoDadoCondicao = (TipoDado) noSe.getCondicao().aceitar(this);
 
         if (tipoDadoCondicao != TipoDado.LOGICO)
@@ -2007,6 +2123,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoVetor noVetor) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noVetor);
+        
         List<NoExpressao> valores = (List) noVetor.getValores();
 
         if (valores != null && !valores.isEmpty())
@@ -2046,6 +2164,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noDeclaracaoParametro);
+        
         switch (noDeclaracaoParametro.getQuantificador())
         {
             case VALOR:
@@ -2126,6 +2246,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         funcoes.add(FUNCAO_LEIA);
         funcoes.add(FUNCAO_ESCREVA);
+        funcoes.add(FUNCAO_ALEATORIO);
         funcoes.add(FUNCAO_LIMPA);
 
         return funcoes;
@@ -2336,7 +2457,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
     private TipoDado analisarReferenciaVariavelBiblioteca(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA
     {
-        final String escopo = noReferenciaVariavel.getEscopo();
+        final String escopo = noReferenciaVariavel.getEscopoBiblioteca();
         final String nome = noReferenciaVariavel.getNome();
         final MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(escopo);
 
@@ -2378,7 +2499,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                 {
                     NoReferenciaVariavel ref = (NoReferenciaVariavel) expTamanho;
 
-                    if (ref.getEscopo() == null)
+                    if (ref.getEscopoBiblioteca() == null)
                     {
                         try
                         {
@@ -2403,7 +2524,7 @@ public final class AnalisadorSemantico implements VisitanteASA
                     }
                     else
                     {
-                        MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(ref.getEscopo());
+                        MetaDadosBiblioteca metaDadosBiblioteca = metaDadosBibliotecas.get(ref.getEscopoBiblioteca());
                         MetaDadosConstantes metaDadosConstantes = metaDadosBiblioteca.getMetaDadosConstantes();
                         MetaDadosConstante metaDadosConstante = metaDadosConstantes.obter(ref.getNome());
 
@@ -2434,18 +2555,21 @@ public final class AnalisadorSemantico implements VisitanteASA
     @Override
     public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noContinue);
         throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noContinue.getTrechoCodigoFonte()), asa, noContinue);
     }
 
     @Override
     public Object visitar(NoTitulo noTitulo) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noTitulo);
         throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noTitulo.getTrechoCodigoFonte()), asa, noTitulo);
     }
 
     @Override
     public Object visitar(NoVaPara noVaPara) throws ExcecaoVisitaASA
     {
+        setarPaiDoNo(noVaPara);
         throw new ExcecaoVisitaASA("Erro", new ErroComandoNaoSuportado(noVaPara.getTrechoCodigoFonte()), asa, noVaPara);
     }
 }

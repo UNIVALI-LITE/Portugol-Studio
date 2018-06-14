@@ -16,6 +16,7 @@ public class testeConversaoAutomaticaDeTipos extends Programa
 
     @Override
     protected void inicializar () throws ErroExecucao, InterruptedException {
+        super.inicializar();
         a = 0.0;
     }
     

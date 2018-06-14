@@ -17,6 +17,7 @@ public class testeComparacaoDeStringComEquals extends Programa
     @Override
     protected void inicializar() throws ErroExecucao, InterruptedException
     {
+        super.inicializar();
         umaFrase = "a";
         outraFrase = "a";
         a = 0;

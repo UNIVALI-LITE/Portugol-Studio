@@ -48,7 +48,7 @@ public class PreCompilador extends VisitanteNulo
         // atualiza o escopo para evitar geração de código usando aliases. As chamadas de função de biblioteca sempre usam o nome completo da Biblioteca
         if (chamadaFuncao.isFuncaoDeBiblioteca())
         {
-            String escopo = chamadaFuncao.getEscopo();
+            String escopo = chamadaFuncao.getEscopoBiblioteca();
             Set<String> nomesBibliotecas = dadosBibliotecas.keySet();
             boolean invocandoComAlias = !nomesBibliotecas.contains(escopo);
             if (invocandoComAlias)
@@ -79,7 +79,7 @@ public class PreCompilador extends VisitanteNulo
             NoDeclaracaoParametro parametroEsperado = (i < parametrosEsperados.size()) ? parametrosEsperados.get(i) : null;
             if (parametroPassado instanceof NoReferenciaVariavel)
             {
-                if (parametroEsperado != null && parametroEsperado.getModoAcesso() == ModoAcesso.POR_REFERENCIA && chamadaFuncao.getEscopo() == null)
+                if (parametroEsperado != null && parametroEsperado.getModoAcesso() == ModoAcesso.POR_REFERENCIA && chamadaFuncao.getEscopoBiblioteca() == null)
                 {
                     NoReferenciaVariavel referencia = (NoReferenciaVariavel) parametroPassado;
                     if (referencia.getOrigemDaReferencia() instanceof NoDeclaracaoVariavel)

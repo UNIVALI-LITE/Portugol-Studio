@@ -9,9 +9,11 @@ programa
 	inclua biblioteca Tipos --> tp
 	inclua biblioteca Matematica --> mat
 
+	const logico EXIBIR_GRADE = falso
+
 	const cadeia POLINOMIO_GERADOR = "@0x^97 + @17x^96 + @60x^95 + @79x^94 + @50x^93 + @61x^92 + @163x^91 + @26x^90 + @187x^89 + @202x^88 + @180x^87 + @221x^86 + @225x^85 + @83x^84 + @239x^83 + @156x^82 + @164x^81 + @212x^80 + @212x^79 + @188x^78 + @190x^77"
 
-	const inteiro TAMANHO_BIT_QRCODE = 9, MARGEM_QRCODE = 4
+	const inteiro TAMANHO_BIT_QRCODE = 8, MARGEM_QRCODE = 4
 
 	const inteiro ACIMA = 0, ABAIXO = 1
 
@@ -94,7 +96,7 @@ programa
 		
 		gerar_matriz_qrcode()
 		
-		exibir_qrcode()		
+		exibir_qrcode()
 	}
 
 	funcao gerar_matriz_qrcode()
@@ -107,37 +109,683 @@ programa
 		reservar_areas_formatacao()
 		reservar_areas_versao()
 		gerar_dados()
-		mascarar_dados()
-		gerar_padroes_formato()
+		
+		inteiro mascara = mascarar_dados()
+		
+		gerar_padroes_formato(mascara)
 		gerar_padroes_versao()		
 	}
 
-	funcao mascarar_dados()
+	funcao inteiro mascarar_dados()
+	{
+		inteiro valores_mascaras[8]
+
+		valores_mascaras[0] = calcular_mascara_0()
+		valores_mascaras[1] = calcular_mascara_1()
+		valores_mascaras[2] = calcular_mascara_2()
+		valores_mascaras[3] = calcular_mascara_3()
+		valores_mascaras[4] = calcular_mascara_4()
+		valores_mascaras[5] = calcular_mascara_5()
+		valores_mascaras[6] = calcular_mascara_6()
+		valores_mascaras[7] = calcular_mascara_7()
+
+		inteiro ultima_penalidade = 9999999
+		inteiro indice_formato = -1
+
+		para (inteiro i = 0; i < 8; i++)
+		{
+			se (valores_mascaras[i] < ultima_penalidade)
+			{				
+				ultima_penalidade = valores_mascaras[i]
+				indice_formato = i
+			}
+		}		
+
+		se (indice_formato == 0)
+		{
+			aplicar_mascara_0_matriz(matriz_qrcode)
+		}
+		senao se (indice_formato == 1)
+		{
+			aplicar_mascara_1_matriz(matriz_qrcode)
+		}
+		senao se (indice_formato == 2)
+		{
+			aplicar_mascara_2_matriz(matriz_qrcode)
+		}
+		senao se (indice_formato == 3)
+		{
+			aplicar_mascara_3_matriz(matriz_qrcode)
+		}
+		senao se (indice_formato == 4)
+		{
+			aplicar_mascara_4_matriz(matriz_qrcode)
+		}
+		senao se (indice_formato == 5)
+		{
+			aplicar_mascara_5_matriz(matriz_qrcode)
+		}
+		senao se (indice_formato == 6)
+		{
+			aplicar_mascara_6_matriz(matriz_qrcode)
+		}
+		senao se (indice_formato == 7)
+		{
+			aplicar_mascara_7_matriz(matriz_qrcode)
+		}
+
+		retorne indice_formato
+	}
+	
+	funcao inteiro calcular_mascara_0()
+	{
+		inteiro matriz_mascarada[45][45]
+		
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_0_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_mascara_1()
+	{
+		inteiro matriz_mascarada[45][45]
+
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_1_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_mascara_2()
+	{
+		inteiro matriz_mascarada[45][45]
+
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_2_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_mascara_3()
+	{
+		inteiro matriz_mascarada[45][45]
+
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_3_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_mascara_4()
+	{
+		inteiro matriz_mascarada[45][45]
+		
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_4_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_mascara_5()
+	{
+		inteiro matriz_mascarada[45][45]
+
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_5_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_mascara_6()
+	{
+		inteiro matriz_mascarada[45][45]
+
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_6_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_mascara_7()
+	{
+		inteiro matriz_mascarada[45][45]
+
+		copiar_matriz(matriz_qrcode, matriz_mascarada)
+		aplicar_mascara_7_matriz(matriz_mascarada)
+
+		inteiro penalidade1 = calcular_penalidade_1(matriz_mascarada)
+		inteiro penalidade2 = calcular_penalidade_2(matriz_mascarada)
+		inteiro penalidade3 = calcular_penalidade_3(matriz_mascarada)
+		inteiro penalidade4 = calcular_penalidade_4(matriz_mascarada)
+
+		retorne penalidade1 + penalidade2 + penalidade3 + penalidade4
+	}
+
+	funcao inteiro calcular_penalidade_1(inteiro matriz[][])
+	{
+		inteiro penalidade_horizontal = 0
+		inteiro penalidade_vertical = 0
+
+		inteiro modulos_consecutivos_escuros_coluna = 0
+		inteiro modulos_consecutivos_escuros_linha = 0
+		
+		inteiro modulos_consecutivos_claros_coluna = 0
+		inteiro modulos_consecutivos_claros_linha = 0
+		
+		para (inteiro i = 0; i < u.numero_linhas(matriz); i++)
+		{
+			para (inteiro j = 0; j < u.numero_colunas(matriz); j++)
+			{
+				se (obter_valor_bit_matriz(matriz, i, j) == BIT_DADOS_LIGADO)
+				{
+					modulos_consecutivos_escuros_coluna += 1
+
+					se (modulos_consecutivos_claros_coluna >= 5)
+					{
+						penalidade_horizontal += 3 + (modulos_consecutivos_claros_coluna - 5)
+					}
+					
+					modulos_consecutivos_claros_coluna = 0
+				}
+				senao se (obter_valor_bit_matriz(matriz, i, j) == BIT_DADOS_DESLIGADO)
+				{
+					modulos_consecutivos_claros_coluna += 1
+
+					se (modulos_consecutivos_escuros_coluna >= 5)
+					{
+						penalidade_horizontal += 3 + (modulos_consecutivos_escuros_coluna - 5)
+					}
+					
+					modulos_consecutivos_escuros_coluna = 0
+				}
+
+				se (j == u.numero_colunas(matriz) - 1)
+				{
+					se (modulos_consecutivos_escuros_coluna >= 5)
+					{
+						penalidade_horizontal += 3 + (modulos_consecutivos_escuros_coluna - 5)
+					}
+
+					se (modulos_consecutivos_claros_coluna >= 5)
+					{
+						penalidade_horizontal += 3 + (modulos_consecutivos_claros_coluna - 5)
+					}
+					
+					modulos_consecutivos_claros_coluna = 0
+					modulos_consecutivos_escuros_coluna = 0
+				}
+			}
+		}
+
+		para (inteiro j = 0; j < u.numero_colunas(matriz); j++)		
+		{
+			para (inteiro i = 0; i < u.numero_linhas(matriz); i++)
+			{
+				se (obter_valor_bit_matriz(matriz, i, j) == BIT_DADOS_LIGADO)
+				{
+					modulos_consecutivos_escuros_linha += 1
+
+					se (modulos_consecutivos_claros_linha >= 5)
+					{
+						penalidade_vertical += 3 + (modulos_consecutivos_claros_linha - 5)
+					}
+					
+					modulos_consecutivos_claros_linha = 0
+				}
+				senao se (obter_valor_bit_matriz(matriz, i, j) == BIT_DADOS_DESLIGADO)
+				{
+					modulos_consecutivos_claros_linha += 1
+					
+					se (modulos_consecutivos_escuros_linha >= 5)
+					{
+						penalidade_vertical += 3 + (modulos_consecutivos_escuros_linha - 5)
+					}
+					
+					modulos_consecutivos_escuros_linha = 0
+				}
+
+				se (i == u.numero_linhas(matriz) - 1)
+				{
+					se (modulos_consecutivos_claros_linha >= 5)
+					{
+						penalidade_vertical += 3 + (modulos_consecutivos_claros_linha - 5)
+					}
+
+					se (modulos_consecutivos_escuros_linha >= 5)
+					{
+						penalidade_vertical += 3 + (modulos_consecutivos_escuros_linha - 5)
+					}
+					
+					modulos_consecutivos_claros_linha = 0
+					modulos_consecutivos_escuros_linha = 0
+				}
+			}
+		}
+
+		retorne penalidade_horizontal + penalidade_vertical
+	}
+
+	funcao inteiro calcular_penalidade_2(inteiro matriz[][])
+	{
+		inteiro penalidade = 0
+
+		para (inteiro i = 0; i < u.numero_linhas(matriz) - 1; i++)
+		{
+			para (inteiro j = 0; j < u.numero_colunas(matriz) - 1; j++)
+			{
+				inteiro soma = 0
+
+				soma += obter_valor_bit_matriz(matriz, i, j)
+				soma += obter_valor_bit_matriz(matriz, i, j + 1)
+				soma += obter_valor_bit_matriz(matriz, i + 1, j)
+				soma += obter_valor_bit_matriz(matriz, i + 1, j + 1)
+				
+				se (soma == 0 ou soma == 4)
+				{
+					penalidade += 3
+				}
+			}
+		}
+
+		retorne penalidade
+	}
+
+	funcao inteiro calcular_penalidade_3(inteiro matriz[][])
+	{
+		inteiro padrao[] = {1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0}
+		
+		inteiro penalidade = 0
+
+		para (inteiro i = 0; i < u.numero_linhas(matriz); i++)
+		{
+			para (inteiro j = 0; j < u.numero_colunas(matriz) - u.numero_elementos(padrao) + 1; j++)
+			{
+				logico padrao_encontrado = verdadeiro
+
+				para (inteiro k = 0; k < u.numero_elementos(padrao); k++)
+				{
+					se (obter_valor_bit_matriz(matriz, i, j + k) != padrao[k])
+					{
+						padrao_encontrado = falso
+					}
+
+				}
+
+				se (padrao_encontrado)
+				{
+					penalidade += 40
+				}
+
+				padrao_encontrado = verdadeiro
+				
+				para (inteiro k = 0; k < u.numero_elementos(padrao); k++)
+				{
+					se (obter_valor_bit_matriz(matriz, i, j + k) != padrao[u.numero_elementos(padrao) - 1 - k])
+					{
+						padrao_encontrado = falso
+					}
+				}
+
+				se (padrao_encontrado)
+				{
+					penalidade += 40
+				}
+			}
+		}
+
+		para (inteiro j = 0; j < u.numero_colunas(matriz); j++)		
+		{
+			para (inteiro i = 0; i < u.numero_linhas(matriz) - u.numero_elementos(padrao) + 1; i++)
+			{
+				logico padrao_encontrado = verdadeiro
+
+				para (inteiro k = 0; k < u.numero_elementos(padrao); k++)
+				{
+					se (obter_valor_bit_matriz(matriz, i + k, j) != padrao[k])
+					{
+						padrao_encontrado = falso
+					}
+
+				}
+
+				se (padrao_encontrado)
+				{
+					penalidade += 40
+				}
+
+				padrao_encontrado = verdadeiro
+				
+				para (inteiro k = 0; k < u.numero_elementos(padrao); k++)
+				{
+					se (obter_valor_bit_matriz(matriz, i + k, j) != padrao[u.numero_elementos(padrao) - 1 - k])
+					{
+						padrao_encontrado = falso
+					}
+				}
+				
+				se (padrao_encontrado)
+				{
+					penalidade += 40
+				}
+			}
+		}
+
+		retorne penalidade
+	}
+
+	funcao inteiro calcular_penalidade_4(inteiro matriz[][])
+	{
+		inteiro penalidade = 0
+		
+		real total_modulos = 0.0
+		real modulos_escuros = 0.0
+
+		para (inteiro i = 0; i < u.numero_linhas(matriz); i++)
+		{
+			para (inteiro j = 0; j < u.numero_colunas(matriz); j++)
+			{
+				total_modulos += 1.0
+
+				se (obter_valor_bit_matriz(matriz, i, j) == BIT_DADOS_LIGADO)
+				{
+					modulos_escuros += 1.0
+				}
+			}
+		}
+
+		inteiro percentual = tp.real_para_inteiro((modulos_escuros / total_modulos) * 100.0)
+		inteiro diferenca = percentual % 5
+
+		inteiro valor_a
+		inteiro valor_b
+
+		valor_a = percentual - diferenca
+		valor_b =  valor_a + 5
+		
+		valor_a = valor_a - 50
+		valor_b = valor_b - 50
+
+		se (valor_a < 0)
+		{
+			valor_a = valor_a * (-1)
+		}
+
+		se (valor_b < 0)
+		{
+			valor_b = valor_b * (-1)
+		}
+
+		valor_a = valor_a / 5
+		valor_b = valor_b / 5
+
+		se (valor_a < valor_b)
+		{
+			retorne valor_a * 10
+		}		
+
+		retorne valor_b * 10
+	}
+
+	funcao inteiro obter_valor_bit_matriz(inteiro matriz[][], inteiro linha, inteiro coluna)
+	{
+		se (matriz[linha][coluna] % 2 == 0)
+		{
+			retorne BIT_DADOS_DESLIGADO
+		}
+
+		retorne BIT_DADOS_LIGADO
+	}
+
+	funcao exibir_mascara(inteiro matriz_original[][], inteiro matriz_mascarada[][])
+	{
+		inteiro tamanho = calcular_tamanho_janela()
+
+		enquanto (nao t.tecla_pressionada(t.TECLA_ESC))
+		{
+			g.definir_cor(COR_BORDA)
+			g.limpar()
+			
+			desenhar_qrcode(matriz_original, 0, 0)
+			desenhar_qrcode(matriz_mascarada, tamanho, 0)
+
+			g.renderizar()
+		}
+	}
+
+	funcao copiar_matriz(inteiro origem[][], inteiro destino[][])
+	{
+		para (inteiro i = 0; i < u.numero_linhas(destino); i++)
+		{
+			para (inteiro j = 0; j < u.numero_colunas(destino); j++)
+			{
+				destino[i][j] = origem[i][j]
+			}
+		}
+	}
+
+	funcao aplicar_mascara_0_matriz(inteiro matriz[][])
 	{
 		para (inteiro i = 0; i < 45; i++)
 		{
 			para (inteiro j = 0; j < 45; j++)
 			{
-				inteiro bit = matriz_qrcode[i][j]
+				inteiro bit = matriz[i][j]
 
 				se (((i + j) % 2 == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
 				{
 					se (bit == BIT_DADOS_LIGADO)
 					{
-						matriz_qrcode[i][j] = BIT_DADOS_DESLIGADO
+						matriz[i][j] = BIT_DADOS_DESLIGADO
 					}
 					senao se (bit == BIT_DADOS_DESLIGADO)
 					{
-						matriz_qrcode[i][j] = BIT_DADOS_LIGADO
+						matriz[i][j] = BIT_DADOS_LIGADO
 					}
 				}
 			}
 		}
 	}
 
-	funcao gerar_padroes_formato()
+	funcao aplicar_mascara_1_matriz(inteiro matriz[][])
 	{
-		cadeia bits = calcular_error_codes_formato()
+		para (inteiro i = 0; i < 45; i++)
+		{
+			para (inteiro j = 0; j < 45; j++)
+			{
+				inteiro bit = matriz[i][j]
+
+				se ((i % 2 == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
+				{
+					se (bit == BIT_DADOS_LIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_DESLIGADO
+					}
+					senao se (bit == BIT_DADOS_DESLIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_LIGADO
+					}
+				}
+			}
+		}
+	}
+
+	funcao aplicar_mascara_2_matriz(inteiro matriz[][])
+	{
+		para (inteiro i = 0; i < 45; i++)
+		{
+			para (inteiro j = 0; j < 45; j++)
+			{
+				inteiro bit = matriz[i][j]
+
+				se ((j % 3 == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
+				{
+					se (bit == BIT_DADOS_LIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_DESLIGADO
+					}
+					senao se (bit == BIT_DADOS_DESLIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_LIGADO
+					}
+				}
+			}
+		}
+	}
+
+	funcao aplicar_mascara_3_matriz(inteiro matriz[][])
+	{
+		para (inteiro i = 0; i < 45; i++)
+		{
+			para (inteiro j = 0; j < 45; j++)
+			{
+				inteiro bit = matriz[i][j]
+
+				se (((i + j) % 3 == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
+				{
+					se (bit == BIT_DADOS_LIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_DESLIGADO
+					}
+					senao se (bit == BIT_DADOS_DESLIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_LIGADO
+					}
+				}
+			}
+		}
+	}
+
+	funcao aplicar_mascara_4_matriz(inteiro matriz[][])
+	{
+		para (inteiro i = 0; i < 45; i++)
+		{
+			para (inteiro j = 0; j < 45; j++)
+			{
+				inteiro bit = matriz[i][j]
+
+				se (((i + j) % 2 == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
+				{
+					se (bit == BIT_DADOS_LIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_DESLIGADO
+					}
+					senao se (bit == BIT_DADOS_DESLIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_LIGADO
+					}
+				}
+			}
+		}
+	}
+
+	funcao aplicar_mascara_5_matriz(inteiro matriz[][])
+	{
+		para (inteiro i = 0; i < 45; i++)
+		{
+			para (inteiro j = 0; j < 45; j++)
+			{
+				inteiro bit = matriz[i][j]
+
+				se ((((i * j) % 2) + ((i * j) % 3) == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
+				{
+					se (bit == BIT_DADOS_LIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_DESLIGADO
+					}
+					senao se (bit == BIT_DADOS_DESLIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_LIGADO
+					}
+				}
+			}
+		}
+	}
+
+	funcao aplicar_mascara_6_matriz(inteiro matriz[][])
+	{
+		para (inteiro i = 0; i < 45; i++)
+		{
+			para (inteiro j = 0; j < 45; j++)
+			{
+				inteiro bit = matriz[i][j]
+
+				se ((( ((i * j) % 2) + ((i * j) % 3)) % 2 == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
+				{
+					se (bit == BIT_DADOS_LIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_DESLIGADO
+					}
+					senao se (bit == BIT_DADOS_DESLIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_LIGADO
+					}
+				}
+			}
+		}
+	}
+
+	funcao aplicar_mascara_7_matriz(inteiro matriz[][])
+	{
+		para (inteiro i = 0; i < 45; i++)
+		{
+			para (inteiro j = 0; j < 45; j++)
+			{
+				inteiro bit = matriz[i][j]
+
+				se ((( ((i + j) % 2) + ((i * j) % 3) ) % 2 == 0) e (bit == BIT_DADOS_DESLIGADO ou bit == BIT_DADOS_LIGADO))
+				{
+					se (bit == BIT_DADOS_LIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_DESLIGADO
+					}
+					senao se (bit == BIT_DADOS_DESLIGADO)
+					{
+						matriz[i][j] = BIT_DADOS_LIGADO
+					}
+				}
+			}
+		}
+	}
+
+	funcao gerar_padroes_formato(inteiro mascara)
+	{
+		cadeia bits = calcular_error_codes_formato(mascara)
 
 		para (inteiro i = 0; i < 8; i++)
 		{
@@ -243,7 +891,7 @@ programa
 			se (bit_existente == BIT_INVALIDO)
 			{
 				indice_bit_dados++				
-				matriz_qrcode[linha][coluna] = obter_valor_bit(indice_bit_dados, linha, coluna)
+				matriz_qrcode[linha][coluna] = obter_valor_bit_na_bitstring(indice_bit_dados)
 			}
 
 			coluna = coluna - 1			
@@ -255,7 +903,7 @@ programa
 			se (bit_existente == BIT_INVALIDO)
 			{
 				indice_bit_dados++				
-				matriz_qrcode[linha][coluna] = obter_valor_bit(indice_bit_dados, linha, coluna)
+				matriz_qrcode[linha][coluna] = obter_valor_bit_na_bitstring(indice_bit_dados)
 			}
 
 			coluna = coluna + 1
@@ -297,12 +945,11 @@ programa
 		}
 	}
 
-	funcao inteiro obter_valor_bit(inteiro indice_bit_dados, inteiro linha, inteiro coluna)
+	funcao inteiro obter_valor_bit_na_bitstring(inteiro indice_bit_dados)
 	{
 		cadeia bit_qr
 		
 		bit_qr = txt.extrair_subtexto(bitstring_dados, indice_bit_dados, indice_bit_dados + 1)
-		//bit_qr = mascarar_bit(bit_qr, linha, coluna)
 
 		se (bit_qr == "1")
 		{
@@ -535,7 +1182,12 @@ programa
 		
 		enquanto (nao t.tecla_pressionada(t.TECLA_ESC))
 		{
-			desenhar_qrcode()
+			g.definir_cor(COR_BORDA)
+			g.limpar()
+		
+			desenhar_qrcode(matriz_qrcode, 0, 0)
+			
+			g.renderizar()
 		}
 	}
 
@@ -548,10 +1200,23 @@ programa
 		g.definir_titulo_janela("Gerador de QRCODE")
 	}
 
-	funcao cadeia calcular_error_codes_formato()
+	funcao cadeia calcular_error_codes_formato(inteiro formato)
 	{
 		cadeia binario_correcao = "01" // L
-		cadeia binario_mascara = "000" // 0
+		cadeia binario_mascara = tp.inteiro_para_cadeia(formato, 2)
+
+		se (formato == 0)
+		{
+			binario_mascara = "000"
+		}
+		senao
+		{
+			binario_mascara = remover_zeros_esquerda(binario_mascara)
+		}
+
+		binario_mascara = txt.preencher_a_esquerda('0', 3, binario_mascara)
+		
+		escreva("Formato: " + binario_mascara + "\n")
 		//cadeia binario_mascara = "100" // 4
 		
 		cadeia polinomio_gerador = "10100110111"
@@ -613,38 +1278,38 @@ programa
 		retorne polinomio_resultante
 	}
 
-	funcao desenhar_qrcode()
+	funcao desenhar_qrcode(inteiro matriz[][], inteiro x, inteiro y)
 	{
-		g.definir_cor(COR_BORDA)
-		g.limpar()
-
-		desenhar_matriz_qrcode()
-		//desenhar_grade()
-		
-		g.renderizar()
+		desenhar_matriz_qrcode(matriz, x, y)
+		desenhar_grade(matriz, x, y)
 	}
 
-	funcao desenhar_grade()
+	funcao desenhar_grade(inteiro matriz[][], inteiro x, inteiro y)
 	{
-		g.definir_cor(COR_GRADE)
-
-		inteiro x = (TAMANHO_BIT_QRCODE * MARGEM_QRCODE)
-		inteiro y = (TAMANHO_BIT_QRCODE * MARGEM_QRCODE)
-		
-		para (inteiro i = 0; i <= 45; i++)
+		se (EXIBIR_GRADE)
 		{
-			g.desenhar_linha(x, y + (i * TAMANHO_BIT_QRCODE), x + (45 * TAMANHO_BIT_QRCODE), y + (i * TAMANHO_BIT_QRCODE))
-			g.desenhar_linha(x + (i * TAMANHO_BIT_QRCODE), y, x + (i * TAMANHO_BIT_QRCODE), y + (45 * TAMANHO_BIT_QRCODE))
+			inteiro tamanho = u.numero_linhas(matriz)
+			
+			g.definir_cor(COR_GRADE)
+	
+			inteiro x_grade = x + (TAMANHO_BIT_QRCODE * MARGEM_QRCODE)
+			inteiro y_grade = y + (TAMANHO_BIT_QRCODE * MARGEM_QRCODE)
+			
+			para (inteiro i = 0; i <= tamanho; i++)
+			{
+				g.desenhar_linha(x_grade, y_grade + (i * TAMANHO_BIT_QRCODE), x_grade + (tamanho * TAMANHO_BIT_QRCODE), y_grade + (i * TAMANHO_BIT_QRCODE))
+				g.desenhar_linha(x_grade + (i * TAMANHO_BIT_QRCODE), y_grade, x_grade + (i * TAMANHO_BIT_QRCODE), y_grade + (tamanho * TAMANHO_BIT_QRCODE))
+			}
 		}
 	}
 
-	funcao desenhar_matriz_qrcode()
+	funcao desenhar_matriz_qrcode(inteiro matriz[][], inteiro x, inteiro y)
 	{
-		para (inteiro i = 0; i < 45; i++)
+		para (inteiro i = 0; i < u.numero_linhas(matriz); i++)
 		{
-			para (inteiro j = 0; j < 45; j++)
+			para (inteiro j = 0; j < u.numero_colunas(matriz); j++)
 			{
-				inteiro bit = matriz_qrcode[i][j]
+				inteiro bit = matriz[i][j]
 	
 				se (bit == BIT_INVALIDO)
 				{
@@ -659,10 +1324,10 @@ programa
 					g.definir_cor(COR_BIT_LIGADO)
 				}
 
-				inteiro x = (TAMANHO_BIT_QRCODE * MARGEM_QRCODE) + (j * TAMANHO_BIT_QRCODE)
-				inteiro y = (TAMANHO_BIT_QRCODE * MARGEM_QRCODE) + (i * TAMANHO_BIT_QRCODE)
+				inteiro x_matriz = x + ((TAMANHO_BIT_QRCODE * MARGEM_QRCODE) + (j * TAMANHO_BIT_QRCODE))
+				inteiro y_matriz = y + ((TAMANHO_BIT_QRCODE * MARGEM_QRCODE) + (i * TAMANHO_BIT_QRCODE))
 
-				g.desenhar_retangulo(x, y, TAMANHO_BIT_QRCODE, TAMANHO_BIT_QRCODE, falso, verdadeiro)
+				g.desenhar_retangulo(x_matriz, y_matriz, TAMANHO_BIT_QRCODE, TAMANHO_BIT_QRCODE, falso, verdadeiro)
 			}
 		}
 	}	
@@ -1346,6 +2011,7 @@ programa
 		g.definir_dimensoes_janela(800, 600)
 		g.definir_titulo_janela("Gerador de QR CODE")
 
+		u.aguarde(500)
 		desenhar_tela_digitar_palavra()
 		
 		enquanto (verdadeiro)
@@ -1451,8 +2117,8 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 564; 
- * @DOBRAMENTO-CODIGO = [66, 74, 99, 114, 137, 180, 216, 228, 299, 316, 333, 368, 388, 393, 410, 427, 437, 472, 488, 515, 523, 531, 541, 550, 575, 585, 595, 615, 626, 640, 669, 674, 716, 730, 745, 756, 767, 807, 862, 870, 883, 911, 935, 966, 1006, 1014, 1022, 1051, 1062, 1076, 1090, 1120, 1126, 1141, 1152, 1175, 1202, 1210, 1235, 1269, 1298, 1329, 1342, 1380, 1390, 1396, 1431];
+ * @POSICAO-CURSOR = 67; 
+ * @DOBRAMENTO-CODIGO = [68, 76, 101, 118, 179, 194, 209, 224, 239, 254, 269, 284, 299, 403, 428, 511, 564, 574, 590, 601, 624, 647, 670, 693, 716, 739, 762, 785, 828, 864, 876, 947, 963, 980, 1015, 1035, 1040, 1057, 1074, 1084, 1119, 1135, 1162, 1170, 1178, 1193, 1202, 1240, 1250, 1260, 1280, 1286, 1305, 1334, 1339, 1381, 1395, 1410, 1421, 1432, 1472, 1527, 1535, 1548, 1576, 1600, 1631, 1671, 1679, 1687, 1716, 1727, 1741, 1755, 1785, 1791, 1806, 1817, 1840, 1867, 1875, 1900, 1934, 1963, 1994, 2007, 2046, 2056, 2062, 2097];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

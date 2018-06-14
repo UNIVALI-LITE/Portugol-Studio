@@ -57,6 +57,7 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
     private final int linhaDoSimbolo;
     private final int tamanhoDoTexto;
     private boolean declaracaoEncontrada;
+    private boolean referenciaEncontrada;
 
     public ProcuradorDeDeclaracao(String nomeDoSimbolo, int linhaDoSimbolo, int colunaDoSimbolo, int tamanhoDoTexto) {
         this.nomeDoSimbolo = nomeDoSimbolo;
@@ -64,6 +65,7 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         this.colunaDoSimbolo = colunaDoSimbolo;
         this.tamanhoDoTexto = tamanhoDoTexto;
         this.declaracaoEncontrada = false;
+        this.referenciaEncontrada = false;
     }
 
     public boolean encontrou() {
@@ -96,6 +98,10 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
                 
                 if(inicializacao != null){
                     inicializacao.aceitar(this); //tentar encontrar a referência na inicialização
+                    if(referenciaEncontrada && (mesmoNome && mesmoTamanho))
+                    {
+                        declaracaoEncontrada = true;
+                    }
                 }
             }            
         }
@@ -183,6 +189,10 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
             if (noDeclaracao != null && noDeclaracao.getNome().equals(noReferencia.getNome())) {
                 //encontrou a referência para o nó declaracão encontrado anteriormente na árvore
                 declaracaoEncontrada = true;
+            } 
+            else if(noDeclaracao == null)
+            {
+                referenciaEncontrada = true;
             }
         }
     }

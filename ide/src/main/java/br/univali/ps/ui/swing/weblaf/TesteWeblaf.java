@@ -2,7 +2,7 @@ package br.univali.ps.ui.swing.weblaf;
 
 import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.paineis.NewPainelTabulado;
+import br.univali.ps.ui.paineis.PSPainelTabulado;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.table.WebTableHeaderUI;
 import java.awt.BorderLayout;

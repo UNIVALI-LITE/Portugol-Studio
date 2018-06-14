@@ -93,18 +93,9 @@ public class TelaPrincipal extends javax.swing.JPanel
                     
                     if(me.getClickCount() == 2){
                         if(Lancador.isMaximazed()){
-                            Dimension d = Lancador.getOlderSize();
-                            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
-                            Lancador.getJFrame().setSize(d);
-                            Lancador.setActualSize(d);                        
-                            Lancador.setMaximazed(false);
-                        }else{                         
-                            Dimension d = Lancador.getJFrame().getSize();
-                            Lancador.setOlderSize(d);
-                            Rectangle newBounds = configurarMaximizar();
-                            Lancador.getJFrame().setBounds(newBounds);
-                            Lancador.setActualSize(newBounds.getSize());
-                            Lancador.setMaximazed(true);
+                            Lancador.maximize(false);
+                        }else{
+                            Lancador.maximize(true);
                         }
                     }
                 });
@@ -297,9 +288,21 @@ public class TelaPrincipal extends javax.swing.JPanel
 
     public void criarNovoCodigoFonte()
     {
+//        SwingUtilities.invokeLater(() -> {
+//            TelaCustomBorder main = new TelaCustomBorder("Novo Programa");
+//            TelaNovoProjeto tnp = new TelaNovoProjeto();
+//            
+//            //tnp.setAcaoFechar(main.getAcaoSair());
+//            main.setMinimumSize(new Dimension(280, 450));
+//            main.setPanel(tnp, false);
+//            main.setLocationRelativeTo(null);
+//            main.setVisible(true);
+//            main.pack();            
+//        });
         final AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();        
         painelTabuladoPrincipal.adicionaAba(abaCodigoFonte);
         abaCodigoFonte.carregarAlgoritmoPadrao();
+        abaCodigoFonte.showPainelUtilitarios(true);
         revalidate();
     }
 

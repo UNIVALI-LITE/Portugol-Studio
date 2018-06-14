@@ -10,6 +10,7 @@ import br.univali.ps.ui.Splash;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.editor.PSFindReplace;
 import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
@@ -94,7 +95,8 @@ public final class PortugolStudio
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
     private TelaCustomBorder telaLicencas = null;
-    private TelaCustomBorder telaRenomearSimbolo = null;        
+    private TelaCustomBorder telaRenomearSimbolo = null;
+    private TelaCustomBorder telaPesquisarSubstituir = null;
     
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
@@ -765,13 +767,8 @@ public final class PortugolStudio
                     Lancador.getJFrame().pack();
                     Lancador.getJFrame().setLocationRelativeTo(null);
                     Lancador.getJFrame().setVisible(true);
-                    Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
-                    
                     Lancador.setOlderSize(new Dimension(800, 600));
-                    Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-                    Lancador.getJFrame().setBounds(bounds);
-                    Lancador.setActualSize(bounds.getSize());
-                    Lancador.setMaximazed(true);
+                    Lancador.maximize(true);
                     
                     Lancador.getJFrame().revalidate();
                     portugolCarregado = true;
@@ -956,6 +953,36 @@ public final class PortugolStudio
         telaLicencas.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaLicencas;
+    }
+    
+    public JDialog getTelaPesquisarSubstituir()
+    {
+        if (telaPesquisarSubstituir == null)
+        {
+            telaPesquisarSubstituir = new TelaCustomBorder("Localizar e Substituir") ;
+            PSFindReplace findReplace = new PSFindReplace(telaPesquisarSubstituir);
+            findReplace.setPreferredSize(new Dimension(550, 190));
+            telaPesquisarSubstituir.setPanel(findReplace);
+        }
+
+        telaPesquisarSubstituir.setLocationRelativeTo(null);
+
+        return telaPesquisarSubstituir;
+    }
+    
+    public PSFindReplace getTelaProcurarSubstituirPanel()
+    {
+        if (telaPesquisarSubstituir == null)
+        {
+            telaPesquisarSubstituir = new TelaCustomBorder("Localizar e Substituir") ;
+            PSFindReplace findReplace = new PSFindReplace(telaPesquisarSubstituir);
+            findReplace.setPreferredSize(new Dimension(550, 190));
+            telaPesquisarSubstituir.setPanel(findReplace);
+        }
+        
+        telaPesquisarSubstituir.setLocationRelativeTo(null);
+        
+        return (PSFindReplace) telaPesquisarSubstituir.getPanel();
     }
 
     public JDialog getTelaRenomearSimbolo()

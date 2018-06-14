@@ -131,7 +131,18 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
         if (!model.isEmpty()) //só resconstrói a lista de símbolos se existem símbolos sendo inspecionados
         {
-            SwingUtilities.invokeLater(new TarefaReconstrucaoNosInspecionados());
+            Runnable tarefa = new TarefaReconstrucaoNosInspecionados();
+            
+            // Só executa a reconstrução dos nós inpecionados com invokeLater se já não estiver na EDT.
+            // Com isso evitamos executar a tarefa na EDT, mesmo já estando nela, fazendo com que a tarefa 
+            // seja executa só depois de algum tempo, o que já é tarde demais para a inicialização dos símbolos.
+            
+            if (SwingUtilities.isEventDispatchThread()) {
+                tarefa.run();
+            }
+            else {
+                SwingUtilities.invokeLater(tarefa);
+            }
         }
     }
     
@@ -287,17 +298,29 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
 
-    @Override
-    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
-        programaExecutando = false;
-        //limpa os valores no fim da execução
+    private void limpaValores()
+    {
         for (int i = 0; i < model.getSize(); i++) {
             model.getElementAt(i).limpa();
+        }        
+    }
+    
+    @Override
+    public void execucaoEncerrada(Programa programa, ResultadoExecucao resultadoExecucao) {
+        Runnable tarefa = () -> {
+            programaExecutando = false;
+            timerAtualizacao.stop();
+            atualizaValoresVariaveisInspecionadas();
+            ultimoItemModificado = null;
+            resetaDestaqueDosSimbolos();
+        };
+        
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(tarefa);
         }
-        ultimoItemModificado = null;
-        timerAtualizacao.stop();
-        setStatusDoDestaqueNosSimbolosInspecionados(true);
-        repaint();
+        else {
+            tarefa.run();
+        }
     }
 
     private void setStatusDoDestaqueNosSimbolosInspecionados(boolean statusDoDestaque) {
@@ -362,13 +385,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     @Override
     public void execucaoIniciada(Programa programa) {
         programaExecutando = true;
+        limpaValores();
         setStatusDoDestaqueNosSimbolosInspecionados(false);
         timerAtualizacao.start();
     }
 
     private void atualizaValoresVariaveisInspecionadas()
     {
-        SwingUtilities.invokeLater(() -> {
+        Runnable tarefa = () -> {
             
             if (programa == null)
             {
@@ -384,7 +408,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             }
         
             redesenhaItemsDaLista();
-        });
+        };
+        
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(tarefa);
+        }
+        else {
+            tarefa.run();
+        }
     }
     
     @Override
@@ -745,11 +776,14 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
     
-    private boolean nosTemMesmoEscopo(NoDeclaracao no1, NoDeclaracao no2) {
-        int id1 = ((NoDeclaracaoInspecionavel)no1).getIdParaInspecao();
-        int id2 = ((NoDeclaracaoInspecionavel)no2).getIdParaInspecao();
+    private boolean nosTemMesmoEscopo(NoDeclaracao no1, NoDeclaracao no2) 
+    {
+        String escopo1 = no1.getEscopo();
+        String escopo2 = no2.getEscopo();
         
-        return id1 == id2;
+        //System.out.println(escopo1 + " -> " + escopo2);
+        
+        return escopo1.equals(escopo2);
     }
     
     private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) {

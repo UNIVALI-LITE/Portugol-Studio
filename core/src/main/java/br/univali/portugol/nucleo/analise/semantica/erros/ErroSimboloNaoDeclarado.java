@@ -183,7 +183,7 @@ public final class ErroSimboloNaoDeclarado extends ErroSemantico
             construtorString.append("A função \"");
             construtorString.append(referencia.getNome());
             
-            if (referencia.getEscopo() == null)
+            if (referencia.getEscopoBiblioteca() == null)
             {
                 
                 codigo += "4";
@@ -191,7 +191,7 @@ public final class ErroSimboloNaoDeclarado extends ErroSemantico
             }
             else 
             {
-                construtorString.append(String.format("\" não existe na biblioteca \"%s\"", chamadaFuncao.getEscopo()));
+                construtorString.append(String.format("\" não existe na biblioteca \"%s\"", chamadaFuncao.getEscopoBiblioteca()));
             }
 
             return construtorString.toString();

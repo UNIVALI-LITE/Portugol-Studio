@@ -62,10 +62,7 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
-import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -84,9 +81,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
-import org.fife.rsta.ui.search.FindDialog;
-import org.fife.rsta.ui.search.ReplaceDialog;
-import org.fife.rsta.ui.search.SearchListener;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -145,7 +139,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     
     private Action acaoFormatarCodigo;
 
-    private TelaCustomBorder procurarESubstituir;
     private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
@@ -166,7 +159,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         this.isExamplable = editorParaExemplo; 
         initComponents();
-        configurarDialogoPesquisarSubstituir();
         configurarParser();
         configurarTextArea();
         configurarAcoes();
@@ -294,16 +286,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
 
         return menu;
-    }
-
-    private void configurarDialogoPesquisarSubstituir()
-    {
-        procurarESubstituir = new TelaCustomBorder("Procurar");
-        PSFindReplace findReplace = new PSFindReplace(textArea, procurarESubstituir);
-        findReplace.setPreferredSize(new Dimension(550, 190));
-        //findReplace.setSize(new Dimension(800, 600));
-        procurarESubstituir.setPanel(findReplace);
-        procurarESubstituir.setLocationRelativeTo(Lancador.getJFrame());
     }
 
     private void configurarParser()
@@ -459,7 +441,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         textArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK), nome);
         textArea.getActionMap().put(nome, acaoRenomearSimboloNoCursor);
-    }
+    }    
 
     public MetadadosDoSimboloSobOCursorDoTeclado obterMetadadosDoSimboloSobOCursorDoTeclado()
     {
@@ -593,11 +575,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private synchronized boolean isExecutandoPrograma()
     {
         return executandoPrograma;
-    }
-
-    public JDialog getSearchDialog()
-    {
-        return this.procurarESubstituir;
     }
 
     private void configurarAcaoDesfazer()
@@ -1679,8 +1656,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         scrollPane = new org.fife.ui.rtextarea.RTextScrollPane();
         textArea = new PSTextArea(new PortugolDocumento());
@@ -1690,7 +1666,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        scrollPane.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(3, 5, 0, 0));
         scrollPane.setName("scrollPaneEditor"); // NOI18N
         scrollPane.setOpaque(false);
 

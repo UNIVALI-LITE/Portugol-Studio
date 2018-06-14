@@ -9,17 +9,13 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParamet
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoConstante;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
-import br.univali.portugol.nucleo.bibliotecas.graficos.CacheImagens;
-import br.univali.portugol.nucleo.bibliotecas.graficos.JanelaGraficaImpl;
 import br.univali.portugol.nucleo.bibliotecas.objetos.CacheObjetos;
 import br.univali.portugol.nucleo.bibliotecas.objetos.Objeto;
-import br.univali.portugol.nucleo.programa.Programa;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.function.Function;
+import javax.naming.directory.InvalidAttributeValueException;
 
 /**
  *
@@ -71,7 +67,7 @@ public final class Objetos extends Biblioteca {
             descricao = "Constante para definir o tipo objeto"
     )
     public static final int TIPO_OBJETO = 6;
-       @DocumentacaoConstante(
+    @DocumentacaoConstante(
             descricao = "Constante para definir o tipo vetor"
     )
     public static final int TIPO_VETOR = 7;
@@ -92,7 +88,7 @@ public final class Objetos extends Biblioteca {
     public int criar_objeto_via_json(String json) throws ErroExecucaoBiblioteca, InterruptedException {
         return cacheObjetos.criarObjeto(new Objeto(json, Objeto.JSON));
     }
-    
+
     @DocumentacaoFuncao(
             descricao = "Realiza a criação de um objeto a partir de uma cadeia no formato XML (eXtensible Markup Language)",
             parametros
@@ -155,7 +151,11 @@ public final class Objetos extends Biblioteca {
             }
     )
     public int obter_propriedade_tipo_inteiro(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
-        return cacheObjetos.obterObjeto(endereco).obterPropriedadeInteiro(propriedade);
+        try {
+            return cacheObjetos.obterObjeto(endereco).obterPropriedadeInteiro(propriedade);
+        } catch (InvalidAttributeValueException | ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
 
     @DocumentacaoFuncao(
@@ -173,7 +173,11 @@ public final class Objetos extends Biblioteca {
             }
     )
     public double obter_propriedade_tipo_real(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
-        return cacheObjetos.obterObjeto(endereco).obterPropriedadeReal(propriedade);
+        try {
+            return cacheObjetos.obterObjeto(endereco).obterPropriedadeReal(propriedade);
+        } catch (InvalidAttributeValueException | ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
 
     @DocumentacaoFuncao(
@@ -191,7 +195,11 @@ public final class Objetos extends Biblioteca {
             }
     )
     public boolean obter_propriedade_tipo_logico(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
-        return cacheObjetos.obterObjeto(endereco).obterPropriedadeLogico(propriedade);
+        try {
+            return cacheObjetos.obterObjeto(endereco).obterPropriedadeLogico(propriedade);
+        } catch (InvalidAttributeValueException | ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
 
     @DocumentacaoFuncao(
@@ -209,7 +217,11 @@ public final class Objetos extends Biblioteca {
             }
     )
     public char obter_propriedade_tipo_caracter(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
-        return cacheObjetos.obterObjeto(endereco).obterPropriedadeCaracter(propriedade);
+        try {
+            return cacheObjetos.obterObjeto(endereco).obterPropriedadeCaracter(propriedade);
+        } catch (InvalidAttributeValueException | ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
 
     @DocumentacaoFuncao(
@@ -227,7 +239,11 @@ public final class Objetos extends Biblioteca {
             }
     )
     public String obter_propriedade_tipo_cadeia(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
-        return cacheObjetos.obterObjeto(endereco).obterPropriedadeCadeia(propriedade);
+        try {
+            return cacheObjetos.obterObjeto(endereco).obterPropriedadeCadeia(propriedade);
+        } catch (InvalidAttributeValueException | ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
 
     @DocumentacaoFuncao(
@@ -246,128 +262,165 @@ public final class Objetos extends Biblioteca {
     )
     public int obter_propriedade_tipo_objeto(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
         try {
-            String objetoAninhadoJson
+            HashMap map
                     = cacheObjetos.obterObjeto(endereco).obterPropriedadeObjeto(propriedade);
-
-            return cacheObjetos.criarObjeto(new Objeto(objetoAninhadoJson));
+            return cacheObjetos.criarObjeto(new Objeto(map));
         } catch (JsonProcessingException ex) {
             throw new ErroExecucaoBiblioteca("Não foi possível obter a propriedade deste objeto.");
+        } catch (InvalidAttributeValueException | ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
         }
     }
-    
+
     @DocumentacaoFuncao(
             descricao
             = "Obtém o valor de um vetor armazenado no objeto do endereço informado",
             parametros
             = {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
-                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido"),
-                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),
-            },
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
+                ,
+                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido")
+                ,
+                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),},
             retorno = "o valor da propriedade informada",
             autores
             = {
                 @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
             }
     )
-    public int obter_propriedade_em_vetor_tipo_objeto(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
-        HashMap map = (HashMap) obter_propriedade_em_vetor(endereco, propriedade, indice);
-        return cacheObjetos.criarObjeto(new Objeto(map));
+    public int obter_propriedade_tipo_objeto_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
+        try {
+            Object valor = obter_propriedade_em_vetor(endereco, propriedade, indice);
+            HashMap map = Objeto.obterPropriedadeObjeto(valor);
+            return cacheObjetos.criarObjeto(new Objeto(map));
+        } catch (ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
-    
+
     @DocumentacaoFuncao(
             descricao
             = "Obtém o valor de um vetor armazenado no objeto do endereço informado",
             parametros
             = {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
-                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido"),
-                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),
-            },
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
+                ,
+                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido")
+                ,
+                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),},
             retorno = "o valor da propriedade informada",
             autores
             = {
                 @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
             }
     )
-    public char obter_propriedade_em_vetor_tipo_caracter(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
-        return ((String) obter_propriedade_em_vetor(endereco, propriedade, indice)).charAt(0);
+    public char obter_propriedade_tipo_caracter_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
+        try {
+            Object valor = obter_propriedade_em_vetor(endereco, propriedade, indice);
+            return Objeto.obterPropriedadeCaracter(valor);
+        } catch (ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
-    
+
     @DocumentacaoFuncao(
             descricao
             = "Obtém o valor de um vetor armazenado no objeto do endereço informado",
             parametros
             = {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
-                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido"),
-                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),
-            },
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
+                ,
+                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido")
+                ,
+                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),},
             retorno = "o valor da propriedade informada",
             autores
             = {
                 @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
             }
     )
-    public boolean obter_propriedade_em_vetor_tipo_logico(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
-        return (boolean) obter_propriedade_em_vetor(endereco, propriedade, indice);
+    public boolean obter_propriedade_tipo_logico_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
+        try {
+            Object valor = obter_propriedade_em_vetor(endereco, propriedade, indice);
+            return Objeto.obterPropriedadeLogico(valor);
+        } catch (ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
-    
+
     @DocumentacaoFuncao(
             descricao
             = "Obtém o valor de um vetor armazenado no objeto do endereço informado",
             parametros
             = {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
-                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido"),
-                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),
-            },
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
+                ,
+                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido")
+                ,
+                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),},
             retorno = "o valor da propriedade informada",
             autores
             = {
                 @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
             }
     )
-    public double obter_propriedade_em_vetor_tipo_real(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
-        return (double) obter_propriedade_em_vetor(endereco, propriedade, indice);
+    public double obter_propriedade_tipo_real_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
+        try {
+            Object valor = obter_propriedade_em_vetor(endereco, propriedade, indice);
+            return Objeto.obterPropriedadeReal(valor);
+        } catch (ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
-    
+
     @DocumentacaoFuncao(
             descricao
             = "Obtém o valor de um vetor armazenado no objeto do endereço informado",
             parametros
             = {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
-                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido"),
-                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),
-            },
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
+                ,
+                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido")
+                ,
+                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),},
             retorno = "o valor da propriedade informada",
             autores
             = {
                 @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
             }
     )
-    public int obter_propriedade_em_vetor_tipo_inteiro(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
-        return (int) obter_propriedade_em_vetor(endereco, propriedade, indice);
+    public int obter_propriedade_tipo_inteiro_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
+        try {
+            Object valor = obter_propriedade_em_vetor(endereco, propriedade, indice);
+            return Objeto.obterPropriedadeInteiro(valor);
+        } catch (ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
-    
+
     @DocumentacaoFuncao(
             descricao
             = "Obtém o valor de um vetor armazenado no objeto do endereço informado",
             parametros
             = {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
-                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido"),
-                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),
-            },
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
+                ,
+                @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido")
+                ,
+                @DocumentacaoParametro(nome = "indice", descricao = "o índice do elemento do vetor que será obtido"),},
             retorno = "o valor da propriedade informada",
             autores
             = {
                 @Autor(nome = "Gabriel Schade", email = "gabrielschade@univali.br")
             }
     )
-    public String obter_propriedade_em_vetor_tipo_cadeia(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
-        return (String) obter_propriedade_em_vetor(endereco, propriedade, indice);
+    public String obter_propriedade_tipo_cadeia_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca, InterruptedException {
+        try {
+            Object valor = obter_propriedade_em_vetor(endereco, propriedade, indice);
+            return Objeto.obterPropriedadeCadeia(valor);
+        } catch (ClassCastException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
     }
 
     @DocumentacaoFuncao(
@@ -375,7 +428,8 @@ public final class Objetos extends Biblioteca {
             = "Obtém o tamanho de um vetor armazenado no objeto do endereço informado",
             parametros
             = {
-                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado"),
+                @DocumentacaoParametro(nome = "endereco", descricao = "o endereço onde o objeto foi armazenado")
+                ,
                 @DocumentacaoParametro(nome = "propriedade", descricao = "a descrição da propriedade que terá o valor obtido")
             },
             retorno = "o valor da propriedade informada",
@@ -385,9 +439,13 @@ public final class Objetos extends Biblioteca {
             }
     )
     public int obter_tamanho_vetor_propriedade(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
-        return ((ArrayList) cacheObjetos.obterObjeto(endereco).obterPropriedade(propriedade)).size();
+        int tamanhoVetor = obterVetorEmPropriedadeModoSeguro(endereco, propriedade,
+                (array) -> {
+                    return array.size();
+                });
+        return tamanhoVetor;
     }
-    
+
     @DocumentacaoFuncao(
             descricao
             = "Libera o objeto do endereço informado da memória",
@@ -471,32 +529,65 @@ public final class Objetos extends Biblioteca {
     )
     public int tipo_propriedade(int endereco, String propriedade) throws ErroExecucaoBiblioteca, InterruptedException {
         int tipo = 0;
-        Object valor = cacheObjetos.obterObjeto(endereco).obterPropriedade(propriedade);
-
-        if (valor instanceof String) {
-            if(((String) valor).length() == 1)
-                tipo = TIPO_CARACTER;
-            else
-                tipo = TIPO_CADEIA;
-        } else if (valor instanceof Integer) {
-            tipo = TIPO_INTEIRO;
-        } else if (valor instanceof Double) {
-            tipo = TIPO_REAL;
-        } else if (valor instanceof Boolean) {
-            tipo = TIPO_LOGICO;
-        }else if (valor instanceof HashMap) {
-            tipo = TIPO_OBJETO;
-        }else if(valor instanceof ArrayList){
-            tipo = TIPO_VETOR;
+        Object valor;
+        try {
+            valor = cacheObjetos.obterObjeto(endereco).obterPropriedade(propriedade);
+            if (valor instanceof String) {
+                if (((String) valor).length() == 1) {
+                    tipo = TIPO_CARACTER;
+                } else {
+                    tipo = TIPO_CADEIA;
+                }
+            } else if (valor instanceof Integer) {
+                tipo = TIPO_INTEIRO;
+            } else if (valor instanceof Double) {
+                tipo = TIPO_REAL;
+            } else if (valor instanceof Boolean) {
+                tipo = TIPO_LOGICO;
+            } else if (valor instanceof HashMap) {
+                tipo = TIPO_OBJETO;
+            } else if (valor instanceof ArrayList) {
+                tipo = TIPO_VETOR;
+            }
+            return tipo;
+        } catch (InvalidAttributeValueException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
         }
-        
-        return tipo;
+
     }
 
-    private Object obter_propriedade_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca{
-        ArrayList array = 
-                (ArrayList) cacheObjetos.obterObjeto(endereco).obterPropriedade(propriedade);
-        return array.get(indice);
+    private Object obter_propriedade_em_vetor(int endereco, String propriedade, int indice) throws ErroExecucaoBiblioteca {
+        Object retorno = obterVetorEmPropriedadeModoSeguro(endereco, propriedade,
+                (array) -> {
+                    if (indice < 0 || indice > array.size() - 1) {
+                        return null;
+                    } else {
+                        return array.get(indice);
+                    }
+                });
+        if (retorno == null) {
+            throw new ErroExecucaoBiblioteca(
+                    "Você tentou acessar um índice de vetor inválido.\n"
+                            + "O índice deve ser menor que o número de elementos que o vetor possui.\n"
+                            + "Por exemplo, se foi declarado um vetor com 5 elementos (inteiro vetor[5]), o maior índice possível é 4.\n"
+                            + "Além disso, o índice de um vetor não pode ser negativo.");
+        }
+        return retorno;
     }
-    
+
+    private <T> T obterVetorEmPropriedadeModoSeguro(int endereco, String propriedade, Function<ArrayList, T> funcao) throws ErroExecucaoBiblioteca {
+        try {
+            Objeto objeto = cacheObjetos.obterObjeto(endereco);
+            Object propriedade_objeto = objeto.obterPropriedade((String) propriedade);
+            if (propriedade_objeto instanceof ArrayList) {
+                ArrayList array = (ArrayList) propriedade_objeto;
+                return funcao.apply(array);
+            } else {
+                throw new ErroExecucaoBiblioteca("A propriedade \"".concat(propriedade).concat("\" não é um vetor."));
+            }
+        } catch (InvalidAttributeValueException ex) {
+            throw new ErroExecucaoBiblioteca(ex.getMessage());
+        }
+    }
+
 }
