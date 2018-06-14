@@ -11,15 +11,15 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.utils.IconFactory;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import org.fife.rsta.ui.search.SearchEvent;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
@@ -71,6 +71,8 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
     
     private void configurarAcoes()
     {
+        
+        
         procurarTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,6 +120,18 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
                 avancarRadioButton.setSelected(!voltarRadioButton.isSelected());
             }
         });
+        
+        String fecharName = "fechar";
+        AbstractAction fechar = new AbstractAction(fecharName) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("aahhhhhhhh fechaa");
+                cancelarButton.doClick();
+            }
+        };
+        
+        getActionMap().put(fecharName, fechar);
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), fecharName);
     }
 
     private void realizarPesquisa(tipo tipo)

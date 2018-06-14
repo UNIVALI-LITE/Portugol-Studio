@@ -418,13 +418,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(()
                         -> {
-                    campoBusca.requestFocusInWindow();
+                    campoBusca.getCampoBusca().requestFocusInWindow();
                     campoBusca.getCampoBusca().selectAll();
                 });
             }
         };
 
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ctrl L"), filterName);
+        
+        
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK), filterName);
         getActionMap().put(filterName, filterByNameAction);
 
         barraBotoesInspetorArvore.adicionaSeparador();
