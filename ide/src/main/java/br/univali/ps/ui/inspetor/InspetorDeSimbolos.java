@@ -495,13 +495,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     {
         //System.out.println("Escopo atual: " + escopoAtual);
         
-        boolean executandoPasso = programaExecutando && (programa.getEstado() == Estado.STEP_OVER || programa.getEstado() == Estado.STEP_INTO);
-        
         for (int i = 0; i < model.getSize(); i++) {
             ItemDaLista item = model.get(i);
             NoDeclaracao no = item.getNoDeclaracao();
             boolean noEstaNoEscopoAtual = true;
-            if (executandoPasso) {
+            if (programaExecutando) {
                 noEstaNoEscopoAtual = noEstaNoEscopoAtual(escopoAtual, no);
             }
             item.setEscopoAtual(noEstaNoEscopoAtual);
@@ -514,6 +512,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
     {
         boolean noEhVariavelGlobal = !no.temPai();
         if (noEhVariavelGlobal)
+            return true;
+        
+        if (escopoAtual.isEmpty())
             return true;
 
         String escopoNoPai = no.getPai().getEscopo();

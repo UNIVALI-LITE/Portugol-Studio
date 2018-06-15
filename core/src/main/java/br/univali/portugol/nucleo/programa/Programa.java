@@ -529,6 +529,9 @@ public abstract class Programa
 		{
 			if (isExecutando())
 			{
+                                if (estado == Estado.BREAK_POINT)
+                                    notificaMudancaEscopo(""); // necessário para habilitar todas as variáveis do inspetor quando a execução é continuada depois de um break point
+                                
 				tarefaExecucao.continuar(estado);
 				if (this.isLendo())
 				{
@@ -596,40 +599,36 @@ public abstract class Programa
             
 		ultimaLinha = linha;
 		ultimaColuna = coluna;
-
-                if (!ultimoEscopo.equals(escopoAtual)) 
-                {
-                    notificaMudancaEscopo(escopoAtual);
-                }
-                
-                ultimoEscopo = escopoAtual;
                 
 		if (podeParar(linha))
 		{
-			disparaDestacar(linha);
-			synchronized (LOCK)
-			{
-				LOCK.wait();
-			}
-			// else if ( this.estado == Estado.STEP_INTO)
-			// {
-			// disparaDestacar(trechoCodigoFonte);
-			// }
-			// else
-			// {
-			// disparaDestacar((trechoCodigoFonte != null) ?
-			// trechoCodigoFonte.getLinha() : -1);
-			// }
+                    if (!ultimoEscopo.equals(escopoAtual)) 
+                    {
+                        notificaMudancaEscopo(escopoAtual);
+                    }
+                    
+                    disparaDestacar(linha);
+                    
+                    synchronized (LOCK)
+                    {
+                            LOCK.wait();
+                    }
+                    // else if ( this.estado == Estado.STEP_INTO)
+                    // {
+                    // disparaDestacar(trechoCodigoFonte);
+                    // }
+                    // else
+                    // {
+                    // disparaDestacar((trechoCodigoFonte != null) ?
+                    // trechoCodigoFonte.getLinha() : -1);
+                    // }
 		}
+                
+                ultimoEscopo = escopoAtual;
 	}
 
         protected void notificaMudancaEscopo(String novoEscopo)
         {
-            // não notifica mudança de escopo quando está executando no modo "normal"
-            if (estado != Estado.STEP_INTO && estado != Estado.STEP_OVER) {
-                return;
-            }
-            
             for (ObservadorExecucao observador : observadores) {
                 observador.escopoModificado(novoEscopo);
             }
