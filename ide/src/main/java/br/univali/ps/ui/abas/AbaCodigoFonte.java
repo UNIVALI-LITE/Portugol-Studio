@@ -1052,7 +1052,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 executar(estadoInicial); // estado inicial da execução: executa até o próximo Ponto de parada ou "passo a passo"
             } catch (ErroCompilacao erroCompilacao) {
                 exibirResultadoAnalise(erroCompilacao.getResultadoAnalise());
-
+                
                 setaAtivacaoBotoesExecucao(true); // pode executar                
             } catch (Exception ex) {
                 PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
@@ -2036,13 +2036,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 programaCompilado.setArquivoOrigem(editor.getPortugolDocumento().getFile());
                 definirDiretorioTrabalho(programaCompilado);
 
-                if (programaCompilado.getResultadoAnalise().contemAvisos()) {
-                    SwingUtilities.invokeLater(() -> {
-                        exibirResultadoAnalise(programaCompilado.getResultadoAnalise());
-                    });
-                }
 
                 ResultadoAnalise resultadoAnalise = programaCompilado.getResultadoAnalise();
+                if (resultadoAnalise.contemAvisos()) {
+                    SwingUtilities.invokeLater(() -> {
+                        exibirResultadoAnalise(resultadoAnalise);
+                    });
+                }
                 if (!resultadoAnalise.contemErros()) {
                     programaCompilado.adicionarObservadorExecucao(new ObservadorExecucao());
                     programaCompilado.adicionarObservadorExecucao(editor);
@@ -2640,6 +2640,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
                     console.escreverNoConsole("\nO programa foi interrompido!");
                 }
+                painelSaida.selecionaConsole();
                 ocultarPainelSaida();
                 acaoInterromper.setEnabled(false);
                 setaAtivacaoBotoesExecucao(true);
