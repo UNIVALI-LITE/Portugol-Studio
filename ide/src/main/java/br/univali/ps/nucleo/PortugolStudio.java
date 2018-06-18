@@ -965,7 +965,7 @@ public final class PortugolStudio
             telaPesquisarSubstituir.setPanel(findReplace);
         }
 
-        telaPesquisarSubstituir.setLocationRelativeTo(null);
+        telaPesquisarSubstituir.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaPesquisarSubstituir;
     }
@@ -980,7 +980,7 @@ public final class PortugolStudio
             telaPesquisarSubstituir.setPanel(findReplace);
         }
         
-        telaPesquisarSubstituir.setLocationRelativeTo(null);
+        telaPesquisarSubstituir.setLocationRelativeTo(Lancador.getJFrame());
         
         return (PSFindReplace) telaPesquisarSubstituir.getPanel();
     }
