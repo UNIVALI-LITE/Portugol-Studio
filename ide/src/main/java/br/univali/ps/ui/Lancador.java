@@ -26,7 +26,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import br.univali.ps.nucleo.Mutex;
-import br.univali.ps.ui.coletor.ColetorInteracao;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 
 /**
  * @author lite
@@ -34,7 +35,7 @@ import br.univali.ps.ui.coletor.ColetorInteracao;
 public class Lancador {
     
     private static JFrame frame;
-    private static Dimension olderSize;
+    private static Dimension olderSize =new Dimension(800, 600);
     private static Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
     private final static Lancador application = new Lancador();
@@ -153,9 +154,22 @@ public class Lancador {
         return maximazed;
     }
 
-    public static void setMaximazed(boolean maximazed) 
+    public static void maximize(boolean maximaze) 
     {
-        Lancador.maximazed = maximazed;
+        if(maximaze){
+            Dimension d = Lancador.getJFrame().getSize();
+            Lancador.setOlderSize(d);
+            Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+            Lancador.getJFrame().setBounds(bounds);
+            Lancador.setActualSize(bounds.getSize());
+        }else{
+            Dimension d = Lancador.getOlderSize();
+            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
+            Lancador.getJFrame().setSize(d);
+            Lancador.setActualSize(d);
+            Lancador.getJFrame().setLocationRelativeTo(null);
+        }
+        Lancador.maximazed = maximaze;
     }
     
     public static JFrame getJFrame()

@@ -1,7 +1,7 @@
 package br.univali.ps.ui.paineis.utils;
 
 import br.univali.ps.ui.abas.Aba;
-import br.univali.ps.ui.paineis.NewPainelTabulado;
+import br.univali.ps.ui.paineis.PSPainelTabulado;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Fillipi Domingos Pelz
  */
-public class PainelTabulado extends NewPainelTabulado{
+public class PainelTabulado extends PSPainelTabulado{
 
     private List<PainelTabuladoListener> painelTabuladoListeners;
 

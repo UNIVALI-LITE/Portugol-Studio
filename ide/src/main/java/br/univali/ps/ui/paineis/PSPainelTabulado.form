@@ -53,7 +53,7 @@
             </DimensionLayout>
           </Layout>
         </Container>
-        <Container class="javax.swing.JPanel" name="cabecalhosAba">
+        <Container class="javax.swing.JPanel" name="cabecalhosContainer">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -119,11 +119,11 @@
               </Parameters>
             </CodeStatement>
             <CodeStatement>
-              <CodeExpression id="6_cabecalhosAba">
-                <CodeVariable name="cabecalhosAba" type="8194" declaredType="javax.swing.JPanel"/>
+              <CodeExpression id="6_cabecalhosContainer">
+                <CodeVariable name="cabecalhosContainer" type="8194" declaredType="javax.swing.JPanel"/>
                 <ExpressionOrigin>
                   <ExpressionProvider type="ComponentRef">
-                    <ComponentRef name="cabecalhosAba"/>
+                    <ComponentRef name="cabecalhosContainer"/>
                   </ExpressionProvider>
                 </ExpressionOrigin>
               </CodeExpression>

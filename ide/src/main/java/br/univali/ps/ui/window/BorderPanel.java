@@ -83,19 +83,11 @@ public class BorderPanel extends JPanel {
                 @Override
                 public void run(MouseEvent me) {
                     if(Lancador.isMaximazed()){
-                        Dimension d = Lancador.getOlderSize();
-                        Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
-                        Lancador.getJFrame().setSize(d);
-                        Lancador.setActualSize(d);
-                        Lancador.getJFrame().setLocationRelativeTo(null);
-                        Lancador.setMaximazed(false);
+                        
+                        Lancador.maximize(false);
                     }else{
-                        Dimension d = Lancador.getJFrame().getSize();
-                        Lancador.setOlderSize(d);
-                        Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-                        Lancador.getJFrame().setBounds(bounds);
-                        Lancador.setActualSize(bounds.getSize());
-                        Lancador.setMaximazed(true);
+                        
+                        Lancador.maximize(true);
                     }
                 }
             });
