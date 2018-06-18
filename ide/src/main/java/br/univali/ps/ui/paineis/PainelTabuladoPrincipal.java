@@ -98,25 +98,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
             }
         });
     }
-    
-    private Rectangle configurarMaximizar(){
-        GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
-        Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
-        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
-        Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
-        if(!monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
-            if(monitorAtual.getDefaultConfiguration().getBounds().x < 0){
-                newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x;
-            }else{
-                newBounds.x = Lancador.getInstance().getMonitorPrincipal().getDefaultConfiguration().getBounds().width;
-            }
-        }else{
-            newBounds.x = screenInsets.left;
-        }
-        newBounds.y = screenInsets.top;
-        return newBounds;
-    }
-    
+        
     @Override
     public void configurarCores() {
         getEspacador().setBackground(ColorController.FUNDO_ESCURO);

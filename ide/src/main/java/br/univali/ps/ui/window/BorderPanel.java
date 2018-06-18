@@ -8,14 +8,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.utils.swing.MouseEventRunnable;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
-import java.awt.MouseInfo;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -87,10 +80,8 @@ public class BorderPanel extends JPanel {
                 @Override
                 public void run(MouseEvent me) {
                     if(Lancador.isMaximazed()){
-                        
                         Lancador.maximize(false);
                     }else{
-                        
                         Lancador.maximize(true);
                     }
                 }
@@ -107,23 +98,4 @@ public class BorderPanel extends JPanel {
             
             add(buttonsPanel, BorderLayout.EAST);            
         }
-        
-        private Rectangle configurarMaximizar(){
-            GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
-            Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
-            Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
-            Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
-            if(!monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
-                if(monitorAtual.getDefaultConfiguration().getBounds().x < 0){
-                    newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x;
-                }else{
-                    newBounds.x = Lancador.getInstance().getMonitorPrincipal().getDefaultConfiguration().getBounds().width;
-                }
-            }else{
-                newBounds.x = screenInsets.left;
-            }
-            newBounds.y = screenInsets.top;
-            return newBounds;
-        }
 }
-
