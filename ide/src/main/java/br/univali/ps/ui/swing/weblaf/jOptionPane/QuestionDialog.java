@@ -7,11 +7,16 @@ import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 
@@ -33,6 +38,40 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
         super((JFrame)null, true);
         initComponents();
         setup();
+        String fecharName = "fechar";
+        String aceitarName = "sim";
+        String negarName = "nao";
+        
+        AbstractAction fechar = new AbstractAction(fecharName) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                botaoCancelar.doClick();
+            }
+        };
+        
+        AbstractAction aceitar = new AbstractAction(aceitarName) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                botaoSim.doClick();
+            }
+        };
+        
+        AbstractAction negar = new AbstractAction(negarName) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                botaoNao.doClick();
+            }
+        };
+        
+        jPanel3.getActionMap().put(fecharName, fechar);
+        jPanel3.getActionMap().put(aceitarName, aceitar);
+        jPanel3.getActionMap().put(negarName, negar);
+        
+        jPanel3.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), fecharName);
+        jPanel3.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), fecharName);
+        jPanel3.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), aceitarName);
+        jPanel3.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_N, 0), negarName);
+            
     }
     public static QuestionDialog getInstance(){
         if(dialog==null){
@@ -158,7 +197,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     
     public int showConfirmMessage(String text) {
         textLabel.setText("<html><body>"+text+"</body></html>");
-        botaoSim.setText("Sim");
+        botaoSim.setText("<html><body><u>S</u>im</body></html>");
         buttonsPane.add(botaoSim);
         buttonsPane.add(botaoNao);
         buttonsPane.add(botaoCancelar);
@@ -203,16 +242,16 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
     titleLabel = new javax.swing.JLabel();
     webButton1 = new com.alee.laf.button.WebButton();
 
-    botaoCancelar.setText("Cancelar");
+    botaoCancelar.setText("<html><body><u>C</u>ancelar</body></html>");
     botaoCancelar.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         botaoCancelarActionPerformed(evt);
       }
     });
 
-    botaoNao.setText("Não");
+    botaoNao.setText("<html><body><u>N</u>ão</body></html>");
 
-    botaoSim.setText("Sim");
+    botaoSim.setText("<html><body><u>S</u>im</body></html>");
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setMaximumSize(new java.awt.Dimension(800, 600));

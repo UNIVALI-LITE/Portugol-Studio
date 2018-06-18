@@ -418,13 +418,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(()
                         -> {
-                    campoBusca.requestFocusInWindow();
+                    campoBusca.getCampoBusca().requestFocusInWindow();
                     campoBusca.getCampoBusca().selectAll();
                 });
             }
         };
-
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ctrl L"), filterName);
+        
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK), filterName);
         getActionMap().put(filterName, filterByNameAction);
 
         barraBotoesInspetorArvore.adicionaSeparador();
@@ -528,7 +528,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
     
     private Action criaAcaoTrocaTema() {
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK);
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK+InputEvent.ALT_MASK+InputEvent.SHIFT_MASK);
         String nome = "Trocar tema (reiniciar)";
         AbstractAction acaoTrocarTema = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png")) {
             @Override
@@ -818,7 +818,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void configurarAcaoSalvarComo() {
         final String nome = "Salvar como";
-        final KeyStroke atalho = KeyStroke.getKeyStroke("shift ctrl S");
+        final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK);
 
         acaoSalvarComo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save_as.png")) {
             @Override
@@ -938,7 +938,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void configurarAcaoSalvarArquivo() {
         final String nome = (String) "Salvar arquivo";
-        final KeyStroke atalho = KeyStroke.getKeyStroke("ctrl S");
+        final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK);
 
         acaoSalvarArquivo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "save.png")) {
             @Override
@@ -967,7 +967,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     private void configurarAcaoAbrirArquivo() {
         final String nome = (String) "Abrir arquivo";
-        final KeyStroke atalho = KeyStroke.getKeyStroke("ctrl O");
+        final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK);
 
         acaoAbrirArquivo = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "open.png")) {
             @Override
@@ -987,7 +987,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     private void configurarAcaoAbrirAjuda() {
         final String nome = (String) "Abrir ajuda";
-        final KeyStroke atalho = KeyStroke.getKeyStroke("ctrl A");
+        
 
         acaoAbrirAjuda = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "helplow.png")) {
             @Override
@@ -1006,7 +1006,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         miniBarra.getBotaoAjuda().setHideActionText(true);
         
         getActionMap().put(nome, acaoAbrirAjuda);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        
     }
 
     /**

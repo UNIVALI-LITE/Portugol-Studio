@@ -11,11 +11,8 @@ import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.window.BorderPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -129,7 +126,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         configurarAcaoFecharTodasAbas();
 
         configurarAcaoExibirAjuda();
-        configurarAcaoExibirDocumentacaoBiblioteca();
+
         configurarAcaoExibirTelaSobre();
     }
 
@@ -184,7 +181,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     }
     
     private void configurarAcaoFecharAbaAtual() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("control Q");
         String nome = "Fechar aba atual";
 
         acaoFecharAbaAtual = new AbstractAction(nome) {
@@ -199,7 +195,8 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         };
 
         this.getActionMap().put(nome, acaoFecharAbaAtual);
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), nome);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), nome);
     }
 
     @Override
@@ -215,7 +212,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
     
     
     private void configurarAcaoFecharTodasAbas() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("shift control Q");
         String nome = "Fechar todas as abas";
 
         acaoFecharTodasAbas = new AbstractAction(nome) {
@@ -230,25 +226,12 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         };
 
         this.getActionMap().put(nome, acaoFecharTodasAbas);
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-    }
-
-    private void configurarAcaoExibirDocumentacaoBiblioteca() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("shift F1");
-
-        acaoExibirDocumentacaoBiblioteca = new AbstractAction(ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                exibirAbaDocumentacao();
-            }
-        };
-
-        this.getActionMap().put(ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA, acaoExibirDocumentacaoBiblioteca);
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK), nome);
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK), nome);
     }
 
     private void configurarAcaoExibirAjuda() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("F1");
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F1,0);
 
         acaoExibirAjuda = new AbstractAction(ACAO_EXIBIR_AJUDA) {
             @Override
@@ -272,7 +255,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         return super.mudarParaAba(aba); //To change body of generated methods, choose Tools | Templates.
     }
     private void configurarAcaoExibirTelaSobre() {
-        KeyStroke atalho = KeyStroke.getKeyStroke("F12");
+        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F12,0);
         String nome = "Exibir tela sobre";
 
         acaoExibirTelaSobre = new AbstractAction(nome) {

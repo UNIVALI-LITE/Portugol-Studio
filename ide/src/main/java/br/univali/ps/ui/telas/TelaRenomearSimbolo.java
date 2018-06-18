@@ -34,8 +34,6 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -139,8 +137,10 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         };
 
         botaoAceitar.setAction(acaoAceitar);
+        botaoAceitar.setText("<html><body><u>A</u>ceitar</body></html>");
 
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Aceitar");
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "Aceitar");
         getActionMap().put("Aceitar", acaoAceitar);
 
         acaoCancelar = new AbstractAction("Cancelar", botaoCancelar.getIcon())
@@ -159,8 +159,10 @@ public class TelaRenomearSimbolo extends javax.swing.JPanel {
         };
 
         botaoCancelar.setAction(acaoCancelar);
+        botaoCancelar.setText("<html><body><u>C</u>ancelar</body></html>");
 
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancelar");
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "Cancelar");
         getActionMap().put("Cancelar", acaoCancelar);
     }
 
