@@ -2637,6 +2637,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
                     console.escreverNoConsole("\nOcorreu um erro durante a execução do programa: " + resultadoExecucao.getErro().getMensagem());
                     console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
+                    Timer timer = new Timer(100, new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            painelSaida.selecionaConsole();
+                        }
+                    });
+                    timer.setRepeats(false);
+                    timer.start();                    
                 } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
                     console.escreverNoConsole("\nO programa foi interrompido!");
                 }
