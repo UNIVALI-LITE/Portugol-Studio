@@ -103,8 +103,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
          * Futuramente vamos movê-la para o local correto ou encapsulá-la
          */
         final String nome = ACAO_NOVO_ARQUIVO;
-        final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK);
-
         acaoNovoArquivo = new AbstractAction(nome) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,7 +113,8 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         botaoNovoArquivo.setAction(acaoNovoArquivo);
 
         telaPrincipal.getPainelTabulado().getActionMap().put(nome, acaoNovoArquivo);
-        telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
+        telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), nome);
+        telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK), nome);
     }
 
     private void configurarAcaoAbrirArquivo(final TelaPrincipal telaPrincipal) {

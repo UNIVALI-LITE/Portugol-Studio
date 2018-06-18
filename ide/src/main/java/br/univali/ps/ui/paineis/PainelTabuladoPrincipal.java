@@ -126,7 +126,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         configurarAcaoFecharTodasAbas();
 
         configurarAcaoExibirAjuda();
-        configurarAcaoExibirDocumentacaoBiblioteca();
+
         configurarAcaoExibirTelaSobre();
     }
 
@@ -228,20 +228,6 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         this.getActionMap().put(nome, acaoFecharTodasAbas);
         this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK), nome);
         this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK), nome);
-    }
-
-    private void configurarAcaoExibirDocumentacaoBiblioteca() {
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.SHIFT_DOWN_MASK);
-
-        acaoExibirDocumentacaoBiblioteca = new AbstractAction(ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                exibirAbaDocumentacao();
-            }
-        };
-
-        this.getActionMap().put(ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA, acaoExibirDocumentacaoBiblioteca);
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, ACAO_EXIBIR_DOCUMENTACAO_BIBLIOTECA);
     }
 
     private void configurarAcaoExibirAjuda() {

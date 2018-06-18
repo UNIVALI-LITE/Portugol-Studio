@@ -64,6 +64,8 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
             {
                 substituirTextField.requestFocus();
                 substituirTextField.selectAll();                
+            }else{
+                procurarTextField.requestFocus();                
             }
         });
         dialogoPai.setVisible(true);
