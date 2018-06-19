@@ -26,8 +26,13 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import br.univali.ps.nucleo.Mutex;
+import static com.alee.utils.SystemUtils.getGraphicsConfiguration;
+import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 /**
  * @author lite
@@ -39,6 +44,8 @@ public class Lancador {
     private static Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
     private final static Lancador application = new Lancador();
+    
+    private final static GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     
     private final ComponentResizer resizer = new ComponentResizer();
     private static Mutex mutex;
@@ -159,15 +166,14 @@ public class Lancador {
         if(maximaze){
             Dimension d = Lancador.getJFrame().getSize();
             Lancador.setOlderSize(d);
-            Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-            Lancador.getJFrame().setBounds(bounds);
-            Lancador.setActualSize(bounds.getSize());
+            Rectangle newBounds = configurarMaximizar(); 
+            Lancador.getJFrame().setBounds(newBounds); 
+            Lancador.setActualSize(newBounds.getSize()); 
         }else{
             Dimension d = Lancador.getOlderSize();
             Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
             Lancador.getJFrame().setSize(d);
             Lancador.setActualSize(d);
-            Lancador.getJFrame().setLocationRelativeTo(null);
         }
         Lancador.maximazed = maximaze;
     }
@@ -273,5 +279,27 @@ public class Lancador {
     }
     public void finalizarServico() {
     	servico.shutdownNow();
+    }
+    
+    public GraphicsDevice getMonitorPrincipal() {
+        return monitorPrincipal;
+    }
+    
+    private static Rectangle configurarMaximizar(){
+        GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
+        Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+        Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
+        if(!monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
+            if(monitorAtual.getDefaultConfiguration().getBounds().x < 0){
+                newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x;
+            }else{
+                newBounds.x = Lancador.getInstance().getMonitorPrincipal().getDefaultConfiguration().getBounds().width;
+            }
+        }else{
+            newBounds.x = screenInsets.left;
+        }
+        newBounds.y = screenInsets.top;
+        return newBounds;
     }
 }

@@ -13,8 +13,6 @@ import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FileHandle;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -92,7 +90,6 @@ public class TelaPrincipal extends javax.swing.JPanel
                         }else{
                             Lancador.maximize(true);
                         }
-
                     }
                 });
                 
@@ -110,7 +107,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             }
         });
     }
-    
+        
     private void criaAbas()
     {
         painelTabuladoPrincipal.setAbaInicial(new AbaInicial(this));
@@ -257,7 +254,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             ta.setAcaoFechar(main.getAcaoSair());
             main.setMinimumSize(new Dimension(280, 450));
             main.setPanel(ta, false);
-            main.setLocationRelativeTo(null);
+            main.setLocationRelativeTo(Lancador.getJFrame());
             main.setVisible(true);
             main.pack();
         });

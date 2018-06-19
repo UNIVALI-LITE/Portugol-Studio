@@ -19,6 +19,7 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.swing.ColorController;

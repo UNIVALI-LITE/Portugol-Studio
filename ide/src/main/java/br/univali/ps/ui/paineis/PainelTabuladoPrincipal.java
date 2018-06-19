@@ -91,7 +91,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
             }
         });
     }
-    
+        
     @Override
     public void configurarCores() {
         getEspacador().setBackground(ColorController.FUNDO_ESCURO);
