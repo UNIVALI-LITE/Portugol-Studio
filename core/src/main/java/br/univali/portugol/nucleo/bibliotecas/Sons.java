@@ -62,16 +62,10 @@ public final class Sons extends Biblioteca
     {
         File caminho = resolveCaminho(caminho_som);
         Integer endereco = caminho.hashCode();
+                
         if (!reproducoes.containsKey(endereco))
-        {
-            try
-            {   
-                reproducoes.put(endereco, new Reproducao(caminho, endereco));
-            }
-            catch(Exception ex)
-            {
-                throw new ErroExecucaoBiblioteca(ex);
-            }
+        { 
+            reproducoes.put(endereco, new Reproducao(caminho, endereco));
         }
         return endereco;
     }
@@ -378,7 +372,7 @@ public final class Sons extends Biblioteca
         private long clipTime = 0;
         private FloatControl controleDeVolume = null;
     
-        public Reproducao(File som, Integer endereco) throws IOException, UnsupportedAudioFileException
+        public Reproducao(File som, Integer endereco) throws ErroExecucaoBiblioteca
         {
             this.endereco = endereco;
             try
@@ -395,8 +389,7 @@ public final class Sons extends Biblioteca
             }
             catch (Exception excecao)
             {
-                LOGGER.log(Level.WARNING, "Não foi possível criar ou abrir uma linha de execução de áudio para " + som.getAbsolutePath(), excecao);
-                clip = null;
+                throw new ErroExecucaoBiblioteca("Não foi possível criar ou abrir uma linha de execução de áudio para " + som.getAbsolutePath());
             }
         }
 
