@@ -126,4 +126,10 @@ public final class NoDeclaracaoFuncao extends NoDeclaracao
     {
         return visitante.visitar(this);
     }
+    
+    @Override
+    public String getEscopo()
+    {
+        return String.format("%s(%s)", getClass().getSimpleName(), getNome());
+    }
 }

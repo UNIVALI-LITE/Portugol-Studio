@@ -404,6 +404,12 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     {
         
     }
+
+    @Override
+    public void escopoModificado(String escopo)
+    {
+        
+    }
     
     @Override
     public void solicitaEntrada(TipoDado tipoDado, Armazenador armazenador)

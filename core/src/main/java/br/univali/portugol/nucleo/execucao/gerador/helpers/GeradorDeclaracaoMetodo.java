@@ -61,12 +61,14 @@ public class GeradorDeclaracaoMetodo
         {
             Utils.geraParadaPassoAPasso(noFuncao, saida, nivelEscopo);
         }
-
+        
         Utils.visitarBlocos(noFuncao.getBlocos(), saida, visitor, nivelEscopo, opcoes, seed); // gera o código dentro do método
 
         saida.println();
         saida.append(identacao).append("}").println(); // finaliza o escopo do método
         saida.println(); // linha em branco depois de cada método
+        
+        
     }
 
     private void geraCodigoInicializacaoParametrosInspecionados(List<NoDeclaracaoParametro> parametros,

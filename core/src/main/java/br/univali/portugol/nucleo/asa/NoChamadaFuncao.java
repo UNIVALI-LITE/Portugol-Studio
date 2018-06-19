@@ -148,4 +148,12 @@ public final class NoChamadaFuncao extends NoReferencia<NoDeclaracaoFuncao>
     {
         return tipoRetornoBiblioteca;
     }
+
+    @Override
+    public String getEscopo()
+    {
+        String escopo = super.getEscopo();
+        return String.format("%s(%s)", escopo, getNome());
+    }
+    
 }

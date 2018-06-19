@@ -1499,6 +1499,12 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     @Override
+    public void escopoModificado(String escopo)
+    {
+        //
+    }
+
+    @Override
     public void mensagemCompiladorSelecionada(Mensagem mensagem)
     {
         exibirMensagemCompilador(mensagem);

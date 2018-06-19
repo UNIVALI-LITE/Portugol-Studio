@@ -46,6 +46,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     private boolean declarandoSimbolosGlobais;
     private ASA asa;
     private Funcao funcaoAtual;
+    private NoBloco blocoAtual;
     private Stack<TipoDado> tipoDadoEscolha = new Stack<>();
 
     private boolean declarandoVetor;
@@ -146,8 +147,8 @@ public final class AnalisadorSemantico implements VisitanteASA
     
     private void setarPaiDoNo(No no)
     {
-        if (funcaoAtual != null) {
-            no.setPai(funcaoAtual.getOrigemDoSimbolo());
+        if (blocoAtual != null) {
+            no.setPai(blocoAtual);
         }
     }
 
@@ -856,6 +857,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         setarPaiDoNo(declaracaoFuncao);
         
+        NoBloco blocoAtualAnterior = blocoAtual;
+        blocoAtual = declaracaoFuncao;
+        
         if (declarandoSimbolosGlobais)
         {
             if (FUNCOES_RESERVADAS.contains(declaracaoFuncao.getNome())){
@@ -936,6 +940,8 @@ public final class AnalisadorSemantico implements VisitanteASA
                 }
             }
         }
+        
+        blocoAtual = blocoAtualAnterior;
 
         return null;
     }
@@ -1394,6 +1400,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         setarPaiDoNo(noEnquanto);
         
+        NoBloco blocoAtualAnterior = blocoAtual;
+        blocoAtual = noEnquanto;
+        
         TipoDado tipoDadoCondicao = (TipoDado) noEnquanto.getCondicao().aceitar(this);
 
         if (tipoDadoCondicao != TipoDado.LOGICO)
@@ -1403,6 +1412,8 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         analisarListaBlocos(noEnquanto.getBlocos());
 
+        blocoAtual = blocoAtualAnterior;
+        
         return null;
     }
 
@@ -1410,6 +1421,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA
     {
         setarPaiDoNo(noEscolha);
+        
+        NoBloco blocoAtualAnterior = blocoAtual;
+        blocoAtual = noEscolha;
         
         tipoDadoEscolha.push((TipoDado) noEscolha.getExpressao().aceitar(this));
 
@@ -1425,6 +1439,8 @@ public final class AnalisadorSemantico implements VisitanteASA
         
         tipoDadoEscolha.pop();
         
+        blocoAtual = blocoAtualAnterior;
+        
         return null;
     }
 
@@ -1432,6 +1448,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA
     {
         setarPaiDoNo(noFacaEnquanto);
+        
+        NoBloco blocoAtualAnterior = blocoAtual;
+        blocoAtual = noFacaEnquanto;
         
         analisarListaBlocos(noFacaEnquanto.getBlocos());
 
@@ -1442,6 +1461,8 @@ public final class AnalisadorSemantico implements VisitanteASA
             notificarErroSemantico(new ErroTiposIncompativeis(noFacaEnquanto, tipoDadoCondicao));
         }
 
+        blocoAtual = blocoAtualAnterior;
+        
         return null;
     }
 
@@ -1865,6 +1886,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         setarPaiDoNo(noPara);
         
+        NoBloco blocoAtualAnterior = blocoAtual;
+        blocoAtual = noPara;
+        
         memoria.empilharEscopo();
 
         try
@@ -1932,6 +1956,8 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         memoria.desempilharEscopo();
 
+        blocoAtual = blocoAtualAnterior;
+        
         return null;
     }
 
@@ -2107,6 +2133,9 @@ public final class AnalisadorSemantico implements VisitanteASA
     {
         setarPaiDoNo(noSe);
         
+        NoBloco blocoAtualAnterior = blocoAtual;
+        blocoAtual = noSe;
+        
         TipoDado tipoDadoCondicao = (TipoDado) noSe.getCondicao().aceitar(this);
 
         if (tipoDadoCondicao != TipoDado.LOGICO)
@@ -2117,6 +2146,8 @@ public final class AnalisadorSemantico implements VisitanteASA
         analisarListaBlocos(noSe.getBlocosVerdadeiros());
         analisarListaBlocos(noSe.getBlocosFalsos());
 
+        blocoAtual = blocoAtualAnterior;
+        
         return null;
     }
 

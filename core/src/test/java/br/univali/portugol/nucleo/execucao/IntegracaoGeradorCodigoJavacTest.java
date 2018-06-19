@@ -92,6 +92,7 @@ public class IntegracaoGeradorCodigoJavacTest
 		}
 		else
 		{
+                        System.out.println(exemplo);
 			List<String> ignore = new ArrayList<>();
 			ignore.add("varios.por");
 			ignore.add("logico.por");
@@ -123,7 +124,7 @@ public class IntegracaoGeradorCodigoJavacTest
 				PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(arquivoJava)));
 				try
 				{
-					GeradorCodigoJava.Opcoes opcoes = new GeradorCodigoJava.Opcoes(true, true, true);
+					GeradorCodigoJava.Opcoes opcoes = GeradorCodigoJava.Opcoes.paraCompilacao();
 					gerador.gera((ASAPrograma) aa.getASA(), writer, nomeClasse, opcoes);
 				}
 				finally

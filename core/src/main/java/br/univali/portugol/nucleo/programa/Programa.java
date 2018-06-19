@@ -31,7 +31,6 @@ import br.univali.portugol.nucleo.execucao.es.Entrada;
 import br.univali.portugol.nucleo.execucao.es.EntradaSaidaPadrao;
 import br.univali.portugol.nucleo.execucao.es.Saida;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
-import static java.lang.Math.random;
 import java.util.Random;
 
 /**
@@ -103,6 +102,8 @@ public abstract class Programa
 
 	public static final Object OBJETO_NULO = new Object(); // usando como valor
 
+        private String ultimoEscopo = "";
+        
 	static Map<Class<? extends RuntimeException>, TradutorRuntimeException<? extends RuntimeException>> getTradutoresRuntimeException() {
 		return tradutoresRuntimeException;
 	}
@@ -528,6 +529,9 @@ public abstract class Programa
 		{
 			if (isExecutando())
 			{
+                                if (estado == Estado.BREAK_POINT)
+                                    notificaMudancaEscopo(""); // necessário para habilitar todas as variáveis do inspetor quando a execução é continuada depois de um break point
+                                
 				tarefaExecucao.continuar(estado);
 				if (this.isLendo())
 				{
@@ -590,30 +594,46 @@ public abstract class Programa
 		return false;
 	}
 
-	protected void realizarParada(int linha, int coluna) throws ErroExecucao, InterruptedException
+	protected void realizarParada(int linha, int coluna, String escopoAtual) throws ErroExecucao, InterruptedException
 	{
+            
 		ultimaLinha = linha;
 		ultimaColuna = coluna;
-
+                
 		if (podeParar(linha))
 		{
-			disparaDestacar(linha);
-			synchronized (LOCK)
-			{
-				LOCK.wait();
-			}
-			// else if ( this.estado == Estado.STEP_INTO)
-			// {
-			// disparaDestacar(trechoCodigoFonte);
-			// }
-			// else
-			// {
-			// disparaDestacar((trechoCodigoFonte != null) ?
-			// trechoCodigoFonte.getLinha() : -1);
-			// }
+                    if (!ultimoEscopo.equals(escopoAtual)) 
+                    {
+                        notificaMudancaEscopo(escopoAtual);
+                    }
+                    
+                    disparaDestacar(linha);
+                    
+                    synchronized (LOCK)
+                    {
+                            LOCK.wait();
+                    }
+                    // else if ( this.estado == Estado.STEP_INTO)
+                    // {
+                    // disparaDestacar(trechoCodigoFonte);
+                    // }
+                    // else
+                    // {
+                    // disparaDestacar((trechoCodigoFonte != null) ?
+                    // trechoCodigoFonte.getLinha() : -1);
+                    // }
 		}
+                
+                ultimoEscopo = escopoAtual;
 	}
 
+        protected void notificaMudancaEscopo(String novoEscopo)
+        {
+            for (ObservadorExecucao observador : observadores) {
+                observador.escopoModificado(novoEscopo);
+            }
+        }
+        
 	private void disparaDestacar(int linha)
 	{
 		if (linha >= 0)

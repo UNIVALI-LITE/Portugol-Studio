@@ -42,7 +42,10 @@ class ItemDaListaParaVariavel extends ItemDaLista {
     }
 
     @Override
-    public void limpa() {
+    public void limpa() 
+    {
+        super.limpa();
+        
         valor = null;
     }
 

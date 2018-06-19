@@ -14,29 +14,30 @@ public class testeGeracaoPontosDeParada extends Programa
     @Override
     protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
     {
-        realizarParada(6, 20);
+        realizarParada(6, 20, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVariavel(a)");
         int a = 2;
         
-        realizarParada(7, 20);
+        realizarParada(7, 20, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVariavel(b)");
         int b = 4;
         
-        realizarParada(8, 16);
+        realizarParada(8, 16, "NoDeclaracaoFuncao(inicio).NoDeclaracaoMatriz(m)");
         int m[][] = new int[2][2];
         
-        realizarParada(9, 16);
+        realizarParada(9, 16, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVetor(v)");
         int v[] = new int[3];
         
-        realizarParada(10, 15);
+        realizarParada(10, 15, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVetor(c)");
         String c[] = new String[]{"a", "b"};
         
-        realizarParada(11, 15);
+        realizarParada(11, 15, "NoDeclaracaoFuncao(inicio).NoDeclaracaoMatriz(matriz)");
         String matriz[][] = new String[][]{{"a", "b"}};
         
-        realizarParada(13, 26);
+        realizarParada(13, 26, "NoDeclaracaoFuncao(inicio).NoPara");
         for(int x = 0; x < 10; x = x + 1)
         {
-            realizarParada(14, 12);
-            a = 10;
+             realizarParada(14, 12, "NoDeclaracaoFuncao(inicio).NoPara.NoOperacaoAtribuicao");
+             a = 10;
+
         }
     }
 

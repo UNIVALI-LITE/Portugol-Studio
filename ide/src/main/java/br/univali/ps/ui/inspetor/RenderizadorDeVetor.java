@@ -1,5 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
+import static br.univali.ps.ui.inspetor.RenderizadorBase.COR_TEXTO_DESTACADO;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -49,7 +51,8 @@ class RenderizadorDeVetor extends RenderizadorBase {
             int yDoIcone = 1 + metrics.getHeight() / 2 - icone.getIconHeight() / 2;
             int x = MARGEM;
             icone.paintIcon(this, g, x, yDoIcone);
-            g.setColor(itemDaLista.podeDesenharDestaque() ? COR_TEXTO_DESTACADO : COR_NOME);
+            Color cor = itemDaLista.estaNoEscopoAtual() ? (itemDaLista.podeDesenharDestaque() ? COR_TEXTO_DESTACADO : COR_NOME) : COR_FORA_ESCOPO;
+            g.setColor(cor);
 
             x += icone.getIconWidth() + MARGEM;
             int larguraNome = desenhaNome(g, x, 0);
@@ -57,7 +60,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
             //desenha dimensão
             x += larguraNome + MARGEM;
             g.setFont(fonteCabecalho);
-            g.setColor(COR_NOME);
+            g.setColor(itemDaLista.estaNoEscopoAtual() ? COR_NOME : COR_FORA_ESCOPO);
             String stringDimensao = ((ItemDaListaParaVetor)itemDaLista).getStringDimensao();
             g.drawString(stringDimensao, x, metrics.getAscent());
             
@@ -132,6 +135,9 @@ class RenderizadorDeVetor extends RenderizadorBase {
         int yDaLinha = g.getFontMetrics(fonteCabecalho).getHeight() + margemSuperior;
         xDaLinha = margemEsquerda;
         int indiceDaUltimaColunaDesenhada = 0;
+        
+        final Color corGrade = itemDaLista.estaNoEscopoAtual() ? COR_GRADE : COR_FORA_ESCOPO;
+        
         for (int c = colunaInicial; c < totalDeColunas; c++) {
             ItemDaListaParaVetor item = ((ItemDaListaParaVetor) itemDaLista);
             boolean podeDestacarEstaColuna = itemDaLista.podeDesenharDestaque() && item.getUltimaColunaAtualizada() == c;
@@ -158,7 +164,8 @@ class RenderizadorDeVetor extends RenderizadorBase {
             FontMetrics metrics = g.getFontMetrics();
             int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
             int yDoValor = yDaLinha + alturaDaLinha - metrics.getDescent();
-            g.setColor(podeDestacarEstaColuna ? COR_TEXTO_DESTACADO : COR_TEXTO);
+            Color cor = itemDaLista.estaNoEscopoAtual() ? (podeDestacarEstaColuna ? COR_TEXTO_DESTACADO : COR_TEXTO) : COR_FORA_ESCOPO;
+            g.setColor(cor);
             g.drawString(stringDoValor, xDoValor, yDoValor);
 
             //desenha a string do índice
@@ -168,7 +175,7 @@ class RenderizadorDeVetor extends RenderizadorBase {
                 g.setColor(COR_DO_CABECALHO_DESTACADO);
             } else {
                 g.setFont(fonteCabecalho);
-                g.setColor(COR_GRADE);
+                g.setColor(corGrade);
             }
             int larguraDoIndice = g.getFontMetrics().stringWidth(stringDoIndice);
             g.drawString(stringDoIndice, xDaLinha + larguraDaColuna / 2 - larguraDoIndice / 2, yDaLinha - 2);//desenha índice 
@@ -176,13 +183,13 @@ class RenderizadorDeVetor extends RenderizadorBase {
 
                 //linha vertical - não desenha a primeira linha vertical quando a primeira
             //coluna que será desenhada não é a primeira coluna do vetor
-            g.setColor(COR_GRADE);
+            g.setColor(corGrade);
             if (!ehPrimeiraColunaComRolagem) {
                 g.drawLine(xDaLinha, yDaLinha + 1, xDaLinha, yDaLinha + alturaDaLinha - 1);
             }
 
             //desenha a linha horizontal
-            g.setColor(COR_GRADE);
+            g.setColor(corGrade);
             Stroke tracejadoPadrao = ((Graphics2D) g).getStroke();
             if (ehPrimeiraColunaComRolagem || ehUltimaColunaComRolagem) {
                 ((Graphics2D) g).setStroke(TRACEJADO);

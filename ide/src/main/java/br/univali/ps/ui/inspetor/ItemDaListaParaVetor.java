@@ -77,7 +77,10 @@ class ItemDaListaParaVetor extends ItemDaLista {
     }
     
     @Override
-    public void limpa() {
+    public void limpa() 
+    {
+        super.limpa();
+        
         for (int c = 0; c < valores.length; c++) {
             valores[c] = null;
         }

@@ -47,7 +47,7 @@ public class GeradorCodigoTest
 	@Test
 	public void testSwitchComCasoContrario() throws Exception
 	{
-		comparaCodigos(true, true, true);
+		comparaCodigos(true, false, true);
 	}
 
 	@Test
@@ -95,8 +95,7 @@ public class GeradorCodigoTest
 	@Test
 	public void testeGeracaoPontosDeParada() throws Exception
 	{
-		comparaCodigos(false, true, false); // ativa a geração de código para
-											// pontos de parada
+		comparaCodigos(false, true, false); // ativa a geração de código para pontos de parada
 	}
 
 	@Test
@@ -271,7 +270,8 @@ public class GeradorCodigoTest
 		comparaCodigos(false, false, false);
 	}
 
-	private void comparaCodigos(boolean geraCodigoParaInterrupcaoDeThread, boolean geraCodigoParaPontosDeParada, boolean geraCodigoParaInspecaoDeSimbolos) throws Exception
+	private void comparaCodigos(boolean geraCodigoParaInterrupcaoDeThread, boolean geraCodigoParaPontosDeParada, 
+                boolean geraCodigoParaInspecaoDeSimbolos) throws Exception
 	{
 		String nomeCompleto = getClass().getCanonicalName();
 		int indicePonto = nomeCompleto.lastIndexOf(".");

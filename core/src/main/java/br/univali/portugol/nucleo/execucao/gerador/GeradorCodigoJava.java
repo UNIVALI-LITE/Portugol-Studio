@@ -30,6 +30,7 @@ public class GeradorCodigoJava
     private final GeradorAtributo geradorAtributo = new GeradorAtributo();
     private final GeradorDeclaracaoVariavel geradorDeclaracaoVariavel = new GeradorDeclaracaoVariavel();
     private final GeradorAtribuicao geradorAtribuicao = new GeradorAtribuicao();
+    private final GeradorLoops geradorLoops = new GeradorLoops();
     private final long seed;
     private boolean processandoVariaveisGlobais = false; // não inicializa as variáveis quando está processando as variáveis globais
     
@@ -50,9 +51,14 @@ public class GeradorCodigoJava
             this.gerandoCodigoParaInspecaoDeSimbolos = geraCodigoParaInspecaoDeSimbolos;
         }
 
-        public Opcoes()
+        public static Opcoes paraCompilacao()
         {
-            this(false, false, false);
+            return new Opcoes(true, true, true);
+        }
+        
+        public static Opcoes paraTeste()
+        {
+            return new Opcoes(false, false, false);
         }
     }
     
@@ -68,7 +74,7 @@ public class GeradorCodigoJava
     
     public void gera(ASAPrograma asa, PrintWriter saida, String nomeClasseJava) throws ExcecaoVisitaASA, IOException
     {
-        gera(asa, saida, nomeClasseJava, new Opcoes()); // não gera código para interrupção de thread, pontos de parada e inspeção de símbolos
+        gera(asa, saida, nomeClasseJava, GeradorCodigoJava.Opcoes.paraTeste()); // não gera código para interrupção de thread, pontos de parada e inspeção de símbolos
     }
 
     public void gera(ASAPrograma asa, PrintWriter saida, String nomeClasseJava, 
@@ -636,25 +642,8 @@ public class GeradorCodigoJava
         @Override
         public Void visitar(NoEnquanto no) throws ExcecaoVisitaASA
         {
-
-            saida.append("while(");
-
-            no.getCondicao().aceitar(this);
-
-            saida.append(")").println();
-
-            String identacao = Utils.geraIdentacao(nivelEscopo);
-
-            saida.append(identacao).append("{").println();
-
-            geraVerificacaoThreadInterrompida();
-
-            visitarBlocos(no.getBlocos());
-
-            saida.println();
-
-            saida.append(identacao).append("}").println();
-
+            geradorLoops.gera(no, saida, this, nivelEscopo, opcoes, seed);
+            
             return null;
         }
 
@@ -711,13 +700,13 @@ public class GeradorCodigoJava
             {
                 geraCodigoInspecao(no);
             }
-
+            
             visitarBlocos(no.getBlocos());
 
             saida.println();
 
             saida.append(identacao).append("}").println();
-
+            
             return null;
         }
 
@@ -755,7 +744,7 @@ public class GeradorCodigoJava
             String identacao = Utils.geraIdentacao(nivelEscopo);
 
             saida.append(identacao).append("{").println();
-
+            
             List<NoBloco> blocosVerdadeiros = no.getBlocosVerdadeiros();
             if (blocosVerdadeiros != null)
             {
@@ -774,7 +763,7 @@ public class GeradorCodigoJava
                 visitarBlocos(blocosFalsos);
 
                 saida.println();
-
+                
                 saida.append(identacao).append("}").println();
             }
 
@@ -804,28 +793,8 @@ public class GeradorCodigoJava
         @Override
         public Void visitar(NoFacaEnquanto no) throws ExcecaoVisitaASA
         {
-            String identacao = Utils.geraIdentacao(nivelEscopo);
-
-            saida.append("do").println();
-            saida.append(identacao).append("{").println();
-
-            geraVerificacaoThreadInterrompida();
-
-            List<NoBloco> blocos = no.getBlocos();
-            if (blocos != null)
-            {
-                visitarBlocos(blocos);
-                saida.println();
-            }
-
-            saida.append(identacao).append("}").println();
-
-            saida.append(identacao).append("while(");
-
-            no.getCondicao().aceitar(this);
-
-            saida.append(");").println();
-
+            geradorLoops.gera(no, saida, this, nivelEscopo, opcoes, seed);
+            
             return null;
         }
 
@@ -855,9 +824,10 @@ public class GeradorCodigoJava
         }
 
         @Override
-        public Void visitar(NoChamadaFuncao no) throws ExcecaoVisitaASA
+        public Void visitar(NoChamadaFuncao noChamada) throws ExcecaoVisitaASA
         {
-            geradorChamadaMetodo.gera(no, saida, this, asa, opcoes, nivelEscopo);
+            geradorChamadaMetodo.gera(noChamada, saida, this, asa, opcoes, nivelEscopo);
+            
             return null;
         }
 

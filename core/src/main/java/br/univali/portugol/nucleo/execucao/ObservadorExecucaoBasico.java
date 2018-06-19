@@ -38,4 +38,9 @@ public abstract class ObservadorExecucaoBasico implements ObservadorExecucao
     {
     }
 
+    @Override
+    public void escopoModificado(String escopo)
+    {
+    }
+
 }

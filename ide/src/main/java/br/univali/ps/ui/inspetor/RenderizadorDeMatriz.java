@@ -63,7 +63,8 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             int x = MARGEM;
             icone.paintIcon(this, g, x, yDoIcone);
 
-            g.setColor( itemDaLista.podeDesenharDestaque() ? COR_TEXTO_DESTACADO : COR_NOME);
+            Color corNome = itemDaLista.estaNoEscopoAtual() ? (itemDaLista.podeDesenharDestaque() ? COR_TEXTO_DESTACADO : COR_NOME) : COR_FORA_ESCOPO;
+            g.setColor(corNome);
             x += icone.getIconWidth() + MARGEM;
             int larguraNome = desenhaNome(g, x, 0);
             
@@ -71,7 +72,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             x += larguraNome + MARGEM;
             String stringDimensoes = ((ItemDaListaParaMatriz)itemDaLista).getStringDimensoes();
             g.setFont(fonteCabecalho);
-            g.setColor(COR_NOME);
+            g.setColor(itemDaLista.estaNoEscopoAtual() ? COR_NOME : COR_FORA_ESCOPO);
             g.drawString(stringDimensoes, x, metrics.getAscent());
             
             int totalDeColunas = ((ItemDaListaParaMatriz) itemDaLista).getColunas();
@@ -218,12 +219,13 @@ class RenderizadorDeMatriz extends RenderizadorBase {
         FontMetrics metrics = g.getFontMetrics();
         int xDoValor = xDaLinha + larguraDaColuna / 2 - metrics.stringWidth(stringDoValor) / 2;
         int yDoValor = alturaDoCabecalho + (alturaDaLinha * (linha - linhaInicial + 1)) + metrics.getAscent() - metrics.getDescent() + MARGEM;
-        g.setColor(podeDestacarEstaCelula ? COR_TEXTO_DESTACADO : COR_TEXTO);
+        Color cor = itemDaLista.estaNoEscopoAtual() ? (podeDestacarEstaCelula ? COR_TEXTO_DESTACADO : COR_TEXTO) : COR_FORA_ESCOPO;
+        g.setColor(cor);
         g.drawString(stringDoValor, xDoValor, yDoValor);
     }
 
     private void desenhaLinhaVerticalDaCelula(Graphics g, int xDaLinha, int yDaLinha, int alturaDaLinha, boolean ehLinhaDeCimaComRolagem, boolean ehLinhaDeBaixoComRolagem, boolean ehPrimeiraColunaComRolagem) {
-        g.setColor(COR_GRADE);
+        g.setColor(itemDaLista.estaNoEscopoAtual() ? COR_GRADE : COR_FORA_ESCOPO);
         Stroke tracejadoPadrao = ((Graphics2D) g).getStroke();
 
         if (ehLinhaDeBaixoComRolagem || ehLinhaDeCimaComRolagem) {//esta é a última linha? (verifica se a próxima linha já estará fora da tela)
@@ -266,7 +268,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             g.setColor(COR_DO_CABECALHO_DESTACADO);
         } else {
             g.setFont(fonteCabecalho);
-            g.setColor(COR_GRADE);
+            g.setColor(itemDaLista.estaNoEscopoAtual() ? COR_GRADE : COR_FORA_ESCOPO);
         }
         int larguraDoIndiceDeColuna = g.getFontMetrics().stringWidth(stringIndiceDaColuna);
         //índice da coluna
@@ -285,7 +287,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
             g.setColor(COR_DO_CABECALHO_DESTACADO);
         } else {
             g.setFont(fonteCabecalho);
-            g.setColor(COR_GRADE);
+            g.setColor(itemDaLista.estaNoEscopoAtual() ? COR_GRADE : COR_FORA_ESCOPO);
         }
         FontMetrics metrics = g.getFontMetrics();
         int largura = metrics.stringWidth(stringIndiceDaLinha);
@@ -295,7 +297,7 @@ class RenderizadorDeMatriz extends RenderizadorBase {
     }
 
     private void desenhaBordaDireita(Graphics g, int linhaInicial, int totalDeLinhas, int xDaLinha, int alturaDaLinha, int margemSuperior, int indiceDaUltimaColunaDesenhada, int indiceDaUltimaLinhaDesenhada, int totalDeColunas ){
-        g.setColor(COR_GRADE);
+        g.setColor(itemDaLista.estaNoEscopoAtual() ? COR_GRADE : COR_FORA_ESCOPO);
         if (indiceDaUltimaColunaDesenhada == totalDeColunas - 1) {
             int offsetSuperior = (linhaInicial > 0) ? alturaDaLinha : 0;
             int offsetInferior = (indiceDaUltimaLinhaDesenhada < totalDeLinhas - 1) ? alturaDaLinha : 0;
