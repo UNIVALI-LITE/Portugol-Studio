@@ -1,24 +1,21 @@
 package br.univali.ps.ui.utils;
 
-import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.utils.notify.Notify;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.notification.NotificationManager;
-import com.alee.managers.notification.WebNotification;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
+import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 /**
  *
@@ -116,23 +113,25 @@ public final class FabricaDicasInterface
     public static void mostrarNotificacao(final String texto,final int displayTime,final Icon icon)
     {
         SwingUtilities.invokeLater(() -> {
-            if(Lancador.getJFrame().isActive())
-            {
-                WebNotification notificacao = new WebNotification();
-                notificacao.setDisplayTime(displayTime);
-                notificacao.setIcon(icon);
-                notificacao.setContent(texto);
-                NotificationManager.showNotification(notificacao);
-            }else{
-                Timer timer = new Timer(5000, new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        mostrarNotificacao(texto, displayTime, icon);
-                    }
-                });
-                timer.setRepeats(false);
-                timer.start();
-            }
+//            if(Lancador.getJFrame().isActive())
+//            {
+//                WebNotification notificacao = new WebNotification();
+//                notificacao.setDisplayTime(displayTime);
+//                notificacao.setIcon(icon);
+//                notificacao.setContent(texto);
+//                NotificationManager.showNotification(notificacao);
+//            }else{
+//                Timer timer = new Timer(5000, new AbstractAction() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        mostrarNotificacao(texto, displayTime, icon);
+//                    }
+//                });
+//                timer.setRepeats(false);
+//                timer.start();
+//            }
+            Image i = ((ImageIcon)icon).getImage();
+            Notify.create().text(texto).title("Titulo").image(i).hideAfter(2).show();
         });
     }
     
