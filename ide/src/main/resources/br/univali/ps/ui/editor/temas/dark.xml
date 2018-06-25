@@ -7,67 +7,67 @@
 <RSyntaxTheme version="1.0">
 
    <!-- Specify family="..." attribute to override system default monospaced. -->
-   <baseFont size="12"/>
+   <baseFont size="12"/>  <!-- Tamanho fonte barra lateral -->
    
    <!--  General editor colors. -->
-   <background color="263238"/>
-   <caret color="c1cbc2"/>
-   <selection bg="404E51" roundedEdges="false"/>
-   <currentLineHighlight color="2F393C" fade="false"/>
-   <marginLine fg="394448"/>
-   <markAllHighlight color="6b8189"/> <!-- TODO: Fix me -->
-   <markOccurrencesHighlight color="6b8189" border="false"/>
-   <matchedBracket fg="6A8088" bg="6b8189" highlightBoth="false" animate="true"/>
-   <hyperlinks fg="A082BD"/>
+   <background color="263238"/> <!-- fundo -->
+   <caret color="c1cbc2"/> <!-- cursor -->
+   <selection bg="404E51" roundedEdges="false"/> <!-- fundo da seleção -->
+   <currentLineHighlight color="2F393C" fade="false"/> <!-- fundo de seleção de linha atual-->
+   <marginLine fg="394448"/> <!-- não sei -->
+   <markAllHighlight color="6b8189"/> <!-- TODO: Fix me --> <!-- não sei -->
+   <markOccurrencesHighlight color="6b8189" border="false"/> <!-- não sei -->
+   <matchedBracket fg="6A8088" bg="6b8189" highlightBoth="false" animate="true"/> <!-- selecao do fechamento(()[]{}) correspondente -->
+   <hyperlinks fg="A082BD"/> <!-- não sei -->
    <secondaryLanguages>
-      <language index="1" bg="334455"/>
-      <language index="2" bg="00F0C0"/>
-      <language index="3" bg="ffe0f0"/>
+      <language index="1" bg="334455"/> <!-- não sei -->
+      <language index="2" bg="00F0C0"/> <!-- não sei -->
+      <language index="3" bg="ffe0f0"/> <!-- não sei -->
    </secondaryLanguages>
    
    <!-- Gutter styling. -->
-   <gutterBorder color="1E2324"/>
-   <lineNumbers fg="516268"/>
-   <foldIndicator fg="516268" iconBg="263238"/>
-   <iconRowHeader activeLineRange="3399ff"/>
+   <gutterBorder color="1E2324"/> <!-- borda da barra esquerda (debug, etc..) -->
+   <lineNumbers fg="516268"/> <!-- numero das linhas -->
+   <foldIndicator fg="516268" iconBg="263238"/> <!-- dobrador de código -->
+   <iconRowHeader activeLineRange="3399ff"/> <!-- não sei -->
    
    <!-- Syntax tokens. -->
    <tokenStyles>
-      <style token="IDENTIFIER" fg="FBFBFB"/>
-      <style token="RESERVED_WORD" fg="F1433C" bold="true"/>
-      <style token="RESERVED_WORD_2" fg="F1433C" bold="true"/>
-      <style token="ANNOTATION" fg="E8E2B7"/>
-      <style token="COMMENT_DOCUMENTATION" fg="6C788C"/>
-      <style token="COMMENT_EOL" fg="66747B"/>
-      <style token="COMMENT_MULTILINE" fg="66747B"/>
-      <style token="COMMENT_KEYWORD" fg="ae9fbf"/>
-      <style token="COMMENT_MARKUP" fg="ae9fbf"/>
-      <style token="FUNCTION" fg="FBFBFB"/>
-      <style token="DATA_TYPE" fg="45BEFF" bold="true"/><!-- 00F0C0-->
-      <style token="LITERAL_BOOLEAN" fg="F1433C" bold="true"/>
-      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="00F0C0"/>
-      <style token="LITERAL_NUMBER_FLOAT" fg="00F0C0"/>
-      <style token="LITERAL_NUMBER_HEXADECIMAL" fg="00F0C0"/>
-      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="FFC200"/>
-      <style token="LITERAL_CHAR" fg="FFC200"/>
-      <style token="LITERAL_BACKQUOTE" fg="F19494"/>
-      <style token="MARKUP_TAG_DELIMITER" fg="00F0C0"/>
-      <style token="MARKUP_TAG_NAME" fg="ABBFD3"/>
-      <style token="MARKUP_TAG_ATTRIBUTE" fg="B3B689"/>
-      <style token="MARKUP_TAG_ATTRIBUTE_VALUE" fg="e1e2cf"/>
-      <style token="MARKUP_PROCESSING_INSTRUCTION" fg="A082BD"/>
-      <style token="MARKUP_CDATA" fg="ae9fbf"/>
-      <style token="OPERATOR" fg="E8E2B7"/>
-      <style token="PREPROCESSOR" fg="A082BD"/>
-      <style token="REGEX" fg="d39745"/>
-      <style token="SEPARATOR" fg="E8E2B7"/>
-      <style token="VARIABLE" fg="ae9fbf" bold="true"/>
-      <style token="WHITESPACE" fg="FBFBFB"/>
+      <style token="IDENTIFIER" fg="FBFBFB"/> <!-- IDENTIFICADOR(nome de variável e função) -->
+      <style token="RESERVED_WORD" fg="F1433C" bold="true"/> <!-- palavras reservadas-->
+      <style token="RESERVED_WORD_2" fg="1a71af" bold="true"/> <!-- não sei -->
+      <style token="ANNOTATION" fg="E8E2B7"/> <!-- não sei -->
+      <style token="COMMENT_DOCUMENTATION" fg="6C788C"/> <!-- não sei -->
+      <style token="COMMENT_EOL" fg="66747B"/> <!-- comentário linha -->
+      <style token="COMMENT_MULTILINE" fg="66747B"/> <!-- comentário multilinha -->
+      <style token="COMMENT_KEYWORD" fg="ae9fbf"/> <!-- não sei -->
+      <style token="COMMENT_MARKUP" fg="ae9fbf"/> <!-- não sei -->
+      <style token="FUNCTION" fg="FBFBFB"/> <!-- chamada de função -->
+      <style token="DATA_TYPE" fg="45BEFF" bold="true"/><!-- tipos -->
+      <style token="LITERAL_BOOLEAN" fg="F1433C" bold="true"/> <!-- verdadeiro/falso -->
+      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="00F0C0"/> <!-- valor inteiro -->
+      <style token="LITERAL_NUMBER_FLOAT" fg="00F0C0"/> <!-- valor real -->
+      <style token="LITERAL_NUMBER_HEXADECIMAL" fg="00F0C0"/>  <!-- valor Hexadecimal -->
+      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="FFC200"/> <!-- valor Cadeia -->
+      <style token="LITERAL_CHAR" fg="FFC200"/> <!-- valor caracter -->
+      <style token="LITERAL_BACKQUOTE" fg="ff6b1c"/> <!-- não sei -->
+      <style token="MARKUP_TAG_DELIMITER" fg="7700ff"/> <!-- não sei -->
+      <style token="MARKUP_TAG_NAME" fg="7700ff"/> <!-- não sei -->
+      <style token="MARKUP_TAG_ATTRIBUTE" fg="7700ff"/> <!-- não sei -->
+      <style token="MARKUP_TAG_ATTRIBUTE_VALUE" fg="7700ff"/> <!-- não sei -->
+      <style token="MARKUP_PROCESSING_INSTRUCTION" fg="7700ff"/> <!-- não sei -->
+      <style token="MARKUP_CDATA" fg="7700ff"/> <!-- não sei -->
+      <style token="OPERATOR" fg="E8E2B7"/> <!-- operadores -->
+      <style token="PREPROCESSOR" fg="7700ff"/> <!-- não sei -->
+      <style token="REGEX" fg="7700ff"/> <!-- não sei -->
+      <style token="SEPARATOR" fg="E8E2B7"/> <!-- ()[]{} -->
+      <style token="VARIABLE" fg="7700ff" bold="true"/> <!-- não sei -->
+      <style token="WHITESPACE" fg="7700ff"/> <!-- não sei -->
       
-      <style token="ERROR_IDENTIFIER" fg="FBFBFB" bg="04790e"/>
-      <style token="ERROR_NUMBER_FORMAT" fg="FBFBFB" bg="04790e"/>
-      <style token="ERROR_STRING_DOUBLE" fg="FBFBFB" bg="04790e"/>
-      <style token="ERROR_CHAR" fg="FBFBFB" bg="04790e"/>
+      <style token="ERROR_IDENTIFIER" fg="FBFBFB" bg="04790e"/>  <!-- Erro nome -->
+      <style token="ERROR_NUMBER_FORMAT" fg="FBFBFB" bg="04790e"/>  <!-- Erro formato numero -->
+      <style token="ERROR_STRING_DOUBLE" fg="FBFBFB" bg="04790e"/>  <!-- Erro cadeia -->
+      <style token="ERROR_CHAR" fg="FBFBFB" bg="04790e"/>  <!-- Erro caracter -->
    </tokenStyles>
 
 </RSyntaxTheme>

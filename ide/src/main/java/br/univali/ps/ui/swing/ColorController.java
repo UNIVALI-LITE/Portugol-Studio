@@ -54,6 +54,12 @@ public final class ColorController {
     private static Color[] getTheme()
     {
         JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
+        
+        if(json == null)
+        {
+            return getASHTheme();
+        }
+        
         JSONObject json_temas = json.getJSONObject("temas");
         
         String tema_selecionado = json.getString("tema_selecionado");        
