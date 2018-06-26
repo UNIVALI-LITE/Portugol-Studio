@@ -19,7 +19,6 @@ import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
 import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.swing.ColorController;
@@ -30,14 +29,12 @@ import br.univali.ps.ui.rstautil.SuportePortugolImpl;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
-import br.univali.ps.ui.telas.TelaCustomBorder;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.Point;
@@ -66,7 +63,6 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -84,14 +80,18 @@ import javax.swing.text.Element;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
 import org.fife.ui.rsyntaxtextarea.parser.DefaultParseResult;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
+import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.json.JSONObject;
 
 /**
  *
@@ -1324,46 +1324,66 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     }
 
     public void aplicarTema(String nome)
-    {
-        try
+    {            
+        JSONObject temaEditor = ColorController.TEMA_EDITOR;            
+        textArea.setBackground(                 new Color(Integer.parseInt(temaEditor.getString("background_editor"), 16)));
+        textArea.setCaretColor(                 new Color(Integer.parseInt(temaEditor.getString("cursor"), 16)));
+        textArea.setSelectedTextColor(          new Color(Integer.parseInt(temaEditor.getString("selection_bg"), 16)));
+        textArea.setCurrentLineHighlightColor(  new Color(Integer.parseInt(temaEditor.getString("selecao_linha_atual"), 16)));
+        textArea.setMatchedBracketBGColor(      new Color(Integer.parseInt(temaEditor.getString("selecao_chave_correspondente_bg"), 16)));
+        textArea.setMatchedBracketBorderColor(  new Color(Integer.parseInt(temaEditor.getString("selecao_chave_correspondente_fg"), 16)));
+
+        Gutter gutter = RSyntaxUtilities.getGutter(textArea);
+        gutter.setBackground(               new Color(Integer.parseInt(temaEditor.getString("background_editor"), 16)));
+        gutter.setBorderColor(              new Color(Integer.parseInt(temaEditor.getString("borda_barra_lateral"), 16)));
+        gutter.setLineNumberColor(          new Color(Integer.parseInt(temaEditor.getString("numeros_das_linhas"), 16)));
+        gutter.setFoldIndicatorForeground(  new Color(Integer.parseInt(temaEditor.getString("dobrador_de_codigo"), 16)));
+        gutter.setFoldBackground(           new Color(Integer.parseInt(temaEditor.getString("background_editor"), 16)));
+
+        SyntaxScheme scheme = textArea.getSyntaxScheme();
+        scheme.getStyle(Token.IDENTIFIER)                   .foreground = new Color(Integer.parseInt(temaEditor.getString("identificador"), 16));
+        scheme.getStyle(Token.RESERVED_WORD)                .foreground = new Color(Integer.parseInt(temaEditor.getString("palavras_reservadas"), 16));
+        scheme.getStyle(Token.COMMENT_EOL)                  .foreground = new Color(Integer.parseInt(temaEditor.getString("comentario_linha"), 16));
+        scheme.getStyle(Token.COMMENT_MULTILINE)            .foreground = new Color(Integer.parseInt(temaEditor.getString("comentario_multilinha"), 16));
+        scheme.getStyle(Token.FUNCTION)                     .foreground = new Color(Integer.parseInt(temaEditor.getString("chamada_funcao"), 16));
+        scheme.getStyle(Token.DATA_TYPE)                    .foreground = new Color(Integer.parseInt(temaEditor.getString("tipos"), 16));
+        scheme.getStyle(Token.LITERAL_BOOLEAN)              .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_logico"), 16));
+        scheme.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT)   .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_inteiro"), 16));
+        scheme.getStyle(Token.LITERAL_NUMBER_FLOAT)         .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_real"), 16));
+        scheme.getStyle(Token.LITERAL_NUMBER_HEXADECIMAL)   .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_hexa"), 16));
+        scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE)  .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_cadeia"), 16));
+        scheme.getStyle(Token.LITERAL_CHAR)                 .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_caracter"), 16));
+        scheme.getStyle(Token.SEPARATOR)                    .foreground = new Color(Integer.parseInt(temaEditor.getString("separador"), 16));
+        scheme.getStyle(Token.ERROR_CHAR)                   .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_CHAR)                   .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
+        scheme.getStyle(Token.ERROR_IDENTIFIER)             .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_IDENTIFIER)             .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
+        scheme.getStyle(Token.ERROR_NUMBER_FORMAT)          .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_NUMBER_FORMAT)          .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
+        scheme.getStyle(Token.ERROR_STRING_DOUBLE)          .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_STRING_DOUBLE)          .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
+
+
+
+        for (Component componente : menuTemas.getComponents())
         {
-            GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-            Theme tema = gerenciadorTemas.carregarTema(nome);
+            JMenuItem item = (JMenuItem) componente;
 
-            Font fonte = textArea.getFont();
-            ((PSTextArea) textArea).setarTema(tema);
-
-            textArea.setFont(fonte);
-            Configuracoes.getInstancia().setTemaEditor(nome);
-
-            for (Component componente : menuTemas.getComponents())
+            if (item.getText().equals(nome))
             {
-                JMenuItem item = (JMenuItem) componente;
-
-                if (item.getText().equals(nome))
-                {
-                    item.setSelected(true);
-                }
-                else
-                {
-                    item.setSelected(false);
-                }
+                item.setSelected(true);
             }
-
-            corErro = obterCorErro();
-
-            if (tagErro != null)
+            else
             {
-                destacarErroExecucao(ultimaLinhaErro + 1, ultimaColunaErro + 1);
+                item.setSelected(false);
             }
         }
-        catch (ExcecaoAplicacao excecao)
+
+        corErro = obterCorErro();
+
+        if (tagErro != null)
         {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-        }
-        catch (NullPointerException exception)
-        {
-            System.out.println("Bug muito loco do net feijões");
+            destacarErroExecucao(ultimaLinhaErro + 1, ultimaColunaErro + 1);
         }
     }
 

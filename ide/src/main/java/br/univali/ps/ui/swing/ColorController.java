@@ -11,53 +11,14 @@ import org.json.JSONObject;
  * @author LITE
  */
 public final class ColorController {
-    private static Color[] getDefaultTheme(){
-        return new Color[]{
-                new Color(51,51,51),    //cinza escuro
-                new Color(210,231,252), //branco azulado
-                new Color(250,250,250), //branco
-                new Color(49,104,146),  //azul
-//                new Color(243,243,243), //branco
-                new Color(193,217,245), //azul_medio
-                new Color(228,241,254), //branco azulado
-                new Color(255,194,0),   //amarelo
-                new Color(255,194,0),   //amarelo
-                new Color(69,189,255),  //azul claro
-                new Color(240,67,59),   //vermelho
-                new Color(0,239,192),   //ciano
-                new Color(255,255,255), //branco
-                new Color(255,255,255), //branco
-                new Color(230,230,230), //cinza
-                new Color(0,0,0,0)      //transparente
-            };
-    }
-    private static Color[] getASHTheme(){
-        return new Color[]{
-                new Color(205,205,205), //cinza claro
-                new Color(58,70,76),    //cinza azulado
-                new Color(38,50,56),    //cinza azulado mais escuro
-                new Color(18,30,36),    //cinza azulado muito mais escuro
-                new Color(38,50,56),    //cinza azulado mais escuro
-                new Color(68,80,86),    //cinza azulado mais claro
-                new Color(241,67,60),   //vermelho
-                new Color(255,194,0),   //amarelo
-                new Color(69,189,255),  //azul claro
-                new Color(240,67,59),   //vermelho
-                new Color(0,239,192),   //ciano
-                new Color(18,30,36),    //cinza azulado muito mais escuro
-                new Color(205,205,205), //cinza claro
-                new Color(58,70,76),    //cinza azulado
-                new Color(0,0,0,0)      //Transparente
-            };
-    }
-    
-    private static Color[] getTheme()
-    {
+       
+    private static JSONObject getThemeEditor()
+    {        
         JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
         
         if(json == null)
         {
-            return getASHTheme();
+            json = getDefaultTheme();
         }
         
         JSONObject json_temas = json.getJSONObject("temas");
@@ -68,6 +29,27 @@ public final class ColorController {
         Configuracoes.getInstancia().setIconesCores(cores_tema.getString("icones"));
         IconFactory.verificarTema();
         
+        return cores_tema.getJSONObject("Editor");
+    }
+    
+    private static Color[] getTheme()
+    {
+        
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
+        
+        if(json == null)
+        {
+            json = getDefaultTheme();
+        }
+        
+        JSONObject json_temas = json.getJSONObject("temas");
+        
+        String tema_selecionado = json.getString("tema_selecionado");        
+        JSONObject cores_tema = json_temas.getJSONObject(tema_selecionado);
+        
+        Configuracoes.getInstancia().setIconesCores(cores_tema.getString("icones"));
+        IconFactory.verificarTema();
+                
         return new Color[]{
                 new Color(Integer.parseInt(cores_tema.getString("cor_letra"), 16)),
                 new Color(Integer.parseInt(cores_tema.getString("cor_destaque"), 16)),
@@ -87,6 +69,105 @@ public final class ColorController {
             };     
     }
     
+    private static JSONObject getDefaultTheme()
+    {
+        String defaultThemeFile = 
+        "{\n" +
+"	\"tema_selecionado\" : \"Dark\",	\n" +
+"	\"temas\" : \n" +
+"	{\n" +
+"		\"Dark\" : \n" +
+"		{\n" +
+"			\"cor_letra\" : \"cdcdcd\",\n" +
+"			\"cor_destaque\" : \"3a464c\",\n" +
+"			\"cor_principal\" : \"263238\",\n" +
+"			\"fundo_escuro\" : \"121e24\",\n" +
+"			\"fundo_medio\" : \"263238\",\n" +
+"			\"fundo_claro\" : \"445056\",\n" +
+"			\"progress_bar\" : \"f1433c\",\n" +
+"			\"fundo_botoes_expansiveis\" : \"121e24\",\n" +
+"			\"cor_letra_titulo\" : \"cdcdcd\",\n" +
+"			\"cor_console\" : \"3a464c\",\n" +
+"			\"icones\" : \"Claros\",\n" +
+"			\n" +
+"			\"Editor\" : \n" +
+"			{\n" +
+"				\"background_editor\" : \"263238\",\n" +
+"				\"cursor\" : \"c1cbc2\",\n" +
+"				\"selection_bg\" : \"404E51\",\n" +
+"				\"selecao_linha_atual\" : \"2F393C\",\n" +
+"				\"selecao_chave_correspondente_fg\" : \"6A8088\",\n" +
+"				\"selecao_chave_correspondente_bg\" : \"6b8189\",\n" +
+"				\"borda_barra_lateral\" : \"1E2324\",\n" +
+"				\"numeros_das_linhas\" : \"516268\",\n" +
+"				\"dobrador_de_codigo\" : \"516268\",\n" +
+"				\"identificador\" : \"FBFBFB\",\n" +
+"				\"palavras_reservadas\" : \"F1433C\",\n" +
+"				\"comentario_linha\" : \"66747B\",\n" +
+"				\"comentario_multilinha\" : \"66747B\",\n" +
+"				\"chamada_funcao\" : \"FBFBFB\",\n" +
+"				\"tipos\" : \"45BEFF\",\n" +
+"				\"valor_logico\" : \"F1433C\",\n" +
+"				\"valor_inteiro\" : \"00F0C0\",\n" +
+"				\"valor_real\" : \"00F0C0\",\n" +
+"				\"valor_hexa\" : \"00F0C0\",\n" +
+"				\"valor_cadeia\" : \"FFC200\",\n" +
+"				\"valor_caracter\" : \"FFC200\",\n" +
+"				\"operador\" : \"E8E2B7\",\n" +
+"				\"separador\" : \"E8E2B7\",\n" +
+"				\"erro_fg\" : \"FBFBFB\",\n" +
+"				\"erro_bg\" : \"04790e\"\n" +
+"			}\n" +
+"		},		\n" +
+"		\"Portugol\" : \n" +
+"		{\n" +
+"			\"cor_letra\" : \"333333\",\n" +
+"			\"cor_destaque\" : \"d2e7fc\",\n" +
+"			\"cor_principal\" : \"fafafa\",\n" +
+"			\"fundo_escuro\" : \"316892\",\n" +
+"			\"fundo_medio\" : \"c1d9f5\",\n" +
+"			\"fundo_claro\" : \"e4f1fe\",\n" +
+"			\"progress_bar\" : \"ffc200\",\n" +
+"			\"fundo_botoes_expansiveis\" : \"ffffff\",\n" +
+"			\"cor_letra_titulo\" : \"ffffff\",\n" +
+"			\"cor_console\" : \"e6e6e6\",\n" +
+"			\"icones\" : \"Escuros\",\n" +
+"			\n" +
+"			\"Editor\" : \n" +
+"			{\n" +
+"				\"background_editor\" : \"fafafa\",\n" +
+"				\"cursor\" : \"ff0000\",\n" +
+"				\"selection_bg\" : \"404E51\",\n" +
+"				\"selecao_linha_atual\" : \"2F393C\",\n" +
+"				\"selecao_chave_correspondente_fg\" : \"000080\",\n" +
+"				\"selecao_chave_correspondente_bg\" : \"eaeaff\",\n" +
+"				\"borda_barra_lateral\" : \"dddddd\",\n" +
+"				\"numeros_das_linhas\" : \"787878\",\n" +
+"				\"dobrador_de_codigo\" : \"808080\",\n" +
+"				\"identificador\" : \"000000\",\n" +
+"				\"palavras_reservadas\" : \"0000ff\",\n" +
+"				\"comentario_linha\" : \"808080\",\n" +
+"				\"comentario_multilinha\" : \"808080\",\n" +
+"				\"chamada_funcao\" : \"ad8000\",\n" +
+"				\"tipos\" : \"008080\",\n" +
+"				\"valor_logico\" : \"0000ff\",\n" +
+"				\"valor_inteiro\" : \"6400C8\",\n" +
+"				\"valor_real\" : \"6400C8\",\n" +
+"				\"valor_hexa\" : \"6400C8\",\n" +
+"				\"valor_cadeia\" : \"DC009C\",\n" +
+"				\"valor_caracter\" : \"DC009C\",\n" +
+"				\"operador\" : \"804040\",\n" +
+"				\"separador\" : \"ff0000\",\n" +
+"				\"erro_fg\" : \"000000\",\n" +
+"				\"erro_bg\" : \"ffcccc\"\n" +
+"			}\n" +
+"		}\n" +
+"	}	\n" +
+"}";
+        
+        return new JSONObject(defaultThemeFile);
+    }
+    
     private static final Color[] THEME= getTheme();
     public static final Color COR_LETRA = THEME[0];
     public static final Color COR_DESTAQUE = THEME[1];
@@ -103,4 +184,5 @@ public final class ColorController {
     public static final Color COR_LETRA_TITULO = THEME[12];
     public static final Color COR_CONSOLE = THEME[13];
     public static final Color TRANSPARENTE = THEME[14];
+    public static final JSONObject TEMA_EDITOR = getThemeEditor();
 }

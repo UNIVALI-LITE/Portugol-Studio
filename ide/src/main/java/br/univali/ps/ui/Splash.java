@@ -45,7 +45,7 @@ public final class Splash
         {
             try
             {
-                splash.setImageURL(ClassLoader.getSystemResource("splash_"+Configuracoes.getInstancia().getTemaPortugol()+".png"));
+                splash.setImageURL(ClassLoader.getSystemResource("splash_Dark.png"));
             }
             catch (IOException | IllegalStateException | NullPointerException ex)
             {
