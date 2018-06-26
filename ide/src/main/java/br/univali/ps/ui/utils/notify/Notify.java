@@ -55,12 +55,6 @@ import dorkbox.util.SwingUtil;
 public final
 class Notify {
 
-    public static final String DIALOG_CONFIRM = "dialog-confirm.png";
-
-    public static final String DIALOG_INFORMATION = "dialog-information.png";
-    public static final String DIALOG_WARNING = "dialog-warning.png";
-    public static final String DIALOG_ERROR = "dialog-error.png";
-
     /**
      * This is the title font used by a notification.
      */
@@ -282,45 +276,6 @@ class Notify {
         return this;
     }
 
-    /**
-     * Shows the notification with the built-in 'warning' image.
-     */
-    public
-    void showWarning() {
-        name = DIALOG_WARNING;
-        icon = getImage(name);
-        show();
-    }
-
-    /**
-     * Shows the notification with the built-in 'information' image.
-     */
-    public
-    void showInformation() {
-        name = DIALOG_INFORMATION;
-        icon = getImage(name);
-        show();
-    }
-
-    /**
-     * Shows the notification with the built-in 'error' image.
-     */
-    public
-    void showError() {
-        name = DIALOG_ERROR;
-        icon = getImage(name);
-        show();
-    }
-
-    /**
-     * Shows the notification with the built-in 'confirm' image.
-     */
-    public
-    void showConfirm() {
-        name = DIALOG_CONFIRM;
-        icon = getImage(name);
-        show();
-    }
 
     /**
      * Shows the notification. If the Notification is assigned to a screen, but shown inside a Swing/etc parent, the screen number will be

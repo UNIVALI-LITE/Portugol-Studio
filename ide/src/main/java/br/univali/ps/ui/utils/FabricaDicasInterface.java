@@ -131,7 +131,7 @@ public final class FabricaDicasInterface
 //                timer.start();
 //            }
             Image i = ((ImageIcon)icon).getImage();
-            Notify.create().text(texto).title("Titulo").image(i).hideAfter(2000).show();
+            Notify.create().text(texto).image(i).hideAfter(5000).show();
         });
     }
     

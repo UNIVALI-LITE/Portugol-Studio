@@ -179,9 +179,12 @@ class NotifyCanvas extends Canvas {
             g2.fillRect(0, 0, WIDTH, HEIGHT);
 
             // Draw the title text
-            g2.setColor(theme.titleText_FG);
-            g2.setFont(theme.titleTextFont);
-            g2.drawString(title, 5, 20);
+            if(title!=null){
+                g2.setColor(theme.titleText_FG);
+                g2.setFont(theme.titleTextFont);
+                g2.drawString(title, 5, 20);
+            }
+            
 
 
             int posX = 10;
@@ -193,7 +196,7 @@ class NotifyCanvas extends Canvas {
                 textLengthLimit = 88;
                 posX = 60;
                 // Draw the image
-                imageIcon.paintIcon(null, g2, 5, 30);
+                imageIcon.paintIcon(null, g2, 12, 25);
             }
 
             // Draw the main text
@@ -225,7 +228,7 @@ class NotifyCanvas extends Canvas {
             mainTextLabel.setText(text.toString());
             mainTextLabel.setBounds(0, 0, WIDTH - posX - 2, HEIGHT);
 
-            g2.translate(posX, posY);
+            g2.translate(posX, posY-10);
             mainTextLabel.paint(g2);
             g2.translate(-posX, -posY);
         } finally {
