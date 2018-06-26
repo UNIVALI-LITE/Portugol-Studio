@@ -15,6 +15,8 @@
  */
 package br.univali.ps.ui.utils.notify;
 
+
+import br.univali.ps.ui.utils.notify.activerender.SwingActiveRender;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -32,7 +34,6 @@ import dorkbox.tweenEngine.TweenEquations;
 import dorkbox.util.ActionHandler;
 import dorkbox.util.ActionHandlerLong;
 import dorkbox.util.ScreenUtil;
-import dorkbox.util.swing.SwingActiveRender;
 
 @SuppressWarnings({"FieldCanBeLocal"})
 class LookAndFeel {
@@ -504,7 +505,7 @@ class LookAndFeel {
     void updatePositionsPre(final boolean visible) {
         if (!visible) {
             boolean popupsAreEmpty = LookAndFeel.removePopupFromMap(this);
-            //SwingActiveRender.removeActiveRender(notifyCanvas);
+            SwingActiveRender.removeActiveRender(notifyCanvas);
 
             if (popupsAreEmpty) {
                 // if there's nothing left, stop the timer.
@@ -518,7 +519,7 @@ class LookAndFeel {
      */
     void updatePositionsPost(final boolean visible) {
         if (visible) {
-            //SwingActiveRender.addActiveRender(notifyCanvas);
+            SwingActiveRender.addActiveRender(notifyCanvas);
 
             // start if we have previously stopped the timer
             if (!SwingActiveRender.containsActiveRenderFrameStart(frameStartHandler)) {
