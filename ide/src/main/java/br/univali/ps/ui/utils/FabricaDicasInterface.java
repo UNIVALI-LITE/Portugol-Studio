@@ -3,6 +3,7 @@ package br.univali.ps.ui.utils;
 import br.univali.ps.ui.utils.notify.Notify;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.window.WebPopOver;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -10,12 +11,17 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -131,7 +137,14 @@ public final class FabricaDicasInterface
 //                timer.start();
 //            }
             Image i = ((ImageIcon)icon).getImage();
+            LookAndFeel look = UIManager.getLookAndFeel();
             Notify.create().text(texto).image(i).hideAfter(5000).show();
+            try {
+                UIManager.setLookAndFeel(look);
+            } catch (UnsupportedLookAndFeelException ex) {
+                Logger.getLogger(FabricaDicasInterface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         });
     }
     
