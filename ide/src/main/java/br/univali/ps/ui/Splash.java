@@ -134,7 +134,7 @@ public final class Splash
 
     private static void desenharCodigoFonte(final String step)
     {
-        String caminho = String.format("br/univali/ps/ui/imagens/splash/"+Configuracoes.getInstancia().getTemaPortugol()+"/%s", step);
+        String caminho = String.format("br/univali/ps/ui/imagens/splash/Dark/%s", step);
         Image imagem = carregarImagem(caminho);
 
         graphics.drawImage(imagem, 354, 91, null);

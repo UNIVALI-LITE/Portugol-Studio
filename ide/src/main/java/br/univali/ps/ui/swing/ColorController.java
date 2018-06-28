@@ -23,7 +23,8 @@ public final class ColorController {
         
         JSONObject json_temas = json.getJSONObject("temas");
         
-        String tema_selecionado = json.getString("tema_selecionado"); 
+        String tema_selecionado = json.getString("tema_selecionado");
+        
         return json_temas.getJSONObject(tema_selecionado);
     }
        
@@ -61,19 +62,13 @@ public final class ColorController {
     
     public static String[] listarTemas()
     {
-        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
-        
-        if(json == null)
-        {
-            json = getTemaPadrao();
-        }
-        
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
         JSONObject json_temas = json.getJSONObject("temas");
         
         return JSONObject.getNames(json_temas);
     }
     
-    private static JSONObject getTemaPadrao()
+    public static JSONObject getTemaPadrao()
     {
         String defaultThemeFile = 
         "{\n" +
@@ -141,8 +136,8 @@ public final class ColorController {
 "			{\n" +
 "				\"background_editor\" : \"fafafa\",\n" +
 "				\"cursor\" : \"ff0000\",\n" +
-"				\"selection_bg\" : \"404E51\",\n" +
-"				\"selecao_linha_atual\" : \"2F393C\",\n" +
+"				\"selection_bg\" : \"c0ced1\",\n" +
+"				\"selecao_linha_atual\" : \"ddf1ff\",\n" +
 "				\"selecao_chave_correspondente_fg\" : \"000080\",\n" +
 "				\"selecao_chave_correspondente_bg\" : \"eaeaff\",\n" +
 "				\"borda_barra_lateral\" : \"dddddd\",\n" +

@@ -1,5 +1,6 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.utils.FileHandle;
@@ -92,6 +93,8 @@ public final class Configuracoes
     {
         carregar();
         this.arquivo_temas = carregar_temas();
+        setTemaPortugol(arquivo_temas.getString("tema_selecionado"));
+        
     }
 
     public static Configuracoes getInstancia()
@@ -149,26 +152,22 @@ public final class Configuracoes
         try 
         {            
             String jsonText = FileHandle.read(new FileInputStream(f));
-            JSONObject json = new JSONObject(jsonText);
-            
-            String tema_selecionado = json.getString("tema_selecionado");
-            setTemaPortugol(tema_selecionado);
-            
+            JSONObject json = new JSONObject(jsonText);            
             return json;
             
         } 
         catch (Exception ex) 
         {
-            Logger.getLogger(Configuracoes.class.getName()).log(Level.SEVERE, null, ex);
+            return ColorController.getTemaPadrao();
         }
-        
-        return null;
     }
     
-    public void salvarTema()
+    public void salvarTema(String tema)
     {        
         File arquivosTemasFile = getCaminhoArquivoTemas();
-
+        
+        arquivo_temas.put("tema_selecionado", tema);
+        
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosTemasFile)))
         {
             escritor.write(arquivo_temas.toString());
@@ -219,7 +218,7 @@ public final class Configuracoes
     {
         String oldTheme = this.temaPortugol;
         this.temaPortugol = theme;
-        salvarTema();
+        salvarTema(theme);
         
         suporteMudancaPropriedade.firePropertyChange(TEMA_PORTUGOL, oldTheme, theme);
     }
@@ -369,8 +368,7 @@ public final class Configuracoes
     public void TrocarTema(String Tema) 
     {
         if(confirmouReinicializacao())
-        {
-            
+        {            
             setTemaPortugol(Tema);
             restartApplication();
         }
@@ -422,15 +420,7 @@ public final class Configuracoes
             }
             else
             {
-                QuestionDialog.getInstance().showMessage("Você deve fechar todas as abas de código antes de reiniciar");                   
-                if(temaPortugol.equals("Dark"))
-                {
-                    setTemaPortugol("Portugol");
-                }
-                else
-                {
-                    setTemaPortugol("Dark");
-                }
+                QuestionDialog.getInstance().showMessage("Você deve fechar todas as abas de código antes de reiniciar");
             }
         
     }
