@@ -255,15 +255,14 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
     private void criarMenuTemas()
     {
-        GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-        menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
+        menuTemas = criaMenuDosTemas(this);
     }
     
-    public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor)
+    public JMenu criaMenuDosTemas(final Editor editor)
     {
         JMenu menu = new JMenu("Cores");
         
-        for (String tema : gerenciadorTemas.listarTemas())
+        for (String tema : ColorController.listarTemas())
         {
             JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
 
@@ -274,8 +273,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 {
                     AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
                     String tema = itemSelecionado.getText();
-                    editor.aplicarTema(tema);
-                    FabricaDicasInterface.mostrarNotificacao("Usando tema " + tema, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
+                    Configuracoes.getInstancia().TrocarTema(tema);
                 }
             });
 
@@ -832,7 +830,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void carregarConfiguracoes()
     {
         Configuracoes configuracoes = Configuracoes.getInstancia();
-        aplicarTema(configuracoes.getTemaEditor());
+        aplicarTema();
         setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
         setCentralizarCodigoFonte(configuracoes.isCentralizarCodigoFonte());
     }
@@ -1323,7 +1321,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
     }
 
-    public void aplicarTema(String nome)
+    public void aplicarTema()
     {            
         JSONObject temaEditor = ColorController.TEMA_EDITOR;            
         textArea.setBackground(                 new Color(Integer.parseInt(temaEditor.getString("background_editor"), 16)));
@@ -1369,7 +1367,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             JMenuItem item = (JMenuItem) componente;
 
-            if (item.getText().equals(nome))
+            if (item.getText().equals(Configuracoes.getInstancia().getTemaPortugol()))
             {
                 item.setSelected(true);
             }

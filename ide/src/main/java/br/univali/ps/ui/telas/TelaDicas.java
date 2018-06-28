@@ -272,7 +272,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable {
 
     private void webButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton3ActionPerformed
         Configuracoes configuracoes = Configuracoes.getInstancia();
-        configuracoes.TrocarTema();
+        //configuracoes.TrocarTema();
     }//GEN-LAST:event_webButton3ActionPerformed
 
 

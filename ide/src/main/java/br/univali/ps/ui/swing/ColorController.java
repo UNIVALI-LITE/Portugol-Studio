@@ -11,65 +11,69 @@ import org.json.JSONObject;
  * @author LITE
  */
 public final class ColorController {
-       
-    private static JSONObject getThemeEditor()
-    {        
+    
+    private static JSONObject getTemaSelecionado()
+    {
         JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
         
         if(json == null)
         {
-            json = getDefaultTheme();
+            json = getTemaPadrao();
         }
         
         JSONObject json_temas = json.getJSONObject("temas");
         
-        String tema_selecionado = json.getString("tema_selecionado");        
-        JSONObject cores_tema = json_temas.getJSONObject(tema_selecionado);
-        
-        Configuracoes.getInstancia().setIconesCores(cores_tema.getString("icones"));
+        String tema_selecionado = json.getString("tema_selecionado"); 
+        return json_temas.getJSONObject(tema_selecionado);
+    }
+       
+    private static JSONObject getTemaEditor()
+    {    
+        Configuracoes.getInstancia().setIconesCores(TEMA_SELECIONADO.getString("icones"));
         IconFactory.verificarTema();
         
-        return cores_tema.getJSONObject("Editor");
+        return TEMA_SELECIONADO.getJSONObject("Editor");
     }
     
-    private static Color[] getTheme()
-    {
-        
-        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
-        
-        if(json == null)
-        {
-            json = getDefaultTheme();
-        }
-        
-        JSONObject json_temas = json.getJSONObject("temas");
-        
-        String tema_selecionado = json.getString("tema_selecionado");        
-        JSONObject cores_tema = json_temas.getJSONObject(tema_selecionado);
-        
-        Configuracoes.getInstancia().setIconesCores(cores_tema.getString("icones"));
+    private static Color[] getTema()
+    {        
+        Configuracoes.getInstancia().setIconesCores(TEMA_SELECIONADO.getString("icones"));
         IconFactory.verificarTema();
                 
         return new Color[]{
-                new Color(Integer.parseInt(cores_tema.getString("cor_letra"), 16)),
-                new Color(Integer.parseInt(cores_tema.getString("cor_destaque"), 16)),
-                new Color(Integer.parseInt(cores_tema.getString("cor_principal"), 16)),
-                new Color(Integer.parseInt(cores_tema.getString("fundo_escuro"), 16)),
-                new Color(Integer.parseInt(cores_tema.getString("fundo_medio"), 16)),
-                new Color(Integer.parseInt(cores_tema.getString("fundo_claro"), 16)),
-                new Color(Integer.parseInt(cores_tema.getString("progress_bar"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_letra"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_destaque"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_principal"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_escuro"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_medio"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_claro"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("progress_bar"), 16)),
                 new Color(255,194,0),   //amarelo
                 new Color(69,189,255),  //azul claro
                 new Color(240,67,59),   //vermelho
                 new Color(0,239,192),   //ciano
-                new Color(Integer.parseInt(cores_tema.getString("fundo_botoes_expansiveis"), 16)),    //cinza azulado muito mais escuro
-                new Color(Integer.parseInt(cores_tema.getString("cor_letra_titulo"), 16)), //cinza claro
-                new Color(Integer.parseInt(cores_tema.getString("cor_console"), 16)),    //cinza azulado
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_botoes_expansiveis"), 16)),    //cinza azulado muito mais escuro
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_letra_titulo"), 16)), //cinza claro
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_console"), 16)),    //cinza azulado
                 new Color(0,0,0,0)      //Transparente
             };     
     }
     
-    private static JSONObject getDefaultTheme()
+    public static String[] listarTemas()
+    {
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
+        
+        if(json == null)
+        {
+            json = getTemaPadrao();
+        }
+        
+        JSONObject json_temas = json.getJSONObject("temas");
+        
+        return JSONObject.getNames(json_temas);
+    }
+    
+    private static JSONObject getTemaPadrao()
     {
         String defaultThemeFile = 
         "{\n" +
@@ -168,7 +172,10 @@ public final class ColorController {
         return new JSONObject(defaultThemeFile);
     }
     
-    private static final Color[] THEME= getTheme();
+    private static final JSONObject TEMA_SELECIONADO = getTemaSelecionado();
+    public static final JSONObject TEMA_EDITOR = getTemaEditor();    
+    
+    private static final Color[] THEME= getTema();
     public static final Color COR_LETRA = THEME[0];
     public static final Color COR_DESTAQUE = THEME[1];
     public static final Color COR_PRINCIPAL = THEME[2];
@@ -183,6 +190,5 @@ public final class ColorController {
     public static final Color FUNDO_BOTOES_EXPANSIVEIS = THEME[11];
     public static final Color COR_LETRA_TITULO = THEME[12];
     public static final Color COR_CONSOLE = THEME[13];
-    public static final Color TRANSPARENTE = THEME[14];
-    public static final JSONObject TEMA_EDITOR = getThemeEditor();
+    public static final Color TRANSPARENTE = THEME[14];    
 }

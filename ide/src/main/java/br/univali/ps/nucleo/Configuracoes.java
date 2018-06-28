@@ -5,6 +5,7 @@ import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.utils.FileHandle;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -163,6 +164,20 @@ public final class Configuracoes
         
         return null;
     }
+    
+    public void salvarTema()
+    {        
+        File arquivosTemasFile = getCaminhoArquivoTemas();
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosTemasFile)))
+        {
+            escritor.write(arquivo_temas.toString());
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, "Erro ao criar ou editar tema", excecao);
+        }
+    }
 
     public boolean isExibirDicasInterface()
     {
@@ -200,30 +215,12 @@ public final class Configuracoes
         this.userAnalyticsID = userAnalyticsID;
     }
     
-    
-    
-    public void setTemaEditor(String theme)
-    {
-        String oldTheme = this.temaEditor;
-
-        this.configuracoes.setProperty(TEMA_EDITOR, theme);
-        this.temaEditor = theme;
-
-        suporteMudancaPropriedade.firePropertyChange(TEMA_EDITOR, oldTheme, theme);
-    }
-
-    public String getTemaEditor()
-    {
-        return this.temaEditor;
-    }
-    
     public void setTemaPortugol(String theme)
     {
         String oldTheme = this.temaPortugol;
-        setTemaEditor(theme);
-        this.configuracoes.setProperty(TEMA_PORTUGOL, theme);
         this.temaPortugol = theme;
-
+        salvarTema();
+        
         suporteMudancaPropriedade.firePropertyChange(TEMA_PORTUGOL, oldTheme, theme);
     }
 
@@ -369,18 +366,12 @@ public final class Configuracoes
         return centralizarCodigoFonte;
     }
 
-    public void TrocarTema() 
+    public void TrocarTema(String Tema) 
     {
         if(confirmouReinicializacao())
         {
-            if(temaPortugol.equals("Dark"))
-            {
-                setTemaPortugol("Portugol");
-            }
-            else
-            {
-                setTemaPortugol("Dark");
-            }
+            
+            setTemaPortugol(Tema);
             restartApplication();
         }
     }

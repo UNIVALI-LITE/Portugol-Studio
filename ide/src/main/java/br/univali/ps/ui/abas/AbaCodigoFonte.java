@@ -527,24 +527,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acaoPainelUtilitarios;
     }
     
-    private Action criaAcaoTrocaTema() {
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK+InputEvent.ALT_MASK+InputEvent.SHIFT_MASK);
-        String nome = "Trocar tema (reiniciar)";
-        AbstractAction acaoTrocarTema = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Configuracoes configuracoes = Configuracoes.getInstancia();
-                configuracoes.TrocarTema();
-            }
-        };
-
-        acaoTrocarTema.putValue(Action.ACCELERATOR_KEY, atalho);
-
-        getActionMap().put(nome, acaoTrocarTema);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        return acaoTrocarTema;
-    }
-
     public Action criaAcaoCentralizarCodigoFonte() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE, InputEvent.SHIFT_DOWN_MASK);
         String nome = "Centralizar código fonte";
@@ -666,11 +648,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         barraBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
 //        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
-        barraBotoesEditor.adicionaAcao(criaAcaoTrocaTema());
         barraBotoesEditor.adicionaSeparador();
         barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());        
-        
-//        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
+        barraBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
 
         adicionaBotaoConfiguracaoEditor(0);
     }
