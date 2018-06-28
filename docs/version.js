@@ -7,5 +7,5 @@ var versionInfo = {
         "others": "https://github.com/UNIVALI-LITE/Portugol-Studio/releases/tag/v2.6.9"
     },
     "versionString": "2.6.9",
-    "releaseDate": 1526070714449
+    "releaseDate": 1530214283191
 }
