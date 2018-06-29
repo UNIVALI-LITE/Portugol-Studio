@@ -61,6 +61,12 @@ dependencies {
 
     testCompile group: 'org.assertj', name: 'assertj-swing-junit', version: '3.8.0'
 
+    // https://mvnrepository.com/artifact/com.dorkbox/TweenEngine
+    compile group: 'com.dorkbox', name: 'TweenEngine', version: '8.3'
+    
+    // https://mvnrepository.com/artifact/com.dorkbox/Notify-Dorkbox-Util
+    compile group: 'com.dorkbox', name: 'Notify-Dorkbox-Util', version: '2.18'
+
 
     
     // Nenhuma das versões abaixo compila, então usamos a versão local

@@ -1,4 +1,4 @@
-﻿Para instalar o Portugol Studio no Linux, primeiramente abra um terminal do 
+Para instalar o Portugol Studio no Linux, primeiramente abra um terminal do 
 Linux. Geralmente o terminal pode ser aberto de uma das seguintes formas:
 
     - Pressionando a combinação de teclas Ctrl+T
@@ -26,25 +26,24 @@ digitado provavelmente será:
 $ cd /home/pedro/Downloads.
 
 	
-Logo após, digite os comandos abaixo em sequência (sem o $), substituindo o
-nome do arquivo pelo correspondente à versão do Portugol Studio que você
-baixou:
+Logo após, digite os comandos abaixo em sequência (sem o $):
 
 
-$ chmod 755 portugol-studio-2.6-linux-x64.run
- 
+$ chmod 755 portugol-studio-2.6.9.run
 
-Por exemplo, se você baixou a versão 2.7 para a plataforma 32 bits, o comando
-ficaria:
+ou caso seu linux seja 64 bits:
 
-
-$ chmod 755 portugol-studio-2.7-linux.run
+$ chmod 755 portugol-studio-2.6.9-x64.run
 
 
 Feito isso, execute o progama de instalação digitando o comando abaixo:
 
 
-$ sudo ./portugol-studio-2.6-linux-x64.run
+$ sudo ./portugol-studio-2.6.9.run
+
+ou caso seu linux seja 64 bits:
+
+$ sudo ./portugol-studio-2.6.9-x64.run
 
 
 Note que existe um ponto "." e uma barra "/" antes do nome do arquivo. Estes
