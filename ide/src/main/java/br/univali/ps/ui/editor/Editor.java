@@ -162,7 +162,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarParser();
         configurarTextArea();
         configurarAcoes();
-        criarMenuTemas();
         instalarObservadores();
         carregarConfiguracoes();
         configurarAparencia();
@@ -247,45 +246,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         return suporteLinguagemPortugol;
     }
-
-    public JMenu getMenuDosTemas()
-    {
-        return menuTemas;
-    }
-
-    private void criarMenuTemas()
-    {
-        menuTemas = criaMenuDosTemas(this);
-    }
     
-    public JMenu criaMenuDosTemas(final Editor editor)
-    {
-        JMenu menu = new JMenu("Cores");
-        
-        for (String tema : ColorController.listarTemas())
-        {
-            JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
-
-            itemMenu.setAction(new AbstractAction(tema)
-            {
-                @Override
-                public void actionPerformed(ActionEvent evento)
-                {
-                    AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
-                    String tema = itemSelecionado.getText();
-                    Configuracoes.getInstancia().TrocarTema(tema);
-                }
-            });
-
-            itemMenu.setText(tema);
-            itemMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-            menu.add(itemMenu);
-        }
-
-        return menu;
-    }
-
     private void configurarParser()
     {
         suporteLinguagemPortugol = criaSuportePortugol();
@@ -1360,29 +1321,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         scheme.getStyle(Token.ERROR_NUMBER_FORMAT)          .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
         scheme.getStyle(Token.ERROR_STRING_DOUBLE)          .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
         scheme.getStyle(Token.ERROR_STRING_DOUBLE)          .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
-
-
-
-        for (Component componente : menuTemas.getComponents())
-        {
-            JMenuItem item = (JMenuItem) componente;
-
-            if (item.getText().equals(Configuracoes.getInstancia().getTemaPortugol()))
-            {
-                item.setSelected(true);
-            }
-            else
-            {
-                item.setSelected(false);
-            }
-        }
-
-        corErro = obterCorErro();
-
-        if (tagErro != null)
-        {
-            destacarErroExecucao(ultimaLinhaErro + 1, ultimaColunaErro + 1);
-        }
     }
 
     @Override
@@ -1571,25 +1509,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             ex.printStackTrace(System.err);
         }
-    }
-
-    private Color obterCorErro()
-    {
-        Color cor = new Color(1f, 0f, 0f, 0.15f);
-
-        // Por enquanto vamos fazer no braço, depois vemos como podemos 
-        // incluir e/ou buscar esta informação no tema
-        for (Component componente : menuTemas.getComponents())
-        {
-            JMenuItem item = (JMenuItem) componente;
-
-            if (item.isSelected() && item.getText().equals("Dark"))
-            {
-                cor = new Color(1f, 0f, 0f, 0.50f);
-            }
-        }
-
-        return cor;
     }
 
     /**

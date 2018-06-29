@@ -649,10 +649,38 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
         barraBotoesEditor.adicionaSeparador();
-        barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());        
-        barraBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
-
+        barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());
+        criaMenuTemas();
         adicionaBotaoConfiguracaoEditor(0);
+    }
+    
+    private void criaMenuTemas()
+    {
+        String[] temas = ColorController.listarTemas();
+        Action[] acoes = new Action[temas.length+1];
+                
+        for (int i=0; i<temas.length; i++)
+        {
+            acoes[i] = new AbstractAction(temas[i])
+            {
+                @Override
+                public void actionPerformed(ActionEvent evento)
+                {
+                    AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
+                    String tema = itemSelecionado.getText();
+                    Configuracoes.getInstancia().TrocarTema(tema);
+                }
+            };
+        }
+        acoes[temas.length] = new AbstractAction("Editar Temas")
+        {
+            @Override
+            public void actionPerformed(ActionEvent evento)
+            {
+                //TODO
+            }
+        };
+        barraBotoesEditor.adicionaGrupoDeItems("Temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"), acoes, true);
     }
 
     private void adicionaBotaoConfiguracaoInspetor(int margemDireita) {

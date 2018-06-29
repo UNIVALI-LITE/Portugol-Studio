@@ -158,7 +158,7 @@ public final class BarraDeBotoesExpansivel extends WebButton
             for (int i = 0; i < acoes.length; i++)
             {
                 botoes[i] = new WebButton(acoes[i]);
-                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_DESTAQUE, Color.orange, ColorController.FUNDO_CLARO, Color.GRAY, 5);
+                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5);
             }
 
             WebButtonGroup textGroup = new WebButtonGroup(true, botoes);
