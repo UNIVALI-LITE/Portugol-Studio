@@ -162,7 +162,6 @@ public final class BarraDeBotoesExpansivel extends WebButton
             }
 
             WebButtonGroup textGroup = new WebButtonGroup(true, botoes);
-
             textGroup.setButtonsDrawFocus(false);
             add(textGroup);
         }

@@ -677,7 +677,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             @Override
             public void actionPerformed(ActionEvent evento)
             {
-                //TODO
+                PortugolStudio.getInstancia().getTelaEditarTemas().setVisible(true);
             }
         };
         barraBotoesEditor.adicionaGrupoDeItems("Temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"), acoes, true);

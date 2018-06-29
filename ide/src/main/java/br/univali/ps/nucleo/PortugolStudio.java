@@ -21,6 +21,7 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.Sobre;
 import br.univali.ps.ui.telas.TelaAtalhos;
+import br.univali.ps.ui.telas.TelaEditarTemas;
 import br.univali.ps.ui.telas.TelaRelatarBug;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.window.OutsidePanel;
@@ -97,6 +98,7 @@ public final class PortugolStudio
     private TelaCustomBorder telaLicencas = null;
     private TelaCustomBorder telaRenomearSimbolo = null;
     private TelaCustomBorder telaPesquisarSubstituir = null;
+    private TelaCustomBorder telaEditarTemas = null;
     
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
@@ -953,6 +955,21 @@ public final class PortugolStudio
         telaLicencas.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaLicencas;
+    }
+    
+    public JDialog getTelaEditarTemas()
+    {
+        if (telaEditarTemas == null)
+        {
+            telaEditarTemas = new TelaCustomBorder("Editar Temas") ;
+            telaEditarTemas.setPanel(new TelaEditarTemas(telaEditarTemas));
+            
+            telaEditarTemas.setSize(640, 550);
+        }
+
+        telaEditarTemas.setLocationRelativeTo(Lancador.getJFrame());
+
+        return telaEditarTemas;
     }
     
     public JDialog getTelaPesquisarSubstituir()
