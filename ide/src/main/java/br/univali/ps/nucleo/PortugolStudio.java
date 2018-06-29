@@ -103,7 +103,6 @@ public final class PortugolStudio
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
         
-    private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
     
     private static boolean portugolCarregado = false;
@@ -858,16 +857,6 @@ public final class PortugolStudio
         }
 
         return tratadorExcecoes;
-    }
-
-    public GerenciadorTemas getGerenciadorTemas()
-    {
-        if (gerenciadorTemas == null)
-        {
-            gerenciadorTemas = new GerenciadorTemas();
-        }
-
-        return gerenciadorTemas;
     }
 
     public JDialog getTelaSobre()
