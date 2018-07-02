@@ -133,7 +133,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
-    private JMenu menuTemas;
 
     private boolean centralizar = false;
     private boolean executandoPrograma = false;

@@ -3,7 +3,6 @@ package br.univali.ps.ui.swing;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -49,10 +48,10 @@ public final class ColorController {
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_medio"), 16)),
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_claro"), 16)),
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("progress_bar"), 16)),
-                new Color(255,194,0),   //amarelo
-                new Color(69,189,255),  //azul claro
-                new Color(240,67,59),   //vermelho
-                new Color(0,239,192),   //ciano
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_1"), 16)),   //amarelo
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_2"), 16)),  //azul claro
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_3"), 16)),   //vermelho
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_4"), 16)),   //ciano
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_botoes_expansiveis"), 16)),    //cinza azulado muito mais escuro
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_letra_titulo"), 16)), //cinza claro
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_console"), 16)),    //cinza azulado
@@ -66,6 +65,14 @@ public final class ColorController {
         JSONObject json_temas = json.getJSONObject("temas");
         
         return JSONObject.getNames(json_temas);
+    }
+    
+    public static JSONObject getTemas()
+    {
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
+        JSONObject json_temas = json.getJSONObject("temas");
+        
+        return json_temas;
     }
     
     public static JSONObject getTemaPadrao()
@@ -87,6 +94,10 @@ public final class ColorController {
 "			\"fundo_botoes_expansiveis\" : \"121e24\",\n" +
 "			\"cor_letra_titulo\" : \"cdcdcd\",\n" +
 "			\"cor_console\" : \"3a464c\",\n" +
+"			\"cor_1\" : \"ffc200\",\n" +
+"			\"cor_2\" : \"45bdff\",\n" +
+"			\"cor_3\" : \"f0433b\",\n" +
+"			\"cor_4\" : \"00efc0\",\n" +
 "			\"icones\" : \"Claros\",\n" +
 "			\n" +
 "			\"Editor\" : \n" +
@@ -130,6 +141,10 @@ public final class ColorController {
 "			\"fundo_botoes_expansiveis\" : \"ffffff\",\n" +
 "			\"cor_letra_titulo\" : \"ffffff\",\n" +
 "			\"cor_console\" : \"e6e6e6\",\n" +
+"			\"cor_1\" : \"ffc200\",\n" +
+"			\"cor_2\" : \"45bdff\",\n" +
+"			\"cor_3\" : \"f0433b\",\n" +
+"			\"cor_4\" : \"00efc0\",\n" +
 "			\"icones\" : \"Escuros\",\n" +
 "			\n" +
 "			\"Editor\" : \n" +

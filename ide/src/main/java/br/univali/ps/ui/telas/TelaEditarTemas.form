@@ -16,19 +16,26 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="variavelScrollPane" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="263" max="32767" attributes="0"/>
-              <Component id="labelTemas" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-              <Component id="comboBoxTemas" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="botaoNovoTema" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="variavelScrollPane" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="botaoAplicarTema" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="botaoCancelar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="109" max="32767" attributes="0"/>
+                      <Component id="labelTemas" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Component id="comboBoxTemas" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="botaoNovoTema" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -40,6 +47,8 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="labelTemas" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="botaoNovoTema" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="botaoAplicarTema" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="botaoCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="comboBoxTemas" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -152,6 +161,16 @@
       </Properties>
     </Component>
     <Component class="com.alee.laf.combobox.WebComboBox" name="comboBoxTemas">
+    </Component>
+    <Component class="com.alee.laf.button.WebButton" name="botaoAplicarTema">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="aplicar tema"/>
+      </Properties>
+    </Component>
+    <Component class="com.alee.laf.button.WebButton" name="botaoCancelar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="cancelar"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

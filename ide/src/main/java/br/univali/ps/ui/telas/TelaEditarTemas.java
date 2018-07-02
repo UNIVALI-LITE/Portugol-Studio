@@ -8,7 +8,11 @@ package br.univali.ps.ui.telas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import com.alee.laf.button.WebButton;
 import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import org.json.JSONObject;
 
 /**
  *
@@ -33,8 +37,41 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     {
         String[] temas = ColorController.listarTemas();
         
-        for (String tema : temas) {
+        for (String tema : temas) 
+        {
             comboBoxTemas.addItem(tema);
+        }
+        carregarCoresTema(temas[0]);
+    }
+    
+    private void carregarCoresTema(String tema)
+    {
+        JSONObject temas = ColorController.getTemas();
+        JSONObject coresTema = temas.getJSONObject(tema);
+        
+        for (String name : JSONObject.getNames(coresTema)) 
+        {
+            if(!name.equals("Editor"))
+            {
+                JPanel estilo = new JPanel();
+                JLabel nomeVariavel = new JLabel(name);
+                WebButton botaoColorPicker = new WebButton("+");
+                estilo.add(nomeVariavel);
+                estilo.add(botaoColorPicker);
+                painelVariaveisPSInterior.add(estilo);
+            }
+        }
+        
+        JSONObject coresEditor = coresTema.getJSONObject("Editor");
+        
+        for (String name : JSONObject.getNames(coresEditor)) 
+        {
+            JPanel estilo = new JPanel();
+            JLabel nomeVariavel = new JLabel(name);
+            WebButton botaoColorPicker = new WebButton("+");
+            estilo.add(nomeVariavel);
+            estilo.add(botaoColorPicker);
+            painelVariaveisEditorInterior.add(estilo);
         }
     }
 
@@ -50,6 +87,8 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             WeblafUtils.configuraWebLaf(comboBoxTemas);
             WeblafUtils.configuraWebLaf(variavelScrollPane);
             WeblafUtils.configurarBotao(botaoNovoTema, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
+            WeblafUtils.configurarBotao(botaoAplicarTema, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
+            WeblafUtils.configurarBotao(botaoCancelar, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5, true);
         }
     }
     
@@ -73,6 +112,8 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         labelTemas = new javax.swing.JLabel();
         botaoNovoTema = new com.alee.laf.button.WebButton();
         comboBoxTemas = new com.alee.laf.combobox.WebComboBox();
+        botaoAplicarTema = new com.alee.laf.button.WebButton();
+        botaoCancelar = new com.alee.laf.button.WebButton();
 
         variavelScrollPane.setOpaque(false);
 
@@ -107,22 +148,31 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
 
         botaoNovoTema.setText("+");
 
+        botaoAplicarTema.setText("aplicar tema");
+
+        botaoCancelar.setText("cancelar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(variavelScrollPane)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(263, Short.MAX_VALUE)
-                .addComponent(labelTemas)
-                .addGap(21, 21, 21)
-                .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(variavelScrollPane)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(botaoAplicarTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addComponent(labelTemas)
+                        .addGap(21, 21, 21)
+                        .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,7 +181,9 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(labelTemas)
-                        .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botaoAplicarTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(variavelScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
@@ -141,6 +193,8 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.alee.laf.button.WebButton botaoAplicarTema;
+    private com.alee.laf.button.WebButton botaoCancelar;
     private com.alee.laf.button.WebButton botaoNovoTema;
     private com.alee.laf.combobox.WebComboBox comboBoxTemas;
     private javax.swing.JLabel labelEditor;
