@@ -10,8 +10,11 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButton;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 import org.json.JSONObject;
 
 /**
@@ -54,23 +57,37 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             if(!name.equals("Editor"))
             {
                 JPanel estilo = new JPanel();
+                estilo.setOpaque(true);
+                estilo.setBorder(new LineBorder(Color.BLACK, 2));
+                estilo.setAlignmentY(LEFT_ALIGNMENT);
                 JLabel nomeVariavel = new JLabel(name);
+                nomeVariavel.setPreferredSize(new Dimension(10, 5));
+                nomeVariavel.setForeground(ColorController.COR_LETRA);
                 WebButton botaoColorPicker = new WebButton("+");
+                WeblafUtils.configurarBotao(botaoColorPicker);
                 estilo.add(nomeVariavel);
                 estilo.add(botaoColorPicker);
+                estilo.revalidate();
                 painelVariaveisPSInterior.add(estilo);
+                
             }
         }
-        
+        painelVariaveisPSInterior.setSize(new Dimension(100, 60));
         JSONObject coresEditor = coresTema.getJSONObject("Editor");
         
         for (String name : JSONObject.getNames(coresEditor)) 
         {
             JPanel estilo = new JPanel();
+            estilo.setOpaque(true);
+            estilo.setBorder(new LineBorder(Color.BLACK, 2));
+            estilo.setAlignmentY(LEFT_ALIGNMENT);
             JLabel nomeVariavel = new JLabel(name);
+            nomeVariavel.setForeground(ColorController.COR_LETRA);
             WebButton botaoColorPicker = new WebButton("+");
+            WeblafUtils.configurarBotao(botaoColorPicker);
             estilo.add(nomeVariavel);
             estilo.add(botaoColorPicker);
+            estilo.revalidate();
             painelVariaveisEditorInterior.add(estilo);
         }
     }
@@ -100,6 +117,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         variavelScrollPane = new javax.swing.JScrollPane();
         painelVariaveis = new javax.swing.JPanel();
@@ -115,6 +133,8 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         botaoAplicarTema = new com.alee.laf.button.WebButton();
         botaoCancelar = new com.alee.laf.button.WebButton();
 
+        variavelScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        variavelScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         variavelScrollPane.setOpaque(false);
 
         painelVariaveis.setOpaque(false);
@@ -127,6 +147,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         painelVariaveisEditor.add(labelEditor, java.awt.BorderLayout.PAGE_START);
 
         painelVariaveisEditorInterior.setOpaque(false);
+        painelVariaveisEditorInterior.setLayout(new java.awt.GridLayout(5, 3));
         painelVariaveisEditor.add(painelVariaveisEditorInterior, java.awt.BorderLayout.CENTER);
 
         painelVariaveis.add(painelVariaveisEditor, java.awt.BorderLayout.CENTER);
@@ -138,6 +159,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         painelVariaveisIDE.add(labelPS, java.awt.BorderLayout.PAGE_START);
 
         painelVariaveisPSInterior.setOpaque(false);
+        painelVariaveisPSInterior.setLayout(new java.awt.GridLayout(5, 3));
         painelVariaveisIDE.add(painelVariaveisPSInterior, java.awt.BorderLayout.CENTER);
 
         painelVariaveis.add(painelVariaveisIDE, java.awt.BorderLayout.NORTH);
@@ -147,6 +169,11 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         labelTemas.setText("Temas");
 
         botaoNovoTema.setText("+");
+        botaoNovoTema.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoNovoTemaActionPerformed(evt);
+            }
+        });
 
         botaoAplicarTema.setText("aplicar tema");
 
@@ -157,39 +184,48 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(variavelScrollPane)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(botaoAplicarTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
-                        .addComponent(labelTemas)
-                        .addGap(21, 21, 21)
-                        .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14))))
+                        .addContainerGap()
+                        .addComponent(variavelScrollPane))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(236, 236, 236)
+                                .addComponent(botaoAplicarTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(254, 254, 254)
+                                .addComponent(labelTemas)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(labelTemas)
-                        .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(botaoAplicarTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(botaoNovoTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(variavelScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(variavelScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botaoAplicarTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botaoNovoTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoTemaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoNovoTemaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
