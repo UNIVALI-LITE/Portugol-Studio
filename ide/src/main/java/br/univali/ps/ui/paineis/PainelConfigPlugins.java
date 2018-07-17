@@ -8,14 +8,19 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
+import com.alee.laf.button.WebButton;
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
@@ -25,99 +30,36 @@ import javax.swing.event.ListDataListener;
  */
 public final class PainelConfigPlugins extends javax.swing.JPanel implements Themeable {
 
-    private MeuModel modelListaPlugin = new MeuModel();
     private List<Plugin> plugins = new ArrayList<>();
     private AbaCodigoFonte abaCodigoFonte;
     private PainelPlugins painelPlugins;
-
+    
     public PainelConfigPlugins() {
         initComponents();
         criarDicasInterface();
         configurarCores();
         botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
-        listaPlugins.setModel(modelListaPlugin);
-        listaPlugins.setCellRenderer(new Render());
     }
-
-    private class MeuModel implements ListModel<String> {
-
-        private List<MetaDadosPlugin> dados = new ArrayList<>();
-        private List<ListDataListener> listeners = new ArrayList<>();
-
-        @Override
-        public int getSize() {
-            return dados.size();
-        }
-
-        @Override
-        public String getElementAt(int index) {
-            return dados.get(index).getNome();
-        }
-
-        @Override
-        public void addListDataListener(ListDataListener l) {
-            listeners.add(l);
-        }
-
-        public MetaDadosPlugin obterMetadado(int indice) {
-            return dados.get(indice);
-        }
-
-        @Override
-        public void removeListDataListener(ListDataListener l) {
-            listeners.remove(l);
-        }
-
-        public void add(MetaDadosPlugin dado) {
-            dados.add(dado);
-            fireDataChanged();
-        }
-
-        public void clear() {
-            dados.clear();
-            fireDataChanged();
-        }
-
-        public void fireDataChanged() {
-            for (ListDataListener listener : listeners) {
-                listener.contentsChanged(null);
-            }
-        }
-    }
-
+    
     public void addModeloLista(Plugin plugin) {
         plugins.add(plugin);
-        modelListaPlugin.add(plugin.getMetaDados());
+        painelPluginsList.add(new PainelPluginItem(plugin.getMetaDados()));
+        painelPluginsList.revalidate();
+        painelPluginsList.repaint();
     }
 
     public void removeModeloLista(Plugin plugin) {
         plugins.remove(plugin);
     }
 
-    public class Render extends DefaultListCellRenderer {
-
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            final JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-            final MetaDadosPlugin metadado = modelListaPlugin.obterMetadado(index);
-            final Image icone = metadado.getIcone16x16();
-
-            renderer.setIcon(new ImageIcon(icone));
-            renderer.setBorder(new EmptyBorder(5, 10, 5, 0));
-
-            return renderer;
-        }
-    }
-
     @Override
     public void configurarCores() {
         painelBarraFerramentas.setBackground(ColorController.FUNDO_ESCURO);
+        painelConteudo.setBackground(ColorController.FUNDO_ESCURO);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             WeblafUtils.configurarBotao(botaoFechar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-            listaPlugins.setBackground(ColorController.COR_DESTAQUE);
-            listaPlugins.setForeground(ColorController.COR_LETRA);
+            WeblafUtils.configuraWebLaf(painelScrollPlugins);
             rotuloNome.setForeground(ColorController.COR_LETRA);
         }
     }
@@ -143,8 +85,8 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         botaoFechar = new com.alee.laf.button.WebButton();
         separador = new javax.swing.JSeparator();
         painelConteudo = new javax.swing.JPanel();
-        scrollPanelPlugins = new javax.swing.JScrollPane();
-        listaPlugins = new javax.swing.JList<>();
+        painelScrollPlugins = new javax.swing.JScrollPane();
+        painelPluginsList = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(250, 250, 250));
         setMinimumSize(new java.awt.Dimension(200, 200));
@@ -206,26 +148,14 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         painelConteudo.setOpaque(false);
         painelConteudo.setLayout(new java.awt.BorderLayout());
 
-        scrollPanelPlugins.setBorder(null);
+        painelScrollPlugins.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        painelScrollPlugins.setOpaque(false);
 
-        listaPlugins.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        listaPlugins.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                listaPluginsMouseClicked(evt);
-            }
-        });
-        listaPlugins.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                listaPluginsValueChanged(evt);
-            }
-        });
-        scrollPanelPlugins.setViewportView(listaPlugins);
+        painelPluginsList.setOpaque(false);
+        painelPluginsList.setLayout(new javax.swing.BoxLayout(painelPluginsList, javax.swing.BoxLayout.Y_AXIS));
+        painelScrollPlugins.setViewportView(painelPluginsList);
 
-        painelConteudo.add(scrollPanelPlugins, java.awt.BorderLayout.CENTER);
+        painelConteudo.add(painelScrollPlugins, java.awt.BorderLayout.CENTER);
 
         add(painelConteudo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -236,45 +166,18 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         }
     }//GEN-LAST:event_botaoFecharActionPerformed
 
-    private void listaPluginsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaPluginsMouseClicked
-        final int index = ((JList) evt.getSource()).getSelectedIndex();
-        final Plugin plugin = plugins.get(index);
-        painelPlugins = new PainelPlugins();
-        /*JFrame frame = new JFrame();
-        frame.setSize(640, 480);
-        frame.setLayout(new GridLayout(1, 1));
-        frame.setLocationRelativeTo(null);
-        frame.getContentPane().add(plugin.getVisao());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);*/
-
-        painelPlugins.setAbaCodigoFonte(abaCodigoFonte);
-        if (plugin.getVisao() != null) {
-            painelPlugins.setPlugin(plugin);
-            painelPlugins.add(plugin.getVisao());
-        }
-        abaCodigoFonte.getScrollInspetor().remove(this);
-        abaCodigoFonte.getScrollInspetor().setViewportView(painelPlugins);
-        //divisorArvoreInspetor.setDividerLocation(0.7);
-        //painelInspetorArvore.validate();*/
-    }//GEN-LAST:event_listaPluginsMouseClicked
-
-    private void listaPluginsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaPluginsValueChanged
-
-    }//GEN-LAST:event_listaPluginsValueChanged
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler alinhador;
     private javax.swing.JToolBar barraFerramentas;
     private com.alee.laf.button.WebButton botaoFechar;
-    private javax.swing.JList<String> listaPlugins;
     private javax.swing.JPanel painelAlinhamentoFerramentas;
     private javax.swing.JPanel painelAlinhamentoNome;
     private javax.swing.JPanel painelBarraFerramentas;
     private javax.swing.JPanel painelConteudo;
+    private javax.swing.JPanel painelPluginsList;
+    private javax.swing.JScrollPane painelScrollPlugins;
     private javax.swing.JLabel rotuloNome;
-    private javax.swing.JScrollPane scrollPanelPlugins;
     private javax.swing.JSeparator separador;
     // End of variables declaration//GEN-END:variables
 }

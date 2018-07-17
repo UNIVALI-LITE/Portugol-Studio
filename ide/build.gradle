@@ -67,7 +67,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.dorkbox/Notify-Dorkbox-Util
     compile group: 'com.dorkbox', name: 'Notify-Dorkbox-Util', version: '2.18'
 
-
+    // https://mvnrepository.com/artifact/cglib/cglib
+    compile group: 'cglib', name: 'cglib', version: '3.2.5'
     
     // Nenhuma das versões abaixo compila, então usamos a versão local
     //

@@ -2,6 +2,11 @@ package br.univali.ps.plugins.base;
 
 import br.univali.portugol.util.jar.CarregadorJar;
 import br.univali.portugol.util.jar.Classes;
+import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
+import br.univali.ps.ui.telas.TelaPrincipal;
+import br.univali.ps.ui.utils.FileHandle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,6 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
+import javax.swing.SwingUtilities;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
@@ -55,6 +61,18 @@ public final class GerenciadorPlugins
         }
 
         return instance;
+    }
+    
+    public void instalarPlugins(final List<File> arquivos)
+    {
+        if (arquivos != null && !arquivos.isEmpty())
+        {
+            Lancador.getInstance().focarJanela();
+            for (File arquivo : arquivos)
+            {
+                
+            }
+        }
     }
 
     /**
