@@ -2,11 +2,10 @@ package br.univali.ps.plugins.base;
 
 import br.univali.portugol.util.jar.CarregadorJar;
 import br.univali.portugol.util.jar.Classes;
-import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.Lancador;
-import br.univali.ps.ui.abas.AbaCodigoFonte;
-import br.univali.ps.ui.telas.TelaPrincipal;
-import br.univali.ps.ui.utils.FileHandle;
+import br.univali.ps.ui.abas.IndicadorDeProgresso;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,9 +26,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
-import javax.swing.SwingUtilities;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.progress.ProgressMonitor;
 
 /**
  *
@@ -51,8 +55,8 @@ public final class GerenciadorPlugins
 
     private final ResultadoCarregamento resultadoCarregamento = new ResultadoCarregamento();
 
-    private boolean carregado = false;
-
+    private boolean carregado = false;    
+    
     public static GerenciadorPlugins getInstance()
     {
         if (instance == null)
@@ -63,16 +67,38 @@ public final class GerenciadorPlugins
         return instance;
     }
     
+    
+    
     public void instalarPlugins(final List<File> arquivos)
     {
+        File diretorioPlugins = Configuracoes.getInstancia().getDiretorioPlugins();
+        
         if (arquivos != null && !arquivos.isEmpty())
         {
             Lancador.getInstance().focarJanela();
             for (File arquivo : arquivos)
             {
-                
-            }
+                try 
+                {
+                    ZipFile zipFile = new ZipFile(arquivo);
+                    zipFile.extractAll(diretorioPlugins.getAbsolutePath());                    
+                    ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
+                    while(progressMonitor.getState() == ProgressMonitor.STATE_BUSY)
+                    {
+                        System.out.println("Extraindo");
+                    }
+                } 
+                catch (ZipException ex) 
+                {
+                    Logger.getLogger(GerenciadorPlugins.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }            
         }
+    }
+    
+    public void desinstalarPlugins(List<String> name)
+    {
+        
     }
 
     /**

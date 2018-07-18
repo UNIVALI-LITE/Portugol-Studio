@@ -275,7 +275,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         buttonPlugins.setAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getActionMap().get("Carregar Plugin").actionPerformed(e);
+                PortugolStudio.getInstancia().getTelaPluginsInstalados().setVisible(true);
             }
         });
         buttonPlugins.setText("Plugins");

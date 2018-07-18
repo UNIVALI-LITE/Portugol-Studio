@@ -45,8 +45,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
     private Aba abaAtual;
 
     private static final FiltroArquivo filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
-    private static final FiltroArquivo filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
-    private static final FiltroArquivo filtroPlugins = new FiltroArquivo("Plugin do Portugol", "zip");
+    private static final FiltroArquivo filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");    
     private static final FiltroArquivo filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
     //private JFileChooser dialogoSelecaoArquivo;
 
@@ -93,22 +92,11 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         return dialogoSelecaoArquivo;
     }
     
-    private JFileChooser criarSeletorPlugin() {
-        JFileChooser dialogoSelecaoArquivo = FabricaDeFileChooser.getFileChooserAbertura();
-        dialogoSelecaoArquivo.setCurrentDirectory(new File(Configuracoes.getInstancia().getCaminhoUltimoDiretorio()));
-        dialogoSelecaoArquivo.setMultiSelectionEnabled(true);
-        dialogoSelecaoArquivo.setAcceptAllFileFilterUsed(false);
-
-        dialogoSelecaoArquivo.addChoosableFileFilter(filtroPlugins);
-
-        dialogoSelecaoArquivo.setFileFilter(filtroPlugins);
-        return dialogoSelecaoArquivo;
-    }
+    
 
     private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop) {
         configurarAcaoNovoArquivo(telaPrincipalDesktop);
         configurarAcaoAbrirArquivo(telaPrincipalDesktop);
-        configurarAcaoCarregarPlugin(telaPrincipalDesktop);
         configurarAcaoExibirTelaInicial(telaPrincipalDesktop);
     }
 
@@ -155,29 +143,6 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
     
-    private void configurarAcaoCarregarPlugin(final TelaPrincipal telaPrincipal) {
-        final String nome = "Carregar Plugin";
-        final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_DOWN_MASK);
-
-        acaoCarregarPlugin = new AbstractAction(nome) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser dialogoSelecaoArquivo = criarSeletorPlugin();
-                if (dialogoSelecaoArquivo.showOpenDialog(telaPrincipal) == JFileChooser.APPROVE_OPTION) {
-                    final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
-                    final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
-                    GerenciadorPlugins.getInstance().instalarPlugins(listaArquivos);
-                }
-                Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
-            }
-        };
-
-        //botaoAbrir.setAction(acaoCarregarPlugin);
-
-        telaPrincipal.getPainelTabulado().getActionMap().put(nome, acaoCarregarPlugin);
-        telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-    }
-
     private void configurarAcaoExibirTelaInicial(final TelaPrincipal telaPrincipal) {
         final String nome = "Exibir tela inicial";
         final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK);

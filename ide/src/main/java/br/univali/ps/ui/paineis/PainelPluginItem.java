@@ -5,65 +5,54 @@
  */
 package br.univali.ps.ui.paineis;
 
-import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.utils.IconFactory;
-import com.alee.laf.button.WebButton;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.border.EmptyBorder;
 
 /**
  *
  * @author Adson Esteves
  */
-public class PainelPluginItem extends javax.swing.JPanel {
+public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
 
     /**
      * Creates new form PainelPluginItem
      */
-    private MetaDadosPlugin metaDados;
-    
-    public PainelPluginItem(MetaDadosPlugin metaDados) {
+       
+    public PainelPluginItem() {
         initComponents();
-        this.metaDados = metaDados;
-        configurarPainel();
+        configurarCores();
     }
-    private void configurarPainel()
-    {
-        final JLabel renderer = new JLabel();
 
-        renderer.setIcon(new ImageIcon(metaDados.getIcone16x16()));
-        renderer.setText(metaDados.getNome());
-        renderer.setBorder(new EmptyBorder(5, 10, 5, 0));
-        renderer.setForeground(ColorController.COR_LETRA);
-        this.add(renderer);
-
-        WebButton botaoDesinstalarPlugin = new WebButton(new AbstractAction("", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "remove.png")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Desinstalando "+ metaDados.getNome());
-            }
-        });
-
-        WebButton botaoConfiguracoesPlugin = new WebButton(new AbstractAction("", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "gear_in.png")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Configuraçoes "+ metaDados.getNome());
-            }
-        });
-
-        if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configurarBotao(botaoDesinstalarPlugin, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);
-            WeblafUtils.configurarBotao(botaoConfiguracoesPlugin, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_MEDIO, ColorController.COR_LETRA, 2, true);            
+    @Override
+    public void configurarCores() 
+    {        
+        labelPluginInstalado.setBackground(ColorController.COR_PRINCIPAL);
+        labelPluginInstalado.setForeground(ColorController.COR_LETRA);        
+        if(WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configuraWebLaf(seletorPlugin);
         }
-        this.add(botaoDesinstalarPlugin);
-        this.add(botaoConfiguracoesPlugin);
     }
+
+    public JLabel getLabelPluginInstalado() {
+        return labelPluginInstalado;
+    }
+
+    public void setLabelPluginInstalado(JLabel labelPluginInstalado) {
+        this.labelPluginInstalado = labelPluginInstalado;
+    }
+
+    public JCheckBox getSeletorPlugin() {
+        return seletorPlugin;
+    }
+
+    public void setSeletorPlugin(JCheckBox seletorPlugin) {
+        this.seletorPlugin = seletorPlugin;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,10 +62,26 @@ public class PainelPluginItem extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        seletorPlugin = new javax.swing.JCheckBox();
+        labelPluginInstalado = new javax.swing.JLabel();
+
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setOpaque(false);
+        setLayout(new java.awt.BorderLayout());
+
+        seletorPlugin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        seletorPlugin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        add(seletorPlugin, java.awt.BorderLayout.WEST);
+
+        labelPluginInstalado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelPluginInstalado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/all_types.png"))); // NOI18N
+        labelPluginInstalado.setText("plugin instalado");
+        add(labelPluginInstalado, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel labelPluginInstalado;
+    private javax.swing.JCheckBox seletorPlugin;
     // End of variables declaration//GEN-END:variables
 }

@@ -11,6 +11,7 @@ import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.PSFindReplace;
+import br.univali.ps.ui.paineis.PainelPluginsInstalados;
 import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
@@ -94,6 +95,7 @@ public final class PortugolStudio
     private TelaPrincipal telaPrincipal = null;
     private TelaInformacoesPlugin telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
+    private TelaCustomBorder telaPluginsInstalados = null;
     private TelaCustomBorder telaLicencas = null;
     private TelaCustomBorder telaRenomearSimbolo = null;
     private TelaCustomBorder telaPesquisarSubstituir = null;
@@ -914,6 +916,18 @@ public final class PortugolStudio
         telaDicas.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaDicas;
+    }
+    
+    public JDialog getTelaPluginsInstalados()
+    {
+        if (telaPluginsInstalados == null)
+        {
+            telaPluginsInstalados = new TelaCustomBorder(new PainelPluginsInstalados(), "Plugins Instalados");
+        }
+
+        telaPluginsInstalados.setLocationRelativeTo(Lancador.getJFrame());
+
+        return telaPluginsInstalados;
     }
 
     public TelaInformacoesPlugin getTelaInformacoesPlugin()

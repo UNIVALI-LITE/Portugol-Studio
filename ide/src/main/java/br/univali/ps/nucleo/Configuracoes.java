@@ -344,7 +344,17 @@ public final class Configuracoes
             {
                 setTemaPortugol("Dark");
             }
-            restartApplication();
+            if(!restartApplication())
+            {
+                if(temaPortugol.equals("Dark"))
+                {
+                    setTemaPortugol("Portugol");
+                }
+                else
+                {
+                    setTemaPortugol("Dark");
+                }
+            }   
         }
     }
     
@@ -353,7 +363,7 @@ public final class Configuracoes
         return temaPortugol.equals("Dark");
     }
     
-    public void restartApplication()
+    public boolean restartApplication()
     {
         TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         
@@ -371,7 +381,7 @@ public final class Configuracoes
                     if(!currentJar.getName().endsWith(".jar"))
                     {
                         System.out.println("nao deu");
-                        return;
+                        return false;
                     }
                     RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
                     List<String> arguments = runtimeMxBean.getInputArguments();
@@ -387,7 +397,8 @@ public final class Configuracoes
 
                     builder.start();
                     PortugolStudio.getInstancia().finalizar(0);
-                }catch(Exception e)
+                }
+                catch(Exception e)
                 {
                     System.out.println("Alguma coisa deu errada no reiniciar");
                 }
@@ -395,15 +406,9 @@ public final class Configuracoes
             else
             {
                 QuestionDialog.getInstance().showMessage("Você deve fechar todas as abas de código antes de reiniciar");                   
-                if(temaPortugol.equals("Dark"))
-                {
-                    setTemaPortugol("Portugol");
-                }
-                else
-                {
-                    setTemaPortugol("Dark");
-                }
-            }
+                return false;
+            }            
+            return false;
         
     }
     

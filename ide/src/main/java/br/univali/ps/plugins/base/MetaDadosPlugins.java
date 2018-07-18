@@ -51,7 +51,7 @@ public final class MetaDadosPlugins implements Iterable<MetaDadosPlugin>
         }
     }
 
-    MetaDadosPlugin obter(Class classePlugin)
+    public MetaDadosPlugin obter(Class classePlugin)
     {
         return mapa.get(classePlugin.getName());
     }
