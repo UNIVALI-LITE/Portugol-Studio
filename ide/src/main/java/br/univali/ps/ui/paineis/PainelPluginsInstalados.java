@@ -18,6 +18,7 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import java.awt.Component;
 import java.awt.Dialog;
@@ -47,12 +48,16 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
     /**
      * Creates new form PainelPluginsInstalados
      */
-    private static final FiltroArquivo filtroPlugins = new FiltroArquivo("Plugin do Portugol", "zip");
+    private static final FiltroArquivo filtroPlugins = new FiltroArquivo("Plugin do Portugol", "psa");
     private List<PainelPluginItem> listaPlugins = new ArrayList<>();
     private static JDialog indicadorProgresso;
+    private TelaCustomBorder dialogoPai;
 
-    public PainelPluginsInstalados() {
+    public PainelPluginsInstalados(TelaCustomBorder pai) {
         initComponents();
+        
+        dialogoPai = pai;
+        
         configurarCores();
         configurarBotoes();
         configuraLoader();
@@ -70,12 +75,15 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
         painel.setBackground(ColorController.FUNDO_CLARO);
         painel.add(new JLabel(icone, JLabel.CENTER));
-        painel.add(new JLabel("Instalando...", JLabel.CENTER));
+        JLabel instalando = new JLabel("Instalando...", JLabel.CENTER);
+        instalando.setForeground(ColorController.COR_LETRA);
+        instalando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        painel.add(instalando);
 
-        indicadorProgresso.add(painel);
-        indicadorProgresso.setLocationRelativeTo(Lancador.getJFrame());
+        indicadorProgresso.add(painel);        
         indicadorProgresso.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         indicadorProgresso.pack();
+        indicadorProgresso.setLocationRelativeTo(Lancador.getJFrame());
     }
 
     private void configurarBotoes() {
@@ -94,10 +102,8 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
                 if (dialogoSelecaoArquivo.showOpenDialog(PortugolStudio.getInstancia().getTelaPrincipal()) == JFileChooser.APPROVE_OPTION) {
                     final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
+                    dialogoPai.setVisible(false);
                     GerenciadorPlugins.getInstance().instalarPlugins(listaArquivos, indicadorProgresso);
-//                    if (confirmouReinicializacao()) {
-//                        Configuracoes.getInstancia().restartApplication();
-//                    }
                 }
                 Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
             }
@@ -105,24 +111,14 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
         botaoDesinstalarPlugins.setAction(new AbstractAction("desinstalar plugins") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<String> lista = new ArrayList<>();
+                List<File> lista = new ArrayList<>();
                 for (PainelPluginItem component : listaPlugins) {
-                    lista.add(component.getLabelPluginInstalado().getText());
+                    lista.add(component.getPastaDeInstalacao());
                 }
-                GerenciadorPlugins.getInstance().desinstalarPlugins(lista);
+                dialogoPai.setVisible(false);
+                GerenciadorPlugins.getInstance().desinstalarPlugins(lista);                
             }
         });
-    }
-
-    private boolean confirmouReinicializacao() {
-        int resp = QuestionDialog.getInstance().showConfirmMessage("Para finalizar a instalação do plugin, o Portugol Studio precisa reinicializar! Confirma?");
-        if (resp == JOptionPane.YES_OPTION) {
-            return true;
-        } else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION) {
-            return false;
-        } else {
-            return false;
-        }
     }
 
     private JFileChooser criarSeletorPlugin() {
@@ -150,6 +146,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
                 PainelPluginItem item = new PainelPluginItem();
                 item.getLabelPluginInstalado().setText(pluginCarregado.getSimpleName());
                 item.getLabelPluginInstalado().setIcon(new ImageIcon(metaPlugins.obter(pluginCarregado).getIcone16x16()));
+                item.setPastaDeInstalacao(metaPlugins.obter(pluginCarregado).getArquivoJar().getParentFile());
                 painelPluginsInstalados.add(item);
                 listaPlugins.add(item);
             } catch (Exception e) {

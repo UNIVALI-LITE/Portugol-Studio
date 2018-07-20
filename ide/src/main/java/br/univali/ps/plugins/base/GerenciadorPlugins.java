@@ -3,11 +3,15 @@ package br.univali.ps.plugins.base;
 import br.univali.portugol.util.jar.CarregadorJar;
 import br.univali.portugol.util.jar.Classes;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
+import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.UnzipUtility;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,9 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.progress.ProgressMonitor;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -68,49 +70,55 @@ public final class GerenciadorPlugins {
         File diretorioPlugins = Configuracoes.getInstancia().getDiretorioPlugins();
 
         if (arquivos != null && !arquivos.isEmpty()) {
-            //Lancador.getInstance().focarJanela();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     for (File arquivo : arquivos) {
-                        
+                        String filename = arquivo.getName().substring(0, arquivo.getName().length() - 3);
+                        File pastaPlugin = new File(diretorioPlugins.getAbsolutePath() + File.separator + filename);
+                        pastaPlugin.mkdirs();
+
                         UnzipUtility unzipper = new UnzipUtility();
                         try {
-                            unzipper.unzip(arquivo.getAbsolutePath(), diretorioPlugins.getAbsolutePath());
+                            unzipper.unzip(arquivo, pastaPlugin);
                         } catch (Exception ex) {
-                            // some errors occurred
-                            ex.printStackTrace();
+                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ErroInstalacaoPlugin(String.format("Erro ao instalar o plugin '%s'", arquivo.getName()), ex));
                         }
-//                        try {
-//
-//                            ZipFile zipFile = new ZipFile(arquivo);
-//                            zipFile.setRunInThread(true);
-//                            ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
-//                            zipFile.extractAll(diretorioPlugins.getAbsolutePath());
-//                            System.out.println("started");
-//                            while (progressMonitor.getState() == ProgressMonitor.STATE_BUSY) {
-//
-//                            }
-//                            System.out.println("finished");
-//
-//                        } catch (ZipException ex) {
-//                            Logger.getLogger(GerenciadorPlugins.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
                     }
                     SwingUtilities.invokeLater(() -> {
                         loading.setVisible(false);
                         if (confirmouReinicializacao()) {
                             Configuracoes.getInstancia().restartApplication();
                         }
-                    });                    
+                    });
                 }
             }).start();
             loading.setVisible(true);
         }
     }
 
-    public void desinstalarPlugins(List<String> name) {
-
+    public void desinstalarPlugins(List<File> arquivos) {
+        if (arquivos != null && !arquivos.isEmpty()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    File desinstalarPlugins = new File(Configuracoes.getInstancia().getDiretorioConfiguracoes(), "desinstalarPlugins.txt");
+                    try (BufferedWriter escritor = new BufferedWriter(new FileWriter(desinstalarPlugins))) {
+                        for (File arquivo : arquivos) {
+                            escritor.write(arquivo.getAbsolutePath());
+                            escritor.newLine();
+                        }
+                    } catch (IOException excecao) {
+                        LOGGER.log(Level.SEVERE, "Erro ao inserir arquivo à fila de arquivos recentes", excecao);
+                    }
+                    SwingUtilities.invokeLater(() -> {
+                        if (confirmouReinicializacao()) {
+                            Configuracoes.getInstancia().restartApplication();
+                        }
+                    });
+                }
+            }).start();
+        }
     }
 
     private boolean confirmouReinicializacao() {

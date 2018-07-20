@@ -8,6 +8,7 @@ package br.univali.ps.ui.paineis;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import java.io.File;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
@@ -21,6 +22,8 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
      * Creates new form PainelPluginItem
      */
        
+    File pastaDeInstalacao;
+    
     public PainelPluginItem() {
         initComponents();
         configurarCores();
@@ -51,6 +54,14 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
 
     public void setSeletorPlugin(JCheckBox seletorPlugin) {
         this.seletorPlugin = seletorPlugin;
+    }
+
+    public File getPastaDeInstalacao() {
+        return pastaDeInstalacao;
+    }
+
+    public void setPastaDeInstalacao(File pastaDeInstalacao) {
+        this.pastaDeInstalacao = pastaDeInstalacao;
     }
     
     /**

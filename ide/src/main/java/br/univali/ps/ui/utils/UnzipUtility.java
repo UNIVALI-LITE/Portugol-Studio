@@ -27,8 +27,7 @@ public class UnzipUtility {
 	 * @param destDirectory
 	 * @throws IOException
 	 */
-	public void unzip(String zipFilePath, String destDirectory) throws IOException {
-		File destDir = new File(destDirectory);
+	public void unzip(File zipFilePath, File destDir) throws IOException {
 		if (!destDir.exists()) {
 			destDir.mkdir();
 		}
@@ -39,10 +38,11 @@ public class UnzipUtility {
 
 		// iterates over entries in the zip file
 		while (entry != null) {
-			String filePath = destDirectory + File.separator + entry.getName();
+			String filePath = destDir.getAbsolutePath() + File.separator + entry.getName();
 			if (!entry.isDirectory()) {
 				// if the entry is a file, extracts it
                                 File newFile = new File(filePath);
+                                new File(newFile.getParent()).mkdirs();
 				extractFile(zipIn, newFile);
 			} else {
 				// if the entry is a directory, make the directory

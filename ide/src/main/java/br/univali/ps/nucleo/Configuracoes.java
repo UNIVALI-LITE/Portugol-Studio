@@ -520,8 +520,10 @@ public final class Configuracoes
     public File getCaminhoArquivosRecuperadosOriginais() {
         return caminhoArquivosRecuperadosOriginais;
     }
-    
-    
+
+    public File getDiretorioConfiguracoes() {
+        return diretorioConfiguracoes;
+    }
     
     private File resolverDiretorioConfiguracoes()
     {

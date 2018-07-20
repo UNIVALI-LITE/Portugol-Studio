@@ -388,6 +388,8 @@ public class TelaPrincipal extends javax.swing.JPanel
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
+            Lancador.getFrame().setVisible(false);            
+            analytics.finalizar_sessao();
             return true;
         }
         

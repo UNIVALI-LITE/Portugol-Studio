@@ -126,7 +126,6 @@ public final class PortugolStudio
                 if(recente.exists()){
                     arquivosRecentes.add(recente);
                 }
-
             }
         } catch (Exception ex) {
             LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos recentemente utilizados pelo Portugol Studio.");
@@ -694,11 +693,34 @@ public final class PortugolStudio
         List<File> files = PortugolStudio.getInstancia().getArquivosOriginais();
         PortugolStudio.getInstancia().getTelaPrincipal().abrirArquivosCodigoFonte(files);
     }
+    
+    private void removerPluginsDefinidos(File removerPlugins)
+    {
+        if(removerPlugins.exists())
+        {
+            try {
+            String arquivo = FileHandle.read(new FileInputStream(removerPlugins));
+            String [] caminhos = arquivo.split("\n");
+            for (String caminho : caminhos) {
+                File pastaPlugin = new File(caminho);
+                if(pastaPlugin.exists() && pastaPlugin.isDirectory())
+                {
+                    FileUtils.deleteDirectory(pastaPlugin);
+                }
+            }
+            FileUtils.deleteQuietly(removerPlugins);
+            } catch (Exception ex) {
+                LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos recentemente utilizados pelo Portugol Studio.");
+            }
+        }
+    }
 
     private void carregarPlugins()
     {
         GerenciadorPlugins gerenciadorPlugins = GerenciadorPlugins.getInstance();
         Configuracoes configuracoes = Configuracoes.getInstancia();
+        
+        removerPluginsDefinidos(new File(configuracoes.getDiretorioConfiguracoes(), "desinstalarPlugins.txt"));
 
         if (configuracoes.getDiretorioPlugins() != null)
         {
@@ -922,7 +944,8 @@ public final class PortugolStudio
     {
         if (telaPluginsInstalados == null)
         {
-            telaPluginsInstalados = new TelaCustomBorder(new PainelPluginsInstalados(), "Plugins Instalados");
+            telaPluginsInstalados = new TelaCustomBorder("Plugins Instalados");
+            telaPluginsInstalados.setPanel(new PainelPluginsInstalados(telaPluginsInstalados));
         }
 
         telaPluginsInstalados.setLocationRelativeTo(Lancador.getJFrame());
