@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
@@ -94,7 +95,14 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         plugins.remove(plugin);
     }
 
-    public class Render extends DefaultListCellRenderer {
+    public final class Render extends DefaultListCellRenderer {
+        
+        public Render()
+        {
+            setFocusable(false);
+            setOpaque(true);
+            setVerticalAlignment(SwingConstants.TOP);
+        }
 
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -105,6 +113,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
 
             renderer.setIcon(new ImageIcon(icone));
             renderer.setBorder(new EmptyBorder(5, 10, 5, 0));
+            
 
             return renderer;
         }
@@ -116,6 +125,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             WeblafUtils.configurarBotao(botaoFechar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            WeblafUtils.configuraWebLaf(separador);
             listaPlugins.setBackground(ColorController.COR_DESTAQUE);
             listaPlugins.setForeground(ColorController.COR_LETRA);
             rotuloNome.setForeground(ColorController.COR_LETRA);
@@ -141,7 +151,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         barraFerramentas = new javax.swing.JToolBar();
         alinhador = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         botaoFechar = new com.alee.laf.button.WebButton();
-        separador = new javax.swing.JSeparator();
+        separador = new com.alee.laf.separator.WebSeparator();
         painelConteudo = new javax.swing.JPanel();
         scrollPanelPlugins = new javax.swing.JScrollPane();
         listaPlugins = new javax.swing.JList<>();
@@ -195,11 +205,9 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         painelAlinhamentoNome.add(barraFerramentas, java.awt.BorderLayout.EAST);
 
         painelAlinhamentoFerramentas.add(painelAlinhamentoNome, java.awt.BorderLayout.CENTER);
+        painelAlinhamentoFerramentas.add(separador, java.awt.BorderLayout.SOUTH);
 
         painelBarraFerramentas.add(painelAlinhamentoFerramentas, java.awt.BorderLayout.CENTER);
-
-        separador.setForeground(new java.awt.Color(210, 210, 210));
-        painelBarraFerramentas.add(separador, java.awt.BorderLayout.SOUTH);
 
         add(painelBarraFerramentas, java.awt.BorderLayout.NORTH);
 
@@ -240,17 +248,9 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         final int index = ((JList) evt.getSource()).getSelectedIndex();
         final Plugin plugin = plugins.get(index);
         painelPlugins = new PainelPlugins();
-        /*JFrame frame = new JFrame();
-        frame.setSize(640, 480);
-        frame.setLayout(new GridLayout(1, 1));
-        frame.setLocationRelativeTo(null);
-        frame.getContentPane().add(plugin.getVisao());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);*/
-
         painelPlugins.setAbaCodigoFonte(abaCodigoFonte);
-        if (plugin.getVisao() != null) {
-            painelPlugins.setPlugin(plugin);
+        painelPlugins.setPlugin(plugin);
+        if (plugin.getVisao() != null) {            
             painelPlugins.add(plugin.getVisao());
         }
         abaCodigoFonte.getScrollInspetor().remove(this);
@@ -275,6 +275,6 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
     private javax.swing.JPanel painelConteudo;
     private javax.swing.JLabel rotuloNome;
     private javax.swing.JScrollPane scrollPanelPlugins;
-    private javax.swing.JSeparator separador;
+    private com.alee.laf.separator.WebSeparator separador;
     // End of variables declaration//GEN-END:variables
 }

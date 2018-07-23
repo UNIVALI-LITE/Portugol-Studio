@@ -207,6 +207,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     exibirPainelPlugins();
+                    botoesPlugin.setVisible(false);
                 }
             });
 
@@ -240,7 +241,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             }
             
-            FabricaDicasInterface.criarTooltip(btnConfigPlugin, "Exibir Plugins instalados");
+            FabricaDicasInterface.criarTooltip(btnConfigPlugin, "Exibir Ações dos Plugins instalados");
             barraFerramentas.add(btnConfigPlugin);            
             
         }
@@ -2516,10 +2517,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 WebButton botaoAcao = new WebButton(new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        acao.actionPerformed(e);
+                        botoesPlugin.setVisible(false);
                     }
                 });
-
+                botaoAcao.setIcon((Icon)acao.getValue(Action.SMALL_ICON));
                 botaoAcao.setBorderPainted(false);
                 botaoAcao.setOpaque(false);
                 botaoAcao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

@@ -93,7 +93,7 @@ public final class PortugolStudio
     private JDialog telaRelatarBug = null;
     private OutsidePanel outSidePanel;
     private TelaPrincipal telaPrincipal = null;
-    private TelaInformacoesPlugin telaInformacoesPlugin = null;
+    private TelaCustomBorder telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
     private TelaCustomBorder telaPluginsInstalados = null;
     private TelaCustomBorder telaLicencas = null;
@@ -953,13 +953,15 @@ public final class PortugolStudio
         return telaPluginsInstalados;
     }
 
-    public TelaInformacoesPlugin getTelaInformacoesPlugin()
+    public TelaCustomBorder getTelaInformacoesPlugin()
     {
         if (telaInformacoesPlugin == null)
         {
-            telaInformacoesPlugin = new TelaInformacoesPlugin();
+            telaInformacoesPlugin = new TelaCustomBorder("Informações do Plugin");
+            TelaInformacoesPlugin painelInformacoesPlugin = new TelaInformacoesPlugin();
+            telaInformacoesPlugin.setPanel(painelInformacoesPlugin);
         }
-
+        telaInformacoesPlugin.setPreferredSize(new Dimension(640, 480));
         telaInformacoesPlugin.setLocationRelativeTo(Lancador.getJFrame());
 
         return telaInformacoesPlugin;

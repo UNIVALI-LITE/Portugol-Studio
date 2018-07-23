@@ -181,12 +181,7 @@
             </Container>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JSeparator" name="separador">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="d2" red="d2" type="rgb"/>
-            </Property>
-          </Properties>
+        <Component class="com.alee.laf.separator.WebSeparator" name="separator">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="South"/>

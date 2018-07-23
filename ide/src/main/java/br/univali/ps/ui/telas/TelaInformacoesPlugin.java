@@ -1,50 +1,76 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.plugins.base.Autor;
 import br.univali.ps.plugins.base.MetaDadosPlugin;
 import br.univali.ps.plugins.base.Plugin;
-import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.swing.ColorController;
+import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.PSOutTabbedPaneUI;
+import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 /**
  *
- * @author Luiz Fernando Noschang
+ * @author Adson Esteves
  */
-public final class TelaInformacoesPlugin extends JDialog
-{
+public class TelaInformacoesPlugin extends javax.swing.JPanel implements Themeable{
+
+    /**
+     * Creates new form TelaInformacoesPlugin2
+     */
     private final String htmlRotulos = "<html><body><div><b>%s:</b> %s</div></body></html>";
 
     private Plugin plugin;
-    private Action acaoSair;
 
     public TelaInformacoesPlugin()
-    {
-        super();
-        setModal(true);
-        setLocationRelativeTo(Lancador.getJFrame());
-        this.setIconImage(IconFactory.getDefaultWindowIcon());
-        configurarAcaoSair();
+    {        
         initComponents();
-        setSize(new Dimension(640, 480));
+        configurarCores();
     }
 
+    @Override
+    public void configurarCores() {
+        setBackground(ColorController.FUNDO_CLARO);
+        painelTabulado.setUI(new PSOutTabbedPaneUI());
+        painelTabulado.setForeground(ColorController.COR_LETRA);
+        jLAutores.setForeground(ColorController.COR_LETRA);
+        jLDescricao.setForeground(ColorController.COR_LETRA);
+        jLIcone.setForeground(ColorController.COR_LETRA);
+        jLJar.setForeground(ColorController.COR_LETRA);
+        jLNome.setForeground(ColorController.COR_LETRA);
+        jLVersao.setForeground(ColorController.COR_LETRA);
+        jTADescricao.setForeground(ColorController.COR_LETRA);
+        jTALicenca.setForeground(ColorController.COR_LETRA);
+        jPInformacoes.setForeground(ColorController.COR_LETRA);        
+        jListAutores.setForeground(ColorController.COR_LETRA);
+        painelConteudo.setBackground(ColorController.COR_PRINCIPAL);
+        jPInformacoes.setBackground(ColorController.COR_PRINCIPAL);       
+        jTADescricao.setBackground(ColorController.COR_PRINCIPAL);       
+        jTALicenca.setBackground(ColorController.COR_PRINCIPAL);
+        jListAutores.setBackground(ColorController.COR_PRINCIPAL);
+        if(WeblafUtils.weblafEstaInstalado())
+        {
+            WeblafUtils.configuraWebLaf(jSPAutores);
+            WeblafUtils.configuraWebLaf(jSPDescricao);
+            WeblafUtils.configuraWebLaf(jSPLicenca);
+        }
+    }
+    
     public void setPlugin(Plugin plugin)
     {
         this.plugin = plugin;
@@ -62,7 +88,7 @@ public final class TelaInformacoesPlugin extends JDialog
 
         jLNome.setText(String.format(htmlRotulos, "Nome", metaDadosPlugin.getNome()));
         jLVersao.setText(String.format(htmlRotulos, "Versão", metaDadosPlugin.getVersao()));
-        jLJar.setText(String.format(htmlRotulos, "JAR", metaDadosPlugin.getArquivoJar().getAbsolutePath()));
+        jLJar.setText(String.format(htmlRotulos, "JAR", metaDadosPlugin.getArquivoJar().getName()));
         jLIcone.setIcon(new ImageIcon(metaDadosPlugin.getIcone32x32()));
         painelTabulado.setIconAt(0, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"));
         painelTabulado.setIconAt(1, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "rosette.png"));
@@ -70,7 +96,6 @@ public final class TelaInformacoesPlugin extends JDialog
         jTALicenca.setText(metaDadosPlugin.getLicenca());
 
         exibirAutores();
-        setIconImage(metaDadosPlugin.getIcone16x16());
 
         painelTabulado.setSelectedIndex(0);
         
@@ -104,25 +129,7 @@ public final class TelaInformacoesPlugin extends JDialog
         }
 
         jSPAutores.getVerticalScrollBar().setValue(0);
-    }
-
-    private void configurarAcaoSair()
-    {
-        String nome = "Sair";
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-
-        acaoSair = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "sair.png"))
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                setVisible(false);
-            }
-        };
-
-        getRootPane().getActionMap().put(nome, acaoSair);
-        getRootPane().getInputMap().put(atalho, nome);
-    }
+    }    
 
     private final class Renderizador extends DefaultListCellRenderer
     {
@@ -142,14 +149,18 @@ public final class TelaInformacoesPlugin extends JDialog
             setVerticalAlignment(JLabel.CENTER);
             setHorizontalAlignment(SwingConstants.LEADING);
             setText(valor.toString());
-            setForeground(Color.BLACK);
-
-            setBackground(new Color(240, 240, 240));
+            setForeground(ColorController.COR_LETRA);
+            setBackground(ColorController.COR_PRINCIPAL);
 
             return renderizador;
         }
     }
 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -171,12 +182,7 @@ public final class TelaInformacoesPlugin extends JDialog
         jSPLicenca = new javax.swing.JScrollPane();
         jTALicenca = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Informações do Plugin");
-        setMinimumSize(new java.awt.Dimension(500, 420));
-        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        setPreferredSize(new java.awt.Dimension(500, 420));
-        setResizable(false);
+        setLayout(new java.awt.BorderLayout());
 
         painelConteudo.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         painelConteudo.setLayout(new java.awt.BorderLayout());
@@ -185,7 +191,7 @@ public final class TelaInformacoesPlugin extends JDialog
         painelTabulado.setFocusable(false);
 
         jPInformacoes.setBackground(new java.awt.Color(255, 255, 255));
-        jPInformacoes.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)), javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8))));
+        jPInformacoes.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8), javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(ColorController.FUNDO_CLARO), javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8))));
         java.awt.GridBagLayout jPInformacoesLayout = new java.awt.GridBagLayout();
         jPInformacoesLayout.columnWidths = new int[] {0, 0, 0};
         jPInformacoesLayout.rowHeights = new int[] {0, 8, 0, 8, 0, 8, 0, 8, 0, 8, 0, 8, 0, 8, 0};
@@ -222,6 +228,7 @@ public final class TelaInformacoesPlugin extends JDialog
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 0, 0);
         jPInformacoes.add(jLDescricao, gridBagConstraints);
 
+        jSPDescricao.setBackground(new java.awt.Color(255, 255, 255));
         jSPDescricao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
         jSPDescricao.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         jSPDescricao.setPreferredSize(new java.awt.Dimension(166, 100));
@@ -321,10 +328,9 @@ public final class TelaInformacoesPlugin extends JDialog
 
         painelConteudo.add(painelTabulado, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(painelConteudo, java.awt.BorderLayout.CENTER);
-
-        pack();
+        add(painelConteudo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLAutores;

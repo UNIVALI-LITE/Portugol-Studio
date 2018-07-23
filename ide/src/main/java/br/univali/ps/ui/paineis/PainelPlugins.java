@@ -8,15 +8,10 @@ import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
 import br.univali.ps.ui.utils.IconFactory;
-import com.alee.laf.button.WebButton;
-import java.awt.BorderLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
+import com.alee.laf.separator.WebSeparator;
 
 /**
  * @author Luiz Fernando Noschang
@@ -38,9 +33,11 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
 
     @Override
     public void configurarCores() {
-        painelBarraFerramentas.setBackground(ColorController.FUNDO_ESCURO);
+        setBackground(ColorController.COR_DESTAQUE);
+        painelBarraFerramentas.setBackground(ColorController.COR_DESTAQUE);
+        painelConteudo.setBackground(ColorController.COR_DESTAQUE);
         if (WeblafUtils.weblafEstaInstalado()) {
-            WeblafUtils.configuraWeblaf(painelConteudo,ColorController.COR_DESTAQUE);
+            WeblafUtils.configuraWebLaf(separator);
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             WeblafUtils.configurarBotao(botaoInformacoes, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoFechar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -88,7 +85,7 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
         alinhador = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         botaoInformacoes = new com.alee.laf.button.WebButton();
         botaoFechar = new com.alee.laf.button.WebButton();
-        separador = new javax.swing.JSeparator();
+        separator = new com.alee.laf.separator.WebSeparator();
         painelConteudo = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(250, 250, 250));
@@ -158,9 +155,7 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
         painelAlinhamentoFerramentas.add(painelAlinhamentoNome, java.awt.BorderLayout.CENTER);
 
         painelBarraFerramentas.add(painelAlinhamentoFerramentas, java.awt.BorderLayout.CENTER);
-
-        separador.setForeground(new java.awt.Color(210, 210, 210));
-        painelBarraFerramentas.add(separador, java.awt.BorderLayout.SOUTH);
+        painelBarraFerramentas.add(separator, java.awt.BorderLayout.SOUTH);
 
         add(painelBarraFerramentas, java.awt.BorderLayout.NORTH);
 
@@ -170,9 +165,11 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoInformacoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInformacoesActionPerformed
-        TelaInformacoesPlugin telaInformacoesPlugin = PortugolStudio.getInstancia().getTelaInformacoesPlugin();
-        telaInformacoesPlugin.setPlugin(plugin);
+        TelaCustomBorder telaInformacoesPlugin = PortugolStudio.getInstancia().getTelaInformacoesPlugin();
+        ((TelaInformacoesPlugin)telaInformacoesPlugin.getPanel()).setPlugin(plugin);
+        telaInformacoesPlugin.pack();
         telaInformacoesPlugin.setVisible(true);
+        
     }//GEN-LAST:event_botaoInformacoesActionPerformed
 
     private void botaoFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoFecharActionPerformed
@@ -192,6 +189,6 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
     private javax.swing.JPanel painelBarraFerramentas;
     private javax.swing.JPanel painelConteudo;
     private javax.swing.JLabel rotuloNome;
-    private javax.swing.JSeparator separador;
+    private com.alee.laf.separator.WebSeparator separator;
     // End of variables declaration//GEN-END:variables
 }
