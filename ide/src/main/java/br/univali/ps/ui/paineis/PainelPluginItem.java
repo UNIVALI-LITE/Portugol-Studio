@@ -23,6 +23,7 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
      */
        
     File pastaDeInstalacao;
+    String linkDownload;
     
     public PainelPluginItem() {
         initComponents();
@@ -63,6 +64,16 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
     public void setPastaDeInstalacao(File pastaDeInstalacao) {
         this.pastaDeInstalacao = pastaDeInstalacao;
     }
+
+    public String getLinkDownload() {
+        return linkDownload;
+    }
+
+    public void setLinkDownload(String linkDownload) {
+        this.linkDownload = linkDownload;
+    }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -85,7 +96,7 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
         add(seletorPlugin, java.awt.BorderLayout.WEST);
 
         labelPluginInstalado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelPluginInstalado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/all_types.png"))); // NOI18N
+        labelPluginInstalado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/pequeno/plugin.png"))); // NOI18N
         labelPluginInstalado.setText("plugin instalado");
         add(labelPluginInstalado, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

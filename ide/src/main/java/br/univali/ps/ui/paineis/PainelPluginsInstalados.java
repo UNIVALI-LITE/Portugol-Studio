@@ -12,17 +12,15 @@ import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.plugins.base.MetaDadosPlugins;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.ui.Lancador;
-import br.univali.ps.ui.abas.IndicadorDeProgresso;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.filtros.FiltroArquivo;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaCustomBorder;
+import br.univali.ps.ui.telas.TelaPluginsDisponiveis;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
-import java.awt.Component;
 import java.awt.Dialog;
-import java.awt.LayoutManager;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -34,10 +32,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -49,8 +46,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
      * Creates new form PainelPluginsInstalados
      */
     private static final FiltroArquivo filtroPlugins = new FiltroArquivo("Plugin do Portugol", "psa");
-    private List<PainelPluginItem> listaPlugins = new ArrayList<>();
-    private static JDialog indicadorProgresso;
+    private List<PainelPluginItem> listaPlugins = new ArrayList<>();    
     private TelaCustomBorder dialogoPai;
 
     public PainelPluginsInstalados(TelaCustomBorder pai) {
@@ -60,30 +56,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
         
         configurarCores();
         configurarBotoes();
-        configuraLoader();
         adicionarPlugins();
-    }
-
-    private void configuraLoader() {
-        boolean usandoTemaDark = Configuracoes.getInstancia().isTemaDark();
-        String caminhoIcone = String.format("/br/univali/ps/ui/icones/%s/grande/load.gif", usandoTemaDark ? "Dark" : "Portugol");
-        Icon icone = new ImageIcon(getClass().getResource(caminhoIcone));
-        indicadorProgresso = new JDialog();
-        indicadorProgresso.setUndecorated(true);
-
-        JPanel painel = new JPanel();
-        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
-        painel.setBackground(ColorController.FUNDO_CLARO);
-        painel.add(new JLabel(icone, JLabel.CENTER));
-        JLabel instalando = new JLabel("Instalando...", JLabel.CENTER);
-        instalando.setForeground(ColorController.COR_LETRA);
-        instalando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        painel.add(instalando);
-
-        indicadorProgresso.add(painel);        
-        indicadorProgresso.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-        indicadorProgresso.pack();
-        indicadorProgresso.setLocationRelativeTo(Lancador.getJFrame());
     }
 
     private void configurarBotoes() {
@@ -103,7 +76,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
                     final File[] arquivos = dialogoSelecaoArquivo.getSelectedFiles();
                     final List<File> listaArquivos = new ArrayList<>(Arrays.asList(arquivos));
                     dialogoPai.setVisible(false);
-                    GerenciadorPlugins.getInstance().instalarPlugins(listaArquivos, indicadorProgresso);
+                    GerenciadorPlugins.getInstance().instalarPlugins(listaArquivos);
                 }
                 Configuracoes.getInstancia().setCaminhoUltimoDiretorio(dialogoSelecaoArquivo.getCurrentDirectory());
             }
@@ -119,6 +92,24 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
                 GerenciadorPlugins.getInstance().desinstalarPlugins(lista);                
             }
         });
+        botaoBaixarPlugins.setAction(new AbstractAction("baixar plugins") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exibirTelaPluginsDisponiveis();               
+            }
+        });
+    }
+    
+    private void exibirTelaPluginsDisponiveis()
+    {
+        SwingUtilities.invokeLater(() -> {
+            TelaCustomBorder main = new TelaCustomBorder("Plugins Disponíveis");
+            TelaPluginsDisponiveis ta = new TelaPluginsDisponiveis();
+            main.setPanel(ta, true);
+            main.setLocationRelativeTo(Lancador.getJFrame());
+            main.setVisible(true);
+            main.pack();
+        });        
     }
 
     private JFileChooser criarSeletorPlugin() {
@@ -164,11 +155,8 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
             WeblafUtils.configurarBotao(botaoInstalarPlugins, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
             WeblafUtils.configurarBotao(botaoDesinstalarPlugins, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
             WeblafUtils.configurarBotao(botaoSelecionarTodos, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configurarBotao(botaoBaixarPlugins, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
         }
-    }
-
-    public JDialog getIndicadorProgresso() {
-        return indicadorProgresso;
     }
 
     /**
@@ -184,6 +172,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
         botaoSelecionarTodos = new com.alee.laf.button.WebButton();
         botaoInstalarPlugins = new com.alee.laf.button.WebButton();
         botaoDesinstalarPlugins = new com.alee.laf.button.WebButton();
+        botaoBaixarPlugins = new com.alee.laf.button.WebButton();
         scrollPlugins = new javax.swing.JScrollPane();
         painelPluginsInstalados = new javax.swing.JPanel();
 
@@ -200,6 +189,9 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
         botaoDesinstalarPlugins.setText("desinstalar plugins");
         painelSelecionadorPlugins.add(botaoDesinstalarPlugins);
 
+        botaoBaixarPlugins.setText("baixar plugins");
+        painelSelecionadorPlugins.add(botaoBaixarPlugins);
+
         add(painelSelecionadorPlugins, java.awt.BorderLayout.NORTH);
 
         painelPluginsInstalados.setLayout(new javax.swing.BoxLayout(painelPluginsInstalados, javax.swing.BoxLayout.Y_AXIS));
@@ -210,6 +202,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.alee.laf.button.WebButton botaoBaixarPlugins;
     private com.alee.laf.button.WebButton botaoDesinstalarPlugins;
     private com.alee.laf.button.WebButton botaoInstalarPlugins;
     private com.alee.laf.button.WebButton botaoSelecionarTodos;

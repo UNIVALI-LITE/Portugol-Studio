@@ -4,9 +4,12 @@ import br.univali.portugol.util.jar.CarregadorJar;
 import br.univali.portugol.util.jar.Classes;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.Lancador;
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.UnzipUtility;
+import java.awt.Dialog;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,8 +32,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -55,9 +63,16 @@ public final class GerenciadorPlugins {
     ///private final CarregadorJar carregadorJar = new CarregadorJar();
 
     private final ResultadoCarregamento resultadoCarregamento = new ResultadoCarregamento();
+    private static JDialog indicadorProgresso;
 
     private boolean carregado = false;
 
+    public GerenciadorPlugins() {
+        SwingUtilities.invokeLater(() -> {
+            configuraLoader();
+        });        
+    }   
+    
     public static GerenciadorPlugins getInstance() {
         if (instance == null) {
             instance = new GerenciadorPlugins();
@@ -65,8 +80,30 @@ public final class GerenciadorPlugins {
 
         return instance;
     }
+    
+    private void configuraLoader() {
+        boolean usandoTemaDark = Configuracoes.getInstancia().isTemaDark();
+        String caminhoIcone = String.format("/br/univali/ps/ui/icones/%s/grande/load.gif", usandoTemaDark ? "Dark" : "Portugol");
+        Icon icone = new ImageIcon(getClass().getResource(caminhoIcone));
+        indicadorProgresso = new JDialog();
+        indicadorProgresso.setUndecorated(true);
 
-    public void instalarPlugins(final List<File> arquivos, JDialog loading) {
+        JPanel painel = new JPanel();
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+        painel.setBackground(ColorController.FUNDO_CLARO);
+        painel.add(new JLabel(icone, JLabel.CENTER));
+        JLabel instalando = new JLabel("Instalando...", JLabel.CENTER);
+        instalando.setForeground(ColorController.COR_LETRA);
+        instalando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        painel.add(instalando);
+
+        indicadorProgresso.add(painel);        
+        indicadorProgresso.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        indicadorProgresso.pack();
+        indicadorProgresso.setLocationRelativeTo(Lancador.getJFrame());
+    }
+
+    public void instalarPlugins(final List<File> arquivos) {
         File diretorioPlugins = Configuracoes.getInstancia().getDiretorioPlugins();
 
         if (arquivos != null && !arquivos.isEmpty()) {
@@ -86,14 +123,17 @@ public final class GerenciadorPlugins {
                         }
                     }
                     SwingUtilities.invokeLater(() -> {
-                        loading.setVisible(false);
+                        indicadorProgresso.setVisible(false);
                         if (confirmouReinicializacao()) {
                             Configuracoes.getInstancia().restartApplication();
                         }
                     });
                 }
             }).start();
-            loading.setVisible(true);
+            SwingUtilities.invokeLater(() -> {
+                indicadorProgresso.setVisible(true);
+            });
+            
         }
     }
 

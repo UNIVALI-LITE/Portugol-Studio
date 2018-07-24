@@ -43,7 +43,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/all_types.png"/>
+          <Image iconType="3" name="/br/univali/ps/ui/icones/Dark/pequeno/plugin.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="plugin instalado"/>
       </Properties>

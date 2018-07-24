@@ -257,8 +257,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             main.setLocationRelativeTo(Lancador.getJFrame());
             main.setVisible(true);
             main.pack();
-        });
-        
+        });        
     }
 
     public void criarNovoCodigoFonte()
