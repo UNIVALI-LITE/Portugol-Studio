@@ -2403,54 +2403,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void run() {
                 painelConfigPlugins.addModeloLista(plugin);
                 painelInspetorArvore.validate();
-//                final JToggleButton botaoPlugin = new JToggleButton();
-//
-//                botaoPlugin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                botaoPlugin.setFocusable(false);
-//                botaoPlugin.setRequestFocusEnabled(false);
-//                botaoPlugin.setHideActionText(true);
-//                botaoPlugin.setIconTextGap(0);
-//                botaoPlugin.setHorizontalAlignment(JToggleButton.CENTER);
-//
-//                botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone16x16()))
-//                {
-//                    @Override
-//                    public void actionPerformed(ActionEvent e)
-//                    {
-//                        if (botaoPlugin.isSelected())
-//                        {
-//                            exibirPlugin(plugin);
-//                        }
-//                    }
-//                });
-//
-//                botoesPlugins.put(plugin, botaoPlugin);
-//                //barraBotoesPlugins.add(botaoPlugin);
-//                grupoBotoesPlugins.add(botaoPlugin);
             }
         });
     }
 
-    private void criarDicaInterfacePlugin(Plugin plugin, JToggleButton botaoPlugin) {
-        MetaDadosPlugin metaDadosPlugin = plugin.getMetaDados();
-        String dica = String.format("Plugin %s:\n\n %s", metaDadosPlugin.getNome(), metaDadosPlugin.getDescricao());
-
-        FabricaDicasInterface.criarTooltip(botaoPlugin, dica);
-    }
-
-    private void exibirPlugin(Plugin plugin) {
-        //painelPlugins.setPlugin(plugin);
-        //exibirPainelPlugins();
-    }
-
     public void exibirPainelPlugins() {
-//        if (divisorArvoreInspetor.getParent() == null)
-//        {
         scrollInspetor.remove(inspetorDeSimbolos);
         scrollInspetor.setViewportView(painelConfigPlugins);
         divisorArvoreInspetor.setDividerLocation(0.7);
         painelInspetorArvore.validate();
-//        }
     }
 
     public void ocultarPainelPlugins() {
@@ -2464,17 +2425,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //JToggleButton botaoPlugin = botoesPlugins.get(plugin);
-                //barraBotoesPlugins.remove(botaoPlugin);
-                //botoesPlugins.remove(plugin);
-                //                if (painelPlugins.getPlugin() == plugin) {
-                //                    painelPlugins.removerPlugin();
-                //                }
-                //
-                //                if (botoesPlugins.isEmpty()) {
-                //                    ocultarPainelBotoesPlugins();
-                //                    ocultarPainelPlugins();
-                //                }
                 painelConfigPlugins.removeModeloLista(plugin);
                 painelInspetorArvore.validate();
             }
@@ -2544,15 +2494,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @Override
     public void desinstalarAcaoPlugin(Plugin plugin, final Action acao) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JButton botaoAcao = mapaBotoesAcoesPlugins.get(acao);
-
-                barraFerramentas.remove(botaoAcao);
-                barraFerramentas.repaint();
-                mapaBotoesAcoesPlugins.remove(acao, botaoAcao);
-            }
+        SwingUtilities.invokeLater(() -> {
+            WebButton botaoAcao = (WebButton) mapaBotoesAcoesPlugins.get(acao);
+            botoesPlugin.remove(botaoAcao);
+            botoesPlugin.repaint();
+            mapaBotoesAcoesPlugins.remove(acao, botaoAcao);
         });
     }
 
@@ -2581,26 +2527,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
     }
-
-//    private BalloonTip criarPainelFlutuante(JComponent origem, JPanel conteudo, boolean painelOpaco) {
-//        Color corDica = new Color(255, 255, 210);
-//        Color corTexto = Color.BLACK;
-//
-//        if (painelOpaco) {
-//            corDica = conteudo.getBackground();
-//        }
-//
-//        conteudo.setOpaque(painelOpaco);
-//        int largura = (int) Math.min(conteudo.getPreferredSize().getWidth(), 640);
-//        int altura = (int) Math.min(conteudo.getPreferredSize().getHeight(), 480);
-//        Dimension novoTamanho = new Dimension(largura, altura);
-//        conteudo.setPreferredSize(novoTamanho);
-//
-//        EdgedBalloonStyle estilo = new EdgedBalloonStyle(corDica, corTexto);
-//        BalloonTip tip = new BalloonTip(origem, conteudo, estilo, true);
-//
-//        return tip;
-//    }
+    
     @Override
     public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho) {
         editor.destacarTrechoCodigoFonte(linha, coluna, tamanho);
@@ -2743,22 +2670,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     if (abaCodigoFonte.podeFechar()) {
                         abaCodigoFonte.redefinirAba();
 
+                        abaCodigoFonte.showPainelUtilitarios(false);
                         /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
                          * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
                          * da utilização anterior
                          */
-                        abaCodigoFonte.showPainelUtilitarios(false);
-                        GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
-
                         /*
                          * Logo após, instalamos todos os plugins novamente, para garantir que quando a aba for
                          * reaproveitada a partir do pool, já estará inicializada com os plugins
                          */
-                        try {
-                            GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
-                        } catch (ErroInstalacaoPlugin erro) {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
-                        }
                         criarInstanciaPlugin(abaCodigoFonte);
                         devolver(abaCodigoFonte);
 
@@ -2806,61 +2726,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-//    private static class PoolAbasCodigoFonte extends PoolAbstrato
-//    {
-//
-//        public PoolAbasCodigoFonte(int tamanho)
-//        {
-//            super(tamanho);
-//        }
-//
-//        @Override
-//        protected AbaCodigoFonte criarObjeto()
-//        {
-//            AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-//
-//            abaCodigoFonte.adicionarAbaListener(new AbaListener()
-//            {
-//                @Override
-//                public boolean fechandoAba(Aba aba)
-//                {
-//                    AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
-//                    if (abaCodigoFonte.podeFechar())
-//                    {
-//                        abaCodigoFonte.redefinirAba();
-//
-//                        /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
-//                         * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
-//                         * da utilização anterior
-//                         */
-//                        GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
-//
-//                        /*
-//                         * Logo após, instalamos todos os plugins novamente, para garantir que quando a aba for
-//                         * reaproveitada a partir do pool, já estará inicializada com os plugins
-//                         */
-//                        try
-//                        {
-//                            GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
-//                        }
-//                        catch (ErroInstalacaoPlugin erro)
-//                        {
-//                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
-//                        }
-//
-//                        devolver(abaCodigoFonte);
-//
-//                        return true;
-//                    }
-//
-//                    return false;
-//                }
-//            });
-//
-//            return abaCodigoFonte;
-//        }
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel arquivosRecuperados;

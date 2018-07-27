@@ -327,11 +327,9 @@ public final class GerenciadorPlugins {
                 if (!pluginJaInstalado(utilizador, classePlugin)) {
                     Plugin plugin = classePlugin.newInstance();
                     plugin.setMetaDados(metaDadosPlugins.obter(classePlugin));
-                    plugin.inicializar(utilizador);
-
                     utilizador.instalarPlugin(plugin);
-
                     mapaUtilizadores.get(utilizador).add(plugin);
+                    plugin.inicializar(utilizador);
                 }
             } catch (IllegalAccessException | InstantiationException | RuntimeException excecao) {
                 throw new ErroInstalacaoPlugin(String.format("Erro ao instalar o plugin '%s' no utilizador '%s'", classePlugin.getName(), utilizador.getClass().getName()), excecao);
