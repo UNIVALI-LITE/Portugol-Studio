@@ -39,6 +39,9 @@ import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.F
 import static br.univali.portugol.nucleo.analise.semantica.AnalisadorSemantico.FUNCAO_LIMPA;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Classe utilitária para abstrair as etapas necessárias à compilação do código
@@ -281,18 +284,30 @@ public final class Compilador
             throw new ErroCompilacao(resultadoAnalise);
         }
         
-        return carregaProgramaCompilado(diretorioCompilacao, nomeClasse, resultadoAnalise);
+        return carregaProgramaCompilado(diretorioCompilacao, nomeClasse, classPath, resultadoAnalise);
         
     }
 
-    private Programa carregaProgramaCompilado(File diretorioCompilacao, String nomeClasseCompilada, ResultadoAnalise resultadoAnalise) throws ErroCompilacao
+    private Programa carregaProgramaCompilado(File diretorioCompilacao, String nomeClasseCompilada, String classPath, ResultadoAnalise resultadoAnalise) throws ErroCompilacao
     {
         try
         {
-            URLClassLoader classLoader = new URLClassLoader(new URL[]
+            List<URL> urlsList = new ArrayList<>();
+            
+            String[] jars = classPath.split(!rodandoEmmWindows() ? ":" : ";");
+            
+            for (String jar: jars)
             {
-                diretorioCompilacao.toURI().toURL()
-            });
+                if (jar.toLowerCase().endsWith(".jar")){
+                    urlsList.add(new File(jar).toURI().toURL());
+                }
+            }
+            
+            urlsList.add(diretorioCompilacao.toURI().toURL());
+            
+            URL[] urls = new URL[urlsList.size()];
+            
+            URLClassLoader classLoader = new URLClassLoader(urlsList.toArray(urls));
             Class<?> loadedClass = classLoader.loadClass(NOME_PACOTE.concat(".").concat(nomeClasseCompilada));
 
             return (Programa) loadedClass.newInstance();
@@ -303,5 +318,11 @@ public final class Compilador
 
             throw new ErroCompilacao(resultadoAnalise);
         }
+    }
+    
+    private static boolean rodandoEmmWindows() {
+        String so = System.getProperty("os.name");
+
+        return (so != null && so.toLowerCase().contains("win"));
     }
 }
