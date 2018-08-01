@@ -1948,7 +1948,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         Configuracoes configuracoes = Configuracoes.getInstancia();
         if (Configuracoes.rodandoEmDesenvolvimento()) {
-            return System.getProperty("java.class.path") + classPathSeparator;
+            return System.getProperty("java.class.path") + classPathSeparator + getPluginsPath();
         }
 
         File classpathDir = new File(configuracoes.getDiretorioAplicacao().getCanonicalPath(), "lib");
@@ -1961,10 +1961,30 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 expandedClassPath += jar.getCanonicalPath() + classPathSeparator;
             }
         }
-
+        return expandedClassPath + getPluginsPath();
+    }
+    
+    private String getPluginsPath() throws IOException
+    {
+        String classPathSeparator = !rodandoEmmWindows() ? ":" : ";";
+        String expandedClassPath = "";
+        File[] pluginsClassDir = new File(Configuracoes.getInstancia().getDiretorioPlugins().getCanonicalPath()).listFiles();
+        
+        for (File file : pluginsClassDir) {
+            if(file.isDirectory())
+            {
+                for (File listFile : file.listFiles()) {
+                    expandedClassPath += listFile.getCanonicalPath() + classPathSeparator;
+                }
+            }
+            else
+            {
+                expandedClassPath += file.getCanonicalPath() + classPathSeparator;
+            }
+        }
         return expandedClassPath;
     }
-
+    
     private static boolean rodandoEmmWindows() {
         String so = System.getProperty("os.name");
 
