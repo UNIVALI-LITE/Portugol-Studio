@@ -222,7 +222,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             botaoAcao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "ajuda.png"));
 
             if (WeblafUtils.weblafEstaInstalado()) {
-                WeblafUtils.configurarBotao(botaoAcao, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                WeblafUtils.configurarBotao(botaoAcao, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             }
             FabricaDicasInterface.criarTooltip(botaoAcao, "Configurações do plugin");
             botoesPlugin.add(botaoAcao);
@@ -233,6 +233,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     botoesPlugin.setVisible(!botoesPlugin.isVisible());
+                    if(botoesPlugin.isVisible()){
+                        WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                    }else{
+                        WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                    }
                 }
             });
             
@@ -269,6 +274,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setBackground(ColorController.VERMELHO.brighter().brighter());
         painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO, 2));
         labelRecuperados.setForeground(Color.BLACK);
+        botoesPlugin.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
+        botoesPlugin.setOpaque(true);
+        
         
         if (WeblafUtils.weblafEstaInstalado()) {
 
@@ -1604,7 +1612,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.insets = new java.awt.Insets(349, 0, 0, 0);
         painelEditor.add(botoesPlugin, gridBagConstraints);
 
-        barraFerramentas.setBorder(null);
         barraFerramentas.setFloatable(false);
         barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
         barraFerramentas.setName("barraFerramentas"); // NOI18N
@@ -1649,6 +1656,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setName("botaoSalvar"); // NOI18N
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
         barraFerramentas.add(btnSalvar);
 
         btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save_as.png"))); // NOI18N
@@ -1770,7 +1782,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreInspetor.setMinimumSize(new java.awt.Dimension(252, 510));
         divisorArvoreInspetor.setName("divisorArvoreInspetor"); // NOI18N
         divisorArvoreInspetor.setOneTouchExpandable(true);
-        divisorArvoreInspetor.setOpaque(false);
 
         treePanel.setName("painelArvore"); // NOI18N
         treePanel.setLayout(new java.awt.GridBagLayout());
@@ -1865,6 +1876,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     private void btnFecharPainelTemplatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharPainelTemplatesActionPerformed
         this.getActionMap().get("Exibir Painel Utilitários").actionPerformed(evt);
     }//GEN-LAST:event_btnFecharPainelTemplatesActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void interromper()
     {
@@ -2482,7 +2497,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 botaoAcao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
                 if (WeblafUtils.weblafEstaInstalado()) {
-                    WeblafUtils.configurarBotao(botaoAcao, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                    WeblafUtils.configurarBotao(botaoAcao, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                 }
                 FabricaDicasInterface.criarTooltip(botaoAcao, acao.getValue(Action.NAME).toString());
                 botoesPlugin.add(botaoAcao);
