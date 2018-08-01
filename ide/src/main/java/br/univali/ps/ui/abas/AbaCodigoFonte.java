@@ -1609,7 +1609,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(349, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(348, 0, 0, 0);
         painelEditor.add(botoesPlugin, gridBagConstraints);
 
         barraFerramentas.setFloatable(false);
@@ -1718,7 +1718,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
