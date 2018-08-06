@@ -209,8 +209,8 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
             tcb.getPanel().add(pspt);
             tcb.getPanel().setBackground(ColorController.FUNDO_MEDIO);
             tcb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            tcb.setLocationRelativeTo(Lancador.getJFrame());
             tcb.pack();
+            tcb.setLocationRelativeTo(Lancador.getJFrame());
             tcb.setVisible(true);
         }
     }
