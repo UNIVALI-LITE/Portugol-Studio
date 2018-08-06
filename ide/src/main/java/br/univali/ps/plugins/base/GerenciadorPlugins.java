@@ -123,10 +123,7 @@ public final class GerenciadorPlugins {
                         }
                     }
                     SwingUtilities.invokeLater(() -> {
-                        indicadorProgresso.setVisible(false);
-                        if (confirmouReinicializacao()) {
-                            Configuracoes.getInstancia().restartApplication();
-                        }
+                        indicadorProgresso.setVisible(false);                        
                     });
                 }
             }).start();
@@ -160,9 +157,9 @@ public final class GerenciadorPlugins {
             }).start();
         }
     }
-
+    
     private boolean confirmouReinicializacao() {
-        int resp = QuestionDialog.getInstance().showConfirmMessage("Para finalizar a instalação do plugin, o Portugol Studio precisa reinicializar! Confirma?");
+        int resp = QuestionDialog.getInstance().showConfirmMessage("Para finalizar a desinstalação do plugin, o Portugol Studio precisa reinicializar! Confirma?");
         if (resp == JOptionPane.YES_OPTION) {
             return true;
         } else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION) {
@@ -171,6 +168,7 @@ public final class GerenciadorPlugins {
             return false;
         }
     }
+
 
     /**
      * Inclui um diretório que será pesquisado pelo gerenciador em busca de

@@ -24,6 +24,7 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
        
     File pastaDeInstalacao;
     String linkDownload;
+    String descricao;
     
     public PainelPluginItem() {
         initComponents();
@@ -72,7 +73,14 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
     public void setLinkDownload(String linkDownload) {
         this.linkDownload = linkDownload;
     }
-    
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
     
     
     /**

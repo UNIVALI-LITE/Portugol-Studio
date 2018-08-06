@@ -76,8 +76,8 @@ public class TelaLicencas extends javax.swing.JPanel implements Themeable{
         setBackground(ColorController.FUNDO_CLARO);
         painelAlinhamento.setBackground(ColorController.COR_PRINCIPAL);
         painelTabulado.setUI(new PSOutTabbedPaneUI());
-        painelAlinhamento.setForeground(ColorController.COR_LETRA);
         painelTabulado.setForeground(ColorController.COR_LETRA);
+        painelAlinhamento.setForeground(ColorController.COR_LETRA);
         painelBotoes.setForeground(ColorController.COR_LETRA);
     }
 

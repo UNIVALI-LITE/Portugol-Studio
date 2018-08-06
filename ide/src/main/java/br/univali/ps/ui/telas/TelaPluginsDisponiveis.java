@@ -5,14 +5,17 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.ps.nucleo.Caminhos;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.paineis.PainelPluginItem;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
+import br.univali.ps.ui.swing.weblaf.PSOutTabbedPaneUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
+import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
@@ -28,15 +31,24 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.markdown4j.Markdown4jProcessor;
 
 /**
  *
@@ -51,6 +63,7 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
     String URIList[] = {"https://api.github.com/repos/UNIVALI-LITE/Plugin-Portugol-GoGoBoard/releases/latest"};
     private List<PainelPluginItem> listaPlugins = new ArrayList<>();
     private static JDialog indicadorProgresso;
+    private String tuto = "";
     
     public TelaPluginsDisponiveis() {
         initComponents();
@@ -97,8 +110,10 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                 PainelPluginItem item = new PainelPluginItem();
                 item.setLinkDownload(downloadURL);
                 item.getLabelPluginInstalado().setText(nome);
-                FabricaDicasInterface.criarTooltipEstatica(item, descricao);
-                
+                if(descricao.contains("Tutorial"))
+                {
+                    item.setDescricao(descricao);                    
+                }                
                 listaPlugins.add(item);
                 painelPluginsDisponiveis.add(item);
             }
@@ -147,11 +162,109 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                         }
                         indicadorProgresso.setVisible(false);
                         GerenciadorPlugins.getInstance().instalarPlugins(listaArquivos);
+                        SwingUtilities.invokeLater(() -> {
+                            try {
+                                showTutoTab();
+                            } catch (IOException ex) {
+                                Logger.getLogger(TelaPluginsDisponiveis.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            if (confirmouReinicializacao()) {
+                                Configuracoes.getInstancia().restartApplication();
+                            }
+                        });                        
                     }
                 }).start();
                 indicadorProgresso.setVisible(true);
             }
         });
+    }
+    
+    private void showTutoTab() throws IOException{
+        JTabbedPane pspt = new JTabbedPane();
+        
+        pspt.setUI(new PSOutTabbedPaneUI());
+        pspt.setForeground(ColorController.COR_LETRA);
+        
+        for (PainelPluginItem Plugin : listaPlugins) {
+            if(Plugin.getDescricao() != null)
+            {
+                JPanel painel = new JPanel(new BorderLayout());
+                JEditorPane editorPane = new JEditorPane();
+                editorStyleSet(editorPane);
+                editorPane.setBackground(ColorController.FUNDO_CLARO);
+                editorPane.setForeground(ColorController.COR_LETRA);
+                
+                String html = new Markdown4jProcessor().process(Plugin.getDescricao());
+                editorPane.setText("<html><body><div>"+html.replaceAll("</p>", "</p><br>")+"</div></body></html>");
+                editorPane.setCaretPosition(0);                
+                painel.add(editorPane);
+                
+                pspt.add(Plugin.getLabelPluginInstalado().getText(), painel);
+            }
+        }
+        if(pspt.getTabCount() > 0)
+        {
+            TelaCustomBorder tcb = new TelaCustomBorder("Tutorial de Instalação de Dependências");
+            tcb.setPanel(new JPanel());
+            tcb.getPanel().add(pspt);
+            tcb.getPanel().setBackground(ColorController.FUNDO_MEDIO);
+            tcb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            tcb.setLocationRelativeTo(Lancador.getJFrame());
+            tcb.pack();
+            tcb.setVisible(true);
+        }
+    }
+    
+    private void editorStyleSet(JEditorPane jEditorPane1)
+    {
+        jEditorPane1.setEditable(false);
+        
+        HTMLEditorKit editorKit = new HTMLEditorKit();
+        jEditorPane1.setEditorKit(editorKit);
+        
+        File imageBase = Configuracoes.getInstancia().getDiretorioAjuda();
+        
+        if (Caminhos.rodandoEmDesenvolvimento())
+        {        
+            imageBase = new File(".");            
+        }
+        
+        String imgPath = "";
+        
+        try
+        {
+            imgPath = imageBase.getCanonicalPath();            
+        }
+        catch (Exception e)
+        {
+
+        }
+        
+        imgPath = imgPath + "/src/main/assets/ajuda";
+        imgPath = imgPath.replaceAll("\\\\", "/");
+    
+        String rule = String.format("ul {list-style-image: url('file:///%s'); }", imgPath + "/recursos/imagens/light_pix.png" );
+        String rgb = ColorController.COR_LETRA.getRed() + "," + ColorController.COR_LETRA.getGreen() + "," + ColorController.COR_LETRA.getBlue();
+                
+        StyleSheet ss = editorKit.getStyleSheet();
+        ss.addRule("body {color: rgb(" + rgb  + ");}");
+        ss.addRule("div{ font-family:Arial; font-size: 10px; }");
+        ss.addRule(rule);
+        ss.addRule("a, a:HOVER, a:VISITED, a:ACTIVE { color: rgb(" + rgb  + "); text-decoration:none; cursor: default;}");        
+        
+        jEditorPane1.setDocument(editorKit.createDefaultDocument());
+    }
+    
+    
+    private boolean confirmouReinicializacao() {
+        int resp = QuestionDialog.getInstance().showConfirmMessage("Para finalizar a instalação do plugin, o Portugol Studio precisa reinicializar! Confirma?");
+        if (resp == JOptionPane.YES_OPTION) {
+            return true;
+        } else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION) {
+            return false;
+        } else {
+            return false;
+        }
     }
     
     private File baixarPlugin(String link)
