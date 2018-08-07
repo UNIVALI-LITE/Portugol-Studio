@@ -8,6 +8,7 @@ package br.univali.ps.ui.paineis;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.utils.IconFactory;
 import java.io.File;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -34,12 +35,14 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
     @Override
     public void configurarCores() 
     {        
-        labelPluginInstalado.setBackground(ColorController.COR_PRINCIPAL);
-        labelPluginInstalado.setForeground(ColorController.COR_LETRA);        
         if(WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configuraWebLaf(seletorPlugin);
         }
+        labelPluginInstalado.setBackground(ColorController.COR_PRINCIPAL);
+        labelPluginInstalado.setForeground(ColorController.COR_LETRA);
+        seletorPlugin.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
+        seletorPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
     }
 
     public JLabel getLabelPluginInstalado() {

@@ -241,7 +241,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
             });
             
-            btnConfigPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png"));
+            btnConfigPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin64.png"));
             if (WeblafUtils.weblafEstaInstalado()) {
                 WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             }
@@ -282,9 +282,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             WeblafUtils.configuraWeblaf(botoesPlugin);//tira a borda dos botões principais
-            //WeblafUtils.configuraWebLaf(campo, 5, 25);
-            //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
-            //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
             WeblafUtils.configuraWebLaf(scrollInspetor);
             WeblafUtils.configuraWebLaf(webSeparator1);
             WeblafUtils.configuraWebLaf(webSeparator2);

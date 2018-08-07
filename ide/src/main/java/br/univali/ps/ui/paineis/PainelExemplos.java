@@ -106,7 +106,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         imagemHelplowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "helplow.png");
         
         imagemPlugins = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png");
-        imagemPluginslowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png");
+        imagemPluginslowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin64.png");
         
         staticPanel.setBackground(ColorController.FUNDO_ESCURO);
         
