@@ -17,7 +17,10 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,8 +34,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -110,10 +111,21 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                 PainelPluginItem item = new PainelPluginItem();
                 item.setLinkDownload(downloadURL);
                 item.getLabelPluginInstalado().setText(nome);
-                if(descricao.contains("Tutorial"))
-                {
-                    item.setDescricao(descricao);                    
-                }                
+                try {                    
+                    String html = new Markdown4jProcessor().process(descricao);
+                    item.setDescricao(html);
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                    item.setDescricao(descricao);
+                }                 
+                item.setAction(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        painelEditorTutorial.setText("<html><body><div>"+item.getDescricao().replaceAll("</p>", "</p><br>")+"</div></body></html>");
+                        painelEditorTutorial.setCaretPosition(0);                        
+                    }
+                });
+                item.setMaximumSize(new Dimension(9999, 30));
                 listaPlugins.add(item);
                 painelPluginsDisponiveis.add(item);
             }
@@ -163,11 +175,11 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                         indicadorProgresso.setVisible(false);
                         GerenciadorPlugins.getInstance().instalarPlugins(listaArquivos);
                         SwingUtilities.invokeLater(() -> {
-                            try {
-                                showTutoTab();
-                            } catch (IOException ex) {
-                                Logger.getLogger(TelaPluginsDisponiveis.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+//                            try {
+//                                showTutoTab();
+//                            } catch (IOException ex) {
+//                                Logger.getLogger(TelaPluginsDisponiveis.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
                             if (confirmouReinicializacao()) {
                                 Configuracoes.getInstancia().restartApplication();
                             }
@@ -195,7 +207,7 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                 editorPane.setForeground(ColorController.COR_LETRA);
                 
                 String html = new Markdown4jProcessor().process(Plugin.getDescricao());
-                editorPane.setText("<html><body><div>"+html.replaceAll("</p>", "</p><br>")+"</div></body></html>");
+                editorPane.setText("<html><body><div>"+html.replaceAll("</p>", "</p>")+"</div></body></html>");
                 editorPane.setCaretPosition(0);                
                 painel.add(editorPane);
                 
@@ -248,11 +260,22 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                 
         StyleSheet ss = editorKit.getStyleSheet();
         ss.addRule("body {color: rgb(" + rgb  + ");}");
-        ss.addRule("div{ font-family:Arial; font-size: 10px; }");
+        ss.addRule("div{ font-family:Arial; font-size: 10px;}");
         ss.addRule(rule);
         ss.addRule("a, a:HOVER, a:VISITED, a:ACTIVE { color: rgb(" + rgb  + "); text-decoration:none; cursor: default;}");        
         
         jEditorPane1.setDocument(editorKit.createDefaultDocument());
+        jEditorPane1.setText("<html>\n" +
+        "  <head>\n" +
+        "\n" +
+        "  </head>\n" +
+        "  <body>\n" +
+        "    <p style=\"margin-top: 0\">\n" +
+        "    Selecione um dos plugins para ver seus configurações\n" +
+        "    </p>\n" +
+        "  </body>\n" +
+        "</html>\n" +
+        "");        
     }
     
     
@@ -285,11 +308,16 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
     @Override
     public void configurarCores() {
         painelSelecionadorPlugins.setBackground(ColorController.FUNDO_MEDIO);
-        painelPluginsDisponiveis.setBackground(ColorController.FUNDO_CLARO);
+        painelPluginsDisponiveis.setBackground(ColorController.FUNDO_MEDIO);
+        editorStyleSet(painelEditorTutorial);
+        painelEditorTutorial.setBackground(ColorController.FUNDO_CLARO);
+        painelEditorTutorial.setForeground(ColorController.COR_LETRA);
+        setBackground(ColorController.FUNDO_MEDIO);
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWebLaf(scrollPlugins);
-            WeblafUtils.configurarBotao(botaoInstalarPlugins, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);            
-            WeblafUtils.configurarBotao(botaoSelecionarTodos, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 2, true);
+            WeblafUtils.configuraWebLaf(scrollTutorial);
+            WeblafUtils.configurarBotao(botaoInstalarPlugins, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 7, true);            
+            WeblafUtils.configurarBotao(botaoSelecionarTodos, ColorController.FUNDO_ESCURO, ColorController.COR_LETRA_TITULO, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 7, true);
         }
     }
     /**
@@ -301,20 +329,23 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        scrollPlugins = new javax.swing.JScrollPane();
-        painelPluginsDisponiveis = new javax.swing.JPanel();
+        painelPluginsPrincipal = new javax.swing.JPanel();
         painelSelecionadorPlugins = new javax.swing.JPanel();
         botaoSelecionarTodos = new com.alee.laf.button.WebButton();
         botaoInstalarPlugins = new com.alee.laf.button.WebButton();
+        scrollPlugins = new javax.swing.JScrollPane();
+        painelPluginsDisponiveis = new javax.swing.JPanel();
+        painelTutorialPlugins = new javax.swing.JPanel();
+        scrollTutorial = new javax.swing.JScrollPane();
+        painelEditorTutorial = new javax.swing.JEditorPane();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new java.awt.BorderLayout());
 
-        painelPluginsDisponiveis.setLayout(new javax.swing.BoxLayout(painelPluginsDisponiveis, javax.swing.BoxLayout.Y_AXIS));
-        scrollPlugins.setViewportView(painelPluginsDisponiveis);
+        painelPluginsPrincipal.setLayout(new java.awt.BorderLayout());
 
-        add(scrollPlugins, java.awt.BorderLayout.CENTER);
-
-        painelSelecionadorPlugins.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        painelSelecionadorPlugins.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 5, 5));
 
         botaoSelecionarTodos.setText("selecionar todos");
         painelSelecionadorPlugins.add(botaoSelecionarTodos);
@@ -322,15 +353,42 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
         botaoInstalarPlugins.setText("instalar plugins");
         painelSelecionadorPlugins.add(botaoInstalarPlugins);
 
-        add(painelSelecionadorPlugins, java.awt.BorderLayout.NORTH);
+        painelPluginsPrincipal.add(painelSelecionadorPlugins, java.awt.BorderLayout.NORTH);
+
+        painelPluginsDisponiveis.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 5, 5));
+        painelPluginsDisponiveis.setLayout(new javax.swing.BoxLayout(painelPluginsDisponiveis, javax.swing.BoxLayout.PAGE_AXIS));
+        scrollPlugins.setViewportView(painelPluginsDisponiveis);
+
+        painelPluginsPrincipal.add(scrollPlugins, java.awt.BorderLayout.CENTER);
+
+        add(painelPluginsPrincipal, java.awt.BorderLayout.WEST);
+
+        painelTutorialPlugins.setOpaque(false);
+        painelTutorialPlugins.setLayout(new java.awt.BorderLayout());
+
+        scrollTutorial.setOpaque(false);
+        scrollTutorial.setPreferredSize(new java.awt.Dimension(100, 212));
+
+        painelEditorTutorial.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelEditorTutorial.setPreferredSize(new java.awt.Dimension(100, 210));
+        painelEditorTutorial.setRequestFocusEnabled(false);
+        scrollTutorial.setViewportView(painelEditorTutorial);
+
+        painelTutorialPlugins.add(scrollTutorial, java.awt.BorderLayout.CENTER);
+
+        add(painelTutorialPlugins, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton botaoInstalarPlugins;
     private com.alee.laf.button.WebButton botaoSelecionarTodos;
+    private javax.swing.JEditorPane painelEditorTutorial;
     private javax.swing.JPanel painelPluginsDisponiveis;
+    private javax.swing.JPanel painelPluginsPrincipal;
     private javax.swing.JPanel painelSelecionadorPlugins;
+    private javax.swing.JPanel painelTutorialPlugins;
     private javax.swing.JScrollPane scrollPlugins;
+    private javax.swing.JScrollPane scrollTutorial;
     // End of variables declaration//GEN-END:variables
 }

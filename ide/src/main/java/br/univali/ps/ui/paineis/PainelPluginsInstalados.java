@@ -108,7 +108,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
             main.setPanel(ta, true);
             main.setLocationRelativeTo(Lancador.getJFrame());
             main.setVisible(true);
-            main.pack();
+            //main.pack();
         });        
     }
 

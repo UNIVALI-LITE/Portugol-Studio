@@ -9,7 +9,9 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.IconFactory;
+import java.awt.event.MouseListener;
 import java.io.File;
+import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
@@ -39,7 +41,8 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
         {
             WeblafUtils.configuraWebLaf(seletorPlugin);
         }
-        labelPluginInstalado.setBackground(ColorController.COR_PRINCIPAL);
+        setBackground(ColorController.FUNDO_CLARO);
+        labelPluginInstalado.setBackground(ColorController.PROGRESS_BAR);
         labelPluginInstalado.setForeground(ColorController.COR_LETRA);
         seletorPlugin.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
         seletorPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
@@ -85,6 +88,10 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
         this.descricao = descricao;
     }
     
+    public void setAction(MouseListener action)
+    {
+        labelPluginInstalado.addMouseListener(action);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,7 +106,6 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
         labelPluginInstalado = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         seletorPlugin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
