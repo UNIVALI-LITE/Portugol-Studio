@@ -121,7 +121,7 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                 item.setAction(new MouseAdapter() {
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        painelEditorTutorial.setText("<html><body><div>"+item.getDescricao().replaceAll("</p>", "</p><br>")+"</div></body></html>");
+                        painelEditorTutorial.setText("<html><body><div>"+item.getDescricao()+"</div></body></html>");
                         painelEditorTutorial.setCaretPosition(0);                        
                     }
                 });
@@ -175,11 +175,6 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                         indicadorProgresso.setVisible(false);
                         GerenciadorPlugins.getInstance().instalarPlugins(listaArquivos);
                         SwingUtilities.invokeLater(() -> {
-//                            try {
-//                                showTutoTab();
-//                            } catch (IOException ex) {
-//                                Logger.getLogger(TelaPluginsDisponiveis.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
                             if (confirmouReinicializacao()) {
                                 Configuracoes.getInstancia().restartApplication();
                             }
@@ -189,42 +184,6 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                 indicadorProgresso.setVisible(true);
             }
         });
-    }
-    
-    private void showTutoTab() throws IOException{
-        JTabbedPane pspt = new JTabbedPane();
-        
-        pspt.setUI(new PSOutTabbedPaneUI());
-        pspt.setForeground(ColorController.COR_LETRA);
-        
-        for (PainelPluginItem Plugin : listaPlugins) {
-            if(Plugin.getDescricao() != null)
-            {
-                JPanel painel = new JPanel(new BorderLayout());
-                JEditorPane editorPane = new JEditorPane();
-                editorStyleSet(editorPane);
-                editorPane.setBackground(ColorController.FUNDO_CLARO);
-                editorPane.setForeground(ColorController.COR_LETRA);
-                
-                String html = new Markdown4jProcessor().process(Plugin.getDescricao());
-                editorPane.setText("<html><body><div>"+html.replaceAll("</p>", "</p>")+"</div></body></html>");
-                editorPane.setCaretPosition(0);                
-                painel.add(editorPane);
-                
-                pspt.add(Plugin.getLabelPluginInstalado().getText(), painel);
-            }
-        }
-        if(pspt.getTabCount() > 0)
-        {
-            TelaCustomBorder tcb = new TelaCustomBorder("Tutorial de Instalação de Dependências");
-            tcb.setPanel(new JPanel());
-            tcb.getPanel().add(pspt);
-            tcb.getPanel().setBackground(ColorController.FUNDO_MEDIO);
-            tcb.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-            tcb.pack();
-            tcb.setLocationRelativeTo(Lancador.getJFrame());
-            tcb.setVisible(true);
-        }
     }
     
     private void editorStyleSet(JEditorPane jEditorPane1)
