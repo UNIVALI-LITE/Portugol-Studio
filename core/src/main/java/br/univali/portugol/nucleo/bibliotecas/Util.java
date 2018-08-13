@@ -184,34 +184,6 @@ public final class Util extends Biblioteca
     }
 
     @DocumentacaoFuncao(
-            descricao = "Sorteia um número aleatório entre os valores mínimo e máximo especificados",
-            parametros =
-            {
-                @DocumentacaoParametro(nome = "minimo", descricao = "o menor número que pode ser sorteado")
-                ,
-            @DocumentacaoParametro(nome = "maximo", descricao = "o maior número que pode ser sorteado")
-            },
-            retorno = "O número sorteado",
-            autores =
-            {
-                @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
-            }
-    )
-    public int sorteia(int minimo, int maximo) throws ErroExecucaoBiblioteca, InterruptedException
-    {
-        if (minimo > maximo)
-        {
-            throw new ErroExecucaoBiblioteca(String.format("O valor mínimo (%d) é maior do que o valor máximo (%d)", minimo, maximo));
-        }
-        else if (minimo == maximo)
-        {
-            throw new ErroExecucaoBiblioteca(String.format("Os valores mínimo e máximo são iguais: %d", minimo));
-        }
-
-        return minimo + random.nextInt(maximo + 1 - minimo);
-    }
-
-    @DocumentacaoFuncao(
             descricao = "Pausa a execução do programa durante o intervalo de tempo especificado",
             parametros =
             {

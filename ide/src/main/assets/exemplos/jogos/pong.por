@@ -89,8 +89,8 @@ programa
 		bolinha[ACELERACAO]=1
 		max_vel=passo+3
 		enquanto(bolinha[V_HORIZONTAL]==0 ou bolinha[V_VERTICAL]==0){
-			bolinha[V_HORIZONTAL]=u.sorteia(passo-2, passo)*u.sorteia(-1, 1)
-			bolinha[V_VERTICAL]=(max_vel-ma.valor_absoluto(bolinha[V_HORIZONTAL]))*u.sorteia(-1, 1)
+			bolinha[V_HORIZONTAL]=sorteia(passo-2, passo)*sorteia(-1, 1)
+			bolinha[V_VERTICAL]=(max_vel-ma.valor_absoluto(bolinha[V_HORIZONTAL]))*sorteia(-1, 1)
 		}		
 	}
 
@@ -509,7 +509,7 @@ programa
 		{
 			se(u.tempo_decorrido()-tempo_anterior_demo>250)
 			{
-				player_demo_aleatoriedade = u.sorteia(1,10)%3
+				player_demo_aleatoriedade = sorteia(1,10)%3
 				tempo_anterior_demo=u.tempo_decorrido()
 			}
 			se(player2[Y]+passo+player2[ALTURA]<campo[Y]+campo[ALTURA]-tamanho_tile e player_demo_aleatoriedade==0){

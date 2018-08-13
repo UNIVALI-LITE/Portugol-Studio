@@ -42,9 +42,7 @@
  */
  
 programa
-{
-	inclua biblioteca Util --> util
-	
+{	
 	funcao inicio()
 	{
 		inteiro vet [10] // Declara um vetor com 10 posições
@@ -69,7 +67,7 @@ programa
 	{
 		para (inteiro i = 0; i < 10; i++)
 		{
-			v[i] = util.sorteia (1, 100)			
+			v[i] = sorteia (1, 100)			
 		}
 	}
 	
@@ -110,7 +108,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1922; 
+ * @POSICAO-CURSOR = 1810; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;

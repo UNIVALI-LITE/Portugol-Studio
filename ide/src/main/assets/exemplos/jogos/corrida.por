@@ -824,7 +824,7 @@ programa
 		real y = 0.0
 		real x = sortear_posicao_faixa(12)
 
-		y = maior_distancia - u.sorteia(MENOR_DISTANCIA_GALOES, MAIOR_DISTANCIA_GALOES)
+		y = maior_distancia - sorteia(MENOR_DISTANCIA_GALOES, MAIOR_DISTANCIA_GALOES)
 		y = m.menor_numero(y, -(altura * 2.0))
 		
 		galoes[indice][_X] = x
@@ -872,7 +872,7 @@ programa
 		real y = 0.0
 		real x = sortear_posicao_faixa(12)
 		 
-		 y = maior_distancia - u.sorteia(MENOR_DISTANCIA_REPAROS, MAIOR_DISTANCIA_REPAROS)
+		 y = maior_distancia - sorteia(MENOR_DISTANCIA_REPAROS, MAIOR_DISTANCIA_REPAROS)
 		 y = m.menor_numero(y, -(altura * 2.0))
 		
 		pontos_reparo[indice][_X] = x
@@ -887,7 +887,7 @@ programa
 	funcao real sortear_posicao_faixa(inteiro numero_faixas)
 	{
 		inteiro largura = largura_faixa(numero_faixas)
-		inteiro faixa = u.sorteia(0, numero_faixas - 1)
+		inteiro faixa = sorteia(0, numero_faixas - 1)
 
 		se (faixa < numero_faixas / 2)
 		{
@@ -901,7 +901,7 @@ programa
 
 	funcao sortear_posicao_veiculo(inteiro indice)
 	{		
-		inteiro indice_modelo = u.sorteia(0, u.numero_linhas(MODELOS_VEICULOS) - 1)
+		inteiro indice_modelo = sorteia(0, u.numero_linhas(MODELOS_VEICULOS) - 1)
 				
 		inteiro largura = MODELOS_VEICULOS[indice_modelo][_LARGURA]
 		inteiro altura = MODELOS_VEICULOS[indice_modelo][_ALTURA]
@@ -916,12 +916,12 @@ programa
 		real y = 0.0
 		real x = sortear_posicao_faixa(4)
 		
-		y = maior_distancia - u.sorteia(MENOR_DISTANCIA_VEICULOS, MAIOR_DISTANCIA_VEICULOS)
+		y = maior_distancia - sorteia(MENOR_DISTANCIA_VEICULOS, MAIOR_DISTANCIA_VEICULOS)
 		y = m.menor_numero(y, -(altura * 2.0))
 
 		inteiro velocidade_minima = tp.real_para_inteiro(VELOCIDADE_MINIMA_VEICULOS)
 		inteiro velocidade_maxima = tp.real_para_inteiro(VELOCIDADE_MAXIMA_VEICULOS)
-		inteiro velocidade = u.sorteia(velocidade_minima, velocidade_maxima)
+		inteiro velocidade = sorteia(velocidade_minima, velocidade_maxima)
 		
 		veiculos[indice][_VELOCIDADE] = tp.inteiro_para_real(velocidade)
 		veiculos[indice][_MODELO] = tp.inteiro_para_real(indice_modelo)
@@ -1314,12 +1314,12 @@ programa
 		{
 			inteiro velocidade_minima = tp.real_para_inteiro(VELOCIDADE_MINIMA_VEICULOS)
 			inteiro velocidade_maxima = tp.real_para_inteiro(VELOCIDADE_MAXIMA_VEICULOS)
-			inteiro velocidade = u.sorteia(velocidade_minima, velocidade_maxima)
+			inteiro velocidade = sorteia(velocidade_minima, velocidade_maxima)
 
 			veiculos[i][_X] = 0.0
 			veiculos[i][_Y] = 1500.0
 			veiculos[i][_VELOCIDADE] = tp.inteiro_para_real(velocidade)
-			veiculos[i][_MODELO] = tp.inteiro_para_real(u.sorteia(0, u.numero_linhas(MODELOS_VEICULOS) - 1))
+			veiculos[i][_MODELO] = tp.inteiro_para_real(sorteia(0, u.numero_linhas(MODELOS_VEICULOS) - 1))
 		}
 
 		para (inteiro i = 0; i < u.numero_linhas(veiculos); i++)

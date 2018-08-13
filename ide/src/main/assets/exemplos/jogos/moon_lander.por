@@ -376,7 +376,7 @@ programa
 		}
 		senao
 		{
-			inteiro probabilidade = u.sorteia(1, 100)
+			inteiro probabilidade = sorteia(1, 100)
 
 			/* 
 			 * Se o foguete estiver dentro da plataforma, move para um dos lados, com 50%
@@ -418,7 +418,7 @@ programa
 			inteligencia_artificial_decidiu_acelerar = verdadeiro
 			tempo_inicio_aceleracao = u.tempo_decorrido()
 
-			inteiro probabilidade = u.sorteia(1, 100)
+			inteiro probabilidade = sorteia(1, 100)
 
 			/* 
 			 * Cria uma probabilidade de 5% de o foguete acelerar por tempo demais e se perder 
@@ -427,11 +427,11 @@ programa
 			
 			se (probabilidade <= 5) 
 			{				
-				tempo_escolhido_aceleracao = u.sorteia(500, 1000)
+				tempo_escolhido_aceleracao = sorteia(500, 1000)
 			}
 			senao
 			{
-				tempo_escolhido_aceleracao = u.sorteia(150, 350)
+				tempo_escolhido_aceleracao = sorteia(150, 350)
 			}
 		}
 	}
@@ -1023,19 +1023,19 @@ programa
 	{
 		para (inteiro indice = 0; indice < u.numero_linhas(estrelas_cintilantes); indice++)
 		{
-			inteiro brilho_minimo = u.sorteia(32, 64)
-			inteiro brilho_maximo = u.sorteia(128, 255)
+			inteiro brilho_minimo = sorteia(32, 64)
+			inteiro brilho_maximo = sorteia(128, 255)
 
-			estrelas_cintilantes[indice][POSICAO_X] = u.sorteia(20, LARGURA_DA_TELA - 20)
-			estrelas_cintilantes[indice][POSICAO_Y] = u.sorteia(20, ALTURA_DA_TELA - altura_da_lua - 20)
-			estrelas_cintilantes[indice][TAMANHO_DA_ESTRELA] = u.sorteia(2, 4)
+			estrelas_cintilantes[indice][POSICAO_X] = sorteia(20, LARGURA_DA_TELA - 20)
+			estrelas_cintilantes[indice][POSICAO_Y] = sorteia(20, ALTURA_DA_TELA - altura_da_lua - 20)
+			estrelas_cintilantes[indice][TAMANHO_DA_ESTRELA] = sorteia(2, 4)
 			
 			estrelas_cintilantes[indice][BRILHO_MINIMO] = brilho_minimo
 			estrelas_cintilantes[indice][BRILHO_MAXIMO] = brilho_maximo
-			estrelas_cintilantes[indice][BRILHO_ATUAL] = u.sorteia(brilho_minimo, brilho_maximo)
+			estrelas_cintilantes[indice][BRILHO_ATUAL] = sorteia(brilho_minimo, brilho_maximo)
 
-			estrelas_cintilantes[indice][VELOCIDADE_DA_ANIMACAO] = u.sorteia(1, 4)
-			estrelas_cintilantes[indice][ESTADO_DA_ANIMACAO] = u.sorteia(AUMENTANDO_BRILHO, DIMINUINDO_BRILHO)
+			estrelas_cintilantes[indice][VELOCIDADE_DA_ANIMACAO] = sorteia(1, 4)
+			estrelas_cintilantes[indice][ESTADO_DA_ANIMACAO] = sorteia(AUMENTANDO_BRILHO, DIMINUINDO_BRILHO)
 		}
 	}
 
@@ -1232,7 +1232,7 @@ programa
 
 	funcao reiniciar_jogo()
 	{
-		x_do_foguete = u.sorteia(10, LARGURA_DA_TELA - largura_do_foguete - 10)
+		x_do_foguete = sorteia(10, LARGURA_DA_TELA - largura_do_foguete - 10)
 		y_do_foguete = 0
 		
 		reiniciar_variaveis_de_controle()

@@ -99,7 +99,7 @@ programa
 
 	funcao real sortear()
 	{
-		retorne u.sorteia(0, 1000) / 1000.0
+		retorne sorteia(0, 1000) / 1000.0
 	}
      
 	funcao  desenhar_proximo_ponto()
@@ -147,7 +147,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 2704; 
+ * @POSICAO-CURSOR = 2523; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

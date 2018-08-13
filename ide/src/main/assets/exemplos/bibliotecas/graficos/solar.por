@@ -126,7 +126,7 @@ programa
 			planetas[i][ORIGEM_Y]=yc
 			planetas[i][Y]=yc
 			planetas[i][DISTANCIA]= xp-xc
-			planetas[i][ANGULO]= u.sorteia(0, 360)
+			planetas[i][ANGULO]= sorteia(0, 360)
 			planetas[i][ANGULO_INC]= speed/tp.cadeia_para_real(inc)
 			planetas[i][COR]=g.criar_cor(tp.cadeia_para_inteiro(r,10), tp.cadeia_para_inteiro(g,10), tp.cadeia_para_inteiro(b,10))
 
@@ -187,9 +187,9 @@ programa
 		inteiro opacidade = 0
 		g.definir_cor(cor_branco)
 		para(inteiro i=0; i< estrelas; i++){
-			x= u.sorteia(0, w)
-			y = u.sorteia(0, h)
-			opacidade = u.sorteia(0, 255)
+			x= sorteia(0, w)
+			y = sorteia(0, h)
+			opacidade = sorteia(0, 255)
 			g.definir_opacidade(opacidade)
 			g.desenhar_elipse(x, y, tamanho_estrela, tamanho_estrela, verdadeiro)
 		}
@@ -217,8 +217,8 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1024; 
- * @DOBRAMENTO-CODIGO = [1, 81, 90, 157, 166, 180, 198];
+ * @POSICAO-CURSOR = 4694; 
+ * @DOBRAMENTO-CODIGO = [1, 81, 157, 166, 198];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

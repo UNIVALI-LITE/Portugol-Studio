@@ -97,7 +97,7 @@ programa
 		
 		
 		para(real i=0.0; i<361.0; i+=0.5){
-			bolinha = u.sorteia(10,16)
+			bolinha = sorteia(10,16)
 			bolinha= 32*(iterador/360.0)+1
 			g.definir_cor(cor)
 			g.desenhar_elipse(base_x+m.seno(i*x)*espaco-bolinha/2, base_y+m.cosseno(i*y)*espaco-bolinha/2, bolinha, bolinha, verdadeiro)
@@ -124,25 +124,25 @@ programa
 			y++
 		}
 		se(t.tecla_pressionada(t.TECLA_C)){
-			cor_base = u.sorteia(-16777216,-1)
+			cor_base = sorteia(-16777216,-1)
 		}
 		se(t.tecla_pressionada(t.TECLA_D)){
-			cor_base = cores[u.sorteia(0,3)]
+			cor_base = cores[sorteia(0,3)]
 		}
 		se(t.tecla_pressionada(t.TECLA_A)){
 			auto_play = nao auto_play
 		}
 		se((u.tempo_decorrido()-tempo_i>tempo_a e auto_play) ou t.tecla_pressionada(t.TECLA_ESPACO)){
-			prob = u.sorteia(0, 100)
+			prob = sorteia(0, 100)
 			se (prob%10<2){
-				x = u.sorteia(0, 360)
-				y = u.sorteia(0, 360)
+				x = sorteia(0, 360)
+				y = sorteia(0, 360)
 			}senao{
-				pos = u.sorteia(0, 20)
+				pos = sorteia(0, 20)
 				x = demos[pos][0]
 				y = demos[pos][1]
 			}
-			cor_base = cores[u.sorteia(0,3)]
+			cor_base = cores[sorteia(0,3)]
 			tempo_i = u.tempo_decorrido()				
 		}
 		enquanto(t.alguma_tecla_pressionada()){
@@ -166,8 +166,8 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 949; 
- * @DOBRAMENTO-CODIGO = [1, 48, 72, 85, 112, 152];
+ * @POSICAO-CURSOR = 3427; 
+ * @DOBRAMENTO-CODIGO = [1, 48, 72, 152];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

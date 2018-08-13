@@ -1457,8 +1457,8 @@ programa
 
 	funcao atualizar_posicao_comida()
 	{
-		comida[LINHA]  = u.sorteia(0, LINHAS  - 1)
-		comida[COLUNA] = u.sorteia(0, COLUNAS - 1)
+		comida[LINHA]  = sorteia(0, LINHAS  - 1)
+		comida[COLUNA] = sorteia(0, COLUNAS - 1)
 
 		enquanto (local_comida_invalido())
 		{

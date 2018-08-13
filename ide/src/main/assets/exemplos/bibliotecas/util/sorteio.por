@@ -25,11 +25,9 @@
  * 	
  * Data: 18/07/2014
  */
- 
+
 programa
 {
-	inclua biblioteca Util --> u
-	
 	funcao inicio()
 	{
 		inteiro valor_inicial
@@ -50,7 +48,7 @@ programa
 		{
 			// Sorteia um número entre os valores informados, incluindo
 			// o próprio valor inicial e final
-			valor_sorteado = u.sorteia(valor_inicial, valor_final)
+			valor_sorteado = sorteia(valor_inicial, valor_final)
 			
 			escreva("\nSorteio nº ", i, ": ", valor_sorteado)
 		}
@@ -64,7 +62,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 970; 
+ * @POSICAO-CURSOR = 928; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;

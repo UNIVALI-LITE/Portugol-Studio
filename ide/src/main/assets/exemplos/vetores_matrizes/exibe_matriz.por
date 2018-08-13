@@ -41,7 +41,7 @@ programa
 		{
 			para (inteiro coluna = 0; coluna < TAMANHO; coluna++)
 			{
-				matriz[linha][coluna] = u.sorteia(1, 9) // Atribui um valor aleatório à posição da matriz
+				matriz[linha][coluna] = sorteia(1, 9) // Atribui um valor aleatório à posição da matriz
 				
 				escreva("[", matriz[linha][coluna], "]") // Exibe o valor contido na posição da matriz
 			}
@@ -56,7 +56,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 923; 
+ * @POSICAO-CURSOR = 787; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;

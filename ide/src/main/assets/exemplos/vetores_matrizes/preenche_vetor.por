@@ -30,8 +30,6 @@
 
 programa
 {
-	inclua biblioteca Util --> util
-	
 	funcao inicio() 
 	{
 		inteiro vetor[10]
@@ -39,7 +37,7 @@ programa
 		// preenche o vetor
 		para (inteiro posicao = 0; posicao < 10; posicao++)
 		{
-			vetor[posicao] = util.sorteia(1, 100) // Sorteia um número e atribui à posição do vetor
+			vetor[posicao] = sorteia(1, 100) // Sorteia um número e atribui à posição do vetor
 		}
 
 		// Exibe o vetor na ordem original
@@ -65,7 +63,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1015; 
+ * @POSICAO-CURSOR = 937; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;

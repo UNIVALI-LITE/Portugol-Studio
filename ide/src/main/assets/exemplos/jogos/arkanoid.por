@@ -460,7 +460,7 @@ programa
 		centralizar_bolinha_no_bastao()
 
 		direcao_bolinha_vertical = ACIMA
-		direcao_bolinha_horizontal = u.sorteia(ESQUERDA, DIREITA)
+		direcao_bolinha_horizontal = sorteia(ESQUERDA, DIREITA)
 
 		velocidade_bolinha_vertical = VELOCIDADE_INICIAL_BOLINHA
 		velocidade_bolinha_horizontal = VELOCIDADE_INICIAL_BOLINHA
@@ -501,7 +501,7 @@ programa
 		inteiro x_minimo = borda_esquerda_tela()
 		inteiro x_maximo = borda_direita_tela() - largura_bastao
 		
-		x_bastao = tp.inteiro_para_real(u.sorteia(x_minimo, x_maximo))
+		x_bastao = tp.inteiro_para_real(sorteia(x_minimo, x_maximo))
 	}
 
 	funcao finalizar()

@@ -42,9 +42,7 @@
  */
  
 programa
-{
-	inclua biblioteca Util --> util
-	
+{	
 	funcao inicio()
 	{
 		inteiro vet = 0 // Declara uma variável
@@ -64,7 +62,7 @@ programa
 	// passada por referência
 	funcao preenche (inteiro &v) 
 	{
-		v = util.sorteia (1, 100)
+		v = sorteia (1, 100)
 	}
 
 	// Exibe o valor contido na variavel. Neste caso, a variavel é 
@@ -84,7 +82,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 1909; 
+ * @POSICAO-CURSOR = 1810; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;

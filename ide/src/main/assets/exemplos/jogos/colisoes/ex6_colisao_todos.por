@@ -171,7 +171,7 @@ programa
 		
 		enquanto (velocidade == 0)
 		{
-			velocidade = u.sorteia(-VELOCIDADE_MAXIMA, VELOCIDADE_MAXIMA)
+			velocidade = sorteia(-VELOCIDADE_MAXIMA, VELOCIDADE_MAXIMA)
 		}
 		
 		retorne velocidade

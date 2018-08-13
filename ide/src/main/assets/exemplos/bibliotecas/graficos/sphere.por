@@ -247,7 +247,7 @@ programa
 			fps = frames
 			tempo_inicio_fps = u.tempo_decorrido() - (tempo_fps - 1000)
 			frames = 0
-			//cor = u.sorteia(0,16000000)			
+			//cor = sorteia(0,16000000)			
 		}
 	}
 
@@ -404,7 +404,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 6770; 
+ * @POSICAO-CURSOR = 8; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = {z_index, 33, 6, 7};
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

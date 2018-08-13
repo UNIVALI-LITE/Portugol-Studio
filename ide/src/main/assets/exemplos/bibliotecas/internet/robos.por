@@ -24,10 +24,10 @@ programa
 		se(img != -1){
 			g.liberar_imagem(img)
 		}
-		chars = u.sorteia(3,10)
+		chars = sorteia(3,10)
 		hash = ""
 		para(inteiro i = 0 ; i < chars ; i++){
-			temp = u.sorteia(0, 23)
+			temp = sorteia(0, 23)
 			hash = hash + tx.obter_caracter(letras, temp)
 		}
 		
@@ -63,7 +63,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 8; 
+ * @POSICAO-CURSOR = 0; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

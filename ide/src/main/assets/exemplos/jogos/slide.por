@@ -48,8 +48,8 @@ programa
 	funcao embaralhar(inteiro mat[][]) {
        para (inteiro i = TAMANHO_PRANCHA - 1; i > 0; i--) {
             para (inteiro j = TAMANHO_PRANCHA - 1; j > 0; j--) {
-                inteiro m = u.sorteia(0,TAMANHO_PRANCHA - 1)
-                inteiro n = u.sorteia(0,TAMANHO_PRANCHA - 1)
+                inteiro m = sorteia(0,TAMANHO_PRANCHA - 1)
+                inteiro n = sorteia(0,TAMANHO_PRANCHA - 1)
                 inteiro temp = mat[i][j]
                 mat[i][j] = mat[m][n]
                 mat[m][n] = temp

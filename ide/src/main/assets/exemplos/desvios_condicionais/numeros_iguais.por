@@ -28,8 +28,6 @@
 
 programa
 {
-	inclua biblioteca Util --> util
-	
 	funcao inicio()
 	{
 		inteiro num_digitado, num_sorteado
@@ -37,7 +35,7 @@ programa
 		escreva("Informe um número de 0 a 6: ")
 		leia(num_digitado)
 
-		num_sorteado = util.sorteia(0, 6)
+		num_sorteado = sorteia(0, 6)
 
 		se (num_digitado >= 0 e num_digitado <= 6)
 		{
@@ -65,7 +63,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 991; 
+ * @POSICAO-CURSOR = 897; 
  * @DOBRAMENTO-CODIGO = [1];
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;

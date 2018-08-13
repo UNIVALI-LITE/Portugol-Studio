@@ -323,8 +323,8 @@ programa
 		
 		para (inteiro i = 1; i <= (tamanho / 2); i++)
 		{
-			sx = u.sorteia(x, x + tamanho)
-			sy = u.sorteia(y, y + tamanho)
+			sx = sorteia(x, x + tamanho)
+			sy = sorteia(y, y + tamanho)
 
 			g.desenhar_ponto(sx, sy)
 		}
@@ -509,6 +509,10 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 44; 
- * @DOBRAMENTO-CODIGO = [50, 64, 73, 78, 93, 123, 121, 105, 140, 152, 191, 195, 205, 209, 168, 217, 239, 243, 237, 262, 295, 305, 323, 314, 332, 343, 341, 360, 358, 351, 369, 402, 400, 389, 413, 411, 423, 421, 431, 436, 441, 470, 483];
+ * @POSICAO-CURSOR = 8; 
+ * @DOBRAMENTO-CODIGO = [50, 64, 73, 78, 93, 123, 121, 105, 140, 152, 191, 195, 205, 209, 168, 217, 239, 243, 237, 262, 295, 305, 332, 343, 341, 360, 358, 351, 369, 402, 400, 389, 413, 411, 423, 421, 431, 436, 441, 470, 483];
+ * @PONTOS-DE-PARADA = ;
+ * @SIMBOLOS-INSPECIONADOS = ;
+ * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
+ * @FILTRO-ARVORE-TIPOS-DE-SIMBOLO = variavel, vetor, matriz, funcao;
  */
