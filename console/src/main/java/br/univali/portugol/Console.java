@@ -41,6 +41,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     
     private Scanner scannerEntrada = null;
     private static boolean aguardarParaSair = true;
+    private static boolean rodandoNoWebstudio = false;
     
     private Programa programa = null;
     
@@ -83,6 +84,9 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
         List<String> parametros = new ArrayList<>( Arrays.asList(args) );
         
         aguardarParaSair = extrairParametroAguardarParaSair(parametros);
+        rodandoNoWebstudio = extrairParametroWebstudio(parametros);
+
+        Portugol.RODANDO_NO_WEBSTUDIO = rodandoNoWebstudio;
         
         definirEntradaDadosPadrao(parametros);
         definirSaidaDadosPadrao(parametros);
@@ -229,6 +233,27 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
         }
         
         return true;
+    }
+
+    private static boolean extrairParametroWebstudio(List<String> parametros)
+    {
+        if (!parametros.isEmpty())
+        {
+            Iterator<String> iterador = parametros.iterator();
+
+            while (iterador.hasNext())
+            {
+                String parametro = iterador.next();
+
+                if (parametro.toLowerCase().equals("-webstudio"))
+                {
+                    iterador.remove();
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     private static void definirEntradaDadosPadrao(List<String> parametros)
@@ -455,8 +480,9 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
     @Override
     public void limpar()
     {
-        
-        if (isLinux) {
+        if (rodandoNoWebstudio) {
+            System.out.print("~|^!+LIMPAR+!^|~");
+        }else if (isLinux) {
             System.out.print("\033c");
     	}else if(isWindows){
             try {
@@ -530,7 +556,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
                 }
                 break;
             case INTERRUPCAO:
-                if (aguardarParaSair)
+                if (aguardarParaSair || rodandoNoWebstudio)
                 {
                     System.out.println("\nO programa foi interrompido");
                     System.out.flush();
@@ -538,7 +564,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
                 }                
                 break;
             case ERRO:
-                if (aguardarParaSair)
+                if (aguardarParaSair || rodandoNoWebstudio)
                 {
                     System.err.println("\nErro de execução: " + resultadoExecucao.getErro().getMensagem() + "\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + resultadoExecucao.getErro().getColuna());
                     System.err.flush();
@@ -603,6 +629,11 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
 
     private static void aguardar(CodigoEncerramento codigoEncerramento)
     {
+        if (rodandoNoWebstudio)
+        {
+            return;
+        }
+
         try
         {
             System.out.println("");

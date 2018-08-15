@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas.base;
 
+import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.Quantificador;
@@ -81,18 +82,22 @@ public final class GerenciadorBibliotecas
         {
             bibliotecasDisponiveis = new ArrayList<>();
             bibliotecasDisponiveis.add("Util");
-            bibliotecasDisponiveis.add("Graficos");
             bibliotecasDisponiveis.add("Matematica");
-            bibliotecasDisponiveis.add("Teclado");
             bibliotecasDisponiveis.add("Texto");
             bibliotecasDisponiveis.add("Tipos");
-            bibliotecasDisponiveis.add("Mouse");
-            bibliotecasDisponiveis.add("Arquivos");
-            bibliotecasDisponiveis.add("Sons");
             bibliotecasDisponiveis.add("Calendario");
-            bibliotecasDisponiveis.add("Internet");
             bibliotecasDisponiveis.add("Objetos");
-            bibliotecasDisponiveis.add("ServicosWeb");
+
+            if (!Portugol.RODANDO_NO_WEBSTUDIO)
+            {
+                bibliotecasDisponiveis.add("Graficos");
+                bibliotecasDisponiveis.add("Teclado");
+                bibliotecasDisponiveis.add("Mouse");
+                bibliotecasDisponiveis.add("Arquivos");
+                bibliotecasDisponiveis.add("Sons");
+                bibliotecasDisponiveis.add("Internet");
+                bibliotecasDisponiveis.add("ServicosWeb");
+            }
 
             Collections.sort(bibliotecasDisponiveis);
         }

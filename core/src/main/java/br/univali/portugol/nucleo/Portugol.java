@@ -19,6 +19,8 @@ public final class Portugol
     public static final String QUEBRA_DE_LINHA = "\n";
     
     private static final Logger LOGGER = Logger.getLogger(Portugol.class.getName());
+
+    public static boolean RODANDO_NO_WEBSTUDIO = false;
     
     private static Programa compilar(String codigo, boolean paraExecucao, String classPath, String caminhoJavac) throws ErroCompilacao
     {

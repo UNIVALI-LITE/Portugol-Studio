@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.bibliotecas;
 
+import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
@@ -32,6 +33,11 @@ public final class Util extends Biblioteca
     )
     public String obter_diretorio_usuario() throws ErroExecucaoBiblioteca, InterruptedException
     {
+        if (Portugol.RODANDO_NO_WEBSTUDIO)
+        {
+            return "/";
+        }
+
         try
         {
             return new File(System.getProperty("user.home")).getAbsolutePath();
