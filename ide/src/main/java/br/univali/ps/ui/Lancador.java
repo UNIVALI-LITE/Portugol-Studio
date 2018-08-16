@@ -178,6 +178,30 @@ public class Lancador {
         Lancador.maximazed = maximaze;
     }
     
+    public static void snapToEdge() {
+    	if(MouseInfo.getPointerInfo().getLocation().getY() <= 5) {
+        	Lancador.maximize(true);
+        }else if(MouseInfo.getPointerInfo().getLocation().getX() >= (monitorPrincipal.getDefaultConfiguration().getBounds().width) - 10){
+        	
+        	Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+        	Rectangle newBounds = new Rectangle(bounds.width, bounds.height);
+        	newBounds.width = newBounds.width/2;
+        	newBounds.x = (int) bounds.getWidth()/2;
+
+        	Lancador.getJFrame().setBounds(newBounds); 
+            Lancador.setActualSize(newBounds.getSize()); 
+        	
+        }else if(MouseInfo.getPointerInfo().getLocation().getX() <= 10){
+        	Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+        	Rectangle newBounds = new Rectangle(bounds.width, bounds.height);
+        	newBounds.width = newBounds.width/2;
+
+        	Lancador.getJFrame().setBounds(newBounds); 
+            Lancador.setActualSize(newBounds.getSize()); 
+
+        }
+    }
+    
     public static JFrame getJFrame()
     {
         return frame;
