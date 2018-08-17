@@ -33,6 +33,7 @@ import java.awt.Insets;
 import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
 
 /**
  * @author lite
@@ -178,27 +179,31 @@ public class Lancador {
         Lancador.maximazed = maximaze;
     }
     
-    public static void snapToEdge() {
-    	if(MouseInfo.getPointerInfo().getLocation().getY() <= 5) {
+    public static void snapToEdge(MouseEvent me) {       
+        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());        
+        
+    	if(me.getYOnScreen()<= 5) {
         	Lancador.maximize(true);
-        }else if(MouseInfo.getPointerInfo().getLocation().getX() >= (monitorPrincipal.getDefaultConfiguration().getBounds().width) - 10){
-        	
-        	Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
-        	Rectangle newBounds = new Rectangle(bounds.width, bounds.height);
-        	newBounds.width = newBounds.width/2;
-        	newBounds.x = (int) bounds.getWidth()/2;
+        }
+        else if(me.getXOnScreen()>= (monitorPrincipal.getDefaultConfiguration().getBounds().width) - 10){
+            Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+            Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
+            newBounds.width = newBounds.width/2;
+            newBounds.x = (int) Math.round((bounds.getWidth()+(screenInsets.left+screenInsets.right))/2);
+            newBounds.y = screenInsets.top;
 
-        	Lancador.getJFrame().setBounds(newBounds); 
+            Lancador.getJFrame().setBounds(newBounds); 
             Lancador.setActualSize(newBounds.getSize()); 
         	
-        }else if(MouseInfo.getPointerInfo().getLocation().getX() <= 10){
-        	Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
-        	Rectangle newBounds = new Rectangle(bounds.width, bounds.height);
-        	newBounds.width = newBounds.width/2;
-
-        	Lancador.getJFrame().setBounds(newBounds); 
+        }else if(me.getXOnScreen()<= 10){
+            Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+            Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
+            newBounds.width = newBounds.width/2;
+            newBounds.x = screenInsets.left;
+            newBounds.y = screenInsets.top;
+            
+            Lancador.getJFrame().setBounds(newBounds); 
             Lancador.setActualSize(newBounds.getSize()); 
-
         }
     }
     

@@ -83,10 +83,8 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         getCabecalhosAba().addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent me) {
                 SwingUtilities.invokeLater(() -> {
-                    if(!Lancador.isMaximazed()){
-                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
-                        Lancador.snapToEdge();
-                    }
+                    Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                    Lancador.snapToEdge(me);
                 });
 
             }
