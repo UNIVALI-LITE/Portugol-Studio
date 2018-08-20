@@ -180,13 +180,36 @@ public class Lancador {
     }
     
     public static void snapToEdge(MouseEvent me) {       
-        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());        
+        if(maximazed) maximazed = false;
         
-    	if(me.getYOnScreen()<= 5) {
+        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());        
+        Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+        
+        //Topo, maximiza
+    	if(me.getYOnScreen()<= screenInsets.top && me.getXOnScreen() < monitorPrincipal.getDefaultConfiguration().getBounds().width-20){
         	Lancador.maximize(true);
-        }
+        
+        }//Canto superior Direito
+        else if((me.getXOnScreen() >= (monitorPrincipal.getDefaultConfiguration().getBounds().width)-20) && (me.getYOnScreen() <= 15)){
+            Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
+            newBounds.width = newBounds.width/2;
+            newBounds.height = newBounds.height/2;
+            newBounds.x = (int) Math.round((bounds.getWidth()+(screenInsets.left+screenInsets.right))/2);
+            
+            Lancador.getJFrame().setBounds(newBounds); 
+            Lancador.setActualSize(newBounds.getSize()); 
+        }//Canto inferior Direito
+        else if((me.getXOnScreen() >= (monitorPrincipal.getDefaultConfiguration().getBounds().width)-20) && (me.getYOnScreen() >= (monitorPrincipal.getDefaultConfiguration().getBounds().height)-20)){
+            Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
+            newBounds.width = newBounds.width/2;
+            newBounds.height = newBounds.height/2;
+            newBounds.x = (int) Math.round((bounds.getWidth()+(screenInsets.left+screenInsets.right))/2);
+            newBounds.y = (int) Math.round((bounds.getHeight()+(screenInsets.top+screenInsets.bottom))/2);;
+            
+            Lancador.getJFrame().setBounds(newBounds); 
+            Lancador.setActualSize(newBounds.getSize()); 
+        }//Lado Direito
         else if(me.getXOnScreen()>= (monitorPrincipal.getDefaultConfiguration().getBounds().width) - 10){
-            Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
             Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
             newBounds.width = newBounds.width/2;
             newBounds.x = (int) Math.round((bounds.getWidth()+(screenInsets.left+screenInsets.right))/2);
@@ -195,8 +218,8 @@ public class Lancador {
             Lancador.getJFrame().setBounds(newBounds); 
             Lancador.setActualSize(newBounds.getSize()); 
         	
-        }else if(me.getXOnScreen()<= 10){
-            Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+        }//Lado Esquerdo
+        else if(me.getXOnScreen()<= screenInsets.left){
             Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
             newBounds.width = newBounds.width/2;
             newBounds.x = screenInsets.left;
