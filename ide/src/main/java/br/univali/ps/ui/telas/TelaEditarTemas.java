@@ -57,17 +57,16 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             if(!name.equals("Editor"))
             {
                 JPanel estilo = new JPanel();
-                estilo.setOpaque(true);
-                estilo.setBorder(new LineBorder(Color.BLACK, 2));
+                estilo.setOpaque(false);
                 estilo.setAlignmentY(LEFT_ALIGNMENT);
-                JLabel nomeVariavel = new JLabel(name);
-                nomeVariavel.setPreferredSize(new Dimension(10, 5));
+                JLabel nomeVariavel = new JLabel("<html><body width='110px'><div>"+name.replace("_", " ")+"</div></body></html>");                
                 nomeVariavel.setForeground(ColorController.COR_LETRA);
                 WebButton botaoColorPicker = new WebButton("+");
-                WeblafUtils.configurarBotao(botaoColorPicker);
-                estilo.add(nomeVariavel);
+                WeblafUtils.configurarBotao(botaoColorPicker, 1);
                 estilo.add(botaoColorPicker);
+                estilo.add(nomeVariavel);
                 estilo.revalidate();
+                estilo.repaint();
                 painelVariaveisPSInterior.add(estilo);
                 
             }
@@ -78,16 +77,16 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         for (String name : JSONObject.getNames(coresEditor)) 
         {
             JPanel estilo = new JPanel();
-            estilo.setOpaque(true);
-            estilo.setBorder(new LineBorder(Color.BLACK, 2));
+            estilo.setOpaque(false);
             estilo.setAlignmentY(LEFT_ALIGNMENT);
-            JLabel nomeVariavel = new JLabel(name);
+            JLabel nomeVariavel = new JLabel("<html><body width='110px'><div>"+name.replace("_", " ")+"</div></body></html>");
             nomeVariavel.setForeground(ColorController.COR_LETRA);
             WebButton botaoColorPicker = new WebButton("+");
-            WeblafUtils.configurarBotao(botaoColorPicker);
-            estilo.add(nomeVariavel);
+            WeblafUtils.configurarBotao(botaoColorPicker, 1);
             estilo.add(botaoColorPicker);
+            estilo.add(nomeVariavel);
             estilo.revalidate();
+            estilo.repaint();
             painelVariaveisEditorInterior.add(estilo);
         }
     }
@@ -133,29 +132,33 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         botaoAplicarTema = new com.alee.laf.button.WebButton();
         botaoCancelar = new com.alee.laf.button.WebButton();
 
-        variavelScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        variavelScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        variavelScrollPane.setMaximumSize(new java.awt.Dimension(760, 580));
         variavelScrollPane.setOpaque(false);
 
+        painelVariaveis.setMaximumSize(new java.awt.Dimension(760, 580));
         painelVariaveis.setOpaque(false);
         painelVariaveis.setLayout(new java.awt.BorderLayout());
 
+        painelVariaveisEditor.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelVariaveisEditor.setOpaque(false);
         painelVariaveisEditor.setLayout(new java.awt.BorderLayout());
 
         labelEditor.setText("Editor");
+        labelEditor.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelVariaveisEditor.add(labelEditor, java.awt.BorderLayout.PAGE_START);
 
         painelVariaveisEditorInterior.setOpaque(false);
-        painelVariaveisEditorInterior.setLayout(new java.awt.GridLayout(5, 3));
+        painelVariaveisEditorInterior.setLayout(new java.awt.GridLayout(10, 3));
         painelVariaveisEditor.add(painelVariaveisEditorInterior, java.awt.BorderLayout.CENTER);
 
         painelVariaveis.add(painelVariaveisEditor, java.awt.BorderLayout.CENTER);
 
+        painelVariaveisIDE.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 20, 5));
         painelVariaveisIDE.setOpaque(false);
         painelVariaveisIDE.setLayout(new java.awt.BorderLayout());
 
         labelPS.setText("Portugol Studio");
+        labelPS.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         painelVariaveisIDE.add(labelPS, java.awt.BorderLayout.PAGE_START);
 
         painelVariaveisPSInterior.setOpaque(false);
@@ -187,7 +190,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(variavelScrollPane))
+                        .addComponent(variavelScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()

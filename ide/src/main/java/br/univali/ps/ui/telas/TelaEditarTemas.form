@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.8" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -20,7 +20,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="variavelScrollPane" max="32767" attributes="0"/>
+                      <Component id="variavelScrollPane" pref="560" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -71,8 +71,9 @@
   <SubComponents>
     <Container class="javax.swing.JScrollPane" name="variavelScrollPane">
       <Properties>
-        <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
-        <Property name="verticalScrollBarPolicy" type="int" value="22"/>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[760, 580]"/>
+        </Property>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
 
@@ -80,6 +81,9 @@
       <SubComponents>
         <Container class="javax.swing.JPanel" name="painelVariaveis">
           <Properties>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[760, 580]"/>
+            </Property>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
 
@@ -87,6 +91,11 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="painelVariaveisEditor">
               <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder bottom="5" left="5" right="5" top="5"/>
+                  </Border>
+                </Property>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Constraints>
@@ -100,6 +109,11 @@
                 <Component class="javax.swing.JLabel" name="labelEditor">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Editor"/>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder bottom="5" left="5" right="5" top="5"/>
+                      </Border>
+                    </Property>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -119,13 +133,18 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="3"/>
-                    <Property name="rows" type="int" value="5"/>
+                    <Property name="rows" type="int" value="10"/>
                   </Layout>
                 </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="painelVariaveisIDE">
               <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder bottom="20" left="5" right="5" top="5"/>
+                  </Border>
+                </Property>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Constraints>
@@ -139,6 +158,11 @@
                 <Component class="javax.swing.JLabel" name="labelPS">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Portugol Studio"/>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder bottom="5" left="5" right="5" top="5"/>
+                      </Border>
+                    </Property>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
