@@ -82,6 +82,7 @@ public class WeblafUtils {
         WebComboBoxStyle.expandedBgColor = ColorController.COR_DESTAQUE;
         WebComboBoxStyle.webColoredBackground = false;
         
+        
 //       ((WebComboBoxUI) field.getUI()).s 
        
 //       field.setBorder(new EmptyBorder(15,15,15,15));
@@ -357,6 +358,8 @@ public class WeblafUtils {
 //            }
             configuraWebTables();
             StyleConstants.darkBorderColor = null;//define a cor de borda do weblaf globalmente
+            WebComboBoxStyle.expandedBgColor = ColorController.COR_DESTAQUE;
+            WebComboBoxStyle.webColoredBackground = false;
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);
             WebLookAndFeel.setDecorateFrames(false);
