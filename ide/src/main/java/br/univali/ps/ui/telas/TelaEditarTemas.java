@@ -9,16 +9,19 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import com.alee.laf.button.WebButton;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListDataListener;
 import org.json.JSONObject;
 
@@ -33,6 +36,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
      */
     
     TelaCustomBorder dialog;
+    MeuModel model;
     
     public TelaEditarTemas(TelaCustomBorder dialog) {
         initComponents();
@@ -44,7 +48,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     private void carregarTemas()
     {
         String[] temas = ColorController.listarTemas();
-        MeuModel model = new MeuModel();
+        model = new MeuModel();
         
         for (String tema : temas) 
         {
@@ -52,17 +56,20 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         }
         listaTemas.setCellRenderer(new Render());
         listaTemas.setModel(model);
+        listaTemas.setSelectedIndex(0);
         carregarCoresTema(temas[0]);
     }
     
     private void carregarCoresTema(String tema)
     {
+        painelVariaveisPSInterior.removeAll();
+        painelVariaveisEditorInterior.removeAll();
         JSONObject temas = ColorController.getTemas();
         JSONObject coresTema = temas.getJSONObject(tema);
         
         for (String name : JSONObject.getNames(coresTema)) 
         {
-            if(!name.equals("Editor"))
+            if(!name.equals("Editor") && !name.equals("icones"))
             {
                 JPanel estilo = new JPanel();
                 estilo.setOpaque(false);
@@ -70,13 +77,13 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
                 JLabel nomeVariavel = new JLabel("<html><body width='110px'><div>"+name.replace("_", " ")+"</div></body></html>");                
                 nomeVariavel.setForeground(ColorController.COR_LETRA);
                 WebButton botaoColorPicker = new WebButton("+");
-                WeblafUtils.configurarBotao(botaoColorPicker, 1);
+                Color botaoColor = new Color(Integer.parseInt(coresTema.getString(name), 16));
+                WeblafUtils.configurarBotao(botaoColorPicker, botaoColor, ColorController.COR_LETRA_TITULO, botaoColor.brighter(), ColorController.COR_LETRA_TITULO, 1, true);
                 estilo.add(botaoColorPicker);
                 estilo.add(nomeVariavel);
                 estilo.revalidate();
                 estilo.repaint();
-                painelVariaveisPSInterior.add(estilo);
-                
+                painelVariaveisPSInterior.add(estilo);                
             }
         }
         painelVariaveisPSInterior.setSize(new Dimension(100, 60));
@@ -90,22 +97,28 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             JLabel nomeVariavel = new JLabel("<html><body width='110px'><div>"+name.replace("_", " ")+"</div></body></html>");
             nomeVariavel.setForeground(ColorController.COR_LETRA);
             WebButton botaoColorPicker = new WebButton("+");
-            WeblafUtils.configurarBotao(botaoColorPicker, 1);
+            Color botaoColor = new Color(Integer.parseInt(coresEditor.getString(name), 16));
+            WeblafUtils.configurarBotao(botaoColorPicker, botaoColor, ColorController.COR_LETRA_TITULO, botaoColor.brighter(), ColorController.COR_LETRA_TITULO, 1, true);
             estilo.add(botaoColorPicker);
             estilo.add(nomeVariavel);
-            estilo.revalidate();
-            estilo.repaint();
             painelVariaveisEditorInterior.add(estilo);
         }
+        painelVariaveisPSInterior.revalidate();
+        painelVariaveisPSInterior.repaint();
+        painelVariaveisEditorInterior.revalidate();
+        painelVariaveisEditorInterior.repaint();
     }
 
     @Override
     public void configurarCores() {
         setBackground(ColorController.FUNDO_MEDIO);
         setForeground(ColorController.COR_LETRA);
-        labelTemas.setForeground(ColorController.COR_LETRA);
+        //labelTemas.setForeground(ColorController.COR_LETRA);
         labelEditor.setForeground(ColorController.COR_LETRA);
         labelPS.setForeground(ColorController.COR_LETRA);
+        listaTemas.setBackground(ColorController.FUNDO_ESCURO);
+        listaTemas.setSelectionBackground(ColorController.FUNDO_CLARO);
+        
         if(WeblafUtils.weblafEstaInstalado())
         {
             WeblafUtils.configuraWebLaf(variavelScrollPane);
@@ -122,10 +135,19 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             final JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             
             renderer.setForeground(ColorController.COR_LETRA);
-            renderer.setOpaque(false);
+            renderer.setBackground(ColorController.FUNDO_ESCURO);
+            if(isSelected)
+            {
+              renderer.setBackground(ColorController.AMARELO);
+              renderer.setForeground(ColorController.FUNDO_ESCURO);
+            }
+            
+            renderer.setBorder(new EmptyBorder(5, 10, 5, 0));
+            
 
             return renderer;
         }
+        
     }
     
     private class MeuModel implements ListModel<String> {
@@ -171,6 +193,10 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel5 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaTemas = new javax.swing.JList<>();
         jPanel1 = new javax.swing.JPanel();
         variavelScrollPane = new javax.swing.JScrollPane();
         painelVariaveis = new javax.swing.JPanel();
@@ -180,19 +206,45 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         painelVariaveisIDE = new javax.swing.JPanel();
         labelPS = new javax.swing.JLabel();
         painelVariaveisPSInterior = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listaTemas = new javax.swing.JList<>();
-        jPanel3 = new javax.swing.JPanel();
-        labelTemas = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
         botaoNovoTema = new com.alee.laf.button.WebButton();
         botaoAplicarTema = new com.alee.laf.button.WebButton();
         botaoCancelar = new com.alee.laf.button.WebButton();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setOpaque(false);
+        jPanel5.setOpaque(false);
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setOpaque(false);
+
+        listaTemas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        listaTemas.setPreferredSize(new java.awt.Dimension(100, 80));
+        listaTemas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaTemasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(listaTemas);
+
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel5.add(jPanel2, java.awt.BorderLayout.WEST);
+
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        variavelScrollPane.setBorder(null);
+        variavelScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         variavelScrollPane.setMaximumSize(new java.awt.Dimension(760, 580));
         variavelScrollPane.setOpaque(false);
 
@@ -214,7 +266,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
 
         painelVariaveis.add(painelVariaveisEditor, java.awt.BorderLayout.CENTER);
 
-        painelVariaveisIDE.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 20, 5));
+        painelVariaveisIDE.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 20, 5));
         painelVariaveisIDE.setOpaque(false);
         painelVariaveisIDE.setLayout(new java.awt.BorderLayout());
 
@@ -230,70 +282,42 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
 
         variavelScrollPane.setViewportView(painelVariaveis);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 346, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(variavelScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                    .addContainerGap()))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 493, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(variavelScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
+        jPanel1.add(variavelScrollPane, java.awt.BorderLayout.CENTER);
 
-        add(jPanel1, java.awt.BorderLayout.CENTER);
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        jPanel4.setOpaque(false);
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
 
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane1.setOpaque(false);
-
-        listaTemas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(listaTemas);
-
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jPanel3.setOpaque(false);
-
-        labelTemas.setText("Temas");
-        jPanel3.add(labelTemas);
-
-        botaoNovoTema.setText("+");
+        botaoNovoTema.setText("adicionar tema");
         botaoNovoTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoNovoTemaActionPerformed(evt);
             }
         });
-        jPanel3.add(botaoNovoTema);
+        jPanel4.add(botaoNovoTema);
 
         botaoAplicarTema.setText("aplicar tema");
-        jPanel3.add(botaoAplicarTema);
+        jPanel4.add(botaoAplicarTema);
 
         botaoCancelar.setText("cancelar");
-        jPanel3.add(botaoCancelar);
+        jPanel4.add(botaoCancelar);
 
-        jPanel2.add(jPanel3, java.awt.BorderLayout.NORTH);
+        jPanel1.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        add(jPanel2, java.awt.BorderLayout.WEST);
+        jPanel5.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        add(jPanel5, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoNovoTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoTemaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botaoNovoTemaActionPerformed
+
+    private void listaTemasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaTemasMouseClicked
+        final int index = ((JList) evt.getSource()).getSelectedIndex();
+        String tema = model.getElementAt(index);
+        carregarCoresTema(tema);
+    }//GEN-LAST:event_listaTemasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -302,11 +326,11 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     private com.alee.laf.button.WebButton botaoNovoTema;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelEditor;
     private javax.swing.JLabel labelPS;
-    private javax.swing.JLabel labelTemas;
     private javax.swing.JList<String> listaTemas;
     private javax.swing.JPanel painelVariaveis;
     private javax.swing.JPanel painelVariaveisEditor;
