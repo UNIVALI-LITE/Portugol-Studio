@@ -13,6 +13,15 @@ public final class ColorController {
     
     private static JSONObject getTemaSelecionado()
     {
+        JSONObject json_temas = ARQUIVO_TEMA.getJSONObject("temas");
+        
+        String tema_selecionado = ARQUIVO_TEMA.getString("tema_selecionado");
+        
+        return json_temas.getJSONObject(tema_selecionado);
+    }
+    
+    private static JSONObject getArquivoTema()
+    {
         JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
         
         if(json == null)
@@ -20,11 +29,7 @@ public final class ColorController {
             json = getTemaPadrao();
         }
         
-        JSONObject json_temas = json.getJSONObject("temas");
-        
-        String tema_selecionado = json.getString("tema_selecionado");
-        
-        return json_temas.getJSONObject(tema_selecionado);
+        return json;
     }
        
     private static JSONObject getTemaEditor()
@@ -61,7 +66,7 @@ public final class ColorController {
     
     public static String[] listarTemas()
     {
-        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
+        JSONObject json = ARQUIVO_TEMA;        
         JSONObject json_temas = json.getJSONObject("temas");
         
         return JSONObject.getNames(json_temas);
@@ -69,7 +74,7 @@ public final class ColorController {
     
     public static JSONObject getTemas()
     {
-        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
+        JSONObject json = ARQUIVO_TEMA;        
         JSONObject json_temas = json.getJSONObject("temas");
         
         return json_temas;
@@ -182,8 +187,9 @@ public final class ColorController {
         return new JSONObject(defaultThemeFile);
     }
     
+    public static final JSONObject ARQUIVO_TEMA = getArquivoTema();    
     private static final JSONObject TEMA_SELECIONADO = getTemaSelecionado();
-    public static final JSONObject TEMA_EDITOR = getTemaEditor();    
+    public static final JSONObject TEMA_EDITOR = getTemaEditor();
     
     private static final Color[] THEME= getTema();
     public static final Color COR_LETRA = THEME[0];

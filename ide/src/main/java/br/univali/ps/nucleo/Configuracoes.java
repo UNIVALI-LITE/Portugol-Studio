@@ -164,8 +164,7 @@ public final class Configuracoes
     
     public void salvarTema(String tema)
     {        
-        File arquivosTemasFile = getCaminhoArquivoTemas();
-        
+        File arquivosTemasFile = getCaminhoArquivoTemas();        
         arquivo_temas.put("tema_selecionado", tema);
         
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosTemasFile)))
@@ -541,6 +540,11 @@ public final class Configuracoes
     public JSONObject getArquivo_temas() {
         return arquivo_temas;
     }
+
+    public void setArquivo_temas(JSONObject arquivo_temas) {
+        this.arquivo_temas = arquivo_temas;
+    }   
+    
     
     private File resolverDiretorioConfiguracoes()
     {
