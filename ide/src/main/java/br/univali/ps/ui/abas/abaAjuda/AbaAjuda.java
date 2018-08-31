@@ -122,7 +122,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
     {
         super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
 
-        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/"+Configuracoes.getInstancia().getTemaPortugol()+"/estilo.css");
+        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/"+Configuracoes.getInstancia().getIconesCores()+"/estilo.css");
         constanteBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html"));
         erroHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
         raizBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));

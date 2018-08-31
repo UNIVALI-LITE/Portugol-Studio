@@ -261,6 +261,11 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoNovoTemaActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="com.alee.laf.button.WebButton" name="botaoRemoverTema">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="remover tema"/>
+                  </Properties>
+                </Component>
                 <Component class="com.alee.laf.button.WebButton" name="botaoAplicarTema">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="aplicar tema"/>

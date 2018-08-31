@@ -16,8 +16,11 @@ public final class ColorController {
         JSONObject json_temas = ARQUIVO_TEMA.getJSONObject("temas");
         
         String tema_selecionado = ARQUIVO_TEMA.getString("tema_selecionado");
+        JSONObject temaSelecionado = json_temas.getJSONObject(tema_selecionado);        
+        Configuracoes.getInstancia().setIconesCores(temaSelecionado.getString("icones"));
+        IconFactory.verificarTema();
         
-        return json_temas.getJSONObject(tema_selecionado);
+        return temaSelecionado;
     }
     
     private static JSONObject getArquivoTema()
@@ -34,17 +37,11 @@ public final class ColorController {
        
     private static JSONObject getTemaEditor()
     {    
-        Configuracoes.getInstancia().setIconesCores(TEMA_SELECIONADO.getString("icones"));
-        IconFactory.verificarTema();
-        
-        return TEMA_SELECIONADO.getJSONObject("Editor");
+         return TEMA_SELECIONADO.getJSONObject("Editor");
     }
     
     private static Color[] getTema()
     {        
-        Configuracoes.getInstancia().setIconesCores(TEMA_SELECIONADO.getString("icones"));
-        IconFactory.verificarTema();
-                
         return new Color[]{
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_letra"), 16)),
                 new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_destaque"), 16)),
@@ -80,6 +77,55 @@ public final class ColorController {
         return json_temas;
     }
     
+    public static JSONObject getNovoTemaBasico()
+    {
+        String basicTheme = "{\n" +
+"			\"fundo_claro\": \"445056\",\n" +
+"			\"cor_letra_titulo\": \"cdcdcd\",\n" +
+"			\"progress_bar\": \"f1433c\",\n" +
+"			\"cor_letra\": \"cdcdcd\",\n" +
+"			\"fundo_medio\": \"263238\",\n" +
+"			\"icones\": \"Dark\",\n" +
+"			\"fundo_escuro\": \"121e24\",\n" +
+"			\"cor_destaque\": \"3a464c\",\n" +
+"			\"cor_console\": \"3a464c\",\n" +
+"			\"fundo_botoes_expansiveis\": \"121e24\",\n" +
+"			\"cor_principal\": \"263238\",\n" +
+"			\"cor_4\": \"00efc0\",\n" +
+"			\"Editor\": {\n" +
+"				\"cursor\": \"c1cbc2\",\n" +
+"				\"selecao_chave_correspondente_fg\": \"6A8088\",\n" +
+"				\"selecao_chave_correspondente_bg\": \"6b8189\",\n" +
+"				\"valor_hexa\": \"00F0C0\",\n" +
+"				\"valor_cadeia\": \"FFC200\",\n" +
+"				\"valor_logico\": \"F1433C\",\n" +
+"				\"valor_inteiro\": \"00F0C0\",\n" +
+"				\"separador\": \"E8E2B7\",\n" +
+"				\"background_editor\": \"263238\",\n" +
+"				\"erro_bg\": \"04790e\",\n" +
+"				\"numeros_das_linhas\": \"516268\",\n" +
+"				\"valor_real\": \"00F0C0\",\n" +
+"				\"tipos\": \"45BEFF\",\n" +
+"				\"erro_fg\": \"FBFBFB\",\n" +
+"				\"selecao_linha_atual\": \"2F393C\",\n" +
+"				\"comentario_linha\": \"66747B\",\n" +
+"				\"valor_caracter\": \"FFC200\",\n" +
+"				\"palavras_reservadas\": \"F1433C\",\n" +
+"				\"comentario_multilinha\": \"66747B\",\n" +
+"				\"chamada_funcao\": \"FBFBFB\",\n" +
+"				\"borda_barra_lateral\": \"1E2324\",\n" +
+"				\"dobrador_de_codigo\": \"516268\",\n" +
+"				\"operador\": \"E8E2B7\",\n" +
+"				\"selection_bg\": \"404E51\",\n" +
+"				\"identificador\": \"FBFBFB\"\n" +
+"			},\n" +
+"			\"cor_3\": \"f0433b\",\n" +
+"			\"cor_2\": \"45bdff\",\n" +
+"			\"cor_1\": \"ffc200\"\n" +
+"		}";
+        return new JSONObject(basicTheme);
+    }
+    
     public static JSONObject getTemaPadrao()
     {
         String defaultThemeFile = 
@@ -103,7 +149,7 @@ public final class ColorController {
 "			\"cor_2\" : \"45bdff\",\n" +
 "			\"cor_3\" : \"f0433b\",\n" +
 "			\"cor_4\" : \"00efc0\",\n" +
-"			\"icones\" : \"Claros\",\n" +
+"			\"icones\" : \"Dark\",\n" +
 "			\n" +
 "			\"Editor\" : \n" +
 "			{\n" +
@@ -150,7 +196,7 @@ public final class ColorController {
 "			\"cor_2\" : \"45bdff\",\n" +
 "			\"cor_3\" : \"f0433b\",\n" +
 "			\"cor_4\" : \"00efc0\",\n" +
-"			\"icones\" : \"Escuros\",\n" +
+"			\"icones\" : \"Portugol\",\n" +
 "			\n" +
 "			\"Editor\" : \n" +
 "			{\n" +
@@ -188,7 +234,7 @@ public final class ColorController {
     }
     
     public static final JSONObject ARQUIVO_TEMA = getArquivoTema();    
-    private static final JSONObject TEMA_SELECIONADO = getTemaSelecionado();
+    public static final JSONObject TEMA_SELECIONADO = getTemaSelecionado();
     public static final JSONObject TEMA_EDITOR = getTemaEditor();
     
     private static final Color[] THEME= getTema();

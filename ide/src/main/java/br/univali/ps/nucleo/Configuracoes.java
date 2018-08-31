@@ -76,7 +76,7 @@ public final class Configuracoes
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Dark";
     private String temaPortugol = "Dark";
-    private String icones = "Escuros";
+    private String icones = "Dark";
     private boolean envio_de_dados = true;
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
@@ -164,8 +164,7 @@ public final class Configuracoes
     
     public void salvarTema(String tema)
     {        
-        File arquivosTemasFile = getCaminhoArquivoTemas();        
-        arquivo_temas.put("tema_selecionado", tema);
+        File arquivosTemasFile = getCaminhoArquivoTemas();
         
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosTemasFile)))
         {
@@ -216,7 +215,8 @@ public final class Configuracoes
     public void setTemaPortugol(String theme)
     {
         String oldTheme = this.temaPortugol;
-        this.temaPortugol = theme;
+        this.temaPortugol = theme;                
+        arquivo_temas.put("tema_selecionado", theme);
         salvarTema(theme);
         
         suporteMudancaPropriedade.firePropertyChange(TEMA_PORTUGOL, oldTheme, theme);
@@ -375,7 +375,7 @@ public final class Configuracoes
     
     public boolean isTemaDark()
     {
-        return icones.equals("Claros");
+        return icones.equals("Dark");
     }
     
     public void restartApplication()
