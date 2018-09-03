@@ -1303,6 +1303,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE)  .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_cadeia"), 16));
         scheme.getStyle(Token.LITERAL_CHAR)                 .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_caracter"), 16));
         scheme.getStyle(Token.SEPARATOR)                    .foreground = new Color(Integer.parseInt(temaEditor.getString("separador"), 16));
+        scheme.getStyle(Token.OPERATOR)                     .foreground = new Color(Integer.parseInt(temaEditor.getString("operador"), 16));
         scheme.getStyle(Token.ERROR_CHAR)                   .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
         scheme.getStyle(Token.ERROR_CHAR)                   .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
         scheme.getStyle(Token.ERROR_IDENTIFIER)             .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));

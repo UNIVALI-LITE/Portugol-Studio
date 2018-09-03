@@ -680,7 +680,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 PortugolStudio.getInstancia().getTelaEditarTemas().setVisible(true);
             }
         };
-        barraBotoesEditor.adicionaGrupoDeItems("Temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"), acoes, true);
+        barraBotoesEditor.adicionaGrupoDeItems("Temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"), acoes, false);
     }
 
     private void adicionaBotaoConfiguracaoInspetor(int margemDireita) {
@@ -1312,7 +1312,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         FabricaDicasInterface.criarTooltip(btnDepurar, "Executa o programa passo a passo", acaoExecutarPasso);
         FabricaDicasInterface.criarTooltip(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarArquivo);
         FabricaDicasInterface.criarTooltip(btnSalvarComo, "Salva uma nova cópia do programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarComo);
-        FabricaDicasInterface.criarTooltip(barraBotoesEditor.getCompomemtParaAdicionarDica(), "Personalizar o editor de código fonte ...");
+        FabricaDicasInterface.criarTooltip(barraBotoesEditor.getCompomemtParaAdicionarDica(), "Personalizar as cores do Portugol");
         FabricaDicasInterface.criarTooltip(barraBotoesInspetorArvore.getCompomemtParaAdicionarDica(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
     }
 

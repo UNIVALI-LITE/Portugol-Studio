@@ -153,8 +153,7 @@ public final class Configuracoes
         {            
             String jsonText = FileHandle.read(new FileInputStream(f));
             JSONObject json = new JSONObject(jsonText);            
-            return json;
-            
+            return json;            
         } 
         catch (Exception ex) 
         {
@@ -162,7 +161,7 @@ public final class Configuracoes
         }
     }
     
-    public void salvarTema(String tema)
+    public void salvarTemas()
     {        
         File arquivosTemasFile = getCaminhoArquivoTemas();
         
@@ -217,7 +216,7 @@ public final class Configuracoes
         String oldTheme = this.temaPortugol;
         this.temaPortugol = theme;                
         arquivo_temas.put("tema_selecionado", theme);
-        salvarTema(theme);
+        salvarTemas();
         
         suporteMudancaPropriedade.firePropertyChange(TEMA_PORTUGOL, oldTheme, theme);
     }
