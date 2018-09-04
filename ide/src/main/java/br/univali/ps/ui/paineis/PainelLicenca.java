@@ -1,9 +1,10 @@
 package br.univali.ps.ui.paineis;
 
+import javax.swing.SwingUtilities;
+
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.utils.Licencas;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -12,7 +13,7 @@ import javax.swing.SwingUtilities;
 public final class PainelLicenca extends javax.swing.JPanel
 {
     private String htmlRotulos = "<html><head><style>b{ color: ${color}; }</style></head><body><div><b>%s:</b> %s</div></body></html>";
-    private final Licencas.Recurso recurso;
+    private final Licencas.Recurso recurso; 
     
     public PainelLicenca(Licencas.Recurso recurso)
     {
