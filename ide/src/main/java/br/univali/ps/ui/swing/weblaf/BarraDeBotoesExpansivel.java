@@ -8,6 +8,7 @@ import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -91,6 +92,16 @@ public final class BarraDeBotoesExpansivel extends WebButton
     public void adicionarComponente(JComponent component)
     {
         menu.add(component);
+    }
+    
+    public void resetaTemas()
+    {
+        for (Component component : menu.getComponents()) {
+            if(component instanceof ItemDeMenuParaGrupoDeAcoes)
+            {
+                menu.remove(component);
+            }
+        }
     }
 
     private final class ItemDeMenuParaGrupoDeAcoes extends JPanel

@@ -5,7 +5,10 @@
  */
 package br.univali.ps.ui.telas;
 
+import br.univali.portugol.nucleo.Portugol;
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -78,6 +81,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
                 String nomeTema = QuestionDialog.getInstance().showInputMessage("Escreva o nome do novo tema:");
                 if(nomeTema == null){return;}
                 criarNovoTema(nomeTema);
+                resetarTemasExpansiveis();
             }
         });
         
@@ -96,7 +100,8 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
                 carregarCoresTema(listaTemas.getSelectedValue());
                 JSONObject temas = ColorController.getTemas();
                 temas.remove(temaSelecionado);
-                Configuracoes.getInstancia().salvarTemas();
+                Configuracoes.getInstancia().salvarTemas(); 
+                resetarTemasExpansiveis();
             }
         });
         
@@ -120,6 +125,12 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         });
     }
     
+    public void resetarTemasExpansiveis()
+    {
+        ((AbaCodigoFonte)PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada()).getBarraBotoesEditor().resetaTemas();
+        ((AbaCodigoFonte)PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada()).criaMenuTemas();
+    }
+    
     public void renameTheme(String oldName, String newName)
     {
         JSONObject obj = ColorController.getTemas();        
@@ -134,6 +145,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         temas.put(nomeTema, ColorController.getNovoTemaBasico());
         model.addElement(nomeTema);
         listaTemas.setSelectedValue(nomeTema, true);
+        this.botaoRemoverTema.setVisible(true);
         carregarCoresTema(nomeTema);
         Configuracoes.getInstancia().salvarTemas();
     }

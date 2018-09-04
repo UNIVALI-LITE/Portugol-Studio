@@ -644,9 +644,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         criaControlesDaFonteDoEditor();
 
         barraBotoesEditor.adicionaAcao(criaAcaoExpandirEditor());
-        //Action acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
         barraBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
-//        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
         barraBotoesEditor.adicionaSeparador();
         barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());
@@ -654,7 +652,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         adicionaBotaoConfiguracaoEditor(0);
     }
     
-    private void criaMenuTemas()
+    public void criaMenuTemas()
     {
         String[] temas = ColorController.listarTemas();
         Action[] acoes = new Action[temas.length+1];
@@ -2610,6 +2608,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
 
         return podeFechar;
+    }
+
+    public BarraDeBotoesExpansivel getBarraBotoesInspetorArvore() {
+        return barraBotoesInspetorArvore;
+    }
+
+    public BarraDeBotoesExpansivel getBarraBotoesEditor() {
+        return barraBotoesEditor;
     }
 
     private final class ObservadorExecucao extends ObservadorExecucaoBasico {
