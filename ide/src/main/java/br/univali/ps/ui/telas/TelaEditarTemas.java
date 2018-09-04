@@ -5,9 +5,9 @@
  */
 package br.univali.ps.ui.telas;
 
-import br.univali.portugol.nucleo.Portugol;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
@@ -89,12 +89,20 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String temaSelecionado = listaTemas.getSelectedValue();
+                int newIndex;
                 if(listaTemas.getSelectedIndex()-1<0)
                 {
-                    listaTemas.setSelectedIndex(listaTemas.getSelectedIndex()-1);
+                    newIndex = 1;
+                    listaTemas.setSelectedIndex(1);                    
                 }
                 else{
-                    listaTemas.setSelectedIndex(1);
+                    newIndex = listaTemas.getSelectedIndex()-1;
+                    listaTemas.setSelectedIndex(listaTemas.getSelectedIndex()-1);
+                }
+                String tema = model.getElementAt(newIndex);
+                if(tema.equals(ColorController.ARQUIVO_TEMA.getString("tema_selecionado")) || tema.equals("Dark") || tema.equals("Portugol"))
+                {
+                    botaoRemoverTema.setVisible(false);
                 }
                 model.removeElement(temaSelecionado);
                 carregarCoresTema(listaTemas.getSelectedValue());
@@ -127,8 +135,12 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     
     public void resetarTemasExpansiveis()
     {
-        ((AbaCodigoFonte)PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada()).getBarraBotoesEditor().resetaTemas();
-        ((AbaCodigoFonte)PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada()).criaMenuTemas();
+        Aba abaselecionada = PortugolStudio.getInstancia().getTelaPrincipal().getPainelTabulado().getAbaSelecionada();
+        if(abaselecionada instanceof AbaCodigoFonte)
+        {            
+            ((AbaCodigoFonte)abaselecionada).getBarraBotoesEditor().resetaTemas();
+            ((AbaCodigoFonte)abaselecionada).criaMenuTemas();
+        }
     }
     
     public void renameTheme(String oldName, String newName)
@@ -268,8 +280,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             return;
         }                
         jsonTema.put(pc.getNome(), ColorToHex(pc.getSelectedColor()));
-        Configuracoes.getInstancia().salvarTemas();
-        
+        Configuracoes.getInstancia().salvarTemas();        
     }
     
     public void acaoBotaoPickColor(WebButton botao, String tema, PainelCor pc)
@@ -389,6 +400,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
 
         @Override
         public void setElementAt(String element, int index) {
+            temas.remove(index);
             temas.add(index, element);
             fireContentsChanged(this, 0, temas.size() - 1);
         }
