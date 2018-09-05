@@ -13,10 +13,14 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
+import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButton;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -26,6 +30,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import org.json.JSONObject;
 
@@ -221,9 +226,52 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         estilo.add(nomeVariavel);
         estilo.setBotaoCor(botaoColorPicker);
         
+        nomeVariavel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                botaoColorPicker.doClick();
+            }
+        });
         acaoBotaoPickColor(botaoColorPicker, tema, estilo);
         
         return estilo;
+    }
+    
+    private JPanel criarRadioPanel(String name)
+    {
+        JPanel painel = new JPanel();
+        JLabel label = new JLabel(name);
+        JPanel painelRadio = new JPanel();
+        JRadioButton option = new JRadioButton("Claros");
+        JRadioButton option2 = new JRadioButton("Escuros");
+        
+        option.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected_rounded.png"));
+        option.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected_rounded.png"));
+        option2.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected_rounded.png"));
+        option2.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected_rounded.png"));
+        
+        option.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                option2.setSelected(!option.isSelected());
+            }
+        });        
+        option2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                option.setSelected(!option2.isSelected());
+            }
+        });
+        
+        painel.setOpaque(false);
+        painelRadio.setOpaque(false);
+        
+        painelRadio.add(option);
+        painelRadio.add(option2);
+        painel.add(label);
+        painel.add(painelRadio);
+        
+        return painel;
     }
     
     private void carregarCoresTema(String tema)
@@ -242,11 +290,16 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         
         for (String name : JSONObject.getNames(coresTema)) 
         {
+            if(name.equals("icones"))
+            {
+                this.painelVariaveisPSInterior.add(criarRadioPanel(name));
+                continue;
+            }
             if(!name.equals("Editor") && !name.equals("icones"))
             {
                 PainelCor pc = criarPainelCor(name, tema, coresTema);
                 this.coresIDE.add(pc);
-                this.painelVariaveisPSInterior.add(pc);                
+                this.painelVariaveisPSInterior.add(pc);
             }
         }
         

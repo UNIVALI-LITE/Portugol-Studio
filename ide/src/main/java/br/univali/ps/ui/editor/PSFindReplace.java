@@ -72,9 +72,7 @@ public class PSFindReplace extends javax.swing.JPanel implements Themeable{
     }
     
     private void configurarAcoes()
-    {
-        
-        
+    {   
         procurarTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
