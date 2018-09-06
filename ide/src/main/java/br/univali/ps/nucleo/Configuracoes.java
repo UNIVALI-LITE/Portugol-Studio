@@ -93,8 +93,7 @@ public final class Configuracoes
     {
         carregar();
         this.arquivo_temas = carregar_temas();
-        setTemaPortugol(arquivo_temas.getString("tema_selecionado"));
-        
+        setTemaPortugol(arquivo_temas.getString("tema_selecionado"));       
     }
 
     public static Configuracoes getInstancia()
@@ -162,7 +161,7 @@ public final class Configuracoes
     }
     
     public void salvarTemas()
-    {        
+    {
         File arquivosTemasFile = getCaminhoArquivoTemas();
         
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosTemasFile)))

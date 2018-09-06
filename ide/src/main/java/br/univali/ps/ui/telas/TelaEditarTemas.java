@@ -15,6 +15,7 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.laf.button.WebButton;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JColorChooser;
@@ -48,6 +50,9 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     private MeuModel model;
     private List<PainelCor> coresIDE;
     private List<PainelCor> coresEditor;
+    private JRadioButton op1;
+    private JRadioButton op2;
+    
     private int editavelcount = 1;
     
     
@@ -221,7 +226,6 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         estilo.setSelectedColor(cor);
         estilo.setNome(name);
         estilo.setOpaque(false);
-        estilo.setAlignmentY(LEFT_ALIGNMENT);
         estilo.add(botaoColorPicker);
         estilo.add(nomeVariavel);
         estilo.setBotaoCor(botaoColorPicker);
@@ -237,10 +241,10 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         return estilo;
     }
     
-    private JPanel criarRadioPanel(String name)
+    private JPanel criarRadioPanel(String name, JSONObject json, String tema)
     {
         JPanel painel = new JPanel();
-        JLabel label = new JLabel(name);
+        JLabel label = new JLabel(name+": ");
         JPanel painelRadio = new JPanel();
         JRadioButton option = new JRadioButton("Claros");
         JRadioButton option2 = new JRadioButton("Escuros");
@@ -250,26 +254,76 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         option2.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected_rounded.png"));
         option2.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected_rounded.png"));
         
+        label.setForeground(ColorController.COR_LETRA);
+        option.setForeground(ColorController.COR_LETRA);
+        option2.setForeground(ColorController.COR_LETRA);
+        
+        painel.setLayout(new BorderLayout());
+        painelRadio.setLayout(new BoxLayout(painelRadio, BoxLayout.Y_AXIS));
+        
+        this.op1 = option;
+        this.op2 = option2;
+        
+        if(json.getString(name).equals("Dark")){
+            option.doClick();
+        }
+        else{
+            option2.doClick();
+        }
+        
         option.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                option2.setSelected(!option.isSelected());
+                if(!tema.equals("Dark") && !tema.equals("Portugol"))
+                {                    
+                    json.put(name, "Dark");
+                    option2.setSelected(!option.isSelected());
+                    Configuracoes.getInstancia().salvarTemas();  
+                }
+                else{
+                    String newName =tema+"Editado"+editavelcount;
+                    editavelcount++;
+                    while(model.contains(newName))
+                    {
+                        newName = tema+"Editado"+editavelcount;
+                        editavelcount++;
+                    }
+                    criarNovoTema(newName);
+                    op1.doClick();
+                }
             }
         });        
         option2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                option.setSelected(!option2.isSelected());
+                if(!tema.equals("Dark") && !tema.equals("Portugol"))
+                { 
+                    json.put(name, "Portugol");
+                    option.setSelected(!option2.isSelected());
+                    Configuracoes.getInstancia().salvarTemas();  
+                }
+                else{
+                    String newName =tema+"Editado"+editavelcount;
+                    editavelcount++;
+                    while(model.contains(newName))
+                    {
+                        newName = tema+"Editado"+editavelcount;
+                        editavelcount++;
+                    }
+                    criarNovoTema(newName);
+                    op2.doClick();
+                }
             }
-        });
+        });       
         
         painel.setOpaque(false);
         painelRadio.setOpaque(false);
         
         painelRadio.add(option);
         painelRadio.add(option2);
-        painel.add(label);
-        painel.add(painelRadio);
+        painelRadio.setBorder(new EmptyBorder(0, 10, 0, 0));
+        painel.add(label, BorderLayout.WEST);
+        painel.add(painelRadio, BorderLayout.CENTER);
         
         return painel;
     }
@@ -287,14 +341,8 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         }
         JSONObject temas = ColorController.getTemas();
         JSONObject coresTema = temas.getJSONObject(tema);
-        
         for (String name : JSONObject.getNames(coresTema)) 
         {
-            if(name.equals("icones"))
-            {
-                this.painelVariaveisPSInterior.add(criarRadioPanel(name));
-                continue;
-            }
             if(!name.equals("Editor") && !name.equals("icones"))
             {
                 PainelCor pc = criarPainelCor(name, tema, coresTema);
@@ -302,7 +350,7 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
                 this.painelVariaveisPSInterior.add(pc);
             }
         }
-        
+        this.painelVariaveisPSInterior.add(criarRadioPanel("icones", coresTema, tema));
         JSONObject coresEditor = coresTema.getJSONObject("Editor");
         
         for (String name : JSONObject.getNames(coresEditor)) 
@@ -457,6 +505,10 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
             temas.add(index, element);
             fireContentsChanged(this, 0, temas.size() - 1);
         }
+
+        public boolean contains(String elem) {
+            return temas.contains(elem);
+        }
     }
     
     public class PainelCor extends JPanel
@@ -505,6 +557,11 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -524,6 +581,21 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
         botaoRemoverTema = new com.alee.laf.button.WebButton();
         botaoAplicarTema = new com.alee.laf.button.WebButton();
         botaoCancelar = new com.alee.laf.button.WebButton();
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText("jLabel1");
+        jPanel3.add(jLabel1, java.awt.BorderLayout.WEST);
+
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.Y_AXIS));
+
+        jRadioButton1.setText("jRadioButton1");
+        jPanel6.add(jRadioButton1);
+
+        jRadioButton2.setText("jRadioButton2");
+        jPanel6.add(jRadioButton2);
+
+        jPanel3.add(jPanel6, java.awt.BorderLayout.EAST);
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new java.awt.BorderLayout());
@@ -650,10 +722,15 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     private com.alee.laf.button.WebButton botaoNovoTema;
     private com.alee.laf.button.WebButton botaoRemoverTema;
     private com.alee.laf.button.WebButton botaoRenomear;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelEditor;
     private javax.swing.JLabel labelPS;

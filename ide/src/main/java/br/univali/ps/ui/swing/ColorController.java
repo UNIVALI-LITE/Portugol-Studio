@@ -63,7 +63,7 @@ public final class ColorController {
     
     public static String[] listarTemas()
     {
-        JSONObject json = ARQUIVO_TEMA;        
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
         JSONObject json_temas = json.getJSONObject("temas");
         
         return JSONObject.getNames(json_temas);
@@ -71,7 +71,7 @@ public final class ColorController {
     
     public static JSONObject getTemas()
     {
-        JSONObject json = ARQUIVO_TEMA;        
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
         JSONObject json_temas = json.getJSONObject("temas");
         
         return json_temas;
