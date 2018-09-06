@@ -86,10 +86,14 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
             public void actionPerformed(ActionEvent e) {
                 List<File> lista = new ArrayList<>();
                 for (PainelPluginItem component : listaPlugins) {
-                    lista.add(component.getPastaDeInstalacao());
+                	if(component.getSeletorPlugin().isSelected()) {
+                		lista.add(component.getPastaDeInstalacao());
+                	}
                 }
-                dialogoPai.setVisible(false);
-                GerenciadorPlugins.getInstance().desinstalarPlugins(lista);                
+                if(!lista.isEmpty()) {
+	                dialogoPai.setVisible(false);
+	                GerenciadorPlugins.getInstance().desinstalarPlugins(lista);
+                }
             }
         });
         botaoBaixarPlugins.setAction(new AbstractAction("baixar plugins") {

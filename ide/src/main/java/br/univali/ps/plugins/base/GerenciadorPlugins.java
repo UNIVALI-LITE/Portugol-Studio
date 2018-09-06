@@ -123,7 +123,10 @@ public final class GerenciadorPlugins {
                         }
                     }
                     SwingUtilities.invokeLater(() -> {
-                        indicadorProgresso.setVisible(false);                        
+                        indicadorProgresso.setVisible(false);
+                        if (confirmouReinicializacao("instalação")) {
+                            Configuracoes.getInstancia().restartApplication();
+                        }
                     });
                 }
             }).start();
@@ -149,7 +152,7 @@ public final class GerenciadorPlugins {
                         LOGGER.log(Level.SEVERE, "Erro ao inserir arquivo à fila de arquivos recentes", excecao);
                     }
                     SwingUtilities.invokeLater(() -> {
-                        if (confirmouReinicializacao()) {
+                        if (confirmouReinicializacao("desinstalação")) {
                             Configuracoes.getInstancia().restartApplication();
                         }
                     });
@@ -158,8 +161,8 @@ public final class GerenciadorPlugins {
         }
     }
     
-    private boolean confirmouReinicializacao() {
-        int resp = QuestionDialog.getInstance().showConfirmMessage("Para finalizar a desinstalação do plugin, o Portugol Studio precisa reinicializar! Confirma?");
+    private boolean confirmouReinicializacao(String msg) {
+        int resp = QuestionDialog.getInstance().showConfirmMessage("Para finalizar a " + msg + "do plugin, o Portugol Studio precisa reinicializar! Confirma?");
         if (resp == JOptionPane.YES_OPTION) {
             return true;
         } else if (resp == JOptionPane.CANCEL_OPTION || resp == JOptionPane.CLOSED_OPTION) {
