@@ -17,31 +17,24 @@ baixado:
 
 $ cd <pasta-do-arquivo>
 
-
 Por exemplo, se o arquivo houver sido baixado na sua pasta de downloads, basta digitar:
 
 $ cd /home/$USER/Downloads
 
 
-Agora, caso o arquivo esteja em formato .zip, você deve executar o seguinte código:
-
-$ unzip -u portugol-studio-*.zip
-
-
 Logo após, digite os comandos abaixo em sequência (sem o $):
 
-$ chmod 755 portugol-studio-*.run
+$ chmod 755 portugol-studio-*-linux*.run
 
 
 Feito isso, execute o programa de instalação digitando o comando abaixo:
 
-$ sudo ./portugol-studio-*.run
+$ sudo ./portugol-studio-*-linux*.run
 
 
 Note que existe um ponto "." e uma barra "/" antes do nome do arquivo. Estes
 caracteres são muito importantes e devem ser digitados, caso contrário o Linux
 não encontrará o programa de instalação.
-
 
 Após executar este comando, será pedida a senha de root (administrador) do
 sistema e logo após o programa de instalação iniciará. Note que é necessário
