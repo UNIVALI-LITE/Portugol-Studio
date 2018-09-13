@@ -164,7 +164,12 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     public void criarNovoTema(String nomeTema)
     {
         JSONObject temas = ColorController.getTemas();
-        temas.put(nomeTema, ColorController.getNovoTemaBasico());
+        if(nomeTema.contains("PortugolEditado"))
+        {
+            temas.put(nomeTema, ColorController.getNovoTemaBasicoPortugol());
+        }else{
+            temas.put(nomeTema, ColorController.getNovoTemaBasicoDark());
+        }
         model.addElement(nomeTema);
         listaTemas.setSelectedValue(nomeTema, true);
         this.botaoRemoverTema.setVisible(true);

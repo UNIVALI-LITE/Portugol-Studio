@@ -11,8 +11,8 @@ body
     margin: 0px;
     padding-top: 20px;
     padding-bottom: 20px;
-    color: #FBFBFB;
-    background-color: #3A464C;
+    color: #${cor_letra};
+    background-color: #${cor_destaque};
     margin: 0;
 
 }
@@ -21,8 +21,8 @@ h1, h2
 {
     font-family: "Tahoma";
     font-size: 20pt;
-    color: #FBFBFB;
-    background-color: #263238;
+    color: #${cor_letra_titulo};
+    background-color: #${fundo_escuro};
     border-left: 3px solid #00EFC0;
     padding: 15px;
     padding-left: 8px;
@@ -43,7 +43,7 @@ p
 div.codigo-portugol
 {
     margin: 25px;
-    background-color: #121E24;
+    background-color: #${fundo_medio};
 }
 
 div.cabecalho-codigo-portugol
@@ -76,7 +76,7 @@ div.cabecalho-codigo-portugol a:visited
 
 a
 {
-    color: #00EFC0;
+    color: #${cor_3};
     font-weight: normal;
     text-decoration: none;
 }
@@ -90,36 +90,36 @@ img
 
 .cadeia, .caracter
 {
-    color: #F2BA05;
+    color: #${valor_cadeia};
 }
 
 .inteiro, .real
 {
-    color:#00EFC0;
+    color:#${valor_inteiro};
 }
 
 .logico, .tipo
 {
-    color: #45BDFF;
+    color: #${valor_logico};
     font-weight: bold;
 }
 
 .palavra-reservada
 {
-    color: #F0433B;
+    color: #${palavras_reservadas};
     font-weight: bold;
 }
 
 .operador
 {
-    color: #fbfbfb;
+    color: #${operador};
 }
 
 hr
 {
     height: 1px;
-    background: #3A464C;
-    color: #3A464C;
+    background: #${cor_destaque};
+    color: #${cor_destaque};
 }
 .imagem
 {
@@ -133,7 +133,7 @@ hr
 }
 
 .codigo-fonte{
-    background-color: #263238;
+    background-color: #${fundo_medio};
     margin: 25px;
     padding: 15px;
     white-space: pre-wrap;
@@ -142,8 +142,8 @@ hr
     margin:25px;
     padding: 10px;
     font-size: 15px;
-    background-color: #121E24;
-    color: #fbfbfb;
+    background-color: #${fundo_escuro};
+    color: #${cor_letra_titulo};
 }
 
 
@@ -152,44 +152,44 @@ hr
 
 .porPalavraReservada //Exemplo: const caso se senao...
 {
-    color: #F0433B;
+    color: #${palavras_reservadas};
     font-weight: bold;
 }
 
 .porTipoDeclaracao //Exemplo: inteiro real cadeia...
 {
-    color: #45BDFF;
+    color: #${tipos};
     font-weight: bold;
 }
 
 .porAgrupamentos //Exemplo: () {} []
 {
-    color: #fbfbfb;
+    color: #${cor_letra};
 }
 
 .porNumeros //Exemplo: 5 4.52...
 {
-    color: #00EFC0;
+    color: #${valor_inteiro};
 }
 
 .porLogico //Exemplo: VERDADEIRO FALSO
 {
-    color: #45BDFF;
+    color: #${valor_logico};
 }
 
 .porTexto //Exemplo: "Olá mundo"...
 {
-    color: #F2BA05;
+    color: #${valor_cadeia};
 }
 
 .porID //Exemplo: nomeVariavel nomeFuncao...
 {
-    color: #fbfbfb;
+    color: #${cor_letra};
 }
 
 .porComentario //Exemplo: //Isso é um comentário...
 {
-    color: #66747B;
+    color: #${comentario_linha};
     font-style: italic;
 }
 
@@ -209,7 +209,7 @@ table
     width: 80%;
     margin-right: 10%;
     margin-left: 9%;
-    color: #fbfbfb;
+    color: #${cor_letra};
     text-align: center;
     font-size: 15px;
 
@@ -222,10 +222,10 @@ table
 }
 th, table b
 {
-    color: #fbfbfb;
+    color: #${cor_letra};
 }
 
 th, td {
-   border: 1px solid #fbfbfb;
+   border: 1px solid #${cor_letra};
 }
 //FIM CSS gerado pelo PortugolHTMLHighlighter.java

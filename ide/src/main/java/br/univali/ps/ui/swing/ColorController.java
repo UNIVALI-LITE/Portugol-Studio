@@ -77,7 +77,7 @@ public final class ColorController {
         return json_temas;
     }
     
-    public static JSONObject getNovoTemaBasico()
+    public static JSONObject getNovoTemaBasicoDark()
     {
         String basicTheme = "{\n" +
 "			\"fundo_claro\": \"445056\",\n" +
@@ -118,6 +118,55 @@ public final class ColorController {
 "				\"operador\": \"E8E2B7\",\n" +
 "				\"selection_bg\": \"404E51\",\n" +
 "				\"identificador\": \"FBFBFB\"\n" +
+"			},\n" +
+"			\"cor_3\": \"f0433b\",\n" +
+"			\"cor_2\": \"45bdff\",\n" +
+"			\"cor_1\": \"ffc200\"\n" +
+"		}";
+        return new JSONObject(basicTheme);
+    }
+    
+    public static JSONObject getNovoTemaBasicoPortugol()
+    {
+        String basicTheme = "{\n" +
+"			\"fundo_claro\": \"e4f1fe\",\n" +
+"			\"cor_letra_titulo\": \"ffffff\",\n" +
+"			\"progress_bar\": \"ffc200\",\n" +
+"			\"cor_letra\": \"333333\",\n" +
+"			\"fundo_medio\": \"c1d9f5\",\n" +
+"			\"icones\": \"Portugol\",\n" +
+"			\"fundo_escuro\": \"316892\",\n" +
+"			\"cor_destaque\": \"d2e7fc\",\n" +
+"			\"cor_console\": \"e6e6e6\",\n" +
+"			\"fundo_botoes_expansiveis\": \"ffffff\",\n" +
+"			\"cor_principal\": \"fafafa\",\n" +
+"			\"cor_4\": \"00efc0\",\n" +
+"			\"Editor\": {\n" +
+"				\"cursor\": \"ff0000\",\n" +
+"				\"selecao_chave_correspondente_fg\": \"000080\",\n" +
+"				\"selecao_chave_correspondente_bg\": \"eaeaff\",\n" +
+"				\"valor_hexa\": \"6400c8\",\n" +
+"				\"valor_cadeia\": \"dc009c\",\n" +
+"				\"valor_logico\": \"0000ff\",\n" +
+"				\"valor_inteiro\": \"6400c8\",\n" +
+"				\"separador\": \"ff0000\",\n" +
+"				\"background_editor\": \"fafafa\",\n" +
+"				\"erro_bg\": \"ffcccc\",\n" +
+"				\"numeros_das_linhas\": \"787878\",\n" +
+"				\"valor_real\": \"6400c8\",\n" +
+"				\"tipos\": \"008080\",\n" +
+"				\"erro_fg\": \"000000\",\n" +
+"				\"selecao_linha_atual\": \"ddf1ff\",\n" +
+"				\"comentario_linha\": \"808080\",\n" +
+"				\"valor_caracter\": \"dc009c\",\n" +
+"				\"palavras_reservadas\": \"0000ff\",\n" +
+"				\"comentario_multilinha\": \"808080\",\n" +
+"				\"chamada_funcao\": \"ad8000\",\n" +
+"				\"borda_barra_lateral\": \"dddddd\",\n" +
+"				\"dobrador_de_codigo\": \"808080\",\n" +
+"				\"operador\": \"804040\",\n" +
+"				\"selection_bg\": \"c0ced1\",\n" +
+"				\"identificador\": \"000000\"\n" +
 "			},\n" +
 "			\"cor_3\": \"f0433b\",\n" +
 "			\"cor_2\": \"45bdff\",\n" +
