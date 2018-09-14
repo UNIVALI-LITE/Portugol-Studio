@@ -6,6 +6,8 @@ import java.util.*;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import br.univali.ps.ui.Lancador;
+
 /**
  *  The ComponentResizer allows you to resize a component by dragging a border
  *  of the component.
@@ -241,33 +243,35 @@ public class ComponentResizer extends MouseAdapter
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
-		Component source = e.getComponent();
-		Point location = e.getPoint();
-		direction = 0;
-
-		if (location.x < dragInsets.left)
-			direction += WEST;
-
-		if (location.x > source.getWidth() - dragInsets.right - 1)
-			direction += EAST;
-
-		if (location.y < dragInsets.top)
-			direction += NORTH;
-
-		if (location.y > source.getHeight() - dragInsets.bottom - 1)
-			direction += SOUTH;
-
-		//  Mouse is no longer over a resizable border
-
-		if (direction == 0)
-		{
-			source.setCursor( sourceCursor );
-		}
-		else  // use the appropriate resizable cursor
-		{
-			int cursorType = cursors.get( direction );
-			Cursor cursor = Cursor.getPredefinedCursor( cursorType );
-			source.setCursor( cursor );
+		if(!Lancador.isMaximazed()) {
+			Component source = e.getComponent();
+			Point location = e.getPoint();
+			direction = 0;
+	
+			if (location.x < dragInsets.left)
+				direction += WEST;
+	
+			if (location.x > source.getWidth() - dragInsets.right - 1)
+				direction += EAST;
+	
+			if (location.y < dragInsets.top)
+				direction += NORTH;
+	
+			if (location.y > source.getHeight() - dragInsets.bottom - 1)
+				direction += SOUTH;
+	
+			//  Mouse is no longer over a resizable border
+	
+			if (direction == 0)
+			{
+				source.setCursor( sourceCursor );
+			}
+			else  // use the appropriate resizable cursor
+			{
+				int cursorType = cursors.get( direction );
+				Cursor cursor = Cursor.getPredefinedCursor( cursorType );
+				source.setCursor( cursor );
+			}
 		}
 	}
 
@@ -348,12 +352,14 @@ public class ComponentResizer extends MouseAdapter
 	public void mouseDragged(MouseEvent e)
 	{
 		if (resizing == false) return;
-
-		Component source = e.getComponent();
-		Point dragged = e.getPoint();
-		SwingUtilities.convertPointToScreen(dragged, source);
-
-		changeBounds(source, direction, bounds, pressed, dragged);
+		
+		if(!Lancador.isMaximazed()) {
+			Component source = e.getComponent();
+			Point dragged = e.getPoint();
+			SwingUtilities.convertPointToScreen(dragged, source);
+	
+			changeBounds(source, direction, bounds, pressed, dragged);
+		}
 	}
 
 	protected void changeBounds(Component source, int direction, Rectangle bounds, Point pressed, Point current)
