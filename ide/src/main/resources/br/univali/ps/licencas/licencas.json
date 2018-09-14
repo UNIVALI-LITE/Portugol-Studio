@@ -1,0 +1,123 @@
+{
+    "recurso": [
+        {
+            "nome": "Portugol Studio",
+            "versao": "Não disponível",
+            "arquivo": "licenca-portugol-studio.txt",
+            "url": "https://github.com/univali-lite/portugol-studio",
+            "descricao": "Ambiente de desenvolvimento para a linguagem Portugol 2.0"
+        },
+        {
+            "nome": "Portugol Core",
+            "versao": "Não disponível",
+            "arquivo": "licenca-portugol-core.txt",
+            "url": "https://github.com/univali-lite/portugol-studio",
+            "descricao": "Compilador da linguagem Portugol 2.0. Inclui: analisador sintático e semântico, gerador de código intermediário, interpretador, depurador e mecanismo de inclusão de bibliotecas"
+        },
+        {
+            "nome": "Web Loof And Feel",
+            "versao": "1.28",
+            "arquivo": "licenca-weblaf-1.28.txt",
+            "url": "http://weblookandfeel.com/",
+            "descricao": "Look and feel com componentes modernos e estilizados com um visual Web"
+        },
+        {
+            "nome": "Zip4j",
+            "versao": "1.3.1",
+            "arquivo": "licenca-zip4j-1.3.1.txt",
+            "url": "http://www.lingala.net/zip4j/index.php",
+            "descricao": "Biblioteca que permite a compactação e descompactação de arquivos ZIP. Suporta a criação de arquivos com senha e criptografados nos formatos AES 128/256. Permite trabalhar com arquivos divididos em múltiplas partes"
+        },
+        {
+            "nome": "ANTLR",
+            "versao": "3.4",
+            "arquivo": "licenca-antlr-3.4.txt",
+            "url": "http://www.antlr3.org/",
+            "descricao": "Gerador de parsers que permitem, ler, processar, executar ou traduzir arquivos binários ou de texto estruturado. Amplamente utilizado na construção de linguagens de programação, ferramentas, bibliotecas e frameworks"
+        },
+        {
+            "nome": "RSyntaxTextArea",
+            "versao": "2.5.2",
+            "arquivo": "licenca-rsyntaxtextarea-2.5.2.txt",
+            "url": "http://bobbylight.github.io/RSyntaxTextArea/",
+            "descricao": "Componente de texto baseado na API Swing do Java. Provê recursos para destaque e dobramento de código fonte. Indicado para aplicações cujo foco é a edição ou visualização de código fonte"
+        },
+        {
+            "nome": "AutoComplete",
+            "versao": "2.5.2",
+            "arquivo": "licenca-autocomplete-2.5.2.txt",
+            "url": "https://github.com/bobbylight/autocomplete",
+            "descricao": "Componente de texto baseado na API Swing do Java. Provê recursos para conclusão de código fonte. Dependende do RSyntaxTextArea. Indicado para aplicações cujo foco é a edição ou visualização de código fonte"
+        },
+        {
+            "nome": "RSyntaxTextArea Components",
+            "versao": "2.5.2",
+            "arquivo": "licenca-rstaui-2.5.2.txt",
+            "url": "https://github.com/bobbylight/RSTAUI",
+            "descricao": "Conjunto de componentes e classes utilitárias para utilizar com o RSyntaxTextArea. Provê recursos para busca avançada de texto e expressões regulares. Dependende do RSyntaxTextArea. Indicado para aplicações cujo foco é a edição ou visualização de código fonte"
+        },
+        {
+            "nome": "jSoup",
+            "versao": "1.7.2",
+            "arquivo": "licenca-jsoup-1.7.2.txt",
+            "url": "http://jsoup.org/",
+            "descricao": "Biblioteca para a manipulação de HTML. A biblioteca utiliza o mesmo modelo DOM dos navegadores e permite a navegação nos elementos utilizando seletores CSS"
+        },
+        {
+            "nome": "jLayer",
+            "versao": "1.0.1",
+            "arquivo": "licenca-jlayer-1.0.1.txt",
+            "url": "http://www.javazoom.net/javalayer/javalayer.html",
+            "descricao": "Biblioteca para a reprodução de arquivos MP3. Utilizado pelo Portugol Núcleo para a reprodução de sons na biblioteca \"Sons\""
+        },
+        {
+            "nome": "DejaVu",
+            "versao": "Não disponível",
+            "arquivo": "licenca-fonte-dejavu.txt",
+            "url": "http://www.fontsquirrel.com/fonts/DejaVu-Sans",
+            "descricao": "Pacote de fontes. Utilizado pelo Portugol Studio no console de entrada e saída de dados"
+        },
+        {
+            "nome": "Apache Commons Codec",
+            "versao": "1.6",
+            "arquivo": "licenca-commons-codec-1.6.txt",
+            "url": "http://commons.apache.org/proper/commons-codec/",
+            "descricao": "Biblioteca para codificação e descodificação de dados. Inclui formatos como Base64, MD5 e SHA. Utilzada no Portugol Studio para realizar validação (checksum) de arquivos durante as atualizações"
+        },
+        {
+            "nome": "Apache Commons IO",
+            "versao": "2.4",
+            "arquivo": "licenca-commons-io-2.4.txt",
+            "url": "http://commons.apache.org/proper/commons-io/",
+            "descricao": "Biblioteca para maniulação do sistema de arquivos e entrada e saída de dados do sistema operacional"
+        },
+        {
+            "nome": "Apache Commons Logging",
+            "versao": "1.1.3",
+            "arquivo": "licenca-commons-logging-1.1.3.txt",
+            "url": "http://commons.apache.org/proper/commons-logging/",
+            "descricao": "Biblioteca para criação de logs de aplicação"
+        },
+        {
+            "nome": "Apache HTTP Components",
+            "versao": "4.3.2",
+            "arquivo": "licenca-httpcomponents-4.3.2.txt",
+            "url": "https://hc.apache.org/",
+            "descricao": "Biblioteca para realização de conexões e acesso a serviços utilizando o protocolo HTTP. Utilizado pelo Portugol Studio para realizar a verificação e o download de atualizações"
+        },
+        {
+            "nome": "Tritonus",
+            "versao": "1.4.2",
+            "arquivo": "licenca-tritonus-1.4.2.txt",
+            "url": "http://www.tritonus.org/plugins.html",
+            "descricao": "Biblioteca que é uma implementação da JAVA Sound API"
+        },
+        {
+            "nome": "MP3 SPI",
+            "versao": "1.9.5",
+            "arquivo": "licenca-mp3spi-1.9.5.txt",
+            "url": "http://www.javazoom.net/mp3spi/mp3spi.html",
+            "descricao": "MP3SPI é um Java Service Provider Interface que adiciona o suporte ao formato de audio mp3 a plataforma Java. Suporta Streaming, ID3v2 frames, Equalizador, ...."
+        }
+    ]
+}

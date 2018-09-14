@@ -1,44 +1,48 @@
 package br.univali.ps.plugins.base;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- *
- * @author Luiz Fernando
- */
-@XmlAccessorType(value = XmlAccessType.FIELD)
-public final class Autor
-{
-    @XmlAttribute
-    private String nome;
+*
+* @author Rafael Ferreira Costa
+*/
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "nome", "email" })
+public class Autor {
 
-    @XmlAttribute
-    private String email;
+	@JsonProperty("nome")
+	private String nome;
+	
+	@JsonProperty("email")
+	private String email;
 
-    Autor()
-    {
+	public Autor() 
+	{
+	
+	}
+	
+	@JsonProperty("nome")
+	public String getNome() {
+		return nome;
+	}
 
-    }
+	@JsonProperty("nome")
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public String getNome()
-    {
-        return nome;
-    }
+	@JsonProperty("email")
+	public String getEmail() {
+		return email;
+	}
 
-    void setNome(String nome)
-    {
-        this.nome = nome;
-    }
+	@JsonProperty("email")
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
 
-    public String getEmail()
-    {
-        return email;
-    }
-
-    void setEmail(String email)
-    {
-        this.email = email;
-    }
 }
