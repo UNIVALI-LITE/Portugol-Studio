@@ -10,6 +10,7 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.swing.ColorController;
+import static br.univali.ps.ui.swing.ColorController.ARQUIVO_TEMA;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
@@ -155,6 +156,12 @@ public class TelaEditarTemas extends javax.swing.JPanel implements Themeable{
     
     public void renameTheme(String oldName, String newName)
     {
+        String tema_selecionado = ARQUIVO_TEMA.getString("tema_selecionado");
+        
+        if(oldName.equals(tema_selecionado))
+        {
+            ARQUIVO_TEMA.put("tema_selecionado", newName);
+        }
         JSONObject obj = ColorController.getTemas();        
         obj.put(newName, obj.get(oldName));
         obj.remove(oldName);
