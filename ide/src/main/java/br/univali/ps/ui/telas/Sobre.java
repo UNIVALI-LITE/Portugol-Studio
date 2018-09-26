@@ -47,7 +47,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         versaoLabel.setForeground(ColorController.COR_LETRA);
         jPanel1.setBackground(ColorController.FUNDO_ESCURO);
         jLabel1.setBackground(ColorController.COR_PRINCIPAL);
-        jLabel1.setText(carregarHTML("/br/univali/ps/ui/telas/"+Configuracoes.getInstancia().getTemaPortugol()+"/membros.html"));
+        jLabel1.setText(carregarHTML("/br/univali/ps/ui/telas/"+Configuracoes.getInstancia().getIconesCores()+"/membros.html"));
     }
     
     private void configurarLinks()

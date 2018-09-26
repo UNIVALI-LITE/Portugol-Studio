@@ -17,28 +17,20 @@ import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.Mensagem;
 import br.univali.ps.dominio.PortugolDocumento;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
-import br.univali.ps.nucleo.GerenciadorTemas;
 import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.SuportePortugol;
 import br.univali.ps.ui.swing.ColorController;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
 import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 
 import br.univali.ps.ui.rstautil.SuportePortugolImpl;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
-import br.univali.ps.ui.telas.TelaCustomBorder;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -60,16 +52,12 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
@@ -84,14 +72,17 @@ import javax.swing.text.Element;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
 import org.fife.ui.rsyntaxtextarea.parser.DefaultParseResult;
 import org.fife.ui.rtextarea.ChangeableHighlightPainter;
+import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.json.JSONObject;
 
 /**
  *
@@ -142,7 +133,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private final boolean isExamplable;
     private final List<Object> destaquesPlugin = new ArrayList<>();
 
-    private JMenu menuTemas;
 
     private boolean centralizar = false;
     private boolean executandoPrograma = false;
@@ -162,7 +152,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         configurarParser();
         configurarTextArea();
         configurarAcoes();
-        criarMenuTemas();
         instalarObservadores();
         carregarConfiguracoes();
         configurarAparencia();
@@ -247,47 +236,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
         return suporteLinguagemPortugol;
     }
-
-    public JMenu getMenuDosTemas()
-    {
-        return menuTemas;
-    }
-
-    private void criarMenuTemas()
-    {
-        GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-        menuTemas = criaMenuDosTemas(gerenciadorTemas, this);
-    }
     
-    public JMenu criaMenuDosTemas(GerenciadorTemas gerenciadorTemas, final Editor editor)
-    {
-        JMenu menu = new JMenu("Cores");
-        
-        for (String tema : gerenciadorTemas.listarTemas())
-        {
-            JCheckBoxMenuItem itemMenu = new JCheckBoxMenuItem();
-
-            itemMenu.setAction(new AbstractAction(tema)
-            {
-                @Override
-                public void actionPerformed(ActionEvent evento)
-                {
-                    AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
-                    String tema = itemSelecionado.getText();
-                    editor.aplicarTema(tema);
-                    FabricaDicasInterface.mostrarNotificacao("Usando tema " + tema, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "theme.png"));
-                }
-            });
-
-            itemMenu.setText(tema);
-            itemMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-            menu.add(itemMenu);
-        }
-
-        return menu;
-    }
-
     private void configurarParser()
     {
         suporteLinguagemPortugol = criaSuportePortugol();
@@ -832,7 +781,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     private void carregarConfiguracoes()
     {
         Configuracoes configuracoes = Configuracoes.getInstancia();
-        aplicarTema(configuracoes.getTemaEditor());
+        aplicarTema();
         setTamanhoFonteEditor(configuracoes.getTamanhoFonteEditor());
         setCentralizarCodigoFonte(configuracoes.isCentralizarCodigoFonte());
     }
@@ -1323,48 +1272,46 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
     {
     }
 
-    public void aplicarTema(String nome)
-    {
-        try
-        {
-            GerenciadorTemas gerenciadorTemas = PortugolStudio.getInstancia().getGerenciadorTemas();
-            Theme tema = gerenciadorTemas.carregarTema(nome);
+    public void aplicarTema()
+    {            
+        JSONObject temaEditor = ColorController.TEMA_EDITOR;            
+        textArea.setBackground(                 new Color(Integer.parseInt(temaEditor.getString("background_editor"), 16)));
+        textArea.setCaretColor(                 new Color(Integer.parseInt(temaEditor.getString("cursor"), 16)));
+        textArea.setSelectedTextColor(          new Color(Integer.parseInt(temaEditor.getString("selection_bg"), 16)));
+        textArea.setCurrentLineHighlightColor(  new Color(Integer.parseInt(temaEditor.getString("selecao_linha_atual"), 16)));
+        textArea.setMatchedBracketBGColor(      new Color(Integer.parseInt(temaEditor.getString("selecao_chave_correspondente_bg"), 16)));
+        textArea.setMatchedBracketBorderColor(  new Color(Integer.parseInt(temaEditor.getString("selecao_chave_correspondente_fg"), 16)));
 
-            Font fonte = textArea.getFont();
-            ((PSTextArea) textArea).setarTema(tema);
+        Gutter gutter = RSyntaxUtilities.getGutter(textArea);
+        gutter.setBackground(               new Color(Integer.parseInt(temaEditor.getString("background_editor"), 16)));
+        gutter.setBorderColor(              new Color(Integer.parseInt(temaEditor.getString("borda_barra_lateral"), 16)));
+        gutter.setLineNumberColor(          new Color(Integer.parseInt(temaEditor.getString("numeros_das_linhas"), 16)));
+        gutter.setFoldIndicatorForeground(  new Color(Integer.parseInt(temaEditor.getString("dobrador_de_codigo"), 16)));
+        gutter.setFoldBackground(           new Color(Integer.parseInt(temaEditor.getString("background_editor"), 16)));
 
-            textArea.setFont(fonte);
-            Configuracoes.getInstancia().setTemaEditor(nome);
-
-            for (Component componente : menuTemas.getComponents())
-            {
-                JMenuItem item = (JMenuItem) componente;
-
-                if (item.getText().equals(nome))
-                {
-                    item.setSelected(true);
-                }
-                else
-                {
-                    item.setSelected(false);
-                }
-            }
-
-            corErro = obterCorErro();
-
-            if (tagErro != null)
-            {
-                destacarErroExecucao(ultimaLinhaErro + 1, ultimaColunaErro + 1);
-            }
-        }
-        catch (ExcecaoAplicacao excecao)
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-        }
-        catch (NullPointerException exception)
-        {
-            System.out.println("Bug muito loco do net feijões");
-        }
+        SyntaxScheme scheme = textArea.getSyntaxScheme();
+        scheme.getStyle(Token.IDENTIFIER)                   .foreground = new Color(Integer.parseInt(temaEditor.getString("identificador"), 16));
+        scheme.getStyle(Token.RESERVED_WORD)                .foreground = new Color(Integer.parseInt(temaEditor.getString("palavras_reservadas"), 16));
+        scheme.getStyle(Token.COMMENT_EOL)                  .foreground = new Color(Integer.parseInt(temaEditor.getString("comentario_linha"), 16));
+        scheme.getStyle(Token.COMMENT_MULTILINE)            .foreground = new Color(Integer.parseInt(temaEditor.getString("comentario_multilinha"), 16));
+        scheme.getStyle(Token.FUNCTION)                     .foreground = new Color(Integer.parseInt(temaEditor.getString("chamada_funcao"), 16));
+        scheme.getStyle(Token.DATA_TYPE)                    .foreground = new Color(Integer.parseInt(temaEditor.getString("tipos"), 16));
+        scheme.getStyle(Token.LITERAL_BOOLEAN)              .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_logico"), 16));
+        scheme.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT)   .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_inteiro"), 16));
+        scheme.getStyle(Token.LITERAL_NUMBER_FLOAT)         .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_real"), 16));
+        scheme.getStyle(Token.LITERAL_NUMBER_HEXADECIMAL)   .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_hexa"), 16));
+        scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE)  .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_cadeia"), 16));
+        scheme.getStyle(Token.LITERAL_CHAR)                 .foreground = new Color(Integer.parseInt(temaEditor.getString("valor_caracter"), 16));
+        scheme.getStyle(Token.SEPARATOR)                    .foreground = new Color(Integer.parseInt(temaEditor.getString("separador"), 16));
+        scheme.getStyle(Token.OPERATOR)                     .foreground = new Color(Integer.parseInt(temaEditor.getString("operador"), 16));
+        scheme.getStyle(Token.ERROR_CHAR)                   .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_CHAR)                   .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
+        scheme.getStyle(Token.ERROR_IDENTIFIER)             .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_IDENTIFIER)             .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
+        scheme.getStyle(Token.ERROR_NUMBER_FORMAT)          .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_NUMBER_FORMAT)          .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
+        scheme.getStyle(Token.ERROR_STRING_DOUBLE)          .foreground = new Color(Integer.parseInt(temaEditor.getString("erro_fg"), 16));
+        scheme.getStyle(Token.ERROR_STRING_DOUBLE)          .background = new Color(Integer.parseInt(temaEditor.getString("erro_bg"), 16));
     }
 
     @Override
@@ -1553,25 +1500,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         {
             ex.printStackTrace(System.err);
         }
-    }
-
-    private Color obterCorErro()
-    {
-        Color cor = new Color(1f, 0f, 0f, 0.15f);
-
-        // Por enquanto vamos fazer no braço, depois vemos como podemos 
-        // incluir e/ou buscar esta informação no tema
-        for (Component componente : menuTemas.getComponents())
-        {
-            JMenuItem item = (JMenuItem) componente;
-
-            if (item.isSelected() && item.getText().equals("Dark"))
-            {
-                cor = new Color(1f, 0f, 0f, 0.50f);
-            }
-        }
-
-        return cor;
     }
 
     /**
