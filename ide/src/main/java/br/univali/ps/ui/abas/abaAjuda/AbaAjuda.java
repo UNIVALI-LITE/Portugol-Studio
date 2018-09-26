@@ -27,10 +27,8 @@ import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -41,7 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
-import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,12 +50,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingWorker;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -433,6 +427,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
     private String colocarCSS(String css, String HTML)
     {
         JSONObject tema = ColorController.TEMA_SELECIONADO;
+        
+        css = css.replace("/*", "").replace("*/", "");
         
         css = css.replace("${fundo_claro}", tema.getString("fundo_claro"))
                  .replace("${cor_letra_titulo}", tema.getString("cor_letra_titulo"))
