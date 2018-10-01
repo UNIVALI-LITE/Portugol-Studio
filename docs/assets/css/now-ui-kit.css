@@ -7503,9 +7503,20 @@ Created using IcoMoon - icomoon.io
         right: 2%;
         max-width: 216px;
     }
+    .section-images .hero-images-container{
+        margin-top: -32vh;
+    }
 }
-
+@media screen and (max-width: 991px) {
+    .section-images .hero-images-container{
+        margin-top: 0vh;
+    }
+    .section-images .hero-images-container {
+        max-width: 991px;
+    }
+}
 @media screen and (max-width: 768px) {
+    
     .section-images {
         height: 300px;
         max-height: 300px;
@@ -7522,6 +7533,9 @@ Created using IcoMoon - icomoon.io
         right: 1%;
         max-width: 133px;
         top: 99%;
+    }
+    .section-images .hero-images-container {
+        max-width: 768px;
     }
 }
 
