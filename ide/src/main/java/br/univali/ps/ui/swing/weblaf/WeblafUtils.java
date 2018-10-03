@@ -15,6 +15,7 @@ import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.button.WebButtonStyle;
+import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.radiobutton.WebRadioButtonUI;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.separator.WebSeparatorUI;
@@ -74,14 +75,20 @@ public class WeblafUtils {
        }
        ((WebComboBoxUI) field.getUI()).setDrawBorder(false);
        ((WebComboBoxUI) field.getUI()).setRound(0);
-//       ((WebComboBoxUI) field.getUI()).setExpandedBgColor(ColorController.COR_DESTAQUE);
-//       ((WebComboBoxUI) field.getUI()).setWebColoredBackground(false);
+       ((WebComboBoxUI) field.getUI()).setExpandedBgColor(ColorController.COR_DESTAQUE);
+       ((WebComboBoxUI) field.getUI()).setWebColoredBackground(false);
+       field.setExpandedBgColor(ColorController.AMARELO);
+       field.setWebColoredBackground(false);
+        WebComboBoxStyle.expandedBgColor = ColorController.COR_DESTAQUE;
+        WebComboBoxStyle.webColoredBackground = false;
+        
+        
 //       ((WebComboBoxUI) field.getUI()).s 
        
 //       field.setBorder(new EmptyBorder(15,15,15,15));
-//       field.setOpaque(true);
-//       field.setBackground(ColorController.COR_DESTAQUE);
-//       field.setForeground(ColorController.FUNDO_ESCURO);
+       field.setOpaque(true);
+       field.setBackground(ColorController.COR_DESTAQUE);
+       field.setForeground(ColorController.FUNDO_ESCURO);
     }
     public static void configuraWebLaf(JTextArea field) {
        if (!WeblafUtils.weblafEstaInstalado()) {
@@ -351,6 +358,8 @@ public class WeblafUtils {
 //            }
             configuraWebTables();
             StyleConstants.darkBorderColor = null;//define a cor de borda do weblaf globalmente
+            WebComboBoxStyle.expandedBgColor = ColorController.COR_DESTAQUE;
+            WebComboBoxStyle.webColoredBackground = false;
             WebLookAndFeel.install();
             WebLookAndFeel.setDecorateDialogs(false);
             WebLookAndFeel.setDecorateFrames(false);

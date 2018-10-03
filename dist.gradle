@@ -1,7 +1,7 @@
 
 ext {
     
-    jdkVersion = '1.8.0_161'
+    jdkVersion = '1.8.0_181'
         
     platforms = [
 
@@ -953,6 +953,26 @@ def renameJvmCfv(def platform) {
     }
 }
 
+def getJDKUrl(def platform){
+    def url
+    switch(platform.name) {
+        case 'windows':
+            url = 'http://dl.dropbox.com/s/2d52hyubib4211y/jdk1.8.0_181-windows.zip'
+            break
+        case 'linux':
+            if(platform.architecture.equals('x64')){
+                url = 'http://dl.dropbox.com/s/6r05urp6u63nwnz/jdk1.8.0_181-linux-x64.zip'
+            }else{
+                url = 'http://dl.dropbox.com/s/81k67uaribtdmhx/jdk1.8.0_181-linux.zip'
+            }
+            break
+        case 'osx':
+            url = 'http://dl.dropbox.com/s/6aq79ichdc6446z/jdk1.8.0_181-osx.zip'
+            break
+    }
+    return url   
+}
+
 def downloadJDK(def platform) {
         
     def platformId = platform.name + platform.suffix
@@ -961,7 +981,8 @@ def downloadJDK(def platform) {
 
     def zipFileName = jdkName + '.zip'
 
-    def remoteZip = 'http://installbuilder.bitrock.com/java/' + zipFileName
+    //def remoteZip = 'http://installbuilder.bitrock.com/java/' + zipFileName
+    def remoteZip = getJDKUrl(platform)
 
     def localZip = new File(dirs.installer.javaDir, zipFileName)
 

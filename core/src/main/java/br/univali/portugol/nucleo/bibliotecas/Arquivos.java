@@ -371,6 +371,7 @@ public final class Arquivos extends Biblioteca
         synchronized (Arquivos.this)
         {
             final ResultadoSelecao resultadoSelecao = new ResultadoSelecao();
+            final StringBuilder erro = new StringBuilder("");
 
             SwingUtilities.invokeLater(new Runnable()
             {
@@ -413,31 +414,26 @@ public final class Arquivos extends Biblioteca
                             Arquivos.this.notifyAll();
                         }
                     }
-                    catch (ErroExecucaoBiblioteca excecao)
+                    catch (Exception excecao)
                     {
-                        throw new RuntimeException(excecao);
-                    }
-                    catch (ClassNotFoundException ex)
-                    {
-                        Logger.getLogger(Arquivos.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    catch (InstantiationException ex)
-                    {
-                        Logger.getLogger(Arquivos.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    catch (IllegalAccessException ex)
-                    {
-                        Logger.getLogger(Arquivos.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    catch (UnsupportedLookAndFeelException ex)
-                    {
-                        Logger.getLogger(Arquivos.class.getName()).log(Level.SEVERE, null, ex);
+                        erro.append(excecao.getMessage());
+                        try {
+                            UIManager.setLookAndFeel(previousLF);
+                        } catch (UnsupportedLookAndFeelException ex) {
+                        }                        
+                        synchronized (Arquivos.this)
+                        {
+                            Arquivos.this.notifyAll();
+                        }
                     }
                 }
             });
 
             wait();
-
+            if(!erro.toString().equals(""))
+            {
+                throw new ErroExecucaoBiblioteca(erro.toString());
+            }
             return resultadoSelecao.getArquivoSelecionado();
         }
     }

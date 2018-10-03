@@ -3,67 +3,290 @@ package br.univali.ps.ui.swing;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Color;
+import org.json.JSONObject;
 
 /**
  *
  * @author LITE
  */
 public final class ColorController {
-    private static Color[] getDefaultTheme(){
-        return new Color[]{
-                new Color(51,51,51),    //cinza escuro
-                new Color(210,231,252), //branco azulado
-                new Color(250,250,250), //branco
-                new Color(49,104,146),  //azul
-//                new Color(243,243,243), //branco
-                new Color(193,217,245), //azul_medio
-                new Color(228,241,254), //branco azulado
-                new Color(255,194,0),   //amarelo
-                new Color(255,194,0),   //amarelo
-                new Color(69,189,255),  //azul claro
-                new Color(240,67,59),   //vermelho
-                new Color(0,239,192),   //ciano
-                new Color(255,255,255), //branco
-                new Color(255,255,255), //branco
-                new Color(230,230,230), //cinza
-                new Color(0,0,0,0)      //transparente
-            };
-    }
-    private static Color[] getASHTheme(){
-        return new Color[]{
-                new Color(205,205,205), //cinza claro
-                new Color(58,70,76),    //cinza azulado
-                new Color(38,50,56),    //cinza azulado mais escuro
-                new Color(18,30,36),    //cinza azulado muito mais escuro
-                new Color(38,50,56),    //cinza azulado mais escuro
-                new Color(68,80,86),    //cinza azulado mais claro
-                new Color(241,67,60),   //vermelho
-                new Color(255,194,0),   //amarelo
-                new Color(69,189,255),  //azul claro
-                new Color(240,67,59),   //vermelho
-                new Color(0,239,192),   //ciano
-                new Color(18,30,36),    //cinza azulado muito mais escuro
-                new Color(205,205,205), //cinza claro
-                new Color(58,70,76),    //cinza azulado
-                new Color(0,0,0,0)      //Transparente
-            };
-    }
     
-    private static Color[] getTheme()
+    private static JSONObject getTemaSelecionado()
     {
-        String temaSelecionado = Configuracoes.getInstancia().getTemaPortugol();
+        JSONObject json_temas = ARQUIVO_TEMA.getJSONObject("temas");
+        
+        String tema_selecionado = ARQUIVO_TEMA.getString("tema_selecionado");
+        JSONObject temaSelecionado = json_temas.getJSONObject(tema_selecionado);        
+        Configuracoes.getInstancia().setIconesCores(temaSelecionado.getString("icones"));
         IconFactory.verificarTema();
-        if(temaSelecionado.equals("Portugol"))
-        {
-            return getDefaultTheme();
-        }
-        else
-        {
-            return getASHTheme();
-        }        
+        
+        return temaSelecionado;
     }
     
-    private static final Color[] THEME= getTheme();
+    private static JSONObject getArquivoTema()
+    {
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();
+        
+        if(json == null)
+        {
+            json = getTemaPadrao();
+        }
+        
+        return json;
+    }
+       
+    private static JSONObject getTemaEditor()
+    {    
+         return TEMA_SELECIONADO.getJSONObject("Editor");
+    }
+    
+    private static Color[] getTema()
+    {        
+        return new Color[]{
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_letra"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_destaque"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_principal"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_escuro"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_medio"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_claro"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("progress_bar"), 16)),
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_1"), 16)),   //amarelo
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_2"), 16)),  //azul claro
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_3"), 16)),   //vermelho
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_4"), 16)),   //ciano
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("fundo_botoes_expansiveis"), 16)),    //cinza azulado muito mais escuro
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_letra_titulo"), 16)), //cinza claro
+                new Color(Integer.parseInt(TEMA_SELECIONADO.getString("cor_console"), 16)),    //cinza azulado
+                new Color(0,0,0,0)      //Transparente
+            };     
+    }
+    
+    public static String[] listarTemas()
+    {
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
+        JSONObject json_temas = json.getJSONObject("temas");
+        
+        return JSONObject.getNames(json_temas);
+    }
+    
+    public static JSONObject getTemas()
+    {
+        JSONObject json = Configuracoes.getInstancia().getArquivo_temas();        
+        JSONObject json_temas = json.getJSONObject("temas");
+        
+        return json_temas;
+    }
+    
+    public static JSONObject getNovoTemaBasicoDark()
+    {
+        String basicTheme = "{\n" +
+"			\"fundo_claro\": \"445056\",\n" +
+"			\"cor_letra_titulo\": \"cdcdcd\",\n" +
+"			\"progress_bar\": \"f1433c\",\n" +
+"			\"cor_letra\": \"cdcdcd\",\n" +
+"			\"fundo_medio\": \"263238\",\n" +
+"			\"icones\": \"Dark\",\n" +
+"			\"fundo_escuro\": \"121e24\",\n" +
+"			\"cor_destaque\": \"3a464c\",\n" +
+"			\"cor_console\": \"3a464c\",\n" +
+"			\"fundo_botoes_expansiveis\": \"121e24\",\n" +
+"			\"cor_principal\": \"263238\",\n" +
+"			\"cor_4\": \"00efc0\",\n" +
+"			\"Editor\": {\n" +
+"				\"cursor\": \"c1cbc2\",\n" +
+"				\"selecao_chave_correspondente_fg\": \"6A8088\",\n" +
+"				\"selecao_chave_correspondente_bg\": \"6b8189\",\n" +
+"				\"valor_hexa\": \"00F0C0\",\n" +
+"				\"valor_cadeia\": \"FFC200\",\n" +
+"				\"valor_logico\": \"F1433C\",\n" +
+"				\"valor_inteiro\": \"00F0C0\",\n" +
+"				\"separador\": \"E8E2B7\",\n" +
+"				\"background_editor\": \"263238\",\n" +
+"				\"erro_bg\": \"04790e\",\n" +
+"				\"numeros_das_linhas\": \"516268\",\n" +
+"				\"valor_real\": \"00F0C0\",\n" +
+"				\"tipos\": \"45BEFF\",\n" +
+"				\"erro_fg\": \"FBFBFB\",\n" +
+"				\"selecao_linha_atual\": \"2F393C\",\n" +
+"				\"comentario_linha\": \"66747B\",\n" +
+"				\"valor_caracter\": \"FFC200\",\n" +
+"				\"palavras_reservadas\": \"F1433C\",\n" +
+"				\"comentario_multilinha\": \"66747B\",\n" +
+"				\"chamada_funcao\": \"FBFBFB\",\n" +
+"				\"borda_barra_lateral\": \"1E2324\",\n" +
+"				\"dobrador_de_codigo\": \"516268\",\n" +
+"				\"operador\": \"E8E2B7\",\n" +
+"				\"selection_bg\": \"404E51\",\n" +
+"				\"identificador\": \"FBFBFB\"\n" +
+"			},\n" +
+"			\"cor_3\": \"f0433b\",\n" +
+"			\"cor_2\": \"45bdff\",\n" +
+"			\"cor_1\": \"ffc200\"\n" +
+"		}";
+        return new JSONObject(basicTheme);
+    }
+    
+    public static JSONObject getNovoTemaBasicoPortugol()
+    {
+        String basicTheme = "{\n" +
+"			\"fundo_claro\": \"e4f1fe\",\n" +
+"			\"cor_letra_titulo\": \"ffffff\",\n" +
+"			\"progress_bar\": \"ffc200\",\n" +
+"			\"cor_letra\": \"333333\",\n" +
+"			\"fundo_medio\": \"c1d9f5\",\n" +
+"			\"icones\": \"Portugol\",\n" +
+"			\"fundo_escuro\": \"316892\",\n" +
+"			\"cor_destaque\": \"d2e7fc\",\n" +
+"			\"cor_console\": \"e6e6e6\",\n" +
+"			\"fundo_botoes_expansiveis\": \"ffffff\",\n" +
+"			\"cor_principal\": \"fafafa\",\n" +
+"			\"cor_4\": \"00efc0\",\n" +
+"			\"Editor\": {\n" +
+"				\"cursor\": \"ff0000\",\n" +
+"				\"selecao_chave_correspondente_fg\": \"000080\",\n" +
+"				\"selecao_chave_correspondente_bg\": \"eaeaff\",\n" +
+"				\"valor_hexa\": \"6400c8\",\n" +
+"				\"valor_cadeia\": \"dc009c\",\n" +
+"				\"valor_logico\": \"0000ff\",\n" +
+"				\"valor_inteiro\": \"6400c8\",\n" +
+"				\"separador\": \"ff0000\",\n" +
+"				\"background_editor\": \"fafafa\",\n" +
+"				\"erro_bg\": \"ffcccc\",\n" +
+"				\"numeros_das_linhas\": \"787878\",\n" +
+"				\"valor_real\": \"6400c8\",\n" +
+"				\"tipos\": \"008080\",\n" +
+"				\"erro_fg\": \"000000\",\n" +
+"				\"selecao_linha_atual\": \"ddf1ff\",\n" +
+"				\"comentario_linha\": \"808080\",\n" +
+"				\"valor_caracter\": \"dc009c\",\n" +
+"				\"palavras_reservadas\": \"0000ff\",\n" +
+"				\"comentario_multilinha\": \"808080\",\n" +
+"				\"chamada_funcao\": \"ad8000\",\n" +
+"				\"borda_barra_lateral\": \"dddddd\",\n" +
+"				\"dobrador_de_codigo\": \"808080\",\n" +
+"				\"operador\": \"804040\",\n" +
+"				\"selection_bg\": \"c0ced1\",\n" +
+"				\"identificador\": \"000000\"\n" +
+"			},\n" +
+"			\"cor_3\": \"f0433b\",\n" +
+"			\"cor_2\": \"45bdff\",\n" +
+"			\"cor_1\": \"ffc200\"\n" +
+"		}";
+        return new JSONObject(basicTheme);
+    }
+    
+    public static JSONObject getTemaPadrao()
+    {
+        String defaultThemeFile = 
+        "{\n" +
+"	\"tema_selecionado\" : \"Dark\",	\n" +
+"	\"temas\" : \n" +
+"	{\n" +
+"		\"Dark\" : \n" +
+"		{\n" +
+"			\"cor_letra\" : \"cdcdcd\",\n" +
+"			\"cor_destaque\" : \"3a464c\",\n" +
+"			\"cor_principal\" : \"263238\",\n" +
+"			\"fundo_escuro\" : \"121e24\",\n" +
+"			\"fundo_medio\" : \"263238\",\n" +
+"			\"fundo_claro\" : \"445056\",\n" +
+"			\"progress_bar\" : \"f1433c\",\n" +
+"			\"fundo_botoes_expansiveis\" : \"121e24\",\n" +
+"			\"cor_letra_titulo\" : \"cdcdcd\",\n" +
+"			\"cor_console\" : \"3a464c\",\n" +
+"			\"cor_1\" : \"ffc200\",\n" +
+"			\"cor_2\" : \"45bdff\",\n" +
+"			\"cor_3\" : \"f0433b\",\n" +
+"			\"cor_4\" : \"00efc0\",\n" +
+"			\"icones\" : \"Dark\",\n" +
+"			\n" +
+"			\"Editor\" : \n" +
+"			{\n" +
+"				\"background_editor\" : \"263238\",\n" +
+"				\"cursor\" : \"c1cbc2\",\n" +
+"				\"selection_bg\" : \"404E51\",\n" +
+"				\"selecao_linha_atual\" : \"2F393C\",\n" +
+"				\"selecao_chave_correspondente_fg\" : \"6A8088\",\n" +
+"				\"selecao_chave_correspondente_bg\" : \"6b8189\",\n" +
+"				\"borda_barra_lateral\" : \"1E2324\",\n" +
+"				\"numeros_das_linhas\" : \"516268\",\n" +
+"				\"dobrador_de_codigo\" : \"516268\",\n" +
+"				\"identificador\" : \"FBFBFB\",\n" +
+"				\"palavras_reservadas\" : \"F1433C\",\n" +
+"				\"comentario_linha\" : \"66747B\",\n" +
+"				\"comentario_multilinha\" : \"66747B\",\n" +
+"				\"chamada_funcao\" : \"FBFBFB\",\n" +
+"				\"tipos\" : \"45BEFF\",\n" +
+"				\"valor_logico\" : \"F1433C\",\n" +
+"				\"valor_inteiro\" : \"00F0C0\",\n" +
+"				\"valor_real\" : \"00F0C0\",\n" +
+"				\"valor_hexa\" : \"00F0C0\",\n" +
+"				\"valor_cadeia\" : \"FFC200\",\n" +
+"				\"valor_caracter\" : \"FFC200\",\n" +
+"				\"operador\" : \"E8E2B7\",\n" +
+"				\"separador\" : \"E8E2B7\",\n" +
+"				\"erro_fg\" : \"FBFBFB\",\n" +
+"				\"erro_bg\" : \"04790e\"\n" +
+"			}\n" +
+"		},		\n" +
+"		\"Portugol\" : \n" +
+"		{\n" +
+"			\"cor_letra\" : \"333333\",\n" +
+"			\"cor_destaque\" : \"d2e7fc\",\n" +
+"			\"cor_principal\" : \"fafafa\",\n" +
+"			\"fundo_escuro\" : \"316892\",\n" +
+"			\"fundo_medio\" : \"c1d9f5\",\n" +
+"			\"fundo_claro\" : \"e4f1fe\",\n" +
+"			\"progress_bar\" : \"ffc200\",\n" +
+"			\"fundo_botoes_expansiveis\" : \"ffffff\",\n" +
+"			\"cor_letra_titulo\" : \"ffffff\",\n" +
+"			\"cor_console\" : \"e6e6e6\",\n" +
+"			\"cor_1\" : \"ffc200\",\n" +
+"			\"cor_2\" : \"45bdff\",\n" +
+"			\"cor_3\" : \"f0433b\",\n" +
+"			\"cor_4\" : \"00efc0\",\n" +
+"			\"icones\" : \"Portugol\",\n" +
+"			\n" +
+"			\"Editor\" : \n" +
+"			{\n" +
+"				\"background_editor\" : \"fafafa\",\n" +
+"				\"cursor\" : \"ff0000\",\n" +
+"				\"selection_bg\" : \"c0ced1\",\n" +
+"				\"selecao_linha_atual\" : \"ddf1ff\",\n" +
+"				\"selecao_chave_correspondente_fg\" : \"000080\",\n" +
+"				\"selecao_chave_correspondente_bg\" : \"eaeaff\",\n" +
+"				\"borda_barra_lateral\" : \"dddddd\",\n" +
+"				\"numeros_das_linhas\" : \"787878\",\n" +
+"				\"dobrador_de_codigo\" : \"808080\",\n" +
+"				\"identificador\" : \"000000\",\n" +
+"				\"palavras_reservadas\" : \"0000ff\",\n" +
+"				\"comentario_linha\" : \"808080\",\n" +
+"				\"comentario_multilinha\" : \"808080\",\n" +
+"				\"chamada_funcao\" : \"ad8000\",\n" +
+"				\"tipos\" : \"008080\",\n" +
+"				\"valor_logico\" : \"0000ff\",\n" +
+"				\"valor_inteiro\" : \"6400C8\",\n" +
+"				\"valor_real\" : \"6400C8\",\n" +
+"				\"valor_hexa\" : \"6400C8\",\n" +
+"				\"valor_cadeia\" : \"DC009C\",\n" +
+"				\"valor_caracter\" : \"DC009C\",\n" +
+"				\"operador\" : \"804040\",\n" +
+"				\"separador\" : \"ff0000\",\n" +
+"				\"erro_fg\" : \"000000\",\n" +
+"				\"erro_bg\" : \"ffcccc\"\n" +
+"			}\n" +
+"		}\n" +
+"	}	\n" +
+"}";
+        
+        return new JSONObject(defaultThemeFile);
+    }
+    
+    public static final JSONObject ARQUIVO_TEMA = getArquivoTema();    
+    public static final JSONObject TEMA_SELECIONADO = getTemaSelecionado();
+    public static final JSONObject TEMA_EDITOR = getTemaEditor();
+    
+    private static final Color[] THEME= getTema();
     public static final Color COR_LETRA = THEME[0];
     public static final Color COR_DESTAQUE = THEME[1];
     public static final Color COR_PRINCIPAL = THEME[2];
@@ -78,5 +301,5 @@ public final class ColorController {
     public static final Color FUNDO_BOTOES_EXPANSIVEIS = THEME[11];
     public static final Color COR_LETRA_TITULO = THEME[12];
     public static final Color COR_CONSOLE = THEME[13];
-    public static final Color TRANSPARENTE = THEME[14];
+    public static final Color TRANSPARENTE = THEME[14];    
 }

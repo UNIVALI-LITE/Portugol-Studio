@@ -63,7 +63,8 @@ public class PSPainelTabulado extends javax.swing.JPanel implements Themeable{
                 aba.selecionar();
             }
         });
-        FabricaDicasInterface.criarTooltipEstatica(cabecalhoAba, cabecalhoAba.getTitulo());
+        //Removendo para teste de problema
+        //FabricaDicasInterface.criarTooltipEstatica(cabecalhoAba, cabecalhoAba.getTitulo());
         return aba;
     }
     

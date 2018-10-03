@@ -1,6 +1,7 @@
 package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.Configuracoes;
+import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -271,8 +272,7 @@ public class TelaDicas extends javax.swing.JPanel implements Themeable {
     }//GEN-LAST:event_exibirSempreStateChanged
 
     private void webButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webButton3ActionPerformed
-        Configuracoes configuracoes = Configuracoes.getInstancia();
-        configuracoes.TrocarTema();
+        PortugolStudio.getInstancia().getTelaEditarTemas().setVisible(true);
     }//GEN-LAST:event_webButton3ActionPerformed
 
 

@@ -563,24 +563,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         return acaoPainelUtilitarios;
     }
     
-    private Action criaAcaoTrocaTema() {
-        KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK+InputEvent.ALT_MASK+InputEvent.SHIFT_MASK);
-        String nome = "Trocar tema (reiniciar)";
-        AbstractAction acaoTrocarTema = new AbstractAction(nome, IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png")) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Configuracoes configuracoes = Configuracoes.getInstancia();
-                configuracoes.TrocarTema();
-            }
-        };
-
-        acaoTrocarTema.putValue(Action.ACCELERATOR_KEY, atalho);
-
-        getActionMap().put(nome, acaoTrocarTema);
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
-        return acaoTrocarTema;
-    }
-
     public Action criaAcaoCentralizarCodigoFonte() {
         KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_PAUSE, InputEvent.SHIFT_DOWN_MASK);
         String nome = "Centralizar código fonte";
@@ -698,17 +680,41 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         criaControlesDaFonteDoEditor();
 
         barraBotoesEditor.adicionaAcao(criaAcaoExpandirEditor());
-        //Action acaoPesquisarSubstituir = FabricaDeAcoesDoEditor.criaAcaoPesquisarSubstituir(editor.getFindDialog(), editor.getReplaceDialog(), getActionMap(), getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
         barraBotoesEditor.adicionaAcao(criaAcaoPesquisarSubstituir());
-//        barraBotoesEditor.adicionaAcao(criaAcaoOpcoesExecucao());
         barraBotoesEditor.adicionaAcao(criaAcaoCentralizarCodigoFonte());
-        barraBotoesEditor.adicionaAcao(criaAcaoTrocaTema());
         barraBotoesEditor.adicionaSeparador();
-        barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());        
-        
-//        barraDeBotoesEditor.adicionaMenu(editor.getMenuDosTemas(), true);//usa toggleButtons
-
+        barraBotoesEditor.adicionaAcao(criaAcaoExibirUtilitarios());
+        criaMenuTemas();
         adicionaBotaoConfiguracaoEditor(0);
+    }
+    
+    public void criaMenuTemas()
+    {
+        String[] temas = ColorController.listarTemas();
+        Action[] acoes = new Action[temas.length+1];
+                
+        for (int i=0; i<temas.length; i++)
+        {
+            acoes[i] = new AbstractAction(temas[i])
+            {
+                @Override
+                public void actionPerformed(ActionEvent evento)
+                {
+                    AbstractButton itemSelecionado = (AbstractButton) evento.getSource();
+                    String tema = itemSelecionado.getText();
+                    Configuracoes.getInstancia().TrocarTema(tema);
+                }
+            };
+        }
+        acoes[temas.length] = new AbstractAction("Editar Temas")
+        {
+            @Override
+            public void actionPerformed(ActionEvent evento)
+            {
+                PortugolStudio.getInstancia().getTelaEditarTemas().setVisible(true);
+            }
+        };
+        barraBotoesEditor.adicionaGrupoDeItems("Temas", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "all_types.png"), acoes, false);
     }
 
     private void adicionaBotaoConfiguracaoInspetor(int margemDireita) {
@@ -1340,7 +1346,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         FabricaDicasInterface.criarTooltip(btnDepurar, "Executa o programa passo a passo", acaoExecutarPasso);
         FabricaDicasInterface.criarTooltip(btnSalvar, "Salva o programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarArquivo);
         FabricaDicasInterface.criarTooltip(btnSalvarComo, "Salva uma nova cópia do programa atual no computador, em uma pasta escolhida pelo usuário", acaoSalvarComo);
-        FabricaDicasInterface.criarTooltip(barraBotoesEditor.getCompomemtParaAdicionarDica(), "Personalizar o editor de código fonte ...");
+        FabricaDicasInterface.criarTooltip(barraBotoesEditor.getCompomemtParaAdicionarDica(), "Personalizar as cores do Portugol");
         FabricaDicasInterface.criarTooltip(barraBotoesInspetorArvore.getCompomemtParaAdicionarDica(), "Personalizar a árvore estrutural e o inspetor de variáveis ...");
     }
 
@@ -2610,6 +2616,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
 
         return podeFechar;
+    }
+
+    public BarraDeBotoesExpansivel getBarraBotoesInspetorArvore() {
+        return barraBotoesInspetorArvore;
+    }
+
+    public BarraDeBotoesExpansivel getBarraBotoesEditor() {
+        return barraBotoesEditor;
     }
 
     private final class ObservadorExecucao extends ObservadorExecucaoBasico {

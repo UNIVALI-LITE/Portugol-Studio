@@ -4,9 +4,11 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.IconFactory;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -72,7 +74,6 @@ public final class BarraDeBotoesExpansivel extends WebButton
         ItemDeMenuParaGrupoDeAcoes item = new ItemDeMenuParaGrupoDeAcoes(texto, icone, acoes, usarToggleButtons);
         menu.add(item);
         item.setFont(getFont());
-        
     }
 
     public void adicionaSeparador()
@@ -91,6 +92,16 @@ public final class BarraDeBotoesExpansivel extends WebButton
     public void adicionarComponente(JComponent component)
     {
         menu.add(component);
+    }
+    
+    public void resetaTemas()
+    {
+        for (Component component : menu.getComponents()) {
+            if(component instanceof ItemDeMenuParaGrupoDeAcoes)
+            {
+                menu.remove(component);
+            }
+        }
     }
 
     private final class ItemDeMenuParaGrupoDeAcoes extends JPanel
@@ -123,22 +134,24 @@ public final class BarraDeBotoesExpansivel extends WebButton
 
         private void criaColunasDeBotoes(Action acoes[], boolean usarTogleButtons)
         {
-            int colunas = acoes.length / 2;
+            int colunas = 2;
             int indiceDaAcao = 0;
 
             WebButtonGroup gruposDasColunas[] = new WebButtonGroup[colunas];
 
-            for (int c = 0; c < colunas; c++)
+            for (int c = 0; c < 2; c++)
             {
                 gruposDasColunas[c] = new WebButtonGroup(WebButtonGroup.VERTICAL, true, new JComponent[0]);//array vazio inicialmente
                 gruposDasColunas[c].setButtonsDrawFocus(false);
 
-                //2 botões no máximo em cada coluna
-                for (int i = 0; i < 2; i++)
+                int linhas = acoes.length%2==0 ? (acoes.length / 2) : (acoes.length / 2)+1;
+                for (int i = 0; i < linhas; i++)
                 {
                     if (indiceDaAcao < acoes.length)
                     {
-                        gruposDasColunas[c].add((usarTogleButtons) ? new JToggleButton(acoes[indiceDaAcao]) : new JButton(acoes[indiceDaAcao]));
+                        WebToggleButton botao = new WebToggleButton(acoes[indiceDaAcao]);
+                        WeblafUtils.configurarToogleBotao(botao, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5);
+                        gruposDasColunas[c].add(botao);
                         indiceDaAcao++;
                     }
                 }
@@ -158,11 +171,10 @@ public final class BarraDeBotoesExpansivel extends WebButton
             for (int i = 0; i < acoes.length; i++)
             {
                 botoes[i] = new WebButton(acoes[i]);
-                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_DESTAQUE, Color.orange, ColorController.FUNDO_CLARO, Color.GRAY, 5);
+                WeblafUtils.configurarBotao((WebButton) botoes[i], ColorController.COR_DESTAQUE, ColorController.COR_LETRA, ColorController.FUNDO_CLARO, ColorController.COR_LETRA, 5);
             }
 
             WebButtonGroup textGroup = new WebButtonGroup(true, botoes);
-
             textGroup.setButtonsDrawFocus(false);
             add(textGroup);
         }

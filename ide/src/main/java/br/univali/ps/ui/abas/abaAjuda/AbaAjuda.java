@@ -60,6 +60,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import org.fit.cssbox.swingbox.util.GeneralEvent;
 import org.fit.cssbox.swingbox.util.GeneralEventListener;
+import org.json.JSONObject;
 
 /**
  *
@@ -104,7 +105,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
     private Topico topicoAtual;
     private Ajuda ajuda;
     
-    private final String css;
+    private String css;
     private final String constanteBibliotecaHTML;
     private final String raizBibliotecaHTML;
     private final String erroHTML;
@@ -116,12 +117,12 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
     {
         super("Ajuda", IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "help.png"), true);
 
-        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/"+Configuracoes.getInstancia().getTemaPortugol()+"/estilo.css");
-        constanteBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html"));
-        erroHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
-        raizBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));
-        funcaoBibliotecaHTML = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html"));
-        conteudoRaizBibliotecas = colocarCSS(carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlraizbibliotecas.html"));
+        css = carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/estilo.css");
+        constanteBibliotecaHTML = colocarCSS(this.css, carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlconstante.html"));
+        erroHTML = colocarCSS(this.css, carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlerro.html"));
+        raizBibliotecaHTML = colocarCSS(this.css, carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlbibliotecas.html"));
+        funcaoBibliotecaHTML = colocarCSS(this.css, carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlfuncao.html"));
+        conteudoRaizBibliotecas = colocarCSS(this.css, carregarHTML("/br/univali/ps/ui/abas/abaBibliotecas/htmlraizbibliotecas.html"));
         
         initComponents();
         configurarArvore();
@@ -423,8 +424,59 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
         return base;
     }
     
-    private String colocarCSS(String HTML)
+    private String colocarCSS(String css, String HTML)
     {
+        JSONObject tema = ColorController.TEMA_SELECIONADO;
+        
+        css = css.replace("/*", "").replace("*/", "");
+        
+        css = css.replace("${fundo_claro}", tema.getString("fundo_claro"))
+                 .replace("${cor_letra_titulo}", tema.getString("cor_letra_titulo"))
+                 .replace("${progress_bar}", tema.getString("progress_bar"))
+                 .replace("${cor_letra}", tema.getString("cor_letra"))
+                 .replace("${fundo_medio}", tema.getString("fundo_medio"))
+                 .replace("${icones}", tema.getString("icones"))
+                 .replace("${fundo_escuro}", tema.getString("fundo_escuro"))
+                 .replace("${cor_destaque}", tema.getString("cor_destaque"))
+                 .replace("${cor_console}", tema.getString("cor_console"))
+                 .replace("${fundo_botoes_expansiveis}", tema.getString("fundo_botoes_expansiveis"))
+                 .replace("${cor_principal}", tema.getString("cor_principal"))
+                 .replace("${cor_4}", tema.getString("cor_4"))
+                 .replace("${cor_3}", tema.getString("cor_3"))
+                 .replace("${cor_2}", tema.getString("cor_2"))
+                 .replace("${cor_1}", tema.getString("cor_1"));
+        
+        JSONObject editor = tema.getJSONObject("Editor");
+        
+         css = css.replace("${palavra_reservada}", editor.getString("palavras_reservadas"))
+                 .replace("${cursor}", editor.getString("cursor"))
+                 .replace("${tipo_reservado}", editor.getString("tipos"))
+                 .replace("${selecao_chave_correspondente_fg}", editor.getString("selecao_chave_correspondente_fg"))
+                 .replace("${selecao_chave_correspondente_bg}", editor.getString("selecao_chave_correspondente_bg"))
+                 .replace("${valor_hexa}", editor.getString("valor_hexa"))
+                 .replace("${valor_cadeia}", editor.getString("valor_cadeia"))
+                 .replace("${valor_logico}", editor.getString("valor_logico"))
+                 .replace("${valor_inteiro}", editor.getString("valor_inteiro"))
+                 .replace("${separador}", editor.getString("separador"))
+                 .replace("${background_editor}", editor.getString("background_editor"))
+                 .replace("${erro_bg}", editor.getString("erro_bg"))
+                 .replace("${numeros_das_linhas}", editor.getString("numeros_das_linhas"))
+                 .replace("${valor_real}", editor.getString("valor_real"))
+                 .replace("${tipos}", editor.getString("tipos"))
+                 .replace("${erro_fg}", editor.getString("erro_fg"))
+                 .replace("${selecao_linha_atual}", editor.getString("selecao_linha_atual"))
+                 .replace("${comentario_linha}", editor.getString("comentario_linha"))
+                 .replace("${valor_caracter}", editor.getString("valor_caracter"))
+                 .replace("${palavras_reservadas}", editor.getString("palavras_reservadas"))
+                 .replace("${comentario_multilinha}", editor.getString("comentario_multilinha"))
+                 .replace("${chamada_funcao}", editor.getString("chamada_funcao"))
+                 .replace("${borda_barra_lateral}", editor.getString("borda_barra_lateral"))
+                 .replace("${dobrador_de_codigo}", editor.getString("dobrador_de_codigo"))
+                 .replace("${operador}", editor.getString("operador"))
+                 .replace("${selection_bg}", editor.getString("selection_bg"))
+                 .replace("${identificador}", editor.getString("identificador"))
+                 .replace("${tipo_declaracao}", editor.getString("valor_inteiro"));
+        
        return HTML.replace("/*${css}*/", css);
     }
     
@@ -709,6 +761,8 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
         private Pattern padraoAtributoClass = Pattern.compile("(class)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
         private Pattern padraoAtributoDataFile = Pattern.compile("(data-file)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
         private Pattern padraoAtributoDataType = Pattern.compile("(data-type)[^=]*=[^(\"|')]*(\"|')([^(\"|')]*)(\"|')", Pattern.CASE_INSENSITIVE);
+        
+        private String css = "";
 
         @Override
         public String processar(String conteudo, Topico topico)
@@ -730,13 +784,13 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
         
         private String decidirEstilos(String conteudo)
         {
-            String caminhoCSS = "Dark";
-            if(!Configuracoes.getInstancia().isTemaDark())
-            {
-                caminhoCSS = "Portugol";
+            try {
+                css = FileHandle.open(new File(Configuracoes.getInstancia().getDiretorioAjuda().getAbsolutePath()+"\\estilos\\ajuda.css"));
+            } catch (Exception ex) {
+                Logger.getLogger(AbaAjuda.class.getName()).log(Level.SEVERE, null, ex);
             }
-            conteudo = conteudo.replace("${ajuda}", caminhoCSS+"/ajuda.css");
-            conteudo = conteudo.replace("${syntax}", caminhoCSS+"/SyntaxHighlighter.css");
+            conteudo = colocarCSS(css, conteudo);
+            conteudo = conteudo.replace("${syntax}", "SyntaxHighlighter.css");
             return conteudo;
         }
 

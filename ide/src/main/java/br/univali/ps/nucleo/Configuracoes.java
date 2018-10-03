@@ -1,10 +1,15 @@
 package br.univali.ps.nucleo;
 
+import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaPrincipal;
+import br.univali.ps.ui.utils.FileHandle;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,6 +21,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.json.JSONObject;
 
 /**
  *
@@ -49,8 +55,9 @@ public final class Configuracoes
     private final File diretorioConfiguracoes = resolverDiretorioConfiguracoes();
     private final File caminhoArquivoConfiguracoes = new File(diretorioConfiguracoes, "configuracoes.properties");
     private final File caminhoArquivoDicas = new File(diretorioConfiguracoes, "dicas_exibidas.txt");
-    private final File caminhoArquivosRecentes = new File(diretorioConfiguracoes, "arquivos_recentes.txt");    
-
+    private final File caminhoArquivosRecentes = new File(diretorioConfiguracoes, "arquivos_recentes.txt");
+    private final File caminhoArquivoTemas = new File(diretorioConfiguracoes, "temas.json");
+    
     private final File diretorioInstalacao = Caminhos.obterDiretorioInstalacao();
     private final File diretorioAjuda = resolverDiretorioAjuda();
     private final File diretorioExemplos = resolverDiretorioExemplos();
@@ -69,6 +76,7 @@ public final class Configuracoes
     private float tamanhoFonteArvore = 12.0f;
     private String temaEditor = "Dark";
     private String temaPortugol = "Dark";
+    private String icones = "Dark";
     private boolean envio_de_dados = true;
     private boolean centralizarCodigoFonte = false;
     private boolean exibirAvisoVideoAulas = true;
@@ -79,10 +87,13 @@ public final class Configuracoes
     private String userAnalyticsID = "bafta";
     private String uriAtualizacao = "https://api.github.com/repos/UNIVALI-LITE/Portugol-Studio/releases/latest";
     private String caminhoUltimoDiretorio = getDiretorioUsuario().toString();
+    private JSONObject arquivo_temas = null;
 
     private Configuracoes()
     {
         carregar();
+        this.arquivo_temas = carregar_temas();
+        setTemaPortugol(arquivo_temas.getString("tema_selecionado"));       
     }
 
     public static Configuracoes getInstancia()
@@ -105,8 +116,6 @@ public final class Configuracoes
             exibirOpcoesExecucao = Boolean.parseBoolean(configuracoes.getProperty(EXIBIR_OPCOES_EXECUCAO, "false"));
             tamanhoFonteConsole = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_CONSOLE, "12.0"));
             tamanhoFonteEditor = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_EDITOR, "12.0"));
-            temaEditor = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
-            temaPortugol = configuracoes.getProperty(TEMA_PORTUGOL, "Dark");
             envio_de_dados = Boolean.parseBoolean(configuracoes.getProperty(ENVIAR_DADOS, "true"));
             tamanhoFonteArvore = Float.parseFloat(configuracoes.getProperty(TAMANHO_FONTE_ARVORE, "12.0"));
             centralizarCodigoFonte = Boolean.parseBoolean(configuracoes.getProperty(CENTRALIZAR_CODIGO_FONTE, "false"));
@@ -132,6 +141,36 @@ public final class Configuracoes
         catch (IOException excecao)
         {
             LOGGER.log(Level.INFO, "Não foi possível salvar as configurações do Portugol Studio. As configurações padrão serão utilizadas na próxima inicialização", excecao);
+        }
+    }
+    
+    public JSONObject carregar_temas()
+    {
+        File f = getCaminhoArquivoTemas();
+        
+        try 
+        {            
+            String jsonText = FileHandle.read(new FileInputStream(f));
+            JSONObject json = new JSONObject(jsonText);            
+            return json;            
+        } 
+        catch (Exception ex) 
+        {
+            return ColorController.getTemaPadrao();
+        }
+    }
+    
+    public void salvarTemas()
+    {
+        File arquivosTemasFile = getCaminhoArquivoTemas();
+        
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosTemasFile)))
+        {
+            escritor.write(arquivo_temas.toString());
+        }
+        catch (IOException excecao)
+        {
+            LOGGER.log(Level.SEVERE, "Erro ao criar ou editar tema", excecao);
         }
     }
 
@@ -171,36 +210,27 @@ public final class Configuracoes
         this.userAnalyticsID = userAnalyticsID;
     }
     
-    
-    
-    public void setTemaEditor(String theme)
-    {
-        String oldTheme = this.temaEditor;
-
-        this.configuracoes.setProperty(TEMA_EDITOR, theme);
-        this.temaEditor = theme;
-
-        suporteMudancaPropriedade.firePropertyChange(TEMA_EDITOR, oldTheme, theme);
-    }
-
-    public String getTemaEditor()
-    {
-        return this.temaEditor;
-    }
-    
     public void setTemaPortugol(String theme)
     {
         String oldTheme = this.temaPortugol;
-        setTemaEditor(theme);
-        this.configuracoes.setProperty(TEMA_PORTUGOL, theme);
-        this.temaPortugol = theme;
-
+        this.temaPortugol = theme;                
+        arquivo_temas.put("tema_selecionado", theme);
+        salvarTemas();
+        
         suporteMudancaPropriedade.firePropertyChange(TEMA_PORTUGOL, oldTheme, theme);
     }
 
     public String getTemaPortugol()
     {
         return this.temaPortugol;
+    }
+
+    public String getIconesCores() {
+        return icones;
+    }
+
+    public void setIconesCores(String icones) {
+        this.icones = icones;
     }
 
     public void setTamanhoFonteConsole(float tamanhoFonteConsole)
@@ -332,35 +362,18 @@ public final class Configuracoes
         return centralizarCodigoFonte;
     }
 
-    public void TrocarTema() 
+    public void TrocarTema(String Tema) 
     {
         if(confirmouReinicializacao())
-        {
-            if(temaPortugol.equals("Dark"))
-            {
-                setTemaPortugol("Portugol");
-            }
-            else
-            {
-                setTemaPortugol("Dark");
-            }
-            if(!restartApplication())
-            {
-                if(temaPortugol.equals("Dark"))
-                {
-                    setTemaPortugol("Portugol");
-                }
-                else
-                {
-                    setTemaPortugol("Dark");
-                }
-            }   
+        {            
+            setTemaPortugol(Tema);
+            restartApplication();
         }
     }
     
     public boolean isTemaDark()
     {
-        return temaPortugol.equals("Dark");
+        return icones.equals("Dark");
     }
     
     public boolean restartApplication()
@@ -406,9 +419,15 @@ public final class Configuracoes
             else
             {
                 QuestionDialog.getInstance().showMessage("Você deve fechar todas as abas de código antes de reiniciar");                   
-                return false;
-            }            
-            return false;
+                if(temaPortugol.equals("Dark"))
+                {
+                    setTemaPortugol("Portugol");
+                }
+                else
+                {
+                    setTemaPortugol("Dark");
+                }
+            }
         
     }
     
@@ -517,13 +536,15 @@ public final class Configuracoes
         return caminhoArquivosRecentes;
     }
 
+    public File getCaminhoArquivoTemas() {
+        return caminhoArquivoTemas;
+    }   
+
     public File getCaminhoArquivosRecuperadosOriginais() {
         return caminhoArquivosRecuperadosOriginais;
     }
-
-    public File getDiretorioConfiguracoes() {
-        return diretorioConfiguracoes;
-    }
+    
+    
     
     private File resolverDiretorioConfiguracoes()
     {
