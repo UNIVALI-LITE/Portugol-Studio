@@ -764,7 +764,7 @@ public final class PortugolStudio
                     Lancador.getJFrame().add(outSidePanel);
                     telaPrincipal = outSidePanel.getTelaPrincipal();
                     telaPrincipal.setArquivosIniciais(arquivosIniciais);
-                    Lancador.getJFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    Lancador.getJFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                     Lancador.getJFrame().pack();
                     Lancador.getJFrame().setLocationRelativeTo(null);
                     Lancador.getJFrame().setVisible(true);

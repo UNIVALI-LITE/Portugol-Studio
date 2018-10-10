@@ -326,7 +326,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void componentResized(ComponentEvent e) {
                 SwingUtilities.invokeLater(()
                         -> {
-                    if (Lancador.getActualSize().width <= 1024) {
+                    if (Lancador.getInstance().getActualSize().width <= 1024) {
                         if (!redimensionouParaBaixaResolucao) {
                             redimensionouParaBaixaResolucao = true;
                         }

@@ -40,12 +40,12 @@ import java.awt.Toolkit;
 public class Lancador {
     
     private static JFrame frame;
-    private static Dimension olderSize =new Dimension(800, 600);
-    private static Dimension actualSize = new Dimension();
+    private Dimension olderSize =new Dimension(800, 600);
+    private Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
-    private final static Lancador application = new Lancador();
+    private static Lancador application;
     
-    private final static GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private final GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     
     private final ComponentResizer resizer = new ComponentResizer();
     private static Mutex mutex;
@@ -64,14 +64,14 @@ public class Lancador {
     }
 
     public static void main(String argumentos[]) 
-    {
-    	try{
-    		verificadorDeInstancias(argumentos);
-            Lancador.getInstance().start(argumentos);
-    	}catch(Exception e){
-    	    System.out.println(e.toString());
-    	}
-    	
+    {        
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
+        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
+        
+        Lancador.getInstance();
+        verificadorDeInstancias(argumentos);
+        Lancador.getInstance().start(argumentos);    	
     }
     
     private static void verificadorDeInstancias(String parametros[]) {
@@ -131,29 +131,29 @@ public class Lancador {
         }
     }
 
-    public static Dimension getOlderSize() 
+    public Dimension getOlderSize() 
     {
         return olderSize;
     }
 
-    public static JFrame getFrame() 
+    public JFrame getFrame() 
     {
         return frame;
     }
 
-    public static Dimension getActualSize() 
+    public Dimension getActualSize() 
     {
         return actualSize;
     }
 
     public static void setActualSize(Dimension actualSize) 
     {
-        Lancador.actualSize = actualSize;
+        Lancador.getInstance().actualSize = actualSize;
     }
 
     public static void setOlderSize(Dimension olderSize) 
     {
-        Lancador.olderSize = olderSize;
+        Lancador.getInstance().olderSize = olderSize;
     }
 
     public static boolean isMaximazed() 
@@ -170,7 +170,7 @@ public class Lancador {
             Lancador.getJFrame().setBounds(newBounds); 
             Lancador.setActualSize(newBounds.getSize()); 
         }else{
-            Dimension d = Lancador.getOlderSize();
+            Dimension d = Lancador.getInstance().getOlderSize();
             Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
             Lancador.getJFrame().setSize(d);
             Lancador.setActualSize(d);
@@ -216,8 +216,6 @@ public class Lancador {
         inicializarMecanismoLog(); //o log é a primeira coisa a ser iniciada, assim você consegue logar os detalhes de inicialização
         LOGGER.log(Level.INFO, "Iniciando main...");
         
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
 
         try
         {
@@ -271,6 +269,10 @@ public class Lancador {
     
     public static Lancador getInstance()
     {
+        if(application == null)
+        {
+            application = new Lancador();
+        }
         return application;
     }
     
