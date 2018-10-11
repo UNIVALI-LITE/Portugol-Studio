@@ -376,7 +376,7 @@ public final class Configuracoes
         return icones.equals("Dark");
     }
     
-    public boolean restartApplication()
+    public void restartApplication()
     {
         TelaPrincipal telaPrincipal = PortugolStudio.getInstancia().getTelaPrincipal();
         
@@ -394,7 +394,7 @@ public final class Configuracoes
                     if(!currentJar.getName().endsWith(".jar"))
                     {
                         System.out.println("nao deu");
-                        return false;
+                        return;
                     }
                     RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
                     List<String> arguments = runtimeMxBean.getInputArguments();
@@ -410,23 +410,14 @@ public final class Configuracoes
 
                     builder.start();
                     PortugolStudio.getInstancia().finalizar(0);
-                }
-                catch(Exception e)
+                }catch(Exception e)
                 {
                     System.out.println("Alguma coisa deu errada no reiniciar");
                 }
             }
             else
             {
-                QuestionDialog.getInstance().showMessage("Você deve fechar todas as abas de código antes de reiniciar");                   
-                if(temaPortugol.equals("Dark"))
-                {
-                    setTemaPortugol("Portugol");
-                }
-                else
-                {
-                    setTemaPortugol("Dark");
-                }
+                QuestionDialog.getInstance().showMessage("Você deve fechar todas as abas de código antes de reiniciar");
             }
         
     }
@@ -543,8 +534,18 @@ public final class Configuracoes
     public File getCaminhoArquivosRecuperadosOriginais() {
         return caminhoArquivosRecuperadosOriginais;
     }
-    
-    
+
+    public JSONObject getArquivo_temas() {
+        return arquivo_temas;
+    }
+
+    public void setArquivo_temas(JSONObject arquivo_temas) {
+        this.arquivo_temas = arquivo_temas;
+    }   
+
+    public File getDiretorioConfiguracoes() {
+        return diretorioConfiguracoes;
+    }
     
     private File resolverDiretorioConfiguracoes()
     {
