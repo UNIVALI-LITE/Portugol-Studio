@@ -579,8 +579,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void actionPerformed(ActionEvent ae) {
                 JMenuItem item = (JMenuItem) getValue("MenuItem");
                 if (!editorEstaExpandido()) {
-                    if(!Lancador.isMaximazed()){
-                        Lancador.maximize(true);
+                    if(!Lancador.getInstance().isMaximazed()){
+                        Lancador.getInstance().maximize(true);
                     }
                     getPainelTabulado().ocultarContainerCabecalhos();
                     painelEditor.remove(barraFerramentas);

@@ -6,12 +6,10 @@ import java.awt.Dimension;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 import br.univali.ps.nucleo.InstanciaPortugolStudio;
 import br.univali.ps.nucleo.MutexImpl;
 import br.univali.ps.nucleo.NamedThreadFactory;
 import br.univali.ps.nucleo.PortugolStudio;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +37,7 @@ import java.awt.Toolkit;
  */
 public class Lancador {
     
-    private static JFrame frame;
+    private JFrame frame;
     private Dimension olderSize =new Dimension(800, 600);
     private Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
@@ -65,13 +63,17 @@ public class Lancador {
 
     public static void main(String argumentos[]) 
     {        
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
-        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
-        
+        setarPropriedadesDoSistema();
         Lancador.getInstance();
         verificadorDeInstancias(argumentos);
         Lancador.getInstance().start(argumentos);    	
+    }
+    
+    private static void setarPropriedadesDoSistema()
+    {
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
+        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
     }
     
     private static void verificadorDeInstancias(String parametros[]) {
@@ -136,49 +138,44 @@ public class Lancador {
         return olderSize;
     }
 
-    public JFrame getFrame() 
-    {
-        return frame;
-    }
-
     public Dimension getActualSize() 
     {
         return actualSize;
     }
 
-    public static void setActualSize(Dimension actualSize) 
+    public void setActualSize(Dimension actualSize) 
     {
-        Lancador.getInstance().actualSize = actualSize;
+        this.actualSize = actualSize;
     }
 
-    public static void setOlderSize(Dimension olderSize) 
+    public void setOlderSize(Dimension olderSize) 
     {
-        Lancador.getInstance().olderSize = olderSize;
+        this.olderSize = olderSize;
     }
 
-    public static boolean isMaximazed() 
+    public boolean isMaximazed() 
     {
         return maximazed;
     }
 
-    public static void maximize(boolean maximaze) 
+    public void maximize(boolean maximaze) 
     {
         if(maximaze){
-            Dimension d = Lancador.getJFrame().getSize();
-            Lancador.setOlderSize(d);
+            Dimension d = frame.getSize();
+            setOlderSize(d);
             Rectangle newBounds = configurarMaximizar(); 
-            Lancador.getJFrame().setBounds(newBounds); 
-            Lancador.setActualSize(newBounds.getSize()); 
+            frame.setBounds(newBounds); 
+            setActualSize(newBounds.getSize()); 
         }else{
-            Dimension d = Lancador.getInstance().getOlderSize();
-            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
-            Lancador.getJFrame().setSize(d);
-            Lancador.setActualSize(d);
+            Dimension d = getOlderSize();
+            frame.setExtendedState(JFrame.NORMAL);
+            frame.setSize(d);
+            setActualSize(d);
         }
-        Lancador.maximazed = maximaze;
+        maximazed = maximaze;
     }
     
-    public static JFrame getJFrame()
+    public JFrame getJFrame()
     {
         return frame;
     }
@@ -215,8 +212,6 @@ public class Lancador {
     {
         inicializarMecanismoLog(); //o log é a primeira coisa a ser iniciada, assim você consegue logar os detalhes de inicialização
         LOGGER.log(Level.INFO, "Iniciando main...");
-        
-
         try
         {
             SwingUtilities.invokeAndWait(() ->
