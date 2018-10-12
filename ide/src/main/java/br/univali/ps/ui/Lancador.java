@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import br.univali.ps.nucleo.Mutex;
-import static com.alee.utils.SystemUtils.getGraphicsConfiguration;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
@@ -163,6 +163,8 @@ public class Lancador {
 
     public static void maximize(boolean maximaze) 
     {
+        GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
+        
         if(maximaze){
             Dimension d = Lancador.getJFrame().getSize();
             Lancador.setOlderSize(d);
@@ -173,6 +175,14 @@ public class Lancador {
             Dimension d = Lancador.getOlderSize();
             Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
             Lancador.getJFrame().setSize(d);
+            
+            //Centraliza janela se estiver no monitor principal
+            if(monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
+                GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
+                Rectangle screenSize = new Rectangle(gcc[0].getBounds().width, gcc[0].getBounds().height);
+                Lancador.getJFrame().setLocation((screenSize.width-d.width)/2, (screenSize.height-d.height)/2);
+            }
+            
             Lancador.setActualSize(d);
         }
         Lancador.maximazed = maximaze;
@@ -288,13 +298,14 @@ public class Lancador {
     private static Rectangle configurarMaximizar(){
         GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
         Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
-        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+        GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
+        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(gcc[0]);
         Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
         if(!monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
             if(monitorAtual.getDefaultConfiguration().getBounds().x < 0){
-                newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x;
+                newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x + screenInsets.left;
             }else{
-                newBounds.x = Lancador.getInstance().getMonitorPrincipal().getDefaultConfiguration().getBounds().width;
+                newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x + screenInsets.left;
             }
         }else{
             newBounds.x = screenInsets.left;
