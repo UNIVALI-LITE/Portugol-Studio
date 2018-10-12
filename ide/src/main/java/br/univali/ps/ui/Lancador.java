@@ -301,12 +301,10 @@ public class Lancador {
         GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
         Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(gcc[0]);
         Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
-        if(!monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
-            newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x + screenInsets.left;
-        }else{
-            newBounds.x = screenInsets.left;
-        }
+        
+        newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x + screenInsets.left;
         newBounds.y = screenInsets.top;
+        
         return newBounds;
     }
 }
