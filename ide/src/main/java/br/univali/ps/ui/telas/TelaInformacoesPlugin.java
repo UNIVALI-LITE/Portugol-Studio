@@ -38,7 +38,7 @@ public final class TelaInformacoesPlugin extends JDialog
     {
         super();
         setModal(true);
-        setLocationRelativeTo(Lancador.getJFrame());
+        setLocationRelativeTo(Lancador.getInstance().getJFrame());
         this.setIconImage(IconFactory.getDefaultWindowIcon());
         configurarAcaoSair();
         initComponents();
@@ -222,6 +222,7 @@ public final class TelaInformacoesPlugin extends JDialog
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 0, 0);
         jPInformacoes.add(jLDescricao, gridBagConstraints);
 
+        jSPDescricao.setBackground(new java.awt.Color(255, 255, 255));
         jSPDescricao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(210, 210, 210)));
         jSPDescricao.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         jSPDescricao.setPreferredSize(new java.awt.Dimension(166, 100));

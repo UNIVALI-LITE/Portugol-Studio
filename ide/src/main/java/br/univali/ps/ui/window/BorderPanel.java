@@ -69,7 +69,7 @@ public class BorderPanel extends JPanel {
             minButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
-                    Lancador.getJFrame().setExtendedState(JFrame.ICONIFIED);
+                    Lancador.getInstance().getJFrame().setExtendedState(JFrame.ICONIFIED);
                 }
             });
             
@@ -79,10 +79,10 @@ public class BorderPanel extends JPanel {
             maxButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
-                    if(Lancador.isMaximazed()){
-                        Lancador.maximize(false);
+                    if(Lancador.getInstance().isMaximazed()){
+                        Lancador.getInstance().maximize(false);
                     }else{
-                        Lancador.maximize(true);
+                        Lancador.getInstance().maximize(true);
                     }
                 }
             });

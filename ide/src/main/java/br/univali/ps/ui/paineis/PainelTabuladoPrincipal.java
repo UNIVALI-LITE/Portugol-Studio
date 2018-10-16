@@ -50,6 +50,7 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         abaAjuda = new AbaAjuda();
         configurarCores();      
         getCabecalhosAba().addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 // Get x,y and store them
                 PortugolStudio.getInstancia().getTelaPrincipal().pX = me.getX();
@@ -57,22 +58,25 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
 
             }
 
+            @Override
              public void mouseDragged(MouseEvent me) {
 
                  SwingUtilities.invokeLater(() -> {
-                     if(!Lancador.isMaximazed()){
-                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                     if(!Lancador.getInstance().isMaximazed()){
+                        JFrame frame = Lancador.getInstance().getJFrame();
+                        frame.setLocation(frame.getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,frame.getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
                      }
                  });
 
             }
+            @Override
             public void mouseClicked(MouseEvent me) {
                 SwingUtilities.invokeLater(() ->{
                     if(me.getClickCount() == 2){
-                        if(Lancador.isMaximazed()){
-                            Lancador.maximize(false);
+                        if(Lancador.getInstance().isMaximazed()){
+                            Lancador.getInstance().maximize(false);
                         }else{
-                            Lancador.maximize(true);
+                            Lancador.getInstance().maximize(true);
                         }
 
                     }
@@ -81,10 +85,12 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
         });
 
         getCabecalhosAba().addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
             public void mouseDragged(MouseEvent me) {
                 SwingUtilities.invokeLater(() -> {
-                    if(!Lancador.isMaximazed()){
-                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,Lancador.getJFrame().getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                    if(!Lancador.getInstance().isMaximazed()){
+                        JFrame frame = Lancador.getInstance().getJFrame();
+                        frame.setLocation(frame.getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,frame.getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
                     }
                 });
 
