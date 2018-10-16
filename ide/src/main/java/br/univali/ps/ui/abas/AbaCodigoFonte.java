@@ -326,7 +326,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void componentResized(ComponentEvent e) {
                 SwingUtilities.invokeLater(()
                         -> {
-                    if (Lancador.getActualSize().width <= 1024) {
+                    if (Lancador.getInstance().getActualSize().width <= 1024) {
                         if (!redimensionouParaBaixaResolucao) {
                             redimensionouParaBaixaResolucao = true;
                         }
@@ -579,8 +579,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void actionPerformed(ActionEvent ae) {
                 JMenuItem item = (JMenuItem) getValue("MenuItem");
                 if (!editorEstaExpandido()) {
-                    if(!Lancador.isMaximazed()){
-                        Lancador.maximize(true);
+                    if(!Lancador.getInstance().isMaximazed()){
+                        Lancador.getInstance().maximize(true);
                     }
                     getPainelTabulado().ocultarContainerCabecalhos();
                     painelEditor.remove(barraFerramentas);
