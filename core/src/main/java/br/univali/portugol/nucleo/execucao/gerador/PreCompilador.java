@@ -250,6 +250,7 @@ public class PreCompilador extends VisitanteNulo
         "double",
         "else",
         "enum",
+        "false",
         "final",
         "finally",
         "float",
@@ -263,6 +264,7 @@ public class PreCompilador extends VisitanteNulo
         "long",
         "native",
         "new",
+        "null",
         "package",
         "private",
         "protected",
@@ -278,12 +280,10 @@ public class PreCompilador extends VisitanteNulo
         "throw",
         "throws",
         "transient",
+        "true",
         "try",
         "void",
         "volatile",
-        "while",
-        "false",
-        "null",
-        "true"
+        "while"
     };
 }
