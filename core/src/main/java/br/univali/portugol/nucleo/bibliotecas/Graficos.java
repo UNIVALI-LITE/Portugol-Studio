@@ -67,28 +67,28 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     
     
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação 0")
     public static final int GRADIENTE_DIREITA = 0;
         
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação 0")
     public static final int GRADIENTE_ESQUERDA = 1;
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação 0")
     public static final int GRADIENTE_ACIMA = 2;
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação 0")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação 0")
     public static final int GRADIENTE_ABAIXO = 3;
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação inferior direito")
     public static final int GRADIENTE_INFERIOR_DIREITO = 4;
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação inferior direito")
     public static final int GRADIENTE_INFERIOR_ESQUERDO = 5;
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação inferior direito")
     public static final int GRADIENTE_SUPERIOR_DIREITO = 6;
     
-    @DocumentacaoConstante(descricao = "constante que representa a o gradiente na rotação inferior direito")
+    @DocumentacaoConstante(descricao = "constante que representa o gradiente na rotação inferior direito")
     public static final int GRADIENTE_SUPERIOR_ESQUERDO = 7;
     
     
@@ -1225,14 +1225,14 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
     
     @DocumentacaoFuncao(
         descricao
-        = "Define a cor atual do ambiente gráfico. Esta cor será utilizada para desenhar e preencher "
+        = "Define a cor atual do ambiente gráfico como um gradiente de 2 cores. Esta cor será utilizada para desenhar e preencher "
         + "as primitivas gráficas (ponto, linha, retângulo, etc.) e, como cor de fundo ao limpar "
-        + "o ambiente gráfico ou desenhar um texto",
+        + "o ambiente gráfico",
         parametros =
         {
-            @DocumentacaoParametro(nome = "tipo", descricao = "a nova cor do ambiente gráfico"),
-            @DocumentacaoParametro(nome = "cor1", descricao = "a nova cor do ambiente gráfico"),
-            @DocumentacaoParametro(nome = "cor2", descricao = "a nova cor do ambiente gráfico")
+            @DocumentacaoParametro(nome = "tipo", descricao = "o tipo de rotação de gradiente que será utilizado"),
+            @DocumentacaoParametro(nome = "cor1", descricao = "a primeira cor do novo gradiente do ambiente gráfico"),
+            @DocumentacaoParametro(nome = "cor2", descricao = "a segunda cor do novo gradiente do ambiente gráfico")
             
         },
         autores =
