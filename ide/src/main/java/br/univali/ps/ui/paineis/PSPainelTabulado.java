@@ -5,21 +5,17 @@
  */
 package br.univali.ps.ui.paineis;
 
-import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.abas.Aba;
 import br.univali.ps.ui.abas.BotoesControleAba;
 import br.univali.ps.ui.abas.CabecalhoAba;
 import br.univali.ps.ui.abas.CabecalhoAdicionarAba;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
-import br.univali.ps.ui.utils.FabricaDicasInterface;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;

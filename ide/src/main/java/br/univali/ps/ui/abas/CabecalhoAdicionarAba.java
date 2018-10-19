@@ -32,7 +32,7 @@ public class CabecalhoAdicionarAba extends javax.swing.JPanel {
             WeblafUtils.configurarBotao(botaoAbrir,ColorController.TRANSPARENTE,ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 1);
         }
         botaoAbrir.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "plus2.png"));
-        FabricaDicasInterface.criarTooltipEstatica(botaoAbrir, "Adicionar nova aba");
+        //FabricaDicasInterface.criarTooltipEstatica(botaoAbrir, "Adicionar nova aba");
     }
 
     /**
