@@ -19,21 +19,14 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import br.univali.ps.ui.telas.TelaPluginsDisponiveis;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
-import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.AbstractAction;
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -110,7 +103,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
             TelaCustomBorder main = new TelaCustomBorder("Plugins Disponíveis");
             TelaPluginsDisponiveis ta = new TelaPluginsDisponiveis();
             main.setPanel(ta, true);
-            main.setLocationRelativeTo(Lancador.getJFrame());
+            main.setLocationRelativeTo(Lancador.getInstance().getJFrame());
             main.setVisible(true);
             //main.pack();
         });        

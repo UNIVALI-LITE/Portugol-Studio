@@ -434,7 +434,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
             {
                 SwingUtilities.invokeLater(() -> 
                         {
-                            if (Lancador.getActualSize().width <= 1024 || Lancador.getActualSize().height <= 768)
+                            if (Lancador.getInstance().getActualSize().width <= 1024 || Lancador.getInstance().getActualSize().height <= 768)
                             {
                                 if (!redimensionouParaBaixaResolucao)
                                 {

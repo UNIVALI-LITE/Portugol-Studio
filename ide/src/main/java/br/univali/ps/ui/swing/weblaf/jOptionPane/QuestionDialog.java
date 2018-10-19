@@ -178,7 +178,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             textLabel.setText("<html><body><div style=\"width:300px;\">"+text+"</div></body></html>");
             pack();
         }
-        setLocationRelativeTo(Lancador.getJFrame());
+        setLocationRelativeTo(Lancador.getInstance().getJFrame());
         setVisible(true);
     }
     
@@ -210,7 +210,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             textLabel.setText("<html><body><div style=\"width:300px;\">"+text+"</div></body></html>");
             pack();
         }
-        setLocationRelativeTo(Lancador.getJFrame());
+        setLocationRelativeTo(Lancador.getInstance().getJFrame());
         setVisible(true);
         return resposta;
     }
@@ -228,7 +228,7 @@ public class QuestionDialog extends javax.swing.JDialog implements Themeable{
             textLabel.setText("<html><body><div style=\"width:300px;\">"+text+"</div></body></html>");
             pack();
         }
-        setLocationRelativeTo(Lancador.getJFrame());
+        setLocationRelativeTo(Lancador.getInstance().getJFrame());
         setVisible(true);
         if(resposta == JOptionPane.CANCEL_OPTION)
             return null;

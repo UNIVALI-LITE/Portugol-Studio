@@ -67,7 +67,7 @@ public final class Caminhos
                 String javaHome = System.getProperty("java.home");
                 if (javaHome != null) {
                     File jrePath = new File(javaHome);
-                    String jdkBinPath = new File(jrePath, "bin").getAbsolutePath();
+                    String jdkBinPath = new File(jrePath.getParent(), "bin").getAbsolutePath();
                     return jdkBinPath + "/javac";
                 }
                 else {

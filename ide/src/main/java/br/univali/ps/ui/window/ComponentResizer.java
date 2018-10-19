@@ -243,7 +243,7 @@ public class ComponentResizer extends MouseAdapter
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
-		if(!Lancador.isMaximazed()) {
+		if(!Lancador.getInstance().isMaximazed()) {
 			Component source = e.getComponent();
 			Point location = e.getPoint();
 			direction = 0;
@@ -353,7 +353,7 @@ public class ComponentResizer extends MouseAdapter
 	{
 		if (resizing == false) return;
 		
-		if(!Lancador.isMaximazed()) {
+		if(!Lancador.getInstance().isMaximazed()) {
 			Component source = e.getComponent();
 			Point dragged = e.getPoint();
 			SwingUtilities.convertPointToScreen(dragged, source);

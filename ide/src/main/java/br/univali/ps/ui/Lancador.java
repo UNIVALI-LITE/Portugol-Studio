@@ -6,12 +6,10 @@ import java.awt.Dimension;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 import br.univali.ps.nucleo.InstanciaPortugolStudio;
 import br.univali.ps.nucleo.MutexImpl;
 import br.univali.ps.nucleo.NamedThreadFactory;
 import br.univali.ps.nucleo.PortugolStudio;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import br.univali.ps.nucleo.Mutex;
-import static com.alee.utils.SystemUtils.getGraphicsConfiguration;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
@@ -39,13 +37,13 @@ import java.awt.Toolkit;
  */
 public class Lancador {
     
-    private static JFrame frame;
-    private static Dimension olderSize =new Dimension(800, 600);
-    private static Dimension actualSize = new Dimension();
+    private JFrame frame;
+    private Dimension olderSize =new Dimension(800, 600);
+    private Dimension actualSize = new Dimension();
     private static boolean maximazed = false;
-    private final static Lancador application = new Lancador();
+    private static Lancador application;
     
-    private final static GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private final GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     
     private final ComponentResizer resizer = new ComponentResizer();
     private static Mutex mutex;
@@ -64,14 +62,18 @@ public class Lancador {
     }
 
     public static void main(String argumentos[]) 
+    {        
+        setarPropriedadesDoSistema();
+        Lancador.getInstance();
+        verificadorDeInstancias(argumentos);
+        Lancador.getInstance().start(argumentos);    	
+    }
+    
+    private static void setarPropriedadesDoSistema()
     {
-    	try{
-    		verificadorDeInstancias(argumentos);
-            Lancador.getInstance().start(argumentos);
-    	}catch(Exception e){
-    	    System.out.println(e.toString());
-    	}
-    	
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
+        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
     }
     
     private static void verificadorDeInstancias(String parametros[]) {
@@ -131,54 +133,59 @@ public class Lancador {
         }
     }
 
-    public static Dimension getOlderSize() 
+    public Dimension getOlderSize() 
     {
         return olderSize;
     }
 
-    public static JFrame getFrame() 
-    {
-        return frame;
-    }
-
-    public static Dimension getActualSize() 
+    public Dimension getActualSize() 
     {
         return actualSize;
     }
 
-    public static void setActualSize(Dimension actualSize) 
+    public void setActualSize(Dimension actualSize) 
     {
-        Lancador.actualSize = actualSize;
+        this.actualSize = actualSize;
     }
 
-    public static void setOlderSize(Dimension olderSize) 
+    public void setOlderSize(Dimension olderSize) 
     {
-        Lancador.olderSize = olderSize;
+        this.olderSize = olderSize;
     }
 
-    public static boolean isMaximazed() 
+    public boolean isMaximazed() 
     {
         return maximazed;
     }
 
-    public static void maximize(boolean maximaze) 
+    public void maximize(boolean maximaze) 
     {
+        GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
+        
         if(maximaze){
-            Dimension d = Lancador.getJFrame().getSize();
-            Lancador.setOlderSize(d);
+            Dimension d = frame.getSize();
+            setOlderSize(d);
             Rectangle newBounds = configurarMaximizar(); 
-            Lancador.getJFrame().setBounds(newBounds); 
-            Lancador.setActualSize(newBounds.getSize()); 
+            frame.setBounds(newBounds); 
+            setActualSize(newBounds.getSize()); 
         }else{
-            Dimension d = Lancador.getOlderSize();
-            Lancador.getJFrame().setExtendedState(JFrame.NORMAL);
-            Lancador.getJFrame().setSize(d);
-            Lancador.setActualSize(d);
+            Dimension d = getOlderSize();
+            frame.setExtendedState(JFrame.NORMAL);
+            frame.setSize(d);
+            
+            //Centraliza janela se estiver no monitor principal
+            if(monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
+                GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
+                Rectangle screenSize = new Rectangle(gcc[0].getBounds().width, gcc[0].getBounds().height);
+                frame.setLocation((screenSize.width-d.width)/2, (screenSize.height-d.height)/2);
+            }
+            
+            setActualSize(d);
         }
-        Lancador.maximazed = maximaze;
+        maximazed = maximaze;
     }
     
-    public static JFrame getJFrame()
+    public JFrame getJFrame()
     {
         return frame;
     }
@@ -215,10 +222,6 @@ public class Lancador {
     {
         inicializarMecanismoLog(); //o log é a primeira coisa a ser iniciada, assim você consegue logar os detalhes de inicialização
         LOGGER.log(Level.INFO, "Iniciando main...");
-        
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Portugol Studio");
-
         try
         {
             SwingUtilities.invokeAndWait(() ->
@@ -271,6 +274,10 @@ public class Lancador {
     
     public static Lancador getInstance()
     {
+        if(application == null)
+        {
+            application = new Lancador();
+        }
         return application;
     }
     
@@ -288,18 +295,13 @@ public class Lancador {
     private static Rectangle configurarMaximizar(){
         GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
         Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
-        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+        GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
+        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(gcc[0]);
         Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
-        if(!monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
-            if(monitorAtual.getDefaultConfiguration().getBounds().x < 0){
-                newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x;
-            }else{
-                newBounds.x = Lancador.getInstance().getMonitorPrincipal().getDefaultConfiguration().getBounds().width;
-            }
-        }else{
-            newBounds.x = screenInsets.left;
-        }
+        
+        newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x + screenInsets.left;
         newBounds.y = screenInsets.top;
+        
         return newBounds;
     }
 }

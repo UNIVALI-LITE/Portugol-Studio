@@ -115,7 +115,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
             excecaoDialog = new TelaCustomBorder("Erro Encontrado");
             telaExcecaoEncontrada = new TelaExcecaoEncontrada(excecaoDialog);
             excecaoDialog.setPanel(telaExcecaoEncontrada);
-            excecaoDialog.setLocationRelativeTo(Lancador.getJFrame());
+            excecaoDialog.setLocationRelativeTo(Lancador.getInstance().getJFrame());
             telaExcecaoEncontrada.getAreaTextoStackTrace().setText(null);
             telaExcecaoEncontrada.getAreaTextoStackTrace().append(fluxoSaida.getFullStack());
         }

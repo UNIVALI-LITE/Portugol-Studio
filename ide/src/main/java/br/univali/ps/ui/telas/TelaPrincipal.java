@@ -66,6 +66,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         configurarCores();
         instalarObservadores();
         addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 // Get x,y and store them
                 pX = me.getX();
@@ -73,22 +74,25 @@ public class TelaPrincipal extends javax.swing.JPanel
 
             }
 
+            @Override
              public void mouseDragged(MouseEvent me) {
                 SwingUtilities.invokeLater(() -> {
-                    if(!Lancador.isMaximazed()){
-                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    if(!Lancador.getInstance().isMaximazed()){
+                        JFrame frame = Lancador.getInstance().getJFrame();
+                        frame.setLocation(frame.getLocation().x + me.getX() - pX,frame.getLocation().y + me.getY() - pY);
                     }
                 });
 
             }
 
+            @Override
             public void mouseClicked(MouseEvent me) {
                 SwingUtilities.invokeLater(() ->{
                     if(me.getClickCount() == 2){
-                        if(Lancador.isMaximazed()){
-                            Lancador.maximize(false);
+                        if(Lancador.getInstance().isMaximazed()){
+                            Lancador.getInstance().maximize(false);
                         }else{
-                            Lancador.maximize(true);
+                            Lancador.getInstance().maximize(true);
                         }
                     }
                 });
@@ -97,10 +101,12 @@ public class TelaPrincipal extends javax.swing.JPanel
         });
 
         addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
             public void mouseDragged(MouseEvent me) {
                 SwingUtilities.invokeLater(() -> {
-                    if(!Lancador.isMaximazed()){
-                        Lancador.getJFrame().setLocation(Lancador.getJFrame().getLocation().x + me.getX() - pX,Lancador.getJFrame().getLocation().y + me.getY() - pY);
+                    if(!Lancador.getInstance().isMaximazed()){
+                        JFrame frame = Lancador.getInstance().getJFrame();
+                        frame.setLocation(frame.getLocation().x + me.getX() - pX,frame.getLocation().y + me.getY() - pY);
                     }
                 });
 
@@ -128,7 +134,7 @@ public class TelaPrincipal extends javax.swing.JPanel
     
     private void instalarObservadorJanela()
     {
-        JFrame frame = Lancador.getJFrame();
+        JFrame frame = Lancador.getInstance().getJFrame();
         if (frame == null)
             return;
         
@@ -162,7 +168,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             
         });
 
-        Lancador.getJFrame().addComponentListener(new ComponentAdapter()
+        frame.addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentShown(ComponentEvent e)
@@ -254,7 +260,7 @@ public class TelaPrincipal extends javax.swing.JPanel
             ta.setAcaoFechar(main.getAcaoSair());
             main.setMinimumSize(new Dimension(280, 450));
             main.setPanel(ta, false);
-            main.setLocationRelativeTo(Lancador.getJFrame());
+            main.setLocationRelativeTo(Lancador.getInstance().getJFrame());
             main.setVisible(true);
             main.pack();
         });        
@@ -374,7 +380,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         { 
-            Lancador.getFrame().setVisible(false);            
+            Lancador.getInstance().getJFrame().setVisible(false);            
             analytics.finalizar_sessao();            
             PortugolStudio.getInstancia().finalizar(0);
             return true;
@@ -387,7 +393,7 @@ public class TelaPrincipal extends javax.swing.JPanel
         painelTabuladoPrincipal.fecharTodasAbas(AbaCodigoFonte.class);
         if (!painelTabuladoPrincipal.temAbaAberta(AbaCodigoFonte.class))
         {
-            Lancador.getFrame().setVisible(false);            
+            Lancador.getInstance().getJFrame().setVisible(false);            
             analytics.finalizar_sessao();
             return true;
         }

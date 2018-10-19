@@ -12,10 +12,8 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.paineis.PainelPluginItem;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
-import br.univali.ps.ui.swing.weblaf.PSOutTabbedPaneUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
-import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -43,7 +41,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -93,7 +90,7 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
         indicadorProgresso.add(painel);        
         indicadorProgresso.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         indicadorProgresso.pack();
-        indicadorProgresso.setLocationRelativeTo(Lancador.getJFrame());
+        indicadorProgresso.setLocationRelativeTo(Lancador.getInstance().getJFrame());
     }
     
     private void carregarPluginsDisponiveis()

@@ -7,7 +7,6 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
-import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.UnzipUtility;
 import java.awt.Dialog;
 import java.awt.image.BufferedImage;
@@ -40,14 +39,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import org.apache.commons.io.FileUtils;
-
-import org.json.JSONException;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -106,7 +97,7 @@ public final class GerenciadorPlugins {
         indicadorProgresso.add(painel);        
         indicadorProgresso.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         indicadorProgresso.pack();
-        indicadorProgresso.setLocationRelativeTo(Lancador.getJFrame());
+        indicadorProgresso.setLocationRelativeTo(Lancador.getInstance().getJFrame());
     }
 
     public void instalarPlugins(final List<File> arquivos) {
