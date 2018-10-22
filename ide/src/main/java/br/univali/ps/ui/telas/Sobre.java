@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import org.json.JSONObject;
 
 /**
  *
@@ -47,7 +48,7 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         versaoLabel.setForeground(ColorController.COR_LETRA);
         jPanel1.setBackground(ColorController.FUNDO_ESCURO);
         jLabel1.setBackground(ColorController.COR_PRINCIPAL);
-        jLabel1.setText(carregarHTML("/br/univali/ps/ui/telas/"+Configuracoes.getInstancia().getIconesCores()+"/membros.html"));
+        jLabel1.setText(colocarCSS(carregarHTML("/br/univali/ps/ui/telas/membros.html")));
     }
     
     private void configurarLinks()
@@ -89,7 +90,62 @@ public class Sobre extends javax.swing.JPanel implements Themeable
         
         return base;
     }
-
+    
+    private String colocarCSS(String HTML)
+    {
+        JSONObject tema = ColorController.TEMA_SELECIONADO;
+        
+        HTML = HTML.replace("<!--", "").replace("-->", "");
+        
+        HTML = HTML.replace("${fundo_claro}", tema.getString("fundo_claro"))
+                 .replace("${cor_letra_titulo}", tema.getString("cor_letra_titulo"))
+                 .replace("${progress_bar}", tema.getString("progress_bar"))
+                 .replace("${cor_letra}", tema.getString("cor_letra"))
+                 .replace("${fundo_medio}", tema.getString("fundo_medio"))
+                 .replace("${icones}", tema.getString("icones"))
+                 .replace("${fundo_escuro}", tema.getString("fundo_escuro"))
+                 .replace("${cor_destaque}", tema.getString("cor_destaque"))
+                 .replace("${cor_console}", tema.getString("cor_console"))
+                 .replace("${fundo_botoes_expansiveis}", tema.getString("fundo_botoes_expansiveis"))
+                 .replace("${cor_principal}", tema.getString("cor_principal"))
+                 .replace("${cor_4}", tema.getString("cor_4"))
+                 .replace("${cor_3}", tema.getString("cor_3"))
+                 .replace("${cor_2}", tema.getString("cor_2"))
+                 .replace("${cor_1}", tema.getString("cor_1"));
+        
+        JSONObject editor = tema.getJSONObject("Editor");
+        
+        HTML = HTML.replace("${palavra_reservada}", editor.getString("palavras_reservadas"))
+                 .replace("${cursor}", editor.getString("cursor"))
+                 .replace("${tipo_reservado}", editor.getString("tipos"))
+                 .replace("${selecao_chave_correspondente_fg}", editor.getString("selecao_chave_correspondente_fg"))
+                 .replace("${selecao_chave_correspondente_bg}", editor.getString("selecao_chave_correspondente_bg"))
+                 .replace("${valor_hexa}", editor.getString("valor_hexa"))
+                 .replace("${valor_cadeia}", editor.getString("valor_cadeia"))
+                 .replace("${valor_logico}", editor.getString("valor_logico"))
+                 .replace("${valor_inteiro}", editor.getString("valor_inteiro"))
+                 .replace("${separador}", editor.getString("separador"))
+                 .replace("${background_editor}", editor.getString("background_editor"))
+                 .replace("${erro_bg}", editor.getString("erro_bg"))
+                 .replace("${numeros_das_linhas}", editor.getString("numeros_das_linhas"))
+                 .replace("${valor_real}", editor.getString("valor_real"))
+                 .replace("${tipos}", editor.getString("tipos"))
+                 .replace("${erro_fg}", editor.getString("erro_fg"))
+                 .replace("${selecao_linha_atual}", editor.getString("selecao_linha_atual"))
+                 .replace("${comentario_linha}", editor.getString("comentario_linha"))
+                 .replace("${valor_caracter}", editor.getString("valor_caracter"))
+                 .replace("${palavras_reservadas}", editor.getString("palavras_reservadas"))
+                 .replace("${comentario_multilinha}", editor.getString("comentario_multilinha"))
+                 .replace("${chamada_funcao}", editor.getString("chamada_funcao"))
+                 .replace("${borda_barra_lateral}", editor.getString("borda_barra_lateral"))
+                 .replace("${dobrador_de_codigo}", editor.getString("dobrador_de_codigo"))
+                 .replace("${operador}", editor.getString("operador"))
+                 .replace("${selection_bg}", editor.getString("selection_bg"))
+                 .replace("${identificador}", editor.getString("identificador"))
+                 .replace("${tipo_declaracao}", editor.getString("valor_inteiro"));
+        
+       return HTML;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
