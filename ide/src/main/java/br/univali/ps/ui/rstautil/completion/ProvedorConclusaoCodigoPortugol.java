@@ -1,5 +1,7 @@
 package br.univali.ps.ui.rstautil.completion;
 
+import br.univali.portugol.nucleo.ErroCompilacao;
+import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import java.awt.Point;
@@ -7,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -91,6 +94,18 @@ public final class ProvedorConclusaoCodigoPortugol extends CompletionProviderBas
     @Override
     protected List<Completion> getCompletionsImpl(JTextComponent comp)
     {
+        //compila e atualiza os provedores de conclusão antes de mostra-los
+        try 
+        {
+            RSyntaxTextArea rsta = (RSyntaxTextArea)comp;
+            String codigo = rsta.getDocument().getText(0, rsta.getDocument().getLength());
+            Programa programa = Portugol.compilarParaAnalise(codigo);
+            provedorConclusaoCodigoPrograma.atualizar(programa);
+            provedorConclusaoCodigoBibliotecas.atualizar(programa); 
+        }
+        catch (Exception ex) {
+        }
+        
         CompletionProvider provider = getProviderFor(comp);
 
         if (provider != null)

@@ -7,7 +7,6 @@ import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
-import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.GerenciadorBibliotecas;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
@@ -29,9 +28,7 @@ import javax.swing.text.JTextComponent;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.FunctionCompletion;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
-import org.fife.ui.autocomplete.VariableCompletion;
 
 public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionProvider
 {
@@ -106,6 +103,7 @@ public final class ProvedorConclusaoCodigoBibliotecas extends DefaultCompletionP
     {
         public void atualizar(Programa programa)
         {
+            apelidosBibliotecas.clear();
             try
             {
                 visitar(programa.getArvoreSintaticaAbstrata());
