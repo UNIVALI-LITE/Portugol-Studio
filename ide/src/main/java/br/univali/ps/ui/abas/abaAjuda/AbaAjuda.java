@@ -786,7 +786,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
         private String decidirEstilos(String conteudo)
         {
             try {
-                css = FileHandle.open(new File(Configuracoes.getInstancia().getDiretorioAjuda().getAbsolutePath()+"\\estilos\\ajuda.css"));
+                css = FileHandle.open(new File(Configuracoes.getInstancia().getDiretorioAjuda().getAbsolutePath()+"/estilos/ajuda.css"));
             } catch (Exception ex) {
                 Logger.getLogger(AbaAjuda.class.getName()).log(Level.SEVERE, null, ex);
             }
