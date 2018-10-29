@@ -21,6 +21,7 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.Sobre;
 import br.univali.ps.ui.telas.TelaAtalhos;
+import br.univali.ps.ui.telas.TelaEditarTemas;
 import br.univali.ps.ui.telas.TelaRelatarBug;
 import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.window.OutsidePanel;
@@ -29,7 +30,6 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
-import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -97,11 +97,11 @@ public final class PortugolStudio
     private TelaCustomBorder telaLicencas = null;
     private TelaCustomBorder telaRenomearSimbolo = null;
     private TelaCustomBorder telaPesquisarSubstituir = null;
+    private TelaCustomBorder telaEditarTemas = null;
     
     private JDialog telaDicas = null;
     private JDialog telaAtalhosTeclado = null;
         
-    private GerenciadorTemas gerenciadorTemas = null;
     private TratadorExcecoes tratadorExcecoes = null;
     
     private static boolean portugolCarregado = false;
@@ -758,19 +758,19 @@ public final class PortugolStudio
                 public void run()
                 {
                     
-                    Lancador.getJFrame().setUndecorated(true);
+                    Lancador.getInstance().getJFrame().setUndecorated(true);
                     outSidePanel = new OutsidePanel();
-                    Lancador.getJFrame().add(outSidePanel);
+                    Lancador.getInstance().getJFrame().add(outSidePanel);
                     telaPrincipal = outSidePanel.getTelaPrincipal();
                     telaPrincipal.setArquivosIniciais(arquivosIniciais);
-                    Lancador.getJFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    Lancador.getJFrame().pack();
-                    Lancador.getJFrame().setLocationRelativeTo(null);
-                    Lancador.getJFrame().setVisible(true);
-                    Lancador.setOlderSize(new Dimension(800, 600));
-                    Lancador.maximize(true);
+                    Lancador.getInstance().getJFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    Lancador.getInstance().getJFrame().pack();
+                    Lancador.getInstance().getJFrame().setLocationRelativeTo(null);
+                    Lancador.getInstance().getJFrame().setVisible(true);
+                    Lancador.getInstance().setOlderSize(new Dimension(800, 600));
+                    Lancador.getInstance().maximize(true);
                     
-                    Lancador.getJFrame().revalidate();
+                    Lancador.getInstance().getJFrame().revalidate();
                     portugolCarregado = true;
                 }
             });
@@ -858,16 +858,6 @@ public final class PortugolStudio
         return tratadorExcecoes;
     }
 
-    public GerenciadorTemas getGerenciadorTemas()
-    {
-        if (gerenciadorTemas == null)
-        {
-            gerenciadorTemas = new GerenciadorTemas();
-        }
-
-        return gerenciadorTemas;
-    }
-
     public JDialog getTelaSobre()
     {
         if (telaSobre == null)
@@ -876,7 +866,7 @@ public final class PortugolStudio
             
         }
 
-        telaSobre.setLocationRelativeTo(null);
+        telaSobre.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaSobre;
     }
@@ -887,7 +877,7 @@ public final class PortugolStudio
             telaRelatarBug = new TelaCustomBorder(new TelaRelatarBug(), "Relatar Bug");            
         }
 
-        telaRelatarBug.setLocationRelativeTo(null);
+        telaRelatarBug.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaRelatarBug;
     }
@@ -899,7 +889,7 @@ public final class PortugolStudio
             telaAtalhosTeclado = new TelaCustomBorder(new TelaAtalhos(), "Atalhos de Teclado");
         }
 
-        telaAtalhosTeclado.setLocationRelativeTo(null);
+        telaAtalhosTeclado.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaAtalhosTeclado;
     }
@@ -911,7 +901,7 @@ public final class PortugolStudio
             telaDicas = new TelaCustomBorder(new TelaDicas(), "Dicas");
         }
 
-        telaDicas.setLocationRelativeTo(null);
+        telaDicas.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaDicas;
     }
@@ -923,7 +913,7 @@ public final class PortugolStudio
             telaInformacoesPlugin = new TelaInformacoesPlugin();
         }
 
-        telaInformacoesPlugin.setLocationRelativeTo(null);
+        telaInformacoesPlugin.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaInformacoesPlugin;
     }
@@ -935,7 +925,7 @@ public final class PortugolStudio
             telaErrosPluginsBibliotecas = new TelaErrosPluginsBibliotecas();
         }
 
-        telaErrosPluginsBibliotecas.setLocationRelativeTo(null);
+        telaErrosPluginsBibliotecas.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaErrosPluginsBibliotecas;
     }
@@ -950,9 +940,24 @@ public final class PortugolStudio
             telaLicencas.setSize(640, 550);
         }
 
-        telaLicencas.setLocationRelativeTo(null);
+        telaLicencas.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaLicencas;
+    }
+    
+    public JDialog getTelaEditarTemas()
+    {
+        if (telaEditarTemas == null)
+        {
+            telaEditarTemas = new TelaCustomBorder("Editar Temas") ;
+            telaEditarTemas.setPanel(new TelaEditarTemas(telaEditarTemas));
+            
+            telaEditarTemas.setSize(640, 550);
+        }
+
+        telaEditarTemas.setLocationRelativeTo(Lancador.getInstance().getJFrame());
+
+        return telaEditarTemas;
     }
     
     public JDialog getTelaPesquisarSubstituir()
@@ -965,7 +970,7 @@ public final class PortugolStudio
             telaPesquisarSubstituir.setPanel(findReplace);
         }
 
-        telaPesquisarSubstituir.setLocationRelativeTo(null);
+        telaPesquisarSubstituir.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaPesquisarSubstituir;
     }
@@ -980,7 +985,7 @@ public final class PortugolStudio
             telaPesquisarSubstituir.setPanel(findReplace);
         }
         
-        telaPesquisarSubstituir.setLocationRelativeTo(null);
+        telaPesquisarSubstituir.setLocationRelativeTo(Lancador.getInstance().getJFrame());
         
         return (PSFindReplace) telaPesquisarSubstituir.getPanel();
     }
@@ -993,7 +998,7 @@ public final class PortugolStudio
             telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
         }
         
-        telaRenomearSimbolo.setLocationRelativeTo(null);
+        telaRenomearSimbolo.setLocationRelativeTo(Lancador.getInstance().getJFrame());
         
         return telaRenomearSimbolo;
     }
@@ -1006,7 +1011,7 @@ public final class PortugolStudio
             telaRenomearSimbolo.setPanel(new TelaRenomearSimbolo(telaRenomearSimbolo));
         }
         
-        telaRenomearSimbolo.setLocationRelativeTo(null);
+        telaRenomearSimbolo.setLocationRelativeTo(Lancador.getInstance().getJFrame());
         
         return (TelaRenomearSimbolo) telaRenomearSimbolo.getPanel();
     }

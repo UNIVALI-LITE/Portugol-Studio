@@ -272,7 +272,7 @@ public final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProv
             String nome = noDeclaracaoMatriz.getNome();
 
             completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome, nome, nome + "[${indice}][${indice}]", null, null, nivelASA, trecho, local));
-            completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome + "[linha][coluna] = exprassao", nome + "[linha][coluna] = exprassao", nome + "[${linha}][${coluna}] = ${expressao}", null, null, nivelASA, trecho, local));
+            completions.add(new ConclusaoModeloASA(ProvedorConclusaoCodigoPrograma.this, nome + "[linha][coluna] = expressao", nome + "[linha][coluna] = expressao", nome + "[${linha}][${coluna}] = ${expressao}", null, null, nivelASA, trecho, local));
 
             return null;
         }

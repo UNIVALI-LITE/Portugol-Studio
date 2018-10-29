@@ -22,8 +22,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+
+import org.json.JSONException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -460,7 +464,7 @@ public final class GerenciadorPlugins
 
     private MetaDadosPlugin carregarMetaDados(File arquivoJar, Class classePlugin) throws ErroCarregamentoPlugin
     {
-        MetaDadosPlugin metaDadosPlugin = carregarMetaDadosXml(arquivoJar, classePlugin);
+        MetaDadosPlugin metaDadosPlugin = carregarMetaDadosJson(arquivoJar, classePlugin);
 
         if (metaDadosPlugin.getNomeClasse().equals(classePlugin.getName()))
         {
@@ -584,27 +588,28 @@ public final class GerenciadorPlugins
         return Integer.parseInt(avaliador.group(1));
     }
 
-    private MetaDadosPlugin carregarMetaDadosXml(File arquivoJar, Class classePlugin) throws ErroCarregamentoPlugin
+    private MetaDadosPlugin carregarMetaDadosJson(File arquivoJar, Class classePlugin) throws ErroCarregamentoPlugin
     {
-        final InputStream stream = classePlugin.getClassLoader().getResourceAsStream("plugin.xml");
-
+        final InputStream stream = classePlugin.getClassLoader().getResourceAsStream("plugin.json");
+    	
         if (stream != null)
         {
             try
             {
-                JAXBContext contexto = JAXBContext.newInstance(MetaDadosPlugin.class);
-                MetaDadosPlugin metaDadosPlugin = (MetaDadosPlugin) contexto.createUnmarshaller().unmarshal(stream);
 
-                return metaDadosPlugin;
+            	ObjectMapper mapper = new ObjectMapper();
+            	MetaDadosPlugin meta = mapper.readValue(stream, MetaDadosPlugin.class); 
+            			
+                return meta;
             }
-            catch (JAXBException excecao)
+            catch (Exception excecao)
             {
-                throw new ErroCarregamentoPlugin(String.format("Ocorreu um erro ao carregar o arquivo de metadados 'plugin.xml': %s", excecao.getMessage()), arquivoJar, classePlugin);
+                throw new ErroCarregamentoPlugin(String.format("Ocorreu um erro ao carregar o arquivo de metadados 'plugin.json': %s", excecao.getMessage()), arquivoJar, classePlugin);
             }
         }
         else
         {
-            throw new ErroCarregamentoPlugin("O arquivo de metadados 'plugin.xml' não foi encontrado", arquivoJar, classePlugin);
+            throw new ErroCarregamentoPlugin("O arquivo de metadados 'plugin.json' não foi encontrado", arquivoJar, classePlugin);
         }
     }
 

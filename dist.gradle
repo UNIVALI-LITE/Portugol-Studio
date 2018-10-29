@@ -1,7 +1,7 @@
 
 ext {
     
-    jdkVersion = '1.8.0_161'
+    jdkVersion = '1.8.0_181'
         
     platforms = [
 
@@ -67,6 +67,8 @@ dirs.installer.javaDir = new File(dirs.installer.buildDir, 'java')
 dirs.installer.configurationsFile = new File(dirs.installer.baseDir, 'build-configurations.json')
 dirs.versionFile = new File(rootProject.projectDir.getPath() + '/ide/src/main/resources/version.properties')
 dirs.macInfo_plistFile = new File(rootProject.projectDir.getPath() + '/installer/arquivos/osx/Portugol Studio.app/Contents/Info.plist')
+dirs.linuxReadFile = new File(rootProject.projectDir.getPath() + '/installer/arquivos/linux/leiatemplate.txt')
+dirs.linuxReadFileDist = new File(rootProject.projectDir.getPath() + '/installer/arquivos/linux/package/leia.txt')
 
 import groovy.json.JsonException
 import groovy.json.JsonSlurper
@@ -113,16 +115,22 @@ class DistFrame extends JFrame
     private final File configurationsFile
     
     private final File versionFile
+    
+    private final File linuxReadFile
+    private final File linuxReadFileDist
+    
 
     private JPanel contentPanel
 
     private final File plistFile
 
-    DistFrame(platforms, buildConfigurations, configurationsFile, versionFile, plistFile) {
+    DistFrame(platforms, buildConfigurations, configurationsFile, versionFile, plistFile, linuxReadFile,linuxReadFileDist) {
         
         this.buildConfigurations = buildConfigurations
         this.configurationsFile = configurationsFile
         this.versionFile = versionFile
+        this.linuxReadFile = linuxReadFile
+        this.linuxReadFileDist = linuxReadFileDist
         this.plistFile = plistFile
 
         buildConfigurations.versionChanged = false
@@ -496,11 +504,16 @@ class DistFrame extends JFrame
 
 
             def plistText = plistFile.text
+            def linuxReadText = linuxReadFile.text
             
+            System.out.println(linuxReadText)
+            
+            linuxReadText = linuxReadText.replaceAll('##DISTRO##', projectVersion)
             plistText = plistText.replaceAll('##VERSION##', projectVersion)
             plistText = plistText.replaceAll('##YEAR##',  Integer.toString(Calendar.getInstance().get(Calendar.YEAR)))
 
             plistFile.write(plistText)
+            linuxReadFileDist.write(linuxReadText)
 
             buildConfigurations.versionChanged = true
 
@@ -649,7 +662,7 @@ def getConfigurationsFromGui(){
 
             UIManager.setLookAndFeel(UIManager.systemLookAndFeelClassName)
 
-            frame = new DistFrame(platforms, buildConfigurations, dirs.installer.configurationsFile, dirs.versionFile, dirs.macInfo_plistFile)
+            frame = new DistFrame(platforms, buildConfigurations, dirs.installer.configurationsFile, dirs.versionFile, dirs.macInfo_plistFile, dirs.linuxReadFile, dirs.linuxReadFileDist)
             frame.visible = true
         }
     }
@@ -940,6 +953,26 @@ def renameJvmCfv(def platform) {
     }
 }
 
+def getJDKUrl(def platform){
+    def url
+    switch(platform.name) {
+        case 'windows':
+            url = 'http://dl.dropbox.com/s/2d52hyubib4211y/jdk1.8.0_181-windows.zip'
+            break
+        case 'linux':
+            if(platform.architecture.equals('x64')){
+                url = 'http://dl.dropbox.com/s/6r05urp6u63nwnz/jdk1.8.0_181-linux-x64.zip'
+            }else{
+                url = 'http://dl.dropbox.com/s/81k67uaribtdmhx/jdk1.8.0_181-linux.zip'
+            }
+            break
+        case 'osx':
+            url = 'http://dl.dropbox.com/s/6aq79ichdc6446z/jdk1.8.0_181-osx.zip'
+            break
+    }
+    return url   
+}
+
 def downloadJDK(def platform) {
         
     def platformId = platform.name + platform.suffix
@@ -948,7 +981,8 @@ def downloadJDK(def platform) {
 
     def zipFileName = jdkName + '.zip'
 
-    def remoteZip = 'http://installbuilder.bitrock.com/java/' + zipFileName
+    //def remoteZip = 'http://installbuilder.bitrock.com/java/' + zipFileName
+    def remoteZip = getJDKUrl(platform)
 
     def localZip = new File(dirs.installer.javaDir, zipFileName)
 

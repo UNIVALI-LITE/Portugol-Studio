@@ -94,7 +94,7 @@ public class CabecalhoAba extends JPanel implements Themeable{
     public void setTitulo(String titulo)
     {
         this.jLTitulo.setText(titulo);
-        FabricaDicasInterface.criarTooltipEstatica(botaoFechar, "Fechar - "+getTitulo());
+        //FabricaDicasInterface.criarTooltipEstatica(botaoFechar, "Fechar - "+getTitulo());
     }
 
     public void setIcone(Icon icone)

@@ -1,5 +1,6 @@
 package br.univali.ps.ui.inspetor;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -51,18 +52,20 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         boolean podeDestacar = itemDaLista.podeDesenharDestaque();
         
         x += icone.getIconWidth() + MARGEM;
-        g.setColor(podeDestacar ? COR_TEXTO_DESTACADO : COR_NOME);
+        
+        Color corTexto = itemDaLista.estaNoEscopoAtual() ? (podeDestacar ? COR_TEXTO_DESTACADO : COR_NOME) : COR_FORA_ESCOPO;
+        g.setColor(corTexto);
         int larguraNome = desenhaNome(g, x, 0);
 
         String stringDoValor = processaStringDoValor(((ItemDaListaParaVariavel) itemDaLista).getValor());
 
-        g.setFont((itemDaLista.podeDesenharDestaque()) ? fonteDestaque : fonteNormal);
+        g.setFont(itemDaLista.estaNoEscopoAtual() ? fonteDestaque : fonteNormal);
         FontMetrics metrics = g.getFontMetrics();
         int larguraValor = metrics.stringWidth(stringDoValor);
         int larguraCaixa = MARGEM + larguraValor + MARGEM;
 
         int xCaixaValor = x + larguraNome + MARGEM;
-        
+
         if (podeDestacar) 
         {
             g.setColor(COR_DO_FUNDO_EM_DESTAQUE);
@@ -74,9 +77,9 @@ class RenderizadorDeVariavel extends RenderizadorBase {
         }
 
         //desenha valor
-        g.setColor(podeDestacar ? COR_TEXTO_DESTACADO : COR_TEXTO);
+        Color corValor = itemDaLista.estaNoEscopoAtual() ? (podeDestacar ? COR_TEXTO_DESTACADO : COR_TEXTO) : COR_FORA_ESCOPO;
+        g.setColor(corValor);
         g.drawString(stringDoValor, xCaixaValor + MARGEM, metrics.getAscent());
-
     }
 
 }

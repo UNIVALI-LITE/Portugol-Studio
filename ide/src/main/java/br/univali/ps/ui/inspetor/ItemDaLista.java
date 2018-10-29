@@ -25,6 +25,8 @@ public abstract class ItemDaLista {
     protected boolean desenhaDestaques = true; //quando o programa está em execução o desenho dos destaques é desativado.
     //Não adiatanda destacar a última variável atualizada com o programa em execução já que o destaque fica "pulando" freneticamente
     //de uma variável para outra
+    
+    protected boolean estaNoEscopoAtual = true; // os itens só ficam fora de escopo na execução passo a passo
 
     public ItemDaLista(NoDeclaracao no) {
         this.noDeclaracao = no;
@@ -39,6 +41,16 @@ public abstract class ItemDaLista {
         desenhaDestaques = statusDosDestaques;
     }
 
+    public void setEscopoAtual(boolean estaNoEscopoAtual)
+    {
+        this.estaNoEscopoAtual = estaNoEscopoAtual;
+    }
+    
+    public boolean estaNoEscopoAtual()
+    {
+        return estaNoEscopoAtual;
+    }
+    
     abstract RenderizadorBase getRendererComponent();
 
     Icon getIcone() {
@@ -71,7 +83,7 @@ public abstract class ItemDaLista {
     }
 
     public boolean podeDesenharDestaque() {
-        return this == InspetorDeSimbolos.ultimoItemModificado && desenhaDestaques;
+        return this == InspetorDeSimbolos.ultimoItemModificado && desenhaDestaques && estaNoEscopoAtual();
     }
 
     public String getNome() {
@@ -86,7 +98,9 @@ public abstract class ItemDaLista {
         return noDeclaracao;
     }
 
-    public abstract void limpa();
+    public void limpa() {
+        estaNoEscopoAtual = true;
+    }
     
     public abstract void atualiza(Programa programa);
 

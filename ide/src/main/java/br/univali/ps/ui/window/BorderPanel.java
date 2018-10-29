@@ -8,10 +8,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.utils.swing.MouseEventRunnable;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -72,7 +69,7 @@ public class BorderPanel extends JPanel {
             minButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
-                    Lancador.getJFrame().setExtendedState(JFrame.ICONIFIED);
+                    Lancador.getInstance().getJFrame().setExtendedState(JFrame.ICONIFIED);
                 }
             });
             
@@ -82,12 +79,10 @@ public class BorderPanel extends JPanel {
             maxButton.onMouseClick(new MouseEventRunnable() {
                 @Override
                 public void run(MouseEvent me) {
-                    if(Lancador.isMaximazed()){
-                        
-                        Lancador.maximize(false);
+                    if(Lancador.getInstance().isMaximazed()){
+                        Lancador.getInstance().maximize(false);
                     }else{
-                        
-                        Lancador.maximize(true);
+                        Lancador.getInstance().maximize(true);
                     }
                 }
             });
@@ -103,4 +98,4 @@ public class BorderPanel extends JPanel {
             
             add(buttonsPanel, BorderLayout.EAST);            
         }
-    }
+}

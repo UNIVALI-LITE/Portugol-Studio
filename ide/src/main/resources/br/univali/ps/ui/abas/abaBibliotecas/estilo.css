@@ -1,0 +1,85 @@
+body 
+{ 
+
+	font-family: "Open Sans"; 
+	font-size:  13px;                 
+	line-height: 150%; 
+	/*color: #${cor_letra};*/
+    /*background-color: #${cor_destaque}; */
+} 
+ 
+a 
+{ 
+	font-weight: bold; 
+
+	color: #00EFC0;
+} 
+ 
+h1
+{
+    font-family: "Tahoma";
+    font-size: 20px;
+    /*color: #${cor_letra_titulo};*/
+    /*background-color: #${fundo_escuro};*/
+    /*border-left: 3px solid #${cor_4};*/
+    padding: 15px;
+    padding-left: 8px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+} 
+ 
+h2 
+{ 
+    font-size: 14px;
+    padding-bottom: 10px;
+    padding-left: 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+} 
+ 
+ul, ol
+{
+	list-style-type: none;
+}
+ 
+li 
+{ 
+    margin-bottom: 10px; 
+} 
+
+b{
+    /*color: #${cor_2};*/
+}
+
+.palavra_reservada 
+{ 
+    /*color: #${palavra_reservada};*/
+    font-weight: bold;
+} 
+
+.tipo_reservado
+{ 
+    /*color: #${tipo_reservado};*/
+    font-weight: bold;
+}
+
+.parametro 
+{ 
+    font-weight: bold; 
+}
+
+.porTipoDeclaracao
+{
+    /*color: #${tipo_declaracao};*/
+    font-weight: bold;
+}
+
+div.codigo-portugol
+{
+    /*background-color: #${fundo_claro};*/
+}
+
+p
+{
+    padding-top: 0px;
+}
