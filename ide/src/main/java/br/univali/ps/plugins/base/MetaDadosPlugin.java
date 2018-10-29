@@ -1,176 +1,157 @@
 package br.univali.ps.plugins.base;
 
-import static javax.xml.bind.annotation.XmlAccessType.FIELD;
 import java.awt.Image;
 import java.io.File;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  *
  * @author Luiz Fernando Noschang
  */
-@XmlAccessorType(FIELD)
-@XmlRootElement(name = "plugin")
-public final class MetaDadosPlugin
-{
-    @XmlTransient
-    private Class classe;
-    
-    @XmlAttribute(name = "classe")
-    private String nomeClasse;
-    
-    @XmlAttribute
-    private String nome;
-    
-    @XmlAttribute
-    private String versao;
-    
-    @XmlElement
-    private String descricao;
-    
-    @XmlTransient
-    private String licenca;
-    
-    @XmlTransient
-    private Image icone16x16;
-    
-    @XmlTransient
-    private Image icone32x32;
-    
-    @XmlElementWrapper
-    @XmlElement(name = "autor")
-    private List<Autor> autores;
-    
-    @XmlTransient
-    private File arquivoJar;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "nome", "versao", "classe", "descricao", "autores" })
+public final class MetaDadosPlugin {
+	@JsonIgnore
+	private Class classe;
 
-    MetaDadosPlugin()
-    {
+	@JsonProperty("nome")
+	private String nome;
 
-    }
+	@JsonProperty("versao")
+	private String versao;
 
-    public Class getClasse()
-    {
-        return classe;
-    }
+	@JsonProperty("classe")
+	private String nomeClasse;
 
-    void setClasse(Class classe)
-    {
-        this.classe = classe;
-    }
+	@JsonProperty("descricao")
+	private String descricao;
 
-    String getNomeClasse()
-    {
-        return nomeClasse;
-    }
+	@JsonProperty("autores")
+	private List<Autor> autores = null;
 
-    void setNomeClasse(String nomeClasse)
-    {
-        this.nomeClasse = nomeClasse;
-    }
-    
-    public String getNome()
-    {
-        return nome;
-    }
+	@JsonIgnore
+	private String licenca;
 
-    void setNome(String nome)
-    {
-        this.nome = nome;
-    }
-    
-    public String getDescricao()
-    {
-        return descricao;
-    }
+	@JsonIgnore
+	private Image icone16x16;
 
-    void setDescricao(String descricao)
-    {
-        this.descricao = descricao;
-    }
+	@JsonIgnore
+	private Image icone32x32;
 
-    public String getLicenca()
-    {
-        return licenca;
-    }
+	@JsonIgnore
+	private File arquivoJar;
 
-    void setLicenca(String licenca)
-    {
-        this.licenca = licenca;
-    }
+	MetaDadosPlugin() {
 
-    public String getVersao()
-    {
-        return versao;
-    }
+	}
+	
+	public Class getClasse() {
+		return classe;
+	}
+	
+	public void setClasse(Class classe) {
+		this.classe = classe;
+	}
+	
+	@JsonProperty("classe")
+	String getNomeClasse() {
+		return nomeClasse;
+	}
+	
+	@JsonProperty("classe")
+	void setNomeClasse(String nomeClasse) {
+		this.nomeClasse = nomeClasse;
+	}
 
-    void setVersao(String versao)
-    {
-        this.versao = versao;
-    }
+	@JsonProperty("nome")
+	public String getNome() {
+		return nome;
+	}
 
-    public Image getIcone16x16()
-    {
-        return icone16x16;
-    }
+	@JsonProperty("nome")
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    void setIcone16x16(Image icone16x16)
-    {
-        this.icone16x16 = icone16x16;
-    }
+	@JsonProperty("versao")
+	public String getVersao() {
+		return versao;
+	}
 
-    public Image getIcone32x32()
-    {
-        return icone32x32;
-    }
+	@JsonProperty("versao")
+	public void setVersao(String versao) {
+		this.versao = versao;
+	}
 
-    void setIcone32x32(Image icone32x32)
-    {
-        this.icone32x32 = icone32x32;
-    }
+	@JsonProperty("descricao")
+	public String getDescricao() {
+		return descricao;
+	}
 
-    public List<Autor> getAutores()
-    {
-        return autores;
-    }
+	@JsonProperty("descricao")
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
-    void setAutores(List<Autor> autores)
-    {
-        this.autores = autores;
-    }
+	@JsonProperty("autores")
+	public List<Autor> getAutores() {
+		return autores;
+	}
 
-    public File getArquivoJar()
-    {
-        return arquivoJar;
-    }
+	@JsonProperty("autores")
+	public void setAutores(List<Autor> autores) {
+		this.autores = autores;
+	}
 
-    void setArquivoJar(File arquivoJar)
-    {
-        this.arquivoJar = arquivoJar;
-    }
-    
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof MetaDadosPlugin)
-        {
-            return ((MetaDadosPlugin) obj).getClass().equals(this.getClass());
-        }
+	public String getLicenca() {
+		return licenca;
+	}
 
-        return false;
-    }
+	void setLicenca(String licenca) {
+		this.licenca = licenca;
+	}
 
-    @Override
-    public int hashCode()
-    {
-        return 2339
-                + (this.getClass() != null ? this.getClass().hashCode() : 0)
-                + (this.getVersao() != null ? this.getVersao().hashCode() : 0);
-    }
+	public Image getIcone16x16() {
+		return icone16x16;
+	}
+
+	void setIcone16x16(Image icone16x16) {
+		this.icone16x16 = icone16x16;
+	}
+
+	public Image getIcone32x32() {
+		return icone32x32;
+	}
+
+	void setIcone32x32(Image icone32x32) {
+		this.icone32x32 = icone32x32;
+	}
+
+	public File getArquivoJar() {
+		return arquivoJar;
+	}
+
+	void setArquivoJar(File arquivoJar) {
+		this.arquivoJar = arquivoJar;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof MetaDadosPlugin) {
+			return ((MetaDadosPlugin) obj).getClass().equals(this.getClass());
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return 2339 + (this.getClass() != null ? this.getClass().hashCode() : 0)
+				+ (this.getVersao() != null ? this.getVersao().hashCode() : 0);
+	}
 }

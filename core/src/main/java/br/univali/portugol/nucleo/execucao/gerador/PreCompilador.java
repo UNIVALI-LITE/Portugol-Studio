@@ -235,6 +235,7 @@ public class PreCompilador extends VisitanteNulo
     // lista de palavras reservadas java 'roubadas' da wikipedia e ordenadasalfabéticamente para possibilitar uma busca binária
     private static final String[] PALAVRAS_RESERVADAS_JAVA =
     {
+        "abstract",
         "assert",
         "boolean",
         "break",
@@ -250,19 +251,23 @@ public class PreCompilador extends VisitanteNulo
         "double",
         "else",
         "enum",
+        "extends",
+        "false",
         "final",
         "finally",
         "float",
         "for",
         "goto",
         "if",
+        "implements",
         "import",
         "instanceof",
-        "interface",
         "int",
+        "interface",
         "long",
         "native",
         "new",
+        "null",
         "package",
         "private",
         "protected",
@@ -278,12 +283,10 @@ public class PreCompilador extends VisitanteNulo
         "throw",
         "throws",
         "transient",
+        "true",
         "try",
         "void",
         "volatile",
-        "while",
-        "false",
-        "null",
-        "true"
+        "while"
     };
 }

@@ -1,184 +1,168 @@
 package br.univali.ps.ui.telas.utils;
 
-import static javax.xml.bind.JAXBContext.newInstance;
-
-import br.univali.ps.nucleo.PortugolStudio;
-import br.univali.ps.ui.utils.FileHandle;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.ui.utils.FileHandle;
 
 /**
- *
- * @author Luiz Fernando
- */
-@XmlRootElement
-@XmlAccessorType(value = XmlAccessType.FIELD)
-public final class Licencas
-{
-    private static final Logger LOGGER = Logger.getLogger(Licencas.class.getName());
+*
+* @author Rafael Ferreira Costa
+*/
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "recurso" })
+public final class Licencas {
 
-    @XmlElement(name = "recurso")
-    private List<Recurso> recursos;
+	private static final Logger LOGGER = Logger.getLogger(Licencas.class.getName());
+	
+	@JsonProperty("recurso")
+	private List<Recurso> recursos = null;
 
-    private Licencas()
-    {
+	@JsonProperty("recurso")
+	public List<Recurso> getRecursos() {
+		return recursos;
+	}
 
-    }
-    
-    public List<Recurso> getRecursos()
-    {
-        return recursos;
-    }
+	@JsonProperty("recurso")
+	public void setRecurso(List<Recurso> recursos) {
+		this.recursos = recursos;
+	}
 
-    public void setRecursos(List<Recurso> recursos)
-    {
-        this.recursos = recursos;
-    }
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonPropertyOrder({ "nome", "versao", "arquivo", "url", "descricao" })
+	public static final class Recurso {
 
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static final class Recurso
-    {
-        @XmlAttribute
-        private String nome;
+		@JsonProperty("nome")
+		private String nome;
+		
+		@JsonProperty("versao")
+		private String versao;
+		
+		@JsonProperty("arquivo")
+		private String arquivo;
+		
+		@JsonProperty("url")
+		private String url;
+		
+		@JsonProperty("descricao")
+		private String descricao;
+		
+		@JsonIgnore
+		private String licenca;
 
-        @XmlAttribute
-        private String versao;
+		@JsonProperty("nome")
+		public String getNome() {
+			return nome;
+		}
 
-        @XmlAttribute
-        private String arquivo;
-        
-        @XmlAttribute
-        private String url;
-        
-        @XmlElement
-        private String descricao;
+		@JsonProperty("nome")
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
 
-        @XmlTransient
-        private String licenca;
-        
-        public String getNome()
-        {
-            return nome;
-        }
+		@JsonProperty("versao")
+		public String getVersao() {
+			return versao;
+		}
 
-        public void setNome(String nome)
-        {
-            this.nome = nome;
-        }
+		@JsonProperty("versao")
+		public void setVersao(String versao) {
+			this.versao = versao;
+		}
 
-        public String getVersao()
-        {
-            return versao;
-        }
+		@JsonProperty("arquivo")
+		public String getArquivo() {
+			return arquivo;
+		}
 
-        public void setVersao(String versao)
-        {
-            this.versao = versao;
-        }       
+		@JsonProperty("arquivo")
+		public void setArquivo(String arquivo) {
+			this.arquivo = arquivo;
+		}
 
-        public String getArquivo()
-        {
-            return arquivo;
-        }
+		@JsonProperty("url")
+		public String getUrl() {
+			return url;
+		}
 
-        public void setArquivo(String arquivo)
-        {
-            this.arquivo = arquivo;
-        }
+		@JsonProperty("url")
+		public void setUrl(String url) {
+			this.url = url;
+		}
 
-        public String getLicenca()
-        {
-            return licenca;
-        }
+		@JsonProperty("descricao")
+		public String getDescricao() {
+			return descricao;
+		}
 
-        public void setLicenca(String licenca)
-        {
-            this.licenca = licenca;
-        }
+		@JsonProperty("descricao")
+		public void setDescricao(String descricao) {
+			this.descricao = descricao;
+		}
 
-        public String getDescricao()
-        {
-            return descricao;
-        }
+		public String getLicenca() {
+			return licenca;
+		}
 
-        public void setDescricao(String descricao)
-        {
-            this.descricao = descricao;
-        }
+		public void setLicenca(String licenca) {
+			this.licenca = licenca;
+		}
 
-        public String getUrl()
-        {
-            return url;
-        }
+	}
 
-        public void setUrl(String url)
-        {
-            this.url = url;
-        }
-    }
+	public static Licencas carregar() {
+		Licencas licencas = carregarJson();
 
-    public static Licencas carregar()
-    {
-        Licencas licencas = carregarXml();
+		if (licencas != null) {
+			for (Recurso recurso : licencas.getRecursos()) 
+			{
+				recurso.setLicenca(carregarLicenca(recurso.getArquivo()));
+			}
+			
+			CompardorRecurso comparador = new CompardorRecurso();
+			Collections.sort(licencas.getRecursos(), comparador);
+		}
 
-        if (licencas != null)
-        {
-            for (Recurso recurso : licencas.getRecursos())
-            {
-                recurso.setLicenca(carregarLicenca(recurso.getArquivo()));
-            }
-            
-            CompardorRecurso comparador = new CompardorRecurso();
-            Collections.sort(licencas.getRecursos(), comparador); 
-        }           
-        
-        return licencas;
-    }
+		return licencas;
+	}
 
-    private static String carregarLicenca(String arquivo)
-    {
-        try
-        {
-            return FileHandle.read(Licencas.class.getClassLoader().getResourceAsStream(String.format("br/univali/ps/licencas/%s", arquivo)), "UTF-8");
-        }
-        catch (Exception excecao)
-        {
-            LOGGER.log(Level.SEVERE, String.format("Erro ao carregar a licença '%s'", arquivo), excecao);
-        }
+	private static String carregarLicenca(String arquivo) {
+		try 
+		{
+			return FileHandle.read(Licencas.class.getClassLoader().getResourceAsStream(String.format("br/univali/ps/licencas/%s", arquivo)), "UTF-8");
+			
+		} catch (Exception excecao) {
+			LOGGER.log(Level.SEVERE, String.format("Erro ao carregar a licença '%s'", arquivo), excecao);
+		}
 
-        return "Erro ao carregar a licença";
-    }
+		return "Erro ao carregar a licença";
+	}
 
-    private static Licencas carregarXml()
-    {
-        try
-        {
-            JAXBContext contexto = newInstance(Licencas.class);
-            Unmarshaller unmarshaller = contexto.createUnmarshaller();
+	private static Licencas carregarJson() {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			InputStream is = Licencas.class.getClassLoader().getResourceAsStream("br/univali/ps/licencas/licencas.json");
+			
+			return mapper.readValue(is, Licencas.class);
+		} catch (Exception excecao) {
+			PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
+		}
 
-            return (Licencas) unmarshaller.unmarshal(Licencas.class.getClassLoader().getResourceAsStream("br/univali/ps/licencas/licencas.xml"));
-        }
-        catch (JAXBException excecao)
-        {
-            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
-        }
-
-        return null;
-    }
-    
-    /**
+		return null;
+	}
+	
+	/**
      * Coloca a aba do Portugol Studio sempre na primeira posição. Depois coloca a aba do
      * Portugol Núcleo na segunda posição. Ordena as demais abas por ordem alfabética.
      */

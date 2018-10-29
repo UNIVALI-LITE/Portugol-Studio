@@ -39,8 +39,8 @@ public final class PortugolStudio extends Biblioteca {
     public void minimizar() throws ErroExecucaoBiblioteca, InterruptedException {
         try {
             SwingUtilities.invokeAndWait(() -> {
-                setUltimoEstado(Lancador.getJFrame().getExtendedState());
-                Lancador.getJFrame().setExtendedState(JFrame.ICONIFIED);
+                setUltimoEstado(Lancador.getInstance().getJFrame().getExtendedState());
+                Lancador.getInstance().getJFrame().setExtendedState(JFrame.ICONIFIED);
             });
         } catch (InterruptedException | InvocationTargetException ex) {
             throw new ErroExecucaoBiblioteca(ex);
@@ -52,11 +52,12 @@ public final class PortugolStudio extends Biblioteca {
     public void finalizar() throws ErroExecucaoBiblioteca {
         try {
             SwingUtilities.invokeAndWait(() -> {
-                if (Lancador.getJFrame().getExtendedState() == JFrame.ICONIFIED)
+                JFrame frame = Lancador.getInstance().getJFrame();
+                if (frame.getExtendedState() == JFrame.ICONIFIED)
                 {
-                    Lancador.getJFrame().setExtendedState(getUltimoEstado());
-                    Lancador.getJFrame().toFront();
-                    Lancador.getJFrame().requestFocusInWindow();
+                    frame.setExtendedState(getUltimoEstado());
+                    frame.toFront();
+                    frame.requestFocusInWindow();
                 }
             });
         } catch (InterruptedException | InvocationTargetException ex) {

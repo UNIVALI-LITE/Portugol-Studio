@@ -130,9 +130,9 @@ public class PSAutoCompletion extends AutoCompletion{
                                     
                                     
                                     
-                                    for (Component component : ((Container)rootPane1.getContentPane().getComponent(1)).getComponents()) {
-                                        System.out.println(component.getClass());
-                                    }
+//                                    for (Component component : ((Container)rootPane1.getContentPane().getComponent(1)).getComponents()) {
+//                                        System.out.println(component.getClass());
+//                                    }
                                     JEditorPane editorPane = (JEditorPane) ((Container)scrollPane.getComponent(0)).getComponent(0);
                                     editorPane.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
                                     editorPane.setForeground(ColorController.AMARELO);
