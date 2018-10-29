@@ -641,9 +641,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
         };
         
-        textArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, InputEvent.CTRL_DOWN_MASK), "Comentar");
+        textArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK+InputEvent.SHIFT_DOWN_MASK), "Comentar");
         textArea.getActionMap().put("Comentar", acaoComentar);
-        //btnComentar.setAction(acaoComentar);
     }
 
     private void configurarAcaoDescomentar()
