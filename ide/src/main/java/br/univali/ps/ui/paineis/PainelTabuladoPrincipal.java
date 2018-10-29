@@ -91,6 +91,9 @@ public final class PainelTabuladoPrincipal extends PainelTabulado implements The
                     if(!Lancador.getInstance().isMaximazed()){
                         JFrame frame = Lancador.getInstance().getJFrame();
                         frame.setLocation(frame.getLocation().x + me.getX() - PortugolStudio.getInstancia().getTelaPrincipal().pX,frame.getLocation().y + me.getY() - PortugolStudio.getInstancia().getTelaPrincipal().pY);
+                        if(Lancador.getInstance().getQtdMonitores() == 1) {
+                        	Lancador.getInstance().snapToEdge(me);
+                        }
                     }
                 });
 

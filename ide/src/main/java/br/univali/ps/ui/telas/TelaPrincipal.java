@@ -107,6 +107,9 @@ public class TelaPrincipal extends javax.swing.JPanel
                     if(!Lancador.getInstance().isMaximazed()){
                         JFrame frame = Lancador.getInstance().getJFrame();
                         frame.setLocation(frame.getLocation().x + me.getX() - pX,frame.getLocation().y + me.getY() - pY);
+                        if(Lancador.getInstance().getQtdMonitores() == 1) {
+                        	Lancador.getInstance().snapToEdge(me);
+                        }
                     }
                 });
 
