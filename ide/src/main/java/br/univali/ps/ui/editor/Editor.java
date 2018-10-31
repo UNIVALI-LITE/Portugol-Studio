@@ -576,34 +576,73 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
 
                     int inicioSelecao = textArea.getSelectionStart();
                     int fimSelecao = textArea.getSelectionEnd();
+                    int tamanhoSelecao = fimSelecao - inicioSelecao;
                     int inicioTexto = textArea.getLineStartOffset(linhaInicial);
                     int fimTexto = textArea.getLineEndOffset(linhaFinal);
                     int tamanhoTexto = fimTexto - inicioTexto;
 
                     String codigo = textArea.getText(inicioTexto, tamanhoTexto);
                     StringBuilder codigoComentado = new StringBuilder();
-
+                    
+                    int deslocamento = 0;
+                    
                     String[] linhas = codigo.split("\n");
+                    
+                    if(linhas[0].startsWith("//")){
+                        for (String linha : linhas){
+                            int posicaoComentario = linha.indexOf("//");
+                            int inicioSelecaoLinha = inicioSelecao - inicioTexto;
+                            int fimSelecaoLinha = inicioSelecaoLinha + tamanhoSelecao;
 
-                    for (String linha : linhas)
-                    {
-                        codigoComentado.append("//");
-                        codigoComentado.append(linha);
-                        codigoComentado.append("\n");
+                            if (posicaoComentario >= 0)
+                            {
+                                codigoComentado.append(linha.substring(0, posicaoComentario));
+                                codigoComentado.append(linha.substring(posicaoComentario + 2));
+                            }
+                            else
+                            {
+                                codigoComentado.append(linha);
+                            }
+
+                            codigoComentado.append("\n");
+                            posicaoComentario = posicaoComentario + deslocamento;
+                            deslocamento = deslocamento + linha.length();
+
+                            if (posicaoComentario >= 0 && posicaoComentario < inicioSelecaoLinha)
+                            {
+                                inicioSelecao = inicioSelecao - 2;
+                                fimSelecao = fimSelecao - 2;
+                            }
+                            else if (posicaoComentario >= 0 && posicaoComentario < fimSelecaoLinha)
+                            {
+                                fimSelecao = fimSelecao - 2;
+                            }
+                        }
+
+                        codigo = codigoComentado.toString();
+                        textArea.replaceRange(codigo, inicioTexto, fimTexto);
+                        textArea.select(inicioSelecao, fimSelecao);
+                    }else{
+                        for (String linha : linhas){
+                            codigoComentado.append("//");
+                            codigoComentado.append(linha);
+                            codigoComentado.append("\n");
+                        }
+
+                        codigo = codigoComentado.toString();
+                        textArea.replaceRange(codigo, inicioTexto, fimTexto);
+                        textArea.select(inicioSelecao + 2, fimSelecao + (linhas.length * 2));
                     }
-
-                    codigo = codigoComentado.toString();
-                    textArea.replaceRange(codigo, inicioTexto, fimTexto);
-                    textArea.select(inicioSelecao + 2, fimSelecao + (linhas.length * 2));
+                    
                 }
-                catch (BadLocationException excecao)
-                {
+                catch (BadLocationException excecao) {
                     excecao.printStackTrace(System.out);
                 }
             }
         };
-
-//        btnComentar.setAction(acaoComentar);
+        
+        textArea.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK+InputEvent.SHIFT_DOWN_MASK), "Comentar");
+        textArea.getActionMap().put("Comentar", acaoComentar);
     }
 
     private void configurarAcaoDescomentar()
@@ -673,8 +712,8 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                 }
             }
         };
-
-//        btnDescomentar.setAction(acaoDescomentar);
+        getActionMap().put("Descomentar", acaoDescomentar);
+        //btnDescomentar.setAction(acaoDescomentar);
     }
 
     private void instalarObservadores()
