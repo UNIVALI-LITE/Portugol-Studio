@@ -154,15 +154,18 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
     }
     
     private void configurarBotoes() {
-        botaoSelecionarTodos.setAction(new AbstractAction("selecionar todos") {
+        botaoSelecionarTodos.setAction(new AbstractAction("Selecionar todos") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (PainelPluginItem component : listaPlugins) {
-                    component.getSeletorPlugin().setSelected(true);
+                	component.getSeletorPlugin().setSelected(true);
+                	if(!component.eCompativelComSistema()) {
+                		component.getSeletorPlugin().setSelected(false);
+                	}
                 }
             }
         });
-        botaoInstalarPlugins.setAction(new AbstractAction("instalar plugins") {
+        botaoInstalarPlugins.setAction(new AbstractAction("Instalar plugins") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<File> listaArquivos = new ArrayList<>();

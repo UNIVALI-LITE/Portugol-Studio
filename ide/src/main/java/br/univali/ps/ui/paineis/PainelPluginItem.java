@@ -63,7 +63,7 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
         seletorPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
     }
     
-    private boolean eCompativelComSistema()
+    public boolean eCompativelComSistema()
     {
         String os = System.getProperty("os.name").toLowerCase();
         
