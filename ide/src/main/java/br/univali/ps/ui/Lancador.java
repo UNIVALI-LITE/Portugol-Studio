@@ -173,12 +173,10 @@ public class Lancador {
             frame.setExtendedState(JFrame.NORMAL);
             frame.setSize(d);
             
-            //Centraliza janela se estiver no monitor principal
-            if(monitorAtual.equals(Lancador.getInstance().getMonitorPrincipal())){
-                GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
-                Rectangle screenSize = new Rectangle(gcc[0].getBounds().width, gcc[0].getBounds().height);
-                frame.setLocation((screenSize.width-d.width)/2, (screenSize.height-d.height)/2);
-            }
+            //Centraliza janela no monitor
+            GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
+            Rectangle screenSize = new Rectangle(gcc[0].getBounds().width, gcc[0].getBounds().height);
+            frame.setLocation(gcc[0].getBounds().x +(screenSize.width-d.width)/2, gcc[0].getBounds().y +(screenSize.height-d.height)/2);
             
             setActualSize(d);
         }
@@ -294,13 +292,13 @@ public class Lancador {
     
     private static Rectangle configurarMaximizar(){
         GraphicsDevice monitorAtual = MouseInfo.getPointerInfo().getDevice();
-        Rectangle bounds = MouseInfo.getPointerInfo().getDevice().getDefaultConfiguration().getBounds();
+        Rectangle bounds = monitorAtual.getDefaultConfiguration().getBounds();
         GraphicsConfiguration gcc[] = monitorAtual.getConfigurations();
         Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(gcc[0]);
         Rectangle newBounds = new Rectangle(bounds.width - (screenInsets.left + screenInsets.right), bounds.height - (screenInsets.top + screenInsets.bottom));
         
         newBounds.x = monitorAtual.getDefaultConfiguration().getBounds().x + screenInsets.left;
-        newBounds.y = screenInsets.top;
+        newBounds.y = monitorAtual.getDefaultConfiguration().getBounds().y + screenInsets.top;
         
         return newBounds;
     }
