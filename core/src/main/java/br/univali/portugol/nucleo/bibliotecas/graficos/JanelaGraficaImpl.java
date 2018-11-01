@@ -4,10 +4,15 @@ import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
+import java.awt.MouseInfo;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -32,6 +37,10 @@ public final class JanelaGraficaImpl extends JFrame implements JanelaGrafica
     private static final int LARGURA_PADRAO = 640;
     private static final int ALTURA_PADRAO = 480;
     private static final String TITULO_PADRAO = "Sem Título";
+    
+    private static final GraphicsDevice monitores[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+    private boolean monitor_alterado = false;
+    private int indiceMonitor = 0;
 
     private int largura = LARGURA_PADRAO;
     private int altura = ALTURA_PADRAO;
@@ -307,7 +316,9 @@ public final class JanelaGraficaImpl extends JFrame implements JanelaGrafica
             @Override
             public void componentResized(ComponentEvent e)
             {
-                setLocationRelativeTo(null);
+                GraphicsConfiguration gcc[] = monitores[indiceMonitor].getConfigurations();
+                Rectangle screenSize = new Rectangle(gcc[0].getBounds().width, gcc[0].getBounds().height);
+                setLocation(gcc[0].getBounds().x +(screenSize.width-largura)/2, gcc[0].getBounds().y+(screenSize.height-altura)/2);   
             }
         });
 
@@ -394,6 +405,21 @@ public final class JanelaGraficaImpl extends JFrame implements JanelaGrafica
             definirDimensoes(this.largura_anterior, this.altura_anterior);
             setLocationRelativeTo(null);
             
+        }
+    }
+    
+    @Override
+    public void definirMonitor(int posMonitor) throws ErroExecucaoBiblioteca{
+        if(posMonitor < monitores.length){
+            this.monitor_alterado = true;
+            this.indiceMonitor = posMonitor;
+            
+            Rectangle janelaBounds = getBounds();
+            janelaBounds.x = monitores[posMonitor].getDefaultConfiguration().getBounds().x;
+            janelaBounds.y = monitores[posMonitor].getDefaultConfiguration().getBounds().y;
+            setBounds(janelaBounds);
+        }else{
+            throw new ErroExecucaoBiblioteca("Indice de Monitor inválido");
         }
     }
 }

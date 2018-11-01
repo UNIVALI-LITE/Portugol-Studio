@@ -42,4 +42,6 @@ public interface JanelaGrafica extends Mouse.InstaladorMouse, Teclado.Instalador
     public void entrarModoTelaCheia() throws ErroExecucaoBiblioteca;
     
     public void sairModoTelaCheia() throws ErroExecucaoBiblioteca;
+    
+    public void definirMonitor(int indiceMonitor) throws ErroExecucaoBiblioteca;
 }

@@ -1655,6 +1655,23 @@ public final class Graficos extends Biblioteca implements Teclado.InstaladorTecl
         janela().sairModoTelaCheia();
     }
     
+    @DocumentacaoFuncao(
+        descricao = "",
+        autores =
+        {
+            @Autor(nome = "R", email = "R")
+        },
+        parametros = 
+        {
+            @DocumentacaoParametro(nome = "posMonitor", descricao = "")
+        }
+        
+    )
+    public void definir_monitor(int posMonitor) throws ErroExecucaoBiblioteca, InterruptedException
+    {
+        janela().definirMonitor(posMonitor);
+    }
+    
     private class ErroExcessoOperacoes extends ErroExecucaoBiblioteca
     {
         public ErroExcessoOperacoes()
