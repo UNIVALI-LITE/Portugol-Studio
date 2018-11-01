@@ -221,7 +221,7 @@ public final class CarregadorJar
                 l = codeSource.getLocation().toString();
             }
 
-            l = l.replace("file:/", "");
+            l = l.replace("file:", "");
 
             jarFile = new File(l);
         }

@@ -510,8 +510,7 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
                 }
                 else if (e.event_type == GeneralEvent.EventType.page_loading_end)
                 {
-                    System.out.println("SwingBox: page loaded in: "
-                            + (System.currentTimeMillis() - time) + " ms");
+                    //System.out.println("SwingBox: page loaded in: "+ (System.currentTimeMillis() - time) + " ms");
                 }
             }
         });

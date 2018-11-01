@@ -2,6 +2,7 @@ package br.univali.ps.ui.abas;
 
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.PortugolStudio;
+import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
@@ -38,12 +39,13 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
     private Action acaoNovoArquivo;
     private Action acaoAbrirArquivo;
+    private Action acaoCarregarPlugin;
     private Action acaoExibirTelaInicial;
 
     private Aba abaAtual;
 
     private static final FiltroArquivo filtroExercicio = new FiltroArquivo("Exercício do Portugol", "pex");
-    private static final FiltroArquivo filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");
+    private static final FiltroArquivo filtroPrograma = new FiltroArquivo("Programa do Portugol", "por");    
     private static final FiltroArquivo filtroTodosSuportados = new FiltroComposto("Todos os tipos suportados", filtroPrograma, filtroExercicio);
     //private JFileChooser dialogoSelecaoArquivo;
 
@@ -88,8 +90,9 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
 
         dialogoSelecaoArquivo.setFileFilter(filtroPrograma);
         return dialogoSelecaoArquivo;
-
     }
+    
+    
 
     private void configurarAcoes(final TelaPrincipal telaPrincipalDesktop) {
         configurarAcaoNovoArquivo(telaPrincipalDesktop);
@@ -139,7 +142,7 @@ public final class BotoesControleAba extends CabecalhoAba implements PainelTabul
         telaPrincipal.getPainelTabulado().getActionMap().put(nome, acaoAbrirArquivo);
         telaPrincipal.getPainelTabulado().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(atalho, nome);
     }
-
+    
     private void configurarAcaoExibirTelaInicial(final TelaPrincipal telaPrincipal) {
         final String nome = "Exibir tela inicial";
         final KeyStroke atalho = KeyStroke.getKeyStroke(KeyEvent.VK_HOME, KeyEvent.ALT_DOWN_MASK);

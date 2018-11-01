@@ -542,7 +542,10 @@ public final class Configuracoes
     public void setArquivo_temas(JSONObject arquivo_temas) {
         this.arquivo_temas = arquivo_temas;
     }   
-    
+
+    public File getDiretorioConfiguracoes() {
+        return diretorioConfiguracoes;
+    }
     
     private File resolverDiretorioConfiguracoes()
     {

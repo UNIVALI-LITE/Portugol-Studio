@@ -11,6 +11,7 @@ import br.univali.ps.ui.telas.TelaRenomearSimbolo;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.editor.PSFindReplace;
+import br.univali.ps.ui.paineis.PainelPluginsInstalados;
 import br.univali.ps.ui.telas.TelaDicas;
 import br.univali.ps.ui.telas.TelaErrosPluginsBibliotecas;
 import br.univali.ps.ui.telas.TelaInformacoesPlugin;
@@ -92,8 +93,9 @@ public final class PortugolStudio
     private JDialog telaRelatarBug = null;
     private OutsidePanel outSidePanel;
     private TelaPrincipal telaPrincipal = null;
-    private TelaInformacoesPlugin telaInformacoesPlugin = null;
+    private TelaCustomBorder telaInformacoesPlugin = null;
     private TelaErrosPluginsBibliotecas telaErrosPluginsBibliotecas = null;
+    private TelaCustomBorder telaPluginsInstalados = null;
     private TelaCustomBorder telaLicencas = null;
     private TelaCustomBorder telaRenomearSimbolo = null;
     private TelaCustomBorder telaPesquisarSubstituir = null;
@@ -124,7 +126,6 @@ public final class PortugolStudio
                 if(recente.exists()){
                     arquivosRecentes.add(recente);
                 }
-
             }
         } catch (Exception ex) {
             LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos recentemente utilizados pelo Portugol Studio.");
@@ -692,11 +693,34 @@ public final class PortugolStudio
         List<File> files = PortugolStudio.getInstancia().getArquivosOriginais();
         PortugolStudio.getInstancia().getTelaPrincipal().abrirArquivosCodigoFonte(files);
     }
+    
+    private void removerPluginsDefinidos(File removerPlugins)
+    {
+        if(removerPlugins.exists())
+        {
+            try {
+            String arquivo = FileHandle.read(new FileInputStream(removerPlugins));
+            String [] caminhos = arquivo.split("\n");
+            for (String caminho : caminhos) {
+                File pastaPlugin = new File(caminho);
+                if(pastaPlugin.exists() && pastaPlugin.isDirectory())
+                {
+                    FileUtils.deleteDirectory(pastaPlugin);
+                }
+            }
+            FileUtils.deleteQuietly(removerPlugins);
+            } catch (Exception ex) {
+                LOGGER.log(Level.INFO, "Não foi possível carregar os Arquivos recentemente utilizados pelo Portugol Studio.");
+            }
+        }
+    }
 
     private void carregarPlugins()
     {
         GerenciadorPlugins gerenciadorPlugins = GerenciadorPlugins.getInstance();
         Configuracoes configuracoes = Configuracoes.getInstancia();
+        
+        removerPluginsDefinidos(new File(configuracoes.getDiretorioConfiguracoes(), "desinstalarPlugins.txt"));
 
         if (configuracoes.getDiretorioPlugins() != null)
         {
@@ -905,14 +929,29 @@ public final class PortugolStudio
 
         return telaDicas;
     }
+    
+    public JDialog getTelaPluginsInstalados()
+    {
+        if (telaPluginsInstalados == null)
+        {
+            telaPluginsInstalados = new TelaCustomBorder("Plugins Instalados");
+            telaPluginsInstalados.setPanel(new PainelPluginsInstalados(telaPluginsInstalados));
+        }
 
-    public TelaInformacoesPlugin getTelaInformacoesPlugin()
+        telaPluginsInstalados.setLocationRelativeTo(Lancador.getInstance().getJFrame());
+
+        return telaPluginsInstalados;
+    }
+
+    public TelaCustomBorder getTelaInformacoesPlugin()
     {
         if (telaInformacoesPlugin == null)
         {
-            telaInformacoesPlugin = new TelaInformacoesPlugin();
+            telaInformacoesPlugin = new TelaCustomBorder("Informações do Plugin");
+            TelaInformacoesPlugin painelInformacoesPlugin = new TelaInformacoesPlugin();
+            telaInformacoesPlugin.setPanel(painelInformacoesPlugin);
         }
-
+        telaInformacoesPlugin.setPreferredSize(new Dimension(640, 480));
         telaInformacoesPlugin.setLocationRelativeTo(Lancador.getInstance().getJFrame());
 
         return telaInformacoesPlugin;

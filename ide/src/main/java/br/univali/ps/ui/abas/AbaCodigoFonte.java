@@ -178,6 +178,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setVisible(false);
         miniBarra.setVisible(false);
         painelTemplate.setVisible(false);
+        botoesPlugin.setVisible(false);
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
         painelConfigPlugins.setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
@@ -201,19 +202,53 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void configurarBotaoPlugin() {
         if (GerenciadorPlugins.getInstance().getPluginsCarregados().size() > 0) {
             WebButton btnConfigPlugin = new WebButton();
+            
+            WebButton botaoAcao = new WebButton(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    exibirPainelPlugins();
+                    botoesPlugin.setVisible(false);
+                }
+            });
+
+            botaoAcao.setBorderPainted(false);
+            botaoAcao.setOpaque(false);
+            botaoAcao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            botaoAcao.setFocusPainted(false);
+            botaoAcao.setFocusable(false);
+            botaoAcao.setHideActionText(true);
+            botaoAcao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+            botaoAcao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);            
+            botaoAcao.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "ajuda.png"));
+
+            if (WeblafUtils.weblafEstaInstalado()) {
+                WeblafUtils.configurarBotao(botaoAcao, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            }
+            FabricaDicasInterface.criarTooltip(botaoAcao, "Configurações do plugin");
+            botoesPlugin.add(botaoAcao);
+            botoesPlugin.repaint();
+            
 
             btnConfigPlugin.setAction(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    exibirPainelPlugins();
+                    botoesPlugin.setVisible(!botoesPlugin.isVisible());
+                    if(botoesPlugin.isVisible()){
+                        WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                    }else{
+                        WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                    }
                 }
             });
-            btnConfigPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png"));
+            
+            btnConfigPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin64.png"));
             if (WeblafUtils.weblafEstaInstalado()) {
                 WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             }
-            FabricaDicasInterface.criarTooltip(btnConfigPlugin, "Exibir Plugins instalados");
-            barraFerramentas.add(btnConfigPlugin);
+            
+            FabricaDicasInterface.criarTooltip(btnConfigPlugin, "Exibir Ações dos Plugins instalados");
+            barraFerramentas.add(btnConfigPlugin);            
+            
         }
     }
 
@@ -239,13 +274,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelRecuperados.setBackground(ColorController.VERMELHO.brighter().brighter());
         painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO, 2));
         labelRecuperados.setForeground(Color.BLACK);
+        botoesPlugin.setBackground(ColorController.FUNDO_BOTOES_EXPANSIVEIS);
+        botoesPlugin.setOpaque(true);
+        
         
         if (WeblafUtils.weblafEstaInstalado()) {
 
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
-            //WeblafUtils.configuraWebLaf(campo, 5, 25);
-            //WeblafUtils.configuraWeblaf(painelEditor, WeblafUtils.COR_DO_PAINEL_PRINCIPAL, true, true, true, true);
-            //WeblafUtils.configuraWeblaf(painelInspetorArvore, WeblafUtils.COR_DO_PAINEL_DIREITO, true, true, true, true);
+            WeblafUtils.configuraWeblaf(botoesPlugin);//tira a borda dos botões principais
             WeblafUtils.configuraWebLaf(scrollInspetor);
             WeblafUtils.configuraWebLaf(webSeparator1);
             WeblafUtils.configuraWebLaf(webSeparator2);
@@ -691,7 +727,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void adicionaBotaoConfiguracaoEditor(int margemDireita) {
-        GridBagConstraints constraints = new GridBagConstraints(1, 0, 1, 1, 0, 0,
+        GridBagConstraints constraints = new GridBagConstraints(3, 0, 1, 1, 0, 0,
                 GridBagConstraints.NORTHEAST, GridBagConstraints.NONE,
                 new Insets(0, 0, 0, margemDireita), 0, 0);
 
@@ -1508,6 +1544,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreEditor = new javax.swing.JSplitPane();
         divisorEditorConsole = new javax.swing.JSplitPane();
         painelEditor = new javax.swing.JPanel();
+        botoesPlugin = new javax.swing.JToolBar();
         barraFerramentas = new javax.swing.JToolBar();
         btnExecutar = new com.alee.laf.button.WebButton();
         btnDepurar = new com.alee.laf.button.WebButton();
@@ -1568,7 +1605,16 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelEditor.setPreferredSize(new java.awt.Dimension(500, 240));
         painelEditor.setLayout(new java.awt.GridBagLayout());
 
-        barraFerramentas.setBorder(null);
+        botoesPlugin.setRollover(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(348, 0, 0, 0);
+        painelEditor.add(botoesPlugin, gridBagConstraints);
+
         barraFerramentas.setFloatable(false);
         barraFerramentas.setOrientation(javax.swing.SwingConstants.VERTICAL);
         barraFerramentas.setName("barraFerramentas"); // NOI18N
@@ -1613,6 +1659,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setName("botaoSalvar"); // NOI18N
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
         barraFerramentas.add(btnSalvar);
 
         btnSalvarComo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/ps/ui/icones/Dark/grande/save_as.png"))); // NOI18N
@@ -1660,7 +1711,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         painelEditor.add(barraFerramentas, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         painelEditor.add(miniBarra, gridBagConstraints);
 
@@ -1669,6 +1720,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -1733,7 +1785,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         divisorArvoreInspetor.setMinimumSize(new java.awt.Dimension(252, 510));
         divisorArvoreInspetor.setName("divisorArvoreInspetor"); // NOI18N
         divisorArvoreInspetor.setOneTouchExpandable(true);
-        divisorArvoreInspetor.setOpaque(false);
 
         treePanel.setName("painelArvore"); // NOI18N
         treePanel.setLayout(new java.awt.GridBagLayout());
@@ -1829,6 +1880,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         this.getActionMap().get("Exibir Painel Utilitários").actionPerformed(evt);
     }//GEN-LAST:event_btnFecharPainelTemplatesActionPerformed
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
     private void interromper()
     {
         if (programaCompilado != null)
@@ -1896,7 +1951,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         Configuracoes configuracoes = Configuracoes.getInstancia();
         if (Configuracoes.rodandoEmDesenvolvimento()) {
-            return System.getProperty("java.class.path") + classPathSeparator;
+            return System.getProperty("java.class.path") + classPathSeparator + getPluginsPath();
         }
 
         File classpathDir = new File(configuracoes.getDiretorioAplicacao().getCanonicalPath(), "lib");
@@ -1909,10 +1964,35 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 expandedClassPath += jar.getCanonicalPath() + classPathSeparator;
             }
         }
-
+        return expandedClassPath + getPluginsPath();
+    }
+    
+    private String getPluginsPath() throws IOException
+    {
+        String classPathSeparator = !rodandoEmmWindows() ? ":" : ";";
+        String expandedClassPath = "";
+        File[] pluginsClassDir = new File(Configuracoes.getInstancia().getDiretorioPlugins().getCanonicalPath()).listFiles();
+        
+        if(pluginsClassDir == null)
+        {
+            return classPathSeparator;
+        }
+        
+        for (File file : pluginsClassDir) {
+            if(file.isDirectory())
+            {
+                for (File listFile : file.listFiles()) {
+                    expandedClassPath += listFile.getCanonicalPath() + classPathSeparator;
+                }
+            }
+            else
+            {
+                expandedClassPath += file.getCanonicalPath() + classPathSeparator;
+            }
+        }
         return expandedClassPath;
     }
-
+    
     private static boolean rodandoEmmWindows() {
         String so = System.getProperty("os.name");
 
@@ -2366,54 +2446,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             public void run() {
                 painelConfigPlugins.addModeloLista(plugin);
                 painelInspetorArvore.validate();
-//                final JToggleButton botaoPlugin = new JToggleButton();
-//
-//                botaoPlugin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                botaoPlugin.setFocusable(false);
-//                botaoPlugin.setRequestFocusEnabled(false);
-//                botaoPlugin.setHideActionText(true);
-//                botaoPlugin.setIconTextGap(0);
-//                botaoPlugin.setHorizontalAlignment(JToggleButton.CENTER);
-//
-//                botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone16x16()))
-//                {
-//                    @Override
-//                    public void actionPerformed(ActionEvent e)
-//                    {
-//                        if (botaoPlugin.isSelected())
-//                        {
-//                            exibirPlugin(plugin);
-//                        }
-//                    }
-//                });
-//
-//                botoesPlugins.put(plugin, botaoPlugin);
-//                //barraBotoesPlugins.add(botaoPlugin);
-//                grupoBotoesPlugins.add(botaoPlugin);
             }
         });
     }
 
-    private void criarDicaInterfacePlugin(Plugin plugin, JToggleButton botaoPlugin) {
-        MetaDadosPlugin metaDadosPlugin = plugin.getMetaDados();
-        String dica = String.format("Plugin %s:\n\n %s", metaDadosPlugin.getNome(), metaDadosPlugin.getDescricao());
-
-        FabricaDicasInterface.criarTooltip(botaoPlugin, dica);
-    }
-
-    private void exibirPlugin(Plugin plugin) {
-        //painelPlugins.setPlugin(plugin);
-        //exibirPainelPlugins();
-    }
-
     public void exibirPainelPlugins() {
-//        if (divisorArvoreInspetor.getParent() == null)
-//        {
         scrollInspetor.remove(inspetorDeSimbolos);
         scrollInspetor.setViewportView(painelConfigPlugins);
         divisorArvoreInspetor.setDividerLocation(0.7);
         painelInspetorArvore.validate();
-//        }
     }
 
     public void ocultarPainelPlugins() {
@@ -2427,17 +2468,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //JToggleButton botaoPlugin = botoesPlugins.get(plugin);
-                //barraBotoesPlugins.remove(botaoPlugin);
-                //botoesPlugins.remove(plugin);
-                //                if (painelPlugins.getPlugin() == plugin) {
-                //                    painelPlugins.removerPlugin();
-                //                }
-                //
-                //                if (botoesPlugins.isEmpty()) {
-                //                    ocultarPainelBotoesPlugins();
-                //                    ocultarPainelPlugins();
-                //                }
                 painelConfigPlugins.removeModeloLista(plugin);
                 painelInspetorArvore.validate();
             }
@@ -2477,8 +2507,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                WebButton botaoAcao = new WebButton(acao);
-
+                WebButton botaoAcao = new WebButton(new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        acao.actionPerformed(e);
+                        botoesPlugin.setVisible(false);
+                    }
+                });
+                botaoAcao.setIcon((Icon)acao.getValue(Action.SMALL_ICON));
                 botaoAcao.setBorderPainted(false);
                 botaoAcao.setOpaque(false);
                 botaoAcao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -2489,11 +2525,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 botaoAcao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
                 if (WeblafUtils.weblafEstaInstalado()) {
-                    WeblafUtils.configurarBotao(botaoAcao, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+                    WeblafUtils.configurarBotao(botaoAcao, ColorController.FUNDO_BOTOES_EXPANSIVEIS, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                 }
                 FabricaDicasInterface.criarTooltip(botaoAcao, acao.getValue(Action.NAME).toString());
-                barraFerramentas.add(botaoAcao);
-                barraFerramentas.repaint();
+                botoesPlugin.add(botaoAcao);
+                botoesPlugin.repaint();
                 mapaBotoesAcoesPlugins.put(acao, botaoAcao);
             }
         });
@@ -2501,15 +2537,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     @Override
     public void desinstalarAcaoPlugin(Plugin plugin, final Action acao) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JButton botaoAcao = mapaBotoesAcoesPlugins.get(acao);
-
-                barraFerramentas.remove(botaoAcao);
-                barraFerramentas.repaint();
-                mapaBotoesAcoesPlugins.remove(acao, botaoAcao);
-            }
+        SwingUtilities.invokeLater(() -> {
+            WebButton botaoAcao = (WebButton) mapaBotoesAcoesPlugins.get(acao);
+            botoesPlugin.remove(botaoAcao);
+            botoesPlugin.repaint();
+            mapaBotoesAcoesPlugins.remove(acao, botaoAcao);
         });
     }
 
@@ -2538,26 +2570,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             }
         });
     }
-
-//    private BalloonTip criarPainelFlutuante(JComponent origem, JPanel conteudo, boolean painelOpaco) {
-//        Color corDica = new Color(255, 255, 210);
-//        Color corTexto = Color.BLACK;
-//
-//        if (painelOpaco) {
-//            corDica = conteudo.getBackground();
-//        }
-//
-//        conteudo.setOpaque(painelOpaco);
-//        int largura = (int) Math.min(conteudo.getPreferredSize().getWidth(), 640);
-//        int altura = (int) Math.min(conteudo.getPreferredSize().getHeight(), 480);
-//        Dimension novoTamanho = new Dimension(largura, altura);
-//        conteudo.setPreferredSize(novoTamanho);
-//
-//        EdgedBalloonStyle estilo = new EdgedBalloonStyle(corDica, corTexto);
-//        BalloonTip tip = new BalloonTip(origem, conteudo, estilo, true);
-//
-//        return tip;
-//    }
+    
     @Override
     public void destacarTrechoCodigoFonte(int linha, int coluna, int tamanho) {
         editor.destacarTrechoCodigoFonte(linha, coluna, tamanho);
@@ -2708,22 +2721,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     if (abaCodigoFonte.podeFechar()) {
                         abaCodigoFonte.redefinirAba();
 
+                        abaCodigoFonte.showPainelUtilitarios(false);
                         /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
                          * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
                          * da utilização anterior
                          */
-                        abaCodigoFonte.showPainelUtilitarios(false);
-                        GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
-
                         /*
                          * Logo após, instalamos todos os plugins novamente, para garantir que quando a aba for
                          * reaproveitada a partir do pool, já estará inicializada com os plugins
                          */
-                        try {
-                            GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
-                        } catch (ErroInstalacaoPlugin erro) {
-                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA));
-                        }
                         criarInstanciaPlugin(abaCodigoFonte);
                         devolver(abaCodigoFonte);
 
@@ -2772,64 +2778,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-//    private static class PoolAbasCodigoFonte extends PoolAbstrato
-//    {
-//
-//        public PoolAbasCodigoFonte(int tamanho)
-//        {
-//            super(tamanho);
-//        }
-//
-//        @Override
-//        protected AbaCodigoFonte criarObjeto()
-//        {
-//            AbaCodigoFonte abaCodigoFonte = new AbaCodigoFonte();
-//
-//            abaCodigoFonte.adicionarAbaListener(new AbaListener()
-//            {
-//                @Override
-//                public boolean fechandoAba(Aba aba)
-//                {
-//                    AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
-//                    if (abaCodigoFonte.podeFechar())
-//                    {
-//                        abaCodigoFonte.redefinirAba();
-//
-//                        /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
-//                         * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
-//                         * da utilização anterior
-//                         */
-//                        GerenciadorPlugins.getInstance().desinstalarPlugins(abaCodigoFonte);
-//
-//                        /*
-//                         * Logo após, instalamos todos os plugins novamente, para garantir que quando a aba for
-//                         * reaproveitada a partir do pool, já estará inicializada com os plugins
-//                         */
-//                        try
-//                        {
-//                            GerenciadorPlugins.getInstance().instalarPlugins(abaCodigoFonte);
-//                        }
-//                        catch (ErroInstalacaoPlugin erro)
-//                        {
-//                            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(new ExcecaoAplicacao(erro.getMessage(), erro, ExcecaoAplicacao.Tipo.ERRO));
-//                        }
-//
-//                        devolver(abaCodigoFonte);
-//
-//                        return true;
-//                    }
-//
-//                    return false;
-//                }
-//            });
-//
-//            return abaCodigoFonte;
-//        }
-//    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel arquivosRecuperados;
     private javax.swing.JToolBar barraFerramentas;
+    private javax.swing.JToolBar botoesPlugin;
     private com.alee.laf.button.WebButton btnAbrir;
     private com.alee.laf.button.WebButton btnAjuda;
     private com.alee.laf.button.WebButton btnDepurar;

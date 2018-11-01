@@ -14,6 +14,7 @@ import br.univali.ps.ui.utils.IconFactory;
 import br.univali.ps.ui.swing.weblaf.PSTreeUI;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.telas.TelaPrincipal;
+import br.univali.ps.ui.utils.FabricaDeFileChooser;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +43,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -103,7 +106,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         imagemHelplowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "helplow.png");
         
         imagemPlugins = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png");
-        imagemPluginslowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png");
+        imagemPluginslowres = IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin64.png");
         
         staticPanel.setBackground(ColorController.FUNDO_ESCURO);
         
@@ -272,7 +275,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         buttonPlugins.setAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //SOMETHING TO FIND PLUGINS
+                PortugolStudio.getInstancia().getTelaPluginsInstalados().setVisible(true);
             }
         });
         buttonPlugins.setText("Plugins");
@@ -295,7 +298,7 @@ public class PainelExemplos extends javax.swing.JPanel implements Themeable{
         staticPanel.add(button);
         staticPanel.add(buttonHelp);
         //Reativar quando um plugin for adicionado
-        //staticPanel.add(buttonPlugins);
+        staticPanel.add(buttonPlugins);
     }
     @Override
     public void configurarCores() {

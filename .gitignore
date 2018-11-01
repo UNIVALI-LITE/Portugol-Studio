@@ -23,3 +23,5 @@ gradle-app.setting
 #IntelliJ IDEA Files
 .idea/
 *.iml
+
+ide/src/main/assets/plugins/

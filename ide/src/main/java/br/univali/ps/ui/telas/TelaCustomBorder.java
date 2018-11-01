@@ -35,7 +35,7 @@ public class TelaCustomBorder extends javax.swing.JDialog
         
         if (jPanel != null)
         {
-            configurePanel(jPanel, titulo, true);
+            this.setPanel(jPanel,titulo, true);
         }
     }
     
@@ -69,6 +69,12 @@ public class TelaCustomBorder extends javax.swing.JDialog
     {
         this.panel = jPanel;
         configurePanel(jPanel, this.titulo, pack);
+    }
+    
+    public void setPanel(JPanel jPanel, String titulo, boolean pack)
+    {
+        this.panel = jPanel;
+        configurePanel(jPanel, titulo, pack);
     }
 
     public JPanel getPanel() {
