@@ -122,6 +122,12 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
                         painelEditorTutorial.setCaretPosition(0);                        
                     }
                 });
+                
+                if(item.getDescricao().contains("DISPONÍVEL PARA"))
+                {
+                    item.setarCompatibilidade(item.getDescricao().split("DISPONÍVEL PARA ")[1].split("!")[0]);
+                }
+                
                 item.setMaximumSize(new Dimension(9999, 30));
                 listaPlugins.add(item);
                 painelPluginsDisponiveis.add(item);

@@ -8,12 +8,15 @@ package br.univali.ps.ui.paineis;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
+import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.utils.IconFactory;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,8 +32,20 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
     String linkDownload;
     String descricao;
     
+    String sistemasDisponiveis = "windows/linux/macos";
+    
     public PainelPluginItem() {
         initComponents();
+        seletorPlugin.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(!eCompativelComSistema())
+                {
+                    seletorPlugin.setSelected(false);
+                    QuestionDialog.getInstance().showMessage("O plugin não é compatível com seu sistema!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
         configurarCores();
     }
 
@@ -46,6 +61,26 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
         labelPluginInstalado.setForeground(ColorController.COR_LETRA);
         seletorPlugin.setSelectedIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "selected.png"));
         seletorPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "unselected.png"));
+    }
+    
+    private boolean eCompativelComSistema()
+    {
+        String os = System.getProperty("os.name").toLowerCase();
+        
+        if(os.contains("win") && sistemasDisponiveis.contains("windows"))
+        {
+            return true;           
+        }
+        else if(os.contains("nux") && sistemasDisponiveis.contains("linux"))
+        {
+            return true;
+        }
+        else if(os.contains("mac") && sistemasDisponiveis.contains("macos"))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
     public JLabel getLabelPluginInstalado() {
@@ -91,6 +126,14 @@ public class PainelPluginItem extends javax.swing.JPanel implements Themeable{
     public void setAction(MouseListener action)
     {
         labelPluginInstalado.addMouseListener(action);
+    }
+
+    public String getSistemasDisponiveis() {
+        return sistemasDisponiveis;
+    }
+
+    public void setarCompatibilidade(String compatíveis) {
+        this.sistemasDisponiveis = compatíveis.toLowerCase();
     }
     
     /**
