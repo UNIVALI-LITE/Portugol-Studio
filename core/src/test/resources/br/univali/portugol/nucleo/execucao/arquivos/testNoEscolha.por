@@ -14,7 +14,7 @@ programa
                 escreva ("Tchau!\n")                    
                 pare                                    
             caso contrario:                                
-                escreva ("Opção Inválida!\n")          
+                escreva ("Opcao Invalida!\n")          
         }                                                   
     }                                                       
 }
