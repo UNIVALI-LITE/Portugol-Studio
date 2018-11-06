@@ -21,6 +21,7 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
+import br.univali.portugol.nucleo.compilador.LogManager;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucaoBasico;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -34,6 +35,7 @@ import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.nucleo.Configuracoes;
 import br.univali.ps.nucleo.ExcecaoAplicacao;
+import br.univali.ps.nucleo.PSAnalytics;
 import br.univali.ps.plugins.base.ErroInstalacaoPlugin;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
@@ -2145,6 +2147,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     SwingUtilities.invokeLater(() -> {
                         exibirResultadoAnalise(resultadoAnalise);
                     });
+                    
+                    new LogManager(programaCompilado, editor.getTextArea().getText(), getNumeroDeLinhas(editor.getTextArea().getText()), PSAnalytics.URL, null);
+                    
 
                     setaAtivacaoBotoesExecucao(true); // libera o botão de execução quando o programa tem erros - issue #358
                 }
@@ -2660,7 +2665,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 console.removerPopupLeia();
 
                 if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.NORMAL) {
-                    console.escreverNoConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");
+                    console.escreverNoConsole("\nPrograma finalizado. Tempo de execução: " + resultadoExecucao.getTempoExecucao() + " milissegundos");                    
                 } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.ERRO) {
                     console.escreverNoConsole("\nOcorreu um erro durante a execução do programa: " + resultadoExecucao.getErro().getMensagem());
                     console.escreverNoConsole("\nLinha: " + resultadoExecucao.getErro().getLinha() + ", Coluna: " + (resultadoExecucao.getErro().getColuna() + 1));
@@ -2671,10 +2676,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         }
                     });
                     timer.setRepeats(false);
-                    timer.start();                    
+                    timer.start();
                 } else if (resultadoExecucao.getModoEncerramento() == ModoEncerramento.INTERRUPCAO) {
-                    console.escreverNoConsole("\nO programa foi interrompido!");
+                    console.escreverNoConsole("\nO programa foi interrompido!");                    
                 }
+                
+                new LogManager(programaCompilado, editor.getTextArea().getText(), getNumeroDeLinhas(editor.getTextArea().getText()), PSAnalytics.URL, resultadoExecucao.getErro());
+                                                
                 painelSaida.selecionaConsole();
                 ocultarPainelSaida();
                 acaoInterromper.setEnabled(false);

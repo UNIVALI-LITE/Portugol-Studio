@@ -35,7 +35,7 @@ import org.apache.http.message.BasicNameValuePair;
 public class PSAnalytics {
     
     boolean pode_enviar_dados = true;
-    private static String URL = "http://lite.acad.univali.br:7070";
+    public static String URL = "http://lite.acad.univali.br:7070";    
     
     public PSAnalytics() {        
         pode_enviar_dados = Configuracoes.getInstancia().isEnvio_de_dados();
