@@ -35,6 +35,7 @@ import org.apache.http.message.BasicNameValuePair;
 public class PSAnalytics {
     
     boolean pode_enviar_dados = true;
+    private static String SERVER_LIST = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/br/univali/ps/nucleo/serverList.json";
     private static String URL = "http://lite.acad.univali.br:7070";
     
     public PSAnalytics() {        
@@ -202,5 +203,8 @@ public class PSAnalytics {
             }
         }
     }
-    
+    private void findServersURLs()
+    {
+        
+    }
 }
