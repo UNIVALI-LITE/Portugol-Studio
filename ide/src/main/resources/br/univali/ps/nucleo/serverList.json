@@ -1,0 +1,11 @@
+{
+	"servers":
+	[
+		{
+			"link" : "http://ui-spy.herokuapp.com"
+		},
+		{
+			"link" : "http://lite.acad.univali.br:7070"
+		}
+	]
+}
