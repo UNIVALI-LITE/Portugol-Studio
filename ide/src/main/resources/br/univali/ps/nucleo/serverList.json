@@ -1,8 +1,4 @@
-[
-	{
-		"link" : "http://ui-spy.herokuapp.com"
-	},
-	{
-		"link" : "http://lite.acad.univali.br:7070"
-	}
+[	
+	"http://ui-spy.herokuapp.com",
+	"http://lite.acad.univali.br:7070"
 ]
