@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -27,6 +29,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -36,9 +40,13 @@ public class PSAnalytics {
     
     boolean pode_enviar_dados = true;
     private static String SERVER_LIST = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/br/univali/ps/nucleo/serverList.json";
-    private static String URL = "http://lite.acad.univali.br:7070";
+    private static List<String> URL_LIST;
+    private static String URL_PADRAO = "http://lite.acad.univali.br:7070";
     
-    public PSAnalytics() {        
+    public PSAnalytics() {
+        this.URL_LIST = new ArrayList<>();
+        findServersURLs();
+        System.out.println(URL_LIST);
         pode_enviar_dados = Configuracoes.getInstancia().isEnvio_de_dados();
     }
     
@@ -46,29 +54,34 @@ public class PSAnalytics {
     {
         if(pode_enviar_dados)
         {
-            InetAddress ip;
-            try {
-                ip = InetAddress.getLocalHost();
-                NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                byte[] mac = network.getHardwareAddress();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < mac.length; i++) {
-                        sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+            for (String url : URL_LIST) 
+            {
+                InetAddress ip;
+                try {
+                    ip = InetAddress.getLocalHost();
+                    NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+                    byte[] mac = network.getHardwareAddress();
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < mac.length; i++) {
+                            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+                    }
+                    String username = sb.toString();
+                    if(getHTML(url+"/api/users/"+username).equals("[]")){
+                    }else{
+                        editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), false, ip);
+                    }
+                    break;
+                } catch (Exception ex) {
+                    System.out.println("Erro no envio ao servidor");
                 }
-                String username = sb.toString();
-                if(getHTML(URL+"/api/users/"+username).equals("[]")){
-                }else{
-                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), false, ip);
-                }
-            } catch (Exception ex) {
-                System.out.println("Erro no envio ao servidor");
             }
+            
         }        
     }
     
     private void criar_usuario_servidor(String username, InetAddress ip) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost(URL+"/api/users");
+        HttpPost httppost = new HttpPost(URL_LIST+"/api/users");
         
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
@@ -101,7 +114,7 @@ public class PSAnalytics {
             System.out.println("Erro no envio ao servidor");
         }
         String id = "undefined";
-        String data= getHTML(URL+"/api/users/"+username);
+        String data= getHTML(URL_LIST+"/api/users/"+username);
         String[] dados = data.split(",");
         for (String dado : dados) {
             String[] obj = dado.split(":");
@@ -115,7 +128,7 @@ public class PSAnalytics {
     
     private void editar_usuario_servidor(String id, boolean set_online, InetAddress ip) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPut httpput = new HttpPut(URL+"/api/users/"+id);
+        HttpPut httpput = new HttpPut(URL_LIST+"/api/users/"+id);
         RequestConfig timeout = RequestConfig.custom().setConnectTimeout(2500).setSocketTimeout(2500).build();
         httpput.setConfig(timeout);
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
@@ -163,48 +176,66 @@ public class PSAnalytics {
    }
     public void iniciar_sessao_servidor(){
         if(pode_enviar_dados)
-        {   
-            String username = "";
-            try {
-                InetAddress ip;
-                ip = InetAddress.getLocalHost();
-                if(Configuracoes.getInstancia().getUserMac().equals("nao")){
-                        NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                        byte[] mac = network.getHardwareAddress();
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = 0; i < mac.length; i++) {
-                                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-                        }
-                        username = sb.toString();
-                        Configuracoes.getInstancia().setUserMac(username);
-                }else{
-                    username = Configuracoes.getInstancia().getUserMac();
-                }
-                if(getHTML(URL+"/api/users/"+username).equals("[]")){
-                    criar_usuario_servidor(username, ip);
-                }else{
-                    if(Configuracoes.getInstancia().getUserAnalyticsID().equals("nao")){
-                        String id = "undefined";
-                        String data= getHTML(URL+"/api/users/"+username);
-                        String[] dados = data.split(",");
-                        for (String dado : dados) {
-                            String[] obj = dado.split(":");
-                            if(obj[0].contains("_id")){
-                                String aid = obj[1].replaceAll("\"", "");
-                                id = aid.replaceAll(" ", "");
+        {
+            for (String url : URL_LIST) 
+            {
+                String username = "";
+                try {
+                    InetAddress ip;
+                    ip = InetAddress.getLocalHost();
+                    if(Configuracoes.getInstancia().getUserMac().equals("nao")){
+                            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+                            byte[] mac = network.getHardwareAddress();
+                            StringBuilder sb = new StringBuilder();
+                            for (int i = 0; i < mac.length; i++) {
+                                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
                             }
-                        }
-                        Configuracoes.getInstancia().setUserAnalyticsID(id);
+                            username = sb.toString();
+                            Configuracoes.getInstancia().setUserMac(username);
+                    }else{
+                        username = Configuracoes.getInstancia().getUserMac();
                     }
-                    editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
+                    if(getHTML(url+"/api/users/"+username).equals("[]")){
+                        criar_usuario_servidor(username, ip);
+                    }else{
+                        if(Configuracoes.getInstancia().getUserAnalyticsID().equals("nao")){
+                            String id = "undefined";
+                            String data= getHTML(url+"/api/users/"+username);
+                            String[] dados = data.split(",");
+                            for (String dado : dados) {
+                                String[] obj = dado.split(":");
+                                if(obj[0].contains("_id")){
+                                    String aid = obj[1].replaceAll("\"", "");
+                                    id = aid.replaceAll(" ", "");
+                                }
+                            }
+                            Configuracoes.getInstancia().setUserAnalyticsID(id);
+                        }
+                        editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
+                    }
+                    break;
+                } catch (Exception ex) {
+                    System.out.println("Erro no envio ao servidor");
                 }
-            } catch (Exception ex) {
-                System.out.println("Erro no envio ao servidor");
             }
+            
         }
     }
     private void findServersURLs()
     {
-        
+        try 
+        {
+            JSONArray serverList = new JSONArray(getHTML(SERVER_LIST));
+            System.out.println(serverList);
+            for (int i = 0; i < serverList.length(); i++) {
+                URL_LIST.add(serverList.getString(i));
+            }
+            
+        }
+        catch (Exception ex) 
+        {
+            URL_LIST.clear();
+            URL_LIST.add(URL_PADRAO);
+        }
     }
 }
