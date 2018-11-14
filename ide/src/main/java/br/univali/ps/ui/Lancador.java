@@ -44,8 +44,8 @@ public class Lancador {
     private static boolean maximazed = false;
     private static Lancador application;
     
-    private final static GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    private final static int qtdMonitores = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length;
+    private final GraphicsDevice monitorPrincipal = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private final int qtdMonitores = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length;
     		
     
     private final ComponentResizer resizer = new ComponentResizer();
