@@ -46,7 +46,6 @@ public class PSAnalytics {
     public PSAnalytics() {
         this.URL_LIST = new ArrayList<>();
         findServersURLs();
-        System.out.println(URL_LIST);
         pode_enviar_dados = Configuracoes.getInstancia().isEnvio_de_dados();
     }
     
@@ -68,20 +67,21 @@ public class PSAnalytics {
                     String username = sb.toString();
                     if(getHTML(url+"/api/users/"+username).equals("[]")){
                     }else{
-                        editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), false, ip);
+                        editar_usuario_servidor(url, Configuracoes.getInstancia().getUserAnalyticsID(), false, ip);
                     }
+                    System.out.println("Enviou ao servidor "+ url);
                     break;
                 } catch (Exception ex) {
-                    System.out.println("Erro no envio ao servidor");
+                    System.out.println("Erro no envio ao servidor "+url);
                 }
             }
             
         }        
     }
     
-    private void criar_usuario_servidor(String username, InetAddress ip) throws Exception{
+    private void criar_usuario_servidor(String url, String username, InetAddress ip) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost(URL_LIST+"/api/users");
+        HttpPost httppost = new HttpPost(url+"/api/users");
         
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
@@ -96,25 +96,23 @@ public class PSAnalytics {
         params.add(new BasicNameValuePair("portugol_version", PortugolStudio.getInstancia().getVersao() ));
         params.add(new BasicNameValuePair("last_use", ""+date));
         params.add(new BasicNameValuePair("ip", ip.toString()));
-        try {
-            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-            //Execute and get the response.
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+        
+        httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+        //Execute and get the response.
+        HttpResponse response = httpclient.execute(httppost);
+        HttpEntity entity = response.getEntity();
 
-            if (entity != null) {
-                InputStream instream = entity.getContent();
-                try {
-                    // do something useful
-                } finally {
-                    instream.close();
-                }
+        if (entity != null) {
+            InputStream instream = entity.getContent();
+            try {
+                // do something useful
+            } finally {
+                instream.close();
             }
-        } catch (Exception ex) {
-            System.out.println("Erro no envio ao servidor");
         }
+        
         String id = "undefined";
-        String data= getHTML(URL_LIST+"/api/users/"+username);
+        String data= getHTML(url+"/api/users/"+username);
         String[] dados = data.split(",");
         for (String dado : dados) {
             String[] obj = dado.split(":");
@@ -126,16 +124,15 @@ public class PSAnalytics {
         Configuracoes.getInstancia().setUserAnalyticsID(id);
     }
     
-    private void editar_usuario_servidor(String id, boolean set_online, InetAddress ip) throws Exception{
+    private void editar_usuario_servidor(String url, String id, boolean set_online, InetAddress ip) throws Exception{
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPut httpput = new HttpPut(URL_LIST+"/api/users/"+id);
+        HttpPut httpput = new HttpPut(url+"/api/users/"+id);
         RequestConfig timeout = RequestConfig.custom().setConnectTimeout(2500).setSocketTimeout(2500).build();
         httpput.setConfig(timeout);
 //        HttpPost httppost = new HttpPost("http://localhost:8080/api/scores");
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String date = df.format(today);
-
         // Request parameters and other properties.
         List<BasicNameValuePair> params = new ArrayList<>(3);
         params.add(new BasicNameValuePair("is_online", ""+set_online));
@@ -143,22 +140,19 @@ public class PSAnalytics {
         params.add(new BasicNameValuePair("ip", ip.toString()));
         params.add(new BasicNameValuePair("portugol_version", ""+PortugolStudio.getInstancia().getVersao()));
         
-        try {
-            httpput.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-            //Execute and get the response.
-            HttpResponse response = httpclient.execute(httpput);
-            HttpEntity entity = response.getEntity();
+        
+        httpput.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+        //Execute and get the response.
+        HttpResponse response = httpclient.execute(httpput);
+        HttpEntity entity = response.getEntity();
 
-            if (entity != null) {
-                InputStream instream = entity.getContent();
-                try {
-                    // do something useful
-                } finally {
-                    instream.close();
-                }
+        if (entity != null) {
+            InputStream instream = entity.getContent();
+            try {
+                // do something useful
+            } finally {
+                instream.close();
             }
-        } catch (Exception ex) {
-            System.out.println("Erro no envio ao servidor");
         }
     }
     public static String getHTML(String urlToRead) throws Exception {
@@ -196,7 +190,7 @@ public class PSAnalytics {
                         username = Configuracoes.getInstancia().getUserMac();
                     }
                     if(getHTML(url+"/api/users/"+username).equals("[]")){
-                        criar_usuario_servidor(username, ip);
+                        criar_usuario_servidor(url, username, ip);
                     }else{
                         if(Configuracoes.getInstancia().getUserAnalyticsID().equals("nao")){
                             String id = "undefined";
@@ -211,11 +205,12 @@ public class PSAnalytics {
                             }
                             Configuracoes.getInstancia().setUserAnalyticsID(id);
                         }
-                        editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
+                        editar_usuario_servidor(url, Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
                     }
+                    System.out.println("Enviou ao servidor " + url);
                     break;
                 } catch (Exception ex) {
-                    System.out.println("Erro no envio ao servidor");
+                    System.out.println("Erro no envio ao servidor " + url);
                 }
             }
             
@@ -226,7 +221,6 @@ public class PSAnalytics {
         try 
         {
             JSONArray serverList = new JSONArray(getHTML(SERVER_LIST));
-            System.out.println(serverList);
             for (int i = 0; i < serverList.length(); i++) {
                 URL_LIST.add(serverList.getString(i));
             }
