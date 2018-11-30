@@ -150,7 +150,7 @@ public final class Configuracoes
         
         try 
         {            
-            String jsonText = FileHandle.read(new FileInputStream(f));
+            String jsonText = FileHandle.open(f);
             JSONObject json = new JSONObject(jsonText);            
             return json;            
         } 

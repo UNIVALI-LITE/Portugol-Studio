@@ -119,7 +119,7 @@ public final class PortugolStudio
         File f = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
         arquivosRecentes.clear();
         try {
-            String arquivo = FileHandle.read(new FileInputStream(f));
+            String arquivo = FileHandle.open(f);
             String [] caminhos = arquivo.split("\n");
             for (String caminho : caminhos) {
                 File recente = new File(caminho);
@@ -163,7 +163,7 @@ public final class PortugolStudio
             return;
         }        
         try {
-            String arquivo = FileHandle.read(new FileInputStream(f));
+            String arquivo = FileHandle.open(f);
             String [] caminhos = arquivo.split("\n");
             for (String caminho : caminhos) {
                 File original = new File(caminho);
@@ -699,7 +699,7 @@ public final class PortugolStudio
         if(removerPlugins.exists())
         {
             try {
-            String arquivo = FileHandle.read(new FileInputStream(removerPlugins));
+            String arquivo = FileHandle.open(removerPlugins);
             String [] caminhos = arquivo.split("\n");
             for (String caminho : caminhos) {
                 File pastaPlugin = new File(caminho);

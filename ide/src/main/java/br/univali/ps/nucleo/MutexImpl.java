@@ -56,7 +56,7 @@ public class MutexImpl implements Mutex
 
             canal = new RandomAccessFile(arquivoMutex, "rw").getChannel();
 
-            canal.write(Charset.forName("ISO-8859-1").encode(Integer.toString(servidorMutex.getLocalPort())));
+            canal.write(Charset.forName("UTF-8").encode(Integer.toString(servidorMutex.getLocalPort())));
             canal.force(true);
             
             ouvirConexoes();

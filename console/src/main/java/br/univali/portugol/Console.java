@@ -556,7 +556,7 @@ public final class Console implements Entrada, Saida, ObservadorExecucao
         {
             StringBuilder reading = new StringBuilder();
             FileInputStream is = new FileInputStream(arquivo);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "ISO-8859-1"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String line;
 
             try
