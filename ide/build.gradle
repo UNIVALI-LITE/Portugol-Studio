@@ -70,6 +70,10 @@ dependencies {
     // https://mvnrepository.com/artifact/cglib/cglib
     compile group: 'cglib', name: 'cglib', version: '3.2.5'
     
+    // https://mvnrepository.com/artifact/com.ibm.icu/icu4j
+    compile group: 'com.ibm.icu', name: 'icu4j', version: '63.1'
+
+    
     // Nenhuma das versões abaixo compila, então usamos a versão local
     //
     //    // https://mvnrepository.com/artifact/de.sciss/weblaf-core
