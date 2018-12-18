@@ -476,7 +476,9 @@ public final class AbaAjuda extends Aba implements PropertyChangeListener
                  .replace("${selection_bg}", editor.getString("selection_bg"))
                  .replace("${identificador}", editor.getString("identificador"))
                  .replace("${tipo_declaracao}", editor.getString("valor_inteiro"));
-        
+       
+        HTML = HTML.replace("${tema}", Configuracoes.getInstancia().getIconesCores());
+         
        return HTML.replace("/*${css}*/", css);
     }
     
