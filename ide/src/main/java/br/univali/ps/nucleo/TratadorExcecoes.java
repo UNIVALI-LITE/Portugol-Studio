@@ -43,7 +43,11 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
         final Level level = obterNivelLog(excecaoAplicacao);
 
         LOGGER.log(level, "Exceção capturada", excecao);
-
+        
+        fluxoSaida = new FluxoSaidaExcecao();
+        escritorExcecao = new PrintWriter(fluxoSaida, true);
+        excecaoAplicacao.printStackTrace(escritorExcecao);
+        
         if (SwingUtilities.isEventDispatchThread())
         {
             exibir(excecaoAplicacao);
@@ -124,10 +128,7 @@ public final class TratadorExcecoes implements Thread.UncaughtExceptionHandler
     @Override
     public void uncaughtException(Thread thread, Throwable excecao)
     {
-        final ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);
-        fluxoSaida = new FluxoSaidaExcecao();
-        escritorExcecao = new PrintWriter(fluxoSaida, true);
-        excecaoAplicacao.printStackTrace(escritorExcecao);
+        final ExcecaoAplicacao excecaoAplicacao = new ExcecaoAplicacao(excecao, ExcecaoAplicacao.Tipo.ERRO_PROGRAMA);        
         
         if ((excecao instanceof ClassNotFoundException) || (excecao instanceof NoClassDefFoundError))
         {
