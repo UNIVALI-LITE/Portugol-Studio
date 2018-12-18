@@ -1121,7 +1121,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         linhas.stream().forEach((linha)
                 -> 
                 {
-                    textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
+                    Fold fold = textArea.getFoldManager().getFoldForLine(linha);
+                    if(fold!=null)
+                    fold.setCollapsed(true);
         });
     }
 
