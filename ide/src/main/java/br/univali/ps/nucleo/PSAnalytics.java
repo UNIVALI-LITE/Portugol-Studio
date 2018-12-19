@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -30,7 +28,6 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -223,8 +220,7 @@ public class PSAnalytics {
             JSONArray serverList = new JSONArray(getHTML(SERVER_LIST));
             for (int i = 0; i < serverList.length(); i++) {
                 URL_LIST.add(serverList.getString(i));
-            }
-            
+            }            
         }
         catch (Exception ex) 
         {

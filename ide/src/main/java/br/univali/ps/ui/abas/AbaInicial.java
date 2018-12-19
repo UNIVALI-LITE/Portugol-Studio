@@ -5,10 +5,8 @@ import br.univali.ps.ui.paineis.PainelExemplos;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.utils.WebConnectionUtils;
-import br.univali.ps.ui.paineis.PainelTabuladoPrincipal;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
 import br.univali.ps.ui.telas.TelaPrincipal;
-import br.univali.ps.ui.utils.IconFactory;
 import java.awt.Cursor;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -45,7 +43,6 @@ public final class AbaInicial extends Aba implements Themeable
         setCabecalho(new BotoesControleAba(this, telaPrincipal));
         initComponents();
         configurarCores();
-        configurarIcones();
         configurarResolucao();
         configurarCursorLogos();
         criarDicasInterface();
@@ -72,10 +69,6 @@ public final class AbaInicial extends Aba implements Themeable
         rotuloRelatarBug.setBackground(ColorController.FUNDO_MEDIO);
         rotuloRelatarBug.setForeground(ColorController.COR_LETRA);
         //        rotuloSlogan.setForeground(new Color(250, 250, 250));
-    }
-    public void configurarIcones()
-    {
-        
     }
 
     private void instalarObservadorCombinacoesSecretas()

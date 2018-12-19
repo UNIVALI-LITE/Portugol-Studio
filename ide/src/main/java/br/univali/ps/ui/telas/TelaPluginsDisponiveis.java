@@ -7,6 +7,7 @@ package br.univali.ps.ui.telas;
 
 import br.univali.ps.nucleo.Caminhos;
 import br.univali.ps.nucleo.Configuracoes;
+import static br.univali.ps.nucleo.PSAnalytics.getHTML;
 import br.univali.ps.plugins.base.GerenciadorPlugins;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.paineis.PainelPluginItem;
@@ -32,6 +33,8 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -58,16 +61,19 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
      * Creates new form TelaPluginsDisponiveis
      */
     
-    String URIList[] = {"https://api.github.com/repos/UNIVALI-LITE/Plugin-Portugol-GoGoBoard/releases/latest"};
+    List<String> URIList;
+    String releasedPluginsURI = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/pluginsList.json";
     private List<PainelPluginItem> listaPlugins = new ArrayList<>();
     private static JDialog indicadorProgresso;
     private String tuto = "";
     
     public TelaPluginsDisponiveis() {
         initComponents();
+        this.URIList = new ArrayList<>();
         configurarCores();
         configurarBotoes();
         configuraLoader();
+        carregarURIDosPlugins();
         carregarPluginsDisponiveis();
     }
     
@@ -91,6 +97,22 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
         indicadorProgresso.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         indicadorProgresso.pack();
         indicadorProgresso.setLocationRelativeTo(Lancador.getInstance().getJFrame());
+    }
+    
+    public void carregarURIDosPlugins()
+    {
+        try 
+        {
+            JSONArray pluginList = new JSONArray(getHTML(releasedPluginsURI));
+            for (int i = 0; i < pluginList.length(); i++) {
+                URIList.add(pluginList.getString(i));
+            }            
+        }
+        catch (Exception ex) 
+        {
+            System.out.println(ex);
+            URIList.clear();
+        }
     }
     
     private void carregarPluginsDisponiveis()
@@ -137,6 +159,8 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
     
     private JSONObject procurarPlugins(String requestURL)
     {
+        requestURL = requestURL.replace("https://github.com/", "https://api.github.com/repos/")+"/latest";
+        
         try {
             InputStream is = new URL(requestURL).openStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
@@ -144,13 +168,10 @@ public class TelaPluginsDisponiveis extends javax.swing.JPanel implements Themea
             JSONObject json = new JSONObject(jsonText);
             is.close();
             return json;
-        } catch (MalformedURLException ex) {
-            
-        } catch (IOException ex) {
-            
-        }
+        } catch (Throwable ex) { 
+            return null;
+        }       
         
-        return null;
     }
     
     private void configurarBotoes() {
