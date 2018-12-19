@@ -420,17 +420,14 @@ public final class PortugolStudio
         }
         File arquivosRecentesFile = Configuracoes.getInstancia().getCaminhoArquivosRecentes();
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosRecentesFile)))
-        {
-            for (Object indice : arquivosRecentes)
-            {
-                escritor.write(indice.toString());
-                escritor.newLine();
-            }
+        String escritor = "";
+        for (File arquivo : arquivosRecentes) {
+            escritor += arquivo.getAbsolutePath()+"\n";
         }
-        catch (IOException excecao)
-        {
-            LOGGER.log(Level.SEVERE, "Erro ao inserir arquivo à fila de arquivos recentes", excecao);
+        try {
+            FileHandle.save(escritor, arquivosRecentesFile);
+        } catch (Exception ex) {
+            Logger.getLogger(GerenciadorPlugins.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -448,17 +445,14 @@ public final class PortugolStudio
         }        
         File arquivosOriginais = Configuracoes.getInstancia().getCaminhoArquivosRecuperadosOriginais();
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivosOriginais)))
-        {
-            for (Object indice : arquivosRecuperadosOriginais)
-            {
-                escritor.write(indice.toString());
-                escritor.newLine();
-            }
+        String escritor = "";
+        for (File arquivo : arquivosRecuperadosOriginais) {
+            escritor += arquivo.getAbsolutePath()+"\n";
         }
-        catch (IOException excecao)
-        {
-            LOGGER.log(Level.SEVERE, "Erro ao inserir arquivo à fila de arquivos recentes", excecao);
+        try {
+            FileHandle.save(escritor, arquivosOriginais);
+        } catch (Exception ex) {
+            Logger.getLogger(GerenciadorPlugins.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -7,6 +7,7 @@ import br.univali.ps.nucleo.PortugolStudio;
 import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.weblaf.jOptionPane.QuestionDialog;
+import br.univali.ps.ui.utils.FileHandle;
 import br.univali.ps.ui.utils.UnzipUtility;
 import java.awt.Dialog;
 import java.awt.image.BufferedImage;
@@ -140,13 +141,14 @@ public final class GerenciadorPlugins {
                 @Override
                 public void run() {
                     File desinstalarPlugins = new File(Configuracoes.getInstancia().getDiretorioConfiguracoes(), "desinstalarPlugins.txt");
-                    try (BufferedWriter escritor = new BufferedWriter(new FileWriter(desinstalarPlugins))) {
-                        for (File arquivo : arquivos) {
-                            escritor.write(arquivo.getAbsolutePath());
-                            escritor.newLine();
-                        }
-                    } catch (IOException excecao) {
-                        LOGGER.log(Level.SEVERE, "Erro ao inserir arquivo à fila de arquivos recentes", excecao);
+                    String escritor = "";
+                    for (File arquivo : arquivos) {
+                        escritor += arquivo.getAbsolutePath()+"\n";
+                    }
+                    try {
+                        FileHandle.save(escritor, desinstalarPlugins);
+                    } catch (Exception ex) {
+                        Logger.getLogger(GerenciadorPlugins.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     SwingUtilities.invokeLater(() -> {
                         if (confirmouReinicializacao("desinstalação")) {
