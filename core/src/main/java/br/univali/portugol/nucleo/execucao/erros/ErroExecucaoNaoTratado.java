@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 public final class ErroExecucaoNaoTratado extends ErroExecucao
 {
     private Exception causa;
+    private String codigo = "ErroExecucao.ErroExecucaoNaoTratado";
 
     /**
      * 
@@ -24,6 +25,7 @@ public final class ErroExecucaoNaoTratado extends ErroExecucao
     public ErroExecucaoNaoTratado(Exception causa) 
     {
         this.causa = causa;
+        super.setCodigo(codigo);
     }
 
     public Exception getCausa()

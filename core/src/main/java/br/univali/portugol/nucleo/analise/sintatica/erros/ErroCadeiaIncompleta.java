@@ -24,6 +24,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 
 public final class ErroCadeiaIncompleta extends ErroSintatico
 {
+	private String codigo = "ErroSintatico.ErroCadeiaIncompleta";
     /**
      * 
      * @param linha              a linha onde o erro ocorreu.
@@ -35,6 +36,7 @@ public final class ErroCadeiaIncompleta extends ErroSintatico
     public ErroCadeiaIncompleta(int linha, int coluna, String mensagemPadrao) 
     {
         super(linha, coluna);
+        super.setCodigo(codigo);
     }
 
     /**

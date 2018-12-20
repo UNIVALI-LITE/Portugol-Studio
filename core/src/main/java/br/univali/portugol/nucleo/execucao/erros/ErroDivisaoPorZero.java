@@ -8,7 +8,12 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
  */
 public class ErroDivisaoPorZero extends ErroExecucao
 {
+	private String codigo = "ErroExecucao.ErroDivisaoPorZero";
     
+	public ErroDivisaoPorZero() {
+		super.setCodigo(codigo);
+	}
+	
     @Override
     protected String construirMensagem()
     {

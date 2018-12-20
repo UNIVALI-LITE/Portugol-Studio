@@ -1,4 +1,4 @@
-package br.univali.portugol.nucleo.compilador;
+package br.univali.ps.nucleo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,6 +24,7 @@ import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 import br.univali.portugol.nucleo.programa.Programa;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -32,6 +35,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
+
 public class LogManager {
 
 	private static File fileLog;
@@ -39,9 +44,21 @@ public class LogManager {
 	private static Object lock = new Object();
 	private Compilation comp;
 
-	public LogManager(Programa programa, String codigoFonte, int numLinhas, String url, ErroExecucao erroExecucao) {		
+	public LogManager() {
+		
+	}
+	
+	public LogManager(Programa programa, String codigoFonte, int numLinhas, String url, ErroExecucao erroExecucao) {	
 		Thread thread = new Thread(){
             public void run(){
+            	//Necessário, seta o código de erro, sendo possível capturar com getCodigo
+            	//Caso contrário essa operação ocorre de modo assincrono, e pode vir com código vazio.
+            	if (programa.getResultadoAnalise().contemErros()) {
+        			for (ErroAnalise erro : programa.getResultadoAnalise().getErros()) {
+        				erro.getMensagem();
+        			}
+        		}
+            	
             //Executa em nova thread para não travar a compilação/execução, mas multiplos logs não devem ser executadro em paralelo	
             	synchronized (lock) {
                 StartLog(programa, codigoFonte, numLinhas, url, erroExecucao);
@@ -49,6 +66,12 @@ public class LogManager {
             }
         };                      
         thread.start();		
+		System.out.println("guardou log compilação");
+		if(erroExecucao != null) {
+			System.out.println("execução com erros");
+		}else {
+			System.out.println("execução sem erros");
+		}
 	}
 	
 	private void StartLog(Programa programa, String codigoFonte, int numLinhas, String url, ErroExecucao erroExecucao) {
@@ -77,7 +100,31 @@ public class LogManager {
 			comp.number_lines = numLinhas;
 			comp.compilation_errors = setCompileErrorsJson(resultadoAnalise);
 			comp.warnings = setCompileWarningsJson(resultadoAnalise);
-
+			
+			//Tenta pegar o usuário da máquina
+			try {				
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				
+				byte[] hashedUserName = md.digest(System.getProperty("user.name").getBytes(StandardCharsets.UTF_8));
+				String userName = Hex.encodeHexString(hashedUserName);
+				comp.user_name = userName;
+			}catch (Exception e) {
+				comp.user_name = "";
+			}
+			
+			//Tenta pegar o nome da máquina
+			try {				
+				java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				
+				byte[] hashedMachineHostName = md.digest(localMachine.getHostName().getBytes(StandardCharsets.UTF_8));
+				
+				String machineHostName = Hex.encodeHexString(hashedMachineHostName);
+				comp.local_machine_hostname = machineHostName;
+			}catch (Exception e) {
+				comp.local_machine_hostname = "";
+			}
+			
 			// Caso tenha erros aqui pode salvar, porque não é chamada a função
 			// execucaoEncerrada que pode ter outros erros
 			/*
@@ -115,7 +162,9 @@ public class LogManager {
 			jsonObject.put("compilation_errors", comp.compilation_errors);
 			jsonObject.put("warnings", comp.warnings);
 			jsonObject.put("execution_error", new JSONObject());
-
+			jsonObject.put("local_machine_hostname", comp.local_machine_hostname);
+			jsonObject.put("user_name", comp.user_name);
+			
 			jsonArray.put(jsonObject);
 
 			Save(jsonArray.toString());
@@ -147,9 +196,11 @@ public class LogManager {
 			jsonObject.put("number_lines", comp.number_lines);
 			jsonObject.put("compilation_errors", comp.compilation_errors);
 			jsonObject.put("warnings", comp.warnings);
+			jsonObject.put("local_machine_hostname", comp.local_machine_hostname);
+			jsonObject.put("user_name", comp.user_name);
 
 			JSONObject jsonErroExecucao = new JSONObject();
-			jsonErroExecucao.put("message", erroExecucao.getMensagem());
+			jsonErroExecucao.put("code", erroExecucao.getCodigo());
 			jsonErroExecucao.put("line", erroExecucao.getLinha());
 			jsonErroExecucao.put("column", erroExecucao.getColuna());
 
@@ -185,7 +236,7 @@ public class LogManager {
 		if (resultadoAnalise.contemAvisos()) {
 			for (AvisoAnalise aviso : resultadoAnalise.getAvisos()) {
 				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("message", aviso.getMensagem());
+				jsonObject.put("code", aviso.getCodigo());
 				jsonObject.put("line", String.valueOf(aviso.getLinha()));
 				jsonObject.put("column", String.valueOf(aviso.getColuna()));
 				jsonArray.put(jsonObject);
@@ -234,6 +285,22 @@ public class LogManager {
 		return "";
 	}
 
+	public void SendToServerOnStart(String url) {		
+		//Caso tenha logs da sessão anterior não enviados
+		
+		if (URL == null)
+			URL = url;
+		
+		Thread thread = new Thread(){
+            public void run(){
+            	synchronized (lock) {
+        			SendToServer();
+        		}
+            }
+        };                      
+        thread.start();	
+	}
+	
 	private void SendToServer() {
 		try {
 			// Tendo um arquivo sending_to_server.txt exclui

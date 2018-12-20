@@ -10,11 +10,13 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 public final class ErroInclusaoBiblioteca extends ErroSemantico
 {
     private Exception causa;
+    private String codigo = "ErroSemantico.ErroInclusaoBiblioteca";
 
     public ErroInclusaoBiblioteca(TrechoCodigoFonte trechoCodigoFonte, Exception causa)
     {
         super(trechoCodigoFonte);
         this.causa = causa;
+        super.setCodigo(codigo);
     }
 
     @Override

@@ -8,10 +8,12 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  * @author fillipi
  */
 public class ErroDefinirTipoDadoMatrizLiteral extends ErroSemantico {
+	private String codigo = "ErroSemantico.ErroDefinirTipoDadoMatrizLiteral";
 
     public ErroDefinirTipoDadoMatrizLiteral(TrechoCodigoFonte trechoCodigoFonte)
     {
         super(trechoCodigoFonte);
+        super.setCodigo(codigo);
     }
 
     @Override

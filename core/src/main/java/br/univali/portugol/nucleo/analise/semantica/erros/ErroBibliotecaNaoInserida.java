@@ -9,11 +9,13 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  */
 public class ErroBibliotecaNaoInserida extends ErroSemantico {
     private final String escopo;
+    private String codigo = "ErroSemantico.ErroBibliotecaNaoInserida";
 
     public ErroBibliotecaNaoInserida(TrechoCodigoFonte trechoCodigoFonte, String escopo)
     {
         super(trechoCodigoFonte);
         this.escopo = escopo;
+        super.setCodigo(codigo);
     }
 
     @Override

@@ -8,6 +8,12 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
  */
 public final class ErroObservadorDepuracao extends ErroExecucao
 {
+	private String codigo = "ErroExecucao.ErroObservadorDepuracao";
+	
+	public ErroObservadorDepuracao() {
+		super.setCodigo(codigo);
+	}
+	
      @Override
     public int getLinha()
     {

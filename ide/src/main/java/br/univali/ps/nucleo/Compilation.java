@@ -1,4 +1,4 @@
-package br.univali.portugol.nucleo.compilador;
+package br.univali.ps.nucleo;
 
 import org.json.JSONArray;
 
@@ -11,4 +11,6 @@ public class Compilation {
 	int number_lines;
 	JSONArray compilation_errors;
 	JSONArray warnings;
+	String user_name;
+	String local_machine_hostname;
 }

@@ -42,6 +42,7 @@ public final class ErroAtribuirEmExpressao extends ErroSemantico
 {
     private NoBloco operacao;
     private NoExpressao expressao;
+    private String codigo = "ErroSemantico.ErroOperacaoComExpressaoConstante.";
 
     /**
      * 
@@ -85,7 +86,8 @@ public final class ErroAtribuirEmExpressao extends ErroSemantico
     protected String construirMensagem()
     {
         if (operacao instanceof NoOperacao) return construirMensagemAtribuicao();
-
+        super.setCodigo(codigo);
+        
         return null;
     }
 
@@ -107,19 +109,21 @@ public final class ErroAtribuirEmExpressao extends ErroSemantico
         if (expressao instanceof NoExpressaoLiteral)
         {
             builder.append("um valor literal.");
+            codigo += "1";
         }
         else if (expressao instanceof NoChamadaFuncao)
         {
             builder.append("uma chamada de função.");
+            codigo += "2";
         }
         else
         {
             builder.append("uma expressão.");
+            codigo += "3";
         }
             
         builder.append(" Você só pode realizar atribuições à variáveis, vetores ou matrizes que não tenham sido declarados como constantes. Se você estiver tentando comparar a igualdade de duas expressões, utilize o operador '==' ao invés do operador '='");
 
-        
         return builder.toString();
     }
 }

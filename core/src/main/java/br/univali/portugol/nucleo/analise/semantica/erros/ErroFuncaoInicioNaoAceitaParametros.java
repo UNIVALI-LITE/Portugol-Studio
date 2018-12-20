@@ -11,12 +11,14 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 public class ErroFuncaoInicioNaoAceitaParametros extends ErroSemantico
 {
     private final NoDeclaracaoFuncao declaracao;
+    private String codigo = "ErroSemantico.ErroFuncaoInicioNaoAceitaParametros";
             
     public ErroFuncaoInicioNaoAceitaParametros(NoDeclaracaoFuncao declaracao)
     {
         super(montarTrechoCodigoFonte(declaracao));
         
         this.declaracao = declaracao;
+        super.setCodigo(codigo);
     }
     
     private static TrechoCodigoFonte montarTrechoCodigoFonte(NoDeclaracaoFuncao declaracao)

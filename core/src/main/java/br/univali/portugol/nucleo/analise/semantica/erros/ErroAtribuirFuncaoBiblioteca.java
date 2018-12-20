@@ -10,11 +10,13 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  */
 public class ErroAtribuirFuncaoBiblioteca extends ErroSemantico {
     private final MetaDadosBiblioteca metaDadosBiblioteca;
+    private String codigo = "ErroSemantico.ErroAtribuirFuncaoBiblioteca";
 
     public ErroAtribuirFuncaoBiblioteca(TrechoCodigoFonte trechoCodigoFonte, MetaDadosBiblioteca metaDadosBiblioteca)
     {
         super(trechoCodigoFonte);
         this.metaDadosBiblioteca = metaDadosBiblioteca;
+        super.setCodigo(codigo);
     }
 
     @Override

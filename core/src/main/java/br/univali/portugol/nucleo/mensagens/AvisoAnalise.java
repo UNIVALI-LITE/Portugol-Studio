@@ -13,6 +13,7 @@ public abstract class AvisoAnalise extends Aviso
 {
     private int linha;
     private int coluna;
+    private String codigo;
     
     private TrechoCodigoFonte trechoCodigoFonte;
     
@@ -47,5 +48,15 @@ public abstract class AvisoAnalise extends Aviso
     public void setTrechoCodigoFonte(TrechoCodigoFonte trechoCodigoFonte1)
     {
         this.trechoCodigoFonte = trechoCodigoFonte1;
+    }
+    
+    public String getCodigo()
+    {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo)
+    {
+        this.codigo = codigo;
     }
 }

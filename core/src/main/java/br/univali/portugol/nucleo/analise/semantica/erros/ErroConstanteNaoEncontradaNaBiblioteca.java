@@ -11,12 +11,14 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 public class ErroConstanteNaoEncontradaNaBiblioteca extends ErroSemantico {
     private final String nome;
     private final MetaDadosBiblioteca metaDadosBiblioteca;
+    private String codigo = "ErroSemantico.ErroConstanteNaoEncontradaNaBiblioteca";
 
     public ErroConstanteNaoEncontradaNaBiblioteca(TrechoCodigoFonte trechoCodigoFonte, String nome, MetaDadosBiblioteca metaDadosBiblioteca)
     {
         super(trechoCodigoFonte);
         this.nome = nome;
         this.metaDadosBiblioteca = metaDadosBiblioteca;
+        super.setCodigo(codigo);
     }
 
     @Override

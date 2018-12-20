@@ -10,11 +10,13 @@ import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 public class ErroVariavelPodeNaoTerSidoInicializada extends ErroAnalise
 {
     private String variavel = "";
+    private String codigo = "ErroExecucao.ErroVariavelPodeNaoTerSidoInicializada";
     
     public ErroVariavelPodeNaoTerSidoInicializada(String mensagem)
     {
         variavel = mensagem.split("error: variable ")[1];
         variavel = variavel.split(" might not have")[0];
+        super.setCodigo(codigo);
     }    
     
     @Override

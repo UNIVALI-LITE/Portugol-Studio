@@ -12,12 +12,14 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 public final class ErroEstouroPilha extends ErroExecucao
 {
     private final NoChamadaFuncao chamadaFuncaoCausadora;
+    private String codigo = "ErroExecucao.ErroEstouroPilha";
     
     public ErroEstouroPilha(NoChamadaFuncao chamadaFuncaoCausadora)
     {
         this.chamadaFuncaoCausadora = chamadaFuncaoCausadora;
         this.setLinha(chamadaFuncaoCausadora.getTrechoCodigoFonteNome().getLinha());
         this.setColuna(chamadaFuncaoCausadora.getTrechoCodigoFonteNome().getColuna());
+        super.setCodigo(codigo);
     }
     
     @Override

@@ -9,9 +9,12 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  */
 public final class ErroComandoNaoSuportado extends ErroSemantico
 {
+	private String codigo = "ErroSemantico.ErroComandoNaoSuportado";
+	
     public ErroComandoNaoSuportado(TrechoCodigoFonte trechoCodigoFonte)
     {
         super(trechoCodigoFonte);
+        super.setCodigo(codigo);
     }
 
     @Override

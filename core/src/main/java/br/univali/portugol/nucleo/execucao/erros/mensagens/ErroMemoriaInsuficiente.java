@@ -9,7 +9,12 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 public final class ErroMemoriaInsuficiente extends ErroExecucao
 {
 	private static final long serialVersionUID = 1L;
+	private String codigo = "ErroExecucao.ErroMemoriaInsuficiente";
 
+	public ErroMemoriaInsuficiente(){
+		super.setCodigo(codigo);
+	}
+	
 	@Override
     protected String construirMensagem()
     {

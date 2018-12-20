@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 public final class ErroSemanticoNaoTratado extends ErroSemantico
 {
     private Exception causa;
+    private String codigo = "ErroSemantico.ErroSemanticoNaoTratado";
 
     /**
      * 
@@ -27,6 +28,7 @@ public final class ErroSemanticoNaoTratado extends ErroSemantico
     {
         super(new TrechoCodigoFonte(0, 0, 0));
         this.causa = causa;
+        super.setCodigo(codigo);
     }
 
     public Exception getCausa()

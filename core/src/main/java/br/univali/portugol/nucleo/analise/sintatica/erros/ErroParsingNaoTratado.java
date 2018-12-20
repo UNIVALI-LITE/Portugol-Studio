@@ -19,6 +19,7 @@ public final class ErroParsingNaoTratado extends ErroSintatico
     private String contexto;
     private String mensagemPadrao;
     private RecognitionException erro;
+    private String codigo = "ErroSintatico.ErroParsingNaoTratado";
    
     /**
      * @param erro                o erro de parsing que ainda não foi tratado.
@@ -32,6 +33,7 @@ public final class ErroParsingNaoTratado extends ErroSintatico
         this.erro = erro;
         this.contexto = contexto;
         this.mensagemPadrao = mensagemPadrao;
+        super.setCodigo(codigo);
     }
 
     /**

@@ -9,13 +9,14 @@ import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 public class ErroVariavelPodeNaoTerSidoInicializada extends ErroAnalise
 {
 	private static final long serialVersionUID = 1L;
-
+	private String codigo = "ErroSemantico.ErroVariavelPodeNaoTerSidoInicializada";
 	private String variavel = "";
 
 	public ErroVariavelPodeNaoTerSidoInicializada(String mensagem)
 	{
 		variavel = mensagem.split("error: variable ")[1];
 		variavel = variavel.split(" might not have")[0];
+		super.setCodigo(codigo);
 	}
 
 	@Override

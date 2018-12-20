@@ -11,6 +11,7 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 public final class ErroValorEntradaInvalido extends ErroExecucao
 {
 	private static final long serialVersionUID = 1L;
+	private String codigo = "ErroExecucao.ErroValorEntradaInvalido";
 	
 	private final TipoDado tipoDado;
     
@@ -19,6 +20,7 @@ public final class ErroValorEntradaInvalido extends ErroExecucao
         this.tipoDado = tipoDado;
         this.setLinha(linha);
         this.setColuna(coluna);
+        super.setCodigo(codigo);
     }
 
     @Override

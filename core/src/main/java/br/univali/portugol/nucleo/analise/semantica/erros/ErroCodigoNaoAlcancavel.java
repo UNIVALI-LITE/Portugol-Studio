@@ -9,7 +9,12 @@ import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 public class ErroCodigoNaoAlcancavel extends ErroAnalise
 {
 	private static final long serialVersionUID = 1L;
+	private String codigo = "ErroSemantico.ErroCodigoNaoAlcancavel";
 
+	public ErroCodigoNaoAlcancavel() {
+		super.setCodigo(codigo);
+	}
+	
 	@Override
     protected String construirMensagem()
     {

@@ -9,11 +9,13 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  */
 public class ErroAliasInexistente extends ErroSemantico {
     private final String alias;
+    private String codigo = "ErroSemantico.ErroAliasInexistente";
 
     public ErroAliasInexistente(TrechoCodigoFonte trechoCodigoFonte, String alias)
     {
         super(trechoCodigoFonte);
         this.alias = alias;
+        super.setCodigo(codigo);
     }
 
     @Override

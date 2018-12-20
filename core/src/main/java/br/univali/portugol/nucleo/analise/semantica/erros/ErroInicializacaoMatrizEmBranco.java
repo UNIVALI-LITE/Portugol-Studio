@@ -8,10 +8,12 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  * @author fillipi
  */
 public class ErroInicializacaoMatrizEmBranco extends ErroSemantico {
+	private String codigo = "ErroSemantico.ErroInicializacaoMatrizEmBranco";
 
     public ErroInicializacaoMatrizEmBranco(TrechoCodigoFonte trechoCodigoFonte)
     {
         super(trechoCodigoFonte);
+        super.setCodigo(codigo);
     }
 
     @Override

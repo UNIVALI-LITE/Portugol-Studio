@@ -15,6 +15,7 @@ public class ErroTamanhoMaximoMatriz extends ErroSemantico
     private final int tamanhoColunasDeclarado;
     private final String nomeMatrix;
     private final BigInteger bigProduto; 
+    private String codigo = "ErroSemantico.ErroTamanhoMaximoMatriz";
 
     public ErroTamanhoMaximoMatriz(int tamanhoLinhasDeclarado, int tamanhoColunasDeclarado, String nomeMatrix, BigInteger bigProduto, TrechoCodigoFonte trechoCodigoFonte)
     {
@@ -23,6 +24,7 @@ public class ErroTamanhoMaximoMatriz extends ErroSemantico
         this.tamanhoColunasDeclarado = tamanhoColunasDeclarado;
         this.nomeMatrix = nomeMatrix;
         this.bigProduto = bigProduto;
+        super.setCodigo(codigo);
     }
 
     

@@ -8,10 +8,12 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  * @author fillipi
  */
 public class ErroAtribuirMatrizVetorEmVariavel extends ErroSemantico {
+	private String codigo = "ErroSemantico.ErroAtribuirMatrizVetorEmVariavel";
 
     public ErroAtribuirMatrizVetorEmVariavel(TrechoCodigoFonte trechoCodigoFonte)
     {
         super(trechoCodigoFonte);
+        super.setCodigo(codigo);
     }
 
     @Override

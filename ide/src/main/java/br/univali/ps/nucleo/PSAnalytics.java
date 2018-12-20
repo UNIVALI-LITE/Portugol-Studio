@@ -197,6 +197,9 @@ public class PSAnalytics {
                     }
                     editar_usuario_servidor(Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
                 }
+                
+                new LogManager().SendToServerOnStart(PSAnalytics.URL);
+                
             } catch (Exception ex) {
                 System.out.println("Erro no envio ao servidor");
             }

@@ -21,7 +21,7 @@ import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
-import br.univali.portugol.nucleo.compilador.LogManager;
+import br.univali.ps.nucleo.LogManager;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucaoBasico;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -2145,12 +2145,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     programaCompilado.executar(new String[]{}, estado);
                 } else {
                     SwingUtilities.invokeLater(() -> {
-                        exibirResultadoAnalise(resultadoAnalise);
+                        exibirResultadoAnalise(resultadoAnalise);  
                     });
                     
                     new LogManager(programaCompilado, editor.getTextArea().getText(), getNumeroDeLinhas(editor.getTextArea().getText()), PSAnalytics.URL, null);
-                    
-
+                   
                     setaAtivacaoBotoesExecucao(true); // libera o botão de execução quando o programa tem erros - issue #358
                 }
             } catch (Exception e) {
@@ -2208,6 +2207,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             AbaMensagemCompilador abaMensagensCompilador = painelSaida.getAbaMensagensCompilador();
             abaMensagensCompilador.atualizar(resultadoAnalise);
             abaMensagensCompilador.selecionar();
+            
+            
+            
 
         });
 

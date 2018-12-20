@@ -12,6 +12,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 public final class ErroTokenFaltando extends ErroSintatico
 {
     private String token;
+    private String codigo = "ErroSintatico.ErroTokenFaltando.";
     
     public ErroTokenFaltando(int linha, int coluna, String token)
     {
@@ -29,17 +30,21 @@ public final class ErroTokenFaltando extends ErroSintatico
         {
             case OPERADOR:
                 sb.append(String.format("A expressão está incompleta, está faltando o operador '%s'", token.toLowerCase()));
+                codigo += "1";
                 break;
                 
             case TIPO_PRIMITIVO:
                 sb.append(String.format("A expressão está incompleta, está faltando um dado do tipo '%s'", token.toLowerCase()));
+                codigo += "2";
                 break;
                 
             default:
                 sb.append(String.format("A expressão está incompleta, está faltando o token '%s'", token.toLowerCase()));
+                codigo += "3";
                 break;
         }
         
+        super.setCodigo(codigo);
         return sb.toString();
     }
 }
