@@ -77,7 +77,6 @@ public final class FileHandle
         String charset = charsetPadrao;
         charset = detector.detect(inputStream, fileContent);
         String fileText = new String(fileContent, charset);
-        
         return fileText;
     }
 
