@@ -205,18 +205,12 @@ public class PSAnalytics {
                         editar_usuario_servidor(url, Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
                     }
                     System.out.println("Enviou ao servidor " + url);
+                    new LogManager().SendToServerOnStart(PSAnalytics.URL_PADRAO);
                     break;
                 } catch (Exception ex) {
                     System.out.println("Erro no envio ao servidor " + url);
                 }
-
-                
-                new LogManager().SendToServerOnStart(PSAnalytics.URL);
-                
-            } catch (Exception ex) {
-                System.out.println("Erro no envio ao servidor");
-            }
-            
+            }            
         }
     }
     private void findServersURLs()

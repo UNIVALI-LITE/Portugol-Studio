@@ -2151,7 +2151,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         exibirResultadoAnalise(resultadoAnalise);  
                     });
                     
-                    new LogManager(programaCompilado, editor.getTextArea().getText(), getNumeroDeLinhas(editor.getTextArea().getText()), PSAnalytics.URL, null);
+                    new LogManager(programaCompilado, editor.getTextArea().getText(), getNumeroDeLinhas(editor.getTextArea().getText()), PSAnalytics.URL_PADRAO, null);
                    
                     setaAtivacaoBotoesExecucao(true); // libera o botão de execução quando o programa tem erros - issue #358
                 }
@@ -2686,7 +2686,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     console.escreverNoConsole("\nO programa foi interrompido!");                    
                 }
                 
-                new LogManager(programaCompilado, editor.getTextArea().getText(), getNumeroDeLinhas(editor.getTextArea().getText()), PSAnalytics.URL, resultadoExecucao.getErro());
+                new LogManager(programaCompilado, editor.getTextArea().getText(), getNumeroDeLinhas(editor.getTextArea().getText()), PSAnalytics.URL_PADRAO, resultadoExecucao.getErro());
                                                 
                 painelSaida.selecionaConsole();
                 ocultarPainelSaida();
