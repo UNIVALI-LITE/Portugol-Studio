@@ -38,7 +38,7 @@ public class PSAnalytics {
     boolean pode_enviar_dados = true;
     private static String SERVER_LIST = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/br/univali/ps/nucleo/serverList.json";
     private static List<String> URL_LIST;
-    private static String URL_PADRAO = "http://lite.acad.univali.br:7070";
+    public static String URL_PADRAO = "http://lite.acad.univali.br:7070";
     
     public PSAnalytics() {
         this.URL_LIST = new ArrayList<>();

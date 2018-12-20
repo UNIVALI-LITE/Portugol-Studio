@@ -51,26 +51,26 @@ public class LogManager {
 	public LogManager(Programa programa, String codigoFonte, int numLinhas, String url, ErroExecucao erroExecucao) {	
 		Thread thread = new Thread(){
             public void run(){
-            	//Necess·rio, seta o cÛdigo de erro, sendo possÌvel capturar com getCodigo
-            	//Caso contr·rio essa operaÁ„o ocorre de modo assincrono, e pode vir com cÛdigo vazio.
+            	//Necess√°rio, seta o c√≥digo de erro, sendo poss√≠vel capturar com getCodigo
+            	//Caso contrario essa opera√ß√£o ocorre de modo assincrono, e pode vir com c√≥digo vazio.
             	if (programa.getResultadoAnalise().contemErros()) {
         			for (ErroAnalise erro : programa.getResultadoAnalise().getErros()) {
         				erro.getMensagem();
         			}
         		}
             	
-            //Executa em nova thread para n„o travar a compilaÁ„o/execuÁ„o, mas multiplos logs n„o devem ser executadro em paralelo	
+            //Executa em nova thread para n√£o travar a compila√ß√£o/execu√ß√£o, mas multiplos logs n√£o devem ser executadro em paralelo	
             	synchronized (lock) {
                 StartLog(programa, codigoFonte, numLinhas, url, erroExecucao);
             	}
             }
         };                      
         thread.start();		
-		System.out.println("guardou log compilaÁ„o");
+		System.out.println("guardou log compila√ß√£o");
 		if(erroExecucao != null) {
-			System.out.println("execuÁ„o com erros");
+			System.out.println("execu√ß√£o com erros");
 		}else {
-			System.out.println("execuÁ„o sem erros");
+			System.out.println("execu√ß√£o sem erros");
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class LogManager {
 			comp.compilation_errors = setCompileErrorsJson(resultadoAnalise);
 			comp.warnings = setCompileWarningsJson(resultadoAnalise);
 			
-			//Tenta pegar o usu·rio da m·quina
+			//Tenta pegar o usu√°rio da m√°quina
 			try {				
 				MessageDigest md = MessageDigest.getInstance("MD5");
 				
@@ -112,7 +112,7 @@ public class LogManager {
 				comp.user_name = "";
 			}
 			
-			//Tenta pegar o nome da m·quina
+			//Tenta pegar o nome da m√°quina
 			try {				
 				java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
 				MessageDigest md = MessageDigest.getInstance("MD5");
@@ -125,7 +125,7 @@ public class LogManager {
 				comp.local_machine_hostname = "";
 			}
 			
-			// Caso tenha erros aqui pode salvar, porque n„o È chamada a funÁ„o
+			// Caso tenha erros aqui pode salvar, porque n√°o √© chamada a fun√ß√£o
 			// execucaoEncerrada que pode ter outros erros
 			/*
 			 * if (!comp.successfulCompilation) { WriteLog(); }
@@ -255,7 +255,7 @@ public class LogManager {
 			out.write(textToSave);
 			out.close();
 		} catch (IOException e) {
-			System.out.println("Erro na gravaÁ„o do arquivo de log");
+			System.out.println("Erro na grava√ß√£o do arquivo de log");
 			return;
 		}
 
@@ -286,7 +286,7 @@ public class LogManager {
 	}
 
 	public void SendToServerOnStart(String url) {		
-		//Caso tenha logs da sess„o anterior n„o enviados
+		//Caso tenha logs da sess√£o anterior n√£o enviados
 		
 		if (URL == null)
 			URL = url;
