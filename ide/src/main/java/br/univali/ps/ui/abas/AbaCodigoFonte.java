@@ -1365,8 +1365,23 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     
     public void adicionarBiblioteca(String biblioteca){
         String code = this.getPortugolDocumento().getCodigoFonte();
-        if(! code.contains("\tinclua biblioteca "+biblioteca)){
-            code = code.replace("programa\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
+        if(! code.contains("inclua biblioteca "+biblioteca)){
+            if(code.contains("programa\r\n{"))
+            {
+                code = code.replace("programa\r\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
+            }
+            else if(code.contains("programa \r\n{"))
+            {
+                code = code.replace("programa \r\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
+            }
+            else if(code.contains("programa \n{"))
+            {
+                code = code.replace("programa \n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
+            }
+            else
+            {
+                code = code.replace("programa\n{", "programa\n{\n\tinclua biblioteca "+biblioteca);
+            }            
             this.getEditor().setCodigoFonte(code);
             int index = code.indexOf("inclua biblioteca "+biblioteca);
             this.getEditor().getTextArea().setCaretPosition(index);
@@ -1429,12 +1444,12 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         }
     }
 
-    public void setCodigoFonte(final String codigoFonte, final File arquivo, final boolean podeSalvar) {
+    public void setCodigoFonte(String codigoFonte, final File arquivo, final boolean podeSalvar) {
         this.codigoFonteAtual = codigoFonte;//o código fonte completo (incluindo as informações do PortugolStudio) 
         //será utilizado mais adiante para carregar os símbolos inspecionados que foram salvos no arquivo
         PortugolParser parser = editor.getSuporteLinguagemPortugol().getPortugolParser();
         parser.resetUltimoCodigoAnalisado();
-
+        codigoFonte = codigoFonte.replace("\r", "");
         simbolosInspecionadosJaForamCarregados = false;
         tree.reseta();
         inspetorDeSimbolos.reseta();

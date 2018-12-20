@@ -11,13 +11,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -55,13 +60,13 @@ public class PSAnalytics {
                 InetAddress ip;
                 try {
                     ip = InetAddress.getLocalHost();
-                    NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                    byte[] mac = network.getHardwareAddress();
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < mac.length; i++) {
-                            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-                    }
-                    String username = sb.toString();
+//                    NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+//                    byte[] mac = network.getHardwareAddress();
+//                    StringBuilder sb = new StringBuilder();
+//                    for (int i = 0; i < mac.length; i++) {
+//                            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+//                    }
+                    String username = searchForMac(); 
                     if(getHTML(url+"/api/users/"+username).equals("[]")){
                     }else{
                         editar_usuario_servidor(url, Configuracoes.getInstancia().getUserAnalyticsID(), false, ip);
@@ -175,13 +180,16 @@ public class PSAnalytics {
                     InetAddress ip;
                     ip = InetAddress.getLocalHost();
                     if(Configuracoes.getInstancia().getUserMac().equals("nao")){
-                            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                            byte[] mac = network.getHardwareAddress();
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < mac.length; i++) {
-                                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-                            }
-                            username = sb.toString();
+//                            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+//                            byte[] mac = network.getHardwareAddress();
+//                            StringBuilder sb = new StringBuilder();
+//                            for (int i = 0; i < mac.length; i++) {
+//                                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+//                            }
+//                            System.out.println(sb.toString());
+//                            username = sb.toString();
+                            username = searchForMac();                           
+                            System.out.println(username);
                             Configuracoes.getInstancia().setUserMac(username);
                     }else{
                         username = Configuracoes.getInstancia().getUserMac();
@@ -209,6 +217,7 @@ public class PSAnalytics {
                     break;
                 } catch (Exception ex) {
                     System.out.println("Erro no envio ao servidor " + url);
+                    ex.printStackTrace();
                 }
             }            
         }
@@ -228,4 +237,37 @@ public class PSAnalytics {
             URL_LIST.add(URL_PADRAO);
         }
     }
+    
+    public String searchForMac() throws SocketException {
+        String firstInterface = null;        
+        Map<String, String> addressByNetwork = new HashMap<>();
+        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+
+        while(networkInterfaces.hasMoreElements()){
+            NetworkInterface network = networkInterfaces.nextElement();
+
+            byte[] bmac = network.getHardwareAddress();
+            if(bmac != null){
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < bmac.length; i++){
+                    sb.append(String.format("%02X%s", bmac[i], (i < bmac.length - 1) ? "-" : ""));        
+                }
+
+                if(sb.toString().isEmpty()==false){
+                    addressByNetwork.put(network.getName(), sb.toString());
+                    System.out.println("Address = "+sb.toString()+" @ ["+network.getName()+"] "+network.getDisplayName());
+                }
+
+                if(sb.toString().isEmpty()==false && firstInterface == null){
+                    firstInterface = network.getName();
+                }
+            }
+        }
+
+        if(firstInterface != null){
+            return addressByNetwork.get(firstInterface);
+        }
+
+        return null;
+    }	
 }
