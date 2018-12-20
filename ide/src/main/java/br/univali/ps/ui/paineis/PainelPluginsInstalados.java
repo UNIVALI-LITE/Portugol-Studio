@@ -99,7 +99,7 @@ public class PainelPluginsInstalados extends javax.swing.JPanel implements Theme
         botaoCriarPlugin.setAction(new AbstractAction("Crie seu Plugin") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Plugin-Portugol-GoGoBoard");              
+                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Plugin-Exemplo");              
             }
         });
     }

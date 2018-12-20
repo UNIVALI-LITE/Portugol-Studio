@@ -636,7 +636,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
                     
                 }
                 catch (BadLocationException excecao) {
-                    excecao.printStackTrace(System.out);
+                    PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
                 }
             }
         };
@@ -994,7 +994,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
             catch (NumberFormatException excecao)
             {
-                excecao.printStackTrace(System.out);
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
             }
 
         }
@@ -1015,7 +1015,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
             catch (IllegalArgumentException excecao )
             {
-                excecao.printStackTrace(System.out);
+                textArea.setCaretPosition(0);
             }
         }
     }
@@ -1041,7 +1041,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             }
             catch (NumberFormatException excecao)
             {
-                excecao.printStackTrace(System.out);
+                PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(excecao);
             }
         }
     }
@@ -1121,7 +1121,9 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         linhas.stream().forEach((linha)
                 -> 
                 {
-                    textArea.getFoldManager().getFoldForLine(linha).setCollapsed(true);
+                    Fold fold = textArea.getFoldManager().getFoldForLine(linha);
+                    if(fold!=null)
+                    fold.setCollapsed(true);
         });
     }
 
@@ -1408,7 +1410,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
         catch (BadLocationException ex)
         {
-            ex.printStackTrace(System.out);
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
     }
     private GutterIconInfo trackingIconDoErro;
@@ -1439,7 +1441,6 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
             int offset = textArea.getLineStartOffset(line);
 
             textArea.getFoldManager().ensureOffsetNotInClosedFold(offset);
-            //TODO Configurar cor tdo tema
             tag = textArea.addLineHighlight(line, ColorController.COR_DESTAQUE);
             ultimaLinhaHighlight = line;
             ultimaColunaHighlight = 0;
@@ -1448,7 +1449,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
         catch (BadLocationException ex)
         {
-            ex.printStackTrace(System.out);
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
     }
 
@@ -1537,7 +1538,7 @@ public final class Editor extends javax.swing.JPanel implements CaretListener, K
         }
         catch (BadLocationException ex)
         {
-            ex.printStackTrace(System.err);
+            PortugolStudio.getInstancia().getTratadorExcecoes().exibirExcecao(ex);
         }
     }
 

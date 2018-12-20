@@ -332,7 +332,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                             AbaCodigoFonte abaCodigoFonte = AbaCodigoFonte.novaAba();
                             abaCodigoFonte.setCodigoFonte(codigoFonterecuperado, null, true);
                             TelaPrincipal t = PortugolStudio.getInstancia().getTelaPrincipal();
-                            t.getPainelTabulado().add(abaCodigoFonte);
+                            t.getPainelTabulado().adicionaAba(abaCodigoFonte);
                         }
                     });
                     if (redimensionouParaBaixaResolucao) {
@@ -351,8 +351,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         if (!temRecuperado) {
             painelRecuperados.setVisible(false);
         } else {
+            labelRecuperados.setText("Houve um erro na finalização do Portugol Studio, mas temos arquivos recuperados");
             painelRecuperados.setVisible(true);
         }
+        painelRecuperados.revalidate();
+        arquivosRecuperados.revalidate();
         painelRecuperados.repaint();
         arquivosRecuperados.repaint();
 

@@ -4,11 +4,12 @@ import br.univali.ps.nucleo.ExcecaoAplicacao;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 
 public final class FileHandle
 {
     private static final Logger LOGGER = Logger.getLogger(FileHandle.class.getName());
-    private static final String charsetPadrao = "ISO-8859-1";
+    private static final String charsetPadrao = "UTF-8";
 
     public static void save(String text, File file) throws Exception{
         save(text, file, charsetPadrao);
@@ -64,13 +65,20 @@ public final class FileHandle
     }
 
     private static String read(File file) throws Exception
-    {
+    {        
         return read(new FileInputStream(file));
     }
 
     public static String read(InputStream inputStream) throws Exception
     {
-        return read(inputStream, charsetPadrao);
+        byte[] fileContent = IOUtils.toByteArray(inputStream);
+        EncodingDetector detector = new EncodingDetector();
+        
+        String charset = charsetPadrao;
+        charset = detector.detect(inputStream, fileContent);
+        String fileText = new String(fileContent, charset);
+        
+        return fileText;
     }
 
     public static String read(InputStream inputStream, String charset) throws Exception
