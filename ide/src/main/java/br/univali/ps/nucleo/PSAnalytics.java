@@ -43,7 +43,7 @@ public class PSAnalytics {
     boolean pode_enviar_dados = true;
     private static String SERVER_LIST = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/br/univali/ps/nucleo/serverList.json";
     private static List<String> URL_LIST;
-    public static String URL_PADRAO = "http://lite.acad.univali.br:7070";
+    public static String URL_PADRAO = "http://localhost:8080";
     
     public PSAnalytics() {
         this.URL_LIST = new ArrayList<>();
@@ -60,13 +60,13 @@ public class PSAnalytics {
                 InetAddress ip;
                 try {
                     ip = InetAddress.getLocalHost();
-//                    NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-//                    byte[] mac = network.getHardwareAddress();
-//                    StringBuilder sb = new StringBuilder();
-//                    for (int i = 0; i < mac.length; i++) {
-//                            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-//                    }
-                    String username = searchForMac(); 
+                    String username;
+                    if(Configuracoes.getInstancia().getUserMac().equals("nao")){
+                            username = searchForMac();
+                            Configuracoes.getInstancia().setUserMac(username);
+                    }else{
+                        username = Configuracoes.getInstancia().getUserMac();
+                    }
                     if(getHTML(url+"/api/users/"+username).equals("[]")){
                     }else{
                         editar_usuario_servidor(url, Configuracoes.getInstancia().getUserAnalyticsID(), false, ip);
@@ -180,16 +180,7 @@ public class PSAnalytics {
                     InetAddress ip;
                     ip = InetAddress.getLocalHost();
                     if(Configuracoes.getInstancia().getUserMac().equals("nao")){
-//                            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-//                            byte[] mac = network.getHardwareAddress();
-//                            StringBuilder sb = new StringBuilder();
-//                            for (int i = 0; i < mac.length; i++) {
-//                                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-//                            }
-//                            System.out.println(sb.toString());
-//                            username = sb.toString();
-                            username = searchForMac();                           
-                            System.out.println(username);
+                            username = searchForMac();
                             Configuracoes.getInstancia().setUserMac(username);
                     }else{
                         username = Configuracoes.getInstancia().getUserMac();
@@ -228,7 +219,8 @@ public class PSAnalytics {
         {
             JSONArray serverList = new JSONArray(getHTML(SERVER_LIST));
             for (int i = 0; i < serverList.length(); i++) {
-                URL_LIST.add(serverList.getString(i));
+                URL_LIST.add("http://localhost:8080");
+                //URL_LIST.add(serverList.getString(i));
             }            
         }
         catch (Exception ex) 
@@ -238,7 +230,7 @@ public class PSAnalytics {
         }
     }
     
-    public String searchForMac() throws SocketException {
+    public static String searchForMac() throws SocketException {
         String firstInterface = null;        
         Map<String, String> addressByNetwork = new HashMap<>();
         Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -255,7 +247,6 @@ public class PSAnalytics {
 
                 if(sb.toString().isEmpty()==false){
                     addressByNetwork.put(network.getName(), sb.toString());
-                    System.out.println("Address = "+sb.toString()+" @ ["+network.getName()+"] "+network.getDisplayName());
                 }
 
                 if(sb.toString().isEmpty()==false && firstInterface == null){

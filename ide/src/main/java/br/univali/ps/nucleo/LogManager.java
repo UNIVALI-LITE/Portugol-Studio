@@ -36,6 +36,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
+import static br.univali.ps.nucleo.PSAnalytics.searchForMac;
 
 public class LogManager {
 
@@ -342,8 +343,14 @@ public class LogManager {
 	private boolean insere_compilacao_servidor(String infoJson) {
 		try {
 
-			String id = getMacAdress();
-
+			String id;
+                        
+                        if(Configuracoes.getInstancia().getUserMac().equals("nao")){
+                                id = searchForMac();
+                        }else{
+                            id = Configuracoes.getInstancia().getUserMac();
+                        }
+                        
 			if (id == null || id.equals("")) {
 				return false;
 			}
@@ -372,26 +379,11 @@ public class LogManager {
 			}
 		} catch (Exception ex) {
 			System.out.println("Erro no envio de logs ao servidor");
+                        ex.printStackTrace();
 			return false;
 		}
 
 		return true;
-	}
-
-	private String getMacAdress() {
-		try {
-			InetAddress ip = InetAddress.getLocalHost();
-			NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-			byte[] mac = network.getHardwareAddress();
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < mac.length; i++) {
-				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-			}
-			return sb.toString();
-		} catch (Exception e) {
-			return "";
-		}
-
 	}
 
 }
