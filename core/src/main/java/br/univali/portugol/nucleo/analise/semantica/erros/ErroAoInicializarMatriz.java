@@ -16,6 +16,7 @@ public class ErroAoInicializarMatriz extends ErroSemantico
     private final int numeroLinhas;
     private final int numeroColunas;
     private final Matriz matriz;
+    private String codigo = "ErroSemantico.ErroAoInicializarMatriz";
 
     public ErroAoInicializarMatriz(Matriz matriz, TrechoCodigoFonte trechoCodigoFonte, int numeroLinhas, int numeroColunas)
     {
@@ -23,6 +24,7 @@ public class ErroAoInicializarMatriz extends ErroSemantico
         this.matriz = matriz;
         this.numeroLinhas = numeroLinhas;
         this.numeroColunas = numeroColunas;
+        super.setCodigo(codigo);	
     }
 
     @Override

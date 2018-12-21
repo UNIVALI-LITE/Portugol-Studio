@@ -19,6 +19,7 @@ public final class ErroExecucaoNaoTratado extends ErroExecucao
 	 */
 	private static final long serialVersionUID = 1L;
 	private Exception causa;
+	private String codigo = "ErroExecucao.ErroExecucaoNaoTratado";
 
     /**
      * 
@@ -28,6 +29,7 @@ public final class ErroExecucaoNaoTratado extends ErroExecucao
     public ErroExecucaoNaoTratado(Exception causa) 
     {
         this.causa = causa;
+        super.setCodigo(codigo);
     }
 
     public Exception getCausa()

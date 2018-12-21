@@ -16,6 +16,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 public final class ErroBlocoInvalido extends ErroSemantico
 {
     private final NoBloco bloco;
+    private String codigo = "ErroSemantico.ErroBlocoInvalido.";
 
     public ErroBlocoInvalido(NoBloco bloco)
     {
@@ -31,7 +32,7 @@ public final class ErroBlocoInvalido extends ErroSemantico
         if ((bloco instanceof NoOperacaoLogica) || (bloco instanceof NoLogico))
         {
             builder.append("Esta expressão lógica não faz sentido se estiver sozinha no código. Você pode utilizar a expressão como condição em um dos seguintes comandos: 'se', 'enquanto', 'faca-enquanto'");
-
+            codigo += "1";
             if (bloco instanceof NoOperacaoLogica)
             {
                 NoOperacaoLogica operacao = (NoOperacaoLogica) bloco;
@@ -45,14 +46,17 @@ public final class ErroBlocoInvalido extends ErroSemantico
                     if (referencia instanceof NoReferenciaVariavel)
                     {
                         builder.append("à variável ");
+                        codigo += "1";
                     }
                     else if (referencia instanceof NoReferenciaVetor)
                     {
                         builder.append("ao vetor ");
+                        codigo += "2";
                     }
                     else if (referencia instanceof NoReferenciaMatriz)
                     {
                         builder.append("à matriz ");
+                        codigo += "3";
                     }
 
                     builder.append("\"");
@@ -63,9 +67,11 @@ public final class ErroBlocoInvalido extends ErroSemantico
         }
         else
         {
+        	codigo += "2";
             builder.append("Esta expressão não faz sentido se estiver sozinha no código. Você pode atribuir a expressão a uma variável, vetor, matriz ou passá-la como parâmetro em uma chamada de função");
         }
-
+        
+        super.setCodigo(codigo);
         return builder.toString();
     }
 }

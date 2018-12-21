@@ -19,6 +19,7 @@ public class AvisoMatrizPodeSerVariavel extends AvisoAnalise {
     private NoDeclaracao declaracao;
     private NoDeclaracaoParametro noDeclaracaoParametro;
     private int tamanho;
+    private String codigo = "AvisoSemantico.AvisoMatrizPodeSerVariavel";
     
     public AvisoMatrizPodeSerVariavel(NoDeclaracao declaracao, int tamanho)
     {
@@ -27,6 +28,7 @@ public class AvisoMatrizPodeSerVariavel extends AvisoAnalise {
         this.declaracao = declaracao;
         this.tamanho = tamanho;
         this.getMensagem();
+        super.setCodigo(codigo);
     }
 
     @Override

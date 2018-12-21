@@ -18,6 +18,7 @@ public final class ErroQuantificadorParametroFuncao extends ErroSemantico
     private String nomeParametro;
     private Quantificador quantificadorParametroEsperado;
     private Quantificador quantificadorParametroPassado;
+    private String codigo = "ErroSemantico.ErroQuantificadorParametroFuncao.";
 
     public ErroQuantificadorParametroFuncao(NoChamadaFuncao chamadaFuncao, int indiceParametro, String nomeParametro, Quantificador quantificadorParametroEsperado, Quantificador quantificadorParametroPassado)
     {
@@ -68,6 +69,7 @@ public final class ErroQuantificadorParametroFuncao extends ErroSemantico
         construtorTexto.append(obterDefinicao(quantificadorParametroEsperado));
         construtorTexto.append(", mas foi passado ");
         construtorTexto.append(obterDefinicao(quantificadorParametroPassado));
+        super.setCodigo(codigo);
         
         return construtorTexto.toString();
     }
@@ -78,9 +80,9 @@ public final class ErroQuantificadorParametroFuncao extends ErroSemantico
         
         switch (quantificador)
         {
-            case VALOR :  definicao = "um valor";   break;
-            case VETOR :  definicao = "um vetor";   break;
-            case MATRIZ : definicao = "uma matriz"; break;
+            case VALOR :  definicao = "um valor"; codigo += "1";  break;
+            case VETOR :  definicao = "um vetor"; codigo += "2";  break;
+            case MATRIZ : definicao = "uma matriz"; codigo += "3"; break;
         }
         
         return definicao;

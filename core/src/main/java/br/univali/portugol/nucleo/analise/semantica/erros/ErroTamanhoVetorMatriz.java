@@ -14,6 +14,7 @@ public class ErroTamanhoVetorMatriz extends ErroSemantico
 {
     private NoDeclaracao declaracao;
     private NoExpressao tamanho;
+    private String codigo = "ErroSemantico.ErroTamanhoVetorMatriz.";
         
     public ErroTamanhoVetorMatriz(NoDeclaracao declaracao, NoExpressao tamanho)
     {
@@ -27,11 +28,16 @@ public class ErroTamanhoVetorMatriz extends ErroSemantico
     {
         if (declaracao instanceof NoDeclaracaoVetor)
         {
+        	codigo += "1";
+        	super.setCodigo(codigo);
+        	
             return String.format("O tamanho do vetor '%s' deve ser um valor ou uma constante do tipo inteiro", declaracao.getNome());
         }
         else
         {            
             String aux = (tamanho == ((NoDeclaracaoMatriz) declaracao).getNumeroLinhas())? "linhas" : "colunas";
+            codigo += "2";
+            super.setCodigo(codigo);
             
             return String.format("O número de %s da matriz '%s' deve ser um valor ou uma constante do tipo inteiro", aux, declaracao.getNome());
         }

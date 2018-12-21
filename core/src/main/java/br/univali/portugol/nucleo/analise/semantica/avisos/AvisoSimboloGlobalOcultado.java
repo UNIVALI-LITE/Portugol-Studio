@@ -26,6 +26,7 @@ public final class AvisoSimboloGlobalOcultado extends AvisoAnalise
     private Simbolo simboloLocal;
     private NoDeclaracao declaracao;
     private NoDeclaracaoParametro noDeclaracaoParametro;
+    private String codigo = "AvisoSemantico.AvisoSimboloGlobalOcultado";
     
     public AvisoSimboloGlobalOcultado(Simbolo simboloGlobal, Simbolo simboloLocal, NoDeclaracao declaracao)
     {
@@ -36,6 +37,7 @@ public final class AvisoSimboloGlobalOcultado extends AvisoAnalise
         this.declaracao = declaracao;
         
         this.getMensagem();
+        super.setCodigo(codigo);
     }
 
     public AvisoSimboloGlobalOcultado(Simbolo simboloGlobal, Simbolo simboloLocal, NoDeclaracaoParametro noDeclaracaoParametro)
@@ -47,6 +49,7 @@ public final class AvisoSimboloGlobalOcultado extends AvisoAnalise
         this.noDeclaracaoParametro = noDeclaracaoParametro;
         
         this.getMensagem();
+        super.setCodigo(codigo);
     }
     
      /**

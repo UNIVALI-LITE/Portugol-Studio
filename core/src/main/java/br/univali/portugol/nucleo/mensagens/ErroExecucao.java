@@ -13,6 +13,7 @@ public abstract class ErroExecucao extends Erro
 	
 	private int linha = 0;
     private int coluna = 0;
+    private String codigo;
 
     public ErroExecucao()
     {
@@ -37,5 +38,15 @@ public abstract class ErroExecucao extends Erro
     public void setColuna(int coluna)
     {
         this.coluna = coluna;
+    }
+    
+    public String getCodigo()
+    {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo)
+    {
+        this.codigo = codigo;
     }
 }

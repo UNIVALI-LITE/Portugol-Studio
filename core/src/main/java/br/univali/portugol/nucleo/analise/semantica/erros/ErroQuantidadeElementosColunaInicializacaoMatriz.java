@@ -13,6 +13,7 @@ public class ErroQuantidadeElementosColunaInicializacaoMatriz extends ErroSemant
     private final String nome;
     private final int numeroElementosEsperados;
     private final int numeroElementosDeclarados;
+    private String codigo = "ErroSemantico.ErroQuantidadeElementosColunaInicializacaoMatriz";
 
     public ErroQuantidadeElementosColunaInicializacaoMatriz(TrechoCodigoFonte trechoCodigoFonte, String nome, int linha, int numeroElementosEsperados, int numeroElementosDeclarados)
     {
@@ -21,6 +22,7 @@ public class ErroQuantidadeElementosColunaInicializacaoMatriz extends ErroSemant
         this.nome = nome;
         this.numeroElementosEsperados = numeroElementosEsperados;
         this.numeroElementosDeclarados = numeroElementosDeclarados;
+        super.setCodigo(codigo);
     }
 
     @Override

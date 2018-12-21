@@ -34,6 +34,7 @@ public final class ErroIndiceVetorInvalido extends ErroExecucao
     private int tamanhoVetor;
     private int indiceAcessado;
     private String nomeVetor;
+    private String codigo = "ErroExecucao.ErroIndiceVetorInvalido";
     
     /**
      * 
@@ -47,7 +48,8 @@ public final class ErroIndiceVetorInvalido extends ErroExecucao
     {
         this.tamanhoVetor = tamanhoVetor;
         this.indiceAcessado = indiceAcessado;
-        this.nomeVetor = nomeVetor;                
+        this.nomeVetor = nomeVetor;  
+        super.setCodigo(codigo);
     }
 
     /**

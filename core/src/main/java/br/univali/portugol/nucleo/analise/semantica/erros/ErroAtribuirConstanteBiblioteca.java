@@ -12,12 +12,14 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 public class ErroAtribuirConstanteBiblioteca extends ErroSemantico {
     private final MetaDadosConstante metaDadosConstante;
     private final MetaDadosBiblioteca metaDadosBiblioteca;
+    private String codigo = "ErroSemantico.ErroAtribuirConstanteBiblioteca";
 
     public ErroAtribuirConstanteBiblioteca(TrechoCodigoFonte trechoCodigoFonte, MetaDadosConstante metaDadosConstante, MetaDadosBiblioteca metaDadosBiblioteca)
     {
         super(trechoCodigoFonte);
         this.metaDadosConstante = metaDadosConstante;
         this.metaDadosBiblioteca = metaDadosBiblioteca;
+        super.setCodigo(codigo);
     }
 
     @Override

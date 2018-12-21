@@ -22,6 +22,7 @@ public final class ErroValorVetorMatrizNaoInicializado extends ErroExecucao
     private int linha;
     private int coluna;
     private int indice;
+    private String codigo = "ErroExecucao.ErroValorVetorMatrizNaoInicializado.";
 
     public ErroValorVetorMatrizNaoInicializado(Vetor vetor, NoReferenciaVetor referenciaVetor, int indice)
     {
@@ -30,6 +31,8 @@ public final class ErroValorVetorMatrizNaoInicializado extends ErroExecucao
         this.indice = indice;
         this.setLinha(referencia.getTrechoCodigoFonteNome().getLinha());
         this.setColuna(referencia.getTrechoCodigoFonteNome().getColuna());
+        codigo += "1";
+        super.setCodigo(codigo);
     }
 
     public ErroValorVetorMatrizNaoInicializado(Matriz matriz, NoReferenciaMatriz referenciaMatriz, int linha, int coluna)
@@ -40,6 +43,8 @@ public final class ErroValorVetorMatrizNaoInicializado extends ErroExecucao
         this.coluna = coluna;
         this.setLinha(referencia.getTrechoCodigoFonteNome().getLinha());
         this.setColuna(referencia.getTrechoCodigoFonteNome().getColuna());
+        codigo += "2";
+        super.setCodigo(codigo);
     }
 
     /**

@@ -27,6 +27,10 @@ dependencies {
     //https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.5'
     
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20170516'
+    
+    
     // Talvez possa ser substituído pela dependência abaixo
     // https://mvnrepository.com/artifact/javax.media/jmf
     //compile group: 'javax.media', name: 'jmf', version: 'fs-3.0'

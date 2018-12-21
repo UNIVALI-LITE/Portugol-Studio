@@ -8,10 +8,12 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  * @author fillipi
  */
 public class ErroAoAtribuirEmMatriz extends ErroSemantico {
+	private String codigo = "ErroSemantico.ErroAoAtribuirEmMatriz";
 
     public ErroAoAtribuirEmMatriz(TrechoCodigoFonte trechoCodigoFonte)
     {
         super(trechoCodigoFonte);
+        super.setCodigo(codigo);
     }
 
     @Override

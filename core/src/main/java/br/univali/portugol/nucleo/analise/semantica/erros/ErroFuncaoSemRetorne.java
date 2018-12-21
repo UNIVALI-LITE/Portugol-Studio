@@ -10,9 +10,12 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 public class ErroFuncaoSemRetorne extends ErroSemantico
 {
     String nomeFuncao;
+    private String codigo = "ErroSemantico.ErroFuncaoSemRetorne";
+    
     public ErroFuncaoSemRetorne(NoDeclaracaoFuncao noDeclaracaoFuncao){
         super(noDeclaracaoFuncao.getTrechoCodigoFonteNome());
         this.nomeFuncao = noDeclaracaoFuncao.getNome();
+        super.setCodigo(codigo);
     }
     @Override
     protected String construirMensagem()

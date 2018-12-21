@@ -37,6 +37,7 @@ public final class ErroIndiceMatrizInvalido extends ErroExecucao
     private String nomeMatriz;
     private final int colunas;
     private final int colunaAcessada;
+    private String codigo = "ErroExecucao.ErroIndiceMatrizInvalido";
     
     /**
      * 
@@ -52,7 +53,8 @@ public final class ErroIndiceMatrizInvalido extends ErroExecucao
         this.colunas = matriz.getNumeroColunas();
         this.linhaAcessada = linha;
         this.colunaAcessada = coluna;
-        this.nomeMatriz = matriz.getNome();                
+        this.nomeMatriz = matriz.getNome();   
+        super.setCodigo(codigo);
     }
 
     /**

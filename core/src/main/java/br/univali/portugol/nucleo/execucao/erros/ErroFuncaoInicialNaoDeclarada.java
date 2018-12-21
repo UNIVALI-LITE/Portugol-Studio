@@ -84,6 +84,7 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 public final class ErroFuncaoInicialNaoDeclarada extends ErroExecucao
 {
     private String nomeFuncaoInicial;
+    private String codigo = "ErroExecucao.ErroFuncaoInicialNaoDeclarada";
 
     /**
      * 
@@ -93,6 +94,7 @@ public final class ErroFuncaoInicialNaoDeclarada extends ErroExecucao
     public ErroFuncaoInicialNaoDeclarada(String nomeFuncaoInicial)
     {
         this.nomeFuncaoInicial = nomeFuncaoInicial;
+        super.setCodigo(codigo);
     }
 
     /**

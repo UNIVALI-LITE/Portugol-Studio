@@ -12,6 +12,7 @@ public final class ErroQuantidadeLinhasIncializacaoMatriz extends ErroSemantico
     private String nome;
     private int numeroLinhasEsperadas;
     private int numeroLinhasDeclaradas;
+    private String codigo = "ErroSemantico.ErroQuantidadeLinhasIncializacaoMatriz";
 
     public ErroQuantidadeLinhasIncializacaoMatriz(TrechoCodigoFonte trechoCodigoFonte, String nome, int numeroLinhasEsperadas, int numeroLinhasDeclaracadas)
     {
@@ -19,6 +20,7 @@ public final class ErroQuantidadeLinhasIncializacaoMatriz extends ErroSemantico
         this.nome = nome;
         this.numeroLinhasEsperadas = numeroLinhasEsperadas;
         this.numeroLinhasDeclaradas = numeroLinhasDeclaracadas;
+        super.setCodigo(codigo);
     }
 
     @Override

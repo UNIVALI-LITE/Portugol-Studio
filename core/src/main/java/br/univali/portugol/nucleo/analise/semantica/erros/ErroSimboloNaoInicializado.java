@@ -16,6 +16,7 @@ public class ErroSimboloNaoInicializado extends ErroSemantico
 {
     private final Simbolo simbolo;
     private final NoReferencia noReferencia;
+    private String codigo = "ErroSemantico.ErroSimboloNaoInicializado.";
 
     public ErroSimboloNaoInicializado(NoReferencia noReferencia, Simbolo simbolo)
     {
@@ -42,7 +43,7 @@ public class ErroSimboloNaoInicializado extends ErroSemantico
             construtorTexto.append("leia(");
             construtorTexto.append(simbolo.getNome());
             construtorTexto.append(")");
-            
+            codigo += "1";
         }
         else if (simbolo instanceof Vetor)
         {
@@ -56,6 +57,7 @@ public class ErroSimboloNaoInicializado extends ErroSemantico
             construtorTexto.append("leia(");
             construtorTexto.append(simbolo.getNome());
             construtorTexto.append("[0])");
+            codigo += "2";
         }
         else if (simbolo instanceof Matriz)
         {
@@ -69,8 +71,9 @@ public class ErroSimboloNaoInicializado extends ErroSemantico
             construtorTexto.append("leia(");
             construtorTexto.append(simbolo.getNome());
             construtorTexto.append("[0][0])");
-            
+            codigo += "3";
         }
+        super.setCodigo(codigo);
         
         return construtorTexto.toString();                
     }

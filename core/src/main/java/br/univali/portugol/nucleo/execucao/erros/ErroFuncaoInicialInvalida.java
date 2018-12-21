@@ -9,10 +9,12 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 public final class ErroFuncaoInicialInvalida extends ErroExecucao
 {
     private final String funcaoInicial;
+    private String codigo = "ErroExecucao.ErroFuncaoInicialInvalida";
 
     public ErroFuncaoInicialInvalida(String funcaoInicial)
     {
-        this.funcaoInicial = funcaoInicial;        
+        this.funcaoInicial = funcaoInicial;   
+        super.setCodigo(codigo);
     }
 
     @Override

@@ -12,12 +12,14 @@ public class ErroTamanhoMaximoVetor extends ErroSemantico
 {
     private final int tamanhoDeclarado;
     private final String nomeVetor;
+    private String codigo = "ErroSemantico.ErroTamanhoMaximoVetor";
 
     public ErroTamanhoMaximoVetor(int tamanhoDeclarado, String nomeVetor, TrechoCodigoFonte trechoCodigoFonte)
     {
         super(trechoCodigoFonte);
         this.tamanhoDeclarado = tamanhoDeclarado;
         this.nomeVetor = nomeVetor;
+        super.setCodigo(codigo);
     }
 
     @Override

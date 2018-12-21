@@ -11,9 +11,11 @@ import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 public final class ErroEstouroPilha extends ErroExecucao
 {
 	private static final long serialVersionUID = 1L;
+	private String codigo = "ErroExecucao.ErroEstouroPilha";
 
 	public ErroEstouroPilha()
 	{
+		super.setCodigo(codigo);
 	}
 
 	@Override

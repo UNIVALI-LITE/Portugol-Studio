@@ -27,6 +27,7 @@ public final class AvisoValorExpressaoSeraConvertido extends AvisoAnalise
     private TipoDado tipoConversao;
     private NoRetorne noRetorne = null;
     private Object[] detalhes;
+    private String codigo = "AvisoSemantico.AvisoValorExpressaoSeraConvertido";
 
     /**
      * 
@@ -44,7 +45,8 @@ public final class AvisoValorExpressaoSeraConvertido extends AvisoAnalise
         this.expressao = expressao;
         this.tipoExpressao = tipoExpressao;
         this.tipoConversao = tipoConversao;
-        this.detalhes = detalhes;                
+        this.detalhes = detalhes;   
+        super.setCodigo(codigo);
     }
 
     public AvisoValorExpressaoSeraConvertido(
@@ -59,7 +61,8 @@ public final class AvisoValorExpressaoSeraConvertido extends AvisoAnalise
         this.expressao = expressao;
         this.tipoExpressao = tipoExpressao;
         this.tipoConversao = tipoConversao;
-        this.detalhes = detalhes;                
+        this.detalhes = detalhes; 
+        super.setCodigo(codigo);
     }
     
     public AvisoValorExpressaoSeraConvertido(
@@ -73,7 +76,8 @@ public final class AvisoValorExpressaoSeraConvertido extends AvisoAnalise
         this.expressao = noRetorne.getExpressao();
         this.tipoExpressao = tipoExpressao;
         this.tipoConversao = tipoConversao;
-        this.detalhes = detalhes;                
+        this.detalhes = detalhes;   
+        super.setCodigo(codigo);
     }
     
     /**

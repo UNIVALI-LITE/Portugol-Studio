@@ -21,6 +21,7 @@ public class AvisoMatrizPodeSerVetor extends AvisoAnalise {
     private int tamanhoX;
     private int tamanhoY;
     private int tamanho;
+    private String codigo = "AvisoSemantico.AvisoMatrizPodeSerVetor";
     
     public AvisoMatrizPodeSerVetor(NoDeclaracao declaracao, int tamanho, int tamanhoX, int tamanhoY)
     {
@@ -31,6 +32,7 @@ public class AvisoMatrizPodeSerVetor extends AvisoAnalise {
         this.tamanhoX = tamanhoX;
         this.tamanhoY = tamanhoY;
         this.getMensagem();
+        super.setCodigo(codigo);
     }
 
     @Override
