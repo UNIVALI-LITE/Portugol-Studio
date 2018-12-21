@@ -2225,10 +2225,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             AbaMensagemCompilador abaMensagensCompilador = painelSaida.getAbaMensagensCompilador();
             abaMensagensCompilador.atualizar(resultadoAnalise);
             abaMensagensCompilador.selecionar();
-            
-            
-            
-
         });
 
     }

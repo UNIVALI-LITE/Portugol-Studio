@@ -248,7 +248,6 @@ public class LogManager {
 
 	private void Save(String textToSave) {
 		String temp_filePathString = System.getProperty("user.dir") + "\\temp_log.txt";
-
 		File temp_file = new File(temp_filePathString);
 		temp_file.delete();
 		try {
@@ -351,7 +350,7 @@ public class LogManager {
                             id = Configuracoes.getInstancia().getUserMac();
                         }
                         
-			if (id == null || id.equals("")) {
+			if (infoJson.equals("") || id == null || id.equals("")) {
 				return false;
 			}
 
