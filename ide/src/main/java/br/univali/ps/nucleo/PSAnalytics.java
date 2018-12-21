@@ -43,7 +43,7 @@ public class PSAnalytics {
     boolean pode_enviar_dados = true;
     private static String SERVER_LIST = "https://raw.githubusercontent.com/UNIVALI-LITE/Portugol-Studio/master/ide/src/main/resources/br/univali/ps/nucleo/serverList.json";
     private static List<String> URL_LIST;
-    public static String URL_PADRAO = "http://localhost:8080";
+    public static String URL_PADRAO = "https://portugol-studio-analytics.herokuapp.com";
     
     public PSAnalytics() {
         this.URL_LIST = new ArrayList<>();
@@ -204,7 +204,7 @@ public class PSAnalytics {
                         editar_usuario_servidor(url, Configuracoes.getInstancia().getUserAnalyticsID(), true, ip);
                     }
                     System.out.println("Enviou ao servidor " + url);
-                    new LogManager().SendToServerOnStart(PSAnalytics.URL_PADRAO);
+                    new LogManager().SendToServerOnStart(url);
                     break;
                 } catch (Exception ex) {
                     System.out.println("Erro no envio ao servidor " + url);
@@ -219,8 +219,8 @@ public class PSAnalytics {
         {
             JSONArray serverList = new JSONArray(getHTML(SERVER_LIST));
             for (int i = 0; i < serverList.length(); i++) {
-                URL_LIST.add("http://localhost:8080");
-                //URL_LIST.add(serverList.getString(i));
+                //URL_LIST.add("http://localhost:8080");
+                URL_LIST.add(serverList.getString(i));
             }            
         }
         catch (Exception ex) 
