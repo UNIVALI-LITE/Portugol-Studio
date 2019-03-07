@@ -9,6 +9,11 @@ import javax.accessibility.AccessibleText;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import br.univali.portugol.ajuda.TopicoHtml;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante;
+import br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao;
+
 class Interacao
 {
 
@@ -21,7 +26,56 @@ class Interacao
 
     public Interacao(Component componente, Point posicao)
     {
-
+    	try {
+    		if(componente.getClass().getName().equals("javax.swing.JTree")) {
+        		String jTreeVarSelectedPath = "";
+        	    Object[] paths = ((javax.swing.JTree)componente).getSelectionPath().getPath();
+        	    for (int i=0; i<paths.length; i++) {
+        	       
+        	    	try {
+        	    		if(((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject() != null) {
+        	    			String nomeClasse = ((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject().getClass().getName();
+            	    		if(nomeClasse.equals("java.lang.String")) {
+            	    			//System.out.println(((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject().toString());
+            	    			jTreeVarSelectedPath += ((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject().toString();
+            	    		}else if(nomeClasse.equals("br.univali.portugol.nucleo.bibliotecas.base.MetaDadosBiblioteca")) {
+            	    			MetaDadosBiblioteca metaDadosBiblioteca = (MetaDadosBiblioteca)((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject();
+            	    			//System.out.println(metaDadosBiblioteca.getNome());
+            	    			jTreeVarSelectedPath += metaDadosBiblioteca.getNome();
+            	    		}else if(nomeClasse.equals("br.univali.portugol.nucleo.bibliotecas.base.MetaDadosFuncao")) {
+            	    			MetaDadosFuncao metaDadosFuncao = (MetaDadosFuncao)((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject();
+            	    			//System.out.println(metaDadosFuncao.getNome());
+            	    			jTreeVarSelectedPath += metaDadosFuncao.getNome();
+            	    		}else if(nomeClasse.equals("br.univali.portugol.ajuda.TopicoHtml")) {
+            	    			TopicoHtml topicoHtml = (TopicoHtml)((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject();
+            	    			//System.out.println(topicoHtml.getTitulo());
+            	    			jTreeVarSelectedPath += topicoHtml.getTitulo();
+            	    		}else if(nomeClasse.equals("br.univali.portugol.nucleo.bibliotecas.base.MetaDadosConstante")) {
+            	    			MetaDadosConstante metaDadosConstante = (MetaDadosConstante)((javax.swing.tree.DefaultMutableTreeNode)paths[i]).getUserObject();
+            	    			//System.out.println(metaDadosConstante.getNome());
+            	    			jTreeVarSelectedPath += metaDadosConstante.getNome();
+            	    		}else {
+            	    			//System.out.println(nomeClasse);  
+            	    		}
+        	    		}  
+        	    	}catch (Exception e) {
+    					// TODO: handle exception
+    				}
+        	        		
+        	        if (i+1 <paths.length && !jTreeVarSelectedPath.equals("")) {
+        	            jTreeVarSelectedPath += "->";
+        	        }
+        	    }
+        	   System.out.println(jTreeVarSelectedPath);   
+        	   if(!jTreeVarSelectedPath.equals("")) {
+        		   ColetorInteracao.getInstancia().adicionaAjudaExemplo(jTreeVarSelectedPath);
+        	   }
+        	}
+    	}catch (Exception e) {
+			// TODO: handle exception
+		}
+    	
+    	
         assert (componente != null);
         assert (posicao != null);
 

@@ -1,5 +1,6 @@
 package br.univali.ps.ui;
 
+import br.univali.ps.ui.coletor.ColetorInteracao;
 import br.univali.ps.ui.telas.TelaPrincipal;
 import br.univali.ps.ui.window.ComponentResizer;
 import java.awt.Dimension;
@@ -263,8 +264,8 @@ public class Lancador {
                 frame = new JFrame(); // a instância do JFrame deve ser criada na thread do Swing
                 resizer.registerComponent(frame);
                 
-//                ColetorInteracao coletor = ColetorInteracao.getInstancia();
-//                coletor.inspeciona(frame);
+                ColetorInteracao coletor = ColetorInteracao.getInstancia();
+                coletor.inspeciona(frame);
             });
 
         }

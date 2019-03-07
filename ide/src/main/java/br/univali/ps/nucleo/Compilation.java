@@ -13,4 +13,5 @@ public class Compilation {
 	JSONArray warnings;
 	String user_name;
 	String local_machine_hostname;
+	JSONArray help_examples;
 }

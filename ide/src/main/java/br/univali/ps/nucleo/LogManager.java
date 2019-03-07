@@ -23,6 +23,7 @@ import br.univali.portugol.nucleo.mensagens.AvisoAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroExecucao;
 import br.univali.portugol.nucleo.programa.Programa;
+import br.univali.ps.ui.coletor.ColetorInteracao;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.http.HttpEntity;
@@ -101,6 +102,7 @@ public class LogManager {
 			comp.number_lines = numLinhas;
 			comp.compilation_errors = setCompileErrorsJson(resultadoAnalise);
 			comp.warnings = setCompileWarningsJson(resultadoAnalise);
+			comp.help_examples = setHelpExamplesJson();
 			
 			//Tenta pegar o usuário da máquina
 			try {				
@@ -165,6 +167,7 @@ public class LogManager {
 			jsonObject.put("execution_error", new JSONObject());
 			jsonObject.put("local_machine_hostname", comp.local_machine_hostname);
 			jsonObject.put("user_name", comp.user_name);
+			jsonObject.put("help_examples", comp.help_examples);
 			
 			jsonArray.put(jsonObject);
 
@@ -199,6 +202,7 @@ public class LogManager {
 			jsonObject.put("warnings", comp.warnings);
 			jsonObject.put("local_machine_hostname", comp.local_machine_hostname);
 			jsonObject.put("user_name", comp.user_name);
+			jsonObject.put("help_examples", comp.help_examples);
 
 			JSONObject jsonErroExecucao = new JSONObject();
 			jsonErroExecucao.put("code", erroExecucao.getCodigo());
@@ -216,6 +220,16 @@ public class LogManager {
 			System.out.println("Erro ao gravar log no arquivo de logs");
 		}
 
+	}
+	
+	private JSONArray setHelpExamplesJson() {
+		JSONArray jsonArray = new JSONArray();
+		if (ColetorInteracao.getAjudasExemplos().size() > 0) {
+			for (String helpExample : ColetorInteracao.getAjudasExemplos()) {							
+				jsonArray.put(helpExample);
+			}
+		}
+		return jsonArray;
 	}
 
 	private JSONArray setCompileErrorsJson(ResultadoAnalise resultadoAnalise) {
@@ -342,7 +356,8 @@ public class LogManager {
 
 	private boolean insere_compilacao_servidor(String infoJson) {
 		try {
-
+			if(infoJson.equals(""))
+				return true;
 			String id;
                         
                         if(Configuracoes.getInstancia().getUserMac().equals("nao")){
@@ -360,7 +375,7 @@ public class LogManager {
 			RequestConfig timeout = RequestConfig.custom().setConnectTimeout(2500).setSocketTimeout(2500).build();
 			httpput.setConfig(timeout);
 
-			StringEntity objetoJson = new StringEntity(infoJson);
+			StringEntity objetoJson = new StringEntity(infoJson, "UTF-8");
 			objetoJson.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 
 			httpput.setEntity(objetoJson);
