@@ -1,3 +1,3 @@
 grammar Portugol;
 
-arquivo:    'programa' '{' 'funcao' 'inicio' '(' ')' '{' '}' '}' 
+arquivo:    'programa' '{' 'funcao' 'inicio' '(' ')' '{' '}' '}';
