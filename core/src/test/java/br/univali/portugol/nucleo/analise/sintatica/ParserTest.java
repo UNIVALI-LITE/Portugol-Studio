@@ -26,7 +26,7 @@ public class ParserTest {
         
         parser.arquivo(); // invoca a regra inicial da gramática
         
-        Assert.assertEquals(parser.getNumberOfSyntaxErrors(), 0);
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
     }
     
     @Test
