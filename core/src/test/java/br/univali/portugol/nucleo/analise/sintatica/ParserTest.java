@@ -28,7 +28,15 @@ public class ParserTest {
         
         Assert.assertEquals(parser.getNumberOfSyntaxErrors(), 0);
     }
-
+    
+    @Test
+    public void testProgramaSemFuncaoIniciao() throws IOException, RecognitionException {
+        PortugolParser parser = novoParser("programa {  }");
+        parser.arquivo(); // invoca a regra inicial da gramática
+        
+        Assert.assertTrue(parser.getNumberOfSyntaxErrors() > 0);
+    }
+    
     private PortugolParser novoParser(String testString) throws IOException {
         PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(testString));
         
