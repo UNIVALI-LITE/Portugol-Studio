@@ -24,7 +24,7 @@ public class ParserTest {
     public void testProgramaVazio() throws IOException, RecognitionException {
         PortugolParser parser = novoParser("programa { funcao inicio() { } }");
         
-        parser.arquivo();
+        parser.arquivo(); // invoca a regra inicial da gramática
         
         Assert.assertEquals(parser.getNumberOfSyntaxErrors(), 0);
     }
