@@ -37,6 +37,14 @@ public class ParserTest {
         Assert.assertTrue(parser.getNumberOfSyntaxErrors() > 0);
     }
     
+    @Test
+    public void testProgramaComChavesNaoBalanceadas() throws IOException, RecognitionException {
+        PortugolParser parser = novoParser("programa { funcao inicio()  } }");
+        parser.arquivo(); // invoca a regra inicial da gramática
+        
+        Assert.assertTrue(parser.getNumberOfSyntaxErrors() > 0);
+    }
+    
     private PortugolParser novoParser(String testString) throws IOException {
         PortugolLexer lexer = new PortugolLexer(CharStreams.fromString(testString));
         
