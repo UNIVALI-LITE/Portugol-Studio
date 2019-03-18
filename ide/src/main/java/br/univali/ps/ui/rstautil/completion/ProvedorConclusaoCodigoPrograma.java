@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.text.JTextComponent;
+import org.fife.ui.autocomplete.AbstractCompletion;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
@@ -84,11 +85,160 @@ public final class ProvedorConclusaoCodigoPrograma extends DefaultCompletionProv
                     iterador.remove();
                 }
             }
-
+            conclusoes.addAll(templateStructures());
             return conclusoes;
         }
         
         return Collections.emptyList();
+    }
+
+    public List<Completion> templateStructures()
+    {
+        List<Completion> structures = new ArrayList<>();
+        
+        Completion escreva = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "escreva(\"texto numero \"+0)";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Escreve um valor/texto no console podendo estar ou não em uma variável";
+            }
+        };
+        
+        Completion leia = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "leia(variavel)";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Lê um valor digitado no console.\nSubstitua o texto \"variavel\" por uma variavel de sua preferência";
+            }
+        };
+        
+        Completion sorteia = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "sorteia(0, 100)";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Retorna um valor aleatorio entre 2 inteiros passados por parâmetro";
+            }
+        };
+        
+        Completion para = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "para(inteiro i=0; i < 10; i++){\n\n\t\t}";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Estrutura de repetição: permite repetir um código dentro das chaves enquanto a expressão no centro for verdadeira.\n A primeira expressão declara uma variavel que funcionará apenas nesta repetição e a última incrementa a mesma a cada final da repetição.";
+            }
+        };
+        
+        Completion enquanto = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "enquanto(variavel<10){\n\n\t\t}";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Estrutura de repetição: permite repetir um código dentro das chaves enquanto a expressão em parênteses for verdadeira.\nSubstitua o texto \"variavel\" por uma variavel/valor de sua preferência";
+            }
+        };
+        
+        Completion facaEnquanto = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "faca{\n\n\t\t}enquanto(variavel<10)";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Estrutura de repetição: permite repetir um código dentro das chaves enquanto a expressão em parênteses for verdadeira.\nSubstitua o texto \"variavel\" por uma variavel/valor de sua preferência";
+            }
+        };
+        
+        Completion escolha = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "escolha(variavel){\n\n"
+                        + "\t\t\tcaso 0: escreva(0)\n"
+                        + "\t\t\tpare\n"
+                        + "\t\t\tcaso 1: escreva(1)\n"
+                        + "\t\t\tpare\n"
+                        + "\t\t\tcaso contrario: escreva(\"contrario\")\n"
+                        + "\t\t\tpare\n"
+                        + "\t\t}";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Estrutura de escolha: Diferentes códigos serão executados dependendo de qual caso o valor da variável passada por parâmetro é igual, sendo que em caso não seja igual a nenhum, cairá no \"caso contrário\"";
+            }
+        };
+        
+        Completion se = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "se(1>2){\n\n"
+                        + "\t\t}";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Estrutura de desvio condicional: apenas executará o código entre chaves se a expressão em parênteses for verdadeira";
+            }
+        };
+        
+        Completion se_senao = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "se(1<2){\n\n"
+                        + "\t\t}senao{\n\n"
+                        + "\t\t}";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Estrutura de desvio condicional: apenas executará o código entre as primeiras chaves se a expressão em parênteses for verdadeira, caso contrário será executado o código entre as segundas chaves";
+            }
+        };
+        
+        Completion se_senao_se = new AbstractCompletion(this) {
+            @Override
+            public String getReplacementText() {
+                return "se(1<2){\n\n"
+                        + "\t\t}senao se(1<2){\n\n"
+                        + "\t\t}senao{\n\n"
+                        + "\t\t}";
+            }
+            
+            @Override
+            public String getSummary() {
+                return "Estrutura de desvio condicional: apenas executará o código entre as primeiras/segundas chaves se a expressão em parênteses for verdadeira, caso contrário será executado o código entre as ultimas chaves";
+            }
+        };
+        structures.add(leia);        
+        structures.add(escreva);        
+        structures.add(sorteia);        
+        structures.add(para);        
+        structures.add(enquanto);        
+        structures.add(facaEnquanto);        
+        structures.add(escolha);        
+        structures.add(se);        
+        structures.add(se_senao);        
+        structures.add(se_senao_se);        
+        return structures;
     }
 
     final class FabricaConclusaoCodigoPrograma extends VisitanteNulo
