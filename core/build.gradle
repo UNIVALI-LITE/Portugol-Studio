@@ -43,10 +43,11 @@ dependencies {
 }
 
 task compileGrammar(type: JavaExec){
-    def grammarDir = "src/main/java/br/univali/portugol/nucleo/analise/sintatica/antlr4"
+    def classesPackage = "br.univali.portugol.nucleo.analise.sintatica.antlr4";
+    def grammarDir = "src/main/java/" + classesPackage.replace('.', '/');
     main = "org.antlr.v4.Tool"
     classpath = files("libs/buildLibs/antlr-4.7.2-complete.jar")
-    args = ["${grammarDir}/Portugol.g4", "-no-listener", "-visitor", "-o", "${grammarDir}"]
+    args = ["${grammarDir}/Portugol.g4", "-no-listener", "-visitor", "-o", "${grammarDir}", "-package", "${classesPackage}"]
     
 }
 
