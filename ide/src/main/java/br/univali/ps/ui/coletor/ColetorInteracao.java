@@ -26,6 +26,8 @@ public class ColetorInteracao
     private final List<Interacao> interacoes = new ArrayList<>();
 
     private final Set<Component> componentesRegistrados = new HashSet<>();
+    
+    private static List<String> ajudasExemplosUtilziados = new ArrayList<String>();
 
     public static ColetorInteracao getInstancia()
     {
@@ -85,6 +87,15 @@ public class ColetorInteracao
         Interacao interacao = new Interacao(componente, evento.getPoint());
         interacoes.add(interacao);
         System.out.println(interacao.toString());
+    }
+    
+    public static void adicionaAjudaExemplo(String ajudaExemplo) {
+    	if(!ajudasExemplosUtilziados.contains(ajudaExemplo)) {
+    		ajudasExemplosUtilziados.add(ajudaExemplo);
+    	}
+    }
+    public static List<String> getAjudasExemplos(){
+    	return ajudasExemplosUtilziados;
     }
 
     private class ListenerMouse extends MouseAdapter
