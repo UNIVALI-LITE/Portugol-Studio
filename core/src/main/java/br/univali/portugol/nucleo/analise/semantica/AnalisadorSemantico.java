@@ -1897,7 +1897,7 @@ public final class AnalisadorSemantico implements VisitanteASA
             {
                 for (NoBloco inicializacao : noPara.getInicializacoes())
                 {
-                    if(inicializacao instanceof NoOperacaoAtribuicao)
+                    if(inicializacao instanceof NoOperacaoAtribuicao || inicializacao instanceof NoDeclaracaoVariavel)
                     {
                         inicializacao.aceitar(this);                        
                     }
