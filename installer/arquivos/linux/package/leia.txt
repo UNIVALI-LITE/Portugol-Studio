@@ -29,21 +29,21 @@ $ cd /home/pedro/Downloads.
 Logo após, digite os comandos abaixo em sequência (sem o $):
 
 
-$ chmod 755 portugol-studio-2.7.1.run
+$ chmod 755 portugol-studio-2.7.2.run
 
 ou caso seu linux seja 64 bits:
 
-$ chmod 755 portugol-studio-2.7.1-x64.run
+$ chmod 755 portugol-studio-2.7.2-x64.run
 
 
 Feito isso, execute o progama de instalação digitando o comando abaixo:
 
 
-$ sudo ./portugol-studio-2.7.1.run
+$ sudo ./portugol-studio-2.7.2.run
 
 ou caso seu linux seja 64 bits:
 
-$ sudo ./portugol-studio-2.7.1-x64.run
+$ sudo ./portugol-studio-2.7.2-x64.run
 
 
 Note que existe um ponto "." e uma barra "/" antes do nome do arquivo. Estes

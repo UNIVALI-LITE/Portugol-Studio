@@ -13,9 +13,9 @@
 	<key>CFBundleExecutable</key>
 	<string>Portugol Studio</string>
 	<key>CFBundleVersion</key>
-	<string>2.6.8</string>
+	<string>2.7.2</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.6.8</string>
+	<string>2.7.2</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>Portuguese</string>
 	<key>CFBundleIdentifier</key>
@@ -46,6 +46,6 @@
 		</dict>
 	</array>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © LITE - UNIVALI, 2009 - 2017. Todos os direitos reservados</string>
+	<string>Copyright © LITE - UNIVALI, 2009 - 2019. Todos os direitos reservados</string>
 </dict>
 </plist>
