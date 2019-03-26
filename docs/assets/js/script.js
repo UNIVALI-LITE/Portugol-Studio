@@ -8,6 +8,28 @@ $('.download-link').click(function () {
     eventValue: 1
   })
 })
+
+function incrementDonationCounter(){
+  ga('send', {
+    hitType: 'event',
+    eventCategory: 'Donation',
+    eventAction: 'Click',
+    eventLabel: 'All',
+    eventValue: 1
+  })
+}
+
+$('.donation-link').click(function () {
+  incrementDonationCounter()
+  ga('send', {
+    hitType: 'event',
+    eventCategory: 'Donation',
+    eventAction: 'Click',
+    eventLabel: 'Donation button on main page',
+    eventValue: 1
+  })
+})
+
 $('.outra-plataforma').click(function () {
   ga('send', {
     hitType: 'event',
@@ -81,11 +103,23 @@ function calculateDownloads () {
         result += data[i].assets[j].download_count
       }
     }
-    $('.download-count').html(result)
+    $('.download-count').each(function(index, element){
+      let currentValue = parseInt($(element).text())
+
+      if (result !== currentValue)
+      {
+        $(element).fadeOut(function(){
+          $(this).text(result).fadeIn()
+        }) 
+      }
+
+      // console.log(index + '-> ' + currentValue)
+    })
   })
 }
 
 $(document).ready(function () {
   testOS()
   calculateDownloads()
+  setInterval(calculateDownloads, 15000)
 })
