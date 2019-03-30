@@ -30,6 +30,16 @@ $('.donation-link').click(function () {
   })
 })
 
+$('.course-link').click(function () {
+  ga('send', {
+    hitType: 'event',
+    eventCategory: 'Courses',
+    eventAction: 'Click',
+    eventLabel: 'Portugol Studio',
+    eventValue: 1
+  })
+})
+
 $('.outra-plataforma').click(function () {
   ga('send', {
     hitType: 'event',
