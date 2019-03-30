@@ -20,7 +20,7 @@ function incrementDonationCounter(){
 }
 
 $('.donation-link').click(function () {
-  incrementDonationCounter()
+  //incrementDonationCounter()
   ga('send', {
     hitType: 'event',
     eventCategory: 'Donation',
