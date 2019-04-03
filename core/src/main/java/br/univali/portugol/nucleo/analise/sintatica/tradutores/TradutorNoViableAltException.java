@@ -11,12 +11,13 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroTipoDeDadoEstaFaltando;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.Stack;
-import org.antlr.runtime.NoViableAltException;
+import org.antlr.v4.runtime.NoViableAltException;
 import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaNoContexto;
 import static br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico.estaEmUmComando;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressaoInesperada;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroInteiroForaDoIntervalo;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParentesis;
+import org.antlr.v4.runtime.Token;
 
 /**
  * Tradutor para erros de parsing do tipo {@link NoViableAltException}.
@@ -43,8 +44,11 @@ public final class TradutorNoViableAltException
      */
     public ErroSintatico traduzirErroParsing(NoViableAltException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
     {
-        int linha = erro.line;
-        int coluna = erro.charPositionInLine;
+        Token token = erro.getOffendingToken();
+        
+        int linha = token.getLine();
+        int coluna = token.getCharPositionInLine();
+        
         String contextoAtual = pilhaContexto.peek();
         
 //        System.out.println("TESTE NUCLEO: " + erro.grammarDecisionDescription);
@@ -57,7 +61,7 @@ public final class TradutorNoViableAltException
             case "listaBlocos": return new ErroComandoEsperado(linha, coluna);
             case "expressao7": return traduzirErrosExpressao(linha, coluna, erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
             case "expressao5": return traduzirErrosExpressao(linha, coluna, erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-            case "referencia": return new ErroCaracterInvalidoReferencia(linha, coluna, erro.token.getText());
+            case "referencia": return new ErroCaracterInvalidoReferencia(linha, coluna, token.getText());
         }
         
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
@@ -65,7 +69,7 @@ public final class TradutorNoViableAltException
 
     private ErroSintatico traduzirErrosExpressao(int linha, int coluna, NoViableAltException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
     {
-        String alternativa = erro.token.getText();
+        String alternativa = erro.getOffendingToken().getText();
         
          if (estaNoContexto("vetor", pilhaContexto) || estaNoContexto("matriz", pilhaContexto))
          {
@@ -89,7 +93,7 @@ public final class TradutorNoViableAltException
     
     private ErroSintatico criarErroExpressaoIncompleta(NoViableAltException erro, Stack<String> pilhaContexto, int linha, int coluna, String mensagemPadrao)
     {
-        if (erro.token.getText().equals("<EOF>"))
+        if (erro.getOffendingToken().getText().equals("<EOF>"))
         {
             return new ErroCadeiaIncompleta(linha, coluna, mensagemPadrao);
         }

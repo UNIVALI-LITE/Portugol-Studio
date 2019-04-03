@@ -4,7 +4,7 @@ import br.univali.portugol.nucleo.analise.sintatica.AnalisadorSintatico;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.Stack;
-import org.antlr.runtime.FailedPredicateException;
+import org.antlr.v4.runtime.FailedPredicateException;
 
 /**
  * Tradutor para erros de parsing do tipo {@link FailedPredicateException}.
@@ -31,8 +31,6 @@ public final class TradutorFailedPredicateException
      */
     public ErroSintatico traduzirErroParsing(FailedPredicateException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
     {
-        int linha = erro.line;
-        int coluna = erro.charPositionInLine;
         String contextoAtual = pilhaContexto.pop();
 
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
