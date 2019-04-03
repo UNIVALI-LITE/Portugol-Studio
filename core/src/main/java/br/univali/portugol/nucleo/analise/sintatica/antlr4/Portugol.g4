@@ -1,7 +1,10 @@
 grammar Portugol;
 
 arquivo 
-    :   PROGRAMA '{' inclusaoBiblioteca* (declaracaoFuncao | declaracaoVariavel | declaracaoArray | declaracaoMatriz )* '}' ;
+    :   PROGRAMA ABRE_CHAVES 
+        inclusaoBiblioteca* 
+        (declaracaoFuncao | declaracaoVariavel | declaracaoArray | declaracaoMatriz )* 
+        FECHA_CHAVES ;
 
 inclusaoBiblioteca
     : INCLUA BIBLIOTECA ID ('->' ID)?;
@@ -10,22 +13,22 @@ declaracaoVariavel
     :   TIPO ID ('=' expressao)? ;
 
 declaracaoArray
-    :   TIPO ID '[' tamanhoArray? ']' ('=' inicializacaoArray)? ;
+    :   TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;
 
 inicializacaoArray
-    :   '{' listaExpressoes '}' ;
+    :   ABRE_CHAVES listaExpressoes FECHA_CHAVES ;
 
 declaracaoMatriz
-    :   TIPO ID '[' tamanhoArray? ']' '[' tamanhoArray? ']' ( '=' inicializacaoMatriz)? ;
+    :   TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ( '=' inicializacaoMatriz)? ;
 
 inicializacaoMatriz
-    :  '{' inicializacaoArray (',' inicializacaoArray)* '}';   
+    :  ABRE_CHAVES inicializacaoArray (',' inicializacaoArray)* FECHA_CHAVES;   
 
 tamanhoArray 
     :   INT;    // O que mais pode ser usado como tamanho de array?    
 
 declaracaoFuncao
-    :   FUNCAO TIPO? ID '(' listaParametros? ')' bloco ; 
+    :   FUNCAO TIPO? ID ABRE_PARENTESES listaParametros? FECHA_PARENTESES bloco ; 
 
 listaParametros
     :   parametro (',' parametro)* ;
@@ -34,13 +37,13 @@ parametro
     :   TIPO '&'? ID (parametroArray | parametroMatriz)? ;
 
 parametroArray
-    :   '[' ']' ;
+    :   ABRE_COLCHETES FECHA_COLCHETES ;
 
 parametroMatriz
-    :   '[' ']' '[' ']' ;
+    :   ABRE_COLCHETES FECHA_COLCHETES ABRE_COLCHETES FECHA_COLCHETES ;
 
 bloco
-    :  '{' comando* '}' ;   // possibly empty statement block
+    :  ABRE_CHAVES comando* FECHA_CHAVES ;   // possibly empty statement block
 
 comando
     :   declaracaoVariavel
@@ -57,16 +60,16 @@ comando
     ;
 
 se
-    :   SE '(' expressao ')' comando (SENAO comando)? ;
+    :   SE ABRE_PARENTESES expressao FECHA_PARENTESES comando (SENAO comando)? ;
 
 enquanto
-    :   ENQUANTO '(' expressao ')' comando ; 
+    :   ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES comando ; 
 
 facaEnquanto
-    :   FACA comando ENQUANTO '(' expressao ')' ; 
+    :   FACA comando ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
 
 escolha
-    :   ESCOLHA '(' ID ')' '{' caso+ casoPadrao? '}' ;   
+    :   ESCOLHA ABRE_PARENTESES ID FECHA_PARENTESES ABRE_CHAVES caso+ casoPadrao? FECHA_CHAVES ;   
 
 caso
     :   CASO (INT | STRING | CARACTER | LOGICO) ':' comando PARE? ;
@@ -77,7 +80,7 @@ casoPadrao
 expressao
     :
         (ID '.')? ID  '(' listaExpressoes? ')'      // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
-    |   ID '[' expressao ']' ('[' expressao ']')?   // array como a[i], a[i][j]
+    |   ID ABRE_COLCHETES expressao FECHA_COLCHETES (ABRE_COLCHETES expressao FECHA_COLCHETES)?   // array como a[i], a[i][j]
     |   OP_SUBTRACAO expressao                         // unary minus
     |   OP_NAO expressao                               // boolean not
     |   expressao (OP_MULTIPLICACAO | OP_DIVISAO | OP_MOD) expressao
@@ -86,18 +89,27 @@ expressao
     |   expressao (OP_MAIOR | OP_MENOR | OP_MENOR_IGUAL | OP_MAIOR_IGUAL) expressao
     |   expressao (OP_E_LOGICO | OP_OU_LOGICO) expressao  
     |   ID | INT | REAL | LOGICO | CARACTER | STRING   // variable reference
-    |   '(' expressao ')' ;
+    |   ABRE_PARENTESES expressao FECHA_PARENTESES ;
     
 
 listaExpressoes
     :   expressao (',' expressao)* ;
      
 
+ABRE_PARENTESES:    '(';
+FECHA_PARENTESES:   ')';
+ABRE_COLCHETES:     '[';
+FECHA_COLCHETES:    ']';
+ABRE_CHAVES:        '{';
+FECHA_CHAVES:       '}';
+
 TIPO:           'real' | 'inteiro' | 'vazio' | 'logico' | 'cadeia' | 'caracter' ; 
 
 FACA:           'faca' ;
 ENQUANTO:       'enquanto' ;
 SE:             'se' ;
+SENAO:          'senao' ;
+CONST:          'const' ;
 FUNCAO:         'funcao' ;
 PROGRAMA:       'programa' ;
 ESCOLHA:        'escolha' ;
@@ -120,7 +132,7 @@ OP_DIFERENCA:      '!=' ;
 OP_MAIOR:          '>' ;
 OP_MENOR:          '<' ;
 OP_MENOR_IGUAL:    '<=' ;
-OP_MAIO_IGUAL:     '>=' ;
+OP_MAIOR_IGUAL:     '>=' ;
 
 CARACTER:       '\'' ( SEQ_ESC | ~('\''|'\\') ) '\'' ;
 
