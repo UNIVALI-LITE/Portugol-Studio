@@ -53,6 +53,7 @@ comando
     |   se   
     |   enquanto
     |   facaEnquanto
+    |   para
     |   escolha
     |   RETORNE expressao? 
     |   expressao '=' expressao                             // atribuição
@@ -69,7 +70,7 @@ facaEnquanto
     :   FACA comando ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
 
 para
-    :   PARA ABRE_PARENTESES TIPO? ID ';' expressao ';' expressao FECHA_PARENTESES comando;
+    :   PARA ABRE_PARENTESES (TIPO? ID ('=' expressao)?)? ';' expressao ';' expressao FECHA_PARENTESES comando;
 
 escolha
     :   ESCOLHA ABRE_PARENTESES ID FECHA_PARENTESES ABRE_CHAVES caso+ casoPadrao? FECHA_CHAVES ;   
@@ -86,6 +87,8 @@ expressao
     |   ID ABRE_COLCHETES expressao FECHA_COLCHETES (ABRE_COLCHETES expressao FECHA_COLCHETES)?   // array como a[i], a[i][j]
     |   OP_SUBTRACAO expressao                         // unary minus
     |   OP_NAO expressao                               // boolean not
+    |   (ID OP_INCREMENTO_UNARIO) | (OP_INCREMENTO_UNARIO ID)  //x++ ou ++x
+    |   (ID OP_DECREMENTO_UNARIO) | (OP_DECREMENTO_UNARIO ID)  //x-- ou --x
     |   expressao (OP_MULTIPLICACAO | OP_DIVISAO | OP_MOD) expressao
     |   expressao (OP_ADICAO | OP_SUBTRACAO) expressao
     |   expressao (OP_IGUALDADE | OP_DIFERENCA) expressao               // equality comparison (lowest priority op)
@@ -137,6 +140,8 @@ OP_MAIOR:          '>' ;
 OP_MENOR:          '<' ;
 OP_MENOR_IGUAL:    '<=' ;
 OP_MAIOR_IGUAL:     '>=' ;
+OP_INCREMENTO_UNARIO:   '++' ;
+OP_DECREMENTO_UNARIO:   '--' ;
 
 CARACTER:       '\'' ( SEQ_ESC | ~('\''|'\\') ) '\'' ;
 
