@@ -68,6 +68,9 @@ enquanto
 facaEnquanto
     :   FACA comando ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
 
+para
+    :   PARA ABRE_PARENTESES TIPO? ID ';' expressao ';' expressao FECHA_PARENTESES comando;
+
 escolha
     :   ESCOLHA ABRE_PARENTESES ID FECHA_PARENTESES ABRE_CHAVES caso+ casoPadrao? FECHA_CHAVES ;   
 
@@ -79,7 +82,7 @@ casoPadrao
 
 expressao
     :
-        (ID '.')? ID  '(' listaExpressoes? ')'      // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
+        (ID '.')? ID  ABRE_PARENTESES listaExpressoes? FECHA_PARENTESES      // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
     |   ID ABRE_COLCHETES expressao FECHA_COLCHETES (ABRE_COLCHETES expressao FECHA_COLCHETES)?   // array como a[i], a[i][j]
     |   OP_SUBTRACAO expressao                         // unary minus
     |   OP_NAO expressao                               // boolean not
@@ -107,6 +110,7 @@ TIPO:           'real' | 'inteiro' | 'vazio' | 'logico' | 'cadeia' | 'caracter' 
 
 FACA:           'faca' ;
 ENQUANTO:       'enquanto' ;
+PARA:           'para' ;
 SE:             'se' ;
 SENAO:          'senao' ;
 CONST:          'const' ;
