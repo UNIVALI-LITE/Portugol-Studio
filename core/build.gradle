@@ -1,8 +1,5 @@
 dependencies {
 
-    // https://mvnrepository.com/artifact/org.antlr/antlr-runtime
-    compile group: 'org.antlr', name: 'antlr-runtime', version: '3.5.2'
-
     // https://mvnrepository.com/artifact/org.antlr/antlr4-runtime
     runtime group: 'org.antlr', name: 'antlr4-runtime', version: '4.7.2'
     
