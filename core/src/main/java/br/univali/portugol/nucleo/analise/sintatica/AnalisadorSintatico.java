@@ -1,6 +1,5 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
-import br.univali.portugol.nucleo.analise.sintatica.antlr4.ParserWrapper;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorEarlyExitException;
