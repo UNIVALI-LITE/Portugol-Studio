@@ -19,6 +19,23 @@ import org.junit.Test;
 public class ParserTest {
 
     @Test
+    public void testLoopPara() throws IOException, RecognitionException {
+        PortugolParser parser = novoParser("programa {                          "
+                + "     funcao inicio() {                                       "
+                + "         para (inteiro i=0; i < 10; i++) {                   "
+                + "             escreva(i)                                      "
+                + "         }       "
+                + "         inteiro x                                            "
+                 + "        para (x=0; x < x+1; x++) {                  "
+                + "             escreva(x)                                      "
+                + "         }                                                   "
+                + "     }                                                       "
+                + "}                                                            ");
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+    @Test
     public void testExpressoesComArrays() throws IOException, RecognitionException {
         PortugolParser parser = novoParser("programa {                          "
                 + "     inteiro v[] = {1, 2, 3}                                 "
