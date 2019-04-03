@@ -34,7 +34,7 @@ import org.antlr.v4.runtime.*;
  * @see PortugolLexer
  * @see PortugolParser
  */
-public final class AnalisadorSintatico implements ObservadorParsing
+public final class AnalisadorSintatico 
 {
     public static enum TipoToken { PALAVRA_RESERVADA, OPERADOR, TIPO_PRIMITIVO, OUTRO, NAO_MAPEADO, ID };
     
@@ -110,9 +110,18 @@ public final class AnalisadorSintatico implements ObservadorParsing
             
             PortugolParser portugolParser = new PortugolParser(new CommonTokenStream(portugolLexer));
 
-            ParserWrapper parserWrapper = new ParserWrapper(portugolParser);
-            parserWrapper.adicionarObservadorParsing(this);
-            ASA asa = parserWrapper.parse();
+            portugolParser.addErrorListener(new BaseErrorListener(){
+                
+                @Override
+                public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+                    Stack pilhaContexto = new Stack(); // usando uma pilha vazia por enquanto
+                    tratarErroParsing(e, recognizer.getTokenNames(), pilhaContexto, msg);
+                }
+                
+            });
+            
+            GeradorASA gerador = new GeradorASA(portugolParser);
+            ASA asa = gerador.geraASA();
             
             verificarCaracteresAposEscopoPrograma(codigoFonte);
             
@@ -175,10 +184,6 @@ public final class AnalisadorSintatico implements ObservadorParsing
         }
     }    
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
     public void tratarErroParsing(RecognitionException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao)
     {
         notificarErroSintatico(traduzirErroParsing(erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte));
