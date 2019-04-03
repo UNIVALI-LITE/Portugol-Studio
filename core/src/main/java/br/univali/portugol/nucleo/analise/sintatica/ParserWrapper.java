@@ -1,6 +1,5 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
-import br.univali.portugol.nucleo.analise.sintatica.ObservadorParsing;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;

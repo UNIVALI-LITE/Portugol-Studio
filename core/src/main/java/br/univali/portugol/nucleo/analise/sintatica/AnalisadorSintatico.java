@@ -2,22 +2,15 @@ package br.univali.portugol.nucleo.analise.sintatica;
 
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorEarlyExitException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorFailedPredicateException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedNotSetException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedRangeException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedSetException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedTokenException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedTreeNodeException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMissingTokenException;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorNoViableAltException;
-import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorUnwantedTokenException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
+import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatchedTokenException;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -35,6 +28,7 @@ import org.antlr.v4.runtime.*;
  * fica disponível para os objetos que utilizarem esta fachada.
  *
  * @author Luiz Fernando Noschang
+ * @author Elieser A. de Jesus
  * @since 1.0
  * 
  * @see PortugolLexer
@@ -43,8 +37,6 @@ import org.antlr.v4.runtime.*;
 public final class AnalisadorSintatico implements ObservadorParsing
 {
     public static enum TipoToken { PALAVRA_RESERVADA, OPERADOR, TIPO_PRIMITIVO, OUTRO, NAO_MAPEADO, ID };
-    
-    private static final Pattern padraoEscopoPrograma = Pattern.compile("[^programa]*programa[^{]*\\{");
     
     private static final List<String> palavrasReservadas = Arrays.asList(new String[]
     {
@@ -92,32 +84,14 @@ public final class AnalisadorSintatico implements ObservadorParsing
        "." ,"á", "à", "ã","â","é","ê","í","ó","ô","õ","ú","ü","ç","Ä","À","Ã","Â","É","Ê","Ë","Ó","Ô","Õ","Ú","Ü","Ç","#","$","\"","§","?","¹","²","³","£","¢","¬","ª","º","~","\'","`","\\\\","@" 
     });
     
+    private static final Pattern padraoEscopoPrograma = Pattern.compile("[^programa]*programa[^{]*\\{");
+    
     private String codigoFonte;
-    private List<ObservadorAnaliseSintatica> observadores;
-    private TradutorEarlyExitException tradutorEarlyExitException;
-    private TradutorFailedPredicateException tradutorFailedPredicateException;
-    private TradutorMismatchedRangeException tradutorMismatchedRangeException;
-    private TradutorMismatchedSetException tradutorMismatchedSetException;
-    private TradutorMismatchedNotSetException tradutorMismatchedNotSetException;
-    private TradutorMismatchedTokenException tradutorMismatchedTokenException;
-    private TradutorMissingTokenException tradutorMissingTokenException;
-    private TradutorUnwantedTokenException tradutorUnwantedTokenException;
-    private TradutorMismatchedTreeNodeException tradutorMismatchedTreeNodeException;
-    private TradutorNoViableAltException tradutorNoViableAltException;
+    private Collection<ObservadorAnaliseSintatica> observadores;
 
     public AnalisadorSintatico()
     {
         observadores = new ArrayList<>();
-        tradutorEarlyExitException = new TradutorEarlyExitException();
-        tradutorFailedPredicateException = new TradutorFailedPredicateException();
-        tradutorMismatchedRangeException = new TradutorMismatchedRangeException();
-        tradutorMismatchedSetException = new TradutorMismatchedSetException();
-        tradutorMismatchedNotSetException = new TradutorMismatchedNotSetException();
-        tradutorMismatchedTokenException = new TradutorMismatchedTokenException();
-        tradutorMissingTokenException = new TradutorMissingTokenException();
-        tradutorUnwantedTokenException = new TradutorUnwantedTokenException();
-        tradutorMismatchedTreeNodeException = new TradutorMismatchedTreeNodeException();
-        tradutorNoViableAltException = new TradutorNoViableAltException();
     }
 
     /**
@@ -133,6 +107,7 @@ public final class AnalisadorSintatico implements ObservadorParsing
             this.codigoFonte = codigoFonte;
             
             PortugolLexer portugolLexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
+            
             PortugolParser portugolParser = new PortugolParser(new CommonTokenStream(portugolLexer));
 
             ParserWrapper parserWrapper = new ParserWrapper(portugolParser);
@@ -243,75 +218,16 @@ public final class AnalisadorSintatico implements ObservadorParsing
          * uma alternativa é o uso de reflection para carregar a instanciar a classe correta.
          *
          */
-        if (erro instanceof EarlyExitException)
-        {
-            return tradutorEarlyExitException.traduzirErroParsing((EarlyExitException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-        else
         
-        if (erro instanceof FailedPredicateException)
-        {
-            return tradutorFailedPredicateException.traduzirErroParsing((FailedPredicateException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
+        if (erro instanceof NoViableAltException) {
+            TradutorNoViableAltException tradutor = new TradutorNoViableAltException();
+            return tradutor.traduzirErroParsing((NoViableAltException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
         }
-            
-        else
-            
-        if (erro instanceof MismatchedRangeException)
-        {
-            return tradutorMismatchedRangeException.traduzirErroParsing((MismatchedRangeException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);        
+        else if (erro instanceof InputMismatchException) {
+            TradutorMismatchedTokenException tradutor = new TradutorMismatchedTokenException();
+            return tradutor.traduzirErroParsing((InputMismatchException)erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
         }
-        
-        else
-            
-        if (erro instanceof MismatchedNotSetException)
-        {
-            return tradutorMismatchedNotSetException.traduzirErroParsing((MismatchedNotSetException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-        
-        else
-
-        if (erro instanceof MissingTokenException)
-        {
-            return tradutorMissingTokenException.traduzirErroParsing((MissingTokenException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-                        
-        else
-
-        if (erro instanceof UnwantedTokenException)
-        {
-            return tradutorUnwantedTokenException.traduzirErroParsing((UnwantedTokenException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-                            
-        else
-                    
-        if (erro instanceof MismatchedTreeNodeException)
-        {
-            return tradutorMismatchedTreeNodeException.traduzirErroParsing((MismatchedTreeNodeException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-
-        else
-
-        if (erro instanceof NoViableAltException)
-        {
-            return tradutorNoViableAltException.traduzirErroParsing((NoViableAltException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-        
-        else
-        
-        if (erro instanceof MismatchedTokenException)
-        {
-            return tradutorMismatchedTokenException.traduzirErroParsing((MismatchedTokenException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-        
-        else
-        
-        if (erro instanceof MismatchedSetException)
-        {
-            return tradutorMismatchedSetException.traduzirErroParsing((MismatchedSetException) erro, tokens, pilhaContexto, mensagemPadrao, codigoFonte);
-        }
-        
-        else
-        {
+        else {
             return new ErroParsingNaoTratado(erro, mensagemPadrao, pilhaContexto.pop());
         }
     }
@@ -361,6 +277,7 @@ public final class AnalisadorSintatico implements ObservadorParsing
     
     public static TipoToken getTipoToken(String token)
     {
+        
         if (palavrasReservadas.contains(token)) return TipoToken.PALAVRA_RESERVADA;
         
         if (operadores.contains(token)) return TipoToken.OPERADOR;

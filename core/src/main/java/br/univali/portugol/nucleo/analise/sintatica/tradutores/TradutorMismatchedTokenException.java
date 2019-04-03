@@ -12,6 +12,8 @@ import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.Stack;
 import org.antlr.runtime.MismatchedTokenException;
+import org.antlr.v4.runtime.InputMismatchException;
+import org.antlr.v4.runtime.Token;
 
 
 /**
@@ -37,91 +39,93 @@ public final class TradutorMismatchedTokenException
      * @return                   o erro sintático traduzido.
      * @since 1.0
      */
-    public ErroSintatico traduzirErroParsing(MismatchedTokenException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
+    public ErroSintatico traduzirErroParsing(InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String mensagemPadrao, String codigoFonte)
     {
-        int linha = erro.line;
-        int coluna = erro.charPositionInLine;
-
+        Token token = erro.getOffendingToken();
+        
+        int linha = token.getLine();
+        int coluna = token.getCharPositionInLine();
+        
         String contextoAtual = pilhaContexto.peek();
-        String tokenEsperado = AnalisadorSintatico.getToken(tokens, erro.expecting);
+        //String tokenEsperado = erro.get;// AnalisadorSintatico.getToken(tokens, erro.expecting);
         
-        switch (contextoAtual)
-        {
-            case "para": return traduzirErrosPara(linha, coluna, erro, tokens, pilhaContexto, codigoFonte);
-        }
+//        switch (contextoAtual)
+//        {
+//            case "para": return traduzirErrosPara(linha, coluna, erro, tokens, pilhaContexto, codigoFonte);
+//        }
         
-        switch (tokenEsperado)
-        {            
-            case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
-            case "}": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, pilhaContexto);
-            case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-            case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-            case ":": return new ErroFaltaDoisPontos(linha, coluna);
-        }        
-        
-        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
-        {
-            case PALAVRA_RESERVADA: 
-            {
-                if (tokenEsperado.equals("PR_PROGRAMA"))
-                {
-                    return traduzirErrosPrograma(linha, coluna, erro, tokens, pilhaContexto, codigoFonte, mensagemPadrao);
-                }
-                else
-                {            
-                    return new ErroPalavraReservadaEstaFaltando(linha, coluna, tokenEsperado.replace("PR_", "").toLowerCase(), contextoAtual);
-                }
-            }
-        }        
+//        switch (tokenEsperado)
+//        {            
+//            case "ID": return new ErroNomeSimboloEstaFaltando(linha, coluna, contextoAtual);
+//            case "}": return new ErroEscopo(linha, coluna, ErroEscopo.Tipo.FECHAMENTO, pilhaContexto);
+//            case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
+//            case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+//            case ":": return new ErroFaltaDoisPontos(linha, coluna);
+//        }        
+//        
+//        switch (AnalisadorSintatico.getTipoToken(tokenEsperado))
+//        {
+//            case PALAVRA_RESERVADA: 
+//            {
+//                if (tokenEsperado.equals("PR_PROGRAMA"))
+//                {
+//                    return traduzirErrosPrograma(linha, coluna, erro, tokens, pilhaContexto, codigoFonte, mensagemPadrao);
+//                }
+//                else
+//                {            
+//                    return new ErroPalavraReservadaEstaFaltando(linha, coluna, tokenEsperado.replace("PR_", "").toLowerCase(), contextoAtual);
+//                }
+//            }
+//        }        
 
         return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
     }
     
-    private ErroSintatico traduzirErrosPara(int linha, int coluna, MismatchedTokenException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte)
-    {
-        String tokenEsperado = AnalisadorSintatico.getToken(tokens, erro.expecting);
-        String tokenEncontrado = AnalisadorSintatico.getToken(tokens, erro.getUnexpectedType());
-        
-        switch (tokenEsperado)
-        {
-            case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-            case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
-            case ";":
-            {
-                if (!tokenEncontrado.equals(")"))
-                {
-                    return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
-                }
-            }
-        }
-        
-        return new ErroParaEsperaCondicao(linha, coluna);
-    }
-
-    private ErroSintatico traduzirErrosPrograma(int linha, int coluna, MismatchedTokenException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte, String mensagemPadrao)
-    {
-        String contextoAtual = pilhaContexto.peek();
-        
-        if (codigoFonte.indexOf("programa") >= 0)
-        {
-            String expressoes = codigoFonte.substring(0, codigoFonte.indexOf("programa"));
-
-            return new ErroExpressoesForaEscopoPrograma(expressoes, 0, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
-        }
-        else if (codigoFonte.indexOf("{") >= 0)
-        {
-            final String expressoes = codigoFonte.substring(0, codigoFonte.indexOf("{"));
-
-            return new ErroSintatico(linha, coluna)
-            {
-                @Override
-                protected String construirMensagem()
-                {
-                    return String.format("A estrutura do algoritmo está incorreta. Para corrigir o problema, substitua o seguinte trecho de código \"%s\" pela palavra reservada \"programa\"", expressoes);
-                }
-            };
-        }
-        
-        return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
-    }
+//    private ErroSintatico traduzirErrosPara(int linha, int coluna, InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte)
+//    {
+//        String tokenEsperado = AnalisadorSintatico.getToken(tokens, erro.expecting);
+//        String tokenEncontrado = AnalisadorSintatico.getToken(tokens, erro.getUnexpectedType());
+//        
+//        switch (tokenEsperado)
+//        {
+//            case ")": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+//            case "(": return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.ABERTURA);
+//            case ";":
+//            {
+//                if (!tokenEncontrado.equals(")"))
+//                {
+//                    return new ErroParentesis(linha, coluna, ErroParentesis.Tipo.FECHAMENTO);
+//                }
+//            }
+//        }
+//        
+//        return new ErroParaEsperaCondicao(linha, coluna);
+//    }
+//
+//    private ErroSintatico traduzirErrosPrograma(int linha, int coluna, InputMismatchException erro, String[] tokens, Stack<String> pilhaContexto, String codigoFonte, String mensagemPadrao)
+//    {
+//        String contextoAtual = pilhaContexto.peek();
+//        
+//        if (codigoFonte.indexOf("programa") >= 0)
+//        {
+//            String expressoes = codigoFonte.substring(0, codigoFonte.indexOf("programa"));
+//
+//            return new ErroExpressoesForaEscopoPrograma(expressoes, 0, codigoFonte, ErroExpressoesForaEscopoPrograma.Local.ANTES);
+//        }
+//        else if (codigoFonte.indexOf("{") >= 0)
+//        {
+//            final String expressoes = codigoFonte.substring(0, codigoFonte.indexOf("{"));
+//
+//            return new ErroSintatico(linha, coluna)
+//            {
+//                @Override
+//                protected String construirMensagem()
+//                {
+//                    return String.format("A estrutura do algoritmo está incorreta. Para corrigir o problema, substitua o seguinte trecho de código \"%s\" pela palavra reservada \"programa\"", expressoes);
+//                }
+//            };
+//        }
+//        
+//        return new ErroParsingNaoTratado(erro, mensagemPadrao, contextoAtual);
+//    }
 }

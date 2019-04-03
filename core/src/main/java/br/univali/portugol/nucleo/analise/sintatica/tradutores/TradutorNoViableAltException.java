@@ -52,9 +52,10 @@ public final class TradutorNoViableAltException
         String contextoAtual = pilhaContexto.peek();
         
 //        System.out.println("TESTE NUCLEO: " + erro.grammarDecisionDescription);
-        if(erro.grammarDecisionDescription.contains("INT-OVERFLOW")){
-            return new ErroInteiroForaDoIntervalo(linha, coluna, erro.grammarDecisionDescription.substring(13));
-        }
+        //if(erro.grammarDecisionDescription.contains("INT-OVERFLOW")){
+        //    return new ErroInteiroForaDoIntervalo(linha, coluna, erro.grammarDecisionDescription.substring(13));
+        //}
+        
         switch (contextoAtual)
         {
             case "declaracaoTipoDado": return new ErroTipoDeDadoEstaFaltando(linha, coluna);
