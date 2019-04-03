@@ -1,7 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
 import java.util.Stack;
-import org.antlr.runtime.RecognitionException;
+import org.antlr.v4.runtime.RecognitionException;
 
 /**
  * Observa o processo de parsing do ANTLR e trata os erros gerados durante este processo.

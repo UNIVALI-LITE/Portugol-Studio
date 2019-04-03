@@ -1,5 +1,6 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.ParserWrapper;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroParsingNaoTratado;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorEarlyExitException;
@@ -12,6 +13,8 @@ import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMismatche
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorMissingTokenException;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorNoViableAltException;
 import br.univali.portugol.nucleo.analise.sintatica.tradutores.TradutorUnwantedTokenException;
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.mensagens.ErroSintatico;
 import java.util.ArrayList;
@@ -20,19 +23,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.EarlyExitException;
-import org.antlr.runtime.FailedPredicateException;
-import org.antlr.runtime.MismatchedNotSetException;
-import org.antlr.runtime.MismatchedRangeException;
-import org.antlr.runtime.MismatchedSetException;
-import org.antlr.runtime.MismatchedTokenException;
-import org.antlr.runtime.MismatchedTreeNodeException;
-import org.antlr.runtime.MissingTokenException;
-import org.antlr.runtime.NoViableAltException;
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.UnwantedTokenException;
+import org.antlr.v4.runtime.*;
 
 /**
  * Esta classe provê uma fachada (Facade) que abstrai o processo de parsing do código fonte e a geração da ASA.
@@ -142,13 +133,12 @@ public final class AnalisadorSintatico implements ObservadorParsing
         {
             this.codigoFonte = codigoFonte;
             
-            ANTLRStringStream antlrStringStream = new ANTLRStringStream(codigoFonte);
-            PortugolLexer portugolLexer = new PortugolLexer(antlrStringStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(portugolLexer);
-            PortugolParser portugolParser = new PortugolParser(commonTokenStream);
+            PortugolLexer portugolLexer = new PortugolLexer(CharStreams.fromString(codigoFonte));
+            PortugolParser portugolParser = new PortugolParser(new CommonTokenStream(portugolLexer));
 
-            portugolParser.adicionarObservadorParsing(this);
-            ASA asa = portugolParser.parse();
+            ParserWrapper parserWrapper = new ParserWrapper(portugolParser);
+            parserWrapper.adicionarObservadorParsing(this);
+            ASA asa = parserWrapper.parse();
             
             verificarCaracteresAposEscopoPrograma(codigoFonte);
             
