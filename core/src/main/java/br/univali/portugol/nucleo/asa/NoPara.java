@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.asa;
 
 import br.univali.portugol.nucleo.programa.Estado;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -72,6 +73,15 @@ public final class NoPara extends NoBloco
         this.blocos = blocos;
     }
 
+    public void adicionaBloco(NoBloco bloco)
+    {
+        if (blocos == null) {
+            blocos = new ArrayList<>();
+        }
+        
+        blocos.add(bloco);
+    }
+    
     /**
      * Define a expressão que irá incrementar o contador deste laço de repetição.
      * 

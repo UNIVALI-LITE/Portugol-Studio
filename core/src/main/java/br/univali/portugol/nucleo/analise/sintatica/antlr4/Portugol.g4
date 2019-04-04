@@ -28,7 +28,8 @@ tamanhoArray
     :   INT;    // O que mais pode ser usado como tamanho de array?    
 
 declaracaoFuncao
-    :   FUNCAO TIPO? ID ABRE_PARENTESES listaParametros? FECHA_PARENTESES bloco ; 
+    :   FUNCAO TIPO? ID ABRE_PARENTESES listaParametros? FECHA_PARENTESES 
+                                             ABRE_CHAVES comando* FECHA_CHAVES ; 
 
 listaParametros
     :   parametro (',' parametro)* ;
@@ -73,7 +74,16 @@ facaEnquanto
     :   FACA comando ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
 
 para
-    :   PARA ABRE_PARENTESES (TIPO? ID ('=' expressao)?)? ';' expressao ';' expressao FECHA_PARENTESES comando;
+    :   PARA ABRE_PARENTESES inicializacaoPara? ';' condicao ';' incrementoPara FECHA_PARENTESES ABRE_CHAVES comando* FECHA_CHAVES;
+
+inicializacaoPara
+    :   atribuicao | declaracaoVariavel ; 
+
+condicao
+    :   expressao ;
+
+incrementoPara
+    :   expressao ;
 
 escolha
     :   ESCOLHA ABRE_PARENTESES ID FECHA_PARENTESES ABRE_CHAVES caso+ casoPadrao? FECHA_CHAVES ;   
@@ -86,7 +96,7 @@ casoPadrao
 
 expressao
     :
-        (ID '.')? ID  ABRE_PARENTESES listaExpressoes? FECHA_PARENTESES                         #chamadaFuncao   // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
+        escopoBiblioteca? ID  ABRE_PARENTESES listaExpressoes? FECHA_PARENTESES                 #chamadaFuncao   // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
     |   ID ABRE_COLCHETES expressao FECHA_COLCHETES (ABRE_COLCHETES expressao FECHA_COLCHETES)? #array          // array como a[i], a[i][j]
     |   OP_SUBTRACAO expressao                                                                  #menosUnario
     |   OP_NAO expressao                                                                        #negacao
@@ -100,14 +110,14 @@ expressao
     |   expressao OP_ADICAO expressao                                                           #adicao
     |   expressao OP_SUBTRACAO expressao                                                        #subtracao
     |   expressao OP_IGUALDADE expressao                                                        #operacaoIgualdade               // equality comparison (lowest priority op)
-    |   expressao OP_DIFERENCA expressao                                                        #operacaoDiferenca// equality comparison (lowest priority op)
+    |   expressao OP_DIFERENCA expressao                                                        #operacaoDiferenca  // equality comparison (lowest priority op)
     |   expressao OP_MAIOR expressao                                                            #operacaoMaior
     |   expressao OP_MENOR expressao                                                            #operacaoMenor
     |   expressao OP_MENOR_IGUAL expressao                                                      #operacaoMenorIgual
     |   expressao OP_MAIOR_IGUAL expressao                                                      #operacaoMaiorIgual
     |   expressao OP_E_LOGICO expressao                                                         #operacaoELogico
     |   expressao OP_OU_LOGICO expressao                                                        #operacaoOuLogico
-    |   ID                                                                                      #variavel
+    |   escopoBiblioteca? ID                                                                    #variavel           // referência para variável
     |   INT                                                                                     #numeroInteiro   
     |   REAL                                                                                    #numeroReal  
     |   LOGICO                                                                                  #valorLogico
@@ -120,6 +130,8 @@ expressao
 listaExpressoes
     :   expressao (',' expressao)* ;
      
+escopoBiblioteca
+    :   (ID '.');
 
 ABRE_PARENTESES:    '(';
 FECHA_PARENTESES:   ')';

@@ -37,6 +37,11 @@ public final class NoDeclaracaoVariavel extends NoDeclaracaoInicializavel
     {
         super(nome, tipoDado, constante);
     }
+    
+    public NoDeclaracaoVariavel(String nome, TipoDado tipoDado)
+    {
+        super(nome, tipoDado, false);
+    }
 
     /**
      * {@inheritDoc }

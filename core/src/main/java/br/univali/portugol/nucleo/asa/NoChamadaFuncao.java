@@ -41,7 +41,7 @@ public final class NoChamadaFuncao extends NoReferencia<NoDeclaracaoFuncao>
     {
         super(escopo, nome);
     }
-
+    
     @Override  // sobrescrevendo para retornar tipo mais específico (tipo de retorno covariante)
     public NoDeclaracaoFuncao getOrigemDaReferencia()
     {
