@@ -40,9 +40,8 @@ public class GeradorASATest {
                 + "             escreva(i)                                      "
                 + "         }                                                   "
                 + "         inteiro x                                           "
-                 + "        para (x=0; x < x+1; x++) {                          "
+                 + "        para (x=0; x < x+1; x++)                            "
                 + "             escreva(x)                                      "
-                + "         }                                                   "
                 + "     }                                                       "
                 + "}                                                            ");
 
@@ -62,6 +61,9 @@ public class GeradorASATest {
         
         NoPara primeiroNoPara = (NoPara)blocos.get(0);
         NoPara segundoNoPara = (NoPara)blocos.get(2);
+        
+        Assert.assertTrue("O primeiro loop deveria ter um comando aninhado", primeiroNoPara.getBlocos().size() == 1);
+        Assert.assertTrue("O segundo loop deveria ter um comando aninhado", segundoNoPara.getBlocos().size() == 1);
         
         Assert.assertEquals("O primeiro loop Para deveria ter um bloco dentro dele (o comando 'escreva(i)')", 1, primeiroNoPara.getBlocos().size());
         Assert.assertEquals("O segundo loop Para deveria ter um bloco dentro dele (o comando 'escreva(x)')", 1, segundoNoPara.getBlocos().size());

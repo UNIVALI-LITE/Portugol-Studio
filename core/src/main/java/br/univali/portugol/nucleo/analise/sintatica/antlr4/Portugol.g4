@@ -74,7 +74,8 @@ facaEnquanto
     :   FACA comando ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
 
 para
-    :   PARA ABRE_PARENTESES inicializacaoPara? ';' condicao ';' incrementoPara FECHA_PARENTESES ABRE_CHAVES comando* FECHA_CHAVES;
+    :   PARA ABRE_PARENTESES inicializacaoPara? ';' condicao ';' incrementoPara FECHA_PARENTESES 
+                (ABRE_CHAVES comando* FECHA_CHAVES | comando); // bloco de comandos ou apenas um comando sem as chaves
 
 inicializacaoPara
     :   atribuicao | declaracaoVariavel ; 

@@ -25,7 +25,6 @@ import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
