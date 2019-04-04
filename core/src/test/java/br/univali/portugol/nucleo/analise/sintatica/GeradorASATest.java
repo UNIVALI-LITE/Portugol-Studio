@@ -8,7 +8,6 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
-import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
@@ -43,31 +42,30 @@ public class GeradorASATest {
         asa.aceitar(buscador);
         
         Assert.assertTrue("A função inicio não foi encontrada", buscador.encontrou());
-        Assert.assertEquals("Mais de uma função início foi encontrada", 1, buscador.getOcorrencias()); // deve ter apenas uma ocorrência
     }
 
     private class BuscadorFuncao extends VisitanteNulo {
 
-        private int ocorrencias = 0;
         private final String nomeFuncao;
+        private NoDeclaracaoFuncao declaracaoFuncao;
 
         public BuscadorFuncao(String nomeFuncao) {
             this.nomeFuncao = nomeFuncao;
         }
 
-        public boolean encontrou()
-        {
-            return ocorrencias > 0;
+        public NoDeclaracaoFuncao getDeclaracaoFuncao() {
+            return declaracaoFuncao;
         }
 
-        public int getOcorrencias() {
-            return ocorrencias;
+        public boolean encontrou()
+        {
+            return declaracaoFuncao != null;
         }
-        
+
         @Override
         public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
             if (nomeFuncao.equals(declaracaoFuncao.getNome())) {
-                ocorrencias++;
+                this.declaracaoFuncao = declaracaoFuncao;
             }
             
             return null;
