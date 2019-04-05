@@ -24,9 +24,14 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.AdicaoContext;
+import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
+import br.univali.portugol.nucleo.asa.NoVetor;
 import java.util.ArrayList;
 import java.util.List;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 public class GeradorASA {
 
@@ -54,6 +59,22 @@ public class GeradorASA {
         }
 
         @Override
+        public NoBloco visitArquivo(ArquivoContext ctx) {
+            
+            List<ParserRuleContext> declaracoesGlobais = new ArrayList<>();
+            declaracoesGlobais.addAll(ctx.declaracaoVariavel());
+            declaracoesGlobais.addAll(ctx.declaracaoArray());
+            declaracoesGlobais.addAll(ctx.declaracaoMatriz());
+            declaracoesGlobais.addAll(ctx.declaracaoFuncao());
+            
+            for (ParserRuleContext declaracao : declaracoesGlobais) {
+                asa.adicionaDeclaracaoGlobal((NoDeclaracao)declaracao.accept(this));
+            }
+            
+            return null;
+        }
+
+        @Override
         public NoBloco visitDeclaracaoFuncao(PortugolParser.DeclaracaoFuncaoContext ctx) {
 
             String nomeFuncao = ctx.ID().getText();
@@ -66,8 +87,6 @@ public class GeradorASA {
             for (PortugolParser.ComandoContext comandoContext : ctx.comando()) {
                 declaracaoFuncao.adicionaBloco(comandoContext.accept(this));
             }
-
-            asa.adicionaDeclaracaoGlobal(declaracaoFuncao);
 
             return declaracaoFuncao;
         }
@@ -90,36 +109,31 @@ public class GeradorASA {
         public NoBloco visitIncrementoUnarioPosfixado(IncrementoUnarioPosfixadoContext ctx) {
             // gerando a mesma estrutura do incremento prefixado
             String nomeVariavel = ctx.ID().getText();
-            NoReferenciaVariavel referenciaVariavel = new NoReferenciaVariavel(null, nomeVariavel);
-            return new NoOperacaoAtribuicao(referenciaVariavel, new NoOperacaoSoma(referenciaVariavel, new NoInteiro(1)));
+            return GeradorNoOperacao.geraIncrementoUnario(nomeVariavel);
         }
 
         @Override
         public NoBloco visitIncrementoUnarioPrefixado(IncrementoUnarioPrefixadoContext ctx) {
             String nomeVariavel = ctx.ID().getText();
-            NoReferenciaVariavel referenciaVariavel = new NoReferenciaVariavel(null, nomeVariavel);
-            return new NoOperacaoAtribuicao(referenciaVariavel, new NoOperacaoSoma(referenciaVariavel, new NoInteiro(1)));
+            return GeradorNoOperacao.geraIncrementoUnario(nomeVariavel);
         }
 
         @Override
         public NoBloco visitDecrementoUnarioPosfixado(DecrementoUnarioPosfixadoContext ctx) {
             // gerando a mesma estrutuar do decremento prefixado
             String nomeVariavel = ctx.ID().getText();
-            NoReferenciaVariavel referenciaVariavel = new NoReferenciaVariavel(null, nomeVariavel);
-            return new NoOperacaoAtribuicao(referenciaVariavel, new NoOperacaoSubtracao(referenciaVariavel, new NoInteiro(1)));
+            return GeradorNoOperacao.geraDecrementoUnario(nomeVariavel);
         }
 
         @Override
         public NoBloco visitDecrementoUnarioPrefixado(DecrementoUnarioPrefixadoContext ctx) {
             String nomeVariavel = ctx.ID().getText();
-            NoReferenciaVariavel referenciaVariavel = new NoReferenciaVariavel(null, nomeVariavel);
-            return new NoOperacaoAtribuicao(referenciaVariavel, new NoOperacaoSubtracao(referenciaVariavel, new NoInteiro(1)));
+            return GeradorNoOperacao.geraDecrementoUnario(nomeVariavel);
         }
         
         @Override
         public NoBloco visitAtribuicao(PortugolParser.AtribuicaoContext ctx) {
-            GeradorNoOperacao<AtribuicaoContext, NoOperacaoAtribuicao> gerador = new GeradorNoOperacao<>(NoOperacaoAtribuicao.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoAtribuicao.class);
         }
 
         @Override
@@ -135,6 +149,30 @@ public class GeradorASA {
             }
 
             return noDeclaracaoVariavel;
+        }
+
+        @Override
+        public NoBloco visitDeclaracaoArray(DeclaracaoArrayContext ctx) {
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            String nome = ctx.ID().getText();
+            
+            NoExpressao tamanho = null;
+            if (ctx.tamanhoArray() != null) {
+                 tamanho = (NoExpressao) ctx.tamanhoArray().accept(this);
+            }
+            
+            NoDeclaracaoVetor vetor = new NoDeclaracaoVetor(nome, tipo, tamanho, false);
+            
+            InicializacaoArrayContext inicializacao = ctx.inicializacaoArray();
+            if (inicializacao != null) {
+                List<Object> valores = new ArrayList<>();
+                for (ExpressaoContext expressao : inicializacao.listaExpressoes().expressao()) {
+                    valores.add(expressao.accept(this));
+                }
+                vetor.setInicializacao(new NoVetor(valores));
+            }
+            
+            return vetor; 
         }
 
         // Loop para (for)
@@ -157,7 +195,6 @@ public class GeradorASA {
         @Override
         public NoBloco visitNumeroInteiro(PortugolParser.NumeroInteiroContext ctx) {
             int valorInteiro = Integer.valueOf(ctx.INT().getText());
-
             return new NoInteiro(valorInteiro);
         }
 
@@ -169,44 +206,37 @@ public class GeradorASA {
 
         @Override
         public NoBloco visitOperacaoMenor(PortugolParser.OperacaoMenorContext ctx) {
-            GeradorNoOperacao<OperacaoMenorContext, NoOperacaoLogicaMenor> gerador = new GeradorNoOperacao<>(NoOperacaoLogicaMenor.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMenor.class);
         }
 
         @Override
         public NoBloco visitOperacaoMenorIgual(PortugolParser.OperacaoMenorIgualContext ctx) {
-            GeradorNoOperacao<OperacaoMenorIgualContext, NoOperacaoLogicaMenorIgual> gerador = new GeradorNoOperacao<>(NoOperacaoLogicaMenorIgual.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMenorIgual.class);
         }
 
         @Override
         public NoBloco visitOperacaoMaior(PortugolParser.OperacaoMaiorContext ctx) {
-            GeradorNoOperacao<OperacaoMaiorContext, NoOperacaoLogicaMaior> gerador = new GeradorNoOperacao<>(NoOperacaoLogicaMaior.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMaior.class);
         }
 
         @Override
         public NoBloco visitOperacaoMaiorIgual(PortugolParser.OperacaoMaiorIgualContext ctx) {
-            GeradorNoOperacao<OperacaoMaiorIgualContext, NoOperacaoLogicaMaiorIgual> gerador = new GeradorNoOperacao<>(NoOperacaoLogicaMaiorIgual.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMaiorIgual.class);
         }
 
         @Override
         public NoBloco visitOperacaoIgualdade(PortugolParser.OperacaoIgualdadeContext ctx) {
-            GeradorNoOperacao<OperacaoIgualdadeContext, NoOperacaoLogicaIgualdade> gerador = new GeradorNoOperacao<>(NoOperacaoLogicaIgualdade.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaIgualdade.class);
         }
 
         @Override
         public NoBloco visitOperacaoDiferenca(PortugolParser.OperacaoDiferencaContext ctx) {
-            GeradorNoOperacao<OperacaoDiferencaContext, NoOperacaoLogicaDiferenca> gerador = new GeradorNoOperacao<>(NoOperacaoLogicaDiferenca.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaDiferenca.class);
         }
 
         @Override
         public NoBloco visitAdicao(PortugolParser.AdicaoContext ctx) {
-            GeradorNoOperacao<AdicaoContext, NoOperacaoSoma> gerador = new GeradorNoOperacao<>(NoOperacaoSoma.class);
-            return gerador.gera(ctx, this);
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoSoma.class);
         }
         
         private NoPara criaNoPara(PortugolParser.ParaContext contexto) {
