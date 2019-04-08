@@ -24,10 +24,15 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
-import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.AdicaoContext;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
-import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
+import br.univali.portugol.nucleo.asa.NoMatriz;
+import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
+import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
+import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
+import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
+import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +157,44 @@ public class GeradorASA {
         }
 
         @Override
+        public NoBloco visitTamanhoArray(TamanhoArrayContext ctx) {
+            return new NoInteiro(Integer.parseInt(ctx.INT().getText()));
+        }
+
+        @Override
+        public NoBloco visitDeclaracaoMatriz(DeclaracaoMatrizContext ctx) {
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            String nome = ctx.ID().getText();
+            
+            NoExpressao expressaoLinhas = null;
+            if (ctx.tamanhoArray(0) != null) {
+                 expressaoLinhas = (NoExpressao) ctx.tamanhoArray(0).accept(this);
+            }
+            
+            NoExpressao expressaoColunas = null;
+            if (ctx.tamanhoArray(1) != null) {
+                 expressaoColunas = (NoExpressao) ctx.tamanhoArray(1).accept(this);
+            }
+            
+            NoDeclaracaoMatriz matriz = new NoDeclaracaoMatriz(nome, tipo, expressaoLinhas, expressaoColunas, false);
+            
+            InicializacaoMatrizContext inicializacao = ctx.inicializacaoMatriz();
+            if (inicializacao != null) {
+                List<List<Object>> linhas = new ArrayList<>();
+                for (InicializacaoArrayContext inicializacaoArrayContext : inicializacao.inicializacaoArray()) {
+                    List<Object> linha = new ArrayList<>();
+                    linhas.add(linha);
+                    for (ExpressaoContext expressao : inicializacaoArrayContext.listaExpressoes().expressao()) {
+                        linha.add(expressao.accept(this));
+                    }
+                }
+                matriz.setInicializacao(new NoMatriz(linhas));
+            }
+            
+            return matriz; 
+        }
+        
+        @Override
         public NoBloco visitDeclaracaoArray(DeclaracaoArrayContext ctx) {
             TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
             String nome = ctx.ID().getText();
@@ -190,6 +233,32 @@ public class GeradorASA {
             String nomeFuncao = ctx.ID().getText();
 
             return new NoChamadaFuncao(escopo, nomeFuncao);
+        }
+
+        @Override
+        public NoBloco visitReferenciaArray(ReferenciaArrayContext ctx) {
+            String escopo = null;
+            if (ctx.escopoBiblioteca() != null) {
+                escopo = ctx.escopoBiblioteca().getText();
+            }
+            
+            String nomeArray = ctx.ID().getText();
+
+            return new NoReferenciaVetor(escopo, nomeArray, (NoExpressao)ctx.expressao().accept(this));
+        }
+        
+         @Override
+        public NoBloco visitReferenciaMatriz(ReferenciaMatrizContext ctx) {
+            String escopo = null;
+            if (ctx.escopoBiblioteca() != null) {
+                escopo = ctx.escopoBiblioteca().getText();
+            }
+            
+            String nomeMatriz = ctx.ID().getText();
+
+            NoExpressao expressaoLinha = (NoExpressao)ctx.expressao(0).accept(this);
+            NoExpressao expressaoColuna = (NoExpressao)ctx.expressao(1).accept(this);
+            return new NoReferenciaMatriz(escopo, nomeMatriz, expressaoLinha, expressaoColuna);
         }
 
         @Override
@@ -237,6 +306,21 @@ public class GeradorASA {
         @Override
         public NoBloco visitAdicao(PortugolParser.AdicaoContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoSoma.class);
+        }
+
+        @Override
+        public NoBloco visitDivisao(DivisaoContext ctx) {
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoDivisao.class);
+        }
+        
+        @Override
+        public NoBloco visitMultiplicacao(MultiplicacaoContext ctx) {
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoMultiplicacao.class);
+        }
+
+        @Override
+        public NoBloco visitModulo(ModuloContext ctx) {
+            return GeradorNoOperacao.gera(ctx, this, NoOperacaoModulo.class);
         }
         
         private NoPara criaNoPara(PortugolParser.ParaContext contexto) {

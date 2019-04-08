@@ -9,15 +9,27 @@ import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.NoExpressao;
+import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
 import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
+import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
+import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
+import br.univali.portugol.nucleo.asa.NoVetor;
+import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
@@ -32,6 +44,121 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testExpressoesComArrays() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {                          "
+                + "     inteiro v[] = {1, 2, 3}                                 "
+                + "     inteiro m[2][2]                                         "
+                + "                                                             "
+                + "     funcao inicio() {                                       "
+                + "         inteiro som = v[0]                                  "
+                + "         som =   m[1][2]                                     "
+                + "         som =   m[10/2][V[0]]                               "
+                + "         m[0][1] = m[0][0]                                   "
+                + "         m[v[0]][v[1]] = m[m[0][0]][v[0]]                                   "
+                + "     }                                                       "
+                + "}                                                            ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+
+        Assert.assertEquals("O programa deveria ter 3 declarações globais, 1 vetor, 1 matriz e uma função", 3, asa.getListaDeclaracoesGlobais().size());
+        
+        NoDeclaracaoVetor noVetor = (NoDeclaracaoVetor)asa.getListaDeclaracoesGlobais().get(0);
+        assertNoDeclaracaoVetor(noVetor, "v", new Integer[]{1, 2, 3});
+        
+        NoDeclaracaoMatriz noMatriz = (NoDeclaracaoMatriz)asa.getListaDeclaracoesGlobais().get(1);
+        assertNoDeclaracaoMatriz(noMatriz, "m", 2, 2);
+        
+        BuscadorFuncao buscador = new BuscadorFuncao("inicio");
+        asa.aceitar(buscador);
+        
+        NoDeclaracaoFuncao funcaoInicio = buscador.getDeclaracaoFuncao();
+        
+        Assert.assertEquals("A função início tem 5 nós filhos", 5, funcaoInicio.getBlocos().size());
+        
+        // testa a linha 'inteiro som = v[0]'
+        NoDeclaracaoVariavel declaracaoInteiroSom = (NoDeclaracaoVariavel)funcaoInicio.getBlocos().get(0);
+        Assert.assertEquals("O nome da variável deveria ser 'som'", "som", declaracaoInteiroSom.getNome());
+        Assert.assertEquals("O tipo da variável 'som' deveria ser 'inteiro'", TipoDado.INTEIRO, declaracaoInteiroSom.getTipoDado());
+        Assert.assertEquals("A variável 'som' está inicializada", true, declaracaoInteiroSom.temInicializacao());
+        
+        Assert.assertTrue("A variável 'som' está inicializada com uma referência para vetor", declaracaoInteiroSom.getInicializacao() instanceof NoReferenciaVetor);
+        Assert.assertEquals("A variável 'som' está inicializada com uma referência para o vetor 'v'", "v", ((NoReferenciaVetor)declaracaoInteiroSom.getInicializacao()).getNome());
+        Assert.assertEquals("A variável 'som' está inicializada com uma referência para o vetor 'v' no índice [0]'", new Integer(0), ((NoInteiro)((NoReferenciaVetor)declaracaoInteiroSom.getInicializacao()).getIndice()).getValor());
+        
+        // testa a linha 'som =   m[1][2]'
+        NoOperacaoAtribuicao atribuicaoSom = (NoOperacaoAtribuicao)funcaoInicio.getBlocos().get(1);
+        Assert.assertEquals("A variável 'som' está recebendo um valor", "som", ((NoReferenciaVariavel)atribuicaoSom.getOperandoEsquerdo()).getNome());
+        Assert.assertTrue("A variável 'som' está recebendo um valor que é uma referência para matriz", atribuicaoSom.getOperandoDireito() instanceof NoReferenciaMatriz);
+        Assert.assertEquals("A variável 'som' está recebendo um valor que é uma referência para a matriz 'm'", "m", ((NoReferenciaMatriz)atribuicaoSom.getOperandoDireito()).getNome());
+        Assert.assertEquals("A variável 'som' está recebendo um valor que é uma referência para a matriz 'm' na linha 1", new Integer(1), ((NoInteiro)((NoReferenciaMatriz)atribuicaoSom.getOperandoDireito()).getLinha()).getValor());
+        Assert.assertEquals("A variável 'som' está recebendo um valor que é uma referência para a matriz 'm' na coluna 2", new Integer(2), ((NoInteiro)((NoReferenciaMatriz)atribuicaoSom.getOperandoDireito()).getColuna()).getValor());
+        
+        // testando a linha 'som =   m[10/2][V[0]]'
+        NoOperacaoAtribuicao atribuicaoSom2 = (NoOperacaoAtribuicao)funcaoInicio.getBlocos().get(2);
+        Assert.assertEquals("A variável 'som' está recebendo um valor", "som", ((NoReferenciaVariavel)atribuicaoSom2.getOperandoEsquerdo()).getNome());
+        Assert.assertTrue("A variável 'som' está recebendo um valor que é uma referência para matriz", atribuicaoSom2.getOperandoDireito() instanceof NoReferenciaMatriz);
+        Assert.assertEquals("A variável 'som' está recebendo um valor que é uma referência para a matriz 'm'", "m", ((NoReferenciaMatriz)atribuicaoSom2.getOperandoDireito()).getNome());
+        Assert.assertTrue("'som' recebe o valor da matriz 'm' no índice de linha que é o resultado de uma divisão", ((NoReferenciaMatriz)atribuicaoSom2.getOperandoDireito()).getLinha() instanceof NoOperacaoDivisao);
+        Assert.assertTrue("'som' recebe o valor da matriz 'm' no índice de coluna que é uma referência para um vetor", ((NoReferenciaMatriz)atribuicaoSom2.getOperandoDireito()).getColuna()instanceof NoReferenciaVetor);
+        Assert.assertEquals("'som' recebe o valor da matriz 'm' no índice de coluna que é uma referência para um vetor na posição [0]", new Integer(0), ((NoInteiro)((NoReferenciaVetor)((NoReferenciaMatriz)atribuicaoSom2.getOperandoDireito()).getColuna()).getIndice()).getValor());
+    
+        // testando a linha 'm[0][1] = m[0][0]'
+        NoOperacaoAtribuicao atribuicaoM = (NoOperacaoAtribuicao)funcaoInicio.getBlocos().get(3);
+        Assert.assertEquals("A matriz 'm' está recebendo um valor", "m", ((NoReferenciaMatriz)atribuicaoM.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("A matriz 'm' está recebendo um valor na linha 0", new Integer(0), ((NoInteiro)((NoReferenciaMatriz)atribuicaoM.getOperandoEsquerdo()).getLinha()).getValor());
+        Assert.assertEquals("A matriz 'm' está recebendo um valor na coluna 1", new Integer(1), ((NoInteiro)((NoReferenciaMatriz)atribuicaoM.getOperandoEsquerdo()).getColuna()).getValor());        
+        Assert.assertEquals("A matriz 'm' está recebendo um valor armazenado nela mesma", "m", ((NoReferenciaMatriz)atribuicaoM.getOperandoDireito()).getNome());
+        Assert.assertEquals("A matriz 'm' recebe o valor armazenado nela mesma na linha 0", new Integer(0), ((NoInteiro)((NoReferenciaMatriz)atribuicaoM.getOperandoDireito()).getLinha()).getValor());
+        Assert.assertEquals("A matriz 'm' recebe o valor armazenado nela mesma na coluna 0", new Integer(0), ((NoInteiro)((NoReferenciaMatriz)atribuicaoM.getOperandoDireito()).getColuna()).getValor());
+        
+        // testando a linha 'm[v[0]][v[1]] = m[m[0][0]][v[0]]'
+        NoOperacaoAtribuicao atribuicaoM2 = (NoOperacaoAtribuicao)funcaoInicio.getBlocos().get(4);
+        Assert.assertEquals("A matriz 'm' está recebendo um valor", "m", ((NoReferenciaMatriz)atribuicaoM2.getOperandoEsquerdo()).getNome());
+        Assert.assertTrue("'m' recebe um valor no índice de linha que é uma referência para um vetor", ((NoReferenciaMatriz)atribuicaoM2.getOperandoEsquerdo()).getLinha() instanceof NoReferenciaVetor);
+        Assert.assertTrue("'m' recebe um valor no índice de coluna que também é uma referência para um vetor", ((NoReferenciaMatriz)atribuicaoM2.getOperandoEsquerdo()).getColuna() instanceof NoReferenciaVetor);
+        Assert.assertTrue("'m' recebe um valor armazenado em uma matriz", atribuicaoM2.getOperandoDireito() instanceof NoReferenciaMatriz);
+        Assert.assertTrue("'m' recebe um valor de uma matriz na linha que também é uma matriz", ((NoReferenciaMatriz)atribuicaoM2.getOperandoDireito()).getLinha() instanceof  NoReferenciaMatriz);
+        Assert.assertTrue("'m' recebe um valor de uma matriz na coluna que é um vetor", ((NoReferenciaMatriz)atribuicaoM2.getOperandoDireito()).getColuna()instanceof  NoReferenciaVetor);
+        
+    }
+    
+    private void assertNoDeclaracaoMatriz(NoDeclaracaoMatriz noMatriz, String nomeEsperado, int linhas, int colunas) throws ExcecaoVisitaASA {
+        
+        Assert.assertEquals("O nome da matriz deveria ser " + nomeEsperado, nomeEsperado, noMatriz.getNome());
+        
+        // assumindo que se este método foi usado a matriz tem suas dimensôes definidas nos colchetes
+        NoInteiro noLinhas = (NoInteiro)noMatriz.getNumeroLinhas();
+        NoInteiro noColunas = (NoInteiro)noMatriz.getNumeroColunas();
+        Assert.assertEquals("O número de linhas da matriz deveria ser um NoInteiro com valor " + linhas, new Integer(linhas), noLinhas.getValor());
+        Assert.assertEquals("O número de colunas da matriz deveria ser um NoInteiro com valor " + colunas, new Integer(colunas), noColunas.getValor());
+        
+    }
+    
+    private <T> void assertNoDeclaracaoVetor(NoDeclaracaoVetor noVetor, String nomeEsperado, T[] valoresEsperados)
+    {
+        Assert.assertEquals("O nome do vetor deveria ser " + nomeEsperado, nomeEsperado, noVetor.getNome());
+        
+        NoVetor vetor = (NoVetor)noVetor.getInicializacao();
+        
+        List valoresVetor = extraiValores(vetor);
+        
+        Assert.assertEquals("A lista de valores do vetor deveria ter o mesmo tamanho da lista de valores esperados", valoresVetor.size(), valoresEsperados.length);
+      
+        Assert.assertEquals("Os valores do vetor e valores esperados são diferentes", Arrays.asList(valoresEsperados), valoresVetor);
+        
+    }
+    
+    private <T> List<T> extraiValores(NoVetor vetor) {
+        List<T> valores = new ArrayList<>();
+        for (Object v : vetor.getValores()) {
+            T valor = ((NoExpressaoLiteral<T>)v).getValor();
+            valores.add(valor);
+        }
+        return valores;
+    }
+    
     @Test
     public void testLoopPara() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "

@@ -97,9 +97,10 @@ casoPadrao
 
 expressao
     :
-        escopoBiblioteca? ID  ABRE_PARENTESES listaExpressoes? FECHA_PARENTESES                 #chamadaFuncao   // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
-    |   ID ABRE_COLCHETES expressao FECHA_COLCHETES (ABRE_COLCHETES expressao FECHA_COLCHETES)? #array          // array como a[i], a[i][j]
-    |   OP_SUBTRACAO expressao                                                                  #menosUnario
+        escopoBiblioteca? ID  ABRE_PARENTESES listaExpressoes? FECHA_PARENTESES                 #chamadaFuncao    // chamadas de função como f(), f(x), f(1,2) ou Graficos.carregar(...)
+    |   escopoBiblioteca? ID ABRE_COLCHETES expressao FECHA_COLCHETES                              #referenciaArray  // array como a[i]
+    |   escopoBiblioteca? ID ABRE_COLCHETES expressao FECHA_COLCHETES (ABRE_COLCHETES expressao FECHA_COLCHETES)? #referenciaMatriz // a[i][j]
+    |   OP_SUBTRACAO expressao                                                                  #menosUnario 
     |   OP_NAO expressao                                                                        #negacao
     |   ID OP_INCREMENTO_UNARIO                                                                 #incrementoUnarioPosfixado // x++
     |   OP_INCREMENTO_UNARIO ID                                                                 #incrementoUnarioPrefixado // ++x
