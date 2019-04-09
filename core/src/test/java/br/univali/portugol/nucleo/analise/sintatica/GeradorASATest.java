@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
+import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
@@ -47,6 +48,62 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testComentariosUnicaLinha() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {                          "
+                + " inteiro x = 1 // comentário na variável                   \n"
+                + "                                                             "
+                + " funcao inicio() {                                           "
+                + "     teste(10, 12.0/x)                                       "
+                + "     // logico b = falso                                   \n"
+                + " }                                                           "
+                + " funcao teste(inteiro x, real teste) {                       "
+                + " } // comentário depois da função                          \n"
+                + " funcao real outra(logico &x, cadeia teste[], real m[][]) {  "
+                + " }                                                           "
+                + "} // comentario no fim do programa                         \n");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        Assert.assertEquals("o número de declarações globais deveria ser 4 (uma variável e 3 funções)", 4, asa.getListaDeclaracoesGlobais().size());
+        assertDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 1);
+        
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
+        Assert.assertTrue("função início deveria ter um filho que é uma chamada pra função", funcaoInicio.getBlocos().get(0) instanceof  NoChamadaFuncao);
+        
+        NoDeclaracaoFuncao funcaoTeste = getNoDeclaracaoFuncao("teste", asa);
+        Assert.assertTrue("função 'teste' não deveria ter filhos", funcaoTeste.getBlocos().isEmpty());
+        
+        NoDeclaracaoFuncao funcaoOutra = getNoDeclaracaoFuncao("outra", asa);
+        Assert.assertTrue("função 'outra' não deveria ter filhos", funcaoOutra.getBlocos().isEmpty());
+    }
+    
+    @Test
+    public void testComentariosMultiLinha() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {                          "
+                + "     inteiro x = 1                                           "
+                + "     /* testando um comentário                               "
+                + "         com várias linhas para                              "
+                + "         para ver se funciona corretamente                   "
+                + "     */                                                      "
+                + "                                                             "
+                + "     /* comentando antes da função */                        "
+                + "     funcao inicio() {                                       "
+                + "         /* comentando dentro da função */                   "
+                + "     }                                                       "
+                + "} // comentario no fim do programa                           ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        Assert.assertEquals("o número de declarações globais deveria ser 2 (uma variável e a função início)", 2, asa.getListaDeclaracoesGlobais().size());
+        assertDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 1);
+        
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
+        Assert.assertTrue("função início não deveria ter filhos", funcaoInicio.getBlocos().isEmpty());
+    }
+    
+    @Test
     public void testBibliotecasNativas() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "
                 + "     inclua biblioteca Graficos                              "
@@ -64,10 +121,7 @@ public class GeradorASATest {
         assertNoInclusaoBiblioteca(inclusoes.get(0), "Graficos");
         assertNoInclusaoBiblioteca(inclusoes.get(1), "Sons", "s");
         
-        BuscadorFuncao buscador = new BuscadorFuncao("inicio");
-        asa.aceitar(buscador);
-        
-        NoDeclaracaoFuncao funcaoInicio = buscador.getDeclaracaoFuncao();
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         NoChamadaFuncao chamadaFuncao = (NoChamadaFuncao) funcaoInicio.getBlocos().get(0);
         Assert.assertEquals("nome da função diferente do esperado", "carregar_som", chamadaFuncao.getNome());
         Assert.assertEquals("Escopo diferente do esperado", "Graficos.", chamadaFuncao.getEscopoBiblioteca());
@@ -97,10 +151,7 @@ public class GeradorASATest {
         
         assertNoInclusaoBiblioteca(asa.getListaInclusoesBibliotecas().get(0), "Graficos");
         
-        BuscadorFuncao buscador = new BuscadorFuncao("inicio");
-        asa.aceitar(buscador);
-        
-        NoDeclaracaoFuncao funcaoInicio = buscador.getDeclaracaoFuncao();
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         
         // inteiro som = 0 
         NoDeclaracaoVariavel inteiroSom = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(0);
@@ -160,10 +211,7 @@ public class GeradorASATest {
         NoDeclaracaoMatriz noMatriz = (NoDeclaracaoMatriz)asa.getListaDeclaracoesGlobais().get(1);
         assertNoDeclaracaoMatriz(noMatriz, "m", 2, 2);
         
-        BuscadorFuncao buscador = new BuscadorFuncao("inicio");
-        asa.aceitar(buscador);
-        
-        NoDeclaracaoFuncao funcaoInicio = buscador.getDeclaracaoFuncao();
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         
         Assert.assertEquals("A função início tem 5 nós filhos", 5, funcaoInicio.getBlocos().size());
         
@@ -278,6 +326,12 @@ public class GeradorASATest {
         return valores;
     }
     
+    private NoDeclaracaoFuncao getNoDeclaracaoFuncao(String nomeFuncao, ASA asa) throws ExcecaoVisitaASA {
+        BuscadorFuncao buscador = new BuscadorFuncao(nomeFuncao);
+        asa.aceitar(buscador);
+        return buscador.getDeclaracaoFuncao();
+    }
+    
     @Test
     public void testLoopPara() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "
@@ -294,13 +348,7 @@ public class GeradorASATest {
         GeradorASA gerador = new GeradorASA(parser);
         ASAPrograma asa = (ASAPrograma) gerador.geraASA();
 
-        // procura a função início
-        BuscadorFuncao buscador = new BuscadorFuncao("inicio");
-        asa.aceitar(buscador);
-        
-        Assert.assertTrue("A função inicio não foi encontrada", buscador.encontrou());
-        
-        NoDeclaracaoFuncao funcaoInicio = buscador.getDeclaracaoFuncao();
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         List<NoBloco> blocos = funcaoInicio.getBlocos();
         
         Assert.assertEquals("Eram esperados 3 blocos dentro da função início", 3, blocos.size());
