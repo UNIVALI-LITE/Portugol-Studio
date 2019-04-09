@@ -8,12 +8,15 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
+import br.univali.portugol.nucleo.asa.NoCadeia;
+import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
+import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
@@ -26,7 +29,6 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +46,64 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testAtribuições() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {                          "
+                + "     inclua biblioteca Graficos                              "
+                + "                                                             "
+                + "     funcao inicio() {                                       "
+                + "         inteiro som = 0                                     "
+                + "         som =   som + 1                                     "
+                + "         inteiro teste = som                                 "
+                + "         som = teste                                         "
+                + "         inteiro som = Graficos.carregar_som(\"teste\")      "
+                + "     }                                                       "
+                + "}                                                            ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+
+        Assert.assertEquals("O programa deveria ter 1 declaração global (a inclusão da biblioteca)", 1, asa.getListaDeclaracoesGlobais().size());
+        
+        assertNoInclusaoBiblioteca(asa.getListaInclusoesBibliotecas().get(0), "Graficos");
+        
+        BuscadorFuncao buscador = new BuscadorFuncao("inicio");
+        asa.aceitar(buscador);
+        
+        NoDeclaracaoFuncao funcaoInicio = buscador.getDeclaracaoFuncao();
+        
+        // inteiro som = 0 
+        NoDeclaracaoVariavel inteiroSom = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(0);
+        assertDeclaracaoVariavel(inteiroSom, "som", TipoDado.INTEIRO, 0); // testa se está inicializada com zero
+        
+        // som =   som + 1
+        NoOperacaoAtribuicao atribuicao = (NoOperacaoAtribuicao) funcaoInicio.getBlocos().get(1);
+        Assert.assertEquals("A variavel deveria ser 'som'", "som", ((NoReferenciaVariavel)atribuicao.getOperandoEsquerdo()).getNome());
+        Assert.assertTrue("A variavel recebe o resultaod de uma soma", atribuicao.getOperandoDireito() instanceof NoOperacaoSoma);
+        
+        NoReferenciaVariavel refVariavel = (NoReferenciaVariavel) ((NoOperacaoSoma)atribuicao.getOperandoDireito()).getOperandoEsquerdo();
+        NoInteiro noInteiro = (NoInteiro) ((NoOperacaoSoma)atribuicao.getOperandoDireito()).getOperandoDireito();
+        Assert.assertTrue("soma + 1", refVariavel.getNome().equals("som")  && noInteiro.getValor() == 1);
+        
+        // inteiro teste = som 
+        assertDeclaracaoVariavel((NoDeclaracaoVariavel)funcaoInicio.getBlocos().get(2), "teste", TipoDado.INTEIRO);
+        
+        // som = teste
+        NoOperacaoAtribuicao atribuicao2 = (NoOperacaoAtribuicao) funcaoInicio.getBlocos().get(3);
+        Assert.assertEquals("A variavel que recebe o valor chama-se 'som'", "som", ((NoReferenciaVariavel)atribuicao2.getOperandoEsquerdo()).getNome());
+        Assert.assertTrue("A variavel recebe o valor de outra variável", atribuicao2.getOperandoDireito() instanceof NoReferenciaVariavel);
+        Assert.assertEquals("A variavel recebe o valor da variavel 'teste'", "teste", ((NoReferenciaVariavel)atribuicao2.getOperandoDireito()).getNome());
+        
+        // inteiro som = Graficos.carregar_som(\"teste\")
+        NoDeclaracaoVariavel declaracao2 = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(4);
+        Assert.assertEquals("A variavel que recebe o valor chama-se 'som'", "som", declaracao2.getNome());
+        Assert.assertTrue("A variavel recebe o valor retornado por uma função", declaracao2.getInicializacao() instanceof NoChamadaFuncao);
+        Assert.assertEquals("O nome da função é diferente do esperado", "carregar_som", ((NoChamadaFuncao)declaracao2.getInicializacao()).getNome());
+        Assert.assertEquals("O escopo da função é diferente do esperado", "Graficos.", ((NoChamadaFuncao)declaracao2.getInicializacao()).getEscopoBiblioteca());
+        Assert.assertEquals("O número de parâmetros passados para a função é diferente do esperado", 1, ((NoChamadaFuncao)declaracao2.getInicializacao()).getParametros().size());
+        Assert.assertEquals("O parâmetro deveria ser uma string com o valor 'teste'", "\"teste\"", ((NoCadeia)((NoChamadaFuncao)declaracao2.getInicializacao()).getParametros().get(0)).getValor());
+    }
+    
     @Test
     public void testExpressoesComArrays() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "
@@ -122,6 +182,35 @@ public class GeradorASATest {
         Assert.assertTrue("'m' recebe um valor de uma matriz na linha que também é uma matriz", ((NoReferenciaMatriz)atribuicaoM2.getOperandoDireito()).getLinha() instanceof  NoReferenciaMatriz);
         Assert.assertTrue("'m' recebe um valor de uma matriz na coluna que é um vetor", ((NoReferenciaMatriz)atribuicaoM2.getOperandoDireito()).getColuna()instanceof  NoReferenciaVetor);
         
+    }
+    
+    private void assertNoInclusaoBiblioteca(NoInclusaoBiblioteca biblioteca, String nomeEsperado) {
+        Assert.assertEquals("O nome da biblioteca incluída deveria ser " + nomeEsperado, nomeEsperado, biblioteca.getNome());
+    }
+    
+    private void assertNoInclusaoBiblioteca(NoInclusaoBiblioteca biblioteca, String nomeEsperado, String apelidoEsperado) {
+        assertNoInclusaoBiblioteca(biblioteca, nomeEsperado);
+        Assert.assertEquals("O apelido da biblioteca incluída deveria ser " + apelidoEsperado, apelidoEsperado, biblioteca.getAlias());
+    }
+    
+    private void assertDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, NoReferenciaVetor vetor, int indiceVetor) {
+        
+        assertDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
+        
+        Assert.assertTrue("A variável " + nomeEsperado + " está inicializada com uma referência para vetor", declaracaoVariavel.getInicializacao() instanceof NoReferenciaVetor);
+        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com uma referência para o vetor " + vetor.getNome(), vetor.getNome(), ((NoReferenciaVetor)declaracaoVariavel.getInicializacao()).getNome());
+        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com uma referência para o vetor " + vetor.getNome() + " no índice [" + indiceVetor +"]'", new Integer(indiceVetor), ((NoInteiro)((NoReferenciaVetor)declaracaoVariavel.getInicializacao()).getIndice()).getValor());        
+    }
+    
+    private <T> void assertDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, T valorInicial) {
+        assertDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
+        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com o valor inteiro", valorInicial, ((NoInteiro)declaracaoVariavel.getInicializacao()).getValor());
+    }
+    
+    private void assertDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado) {
+        Assert.assertEquals("O nome da variável deveria ser " + nomeEsperado, nomeEsperado, declaracaoVariavel.getNome());
+        Assert.assertEquals("O tipo da variável " + nomeEsperado + " deveria ser " + tipoEsperado.getNome(), tipoEsperado, declaracaoVariavel.getTipoDado());
+        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada", true, declaracaoVariavel.temInicializacao());
     }
     
     private void assertNoDeclaracaoMatriz(NoDeclaracaoMatriz noMatriz, String nomeEsperado, int linhas, int colunas) throws ExcecaoVisitaASA {

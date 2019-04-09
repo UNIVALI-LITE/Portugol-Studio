@@ -35,7 +35,7 @@ listaParametros
     :   parametro (',' parametro)* ;
 
 parametro
-    :   TIPO '&'? ID (parametroArray | parametroMatriz)? ;
+    :   TIPO PARAMETRO_POR_REFERENCIA? ID (parametroArray | parametroMatriz)? ;
 
 parametroArray
     :   ABRE_COLCHETES FECHA_COLCHETES ;
@@ -135,12 +135,13 @@ listaExpressoes
 escopoBiblioteca
     :   (ID '.');
 
-ABRE_PARENTESES:    '(';
-FECHA_PARENTESES:   ')';
-ABRE_COLCHETES:     '[';
-FECHA_COLCHETES:    ']';
-ABRE_CHAVES:        '{';
-FECHA_CHAVES:       '}';
+ABRE_PARENTESES:            '(' ;
+FECHA_PARENTESES:           ')' ;
+ABRE_COLCHETES:             '[' ;
+FECHA_COLCHETES:            ']' ;
+ABRE_CHAVES:                '{' ;
+FECHA_CHAVES:               '}' ; 
+PARAMETRO_POR_REFERENCIA:   '&' ;
 
 TIPO:           'real' | 'inteiro' | 'vazio' | 'logico' | 'cadeia' | 'caracter' ; 
 
@@ -200,7 +201,10 @@ fragment DIGITO: [0-9] ;
 
 INT:    DIGITO+ ;
 
-LOGICO: 'verdadeiro' | 'falso' ;
+LOGICO: VERDADEIRO | FALSO ;
+
+VERDADEIRO:    'verdadeiro' ;
+FALSO:         'falso' ;      
 
 COMENTARIO:         '/*' .*? '*/' -> channel(HIDDEN) ;
 COMENTARIO_SIMPLES: '//' .*? '\n' -> channel(HIDDEN) ; // acho que o ideal seria mandar os comentários para outro canal como no livro no Antlr4

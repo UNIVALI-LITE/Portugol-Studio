@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolBaseVisitor;
+import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
@@ -24,9 +25,16 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
+import br.univali.portugol.nucleo.asa.ModoAcesso;
+import br.univali.portugol.nucleo.asa.No;
+import br.univali.portugol.nucleo.asa.NoCadeia;
+import br.univali.portugol.nucleo.asa.NoCaracter;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
+import br.univali.portugol.nucleo.asa.NoLogico;
 import br.univali.portugol.nucleo.asa.NoMatriz;
 import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
 import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
@@ -55,7 +63,7 @@ public class GeradorASA {
         return visitor.getAsa();
     }
 
-    private class Antlr4ParserVisitor extends PortugolBaseVisitor<NoBloco> {
+    private class Antlr4ParserVisitor extends PortugolBaseVisitor<No> {
 
         private final ASAPrograma asa = new ASAPrograma();
 
@@ -64,9 +72,16 @@ public class GeradorASA {
         }
 
         @Override
-        public NoBloco visitArquivo(ArquivoContext ctx) {
+        public No visitArquivo(ArquivoContext ctx) {
             
+            List<NoInclusaoBiblioteca> inclusoes = new ArrayList<>();
+            for (InclusaoBibliotecaContext inclusaoBibliotecaContext : ctx.inclusaoBiblioteca()) {
+                inclusoes.add((NoInclusaoBiblioteca)inclusaoBibliotecaContext.accept(this));
+            }
+            asa.setListaInclusoesBibliotecas(inclusoes);   
+
             List<ParserRuleContext> declaracoesGlobais = new ArrayList<>();
+            
             declaracoesGlobais.addAll(ctx.declaracaoVariavel());
             declaracoesGlobais.addAll(ctx.declaracaoArray());
             declaracoesGlobais.addAll(ctx.declaracaoMatriz());
@@ -80,7 +95,7 @@ public class GeradorASA {
         }
 
         @Override
-        public NoBloco visitDeclaracaoFuncao(PortugolParser.DeclaracaoFuncaoContext ctx) {
+        public No visitDeclaracaoFuncao(PortugolParser.DeclaracaoFuncaoContext ctx) {
 
             String nomeFuncao = ctx.ID().getText();
             String nomeTipoRetorno = ctx.TIPO() != null ? ctx.TIPO().getText() : "vazio";
@@ -88,9 +103,28 @@ public class GeradorASA {
 
             NoDeclaracaoFuncao declaracaoFuncao = new NoDeclaracaoFuncao(nomeFuncao, tipoRetorno, Quantificador.VALOR);
 
+            if (ctx.listaParametros() != null) { // se a função tem parâmetros
+                List<NoDeclaracaoParametro> parametros = new ArrayList<>();
+                for (ParametroContext parametroContext : ctx.listaParametros().parametro()) {
+                    TipoDado tipo = TipoDado.obterTipoDadoPeloNome(parametroContext.TIPO().getText());
+                    String nome = parametroContext.ID().getText();
+                    ModoAcesso modoAcesso = (parametroContext.PARAMETRO_POR_REFERENCIA() == null) ? ModoAcesso.POR_VALOR : ModoAcesso.POR_REFERENCIA;
+                    Quantificador quantificador = Quantificador.VALOR;
+                    if (parametroContext.parametroArray() != null) {
+                        quantificador = Quantificador.VETOR;
+                    }
+                    else if (parametroContext.parametroMatriz() != null) {
+                        quantificador = Quantificador.MATRIZ;
+                    }
+
+                    parametros.add(new NoDeclaracaoParametro(nome, tipo, quantificador, modoAcesso));
+                }
+                declaracaoFuncao.setParametros(parametros);
+            }
+                        
             // percorre os comandos declarados dentro da função
             for (PortugolParser.ComandoContext comandoContext : ctx.comando()) {
-                declaracaoFuncao.adicionaBloco(comandoContext.accept(this));
+                declaracaoFuncao.adicionaBloco((NoBloco)comandoContext.accept(this));
             }
 
             return declaracaoFuncao;
@@ -98,7 +132,7 @@ public class GeradorASA {
 
         // referência para variável
         @Override
-        public NoBloco visitVariavel(PortugolParser.VariavelContext ctx) {
+        public No visitVariavel(PortugolParser.VariavelContext ctx) {
             String nomeVariavel = ctx.ID().getText();
 
             String escopo = null;
@@ -111,38 +145,38 @@ public class GeradorASA {
         }
 
         @Override
-        public NoBloco visitIncrementoUnarioPosfixado(IncrementoUnarioPosfixadoContext ctx) {
+        public No visitIncrementoUnarioPosfixado(IncrementoUnarioPosfixadoContext ctx) {
             // gerando a mesma estrutura do incremento prefixado
             String nomeVariavel = ctx.ID().getText();
             return GeradorNoOperacao.geraIncrementoUnario(nomeVariavel);
         }
 
         @Override
-        public NoBloco visitIncrementoUnarioPrefixado(IncrementoUnarioPrefixadoContext ctx) {
+        public No visitIncrementoUnarioPrefixado(IncrementoUnarioPrefixadoContext ctx) {
             String nomeVariavel = ctx.ID().getText();
             return GeradorNoOperacao.geraIncrementoUnario(nomeVariavel);
         }
 
         @Override
-        public NoBloco visitDecrementoUnarioPosfixado(DecrementoUnarioPosfixadoContext ctx) {
+        public No visitDecrementoUnarioPosfixado(DecrementoUnarioPosfixadoContext ctx) {
             // gerando a mesma estrutuar do decremento prefixado
             String nomeVariavel = ctx.ID().getText();
             return GeradorNoOperacao.geraDecrementoUnario(nomeVariavel);
         }
 
         @Override
-        public NoBloco visitDecrementoUnarioPrefixado(DecrementoUnarioPrefixadoContext ctx) {
+        public No visitDecrementoUnarioPrefixado(DecrementoUnarioPrefixadoContext ctx) {
             String nomeVariavel = ctx.ID().getText();
             return GeradorNoOperacao.geraDecrementoUnario(nomeVariavel);
         }
         
         @Override
-        public NoBloco visitAtribuicao(PortugolParser.AtribuicaoContext ctx) {
+        public No visitAtribuicao(PortugolParser.AtribuicaoContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoAtribuicao.class);
         }
 
         @Override
-        public NoBloco visitDeclaracaoVariavel(PortugolParser.DeclaracaoVariavelContext ctx) {
+        public No visitDeclaracaoVariavel(PortugolParser.DeclaracaoVariavelContext ctx) {
             TipoDado tipoVariavel = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
             String nomeVariavel = ctx.ID().getText();
             NoDeclaracaoVariavel noDeclaracaoVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipoVariavel);
@@ -157,12 +191,24 @@ public class GeradorASA {
         }
 
         @Override
-        public NoBloco visitTamanhoArray(TamanhoArrayContext ctx) {
+        public No visitInclusaoBiblioteca(InclusaoBibliotecaContext ctx) {
+            String nome = ctx.ID(0).getText();
+            
+            String alias = null;
+            if (ctx.ID(1) != null) {
+                alias = ctx.ID(1).getText();
+            }
+            
+            return new NoInclusaoBiblioteca(nome, alias);
+        }
+        
+        @Override
+        public No visitTamanhoArray(TamanhoArrayContext ctx) {
             return new NoInteiro(Integer.parseInt(ctx.INT().getText()));
         }
 
         @Override
-        public NoBloco visitDeclaracaoMatriz(DeclaracaoMatrizContext ctx) {
+        public No visitDeclaracaoMatriz(DeclaracaoMatrizContext ctx) {
             TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
             String nome = ctx.ID().getText();
             
@@ -195,7 +241,7 @@ public class GeradorASA {
         }
         
         @Override
-        public NoBloco visitDeclaracaoArray(DeclaracaoArrayContext ctx) {
+        public No visitDeclaracaoArray(DeclaracaoArrayContext ctx) {
             TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
             String nome = ctx.ID().getText();
             
@@ -220,23 +266,33 @@ public class GeradorASA {
 
         // Loop para (for)
         @Override
-        public NoBloco visitPara(PortugolParser.ParaContext ctx) {
+        public No visitPara(PortugolParser.ParaContext ctx) {
             return criaNoPara(ctx);
         }
 
         @Override
-        public NoBloco visitChamadaFuncao(PortugolParser.ChamadaFuncaoContext ctx) {
+        public No visitChamadaFuncao(PortugolParser.ChamadaFuncaoContext ctx) {
 
             PortugolParser.EscopoBibliotecaContext escopoBiblioteca = ctx.escopoBiblioteca();
 
             String escopo = (escopoBiblioteca != null) ? escopoBiblioteca.getText() : null;
             String nomeFuncao = ctx.ID().getText();
 
-            return new NoChamadaFuncao(escopo, nomeFuncao);
+            NoChamadaFuncao noChamadaFuncao = new NoChamadaFuncao(escopo, nomeFuncao);
+            
+            if (ctx.listaExpressoes() != null) { // se existem parâmetros sendo passados para a função
+                List<NoExpressao> parametros = new ArrayList<>();
+                for (ExpressaoContext expressaoContext : ctx.listaExpressoes().expressao()) {
+                    parametros.add((NoExpressao)expressaoContext.accept(this));
+                }
+                noChamadaFuncao.setParametros(parametros);
+            }
+            
+            return noChamadaFuncao;
         }
 
         @Override
-        public NoBloco visitReferenciaArray(ReferenciaArrayContext ctx) {
+        public No visitReferenciaArray(ReferenciaArrayContext ctx) {
             String escopo = null;
             if (ctx.escopoBiblioteca() != null) {
                 escopo = ctx.escopoBiblioteca().getText();
@@ -248,7 +304,7 @@ public class GeradorASA {
         }
         
          @Override
-        public NoBloco visitReferenciaMatriz(ReferenciaMatrizContext ctx) {
+        public No visitReferenciaMatriz(ReferenciaMatrizContext ctx) {
             String escopo = null;
             if (ctx.escopoBiblioteca() != null) {
                 escopo = ctx.escopoBiblioteca().getText();
@@ -262,64 +318,80 @@ public class GeradorASA {
         }
 
         @Override
-        public NoBloco visitNumeroInteiro(PortugolParser.NumeroInteiroContext ctx) {
+        public No visitNumeroInteiro(PortugolParser.NumeroInteiroContext ctx) {
             int valorInteiro = Integer.valueOf(ctx.INT().getText());
             return new NoInteiro(valorInteiro);
         }
 
         @Override
-        public NoBloco visitNumeroReal(PortugolParser.NumeroRealContext ctx) {
+        public No visitNumeroReal(PortugolParser.NumeroRealContext ctx) {
             double valorDouble = Double.parseDouble(ctx.REAL().getText());
             return new NoReal(valorDouble);
         }
 
         @Override
-        public NoBloco visitOperacaoMenor(PortugolParser.OperacaoMenorContext ctx) {
+        public No visitString(StringContext ctx) {
+            return new NoCadeia(ctx.STRING().getText());
+        }
+
+        @Override
+        public No visitValorLogico(ValorLogicoContext ctx) {
+            boolean valor = ctx.LOGICO().getText().equals("verdadeiro");
+            return new NoLogico(valor);
+        }
+
+        @Override
+        public No visitCaracter(CaracterContext ctx) {
+            return new NoCaracter(ctx.CARACTER().getText().charAt(0));
+        }
+        
+        @Override
+        public No visitOperacaoMenor(PortugolParser.OperacaoMenorContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMenor.class);
         }
 
         @Override
-        public NoBloco visitOperacaoMenorIgual(PortugolParser.OperacaoMenorIgualContext ctx) {
+        public No visitOperacaoMenorIgual(PortugolParser.OperacaoMenorIgualContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMenorIgual.class);
         }
 
         @Override
-        public NoBloco visitOperacaoMaior(PortugolParser.OperacaoMaiorContext ctx) {
+        public No visitOperacaoMaior(PortugolParser.OperacaoMaiorContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMaior.class);
         }
 
         @Override
-        public NoBloco visitOperacaoMaiorIgual(PortugolParser.OperacaoMaiorIgualContext ctx) {
+        public No visitOperacaoMaiorIgual(PortugolParser.OperacaoMaiorIgualContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMaiorIgual.class);
         }
 
         @Override
-        public NoBloco visitOperacaoIgualdade(PortugolParser.OperacaoIgualdadeContext ctx) {
+        public No visitOperacaoIgualdade(PortugolParser.OperacaoIgualdadeContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaIgualdade.class);
         }
 
         @Override
-        public NoBloco visitOperacaoDiferenca(PortugolParser.OperacaoDiferencaContext ctx) {
+        public No visitOperacaoDiferenca(PortugolParser.OperacaoDiferencaContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaDiferenca.class);
         }
 
         @Override
-        public NoBloco visitAdicao(PortugolParser.AdicaoContext ctx) {
+        public No visitAdicao(PortugolParser.AdicaoContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoSoma.class);
         }
 
         @Override
-        public NoBloco visitDivisao(DivisaoContext ctx) {
+        public No visitDivisao(DivisaoContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoDivisao.class);
         }
         
         @Override
-        public NoBloco visitMultiplicacao(MultiplicacaoContext ctx) {
+        public No visitMultiplicacao(MultiplicacaoContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoMultiplicacao.class);
         }
 
         @Override
-        public NoBloco visitModulo(ModuloContext ctx) {
+        public No visitModulo(ModuloContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoModulo.class);
         }
         
@@ -334,7 +406,7 @@ public class GeradorASA {
             if (inicializacaoPara != null) {
                 // TODO tratar as outras inicializações, a gramática só está suportando uma inicialização
                 List<NoBloco> inicializacoes = new ArrayList<>();
-                inicializacoes.add(inicializacaoPara.accept(this));
+                inicializacoes.add((NoBloco)inicializacaoPara.accept(this));
                 noPara.setInicializacoes(inicializacoes);
             }
 
@@ -348,7 +420,7 @@ public class GeradorASA {
 
             // percorre os comandos filhos do loop
             for (PortugolParser.ComandoContext comandoContext : contexto.comando()) {
-                noPara.adicionaBloco(comandoContext.accept(this));
+                noPara.adicionaBloco((NoBloco)comandoContext.accept(this));
             }
 
             return noPara;

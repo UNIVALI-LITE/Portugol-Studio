@@ -13,6 +13,15 @@ public final class NoInclusaoBiblioteca extends No
     private TrechoCodigoFonte trechoCodigoFonteNome;
     private TrechoCodigoFonte trechoCodigoFonteAlias;
 
+    public NoInclusaoBiblioteca(String nome) {
+        this.nome = nome;
+    }
+
+    public NoInclusaoBiblioteca(String nome, String alias) {
+        this(nome);
+        this.alias = alias;
+    }
+    
     public String getNome()
     {
         return nome;
