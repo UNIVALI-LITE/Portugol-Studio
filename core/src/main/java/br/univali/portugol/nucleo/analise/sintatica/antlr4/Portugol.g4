@@ -177,6 +177,11 @@ OP_MAIOR_IGUAL:     '>=' ;
 OP_INCREMENTO_UNARIO:   '++' ;
 OP_DECREMENTO_UNARIO:   '--' ;
 
+LOGICO: VERDADEIRO | FALSO ;
+
+VERDADEIRO:    'verdadeiro' ;
+FALSO:         'falso' ;
+
 CARACTER:       '\'' ( SEQ_ESC | ~('\''|'\\') ) '\'' ;
 
 fragment DIGIT_HEX: ('0'..'9'|'a'..'f'|'A'..'F') ;
@@ -200,11 +205,6 @@ REAL:   DIGITO+ '.' DIGITO*
 fragment DIGITO: [0-9] ; 
 
 INT:    DIGITO+ ;
-
-LOGICO: VERDADEIRO | FALSO ;
-
-VERDADEIRO:    'verdadeiro' ;
-FALSO:         'falso' ;      
 
 COMENTARIO:         '/*' .*? '*/' -> channel(HIDDEN) ;
 COMENTARIO_SIMPLES: '//' .*? '\n' -> channel(HIDDEN) ; // acho que o ideal seria mandar os comentários para outro canal como no livro no Antlr4

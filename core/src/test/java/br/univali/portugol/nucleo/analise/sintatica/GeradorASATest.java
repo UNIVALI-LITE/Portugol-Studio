@@ -9,7 +9,6 @@ import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
-import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -48,6 +47,52 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testChamadasFuncoes() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {                          "
+                + " inteiro x = 1                                               "
+                + "                                                             "
+                + " funcao inicio() {                                           "
+                + "     teste(10, 12.0/x)                                       "
+                + "     logico b = falso                                        "
+                + "     cadeia frases[2]                                        "
+                + "     real m[2][2]                                            "
+                + "     real y = outra(b, frases)                               "
+                + " }                                                           "
+                + " funcao teste(inteiro x, real teste) {                       "
+                + " }                                                           "
+                + " funcao real outra(logico &x, cadeia teste[], real m[][]) {  "
+                + "     retorne 0.0                                             "
+                + " }                                                           "
+                + "}                                                            ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        Assert.assertEquals("o número de declarações globais deveria ser 4 (uma variável e 3 funções)", 4, asa.getListaDeclaracoesGlobais().size());
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 1);
+        
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        NoChamadaFuncao chamadaTeste = (NoChamadaFuncao) funcaoInicio.getBlocos().get(0);
+        assertNoChamadaFuncao(chamadaTeste, "teste", new Object[]{10, new NoOperacaoDivisao(null, null)});
+        
+        NoDeclaracaoVariavel declaracaoB = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(1);
+        assertNoDeclaracaoVariavel(declaracaoB, "b", TipoDado.LOGICO, false);
+        
+        NoDeclaracaoVetor frases = (NoDeclaracaoVetor) funcaoInicio.getBlocos().get(2);
+        assertNoDeclaracaoVetor(frases, "frases", 2);
+        
+        NoDeclaracaoMatriz matrizM = (NoDeclaracaoMatriz) funcaoInicio.getBlocos().get(3);
+        assertNoDeclaracaoMatriz(matrizM, "m", 2, 2);
+        
+        NoDeclaracaoVariavel y = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(4);
+        assertNoDeclaracaoVariavel(y, "y", TipoDado.REAL);
+        
+        NoChamadaFuncao chamadaFuncaoOutra = (NoChamadaFuncao) y.getInicializacao();
+        assertNoChamadaFuncao(chamadaFuncaoOutra, "outra", new Object[]{new NoReferenciaVariavel(null, null), new NoReferenciaVetor(null, null, null)});
+    }
+    
+    @Test
     public void testComentariosUnicaLinha() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "
                 + " inteiro x = 1 // comentário na variável                   \n"
@@ -66,7 +111,7 @@ public class GeradorASATest {
         ASAPrograma asa = (ASAPrograma) gerador.geraASA();
         
         Assert.assertEquals("o número de declarações globais deveria ser 4 (uma variável e 3 funções)", 4, asa.getListaDeclaracoesGlobais().size());
-        assertDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 1);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 1);
         
         NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         Assert.assertTrue("função início deveria ter um filho que é uma chamada pra função", funcaoInicio.getBlocos().get(0) instanceof  NoChamadaFuncao);
@@ -97,7 +142,7 @@ public class GeradorASATest {
         ASAPrograma asa = (ASAPrograma) gerador.geraASA();
         
         Assert.assertEquals("o número de declarações globais deveria ser 2 (uma variável e a função início)", 2, asa.getListaDeclaracoesGlobais().size());
-        assertDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 1);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 1);
         
         NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         Assert.assertTrue("função início não deveria ter filhos", funcaoInicio.getBlocos().isEmpty());
@@ -123,11 +168,7 @@ public class GeradorASATest {
         
         NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         NoChamadaFuncao chamadaFuncao = (NoChamadaFuncao) funcaoInicio.getBlocos().get(0);
-        Assert.assertEquals("nome da função diferente do esperado", "carregar_som", chamadaFuncao.getNome());
-        Assert.assertEquals("Escopo diferente do esperado", "Graficos.", chamadaFuncao.getEscopoBiblioteca());
-        Assert.assertEquals("número de parâmetros diferente do esperado", 1, chamadaFuncao.getParametros().size());
-        Assert.assertEquals("Valor do parâmetro diferente do esperado", "\"teste\"", ((NoCadeia)chamadaFuncao.getParametros().get(0)).getValor());
-        
+        assertNoChamadaFuncao(chamadaFuncao, "carregar_som", "Graficos.", new String[]{"\"teste\""});
     }
     
     @Test
@@ -155,7 +196,7 @@ public class GeradorASATest {
         
         // inteiro som = 0 
         NoDeclaracaoVariavel inteiroSom = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(0);
-        assertDeclaracaoVariavel(inteiroSom, "som", TipoDado.INTEIRO, 0); // testa se está inicializada com zero
+        assertNoDeclaracaoVariavel(inteiroSom, "som", TipoDado.INTEIRO, 0); // testa se está inicializada com zero
         
         // som =   som + 1
         NoOperacaoAtribuicao atribuicao = (NoOperacaoAtribuicao) funcaoInicio.getBlocos().get(1);
@@ -167,7 +208,7 @@ public class GeradorASATest {
         Assert.assertTrue("soma + 1", refVariavel.getNome().equals("som")  && noInteiro.getValor() == 1);
         
         // inteiro teste = som 
-        assertDeclaracaoVariavel((NoDeclaracaoVariavel)funcaoInicio.getBlocos().get(2), "teste", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)funcaoInicio.getBlocos().get(2), "teste", TipoDado.INTEIRO);
         
         // som = teste
         NoOperacaoAtribuicao atribuicao2 = (NoOperacaoAtribuicao) funcaoInicio.getBlocos().get(3);
@@ -179,10 +220,7 @@ public class GeradorASATest {
         NoDeclaracaoVariavel declaracao2 = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(4);
         Assert.assertEquals("A variavel que recebe o valor chama-se 'som'", "som", declaracao2.getNome());
         Assert.assertTrue("A variavel recebe o valor retornado por uma função", declaracao2.getInicializacao() instanceof NoChamadaFuncao);
-        Assert.assertEquals("O nome da função é diferente do esperado", "carregar_som", ((NoChamadaFuncao)declaracao2.getInicializacao()).getNome());
-        Assert.assertEquals("O escopo da função é diferente do esperado", "Graficos.", ((NoChamadaFuncao)declaracao2.getInicializacao()).getEscopoBiblioteca());
-        Assert.assertEquals("O número de parâmetros passados para a função é diferente do esperado", 1, ((NoChamadaFuncao)declaracao2.getInicializacao()).getParametros().size());
-        Assert.assertEquals("O parâmetro deveria ser uma string com o valor 'teste'", "\"teste\"", ((NoCadeia)((NoChamadaFuncao)declaracao2.getInicializacao()).getParametros().get(0)).getValor());
+        assertNoChamadaFuncao((NoChamadaFuncao)declaracao2.getInicializacao(), "carregar_som", "Graficos.", new String[]{"\"teste\""});
     }
     
     @Test
@@ -261,6 +299,30 @@ public class GeradorASATest {
         Assert.assertTrue("'m' recebe um valor de uma matriz na coluna que é um vetor", ((NoReferenciaMatriz)atribuicaoM2.getOperandoDireito()).getColuna()instanceof  NoReferenciaVetor);
         
     }
+
+    private void assertNoChamadaFuncao(NoChamadaFuncao chamadaFuncao, String nomeEsperado, Object[] parametrosEsperados) {
+        assertNoChamadaFuncao(chamadaFuncao, nomeEsperado, (String)null, parametrosEsperados); // escopo nulo
+    }
+    
+    private <T> void assertNoChamadaFuncao(NoChamadaFuncao chamadaFuncao, String nomeEsperado, String escopoEsperado, Object[] parametrosEsperados) {
+        assertNoChamadaFuncao(chamadaFuncao, nomeEsperado, escopoEsperado);
+        Assert.assertEquals("número de parâmetros diferente do esperado", parametrosEsperados.length, chamadaFuncao.getParametros().size());
+        for (int i = 0; i < parametrosEsperados.length; i++) {
+            Object parametroEsperado = parametrosEsperados[i];
+            NoExpressao parametroPassado = chamadaFuncao.getParametros().get(i);
+            if (parametroPassado instanceof NoExpressaoLiteral) {
+                  Assert.assertEquals("valor do parâmetro é diferente", parametroEsperado, ((NoExpressaoLiteral<T>) parametroPassado).getValor());
+            }
+            else if (parametroPassado instanceof NoOperacao) {
+                Assert.assertEquals("Classe é diferente", parametroEsperado.getClass().getName(), parametroPassado.getClass().getName());
+            }
+        }
+    }
+  
+    private void assertNoChamadaFuncao(NoChamadaFuncao chamadaFuncao, String nomeEsperado, String escopoEsperado) {
+        Assert.assertEquals("O nome da função é diferente do esperado", nomeEsperado, chamadaFuncao.getNome());
+        Assert.assertEquals("O escopo da função é diferente do esperado", escopoEsperado, chamadaFuncao.getEscopoBiblioteca());
+    }
     
     private void assertNoInclusaoBiblioteca(NoInclusaoBiblioteca biblioteca, String nomeEsperado) {
         Assert.assertEquals("O nome da biblioteca incluída deveria ser " + nomeEsperado, nomeEsperado, biblioteca.getNome());
@@ -271,21 +333,21 @@ public class GeradorASATest {
         Assert.assertEquals("O apelido da biblioteca incluída deveria ser " + apelidoEsperado, apelidoEsperado, biblioteca.getAlias());
     }
     
-    private void assertDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, NoReferenciaVetor vetor, int indiceVetor) {
+    private void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, NoReferenciaVetor vetor, int indiceVetor) {
         
-        assertDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
+        assertNoDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
         
         Assert.assertTrue("A variável " + nomeEsperado + " está inicializada com uma referência para vetor", declaracaoVariavel.getInicializacao() instanceof NoReferenciaVetor);
         Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com uma referência para o vetor " + vetor.getNome(), vetor.getNome(), ((NoReferenciaVetor)declaracaoVariavel.getInicializacao()).getNome());
         Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com uma referência para o vetor " + vetor.getNome() + " no índice [" + indiceVetor +"]'", new Integer(indiceVetor), ((NoInteiro)((NoReferenciaVetor)declaracaoVariavel.getInicializacao()).getIndice()).getValor());        
     }
     
-    private <T> void assertDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, T valorInicial) {
-        assertDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
-        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com o valor inteiro", valorInicial, ((NoInteiro)declaracaoVariavel.getInicializacao()).getValor());
+    private <T> void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, T valorInicial) {
+        assertNoDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
+        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com o valor " + valorInicial, valorInicial, ((NoExpressaoLiteral<T>)declaracaoVariavel.getInicializacao()).getValor());
     }
     
-    private void assertDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado) {
+    private void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado) {
         Assert.assertEquals("O nome da variável deveria ser " + nomeEsperado, nomeEsperado, declaracaoVariavel.getNome());
         Assert.assertEquals("O tipo da variável " + nomeEsperado + " deveria ser " + tipoEsperado.getNome(), tipoEsperado, declaracaoVariavel.getTipoDado());
         Assert.assertEquals("A variável " + nomeEsperado + " está inicializada", true, declaracaoVariavel.temInicializacao());
@@ -301,6 +363,13 @@ public class GeradorASATest {
         Assert.assertEquals("O número de linhas da matriz deveria ser um NoInteiro com valor " + linhas, new Integer(linhas), noLinhas.getValor());
         Assert.assertEquals("O número de colunas da matriz deveria ser um NoInteiro com valor " + colunas, new Integer(colunas), noColunas.getValor());
         
+    }
+    
+    private void assertNoDeclaracaoVetor(NoDeclaracaoVetor noVetor, String nomeEsperado, int tamanhoVetor)
+    {
+        Assert.assertEquals("O nome do vetor deveria ser " + nomeEsperado, nomeEsperado, noVetor.getNome());
+        
+        Assert.assertEquals("tamanho do vetor é diferente", new Integer(tamanhoVetor), ((NoInteiro)noVetor.getTamanho()).getValor());
     }
     
     private <T> void assertNoDeclaracaoVetor(NoDeclaracaoVetor noVetor, String nomeEsperado, T[] valoresEsperados)
