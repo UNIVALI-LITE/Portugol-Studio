@@ -47,6 +47,36 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testBibliotecasNativas() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {                          "
+                + "     inclua biblioteca Graficos                              "
+                + "     inclua biblioteca Sons -> s                             "
+                + "                                                             "
+                + "     funcao inicio() {                                       "
+                + "         Graficos.carregar_som(\"teste\")"
+                + "     }                                                       "
+                + "}                                                            ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        List<NoInclusaoBiblioteca> inclusoes = asa.getListaInclusoesBibliotecas();
+        assertNoInclusaoBiblioteca(inclusoes.get(0), "Graficos");
+        assertNoInclusaoBiblioteca(inclusoes.get(1), "Sons", "s");
+        
+        BuscadorFuncao buscador = new BuscadorFuncao("inicio");
+        asa.aceitar(buscador);
+        
+        NoDeclaracaoFuncao funcaoInicio = buscador.getDeclaracaoFuncao();
+        NoChamadaFuncao chamadaFuncao = (NoChamadaFuncao) funcaoInicio.getBlocos().get(0);
+        Assert.assertEquals("nome da função diferente do esperado", "carregar_som", chamadaFuncao.getNome());
+        Assert.assertEquals("Escopo diferente do esperado", "Graficos.", chamadaFuncao.getEscopoBiblioteca());
+        Assert.assertEquals("número de parâmetros diferente do esperado", 1, chamadaFuncao.getParametros().size());
+        Assert.assertEquals("Valor do parâmetro diferente do esperado", "\"teste\"", ((NoCadeia)chamadaFuncao.getParametros().get(0)).getValor());
+        
+    }
+    
+    @Test
     public void testAtribuições() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "
                 + "     inclua biblioteca Graficos                              "
