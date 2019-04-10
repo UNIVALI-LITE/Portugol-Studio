@@ -132,6 +132,7 @@ public class GeradorASA {
             return noEscolha;
         }
         
+        
         private List<NoBloco> getBlocos(List<ComandoContext> comandos) {
             List<NoBloco> blocos = new ArrayList<>();
             for (ComandoContext comando : comandos) {
@@ -262,10 +263,53 @@ public class GeradorASA {
 
         // Loop para (for)
         @Override
-        public No visitPara(PortugolParser.ParaContext ctx) {
-            return criaNoPara(ctx);
+        public No visitPara(PortugolParser.ParaContext contexto) {
+            PortugolParser.InicializacaoParaContext inicializacaoPara = contexto.inicializacaoPara();
+            PortugolParser.CondicaoContext condicao = contexto.condicao();
+            PortugolParser.IncrementoParaContext incrementoPara = contexto.incrementoPara();
+
+            NoPara noPara = new NoPara();
+
+            if (inicializacaoPara != null) {
+                // TODO tratar as outras inicializações, a gramática só está suportando uma inicialização
+                List<NoBloco> inicializacoes = new ArrayList<>();
+                inicializacoes.add((NoBloco)inicializacaoPara.accept(this));
+                noPara.setInicializacoes(inicializacoes);
+            }
+
+            if (condicao != null) {
+                noPara.setCondicao((NoExpressao) condicao.accept(this));
+            }
+
+            if (incrementoPara != null) {
+                noPara.setIncremento((NoExpressao) incrementoPara.accept(this));
+            }
+
+            // percorre os comandos filhos do loop
+            noPara.setBlocos(getBlocos(contexto.listaComandos().comando()));
+
+            return noPara;
         }
 
+        @Override
+        public No visitFacaEnquanto(FacaEnquantoContext ctx) {
+            NoFacaEnquanto facaEnquanto = new NoFacaEnquanto((NoExpressao)ctx.expressao().accept(this));
+            facaEnquanto.setBlocos(getBlocos(ctx.listaComandos().comando()));
+            return facaEnquanto;
+        }
+
+        @Override
+        public No visitSe(SeContext ctx) {
+            NoSe se = new NoSe((NoExpressao)ctx.expressao().accept(this));
+            
+            se.setBlocosVerdadeiros(getBlocos(ctx.listaComandos(0).comando()));
+            
+            if (ctx.SENAO() != null) {
+                se.setBlocosFalsos(getBlocos(ctx.listaComandos(1).comando()));
+            }
+            return se;
+        }
+        
         @Override
         public No visitChamadaFuncao(PortugolParser.ChamadaFuncaoContext ctx) {
 
@@ -390,38 +434,7 @@ public class GeradorASA {
         public No visitModulo(ModuloContext ctx) {
             return GeradorNoOperacao.gera(ctx, this, NoOperacaoModulo.class);
         }
-        
-        private NoPara criaNoPara(PortugolParser.ParaContext contexto) {
-
-            PortugolParser.InicializacaoParaContext inicializacaoPara = contexto.inicializacaoPara();
-            PortugolParser.CondicaoContext condicao = contexto.condicao();
-            PortugolParser.IncrementoParaContext incrementoPara = contexto.incrementoPara();
-
-            NoPara noPara = new NoPara();
-
-            if (inicializacaoPara != null) {
-                // TODO tratar as outras inicializações, a gramática só está suportando uma inicialização
-                List<NoBloco> inicializacoes = new ArrayList<>();
-                inicializacoes.add((NoBloco)inicializacaoPara.accept(this));
-                noPara.setInicializacoes(inicializacoes);
-            }
-
-            if (condicao != null) {
-                noPara.setCondicao((NoExpressao) condicao.accept(this));
-            }
-
-            if (incrementoPara != null) {
-                noPara.setIncremento((NoExpressao) incrementoPara.accept(this));
-            }
-
-            // percorre os comandos filhos do loop
-            for (PortugolParser.ComandoContext comandoContext : contexto.comando()) {
-                noPara.adicionaBloco((NoBloco)comandoContext.accept(this));
-            }
-
-            return noPara;
-        }
-
+   
     }
 
 }

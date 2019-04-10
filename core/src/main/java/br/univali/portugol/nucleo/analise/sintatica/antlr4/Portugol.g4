@@ -43,14 +43,14 @@ parametroArray
 parametroMatriz
     :   ABRE_COLCHETES FECHA_COLCHETES ABRE_COLCHETES FECHA_COLCHETES ;
 
-bloco
-    :  ABRE_CHAVES comando* FECHA_CHAVES ;   // possibly empty statement block
+//bloco
+//    :  ABRE_CHAVES comando* FECHA_CHAVES ;   // possibly empty statement block
 
 comando
     :   declaracaoVariavel      
     |   declaracaoArray         
     |   declaracaoMatriz
-    |   bloco
+//    |   bloco
     |   se   
     |   enquanto
     |   facaEnquanto
@@ -65,17 +65,19 @@ atribuicao
     :   expressao '=' expressao ;
 
 se
-    :   SE ABRE_PARENTESES expressao FECHA_PARENTESES comando (SENAO comando)? ;
+    :   SE ABRE_PARENTESES expressao FECHA_PARENTESES listaComandos (SENAO listaComandos)? ;
 
 enquanto
-    :   ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES comando ; 
+    :   ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES listaComandos ; 
 
 facaEnquanto
-    :   FACA comando ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
+    :   FACA listaComandos ENQUANTO ABRE_PARENTESES expressao FECHA_PARENTESES ; 
 
 para
-    :   PARA ABRE_PARENTESES inicializacaoPara? ';' condicao ';' incrementoPara FECHA_PARENTESES 
-                (ABRE_CHAVES comando* FECHA_CHAVES | comando); // bloco de comandos ou apenas um comando sem as chaves
+    :   PARA ABRE_PARENTESES inicializacaoPara? ';' condicao ';' incrementoPara FECHA_PARENTESES listaComandos ;
+
+listaComandos
+    : (ABRE_CHAVES comando* FECHA_CHAVES | comando); // 1 comando ou um bloco de comandos entre chaves, possivelmente vazio
 
 inicializacaoPara
     :   atribuicao | declaracaoVariavel ; 
