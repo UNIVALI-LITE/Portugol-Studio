@@ -7,6 +7,8 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class GeradorASA {
 
@@ -89,9 +91,25 @@ public class GeradorASA {
                 declaracaoFuncao.adicionaBloco((NoBloco)comandoContext.accept(this));
             }
 
+            declaracaoFuncao.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            declaracaoFuncao.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.FUNCAO(), ctx.getText().length()));
+            
+            if (ctx.TIPO() != null) {
+                declaracaoFuncao.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            }
+            
             return declaracaoFuncao;
         }
 
+        @Override
+        public No visitNegacao(NegacaoContext ctx) {
+            NoNao noNao = new NoNao((NoExpressao)ctx.expressao().accept(this));
+            
+            noNao.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.OP_NAO(), ctx.getText().length()));
+            
+            return noNao;
+        }
+        
         // referência para variável
         @Override
         public No visitVariavel(PortugolParser.VariavelContext ctx) {
@@ -103,31 +121,42 @@ public class GeradorASA {
                 escopo = escopoBiblioteca.ID().getText();
             }
 
-            return new NoReferenciaVariavel(escopo, nomeVariavel);
+            NoReferenciaVariavel no = new NoReferenciaVariavel(escopo, nomeVariavel);
+            
+            no.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            no.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ID(), ctx.getText().length()));
+            
+            return no;
         }
 
+        @Override
+        public No visitPare(PareContext ctx) {
+            NoPare noPare = new NoPare();
+            noPare.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.PARE()));
+            return noPare;
+        }
+
+        @Override
+        public No visitCaso(CasoContext casoContext) {
+            NoExpressao expressao = casoContext.CONTRARIO() == null ? (NoExpressao) casoContext.expressao().accept(this) : null;
+            NoCaso caso = new NoCaso(expressao);
+            caso.setBlocos(getBlocos(casoContext.comando()));
+            caso.setTrechoCodigoFonte(getTrechoCodigoFonte(casoContext.CASO(), casoContext.getText().length()));
+            return caso;
+        }
+        
         @Override
         public No visitEscolha(EscolhaContext ctx) {
             NoEscolha noEscolha = new NoEscolha((NoExpressao)ctx.expressao().accept(this));
             
             List<NoCaso> casos = new ArrayList<>();
             for (CasoContext casoContext : ctx.caso()) {
-                NoCaso caso = new NoCaso((NoExpressao)casoContext.expressao().accept(this));
-                List<NoBloco> blocos = getBlocos(casoContext.comando());
-                if (casoContext.PARE() != null) {
-                    blocos.add(new NoPare());
-                }
-                caso.setBlocos(blocos);
-                casos.add(caso);
+                casos.add((NoCaso)casoContext.accept(this));
             }
-            
-            if (ctx.casoPadrao() != null) {
-                NoCaso casoPadrao = new NoCaso(null); // sem expressão?
-                casoPadrao.setBlocos(getBlocos(ctx.casoPadrao().comando()));
-                casos.add(casoPadrao);
-            }
-            
+             
             noEscolha.setCasos(casos);
+            
+            noEscolha.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ESCOLHA(), ctx.getText().length()));
             
             return noEscolha;
         }
@@ -172,7 +201,12 @@ public class GeradorASA {
         
         @Override
         public No visitAtribuicao(PortugolParser.AtribuicaoContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoAtribuicao.class);
+            NoOperacaoAtribuicao atribuicao = GeradorNoOperacao.gera(ctx, this, NoOperacaoAtribuicao.class);
+            
+            NoExpressao esquerda = (NoExpressao)ctx.expressao(0).accept(this);
+            atribuicao.setTrechoCodigoFonte(new TrechoCodigoFonte(esquerda.getTrechoCodigoFonte(), ctx.getText().length()));
+            
+            return atribuicao;
         }
 
         @Override
@@ -186,6 +220,12 @@ public class GeradorASA {
                 NoExpressao inicializacao = (NoExpressao) ctx.expressao().accept(this);
                 noDeclaracaoVariavel.setInicializacao(inicializacao);
             }
+            
+            noDeclaracaoVariavel.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            noDeclaracaoVariavel.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            
+            // FALTA TRATAR O CASO DAS CONSTATES
+            noDeclaracaoVariavel.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
 
             return noDeclaracaoVariavel;
         }
@@ -204,7 +244,9 @@ public class GeradorASA {
         
         @Override
         public No visitTamanhoArray(TamanhoArrayContext ctx) {
-            return new NoInteiro(Integer.parseInt(ctx.INT().getText()));
+            NoInteiro noInteiro = new NoInteiro(Integer.parseInt(ctx.INT().getText()));
+            noInteiro.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.INT()));
+            return noInteiro;
         }
 
         @Override
@@ -237,6 +279,12 @@ public class GeradorASA {
                 matriz.setInicializacao(new NoMatriz(linhas));
             }
             
+            matriz.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            matriz.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            
+            // TODO TRATAR as constates
+            matriz.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
+            
             return matriz; 
         }
         
@@ -260,6 +308,12 @@ public class GeradorASA {
                 }
                 vetor.setInicializacao(new NoVetor(valores));
             }
+            
+            vetor.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            vetor.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            
+            // TODO TRATAR as constates
+            vetor.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
             
             return vetor; 
         }
@@ -291,6 +345,8 @@ public class GeradorASA {
             // percorre os comandos filhos do loop
             noPara.setBlocos(getBlocos(contexto.listaComandos()));
 
+            noPara.setTrechoCodigoFonte(getTrechoCodigoFonte(contexto.PARA(), contexto.getText().length()));
+            
             return noPara;
         }
 
@@ -298,6 +354,7 @@ public class GeradorASA {
         public No visitFacaEnquanto(FacaEnquantoContext ctx) {
             NoFacaEnquanto facaEnquanto = new NoFacaEnquanto((NoExpressao)ctx.expressao().accept(this));
             facaEnquanto.setBlocos(getBlocos(ctx.listaComandos()));
+            facaEnquanto.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.FACA(), ctx.getText().length()));
             return facaEnquanto;
         }
 
@@ -305,6 +362,7 @@ public class GeradorASA {
         public No visitEnquanto(EnquantoContext ctx) {
             NoEnquanto enquanto = new NoEnquanto((NoExpressao)ctx.expressao().accept(this));
             enquanto.setBlocos(getBlocos(ctx.listaComandos()));
+            enquanto.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ENQUANTO(), ctx.getText().length()));
             return enquanto;
         }
         
@@ -317,6 +375,9 @@ public class GeradorASA {
             if (ctx.SENAO() != null) {
                 se.setBlocosFalsos(getBlocos(ctx.listaComandos(1)));
             }
+            
+            se.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.SE(), ctx.getText().length()));
+            
             return se;
         }
         
@@ -338,6 +399,9 @@ public class GeradorASA {
                 noChamadaFuncao.setParametros(parametros);
             }
             
+            noChamadaFuncao.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            noChamadaFuncao.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ID(), ctx.getText().length()));
+            
             return noChamadaFuncao;
         }
 
@@ -350,7 +414,24 @@ public class GeradorASA {
             
             String nomeArray = ctx.ID().getText();
 
-            return new NoReferenciaVetor(escopo, nomeArray, (NoExpressao)ctx.expressao().accept(this));
+            NoReferenciaVetor noReferenciaVetor = new NoReferenciaVetor(escopo, nomeArray, (NoExpressao)ctx.expressao().accept(this));
+            
+            noReferenciaVetor.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            noReferenciaVetor.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ID(), ctx.getText().length()));
+            
+            return noReferenciaVetor;
+        }
+        
+        private TrechoCodigoFonte getTrechoCodigoFonte(TerminalNode node, int tamanho) {
+            Token symbol = node.getSymbol();
+            int linha = symbol.getLine();
+            int coluna = symbol.getCharPositionInLine();
+            return new TrechoCodigoFonte(linha, coluna, tamanho);
+        }
+        
+        private TrechoCodigoFonte getTrechoCodigoFonte(TerminalNode node) {
+            int tamanho = node.getSymbol().getText().length();
+            return getTrechoCodigoFonte(node, tamanho);
         }
         
          @Override
@@ -364,99 +445,130 @@ public class GeradorASA {
 
             NoExpressao expressaoLinha = (NoExpressao)ctx.expressao(0).accept(this);
             NoExpressao expressaoColuna = (NoExpressao)ctx.expressao(1).accept(this);
-            return new NoReferenciaMatriz(escopo, nomeMatriz, expressaoLinha, expressaoColuna);
+            
+            NoReferenciaMatriz matriz = new NoReferenciaMatriz(escopo, nomeMatriz, expressaoLinha, expressaoColuna);
+            
+            matriz.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            matriz.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ID(), ctx.getText().length()));
+            
+            return matriz;
         }
 
         @Override
         public No visitNumeroInteiro(PortugolParser.NumeroInteiroContext ctx) {
             int valorInteiro = Integer.valueOf(ctx.INT().getText());
-            return new NoInteiro(valorInteiro);
+            
+            NoInteiro noInteiro = new NoInteiro(valorInteiro);
+            noInteiro.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.INT()));
+            return noInteiro;
         }
 
         @Override
         public No visitNumeroReal(PortugolParser.NumeroRealContext ctx) {
             double valorDouble = Double.parseDouble(ctx.REAL().getText());
-            return new NoReal(valorDouble);
+            NoReal noReal = new NoReal(valorDouble);
+            noReal.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.REAL()));
+            return noReal;
         }
 
         @Override
         public No visitExpressaoEntreParenteses(ExpressaoEntreParentesesContext ctx) {
             NoExpressao expressao = (NoExpressao)ctx.expressao().accept(this);
             expressao.setEstaEntreParenteses(true);
+            expressao.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ABRE_PARENTESES(), ctx.getText().length()));
             return expressao;
         }
 
         @Override
         public No visitMenosUnario(MenosUnarioContext ctx) {
-            return new NoMenosUnario((NoExpressao)ctx.expressao().accept(this));
+            NoMenosUnario noMenosUnario = new NoMenosUnario((NoExpressao)ctx.expressao().accept(this));
+            noMenosUnario.setTrechoCodigoFonteMenos(getTrechoCodigoFonte(ctx.OP_SUBTRACAO()));
+            noMenosUnario.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.OP_SUBTRACAO(), ctx.getText().length()));
+            return noMenosUnario;
         }
         
         @Override
         public No visitString(StringContext ctx) {
-            return new NoCadeia(ctx.STRING().getText());
+            NoCadeia noCadeia = new NoCadeia(ctx.STRING().getText());
+            noCadeia.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.STRING()));
+            return noCadeia;
         }
 
         @Override
         public No visitValorLogico(ValorLogicoContext ctx) {
             boolean valor = ctx.LOGICO().getText().equals("verdadeiro");
-            return new NoLogico(valor);
+            NoLogico noLogico = new NoLogico(valor);
+            noLogico.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.LOGICO()));
+            return noLogico;
         }
 
         @Override
         public No visitCaracter(CaracterContext ctx) {
-            return new NoCaracter(ctx.CARACTER().getText().charAt(1));
+            NoCaracter noCaracter = new NoCaracter(ctx.CARACTER().getText().charAt(1));
+            noCaracter.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.CARACTER()));
+            return noCaracter;
+        }
+        
+        private <TipoContexto extends ParserRuleContext> 
+        NoOperacao criaNoOperacao(TipoContexto contexto, PortugolBaseVisitor visitor, Class<? extends NoOperacao> clazz, TerminalNode operador) {
+            
+            NoOperacao no = GeradorNoOperacao.gera(contexto, visitor, clazz);
+            no.setTrechoCodigoFonteOperador(getTrechoCodigoFonte(operador));
+            no.setTrechoCodigoFonte(new TrechoCodigoFonte(no.getOperandoEsquerdo().getTrechoCodigoFonte(), contexto.getText().length()));
+            return no;
         }
         
         @Override
         public No visitOperacaoMenor(PortugolParser.OperacaoMenorContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMenor.class);
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaMenor.class, ctx.OP_MENOR());
         }
 
         @Override
         public No visitOperacaoMenorIgual(PortugolParser.OperacaoMenorIgualContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMenorIgual.class);
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaMenorIgual.class, ctx.OP_MENOR_IGUAL());
         }
 
         @Override
         public No visitOperacaoMaior(PortugolParser.OperacaoMaiorContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMaior.class);
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaMaior.class, ctx.OP_MAIOR());
         }
 
         @Override
         public No visitOperacaoMaiorIgual(PortugolParser.OperacaoMaiorIgualContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaMaiorIgual.class);
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaMaiorIgual.class, ctx.OP_MAIOR_IGUAL());
         }
 
         @Override
         public No visitOperacaoIgualdade(PortugolParser.OperacaoIgualdadeContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaIgualdade.class);
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaIgualdade.class, ctx.OP_IGUALDADE());
         }
 
         @Override
         public No visitOperacaoDiferenca(PortugolParser.OperacaoDiferencaContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoLogicaDiferenca.class);
-        }
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaDiferenca.class, ctx.OP_DIFERENCA());
+         }
 
         @Override
         public No visitAdicao(PortugolParser.AdicaoContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoSoma.class);
+            return criaNoOperacao(ctx, this, NoOperacaoSoma.class, ctx.OP_ADICAO());
         }
 
         @Override
         public No visitDivisao(DivisaoContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoDivisao.class);
+            return criaNoOperacao(ctx, this, NoOperacaoDivisao.class, ctx.OP_DIVISAO());
         }
         
         @Override
         public No visitMultiplicacao(MultiplicacaoContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoMultiplicacao.class);
+            return criaNoOperacao(ctx, this, NoOperacaoMultiplicacao.class, ctx.OP_MULTIPLICACAO());
         }
 
         @Override
         public No visitModulo(ModuloContext ctx) {
-            return GeradorNoOperacao.gera(ctx, this, NoOperacaoModulo.class);
+            return criaNoOperacao(ctx, this, NoOperacaoModulo.class, ctx.OP_MOD());
+                    
         }
-   
+
     }
 
 }

@@ -53,6 +53,7 @@ comando
     |   para
     |   escolha
     |   RETORNE expressao? 
+    |   pare
     |   atribuicao                            
     |   expressao                      // chamada de função
     ;
@@ -85,13 +86,13 @@ incrementoPara
     :   expressao ;
 
 escolha
-    :   ESCOLHA ABRE_PARENTESES expressao FECHA_PARENTESES ABRE_CHAVES caso+ casoPadrao? FECHA_CHAVES ;   
+    :   ESCOLHA ABRE_PARENTESES expressao FECHA_PARENTESES ABRE_CHAVES caso* FECHA_CHAVES ;   
 
 caso
-    :   CASO expressao ':' comando* PARE? ;
+    :   CASO (CONTRARIO | expressao) ':' (comando* | ABRE_CHAVES comando* FECHA_CHAVES) pare? ;
 
-casoPadrao
-    :   CASO CONTRARIO ':' comando* ;
+pare
+    : PARE ;
 
 expressao
     :
