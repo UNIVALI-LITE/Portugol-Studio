@@ -8,6 +8,7 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
@@ -15,6 +16,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
@@ -39,6 +41,7 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoVetor;
+import br.univali.portugol.nucleo.asa.Quantificador;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import java.util.ArrayList;
@@ -57,6 +60,44 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testDeclaracaoFuncoes() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {                      "
+                + " funcao inicio() {                                       "
+                + " }                                                       "
+                + " funcao teste(inteiro x, real teste[]) {                   "
+                + " }                                                       "
+                + " funcao real outra(logico &x, inteiro x, cadeia teste[][]) { "
+                + "     retorne 1.0                                         "
+                + " }                                                       "
+                + "}                                                        ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        Assert.assertTrue("a função início não tem filhos", inicio.getBlocos().isEmpty());
+        Assert.assertTrue("a função início não tem parâmetros", inicio.getParametros().isEmpty());
+        
+        NoDeclaracaoFuncao teste = getNoDeclaracaoFuncao("teste", asa);
+        Assert.assertTrue("a função teste não tem filhos", teste.getBlocos().isEmpty());
+        Assert.assertEquals("a função teste tem 2 parâmetros", 2, teste.getParametros().size());
+        
+        List<NoDeclaracaoParametro> parametrosTeste = teste.getParametros();
+        assertNoDeclaracaoParametro(parametrosTeste.get(0), "x", TipoDado.INTEIRO, ModoAcesso.POR_VALOR, Quantificador.VALOR);
+        assertNoDeclaracaoParametro(parametrosTeste.get(1), "teste", TipoDado.REAL, ModoAcesso.POR_VALOR, Quantificador.VETOR);
+        
+        NoDeclaracaoFuncao outra = getNoDeclaracaoFuncao("outra", asa);
+        Assert.assertEquals("a função outra tem 1 filho", 1, outra.getBlocos().size());
+        Assert.assertEquals("a função outra tem 3 parâmetros", 3, outra.getParametros().size());
+        Assert.assertEquals("A função outra retorna um real", TipoDado.REAL, outra.getTipoDado());
+        
+        List<NoDeclaracaoParametro> parametrosOutra = outra.getParametros();
+        assertNoDeclaracaoParametro(parametrosOutra.get(0), "x", TipoDado.LOGICO, ModoAcesso.POR_REFERENCIA, Quantificador.VALOR);
+        assertNoDeclaracaoParametro(parametrosOutra.get(1), "x", TipoDado.INTEIRO, ModoAcesso.POR_VALOR, Quantificador.VALOR);
+        assertNoDeclaracaoParametro(parametrosOutra.get(2), "teste", TipoDado.CADEIA, ModoAcesso.POR_VALOR, Quantificador.MATRIZ);
+    }    
     
     @Test
     public void testVariaveisLocais() throws IOException, RecognitionException, ExcecaoVisitaASA {
@@ -528,6 +569,13 @@ public class GeradorASATest {
         
     }
 
+    private void assertNoDeclaracaoParametro(NoDeclaracaoParametro parametro, String nomeEsperado, TipoDado tipoEsperado, ModoAcesso modoAcesso, Quantificador quantificador) {
+        Assert.assertEquals("O nome do parâmetro deveria ser " + nomeEsperado, nomeEsperado, parametro.getNome());
+        Assert.assertEquals("O tipo do parâmetro " + nomeEsperado + " deveria ser " + tipoEsperado.getNome(), tipoEsperado, parametro.getTipoDado());
+        Assert.assertEquals("Problema no parâmetro passado (ou não) como referência", modoAcesso, parametro.getModoAcesso());
+        Assert.assertEquals("problema com parâmetro que é array ou matriz", quantificador, parametro.getQuantificador());
+    }
+    
     private void assertNoChamadaFuncao(NoChamadaFuncao chamadaFuncao, String nomeEsperado, Object[] parametrosEsperados) {
         assertNoChamadaFuncao(chamadaFuncao, nomeEsperado, (String)null, parametrosEsperados); // escopo nulo
     }
