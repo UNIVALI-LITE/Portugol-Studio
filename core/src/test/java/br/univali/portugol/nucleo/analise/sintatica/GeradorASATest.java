@@ -55,6 +55,65 @@ public class GeradorASATest {
 
     
     @Test
+    public void testSe() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {      "
+                + " funcao inicio() {                       "
+                + "     se (x > 10)  {                      "
+                + "         inteiro a = 10                  "
+                + "         escreva(x)                      "
+                + "     }                                   "
+                + "     se (x < 5) {                        "
+                + "         escreva(\"teste\")              "
+                + "         escreva(\"teste\", x)           "
+                + "     }                                   "
+                + "     se (x > 10)                         "
+                + "         escreva(x)                      "
+                + "     senao {                             "
+                + "         se(x > 12) {}                   "
+                + "         senao { escreva (\"teste\", x) }"
+                + "     }                                   "
+                + " }                                       " // funcão início
+                + "}                                        ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        NoSe se = (NoSe) funcaoInicio.getBlocos().get(0);
+        Assert.assertTrue("a condição do primeiro se é do tipo >", se.getCondicao() instanceof NoOperacaoLogicaMaior);
+        NoOperacaoLogicaMaior condicao = (NoOperacaoLogicaMaior)se.getCondicao();
+        Assert.assertEquals("o operando esquerdo da condição deveria ser 'x'", "x", ((NoReferenciaVariavel)condicao.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("o operando direito da condição deveria ser 10", (Integer)10, ((NoInteiro)condicao.getOperandoDireito()).getValor());
+        Assert.assertEquals("o primeiro se deveria ter 2 filhos no bloco verdadeiro", 2, se.getBlocosVerdadeiros().size());
+        Assert.assertTrue("o primeiro se não tem um senão", se.getBlocosFalsos() == null);
+        
+        NoSe se2 = (NoSe) funcaoInicio.getBlocos().get(1);
+        Assert.assertTrue("a condição do segundo se é do tipo <", se2.getCondicao() instanceof NoOperacaoLogicaMenor);
+        NoOperacaoLogicaMenor condicao2 = (NoOperacaoLogicaMenor)se2.getCondicao();
+        Assert.assertEquals("o operando esquerdo da condição deveria ser 'x'", "x", ((NoReferenciaVariavel)condicao2.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("o operando direito da condição deveria ser 5", (Integer)5, ((NoInteiro)condicao2.getOperandoDireito()).getValor());
+        Assert.assertEquals("o segundo se deveria ter 2 filhos no bloco verdadeiro", 2, se2.getBlocosVerdadeiros().size());
+        Assert.assertTrue("o segundo se não tem senão", se2.getBlocosFalsos() == null);
+        
+        NoSe se3 = (NoSe) funcaoInicio.getBlocos().get(2);
+        Assert.assertTrue("a condição do terceiro se é do tipo >", se3.getCondicao() instanceof NoOperacaoLogicaMaior);
+        NoOperacaoLogicaMaior condicao3 = (NoOperacaoLogicaMaior)se3.getCondicao();
+        Assert.assertEquals("o operando esquerdo da condição deveria ser 'x'", "x", ((NoReferenciaVariavel)condicao3.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("o operando direito da condição deveria ser 10", (Integer)10, ((NoInteiro)condicao3.getOperandoDireito()).getValor());
+        Assert.assertEquals("o terceiro se deveria ter 1 filho no bloco verdadeiro", 1, se3.getBlocosVerdadeiros().size());
+        Assert.assertEquals("o terceiro se deveria ter 1 filho no bloco falso", 1, se3.getBlocosFalsos().size());
+        
+        NoSe seAninhado = (NoSe) se3.getBlocosFalsos().get(0);
+        Assert.assertTrue("a condição do se aninhado é do tipo >", seAninhado.getCondicao() instanceof NoOperacaoLogicaMaior);
+        NoOperacaoLogicaMaior condicao4 = (NoOperacaoLogicaMaior)seAninhado.getCondicao();
+        Assert.assertEquals("o operando esquerdo da condição deveria ser 'x'", "x", ((NoReferenciaVariavel)condicao4.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("o operando direito da condição deveria ser 12", (Integer)12, ((NoInteiro)condicao4.getOperandoDireito()).getValor());
+        Assert.assertEquals("o se aninhado deveria ter 0 filhos no bloco verdadeiro", 0, seAninhado.getBlocosVerdadeiros().size());
+        Assert.assertEquals("o se aninhado deveria ter 1 filho no bloco falso", 1, seAninhado.getBlocosFalsos().size());
+    }
+    
+    @Test
     public void testEnquanto() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {  "
                 + " funcao inicio() {                   "
@@ -75,7 +134,7 @@ public class GeradorASATest {
         
         NoEnquanto enquanto = (NoEnquanto) funcaoInicio.getBlocos().get(0);
         
-        Assert.assertTrue("a condição do primeiro enquanto é do tipo <", enquanto.getCondicao() instanceof NoOperacaoLogicaMaior);
+        Assert.assertTrue("a condição do primeiro enquanto é do tipo >", enquanto.getCondicao() instanceof NoOperacaoLogicaMaior);
         NoOperacaoLogicaMaior condicao = (NoOperacaoLogicaMaior)enquanto.getCondicao();
         Assert.assertEquals("o operando esquerdo da condição deveria ser 'x'", "x", ((NoReferenciaVariavel)condicao.getOperandoEsquerdo()).getNome());
         Assert.assertEquals("o operando direito da condição deveria ser 10", (Integer)10, ((NoInteiro)condicao.getOperandoDireito()).getValor());
