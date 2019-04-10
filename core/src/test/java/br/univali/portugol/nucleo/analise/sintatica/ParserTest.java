@@ -19,6 +19,15 @@ import org.junit.Test;
 public class ParserTest {
 
     @Test
+    public void testListaDeclaracaoVariaveis() throws IOException, RecognitionException{
+        PortugolParser parser = novoParser("programa {                      "
+                + "     inteiro x=0, y                                            "
+                + "}                                                        ");
+        
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+    @Test
     public void testLoopPara() throws IOException, RecognitionException {
         PortugolParser parser = novoParser("programa {                          "
                 + "     funcao inicio() {                                       "

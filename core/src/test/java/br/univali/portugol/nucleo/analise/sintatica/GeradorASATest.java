@@ -60,6 +60,10 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    
+    
+    
+    
     @Test
     public void testDeclaracaoFuncoes() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                      "

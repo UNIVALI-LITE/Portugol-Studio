@@ -3,7 +3,7 @@ grammar Portugol;
 arquivo 
     :   PROGRAMA ABRE_CHAVES 
         inclusaoBiblioteca* 
-        (declaracaoFuncao | declaracaoVariavel | declaracaoArray | declaracaoMatriz)* 
+        (declaracaoFuncao | (declaracaoVariavel | declaracaoListaVariaveis) | declaracaoArray | declaracaoMatriz)* 
         FECHA_CHAVES ;
 
 inclusaoBiblioteca
@@ -11,6 +11,9 @@ inclusaoBiblioteca
 
 declaracaoVariavel
     :  CONSTANTE? TIPO ID ('=' expressao)? ;
+
+declaracaoListaVariaveis
+    : TIPO ID ('=' expressao)? (',' ID ('=' expressao)?)*;
 
 declaracaoArray
     :   TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;

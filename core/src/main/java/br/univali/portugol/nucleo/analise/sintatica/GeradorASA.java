@@ -46,6 +46,7 @@ public class GeradorASA {
 
             List<ParserRuleContext> declaracoesGlobais = new ArrayList<>();
             
+            declaracoesGlobais.addAll(ctx.declaracaoListaVariaveis());
             declaracoesGlobais.addAll(ctx.declaracaoVariavel());
             declaracoesGlobais.addAll(ctx.declaracaoArray());
             declaracoesGlobais.addAll(ctx.declaracaoMatriz());
@@ -334,7 +335,7 @@ public class GeradorASA {
                 inicializacoes.add((NoBloco)inicializacaoPara.accept(this));
                 noPara.setInicializacoes(inicializacoes);
             }
-
+            
             if (condicao != null) {
                 noPara.setCondicao((NoExpressao) condicao.accept(this));
             }
