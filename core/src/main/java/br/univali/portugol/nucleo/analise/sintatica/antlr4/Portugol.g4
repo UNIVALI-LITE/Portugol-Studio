@@ -10,7 +10,7 @@ inclusaoBiblioteca
     : INCLUA BIBLIOTECA ID ('->' ID)?;
 
 declaracaoVariavel
-    :   TIPO ID ('=' expressao)? ;
+    :  CONSTANTE? TIPO ID ('=' expressao)? ;
 
 declaracaoArray
     :   TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;
@@ -149,7 +149,7 @@ ENQUANTO:       'enquanto' ;
 PARA:           'para' ;
 SE:             'se' ;
 SENAO:          'senao' ;
-CONST:          'const' ;
+CONSTANTE:          'const' ;
 FUNCAO:         'funcao' ;
 PROGRAMA:       'programa' ;
 ESCOLHA:        'escolha' ;

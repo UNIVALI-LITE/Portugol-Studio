@@ -213,7 +213,8 @@ public class GeradorASA {
         public No visitDeclaracaoVariavel(PortugolParser.DeclaracaoVariavelContext ctx) {
             TipoDado tipoVariavel = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
             String nomeVariavel = ctx.ID().getText();
-            NoDeclaracaoVariavel noDeclaracaoVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipoVariavel);
+            boolean constante = ctx.CONSTANTE() != null;
+            NoDeclaracaoVariavel noDeclaracaoVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipoVariavel, constante);
 
             // a declaração da variável tem uma inicialização?
             if (ctx.expressao() != null) {
@@ -226,7 +227,7 @@ public class GeradorASA {
             
             // FALTA TRATAR O CASO DAS CONSTATES
             noDeclaracaoVariavel.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
-
+            
             return noDeclaracaoVariavel;
         }
 
