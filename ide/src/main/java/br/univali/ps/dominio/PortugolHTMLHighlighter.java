@@ -29,7 +29,7 @@ public class PortugolHTMLHighlighter {
                 case PortugolLexer.PROGRAMA:
                 case PortugolLexer.INCLUA:
                 case PortugolLexer.BIBLIOTECA:
-                case PortugolLexer.CONST:
+                case PortugolLexer.CONSTANTE:
                 case PortugolLexer.FUNCAO:
                 case PortugolLexer.RETORNE:
                 case PortugolLexer.SE:
