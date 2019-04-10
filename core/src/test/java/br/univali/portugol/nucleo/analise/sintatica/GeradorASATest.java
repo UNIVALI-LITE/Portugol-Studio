@@ -11,7 +11,9 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
@@ -22,6 +24,8 @@ import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
+import br.univali.portugol.nucleo.asa.NoMatriz;
+import br.univali.portugol.nucleo.asa.NoMenosUnario;
 import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
 import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
@@ -53,6 +57,44 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    
+    @Test
+    public void testVariaveisLocais() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa { "
+                + " funcao inicio() {                               "
+                + "     inteiro x                                "
+                + "     real a = 10.0                               "
+                + "     cadeia teste = \"teste\"                    "
+                + "     cadeia concat = \"conca\" + \"tenação\"     "
+                + "     caracter c = 'a'                            "
+                + "     logico l = verdadeiro                       "
+                + "     inteiro soma = -(10 + 2)                    "
+                + "     inteiro soma2 = 10 + 2 * x / a              "
+                + "     inteiro vetor[3]                            "
+                + "     inteiro v[] = {1, 2, 3, 10}                 "
+                + "     inteiro m[3][3]                             "
+                + "     inteiro matriz[][] = {{1, 2}, {10, 3}}"
+                + " }                                               "
+                + "}                                                ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(1), "a", TipoDado.REAL, 10.0);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(2), "teste", TipoDado.CADEIA, "\"teste\"");
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(3), "concat", TipoDado.CADEIA, NoOperacaoSoma.class);// new NoOperacaoSoma(null, null));
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(4), "c", TipoDado.CARACTER, 'a');
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(5), "l", TipoDado.LOGICO, true);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(6), "soma", TipoDado.INTEIRO, NoMenosUnario.class);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(7), "soma2", TipoDado.INTEIRO, NoOperacaoSoma.class);
+        assertNoDeclaracaoVetor((NoDeclaracaoVetor)inicio.getBlocos().get(8), "vetor", 3);
+        assertNoDeclaracaoVetor((NoDeclaracaoVetor)inicio.getBlocos().get(9), "v", new Object[]{1, 2, 3, 10});
+        assertNoDeclaracaoMatriz((NoDeclaracaoMatriz)inicio.getBlocos().get(10), "m", 3, 3);
+        assertNoDeclaracaoMatriz((NoDeclaracaoMatriz)inicio.getBlocos().get(11), "matriz", new Integer[][]{{1, 2}, {10, 3}});
+    }
     
     @Test
     public void testSe() throws IOException, RecognitionException, ExcecaoVisitaASA {
@@ -528,15 +570,32 @@ public class GeradorASATest {
         Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com uma referência para o vetor " + vetor.getNome() + " no índice [" + indiceVetor +"]'", new Integer(indiceVetor), ((NoInteiro)((NoReferenciaVetor)declaracaoVariavel.getInicializacao()).getIndice()).getValor());        
     }
     
+    private <T> void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, Class<? extends NoExpressao> classeNoOperacao) {
+        assertNoDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
+        Assert.assertEquals("Problema na inicialização", classeNoOperacao.getName(), declaracaoVariavel.getInicializacao().getClass().getName());
+    }
+    
     private <T> void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado, T valorInicial) {
         assertNoDeclaracaoVariavel(declaracaoVariavel, nomeEsperado, tipoEsperado);
-        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com o valor " + valorInicial, valorInicial, ((NoExpressaoLiteral<T>)declaracaoVariavel.getInicializacao()).getValor());
+        Assert.assertEquals("A variável " + nomeEsperado + " está inicializada com o valor " + valorInicial, valorInicial, ((NoExpressaoLiteral<T>)declaracaoVariavel.getInicializacao()).getValor());            
     }
     
     private void assertNoDeclaracaoVariavel(NoDeclaracaoVariavel declaracaoVariavel, String nomeEsperado, TipoDado tipoEsperado) {
         Assert.assertEquals("O nome da variável deveria ser " + nomeEsperado, nomeEsperado, declaracaoVariavel.getNome());
         Assert.assertEquals("O tipo da variável " + nomeEsperado + " deveria ser " + tipoEsperado.getNome(), tipoEsperado, declaracaoVariavel.getTipoDado());
         //Assert.assertFalse("A variável " + nomeEsperado + " está inicializada", declaracaoVariavel.temInicializacao());
+    }
+    
+    private <T> void assertNoDeclaracaoMatriz(NoDeclaracaoMatriz noMatriz, String nomeEsperado, T[][] valoresEsperados) throws ExcecaoVisitaASA {
+        assertNoDeclaracaoMatriz(noMatriz, nomeEsperado, valoresEsperados.length, valoresEsperados[0].length);
+        
+        NoMatriz matriz = (NoMatriz)noMatriz.getInicializacao();
+        for (int i = 0; i < valoresEsperados.length; i++) {
+            for (int j = 0; j < valoresEsperados[0].length; j++) {
+                T valor = ((NoExpressaoLiteral<T>)(matriz.getValores().get(i).get(j))).getValor();
+                Assert.assertEquals("valores são diferentes", valoresEsperados[i][j], valor);
+            }
+        }
     }
     
     private void assertNoDeclaracaoMatriz(NoDeclaracaoMatriz noMatriz, String nomeEsperado, int linhas, int colunas) throws ExcecaoVisitaASA {
@@ -546,9 +605,13 @@ public class GeradorASATest {
         // assumindo que se este método foi usado a matriz tem suas dimensôes definidas nos colchetes
         NoInteiro noLinhas = (NoInteiro)noMatriz.getNumeroLinhas();
         NoInteiro noColunas = (NoInteiro)noMatriz.getNumeroColunas();
-        Assert.assertEquals("O número de linhas da matriz deveria ser um NoInteiro com valor " + linhas, new Integer(linhas), noLinhas.getValor());
-        Assert.assertEquals("O número de colunas da matriz deveria ser um NoInteiro com valor " + colunas, new Integer(colunas), noColunas.getValor());
+        if (noLinhas != null) {
+            Assert.assertEquals("O número de linhas da matriz deveria ser um NoInteiro com valor " + linhas, new Integer(linhas), noLinhas.getValor());
+        }
         
+        if (noColunas != null) {
+            Assert.assertEquals("O número de colunas da matriz deveria ser um NoInteiro com valor " + colunas, new Integer(colunas), noColunas.getValor());
+        }
     }
     
     private void assertNoDeclaracaoVetor(NoDeclaracaoVetor noVetor, String nomeEsperado, int tamanhoVetor)

@@ -380,6 +380,18 @@ public class GeradorASA {
         }
 
         @Override
+        public No visitExpressaoEntreParenteses(ExpressaoEntreParentesesContext ctx) {
+            NoExpressao expressao = (NoExpressao)ctx.expressao().accept(this);
+            expressao.setEstaEntreParenteses(true);
+            return expressao;
+        }
+
+        @Override
+        public No visitMenosUnario(MenosUnarioContext ctx) {
+            return new NoMenosUnario((NoExpressao)ctx.expressao().accept(this));
+        }
+        
+        @Override
         public No visitString(StringContext ctx) {
             return new NoCadeia(ctx.STRING().getText());
         }
@@ -392,7 +404,7 @@ public class GeradorASA {
 
         @Override
         public No visitCaracter(CaracterContext ctx) {
-            return new NoCaracter(ctx.CARACTER().getText().charAt(0));
+            return new NoCaracter(ctx.CARACTER().getText().charAt(1));
         }
         
         @Override

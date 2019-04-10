@@ -102,4 +102,8 @@ public final class NoMatriz extends NoExpressao
         
         return TipoDado.VAZIO;
     }
+
+    public NoMatriz getInicializacao() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
