@@ -150,6 +150,7 @@ public class ParserTest {
                 + "     escolha (x) {                   "
                 + "         caso 1:                     "
                 + "             escreva(x)              "
+                + "             escreva(x + 1)          "
                 + "             pare                    "
                 + "         caso 2:                     "
                 + "             escreva(x+1)            "

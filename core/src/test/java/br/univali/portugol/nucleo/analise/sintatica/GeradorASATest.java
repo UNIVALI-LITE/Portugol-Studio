@@ -9,11 +9,13 @@ import br.univali.portugol.nucleo.asa.ASA;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
+import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
@@ -24,6 +26,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoPare;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
@@ -46,6 +49,54 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testEscolhaCaso() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {  "
+                + " funcao inicio() {                   "
+                + "     inteiro x = 1                   "
+                + "     escolha (x) {                   "
+                + "         caso 1:                     "
+                + "             escreva(x)              "
+                + "             escreva(x + 1)          "                
+                + "             pare                    "
+                + "         caso 2:                     "
+                + "             escreva(x+1)            "
+                + "         caso contrario:             "
+                + "             escreva(\"asd\")        "
+                + "     }                               "
+                + " }                                   " // funcão início
+                + "}                                    ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)funcaoInicio.getBlocos().get(0), "x", TipoDado.INTEIRO, 1);
+        
+        NoEscolha noEscolha = (NoEscolha) funcaoInicio.getBlocos().get(1);
+        Assert.assertEquals("variável do escolha deveria ser x", "x", ((NoReferenciaVariavel)noEscolha.getExpressao()).getNome());
+        Assert.assertEquals("escolha deveria ter 3 casos", 3, noEscolha.getCasos().size());
+        
+        NoCaso caso1 = noEscolha.getCasos().get(0);
+        Assert.assertEquals("o caso 1 deveria ter o valor 1 como expressão", new Integer(1), ((NoInteiro)caso1.getExpressao()).getValor());
+        Assert.assertEquals("O caso 1 deveria ter 3 comandos filhos, incluindo o 'pare'", 3, caso1.getBlocos().size());
+        
+        assertNoChamadaFuncao((NoChamadaFuncao)caso1.getBlocos().get(0), "escreva", new Object[]{new NoReferenciaVariavel(null, null)});
+        assertNoChamadaFuncao((NoChamadaFuncao)caso1.getBlocos().get(1), "escreva", new Object[]{new NoOperacaoSoma(null, null)});
+        
+        Assert.assertTrue("o caso 1 contém o comando pare no final", caso1.getBlocos().get(2) instanceof NoPare);
+        
+        NoCaso caso2 = noEscolha.getCasos().get(1);
+        Assert.assertEquals("o caso 2 deveria ter o valor 2 como expressão", new Integer(2), ((NoInteiro)caso2.getExpressao()).getValor());
+        Assert.assertEquals("O caso 2 deveria ter 1 comando filho", 1, caso2.getBlocos().size());
+        assertNoChamadaFuncao((NoChamadaFuncao)caso2.getBlocos().get(0), "escreva", new Object[]{new NoOperacaoSoma(null, null)});
+        
+        NoCaso casoContrario = noEscolha.getCasos().get(2);
+        Assert.assertEquals("O caso contrário deveria ter 1 comando filho", 1, casoContrario.getBlocos().size());
+        assertNoChamadaFuncao((NoChamadaFuncao)casoContrario.getBlocos().get(0), "escreva", new Object[]{"\"asd\""});
+    }
+    
     @Test
     public void testChamadasFuncoes() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "

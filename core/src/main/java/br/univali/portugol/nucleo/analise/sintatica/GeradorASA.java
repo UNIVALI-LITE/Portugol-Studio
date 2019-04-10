@@ -1,47 +1,9 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolBaseVisitor;
-import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
-import br.univali.portugol.nucleo.asa.ASA;
-import br.univali.portugol.nucleo.asa.ASAPrograma;
-import br.univali.portugol.nucleo.asa.NoBloco;
-import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
-import br.univali.portugol.nucleo.asa.NoExpressao;
-import br.univali.portugol.nucleo.asa.NoInteiro;
-import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaDiferenca;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaIgualdade;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaior;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaiorIgual;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenorIgual;
-import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
-import br.univali.portugol.nucleo.asa.NoPara;
-import br.univali.portugol.nucleo.asa.NoReal;
-import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
-import br.univali.portugol.nucleo.asa.Quantificador;
-import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.asa.*;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser.*;
-import br.univali.portugol.nucleo.asa.ModoAcesso;
-import br.univali.portugol.nucleo.asa.No;
-import br.univali.portugol.nucleo.asa.NoCadeia;
-import br.univali.portugol.nucleo.asa.NoCaracter;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
-import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
-import br.univali.portugol.nucleo.asa.NoLogico;
-import br.univali.portugol.nucleo.asa.NoMatriz;
-import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
-import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
-import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
-import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
-import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
-import br.univali.portugol.nucleo.asa.NoVetor;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -144,6 +106,40 @@ public class GeradorASA {
             return new NoReferenciaVariavel(escopo, nomeVariavel);
         }
 
+        @Override
+        public No visitEscolha(EscolhaContext ctx) {
+            NoEscolha noEscolha = new NoEscolha((NoExpressao)ctx.expressao().accept(this));
+            
+            List<NoCaso> casos = new ArrayList<>();
+            for (CasoContext casoContext : ctx.caso()) {
+                NoCaso caso = new NoCaso((NoExpressao)casoContext.expressao().accept(this));
+                List<NoBloco> blocos = getBlocos(casoContext.comando());
+                if (casoContext.PARE() != null) {
+                    blocos.add(new NoPare());
+                }
+                caso.setBlocos(blocos);
+                casos.add(caso);
+            }
+            
+            if (ctx.casoPadrao() != null) {
+                NoCaso casoPadrao = new NoCaso(null); // sem expressão?
+                casoPadrao.setBlocos(getBlocos(ctx.casoPadrao().comando()));
+                casos.add(casoPadrao);
+            }
+            
+            noEscolha.setCasos(casos);
+            
+            return noEscolha;
+        }
+        
+        private List<NoBloco> getBlocos(List<ComandoContext> comandos) {
+            List<NoBloco> blocos = new ArrayList<>();
+            for (ComandoContext comando : comandos) {
+                blocos.add((NoBloco)comando.accept(this));
+            }
+            return blocos;
+        }
+        
         @Override
         public No visitIncrementoUnarioPosfixado(IncrementoUnarioPosfixadoContext ctx) {
             // gerando a mesma estrutura do incremento prefixado

@@ -87,13 +87,13 @@ incrementoPara
     :   expressao ;
 
 escolha
-    :   ESCOLHA ABRE_PARENTESES ID FECHA_PARENTESES ABRE_CHAVES caso+ casoPadrao? FECHA_CHAVES ;   
+    :   ESCOLHA ABRE_PARENTESES expressao FECHA_PARENTESES ABRE_CHAVES caso+ casoPadrao? FECHA_CHAVES ;   
 
 caso
-    :   CASO (INT | STRING | CARACTER | LOGICO) ':' comando PARE? ;
+    :   CASO expressao ':' comando* PARE? ;
 
 casoPadrao
-    :   CASO CONTRARIO ':' comando ;
+    :   CASO CONTRARIO ':' comando* ;
 
 expressao
     :
