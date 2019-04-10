@@ -132,13 +132,16 @@ public class GeradorASA {
             return noEscolha;
         }
         
-        
-        private List<NoBloco> getBlocos(List<ComandoContext> comandos) {
+        private List<NoBloco> getBlocos(List<ComandoContext> ctx) {
             List<NoBloco> blocos = new ArrayList<>();
-            for (ComandoContext comando : comandos) {
+            for (ComandoContext comando : ctx) {
                 blocos.add((NoBloco)comando.accept(this));
             }
             return blocos;
+        }
+        
+        private List<NoBloco> getBlocos(ListaComandosContext ctx) {
+            return getBlocos(ctx.comando());
         }
         
         @Override
@@ -286,7 +289,7 @@ public class GeradorASA {
             }
 
             // percorre os comandos filhos do loop
-            noPara.setBlocos(getBlocos(contexto.listaComandos().comando()));
+            noPara.setBlocos(getBlocos(contexto.listaComandos()));
 
             return noPara;
         }
@@ -294,18 +297,25 @@ public class GeradorASA {
         @Override
         public No visitFacaEnquanto(FacaEnquantoContext ctx) {
             NoFacaEnquanto facaEnquanto = new NoFacaEnquanto((NoExpressao)ctx.expressao().accept(this));
-            facaEnquanto.setBlocos(getBlocos(ctx.listaComandos().comando()));
+            facaEnquanto.setBlocos(getBlocos(ctx.listaComandos()));
             return facaEnquanto;
         }
 
         @Override
+        public No visitEnquanto(EnquantoContext ctx) {
+            NoEnquanto enquanto = new NoEnquanto((NoExpressao)ctx.expressao().accept(this));
+            enquanto.setBlocos(getBlocos(ctx.listaComandos()));
+            return enquanto;
+        }
+        
+        @Override
         public No visitSe(SeContext ctx) {
             NoSe se = new NoSe((NoExpressao)ctx.expressao().accept(this));
             
-            se.setBlocosVerdadeiros(getBlocos(ctx.listaComandos(0).comando()));
+            se.setBlocosVerdadeiros(getBlocos(ctx.listaComandos(0)));
             
             if (ctx.SENAO() != null) {
-                se.setBlocosFalsos(getBlocos(ctx.listaComandos(1).comando()));
+                se.setBlocosFalsos(getBlocos(ctx.listaComandos(1)));
             }
             return se;
         }

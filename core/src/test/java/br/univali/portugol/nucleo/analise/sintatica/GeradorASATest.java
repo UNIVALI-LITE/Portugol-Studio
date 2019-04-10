@@ -15,6 +15,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
+import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
@@ -52,6 +53,43 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    
+    @Test
+    public void testEnquanto() throws IOException, RecognitionException, ExcecaoVisitaASA {
+        PortugolParser parser = novoParser("programa {  "
+                + " funcao inicio() {                   "
+                + "     enquanto (x > 10)  {            "
+                + "         se (x < 5) {                "
+                + "             escreva(\"teste\")      "
+                + "         }                           "
+                + "     }                               "
+                + "     enquanto (x > 10)               "
+                + "         escreva(x)                  "
+                + " }                                   " // funcão início
+                + "}                                    ");
+
+        GeradorASA gerador = new GeradorASA(parser);
+        ASAPrograma asa = (ASAPrograma) gerador.geraASA();
+        
+        NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        NoEnquanto enquanto = (NoEnquanto) funcaoInicio.getBlocos().get(0);
+        
+        Assert.assertTrue("a condição do primeiro enquanto é do tipo <", enquanto.getCondicao() instanceof NoOperacaoLogicaMaior);
+        NoOperacaoLogicaMaior condicao = (NoOperacaoLogicaMaior)enquanto.getCondicao();
+        Assert.assertEquals("o operando esquerdo da condição deveria ser 'x'", "x", ((NoReferenciaVariavel)condicao.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("o operando direito da condição deveria ser 10", (Integer)10, ((NoInteiro)condicao.getOperandoDireito()).getValor());
+        Assert.assertEquals("o primeiro enquanto deveria ter um filho", 1, enquanto.getBlocos().size());
+        
+        NoEnquanto enquanto2 = (NoEnquanto) funcaoInicio.getBlocos().get(1);
+        
+        Assert.assertTrue("a condição do segundo enquanto é do tipo <", enquanto2.getCondicao() instanceof NoOperacaoLogicaMaior);
+        NoOperacaoLogicaMaior condicao2 = (NoOperacaoLogicaMaior)enquanto2.getCondicao();
+        Assert.assertEquals("o operando esquerdo da condição deveria ser 'x'", "x", ((NoReferenciaVariavel)condicao2.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("o operando direito da condição deveria ser 10", (Integer)10, ((NoInteiro)condicao2.getOperandoDireito()).getValor());
+        Assert.assertEquals("o segundo enquanto deveria ter um filho", 1, enquanto2.getBlocos().size());
+    }
+    
     @Test
     public void testFacaEnquanto() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {  "
