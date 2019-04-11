@@ -1,7 +1,7 @@
 package br.univali.ps.ui.inspetor;
 
 import br.univali.portugol.nucleo.programa.Programa;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
@@ -18,7 +18,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoInspecionavel;
  */
 public abstract class ItemDaLista {
 
-    protected final NoDeclaracao noDeclaracao;
+    protected final NoDeclaracaoBase noDeclaracao;
     
     protected final int ID;
 
@@ -28,7 +28,7 @@ public abstract class ItemDaLista {
     
     protected boolean estaNoEscopoAtual = true; // os itens só ficam fora de escopo na execução passo a passo
 
-    public ItemDaLista(NoDeclaracao no) {
+    public ItemDaLista(NoDeclaracaoBase no) {
         this.noDeclaracao = no;
         ID = ((NoDeclaracaoInspecionavel) no).getIdParaInspecao();
     }
@@ -94,7 +94,7 @@ public abstract class ItemDaLista {
         return noDeclaracao.getTipoDado();
     }
 
-    public NoDeclaracao getNoDeclaracao() {
+    public NoDeclaracaoBase getNoDeclaracao() {
         return noDeclaracao;
     }
 

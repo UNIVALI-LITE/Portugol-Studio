@@ -4,7 +4,7 @@ import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.No;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
@@ -194,9 +194,9 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         });
     }
 
-    public List<NoDeclaracao> getNosInspecionados() 
+    public List<NoDeclaracaoBase> getNosInspecionados() 
     {
-        List<NoDeclaracao> nosInpecionados = new ArrayList<>();
+        List<NoDeclaracaoBase> nosInpecionados = new ArrayList<>();
         
         for (int i = 0; i < model.getSize(); i++) {
             nosInpecionados.add(model.get(i).getNoDeclaracao());
@@ -395,7 +395,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
     }
 
-    public boolean contemNo(NoDeclaracao no) 
+    public boolean contemNo(NoDeclaracaoBase no) 
     {
         if (no == null) {
             return false;
@@ -404,7 +404,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return getItemDoNo(no) != null;
     }
 
-    private ItemDaLista getItemDoNo(NoDeclaracao no) 
+    private ItemDaLista getItemDoNo(NoDeclaracaoBase no) 
     {
         for (int i = 0; i < model.getSize(); i++) {
             ItemDaLista item = model.getElementAt(i);
@@ -497,7 +497,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         
         for (int i = 0; i < model.getSize(); i++) {
             ItemDaLista item = model.get(i);
-            NoDeclaracao no = item.getNoDeclaracao();
+            NoDeclaracaoBase no = item.getNoDeclaracao();
             boolean noEstaNoEscopoAtual = true;
             if (programaExecutando) {
                 noEstaNoEscopoAtual = noEstaNoEscopoAtual(escopoAtual, no);
@@ -528,11 +528,11 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
         private boolean podeImportartNosArrastadosDaTree(TransferHandler.TransferSupport support) 
         {
-            List<NoDeclaracao> nosTransferidos = null;
+            List<NoDeclaracaoBase> nosTransferidos = null;
             try 
             {
-                nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
-                for (NoDeclaracao no : nosTransferidos) 
+                nosTransferidos = (List<NoDeclaracaoBase>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+                for (NoDeclaracaoBase no : nosTransferidos) 
                 {
                     if (!contemNo(no)) {
                         support.setShowDropLocation(true);
@@ -572,13 +572,13 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
 
         private boolean importaNosArrastadosDaJTree(TransferHandler.TransferSupport support) 
         {
-            List<NoDeclaracao> nosTransferidos = null;
+            List<NoDeclaracaoBase> nosTransferidos = null;
             try 
             {
-                nosTransferidos = (List<NoDeclaracao>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
+                nosTransferidos = (List<NoDeclaracaoBase>) support.getTransferable().getTransferData(AbaCodigoFonte.NoTransferable.NO_DATA_FLAVOR);
 
                 boolean importou = false;
-                for (NoDeclaracao noTransferido : nosTransferidos) 
+                for (NoDeclaracaoBase noTransferido : nosTransferidos) 
                 {
                     if (!contemNo(noTransferido)) {
                         adicionaNo(noTransferido);
@@ -608,7 +608,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                     int tamanhoDoTexto = textArea.getSelectionEnd() - textArea.getSelectionStart();
                     ProcuradorDeDeclaracao procuradorDeDeclaracao = new ProcuradorDeDeclaracao(stringArrastada, linha, coluna, tamanhoDoTexto);
                     programa.getArvoreSintaticaAbstrata().aceitar(procuradorDeDeclaracao);
-                    NoDeclaracao no = procuradorDeDeclaracao.getNoDeclaracao();
+                    NoDeclaracaoBase no = procuradorDeDeclaracao.getNoDeclaracao();
                     if (procuradorDeDeclaracao.encontrou() && !contemNo(no)) {
                         adicionaNo(no);
                     }
@@ -706,7 +706,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
             
             if (procuradorDeDeclaracao.encontrou()) {
 
-                NoDeclaracao noDeclaracao = procuradorDeDeclaracao.getNoDeclaracao();
+                NoDeclaracaoBase noDeclaracao = procuradorDeDeclaracao.getNoDeclaracao();
 
                 if (noDeclaracao instanceof NoDeclaracaoInicializavel) {
                     return obtemValorDeExpressaoDoTipoInteiro(((NoDeclaracaoInicializavel) noDeclaracao).getInicializacao());
@@ -805,7 +805,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return false;
     }
 
-    public void adicionaNo(NoDeclaracao noTransferido) throws ExcecaoVisitaASA 
+    public void adicionaNo(NoDeclaracaoBase noTransferido) throws ExcecaoVisitaASA 
     {
         boolean simboloInserido = false;
         if (noTransferido instanceof NoDeclaracaoVariavel) 
@@ -847,7 +847,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 LOGGER.log(Level.INFO, "Reconstruindo lista de nós inspecionados");
                 
                 // verifica quais nós devem ser mantidos no inspetor, os demais são apagados
-                final List<NoDeclaracao> nosQueSeraoMantidos = new ArrayList<>();
+                final List<NoDeclaracaoBase> nosQueSeraoMantidos = new ArrayList<>();
 
                 programa.getArvoreSintaticaAbstrata().aceitar(new VisitanteNulo() {
 
@@ -895,7 +895,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
                 
                 model.clear();
                 
-                for (NoDeclaracao no : nosQueSeraoMantidos) {
+                for (NoDeclaracaoBase no : nosQueSeraoMantidos) {
                     adicionaNo(no);
                 }
                 
@@ -905,7 +905,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         }
     }
     
-    private boolean nosTemMesmoEscopo(NoDeclaracao no1, NoDeclaracao no2) 
+    private boolean nosTemMesmoEscopo(NoDeclaracaoBase no1, NoDeclaracaoBase no2) 
     {
         String escopo1 = no1.getEscopo();
         String escopo2 = no2.getEscopo();
@@ -913,7 +913,7 @@ public class InspetorDeSimbolos extends JList<ItemDaLista> implements Observador
         return escopo1.equals(escopo2);
     }
     
-    private boolean mesmoNo(NoDeclaracao no1, NoDeclaracao no2) 
+    private boolean mesmoNo(NoDeclaracaoBase no1, NoDeclaracaoBase no2) 
     {
         boolean mesmoEscopo = nosTemMesmoEscopo(no1, no2);
         boolean mesmoNome = no1.getNome().equals(no2.getNome());

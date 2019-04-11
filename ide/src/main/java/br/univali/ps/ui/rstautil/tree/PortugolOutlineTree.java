@@ -1,7 +1,7 @@
 package br.univali.ps.ui.rstautil.tree;
 
 import br.univali.portugol.nucleo.programa.Programa;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 
 import br.univali.ps.ui.rstautil.PortugolParser;
@@ -264,7 +264,7 @@ public class PortugolOutlineTree extends JTree
 
                     if (selecionado.isLeaf())
                     {
-                        NoDeclaracao noDeclaracao = (NoDeclaracao) selecionado.getUserObject();
+                        NoDeclaracaoBase noDeclaracao = (NoDeclaracaoBase) selecionado.getUserObject();
                         String nomeDoSimbolo = noDeclaracao.getNome();
                         int larguraDoNomeDoSimbolo = metrics.stringWidth(nomeDoSimbolo);
 
@@ -320,7 +320,7 @@ public class PortugolOutlineTree extends JTree
         {
             if (getSelectionPaths() != null)
             {
-                List<NoDeclaracao> nosSelecionados = new ArrayList<>();
+                List<NoDeclaracaoBase> nosSelecionados = new ArrayList<>();
                 TreePath paths[] = getSelectionPaths();
 
                 for (TreePath caminhoSelecionado : paths)
@@ -335,7 +335,7 @@ public class PortugolOutlineTree extends JTree
                         {
                             try
                             {
-                                NoDeclaracao noDeclaracao = (NoDeclaracao) treeNode.getUserObject();
+                                NoDeclaracaoBase noDeclaracao = (NoDeclaracaoBase) treeNode.getUserObject();
                                 nosSelecionados.add(noDeclaracao);
                             } catch (Exception e)
                             {

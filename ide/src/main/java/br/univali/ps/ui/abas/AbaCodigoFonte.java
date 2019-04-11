@@ -16,7 +16,7 @@ import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
@@ -744,13 +744,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         public static final DataFlavor NO_DATA_FLAVOR
                 = new DataFlavor(List.class, "List");
-        private List<NoDeclaracao> nosDeclaracoes;
+        private List<NoDeclaracaoBase> nosDeclaracoes;
 
-        public NoTransferable(List<NoDeclaracao> nosDeclaracoes) {
+        public NoTransferable(List<NoDeclaracaoBase> nosDeclaracoes) {
             this.nosDeclaracoes = nosDeclaracoes;
         }
 
-        public List<NoDeclaracao> getNos() {
+        public List<NoDeclaracaoBase> getNos() {
             return nosDeclaracoes;
         }
 
@@ -1281,8 +1281,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 Object obj = node.getUserObject();
                 TrechoCodigoFonte trechoCodigoFonte = null;
 
-                if (obj instanceof NoDeclaracao) {
-                    trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
+                if (obj instanceof NoDeclaracaoBase) {
+                    trechoCodigoFonte = ((NoDeclaracaoBase) obj).getTrechoCodigoFonteNome();
                 }
 
                 if (trechoCodigoFonte != null) {
@@ -1303,14 +1303,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
                         Object obj = node.getUserObject();
 
-                        if (obj instanceof NoDeclaracao)
+                        if (obj instanceof NoDeclaracaoBase)
                         {
                             if ((programaCompilado != null && programaCompilado.isExecutando()))
                             {
                                 QuestionDialog.getInstance().showMessage("Não é possível renomear enquanto o programa está executando. Interrompa o programa e tente novamente");
                                 editor.getTextArea().requestFocusInWindow();
                             } else {
-                                TrechoCodigoFonte trechoCodigoFonte = ((NoDeclaracao) obj).getTrechoCodigoFonteNome();
+                                TrechoCodigoFonte trechoCodigoFonte = ((NoDeclaracaoBase) obj).getTrechoCodigoFonteNome();
 
                                 try {
                                     String programa = editor.getPortugolDocumento().getCodigoFonte();
@@ -1527,7 +1527,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                             int linhaDoSimbolo = Integer.valueOf(partes[1].trim());
                             int colunaDoSimbolo = Integer.valueOf(partes[2].trim());
                             int tamanhoDoTextoDoSimbolo = Integer.valueOf(partes[3].trim());
-                            NoDeclaracao noDeclaracao = procuraNoDeclaracao(programa, nomeDoSimbolo, linhaDoSimbolo, colunaDoSimbolo, tamanhoDoTextoDoSimbolo);
+                            NoDeclaracaoBase noDeclaracao = procuraNoDeclaracao(programa, nomeDoSimbolo, linhaDoSimbolo, colunaDoSimbolo, tamanhoDoTextoDoSimbolo);
                             if (noDeclaracao != null) {
                                 inspetorDeSimbolos.adicionaNo(noDeclaracao);
                             }
@@ -1546,7 +1546,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelTemplate.setVisible(show);
     }
 
-    private NoDeclaracao procuraNoDeclaracao(Programa programa, final String nomeDoSimbolo, final int linhaDoSimbolo, final int colunaDoSimbolo, final int tamanhoDoTexto) throws ExcecaoVisitaASA {
+    private NoDeclaracaoBase procuraNoDeclaracao(Programa programa, final String nomeDoSimbolo, final int linhaDoSimbolo, final int colunaDoSimbolo, final int tamanhoDoTexto) throws ExcecaoVisitaASA {
         if (programa == null) {
             return null;
         }
@@ -2259,11 +2259,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void inserirInformacoesDosSimbolosInspecionados(StringBuilder sb) {
-        List<NoDeclaracao> model = inspetorDeSimbolos.getNosInspecionados();
+        List<NoDeclaracaoBase> model = inspetorDeSimbolos.getNosInspecionados();
         StringBuilder sbItems = new StringBuilder();
         for (int i = 0; i < model.size(); i++) {
             sbItems.append("{");
-            NoDeclaracao no = model.get(i);
+            NoDeclaracaoBase no = model.get(i);
             String nome = no.getNome();
             String linha = String.valueOf(no.getTrechoCodigoFonteNome().getLinha());
             String coluna = String.valueOf(no.getTrechoCodigoFonteNome().getColuna());

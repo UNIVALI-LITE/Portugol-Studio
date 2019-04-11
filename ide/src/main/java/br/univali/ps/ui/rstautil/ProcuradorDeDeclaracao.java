@@ -6,6 +6,7 @@ import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -51,7 +52,7 @@ import java.util.List;
  * Procura por um determinado símbolo dentro da ASA.
  */ 
 public class ProcuradorDeDeclaracao extends VisitanteNulo {
-    private NoDeclaracao noDeclaracao;
+    private NoDeclaracaoBase noDeclaracao;
     private final String nomeDoSimbolo;
     private final int colunaDoSimbolo;
     private final int linhaDoSimbolo;
@@ -72,11 +73,11 @@ public class ProcuradorDeDeclaracao extends VisitanteNulo {
         return declaracaoEncontrada;
     }
 
-    public NoDeclaracao getNoDeclaracao() {
+    public NoDeclaracaoBase getNoDeclaracao() {
         return noDeclaracao;
     }
 
-    private void verificarNoDeclaracao(NoDeclaracao no) throws ExcecaoVisitaASA {
+    private void verificarNoDeclaracao(NoDeclaracaoBase no) throws ExcecaoVisitaASA {
         boolean mesmoNome = no.getNome().equals(nomeDoSimbolo);
         boolean mesmaLinha = no.getTrechoCodigoFonteNome().getLinha() == linhaDoSimbolo;
         boolean mesmaColuna = no.getTrechoCodigoFonteNome().getColuna() == colunaDoSimbolo;

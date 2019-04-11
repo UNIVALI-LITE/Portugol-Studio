@@ -12,6 +12,7 @@ import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoContinue;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
@@ -720,10 +721,10 @@ class AstOutlineTreeFactory implements VisitanteASA
             Object o1 = no1.getUserObject();
             Object o2 = no2.getUserObject();
 
-            if ((o1 instanceof NoDeclaracao) && (o2 instanceof NoDeclaracao))
+            if ((o1 instanceof NoDeclaracaoBase) && (o2 instanceof NoDeclaracaoBase))
             {
-                NoDeclaracao nd1 = (NoDeclaracao) o1;
-                NoDeclaracao nd2 = (NoDeclaracao) o2;
+                NoDeclaracaoBase nd1 = (NoDeclaracaoBase) o1;
+                NoDeclaracaoBase nd2 = (NoDeclaracaoBase) o2;
 
                 if ((!(nd1 instanceof NoDeclaracaoFuncao)) && (nd2 instanceof NoDeclaracaoFuncao))
                 {

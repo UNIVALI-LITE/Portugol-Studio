@@ -1,6 +1,6 @@
 package br.univali.ps.ui;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.ps.ui.abas.AbaCodigoFonte;
 import br.univali.ps.ui.inspetor.InspetorDeSimbolos;
 import java.awt.Point;
@@ -103,7 +103,7 @@ public class IntegracaoAbaCodigoFonteTest extends AssertJSwingJUnitTestCase {
         Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
-            NoDeclaracao declaracao = (NoDeclaracao)node.getUserObject();
+            NoDeclaracaoBase declaracao = (NoDeclaracaoBase)node.getUserObject();
             if (declaracao.getNome().equalsIgnoreCase(variavel)) {
                 return node.getLevel() - 1;
             }
