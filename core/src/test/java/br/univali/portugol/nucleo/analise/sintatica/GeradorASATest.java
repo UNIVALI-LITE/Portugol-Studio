@@ -117,14 +117,11 @@ public class GeradorASATest {
         ASA asa = geradorASA.geraASA();
         
         NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
-        NoListaDeclaracaoVariaveis listaDeclaracoes = (NoListaDeclaracaoVariaveis) inicio.getBlocos().get(0);
         
-        Assert.assertEquals("a lista de declarações deveria ter 3 variáveis", 3, listaDeclaracoes.getDeclaracoes().size());
-        
-        List<NoDeclaracaoVariavel> declaracoes = listaDeclaracoes.getDeclaracoes();
-        assertNoDeclaracaoVariavel(declaracoes.get(0), "a", TipoDado.INTEIRO);
-        assertNoDeclaracaoVariavel(declaracoes.get(1), "b", TipoDado.INTEIRO);
-        assertNoDeclaracaoVariavel(declaracoes.get(2), "c", TipoDado.INTEIRO);
+        // a lista de declaração de variáveis é quebrada em declarações separadas
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "a", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(1), "b", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(2), "c", TipoDado.INTEIRO);
     }
     
     @Test
@@ -213,7 +210,7 @@ public class GeradorASATest {
         
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO);
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(1), "a", TipoDado.REAL, 10.0);
-        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(2), "teste", TipoDado.CADEIA, "\"teste\"");
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(2), "teste", TipoDado.CADEIA, "teste");
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(3), "concat", TipoDado.CADEIA, NoOperacaoSoma.class);// new NoOperacaoSoma(null, null));
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(4), "c", TipoDado.CARACTER, 'a');
         assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(5), "l", TipoDado.LOGICO, true);
@@ -400,7 +397,7 @@ public class GeradorASATest {
         
         NoCaso casoContrario = noEscolha.getCasos().get(2);
         Assert.assertEquals("O caso contrário deveria ter 1 comando filho", 1, casoContrario.getBlocos().size());
-        assertNoChamadaFuncao((NoChamadaFuncao)casoContrario.getBlocos().get(0), "escreva", new Object[]{"\"asd\""});
+        assertNoChamadaFuncao((NoChamadaFuncao)casoContrario.getBlocos().get(0), "escreva", new Object[]{"asd"});
     }
     
     @Test
@@ -525,7 +522,7 @@ public class GeradorASATest {
         
         NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         NoChamadaFuncao chamadaFuncao = (NoChamadaFuncao) funcaoInicio.getBlocos().get(0);
-        assertNoChamadaFuncao(chamadaFuncao, "carregar_som", "Graficos.", new String[]{"\"teste\""});
+        assertNoChamadaFuncao(chamadaFuncao, "carregar_som", "Graficos.", new String[]{"teste"});
     }
     
     @Test
@@ -577,7 +574,7 @@ public class GeradorASATest {
         NoDeclaracaoVariavel declaracao2 = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(4);
         Assert.assertEquals("A variavel que recebe o valor chama-se 'som'", "som", declaracao2.getNome());
         Assert.assertTrue("A variavel recebe o valor retornado por uma função", declaracao2.getInicializacao() instanceof NoChamadaFuncao);
-        assertNoChamadaFuncao((NoChamadaFuncao)declaracao2.getInicializacao(), "carregar_som", "Graficos.", new String[]{"\"teste\""});
+        assertNoChamadaFuncao((NoChamadaFuncao)declaracao2.getInicializacao(), "carregar_som", "Graficos.", new String[]{"teste"});
     }
     
     @Test
