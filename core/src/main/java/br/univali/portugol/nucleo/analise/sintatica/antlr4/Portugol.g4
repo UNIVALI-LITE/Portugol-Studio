@@ -3,7 +3,7 @@ grammar Portugol;
 arquivo 
     :   PROGRAMA ABRE_CHAVES 
         inclusaoBiblioteca* 
-        (declaracaoFuncao | (declaracaoListaVariaveis | declaracaoVariavel) | declaracaoArray | declaracaoMatriz)* 
+        (declaracaoFuncao | (declaracaoVariavel | declaracaoListaVariaveis) | declaracaoArray | declaracaoMatriz)* 
         FECHA_CHAVES ;
 
 inclusaoBiblioteca
