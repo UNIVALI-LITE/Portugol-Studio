@@ -1,20 +1,14 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
-import br.univali.portugol.nucleo.Portugol;
-import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import java.io.IOException;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
-import br.univali.portugol.nucleo.programa.Programa;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Recognizer;
 import org.junit.Assert;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -24,6 +18,34 @@ import org.junit.Test;
  */
 public class ParserTest {
 
+    @Test
+    public void testDeclaracaoArrayComConstante() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	const inteiro TAMANHO_VETOR = 1000                      \n"
+                + "	inteiro vetor[TAMANHO_VETOR]                            \n"
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }        
+    
+    @Test
+    public void testDeclaracaoMatrizComConstante() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	const inteiro T = 1000                                  \n"
+                + "	inteiro matriz[T][T]                                    \n"
+                + "	inteiro m[T][2]                                         \n"
+                + "	inteiro n[2][T]                                         \n"                        
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+        
     @Test
     public void testParaComVariasVariaveisDeclaradas() throws Exception {
 

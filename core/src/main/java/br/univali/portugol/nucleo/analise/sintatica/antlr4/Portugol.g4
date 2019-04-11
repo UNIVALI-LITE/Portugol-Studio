@@ -28,7 +28,7 @@ inicializacaoMatriz
     :  ABRE_CHAVES inicializacaoArray (',' inicializacaoArray)* FECHA_CHAVES;   
 
 tamanhoArray 
-    :   INT;    // O que mais pode ser usado como tamanho de array?    
+    :   INT | ID; // aceita inteiro ou variável como tamanho do array, o semântico verifica se a variável é constante
 
 declaracaoFuncao
     :   FUNCAO TIPO? ID ABRE_PARENTESES listaParametros? FECHA_PARENTESES 
