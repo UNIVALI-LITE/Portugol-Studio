@@ -266,7 +266,7 @@ public class GeradorASA {
         @Override
         public No visitTamanhoArray(TamanhoArrayContext ctx) {
             if (ctx.INT() != null) {
-                return ctx.INT().accept(this); // um inteiro foi usado como tamanho do array
+                return new NoInteiro(Integer.parseInt(ctx.INT().getText()));
             }
             
             return new NoReferenciaVariavel(null, ctx.ID().getText()); // uma variável foi usada como tamanho do array
