@@ -1,6 +1,7 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
 import br.univali.portugol.nucleo.Portugol;
+import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import java.io.IOException;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
@@ -9,8 +10,11 @@ import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
 import br.univali.portugol.nucleo.programa.Programa;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Recognizer;
 import org.junit.Assert;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -19,6 +23,30 @@ import org.junit.Test;
  * @author Elieser
  */
 public class ParserTest {
+
+    @Test
+    public void testParaComVariasVariaveisDeclaradas() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	funcao inicio() {                                       "
+                + "		para(inteiro i = 0, j = 0, k = 5,l; i < 5; i++){"
+                + "			para(j = 1; j < 5; i++){                "
+                + "			}                                       "
+                + "			para(k = 5; k < 5; k++){                "
+                + "			}                                       "
+                + "			para(l = 0; l < 5; l++){                "
+                + "			}                                       "
+                + "		}                                               "
+                + "		para(inteiro i = 2, j = i, k = j; i < 5; i++){  "
+                + "		}                                               "
+                + "	}                                                       "
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+
+    }
 
     @Test
     public void testFuncaoLeiaComVariasVariaveis() throws IOException {

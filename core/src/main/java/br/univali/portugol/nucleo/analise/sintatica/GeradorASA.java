@@ -352,9 +352,14 @@ public class GeradorASA {
             NoPara noPara = new NoPara();
 
             if (inicializacaoPara != null) {
-                // TODO tratar as outras inicializações, a gramática só está suportando uma inicialização
                 List<NoBloco> inicializacoes = new ArrayList<>();
-                inicializacoes.add((NoBloco)inicializacaoPara.accept(this));
+                NoBloco blocoInicializacao = (NoBloco)inicializacaoPara.accept(this);
+                if (blocoInicializacao instanceof NoListaDeclaracaoVariaveis) {
+                    inicializacoes.addAll(((NoListaDeclaracaoVariaveis)blocoInicializacao).getDeclaracoes());
+                }
+                else {
+                    inicializacoes.add(blocoInicializacao); // declaração única de variável ou atribuição
+                }
                 noPara.setInicializacoes(inicializacoes);
             }
             

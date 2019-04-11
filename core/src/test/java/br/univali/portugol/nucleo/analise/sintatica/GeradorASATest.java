@@ -60,6 +60,48 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testParaComVariasVariaveisDeclaradas() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	funcao inicio() {                                       "
+                + "		para(inteiro i = 0, j = 0, k = 5,l; i < 5; i++){"
+                + "			para(j = 1; j < 5; i++){                "
+                + "			}                                       "
+                + "		}                                               "
+                + "	}                                                       "
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        NoPara para = (NoPara) inicio.getBlocos().get(0);
+        Assert.assertEquals("Erro no número de inicializações", 4,  para.getInicializacoes().size());
+        
+        List<NoBloco> inicializacoes = para.getInicializacoes();
+        
+        // para(inteiro i = 0, j = 0, k = 5,l; i < 5; i++)
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicializacoes.get(0), "i", TipoDado.INTEIRO, 0);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicializacoes.get(1), "j", TipoDado.INTEIRO, 0);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicializacoes.get(2), "k", TipoDado.INTEIRO, 5);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicializacoes.get(3), "l", TipoDado.INTEIRO);
+        
+        // para(j = 1; j < 5; i++){
+        NoPara paraAninhado = (NoPara)para.getBlocos().get(0);
+        List<NoBloco> inicializacoesParaAninhado = paraAninhado.getInicializacoes();
+        Assert.assertEquals("Erro no número de inicializações do para aninhado", 1, inicializacoesParaAninhado.size());
+        
+        NoOperacaoAtribuicao atribuicao = (NoOperacaoAtribuicao)inicializacoesParaAninhado.get(0);
+        Assert.assertEquals("Erro no nome da variável", "j", ((NoReferenciaVariavel)atribuicao.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("Erro na inicialização da variável j", new Integer(1), ((NoInteiro)atribuicao.getOperandoDireito()).getValor());
+    }
+    
+    @Test
     public void testFuncaoLeiaComVariasVariaveis() throws IOException, ExcecaoVisitaASA {
 
         PortugolParser parser = novoParser("programa {                          "

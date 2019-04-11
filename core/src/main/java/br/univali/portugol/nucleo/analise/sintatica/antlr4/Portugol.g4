@@ -81,7 +81,10 @@ listaComandos
     : (ABRE_CHAVES comando* FECHA_CHAVES | comando); // 1 comando ou um bloco de comandos entre chaves, possivelmente vazio
 
 inicializacaoPara
-    :   atribuicao | declaracaoVariavel ; 
+    :   atribuicao                      // quando a variável é declarada fora do loop e apenas inicializada dentro dele
+    |   declaracaoVariavel              // apenas uma variável declarada dentro do loop (o caso mais comum)
+    |   declaracaoListaVariaveis        // lista de variáveis declaradas no loop
+    ; 
 
 condicao
     :   expressao ;
