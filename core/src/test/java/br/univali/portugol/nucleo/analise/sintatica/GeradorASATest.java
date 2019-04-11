@@ -60,6 +60,34 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testDeclaracaoMatrizVetorComConstante() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	const inteiro T = 1000                                  \n"
+                + "	inteiro matriz[T][T]                                    \n"
+                + "	inteiro m[T]                                            \n"
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+        
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        
+        NoDeclaracaoVariavel T = (NoDeclaracaoVariavel) asa.getListaDeclaracoesGlobais().get(0);
+        NoDeclaracaoMatriz matriz = (NoDeclaracaoMatriz) asa.getListaDeclaracoesGlobais().get(1);
+        NoDeclaracaoVetor m = (NoDeclaracaoVetor) asa.getListaDeclaracoesGlobais().get(2);
+        
+        assertNoDeclaracaoVariavel(T, "T", TipoDado.INTEIRO, 1000);
+        Assert.assertTrue("deveria ser constante", T.constante());
+        
+        assertNoDeclaracaoVetor(m, "m", 1000);
+        assertNoDeclaracaoMatriz(matriz, "matriz", 1000, 1000);
+    }
+    
+    @Test
     public void testParaComVariasVariaveisDeclaradas() throws Exception {
 
         PortugolParser parser = novoParser(

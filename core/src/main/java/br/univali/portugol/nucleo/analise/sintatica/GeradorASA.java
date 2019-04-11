@@ -43,16 +43,9 @@ public class GeradorASA {
                 inclusoes.add((NoInclusaoBiblioteca)inclusaoBibliotecaContext.accept(this));
             }
             asa.setListaInclusoesBibliotecas(inclusoes);   
-
-            List<ParserRuleContext> declaracoesGlobais = new ArrayList<>();
-            
-            declaracoesGlobais.addAll(ctx.declaracaoListaVariaveis());
-            declaracoesGlobais.addAll(ctx.declaracaoVariavel());
-            declaracoesGlobais.addAll(ctx.declaracaoArray());
-            declaracoesGlobais.addAll(ctx.declaracaoMatriz());
-            declaracoesGlobais.addAll(ctx.declaracaoFuncao());
-            
-            for (ParserRuleContext declaracao : declaracoesGlobais) {
+           
+            List<ParserRuleContext> declaracoes = ctx.getRuleContexts(ParserRuleContext.class);
+            for (ParserRuleContext declaracao : declaracoes) {
                 asa.adicionaDeclaracaoGlobal((NoDeclaracao)declaracao.accept(this));
             }
             
@@ -272,9 +265,11 @@ public class GeradorASA {
         
         @Override
         public No visitTamanhoArray(TamanhoArrayContext ctx) {
-            NoInteiro noInteiro = new NoInteiro(Integer.parseInt(ctx.INT().getText()));
-            noInteiro.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.INT()));
-            return noInteiro;
+            if (ctx.INT() != null) {
+                return ctx.INT().accept(this); // um inteiro foi usado como tamanho do array
+            }
+            
+            return ctx.ID().accept(this); // uma variável foi usada como tamanho do array
         }
 
         @Override
