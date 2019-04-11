@@ -269,7 +269,7 @@ public class GeradorASA {
                 return ctx.INT().accept(this); // um inteiro foi usado como tamanho do array
             }
             
-            return ctx.ID().accept(this); // uma variável foi usada como tamanho do array
+            return new NoReferenciaVariavel(null, ctx.ID().getText()); // uma variável foi usada como tamanho do array
         }
 
         @Override
@@ -318,7 +318,7 @@ public class GeradorASA {
             
             NoExpressao tamanho = null;
             if (ctx.tamanhoArray() != null) {
-                 tamanho = (NoExpressao) ctx.tamanhoArray().accept(this);
+                tamanho = (NoExpressao) visitTamanhoArray(ctx.tamanhoArray());
             }
             
             NoDeclaracaoVetor vetor = new NoDeclaracaoVetor(nome, tipo, tamanho, false);
@@ -340,7 +340,7 @@ public class GeradorASA {
             
             return vetor; 
         }
-
+        
         // Loop para (for)
         @Override
         public No visitPara(PortugolParser.ParaContext contexto) {

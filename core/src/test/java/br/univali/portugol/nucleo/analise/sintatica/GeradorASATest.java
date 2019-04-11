@@ -83,8 +83,8 @@ public class GeradorASATest {
         assertNoDeclaracaoVariavel(T, "T", TipoDado.INTEIRO, 1000);
         Assert.assertTrue("deveria ser constante", T.constante());
         
-        assertNoDeclaracaoVetor(m, "m", 1000);
-        assertNoDeclaracaoMatriz(matriz, "matriz", 1000, 1000);
+        assertNoDeclaracaoVetor(m, "m", T);
+        assertNoDeclaracaoMatriz(matriz, "matriz", T, T);
     }
     
     @Test
@@ -759,6 +759,18 @@ public class GeradorASATest {
         }
     }
     
+    private void assertNoDeclaracaoMatriz(NoDeclaracaoMatriz noMatriz, String nomeEsperado, NoDeclaracaoVariavel linhas, NoDeclaracaoVariavel colunas) throws ExcecaoVisitaASA {
+        
+        Assert.assertEquals("O nome da matriz deveria ser " + nomeEsperado, nomeEsperado, noMatriz.getNome());
+        
+        Assert.assertTrue("a variável usada como número de linhas não é constante", linhas.constante());
+        Assert.assertTrue("a variável usada como número de colunas não é constante", colunas.constante());
+        
+        Assert.assertEquals("erro na variável usada como número de linhas", linhas.getNome(), ((NoReferenciaVariavel)noMatriz.getNumeroLinhas()).getNome());
+        Assert.assertEquals("erro na variável usada como número de colunas", colunas.getNome(), ((NoReferenciaVariavel)noMatriz.getNumeroColunas()).getNome());
+       
+    }
+    
     private void assertNoDeclaracaoMatriz(NoDeclaracaoMatriz noMatriz, String nomeEsperado, int linhas, int colunas) throws ExcecaoVisitaASA {
         
         Assert.assertEquals("O nome da matriz deveria ser " + nomeEsperado, nomeEsperado, noMatriz.getNome());
@@ -782,9 +794,21 @@ public class GeradorASATest {
         Assert.assertEquals("tamanho do vetor é diferente", new Integer(tamanhoVetor), ((NoInteiro)noVetor.getTamanho()).getValor());
     }
     
+    private <T> void assertNoDeclaracaoVetor(NoDeclaracaoVetor noVetor, String nomeEsperado, NoDeclaracaoVariavel tamanhoVetor) {
+        Assert.assertEquals("O nome do vetor deveria ser " + nomeEsperado, nomeEsperado, noVetor.getNome());
+        
+        Assert.assertTrue("variável usada como tamanho não é uma constante", tamanhoVetor.constante());
+        
+        Assert.assertEquals("erro na variável usada como tamanho", tamanhoVetor.getNome(), ((NoReferenciaVariavel)noVetor.getTamanho()).getNome());
+    }
+    
     private <T> void assertNoDeclaracaoVetor(NoDeclaracaoVetor noVetor, String nomeEsperado, T[] valoresEsperados)
     {
         Assert.assertEquals("O nome do vetor deveria ser " + nomeEsperado, nomeEsperado, noVetor.getNome());
+        
+        if (valoresEsperados.length == 0) {
+            return;
+        }
         
         NoVetor vetor = (NoVetor)noVetor.getInicializacao();
         
