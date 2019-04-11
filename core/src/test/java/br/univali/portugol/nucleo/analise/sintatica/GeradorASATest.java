@@ -59,6 +59,31 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testFuncaoLeiaComVariasVariaveis() throws IOException, ExcecaoVisitaASA {
+
+        PortugolParser parser = novoParser("programa {                          "
+                + " funcao inicio(){            "
+                + "   inteiro a,b,c                 "
+                + "   leia(a,b,c)                   "
+                + " }                           "
+                + "}                                                          ");
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+        
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        NoListaDeclaracaoVariaveis listaDeclaracoes = (NoListaDeclaracaoVariaveis) inicio.getBlocos().get(0);
+        
+        Assert.assertEquals("a lista de declarações deveria ter 3 variáveis", 3, listaDeclaracoes.getDeclaracoes().size());
+        
+        List<NoDeclaracaoVariavel> declaracoes = listaDeclaracoes.getDeclaracoes();
+        assertNoDeclaracaoVariavel(declaracoes.get(0), "a", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel(declaracoes.get(1), "b", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel(declaracoes.get(2), "c", TipoDado.INTEIRO);
+    }
     
     @Test
     public void testListaDeclaracaoVariaveis() throws IOException, RecognitionException{

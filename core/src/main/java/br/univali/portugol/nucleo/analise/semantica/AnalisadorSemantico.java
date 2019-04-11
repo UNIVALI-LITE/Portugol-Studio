@@ -2382,7 +2382,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         Class classeBloco = bloco.getClass();
         Class<? extends NoBloco>[] classesPermitidas = new Class[]
         {
-            NoDeclaracaoVariavel.class, NoDeclaracaoVetor.class, NoDeclaracaoMatriz.class,
+            NoDeclaracaoVariavel.class, NoDeclaracaoVetor.class, NoDeclaracaoMatriz.class, NoListaDeclaracaoVariaveis.class,
             NoCaso.class, NoEnquanto.class, NoEscolha.class, NoFacaEnquanto.class, NoPara.class, NoSe.class,
             NoPare.class, NoRetorne.class, NoTitulo.class, NoVaPara.class,
             NoOperacaoAtribuicao.class, NoChamadaFuncao.class

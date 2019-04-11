@@ -3,7 +3,7 @@ grammar Portugol;
 arquivo 
     :   PROGRAMA ABRE_CHAVES 
         inclusaoBiblioteca* 
-        (declaracaoFuncao | (declaracaoVariavel | declaracaoListaVariaveis) | declaracaoArray | declaracaoMatriz)* 
+        (declaracaoFuncao | (declaracaoListaVariaveis | declaracaoVariavel) | declaracaoArray | declaracaoMatriz)* 
         FECHA_CHAVES ;
 
 inclusaoBiblioteca
@@ -47,7 +47,8 @@ parametroMatriz
     :   ABRE_COLCHETES FECHA_COLCHETES ABRE_COLCHETES FECHA_COLCHETES ;
 
 comando
-    :   declaracaoVariavel      
+    :   declaracaoVariavel   
+    |   declaracaoListaVariaveis
     |   declaracaoArray         
     |   declaracaoMatriz
     |   se   

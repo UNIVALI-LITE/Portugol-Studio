@@ -8,6 +8,7 @@ import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarad
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoInicializado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTiposIncompativeis;
 import br.univali.portugol.nucleo.asa.TipoDado;
+import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -238,11 +239,15 @@ public final class AnalisadorSemanticoTest
             );
 
             ResultadoAnalise resultado = programa.getResultadoAnalise();
-            
+
             assertTrue("O programa deveria ter compilado sem erros e avisos", !resultado.contemAvisos() && !resultado.contemErros());
         }
-        catch (Exception ex)
+        catch (ErroCompilacao ex)
         {
+            for (ErroAnalise erro : ex.getResultadoAnalise().getErros()) {
+                System.out.println(erro);
+            }
+            
             fail(ex.getMessage());
         }
     }

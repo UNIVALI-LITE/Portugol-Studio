@@ -1,10 +1,12 @@
 package br.univali.portugol.nucleo.analise.sintatica;
 
+import br.univali.portugol.nucleo.Portugol;
 import java.io.IOException;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
+import br.univali.portugol.nucleo.programa.Programa;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Recognizer;
@@ -18,6 +20,19 @@ import org.junit.Test;
  */
 public class ParserTest {
 
+    @Test
+    public void testFuncaoLeiaComVariasVariaveis() throws IOException {
+
+        PortugolParser parser = novoParser("programa {                          "
+                + " funcao inicio(){            "
+                + "   inteiro a,b,c                 "
+                + "   leia(a,b,c)                   "
+                + " }                           "
+                + "}                                                          ");
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
     @Test
     public void testListaDeclaracaoVariaveis() throws IOException, RecognitionException{
         PortugolParser parser = novoParser("programa {                      "
