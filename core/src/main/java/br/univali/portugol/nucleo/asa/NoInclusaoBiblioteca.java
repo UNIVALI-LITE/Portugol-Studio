@@ -4,7 +4,7 @@ package br.univali.portugol.nucleo.asa;
  *
  * @author Luiz Fernando Noschang
  */
-public final class NoInclusaoBiblioteca extends No
+public final class NoInclusaoBiblioteca extends No implements NoDeclaracao
 {
     private String nome;
     private String alias;
