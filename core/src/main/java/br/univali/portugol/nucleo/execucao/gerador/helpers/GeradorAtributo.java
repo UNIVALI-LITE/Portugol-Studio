@@ -1,7 +1,7 @@
 package br.univali.portugol.nucleo.execucao.gerador.helpers;
 
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
@@ -24,7 +24,7 @@ public class GeradorAtributo
                 .println();
     }
 
-    public boolean gera(NoDeclaracao no, PrintWriter saida, VisitanteASA visitor, int nivelEscopo) throws ExcecaoVisitaASA
+    public boolean gera(NoDeclaracaoBase no, PrintWriter saida, VisitanteASA visitor, int nivelEscopo) throws ExcecaoVisitaASA
     {
         if (podeDeclararComoAtributo(no))
         {
@@ -42,7 +42,7 @@ public class GeradorAtributo
         return false;
     }
 
-    private static boolean podeDeclararComoAtributo(NoDeclaracao no)
+    private static boolean podeDeclararComoAtributo(NoDeclaracaoBase no)
     {
         return no instanceof NoDeclaracaoVariavel
                 || no instanceof NoDeclaracaoVetor

@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.analise.semantica.erros;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoExpressao;
@@ -12,11 +12,11 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  */
 public class ErroTamanhoVetorMatriz extends ErroSemantico 
 {
-    private NoDeclaracao declaracao;
+    private NoDeclaracaoBase declaracao;
     private NoExpressao tamanho;
     private String codigo = "ErroSemantico.ErroTamanhoVetorMatriz.";
         
-    public ErroTamanhoVetorMatriz(NoDeclaracao declaracao, NoExpressao tamanho)
+    public ErroTamanhoVetorMatriz(NoDeclaracaoBase declaracao, NoExpressao tamanho)
     {
         super(tamanho.getTrechoCodigoFonte(),"ErroSemantico.ErroTamanhoVetorMatriz");
         this.declaracao = declaracao;

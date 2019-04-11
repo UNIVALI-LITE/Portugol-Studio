@@ -623,7 +623,7 @@ public class GeradorCodigoJava
                 saida.append(escopo).append(".");
             }
 
-            NoDeclaracao declaracao = no.getOrigemDaReferencia();
+            NoDeclaracaoBase declaracao = no.getOrigemDaReferencia();
             boolean ehParametroPorReferencia = declaracao instanceof NoDeclaracaoParametro && (((NoDeclaracaoParametro) declaracao).getModoAcesso() == ModoAcesso.POR_REFERENCIA);
             if (ehParametroPorReferencia || no.ehPassadoPorReferencia())
             {
@@ -719,7 +719,7 @@ public class GeradorCodigoJava
                 if (atribuicao.getOperandoEsquerdo() instanceof NoReferenciaVariavel) 
                 {
                     NoReferenciaVariavel referencia = (NoReferenciaVariavel) atribuicao.getOperandoEsquerdo();
-                    NoDeclaracao origem = referencia.getOrigemDaReferencia();
+                    NoDeclaracaoBase origem = referencia.getOrigemDaReferencia();
                     if (origem instanceof NoDeclaracaoVariavel)
                     {
                         Utils.geraCodigoParaInspecao((NoDeclaracaoVariavel)origem, saida, nivelEscopo, false);

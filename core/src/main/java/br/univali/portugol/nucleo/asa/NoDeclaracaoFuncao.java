@@ -31,7 +31,7 @@ import java.util.List;
  * @author Luiz Fernando Noschang
  * @version 1.0
  */
-public final class NoDeclaracaoFuncao extends NoDeclaracao
+public final class NoDeclaracaoFuncao extends NoDeclaracaoBase
 {
     private final Quantificador quantificador;
     private List<NoBloco> blocos = new ArrayList<>();

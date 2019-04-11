@@ -60,6 +60,28 @@ public class GeradorASA {
         }
 
         @Override
+        public No visitDeclaracaoListaVariaveis(DeclaracaoListaVariaveisContext ctx) {
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            NoListaDeclaracaoVariaveis no = new NoListaDeclaracaoVariaveis(tipo);
+            
+            int totalVariaveis = ctx.ID().size();
+            for (int i = 0; i < totalVariaveis; i++) {
+                String nomeVariavel = ctx.ID(i).getText();
+                
+                NoDeclaracaoVariavel noVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipo);
+                
+                ExpressaoContext inicializacao = ctx.expressao(i);
+                if (inicializacao != null) { // a variável tem inicialização?
+                    noVariavel.setInicializacao((NoExpressao)inicializacao.accept(this));
+                }
+                
+                no.adicionaDeclaracao(noVariavel);
+            }
+            
+            return no;
+        }
+        
+        @Override
         public No visitDeclaracaoFuncao(PortugolParser.DeclaracaoFuncaoContext ctx) {
 
             String nomeFuncao = ctx.ID().getText();

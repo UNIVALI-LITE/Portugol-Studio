@@ -21,7 +21,7 @@ package br.univali.portugol.nucleo.asa;
  * @author Luiz Fernando Noschang
  * @version 1.0
  */
-public final class NoReferenciaVariavel extends NoReferencia<NoDeclaracao>
+public final class NoReferenciaVariavel extends NoReferencia<NoDeclaracaoBase>
 {
     private boolean variavelDeBiblioteca = false;
     private TipoDado tipoBiblioteca = TipoDado.VAZIO;

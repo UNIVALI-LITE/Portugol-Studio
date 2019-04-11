@@ -4,7 +4,7 @@ package br.univali.portugol.nucleo.asa;
  *
  * @author Luiz Fernando Noschang
  */
-public abstract class NoDeclaracaoInicializavel extends NoDeclaracao implements NoDeclaracaoInspecionavel
+public abstract class NoDeclaracaoInicializavel extends NoDeclaracaoBase implements NoDeclaracaoInspecionavel
 {
     private NoExpressao inicializacao;
     

@@ -10,7 +10,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
 
     private int linha;
     private int coluna;
-    private NoDeclaracao declaracaoSimbolo = null;
+    private NoDeclaracaoBase declaracaoSimbolo = null;
 
     public void buscarSimbolo(Programa programa, int linha, int coluna) throws ErroAoRenomearSimbolo {
         try {
@@ -32,7 +32,7 @@ final class BuscadorDeSimbolo implements VisitanteASA {
         return declaracaoSimbolo != null;
     }
 
-    public NoDeclaracao getDeclaracaoSimbolo() {
+    public NoDeclaracaoBase getDeclaracaoSimbolo() {
         return declaracaoSimbolo;
     }
 

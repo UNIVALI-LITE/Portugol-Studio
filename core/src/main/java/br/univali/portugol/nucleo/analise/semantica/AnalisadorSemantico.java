@@ -256,7 +256,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
                 // verifica se o usuário está tentando usar uma constante na função LEIA
                 if (parametroValido && parametro instanceof NoReferenciaVariavel) {
-                    NoDeclaracao origemDaReferencia = ((NoReferenciaVariavel)parametro).getOrigemDaReferencia();
+                    NoDeclaracaoBase origemDaReferencia = ((NoReferenciaVariavel)parametro).getOrigemDaReferencia();
                     parametroValido = origemDaReferencia != null && !origemDaReferencia.constante();
                         
                 }
@@ -2520,7 +2520,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, noReferenciaVariavel);
     }
 
-    private Integer obterTamanhoVetorMatriz(final NoExpressao expTamanho, NoDeclaracao noDeclaracao) throws ExcecaoVisitaASA
+    private Integer obterTamanhoVetorMatriz(final NoExpressao expTamanho, NoDeclaracaoBase noDeclaracao) throws ExcecaoVisitaASA
     {
         if (expTamanho != null)
         {

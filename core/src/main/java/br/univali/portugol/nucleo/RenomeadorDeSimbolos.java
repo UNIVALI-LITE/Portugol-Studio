@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoReferencia;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.programa.Programa;
@@ -48,7 +48,7 @@ final class RenomeadorDeSimbolos
 
             if (buscadorDeSimbolo.simboloEncontrado())
             {
-                NoDeclaracao declaracao = buscadorDeSimbolo.getDeclaracaoSimbolo();
+                NoDeclaracaoBase declaracao = buscadorDeSimbolo.getDeclaracaoSimbolo();
                 List<Integer> posicoesOcorrencias = mapearPosicoesReferencias(programa, declaracao.getReferencias());
 
                 posicoesOcorrencias.add(obterPosicaoAbsoluta(programa, declaracao.getTrechoCodigoFonteNome().getLinha(), declaracao.getTrechoCodigoFonteNome().getColuna()));
@@ -82,7 +82,7 @@ final class RenomeadorDeSimbolos
         }
     }
 
-    public NoDeclaracao obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo, ErroAoRenomearSimbolo
+    public NoDeclaracaoBase obterDeclaracaoDoSimbolo(String programa, int linha, int coluna) throws ErroAoTentarObterDeclaracaoDoSimbolo, ErroAoRenomearSimbolo
     {
         programa = removerInformacoesPortugolStudio(programa);
 

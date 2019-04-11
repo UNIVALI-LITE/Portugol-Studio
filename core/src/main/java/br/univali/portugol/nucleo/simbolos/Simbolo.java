@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.simbolos;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import java.util.Objects;
@@ -47,7 +47,7 @@ public abstract class Simbolo
     private boolean utilizado = false;
     private boolean inicializado = false;
     private boolean redeclarado = false;
-    private NoDeclaracao origemDoSimbolo = null;
+    private NoDeclaracaoBase origemDoSimbolo = null;
 
     /**
      *
@@ -57,7 +57,7 @@ public abstract class Simbolo
      *
      * @param declaracaoOrigem a declaração que originou o símbolo
      */
-    public Simbolo(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem)
+    public Simbolo(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem)
     {
         setNome(nome);
         setTipoDado(tipoDado);
@@ -266,12 +266,12 @@ public abstract class Simbolo
         this.constante = constante;
     }
 
-    public NoDeclaracao getOrigemDoSimbolo()
+    public NoDeclaracaoBase getOrigemDoSimbolo()
     {
         return origemDoSimbolo;
     }
 
-    final void setOrigemDoSimbolo(NoDeclaracao origemDoSimbolo)
+    final void setOrigemDoSimbolo(NoDeclaracaoBase origemDoSimbolo)
     {
         this.origemDoSimbolo = origemDoSimbolo;
     }

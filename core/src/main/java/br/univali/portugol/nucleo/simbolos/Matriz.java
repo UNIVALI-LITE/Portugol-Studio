@@ -1,6 +1,6 @@
 package br.univali.portugol.nucleo.simbolos;
 
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public final class Matriz extends Simbolo
      *
      * @since 1.0
      */
-    public Matriz(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem)
+    public Matriz(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem)
     {
         super(nome, tipoDado, declaracaoOrigem);
         setInicializado(true);
@@ -63,7 +63,7 @@ public final class Matriz extends Simbolo
      *
      * @since 1.0
      */
-    public Matriz(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem, int numeroLinhas, int numeroColunas)
+    public Matriz(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem, int numeroLinhas, int numeroColunas)
     {
         super(nome, tipoDado, declaracaoOrigem);
         inicializarComDimensoes(numeroLinhas, numeroColunas);
@@ -87,7 +87,7 @@ public final class Matriz extends Simbolo
      *
      * @since 1.0
      */
-    public Matriz(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem, int numeroLinhas, int numeroColunas, List<List<Object>> valores)
+    public Matriz(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem, int numeroLinhas, int numeroColunas, List<List<Object>> valores)
     {
         super(nome, tipoDado, declaracaoOrigem);
         inicializarComDimensoesValores(numeroLinhas, numeroColunas, valores);
@@ -108,7 +108,7 @@ public final class Matriz extends Simbolo
      *
      * @since 1.0
      */
-    public Matriz(String nome, TipoDado tipoDado, NoDeclaracao declaracaoOrigem, List<List<Object>> valores)
+    public Matriz(String nome, TipoDado tipoDado, NoDeclaracaoBase declaracaoOrigem, List<List<Object>> valores)
     {
         super(nome, tipoDado, declaracaoOrigem);
         if (valores != null)

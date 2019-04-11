@@ -1,7 +1,7 @@
 package br.univali.portugol.nucleo.analise.semantica.erros;
 
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoBase;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
@@ -18,7 +18,7 @@ import br.univali.portugol.nucleo.mensagens.ErroSemantico;
  */
 public final class ErroInicializacaoConstante extends ErroSemantico
 {
-    private NoDeclaracao declaracao;
+    private NoDeclaracaoBase declaracao;
     private Integer indice = null;
     private Integer linha = null;
     private Integer coluna = null;

@@ -69,7 +69,7 @@ public class DetectaNosParada implements VisitanteASA
             if (noDeclaracao instanceof NoDeclaracaoFuncao) {
                 noDeclaracao.aceitar(this);
             } else {
-                nosParada.add(noDeclaracao);
+                nosParada.add((NoBloco)noDeclaracao);
             }
         }
         return null;

@@ -209,7 +209,7 @@ public class Utils
         NoExpressao operandoEsquerdo = atribuicao.getOperandoEsquerdo();
         if (operandoEsquerdo instanceof NoReferenciaVariavel) {
             NoReferenciaVariavel referenciaVariavel = (NoReferenciaVariavel) operandoEsquerdo;
-            NoDeclaracao origem = referenciaVariavel.getOrigemDaReferencia();
+            NoDeclaracaoBase origem = referenciaVariavel.getOrigemDaReferencia();
             if (origem instanceof NoDeclaracaoVariavel) {
                 Utils.geraCodigoParaInspecao((NoDeclaracaoVariavel) origem, saida, nivelEscopo, true);
             } else {
@@ -315,7 +315,7 @@ public class Utils
         } else if (no instanceof NoEscolha) {
             trechoCodigoFonte = ((NoEscolha) no).getExpressao().getTrechoCodigoFonte();
         } else if (no instanceof NoDeclaracaoMatriz || no instanceof NoDeclaracaoVetor) {
-            trechoCodigoFonte = ((NoDeclaracao) no).getTrechoCodigoFonteNome();
+            trechoCodigoFonte = ((NoDeclaracaoBase) no).getTrechoCodigoFonteNome();
         }
 
         return trechoCodigoFonte;

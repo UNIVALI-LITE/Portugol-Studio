@@ -7,7 +7,7 @@ package br.univali.portugol.nucleo.asa;
  * @version 1.0
  * @see NoDeclaracaoFuncao
  */
-public final class NoDeclaracaoParametro extends NoDeclaracao implements NoDeclaracaoInspecionavel
+public final class NoDeclaracaoParametro extends NoDeclaracaoBase implements NoDeclaracaoInspecionavel
 {
     private int indice;
     private final ModoAcesso modoAcesso;

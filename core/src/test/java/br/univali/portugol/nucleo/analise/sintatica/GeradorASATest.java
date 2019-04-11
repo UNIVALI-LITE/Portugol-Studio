@@ -12,9 +12,7 @@ import br.univali.portugol.nucleo.asa.ModoAcesso;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoInicializavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
@@ -26,6 +24,7 @@ import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
 import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
+import br.univali.portugol.nucleo.asa.NoListaDeclaracaoVariaveis;
 import br.univali.portugol.nucleo.asa.NoMatriz;
 import br.univali.portugol.nucleo.asa.NoMenosUnario;
 import br.univali.portugol.nucleo.asa.NoOperacao;
@@ -61,7 +60,25 @@ import org.junit.Test;
 public class GeradorASATest {
 
     
-    
+    @Test
+    public void testListaDeclaracaoVariaveis() throws IOException, RecognitionException{
+        PortugolParser parser = novoParser("programa {                      "
+                + "     inteiro x=0, y                                            "
+                + "}                                                        ");
+        
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+        
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoListaDeclaracaoVariaveis listaDeclaracoes = (NoListaDeclaracaoVariaveis) asa.getListaDeclaracoesGlobais().get(0);
+        
+        Assert.assertEquals("a lista de declarações deveria ter 2 variáveis", 2, listaDeclaracoes.getDeclaracoes().size());
+        
+        List<NoDeclaracaoVariavel> declaracoes = listaDeclaracoes.getDeclaracoes();
+        assertNoDeclaracaoVariavel(declaracoes.get(0), "x", TipoDado.INTEIRO, 0);
+        assertNoDeclaracaoVariavel(declaracoes.get(1), "y", TipoDado.INTEIRO);
+    }
     
     
     @Test
