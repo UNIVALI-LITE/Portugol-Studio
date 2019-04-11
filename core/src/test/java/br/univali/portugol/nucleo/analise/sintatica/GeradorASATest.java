@@ -570,7 +570,7 @@ public class GeradorASATest {
         GeradorASA gerador = new GeradorASA(parser);
         ASAPrograma asa = (ASAPrograma) gerador.geraASA();
 
-        Assert.assertEquals("O programa deveria ter 1 declaração global (a inclusão da biblioteca)", 1, asa.getListaDeclaracoesGlobais().size());
+        Assert.assertEquals("O programa deveria ter 2 declarações globais (a inclusão da biblioteca e 'inicio')", 2, asa.getListaDeclaracoesGlobais().size());
         
         assertNoInclusaoBiblioteca(asa.getListaInclusoesBibliotecas().get(0), "Graficos");
         
