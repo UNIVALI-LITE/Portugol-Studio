@@ -62,6 +62,7 @@ public class GeradorASA {
         @Override
         public No visitDeclaracaoListaVariaveis(DeclaracaoListaVariaveisContext ctx) {
             TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            
             NoListaDeclaracaoVariaveis no = new NoListaDeclaracaoVariaveis(tipo);
             
             int totalVariaveis = ctx.ID().size();
@@ -109,10 +110,7 @@ public class GeradorASA {
                 declaracaoFuncao.setParametros(parametros);
             }
                         
-            // percorre os comandos declarados dentro da função
-            for (PortugolParser.ComandoContext comandoContext : ctx.comando()) {
-                declaracaoFuncao.adicionaBloco((NoBloco)comandoContext.accept(this));
-            }
+            declaracaoFuncao.setBlocos(getBlocos(ctx.comando()));
 
             declaracaoFuncao.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
             declaracaoFuncao.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.FUNCAO(), ctx.getText().length()));
@@ -187,7 +185,13 @@ public class GeradorASA {
         private List<NoBloco> getBlocos(List<ComandoContext> ctx) {
             List<NoBloco> blocos = new ArrayList<>();
             for (ComandoContext comando : ctx) {
-                blocos.add((NoBloco)comando.accept(this));
+                NoBloco bloco = (NoBloco)comando.accept(this);
+                if (!(bloco instanceof NoListaDeclaracaoVariaveis)) {
+                    blocos.add(bloco);
+                }
+                else { // trata a lista de declarações como um 'amontoado' de declarações
+                    blocos.addAll(((NoListaDeclaracaoVariaveis)bloco).getDeclaracoes());
+                }
             }
             return blocos;
         }
@@ -518,7 +522,8 @@ public class GeradorASA {
         
         @Override
         public No visitString(StringContext ctx) {
-            NoCadeia noCadeia = new NoCadeia(ctx.STRING().getText());
+            String texto = ctx.STRING().getText();
+            NoCadeia noCadeia = new NoCadeia(texto.substring(1, texto.length()- 1)); //ignora as aspas que circundam a string
             noCadeia.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.STRING()));
             return noCadeia;
         }

@@ -19,13 +19,17 @@ public class NoListaDeclaracaoVariaveis extends NoBloco implements NoDeclaracao 
     public void adicionaDeclaracao(NoDeclaracaoVariavel declaracao) {
         declaracoes.add(declaracao);
     }
+
+    public TipoDado getTipo() {
+        return tipo;
+    }
     
     @Override
     public Object aceitar(VisitanteASA visitante) throws ExcecaoVisitaASA {
         for (NoDeclaracaoVariavel declaracao : declaracoes) {
-            declaracao.aceitar(visitante);
+            visitante.visitar(declaracao);
         }
-
+        
         return null;
     }
 
@@ -34,7 +38,7 @@ public class NoListaDeclaracaoVariaveis extends NoBloco implements NoDeclaracao 
     }
     
     @Override
-    public String getNome() {
+    public String getNome() { // TODO remover este método da Interface No Declaracao
         return "";
     }
 }
