@@ -294,10 +294,14 @@ public class GeradorASA {
                 List<List<Object>> linhas = new ArrayList<>();
                 for (InicializacaoArrayContext inicializacaoArrayContext : inicializacao.inicializacaoArray()) {
                     List<Object> linha = new ArrayList<>();
-                    linhas.add(linha);
-                    for (ExpressaoContext expressao : inicializacaoArrayContext.listaExpressoes().expressao()) {
-                        linha.add(expressao.accept(this));
+                    
+                    if (inicializacaoArrayContext.listaExpressoes() != null) { // se as linhas da matriz não foram inicializadas com listas vazias: inteiro m[][] = {{}, {}}
+                        for (ExpressaoContext expressao : inicializacaoArrayContext.listaExpressoes().expressao()) {
+                            linha.add(expressao.accept(this));
+                        }
                     }
+                    
+                    linhas.add(linha);
                 }
                 matriz.setInicializacao(new NoMatriz(linhas));
             }
@@ -326,8 +330,10 @@ public class GeradorASA {
             InicializacaoArrayContext inicializacao = ctx.inicializacaoArray();
             if (inicializacao != null) {
                 List<Object> valores = new ArrayList<>();
-                for (ExpressaoContext expressao : inicializacao.listaExpressoes().expressao()) {
-                    valores.add(expressao.accept(this));
+                if (inicializacao.listaExpressoes() != null) { // quando o vetor é inicializado com uma lista vazia: inteiro v[] = {}
+                    for (ExpressaoContext expressao : inicializacao.listaExpressoes().expressao()) {
+                        valores.add(expressao.accept(this));
+                    }
                 }
                 vetor.setInicializacao(new NoVetor(valores));
             }

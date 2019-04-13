@@ -45,7 +45,21 @@ public class ParserTest {
 
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
     }
-        
+    
+    @Test
+    public void testDeclaracaoMatrizVazia() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	inteiro x[] = {}                                        \n"
+                + "	inteiro m[][] = {{}}                                    \n"
+                + "	inteiro a[][] = {{}, {}}                               \n"
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
     @Test
     public void testParaComVariasVariaveisDeclaradas() throws Exception {
 

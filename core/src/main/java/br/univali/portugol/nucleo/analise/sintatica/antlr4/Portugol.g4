@@ -27,7 +27,7 @@ declaracaoArray
     :   TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;
 
 inicializacaoArray
-    :   ABRE_CHAVES listaExpressoes FECHA_CHAVES ;
+    :   ABRE_CHAVES listaExpressoes? FECHA_CHAVES ;
 
 tamanhoArray 
     :   INT | ID; // aceita inteiro ou variável como tamanho do array, o semântico verifica se a variável é constante

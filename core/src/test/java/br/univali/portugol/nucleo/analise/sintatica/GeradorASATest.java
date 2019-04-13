@@ -60,6 +60,27 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testDeclaracaoMatrizVazia() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	inteiro x[] = {}                                        \n"
+                + "	inteiro m[][] = {{}}                                    \n"
+        //        + "	inteiro a[][] = {{}, {}}                               \n"
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoVetor x = (NoDeclaracaoVetor) asa.getListaDeclaracoesGlobais().get(0);
+        NoDeclaracaoMatriz m = (NoDeclaracaoMatriz) asa.getListaDeclaracoesGlobais().get(1);
+        
+        assertNoDeclaracaoVetor(x, "x", new Object[]{});
+        assertNoDeclaracaoMatriz(m, "m", new Object[][]{{}, {}});
+    }
+    
+    @Test
     public void testDeclaracaoMatrizVetorComConstante() throws Exception {
 
         PortugolParser parser = novoParser(
