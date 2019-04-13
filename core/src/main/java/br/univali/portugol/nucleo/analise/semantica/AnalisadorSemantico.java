@@ -728,9 +728,8 @@ public final class AnalisadorSemantico implements VisitanteASA
         {
             if (!FUNCOES_RESERVADAS.contains(chamadaFuncao.getNome()))
             {
-                //try
-                //{
-                    Simbolo simbolo = memoria.getSimbolo(chamadaFuncao.getNome());
+                Simbolo simbolo = memoria.getSimbolo(chamadaFuncao.getNome());
+                if (simbolo != null) {
                     if (!(simbolo instanceof Funcao))
                     {
                         notificarErroSemantico(new ErroReferenciaInvalida(chamadaFuncao, simbolo));
@@ -740,12 +739,12 @@ public final class AnalisadorSemantico implements VisitanteASA
                     {
                         simbolo.getOrigemDoSimbolo().adicionarReferencia(chamadaFuncao);
                     }
-                //}
-//                catch (ExcecaoSimboloNaoDeclarado ex)
-//                {
-//                    notificarErroSemantico(new ErroSimboloNaoDeclarado(chamadaFuncao));
-//                    throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, chamadaFuncao);
-//                }
+                }
+                else // (ExcecaoSimboloNaoDeclarado ex)
+                {
+                    notificarErroSemantico(new ErroSimboloNaoDeclarado(chamadaFuncao));
+                    throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, chamadaFuncao);
+                }
             }
         }
         else
