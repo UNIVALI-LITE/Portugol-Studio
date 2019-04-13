@@ -7,6 +7,7 @@ import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroInclusaoBiblioteca;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoInicializado;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloRedeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTiposIncompativeis;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
@@ -37,7 +38,23 @@ public final class AnalisadorSemanticoTest
         
     }
     
-    // TESTAR função declarada com o mesmo nome de uma variável global
+    @Test 
+    public void testFuncaoComNomeDeVariavelGlobal() throws ErroCompilacao {
+        try {
+            Portugol.compilarParaAnalise(""
+                    + "programa {                                               "
+                    + "     inteiro teste                                       "
+                    + "	    funcao teste() {}                                   "
+                    + "}                                                        "
+            );
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() > 0);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroSimboloRedeclarado.class.getName(), resultado.getErros().get(0).getClass().getName());
+        }
+        
+    }
     
 //    @Test (expected = ErroInclusaoBiblioteca.class)
 //    public void testChamadaFuncaoInexistente() throws ErroCompilacao {
