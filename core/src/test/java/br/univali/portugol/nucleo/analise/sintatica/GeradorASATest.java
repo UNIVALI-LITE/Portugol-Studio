@@ -177,22 +177,23 @@ public class GeradorASATest {
     
     @Test
     public void testListaDeclaracaoVariaveis() throws IOException, RecognitionException{
-        PortugolParser parser = novoParser("programa {                      "
-                + "     inteiro x=0, y                                            "
-                + "}                                                        ");
+        PortugolParser parser = novoParser(""
+                + "programa {                                                   "
+                + "     inteiro x=0, y                                          "
+                + "     cadeia c                                                "
+                + "}                                                            "
+        );
         
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
         
         GeradorASA geradorASA = new GeradorASA(parser);
         ASA asa = geradorASA.geraASA();
         
-        NoListaDeclaracaoVariaveis listaDeclaracoes = (NoListaDeclaracaoVariaveis) asa.getListaDeclaracoesGlobais().get(0);
+        Assert.assertEquals("a lista de declarações deveria ter 3 variáveis", 3, asa.getListaDeclaracoesGlobais().size());
         
-        Assert.assertEquals("a lista de declarações deveria ter 2 variáveis", 2, listaDeclaracoes.getDeclaracoes().size());
-        
-        List<NoDeclaracaoVariavel> declaracoes = listaDeclaracoes.getDeclaracoes();
-        assertNoDeclaracaoVariavel(declaracoes.get(0), "x", TipoDado.INTEIRO, 0);
-        assertNoDeclaracaoVariavel(declaracoes.get(1), "y", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 0);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(1), "y", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(2), "c", TipoDado.CADEIA);
     }
     
     
