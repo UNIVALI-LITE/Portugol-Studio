@@ -11,10 +11,10 @@ programa
                 escreva ("caso 2")                        
                 pare                                    
             caso 3:                                        
-                escreva ("Tchau!\n")                    
+                escreva ("Tchau!")                    
                 pare                                    
             caso contrario:                                
-                escreva ("Opcao Invalida!\n")          
+                escreva ("Opcao Invalida!")          
         }                                                   
     }                                                       
 }
