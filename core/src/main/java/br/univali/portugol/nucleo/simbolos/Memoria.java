@@ -37,9 +37,9 @@ public class Memoria
         observadores.remove(observador);
     }    
     
-    public Simbolo getSimbolo(String nome) throws ExcecaoSimboloNaoDeclarado
+    public Simbolo getSimbolo(String nome)
     {    
-        Simbolo simbolo = null;
+        Simbolo simbolo;
         
         if (!escoposLocais.isEmpty())
         {   
@@ -54,7 +54,7 @@ public class Memoria
             return simbolo;
         }
         
-        throw new ExcecaoSimboloNaoDeclarado(nome);
+        return null;
     }
     
     public void adicionarSimbolo(Simbolo simbolo)

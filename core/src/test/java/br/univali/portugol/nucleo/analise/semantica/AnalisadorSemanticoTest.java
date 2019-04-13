@@ -4,6 +4,7 @@ import br.univali.portugol.nucleo.ErroCompilacao;
 import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.programa.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
+import br.univali.portugol.nucleo.analise.semantica.erros.ErroInclusaoBiblioteca;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoDeclarado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoInicializado;
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTiposIncompativeis;
@@ -15,6 +16,33 @@ import org.junit.Test;
 public final class AnalisadorSemanticoTest
 {
 	
+    @Test (expected = ErroInclusaoBiblioteca.class)
+    public void testInclusaoBibliotecaDuplicada() throws ErroCompilacao {
+        Portugol.compilarParaAnalise(
+                "programa"
+                + "{"
+                + "	inclua biblioteca Graficos"
+                + "	inclua biblioteca Graficos"
+                + "	"
+                + "}"
+            );
+        
+        
+    }
+    
+    // TESTAR função declarada com o mesmo nome de uma variável global
+    
+//    @Test (expected = ErroInclusaoBiblioteca.class)
+//    public void testChamadaFuncaoInexistente() throws ErroCompilacao {
+//        Portugol.compilarParaAnalise(
+//                "programa"
+//                + "{"
+//                + "	funcao inicio() { teste() }"
+//                + "}"
+//            );
+//    }
+    
+   
 	@Test (expected = ErroCompilacao.class)
     public void testParaMultideclaradoForaDeEscopo() throws ErroCompilacao{
         Portugol.compilarParaAnalise(
