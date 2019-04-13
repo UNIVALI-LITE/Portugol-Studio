@@ -268,7 +268,16 @@ public class GeradorASA {
                 alias = ctx.ID(1).getText();
             }
             
-            return new NoInclusaoBiblioteca(nome, alias);
+            NoInclusaoBiblioteca no = new NoInclusaoBiblioteca(nome, alias);
+            
+            no.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID(0)));
+            no.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ID(0), ctx.getText().length()));
+            
+            if (no.getAlias() != null) {
+                no.setTrechoCodigoFonteAlias(getTrechoCodigoFonte(ctx.ID(1)));
+            }
+            
+            return no;
         }
         
         @Override
