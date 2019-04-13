@@ -366,10 +366,18 @@ public class ParserTest {
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
     }
 
+    /*
+    cadeia c = "teste" + " concatenacao"                
+    inteiro i = ((10 + 2 * 4/1) << 1)                       
+    logico l = verdadeiro e verdadeiro ou falso            
+    real r = 53.23 + 0.01           
+    */
+    
     @Test
     public void testDeclaracaoVariavelGlobal() throws IOException, RecognitionException {
         PortugolParser parser = novoParser("programa {              "
-                + "     inteiro x = 0                                   "
+                + "     inteiro i = ((10 + 2 * 4/1) << 1)           "
+                + "     inteiro x = 0                               "
                 + "     real a = 10.0                               "
                 + "     cadeia teste = \"teste\"                    "
                 + "     cadeia concat = \"conca\" + \"tenação\"     "

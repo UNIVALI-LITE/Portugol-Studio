@@ -28,19 +28,23 @@ OP_E_LOGICO:       'e' ;
 OP_OU_LOGICO:      'ou';
 INCLUA:         'inclua' ;
 BIBLIOTECA:     'biblioteca' ;
-OP_SUBTRACAO:      '-' ;
-OP_ADICAO:         '+' ;
-OP_MULTIPLICACAO:  '*' ;
-OP_DIVISAO:        '/' ;
-OP_MOD:            '%' ;
-OP_IGUALDADE:      '==' ;
-OP_DIFERENCA:      '!=' ;
-OP_MAIOR:          '>' ;
-OP_MENOR:          '<' ;
-OP_MENOR_IGUAL:    '<=' ;
-OP_MAIOR_IGUAL:     '>=' ;
+
+OP_SUBTRACAO:           '-' ;
+OP_ADICAO:              '+' ;
+OP_MULTIPLICACAO:       '*' ;
+OP_DIVISAO:             '/' ;
+OP_MOD:                 '%' ;
+OP_IGUALDADE:           '==' ;
+OP_DIFERENCA:           '!=' ;
+OP_MAIOR:               '>' ;
+OP_MENOR:               '<' ;
+OP_MENOR_IGUAL:         '<=' ;
+OP_MAIOR_IGUAL:         '>=' ;
 OP_INCREMENTO_UNARIO:   '++' ;
 OP_DECREMENTO_UNARIO:   '--' ;
+OP_SHIFT_LEFT:          '<<' ;
+OP_SHIFT_RIGHT:         '>>' ;
+OP_XOR:                 '^' ;
 
 LOGICO: VERDADEIRO | FALSO ;
 

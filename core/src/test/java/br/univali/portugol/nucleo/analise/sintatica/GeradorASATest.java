@@ -29,6 +29,8 @@ import br.univali.portugol.nucleo.asa.NoMatriz;
 import br.univali.portugol.nucleo.asa.NoMenosUnario;
 import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseLeftShift;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
 import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaior;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
@@ -237,7 +239,7 @@ public class GeradorASATest {
     public void testVariaveisLocais() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa { "
                 + " funcao inicio() {                               "
-                + "     inteiro x                                "
+                + "     inteiro x                                   "
                 + "     real a = 10.0                               "
                 + "     cadeia teste = \"teste\"                    "
                 + "     cadeia concat = \"conca\" + \"tenação\"     "
@@ -248,7 +250,9 @@ public class GeradorASATest {
                 + "     inteiro vetor[3]                            "
                 + "     inteiro v[] = {1, 2, 3, 10}                 "
                 + "     inteiro m[3][3]                             "
-                + "     inteiro matriz[][] = {{1, 2}, {10, 3}}"
+                + "     inteiro matriz[][] = {{1, 2}, {10, 3}}      "
+                + "     inteiro i = 1 << 1                          "
+                + "     inteiro j = 1 >> 1                          "
                 + " }                                               "
                 + "}                                                ");
 
@@ -269,6 +273,9 @@ public class GeradorASATest {
         assertNoDeclaracaoVetor((NoDeclaracaoVetor)inicio.getBlocos().get(9), "v", new Object[]{1, 2, 3, 10});
         assertNoDeclaracaoMatriz((NoDeclaracaoMatriz)inicio.getBlocos().get(10), "m", 3, 3);
         assertNoDeclaracaoMatriz((NoDeclaracaoMatriz)inicio.getBlocos().get(11), "matriz", new Integer[][]{{1, 2}, {10, 3}});
+        
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(12), "i", TipoDado.INTEIRO, NoOperacaoBitwiseLeftShift.class);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(13), "j", TipoDado.INTEIRO, NoOperacaoBitwiseRightShift.class);
     }
     
     @Test

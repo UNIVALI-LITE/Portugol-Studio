@@ -606,7 +606,26 @@ public class GeradorASA {
         @Override
         public No visitModulo(ModuloContext ctx) {
             return criaNoOperacao(ctx, this, NoOperacaoModulo.class, ctx.OP_MOD());
-                    
+        }
+
+        @Override
+        public No visitOperacaoShiftLeft(OperacaoShiftLeftContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoBitwiseLeftShift.class, ctx.OP_SHIFT_LEFT());
+        }
+
+        @Override
+        public No visitOperacaoShiftRight(OperacaoShiftRightContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoBitwiseRightShift.class, ctx.OP_SHIFT_RIGHT());
+        }
+
+        @Override
+        public No visitOperacaoELogico(OperacaoELogicoContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaE.class, ctx.OP_E_LOGICO());
+        }
+
+        @Override
+        public No visitOperacaoOuLogico(OperacaoOuLogicoContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoLogicaOU.class, ctx.OP_OU_LOGICO());
         }
 
     }
