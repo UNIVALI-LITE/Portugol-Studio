@@ -45,6 +45,7 @@ OP_DECREMENTO_UNARIO:   '--' ;
 OP_SHIFT_LEFT:          '<<' ;
 OP_SHIFT_RIGHT:         '>>' ;
 OP_XOR:                 '^' ;
+OP_ALIAS_BIBLIOTECA:    '-->' ;
 
 LOGICO: VERDADEIRO | FALSO ;
 

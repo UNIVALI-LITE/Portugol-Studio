@@ -9,7 +9,7 @@ arquivo
         FECHA_CHAVES ;
 
 inclusaoBiblioteca
-    : INCLUA BIBLIOTECA ID ('->' ID)?;
+    : INCLUA BIBLIOTECA ID (OP_ALIAS_BIBLIOTECA ID)?;
 
 declaracaoVariavel
     :  CONSTANTE? TIPO ID ('=' expressao)? ;

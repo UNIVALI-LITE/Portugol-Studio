@@ -563,7 +563,7 @@ public class GeradorASATest {
     public void testBibliotecasNativas() throws IOException, RecognitionException, ExcecaoVisitaASA {
         PortugolParser parser = novoParser("programa {                          "
                 + "     inclua biblioteca Graficos                              "
-                + "     inclua biblioteca Sons -> s                             "
+                + "     inclua biblioteca Sons --> s                             "
                 + "                                                             "
                 + "     funcao inicio() {                                       "
                 + "         Graficos.carregar_som(\"teste\")"
