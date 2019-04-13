@@ -86,7 +86,8 @@ inicializacaoPara
     :   atribuicao                      // quando a variável é declarada fora do loop e apenas inicializada dentro dele
     |   declaracaoVariavel              // apenas uma variável declarada dentro do loop (o caso mais comum)
     |   declaracaoListaVariaveis        // lista de variáveis declaradas no loop
-    ; 
+    |   ID
+; 
 
 condicao
     :   expressao ;
@@ -127,7 +128,7 @@ expressao
     |   expressao OP_MAIOR_IGUAL expressao                                                      #operacaoMaiorIgual
     |   expressao OP_E_LOGICO expressao                                                         #operacaoELogico
     |   expressao OP_OU_LOGICO expressao                                                        #operacaoOuLogico
-    |   escopoBiblioteca? ID                                                                    #variavel           // referência para variável
+    |   escopoBiblioteca? ID                                                                    #referenciaParaVariavel           // referência para variável
     |   INT                                                                                     #numeroInteiro   
     |   REAL                                                                                    #numeroReal  
     |   LOGICO                                                                                  #valorLogico
@@ -136,9 +137,8 @@ expressao
     |   ABRE_PARENTESES expressao FECHA_PARENTESES                                              #expressaoEntreParenteses
     ;
     
-
 listaExpressoes
     :   expressao (',' expressao)* ;
      
 escopoBiblioteca
-    :   (ID '.');
+    :   (ID '.') ;

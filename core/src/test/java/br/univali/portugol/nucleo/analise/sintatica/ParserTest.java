@@ -62,12 +62,16 @@ public class ParserTest {
                 + "		}                                               "
                 + "		para(inteiro i = 2, j = i, k = j; i < 5; i++){  "
                 + "		}                                               "
-                + "	}                                                       "
+               + "                                                              "
+                + "             inteiro j=0                                     "
+                + "             para(j; j <= 10; j++) {                         "
+                + "                 escreva(j)                                  "
+                + "             }                                               "
+                + "     }                                                       "
                 + "}                                                            "
         );
 
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
-
     }
 
     @Test

@@ -126,7 +126,7 @@ public class GeradorASA {
         
         // referência para variável
         @Override
-        public No visitVariavel(PortugolParser.VariavelContext ctx) {
+        public No visitReferenciaParaVariavel(PortugolParser.ReferenciaParaVariavelContext ctx) {
             String nomeVariavel = ctx.ID().getText();
 
             String escopo = null;
@@ -352,12 +352,17 @@ public class GeradorASA {
 
             if (inicializacaoPara != null) {
                 List<NoBloco> inicializacoes = new ArrayList<>();
-                NoBloco blocoInicializacao = (NoBloco)inicializacaoPara.accept(this);
-                if (blocoInicializacao instanceof NoListaDeclaracaoVariaveis) {
-                    inicializacoes.addAll(((NoListaDeclaracaoVariaveis)blocoInicializacao).getDeclaracoes());
+                if (inicializacaoPara.ID() == null) { // se NÃO foi usada uma referência para variável na inicialização do para
+                    NoBloco blocoInicializacao = (NoBloco)inicializacaoPara.accept(this);
+                    if (blocoInicializacao instanceof NoListaDeclaracaoVariaveis) {
+                        inicializacoes.addAll(((NoListaDeclaracaoVariaveis)blocoInicializacao).getDeclaracoes());
+                    }
+                    else {
+                        inicializacoes.add(blocoInicializacao); // declaração única de variável ou atribuição
+                    }
                 }
-                else {
-                    inicializacoes.add(blocoInicializacao); // declaração única de variável ou atribuição
+                else { // o para foi inicializado apenas com uma referência para variável, como 'para(j; j< 10; j++) ... "
+                    inicializacoes.add(new NoReferenciaVariavel(null, inicializacaoPara.ID().getText()));
                 }
                 noPara.setInicializacoes(inicializacoes);
             }

@@ -845,6 +845,11 @@ public class GeradorASATest {
                 + "         inteiro x                                           "
                  + "        para (x=0; x < x+1; x++)                            "
                 + "             escreva(x)                                      "
+                + "                                                             "
+                + "         inteiro j=0                                     "
+                + "         para(j; j <= 10; j++) {                         "
+                + "            escreva(j)                                  "
+                + "         }                                               "
                 + "     }                                                       "
                 + "}                                                            ");
 
@@ -854,7 +859,7 @@ public class GeradorASATest {
         NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         List<NoBloco> blocos = funcaoInicio.getBlocos();
         
-        Assert.assertEquals("Eram esperados 3 blocos dentro da função início", 3, blocos.size());
+        Assert.assertEquals("Eram esperados 5 blocos dentro da função início", 5, blocos.size());
         
         NoPara primeiroNoPara = (NoPara)blocos.get(0);
         NoPara segundoNoPara = (NoPara)blocos.get(2);
@@ -901,6 +906,9 @@ public class GeradorASATest {
         NoOperacaoAtribuicao segundoIncremento = (NoOperacaoAtribuicao)segundoNoPara.getIncremento();
         Assert.assertTrue("O segundo loop deveria ter uma expressão de incremento", segundoIncremento != null);
         Assert.assertTrue("O incrementod o segundo loop deveria usar a variável x", "x".equals(((NoReferenciaVariavel)segundoIncremento.getOperandoEsquerdo()).getNome()));
+    
+        NoPara ultimoPara =(NoPara) funcaoInicio.getBlocos().get(4);
+        Assert.assertEquals("erro no nome da variável usada na inicialização do loop", "j", ((NoReferenciaVariavel)ultimoPara.getInicializacoes().get(0)).getNome());
     }
     
     @Test
