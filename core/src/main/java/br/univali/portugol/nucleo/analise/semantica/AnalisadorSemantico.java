@@ -2340,18 +2340,14 @@ public final class AnalisadorSemantico implements VisitanteASA
 
         try
         {
-            Simbolo simbolo = memoria.getSimbolo(nome);
-            if (simbolo == null) {
-                memoria.adicionarSimbolo(simbolo); // coloca a declaração na tabela de símbolos
-            
-                MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(nome);
+            MetaDadosBiblioteca metaDadosBiblioteca = GerenciadorBibliotecas.getInstance().obterMetaDadosBiblioteca(nome);
 
-                if (metaDadosBibliotecas.containsKey(nome)) {
-                    notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteNome(), new Exception(String.format("A biblioteca \"%s\" já foi incluída", nome))));
-                }
-                else {
-                    metaDadosBibliotecas.put(nome, metaDadosBiblioteca);
-                }
+            if (metaDadosBibliotecas.containsKey(nome)) {
+                notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteNome(), new Exception(String.format("A biblioteca \"%s\" já foi incluída", nome))));
+            }
+            else {
+                metaDadosBibliotecas.put(nome, metaDadosBiblioteca);
+            }
 
 //                if (alias != null) {
 //                    try {
@@ -2367,7 +2363,6 @@ public final class AnalisadorSemantico implements VisitanteASA
 //                        }
 //                    }
 //                }
-            }
         }
         catch (ErroCarregamentoBiblioteca erro) {
             notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteNome(), erro));

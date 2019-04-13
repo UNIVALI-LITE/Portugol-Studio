@@ -10,23 +10,30 @@ import br.univali.portugol.nucleo.analise.semantica.erros.ErroSimboloNaoIniciali
 import br.univali.portugol.nucleo.analise.semantica.erros.ErroTiposIncompativeis;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
+import junit.framework.Assert;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 public final class AnalisadorSemanticoTest
 {
 	
-    @Test (expected = ErroInclusaoBiblioteca.class)
+    @Test 
     public void testInclusaoBibliotecaDuplicada() throws ErroCompilacao {
-        Portugol.compilarParaAnalise(
-                "programa"
-                + "{"
-                + "	inclua biblioteca Graficos"
-                + "	inclua biblioteca Graficos"
-                + "	"
-                + "}"
+        try {
+            Portugol.compilarParaAnalise(
+                    "programa"
+                            + "{"
+                            + "	inclua biblioteca Graficos"
+                            + "	inclua biblioteca Graficos"
+                            + "	"
+                            + "}"
             );
-        
+        }
+        catch(ErroCompilacao e) {
+            ResultadoAnalise resultado = e.getResultadoAnalise();
+            Assert.assertTrue("era esperado um erro de compilação", resultado.getErros().size() > 0);
+            Assert.assertEquals("Erro no tipo de exceção reportada", ErroInclusaoBiblioteca.class.getName(), resultado.getErros().get(0).getClass().getName());
+        }
         
     }
     
