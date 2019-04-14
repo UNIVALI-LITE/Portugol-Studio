@@ -19,6 +19,18 @@ import org.junit.Test;
 public class ParserTest {
 
     @Test
+    public void testInteiroInicializadoComHexadecimal() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	inteiro x = 0xFFFFFF                                    \n"
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+    @Test
     public void testFuncaoRetornandoValor() throws Exception {
 
         PortugolParser parser = novoParser(

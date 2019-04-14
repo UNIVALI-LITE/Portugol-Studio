@@ -135,14 +135,14 @@ expressao
     |   expressao OP_SHIFT_LEFT expressao                                                       #operacaoShiftLeft
     |   expressao OP_SHIFT_RIGHT expressao                                                      #operacaoShiftRight
     |   escopoBiblioteca? ID                                                                    #referenciaParaVariavel           // referência para variável
-    |   INT                                                                                     #numeroInteiro   
+    |   (INT | HEXADECIMAL)                                                                     #numeroInteiro 
     |   REAL                                                                                    #numeroReal  
     |   LOGICO                                                                                  #valorLogico
     |   CARACTER                                                                                #caracter
     |   STRING                                                                                  #string   
     |   ABRE_PARENTESES expressao FECHA_PARENTESES                                              #expressaoEntreParenteses
     ;
-    
+
 listaExpressoes
     :   expressao (',' expressao)* ;
      

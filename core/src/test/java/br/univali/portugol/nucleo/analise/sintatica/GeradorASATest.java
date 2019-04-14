@@ -63,6 +63,22 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testInteiroInicializadoComHexadecimal() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	inteiro x = 0xFaBcDe                                    \n"
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoVariavel no = (NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0);
+        assertNoDeclaracaoVariavel(no, "x", TipoDado.INTEIRO, 0xFaBcDe);
+    }
+    
+    @Test
     public void testFuncaoRetornandoValor() throws Exception {
 
         PortugolParser parser = novoParser(

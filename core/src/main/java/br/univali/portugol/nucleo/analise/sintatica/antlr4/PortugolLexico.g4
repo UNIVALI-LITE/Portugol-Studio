@@ -76,6 +76,10 @@ fragment DIGITO: [0-9] ;
 
 INT:    DIGITO+ ;
 
+HEXADECIMAL: '0x' SIMBOLO_HEXADECIMAL SIMBOLO_HEXADECIMAL SIMBOLO_HEXADECIMAL (SIMBOLO_HEXADECIMAL SIMBOLO_HEXADECIMAL SIMBOLO_HEXADECIMAL)?; // 3 ou 6 símbolos
+
+fragment SIMBOLO_HEXADECIMAL:   DIGITO | [A-Fa-f] ;
+
 COMENTARIO:         '/*' .*? '*/' -> channel(HIDDEN) ;
 COMENTARIO_SIMPLES: '//' .*? '\n' -> channel(HIDDEN) ; // acho que o ideal seria mandar os comentários para outro canal como no livro no Antlr4
 

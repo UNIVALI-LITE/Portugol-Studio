@@ -561,12 +561,29 @@ public class GeradorASA {
             return matriz;
         }
 
+        private int parseInt(String texto, int base) {
+            
+            if (base != 10 && base != 16) {
+                throw new IllegalArgumentException("não é possível converter inteiros na base " + base);
+            }
+            
+            if (base == 16) {
+                return Integer.parseInt(texto.replaceFirst("0x", ""), base); // remove o 0x da frente do número hexa
+            }
+            
+            return Integer.parseInt(texto, base);
+        }
+        
         @Override
         public No visitNumeroInteiro(PortugolParser.NumeroInteiroContext ctx) {
-            int valorInteiro = Integer.valueOf(ctx.INT().getText());
             
+            TerminalNode terminal = ctx.INT() != null ? ctx.INT() : ctx.HEXADECIMAL();
+            int base = terminal == ctx.INT() ? 10 : 16; // decimal ou hexa
+                    
+            int valorInteiro = parseInt(terminal.getText(), base);
+
             NoInteiro noInteiro = new NoInteiro(valorInteiro);
-            noInteiro.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.INT()));
+            noInteiro.setTrechoCodigoFonte(getTrechoCodigoFonte(terminal));
             return noInteiro;
         }
 
