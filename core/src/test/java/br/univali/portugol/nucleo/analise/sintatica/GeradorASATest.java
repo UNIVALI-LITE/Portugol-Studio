@@ -40,6 +40,7 @@ import br.univali.portugol.nucleo.asa.NoPare;
 import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
+import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.Quantificador;
@@ -61,6 +62,25 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testFuncaoRetornandoValor() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	funcao inteiro teste() {                                \n"
+                + "         retorne 1                                           \n"
+                + "     }                                                       \n"
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao teste = (NoDeclaracaoFuncao) asa.getListaDeclaracoesGlobais().get(0);
+        NoRetorne retorne = (NoRetorne)teste.getBlocos().get(0);
+        Assert.assertEquals((Integer)1, ((NoInteiro)retorne.getExpressao()).getValor());
+    }  
+    
     @Test
     public void testDeclaracaoMatrizVazia() throws Exception {
 
@@ -579,7 +599,7 @@ public class GeradorASATest {
         
         NoDeclaracaoFuncao funcaoInicio = getNoDeclaracaoFuncao("inicio", asa);
         NoChamadaFuncao chamadaFuncao = (NoChamadaFuncao) funcaoInicio.getBlocos().get(0);
-        assertNoChamadaFuncao(chamadaFuncao, "carregar_som", "Graficos.", new String[]{"teste"});
+        assertNoChamadaFuncao(chamadaFuncao, "carregar_som", "Graficos", new String[]{"teste"});
     }
     
     @Test
@@ -631,7 +651,7 @@ public class GeradorASATest {
         NoDeclaracaoVariavel declaracao2 = (NoDeclaracaoVariavel) funcaoInicio.getBlocos().get(4);
         Assert.assertEquals("A variavel que recebe o valor chama-se 'som'", "som", declaracao2.getNome());
         Assert.assertTrue("A variavel recebe o valor retornado por uma função", declaracao2.getInicializacao() instanceof NoChamadaFuncao);
-        assertNoChamadaFuncao((NoChamadaFuncao)declaracao2.getInicializacao(), "carregar_som", "Graficos.", new String[]{"teste"});
+        assertNoChamadaFuncao((NoChamadaFuncao)declaracao2.getInicializacao(), "carregar_som", "Graficos", new String[]{"teste"});
     }
     
     @Test

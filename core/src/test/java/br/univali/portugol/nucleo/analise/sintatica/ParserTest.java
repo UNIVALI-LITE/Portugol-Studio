@@ -19,6 +19,20 @@ import org.junit.Test;
 public class ParserTest {
 
     @Test
+    public void testFuncaoRetornandoValor() throws Exception {
+
+        PortugolParser parser = novoParser(
+                "programa {                                                     "
+                + "	funcao inteiro teste() {                                \n"
+                + "         retorne 1                                           \n"
+                + "     }                                                       \n"
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }  
+    
+    @Test
     public void testDeclaracaoArrayComConstante() throws Exception {
 
         PortugolParser parser = novoParser(

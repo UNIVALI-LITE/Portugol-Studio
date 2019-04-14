@@ -95,18 +95,7 @@ public class GeradorASA {
             if (ctx.listaParametros() != null) { // se a função tem parâmetros
                 List<NoDeclaracaoParametro> parametros = new ArrayList<>();
                 for (ParametroContext parametroContext : ctx.listaParametros().parametro()) {
-                    TipoDado tipo = TipoDado.obterTipoDadoPeloNome(parametroContext.TIPO().getText());
-                    String nome = parametroContext.ID().getText();
-                    ModoAcesso modoAcesso = (parametroContext.PARAMETRO_POR_REFERENCIA() == null) ? ModoAcesso.POR_VALOR : ModoAcesso.POR_REFERENCIA;
-                    Quantificador quantificador = Quantificador.VALOR;
-                    if (parametroContext.parametroArray() != null) {
-                        quantificador = Quantificador.VETOR;
-                    }
-                    else if (parametroContext.parametroMatriz() != null) {
-                        quantificador = Quantificador.MATRIZ;
-                    }
-
-                    parametros.add(new NoDeclaracaoParametro(nome, tipo, quantificador, modoAcesso));
+                    parametros.add((NoDeclaracaoParametro)parametroContext.accept(this));
                 }
                 declaracaoFuncao.setParametros(parametros);
             }
@@ -119,8 +108,20 @@ public class GeradorASA {
             if (ctx.TIPO() != null) {
                 declaracaoFuncao.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
             }
-            
+
             return declaracaoFuncao;
+        }
+
+        @Override
+        public No visitRetorne(RetorneContext ctx) {
+            TrechoCodigoFonte trechoCodigoFonte = getTrechoCodigoFonte(ctx.RETORNE());
+            
+            NoExpressao expressao = null;
+            if (ctx.expressao() != null) {
+                expressao = (NoExpressao)ctx.expressao().accept(this);
+            }
+            
+            return new NoRetorne(trechoCodigoFonte, expressao);
         }
 
         @Override
@@ -304,23 +305,13 @@ public class GeradorASA {
                  expressaoColunas = (NoExpressao) ctx.tamanhoArray(1).accept(this);
             }
             
-            NoDeclaracaoMatriz matriz = new NoDeclaracaoMatriz(nome, tipo, expressaoLinhas, expressaoColunas, false);
+            boolean constante = ctx.CONSTANTE() != null;
+            
+            NoDeclaracaoMatriz matriz = new NoDeclaracaoMatriz(nome, tipo, expressaoLinhas, expressaoColunas, constante);
             
             InicializacaoMatrizContext inicializacao = ctx.inicializacaoMatriz();
             if (inicializacao != null) {
-                List<List<Object>> linhas = new ArrayList<>();
-                for (InicializacaoArrayContext inicializacaoArrayContext : inicializacao.inicializacaoArray()) {
-                    List<Object> linha = new ArrayList<>();
-                    
-                    if (inicializacaoArrayContext.listaExpressoes() != null) { // se as linhas da matriz não foram inicializadas com listas vazias: inteiro m[][] = {{}, {}}
-                        for (ExpressaoContext expressao : inicializacaoArrayContext.listaExpressoes().expressao()) {
-                            linha.add(expressao.accept(this));
-                        }
-                    }
-                    
-                    linhas.add(linha);
-                }
-                matriz.setInicializacao(new NoMatriz(linhas));
+                matriz.setInicializacao((NoMatriz)inicializacao.accept(this));
             }
             
             matriz.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
@@ -330,6 +321,45 @@ public class GeradorASA {
             matriz.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
             
             return matriz; 
+        }
+
+        @Override
+        public No visitInicializacaoMatriz(InicializacaoMatrizContext ctx) {
+            List<List<Object>> linhas = new ArrayList<>();
+            
+            for (InicializacaoArrayContext inicializacaoArrayContext : ctx.inicializacaoArray()) {
+                List<Object> linha = new ArrayList<>();
+
+                if (inicializacaoArrayContext.listaExpressoes() != null) { // se as linhas da matriz não foram inicializadas com listas vazias: inteiro m[][] = {{}, {}}
+                    for (ExpressaoContext expressao : inicializacaoArrayContext.listaExpressoes().expressao()) {
+                        linha.add(expressao.accept(this));
+                    }
+                }
+
+                linhas.add(linha);
+            }
+            
+            NoMatriz matriz = new NoMatriz(linhas);
+            
+            matriz.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ABRE_CHAVES(), ctx.getText().length()));
+            
+            return matriz;
+        }
+        
+        @Override
+        public No visitInicializacaoArray(InicializacaoArrayContext ctx) {
+            
+            List<Object> valores = new ArrayList<>();
+            if (ctx.listaExpressoes() != null) { // quando o vetor é inicializado com uma lista vazia: inteiro v[] = {}
+                for (ExpressaoContext expressao : ctx.listaExpressoes().expressao()) {
+                    valores.add(expressao.accept(this));
+                }
+            }
+            NoVetor noVetor = new NoVetor(valores);
+
+            noVetor.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.ABRE_CHAVES(), ctx.getText().length()));
+            
+            return noVetor;
         }
         
         @Override
@@ -342,17 +372,14 @@ public class GeradorASA {
                 tamanho = (NoExpressao) visitTamanhoArray(ctx.tamanhoArray());
             }
             
-            NoDeclaracaoVetor vetor = new NoDeclaracaoVetor(nome, tipo, tamanho, false);
+            
+            boolean constante = ctx.CONSTANTE() != null;
+            
+            NoDeclaracaoVetor vetor = new NoDeclaracaoVetor(nome, tipo, tamanho, constante);
             
             InicializacaoArrayContext inicializacao = ctx.inicializacaoArray();
             if (inicializacao != null) {
-                List<Object> valores = new ArrayList<>();
-                if (inicializacao.listaExpressoes() != null) { // quando o vetor é inicializado com uma lista vazia: inteiro v[] = {}
-                    for (ExpressaoContext expressao : inicializacao.listaExpressoes().expressao()) {
-                        valores.add(expressao.accept(this));
-                    }
-                }
-                vetor.setInicializacao(new NoVetor(valores));
+                vetor.setInicializacao((NoVetor)inicializacao.accept(this));
             }
             
             vetor.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
@@ -442,7 +469,7 @@ public class GeradorASA {
 
             PortugolParser.EscopoBibliotecaContext escopoBiblioteca = ctx.escopoBiblioteca();
 
-            String escopo = (escopoBiblioteca != null) ? escopoBiblioteca.getText() : null;
+            String escopo = (escopoBiblioteca != null) ? escopoBiblioteca.ID().getText() : null;
             String nomeFuncao = ctx.ID().getText();
 
             NoChamadaFuncao noChamadaFuncao = new NoChamadaFuncao(escopo, nomeFuncao);
@@ -461,6 +488,31 @@ public class GeradorASA {
             return noChamadaFuncao;
         }
 
+        @Override
+        public No visitParametro(ParametroContext ctx) {
+            
+            String nome = ctx.ID().getText();
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            
+            Quantificador quantificador = Quantificador.VALOR;
+            if (ctx.parametroArray() != null) {
+                quantificador = Quantificador.VETOR;
+            }
+            else if (ctx.parametroMatriz() != null) {
+                quantificador = Quantificador.MATRIZ;
+            }
+            
+            ModoAcesso modoAcesso = ctx.PARAMETRO_POR_REFERENCIA() != null ? ModoAcesso.POR_REFERENCIA : ModoAcesso.POR_VALOR;
+            
+            NoDeclaracaoParametro parametro = new NoDeclaracaoParametro(nome, tipo, quantificador, modoAcesso);
+            
+            parametro.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
+            parametro.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
+            parametro.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
+            
+            return parametro; 
+        }
+        
         @Override
         public No visitReferenciaArray(ReferenciaArrayContext ctx) {
             String escopo = null;

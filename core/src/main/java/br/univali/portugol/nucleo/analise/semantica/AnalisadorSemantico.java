@@ -43,7 +43,7 @@ public final class AnalisadorSemantico implements VisitanteASA
     private final Map<String, MetaDadosBiblioteca> metaDadosBibliotecas;
     private final TabelaCompatibilidadeTipos tabelaCompatibilidadeTipos = TabelaCompatibilidadeTiposPortugol.INSTANCE;
 
-    private boolean declarandoSimbolosGlobais;
+    //private boolean declarandoSimbolosGlobais;
     private ASA asa;
     private Funcao funcaoAtual;
     private NoBloco blocoAtual;
@@ -151,28 +151,61 @@ public final class AnalisadorSemantico implements VisitanteASA
             no.setPai(blocoAtual);
         }
     }
+    
+    private Funcao criaSimboloFuncao(NoDeclaracaoFuncao declaracaoFuncao) {
+        String nome = declaracaoFuncao.getNome();
+        TipoDado tipoDado = declaracaoFuncao.getTipoDado();
+        Quantificador quantificador = declaracaoFuncao.getQuantificador();
+        
+        Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
+        funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
+        funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
+        
+        return funcao;
+    }
+    
+    private void registraFuncaoNaTabelaDeSimbolos(NoDeclaracaoFuncao declaracaoFuncao)
+    {
+        boolean funcaoReservada = FUNCOES_RESERVADAS.contains(declaracaoFuncao.getNome());
+        
+        if (funcaoReservada) {
+            notificarErroSemantico(new ErroSemantico(declaracaoFuncao.getTrechoCodigoFonteNome()) {
+                @Override
+                protected String construirMensagem() {
+                    return "A função " + declaracaoFuncao.getNome() + " é reservada para a linguagem";
+                }
+            });
+            Funcao funcao = criaSimboloFuncao(declaracaoFuncao);
+            funcao.setRedeclarado(true);
+            memoria.adicionarSimbolo(funcao);
+        }
+        else {
+            Funcao funcao = criaSimboloFuncao(declaracaoFuncao);
+            
+            Simbolo simbolo = memoria.getSimbolo(declaracaoFuncao.getNome());
+            if (simbolo == null) {
+                memoria.adicionarSimbolo(funcao);
+            } else {
+                notificarErroSemantico(new ErroSimboloRedeclarado(funcao, simbolo));
+                funcao.setRedeclarado(true);
+            }
+        }
+    }
 
     @Override
     public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA
     {
-        //for (NoInclusaoBiblioteca inclusao : asap.getListaInclusoesBibliotecas())
-        //{
-        //    inclusao.aceitar(this);
-        //}
 
-        // Executa a primeira vez para declarar as funções na tabela de símbolos
-        declarandoSimbolosGlobais = true;
-
-        for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais())
-        {
-            declaracao.aceitar(this);
+        List<NoDeclaracao> declaracoes = asap.getListaDeclaracoesGlobais();
+        
+        // itera somente nas declarações de funções para colocá-las na tabela de símbolos
+        for (NoDeclaracao declaracao : declaracoes) {
+            if (declaracao instanceof NoDeclaracaoFuncao) {
+                registraFuncaoNaTabelaDeSimbolos((NoDeclaracaoFuncao)declaracao);
+            }
         }
-
-        declarandoSimbolosGlobais = false;
-
-        // Executa a segunda vez para analizar os blocos das funções
-        for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais())
-        {
+        
+        for (NoDeclaracao declaracao : declaracoes) {
             declaracao.aceitar(this);
         }
 
@@ -796,52 +829,55 @@ public final class AnalisadorSemantico implements VisitanteASA
         NoBloco blocoAtualAnterior = blocoAtual;
         blocoAtual = declaracaoFuncao;
         
-        if (declarandoSimbolosGlobais)
-        {
-            if (FUNCOES_RESERVADAS.contains(declaracaoFuncao.getNome())){
-                notificarErroSemantico(new ErroSemantico(declaracaoFuncao.getTrechoCodigoFonteNome()) {
-                    @Override
-                    protected String construirMensagem() {
-                        return "A função "+declaracaoFuncao.getNome()+" é reservada para a linguagem";
-                    }
-                });
-                String nome = declaracaoFuncao.getNome();
-                TipoDado tipoDado = declaracaoFuncao.getTipoDado();
-                Quantificador quantificador = declaracaoFuncao.getQuantificador();
-                Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
-                funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
-                funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
-                funcao.setRedeclarado(true);
-                memoria.adicionarSimbolo(funcao);
-                return null;
-            }
-            String nome = declaracaoFuncao.getNome();
-            TipoDado tipoDado = declaracaoFuncao.getTipoDado();
-            Quantificador quantificador = declaracaoFuncao.getQuantificador();
-
-            Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
-            funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
-            funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
+        //if (declarandoSimbolosGlobais)
+        //{
+//            if (FUNCOES_RESERVADAS.contains(declaracaoFuncao.getNome())){
+//                notificarErroSemantico(new ErroSemantico(declaracaoFuncao.getTrechoCodigoFonteNome()) {
+//                    @Override
+//                    protected String construirMensagem() {
+//                        return "A função "+declaracaoFuncao.getNome()+" é reservada para a linguagem";
+//                    }
+//                });
+//                String nome = declaracaoFuncao.getNome();
+//                TipoDado tipoDado = declaracaoFuncao.getTipoDado();
+//                Quantificador quantificador = declaracaoFuncao.getQuantificador();
+//                Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
+//                funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
+//                funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
+//                funcao.setRedeclarado(true);
+//                memoria.adicionarSimbolo(funcao);
+//                return null;
+//            }
             
+//            String nome = declaracaoFuncao.getNome();
+//            TipoDado tipoDado = declaracaoFuncao.getTipoDado();
+//            Quantificador quantificador = declaracaoFuncao.getQuantificador();
+//
+//            Funcao funcao = new Funcao(nome, tipoDado, quantificador, declaracaoFuncao.getParametros(), declaracaoFuncao);
+//            funcao.setTrechoCodigoFonteNome(declaracaoFuncao.getTrechoCodigoFonteNome());
+//            funcao.setTrechoCodigoFonteTipoDado(declaracaoFuncao.getTrechoCodigoFonteTipoDado());
             
-            Simbolo simbolo = memoria.getSimbolo(nome);
-            if (simbolo != null) {
-                notificarErroSemantico(new ErroSimboloRedeclarado(funcao, simbolo));
-                funcao.setRedeclarado(true);
-            }
-            else
-            {
-                memoria.adicionarSimbolo(funcao);
-            }
-            
-            if (funcao.getNome().equals("inicio") && !funcao.getParametros().isEmpty())
-            {
-                notificarErroSemantico(new ErroFuncaoInicioNaoAceitaParametros(declaracaoFuncao));
-            }
-        }
-        else
-        {
-            
+//            
+//            Simbolo simbolo = memoria.getSimbolo(nome);
+//            if (simbolo != null) {
+//                notificarErroSemantico(new ErroSimboloRedeclarado(funcao, simbolo));
+//                funcao.setRedeclarado(true);
+//            }
+//            else
+//            {
+//                memoria.adicionarSimbolo(funcao);
+//            }
+//            
+//            if (funcao.getNome().equals("inicio") && !funcao.getParametros().isEmpty())
+//            {
+//                notificarErroSemantico(new ErroFuncaoInicioNaoAceitaParametros(declaracaoFuncao));
+//            }
+//            
+//            
+//        }
+//        else
+//        {
+//            
             funcaoAtual = (Funcao) memoria.getSimbolo(declaracaoFuncao.getNome());
             if (funcaoAtual != null) {
                 memoria.empilharFuncao();
@@ -856,20 +892,20 @@ public final class AnalisadorSemantico implements VisitanteASA
             else {
                 throw new ExcecaoVisitaASA(new ExcecaoSimboloNaoDeclarado(declaracaoFuncao.getNome()), asa, declaracaoFuncao);
             }
+
+            try
+            {
+                memoria.desempilharFuncao();
+            }
+            catch (EmptyStackException e)
+            {
+                // esta excessão ocorre quando a ClassCastException acima também acontece (função com mesmo nome de variável global). 
+                // Nesses casos a função não chega a ser empilhada (porque o nome dela coincide com uma variável) e então a pilha
+                // está vazia, gerando uma EmptyStackException quando se tenta 'desempilhar'.
+                // Estamos 'engolindo' a excessão aqui apenas para evitar que a stack trace seja mostrada na console do PS.
+            }
             
-//            try
-//            {
-//                memoria.desempilharFuncao();
-//            }
-//            catch (EmptyStackException e)
-//            {
-//                // esta excessão ocorre quando a ClassCastException acima também acontece (função com mesmo nome de variável global). 
-//                // Nesses casos a função não chega a ser empilhada (porque o nome dela coincide com uma variável) e então a pilha
-//                // está vazia, gerando uma EmptyStackException quando se tenta 'desempilhar'.
-//                // Estamos 'engolindo' a excessão aqui apenas para evitar que a stack trace seja mostrada na console do PS.
-//            }
-            
-        }
+//        }
         
         blocoAtual = blocoAtualAnterior;
 
@@ -884,8 +920,8 @@ public final class AnalisadorSemantico implements VisitanteASA
         noDeclaracaoMatriz.setIdParaInspecao(totalMatrizesDeclaradas);
         totalMatrizesDeclaradas++;
         
-        if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
-        {
+//        if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
+//        {
             String nome = noDeclaracaoMatriz.getNome();
             TipoDado tipoDados = noDeclaracaoMatriz.getTipoDado();
             Integer linhas = obterTamanhoVetorMatriz(noDeclaracaoMatriz.getNumeroLinhas(), noDeclaracaoMatriz);
@@ -1055,7 +1091,7 @@ public final class AnalisadorSemantico implements VisitanteASA
             }
 
             matriz.setConstante(noDeclaracaoMatriz.constante());
-        }
+//        }
 
         return null;
     }
@@ -1069,8 +1105,8 @@ public final class AnalisadorSemantico implements VisitanteASA
         //System.out.println(declaracaoVariavel.getNome() + " => " + totalVariaveisDeclaradas);
         totalVariaveisDeclaradas++;
         
-        if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
-        {
+//        if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
+//        {
             String nome = declaracaoVariavel.getNome();
             TipoDado tipoDadoVariavel = declaracaoVariavel.getTipoDado();
             
@@ -1177,7 +1213,7 @@ public final class AnalisadorSemantico implements VisitanteASA
 
             variavel.setConstante(declaracaoVariavel.constante());
 
-        }
+//        }
         return null;
     }
 
@@ -1189,8 +1225,7 @@ public final class AnalisadorSemantico implements VisitanteASA
         noDeclaracaoVetor.setIdParaInspecao(totalVetoresDeclarados);
         totalVetoresDeclarados++;
         
-        if (declarandoSimbolosGlobais == memoria.isEscopoGlobal())
-        {
+//        if (declarandoSimbolosGlobais == memoria.isEscopoGlobal()) {
             String nome = noDeclaracaoVetor.getNome();
             TipoDado tipoDados = noDeclaracaoVetor.getTipoDado();
             NoExpressao expTamanho = noDeclaracaoVetor.getTamanho();
@@ -1319,7 +1354,7 @@ public final class AnalisadorSemantico implements VisitanteASA
             }
 
             vetor.setConstante(noDeclaracaoVetor.constante());
-        }
+//        }
 
         return null;
 
@@ -2113,13 +2148,15 @@ public final class AnalisadorSemantico implements VisitanteASA
                 throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, noVetor);
             }
         }
-        else
-        {
-            //TODO Fazer essa verificaçao no Sintatico (Portugol.g)
-            notificarErroSemantico(new ErroVetorSemElementos(noVetor.getTrechoCodigoFonte()));
+//        else
+//        {
+//            //TODO Fazer essa verificaçao no Sintatico (Portugol.g)
+//            notificarErroSemantico(new ErroVetorSemElementos(noVetor.getTrechoCodigoFonte()));
+//
+//            throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, noVetor);
+//        }
 
-            throw new ExcecaoVisitaASA(new ExcecaoImpossivelDeterminarTipoDado(), asa, noVetor);
-        }
+        return null;
     }
 
     @Override
@@ -2348,20 +2385,21 @@ public final class AnalisadorSemantico implements VisitanteASA
                 metaDadosBibliotecas.put(nome, metaDadosBiblioteca);
             }
 
-//                if (alias != null) {
-//                    try {
-//                        memoria.getSimbolo(nome);
-//                        notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteNome(), new Exception(String.format("o identificador \"%s\" já está sendo utilizado", nome))));
-//                    }
-//                    catch (ExcecaoSimboloNaoDeclarado excecao2) {
-//                        if (metaDadosBibliotecas.containsKey(alias)) {
-//                            notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteAlias(), new Exception(String.format("O alias \"%s\" já está sendo utilizado pela biblioteca \"%s\"", alias, metaDadosBibliotecas.get(alias).getNome()))));
-//                        }
-//                        else {
-//                            metaDadosBibliotecas.put(alias, metaDadosBiblioteca);
-//                        }
-//                    }
+            if (alias != null) {
+//                Simbolo simbolo = memoria.getSimbolo(nome);
+//                if (simbolo != null) {
+//                    
+//                    notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteNome(), new Exception(String.format("o identificador \"%s\" já está sendo utilizado", nome))));
 //                }
+                //else { // (ExcecaoSimboloNaoDeclarado excecao2) {
+                    if (metaDadosBibliotecas.containsKey(alias)) {
+                        notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteAlias(), new Exception(String.format("O alias \"%s\" já está sendo utilizado pela biblioteca \"%s\"", alias, metaDadosBibliotecas.get(alias).getNome()))));
+                    }
+                    else {
+                        metaDadosBibliotecas.put(alias, metaDadosBiblioteca);
+                    }
+                //}
+            }
         }
         catch (ErroCarregamentoBiblioteca erro) {
             notificarErroSemantico(new ErroInclusaoBiblioteca(noInclusaoBiblioteca.getTrechoCodigoFonteNome(), erro));

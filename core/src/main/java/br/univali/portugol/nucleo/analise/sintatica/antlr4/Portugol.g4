@@ -18,13 +18,13 @@ declaracaoListaVariaveis
     : TIPO ID ('=' expressao)? (',' ID ('=' expressao)?)*;
 
 declaracaoMatriz
-    :   TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ( '=' inicializacaoMatriz)? ;
+    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ( '=' inicializacaoMatriz)? ;
 
 inicializacaoMatriz
     :  ABRE_CHAVES inicializacaoArray (',' inicializacaoArray)* FECHA_CHAVES;  
 
 declaracaoArray
-    :   TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;
+    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;
 
 inicializacaoArray
     :   ABRE_CHAVES listaExpressoes? FECHA_CHAVES ;
@@ -58,7 +58,7 @@ comando
     |   facaEnquanto
     |   para
     |   escolha
-    |   RETORNE expressao? 
+    |   retorne 
     |   pare
     |   atribuicao                            
     |   expressao                      // chamada de função
@@ -66,6 +66,10 @@ comando
 
 atribuicao
     :   expressao '=' expressao ;
+
+
+retorne
+    :   RETORNE expressao? ;   
 
 se
     :   SE ABRE_PARENTESES expressao FECHA_PARENTESES listaComandos (SENAO listaComandos)? ;
