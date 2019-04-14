@@ -15,7 +15,7 @@ declaracaoVariavel
     :  CONSTANTE? TIPO ID ('=' expressao)? ;
 
 declaracaoListaVariaveis
-    : TIPO ID ('=' expressao)? (',' ID ('=' expressao)?)*;
+    : CONSTANTE? TIPO ID ('=' expressao)? (',' ID ('=' expressao)?)*;
 
 declaracaoMatriz
     :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ( '=' inicializacaoMatriz)? ;

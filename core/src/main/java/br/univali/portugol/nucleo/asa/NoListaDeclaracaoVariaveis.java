@@ -11,9 +11,11 @@ public class NoListaDeclaracaoVariaveis extends NoBloco implements NoDeclaracao 
 
     private final List<NoDeclaracaoVariavel> declaracoes = new ArrayList<>();
     private final TipoDado tipo;
+    private final boolean constante;
 
-    public NoListaDeclaracaoVariaveis(TipoDado tipo) {
+    public NoListaDeclaracaoVariaveis(TipoDado tipo, boolean constante) {
         this.tipo = tipo;
+        this.constante = constante;
     }
     
     public void adicionaDeclaracao(NoDeclaracaoVariavel declaracao) {
@@ -22,6 +24,10 @@ public class NoListaDeclaracaoVariaveis extends NoBloco implements NoDeclaracao 
 
     public TipoDado getTipo() {
         return tipo;
+    }
+    
+    public boolean ehConstante() {
+        return constante;
     }
     
     @Override

@@ -63,14 +63,15 @@ public class GeradorASA {
         @Override
         public No visitDeclaracaoListaVariaveis(DeclaracaoListaVariaveisContext ctx) {
             TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
+            boolean constante = ctx.CONSTANTE() != null;
             
-            NoListaDeclaracaoVariaveis no = new NoListaDeclaracaoVariaveis(tipo);
+            NoListaDeclaracaoVariaveis no = new NoListaDeclaracaoVariaveis(tipo, constante);
             
             int totalVariaveis = ctx.ID().size();
             for (int i = 0; i < totalVariaveis; i++) {
                 String nomeVariavel = ctx.ID(i).getText();
                 
-                NoDeclaracaoVariavel noVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipo);
+                NoDeclaracaoVariavel noVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipo, constante);
                 
                 ExpressaoContext inicializacao = ctx.expressao(i);
                 if (inicializacao != null) { // a variável tem inicialização?
