@@ -254,8 +254,7 @@ public class GeradorASA {
             noDeclaracaoVariavel.setTrechoCodigoFonteNome(getTrechoCodigoFonte(ctx.ID()));
             noDeclaracaoVariavel.setTrechoCodigoFonteTipoDado(getTrechoCodigoFonte(ctx.TIPO()));
             
-            // FALTA TRATAR O CASO DAS CONSTATES
-            noDeclaracaoVariavel.setTrechoCodigoFonte(getTrechoCodigoFonte(ctx.TIPO(), ctx.getText().length()));
+            noDeclaracaoVariavel.setTrechoCodigoFonte(getTrechoCodigoFonte(constante ? ctx.CONSTANTE() : ctx.TIPO(), ctx.getText().length()));
             
             return noDeclaracaoVariavel;
         }

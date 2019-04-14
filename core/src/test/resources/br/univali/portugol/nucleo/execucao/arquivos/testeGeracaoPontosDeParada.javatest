@@ -14,10 +14,10 @@ public class testeGeracaoPontosDeParada extends Programa
     @Override
     protected void executar(String[] parametros) throws ErroExecucao, InterruptedException
     {
-        realizarParada(6, 20, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVariavel(a)");
+        realizarParada(6, 8, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVariavel(a)");
         int a = 2;
         
-        realizarParada(7, 20, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVariavel(b)");
+        realizarParada(7, 8, "NoDeclaracaoFuncao(inicio).NoDeclaracaoVariavel(b)");
         int b = 4;
         
         realizarParada(8, 16, "NoDeclaracaoFuncao(inicio).NoDeclaracaoMatriz(m)");

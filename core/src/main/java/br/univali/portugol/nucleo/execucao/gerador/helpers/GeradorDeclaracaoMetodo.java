@@ -57,10 +57,10 @@ public class GeradorDeclaracaoMetodo
             geraCodigoInicializacaoParametrosInspecionados(noFuncao.getParametros(), saida, nivelEscopo, seed);
         }
         
-        if (opcoes.gerandoCodigoParaPontosDeParada)
-        {
-            Utils.geraParadaPassoAPasso(noFuncao, saida, nivelEscopo);
-        }
+//        if (opcoes.gerandoCodigoParaPontosDeParada)
+//        {
+//            Utils.geraParadaPassoAPasso(noFuncao, saida, nivelEscopo);
+//        }
         
         Utils.visitarBlocos(noFuncao.getBlocos(), saida, visitor, nivelEscopo, opcoes, seed); // gera o código dentro do método
 
