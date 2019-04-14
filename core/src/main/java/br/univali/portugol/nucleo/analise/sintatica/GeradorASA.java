@@ -61,13 +61,46 @@ public class GeradorASA {
         }
 
         @Override
+        public No visitDeclaracaoListaArray(DeclaracaoListaArrayContext ctx) {
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.declaracaoArray().TIPO().getText());
+            boolean constante = ctx.declaracaoArray().CONSTANTE() != null;
+            
+            NoListaDeclaracaoVetores no = new NoListaDeclaracaoVetores(tipo, constante);
+            
+            // trata o primeiro vetor da lista
+            no.adicionaDeclaracao((NoDeclaracaoVetor)ctx.declaracaoArray().accept(this));
+            
+            int totalVetores = ctx.ID().size(); // trata os outros arrays da lista
+            for (int i = 0; i < totalVetores; i++) {
+                String nomeVetor = ctx.ID(i).getText();
+                
+                NoExpressao tamanho = (ctx.tamanhoArray(i) != null) ? (NoExpressao)ctx.tamanhoArray(i).accept(this) : null;
+                
+                NoDeclaracaoVetor noVetor = new NoDeclaracaoVetor(nomeVetor, tipo, tamanho, constante);
+                
+                InicializacaoArrayContext inicializacao = ctx.inicializacaoArray(i);
+                if (inicializacao != null) { // o vetor tem inicialização?
+                    noVetor.setInicializacao((NoExpressao)inicializacao.accept(this));
+                }
+                
+                no.adicionaDeclaracao(noVetor);
+            }
+
+            return no;
+        }
+        
+
+        @Override
         public No visitDeclaracaoListaVariaveis(DeclaracaoListaVariaveisContext ctx) {
-            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.TIPO().getText());
-            boolean constante = ctx.CONSTANTE() != null;
+            TipoDado tipo = TipoDado.obterTipoDadoPeloNome(ctx.declaracaoVariavel().TIPO().getText());
+            boolean constante = ctx.declaracaoVariavel().CONSTANTE() != null;
             
             NoListaDeclaracaoVariaveis no = new NoListaDeclaracaoVariaveis(tipo, constante);
             
-            int totalVariaveis = ctx.ID().size();
+            // trata a primeira variável da lista
+            no.adicionaDeclaracao((NoDeclaracaoVariavel)ctx.declaracaoVariavel().accept(this));
+            
+            int totalVariaveis = ctx.ID().size(); // trata as outras variáveis da lista
             for (int i = 0; i < totalVariaveis; i++) {
                 String nomeVariavel = ctx.ID(i).getText();
                 
@@ -189,11 +222,11 @@ public class GeradorASA {
             List<NoBloco> blocos = new ArrayList<>();
             for (ComandoContext comando : ctx) {
                 NoBloco bloco = (NoBloco)comando.accept(this);
-                if (!(bloco instanceof NoListaDeclaracaoVariaveis)) {
+                if (!(bloco instanceof NoListaDeclaracoes)) {
                     blocos.add(bloco);
                 }
-                else { // trata a lista de declarações como um 'amontoado' de declarações
-                    blocos.addAll(((NoListaDeclaracaoVariaveis)bloco).getDeclaracoes());
+                else { // trata a lista de declarações (variáveis ou arrays) como um 'amontoado' de declarações
+                    blocos.addAll(((NoListaDeclaracoes)bloco).getDeclaracoes());
                 }
             }
             return blocos;

@@ -5,7 +5,7 @@ import PortugolLexico;
 arquivo 
     :   PROGRAMA ABRE_CHAVES 
         inclusaoBiblioteca* 
-        (declaracaoFuncao | (declaracaoVariavel | declaracaoListaVariaveis) | declaracaoArray | declaracaoMatriz)* 
+        (declaracaoFuncao | (declaracaoVariavel | declaracaoListaVariaveis) | (declaracaoArray | declaracaoListaArray) | declaracaoMatriz)* 
         FECHA_CHAVES ;
 
 inclusaoBiblioteca
@@ -15,7 +15,7 @@ declaracaoVariavel
     :  CONSTANTE? TIPO ID ('=' expressao)? ;
 
 declaracaoListaVariaveis
-    : CONSTANTE? TIPO ID ('=' expressao)? (',' ID ('=' expressao)?)*;
+    : declaracaoVariavel (',' ID ('=' expressao)?)*;
 
 declaracaoMatriz
     :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ( '=' inicializacaoMatriz)? ;
@@ -25,6 +25,9 @@ inicializacaoMatriz
 
 declaracaoArray
     :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;
+
+declaracaoListaArray
+    :   declaracaoArray (',' ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)?)* ;
 
 inicializacaoArray
     :   ABRE_CHAVES listaExpressoes? FECHA_CHAVES ;
