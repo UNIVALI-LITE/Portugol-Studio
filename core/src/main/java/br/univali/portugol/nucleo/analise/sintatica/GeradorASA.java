@@ -80,7 +80,7 @@ public class GeradorASA {
                 
                 no.adicionaDeclaracao(noVariavel);
             }
-            
+
             return no;
         }
         
@@ -569,7 +569,7 @@ public class GeradorASA {
             }
             
             if (base == 16) {
-                return Integer.parseInt(texto.replaceFirst("0x", ""), base); // remove o 0x da frente do número hexa
+                return Integer.parseInt(texto.replaceFirst("0[xX]", ""), base); // remove o 0x da frente do número hexa
             }
             
             return Integer.parseInt(texto, base);

@@ -24,6 +24,7 @@ public class ParserTest {
         PortugolParser parser = novoParser(
                 "programa {                                                     "
                 + "	inteiro x = 0xFFFFFF                                    \n"
+                + "     inteiro a = 0Xababab                                    \n"
                 + "}                                                            "
         );
 
