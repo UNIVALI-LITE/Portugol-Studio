@@ -242,6 +242,11 @@ public class GeradorASA {
         public No visitAtribuicaoCompostaMultiplicacao(AtribuicaoCompostaMultiplicacaoContext ctx) {
             return criaNoOperacao(ctx, this, NoOperacaoMultiplicacao.class, ctx.OP_MULTIPLICACAO_IGUAL());
         }
+
+        @Override
+        public No visitOperacaoXor(OperacaoXorContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoBitwiseXOR.class, ctx.OP_XOR());
+        }
         
         private List<NoBloco> getBlocos(List<ComandoContext> ctx) {
             List<NoBloco> blocos = new ArrayList<>();

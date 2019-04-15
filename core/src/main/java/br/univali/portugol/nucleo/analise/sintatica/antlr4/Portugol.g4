@@ -142,6 +142,7 @@ expressao
     |   expressao OP_MAIOR_IGUAL expressao                                                      #operacaoMaiorIgual
     |   expressao OP_E_LOGICO expressao                                                         #operacaoELogico
     |   expressao OP_OU_LOGICO expressao                                                        #operacaoOuLogico
+    |   expressao OP_XOR expressao                                                              #operacaoXor
     |   expressao OP_SHIFT_LEFT expressao                                                       #operacaoShiftLeft
     |   expressao OP_SHIFT_RIGHT expressao                                                      #operacaoShiftRight
     |   escopoBiblioteca? ID                                                                    #referenciaParaVariavel           // referência para variável

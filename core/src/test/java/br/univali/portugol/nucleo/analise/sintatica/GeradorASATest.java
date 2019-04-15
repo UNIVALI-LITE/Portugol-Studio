@@ -23,6 +23,31 @@ import org.junit.Test;
 public class GeradorASATest {
 
     @Test
+    public void testXor() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "      funcao inicio() {                                      "
+                + "         inteiro x = 1                                       \n"
+                + "         x = x ^ 2                                           \n"
+                + "     }                                                       "
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)inicio.getBlocos().get(0), "x", TipoDado.INTEIRO, 1);
+        
+        NoOperacaoAtribuicao atribuicao = (NoOperacaoAtribuicao)inicio.getBlocos().get(1);
+        NoOperacaoBitwiseXOR xor = (NoOperacaoBitwiseXOR)atribuicao.getOperandoDireito();
+        Assert.assertEquals("erro no xor", "x", ((NoReferenciaVariavel)xor.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("erro no operando direito ", new Integer(2), ((NoInteiro)xor.getOperandoDireito()).getValor());
+    }
+    
+    @Test
     public void testAtribuicoesCompostas() throws Exception {
 
         PortugolParser parser = novoParser(
