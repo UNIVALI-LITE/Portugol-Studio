@@ -5,47 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolParser;
 import br.univali.portugol.nucleo.analise.sintatica.antlr4.PortugolLexer;
-import br.univali.portugol.nucleo.asa.ASA;
-import br.univali.portugol.nucleo.asa.ASAPrograma;
-import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.ModoAcesso;
-import br.univali.portugol.nucleo.asa.NoBloco;
-import br.univali.portugol.nucleo.asa.NoCaso;
-import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
-import br.univali.portugol.nucleo.asa.NoEnquanto;
-import br.univali.portugol.nucleo.asa.NoEscolha;
-import br.univali.portugol.nucleo.asa.NoExpressao;
-import br.univali.portugol.nucleo.asa.NoExpressaoLiteral;
-import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
-import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
-import br.univali.portugol.nucleo.asa.NoInteiro;
-import br.univali.portugol.nucleo.asa.NoListaDeclaracaoVariaveis;
-import br.univali.portugol.nucleo.asa.NoMatriz;
-import br.univali.portugol.nucleo.asa.NoMenosUnario;
-import br.univali.portugol.nucleo.asa.NoOperacao;
-import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseLeftShift;
-import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
-import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaior;
-import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
-import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
-import br.univali.portugol.nucleo.asa.NoPara;
-import br.univali.portugol.nucleo.asa.NoPare;
-import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
-import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
-import br.univali.portugol.nucleo.asa.NoReferenciaVetor;
-import br.univali.portugol.nucleo.asa.NoRetorne;
-import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.portugol.nucleo.asa.NoVetor;
-import br.univali.portugol.nucleo.asa.Quantificador;
-import br.univali.portugol.nucleo.asa.TipoDado;
-import br.univali.portugol.nucleo.asa.VisitanteNulo;
+import br.univali.portugol.nucleo.asa.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +22,46 @@ import org.junit.Test;
  */
 public class GeradorASATest {
 
+    @Test
+    public void testAtribuicoesCompostas() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "      funcao inicio() {                                      "
+                + "         inteiro x = 1                                       \n"
+                + "         x += 10                                             \n"
+                + "         x -= 10                                             \n"
+                + "         x *= 10                                             \n"
+                + "         x /= 10                                             \n"                        
+                + "     }                                                       "
+                + "}                                                            "
+        );
+
+        GeradorASA geradorASA = new GeradorASA(parser);
+        ASA asa = geradorASA.geraASA();
+        
+        NoDeclaracaoFuncao inicio = getNoDeclaracaoFuncao("inicio", asa);
+        
+        List<NoBloco> declaracoes = inicio.getBlocos();
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)declaracoes.get(0), "x", TipoDado.INTEIRO, 1);
+        
+        NoOperacaoSoma soma = (NoOperacaoSoma)declaracoes.get(1);
+        Assert.assertEquals("erro na atribuição composta", "x", ((NoReferenciaVariavel)soma.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("erro no operando direito ", new Integer(10), ((NoInteiro)soma.getOperandoDireito()).getValor());
+        
+        NoOperacaoSubtracao subtracao = (NoOperacaoSubtracao)declaracoes.get(2);
+        Assert.assertEquals("erro na atribuição composta", "x", ((NoReferenciaVariavel)subtracao.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("erro no operando direito ", new Integer(10), ((NoInteiro)subtracao.getOperandoDireito()).getValor());
+        
+        NoOperacaoMultiplicacao multiplicacao = (NoOperacaoMultiplicacao)declaracoes.get(3);
+        Assert.assertEquals("erro na atribuição composta", "x", ((NoReferenciaVariavel)multiplicacao.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("erro no operando direito ", new Integer(10), ((NoInteiro)multiplicacao.getOperandoDireito()).getValor());
+        
+        NoOperacaoDivisao divisao = (NoOperacaoDivisao)declaracoes.get(4);
+        Assert.assertEquals("erro na atribuição composta", "x", ((NoReferenciaVariavel)divisao.getOperandoEsquerdo()).getNome());
+        Assert.assertEquals("erro no operando direito ", new Integer(10), ((NoInteiro)divisao.getOperandoDireito()).getValor());
+    }
+    
     @Test
     public void testInteiroInicializadoComHexadecimal() throws Exception {
 

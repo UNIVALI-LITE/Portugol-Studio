@@ -217,11 +217,37 @@ public class GeradorASA {
             
             return noEscolha;
         }
+
+        
+         /***
+          *     ATENçÃO: No momento as atribuições compostas estão sendo tratadas
+          *     como atribuições simples para evitar mudanças maiores no código
+          */
+        @Override
+        public No visitAtribuicaoCompostaSoma(AtribuicaoCompostaSomaContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoSoma.class, ctx.OP_MAIS_IGUAL());
+        }
+
+        @Override
+        public No visitAtribuicaoCompostaSubtracao(AtribuicaoCompostaSubtracaoContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoSubtracao.class, ctx.OP_MENOS_IGUAL());
+        }
+
+        @Override
+        public No visitAtribuicaoCompostaDivisao(AtribuicaoCompostaDivisaoContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoDivisao.class, ctx.OP_DIVISAO_IGUAL());
+        }
+
+        @Override
+        public No visitAtribuicaoCompostaMultiplicacao(AtribuicaoCompostaMultiplicacaoContext ctx) {
+            return criaNoOperacao(ctx, this, NoOperacaoMultiplicacao.class, ctx.OP_MULTIPLICACAO_IGUAL());
+        }
         
         private List<NoBloco> getBlocos(List<ComandoContext> ctx) {
             List<NoBloco> blocos = new ArrayList<>();
             for (ComandoContext comando : ctx) {
                 NoBloco bloco = (NoBloco)comando.accept(this);
+                
                 if (!(bloco instanceof NoListaDeclaracoes)) {
                     blocos.add(bloco);
                 }

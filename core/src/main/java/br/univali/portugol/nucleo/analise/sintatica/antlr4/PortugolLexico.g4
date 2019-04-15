@@ -15,7 +15,7 @@ ENQUANTO:       'enquanto' ;
 PARA:           'para' ;
 SE:             'se' ;
 SENAO:          'senao' ;
-CONSTANTE:          'const' ;
+CONSTANTE:      'const' ;
 FUNCAO:         'funcao' ;
 PROGRAMA:       'programa' ;
 ESCOLHA:        'escolha' ;
@@ -23,9 +23,9 @@ CASO:           'caso' ;
 CONTRARIO:      'contrario' ;
 PARE:           'pare' ;
 RETORNE:        'retorne';
-OP_NAO:            'nao' ;
-OP_E_LOGICO:       'e' ;
-OP_OU_LOGICO:      'ou';
+OP_NAO:         'nao' ;
+OP_E_LOGICO:    'e' ;
+OP_OU_LOGICO:   'ou';
 INCLUA:         'inclua' ;
 BIBLIOTECA:     'biblioteca' ;
 
@@ -34,6 +34,7 @@ OP_ADICAO:              '+' ;
 OP_MULTIPLICACAO:       '*' ;
 OP_DIVISAO:             '/' ;
 OP_MOD:                 '%' ;
+OP_ATRIBUICAO:          '=' ;
 OP_IGUALDADE:           '==' ;
 OP_DIFERENCA:           '!=' ;
 OP_MAIOR:               '>' ;
@@ -46,6 +47,11 @@ OP_SHIFT_LEFT:          '<<' ;
 OP_SHIFT_RIGHT:         '>>' ;
 OP_XOR:                 '^' ;
 OP_ALIAS_BIBLIOTECA:    '-->' ;
+
+OP_MAIS_IGUAL:          '+=' ;
+OP_MENOS_IGUAL:         '-=' ;
+OP_MULTIPLICACAO_IGUAL: '*=' ;
+OP_DIVISAO_IGUAL:       '/=' ;
 
 LOGICO: VERDADEIRO | FALSO ;
 

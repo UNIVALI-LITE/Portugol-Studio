@@ -19,6 +19,24 @@ import org.junit.Test;
 public class ParserTest {
 
     @Test
+    public void testAtribuicoesCompostas() throws Exception {
+
+        PortugolParser parser = novoParser(
+                " programa {                                                    "
+                + "      funcao inicio() {                                      "
+                + "         inteiro x = 1                                       \n"
+                + "         x += 10                                             \n"
+                + "         x -= 10                                             \n"
+                + "         x *= 10                                             \n"
+                + "         x /= 10                                             \n"                        
+                + "     }                                                       "
+                + "}                                                            "
+        );
+
+        Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+    }
+    
+    @Test
     public void testInteiroInicializadoComHexadecimal() throws Exception {
 
         PortugolParser parser = novoParser(

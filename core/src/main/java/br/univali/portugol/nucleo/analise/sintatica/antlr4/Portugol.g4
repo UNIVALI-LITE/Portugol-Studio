@@ -12,22 +12,22 @@ inclusaoBiblioteca
     : INCLUA BIBLIOTECA ID (OP_ALIAS_BIBLIOTECA ID)?;
 
 declaracaoVariavel
-    :  CONSTANTE? TIPO ID ('=' expressao)? ;
+    :  CONSTANTE? TIPO ID (OP_ATRIBUICAO expressao)? ;
 
 declaracaoListaVariaveis
-    : declaracaoVariavel (',' ID ('=' expressao)?)*;
+    : declaracaoVariavel (',' ID (OP_ATRIBUICAO expressao)?)*;
 
 declaracaoMatriz
-    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ( '=' inicializacaoMatriz)? ;
+    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoMatriz)? ;
 
 inicializacaoMatriz
     :  ABRE_CHAVES inicializacaoArray (',' inicializacaoArray)* FECHA_CHAVES;  
 
 declaracaoArray
-    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)? ;
+    :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoArray)? ;
 
 declaracaoListaArray
-    :   declaracaoArray (',' ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ('=' inicializacaoArray)?)* ;
+    :   declaracaoArray (',' ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoArray)?)* ;
 
 inicializacaoArray
     :   ABRE_CHAVES listaExpressoes? FECHA_CHAVES ;
@@ -63,13 +63,20 @@ comando
     |   escolha
     |   retorne 
     |   pare
-    |   atribuicao                            
+    |   atribuicao     
+    |   atribuicaoComposta
     |   expressao                      // chamada de função
     ;
 
 atribuicao
-    :   expressao '=' expressao ;
+    :   expressao OP_ATRIBUICAO expressao ;
 
+atribuicaoComposta
+    :   expressao OP_MAIS_IGUAL expressao           #atribuicaoCompostaSoma
+    |   expressao OP_MENOS_IGUAL expressao          #atribuicaoCompostaSubtracao
+    |   expressao OP_MULTIPLICACAO_IGUAL expressao  #atribuicaoCompostaMultiplicacao
+    |   expressao OP_DIVISAO_IGUAL expressao        #atribuicaoCompostaDivisao 
+    ;
 
 retorne
     :   RETORNE expressao? ;   
