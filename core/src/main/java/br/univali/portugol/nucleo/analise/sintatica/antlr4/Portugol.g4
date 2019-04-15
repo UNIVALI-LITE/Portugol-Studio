@@ -15,7 +15,10 @@ declaracaoVariavel
     :  CONSTANTE? TIPO ID (OP_ATRIBUICAO expressao)? ;
 
 declaracaoListaVariaveis
-    : declaracaoVariavel (',' ID (OP_ATRIBUICAO expressao)?)*;
+    : declaracaoVariavel itemListaVariaveis*;
+
+itemListaVariaveis
+    : (',' ID (OP_ATRIBUICAO expressao)?) ;
 
 declaracaoMatriz
     :   CONSTANTE? TIPO ID ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES ABRE_COLCHETES tamanhoArray? FECHA_COLCHETES (OP_ATRIBUICAO inicializacaoMatriz)? ;

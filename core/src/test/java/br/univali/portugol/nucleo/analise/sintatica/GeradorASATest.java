@@ -255,22 +255,26 @@ public class GeradorASATest {
     @Test
     public void testListaDeclaracaoVariaveis() throws IOException, RecognitionException{
         PortugolParser parser = novoParser(""
-                + "programa {                                                   "
-                + "     inteiro x=0, y                                          "
-                + "     cadeia c                                                "
-                + "}                                                            "
+                + "programa {                                                               "
+                + "     inteiro base_x, base_y, espaco, cor_base=0, iterador=360, portugol=0"
+                + "     cadeia c                                                            "
+                + "}                                                                        "
         );
-        
+
         Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
         
         GeradorASA geradorASA = new GeradorASA(parser);
         ASA asa = geradorASA.geraASA();
         
-        Assert.assertEquals("a lista de declarações deveria ter 3 variáveis", 3, asa.getListaDeclaracoesGlobais().size());
+        Assert.assertEquals("a lista de declarações deveria ter 7 variáveis", 7, asa.getListaDeclaracoesGlobais().size());
         
-        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "x", TipoDado.INTEIRO, 0);
-        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(1), "y", TipoDado.INTEIRO);
-        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(2), "c", TipoDado.CADEIA);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(0), "base_x", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(1), "base_y", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(2), "espaco", TipoDado.INTEIRO);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(3), "cor_base", TipoDado.INTEIRO, 0);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(4), "iterador", TipoDado.INTEIRO, 360);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(5), "portugol", TipoDado.INTEIRO, 0);
+        assertNoDeclaracaoVariavel((NoDeclaracaoVariavel)asa.getListaDeclaracoesGlobais().get(6), "c", TipoDado.CADEIA);
     }
     
     

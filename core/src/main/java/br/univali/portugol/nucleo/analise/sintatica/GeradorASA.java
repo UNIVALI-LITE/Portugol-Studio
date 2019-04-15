@@ -100,13 +100,13 @@ public class GeradorASA {
             // trata a primeira variável da lista
             no.adicionaDeclaracao((NoDeclaracaoVariavel)ctx.declaracaoVariavel().accept(this));
             
-            int totalVariaveis = ctx.ID().size(); // trata as outras variáveis da lista
+            int totalVariaveis = ctx.itemListaVariaveis().size(); // trata as outras variáveis da lista
             for (int i = 0; i < totalVariaveis; i++) {
-                String nomeVariavel = ctx.ID(i).getText();
+                String nomeVariavel = ctx.itemListaVariaveis(i).ID().getText();
                 
                 NoDeclaracaoVariavel noVariavel = new NoDeclaracaoVariavel(nomeVariavel, tipo, constante);
                 
-                ExpressaoContext inicializacao = ctx.expressao(i);
+                ExpressaoContext inicializacao = ctx.itemListaVariaveis(i).expressao();
                 if (inicializacao != null) { // a variável tem inicialização?
                     noVariavel.setInicializacao((NoExpressao)inicializacao.accept(this));
                 }
